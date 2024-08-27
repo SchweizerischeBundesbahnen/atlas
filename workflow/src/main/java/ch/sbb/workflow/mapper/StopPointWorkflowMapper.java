@@ -16,8 +16,13 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class StopPointWorkflowMapper {
 
-  public static ReadStopPointWorkflowModel toModel(StopPointWorkflow entity, List<StopPointClientPersonModel> examinants) {
-    ReadStopPointWorkflowModel model = ReadStopPointWorkflowModel.builder()
+  public static ReadStopPointWorkflowModel toModelWithReorderingExaminants(StopPointWorkflow entity, List<StopPointClientPersonModel> examinants) {
+    ReadStopPointWorkflowModel model = toModel(entity);
+    return reorderExaminants(model, examinants);
+  }
+
+  public static ReadStopPointWorkflowModel toModel(StopPointWorkflow entity) {
+    return ReadStopPointWorkflowModel.builder()
         .id(entity.getId())
         .sloid(entity.getSloid())
         .versionId(entity.getVersionId())
@@ -40,11 +45,6 @@ public class StopPointWorkflowMapper {
         .creationDate(entity.getCreationDate())
         .creator(entity.getCreator())
         .build();
-    if (examinants != null) {
-      return reorderExaminants(model, examinants);
-    } else {
-      return model;
-    }
   }
 
   public static StopPointWorkflow addStopPointWorkflowToEntity(StopPointAddWorkflowModel model,

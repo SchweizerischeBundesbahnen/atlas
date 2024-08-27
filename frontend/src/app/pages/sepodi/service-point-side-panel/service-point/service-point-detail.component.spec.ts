@@ -16,14 +16,7 @@ import {AtlasSpacerComponent} from '../../../../core/components/spacer/atlas-spa
 import {Record} from '../../../../core/components/base-detail/record';
 import {adminPermissionServiceMock, MockAtlasButtonComponent} from '../../../../app.testing.mocks';
 import {DialogService} from '../../../../core/components/dialog/dialog.service';
-import {
-  Country,
-  ReadServicePointVersion,
-  ServicePointsService,
-  Status,
-  StopPointPerson,
-  StopPointWorkflowService,
-} from '../../../../api';
+import {Country, ReadServicePointVersion, ServicePointsService, Status,} from '../../../../api';
 import {NotificationService} from '../../../../core/notification/notification.service';
 import {DisplayCantonPipe} from '../../../../core/cantons/display-canton.pipe';
 import {MapService} from '../../map/map.service';
@@ -36,7 +29,6 @@ import {DetailFooterComponent} from "../../../../core/components/detail-footer/d
 import {ValidityService} from "../../validity/validity.service";
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
-import {HttpResponse} from "@angular/common/http";
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
@@ -76,7 +68,6 @@ class ServicePointGeographyMockComponent {
 
 describe('ServicePointDetailComponent', () => {
   let component: ServicePointDetailComponent;
-  let stopPointWorkflowService: jasmine.SpyObj<StopPointWorkflowService>;
   let fixture: ComponentFixture<ServicePointDetailComponent>;
 
   const activatedRouteMock = {parent: {data: of({servicePoint: BERN})}};
@@ -84,8 +75,6 @@ describe('ServicePointDetailComponent', () => {
   let validityService: ValidityService;
 
   beforeEach(async () => {
-    const stopPointWorkflowServiceSpy = jasmine.createSpyObj('StopPointWorkflowService', ['getExaminants']);
-
     await TestBed.configureTestingModule({
       declarations: [
         ServicePointDetailComponent,
@@ -109,8 +98,6 @@ describe('ServicePointDetailComponent', () => {
       imports: [AppTestingModule, FormsModule],
       providers: [
         ValidityService,
-        StopPointWorkflowService,
-        { provide: StopPointWorkflowService, useValue: stopPointWorkflowServiceSpy },
         {provide: PermissionService, useValue: adminPermissionServiceMock},
         {provide: ActivatedRoute, useValue: activatedRouteMock},
         {provide: DialogService, useValue: dialogServiceSpy},
@@ -124,7 +111,6 @@ describe('ServicePointDetailComponent', () => {
 
     fixture = TestBed.createComponent(ServicePointDetailComponent);
     component = fixture.componentInstance;
-    stopPointWorkflowService = TestBed.inject(StopPointWorkflowService) as jasmine.SpyObj<StopPointWorkflowService>;
     validityService = TestBed.inject(ValidityService)
     fixture.detectChanges();
   });
@@ -403,34 +389,8 @@ describe('ServicePointDetailComponent', () => {
     expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
   });
 
-  it('should call getExaminants', () => {
-    const mockVersion: ReadServicePointVersion = {
-      id: 10,
-      businessOrganisation: 'ch:1:sboid:100016',
-      designationOfficial: 'abcd',
-      validFrom: new Date(2020-10-1),
-      validTo: new Date(2099-10-1),
-      number: {
-        number: 123456,
-        numberShort: 31,
-        uicCountryCode: 0,
-        checkDigit: 0,
-      },
-      status: 'REVOKED',
-      country: Country.Switzerland
-    };
-    component.selectedVersion = mockVersion;
-
-    const mockResponse = new HttpResponse<StopPointPerson[]>({
-      body: [],
-      status: 200
-    });
-
-    stopPointWorkflowService.getExaminants.and.returnValue(of(mockResponse));
-
-    component.addWorkflow();
-
-    expect(stopPointWorkflowService.getExaminants).toHaveBeenCalledWith(10);
+  it('should open add workflow dialog', () => {
+    expect(addStopPointWorkflowDialogService.openDialog).toHaveBeenCalled();
   });
 
 });
