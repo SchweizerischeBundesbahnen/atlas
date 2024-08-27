@@ -29,6 +29,7 @@ import {DialogFooterComponent} from "../../../../core/components/dialog/footer/d
 import {DialogContentComponent} from "../../../../core/components/dialog/content/dialog-content.component";
 import {DialogCloseComponent} from "../../../../core/components/dialog/close/dialog-close.component";
 import {StopPointWorkflowDetailFormComponent} from "../detail-page/detail-form/stop-point-workflow-detail-form.component";
+import {ValidationService} from "../../../../core/validation/validation.service";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -45,12 +46,13 @@ const detailHelperService = jasmine.createSpyObj({
 });
 const stopPointWorkflowService = jasmine.createSpyObj('StopPointWorkflowService', {
   addStopPointWorkflow: of(workflow),
+  getExaminants: of([])
 });
 
 const workflowDialogData: AddStopPointWorkflowDialogData = {
   title: '',
   message: '',
-  stopPoint: BERN_WYLEREGG
+  stopPoint: BERN_WYLEREGG,
 }
 
 describe('AddStopPointWorkflowComponent', () => {

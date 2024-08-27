@@ -390,6 +390,8 @@ describe('ServicePointDetailComponent', () => {
   });
 
   it('should open add workflow dialog', () => {
+    component.addWorkflow();
+
     expect(addStopPointWorkflowDialogService.openDialog).toHaveBeenCalled();
   });
 
