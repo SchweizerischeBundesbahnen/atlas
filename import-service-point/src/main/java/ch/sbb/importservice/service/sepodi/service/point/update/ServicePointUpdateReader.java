@@ -23,5 +23,10 @@ public class ServicePointUpdateReader extends ServicePointUpdate implements Bulk
     return new ArrayList<>(servicePointUpdateCsvModels);
   }
 
+  @Override
+  public Class<?> getCsvModelClass() {
+    return ServicePointUpdateCsvModel.class;
+  }
+
 
 }
