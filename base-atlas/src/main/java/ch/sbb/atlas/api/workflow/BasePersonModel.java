@@ -21,13 +21,11 @@ public abstract class BasePersonModel {
   @Schema(description = "Firstname", example = "John")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
-//  @JsonDeserialize(using = StringTrimmerDeserializer.class)
   private String firstName;
 
   @Schema(description = "Second", example = "Doe")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
-//  @JsonDeserialize(using = StringTrimmerDeserializer.class)
   private String lastName;
 
   @Schema(description = "Object creation date", example = "01.01.2000", accessMode = AccessMode.READ_ONLY)
