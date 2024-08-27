@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointBulkImportService;
@@ -16,12 +17,15 @@ class ServicePointBulkImportControllerTest {
   @Mock
   private ServicePointBulkImportService servicePointBulkImportService;
 
+  @Mock
+  private AtlasExceptionHandler atlasExceptionHandler;
+
   private ServicePointBulkImportController servicePointBulkImportController;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.initMocks(this);
-    servicePointBulkImportController = new ServicePointBulkImportController(servicePointBulkImportService);
+    servicePointBulkImportController = new ServicePointBulkImportController(servicePointBulkImportService, atlasExceptionHandler);
   }
 
   @Test
