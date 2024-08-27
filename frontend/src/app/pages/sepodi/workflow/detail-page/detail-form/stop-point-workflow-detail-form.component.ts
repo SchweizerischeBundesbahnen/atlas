@@ -64,10 +64,10 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
         },
       };
     }
-    this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.currentWorkflow);
+    // this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.currentWorkflow);
 
-    const examinantsFormArray = this.form.get('examinants') as FormArray;
-    this.disableFirstTwoExaminants(examinantsFormArray);
+    // const examinantsFormArray = this.form.get('examinants') as FormArray;
+    // this.disableFirstTwoExaminants(examinantsFormArray);
 
     if(!this.currentWorkflow){
       this.stopPointWorkflowService.getExaminants(this.stopPoint.id!).subscribe((listOfExaminants: StopPointPerson[]) => {
@@ -90,11 +90,13 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
 
 
     if (this.currentWorkflow) {
+      // const examinantsFormArray = this.form.get('examinants') as FormArray;
+      // this.disableFirstTwoExaminants(examinantsFormArray);
       this.specialDecision = this.currentWorkflow.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
     }
   }
 
-  private disableFirstTwoExaminants(examinantsFormArray: FormArray): void {
+  public disableFirstTwoExaminants(examinantsFormArray: FormArray): void {
     if (examinantsFormArray.length > 0) {
       examinantsFormArray.at(0).disable();
       if (examinantsFormArray.length > 1) {
@@ -103,14 +105,30 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     }
   }
 
+  hideDeleteButtonForTheFirstTwoExaminants(index: number): boolean {
+    return index >= 2 && this.form.enabled;
+  }
+
+  disableDeleteButtonForTheFirstTwoExaminants(index: number): boolean {
+    return index < 2 || this.form.disabled;
+  }
+
 
   addExaminant() {
     const examinantsControl = this.form.controls.examinants;
     ValidationService.validateForm(examinantsControl);
-    if (examinantsControl.valid) {
+    if (examinantsControl.valid || this.allExaminantsDisabled(examinantsControl)) {
       examinantsControl.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     }
   }
+
+  private allExaminantsDisabled(examinantsControl: FormArray): boolean {
+    return examinantsControl.controls.every(control =>
+      control.disabled
+    );
+  }
+
+
 
   removeExaminant(index: number) {
     this.form.controls.examinants.removeAt(index);
@@ -152,5 +170,4 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     this.decisionDetailDialogService.openDialog(this.currentWorkflow!.id!, this.currentWorkflow!.status!, StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(this.specialDecision));
   }
 
-  protected readonly FormGroup = FormGroup;
 }
