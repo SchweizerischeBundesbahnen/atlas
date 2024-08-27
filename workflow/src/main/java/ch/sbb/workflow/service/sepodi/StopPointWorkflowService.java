@@ -19,14 +19,18 @@ import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.Examinants;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -55,6 +59,7 @@ public class StopPointWorkflowService {
   public Page<StopPointWorkflow> getWorkflows(StopPointWorkflowSearchRestrictions searchRestrictions) {
     return workflowRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
+
 
   public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
     if (workflowModel.getExaminants() != null && !workflowModel.getExaminants().isEmpty()) {
@@ -87,10 +92,44 @@ public class StopPointWorkflowService {
     return save(stopPointWorkflow);
   }
 
-  public List<StopPointClientPersonModel> getExaminants(Long id) {
-    ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.getServicePointById(id);
+  public List<StopPointClientPersonModel> getExaminantsByWorkflowId(Long id) {
+    Long servicePointVersionId = getWorkflow(id).getVersionId();
+    return getExaminantsByServicePointVersionId(servicePointVersionId);
+  }
+
+  public List<StopPointClientPersonModel> getExaminantsByServicePointVersionId(Long servicePointVersionId) {
+    ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.getServicePointById(servicePointVersionId);
     return examinants.getExaminants(servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getCanton());
   }
+
+  public ReadStopPointWorkflowModel reorderExaminants(ReadStopPointWorkflowModel stopPointWorkflowModel) {
+    List<StopPointClientPersonModel> importantPersons = getExaminantsByServicePointVersionId(stopPointWorkflowModel.getVersionId());
+    List<StopPointClientPersonModel> examinants = stopPointWorkflowModel.getExaminants();
+    List<Person> importantPersonsForComparison = importantPersons.stream()
+        .map(StopPointClientPersonMapper::toEntity)
+        .collect(Collectors.toList());
+
+    List<StopPointClientPersonModel> sortedExaminants = new ArrayList<>();
+
+    for (Person importantPerson : importantPersonsForComparison) {
+      examinants.stream()
+          .filter(examinant ->
+              Objects.equals(examinant.getFirstName(), importantPerson.getFirstName()) &&
+                  Objects.equals(examinant.getLastName(), importantPerson.getLastName()) &&
+                  Objects.equals(examinant.getMail(), importantPerson.getMail()) &&
+                  Objects.equals(examinant.getOrganisation(), importantPerson.getOrganisation()) &&
+                  Objects.equals(examinant.getPersonFunction(), importantPerson.getFunction())
+          )
+          .findFirst()
+          .ifPresent(sortedExaminants::add);
+    }
+    examinants.stream()
+        .filter(examinant -> !sortedExaminants.contains(examinant))
+        .forEach(sortedExaminants::add);
+    stopPointWorkflowModel.setExaminants(sortedExaminants);
+    return stopPointWorkflowModel;
+  }
+
 
   public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
