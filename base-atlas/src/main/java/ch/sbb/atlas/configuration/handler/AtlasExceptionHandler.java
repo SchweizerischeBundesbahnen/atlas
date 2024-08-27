@@ -305,4 +305,14 @@ public class AtlasExceptionHandler {
             .message(exception.getMessage())
             .build());
   }
+
+  public ErrorResponse mapToErrorResponse(Exception exception) {
+    if (exception instanceof AtlasException atlasException) {
+      return atlasException(atlasException).getBody();
+    }
+    if (exception instanceof VersioningNoChangesException versioningNoChangesException) {
+      return versioningNoChangesException(versioningNoChangesException).getBody();
+    }
+    return handleException(exception).getBody();
+  }
 }
