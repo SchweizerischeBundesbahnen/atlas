@@ -13,28 +13,46 @@ public class LogFile {
 
   private final List<LogEntry> logEntries = new ArrayList<>();
 
-  public LogFile appendErrors(BulkImportUpdateContainer<?> container) {
-    if (container.hasErrors()) {
-      List<BulkImportError> errors = container.getDataValidationErrors().stream()
-          .map(dataValidationError -> BulkImportError.builder()
-              .errorMessage(
-                  "Expected " + dataValidationError.getExpectedType() + " but got " + dataValidationError.getErrorValue()
-                      + " in column " + dataValidationError.getField())
-              .displayInfo(DisplayInfo.builder()
-                  .code("BULK_IMPORT.VALIDATION.DATA_VALIDATION_ERROR")
-                  .with("field", dataValidationError.getField())
-                  .with("errorValue", dataValidationError.getErrorValue())
-                  .with("expectedType", dataValidationError.getExpectedType().toString())
-                  .build())
-              .build())
-          .toList();
-      this.getLogEntries().add(LogEntry.builder()
-          .lineNumber(container.getLineNumber())
-          .status(BulkImportStatus.DATA_VALIDATION_ERROR)
-          .errors(errors)
-          .build());
-    }
-    return this;
+  public static LogEntry mapToDataValidationLogEntry(BulkImportUpdateContainer<?> container) {
+    List<BulkImportError> errors = container.getDataValidationErrors().stream()
+        .map(dataValidationError -> BulkImportError.builder()
+            .errorMessage(
+                "Expected " + dataValidationError.getExpectedType() + " but got " + dataValidationError.getErrorValue()
+                    + " in column " + dataValidationError.getField())
+            .displayInfo(DisplayInfo.builder()
+                .code("BULK_IMPORT.VALIDATION.DATA_VALIDATION_ERROR")
+                .with("field", dataValidationError.getField())
+                .with("errorValue", dataValidationError.getErrorValue())
+                .with("expectedType", dataValidationError.getExpectedType().toString())
+                .build())
+            .build())
+        .toList();
+    return LogEntry.builder()
+        .lineNumber(container.getLineNumber())
+        .status(BulkImportStatus.DATA_VALIDATION_ERROR)
+        .errors(errors)
+        .build();
+  }
+
+  public static LogEntry mapToDataExecutionLogEntry(BulkImportUpdateContainer<?> container) {
+    List<BulkImportError> errors = container.getDataExecutionErrors().stream()
+        .map(dataValidationError -> BulkImportError.builder()
+            .errorMessage(
+                "Expected " + dataValidationError.getExpectedType() + " but got " + dataValidationError.getErrorValue()
+                    + " in column " + dataValidationError.getField())
+            .displayInfo(DisplayInfo.builder()
+                .code("BULK_IMPORT.VALIDATION.DATA_VALIDATION_ERROR")
+                .with("field", dataValidationError.getField())
+                .with("errorValue", dataValidationError.getErrorValue())
+                .with("expectedType", dataValidationError.getExpectedType().toString())
+                .build())
+            .build())
+        .toList();
+    return LogEntry.builder()
+        .lineNumber(container.getLineNumber())
+        .status(container.hasDataExecutionErrors() ? BulkImportStatus.DATA_EXECUTION_ERROR : BulkImportStatus.SUCCESS)
+        .errors(errors)
+        .build();
   }
 
   @Data

@@ -25,8 +25,15 @@ public class BulkImportUpdateContainer<T> implements BulkImportContainer {
   @Builder.Default
   private final List<DataValidationError> dataValidationErrors = new ArrayList<>();
 
-  public boolean hasErrors() {
+  public boolean hasDataValidationErrors() {
     return !dataValidationErrors.isEmpty();
+  }
+
+  @Builder.Default
+  private final List<DataValidationError> dataExecutionErrors = new ArrayList<>();
+
+  public boolean hasDataExecutionErrors() {
+    return !dataExecutionErrors.isEmpty();
   }
 
   @Data

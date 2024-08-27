@@ -1,9 +1,7 @@
 package ch.sbb.importservice.service.sepodi.service.point.update;
 
-import ch.sbb.atlas.imports.bulk.BulkImportContainer;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
-import ch.sbb.importservice.service.bulk.log.LogFile;
 import ch.sbb.importservice.service.bulk.reader.BulkImportCsvReader;
 import ch.sbb.importservice.service.bulk.reader.BulkImportItemReader;
 import java.io.File;
@@ -17,21 +15,13 @@ import org.springframework.stereotype.Service;
 public class ServicePointUpdateReader extends ServicePointUpdate implements BulkImportItemReader {
 
   @Override
-  public List<BulkImportContainer> apply(File file) {
+  public List<BulkImportUpdateContainer<?>> apply(File file) {
     List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> servicePointUpdateCsvModels =
         BulkImportCsvReader.readLinesFromFileWithNullingValue(
         file, ServicePointUpdateCsvModel.class);
 
     log.info("Read {} lines to import", servicePointUpdateCsvModels.size());
-
-    LogFile logFile = LogFile.builder().build();
-    servicePointUpdateCsvModels.forEach(logFile::appendErrors);
-
-    log.info("Need to log to job with id {}", 1);
-
-    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updatesToWrite = servicePointUpdateCsvModels.stream()
-        .filter(i -> !i.hasErrors()).toList();
-    return new ArrayList<>(updatesToWrite);
+    return new ArrayList<>(servicePointUpdateCsvModels);
   }
 
   @Override
