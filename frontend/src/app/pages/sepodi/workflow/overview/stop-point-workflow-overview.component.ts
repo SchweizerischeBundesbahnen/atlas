@@ -17,11 +17,11 @@ import {Pages} from "../../../pages";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TableService} from "../../../../core/components/table/table.service";
 import {TablePagination} from "../../../../core/components/table/table-pagination";
-import {addElementsToArrayWhenNotUndefined} from "../../../../core/util/arrays";
 import {TableFilterSingleSearch} from "../../../../core/components/table-filter/config/table-filter-single-search";
 import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
 import {TableFilterBoolean} from "../../../../core/components/table-filter/config/table-filter-boolean";
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import {addElementsToArrayWhenNotUndefined} from "../../../../core/util/arrays";
 
 @Component({
   selector: 'stop-point-workflow-overview',
@@ -109,7 +109,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
       this.tableService.filter.filterByNoDecision?.getActiveSearch() ?? undefined,
       pagination.page,
       pagination.size,
-      addElementsToArrayWhenNotUndefined(pagination.sort, 'id,asc')
+      addElementsToArrayWhenNotUndefined(pagination.sort, 'id,desc')
     )
       .subscribe((container) => {
         this.stopPointWorkflows = container.objects!;
