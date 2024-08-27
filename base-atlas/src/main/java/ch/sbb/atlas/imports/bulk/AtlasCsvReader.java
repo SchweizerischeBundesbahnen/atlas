@@ -10,8 +10,9 @@ public class AtlasCsvReader {
 
   public static final CsvMapper CSV_MAPPER = new CsvMapper().enable(Feature.EMPTY_STRING_AS_NULL);
 
+  public static final char CSV_COLUMN_SEPARATOR = ';';
   public static final CsvSchema CSV_SCHEMA = CsvSchema.emptySchema()
       .withHeader()
-      .withColumnSeparator(';');
+      .withColumnSeparator(CSV_COLUMN_SEPARATOR);
 
 }
