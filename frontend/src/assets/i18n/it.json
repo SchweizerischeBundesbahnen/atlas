@@ -1438,5 +1438,11 @@
         "EDIT_SUCCESS": "Il collegamento è stato salvato con successo."
       }
     }
+  },
+  "BULK_IMPORT": {
+    "ERROR": {
+      "EXCEL_CONVERSION": "Non è stato possibile leggere correttamente il file Excel utilizzato. Assicuratevi di utilizzare il file secondo il modello.\nFonte dell'errore in riga:{{rowIndex}}, colonna:{{columnIndex}}",
+      "FILE_HEADER": "Il file utilizzato non ha la riga di intestazione prevista. Assicuratevi di utilizzare il file secondo il modello."
+    }
   }
 }
