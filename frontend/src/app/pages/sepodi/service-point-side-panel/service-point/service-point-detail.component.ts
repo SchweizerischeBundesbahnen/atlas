@@ -8,7 +8,6 @@ import {
   ReadServicePointVersion,
   ServicePointsService,
   Status,
-  StopPointWorkflowService,
 } from '../../../../api';
 import {FormGroup} from '@angular/forms';
 import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder,} from './service-point-detail-form-group';
@@ -67,7 +66,6 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     private route: ActivatedRoute,
     private dialogService: DialogService,
     private servicePointService: ServicePointsService,
-    private stopPointWorkflowService: StopPointWorkflowService,
     private notificationService: NotificationService,
     private mapService: MapService,
     private permissionService: PermissionService,
@@ -341,7 +339,6 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   addWorkflow() {
-
-      this.addStopPointWorkflowDialogService.openDialog(this.selectedVersion!);
+    this.addStopPointWorkflowDialogService.openDialog(this.selectedVersion!);
   }
 }
