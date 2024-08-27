@@ -1,8 +1,10 @@
 package ch.sbb.importservice.service.bulk.log;
 
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -36,16 +38,11 @@ public class LogFile {
 
   public static LogEntry mapToDataExecutionLogEntry(BulkImportUpdateContainer<?> container) {
     List<BulkImportError> errors = container.getDataExecutionErrors().stream()
-        .map(dataValidationError -> BulkImportError.builder()
-            .errorMessage(
-                "Expected " + dataValidationError.getExpectedType() + " but got " + dataValidationError.getErrorValue()
-                    + " in column " + dataValidationError.getField())
-            .displayInfo(DisplayInfo.builder()
-                .code("BULK_IMPORT.VALIDATION.DATA_VALIDATION_ERROR")
-                .with("field", dataValidationError.getField())
-                .with("errorValue", dataValidationError.getErrorValue())
-                .with("expectedType", dataValidationError.getExpectedType().toString())
-                .build())
+        .map(ErrorResponse::getDetails)
+        .flatMap(Collection::stream)
+        .map(dataExecutionError -> BulkImportError.builder()
+            .errorMessage(dataExecutionError.getMessage())
+            .displayInfo(dataExecutionError.getDisplayInfo())
             .build())
         .toList();
     return LogEntry.builder()

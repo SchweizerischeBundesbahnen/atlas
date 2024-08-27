@@ -4,6 +4,7 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_JOB
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.importservice.listener.BulkImportDataExecutionToLogFileListener;
 import ch.sbb.importservice.listener.BulkImportDataValidationToLogFileListener;
 import ch.sbb.importservice.listener.JobCompletionListener;
 import ch.sbb.importservice.listener.StepTracerListener;
@@ -51,6 +52,7 @@ public class BulkImportBatchJobConfig {
   private final BulkImportWriters bulkImportWriters;
   private final BulkImportReaders bulkImportReaders;
   private final BulkImportDataValidationToLogFileListener bulkImportDataValidationToLogFileListener;
+  private final BulkImportDataExecutionToLogFileListener bulkImportDataExecutionToLogFileListener;
 
   @Bean
   public Job bulkImportJob(ThreadSafeListItemReader<BulkImportUpdateContainer<?>> itemReader, ItemWriter<BulkImportUpdateContainer<?>> itemWriter) {
@@ -71,6 +73,7 @@ public class BulkImportBatchJobConfig {
         .reader(itemReader)
         .listener(bulkImportDataValidationToLogFileListener)
         .writer(itemWriter)
+        .listener(bulkImportDataExecutionToLogFileListener)
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))

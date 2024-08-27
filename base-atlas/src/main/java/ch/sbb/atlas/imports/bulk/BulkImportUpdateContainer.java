@@ -1,5 +1,6 @@
 package ch.sbb.atlas.imports.bulk;
 
+import ch.sbb.atlas.api.model.ErrorResponse;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class BulkImportUpdateContainer<T> implements BulkImportContainer {
   }
 
   @Builder.Default
-  private final List<DataValidationError> dataExecutionErrors = new ArrayList<>();
+  private final List<ErrorResponse> dataExecutionErrors = new ArrayList<>();
 
   public boolean hasDataExecutionErrors() {
     return !dataExecutionErrors.isEmpty();
