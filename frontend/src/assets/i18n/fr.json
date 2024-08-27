@@ -1438,5 +1438,11 @@
         "EDIT_SUCCESS": "Le relation a été enregistré avec succès."
       }
     }
+  },
+  "BULK_IMPORT": {
+    "ERROR": {
+      "EXCEL_CONVERSION": "Le fichier Excel utilisé n'a pas pu être lu correctement. Veuillez vous assurer que vous utilisez le fichier conformément au modèle.\nSource d'erreur dans la ligne:{{rowIndex}}, la colonne:{{columnIndex}}",
+      "FILE_HEADER": "Le fichier utilisé n'a pas l'en-tête attendu. Veuillez vous assurer que vous utilisez le fichier conformément au modèle."
+    }
   }
 }

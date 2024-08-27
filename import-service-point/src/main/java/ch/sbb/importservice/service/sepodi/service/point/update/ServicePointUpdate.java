@@ -8,12 +8,14 @@ import ch.sbb.importservice.service.bulk.BulkImportType;
 
 public abstract class ServicePointUpdate implements BulkImportType {
 
+  public static final BulkImportConfig CONFIG = BulkImportConfig.builder()
+      .application(ApplicationType.SEPODI)
+      .objectType(BusinessObjectType.SERVICE_POINT)
+      .importType(ImportType.UPDATE)
+      .build();
+
   @Override
   public BulkImportConfig getBulkImportConfig() {
-    return BulkImportConfig.builder()
-        .application(ApplicationType.SEPODI)
-        .objectType(BusinessObjectType.SERVICE_POINT)
-        .importType(ImportType.UPDATE)
-        .build();
+    return CONFIG;
   }
 }
