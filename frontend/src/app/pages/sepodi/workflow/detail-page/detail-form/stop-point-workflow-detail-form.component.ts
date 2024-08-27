@@ -64,10 +64,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
         },
       };
     }
-    // this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.currentWorkflow);
-
-    // const examinantsFormArray = this.form.get('examinants') as FormArray;
-    // this.disableFirstTwoExaminants(examinantsFormArray);
 
     if(!this.currentWorkflow){
       this.stopPointWorkflowService.getExaminants(this.stopPoint.id!).subscribe((listOfExaminants: StopPointPerson[]) => {
@@ -88,10 +84,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
       });
     }
 
-
     if (this.currentWorkflow) {
-      // const examinantsFormArray = this.form.get('examinants') as FormArray;
-      // this.disableFirstTwoExaminants(examinantsFormArray);
       this.specialDecision = this.currentWorkflow.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
     }
   }
@@ -103,10 +96,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
         examinantsFormArray.at(1).disable();
       }
     }
-  }
-
-  hideDeleteButtonForTheFirstTwoExaminants(index: number): boolean {
-    return index >= 2 && this.form.enabled;
   }
 
   disableDeleteButtonForTheFirstTwoExaminants(index: number): boolean {
@@ -127,8 +116,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
       control.disabled
     );
   }
-
-
 
   removeExaminant(index: number) {
     this.form.controls.examinants.removeAt(index);
