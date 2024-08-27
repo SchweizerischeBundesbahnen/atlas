@@ -14,7 +14,6 @@ export class TextFieldComponent {
   @Input() infoIconTitle!: string;
   @Input() infoIconLink!: string;
   @Input() required!: boolean;
-  @Input() readonly: boolean = false;
   @Input() fieldExamples!: Array<FieldExample>;
   @Input() customInputNgStyle!: Record<string, string | undefined | null>;
   @Input() customError!: AtlasFieldCustomError;
