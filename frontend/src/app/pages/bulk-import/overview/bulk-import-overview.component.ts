@@ -17,7 +17,9 @@ export class BulkImportOverviewComponent implements OnInit{
   form!: FormGroup<BulkImportFormGroup>;
   isUserSelectEnabled = false;
   uploadedFiles: File[] = [];
+
   fileTypes=["text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+
   userName: string | undefined;
   optionsApplication: string[] = Object.values([ApplicationType.Sepodi, ApplicationType.Prm]);
   optionsObject: string[] = Object.values([BusinessObjectType.StopPoint, BusinessObjectType.LoadingPoint]);
@@ -31,12 +33,9 @@ export class BulkImportOverviewComponent implements OnInit{
 
   ngOnInit(): void {
     this.form = BulkImportFormGroupBuilder.initFormGroup();
-    console.log("isAdmin before ", this.isAdmin)
     this.isAdmin = this.permissionService.isAdmin;
-    console.log("isAdmin after ", this.isAdmin)
     this.userAdministrationService.getCurrentUser().subscribe((user) => {
       this.userName = this.removeDepartment(user.displayName);
-      console.log("user ", user)
     });
   }
 
@@ -49,14 +48,14 @@ export class BulkImportOverviewComponent implements OnInit{
   }
 
 
-  private startBulkImport(){
+  /*private startBulkImport(){
     this.bulkImportService.startServicePointImportBatch1(
       ApplicationType.Sepodi,
       BusinessObjectType.LoadingPoint,
       ImportType.Create,
       { file: this.uploadedFiles[0] } as InlineObject9
     );
-  }
+  }*/
 
   enableUserSelect(isEnabled: boolean) {
     this.isUserSelectEnabled = isEnabled;
