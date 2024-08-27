@@ -1,19 +1,19 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TableComponent } from './table.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { By } from '@angular/platform-browser';
-import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
-import { TableFilterComponent } from '../table-filter/table-filter.component';
-import { AppTestingModule } from '../../../app.testing.module';
-import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
-import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
-import { TableService } from './table.service';
-import { MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
-import { StatementStatus } from '../../../api';
-import { SelectComponent } from '../../form-components/select/select.component';
-import { Pipe, PipeTransform } from '@angular/core';
-import { TableColumn } from './table-column';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {TableComponent} from './table.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {By} from '@angular/platform-browser';
+import {LoadingSpinnerComponent} from '../loading-spinner/loading-spinner.component';
+import {TableFilterComponent} from '../table-filter/table-filter.component';
+import {AppTestingModule} from '../../../app.testing.module';
+import {DateIconComponent} from '../../form-components/date-icon/date-icon.component';
+import {BusinessOrganisationSelectComponent} from '../../form-components/bo-select/business-organisation-select.component';
+import {TableService} from './table.service';
+import {MockAtlasFieldErrorComponent} from '../../../app.testing.mocks';
+import {StatementStatus} from '../../../api';
+import {SelectComponent} from '../../form-components/select/select.component';
+import {Pipe, PipeTransform} from '@angular/core';
+import {TableColumn} from './table-column';
+import {MatCheckboxChange} from '@angular/material/checkbox';
 
 export interface Obj {
   prop: string;
@@ -177,6 +177,7 @@ describe('TableComponent', () => {
   });
 
   it('should click on show 5 element', () => {
+    component.sortData({active: 'validFrom', direction: 'asc'})
     spyOn(component.tableChanged, 'emit');
 
     const paginator = fixture.debugElement.query(By.css('mat-paginator'));
@@ -213,7 +214,7 @@ describe('TableComponent', () => {
       Object({
         page: 0,
         size: 10,
-        sort: 'validFrom,desc',
+        sort: 'validFrom,asc',
       }),
     );
   });
