@@ -1,6 +1,6 @@
 package ch.sbb.importservice.service.sepodi.service.point.update;
 
-import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.importservice.client.ServicePointBulkImportClient;
@@ -27,9 +27,12 @@ public class ServicePointUpdateWriter extends ServicePointUpdate implements Bulk
             .toList();
 
     log.info("Writing {} containers to service-point-directory", updateContainers.size());
-    List<ItemImportResult> importResult = servicePointBulkImportClient.bulkImportUpdate(updateContainers);
+    List<BulkImportItemExecutionResult> importResult = servicePointBulkImportClient.bulkImportUpdate(updateContainers);
 
-    // itemResult to log file
-    log.info("Import result: {}", importResult);
+    updateContainers.forEach(updateContainer -> {
+      BulkImportItemExecutionResult correspondingResult = importResult.stream()
+          .filter(i -> i.getLineNumber() == updateContainer.getLineNumber()).findFirst().orElseThrow();
+      updateContainer.getDataExecutionErrors().add(correspondingResult.getErrorResponse());
+    });
   }
 }
