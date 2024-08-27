@@ -1,11 +1,14 @@
 package ch.sbb.workflow.controller;
 
+import static ch.sbb.workflow.controller.StopPointWorkflowControllerTest.getUpdateServicePointVersionModel;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.WithUnauthorizedMockJwtAuthentication;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Decision;
@@ -137,6 +140,8 @@ class StopPointWorkflowControllerVotingUnauthorizedTest {
     decisionRepository.save(judithsDecision);
 
     // When Marek votes
+    when(sePoDiClientService.getServicePointById(123456L))
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
     controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
     verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
 
