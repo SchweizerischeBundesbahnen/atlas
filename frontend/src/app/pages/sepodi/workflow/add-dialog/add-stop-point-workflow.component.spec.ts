@@ -50,8 +50,7 @@ const stopPointWorkflowService = jasmine.createSpyObj('StopPointWorkflowService'
 const workflowDialogData: AddStopPointWorkflowDialogData = {
   title: '',
   message: '',
-  stopPoint: BERN_WYLEREGG,
-  examinants: []
+  stopPoint: BERN_WYLEREGG
 }
 
 describe('AddStopPointWorkflowComponent', () => {
@@ -111,6 +110,25 @@ describe('AddStopPointWorkflowComponent', () => {
     component.cancel();
 
     expect(detailHelperService.confirmLeaveDirtyForm).toHaveBeenCalled();
+    expect(dialogRefSpy.close).toHaveBeenCalled();
+  });
+
+  it('should add workflow via service', () => {
+    spyOn(ValidationService, 'validateForm').and.callThrough();
+
+    const firstExaminant = component.form.controls.examinants.at(0);
+    firstExaminant.controls.firstName.setValue('firstName');
+    firstExaminant.controls.lastName.setValue('lastName');
+    firstExaminant.controls.personFunction.setValue('personFunction');
+    firstExaminant.controls.organisation.setValue('organisation');
+    firstExaminant.controls.mail.setValue('mail@sbb.ch');
+
+    component.form.controls.workflowComment.setValue('YB isch wida Meista');
+
+    component.addWorkflow();
+
+    expect(stopPointWorkflowService.addStopPointWorkflow).toHaveBeenCalled();
+    expect(notificationServiceSpy.success).toHaveBeenCalled();
     expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 
