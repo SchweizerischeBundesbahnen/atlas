@@ -51,7 +51,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
     List<StopPointClientPersonModel> examinants = service.getExaminantsByWorkflowId(id);
     ReadStopPointWorkflowModel stopPointWorkflowModel = StopPointWorkflowMapper.toModelWithReorderingExaminants(service.getWorkflow(id), examinants);
-//    ReadStopPointWorkflowModel reordered = service.reorderExaminants(stopPointWorkflowModel);
 
     service.getWorkflowByFollowUpId(id).ifPresent(stopPointWorkflow ->
         stopPointWorkflowModel.setPreviousWorkflowId(stopPointWorkflow.getId())
@@ -71,7 +70,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
     Page<StopPointWorkflow> workflows = service.getWorkflows(stopPointWorkflowSearchRestrictions);
 
     return Container.<ReadStopPointWorkflowModel>builder()
-        .objects(workflows.stream().map(w -> StopPointWorkflowMapper.toModel(w)).toList())
+        .objects(workflows.stream().map(StopPointWorkflowMapper::toModel).toList())
         .totalCount(workflows.getTotalElements())
         .build();
   }
