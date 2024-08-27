@@ -1,12 +1,12 @@
 @if (currentWorkflow?.previousWorkflowId) {
 <div class="mb-2">
-  <atlas-link label="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.PREVIOUS_WORKFLOW' | translate: { number: currentWorkflow!.previousWorkflowId! } }}" (linkClicked)="goToWorkflow(currentWorkflow!.previousWorkflowId!)"> </atlas-link>
+<atlas-link label="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.PREVIOUS_WORKFLOW' | translate: { number: currentWorkflow!.previousWorkflowId! } }}" (linkClicked)="goToWorkflow(currentWorkflow!.previousWorkflowId!)"> </atlas-link>
 </div>
 }
 @if (currentWorkflow?.followUpWorkflowId) {
-  <div class="mb-2">
-    <atlas-link label="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.FOLLOW_UP_WORKFLOW' | translate: { number: currentWorkflow!.followUpWorkflowId! } }}" (linkClicked)="goToWorkflow(currentWorkflow!.followUpWorkflowId!)"> </atlas-link>
-  </div>
+<div class="mb-2">
+<atlas-link label="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.FOLLOW_UP_WORKFLOW' | translate: { number: currentWorkflow!.followUpWorkflowId! } }}" (linkClicked)="goToWorkflow(currentWorkflow!.followUpWorkflowId!)"> </atlas-link>
+</div>
 }
 
 <h1 class="font-bold-2xl pt-5">
@@ -16,15 +16,15 @@
 </h1>
 
 @if (stopPoint.validFrom && stopPoint.validTo) {
-  <div class="mb-3">
-    <span data-cy="version-range">
-      {{ 'COMMON.VERSION_VALIDITY' | translate }}
-      {{ 'COMMON.FROM' | translate }}
-      {{ stopPoint.validFrom | displayDate }}
-      {{ 'COMMON.TO' | translate }}
-      {{ stopPoint.validTo | displayDate }}
-    </span>
-  </div>
+<div class="mb-3">
+<span data-cy="version-range">
+{{ 'COMMON.VERSION_VALIDITY' | translate }}
+  {{ 'COMMON.FROM' | translate }}
+  {{ stopPoint.validFrom | displayDate }}
+  {{ 'COMMON.TO' | translate }}
+  {{ stopPoint.validTo | displayDate }}
+</span>
+</div>
 }
 <div class="stop-point-info">
   <div class="row mb-3">
@@ -52,24 +52,24 @@
   </h1>
 
   @if (currentWorkflow) {
-    <div class="row mb-3">
-      <div class="col" data-cy="workflow-status">
-        <div class="font-bold-base">{{ 'WORKFLOW.STATUS_DETAIL' | translate }}</div>
+  <div class="row mb-3">
+    <div class="col" data-cy="workflow-status">
+      <div class="font-bold-base">{{ 'WORKFLOW.STATUS_DETAIL' | translate }}</div>
         <div>{{ 'WORKFLOW.STATUS.' + currentWorkflow.status | translate }}</div>
       </div>
       @if (specialDecision) {
-        <atlas-button
-          (buttonClicked)="openStatusDecision()"
-          buttonType="icon"
-          wrapperStyleClass="pt-1"
-          buttonStyleClass="bordered-btn px-2 py-1"
-        >
-          <ng-template #rightIcon>
-            <i class="bi bi-x-lg"></i>
-          </ng-template>
-        </atlas-button>
-      }
-    </div>
+  <atlas-button
+    (buttonClicked)="openStatusDecision()"
+    buttonType="icon"
+    wrapperStyleClass="pt-1"
+    buttonStyleClass="bordered-btn px-2 py-1"
+  >
+    <ng-template #rightIcon>
+      <i class="bi bi-x-lg"></i>
+    </ng-template>
+  </atlas-button>
+  }
+  </div>
   }
 
   <div class="row mb-3">
@@ -78,48 +78,48 @@
         {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate }}
       </div>
       @if (!currentWorkflow) {
-        <div>{{ stopPoint.designationOfficial }}</div>
+      <div>{{ stopPoint.designationOfficial }}</div>
       }
 
       @if (currentWorkflow) {
-        <atlas-text-field [formGroup]="form" controlName="designationOfficial"></atlas-text-field>
+      <atlas-text-field [formGroup]="form" controlName="designationOfficial"></atlas-text-field>
       }
     </div>
 
     @if (oldDesignation) {
-      <div class="col-8" data-cy="old-designation-official">
-        <div class="font-bold-base">
-          {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.OLD_DESIGNATION_OFFICIAL' | translate }}
-        </div>
-        <div>{{ oldDesignation }}</div>
+    <div class="col-8" data-cy="old-designation-official">
+      <div class="font-bold-base">
+    {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.OLD_DESIGNATION_OFFICIAL' | translate }}
+    </div>
+    <div>{{ oldDesignation }}</div>
       </div>
     }
   </div>
 
   @if (currentWorkflow) {
-    <div class="row mb-5">
-      @if (stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName) {
-        <div class="col" data-cy="municipality">
-          <div class="font-bold-base">{{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}</div>
-          <div>
-            {{
-              stopPoint.servicePointGeolocation!.swissLocation!.localityMunicipality!.localityName
-            }}
-          </div>
-        </div>
-      }
-      <div class="col-8" data-cy="links">
-        <span class="font-bold-base">
-          <em class="bi bi-geo-alt-fill"></em
-          >{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
+  <div class="row mb-5">
+    @if (stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName) {
+  <div class="col" data-cy="municipality">
+    <div class="font-bold-base">{{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}</div>
+    <div>
+      {{
+      stopPoint.servicePointGeolocation!.swissLocation!.localityMunicipality!.localityName
+      }}
+    </div>
+  </div>
+  }
+  <div class="col-8" data-cy="links">
+    <span class="font-bold-base">
+      <em class="bi bi-geo-alt-fill"></em
+      >{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
         </span>
         @if (this.stopPoint.servicePointGeolocation?.lv95) {
-          <atlas-link label="Swisstopo" (linkClicked)="goToSwissTopo()"></atlas-link>
-          /
-        }
-        <atlas-link label="atlas" (linkClicked)="goToAtlasStopPoint()"></atlas-link>
-      </div>
-    </div>
+  <atlas-link label="Swisstopo" (linkClicked)="goToSwissTopo()"></atlas-link>
+  /
+  }
+  <atlas-link label="atlas" (linkClicked)="goToAtlasStopPoint()"></atlas-link>
+</div>
+</div>
   }
 </div>
 
@@ -144,27 +144,29 @@
       ></form-info-icon>
     </div>
     @if (form.enabled) {
-      <div class="translated-paragraph">
-        {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_SUBTITLE' | translate }}
-      </div>
+    <div class="translated-paragraph">
+    {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_SUBTITLE' | translate }}
+    </div>
     }
   </div>
 
   <div class="examinant-table">
     @if (form.controls.examinants.controls.length > 0) {
-      <div class="examinant-header row font-bold-lg mt-3">
-        <div class="col pe-2">{{ 'WORKFLOW.PERSON.FIRSTNAME' | translate }}</div>
+    <div class="examinant-header row font-bold-lg mt-3">
+      <div class="col pe-2">{{ 'WORKFLOW.PERSON.FIRSTNAME' | translate }}</div>
         <div class="col pe-2">{{ 'WORKFLOW.PERSON.LASTNAME' | translate }}</div>
         <div class="col pe-2 required-indicator">
-          {{ 'WORKFLOW.PERSON.ORGANISATION' | translate }}
-        </div>
-        <div class="col pe-2">{{ 'WORKFLOW.PERSON.FUNCTION' | translate }}</div>
+    {{ 'WORKFLOW.PERSON.ORGANISATION' | translate }}
+    </div>
+    <div class="col pe-2">{{ 'WORKFLOW.PERSON.FUNCTION' | translate }}</div>
         <div class="col required-indicator">{{ 'WORKFLOW.PERSON.MAIL' | translate }}</div>
         @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled) {
-          <div class="decision-icon-col pe-2">{{ 'WORKFLOW.PERSON.JUDGEMENT' | translate }}</div>
-        }
-        <div class="icon-button-col"></div>
-      </div>
+    <div class="decision-icon-col pe-2">{{ 'WORKFLOW.PERSON.JUDGEMENT' | translate }}</div>
+    }
+    @if (form.enabled) {
+    <div class="icon-button-col"></div>
+    }
+    </div>
     }
 
     <div
@@ -174,22 +176,13 @@
       <ng-container [formGroupName]="i">
         <div class="examinant row">
           <div class="col pe-2" [title]="examinant.controls.firstName.value ?? ''">
-            <atlas-text-field
-              [formGroup]="examinant"
-              controlName="firstName"
-            ></atlas-text-field>
+            <atlas-text-field [formGroup]="examinant" controlName="firstName"></atlas-text-field>
           </div>
           <div class="col pe-2" [title]="examinant.controls.lastName.value ?? ''">
-            <atlas-text-field
-              [formGroup]="examinant"
-              controlName="lastName"
-            ></atlas-text-field>
+            <atlas-text-field [formGroup]="examinant" controlName="lastName"></atlas-text-field>
           </div>
           <div class="col pe-2" [title]="examinant.controls.organisation.value ?? ''">
-            <atlas-text-field
-              [formGroup]="examinant"
-              controlName="organisation"
-            ></atlas-text-field>
+            <atlas-text-field [formGroup]="examinant" controlName="organisation"></atlas-text-field>
           </div>
           <div class="col pe-2" [title]="examinant.controls.personFunction.value ?? ''">
             <atlas-text-field
@@ -198,74 +191,53 @@
             ></atlas-text-field>
           </div>
           <div class="col" [title]="examinant.controls.mail.value ?? ''">
-            <atlas-text-field
-              [formGroup]="examinant"
-              controlName="mail"
-            ></atlas-text-field>
-
+            <atlas-text-field [formGroup]="examinant" controlName="mail"></atlas-text-field>
             <app-atlas-field-error
               [form]="form"
               controlName="examinants"
             ></app-atlas-field-error>
-
-
-
-
-
-            <!--            <div-->
-<!--              *ngIf="i === form.controls.examinants.controls.length - 1 && form.controls.examinants?.errors?.duplicateEmail"-->
-<!--              [ngClass]="{'red-text': form.controls.examinants.errors?.duplicateEmail}"-->
-<!--            >-->
-<!--              <span class="font-regular-sm" style="font-size: 0.75em !important;">-->
-<!--                  {{ 'VALIDATION.DUPLICATE_EMAIL' | translate }}-->
-<!--              </span>-->
-
-<!--            </div>-->
           </div>
           @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled) {
-            <div class="decision-icon-col pe-2">
-              <atlas-button
-                (buttonClicked)="openDecision(i)"
-                buttonType="icon"
-                wrapperStyleClass="pt-1"
-                buttonStyleClass="bordered-btn px-2 py-1"
-              >
-                <ng-template #rightIcon>
-                  <i class="bi {{ examinant.controls.judgementIcon.value }}"></i>
+          <div class="decision-icon-col pe-2">
+            <atlas-button
+              (buttonClicked)="openDecision(i)"
+              buttonType="icon"
+              wrapperStyleClass="pt-1"
+              buttonStyleClass="bordered-btn px-2 py-1"
+            >
+              <ng-template #rightIcon>
+                <i class="bi {{ examinant.controls.judgementIcon.value }}"></i>
                 </ng-template>
               </atlas-button>
             </div>
           }
+          @if (form.enabled) {
           <div class="icon-button-col text-align-center">
-          @if (form.enabled && i >= 2) {
-
-              <atlas-button
-                (buttonClicked)="removeExaminant(i)"
-                [disabled]="form.disabled"
-                buttonType="icon"
-                class="delete-button"
-              >
-                <ng-template #rightIcon>
-                  <i class="bi bi-trash"></i>
-                </ng-template>
-              </atlas-button>
-
-          }
+            <atlas-button
+              (buttonClicked)="removeExaminant(i)"
+              [disabled]="disableDeleteButtonForTheFirstTwoExaminants(i)"
+              buttonType="icon"
+            >
+              <ng-template #rightIcon>
+                <i class="bi bi-trash"></i>
+              </ng-template>
+            </atlas-button>
           </div>
+          }
         </div>
       </ng-container>
     </div>
   </div>
 
   @if (form.enabled) {
-    <atlas-button
-      (buttonClicked)="addExaminant()"
-      buttonDataCy="add-examinant"
-      buttonText="SEPODI.SERVICE_POINTS.WORKFLOW.ADD_EXAMINANT"
-      buttonType="defaultPrimary"
-      wrapperStyleClass="mt-3"
-    >
-    </atlas-button>
+  <atlas-button
+    (buttonClicked)="addExaminant()"
+    buttonDataCy="add-examinant"
+    buttonText="SEPODI.SERVICE_POINTS.WORKFLOW.ADD_EXAMINANT"
+    buttonType="defaultPrimary"
+    wrapperStyleClass="mt-3"
+  >
+  </atlas-button>
   }
 </div>
 
