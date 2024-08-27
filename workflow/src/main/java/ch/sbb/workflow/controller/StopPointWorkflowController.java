@@ -78,7 +78,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   @Override
   public ReadStopPointWorkflowModel addStopPointWorkflow(StopPointAddWorkflowModel workflowModel) {
-    List<StopPointClientPersonModel> examinants = service.getExaminantsByServicePointVersionId(workflowModel.getVersionId());
     return StopPointWorkflowMapper.toModel(workflowTransitionService.addWorkflow(workflowModel));
   }
 
