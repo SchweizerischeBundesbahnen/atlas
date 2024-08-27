@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @UtilityClass
 public class BulkImportCsvReader {
 
@@ -44,17 +46,28 @@ public class BulkImportCsvReader {
 
     line = line.replace(NULLING_VALUE, "");
 
+    CsvExceptionHandler csvExceptionHandler = new CsvExceptionHandler();
     try (MappingIterator<T> mappingIterator = AtlasCsvReader.CSV_MAPPER
         .registerModule(PipedSetDeserializer.module())
+        .addHandler(csvExceptionHandler)
         .readerFor(clazz)
         .with(AtlasCsvReader.CSV_SCHEMA)
         .readValues(header + line)) {
       T object = mappingIterator.next();
-      return BulkImportUpdateContainer.<T>builder()
-          .lineNumber(lineNumber)
-          .object(object)
-          .attributesToNull(toNullAttributes)
-          .build();
+      if (csvExceptionHandler.getErrors().isEmpty()) {
+        return BulkImportUpdateContainer.<T>builder()
+            .lineNumber(lineNumber)
+            .object(object)
+            .attributesToNull(toNullAttributes)
+            .build();
+      } else {
+        log.error("Caught errors: {}", csvExceptionHandler.getErrors());
+        return BulkImportUpdateContainer.<T>builder()
+            .lineNumber(lineNumber)
+            .dataValidationErrors(csvExceptionHandler.getErrors())
+            .build();
+      }
+
     }
   }
 
