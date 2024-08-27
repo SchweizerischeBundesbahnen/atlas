@@ -8,9 +8,17 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
+import ch.sbb.atlas.api.servicepoint.SwissLocation;
+import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Person;
@@ -60,6 +68,9 @@ class StopPointWorkflowControllerVotingTest {
 
   @MockBean
   private StopPointWorkflowNotificationService notificationService;
+
+  @MockBean
+  private SePoDiClient sePoDiClient;
 
   @Captor
   private ArgumentCaptor<String> pincodeCaptor;
@@ -146,6 +157,19 @@ class StopPointWorkflowControllerVotingTest {
   @Test
   void shouldObtainOtpViaMailAndVoteCorrectly() {
     // Read workflow details
+    ServicePointGeolocationReadModel geolocationReadModel = ServicePointGeolocationReadModel.builder()
+        .swissLocation(SwissLocation.builder()
+            .canton(SwissCanton.ZURICH)
+            .localityMunicipality(LocalityMunicipalityModel.builder().localityName("Zürich").build())
+            .build())
+        .build();
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder()
+        .servicePointGeolocation(geolocationReadModel)
+        .id(123456L)
+        .status(Status.IN_REVIEW)
+        .build();
+    when(sePoDiClient.getServicePointById(123456L)).thenReturn(updateServicePointVersionModel);
+
     ReadStopPointWorkflowModel stopPointWorkflow = controller.getStopPointWorkflow(workflowInHearing.getId());
     assertThat(stopPointWorkflow.getExaminants().getFirst().getJudgement()).isNull();
 
