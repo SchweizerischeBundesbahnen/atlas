@@ -23,7 +23,6 @@ public class CsvExceptionHandler extends DeserializationProblemHandler {
         .field(ctxt.getParser().currentName())
         .errorValue(valueToConvert)
         .build());
-
     return getDummyValue(targetType);
   }
 
@@ -49,6 +48,9 @@ public class CsvExceptionHandler extends DeserializationProblemHandler {
   private Object getDummyValue(Class<?> targetClass) {
     if (targetClass == Integer.class) {
       return 0;
+    }
+    if (targetClass == Double.class) {
+      return 0.0;
     }
     if (targetClass == LocalDate.class) {
       return LocalDate.now();
