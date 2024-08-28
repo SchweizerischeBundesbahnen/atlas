@@ -89,10 +89,10 @@ export class BulkImportService {
     }
 
     /**
-     * @param application 
-     * @param objectType 
-     * @param importType 
-     * @param inlineObject9 
+     * @param application
+     * @param objectType
+     * @param importType
+     * @param inlineObject9
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
