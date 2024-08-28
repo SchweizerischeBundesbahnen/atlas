@@ -8,7 +8,7 @@ export class UniqueEmailsValidator {
         throw new Error('UniqueEmailsValidator must be used with a FormArray');
       }
 
-      const emailSet = new Set<string>();
+      const emailMap = new Map<string, AbstractControl[]>();
 
       for (const control of formArray.controls) {
         const emailControl = control.get('mail');
@@ -16,13 +16,30 @@ export class UniqueEmailsValidator {
         if (email) {
           const lowerCaseEmail = email.toLowerCase();
 
-          if (emailSet.has(lowerCaseEmail)) {
-            const error: ValidationErrors = {
-              duplicateEmail: lowerCaseEmail
-            };
-            return error;
+          if (!emailMap.has(lowerCaseEmail)) {
+            emailMap.set(lowerCaseEmail, []);
           }
-          emailSet.add(lowerCaseEmail);
+          emailMap.get(lowerCaseEmail)!.push(control);
+        }
+      }
+
+      for (const [email, controls] of emailMap.entries()) {
+        if (controls.length > 1) {
+          for (const control of controls) {
+            const emailControl = control.get('mail');
+            if (emailControl) {
+              const error: ValidationErrors = {
+                duplicateEmail: email
+              };
+              emailControl.setErrors(error);
+            }
+          }
+        } else {
+          const emailControl = controls[0].get('mail');
+          if (emailControl && emailControl.hasError('duplicateEmail')) {
+            emailControl.setErrors(null);
+            emailControl.updateValueAndValidity({ emitEvent: false });
+          }
         }
       }
 
