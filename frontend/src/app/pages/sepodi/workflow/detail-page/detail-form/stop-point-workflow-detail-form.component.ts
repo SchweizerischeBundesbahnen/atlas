@@ -36,7 +36,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   @Input() oldDesignation?: string;
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
   @Input() currentWorkflow?: ReadStopPointWorkflow;
-  disableDeleteButton: boolean = false;
+  isDeleteButtonInvisible: boolean = false;
 
   specialDecision?: StopPointPerson;
 
@@ -62,11 +62,11 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
           checkDigit: 1,
           numberShort: 1,
           uicCountryCode: 85
-        },
-      };
+        }
+      }
     }
 
-    if(!this.currentWorkflow){
+    if (!this.currentWorkflow) {
       this.stopPointWorkflowService.getExaminants(this.stopPoint.id!).subscribe((listOfExaminants: StopPointPerson[]) => {
         const emptyExaminant: StopPointPerson = {
           firstName: '',
@@ -81,17 +81,17 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
           examinantsFormArray.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(examinant));
         });
 
-        this.disableFirstTwoExaminants(examinantsFormArray);
+        this.disableFirstTwoExaminantsAndSetDeleteInvisible(examinantsFormArray);
       });
     }
 
-    if (this.currentWorkflow) {
-      this.specialDecision = this.currentWorkflow.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
+    if(this.currentWorkflow){
+      this.specialDecision = this.currentWorkflow!.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
     }
   }
 
-  public disableFirstTwoExaminants(examinantsFormArray: FormArray): void {
-    this.disableDeleteButton = true;
+  public disableFirstTwoExaminantsAndSetDeleteInvisible(examinantsFormArray: FormArray): void {
+    this.isDeleteButtonInvisible = true;
     if (examinantsFormArray.length > 0) {
       examinantsFormArray.at(0).disable();
       if (examinantsFormArray.length > 1) {
@@ -100,23 +100,16 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     }
   }
 
-  disableDeleteButtonForTheFirstTwoExaminants(index: number): boolean {
-    return (index < 2 && this.disableDeleteButton) || this.form.disabled;
+  makeInvisibleDeleteButtonForTheFirstTwoExaminants(index: number): boolean {
+    return (index < 2 && this.isDeleteButtonInvisible);
   }
-
 
   addExaminant() {
     const examinantsControl = this.form.controls.examinants;
     ValidationService.validateForm(examinantsControl);
-    if (examinantsControl.valid || this.allExaminantsDisabled(examinantsControl)) {
+    if (examinantsControl.valid) {
       examinantsControl.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     }
-  }
-
-  private allExaminantsDisabled(examinantsControl: FormArray): boolean {
-    return examinantsControl.controls.every(control =>
-      control.disabled
-    );
   }
 
   removeExaminant(index: number) {
