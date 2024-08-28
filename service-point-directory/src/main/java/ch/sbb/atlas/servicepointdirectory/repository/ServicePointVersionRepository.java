@@ -84,4 +84,15 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
   List<ServicePointVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationLongIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String designationLong);
 
+  @Query(value = """
+      select spv.sloid as sloid, spv.id as id
+      from service_point_version spv
+      where spv.servicePointGeolocation is not null
+       and spv.country = ch.sbb.atlas.servicepoint.Country.SWITZERLAND
+       and spv.validTo >= current_date
+       and spv.status not in (ch.sbb.atlas.model.Status.REVOKED, ch.sbb.atlas.model.Status.IN_REVIEW)
+      order by sloid
+      """)
+  List<ServicePointSwissWithGeoTransfer> findActualServicePointWithGeolocation();
+
 }
