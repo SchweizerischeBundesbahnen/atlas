@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 import {BulkImportFormGroup, BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
 import {
-  ApplicationType,
+  ApplicationType, BulkImportRequest,
   BulkImportService,
   BusinessObjectType,
   ImportType, InlineObject9,
@@ -48,14 +48,18 @@ export class BulkImportOverviewComponent implements OnInit{
   }
 
 
-  /*private startBulkImport(){
+  startBulkImport() {
+    const bulkImportRequest: BulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
+    const formData: InlineObject9 = {
+      ...bulkImportRequest,
+      file: this.uploadedFiles[0]
+    };
     this.bulkImportService.startServicePointImportBatch1(
-      ApplicationType.Sepodi,
-      BusinessObjectType.LoadingPoint,
-      ImportType.Create,
-      { file: this.uploadedFiles[0] } as InlineObject9
-    );
-  }*/
+      formData
+    ).subscribe(test  => {
+      console.log("test ", test)
+    });
+  }
 
   enableUserSelect(isEnabled: boolean) {
     this.isUserSelectEnabled = isEnabled;
@@ -64,14 +68,6 @@ export class BulkImportOverviewComponent implements OnInit{
   back(){
 
   }
-
-  test() {
-    console.log("this.form ", this.form.controls)
-    console.log("uploaded files ", this.uploadedFiles)
-  }
-
-  //TODO: Method to start workflow
-
 
   //TODO: Get user
 }
