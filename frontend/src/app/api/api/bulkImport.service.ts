@@ -104,8 +104,8 @@ export class BulkImportService {
     /**
      * Download bulk import template
      * Downloads a template file for the specified business object type and import type
-     * @param objectType 
-     * @param importType 
+     * @param objectType
+     * @param importType
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -147,11 +147,11 @@ export class BulkImportService {
     }
 
     /**
-     * @param application 
-     * @param objectType 
-     * @param importType 
-     * @param bulkImportRequest 
-     * @param file 
+     * @param application
+     * @param objectType
+     * @param importType
+     * @param bulkImportRequest
+     * @param file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
