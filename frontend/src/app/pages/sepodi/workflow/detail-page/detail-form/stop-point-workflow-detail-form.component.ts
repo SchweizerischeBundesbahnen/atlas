@@ -36,6 +36,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   @Input() oldDesignation?: string;
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
   @Input() currentWorkflow?: ReadStopPointWorkflow;
+  disableDeleteButton: boolean = false;
 
   specialDecision?: StopPointPerson;
 
@@ -90,6 +91,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   }
 
   public disableFirstTwoExaminants(examinantsFormArray: FormArray): void {
+    this.disableDeleteButton = true;
     if (examinantsFormArray.length > 0) {
       examinantsFormArray.at(0).disable();
       if (examinantsFormArray.length > 1) {
@@ -99,7 +101,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   }
 
   disableDeleteButtonForTheFirstTwoExaminants(index: number): boolean {
-    return index < 2 || this.form.disabled;
+    return (index < 2 && this.disableDeleteButton) || this.form.disabled;
   }
 
 
