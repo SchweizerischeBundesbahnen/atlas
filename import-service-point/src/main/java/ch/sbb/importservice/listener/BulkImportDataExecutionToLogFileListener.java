@@ -1,12 +1,7 @@
 package ch.sbb.importservice.listener;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.importservice.entity.BulkImportLog;
-import ch.sbb.importservice.repository.BulkImportLogRepository;
-import ch.sbb.importservice.service.bulk.log.LogFile;
-import ch.sbb.importservice.service.bulk.log.LogFile.LogEntry;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
+import ch.sbb.importservice.service.bulk.log.PersistedLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemWriteListener;
 import org.springframework.batch.core.StepExecution;
@@ -24,27 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class BulkImportDataExecutionToLogFileListener implements ItemWriteListener<BulkImportUpdateContainer<?>> {
 
   @Autowired
-  private BulkImportLogRepository bulkImportLogRepository;
-  @Autowired
-  private ObjectMapper objectMapper;
+  private PersistedLogService persistedLogService;
 
   @Value("#{stepExecution}")
   private StepExecution stepExecution;
 
   @Override
   public void afterWrite(Chunk<? extends BulkImportUpdateContainer<?>> items) {
-    items.getItems().forEach(writeItem ->
-        bulkImportLogRepository.save(BulkImportLog.builder()
-        .jobExecutionId(stepExecution.getJobExecution().getId())
-        .lineNumber(writeItem.getLineNumber())
-        .logEntry(getLogEntry(writeItem))
-        .build()));
+    items.getItems().forEach(writeItem -> persistedLogService.saveDataExecutionLog(stepExecution.getJobExecutionId(), writeItem));
   }
 
-
-  @SneakyThrows
-  private String getLogEntry(BulkImportUpdateContainer<?> item) {
-    LogEntry logEntry = LogFile.mapToDataExecutionLogEntry(item);
-    return objectMapper.writeValueAsString(logEntry);
-  }
 }
