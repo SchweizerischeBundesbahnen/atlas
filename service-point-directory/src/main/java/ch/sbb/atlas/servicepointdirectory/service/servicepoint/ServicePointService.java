@@ -10,6 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVer
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSwissWithGeoTransfer;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
@@ -209,6 +210,10 @@ public class ServicePointService {
     servicePointVersion.setStatus(statusToChange);
     servicePointVersionRepository.save(servicePointVersion);
     return servicePointVersion;
+  }
+
+  public List<ServicePointSwissWithGeoTransfer> findActualServicePointWithGeolocation() {
+    return servicePointVersionRepository.findActualServicePointWithGeolocation();
   }
 
 }
