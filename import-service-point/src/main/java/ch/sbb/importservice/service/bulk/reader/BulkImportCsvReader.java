@@ -61,7 +61,6 @@ public class BulkImportCsvReader {
             .attributesToNull(toNullAttributes)
             .build();
       } else {
-        log.error("Caught errors: {}", csvExceptionHandler.getErrors());
         return BulkImportUpdateContainer.<T>builder()
             .lineNumber(lineNumber)
             .dataValidationErrors(csvExceptionHandler.getErrors())
