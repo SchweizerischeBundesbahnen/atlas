@@ -11,7 +11,7 @@
  */
 
 
-export interface ServicePointNumber { 
+export interface ServicePointNumber {
     /**
      * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7
      */
