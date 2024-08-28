@@ -138,13 +138,14 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   toggleEdit() {
-    const examinantsFormArray = this.form.get('examinants') as FormArray;
+    // const examinantsFormArray = this.form.get('examinants') as FormArray;
 
     if (this.form?.enabled) {
       this.showConfirmationDialog();
     } else {
       this.enableForm();
-      this.disableFirstTwoExaminants(examinantsFormArray);
+      // this.disableFirstTwoExaminants(examinantsFormArray);
+      ValidationService.validateForm(this.form!);
     }
   }
 
