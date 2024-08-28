@@ -211,8 +211,9 @@
             <div class="icon-button-col text-align-center">
               <atlas-button
                 (buttonClicked)="removeExaminant(i)"
-                [disabled]="disableDeleteButtonForTheFirstTwoExaminants(i)"
+                [disabled]="form.disabled"
                 buttonType="icon"
+                [ngStyle]="{ visibility: makeInvisibleDeleteButtonForTheFirstTwoExaminants(i) ? 'hidden' : 'visible' }"
               >
                 <ng-template #rightIcon>
                   <i class="bi bi-trash"></i>
