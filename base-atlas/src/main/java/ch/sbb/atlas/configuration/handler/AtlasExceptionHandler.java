@@ -313,6 +313,12 @@ public class AtlasExceptionHandler {
     if (exception instanceof VersioningNoChangesException versioningNoChangesException) {
       return versioningNoChangesException(versioningNoChangesException).getBody();
     }
+    if (exception instanceof MethodArgumentNotValidException methodArgumentNotValidException) {
+      return methodArgumentNotValidException(methodArgumentNotValidException).getBody();
+    }
+    if (exception instanceof ConstraintViolationException constraintViolationException) {
+      return handleConstraintViolationException(constraintViolationException).getBody();
+    }
     return handleException(exception).getBody();
   }
 }

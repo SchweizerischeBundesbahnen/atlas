@@ -6,7 +6,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.listener.BulkImportDataExecutionToLogFileListener;
 import ch.sbb.importservice.listener.BulkImportDataValidationToLogFileListener;
-import ch.sbb.importservice.listener.JobCompletionListener;
+import ch.sbb.importservice.listener.BulkImportJobCompletionListener;
 import ch.sbb.importservice.listener.StepTracerListener;
 import ch.sbb.importservice.model.BulkImportConfig;
 import ch.sbb.importservice.model.BusinessObjectType;
@@ -18,6 +18,7 @@ import ch.sbb.importservice.utils.StepUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class BulkImportBatchJobConfig {
 
   private final JobRepository jobRepository;
   private final PlatformTransactionManager transactionManager;
-  private final JobCompletionListener jobCompletionListener;
+  private final BulkImportJobCompletionListener bulkImportJobCompletionListener;
   private final StepTracerListener stepTracerListener;
   private final BulkImportWriters bulkImportWriters;
   private final BulkImportReaders bulkImportReaders;
@@ -57,7 +58,7 @@ public class BulkImportBatchJobConfig {
   @Bean
   public Job bulkImportJob(ThreadSafeListItemReader<BulkImportUpdateContainer<?>> itemReader, ItemWriter<BulkImportUpdateContainer<?>> itemWriter) {
     return new JobBuilder(BULK_IMPORT_JOB_NAME, jobRepository)
-        .listener(jobCompletionListener)
+        .listener(bulkImportJobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(bulkImportFromCsv(itemReader, itemWriter))
         .end()
@@ -98,15 +99,8 @@ public class BulkImportBatchJobConfig {
         .build();
     Function<File, List<BulkImportUpdateContainer<?>>> readerFunction = bulkImportReaders.getReaderFunction(config);
 
-    List<BulkImportUpdateContainer<?>> items = new ArrayList<>();
-    if (pathToFile != null) {
-      File file = new File(pathToFile);
-      items.addAll(readerFunction.apply(file));
-    }
-
-    // Should we download the file here instead of passing it via job param?
-
-    log.info("Bulk import configured with chunkSize: {}", CHUNK_SIZE);
+    File file = new File(Objects.requireNonNull(pathToFile));
+    List<BulkImportUpdateContainer<?>> items = new ArrayList<>(readerFunction.apply(file));
     return new ThreadSafeListItemReader<>(items);
   }
 
