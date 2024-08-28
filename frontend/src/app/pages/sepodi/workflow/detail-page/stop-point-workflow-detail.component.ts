@@ -9,7 +9,7 @@ import {
   StopPointWorkflowService,
   WorkflowStatus,
 } from '../../../../api';
-import {FormArray, FormGroup} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {StopPointWorkflowDetailData} from './stop-point-workflow-detail-resolver.service';
 import {NotificationService} from '../../../../core/notification/notification.service';
@@ -138,23 +138,11 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   toggleEdit() {
-    // const examinantsFormArray = this.form.get('examinants') as FormArray;
-
     if (this.form?.enabled) {
       this.showConfirmationDialog();
     } else {
       this.enableForm();
-      // this.disableFirstTwoExaminants(examinantsFormArray);
       ValidationService.validateForm(this.form!);
-    }
-  }
-
-  public disableFirstTwoExaminants(examinantsFormArray: FormArray): void {
-    if (examinantsFormArray.length > 0) {
-      examinantsFormArray.at(0).disable();
-      if (examinantsFormArray.length > 1) {
-        examinantsFormArray.at(1).disable();
-      }
     }
   }
 
@@ -196,7 +184,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         ccEmails: this.form.controls.ccEmails.value ?? undefined,
         designationOfficial: this.form.controls.designationOfficial.value!,
         workflowComment: this.form.controls.workflowComment.value!,
-        examinants: this.form.controls.examinants.getRawValue().map(
+        examinants: this.form.controls.examinants.value.map(
           (examinant) => examinant as StopPointPerson,
         ),
       };

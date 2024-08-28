@@ -49,8 +49,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   @Override
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
-    List<StopPointClientPersonModel> examinants = service.getExaminantsByWorkflowId(id);
-    ReadStopPointWorkflowModel stopPointWorkflowModel = StopPointWorkflowMapper.toModelWithReorderingExaminants(service.getWorkflow(id), examinants);
+    ReadStopPointWorkflowModel stopPointWorkflowModel = StopPointWorkflowMapper.toModel(service.getWorkflow(id));
 
     service.getWorkflowByFollowUpId(id).ifPresent(stopPointWorkflow ->
         stopPointWorkflowModel.setPreviousWorkflowId(stopPointWorkflow.getId())
@@ -101,8 +100,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel editStopPointWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
-    List<StopPointClientPersonModel> examinants = service.getExaminantsByWorkflowId(id);
-    return StopPointWorkflowMapper.toModelWithReorderingExaminants(service.editWorkflow(id, workflowModel), examinants);
+    return StopPointWorkflowMapper.toModel(service.editWorkflow(id, workflowModel));
   }
 
   @Override

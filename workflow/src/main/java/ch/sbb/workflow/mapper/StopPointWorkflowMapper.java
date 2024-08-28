@@ -9,17 +9,11 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class StopPointWorkflowMapper {
-
-  public static ReadStopPointWorkflowModel toModelWithReorderingExaminants(StopPointWorkflow entity, List<StopPointClientPersonModel> examinants) {
-    ReadStopPointWorkflowModel model = toModel(entity);
-    return reorderExaminants(model, examinants);
-  }
 
   public static ReadStopPointWorkflowModel toModel(StopPointWorkflow entity) {
     return ReadStopPointWorkflowModel.builder()
@@ -67,34 +61,6 @@ public class StopPointWorkflowMapper {
         .map(StopPointClientPersonMapper::toEntity)
         .collect(Collectors.toSet()));
     return stopPointWorkflow;
-  }
-
-
-  private ReadStopPointWorkflowModel reorderExaminants(ReadStopPointWorkflowModel stopPointWorkflowModel, List<StopPointClientPersonModel> importantPersons) {
-    List<StopPointClientPersonModel> examinants = stopPointWorkflowModel.getExaminants();
-    List<Person> importantPersonsForComparison = importantPersons.stream()
-        .map(StopPointClientPersonMapper::toEntity)
-        .collect(Collectors.toList());
-
-    List<StopPointClientPersonModel> sortedExaminants = new ArrayList<>();
-
-    for (Person importantPerson : importantPersonsForComparison) {
-      examinants.stream()
-          .filter(examinant ->
-                  Objects.equals(examinant.getMail(), importantPerson.getMail()) &&
-                  Objects.equals(examinant.getOrganisation(), importantPerson.getOrganisation()) &&
-                  Objects.equals(examinant.getPersonFunction(), importantPerson.getFunction())
-          )
-          .findFirst()
-          .ifPresent(sortedExaminants::add);
-    }
-
-    examinants.stream()
-        .filter(examinant -> !sortedExaminants.contains(examinant))
-        .forEach(sortedExaminants::add);
-
-    stopPointWorkflowModel.setExaminants(sortedExaminants);
-    return stopPointWorkflowModel;
   }
 
 }
