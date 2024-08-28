@@ -11,7 +11,7 @@
  */
 
 
-export interface ServicePointNumber { 
+export interface ServicePointNumber {
     /**
      * NumberShort - 5 chars identifying number. Range: 1-99.999
      */
