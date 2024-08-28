@@ -142,7 +142,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       this.showConfirmationDialog();
     } else {
       this.enableForm();
-      ValidationService.validateForm(this.form!);
+      ValidationService.validateForm(this.form);
     }
   }
 
