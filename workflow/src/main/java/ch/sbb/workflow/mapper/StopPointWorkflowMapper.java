@@ -81,8 +81,6 @@ public class StopPointWorkflowMapper {
     for (Person importantPerson : importantPersonsForComparison) {
       examinants.stream()
           .filter(examinant ->
-              Objects.equals(examinant.getFirstName(), importantPerson.getFirstName()) &&
-                  Objects.equals(examinant.getLastName(), importantPerson.getLastName()) &&
                   Objects.equals(examinant.getMail(), importantPerson.getMail()) &&
                   Objects.equals(examinant.getOrganisation(), importantPerson.getOrganisation()) &&
                   Objects.equals(examinant.getPersonFunction(), importantPerson.getFunction())
