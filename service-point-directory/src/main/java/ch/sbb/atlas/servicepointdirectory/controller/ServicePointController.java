@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.location.LocationService;
@@ -25,6 +26,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersion
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSwissWithGeoTransfer;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
@@ -33,8 +35,10 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearc
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointValidationService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -55,7 +59,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
-                                                                  ServicePointRequestParams servicePointRequestParams) {
+      ServicePointRequestParams servicePointRequestParams) {
     log.info("Loading ServicePointVersions with pageable={} and servicePointRequestParams={}", pageable,
         servicePointRequestParams);
     ServicePointSearchRestrictions searchRestrictions = ServicePointSearchRestrictions.builder()
@@ -174,21 +178,21 @@ public class ServicePointController implements ServicePointApiV1 {
     return ServicePointVersionMapper.toModel(validatedServicePointVersion);
   }
 
-
   @Override
-  public List<ReadServicePointVersionModel> updateServicePoint(Long id, UpdateServicePointVersionModel updateServicePointVersionModel) {
+  public List<ReadServicePointVersionModel> updateServicePoint(Long id,
+      UpdateServicePointVersionModel updateServicePointVersionModel) {
     ServicePointVersion servicePointVersionToUpdate = getServicePointVersionById(id);
 
     checkIfServicePointStatusRevoked(servicePointVersionToUpdate);
     checkIfServicePointStatusInReview(servicePointVersionToUpdate, updateServicePointVersionModel);
 
     List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
-            servicePointVersionToUpdate.getNumber());
+        servicePointVersionToUpdate.getNumber());
 
     servicePointValidationService.checkNotAffectingInReviewVersions(currentVersions, updateServicePointVersionModel);
 
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
-            servicePointVersionToUpdate.getNumber());
+        servicePointVersionToUpdate.getNumber());
 
     addGeoReferenceInformation(editedVersion);
 
@@ -196,14 +200,16 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
-  public ReadServicePointVersionModel updateDesingationOfficialServicePoint(Long id, UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
+  public ReadServicePointVersionModel updateDesingationOfficialServicePoint(Long id,
+      UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
 
-    List<ReadServicePointVersionModel> updatedServicePoints = servicePointService.updateDesignationOfficial(id, updateDesignationOfficialServicePointModel);
+    List<ReadServicePointVersionModel> updatedServicePoints = servicePointService.updateDesignationOfficial(id,
+        updateDesignationOfficialServicePointModel);
 
     return updatedServicePoints.stream()
-            .filter(servicePoint -> servicePoint.getId().equals(id))
-            .findFirst()
-            .orElseThrow(() -> new IdNotFoundException(id));
+        .filter(servicePoint -> servicePoint.getId().equals(id))
+        .findFirst()
+        .orElseThrow(() -> new IdNotFoundException(id));
   }
 
   @Override
@@ -240,6 +246,20 @@ public class ServicePointController implements ServicePointApiV1 {
   public void syncServicePoints() {
     log.info("Syncing all Service Points");
     servicePointDistributor.syncServicePoints();
+  }
+
+  @Override
+  public List<ServicePointSwissWithGeoModel> getActualServicePointWithGeolocation() {
+    List<ServicePointSwissWithGeoTransfer> actualServicePointWithGeolocation =
+        servicePointService.findActualServicePointWithGeolocation();
+    List<ServicePointSwissWithGeoModel> swissWithGeoModels = new ArrayList<>();
+    actualServicePointWithGeolocation.stream()
+        .collect(Collectors.groupingBy(ServicePointSwissWithGeoTransfer::getSloid))
+        .forEach((sloid, servicePointSwissWithGeoTransfers) -> {
+          List<Long> ids = servicePointSwissWithGeoTransfers.stream().map(ServicePointSwissWithGeoTransfer::getId).toList();
+          swissWithGeoModels.add(new ServicePointSwissWithGeoModel(sloid, ids));
+        });
+    return swissWithGeoModels;
   }
 
   private void checkIfServicePointStatusRevoked(ServicePointVersion servicePointVersion) {
@@ -282,19 +302,20 @@ public class ServicePointController implements ServicePointApiV1 {
 
   private ServicePointVersion getServicePointVersionById(Long id) {
     return servicePointService.findById(id)
-            .orElseThrow(() -> new IdNotFoundException(id));
+        .orElseThrow(() -> new IdNotFoundException(id));
   }
 
-  private List<ReadServicePointVersionModel> updateAndPublish(ServicePointVersion servicePointVersionToUpdate, ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
+  private List<ReadServicePointVersionModel> updateAndPublish(ServicePointVersion servicePointVersionToUpdate,
+      ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
     servicePointService.update(servicePointVersionToUpdate, editedVersion, currentVersions);
 
     List<ServicePointVersion> servicePoint = servicePointService.findAllByNumberOrderByValidFrom(
-            servicePointVersionToUpdate.getNumber());
+        servicePointVersionToUpdate.getNumber());
     servicePointDistributor.publishServicePointsWithNumbers(servicePointVersionToUpdate.getNumber());
 
     return servicePoint
-            .stream()
-            .map(ServicePointVersionMapper::toModel)
-            .toList();
+        .stream()
+        .map(ServicePointVersionMapper::toModel)
+        .toList();
   }
 }
