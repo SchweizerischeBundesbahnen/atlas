@@ -123,7 +123,7 @@ describe('AddStopPointWorkflowComponent', () => {
     firstExaminant.controls.lastName.setValue('lastName');
     firstExaminant.controls.personFunction.setValue('personFunction');
     firstExaminant.controls.organisation.setValue('organisation');
-    firstExaminant.controls.mail.setValue('mail@sbb.ch');
+    firstExaminant.controls.mail.setValue('mail5@sbb.ch');
 
     component.form.controls.workflowComment.setValue('YB isch wida Meista');
 
