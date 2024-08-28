@@ -13,7 +13,8 @@ import lombok.Data;
 @Builder
 public class LogFile {
 
-  private final List<LogEntry> logEntries = new ArrayList<>();
+  @Builder.Default
+  private List<LogEntry> logEntries = new ArrayList<>();
 
   public static LogEntry mapToDataValidationLogEntry(BulkImportUpdateContainer<?> container) {
     List<BulkImportError> errors = container.getDataValidationErrors().stream()
