@@ -9,9 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BulkImportRequest } from './bulkImportRequest';
 
 
 export interface InlineObject9 { 
+    bulkImportRequest?: BulkImportRequest;
     file: Blob;
 }
 
