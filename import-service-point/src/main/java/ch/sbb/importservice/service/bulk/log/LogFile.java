@@ -6,6 +6,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Data;
 
@@ -40,6 +41,7 @@ public class LogFile {
   public static LogEntry mapToDataExecutionLogEntry(BulkImportUpdateContainer<?> container) {
     List<BulkImportError> errors = container.getDataExecutionErrors().stream()
         .map(ErrorResponse::getDetails)
+        .filter(Objects::nonNull)
         .flatMap(Collection::stream)
         .map(dataExecutionError -> BulkImportError.builder()
             .errorMessage(dataExecutionError.getMessage())

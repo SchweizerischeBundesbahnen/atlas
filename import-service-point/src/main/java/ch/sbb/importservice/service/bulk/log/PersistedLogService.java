@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.File;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -35,18 +36,24 @@ public class PersistedLogService {
   }
 
   public void saveDataExecutionLog(Long jobExecutionId, BulkImportUpdateContainer<?> item) {
-    LogEntry logEntry = LogFile.mapToDataExecutionLogEntry(item);
-    bulkImportLogRepository.save(BulkImportLog.builder()
-        .jobExecutionId(jobExecutionId)
-        .lineNumber(item.getLineNumber())
-        .logEntry(mapToJsonString(logEntry))
-        .build());
+    if (!item.hasDataValidationErrors()) {
+      LogEntry logEntry = LogFile.mapToDataExecutionLogEntry(item);
+      bulkImportLogRepository.save(BulkImportLog.builder()
+          .jobExecutionId(jobExecutionId)
+          .lineNumber(item.getLineNumber())
+          .logEntry(mapToJsonString(logEntry))
+          .build());
+    }
   }
 
   public LogFile getLogFile(Long jobExecutionId) {
     List<BulkImportLog> log = bulkImportLogRepository.findAllByJobExecutionId(jobExecutionId);
+    List<LogEntry> logEntries = log.stream()
+        .map(i -> mapToLogEntry(i.getLogEntry()))
+        .sorted(Comparator.comparing(LogEntry::getLineNumber))
+        .toList();
     return LogFile.builder()
-        .logEntries(log.stream().map(i -> mapToLogEntry(i.getLogEntry())).toList())
+        .logEntries(logEntries)
         .build();
   }
 
@@ -63,8 +70,9 @@ public class PersistedLogService {
   @SneakyThrows
   public File writeLogToFile(LogFile logFile, BulkImport currentImport) {
     ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
-    String fileName = "%s_%s_%s.log".formatted(currentImport.getObjectType(), currentImport.getImportType(), currentImport.getId());
-    File file = new File(fileService.getDir() + File.separator +  fileName);
+    String fileName = "%s_%s_%s.log".formatted(currentImport.getObjectType(), currentImport.getImportType(),
+        currentImport.getId());
+    File file = new File(fileService.getDir() + File.separator + fileName);
     writer.writeValue(file, logFile);
     return file;
   }
