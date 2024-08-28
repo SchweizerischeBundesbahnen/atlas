@@ -192,10 +192,6 @@
           </div>
           <div class="col" [title]="examinant.controls.mail.value ?? ''">
             <atlas-text-field [formGroup]="examinant" controlName="mail"></atlas-text-field>
-<!--            <app-atlas-field-error-->
-<!--              [form]="form"-->
-<!--              controlName="examinants"-->
-<!--            ></app-atlas-field-error>-->
           </div>
           @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled) {
             <div class="decision-icon-col pe-2">
