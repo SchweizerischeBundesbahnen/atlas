@@ -1,13 +1,8 @@
 package ch.sbb.importservice.listener;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.importservice.entity.BulkImportLog;
-import ch.sbb.importservice.repository.BulkImportLogRepository;
-import ch.sbb.importservice.service.bulk.log.LogFile;
-import ch.sbb.importservice.service.bulk.log.LogFile.LogEntry;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ch.sbb.importservice.service.bulk.log.PersistedLogService;
 import jakarta.validation.constraints.NotNull;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemReadListener;
 import org.springframework.batch.core.StepExecution;
@@ -24,27 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class BulkImportDataValidationToLogFileListener implements ItemReadListener<BulkImportUpdateContainer<?>> {
 
   @Autowired
-  private BulkImportLogRepository bulkImportLogRepository;
-  @Autowired
-  private ObjectMapper objectMapper;
+  private PersistedLogService persistedLogService;
 
   @Value("#{stepExecution}")
   private StepExecution stepExecution;
 
   @Override
   public void afterRead(@NotNull BulkImportUpdateContainer<?> item) {
-    if (item.hasDataValidationErrors()) {
-      bulkImportLogRepository.save(BulkImportLog.builder()
-          .jobExecutionId(stepExecution.getJobExecution().getId())
-          .lineNumber(item.getLineNumber())
-          .logEntry(getLogEntry(item))
-          .build());
-    }
+    persistedLogService.saveDataValidationErrors(stepExecution.getJobExecutionId(), item);
   }
 
-  @SneakyThrows
-  private String getLogEntry(BulkImportUpdateContainer<?> item) {
-    LogEntry logEntry = LogFile.mapToDataValidationLogEntry(item);
-    return objectMapper.writeValueAsString(logEntry);
-  }
 }
