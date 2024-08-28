@@ -3,8 +3,10 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +38,19 @@ public class ServicePointBulkImportService {
 
   private List<ServicePointVersion> getCurrentVersions(ServicePointUpdateCsvModel servicePointUpdate) {
     if (servicePointUpdate.getNumber() != null) {
-      return servicePointService.findAllByNumberOrderByValidFrom(
-          ServicePointNumber.ofNumberWithoutCheckDigit(servicePointUpdate.getNumber()));
+      ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointUpdate.getNumber());
+      List<ServicePointVersion> servicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
+      if (servicePointVersions.isEmpty()) {
+        throw new ServicePointNumberNotFoundException(servicePointNumber);
+      }
+      return servicePointVersions;
     } else if (servicePointUpdate.getSloid() != null) {
-      return servicePointService.findBySloidAndOrderByValidFrom(servicePointUpdate.getSloid());
+      List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(
+          servicePointUpdate.getSloid());
+      if (servicePointVersions.isEmpty()) {
+        throw new SloidNotFoundException(servicePointUpdate.getSloid());
+      }
+      return servicePointVersions;
     }
     throw new IllegalStateException("Number or sloid should be given");
   }
