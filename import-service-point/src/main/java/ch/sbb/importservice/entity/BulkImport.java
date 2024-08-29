@@ -6,6 +6,8 @@ import ch.sbb.importservice.model.BulkImportConfig;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,12 +43,15 @@ public class BulkImport {
   private Long id;
 
   @NotNull
+  @Enumerated(EnumType.STRING)
   private ApplicationType application;
 
   @NotNull
+  @Enumerated(EnumType.STRING)
   private BusinessObjectType objectType;
 
   @NotNull
+  @Enumerated(EnumType.STRING)
   private ImportType importType;
 
   @Size(max = AtlasFieldLengths.LENGTH_100)
