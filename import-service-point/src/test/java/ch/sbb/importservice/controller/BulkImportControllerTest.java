@@ -19,7 +19,7 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.ImportFiles;
-import ch.sbb.importservice.client.ServicePointBulkImportClient;
+import ch.sbb.importservice.client.ServicePointClient;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import java.io.File;
@@ -55,7 +55,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
   private BulkImportRepository bulkImportRepository;
 
   @MockBean
-  private ServicePointBulkImportClient servicePointBulkImportClient;
+  private ServicePointClient servicePointBulkImportClient;
 
   @MockBean
   private AmazonService amazonService;
