@@ -32,21 +32,4 @@ public class BulkImportUpdateContainer<T> implements BulkImportContainer {
         bulkImportLogEntry.getStatus() == BulkImportStatus.DATA_VALIDATION_ERROR;
   }
 
-  @Data
-  @Builder
-  public static class DataMappingError {
-
-    private final String field;
-    private final String errorValue;
-    private final ExpectedType expectedType;
-
-  }
-
-  public enum ExpectedType {
-    INTEGER,
-    DATE,
-    ENUM,
-    DOUBLE,
-    BOOLEAN,
-  }
 }
