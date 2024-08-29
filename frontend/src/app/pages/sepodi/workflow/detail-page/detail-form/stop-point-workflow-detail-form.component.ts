@@ -100,10 +100,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     }
   }
 
-  makeInvisibleDeleteButtonForTheFirstTwoExaminants(index: number): boolean {
-    return (index < 2 && this.isDeleteButtonInvisible);
-  }
-
   addExaminant() {
     const examinantsControl = this.form.controls.examinants;
     ValidationService.validateForm(examinantsControl);
