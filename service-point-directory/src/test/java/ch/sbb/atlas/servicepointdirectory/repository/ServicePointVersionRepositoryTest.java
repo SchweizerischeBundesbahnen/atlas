@@ -332,8 +332,10 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(result).hasSize(2);
     assertThat(result.getFirst().getId()).isEqualTo(servicePointSwissWithGeoLocationVersion1.getId());
     assertThat(result.getFirst().getSloid()).isEqualTo(servicePointSwissWithGeoLocationVersion1.getSloid());
+    assertThat(result.getFirst().getValidFrom()).isEqualTo(servicePointSwissWithGeoLocationVersion1.getValidFrom());
     assertThat(result.getLast().getId()).isEqualTo(servicePointSwissWithGeoLocationVersion2.getId());
     assertThat(result.getLast().getSloid()).isEqualTo(servicePointSwissWithGeoLocationVersion2.getSloid());
+    assertThat(result.getLast().getValidFrom()).isEqualTo(servicePointSwissWithGeoLocationVersion2.getValidFrom());
 
   }
 
