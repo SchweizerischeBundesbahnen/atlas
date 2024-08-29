@@ -1,11 +1,11 @@
 package ch.sbb.importservice.service.bulk.log;
 
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.entity.BulkImportLog;
 import ch.sbb.importservice.repository.BulkImportLogRepository;
-import ch.sbb.importservice.service.bulk.log.LogFile.LogEntry;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -26,31 +26,29 @@ public class PersistedLogService {
 
   public void saveDataValidationErrors(Long jobExecutionId, BulkImportUpdateContainer<?> item) {
     if (item.hasDataValidationErrors()) {
-      LogEntry logEntry = LogFile.mapToDataValidationLogEntry(item);
       bulkImportLogRepository.save(BulkImportLog.builder()
           .jobExecutionId(jobExecutionId)
           .lineNumber(item.getLineNumber())
-          .logEntry(mapToJsonString(logEntry))
+          .logEntry(mapToJsonString(item.getBulkImportLogEntry()))
           .build());
     }
   }
 
   public void saveDataExecutionLog(Long jobExecutionId, BulkImportUpdateContainer<?> item) {
     if (!item.hasDataValidationErrors()) {
-      LogEntry logEntry = LogFile.mapToDataExecutionLogEntry(item);
       bulkImportLogRepository.save(BulkImportLog.builder()
           .jobExecutionId(jobExecutionId)
           .lineNumber(item.getLineNumber())
-          .logEntry(mapToJsonString(logEntry))
+          .logEntry(mapToJsonString(item.getBulkImportLogEntry()))
           .build());
     }
   }
 
   public LogFile getLogFile(Long jobExecutionId) {
     List<BulkImportLog> log = bulkImportLogRepository.findAllByJobExecutionId(jobExecutionId);
-    List<LogEntry> logEntries = log.stream()
+    List<BulkImportLogEntry> logEntries = log.stream()
         .map(i -> mapToLogEntry(i.getLogEntry()))
-        .sorted(Comparator.comparing(LogEntry::getLineNumber))
+        .sorted(Comparator.comparing(BulkImportLogEntry::getLineNumber))
         .toList();
     return LogFile.builder()
         .logEntries(logEntries)
@@ -58,13 +56,13 @@ public class PersistedLogService {
   }
 
   @SneakyThrows
-  private String mapToJsonString(LogEntry logEntry) {
+  private String mapToJsonString(BulkImportLogEntry logEntry) {
     return objectMapper.writeValueAsString(logEntry);
   }
 
   @SneakyThrows
-  private LogEntry mapToLogEntry(String logEntryAsJson) {
-    return objectMapper.readValue(logEntryAsJson, LogEntry.class);
+  private BulkImportLogEntry mapToLogEntry(String logEntryAsJson) {
+    return objectMapper.readValue(logEntryAsJson, BulkImportLogEntry.class);
   }
 
   @SneakyThrows
