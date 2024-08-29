@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.ImportFiles;
 import ch.sbb.importservice.client.ServicePointBulkImportClient;
@@ -26,6 +27,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -74,6 +76,11 @@ class BulkImportControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldAcceptGenericBulkImportWithFile() throws Exception {
+    when(servicePointBulkImportClient.bulkImportUpdate(any())).thenReturn(
+        List.of(BulkImportItemExecutionResult.builder()
+            .lineNumber(1)
+            .build()));
+
     File file = ImportFiles.getFileByPath("import-files/valid/service-point-update.csv");
     mvc.perform(multipart("/v1/import/bulk/SEPODI/SERVICE_POINT/UPDATE")
             .file(new MockMultipartFile("file", "service-point-update.csv", "text/csv", Files.readAllBytes(file.toPath()))))
