@@ -24,7 +24,7 @@ public class PipedSetDeserializer<T extends Enum<T>> extends JsonDeserializer<Se
         return T.valueOf(type, i);
       } catch (IllegalArgumentException exception) {
         try {
-          return (T) ctx.handleWeirdStringValue(type, i, i+ " is not a valid"+type.getName());
+          return (T) ctx.handleWeirdStringValue(type, i, i + " is not a valid" + type.getName());
         } catch (IOException e) {
           throw new IllegalStateException(e);
         }
