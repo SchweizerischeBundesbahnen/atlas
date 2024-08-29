@@ -1,45 +1,40 @@
 package ch.sbb.atlas.imports.bulk;
 
-import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportStatus;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Builder
 @Data
 public class BulkImportUpdateContainer<T> implements BulkImportContainer {
 
-  private final int lineNumber;
+  private int lineNumber;
 
   @Valid
-  private final T object;
+  private T object;
 
   @Builder.Default
-  private final List<String> attributesToNull = new ArrayList<>();
+  private List<String> attributesToNull = new ArrayList<>();
 
-  @Builder.Default
-  private final List<DataValidationError> dataValidationErrors = new ArrayList<>();
+  private BulkImportLogEntry bulkImportLogEntry;
 
   public boolean hasDataValidationErrors() {
-    return !dataValidationErrors.isEmpty();
-  }
-
-  @Builder.Default
-  private final List<ErrorResponse> dataExecutionErrors = new ArrayList<>();
-
-  public boolean hasDataExecutionErrors() {
-    return !dataExecutionErrors.isEmpty();
+    return bulkImportLogEntry != null &&
+        bulkImportLogEntry.getStatus() == BulkImportStatus.DATA_VALIDATION_ERROR;
   }
 
   @Data
   @Builder
-  public static class DataValidationError {
+  public static class DataMappingError {
 
     private final String field;
     private final String errorValue;
