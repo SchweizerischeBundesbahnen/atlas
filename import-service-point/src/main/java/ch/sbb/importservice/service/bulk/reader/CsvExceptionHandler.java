@@ -2,8 +2,7 @@ package ch.sbb.importservice.service.bulk.reader;
 
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
-import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer.DataMappingError;
-import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer.ExpectedType;
+import ch.sbb.importservice.service.bulk.reader.DataMappingError.ExpectedType;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import java.io.IOException;
