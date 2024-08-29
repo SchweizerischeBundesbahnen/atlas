@@ -2,6 +2,8 @@ package ch.sbb.importservice.service.bulk.reader;
 
 import ch.sbb.atlas.exception.CsvException;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
+import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
+import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportStatus;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.File;
@@ -63,7 +65,11 @@ public class BulkImportCsvReader {
       } else {
         return BulkImportUpdateContainer.<T>builder()
             .lineNumber(lineNumber)
-            .dataValidationErrors(csvExceptionHandler.getErrors())
+            .bulkImportLogEntry(BulkImportLogEntry.builder()
+                .lineNumber(lineNumber)
+                .status(BulkImportStatus.DATA_VALIDATION_ERROR)
+                .errors(new ArrayList<>(csvExceptionHandler.getDataMappingErrors()))
+                .build())
             .build();
       }
 
