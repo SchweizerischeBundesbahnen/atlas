@@ -1,10 +1,13 @@
 package ch.sbb.atlas.deserializer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import java.io.IOException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +19,8 @@ class LocalDateDeserializerTest {
 
   @Mock
   private JsonParser jsonParser;
+  @Mock
+  private DeserializationContext ctx;
 
   private final LocalDateDeserializer localDateDeserializer = new LocalDateDeserializer();
 
@@ -44,7 +49,7 @@ class LocalDateDeserializerTest {
   void shouldThrowExceptionWhenPatternUnsupported() throws IOException {
     when(jsonParser.getText()).thenReturn("02-03-2020");
 
-    assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
-        () -> localDateDeserializer.deserialize(jsonParser, null));
+    localDateDeserializer.deserialize(jsonParser, ctx);
+    verify(ctx).handleWeirdStringValue(eq(LocalDate.class), eq("02-03-2020"), anyString());
   }
 }
