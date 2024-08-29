@@ -85,7 +85,7 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
       LocalDate validFrom, LocalDate validTo, String designationLong);
 
   @Query(value = """
-      select spv.sloid as sloid, spv.id as id
+      select spv.sloid as sloid, spv.id as id, spv.validFrom as validFrom
       from service_point_version spv
       where spv.servicePointGeolocation is not null
        and spv.country = ch.sbb.atlas.servicepoint.Country.SWITZERLAND
