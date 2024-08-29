@@ -2,19 +2,20 @@ package ch.sbb.atlas.imports.bulk;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
+import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel.Fields;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,17 +37,15 @@ import lombok.experimental.FieldNameConstants;
     Fields.operatingPointTechnicalTimetableType, Fields.meansOfTransport, Fields.categories,
     Fields.operatingPointTrafficPointType, Fields.sortCodeOfDestinationStation, Fields.businessOrganisation,
     Fields.east, Fields.north, Fields.spatialReference, Fields.height})
-public class ServicePointUpdateCsvModel {
+public class ServicePointUpdateCsvModel implements Validatable {
 
   private String sloid;
 
   private Integer number;
 
-  @NotNull
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validFrom;
 
-  @NotNull
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validTo;
 
@@ -80,10 +79,26 @@ public class ServicePointUpdateCsvModel {
 
   private Double height;
 
-  @JsonIgnore
-  @AssertTrue(message = "Only one of SLOID or number is allowed")
-  boolean isOnlyNumberOrSloidGiven() {
-    return sloid == null ^ number == null;
+  @Override
+  public List<BulkImportError> validate() {
+    List<BulkImportError> errors = new ArrayList<>();
+    if ((sloid == null) == (number == null)) {
+      errors.add(BulkImportErrors.sloidXorNumber());
+    }
+    if (number != null) {
+      try {
+        ServicePointNumber.ofNumberWithoutCheckDigit(number);
+      } catch (Exception e) {
+        errors.add(BulkImportErrors.invalidServicePointNumber());
+      }
+    }
+    if (validFrom == null) {
+      errors.add(BulkImportErrors.notNull(Fields.validFrom));
+    }
+    if (validTo == null) {
+      errors.add(BulkImportErrors.notNull(Fields.validTo));
+    }
+    return errors;
   }
 
 }
