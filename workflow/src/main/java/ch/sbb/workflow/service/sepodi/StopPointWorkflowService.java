@@ -88,11 +88,6 @@ public class StopPointWorkflowService {
     return save(stopPointWorkflow);
   }
 
-  public List<StopPointClientPersonModel> getExaminantsByWorkflowId(Long id) {
-    Long servicePointVersionId = getWorkflow(id).getVersionId();
-    return getExaminantsByServicePointVersionId(servicePointVersionId);
-  }
-
   public List<StopPointClientPersonModel> getExaminantsByServicePointVersionId(Long servicePointVersionId) {
     ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.getServicePointById(servicePointVersionId);
     return examinants.getExaminants(servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getCanton());
