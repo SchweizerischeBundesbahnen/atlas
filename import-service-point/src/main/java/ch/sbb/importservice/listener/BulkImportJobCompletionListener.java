@@ -11,13 +11,10 @@ import ch.sbb.importservice.service.mail.MailNotificationService;
 import ch.sbb.importservice.service.mail.MailProducerService;
 import java.net.URL;
 import java.util.Objects;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
-import org.springframework.batch.core.StepExecution;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -34,23 +31,21 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
   @Override
   public void afterJob(JobExecution jobExecution) {
     LogFile logFile = persistedLogService.getLogFile(jobExecution.getId());
-    log.info("Persisted log file: {}", logFile);
-
     Long bulkImportId = Objects.requireNonNull(jobExecution.getJobParameters().getLong(BULK_IMPORT_ID_JOB_PARAMETER));
     BulkImport currentImport = bulkImportRepository.findById(bulkImportId).orElseThrow();
 
-    URL logUrl = s3BucketService.uploadImportFile(persistedLogService.writeLogToFile(logFile, currentImport), currentImport);
-    currentImport.setLogFileUrl(logUrl.getPath().substring(1));
-    bulkImportRepository.save(currentImport);
+    uploadLogFile(logFile, currentImport);
 
-    Optional<StepExecution> stepExecution = jobExecution.getStepExecutions().stream().findFirst();
-    if (ExitStatus.COMPLETED.equals(jobExecution.getExitStatus()) && stepExecution.isPresent()) {
-
-    }
-    if (ExitStatus.FAILED.equals(jobExecution.getExitStatus()) && stepExecution.isPresent()) {
-
-    }
+    sendMailToImporter(currentImport);
   }
 
+  private void uploadLogFile(LogFile logFile, BulkImport bulkImport) {
+    URL logUrl = s3BucketService.uploadImportFile(persistedLogService.writeLogToFile(logFile, bulkImport), bulkImport);
+    bulkImport.setLogFileUrl(logUrl.getPath().substring(1));
+    bulkImportRepository.save(bulkImport);
+  }
 
+  private void sendMailToImporter(BulkImport bulkImport) {
+    // Send mail with link to atlas log gui
+  }
 }
