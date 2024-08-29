@@ -28,15 +28,20 @@ public class BulkImportItemValidationService {
     T object = item.getObject();
     List<BulkImportError> validationErrors = object.validate();
     if (!validationErrors.isEmpty()) {
-      if (item.getBulkImportLogEntry() != null) {
-        item.getBulkImportLogEntry().getErrors().addAll(validationErrors);
-      } else {
-        item.setBulkImportLogEntry(BulkImportLogEntry.builder()
-            .lineNumber(item.getLineNumber())
-            .status(BulkImportStatus.DATA_VALIDATION_ERROR)
-            .errors(new ArrayList<>(validationErrors))
-            .build());
-      }
+      storeInfoInLogEntry(item, validationErrors);
+    }
+  }
+
+  private static <T extends Validatable> void storeInfoInLogEntry(BulkImportUpdateContainer<T> item,
+      List<BulkImportError> validationErrors) {
+    if (item.getBulkImportLogEntry() == null) {
+      item.setBulkImportLogEntry(BulkImportLogEntry.builder()
+          .lineNumber(item.getLineNumber())
+          .status(BulkImportStatus.DATA_VALIDATION_ERROR)
+          .errors(new ArrayList<>(validationErrors))
+          .build());
+    } else {
+      item.getBulkImportLogEntry().getErrors().addAll(validationErrors);
     }
   }
 }
