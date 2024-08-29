@@ -7,6 +7,7 @@ import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel.Detail;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.location.LocationService;
@@ -256,8 +257,11 @@ public class ServicePointController implements ServicePointApiV1 {
     actualServicePointWithGeolocation.stream()
         .collect(Collectors.groupingBy(ServicePointSwissWithGeoTransfer::getSloid))
         .forEach((sloid, servicePointSwissWithGeoTransfers) -> {
-          List<Long> ids = servicePointSwissWithGeoTransfers.stream().map(ServicePointSwissWithGeoTransfer::getId).toList();
-          swissWithGeoModels.add(new ServicePointSwissWithGeoModel(sloid, ids));
+          List<Detail> details = new ArrayList<>();
+          servicePointSwissWithGeoTransfers.forEach(swissWithGeoTransfer -> {
+            details.add(new Detail(swissWithGeoTransfer.getId(), swissWithGeoTransfer.getValidFrom()));
+          });
+          swissWithGeoModels.add(new ServicePointSwissWithGeoModel(sloid, details));
         });
     return swissWithGeoModels;
   }

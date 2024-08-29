@@ -3,7 +3,9 @@ package ch.sbb.atlas.api.servicepoint;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +33,24 @@ public class ServicePointSwissWithGeoModel {
       To do this, use the sloid or number in combination with the data range (valid from/valid until).
       """,
       accessMode = AccessMode.READ_ONLY, example = "1")
-  private List<Long> ids;
+  private List<Detail> details;
+
+  @AllArgsConstructor
+  @Data
+  public static class Detail {
+
+    @Schema(description = """
+        This ID helps identify versions of a service point in the use case front end and/or update.
+        This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a service point.
+        To do this, use the sloid or number in combination with the data range (valid from/valid until).
+        """,
+        accessMode = AccessMode.READ_ONLY, example = "1")
+    private Long id;
+
+    @Schema(description = "Valid from")
+    @NotNull
+    private LocalDate validFrom;
+
+  }
 
 }
