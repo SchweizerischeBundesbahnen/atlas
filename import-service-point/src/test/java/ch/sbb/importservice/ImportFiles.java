@@ -38,7 +38,6 @@ public class ImportFiles {
   public static ServicePointUpdateCsvModel getExpectedServicePointUpdateCsvModel() {
     return ServicePointUpdateCsvModel.builder()
         .sloid("ch:1:sloid:7000")
-        .number(8507000)
         .validFrom(LocalDate.of(2021, 4, 1))
         .validTo(LocalDate.of(2099, 12, 31))
         .designationOfficial("Bern")
