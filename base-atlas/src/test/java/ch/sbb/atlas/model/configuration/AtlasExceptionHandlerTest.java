@@ -9,6 +9,8 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.export.enumeration.ExportType;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
+import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import java.util.Collections;
 import org.apache.catalina.connector.ClientAbortException;
 import org.hibernate.StaleStateException;
@@ -26,7 +28,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 public class AtlasExceptionHandlerTest {
 
- private final AtlasExceptionHandler atlasExceptionHandler = new AtlasExceptionHandler();
+  private final AtlasExceptionHandler atlasExceptionHandler = new AtlasExceptionHandler();
 
   @Test
   void shouldConvertMethodArgumentExceptionToErrorResponse() {
@@ -157,5 +159,32 @@ public class AtlasExceptionHandlerTest {
 
     // Then
     assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(499);
+  }
+
+  @Test
+  void shouldMapAtlasExceptionToErrorResponse() {
+    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(new SloidNotFoundException("ch:1:sloid:12333"));
+    assertThat(errorResponse.getMessage()).isEqualTo("Entity not found");
+  }
+
+  @Test
+  void shouldMapVersioningNoChangesExceptionToErrorResponse() {
+    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(new VersioningNoChangesException());
+    assertThat(errorResponse.getMessage()).isEqualTo("No entities were modified after versioning execution.");
+  }
+
+  @Test
+  void shouldMapMethodArgumentNotValidExceptionToErrorResponse() {
+    // Given
+    BeanPropertyBindingResult bindingResult = mock(BeanPropertyBindingResult.class);
+    when(bindingResult.getFieldErrors()).thenReturn(
+        Collections.singletonList(new FieldError("objectName", "field", "defaultMessage")));
+    MethodArgumentNotValidException exception = new MethodArgumentNotValidException(
+        mock(MethodParameter.class), bindingResult);
+
+    // When
+    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(exception);
+
+    assertThat(errorResponse.getMessage()).isEqualTo("Constraint for requestbody was violated");
   }
 }
