@@ -16,6 +16,7 @@ import java.util.SortedSet;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -127,6 +128,7 @@ public class ErrorResponse {
   @AllArgsConstructor
   @ToString
   @Getter
+  @EqualsAndHashCode
   public static class DisplayInfo {
 
     @Schema(description = "Errorcode for UI", example = "LIDI.LINE.CONFLICT")
@@ -172,6 +174,7 @@ public class ErrorResponse {
   @AllArgsConstructor
   @ToString
   @Getter
+  @EqualsAndHashCode
   public static class Parameter {
 
     private String key;
