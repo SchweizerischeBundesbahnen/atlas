@@ -5,6 +5,7 @@ import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportStatus;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.bulk.Validatable;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class BulkImportCsvReader {
 
   public static final String NULLING_VALUE = "<null>";
 
-  public <T> List<BulkImportUpdateContainer<T>> readLinesFromFileWithNullingValue(File file, Class<T> clazz) {
+  public <T extends Validatable> List<BulkImportUpdateContainer<T>> readLinesFromFileWithNullingValue(File file, Class<T> clazz) {
     List<BulkImportUpdateContainer<T>> mappedObjects = new ArrayList<>();
 
     String header = "";
@@ -42,7 +43,8 @@ public class BulkImportCsvReader {
     return mappedObjects;
   }
 
-  private static <T> BulkImportUpdateContainer<T> readObject(Class<T> clazz, String header, String line, int lineNumber)
+  private static <T extends Validatable> BulkImportUpdateContainer<T> readObject(Class<T> clazz, String header, String line,
+      int lineNumber)
       throws IOException {
     List<String> toNullAttributes = calculateAttributesToNull(header, line);
 
