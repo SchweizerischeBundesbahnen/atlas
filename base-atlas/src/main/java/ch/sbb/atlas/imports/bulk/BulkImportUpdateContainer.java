@@ -1,6 +1,7 @@
 package ch.sbb.atlas.imports.bulk;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +28,9 @@ public class BulkImportUpdateContainer<T> implements BulkImportContainer {
 
   private BulkImportLogEntry bulkImportLogEntry;
 
+  @JsonIgnore
   public boolean hasDataValidationErrors() {
-    return bulkImportLogEntry != null &&
-        bulkImportLogEntry.getStatus() == BulkImportStatus.DATA_VALIDATION_ERROR;
+    return bulkImportLogEntry != null && bulkImportLogEntry.getStatus() == BulkImportStatus.DATA_VALIDATION_ERROR;
   }
 
 }
