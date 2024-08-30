@@ -1,6 +1,5 @@
 package ch.sbb.importservice.service.bulk.reader;
 
-import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.importservice.service.bulk.reader.DataMappingError.ExpectedType;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -17,18 +16,7 @@ public class CsvExceptionHandler extends DeserializationProblemHandler {
   private final List<DataMappingError> errors = new ArrayList<>();
 
   public List<BulkImportError> getDataMappingErrors() {
-    return errors.stream().map(dataMappingError -> BulkImportError.builder()
-            .errorMessage(
-                "Expected " + dataMappingError.getExpectedType() + " but got " + dataMappingError.getErrorValue()
-                    + " in column " + dataMappingError.getField())
-            .displayInfo(DisplayInfo.builder()
-                .code("BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR")
-                .with("field", dataMappingError.getField())
-                .with("errorValue", dataMappingError.getErrorValue())
-                .with("expectedType", dataMappingError.getExpectedType().toString())
-                .build())
-            .build())
-        .toList();
+    return errors.stream().map(DataMappingError::toBulkImportError).toList();
   }
 
   @Override
