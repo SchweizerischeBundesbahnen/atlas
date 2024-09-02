@@ -5,19 +5,24 @@ import ch.sbb.importservice.entity.BulkImportRequest;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Encoding;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,15 +31,20 @@ import org.springframework.web.multipart.MultipartFile;
 public interface BulkImportApiV1 {
 
 
-  @PostMapping("")
+  @PostMapping(path = "{application}/{objectType}/{importType}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   @ResponseStatus(HttpStatus.ACCEPTED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "202"),
   })
+  @RequestBody(content = @Content(encoding = @Encoding(name = "bulkImportRequest", contentType = MediaType.APPLICATION_JSON_VALUE)))
   @PreAuthorize("""
       @bulkImportUserAdministrationService.hasPermissionsForBulkImport(#application)""")
   void startServicePointImportBatch(
-          @RequestBody BulkImportRequest bulkImportRequest
+          @PathVariable ApplicationType application,
+          @PathVariable BusinessObjectType objectType,
+          @PathVariable ImportType importType,
+          @RequestPart BulkImportRequest bulkImportRequest,
+          @RequestPart MultipartFile file
       );
 
 
