@@ -8,8 +8,8 @@ import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
-import ch.sbb.atlas.api.servicepoint.SwissLocation;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.SwissLocation;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import java.util.Map;
@@ -86,7 +86,19 @@ public class ServicePointGeolocationMapper {
         .build();
   }
 
-
+  public static GeolocationBaseCreateModel toEntityBase(ServicePointGeolocation servicePointGeolocation) {
+    if (servicePointGeolocation == null) {
+      return null;
+    }
+    GeolocationMapper.transformLv03andWgs84(servicePointGeolocation);
+    GeolocationMapper.checkIfCoordinatesAreTransformable(servicePointGeolocation);
+    return GeolocationBaseCreateModel.builder()
+        .spatialReference(servicePointGeolocation.getSpatialReference())
+        .north(servicePointGeolocation.getNorth())
+        .east(servicePointGeolocation.getEast())
+        .height(servicePointGeolocation.getHeight())
+        .build();
+  }
 
   private static Canton getCanton(ServicePointGeolocation servicePointGeolocation) {
     if (servicePointGeolocation.getSwissCanton() == null) {
