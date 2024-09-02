@@ -62,14 +62,14 @@ public class MailNotificationService {
     mailContentProperty.put("warningImportedItemsSize", warningImportedItems.size());
     mailContentProperty.put("failedImportedItemsSize", failedImportedItems.size());
 
-    if(failedImportedItems.size() + warningImportedItems.size() > 1_000){
-      mailContentProperty.put("failedImportedItems", new HashMap<>());
-      mailContentProperty.put("warningImportedItems", new HashMap<>());
-    }
-    else{
-      mailContentProperty.put("failedImportedItems", getImportProcessItem(failedImportedItems));
-      mailContentProperty.put("warningImportedItems", getImportProcessItem(warningImportedItems));
-    }
+    //    if (failedImportedItems.size() + warningImportedItems.size() + successImportedItems.size() > 20_000) {
+    //      mailContentProperty.put("failedImportedItems", new HashMap<>());
+    //      mailContentProperty.put("warningImportedItems", new HashMap<>());
+    //    } else {
+    mailContentProperty.put("successImportedItems", getImportProcessItem(successImportedItems));
+    mailContentProperty.put("warningImportedItems", getImportProcessItem(warningImportedItems));
+    mailContentProperty.put("failedImportedItems", getImportProcessItem(failedImportedItems));
+    //    }
 
     mailProperties.add(mailContentProperty);
     return mailProperties;
@@ -79,6 +79,7 @@ public class MailNotificationService {
     return importProcessItems.stream().map(item -> {
       Map<String, Object> object = new HashMap<>();
       object.put("processedItem", item.getItemNumber());
+      object.put("processedItemId", item.getId());
       object.put("processedItemStatus", item.getResponseStatus());
       object.put("processedItemMessage", item.getResponseMessage());
       return object;
