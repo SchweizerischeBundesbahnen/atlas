@@ -34,7 +34,9 @@ model/applicationType.ts
 model/basicAttributeType.ts
 model/boardingDeviceAttributeType.ts
 model/booleanOptionalAttributeType.ts
+model/bulkImportPermissionRestrictionModel.ts
 model/bulkImportRequest.ts
+model/bulkImportUpdateContainerServicePointUpdateCsvModel.ts
 model/businessObjectType.ts
 model/businessOrganisation.ts
 model/businessOrganisationVersion.ts
@@ -95,6 +97,8 @@ model/importType.ts
 model/infoOpportunityAttributeType.ts
 model/inlineObject2.ts
 model/inlineObject3.ts
+model/itemImportResponseStatus.ts
+model/itemImportResult.ts
 model/judgementType.ts
 model/line.ts
 model/lineType.ts
@@ -148,6 +152,7 @@ model/servicePointGeolocation.ts
 model/servicePointNumber.ts
 model/servicePointSearchRequest.ts
 model/servicePointSearchResult.ts
+model/servicePointUpdateCsvModel.ts
 model/sortObject.ts
 model/spatialReference.ts
 model/standardAttributeType.ts
