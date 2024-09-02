@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 
+import static java.util.Comparator.naturalOrder;
+
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.servicepoint.Country;
@@ -14,8 +16,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.Comparator;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,8 +36,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @AtlasVersionable
+@EqualsAndHashCode(callSuper = true)
 @Entity(name = "service_point_version_geolocation")
-public class ServicePointGeolocation extends GeolocationBaseEntity {
+public class ServicePointGeolocation extends GeolocationBaseEntity implements Comparable<ServicePointGeolocation> {
 
   private static final String VERSION_SEQ = "service_point_version_geolocation_seq";
 
@@ -71,4 +77,16 @@ public class ServicePointGeolocation extends GeolocationBaseEntity {
   @AtlasVersionableProperty
   private String swissLocalityName;
 
+  @Override
+  public int compareTo(@NotNull ServicePointGeolocation o) {
+    return Comparator.comparing(ServicePointGeolocation::getHeight, Comparator.nullsLast(naturalOrder()))
+        .thenComparing(ServicePointGeolocation::getCountry, Comparator.nullsLast(naturalOrder()))
+        .thenComparing(ServicePointGeolocation::getSwissCanton, Comparator.nullsLast(naturalOrder()))
+        .thenComparing(ServicePointGeolocation::getSwissDistrictName, Comparator.nullsLast(naturalOrder()))
+        .thenComparing(ServicePointGeolocation::getSwissDistrictNumber, Comparator.nullsLast(naturalOrder()))
+        .thenComparing(ServicePointGeolocation::getSwissMunicipalityNumber, Comparator.nullsLast(naturalOrder()))
+        .thenComparing(ServicePointGeolocation::getSwissMunicipalityName, Comparator.nullsLast(naturalOrder()))
+        .thenComparing(ServicePointGeolocation::getSwissLocalityName, Comparator.nullsLast(naturalOrder()))
+        .compare(this, o);
+  }
 }

@@ -9,7 +9,11 @@ import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel.Detail;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
+import ch.sbb.atlas.api.servicepoint.UpdateGeoServicePointVersionResultModel;
+import ch.sbb.atlas.api.servicepoint.UpdateGeoServicePointVersionResultModel.VersionDataRage;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
+import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
+import ch.sbb.atlas.imports.ItemImportResponseStatus;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.Status;
@@ -25,6 +29,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundEx
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusRevokedChangeNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
+import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSwissWithGeoTransfer;
@@ -37,6 +42,7 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearc
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointValidationService;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -201,6 +207,60 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
+  public GeoUpdateItemResultModel updateServicePointGeoLocation(String sloid, Long id) {
+    try {
+      UpdateGeoServicePointVersionResultModel result = updateGeoLocation(id);
+      if (result != null) {
+        return new GeoUpdateItemResultModel(result.getSloid(), result.getId(),
+            result.getResponseMessage(), ItemImportResponseStatus.SUCCESS);
+      }
+    } catch (Exception e) {
+      return new GeoUpdateItemResultModel(sloid, id, e.getMessage(), ItemImportResponseStatus.FAILED);
+    }
+    return null;
+  }
+
+  private UpdateGeoServicePointVersionResultModel updateGeoLocation(Long id) {
+    ServicePointVersion servicePointVersionToUpdate = getServicePointVersionById(id);
+    ServicePointGeolocation currentServicePointGeolocation = servicePointVersionToUpdate.getServicePointGeolocation();
+    ServicePointGeolocation updatedServicePointGeolocation = getGeoReferenceInformation(currentServicePointGeolocation);
+
+    if (currentServicePointGeolocation.compareTo(updatedServicePointGeolocation) != 0) {
+      UpdateGeoServicePointVersionResultModel result = UpdateGeoServicePointVersionResultModel.builder()
+          .currentServicePointGeolocation(ServicePointGeolocationMapper.toModel(currentServicePointGeolocation))
+          .updatedServicePointGeolocation(ServicePointGeolocationMapper.toModel(updatedServicePointGeolocation))
+          .id(servicePointVersionToUpdate.getId())
+          .sloid(servicePointVersionToUpdate.getSloid())
+          .build();
+
+      List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
+          servicePointVersionToUpdate.getNumber());
+      ServicePointVersion editedVersion =
+          servicePointVersionToUpdate.toBuilder()
+              .servicePointGeolocation(updatedServicePointGeolocation)
+              .build();
+      List<ReadServicePointVersionModel> readServicePointVersionModels = updateAndPublish(servicePointVersionToUpdate,
+          editedVersion, currentVersions);
+      if (readServicePointVersionModels.size() != currentVersions.size()) {
+        List<VersionDataRage> updatedVersionsDataRange = new ArrayList<>(readServicePointVersionModels.stream()
+            .map(servicePointVersionModel ->
+                new VersionDataRage(servicePointVersionModel.getValidFrom(), servicePointVersionModel.getValidTo())
+            ).toList());
+        updatedVersionsDataRange.sort(Comparator.comparing(VersionDataRage::getValidFrom));
+        result.setUpdatedVersionsDataRange(updatedVersionsDataRange);
+        List<VersionDataRage> currentVersionsDataRange = new ArrayList<>(currentVersions.stream()
+            .map(servicePointVersionModel ->
+                new VersionDataRage(servicePointVersionModel.getValidFrom(), servicePointVersionModel.getValidTo())
+            ).toList());
+        currentVersionsDataRange.sort(Comparator.comparing(VersionDataRage::getValidFrom));
+        result.setCurrentVersionsDataRange(currentVersionsDataRange);
+      }
+      return result;
+    }
+    return null;
+  }
+
+  @Override
   public ReadServicePointVersionModel updateDesingationOfficialServicePoint(Long id,
       UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
 
@@ -302,6 +362,22 @@ public class ServicePointController implements ServicePointApiV1 {
       servicePointGeolocation.setSwissMunicipalityName(geoReference.getSwissMunicipalityName());
       servicePointGeolocation.setSwissLocalityName(geoReference.getSwissLocalityName());
     }
+  }
+
+  private ServicePointGeolocation getGeoReferenceInformation(ServicePointGeolocation servicePointGeolocationToUpdate) {
+    GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocationToUpdate.asCoordinatePair(),
+        servicePointGeolocationToUpdate.getHeight() == null);
+    return servicePointGeolocationToUpdate
+        .toBuilder()
+        .height(geoReference.getHeight() != null ? geoReference.getHeight() : servicePointGeolocationToUpdate.getHeight())
+        .country(geoReference.getCountry())
+        .swissCanton(geoReference.getSwissCanton())
+        .swissDistrictNumber(geoReference.getSwissDistrictNumber())
+        .swissDistrictName(geoReference.getSwissDistrictName())
+        .swissMunicipalityNumber(geoReference.getSwissMunicipalityNumber())
+        .swissMunicipalityName(geoReference.getSwissMunicipalityName())
+        .swissLocalityName(geoReference.getSwissLocalityName())
+        .build();
   }
 
   private ServicePointVersion getServicePointVersionById(Long id) {

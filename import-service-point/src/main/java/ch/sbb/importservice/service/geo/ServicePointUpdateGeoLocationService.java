@@ -1,7 +1,7 @@
 package ch.sbb.importservice.service.geo;
 
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
-import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
 import ch.sbb.importservice.client.ServicePointClient;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +15,14 @@ public class ServicePointUpdateGeoLocationService {
 
   private final ServicePointClient servicePointClient;
 
-  public List<ServicePointSwissWithGeoModel> getActualServicePointWithGeolocation(){
+  public List<ServicePointSwissWithGeoModel> getActualServicePointWithGeolocation() {
     log.info("Get service points with geo location to update...");
     List<ServicePointSwissWithGeoModel> servicePointWithGeolocation = servicePointClient.getActualServicePointWithGeolocation();
     log.info("Found {} service points with geo location to update.", servicePointWithGeolocation.size());
     return servicePointWithGeolocation;
   }
 
-  public List<ItemImportResult> postServicePoints(String servicePointImportRequestModel) {
-    return null;
+  public GeoUpdateItemResultModel updateServicePointGeoLocation(String sloid, Long id) {
+    return servicePointClient.updateServicePointGeoLocation(sloid, id);
   }
 }
