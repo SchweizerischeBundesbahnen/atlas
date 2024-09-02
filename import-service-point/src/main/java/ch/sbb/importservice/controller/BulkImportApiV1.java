@@ -1,6 +1,7 @@
 package ch.sbb.importservice.controller;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.importservice.entity.BulkImportRequest;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -24,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface BulkImportApiV1 {
 
 
-  @PostMapping("{application}/{objectType}/{importType}")
+  @PostMapping("")
   @ResponseStatus(HttpStatus.ACCEPTED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "202"),
@@ -32,10 +34,8 @@ public interface BulkImportApiV1 {
   @PreAuthorize("""
       @bulkImportUserAdministrationService.hasPermissionsForBulkImport(#application)""")
   void startServicePointImportBatch(
-      @PathVariable ApplicationType application,
-      @PathVariable BusinessObjectType objectType,
-      @PathVariable ImportType importType,
-      @RequestParam MultipartFile file);
+          @RequestBody BulkImportRequest bulkImportRequest
+      );
 
 
   @GetMapping("template/{objectType}/{importType}")
