@@ -22,7 +22,11 @@ public class ServicePointBulkImportUpdate {
         case Fields.categories -> editedVersion.setCategories(null);
         case Fields.operatingPointTrafficPointType -> editedVersion.setOperatingPointTrafficPointType(null);
         case Fields.sortCodeOfDestinationStation -> editedVersion.setSortCodeOfDestinationStation(null);
-        case Fields.height -> editedVersion.getServicePointGeolocation().setHeight(null);
+        case Fields.height -> {
+          if (editedVersion.hasGeolocation()) {
+            editedVersion.getServicePointGeolocation().setHeight(null);
+          }
+        }
         case Fields.east, Fields.north, Fields.spatialReference -> editedVersion.setServicePointGeolocation(null);
         default -> throw new UnsupportedOperationException("Field " + attributeToNull + " not supported for attribute nulling");
       }
