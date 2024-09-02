@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -33,4 +34,7 @@ public class BulkImportRequest {
     private String inNameOf;
 
     private List<String> emails;
+
+    @NotNull
+    private MultipartFile file;
 }
