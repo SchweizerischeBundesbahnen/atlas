@@ -35,7 +35,6 @@ model/basicAttributeType.ts
 model/boardingDeviceAttributeType.ts
 model/booleanOptionalAttributeType.ts
 model/bulkImportPermissionRestrictionModel.ts
-model/bulkImportRequest.ts
 model/bulkImportUpdateContainerServicePointUpdateCsvModel.ts
 model/businessObjectType.ts
 model/businessOrganisation.ts
