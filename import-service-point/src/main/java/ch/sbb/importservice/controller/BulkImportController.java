@@ -35,24 +35,25 @@ public class BulkImportController implements BulkImportApiV1 {
   private final BulkImportFileValidationService bulkImportFileValidationService;
 
   @Override
-  public void startServicePointImportBatch(BulkImportRequest bulkImportRequest) {
+  public void startServicePointImportBatch(ApplicationType application, BusinessObjectType objectType,
+                                           ImportType importType, BulkImportRequest bulkImportRequest, MultipartFile file) {
     log.info("Starting bulk import:");
-    log.info("Application={}, BusinessObject={}, ImportType={}", bulkImportRequest.getApplicationType(), bulkImportRequest.getObjectType(), bulkImportRequest.getImportType());
+    log.info("Application={}, BusinessObject={}, ImportType={}", application, objectType, importType);
     log.info("Uploaded file has size={}, uploadFileName={}, contentType={}",
-        FileUtils.byteCountToDisplaySize(bulkImportRequest.getFile().getSize()),
-        bulkImportRequest.getFile().getOriginalFilename(),
-        bulkImportRequest.getFile().getContentType());
+        FileUtils.byteCountToDisplaySize(file.getSize()),
+            file.getOriginalFilename(),
+            file.getContentType());
 
     BulkImport bulkImport = BulkImport.builder()
-        .application(bulkImportRequest.getApplicationType())
-        .objectType(bulkImportRequest.getObjectType())
-        .importType(bulkImportRequest.getImportType())
+        .application(application)
+        .objectType(objectType)
+        .importType(importType)
         .creator(UserService.getUserIdentifier())
         .inNameOf(bulkImportRequest.getInNameOf() != null ? bulkImportRequest.getInNameOf() : null)
         .emails(bulkImportRequest.getEmails() != null ? bulkImportRequest.getEmails() : Collections.emptyList())
         .build();
 
-    File csvFile = bulkImportFileValidationService.validateFileAndPrepareFile(bulkImportRequest.getFile(), bulkImport.getBulkImportConfig());
+    File csvFile = bulkImportFileValidationService.validateFileAndPrepareFile(file, bulkImport.getBulkImportConfig());
 
     bulkImportService.startBulkImport(bulkImport, csvFile);
   }
