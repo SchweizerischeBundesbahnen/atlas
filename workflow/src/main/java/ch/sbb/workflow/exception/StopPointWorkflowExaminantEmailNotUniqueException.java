@@ -16,7 +16,7 @@ public class StopPointWorkflowExaminantEmailNotUniqueException extends AtlasExce
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-        .status(HttpStatus.FORBIDDEN.value())
+        .status(HttpStatus.BAD_REQUEST.value())
         .message(UNIQUE_EMAIL_MESSAGE)
         .error("StopPoint Workflow error")
         .details(new TreeSet<>(getErrorDetails()))

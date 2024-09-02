@@ -549,7 +549,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
     )
-        .andExpect(status().isForbidden())
+        .andExpect(status().isBadRequest())
         .andExpect(result -> {
           assertThat(result.getResolvedException()).isInstanceOf(StopPointWorkflowExaminantEmailNotUniqueException.class);
           assertThat(result.getResolvedException().getMessage()).contains(StopPointWorkflowExaminantEmailNotUniqueException.UNIQUE_EMAIL_MESSAGE);

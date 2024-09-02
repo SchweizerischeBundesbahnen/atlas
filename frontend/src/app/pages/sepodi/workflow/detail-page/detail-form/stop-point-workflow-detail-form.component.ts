@@ -67,21 +67,27 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     }
 
     if (!this.currentWorkflow) {
-      this.stopPointWorkflowService.getExaminants(this.stopPoint.id!).subscribe((listOfExaminants: StopPointPerson[]) => {
-        const emptyExaminant: StopPointPerson = {
-          firstName: '',
-          lastName: '',
-          organisation: '',
-          mail: ''
-        };
-        listOfExaminants.push(emptyExaminant);
-        const examinantsFormArray = this.form.get('examinants') as FormArray;
-        examinantsFormArray.clear();
-        listOfExaminants.forEach(examinant => {
-          examinantsFormArray.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(examinant));
-        });
+      this.stopPointWorkflowService.getExaminants(this.stopPoint.id!).subscribe({
+        next: (listOfExaminants: StopPointPerson[]) => {
+          const emptyExaminant: StopPointPerson = {
+            firstName: '',
+            lastName: '',
+            organisation: '',
+            mail: ''
+          };
+          listOfExaminants.push(emptyExaminant);
+          const examinantsFormArray = this.form.get('examinants') as FormArray;
+          examinantsFormArray.clear();
+          listOfExaminants.forEach(examinant => {
+            examinantsFormArray.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(examinant));
+          });
 
-        this.disableFirstTwoExaminantsAndSetDeleteInvisible(examinantsFormArray);
+          this.disableFirstTwoExaminantsAndSetDeleteInvisible(examinantsFormArray);
+        },
+        error: (error) => {
+          console.error("Error occurred while fetching examinants:", error);
+          this.form.disable();
+        }
       });
     }
 
@@ -92,12 +98,8 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
 
   public disableFirstTwoExaminantsAndSetDeleteInvisible(examinantsFormArray: FormArray): void {
     this.isDeleteButtonInvisible = true;
-    if (examinantsFormArray.length > 0) {
-      examinantsFormArray.at(0).disable();
-      if (examinantsFormArray.length > 1) {
-        examinantsFormArray.at(1).disable();
-      }
-    }
+    examinantsFormArray.at(0)?.disable();
+    examinantsFormArray.at(1)?.disable();
   }
 
   addExaminant() {

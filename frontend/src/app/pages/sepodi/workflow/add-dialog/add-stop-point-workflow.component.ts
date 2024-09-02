@@ -48,8 +48,8 @@ export class AddStopPointWorkflowComponent implements OnInit {
         workflowComment: this.form.controls.workflowComment.value!,
         ccEmails: this.form.controls.ccEmails.value!,
         examinants: this.form.controls.examinants.getRawValue().map(examinant => {
-          if (examinant.firstName?.trim() === '') { examinant.firstName = null; }
-          if (examinant.lastName?.trim() === '') { examinant.lastName = null; }
+          if (!examinant.firstName) examinant.firstName = null;
+          if (!examinant.lastName) examinant.lastName = null;
           return examinant as StopPointPerson;
         })
       }
