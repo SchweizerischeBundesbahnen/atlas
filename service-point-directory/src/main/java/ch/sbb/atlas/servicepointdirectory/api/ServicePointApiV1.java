@@ -13,6 +13,7 @@ import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
@@ -88,10 +89,10 @@ public interface ServicePointApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
@@ -101,12 +102,16 @@ public interface ServicePointApiV1 {
       @RequestBody @Valid UpdateServicePointVersionModel servicePointVersionModel
   );
 
+  @ResponseStatus(HttpStatus.OK)
+  @PutMapping(path = "update-geo/{sloid}/{id}")
+  GeoUpdateItemResultModel updateServicePointGeoLocation(@PathVariable String sloid, @PathVariable Long id);
+
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
-          + ".ApplicationType).SEPODI)")
+      + ".ApplicationType).SEPODI)")
   @PutMapping(path = "/update-designation-official/{id}")
   ReadServicePointVersionModel updateDesingationOfficialServicePoint(
-          @PathVariable Long id,
-          @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
+      @PathVariable Long id,
+      @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
   );
 
   @PutMapping(path = "/status/{sloid}/{id}")
