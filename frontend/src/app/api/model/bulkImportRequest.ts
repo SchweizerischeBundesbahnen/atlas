@@ -23,5 +23,6 @@ export interface BulkImportRequest {
     importType: ImportType;
     inNameOf?: string;
     emails?: Array<string>;
+    file: Blob;
 }
 
