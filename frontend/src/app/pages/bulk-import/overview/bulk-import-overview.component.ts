@@ -2,13 +2,14 @@ import {Component, OnInit} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 import {BulkImportFormGroup, BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
 import {
-  ApplicationType, BulkImportRequest,
+  ApplicationType,
   BulkImportService,
   BusinessObjectType,
-  ImportType,
+  ImportType, User,
   UserAdministrationService
 } from "../../../api";
 import {PermissionService} from "../../../core/auth/permission/permission.service";
+import {catchError, EMPTY} from "rxjs";
 
 @Component({
   templateUrl: './bulk-import-overview.component.html'
@@ -49,16 +50,23 @@ export class BulkImportOverviewComponent implements OnInit{
 
 
   startBulkImport() {
-    const bulkImportRequest: BulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form, this.uploadedFiles[0]);
-    const formData = {
-      ...bulkImportRequest
-    };
-    console.log("form data ", formData)
+    const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
+
+    const controlsAlreadyDisabled = Object.keys(this.form.controls).filter(
+      (key) => this.form.get(key)?.disabled,
+    );
+    console.log("this.form ", this.form)
     this.bulkImportService.startServicePointImportBatch(
-      formData
-    ).subscribe(test  => {
-      console.log("test ", test)
-    });
+      this.form.controls.applicationType.value!,
+      this.form.controls.objectType.value!,
+      this.form.controls.importType.value!,
+      bulkImportRequest,
+      this.uploadedFiles[0]
+    )
+      .pipe(catchError(() => this.handleError(controlsAlreadyDisabled)))
+      .subscribe((bulkImport) => {
+        console.log("bulkImport ", bulkImport)
+      });
   }
 
   enableUserSelect(isEnabled: boolean) {
@@ -68,6 +76,15 @@ export class BulkImportOverviewComponent implements OnInit{
   back(){
 
   }
+
+  private readonly handleError = (excludedControls: string[]) => {
+    Object.keys(this.form.controls).forEach((key) => {
+      if (!excludedControls.includes(key)) {
+        this.form.get(key)?.enable({ emitEvent: false });
+      }
+    });
+    return EMPTY;
+  };
 
   //TODO: Get user
 }

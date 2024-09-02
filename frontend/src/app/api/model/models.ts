@@ -4,7 +4,6 @@ export * from './basicAttributeType';
 export * from './boardingDeviceAttributeType';
 export * from './booleanOptionalAttributeType';
 export * from './bulkImportPermissionRestrictionModel';
-export * from './bulkImportRequest';
 export * from './bulkImportUpdateContainerServicePointUpdateCsvModel';
 export * from './businessObjectType';
 export * from './businessOrganisation';
