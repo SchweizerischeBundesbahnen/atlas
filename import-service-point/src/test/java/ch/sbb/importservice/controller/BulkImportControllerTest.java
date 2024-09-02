@@ -1,10 +1,12 @@
 package ch.sbb.importservice.controller;
 
+import static ch.sbb.importservice.service.bulk.BulkImportFileValidationService.CSV_CONTENT_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -83,11 +85,11 @@ class BulkImportControllerTest extends BaseControllerApiTest {
 
     File file = ImportFiles.getFileByPath("import-files/valid/service-point-update.csv");
     mvc.perform(multipart("/v1/import/bulk/SEPODI/SERVICE_POINT/UPDATE")
-            .file(new MockMultipartFile("file", "service-point-update.csv", "text/csv", Files.readAllBytes(file.toPath()))))
+            .file(new MockMultipartFile("file", "service-point-update.csv", CSV_CONTENT_TYPE, Files.readAllBytes(file.toPath()))))
         .andExpect(status().isAccepted());
 
-    verify(amazonService, timeout(100)).putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), eq(todaysDirectory));
-    verify(servicePointBulkImportClient, timeout(1000).atLeastOnce()).bulkImportUpdate(any());
+    verify(amazonService, times(2)).putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), eq(todaysDirectory));
+    verify(servicePointBulkImportClient, atLeastOnce()).bulkImportUpdate(any());
 
     assertThat(bulkImportRepository.count()).isEqualTo(1);
     BulkImport bulkImport = bulkImportRepository.findAll().getFirst();

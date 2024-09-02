@@ -1,5 +1,6 @@
-package ch.sbb.importservice.service.bulk;
+package ch.sbb.importservice.controller;
 
+import static ch.sbb.importservice.service.bulk.BulkImportFileValidationService.CSV_CONTENT_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -44,15 +46,18 @@ import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.mock.web.MockMultipartFile;
 
 @Slf4j
 @IntegrationTest
-class BulkImportServiceLogFileTest {
+class BulkImportLogFileIntegrationTest {
 
   @Autowired
-  private BulkImportService bulkImportService;
+  private BulkImportController bulkImportController;
+
   @Autowired
   private BulkImportRepository bulkImportRepository;
+
   @Autowired
   private ObjectMapper objectMapper;
 
@@ -94,12 +99,10 @@ class BulkImportServiceLogFileTest {
     File file = ImportFiles.getFileByPath("import-files/valid/service-point-update-mix.csv");
 
     // When
-    bulkImportService.startBulkImport(BulkImport.builder()
-        .application(ApplicationType.SEPODI)
-        .objectType(BusinessObjectType.SERVICE_POINT)
-        .importType(ImportType.UPDATE)
-        .creator("e123456")
-        .build(), file);
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "service-point"
+        + "-update-mix.csv", CSV_CONTENT_TYPE, Files.readAllBytes(file.toPath()));
+    bulkImportController.startServicePointImportBatch(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.UPDATE,
+        multipartFile);
 
     // Then
     assertThat(bulkImportRepository.count()).isEqualTo(1);
