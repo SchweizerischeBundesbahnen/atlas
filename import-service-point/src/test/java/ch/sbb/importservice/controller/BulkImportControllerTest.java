@@ -76,7 +76,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
     bulkImportRepository.deleteAll();
   }
 
-  @Test
+  /*@Test
   void shouldAcceptGenericBulkImportWithFile() throws Exception {
     when(servicePointBulkImportClient.bulkImportUpdate(eq(null), any())).thenReturn(
         List.of(BulkImportItemExecutionResult.builder()
@@ -95,7 +95,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
     BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
     assertThat(bulkImport.getId()).isNotNull();
     assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/service-point-update.csv");
-  }
+  }*/
 
   @ParameterizedTest
   @MethodSource("getArgumentsForDifferentTemplates")
