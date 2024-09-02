@@ -16,17 +16,17 @@ public abstract class BaseApiWriter {
   protected ServicePointUpdateGeoLocationService sePoDiClientService;
 
   @Autowired
-  private ImportProcessedItemRepository importProcessedItemRepository;
+  protected ImportProcessedItemRepository importProcessedItemRepository;
 
   @BeforeStep
   public void getStepExecutionData(StepExecution stepExecution) {
     this.stepExecution = stepExecution;
   }
 
-  protected void saveItemProcessed(Long stepExecutionId, String itemNumber, ItemImportResponseStatus status, String message) {
+  protected void saveItemProcessed(String itemNumber, ItemImportResponseStatus status, String message) {
     ImportProcessItem importProcessItem = ImportProcessItem.builder()
         .itemNumber(itemNumber)
-        .stepExecutionId(stepExecutionId)
+        .stepExecutionId(stepExecution.getId())
         .jobExecutionName(stepExecution.getJobExecution().getJobInstance().getJobName())
         .responseStatus(status)
         .responseMessage(message)
