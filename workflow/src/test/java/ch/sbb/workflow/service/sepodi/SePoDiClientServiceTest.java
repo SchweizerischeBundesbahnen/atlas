@@ -1,6 +1,7 @@
 package ch.sbb.workflow.service.sepodi;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -199,10 +200,10 @@ class SePoDiClientServiceTest {
     // given
     AtlasException atlasException = new IdNotFoundException(stopPointWorkflow.getId());
     doThrow(atlasException).when(sePoDiClient).getServicePointById(stopPointWorkflow.getId());
-    // when
-    ReadServicePointVersionModel result = service.getServicePointById(stopPointWorkflow.getId());
-    // then
-    assertThat(result).isNull();
+    // when & then
+    assertThatThrownBy(() -> service.getServicePointById(stopPointWorkflow.getId()))
+        .isInstanceOf(IdNotFoundException.class)
+        .hasMessageContaining("Entity not found");
   }
 
 }
