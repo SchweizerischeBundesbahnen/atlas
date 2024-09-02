@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 
 @Tag(name = "Bulk Import")
 @RequestMapping("v1/import/bulk")
