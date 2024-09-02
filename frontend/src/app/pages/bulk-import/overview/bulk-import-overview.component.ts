@@ -5,7 +5,7 @@ import {
   ApplicationType,
   BulkImportService,
   BusinessObjectType,
-  ImportType, User,
+  ImportType,
   UserAdministrationService
 } from "../../../api";
 import {PermissionService} from "../../../core/auth/permission/permission.service";
