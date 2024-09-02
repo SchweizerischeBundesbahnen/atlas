@@ -8,3 +8,8 @@ CREATE TABLE bulk_import_log
 );
 
 CREATE SEQUENCE bulk_import_log_seq START WITH 1000 INCREMENT BY 1;
+
+ALTER TABLE bulk_import
+    alter column import_file_url type VARCHAR(500);
+ALTER TABLE bulk_import
+    alter column log_file_url type VARCHAR(500);
