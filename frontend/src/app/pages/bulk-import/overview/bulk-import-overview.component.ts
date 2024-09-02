@@ -5,7 +5,7 @@ import {
   ApplicationType, BulkImportRequest,
   BulkImportService,
   BusinessObjectType,
-  ImportType, InlineObject9,
+  ImportType,
   UserAdministrationService
 } from "../../../api";
 import {PermissionService} from "../../../core/auth/permission/permission.service";
@@ -49,12 +49,12 @@ export class BulkImportOverviewComponent implements OnInit{
 
 
   startBulkImport() {
-    const bulkImportRequest: BulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
-    const formData: InlineObject9 = {
-      ...bulkImportRequest,
-      file: this.uploadedFiles[0]
+    const bulkImportRequest: BulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form, this.uploadedFiles[0]);
+    const formData = {
+      ...bulkImportRequest
     };
-    this.bulkImportService.startServicePointImportBatch1(
+    console.log("form data ", formData)
+    this.bulkImportService.startServicePointImportBatch(
       formData
     ).subscribe(test  => {
       console.log("test ", test)
