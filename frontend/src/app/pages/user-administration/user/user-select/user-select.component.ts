@@ -16,7 +16,6 @@ export class UserSelectComponent {
   userSearchResults$: Observable<User[]> = of([]);
 
   searchUser(searchQuery: string): void {
-    console.log("string ", searchQuery)
     if (!searchQuery) {
       return;
     }
