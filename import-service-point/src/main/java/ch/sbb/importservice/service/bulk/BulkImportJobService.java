@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service.bulk;
 
+import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_ID_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
@@ -37,11 +38,11 @@ public class BulkImportJobService {
   public void startBulkImportJob(BulkImport bulkImport, File file) {
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
+        .addLong(BULK_IMPORT_ID_JOB_PARAMETER, bulkImport.getId())
         .addString(Fields.application, bulkImport.getApplication().toString())
         .addString(Fields.objectType, bulkImport.getObjectType().toString())
         .addString(Fields.importType, bulkImport.getImportType().toString())
         .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
-
     try {
       JobExecution execution = jobLauncher.run(bulkImportJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
