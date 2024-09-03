@@ -9,7 +9,7 @@ public class BulkImportErrors {
 
   public static BulkImportError sloidXorNumber() {
     return BulkImportError.builder()
-        .errorMessage("SlOID xor number must might be given")
+        .errorMessage("SlOID xor number must be given")
         .displayInfo(DisplayInfo.builder()
             .code("BULK_IMPORT.VALIDATION.SLOID_XOR_NUMBER")
             .build()).build();
