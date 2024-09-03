@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MailNotificationService {
+public class GeoLocationMailNotificationService {
 
   @Value("${mail.receiver.import-service-point}")
   private List<String> schedulingNotificationAddresses;
@@ -29,7 +29,7 @@ public class MailNotificationService {
     return MailNotification.builder()
         .to(schedulingNotificationAddresses)
         .subject("Job [" + jobName + "] execution failed")
-        .mailType(MailType.IMPORT_SERVICE_POINT_ERROR_NOTIFICATION)
+        .mailType(MailType.UPDATE_GEOLOCATION_ERROR_NOTIFICATION)
         .templateProperties(buildErrorMailContent(jobName, stepExecution))
         .build();
   }
@@ -39,7 +39,7 @@ public class MailNotificationService {
     return MailNotification.builder()
         .to(schedulingNotificationAddresses)
         .subject("Job [" + jobName + "] execution successfully")
-        .mailType(MailType.IMPORT_SERVICE_POINT_SUCCESS_NOTIFICATION)
+        .mailType(MailType.UPDATE_GEOLOCATION_SUCCESS_NOTIFICATION)
         .templateProperties(buildSuccessMailContent(jobName, importProcessItems, stepExecution))
         .build();
   }
@@ -49,7 +49,6 @@ public class MailNotificationService {
     String stepExecutionInformation = getStepExecutionInformation(stepExecution);
 
     List<ImportProcessItem> successImportedItems = filterByStatus(importProcessItems, ItemImportResponseStatus.SUCCESS);
-    List<ImportProcessItem> warningImportedItems = filterByStatus(importProcessItems, ItemImportResponseStatus.WARNING);
     List<ImportProcessItem> failedImportedItems = filterByStatus(importProcessItems, ItemImportResponseStatus.FAILED);
 
     List<Map<String, Object>> mailProperties = new ArrayList<>();
@@ -59,18 +58,9 @@ public class MailNotificationService {
     mailContentProperty.put("correlationId", getCurrentSpan(stepExecution));
     mailContentProperty.put("importProcessItemsSize", importProcessItems.size());
     mailContentProperty.put("successImportedItemsSize", successImportedItems.size());
-    mailContentProperty.put("warningImportedItemsSize", warningImportedItems.size());
     mailContentProperty.put("failedImportedItemsSize", failedImportedItems.size());
-
-    //    if (failedImportedItems.size() + warningImportedItems.size() + successImportedItems.size() > 20_000) {
-    //      mailContentProperty.put("failedImportedItems", new HashMap<>());
-    //      mailContentProperty.put("warningImportedItems", new HashMap<>());
-    //    } else {
     mailContentProperty.put("successImportedItems", getImportProcessItem(successImportedItems));
-    mailContentProperty.put("warningImportedItems", getImportProcessItem(warningImportedItems));
     mailContentProperty.put("failedImportedItems", getImportProcessItem(failedImportedItems));
-    //    }
-
     mailProperties.add(mailContentProperty);
     return mailProperties;
   }

@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInReviewException;
@@ -87,6 +88,11 @@ public class ServicePointService {
 
   public Optional<ServicePointVersion> findById(Long id) {
     return servicePointVersionRepository.findById(id);
+  }
+
+  public ServicePointVersion getServicePointVersionById(Long id) {
+    return findById(id)
+        .orElseThrow(() -> new IdNotFoundException(id));
   }
 
   public List<ServicePointVersion> revokeServicePoint(ServicePointNumber servicePointNumber) {
@@ -216,4 +222,17 @@ public class ServicePointService {
     return servicePointVersionRepository.findActualServicePointWithGeolocation();
   }
 
+  public List<ReadServicePointVersionModel> updateAndPublish(ServicePointVersion servicePointVersionToUpdate,
+      ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
+    update(servicePointVersionToUpdate, editedVersion, currentVersions);
+
+    List<ServicePointVersion> servicePoint = findAllByNumberOrderByValidFrom(
+        servicePointVersionToUpdate.getNumber());
+    servicePointDistributor.publishServicePointsWithNumbers(servicePointVersionToUpdate.getNumber());
+
+    return servicePoint
+        .stream()
+        .map(ServicePointVersionMapper::toModel)
+        .toList();
+  }
 }
