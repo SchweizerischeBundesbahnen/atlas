@@ -394,4 +394,5 @@ describe('ServicePointDetailComponent', () => {
 
     expect(addStopPointWorkflowDialogService.openDialog).toHaveBeenCalled();
   });
+
 });
