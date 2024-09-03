@@ -25,6 +25,7 @@ import ch.sbb.workflow.service.sepodi.StopPointWorkflowEndExpiredService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowOtpService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,11 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   private final DecisionService decisionService;
   private final StopPointWorkflowTransitionService workflowTransitionService;
   private final StopPointWorkflowEndExpiredService endExpiredWorkflowsService;
+
+  @Override
+  public List<StopPointClientPersonModel> getExaminants(Long servicePointVersionId) {
+    return service.getExaminantsByServicePointVersionId(servicePointVersionId);
+  }
 
   @Override
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {

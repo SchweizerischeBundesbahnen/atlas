@@ -73,6 +73,7 @@ class StopPointWorkflowServiceTest {
 
     assertThat(searchResult).isEmpty();
   }
+
   @Test
   void testEditWorkflow_Success() {
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()

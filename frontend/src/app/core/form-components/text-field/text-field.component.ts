@@ -1,7 +1,7 @@
-import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FieldExample } from './field-example';
-import { AtlasFieldCustomError } from '../atlas-field-error/atlas-field-custom-error';
+import {Component, ContentChild, Input, TemplateRef} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {FieldExample} from './field-example';
+import {AtlasFieldCustomError} from '../atlas-field-error/atlas-field-custom-error';
 
 @Component({
   selector: 'atlas-text-field',

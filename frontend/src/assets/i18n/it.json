@@ -248,7 +248,8 @@
     "DECIMAL_NUMBER": "Inserire un numero decimale con un massimo di {{maxDecimalDigits}} cifre decimali.",
     "INTEGER_WITH_FRACTION": "Inserire un numero decimale composto da un massimo di {{maxDecimalDigits}} cifre e con un massimo di {{maxFractionDigits}} cifre decimali.",
     "COLON_SEPERATED_SID4PT": "Utilizzare i caratteri SID4PT (-._0-9a-zA-Z) con esattamente {{numbersWithColons}} due punti.",
-    "DECISION_COMMENT_REQUIRED": "La giustificazione è necessaria"
+    "DECISION_COMMENT_REQUIRED": "La giustificazione è necessaria",
+    "NOTUNIQUEEMAIL": "L'e-mail esiste già. Verificare se il destinatario è già stato inserito o modificare l'indirizzo e-mail."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
@@ -617,6 +618,7 @@
       "PIN_CODE_INVALID": "Il codice PIN inserito non è corretto o non è più valido.",
       "WRONG_CHANGING_STATUS": "I dati visualizzati sono stati modificati nel frattempo. Ricarichi il browser (F5).",
       "WORKFLOW_STATUS_MUST_BE_ADDED": "Lo stato dell'audizione deve essere 'Inizializzato'.",
+      "EMAIL_MUST_BE_UNIQUE": "L'email deve essere univoca per tutti gli esaminatori.",
       "NOT_IN_HEARING": "L'audizione in corso non ha più lo stato \"In audizione\"."
     },
     "DECISION": {
@@ -1041,8 +1043,8 @@
         "ADDITIONAL_MAIL_RECIPIENTS_INFO": "È possibile aggiungere altri indirizzi e-mail. Saranno inoltre informati sullo svolgimento dell'udienza.",
         "COMMENT": "Motivo",
         "EXAMINANTS": "Ricevente",
-        "EXAMINANTS_INFO": "È necessario inserire almeno un comune. In alcuni casi, come nel caso di chiarimenti preliminari al di fuori dell'atlante, questa parte può rimanere vuota. Il cantone e il centro specializzato vengono aggiunti automaticamente.",
-        "EXAMINANTS_SUBTITLE": "Importante: le informazioni di contatto per l'udienza devono essere aggiunte qui (comune obbligatorio, altri destinatari se richiesti).\nI destinatari cantonali e le agenzie specializzate vengono aggiunti automaticamente dall'atlante.",
+        "EXAMINANTS_INFO": "È necessario inserire almeno un comune. In alcuni casi, come nel caso di chiarimenti preliminari al di fuori dell'atlas, questa parte può rimanere vuota. Il cantone e il centro specializzato vengono aggiunti automaticamente.",
+        "EXAMINANTS_SUBTITLE": "Importante: le informazioni di contatto degli enti, che partecipano all’audizione, devono essere aggiunte qui (ricordarsi di inserire sempre il Comune di ubicazione della fermata, altri destinatari solo se richiesti).\nL’impresa che apre l’audizione non partecipa all’audizione.",
         "OLD_DESIGNATION_OFFICIAL": "Vecchio nome ufficiale",
         "APPLICANT": "Richiedente",
         "STOP_POINT_INFO": "Informazioni di base sulla fermata",
