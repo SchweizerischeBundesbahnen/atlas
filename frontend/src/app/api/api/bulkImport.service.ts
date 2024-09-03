@@ -18,13 +18,13 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ApplicationType } from '../model/models';
-import { BulkImportRequest } from '../model/models';
 import { BusinessObjectType } from '../model/models';
 import { ErrorResponse } from '../model/models';
 import { ImportType } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
+import {BulkImportRequest} from "../model/bulkImportRequest";
 
 
 
