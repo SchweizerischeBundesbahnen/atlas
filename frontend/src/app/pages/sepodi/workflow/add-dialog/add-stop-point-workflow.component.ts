@@ -1,18 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {
-
-  StopPointAddWorkflow,
-  StopPointPerson,
-  StopPointWorkflowService,
-} from '../../../../api';
-import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog-data';
-import { FormGroup } from '@angular/forms';
-import { ValidationService } from '../../../../core/validation/validation.service';
-import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { Router } from '@angular/router';
-import { Pages } from '../../../pages';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {StopPointAddWorkflow, StopPointPerson, StopPointWorkflowService,} from '../../../../api';
+import {AddStopPointWorkflowDialogData} from './add-stop-point-workflow-dialog-data';
+import {FormGroup} from '@angular/forms';
+import {ValidationService} from '../../../../core/validation/validation.service';
+import {DetailHelperService} from '../../../../core/detail/detail-helper.service';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {Router} from '@angular/router';
+import {Pages} from '../../../pages';
 import {UserService} from "../../../../core/auth/user/user.service";
 import {
   StopPointWorkflowDetailFormGroup,
@@ -52,7 +47,11 @@ export class AddStopPointWorkflowComponent implements OnInit {
         sloid: this.data.stopPoint.sloid!,
         workflowComment: this.form.controls.workflowComment.value!,
         ccEmails: this.form.controls.ccEmails.value!,
-        examinants: this.form.controls.examinants.value.map(examinant => examinant as StopPointPerson)
+        examinants: this.form.controls.examinants.getRawValue().map(examinant => {
+          if (!examinant.firstName) examinant.firstName = null;
+          if (!examinant.lastName) examinant.lastName = null;
+          return examinant as StopPointPerson;
+        })
       }
       this.form.disable();
       this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe((createdWorkflow) => {

@@ -248,7 +248,8 @@
     "DECIMAL_NUMBER": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Nachkommastellen ein.",
     "INTEGER_WITH_FRACTION": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Ziffern und mit maximal {{maxFractionDigits}} Nachkommastellen ein.",
     "COLON_SEPERATED_SID4PT": "Verwenden Sie den SID4PT Zeichensatz (-._0-9a-zA-Z) mit genau {{numbersWithColons}} trennenden Doppelpunkten.",
-    "DECISION_COMMENT_REQUIRED": "Begründung ist notwendig"
+    "DECISION_COMMENT_REQUIRED": "Begründung ist notwendig",
+    "NOTUNIQUEEMAIL": "E-Mail bereits vorhanden. Bitte prüfen Sie ob der Empfänger bereits erfasst ist oder ändern Sie die E-Mail Adresse."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
@@ -617,6 +618,7 @@
       "PIN_CODE_INVALID": "Der eingetragene PIN-Code ist nicht korrekt oder nicht mehr gültig.",
       "WRONG_CHANGING_STATUS": "Die angezeigten Daten wurden inzwischen bearbeitet. Bitte laden Sie ihren Browser neu (F5).",
       "WORKFLOW_STATUS_MUST_BE_ADDED": "Workflow Status muss 'Erfasst' sein.",
+      "EMAIL_MUST_BE_UNIQUE": "Die E-Mail-Adresse muss unter allen Prüfern eindeutig sein.",
       "NOT_IN_HEARING": "Die aktuelle Anhörung ist nicht mehr im Status 'In Anhörung'"
     },
     "DECISION": {
@@ -1042,7 +1044,7 @@
         "COMMENT": "Begründung",
         "EXAMINANTS": "Empfänger",
         "EXAMINANTS_INFO": "Es ist mindestens eine Gemeinde einzutragen. In bestimmten Fällen, wie bei vorheriger Abklärung ausserhalb von atlas kann dieser Part leer bleiben. Kanton und Fachstelle werden automatisch hinzugefügt.",
-        "EXAMINANTS_SUBTITLE": "Wichtig: Hier müssen die Kontaktinformationen für die Anhörung ergänzt werden (Gemeinde zwingend, weitere Empfänger bei Bedarf).\nDie Kantonsempfänger und Fachstellen werden durch atlas automatisch ergänzt.",
+        "EXAMINANTS_SUBTITLE": "Wichtig: Hier müssen die Kontaktinformationen für die Anhörung ergänzt werden (Gemeinde zwingend, weitere Empfänger bei Bedarf).\nDas Antragstellende Transportunternehmen nimmt nicht an der Anhörung teil.",
         "OLD_DESIGNATION_OFFICIAL": "Alte offizielle Bezeichnung",
         "APPLICANT": "Antragsteller",
         "STOP_POINT_INFO": "Basisinformationen zur Haltestelle",
