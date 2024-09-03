@@ -38,6 +38,7 @@ export class BulkImportOverviewComponent implements OnInit{
     this.userAdministrationService.getCurrentUser().subscribe((user) => {
       this.userName = this.removeDepartment(user.displayName);
     });
+    console.log("test")
   }
 
   removeDepartment(username?: string) {
@@ -50,13 +51,14 @@ export class BulkImportOverviewComponent implements OnInit{
 
 
   startBulkImport() {
+    //TODO: Is user admin?
     const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
 
     const controlsAlreadyDisabled = Object.keys(this.form.controls).filter(
       (key) => this.form.get(key)?.disabled,
     );
     console.log("this.form ", this.form)
-    this.bulkImportService.startServicePointImportBatch(
+    /*this.bulkImportService.startServicePointImportBatch(
       this.form.controls.applicationType.value!,
       this.form.controls.objectType.value!,
       this.form.controls.importType.value!,
@@ -66,7 +68,7 @@ export class BulkImportOverviewComponent implements OnInit{
       .pipe(catchError(() => this.handleError(controlsAlreadyDisabled)))
       .subscribe((bulkImport) => {
         console.log("bulkImport ", bulkImport)
-      });
+      });*/
   }
 
   enableUserSelect(isEnabled: boolean) {
@@ -85,6 +87,4 @@ export class BulkImportOverviewComponent implements OnInit{
     });
     return EMPTY;
   };
-
-  //TODO: Get user
 }
