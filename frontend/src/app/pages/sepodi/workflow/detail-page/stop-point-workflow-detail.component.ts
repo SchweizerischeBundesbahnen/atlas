@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   ApplicationType,
   EditStopPointWorkflow,
@@ -9,19 +9,21 @@ import {
   StopPointWorkflowService,
   WorkflowStatus,
 } from '../../../../api';
-import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
-import { environment } from '../../../../../environments/environment';
-import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, catchError, EMPTY, Observable, of, take } from 'rxjs';
+import {FormGroup} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {StopPointWorkflowDetailData} from './stop-point-workflow-detail-resolver.service';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {
+  StopPointRejectWorkflowDialogService
+} from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
+import {environment} from '../../../../../environments/environment';
+import {MatDialog} from '@angular/material/dialog';
+import {BehaviorSubject, catchError, EMPTY, Observable, of, take} from 'rxjs';
 import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
 } from './detail-form/stop-point-workflow-detail-form-group';
-import { DecisionStepperComponent } from './decision/decision-stepper/decision-stepper.component';
+import {DecisionStepperComponent} from './decision/decision-stepper/decision-stepper.component';
 import {DialogService} from "../../../../core/components/dialog/dialog.service";
 import {ValidationService} from "../../../../core/validation/validation.service";
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
@@ -140,6 +142,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       this.showConfirmationDialog();
     } else {
       this.enableForm();
+      ValidationService.validateForm(this.form);
     }
   }
 

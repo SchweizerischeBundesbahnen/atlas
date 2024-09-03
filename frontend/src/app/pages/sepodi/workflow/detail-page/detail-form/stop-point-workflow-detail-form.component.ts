@@ -1,12 +1,20 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
+import {ControlContainer, FormArray, FormGroup, NgForm} from '@angular/forms';
 import {
   SPECIAL_DECISION_TYPES,
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
 } from './stop-point-workflow-detail-form-group';
 import {Router} from '@angular/router';
-import {Country, ReadServicePointVersion, ReadStopPointWorkflow, Status, StopPointPerson, WorkflowStatus} from 'src/app/api';
+import {
+  Country,
+  ReadServicePointVersion,
+  ReadStopPointWorkflow,
+  Status,
+  StopPointPerson,
+  StopPointWorkflowService,
+  WorkflowStatus
+} from 'src/app/api';
 import {AtlasCharsetsValidator} from 'src/app/core/validation/charsets/atlas-charsets-validator';
 import {AtlasFieldLengthValidator} from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
 import {DecisionDetailDialogService} from '../decision/decision-detail/decision-detail-dialog.service';
@@ -28,12 +36,14 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   @Input() oldDesignation?: string;
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
   @Input() currentWorkflow?: ReadStopPointWorkflow;
+  isDeleteButtonInvisible: boolean = false;
 
   specialDecision?: StopPointPerson;
 
   constructor(
     private router: Router,
     private decisionDetailDialogService: DecisionDetailDialogService,
+    private stopPointWorkflowService: StopPointWorkflowService
   ) {
   }
 
@@ -47,17 +57,49 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
         designationOfficial: this.currentWorkflow.designationOfficial!,
         country: Country.Switzerland,
         status: Status.InReview,
-        number:{
+        number: {
           number: SloidHelper.servicePointSloidToNumber(this.currentWorkflow.sloid),
           checkDigit: 1,
           numberShort: 1,
           uicCountryCode: 85
-        },
+        }
       }
     }
+
+    if (!this.currentWorkflow) {
+      this.stopPointWorkflowService.getExaminants(this.stopPoint.id!).subscribe({
+        next: (listOfExaminants: StopPointPerson[]) => {
+          const emptyExaminant: StopPointPerson = {
+            firstName: '',
+            lastName: '',
+            organisation: '',
+            mail: ''
+          };
+          listOfExaminants.push(emptyExaminant);
+          const examinantsFormArray = this.form.get('examinants') as FormArray;
+          examinantsFormArray.clear();
+          listOfExaminants.forEach(examinant => {
+            examinantsFormArray.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(examinant));
+          });
+
+          this.disableFirstTwoExaminantsAndSetDeleteInvisible(examinantsFormArray);
+        },
+        error: (error) => {
+          console.error("Error occurred while fetching examinants:", error);
+          this.form.disable();
+        }
+      });
+    }
+
     if(this.currentWorkflow){
       this.specialDecision = this.currentWorkflow!.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
     }
+  }
+
+  public disableFirstTwoExaminantsAndSetDeleteInvisible(examinantsFormArray: FormArray): void {
+    this.isDeleteButtonInvisible = true;
+    examinantsFormArray.at(0)?.disable();
+    examinantsFormArray.at(1)?.disable();
   }
 
   addExaminant() {
@@ -107,4 +149,5 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   openStatusDecision() {
     this.decisionDetailDialogService.openDialog(this.currentWorkflow!.id!, this.currentWorkflow!.status!, StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(this.specialDecision));
   }
+
 }

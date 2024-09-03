@@ -31,6 +31,15 @@ public class SePoDiClientService {
     return updateServicePointVersionModel;
   }
 
+  public ReadServicePointVersionModel getServicePointById(Long id) {
+    try {
+      return sePoDiClient.getServicePointById(id);
+    } catch (AtlasException e) {
+      log.error("!!!! Something went wrong when calling SePoDi API: \n{}", e.getErrorResponse(), e);
+      throw e;
+    }
+  }
+
   public ReadServicePointVersionModel updateStopPointStatusToDraft(StopPointWorkflow stopPointWorkflow) {
     ReadServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsStatusUpdate(
         stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId(), Status.DRAFT);
