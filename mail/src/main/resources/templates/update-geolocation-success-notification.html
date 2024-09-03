@@ -139,10 +139,10 @@
             </thead>
             <tbody>
             <tr th:each="item : ${properties.get(0).get('successImportedItems')}">
-                <td th:text='${item.processedItem}'></td>
-                <td th:text='${item.processedItemId}'></td>
-                <td th:text='${item.processedItemStatus}'></td>
-                <td th:text='${item.processedItemMessage}'></td>
+                <td th:utext='${item.processedItem}'></td>
+                <td th:utext='${item.processedItemId}'></td>
+                <td th:utext='${item.processedItemStatus}'></td>
+                <td th:utext='${item.processedItemMessage}'></td>
             </tr>
             </tbody>
         </table>
@@ -161,10 +161,10 @@
             </thead>
             <tbody>
             <tr th:each="item : ${properties.get(0).get('failedImportedItems')}">
-                <td th:text='${item.processedItem}'></td>
-                <td th:text='${item.processedItemId}'></td>
-                <td th:text='${item.processedItemStatus}'></td>
-                <td th:text='${item.processedItemMessage}'></td>
+                <td th:utext='${item.processedItem}'></td>
+                <td th:utext='${item.processedItemId}'></td>
+                <td th:utext='${item.processedItemStatus}'></td>
+                <td th:utext='${item.processedItemMessage}'></td>
             </tr>
             </tbody>
         </table>
