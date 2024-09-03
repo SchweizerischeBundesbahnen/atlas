@@ -31,6 +31,7 @@ import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Otp;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
 import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
@@ -87,9 +88,26 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetExaminants() throws Exception {
+    StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+    controller.addStopPointWorkflow(workflowModel);
+
+    ReadServicePointVersionModel servicePointVersionModel = getUpdateServicePointVersionModel(Status.IN_REVIEW);
+
+    when(sePoDiClientService.getServicePointById(servicePointVersionModel.getId()))
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+
+    mvc.perform(get("/v1/stop-point/workflows/123456/examinants"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(2)));
+  }
+
+  @Test
   void shouldGetWorkflows() throws Exception {
 
-    StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+    StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflowWithMultipleExaminants();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
@@ -104,7 +122,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldFilterWorkflowsByNoDecision() throws Exception {
-    StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+    StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflowWithMultipleExaminants();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
@@ -496,6 +514,47 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
     ).andExpect(status().isCreated());
+  }
+
+  @Test
+  void shouldThrowErrorWhenAddingWorkflowWithExaminantsWithTheSameEmailAddress() throws Exception {
+    //when
+    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .organisation("BAV")
+        .mail(MAIL_ADDRESS).build();
+    StopPointClientPersonModel person1 = StopPointClientPersonModel.builder()
+        .firstName("Marek1")
+        .lastName("Hamsik1")
+        .personFunction("Centrocampista1")
+        .organisation("BAV1")
+        .mail(MAIL_ADDRESS).build();
+    long versionId = 123456L;
+    String sloid = "ch:1:sloid:1234";
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+        .sloid(sloid)
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .examinants(List.of(person, person1))
+        .applicantMail("a@b.ch")
+        .versionId(versionId)
+        .build();
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(workflowModel))
+    )
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> {
+          assertThat(result.getResolvedException()).isInstanceOf(StopPointWorkflowExaminantEmailNotUniqueException.class);
+          assertThat(result.getResolvedException().getMessage()).contains(StopPointWorkflowExaminantEmailNotUniqueException.UNIQUE_EMAIL_MESSAGE);
+        });
+
   }
 
   @Test
