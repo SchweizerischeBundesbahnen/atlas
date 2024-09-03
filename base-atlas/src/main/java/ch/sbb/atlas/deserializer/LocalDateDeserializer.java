@@ -19,7 +19,9 @@ public class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
       try {
         return LocalDate.parse(jsonParser.getText(), DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH));
       } catch (DateTimeParseException e2) {
-        throw new IllegalArgumentException(jsonParser.getText(), e2);
+        return (LocalDate) ctx.handleWeirdStringValue(LocalDate.class, jsonParser.getText(),
+            "Expected Date in format " + AtlasApiConstants.DATE_FORMAT_PATTERN + " or "
+                + AtlasApiConstants.DATE_FORMAT_PATTERN_CH);
       }
     }
   }
