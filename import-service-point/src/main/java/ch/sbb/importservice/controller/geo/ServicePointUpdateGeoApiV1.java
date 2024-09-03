@@ -1,4 +1,4 @@
-package ch.sbb.importservice.controller;
+package ch.sbb.importservice.controller.geo;
 
 import ch.sbb.atlas.configuration.Role;
 import io.swagger.v3.oas.annotations.tags.Tag;

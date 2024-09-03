@@ -20,7 +20,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "UpdateGeoServicePointVersionResult")
-public class UpdateGeoServicePointVersionResultModel{
+public class UpdateGeoServicePointVersionResultModel {
 
   private Long id;
 
@@ -34,23 +34,9 @@ public class UpdateGeoServicePointVersionResultModel{
 
   private List<VersionDataRage> updatedVersionsDataRange;
 
-  public boolean isHasNumberOfVersionsChanged(){
-    if (currentVersionsDataRange != null && updatedVersionsDataRange != null){
-      return currentVersionsDataRange.size() != updatedVersionsDataRange.size();
-    }
-    return false;
-  }
-
-  public boolean isHasMergedVersions(){
-    if (currentVersionsDataRange != null && updatedVersionsDataRange != null){
+  public boolean isHasMergedVersions() {
+    if (currentVersionsDataRange != null && updatedVersionsDataRange != null) {
       return updatedVersionsDataRange.size() < currentVersionsDataRange.size();
-    }
-    return false;
-  }
-
-  public boolean isHasAdditionalVersionsGenerated(){
-    if (currentVersionsDataRange != null && updatedVersionsDataRange != null){
-      return updatedVersionsDataRange.size() > currentVersionsDataRange.size();
     }
     return false;
   }
@@ -61,23 +47,18 @@ public class UpdateGeoServicePointVersionResultModel{
   @EqualsAndHashCode
   @SuperBuilder
   public static class VersionDataRage {
+
     private LocalDate validFrom;
     private LocalDate validTo;
   }
 
   public String getResponseMessage() {
     String msg = "";
-    if (!isHasNumberOfVersionsChanged()) {
-      msg += "No versioning changes happened! ";
+    if (!isHasMergedVersions()) {
+      msg += "No versioning changes happened!<br> ";
     } else {
-      if (isHasAdditionalVersionsGenerated()) {
-        msg += String.format("Generated additional versions: \nbefore %s \nafter %s", this.getCurrentVersionsDataRange(),
-            this.getUpdatedVersionsDataRange());
-      }
-      if (this.isHasMergedVersions()) {
-        msg += String.format("Generated additional versions: \nbefore %s \nafter %s", this.getCurrentVersionsDataRange(),
-            this.getUpdatedVersionsDataRange());
-      }
+      msg += String.format("Merged versions: <br>before %s <br>after %s", this.getCurrentVersionsDataRange(),
+          this.getUpdatedVersionsDataRange());
     }
     msg += getDiffServicePointGeolocationAsMessage(this.getCurrentServicePointGeolocation(),
         this.getUpdatedServicePointGeolocation());
