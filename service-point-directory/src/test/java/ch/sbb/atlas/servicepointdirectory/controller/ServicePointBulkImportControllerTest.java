@@ -1,9 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
+import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.model.exception.AtlasException;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointBulkImportService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,24 +24,50 @@ class ServicePointBulkImportControllerTest {
   @Mock
   private ServicePointBulkImportService servicePointBulkImportService;
 
+  @Mock
+  private AtlasExceptionHandler atlasExceptionHandler;
+
   private ServicePointBulkImportController servicePointBulkImportController;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.initMocks(this);
-    servicePointBulkImportController = new ServicePointBulkImportController(servicePointBulkImportService);
+    when(atlasExceptionHandler.mapToErrorResponse(any())).thenAnswer(
+        i -> i.getArgument(0, AtlasException.class).getErrorResponse());
+    servicePointBulkImportController = new ServicePointBulkImportController(servicePointBulkImportService, atlasExceptionHandler);
   }
 
   @Test
   void shouldBulkUpdateViaService() {
     BulkImportUpdateContainer<ServicePointUpdateCsvModel> updateContainer =
         BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
-        .object(ServicePointUpdateCsvModel.builder()
-            .sloid("ch:1:sloid:7000")
-            .build())
-        .build();
-    servicePointBulkImportController.bulkImportUpdate(List.of(updateContainer));
+            .object(ServicePointUpdateCsvModel.builder()
+                .sloid("ch:1:sloid:7000")
+                .build())
+            .build();
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(
+        List.of(updateContainer));
 
     verify(servicePointBulkImportService).updateServicePoint(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first().extracting(BulkImportItemExecutionResult::isSuccess)
+        .isEqualTo(true);
+  }
+
+  @Test
+  void shouldReturnExecutionResultWithErrorResponse() {
+    doThrow(new SloidNotFoundException("ch:1:sloid:7000")).when(servicePointBulkImportService).updateServicePoint(any());
+
+    BulkImportUpdateContainer<ServicePointUpdateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
+            .object(ServicePointUpdateCsvModel.builder()
+                .sloid("ch:1:sloid:7000")
+                .build())
+            .build();
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(
+        List.of(updateContainer));
+
+    verify(servicePointBulkImportService).updateServicePoint(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first().extracting(BulkImportItemExecutionResult::isSuccess)
+        .isEqualTo(false);
   }
 }

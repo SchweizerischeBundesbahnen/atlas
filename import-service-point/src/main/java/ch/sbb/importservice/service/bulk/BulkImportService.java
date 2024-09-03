@@ -4,7 +4,6 @@ import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.repository.BulkImportRepository;
-import jakarta.transaction.Transactional;
 import java.io.File;
 import java.net.URL;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
 public class BulkImportService {
 
@@ -32,9 +30,8 @@ public class BulkImportService {
     String s3ObjectKey = uploadImportFile(file, bulkImport);
     bulkImport.setImportFileUrl(s3ObjectKey);
 
-    saveBulkImportMetaData(bulkImport);
-
-    bulkImportJobService.startBulkImportJob(bulkImport, file);
+    BulkImport bulkImportData = saveBulkImportMetaData(bulkImport);
+    bulkImportJobService.startBulkImportJob(bulkImportData, file);
   }
 
   public File downloadTemplate(BusinessObjectType objectType, ImportType importType) {
@@ -48,8 +45,8 @@ public class BulkImportService {
     return uploadedImportFileUrl.getPath().substring(1);
   }
 
-  private void saveBulkImportMetaData(BulkImport bulkImport) {
-    bulkImportRepository.saveAndFlush(bulkImport);
+  private BulkImport saveBulkImportMetaData(BulkImport bulkImport) {
+    return bulkImportRepository.saveAndFlush(bulkImport);
   }
 
 }

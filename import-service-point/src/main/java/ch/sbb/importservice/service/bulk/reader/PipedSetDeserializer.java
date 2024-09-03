@@ -19,7 +19,17 @@ public class PipedSetDeserializer<T extends Enum<T>> extends JsonDeserializer<Se
 
   @Override
   public Set<T> deserialize(JsonParser jsonParser, DeserializationContext ctx) throws IOException {
-    return Arrays.stream(jsonParser.getText().split(PIPE_SEPARATOR)).map(i -> T.valueOf(type, i)).collect(Collectors.toSet());
+    return Arrays.stream(jsonParser.getText().split(PIPE_SEPARATOR)).map(i -> {
+      try {
+        return T.valueOf(type, i);
+      } catch (IllegalArgumentException exception) {
+        try {
+          return (T) ctx.handleWeirdStringValue(type, i, i + " is not a valid" + type.getName());
+        } catch (IOException e) {
+          throw new IllegalStateException(e);
+        }
+      }
+    }).collect(Collectors.toSet());
   }
 
   @Override
