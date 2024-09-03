@@ -213,6 +213,7 @@
                 (buttonClicked)="removeExaminant(i)"
                 [disabled]="form.disabled"
                 buttonType="icon"
+                [ngStyle]="{ visibility: (i < 2 && this.isDeleteButtonInvisible) ? 'hidden' : 'visible' }"
               >
                 <ng-template #rightIcon>
                   <i class="bi bi-trash"></i>

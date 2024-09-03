@@ -248,7 +248,8 @@
     "DECIMAL_NUMBER": "Saisissez un nombre décimal avec un maximum de {{maxDecimalDigits}} chiffres après la virgule.",
     "INTEGER_WITH_FRACTION": "Entrez un nombre décimal comprenant jusqu'à {{maxDecimalDigits}} chiffres et jusqu'à {{maxFractionDigits}} décimales.",
     "COLON_SEPERATED_SID4PT": "Utilisez le jeu de caractères SID4PT (-._0-9a-zA-Z) avec des deux-points séparant exactement {{numbersWithColons}}.",
-    "DECISION_COMMENT_REQUIRED": "La justification est nécessaire"
+    "DECISION_COMMENT_REQUIRED": "La justification est nécessaire",
+    "NOTUNIQUEEMAIL": "E-mail déjà existant. Veuillez vérifier si le destinataire est déjà saisi ou modifier l'adresse e-mail."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
@@ -617,6 +618,7 @@
       "PIN_CODE_INVALID": "Le code PIN saisi est incorrect ou n'est plus valable.",
       "WRONG_CHANGING_STATUS": "Les données affichées ont été traitées entre-temps. Veuillez recharger votre browser (F5).",
       "WORKFLOW_STATUS_MUST_BE_ADDED": "Le statut de l'audition doit être 'Saisi'.",
+      "EMAIL_MUST_BE_UNIQUE": "L'e-mail doit être unique parmi les examinateurs.",
       "NOT_IN_HEARING": "L'audition en cours n'a plus le statut 'En audition'."
     },
     "DECISION": {
@@ -1042,7 +1044,7 @@
         "COMMENT": "Justification",
         "EXAMINANTS": "Destinataires",
         "EXAMINANTS_INFO": "Au moins une commune doit être inscrite. Dans certains cas, comme lors d'une clarification préalable en dehors d'atlas, cette partie peut rester vide. Le canton et le service spécialisé sont automatiquement ajoutés.",
-        "EXAMINANTS_SUBTITLE": "Important : les informations de contact pour l'audition doivent être complétées ici (commune obligatoire, autres destinataires si nécessaire).\nLes destinataires cantonaux et les services spécialisés sont automatiquement complétés par atlas.",
+        "EXAMINANTS_SUBTITLE": "Important : les informations de contact pour l'audition doivent être complétées ici (commune obligatoire, autres destinataires si nécessaire).\nL'entreprise de transport requérante ne participe pas à l'audition.",
         "OLD_DESIGNATION_OFFICIAL": "Ancienne dénomination officielle",
         "APPLICANT": "Commanditaire",
         "STOP_POINT_INFO": "Informations de base sur l'arrêt",
