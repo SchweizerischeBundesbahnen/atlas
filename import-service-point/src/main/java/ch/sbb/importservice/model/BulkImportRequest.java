@@ -1,16 +1,13 @@
-package ch.sbb.importservice.entity;
+package ch.sbb.importservice.model;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.importservice.model.ImportType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,7 +20,7 @@ import java.util.List;
 public class BulkImportRequest {
 
     @NotNull
-    private ApplicationType applicationType;
+    private ApplicationType application;
 
     @NotNull
     private BusinessObjectType objectType;
@@ -35,6 +32,4 @@ public class BulkImportRequest {
 
     private List<String> emails;
 
-    @NotNull
-    private MultipartFile file;
 }
