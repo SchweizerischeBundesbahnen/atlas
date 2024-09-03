@@ -2,20 +2,23 @@ package ch.sbb.importservice.config;
 
 import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_JOB_NAME;
 
-import ch.sbb.atlas.imports.bulk.BulkImportContainer;
+import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.importservice.listener.JobCompletionListener;
+import ch.sbb.importservice.listener.BulkImportDataExecutionToLogFileListener;
+import ch.sbb.importservice.listener.BulkImportDataValidationToLogFileListener;
+import ch.sbb.importservice.listener.BulkImportJobCompletionListener;
 import ch.sbb.importservice.listener.StepTracerListener;
 import ch.sbb.importservice.model.BulkImportConfig;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.reader.ThreadSafeListItemReader;
 import ch.sbb.importservice.service.bulk.reader.BulkImportReaders;
-import ch.sbb.importservice.utils.StepUtils;
 import ch.sbb.importservice.service.bulk.writer.BulkImportWriters;
+import ch.sbb.importservice.utils.StepUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
@@ -45,15 +48,17 @@ public class BulkImportBatchJobConfig {
 
   private final JobRepository jobRepository;
   private final PlatformTransactionManager transactionManager;
-  private final JobCompletionListener jobCompletionListener;
+  private final BulkImportJobCompletionListener bulkImportJobCompletionListener;
   private final StepTracerListener stepTracerListener;
   private final BulkImportWriters bulkImportWriters;
   private final BulkImportReaders bulkImportReaders;
+  private final BulkImportDataValidationToLogFileListener bulkImportDataValidationToLogFileListener;
+  private final BulkImportDataExecutionToLogFileListener bulkImportDataExecutionToLogFileListener;
 
   @Bean
-  public Job bulkImportJob(ThreadSafeListItemReader<BulkImportContainer> itemReader, ItemWriter<BulkImportContainer> itemWriter) {
+  public Job bulkImportJob(ThreadSafeListItemReader<BulkImportUpdateContainer<?>> itemReader, ItemWriter<BulkImportUpdateContainer<?>> itemWriter) {
     return new JobBuilder(BULK_IMPORT_JOB_NAME, jobRepository)
-        .listener(jobCompletionListener)
+        .listener(bulkImportJobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(bulkImportFromCsv(itemReader, itemWriter))
         .end()
@@ -61,13 +66,15 @@ public class BulkImportBatchJobConfig {
   }
 
   @Bean
-  public Step bulkImportFromCsv(ThreadSafeListItemReader<BulkImportContainer> itemReader,
-      ItemWriter<BulkImportContainer> itemWriter) {
+  public Step bulkImportFromCsv(ThreadSafeListItemReader<BulkImportUpdateContainer<?>> itemReader,
+      ItemWriter<BulkImportUpdateContainer<?>> itemWriter) {
     String stepName = "bulkImportFromCsv";
     return new StepBuilder(stepName, jobRepository)
-        .<BulkImportContainer, BulkImportContainer>chunk(CHUNK_SIZE, transactionManager)
+        .<BulkImportUpdateContainer<?>, BulkImportUpdateContainer<?>>chunk(CHUNK_SIZE, transactionManager)
         .reader(itemReader)
+        .listener(bulkImportDataValidationToLogFileListener)
         .writer(itemWriter)
+        .listener(bulkImportDataExecutionToLogFileListener)
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
@@ -78,7 +85,7 @@ public class BulkImportBatchJobConfig {
 
   @StepScope
   @Bean
-  public ThreadSafeListItemReader<BulkImportContainer> itemReader(
+  public ThreadSafeListItemReader<BulkImportUpdateContainer<?>> itemReader(
       @Value("#{jobParameters[fullPathFileName]}") String pathToFile,
       @Value("#{jobParameters[application]}") String application,
       @Value("#{jobParameters[objectType]}") String objectType,
@@ -90,23 +97,16 @@ public class BulkImportBatchJobConfig {
         .objectType(BusinessObjectType.valueOf(objectType))
         .importType(ImportType.valueOf(importType))
         .build();
-    Function<File, List<BulkImportContainer>> readerFunction = bulkImportReaders.getReaderFunction(config);
+    Function<File, List<BulkImportUpdateContainer<?>>> readerFunction = bulkImportReaders.getReaderFunction(config);
 
-    List<BulkImportContainer> items = new ArrayList<>();
-    if (pathToFile != null) {
-      File file = new File(pathToFile);
-      items.addAll(readerFunction.apply(file));
-    }
-
-    // Should we download the file here instead of passing it via job param?
-
-    log.info("Bulk import configured with chunkSize: {}", CHUNK_SIZE);
+    File file = new File(Objects.requireNonNull(pathToFile));
+    List<BulkImportUpdateContainer<?>> items = new ArrayList<>(readerFunction.apply(file));
     return new ThreadSafeListItemReader<>(items);
   }
 
   @StepScope
   @Bean
-  public ItemWriter<BulkImportContainer> itemWriter(
+  public ItemWriter<BulkImportUpdateContainer<?>> itemWriter(
       @Value("#{jobParameters[application]}") String application,
       @Value("#{jobParameters[objectType]}") String objectType,
       @Value("#{jobParameters[importType]}") String importType

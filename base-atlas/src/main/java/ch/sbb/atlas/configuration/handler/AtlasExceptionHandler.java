@@ -305,4 +305,20 @@ public class AtlasExceptionHandler {
             .message(exception.getMessage())
             .build());
   }
+
+  public ErrorResponse mapToErrorResponse(Exception exception) {
+    if (exception instanceof AtlasException atlasException) {
+      return atlasException(atlasException).getBody();
+    }
+    if (exception instanceof VersioningNoChangesException versioningNoChangesException) {
+      return versioningNoChangesException(versioningNoChangesException).getBody();
+    }
+    if (exception instanceof MethodArgumentNotValidException methodArgumentNotValidException) {
+      return methodArgumentNotValidException(methodArgumentNotValidException).getBody();
+    }
+    if (exception instanceof ConstraintViolationException constraintViolationException) {
+      return handleConstraintViolationException(constraintViolationException).getBody();
+    }
+    return handleException(exception).getBody();
+  }
 }

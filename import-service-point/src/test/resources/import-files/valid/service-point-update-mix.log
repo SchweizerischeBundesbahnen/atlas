@@ -1,0 +1,354 @@
+{
+  "logEntries": [
+    {
+      "lineNumber": 1,
+      "status": "SUCCESS",
+      "errors": []
+    },
+    {
+      "lineNumber": 2,
+      "status": "DATA_VALIDATION_ERROR",
+      "errors": [
+        {
+          "errorMessage": "SlOID xor number must be given",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.SLOID_XOR_NUMBER",
+            "parameters": []
+          }
+        },
+        {
+          "errorMessage": "Invalid Service Point Number",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.INVALID_SERVICE_POINT_NUMBER",
+            "parameters": []
+          }
+        },
+        {
+          "errorMessage": "Field validFrom must not be null",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.FIELD_MANDATORY",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "validFrom"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Field validTo must not be null",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.FIELD_MANDATORY",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "validTo"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lineNumber": 3,
+      "status": "DATA_VALIDATION_ERROR",
+      "errors": [
+        {
+          "errorMessage": "Expected DATE but got heute in column validFrom",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "validFrom"
+              },
+              {
+                "key": "errorValue",
+                "value": "heute"
+              },
+              {
+                "key": "expectedType",
+                "value": "DATE"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected DATE but got moregen in column validTo",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "validTo"
+              },
+              {
+                "key": "errorValue",
+                "value": "moregen"
+              },
+              {
+                "key": "expectedType",
+                "value": "DATE"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected ENUM but got nein in column stopPointType",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "stopPointType"
+              },
+              {
+                "key": "errorValue",
+                "value": "nein"
+              },
+              {
+                "key": "expectedType",
+                "value": "ENUM"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected BOOLEAN but got ja in column freightServicePoint",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "freightServicePoint"
+              },
+              {
+                "key": "errorValue",
+                "value": "ja"
+              },
+              {
+                "key": "expectedType",
+                "value": "BOOLEAN"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected ENUM but got yes in column operatingPointType",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "operatingPointType"
+              },
+              {
+                "key": "errorValue",
+                "value": "yes"
+              },
+              {
+                "key": "expectedType",
+                "value": "ENUM"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected ENUM but got auch in column operatingPointTechnicalTimetableType",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "operatingPointTechnicalTimetableType"
+              },
+              {
+                "key": "errorValue",
+                "value": "auch"
+              },
+              {
+                "key": "expectedType",
+                "value": "ENUM"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected ENUM but got CAR in column meansOfTransport",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "meansOfTransport"
+              },
+              {
+                "key": "errorValue",
+                "value": "CAR"
+              },
+              {
+                "key": "expectedType",
+                "value": "ENUM"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected ENUM but got 1 in column categories",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "categories"
+              },
+              {
+                "key": "errorValue",
+                "value": "1"
+              },
+              {
+                "key": "expectedType",
+                "value": "ENUM"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected ENUM but got egal in column operatingPointTrafficPointType",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "operatingPointTrafficPointType"
+              },
+              {
+                "key": "errorValue",
+                "value": "egal"
+              },
+              {
+                "key": "expectedType",
+                "value": "ENUM"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected DOUBLE but got osten in column east",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "east"
+              },
+              {
+                "key": "errorValue",
+                "value": "osten"
+              },
+              {
+                "key": "expectedType",
+                "value": "DOUBLE"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected DOUBLE but got norden in column north",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "north"
+              },
+              {
+                "key": "errorValue",
+                "value": "norden"
+              },
+              {
+                "key": "expectedType",
+                "value": "DOUBLE"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected ENUM but got welt in column spatialReference",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "spatialReference"
+              },
+              {
+                "key": "errorValue",
+                "value": "welt"
+              },
+              {
+                "key": "expectedType",
+                "value": "ENUM"
+              }
+            ]
+          }
+        },
+        {
+          "errorMessage": "Expected DOUBLE but got 20m in column height",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DATA_MAPPING_ERROR",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "height"
+              },
+              {
+                "key": "errorValue",
+                "value": "20m"
+              },
+              {
+                "key": "expectedType",
+                "value": "DOUBLE"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lineNumber": 4,
+      "status": "DATA_EXECUTION_ERROR",
+      "errors": [
+        {
+          "errorMessage": "Object with SLOID ch:1:sloid:notfound not found",
+          "displayInfo": {
+            "code": "ERROR.ENTITY_NOT_FOUND",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "sloid"
+              },
+              {
+                "key": "value",
+                "value": "ch:1:sloid:notfound"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lineNumber": 5,
+      "status": "DATA_EXECUTION_ERROR",
+      "errors": [
+        {
+          "errorMessage": "No entities were modified after versioning execution.",
+          "displayInfo": {
+            "code": "ERROR.WARNING.VERSIONING_NO_CHANGES",
+            "parameters": []
+          }
+        }
+      ]
+    }
+  ]
+}
