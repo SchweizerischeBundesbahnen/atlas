@@ -57,13 +57,17 @@ public class BulkImportCsvReader {
         .with(AtlasCsvReader.CSV_SCHEMA)
         .readValues(header + line)) {
       T object = mappingIterator.next();
+
+      // Successful parsing
       if (csvExceptionHandler.getErrors().isEmpty()) {
         return BulkImportUpdateContainer.<T>builder()
             .lineNumber(lineNumber)
             .object(object)
             .attributesToNull(toNullAttributes)
             .build();
-      } else {
+      }
+      // Error on csv parsing
+      else {
         return BulkImportUpdateContainer.<T>builder()
             .lineNumber(lineNumber)
             .bulkImportLogEntry(BulkImportLogEntry.builder()
@@ -73,7 +77,6 @@ public class BulkImportCsvReader {
                 .build())
             .build();
       }
-
     }
   }
 
