@@ -46,6 +46,7 @@ const detailHelperService = jasmine.createSpyObj({
 });
 const stopPointWorkflowService = jasmine.createSpyObj('StopPointWorkflowService', {
   addStopPointWorkflow: of(workflow),
+  getExaminants: of([])
 });
 
 const workflowDialogData: AddStopPointWorkflowDialogData = {
