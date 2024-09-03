@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service.bulk.reader;
 
+import ch.sbb.importservice.exception.BulkImportNotImplementedException;
 import ch.sbb.importservice.model.BulkImportConfig;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ public class BulkImportReaders {
 
   public BulkImportItemReader getReaderFunction(BulkImportConfig bulkImportConfig) {
     if (!READERS.containsKey(bulkImportConfig)) {
-      throw new UnsupportedOperationException("BulkImportConfig not supported yet" + bulkImportConfig);
+      throw new BulkImportNotImplementedException(bulkImportConfig);
     }
     return READERS.get(bulkImportConfig);
   }
