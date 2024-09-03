@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 
+/**
+ * Is here to collect all the errors in one csv line.
+ * It returns a dummy value so jackson continues the deserialization process.
+ * This allows us to continue after the first exception.
+ * Errors are aggregated in errors and have to be queued after deserialization.
+ */
 @Getter
 public class CsvExceptionHandler extends DeserializationProblemHandler {
 

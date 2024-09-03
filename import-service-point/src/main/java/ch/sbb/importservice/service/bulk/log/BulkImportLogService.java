@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PersistedLogService {
+public class BulkImportLogService {
 
   private final BulkImportLogRepository bulkImportLogRepository;
   private final ObjectMapper objectMapper;
@@ -73,5 +73,9 @@ public class PersistedLogService {
     File file = new File(fileService.getDir() + File.separator + fileName);
     writer.writeValue(file, logFile);
     return file;
+  }
+
+  public void deleteLog(Long jobExecutionId) {
+    bulkImportLogRepository.deleteAllByJobExecutionId(jobExecutionId);
   }
 }

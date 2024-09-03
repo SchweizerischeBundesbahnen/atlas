@@ -26,7 +26,7 @@ import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import ch.sbb.importservice.service.bulk.log.LogFile;
-import ch.sbb.importservice.service.bulk.log.PersistedLogService;
+import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
@@ -68,7 +68,7 @@ class BulkImportLogFileIntegrationTest {
   private AmazonService amazonService;
 
   @SpyBean
-  private PersistedLogService persistedLogService;
+  private BulkImportLogService bulkImportLogService;
 
   @Captor
   private ArgumentCaptor<LogFile> logFileCaptor;
@@ -106,7 +106,7 @@ class BulkImportLogFileIntegrationTest {
 
     // Then
     assertThat(bulkImportRepository.count()).isEqualTo(1);
-    verify(persistedLogService).writeLogToFile(logFileCaptor.capture(), any(BulkImport.class));
+    verify(bulkImportLogService).writeLogToFile(logFileCaptor.capture(), any(BulkImport.class));
 
     LogFile writtenLogFile = logFileCaptor.getValue();
 
