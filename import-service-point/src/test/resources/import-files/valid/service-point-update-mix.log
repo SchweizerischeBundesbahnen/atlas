@@ -10,7 +10,7 @@
       "status": "DATA_VALIDATION_ERROR",
       "errors": [
         {
-          "errorMessage": "SlOID xor number must might be given",
+          "errorMessage": "SlOID xor number must be given",
           "displayInfo": {
             "code": "BULK_IMPORT.VALIDATION.SLOID_XOR_NUMBER",
             "parameters": []
