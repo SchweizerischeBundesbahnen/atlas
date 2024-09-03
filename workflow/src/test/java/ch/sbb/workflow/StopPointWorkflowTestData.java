@@ -35,6 +35,26 @@ public class StopPointWorkflowTestData {
         return workflowModel;
     }
 
+    public static StopPointAddWorkflowModel getAddStopPointWorkflowWithMultipleExaminants() {
+        List<StopPointClientPersonModel> stopPointClientPersonModels = new ArrayList<>();
+        stopPointClientPersonModels.add(getClientPerson());
+        stopPointClientPersonModels.add(getMunicipalityPerson());
+        stopPointClientPersonModels.add(getAtlasPerson());
+
+        long versionId = 123456L;
+        String sloid = "ch:1:sloid:1234";
+        StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+                .sloid(sloid)
+                .ccEmails(List.of(MAIL_ADDRESS))
+                .workflowComment("WF comment")
+                .examinants(stopPointClientPersonModels)
+                .ccEmails(List.of("a@b.ch", "b@c.it"))
+                .versionId(versionId)
+                .build();
+
+        return workflowModel;
+    }
+
     public static StopPointAddWorkflowModel getAddStopPointWorkflow2() {
         List<StopPointClientPersonModel> clientPersonModels = new ArrayList<>();
         clientPersonModels.add(getClientPerson());
@@ -60,6 +80,26 @@ public class StopPointWorkflowTestData {
                 .personFunction("Centrocampista")
                 .organisation("BAV")
                 .mail(MAIL_ADDRESS).build();
+        return person;
+    }
+
+    public static StopPointClientPersonModel getMunicipalityPerson(){
+        StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+                .firstName("Name")
+                .lastName("Lastname")
+                .personFunction("Verkehrsplanung")
+                .organisation("Amt für öffentlichen Verkehr, Bau-, Verkehrs- und Energiedirektion")
+                .mail("TechSupport-ATLAS-fake@sbb.ch").build();
+        return person;
+    }
+
+    public static StopPointClientPersonModel getAtlasPerson(){
+        StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+                .firstName("atlas")
+                .lastName("SKI")
+                .personFunction("Fachstelle atlas")
+                .organisation("SKI - Systemaufgaben Kundeninformation")
+                .mail("testuser-atlas-fake@sbb.ch").build();
         return person;
     }
 

@@ -1,16 +1,20 @@
 package ch.sbb.workflow.service.sepodi;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.AtlasException;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.workflow.client.SePoDiAdminClient;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.StopPointWorkflow;
@@ -180,6 +184,26 @@ class SePoDiClientServiceTest {
         stopPointWorkflow);
     //then
     assertThat(result).isNull();
+  }
+
+  @Test
+  void shouldReturnServicePointVersionModelWhenGetServicePointById() {
+    //when
+    ReadServicePointVersionModel result = service.getServicePointById(
+        stopPointWorkflow.getId());
+    //then
+    assertThat(result).isNull();
+  }
+
+  @Test
+  void shouldVerifyNotFoundExceptionIsThrownWhenGetServicePointById() {
+    // given
+    AtlasException atlasException = new IdNotFoundException(stopPointWorkflow.getId());
+    doThrow(atlasException).when(sePoDiClient).getServicePointById(stopPointWorkflow.getId());
+    // when & then
+    assertThatThrownBy(() -> service.getServicePointById(stopPointWorkflow.getId()))
+        .isInstanceOf(IdNotFoundException.class)
+        .hasMessageContaining("Entity not found");
   }
 
 }
