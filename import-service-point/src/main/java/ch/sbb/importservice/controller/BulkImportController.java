@@ -1,9 +1,8 @@
 package ch.sbb.importservice.controller;
 
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.importservice.entity.BulkImport;
-import ch.sbb.importservice.entity.BulkImportRequest;
+import ch.sbb.importservice.model.BulkImportRequest;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.service.bulk.BulkImportFileValidationService;
@@ -35,19 +34,18 @@ public class BulkImportController implements BulkImportApiV1 {
   private final BulkImportFileValidationService bulkImportFileValidationService;
 
   @Override
-  public void startServicePointImportBatch(ApplicationType application, BusinessObjectType objectType,
-                                           ImportType importType, BulkImportRequest bulkImportRequest, MultipartFile file) {
+  public void startServicePointImportBatch(BulkImportRequest bulkImportRequest, MultipartFile file) {
     log.info("Starting bulk import:");
-    log.info("Application={}, BusinessObject={}, ImportType={}", application, objectType, importType);
+    log.info("Application={}, BusinessObject={}, ImportType={}", bulkImportRequest.getApplication(), bulkImportRequest.getObjectType(), bulkImportRequest.getImportType());
     log.info("Uploaded file has size={}, uploadFileName={}, contentType={}",
         FileUtils.byteCountToDisplaySize(file.getSize()),
             file.getOriginalFilename(),
             file.getContentType());
 
     BulkImport bulkImport = BulkImport.builder()
-        .application(application)
-        .objectType(objectType)
-        .importType(importType)
+        .application(bulkImportRequest.getApplication())
+        .objectType(bulkImportRequest.getObjectType())
+        .importType(bulkImportRequest.getImportType())
         .creator(UserService.getUserIdentifier())
         .inNameOf(bulkImportRequest.getInNameOf() != null ? bulkImportRequest.getInNameOf() : null)
         .emails(bulkImportRequest.getEmails() != null ? bulkImportRequest.getEmails() : Collections.emptyList())
