@@ -22,7 +22,7 @@ class BulkImportItemValidationServiceTest {
     assertThat(container.getBulkImportLogEntry().getErrors()).hasSize(3);
     List<String> errorMessages = container.getBulkImportLogEntry().getErrors().stream().map(BulkImportError::getErrorMessage)
         .toList();
-    assertThat(errorMessages).containsExactlyInAnyOrder("SlOID xor number must might be given",
+    assertThat(errorMessages).containsExactlyInAnyOrder("SlOID xor number must be given",
         "Field validFrom must not be null", "Field validTo must not be null");
   }
 

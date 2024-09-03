@@ -1,7 +1,7 @@
 package ch.sbb.importservice.listener;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.importservice.service.bulk.log.PersistedLogService;
+import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemWriteListener;
 import org.springframework.batch.core.StepExecution;
@@ -19,14 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class BulkImportDataExecutionToLogFileListener implements ItemWriteListener<BulkImportUpdateContainer<?>> {
 
   @Autowired
-  private PersistedLogService persistedLogService;
+  private BulkImportLogService bulkImportLogService;
 
   @Value("#{stepExecution}")
   private StepExecution stepExecution;
 
   @Override
   public void afterWrite(Chunk<? extends BulkImportUpdateContainer<?>> items) {
-    items.getItems().forEach(writeItem -> persistedLogService.saveDataExecutionLog(stepExecution.getJobExecutionId(), writeItem));
+    items.getItems().forEach(writeItem -> bulkImportLogService.saveDataExecutionLog(stepExecution.getJobExecutionId(), writeItem));
   }
 
 }
