@@ -1,7 +1,7 @@
 package ch.sbb.importservice.listener;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.importservice.service.bulk.log.PersistedLogService;
+import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemReadListener;
@@ -19,14 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class BulkImportDataValidationToLogFileListener implements ItemReadListener<BulkImportUpdateContainer<?>> {
 
   @Autowired
-  private PersistedLogService persistedLogService;
+  private BulkImportLogService bulkImportLogService;
 
   @Value("#{stepExecution}")
   private StepExecution stepExecution;
 
   @Override
   public void afterRead(@NotNull BulkImportUpdateContainer<?> item) {
-    persistedLogService.saveDataValidationErrors(stepExecution.getJobExecutionId(), item);
+    bulkImportLogService.saveDataValidationErrors(stepExecution.getJobExecutionId(), item);
   }
 
 }
