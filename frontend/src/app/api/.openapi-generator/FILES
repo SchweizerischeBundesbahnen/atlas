@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -35,6 +36,7 @@ model/basicAttributeType.ts
 model/boardingDeviceAttributeType.ts
 model/booleanOptionalAttributeType.ts
 model/bulkImportPermissionRestrictionModel.ts
+model/bulkImportRequest.ts
 model/bulkImportUpdateContainerServicePointUpdateCsvModel.ts
 model/businessObjectType.ts
 model/businessOrganisation.ts
@@ -96,6 +98,7 @@ model/importType.ts
 model/infoOpportunityAttributeType.ts
 model/inlineObject2.ts
 model/inlineObject3.ts
+model/inlineObject4.ts
 model/itemImportResponseStatus.ts
 model/itemImportResult.ts
 model/judgementType.ts
