@@ -12,4 +12,6 @@ public interface BulkImportLogRepository extends JpaRepository<BulkImportLog, Lo
 
   List<BulkImportLog> findAllByJobExecutionId(Long jobExecutionId);
 
+  void deleteAllByJobExecutionId(Long jobExecutionId);
+
 }

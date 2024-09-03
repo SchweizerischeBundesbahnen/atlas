@@ -10,7 +10,7 @@ class BulkImportErrorsTest {
   @Test
   void shouldBuildBulkImportErrorForSloidXorNumber() {
     BulkImportError bulkImportError = BulkImportErrors.sloidXorNumber();
-    assertThat(bulkImportError.getErrorMessage()).isEqualTo("SlOID xor number must might be given");
+    assertThat(bulkImportError.getErrorMessage()).isEqualTo("SlOID xor number must be given");
   }
 
   @Test
