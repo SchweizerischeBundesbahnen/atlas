@@ -17,6 +17,6 @@ public interface ServicePointClient extends ServicePointBulkImportApiV1 {
   @GetMapping("v1/service-points/actual-swiss-service-point-with-geo")
   List<ServicePointSwissWithGeoModel> getActualServicePointWithGeolocation();
 
-  @PutMapping("v1/service-points/update-geo/{sloid}/{id}")
+  @PutMapping("v1/geodata/update-geo/{sloid}/{id}")
   GeoUpdateItemResultModel updateServicePointGeoLocation(@PathVariable("sloid") String sloid, @PathVariable("id") Long id);
 }
