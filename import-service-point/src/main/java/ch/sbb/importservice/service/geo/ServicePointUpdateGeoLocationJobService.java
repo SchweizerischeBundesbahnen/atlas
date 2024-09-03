@@ -1,4 +1,4 @@
-package ch.sbb.importservice.controller;
+package ch.sbb.importservice.service.geo;
 
 import static ch.sbb.importservice.config.ServicePointGeoLocationUpdateConfig.UPDATE_SERVICE_POINT_GEO_JOB;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
@@ -16,20 +16,21 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
-@RestController
+@Service
 @RequiredArgsConstructor
 @Slf4j
-public class ServicePointUpdateGeoController implements ServicePointUpdateGeoApiV1 {
+public class ServicePointUpdateGeoLocationJobService {
 
   private final JobLauncher jobLauncher;
 
-  @Qualifier("updateServicePointGeoJob")
+  @Qualifier(UPDATE_SERVICE_POINT_GEO_JOB)
   private final Job updateServicePointGeoJob;
 
-  @Override
-  public void startServicePointImportBatch() throws JobExecutionException {
+  @Async
+  public void runGeoLocationUpdateJob() throws JobExecutionException {
     JobParameters jobParameters = new JobParametersBuilder()
         .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     try {
