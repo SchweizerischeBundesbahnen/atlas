@@ -1,12 +1,11 @@
 package ch.sbb.importservice.service.sepodi.service.point.update;
 
-import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.bulk.BulkImportContainer;
+import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.importservice.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.service.bulk.writer.BulkImportItemWriter;
-import java.util.ArrayList;
+import ch.sbb.importservice.service.bulk.writer.WriterUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,14 +20,13 @@ public class ServicePointUpdateWriter extends ServicePointUpdate implements Bulk
   private final ServicePointBulkImportClient servicePointBulkImportClient;
 
   @Override
-  public void accept(Chunk<? extends BulkImportContainer> items) {
-    List<BulkImportContainer> containers = new ArrayList<>(items.getItems());
-    log.info("Writing {} containers to service-point-directory", containers.size());
+  public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
+    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers =
+        WriterUtil.getContainersWithoutDataValidationErrors(items);
 
-    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers = containers.stream().map(i -> (BulkImportUpdateContainer<ServicePointUpdateCsvModel>)i).toList();
-    List<ItemImportResult> importResult = servicePointBulkImportClient.bulkImportUpdate(updateContainers);
+    log.info("Writing {} containers to service-point-directory", updateContainers.size());
+    List<BulkImportItemExecutionResult> importResult = servicePointBulkImportClient.bulkImportUpdate(updateContainers);
 
-    // itemResult to log file
-    log.info("Import result: {}", importResult);
+    WriterUtil.mapExecutionResultToLogEntry(importResult, updateContainers);
   }
 }
