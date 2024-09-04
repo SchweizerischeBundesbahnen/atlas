@@ -1136,6 +1136,7 @@
       "CANTON": "Cantone",
       "MUNICIPALITY": "Comune",
       "DISTRICT": "Località",
+      "DISTRICT_NAME": "Quartiere",
       "GEOGRAPHY_INFORMATION": "Se attivata, la posizione geografica deve essere registrata in uno dei due sistemi di coordinate."
     },
     "MAP_STYLES": {
