@@ -27,7 +27,7 @@ import {PermissionService} from "../../../../../core/auth/permission/permission.
   styleUrls: ['./service-point-form.component.scss'],
 })
 export class ServicePointFormComponent implements OnInit, OnDestroy {
-  @ContentChild(GeographyComponent, { static: true }) geographyComponent?: GeographyComponent;
+  @ContentChild(GeographyComponent, {static: true}) geographyComponent?: GeographyComponent;
 
   locationInformation$?: Observable<LocationInformation>;
   servicePointTypes = Object.values(ServicePointType);
@@ -46,6 +46,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     this.formDestroy$.next();
     this.initTypeChangeInformationDialog(form.controls.selectedType);
   }
+
   get form(): FormGroup<ServicePointDetailFormGroup> | undefined {
     return this._form;
   }
@@ -56,11 +57,14 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       isoCountryCode: version?.servicePointGeolocation?.isoCountryCode,
       canton: version?.servicePointGeolocation?.swissLocation?.canton,
       municipalityName:
-        version?.servicePointGeolocation?.swissLocation?.localityMunicipality?.municipalityName,
+      version?.servicePointGeolocation?.swissLocation?.localityMunicipality?.municipalityName,
       localityName:
-        version?.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName,
+      version?.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName,
+      swissDistrictName:
+      version?.servicePointGeolocation?.swissLocation?.district?.districtName
     });
   }
+
   get currentVersion(): ReadServicePointVersion | undefined {
     return this._currentVersion;
   }
@@ -79,7 +83,8 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     private readonly dialogService: DialogService,
     private readonly geoDataService: GeoDataService,
     private readonly permissionService: PermissionService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.isNew = !this.currentVersion?.id;
@@ -98,6 +103,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
                 municipalityName: geoReference.swissMunicipalityName,
                 localityName: geoReference.swissLocalityName,
                 height: geoReference.height,
+                swissDistrictName: geoReference.swissDistrictName
               })),
             );
         }
