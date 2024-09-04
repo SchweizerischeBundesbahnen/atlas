@@ -40,7 +40,7 @@ export default defineConfig({
       require('cypress-mochawesome-reporter/plugin')(on);
       return config;
     },
-    baseUrl: 'http://localhost:4200',
+    baseUrl: 'https://atlas.dev.sbb-cloud.net',
     scrollBehavior: 'center'
   },
 });
