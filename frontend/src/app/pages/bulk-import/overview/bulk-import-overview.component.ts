@@ -19,6 +19,11 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './bulk-import-overview.component.html'
 })
 export class BulkImportOverviewComponent implements OnInit{
+  protected readonly OPTIONS_SCENARIO = OPTIONS_SCENARIO;
+  protected readonly OPTIONS_OBJECT_TYPE = OPTIONS_OBJECT_TYPE;
+  protected readonly OPTIONS_APPLICATION_TYPE = OPTIONS_APPLICATION_TYPE;
+  protected readonly ALLOWED_FILE_TYPES_BULK_IMPORT = ALLOWED_FILE_TYPES_BULK_IMPORT;
+
   form!: FormGroup<BulkImportFormGroup>;
   isUserSelectEnabled = false;
   uploadedFiles: File[] = [];
@@ -29,6 +34,7 @@ export class BulkImportOverviewComponent implements OnInit{
   isAdmin = false;
 
   isEnabledToStartImport = false;
+  isFileUploaded = false;
 
   constructor(private userAdministrationService: UserAdministrationService,
               private permissionService: PermissionService,
@@ -44,12 +50,9 @@ export class BulkImportOverviewComponent implements OnInit{
     this.userAdministrationService.getCurrentUser().subscribe((user) => {
       this.userName = this.removeDepartment(user.displayName);
     });
-
     this.form.valueChanges.subscribe(value => {
-      console.log("value ", value)
-      if(value.importType != null && value.applicationType != null && value.objectType != null && this.uploadedFiles[0] != null) {
+      if(value.importType != null && value.applicationType != null && value.objectType != null) {
         this.isEnabledToStartImport = true
-        console.log("isEnabled ", this.isEnabledToStartImport)
       }
     })
   }
@@ -92,9 +95,9 @@ export class BulkImportOverviewComponent implements OnInit{
       }
     });
     return EMPTY;
-  };
-  protected readonly OPTIONS_SCENARIO = OPTIONS_SCENARIO;
-  protected readonly OPTIONS_OBJECT_TYPE = OPTIONS_OBJECT_TYPE;
-  protected readonly OPTIONS_APPLICATION_TYPE = OPTIONS_APPLICATION_TYPE;
-  protected readonly ALLOWED_FILE_TYPES_BULK_IMPORT = ALLOWED_FILE_TYPES_BULK_IMPORT;
+  }
+
+  onFileChange(files: File[]){
+    this.isFileUploaded = files.length > 0;
+  }
 }
