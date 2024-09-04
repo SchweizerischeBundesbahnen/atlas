@@ -49,7 +49,7 @@ module.exports = [{
         "@typescript-eslint/explicit-module-boundary-types": "off",
     },
 }, {
-  files: ["**/*.ts"],
+  files: ["cypress/**/*.ts"],
 
   languageOptions: {
     ecmaVersion: 5,
