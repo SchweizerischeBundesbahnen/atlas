@@ -8,12 +8,11 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
-import ch.sbb.atlas.api.servicepoint.UpdateGeoLocationTesData;
-import ch.sbb.atlas.api.servicepoint.UpdateGeoServicePointVersionResultModel;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
 import ch.sbb.atlas.imports.ItemImportResponseStatus;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepointdirectory.geodata.mapper.UpdateGeoLocationResultContainer;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceJobService;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +57,7 @@ class GeoReferenceControllerTest {
     //given
     Long id = 1000L;
     String sloid = "ch:1:sloid:7000";
-    UpdateGeoServicePointVersionResultModel resultModel = UpdateGeoLocationTesData.getModel();
+    UpdateGeoLocationResultContainer resultModel = UpdateGeoLocationTesData.getModel();
     when(geoReferenceJobService.updateGeoLocation(id)).thenReturn(resultModel);
     //when
     GeoUpdateItemResultModel result = geoReferenceController.updateServicePointGeoLocation(sloid, id);
@@ -69,7 +68,7 @@ class GeoReferenceControllerTest {
     assertThat(result.getSloid()).isEqualTo(sloid);
     assertThat(result.getId()).isEqualTo(id);
     assertThat(result.getMessage()).isEqualTo(
-        "No versioning changes happened!<br> [SwissMunicipalityNumber=236,SwissMunicipalityName=Bern,SwissLocalityName=Bern] "
+        "No versioning changes happened!<br> [SwissMunicipalityNumber=351,SwissMunicipalityName=Bern,SwissLocalityName=Bern] "
             + "differs from [SwissMunicipalityNumber=101,SwissMunicipalityName=Wyleregg,SwissLocalityName=Wyleregg]");
   }
 
