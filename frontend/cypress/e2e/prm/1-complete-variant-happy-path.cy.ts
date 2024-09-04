@@ -32,8 +32,8 @@ describe('PRM use case: complete variant', { testIsolation: false }, () => {
     it('Step-4: Fill complete form', () => {
       CommonUtils.getClearType(PrmDataCy.FREE_TEXT, completeStopPoint.freeText);
 
-      CommonUtils.getClearType(DataCy.VALID_FROM, completeStopPoint.validFrom, true);
-      CommonUtils.getClearType(DataCy.VALID_TO, completeStopPoint.validTo, true);
+      CommonUtils.getClearType(DataCy.VALID_FROM, completeStopPoint.validFrom);
+      CommonUtils.getClearType(DataCy.VALID_TO, completeStopPoint.validTo);
 
       CommonUtils.getClearType(PrmDataCy.ADDRESS, completeStopPoint.address);
       CommonUtils.getClearType(PrmDataCy.ZIP_CODE, completeStopPoint.zipCode);
