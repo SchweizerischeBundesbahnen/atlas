@@ -1,11 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.servicepoint.GeoReference;
-import ch.sbb.atlas.api.servicepoint.UpdateGeoServicePointVersionResultModel;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
 import ch.sbb.atlas.imports.ItemImportResponseStatus;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.api.GeoReferenceApiV1;
+import ch.sbb.atlas.servicepointdirectory.geodata.mapper.UpdateGeoLocationResultContainer;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceJobService;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class GeoReferenceController implements GeoReferenceApiV1 {
   @Override
   public GeoUpdateItemResultModel updateServicePointGeoLocation(String sloid, Long id) {
     try {
-      UpdateGeoServicePointVersionResultModel result = geoReferenceJobService.updateGeoLocation(id);
+      UpdateGeoLocationResultContainer result = geoReferenceJobService.updateGeoLocation(id);
       if (result != null) {
         return new GeoUpdateItemResultModel(result.getSloid(), result.getId(),
             result.getResponseMessage(), ItemImportResponseStatus.SUCCESS);

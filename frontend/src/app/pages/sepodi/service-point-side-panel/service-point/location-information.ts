@@ -1,9 +1,10 @@
-import { SwissCanton } from '../../../../api';
+import {SwissCanton} from '../../../../api';
 
 export interface LocationInformation {
   isoCountryCode?: string;
   canton?: SwissCanton;
   municipalityName?: string;
   localityName?: string;
+  swissDistrictName?: string;
   height?: number;
 }
