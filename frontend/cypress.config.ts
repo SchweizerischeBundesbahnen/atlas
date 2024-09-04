@@ -41,5 +41,6 @@ export default defineConfig({
       return config;
     },
     baseUrl: 'http://localhost:4200',
+    scrollBehavior: 'center'
   },
 });
