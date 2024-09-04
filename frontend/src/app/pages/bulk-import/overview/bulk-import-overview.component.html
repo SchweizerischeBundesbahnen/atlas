@@ -74,6 +74,8 @@
         [maxFileCount]="1"
         [maxFileSize]="20 * 1024 * 1024"
         [acceptedFileType]="ALLOWED_FILE_TYPES_BULK_IMPORT"
+        (uploadedFilesChange)="onFileChange($event)"
+
       ></atlas-file-upload>
     </div>
     <div class="mt-5 me-5 d-flex justify-content-end">
@@ -84,7 +86,7 @@
         buttonText="PAGES.BULK_IMPORT.START_BULK_IMPORT"
         buttonType="whiteFooterEdit"
         wrapperStyleClass="ms-3"
-        [disabled]="!isEnabledToStartImport"
+        [disabled]="!isEnabledToStartImport || !isFileUploaded"
       ></atlas-button>
     </div>
   </div>
