@@ -1,5 +1,6 @@
 package ch.sbb.importservice.controller;
 
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.model.BulkImportRequest;
@@ -9,6 +10,7 @@ import ch.sbb.importservice.service.bulk.BulkImportFileValidationService;
 import ch.sbb.importservice.service.bulk.BulkImportService;
 import java.io.File;
 import java.util.Collections;
+import java.util.List;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -36,14 +38,14 @@ public class BulkImportController implements BulkImportApiV1 {
   @Override
   public void startServicePointImportBatch(BulkImportRequest bulkImportRequest, MultipartFile file) {
     log.info("Starting bulk import:");
-    log.info("Application={}, BusinessObject={}, ImportType={}", bulkImportRequest.getApplication(), bulkImportRequest.getObjectType(), bulkImportRequest.getImportType());
+    log.info("Application={}, BusinessObject={}, ImportType={}", bulkImportRequest.getApplicationType(), bulkImportRequest.getObjectType(), bulkImportRequest.getImportType());
     log.info("Uploaded file has size={}, uploadFileName={}, contentType={}",
         FileUtils.byteCountToDisplaySize(file.getSize()),
             file.getOriginalFilename(),
             file.getContentType());
 
     BulkImport bulkImport = BulkImport.builder()
-        .application(bulkImportRequest.getApplication())
+        .application(bulkImportRequest.getApplicationType())
         .objectType(bulkImportRequest.getObjectType())
         .importType(bulkImportRequest.getImportType())
         .creator(UserService.getUserIdentifier())

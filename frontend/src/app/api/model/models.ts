@@ -64,6 +64,8 @@ export * from './geolocationCreate';
 export * from './hearingStatus';
 export * from './importType';
 export * from './infoOpportunityAttributeType';
+export * from './inlineObject';
+export * from './inlineObject1';
 export * from './inlineObject2';
 export * from './inlineObject3';
 export * from './inlineObject4';
