@@ -1,6 +1,5 @@
 package ch.sbb.importservice.controller;
 
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.model.BulkImportRequest;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
