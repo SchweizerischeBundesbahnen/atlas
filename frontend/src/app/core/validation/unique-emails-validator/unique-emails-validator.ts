@@ -14,11 +14,8 @@ export class UniqueEmailsValidator {
       formArray.controls.forEach(control => {
         const emailControl = control.get(UniqueEmailsValidator.MAIL);
         if (emailControl) {
-          const errors = emailControl.errors;
-          if (errors && errors[UniqueEmailsValidator.NOT_UNIQUE_EMAIL]) {
-            delete errors[UniqueEmailsValidator.NOT_UNIQUE_EMAIL];
-            emailControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-          }
+          emailControl.setErrors(null);
+          emailControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
         }
       });
 
