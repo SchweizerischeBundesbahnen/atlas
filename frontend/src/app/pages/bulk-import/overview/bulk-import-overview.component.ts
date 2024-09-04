@@ -5,7 +5,7 @@ import {
   ApplicationType,
   BulkImportService,
   BusinessObjectType,
-  ImportType,
+  ImportType, InlineObject4,
   UserAdministrationService
 } from "../../../api";
 import {PermissionService} from "../../../core/auth/permission/permission.service";
@@ -38,7 +38,6 @@ export class BulkImportOverviewComponent implements OnInit{
     this.userAdministrationService.getCurrentUser().subscribe((user) => {
       this.userName = this.removeDepartment(user.displayName);
     });
-    console.log("test")
   }
 
   removeDepartment(username?: string) {
@@ -54,21 +53,18 @@ export class BulkImportOverviewComponent implements OnInit{
     //TODO: Is user admin?
     const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
 
+
     const controlsAlreadyDisabled = Object.keys(this.form.controls).filter(
       (key) => this.form.get(key)?.disabled,
     );
     console.log("this.form ", this.form)
-    /*this.bulkImportService.startServicePointImportBatch(
-      this.form.controls.applicationType.value!,
-      this.form.controls.objectType.value!,
-      this.form.controls.importType.value!,
-      bulkImportRequest,
-      this.uploadedFiles[0]
-    )
+    console.log("bulkImportRequest ", bulkImportRequest)
+
+    this.bulkImportService.startServicePointImportBatch(bulkImportRequest, this.uploadedFiles[0])
       .pipe(catchError(() => this.handleError(controlsAlreadyDisabled)))
       .subscribe((bulkImport) => {
         console.log("bulkImport ", bulkImport)
-      });*/
+      });
   }
 
   enableUserSelect(isEnabled: boolean) {

@@ -20,7 +20,7 @@ import java.util.List;
 public class BulkImportRequest {
 
     @NotNull
-    private ApplicationType application;
+    private ApplicationType applicationType;
 
     @NotNull
     private BusinessObjectType objectType;

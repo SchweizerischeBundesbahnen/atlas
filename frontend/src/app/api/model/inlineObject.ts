@@ -9,14 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { BulkImportRequest } from './bulkImportRequest';
+import { TimetableHearingStatementV2 } from './timetableHearingStatementV2';
 
 
-export interface InlineObject4 {
-    bulkImportRequest: BulkImportRequest;
-    /**
-     * File to upload
-     */
-    file: Blob;
+export interface InlineObject { 
+    statement: TimetableHearingStatementV2;
+    documents?: Array<Blob>;
 }
 
