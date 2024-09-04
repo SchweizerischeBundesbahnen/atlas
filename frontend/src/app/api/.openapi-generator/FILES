@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -96,6 +95,8 @@ model/geolocationCreate.ts
 model/hearingStatus.ts
 model/importType.ts
 model/infoOpportunityAttributeType.ts
+model/inlineObject.ts
+model/inlineObject1.ts
 model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
