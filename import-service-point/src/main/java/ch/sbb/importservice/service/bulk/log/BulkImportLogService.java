@@ -6,10 +6,12 @@ import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.entity.BulkImportLog;
 import ch.sbb.importservice.repository.BulkImportLogRepository;
+import ch.sbb.importservice.service.bulk.BulkImportS3BucketService;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.File;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 public class BulkImportLogService {
 
   private final BulkImportLogRepository bulkImportLogRepository;
+  private final BulkImportS3BucketService bulkImportS3BucketService;
   private final ObjectMapper objectMapper;
   private final FileService fileService;
 
@@ -53,6 +56,15 @@ public class BulkImportLogService {
     return LogFile.builder()
         .logEntries(logEntries)
         .build();
+  }
+
+  public List<BulkImportLogEntry> getLogEntriesFromS3LogFile(String logFileUrl) {
+    File logFile = bulkImportS3BucketService.downloadImportFile(logFileUrl);
+    try {
+      return objectMapper.readValue(logFile, LogFile.class).getLogEntries();
+    } catch (IOException e) {
+      throw new RuntimeException("Unexpected exception during parsing of Bulk Import Result Log File to Java List occurred!", e);
+    }
   }
 
   @SneakyThrows
