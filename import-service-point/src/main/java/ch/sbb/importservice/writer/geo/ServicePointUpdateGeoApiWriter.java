@@ -2,7 +2,7 @@ package ch.sbb.importservice.writer.geo;
 
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
-import ch.sbb.importservice.entity.ImportProcessItem;
+import ch.sbb.importservice.entity.GeoUpdateImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import ch.sbb.importservice.service.geo.ServicePointUpdateGeoLocationService;
 import java.util.ArrayList;
@@ -41,14 +41,14 @@ public class ServicePointUpdateGeoApiWriter implements ItemWriter<ServicePointSw
   }
 
   void doWrite(List<ServicePointSwissWithGeoModel> servicePointCsvModels) {
-    servicePointCsvModels.forEach(servicePointSwissWithGeoModel -> servicePointSwissWithGeoModel.getDetails().forEach(detail -> {
+    servicePointCsvModels.forEach(swissWithGeoModel -> swissWithGeoModel.getDetails().forEach(detail -> {
       GeoUpdateItemResultModel result =
-          sePoDiClientService.updateServicePointGeoLocation(servicePointSwissWithGeoModel.getSloid(), detail.getId());
-      log.info("Process ServicePoint [sloid={},id={}] with GeoLocation...", detail.getId(),
-          servicePointSwissWithGeoModel.getSloid());
+          sePoDiClientService.updateServicePointGeoLocation(swissWithGeoModel.getSloid(), detail.getId());
+      log.info("Process ServicePoint [sloid={},id={}] with GeoLocation...", swissWithGeoModel.getSloid(),
+          detail.getId());
       if (result != null) {
-        ImportProcessItem importProcessItem = getImportProcessItem(result);
-        importProcessedItemRepository.saveAndFlush(importProcessItem);
+        GeoUpdateImportProcessItem geoUpdateImportProcessItem = getImportProcessItem(result);
+        importProcessedItemRepository.saveAndFlush(geoUpdateImportProcessItem);
         log.info("Result: {}", result);
       } else {
         log.info("No GeoLocation updated!");
@@ -56,10 +56,10 @@ public class ServicePointUpdateGeoApiWriter implements ItemWriter<ServicePointSw
     }));
   }
 
-  private ImportProcessItem getImportProcessItem(GeoUpdateItemResultModel result) {
-    return ImportProcessItem.builder()
-        .itemNumber(result.getSloid())
-        .id(result.getId())
+  private GeoUpdateImportProcessItem getImportProcessItem(GeoUpdateItemResultModel result) {
+    return GeoUpdateImportProcessItem.builder()
+        .sloid(result.getSloid())
+        .servicePointId(result.getId())
         .jobExecutionName(stepExecution.getJobExecution().getJobInstance().getJobName())
         .stepExecutionId(stepExecution.getId())
         .responseStatus(result.getStatus())
