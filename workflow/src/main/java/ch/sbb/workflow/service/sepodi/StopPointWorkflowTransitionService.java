@@ -3,6 +3,7 @@ package ch.sbb.workflow.service.sepodi;
 import static ch.sbb.atlas.workflow.model.WorkflowStatus.REJECTED;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.LoggingAspect;
 import ch.sbb.workflow.aop.MethodLogged;
@@ -12,13 +13,16 @@ import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.PersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
+import ch.sbb.workflow.model.sepodi.Examinants;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -35,6 +39,7 @@ public class StopPointWorkflowTransitionService {
 
   private final DecisionService decisionService;
   private final SePoDiClientService sePoDiClientService;
+  private final Examinants examinants;
   private final StopPointWorkflowNotificationService notificationService;
   private final StopPointWorkflowService stopPointWorkflowService;
 
@@ -164,7 +169,9 @@ public class StopPointWorkflowTransitionService {
 
   private StopPointWorkflow createStopPointAddWorkflow(StopPointAddWorkflowModel workflowStartModel,
       ReadServicePointVersionModel servicePointVersionModel) {
-    return StopPointWorkflowMapper.addStopPointWorkflowToEntity(workflowStartModel, servicePointVersionModel);
+    SwissCanton swissCanton = servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getCanton();
+    List<StopPointClientPersonModel> personModels = examinants.getExaminants(swissCanton);
+    return StopPointWorkflowMapper.addStopPointWorkflowToEntity(workflowStartModel, servicePointVersionModel, personModels);
   }
 
   private void updateCurrentWorkflow(StopPointWorkflow stopPointWorkflow, StopPointWorkflow newStopPointWorkflow) {
