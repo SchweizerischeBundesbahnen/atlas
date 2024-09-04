@@ -2,14 +2,18 @@ import {Component, OnInit} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 import {BulkImportFormGroup, BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
 import {
-  ApplicationType,
   BulkImportService,
-  BusinessObjectType,
-  ImportType, InlineObject4,
   UserAdministrationService
 } from "../../../api";
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {catchError, EMPTY} from "rxjs";
+import {
+  ALLOWED_FILE_TYPES_BULK_IMPORT,
+  OPTIONS_APPLICATION_TYPE,
+  OPTIONS_OBJECT_TYPE,
+  OPTIONS_SCENARIO
+} from "../detail/bulk-import-options";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   templateUrl: './bulk-import-overview.component.html'
@@ -19,17 +23,19 @@ export class BulkImportOverviewComponent implements OnInit{
   isUserSelectEnabled = false;
   uploadedFiles: File[] = [];
 
-  fileTypes=["text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
-
   userName: string | undefined;
-  optionsApplication: string[] = Object.values([ApplicationType.Sepodi, ApplicationType.Prm]);
-  optionsObject: string[] = Object.values([BusinessObjectType.StopPoint, BusinessObjectType.LoadingPoint]);
-  optionsScenario: string[] = Object.values([ImportType.Create, ImportType.Terminate]);
+  //TODO: Filter - wenn PRM ausgewählt, dann BusinessObjectTypes von PRM werden angezeigt
+
   isAdmin = false;
+
+  isEnabledToStartImport = false;
 
   constructor(private userAdministrationService: UserAdministrationService,
               private permissionService: PermissionService,
-              private bulkImportService: BulkImportService) {
+              private bulkImportService: BulkImportService,
+              private readonly router: Router,
+              private readonly route: ActivatedRoute,
+  ) {
   }
 
   ngOnInit(): void {
@@ -38,6 +44,14 @@ export class BulkImportOverviewComponent implements OnInit{
     this.userAdministrationService.getCurrentUser().subscribe((user) => {
       this.userName = this.removeDepartment(user.displayName);
     });
+
+    this.form.valueChanges.subscribe(value => {
+      console.log("value ", value)
+      if(value.importType != null && value.applicationType != null && value.objectType != null && this.uploadedFiles[0] != null) {
+        this.isEnabledToStartImport = true
+        console.log("isEnabled ", this.isEnabledToStartImport)
+      }
+    })
   }
 
   removeDepartment(username?: string) {
@@ -50,20 +64,16 @@ export class BulkImportOverviewComponent implements OnInit{
 
 
   startBulkImport() {
-    //TODO: Is user admin?
     const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
-
 
     const controlsAlreadyDisabled = Object.keys(this.form.controls).filter(
       (key) => this.form.get(key)?.disabled,
     );
-    console.log("this.form ", this.form)
-    console.log("bulkImportRequest ", bulkImportRequest)
 
     this.bulkImportService.startServicePointImportBatch(bulkImportRequest, this.uploadedFiles[0])
       .pipe(catchError(() => this.handleError(controlsAlreadyDisabled)))
       .subscribe((bulkImport) => {
-        console.log("bulkImport ", bulkImport)
+        //TODO disable again start button
       });
   }
 
@@ -72,7 +82,7 @@ export class BulkImportOverviewComponent implements OnInit{
   }
 
   back(){
-
+    this.router.navigate(['..'], { relativeTo: this.route }).then();
   }
 
   private readonly handleError = (excludedControls: string[]) => {
@@ -83,4 +93,8 @@ export class BulkImportOverviewComponent implements OnInit{
     });
     return EMPTY;
   };
+  protected readonly OPTIONS_SCENARIO = OPTIONS_SCENARIO;
+  protected readonly OPTIONS_OBJECT_TYPE = OPTIONS_OBJECT_TYPE;
+  protected readonly OPTIONS_APPLICATION_TYPE = OPTIONS_APPLICATION_TYPE;
+  protected readonly ALLOWED_FILE_TYPES_BULK_IMPORT = ALLOWED_FILE_TYPES_BULK_IMPORT;
 }
