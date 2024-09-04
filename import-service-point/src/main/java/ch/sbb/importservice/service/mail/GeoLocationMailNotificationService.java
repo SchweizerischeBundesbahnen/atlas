@@ -1,9 +1,11 @@
 package ch.sbb.importservice.service.mail;
 
+import static ch.sbb.importservice.service.geo.ServicePointUpdateGeoLocationService.GEO_LOCATION_VERSIONS_KEY;
+
 import ch.sbb.atlas.imports.ItemImportResponseStatus;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
-import ch.sbb.importservice.entity.ImportProcessItem;
+import ch.sbb.importservice.entity.GeoUpdateImportProcessItem;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,29 +36,37 @@ public class GeoLocationMailNotificationService {
         .build();
   }
 
-  public MailNotification buildMailSuccessNotification(String jobName, List<ImportProcessItem> importProcessItems,
+  public MailNotification buildMailSuccessNotification(String jobName,
+      List<GeoUpdateImportProcessItem> geoUpdateImportProcessItems,
       StepExecution stepExecution) {
     return MailNotification.builder()
         .to(schedulingNotificationAddresses)
         .subject("Job [" + jobName + "] execution successfully")
         .mailType(MailType.UPDATE_GEOLOCATION_SUCCESS_NOTIFICATION)
-        .templateProperties(buildSuccessMailContent(jobName, importProcessItems, stepExecution))
+        .templateProperties(buildSuccessMailContent(jobName, geoUpdateImportProcessItems, stepExecution))
         .build();
   }
 
-  private List<Map<String, Object>> buildSuccessMailContent(String jobName, List<ImportProcessItem> importProcessItems,
+  private List<Map<String, Object>> buildSuccessMailContent(String jobName,
+      List<GeoUpdateImportProcessItem> geoUpdateImportProcessItems,
       StepExecution stepExecution) {
     String stepExecutionInformation = getStepExecutionInformation(stepExecution);
 
-    List<ImportProcessItem> successImportedItems = filterByStatus(importProcessItems, ItemImportResponseStatus.SUCCESS);
-    List<ImportProcessItem> failedImportedItems = filterByStatus(importProcessItems, ItemImportResponseStatus.FAILED);
+    String geoLocationVersionsProcessed = String.valueOf(stepExecution.getExecutionContext().get(GEO_LOCATION_VERSIONS_KEY));
+    log.info("GeoLocation Versions Processed: {}", geoLocationVersionsProcessed);
+
+    List<GeoUpdateImportProcessItem> successImportedItems = filterByStatus(geoUpdateImportProcessItems,
+        ItemImportResponseStatus.SUCCESS);
+    List<GeoUpdateImportProcessItem> failedImportedItems = filterByStatus(geoUpdateImportProcessItems,
+        ItemImportResponseStatus.FAILED);
 
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("jobName", jobName);
     mailContentProperty.put("stepExecutionInformation", stepExecutionInformation);
     mailContentProperty.put("correlationId", getCurrentSpan(stepExecution));
-    mailContentProperty.put("importProcessItemsSize", importProcessItems.size());
+    mailContentProperty.put("geoLocationVersionsToProcess", geoLocationVersionsProcessed);
+    mailContentProperty.put("importProcessItemsSize", geoUpdateImportProcessItems.size());
     mailContentProperty.put("successImportedItemsSize", successImportedItems.size());
     mailContentProperty.put("failedImportedItemsSize", failedImportedItems.size());
     mailContentProperty.put("successImportedItems", getImportProcessItem(successImportedItems));
@@ -65,11 +75,11 @@ public class GeoLocationMailNotificationService {
     return mailProperties;
   }
 
-  private List<Map<String, Object>> getImportProcessItem(List<ImportProcessItem> importProcessItems) {
-    return importProcessItems.stream().map(item -> {
+  private List<Map<String, Object>> getImportProcessItem(List<GeoUpdateImportProcessItem> geoUpdateImportProcessItems) {
+    return geoUpdateImportProcessItems.stream().map(item -> {
       Map<String, Object> object = new HashMap<>();
-      object.put("processedItem", item.getItemNumber());
-      object.put("processedItemId", item.getId());
+      object.put("processedItem", item.getSloid());
+      object.put("processedItemId", item.getServicePointId());
       object.put("processedItemStatus", item.getResponseStatus());
       object.put("processedItemMessage", item.getResponseMessage());
       return object;
@@ -119,7 +129,7 @@ public class GeoLocationMailNotificationService {
     return stepExecution.getExecutionContext().getString("traceId");
   }
 
-  private List<ImportProcessItem> filterByStatus(List<ImportProcessItem> allImportProcessedItem,
+  private List<GeoUpdateImportProcessItem> filterByStatus(List<GeoUpdateImportProcessItem> allImportProcessedItem,
       ItemImportResponseStatus status) {
     return allImportProcessedItem.stream()
         .filter(importProcessItem -> status.equals(importProcessItem.getResponseStatus())).toList();
