@@ -2,7 +2,7 @@ package ch.sbb.importservice.listener;
 
 import ch.sbb.atlas.imports.ItemImportResponseStatus;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.importservice.entity.ImportProcessItem;
+import ch.sbb.importservice.entity.GeoUpdateImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import ch.sbb.importservice.service.mail.GeoLocationMailNotificationService;
 import ch.sbb.importservice.service.mail.MailProducerService;
@@ -51,7 +51,7 @@ public class GeoLocationJobCompletionListener implements JobExecutionListener {
 
   private void sendSuccessfullyNotification(StepExecution stepExecution) {
     String jobName = getJobName(stepExecution);
-    List<ImportProcessItem> allImportProcessedItem =
+    List<GeoUpdateImportProcessItem> allImportProcessedItem =
         importProcessedItemRepository.findAllByStepExecutionId(stepExecution.getId());
 
     MailNotification mailNotification = geoLocationMailNotificationService.buildMailSuccessNotification(jobName,

@@ -1,7 +1,7 @@
 package ch.sbb.importservice.repository;
 
 import ch.sbb.atlas.imports.ItemImportResponseStatus;
-import ch.sbb.importservice.entity.ImportProcessItem;
+import ch.sbb.importservice.entity.GeoUpdateImportProcessItem;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface ImportProcessedItemRepository extends JpaRepository<ImportProcessItem, Long> {
+public interface ImportProcessedItemRepository extends JpaRepository<GeoUpdateImportProcessItem, Long> {
 
   void deleteAllByStepExecutionId(Long stepExecutionId);
 
   void deleteAllByStepExecutionIdAndResponseStatus(Long stepExecutionId, ItemImportResponseStatus responseStatus);
 
-  List<ImportProcessItem> findAllByStepExecutionId(Long stepExecutionId);
+  List<GeoUpdateImportProcessItem> findAllByStepExecutionId(Long stepExecutionId);
 }

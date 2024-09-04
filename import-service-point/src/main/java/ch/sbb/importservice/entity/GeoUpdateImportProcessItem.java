@@ -23,10 +23,10 @@ import lombok.experimental.FieldNameConstants;
 @ToString
 @Builder
 @FieldNameConstants
-@Entity(name = "import_process_item")
-public class ImportProcessItem {
+@Entity(name = "geo_update_import_process_item")
+public class GeoUpdateImportProcessItem {
 
-  private static final String VERSION_SEQ = "import_process_item_seq";
+  private static final String VERSION_SEQ = "geo_update_import_process_item_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -37,7 +37,9 @@ public class ImportProcessItem {
 
   private String jobExecutionName;
 
-  private String itemNumber;
+  private String sloid;
+
+  private Long servicePointId;
 
   @Enumerated(EnumType.STRING)
   private ItemImportResponseStatus responseStatus;
