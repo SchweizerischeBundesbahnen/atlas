@@ -116,7 +116,10 @@
     <ul>
         <li><b th:text="'Step Execution Information: ' + ${properties.get(0).get('stepExecutionInformation')} "></b></li>
         <li><b
-                th:text="'Total Processed ServicePoint with GeoLocation to update: ' + ${properties.get(0).get('importProcessItemsSize')} "></b>
+                th:text="'Total Found ServicePoints with GeoLocation to process: ' + ${properties.get(0).get('geoLocationVersionsToProcess')} "></b>
+        </li>
+        <li><b
+                th:text="'Total Processed ServicePoints with GeoLocation to update: ' + ${properties.get(0).get('importProcessItemsSize')} "></b>
         </li>
         <li>
             <b th:text="'Total Successfully updated GeoLocations: ' + ${properties.get(0).get('successImportedItemsSize')}  "></b>
