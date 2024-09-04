@@ -13,7 +13,7 @@
         controlName="applicationType"
         label="{{ 'PAGES.BULK_IMPORT.APPLICATION' | translate }}"
         optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
-        [options]="optionsApplication"
+        [options]="OPTIONS_APPLICATION_TYPE"
       >
       </atlas-select>
     </div>
@@ -23,7 +23,7 @@
         controlName="objectType"
         label="{{ 'PAGES.BULK_IMPORT.OBJECT' | translate }}"
         optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
-        [options]="optionsObject"
+        [options]="OPTIONS_OBJECT_TYPE"
       >
       </atlas-select>
     </div>
@@ -33,7 +33,7 @@
         controlName="importType"
         label="{{ 'PAGES.BULK_IMPORT.SCENARIO' | translate }}"
         optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
-        [options]="optionsScenario"
+        [options]="OPTIONS_SCENARIO"
       >
       </atlas-select>
     </div>
@@ -71,9 +71,9 @@
     <div class="mt-5">
       <atlas-file-upload
         [(uploadedFiles)]="uploadedFiles"
-        [maxFileCount]="2"
+        [maxFileCount]="1"
         [maxFileSize]="20 * 1024 * 1024"
-        [acceptedFileType]="fileTypes"
+        [acceptedFileType]="ALLOWED_FILE_TYPES_BULK_IMPORT"
       ></atlas-file-upload>
     </div>
     <div class="mt-5 me-5 d-flex justify-content-end">
@@ -81,10 +81,10 @@
         (buttonClicked)="startBulkImport()"
         [footerEdit]="form.enabled"
         buttonDataCy="save"
-        buttonText="COMMON.SAVE"
+        buttonText="PAGES.BULK_IMPORT.START_BULK_IMPORT"
         buttonType="whiteFooterEdit"
         wrapperStyleClass="ms-3"
-        [disabled]="!isAdmin"
+        [disabled]="!isEnabledToStartImport"
       ></atlas-button>
     </div>
   </div>
