@@ -18,9 +18,9 @@ import {
 import {AtlasCharsetsValidator} from 'src/app/core/validation/charsets/atlas-charsets-validator';
 import {AtlasFieldLengthValidator} from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
 import {DecisionDetailDialogService} from '../decision/decision-detail/decision-detail-dialog.service';
-import {ValidationService} from 'src/app/core/validation/validation.service';
 import {Pages} from 'src/app/pages/pages';
 import {SloidHelper} from "../../../../../core/util/sloidHelper";
+import {ValidationService} from "../../../../../core/validation/validation.service";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
@@ -105,13 +105,24 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   addExaminant() {
     const examinantsControl = this.form.controls.examinants;
     ValidationService.validateForm(examinantsControl);
-    if (examinantsControl.valid) {
+    const allDisabled = examinantsControl.controls.every(control => control.disabled);
+    if (allDisabled || examinantsControl.valid) {
       examinantsControl.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     }
   }
 
   removeExaminant(index: number) {
-    this.form.controls.examinants.removeAt(index);
+    const examinantsControl = this.form.controls.examinants;
+    examinantsControl.removeAt(index);
+    if (!this.currentWorkflow) {
+      examinantsControl.controls.forEach(control => {
+        if (control.disabled) {
+          control.enable({ emitEvent: false });
+        }
+      });
+      examinantsControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+      this.disableFirstTwoExaminantsAndSetDeleteInvisible(examinantsControl);
+    }
     this.form.markAsDirty();
   }
 
