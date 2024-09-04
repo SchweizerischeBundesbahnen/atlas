@@ -1,4 +1,5 @@
 import BodiDependentUtils from "./bodi-dependent-utils";
+import Chainable = Cypress.Chainable;
 
 export type SePoDependentInfo = {
   designationOfficial: string,
@@ -9,7 +10,7 @@ export type SePoDependentInfo = {
 
 export default class SePoDiDependentUtils {
 
-  static createDependentStopPointWithTrafficPoint(stopPointDesignationOfficial: string): Promise<SePoDependentInfo> {
+  static createDependentStopPointWithTrafficPoint(stopPointDesignationOfficial: string): Chainable<SePoDependentInfo> {
     return SePoDiDependentUtils.createDependentStopPoint(stopPointDesignationOfficial).then(stopPointInfo => {
       return cy.request({
         method: 'GET',
@@ -42,7 +43,7 @@ export default class SePoDiDependentUtils {
     });
   }
 
-  static createDependentStopPoint(designationOfficial: string): Promise<SePoDependentInfo> {
+  static createDependentStopPoint(designationOfficial: string): Chainable<SePoDependentInfo> {
     return BodiDependentUtils.createDependentBusinessOrganisation().then(sboid => {
       return cy.request({
         method: 'POST',
