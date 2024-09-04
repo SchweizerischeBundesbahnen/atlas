@@ -8,6 +8,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -34,13 +35,10 @@ public class GeoReferenceJobService {
           servicePointVersionToUpdate.getNumber());
       ServicePointVersion editedVersion = servicePointVersionToUpdate.toBuilder()
           .servicePointGeolocation(updatedServicePointGeolocation)
+          .validFrom(LocalDate.now())
           .build();
       List<ReadServicePointVersionModel> readServicePointVersionModels =
           servicePointService.updateAndPublish(servicePointVersionToUpdate, editedVersion, currentVersions);
-
-      if (readServicePointVersionModels.size() > currentVersions.size()) {
-        throw new IllegalStateException("No additional versions should be generated after updating GeoLocation!");
-      }
 
       UpdateGeoServicePointVersionResultModel resultModel = initResultModel(
           servicePointVersionToUpdate, currentServicePointGeolocation, updatedServicePointGeolocation);
