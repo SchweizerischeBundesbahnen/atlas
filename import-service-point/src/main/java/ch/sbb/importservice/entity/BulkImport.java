@@ -54,10 +54,10 @@ public class BulkImport {
   @Enumerated(EnumType.STRING)
   private ImportType importType;
 
-  @Size(max = AtlasFieldLengths.LENGTH_100)
+  @Size(max = AtlasFieldLengths.LENGTH_500)
   private String importFileUrl;
 
-  @Size(max = AtlasFieldLengths.LENGTH_100)
+  @Size(max = AtlasFieldLengths.LENGTH_500)
   private String logFileUrl;
 
   @NotNull
