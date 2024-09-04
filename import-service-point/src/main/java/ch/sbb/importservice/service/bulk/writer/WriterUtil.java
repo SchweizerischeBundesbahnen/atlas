@@ -28,6 +28,7 @@ public class WriterUtil {
           .filter(i -> i.getLineNumber() == updateContainer.getLineNumber()).findFirst().orElseThrow();
       updateContainer.setBulkImportLogEntry(BulkImportLogEntry.builder()
           .lineNumber(updateContainer.getLineNumber())
+          /* todo: check http status code of error response to determine new status VersioningNoChanges as "warning" */
           .status(correspondingResult.isSuccess() ? BulkImportStatus.SUCCESS : BulkImportStatus.DATA_EXECUTION_ERROR)
           .errors(correspondingResult.getErrors())
           .build());

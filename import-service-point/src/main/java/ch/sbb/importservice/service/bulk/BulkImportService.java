@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service.bulk;
 
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import java.io.File;
@@ -35,6 +36,10 @@ public class BulkImportService {
 
   private BulkImport saveBulkImportMetaData(BulkImport bulkImport) {
     return bulkImportRepository.saveAndFlush(bulkImport);
+  }
+
+  public BulkImport getBulkImport(Long id) {
+    return bulkImportRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
 }

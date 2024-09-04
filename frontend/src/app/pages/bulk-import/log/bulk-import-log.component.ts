@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { BulkImportService } from '../../../api';
 
 @Component({
   selector: 'bulk-import-log',
@@ -11,7 +12,10 @@ export class BulkImportLogComponent implements OnInit {
   bulkImportId$?: Observable<{ id: number } | null>;
   logs$?: Observable<string[]>;
 
-  constructor(private readonly route: ActivatedRoute) {}
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly bulkImportService: BulkImportService,
+  ) {}
 
   ngOnInit() {
     this.bulkImportId$ = this.route.params.pipe(
@@ -26,9 +30,10 @@ export class BulkImportLogComponent implements OnInit {
       }),
     );
   }
-}
 
-function getLogs(id: number): Observable<string[]> {
-  console.log('request logs with bulk import id:', id);
-  return of(['test1', 'test2']);
+  private getLogs(id: number): Observable<string[]> {
+    console.log('request logs with bulk import id:', id);
+    this.bulkImportService.getBulkImportResults(id);
+    return of(['test1', 'test2']);
+  }
 }
