@@ -17,10 +17,10 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { BulkImportRequest } from '../model/models';
 import { BusinessObjectType } from '../model/models';
 import { ErrorResponse } from '../model/models';
 import { ImportType } from '../model/models';
-import { InlineObject4 } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -50,6 +50,19 @@ export class BulkImportService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
@@ -133,14 +146,21 @@ export class BulkImportService {
     }
 
     /**
-     * @param inlineObject4 
+     * @param bulkImportRequest 
+     * @param file File to upload
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public startServicePointImportBatch(inlineObject4?: InlineObject4, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<any>;
-    public startServicePointImportBatch(inlineObject4?: InlineObject4, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<any>>;
-    public startServicePointImportBatch(inlineObject4?: InlineObject4, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<any>>;
-    public startServicePointImportBatch(inlineObject4?: InlineObject4, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public startServicePointImportBatch(bulkImportRequest: BulkImportRequest, file: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<any>;
+    public startServicePointImportBatch(bulkImportRequest: BulkImportRequest, file: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<any>>;
+    public startServicePointImportBatch(bulkImportRequest: BulkImportRequest, file: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<any>>;
+    public startServicePointImportBatch(bulkImportRequest: BulkImportRequest, file: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (bulkImportRequest === null || bulkImportRequest === undefined) {
+            throw new Error('Required parameter bulkImportRequest was null or undefined when calling startServicePointImportBatch.');
+        }
+        if (file === null || file === undefined) {
+            throw new Error('Required parameter file was null or undefined when calling startServicePointImportBatch.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -156,15 +176,30 @@ export class BulkImportService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
             'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (bulkImportRequest !== undefined) {
+            formParams = formParams.append('bulkImportRequest', useForm ? new Blob([JSON.stringify(bulkImportRequest)], {type: 'application/json'}) : <any>bulkImportRequest) as any || formParams;
+        }
+        if (file !== undefined) {
+            formParams = formParams.append('file', <any>file) as any || formParams;
         }
 
         let responseType_: 'text' | 'json' = 'json';
@@ -173,7 +208,7 @@ export class BulkImportService {
         }
 
         return this.httpClient.post<any>(`${this.configuration.basePath}/import-service-point/v1/import/bulk`,
-            inlineObject4,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
