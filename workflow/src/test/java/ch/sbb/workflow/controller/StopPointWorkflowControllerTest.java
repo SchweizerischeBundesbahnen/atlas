@@ -107,7 +107,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @Test
   void shouldGetWorkflows() throws Exception {
 
-    StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflowWithMultipleExaminants();
+    StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
