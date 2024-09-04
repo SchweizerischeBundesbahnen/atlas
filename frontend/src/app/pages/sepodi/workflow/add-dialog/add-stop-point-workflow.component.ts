@@ -47,7 +47,7 @@ export class AddStopPointWorkflowComponent implements OnInit {
         sloid: this.data.stopPoint.sloid!,
         workflowComment: this.form.controls.workflowComment.value!,
         ccEmails: this.form.controls.ccEmails.value!,
-        examinants: this.form.controls.examinants.getRawValue().map(examinant => {
+        examinants: this.form.controls.examinants.value.map(examinant => {
           if (!examinant.firstName) examinant.firstName = null;
           if (!examinant.lastName) examinant.lastName = null;
           return examinant as StopPointPerson;
