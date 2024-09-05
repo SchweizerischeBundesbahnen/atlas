@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { UserService } from '../../service/user.service';
-import { User } from '../../../../api';
+import {ApplicationType, User} from '../../../../api';
 
 @Component({
   selector: 'app-user-select',
@@ -12,14 +12,17 @@ export class UserSelectComponent {
   constructor(private readonly userService: UserService) {}
 
   @Input() form!: FormGroup;
+  @Input() searchInAtlas?: boolean;
+  @Input() applicationType?: ApplicationType;
+
   @Output() selectionChange: EventEmitter<User> = new EventEmitter<User>();
   userSearchResults$: Observable<User[]> = of([]);
 
   searchUser(searchQuery: string): void {
-    console.log("string ", searchQuery)
     if (!searchQuery) {
       return;
     }
-    this.userSearchResults$ = this.userService.searchUsers(searchQuery);
+    this.userSearchResults$ = this.userService.searchUsers(searchQuery, this.searchInAtlas, this.applicationType);
+    console.log("user resutlts ", this.userSearchResults$)
   }
 }

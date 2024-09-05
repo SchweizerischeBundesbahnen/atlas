@@ -34,6 +34,9 @@ model/applicationType.ts
 model/basicAttributeType.ts
 model/boardingDeviceAttributeType.ts
 model/booleanOptionalAttributeType.ts
+model/bulkImportError.ts
+model/bulkImportItemExecutionResult.ts
+model/bulkImportLogEntry.ts
 model/bulkImportPermissionRestrictionModel.ts
 model/bulkImportRequest.ts
 model/bulkImportUpdateContainerServicePointUpdateCsvModel.ts
@@ -100,8 +103,6 @@ model/inlineObject1.ts
 model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
-model/itemImportResponseStatus.ts
-model/itemImportResult.ts
 model/judgementType.ts
 model/line.ts
 model/lineType.ts
