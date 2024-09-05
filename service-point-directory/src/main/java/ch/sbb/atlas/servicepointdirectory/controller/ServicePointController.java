@@ -7,7 +7,6 @@ import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel.Detail;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.location.LocationService;
@@ -25,6 +24,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundEx
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusRevokedChangeNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
+import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointSwissWithGeoMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSwissWithGeoTransfer;
@@ -253,15 +253,13 @@ public class ServicePointController implements ServicePointApiV1 {
   public List<ServicePointSwissWithGeoModel> getActualServicePointWithGeolocation() {
     List<ServicePointSwissWithGeoTransfer> actualServicePointWithGeolocation =
         servicePointService.findActualServicePointWithGeolocation();
+
     List<ServicePointSwissWithGeoModel> swissWithGeoModels = new ArrayList<>();
     actualServicePointWithGeolocation.stream()
         .collect(Collectors.groupingBy(ServicePointSwissWithGeoTransfer::getSloid))
-        .forEach((sloid, servicePointSwissWithGeoTransfers) -> {
-          List<Detail> details = new ArrayList<>();
-          servicePointSwissWithGeoTransfers.forEach(
-              swissWithGeoTransfer -> details.add(new Detail(swissWithGeoTransfer.getId(), swissWithGeoTransfer.getValidFrom())));
-          swissWithGeoModels.add(new ServicePointSwissWithGeoModel(sloid, details));
-        });
+        .forEach((sloid, swissWithGeoTransfers) ->
+            swissWithGeoModels.add(ServicePointSwissWithGeoMapper.mapTo(sloid, swissWithGeoTransfers)));
+
     return swissWithGeoModels;
   }
 
