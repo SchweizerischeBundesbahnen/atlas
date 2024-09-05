@@ -14,7 +14,6 @@ import jakarta.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.ClientAbortException;
 import org.hibernate.StaleObjectStateException;
-import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
@@ -206,21 +204,14 @@ public class AtlasExceptionHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
     Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
-    Set<String> messages = new HashSet<>(constraintViolations.size());
-    messages.addAll(constraintViolations.stream()
-        .map(
-            constraintViolation -> String.format(
-                "Path parameter '%s' value '%s' %s",
-                ((PathImpl) constraintViolation.getPropertyPath()).getLeafNode().getName(),
-                constraintViolation.getInvalidValue(),
-                constraintViolation.getMessage())).toList());
-
+    ConstraintViolationMapper constraintViolationMapper = new ConstraintViolationMapper(constraintViolations);
     return ResponseEntity.badRequest()
         .body(ErrorResponse.builder()
             .status(HttpStatus.BAD_REQUEST.value())
             .error(
                 "Param argument not valid on: " + constraintViolations.stream().findFirst().map(ConstraintViolation::getLeafBean))
-            .message("Constraint for Path parameter was violated: " + messages)
+            .message(constraintViolationMapper.getMessage())
+            .details(constraintViolationMapper.getDetails())
             .build());
   }
 
