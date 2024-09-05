@@ -2,8 +2,8 @@ package ch.sbb.importservice.writer.geo;
 
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
-import ch.sbb.importservice.entity.GeoUpdateImportProcessItem;
-import ch.sbb.importservice.repository.ImportProcessedItemRepository;
+import ch.sbb.importservice.entity.GeoUpdateProcessItem;
+import ch.sbb.importservice.repository.GeoUpdateProcessItemRepository;
 import ch.sbb.importservice.service.geo.ServicePointUpdateGeoLocationService;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ServicePointUpdateGeoApiWriter implements ItemWriter<ServicePointSw
   private ServicePointUpdateGeoLocationService sePoDiClientService;
 
   @Autowired
-  private ImportProcessedItemRepository importProcessedItemRepository;
+  private GeoUpdateProcessItemRepository geoUpdateProcessItemRepository;
 
   @BeforeStep
   public void getStepExecutionData(StepExecution stepExecution) {
@@ -41,23 +41,24 @@ public class ServicePointUpdateGeoApiWriter implements ItemWriter<ServicePointSw
   }
 
   void doWrite(List<ServicePointSwissWithGeoModel> servicePointCsvModels) {
-    servicePointCsvModels.forEach(swissWithGeoModel -> swissWithGeoModel.getDetails().forEach(detail -> {
-      GeoUpdateItemResultModel result =
-          sePoDiClientService.updateServicePointGeoLocation(swissWithGeoModel.getSloid(), detail.getId());
-      log.info("Process ServicePoint [sloid={},id={}] with GeoLocation...", swissWithGeoModel.getSloid(),
-          detail.getId());
-      if (result != null) {
-        GeoUpdateImportProcessItem geoUpdateImportProcessItem = getImportProcessItem(result);
-        importProcessedItemRepository.saveAndFlush(geoUpdateImportProcessItem);
-        log.info("Result: {}", result);
-      } else {
-        log.info("No GeoLocation updated!");
-      }
-    }));
+    servicePointCsvModels.forEach(swissWithGeoModel -> swissWithGeoModel.getDetails()
+        .forEach(detail -> {
+          GeoUpdateItemResultModel result =
+              sePoDiClientService.updateServicePointGeoLocation(swissWithGeoModel.getSloid(), detail.getId());
+          log.info("Process ServicePoint [sloid={},id={}] with GeoLocation...", swissWithGeoModel.getSloid(),
+              detail.getId());
+          if (result != null) {
+            GeoUpdateProcessItem geoUpdateProcessItem = getGeoUpdateProcessItem(result);
+            geoUpdateProcessItemRepository.saveAndFlush(geoUpdateProcessItem);
+            log.info("Result: {}", result);
+          } else {
+            log.info("No GeoLocation updated!");
+          }
+        }));
   }
 
-  private GeoUpdateImportProcessItem getImportProcessItem(GeoUpdateItemResultModel result) {
-    return GeoUpdateImportProcessItem.builder()
+  private GeoUpdateProcessItem getGeoUpdateProcessItem(GeoUpdateItemResultModel result) {
+    return GeoUpdateProcessItem.builder()
         .sloid(result.getSloid())
         .servicePointId(result.getId())
         .jobExecutionName(stepExecution.getJobExecution().getJobInstance().getJobName())

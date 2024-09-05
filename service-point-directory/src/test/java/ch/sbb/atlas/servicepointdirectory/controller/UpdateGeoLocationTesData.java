@@ -8,7 +8,7 @@ import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
 import ch.sbb.atlas.api.servicepoint.SwissLocation;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.geodata.mapper.UpdateGeoLocationResultContainer;
+import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
