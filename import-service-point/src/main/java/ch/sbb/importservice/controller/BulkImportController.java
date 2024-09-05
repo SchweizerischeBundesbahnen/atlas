@@ -1,7 +1,5 @@
 package ch.sbb.importservice.controller;
 
-import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
-import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportStatus;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.importservice.entity.BulkImport;
@@ -15,6 +13,7 @@ import ch.sbb.importservice.service.bulk.BulkImportService;
 import ch.sbb.importservice.service.bulk.template.BulkImportTemplateGenerator;
 import jakarta.validation.constraints.NotNull;
 import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
+import ch.sbb.importservice.service.bulk.log.LogFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -89,14 +88,9 @@ public class BulkImportController implements BulkImportApiV1 {
   }
 
   @Override
-  public BulkImportResult getBulkImportResults(Long id, boolean onlyFailures) {
+  public BulkImportResult getBulkImportResults(Long id) {
     BulkImport bulkImport = bulkImportService.getBulkImport(id);
-    List<BulkImportLogEntry> logEntries = bulkImportLogService.getLogEntriesFromS3LogFile(
-        bulkImport.getLogFileUrl());
-
-    if (onlyFailures) {
-      logEntries = logEntries.stream().filter(entry -> entry.getStatus() != BulkImportStatus.SUCCESS).toList();
-    }
+    LogFile logFile = bulkImportLogService.getLogFileFromS3(bulkImport.getLogFileUrl());
 
     return BulkImportResult.builder()
         .businessObjectType(bulkImport.getObjectType())
@@ -104,7 +98,10 @@ public class BulkImportController implements BulkImportApiV1 {
         .creator(bulkImport.getCreator())
         .inNameOf(bulkImport.getInNameOf())
         .importType(bulkImport.getImportType())
-        .logEntries(logEntries)
+        .logEntries(logFile.getLogEntries())
+        .nbOfSuccess(logFile.getNbOfSuccess())
+        .nbOfInfo(logFile.getNbOfInfo())
+        .nbOfError(logFile.getNbOfError())
         .build();
   }
 
