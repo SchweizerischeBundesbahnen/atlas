@@ -86,20 +86,6 @@ public class ServicePointGeolocationMapper {
         .build();
   }
 
-  public static GeolocationBaseCreateModel toEntityBase(ServicePointGeolocation servicePointGeolocation) {
-    if (servicePointGeolocation == null) {
-      return null;
-    }
-    GeolocationMapper.transformLv03andWgs84(servicePointGeolocation);
-    GeolocationMapper.checkIfCoordinatesAreTransformable(servicePointGeolocation);
-    return GeolocationBaseCreateModel.builder()
-        .spatialReference(servicePointGeolocation.getSpatialReference())
-        .north(servicePointGeolocation.getNorth())
-        .east(servicePointGeolocation.getEast())
-        .height(servicePointGeolocation.getHeight())
-        .build();
-  }
-
   private static Canton getCanton(ServicePointGeolocation servicePointGeolocation) {
     if (servicePointGeolocation.getSwissCanton() == null) {
       return null;

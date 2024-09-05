@@ -1,13 +1,11 @@
 package ch.sbb.importservice.listener;
 
-import ch.sbb.atlas.imports.ItemImportResponseStatus;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.importservice.entity.GeoUpdateImportProcessItem;
-import ch.sbb.importservice.repository.ImportProcessedItemRepository;
+import ch.sbb.importservice.entity.GeoUpdateProcessItem;
+import ch.sbb.importservice.repository.GeoUpdateProcessItemRepository;
 import ch.sbb.importservice.service.mail.GeoLocationMailNotificationService;
 import ch.sbb.importservice.service.mail.MailProducerService;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ExitStatus;
@@ -22,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class GeoLocationJobCompletionListener implements JobExecutionListener {
 
   private final GeoLocationMailNotificationService geoLocationMailNotificationService;
-  private final ImportProcessedItemRepository importProcessedItemRepository;
+  private final GeoUpdateProcessItemRepository geoUpdateProcessItemRepository;
   private final MailProducerService mailProducerService;
 
   @Override
@@ -32,15 +30,18 @@ public class GeoLocationJobCompletionListener implements JobExecutionListener {
 
   @Override
   public void afterJob(JobExecution jobExecution) {
-    Optional<StepExecution> stepExecution = jobExecution.getStepExecutions().stream().findFirst();
-    if (ExitStatus.COMPLETED.equals(jobExecution.getExitStatus()) && stepExecution.isPresent()) {
-      sendSuccessfullyNotification(stepExecution.get());
-      clearDBFromSuccessImportedItem(stepExecution.get());
-    }
-    if (ExitStatus.FAILED.equals(jobExecution.getExitStatus()) && stepExecution.isPresent()) {
-      sendUnsuccessfullyNotification(stepExecution.get());
-      importProcessedItemRepository.deleteAllByStepExecutionId(stepExecution.get().getId());
-    }
+    jobExecution.getStepExecutions().stream()
+        .findFirst()
+        .ifPresent(stepExecution -> {
+          if (ExitStatus.COMPLETED.equals(jobExecution.getExitStatus())) {
+            sendSuccessfullyNotification(stepExecution);
+          }
+          if (ExitStatus.FAILED.equals(jobExecution.getExitStatus())) {
+            sendUnsuccessfullyNotification(stepExecution);
+          }
+          geoUpdateProcessItemRepository.deleteAllByStepExecutionId(stepExecution.getId());
+        });
+
   }
 
   private void sendUnsuccessfullyNotification(StepExecution stepExecution) {
@@ -51,19 +52,13 @@ public class GeoLocationJobCompletionListener implements JobExecutionListener {
 
   private void sendSuccessfullyNotification(StepExecution stepExecution) {
     String jobName = getJobName(stepExecution);
-    List<GeoUpdateImportProcessItem> allImportProcessedItem =
-        importProcessedItemRepository.findAllByStepExecutionId(stepExecution.getId());
+    List<GeoUpdateProcessItem> allImportProcessedItem =
+        geoUpdateProcessItemRepository.findAllByStepExecutionId(stepExecution.getId());
 
     MailNotification mailNotification = geoLocationMailNotificationService.buildMailSuccessNotification(jobName,
         allImportProcessedItem,
         stepExecution);
     mailProducerService.produceMailNotification(mailNotification);
-  }
-
-  private void clearDBFromSuccessImportedItem(StepExecution stepExecution) {
-    log.info("Deleting item processed from execution: {} ", stepExecution);
-    importProcessedItemRepository.deleteAllByStepExecutionIdAndResponseStatus(stepExecution.getId(),
-        ItemImportResponseStatus.SUCCESS);
   }
 
   private String getJobName(StepExecution stepExecution) {

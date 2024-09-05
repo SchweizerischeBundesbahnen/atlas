@@ -4,7 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.servicepointdirectory.controller.UpdateGeoLocationTesData;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.geodata.mapper.UpdateGeoLocationResultContainer.VersionDataRage;
+import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer;
+import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer.VersionDataRage;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

@@ -9,8 +9,8 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel.Detail;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
-import ch.sbb.atlas.imports.ItemImportResponseStatus;
-import ch.sbb.importservice.repository.ImportProcessedItemRepository;
+import ch.sbb.atlas.imports.ItemProcessResponseStatus;
+import ch.sbb.importservice.repository.GeoUpdateProcessItemRepository;
 import ch.sbb.importservice.service.geo.ServicePointUpdateGeoLocationService;
 import java.time.LocalDate;
 import java.util.List;
@@ -32,7 +32,7 @@ class ServicePointUpdateGeoApiWriterTest {
   private ServicePointUpdateGeoLocationService sePoDiClientService;
 
   @Mock
-  private ImportProcessedItemRepository importProcessedItemRepository;
+  private GeoUpdateProcessItemRepository geoUpdateProcessItemRepository;
 
   @InjectMocks
   private ServicePointUpdateGeoApiWriter geoApiWriter;
@@ -56,7 +56,7 @@ class ServicePointUpdateGeoApiWriterTest {
     GeoUpdateItemResultModel successResultModel = GeoUpdateItemResultModel.builder()
         .sloid(swissWithGeoModel1.getSloid())
         .id(swissWithGeoModel1.getDetails().getFirst().getId())
-        .status(ItemImportResponseStatus.SUCCESS)
+        .status(ItemProcessResponseStatus.SUCCESS)
         .message("Tutto Bene")
         .build();
     doReturn(successResultModel).when(sePoDiClientService).updateServicePointGeoLocation(swissWithGeoModel1.getSloid(),
@@ -74,7 +74,7 @@ class ServicePointUpdateGeoApiWriterTest {
         swissWithGeoModel2.getDetails().getFirst().getId());
     verify(sePoDiClientService).updateServicePointGeoLocation(swissWithGeoModel2.getSloid(),
         swissWithGeoModel2.getDetails().getLast().getId());
-    verify(importProcessedItemRepository,times(1)).saveAndFlush(any());
+    verify(geoUpdateProcessItemRepository, times(1)).saveAndFlush(any());
 
   }
 
