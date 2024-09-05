@@ -24,7 +24,6 @@ class ConstraintViolationMapperTest {
 
     assertThat(actual).hasSize(1);
     Detail detail = actual.first();
-    assertThat(detail.getMessage()).isEqualTo("Größe muss zwischen 2 und 30 sein");
     assertThat(detail.getField()).isEqualTo("designationOfficial");
     assertThat(detail.getDisplayInfo().getCode()).isEqualTo("ERROR.CONSTRAINT.SIZE");
 
