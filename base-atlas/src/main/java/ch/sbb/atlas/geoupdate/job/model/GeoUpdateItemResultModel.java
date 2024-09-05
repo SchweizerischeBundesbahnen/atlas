@@ -1,6 +1,6 @@
 package ch.sbb.atlas.geoupdate.job.model;
 
-import ch.sbb.atlas.imports.ItemImportResponseStatus;
+import ch.sbb.atlas.imports.ItemProcessResponseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +20,6 @@ public class GeoUpdateItemResultModel {
 
   private String message;
 
-  private ItemImportResponseStatus status;
+  private ItemProcessResponseStatus status;
 
 }
