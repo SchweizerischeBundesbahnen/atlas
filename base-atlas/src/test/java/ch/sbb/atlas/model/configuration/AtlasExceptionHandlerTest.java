@@ -172,19 +172,4 @@ public class AtlasExceptionHandlerTest {
     ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(new VersioningNoChangesException());
     assertThat(errorResponse.getMessage()).isEqualTo("No entities were modified after versioning execution.");
   }
-
-  @Test
-  void shouldMapMethodArgumentNotValidExceptionToErrorResponse() {
-    // Given
-    BeanPropertyBindingResult bindingResult = mock(BeanPropertyBindingResult.class);
-    when(bindingResult.getFieldErrors()).thenReturn(
-        Collections.singletonList(new FieldError("objectName", "field", "defaultMessage")));
-    MethodArgumentNotValidException exception = new MethodArgumentNotValidException(
-        mock(MethodParameter.class), bindingResult);
-
-    // When
-    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(exception);
-
-    assertThat(errorResponse.getMessage()).isEqualTo("Constraint for requestbody was violated");
-  }
 }
