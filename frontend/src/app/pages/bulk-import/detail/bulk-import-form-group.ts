@@ -23,14 +23,13 @@ export class BulkImportFormGroupBuilder {
     })
   }
 
-  static buildBulkImport(formGroup: FormGroup<BulkImportFormGroup>, file: File) {
+  static buildBulkImport(formGroup: FormGroup<BulkImportFormGroup>) {
     return {
       applicationType: formGroup.controls.applicationType.value!,
       objectType: formGroup.controls.objectType.value!,
       importType: formGroup.controls.importType.value!,
       inNameOf:  formGroup.controls.userSearchForm.controls.userSearch.value?.userId,
       emails: formGroup.controls.emails.value!,
-      file: file
     }
   }
 }
