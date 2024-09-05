@@ -20,6 +20,9 @@ export interface BulkImportResult {
     creator?: string;
     creationDate?: string;
     inNameOf?: string;
+    nbOfSuccess?: number;
+    nbOfInfo?: number;
+    nbOfError?: number;
     logEntries?: Array<BulkImportLogEntry>;
 }
 
