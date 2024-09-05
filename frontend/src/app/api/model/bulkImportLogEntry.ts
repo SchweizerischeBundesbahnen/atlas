@@ -18,11 +18,12 @@ export interface BulkImportLogEntry {
     errors?: Array<BulkImportError>;
 }
 export namespace BulkImportLogEntry {
-    export type StatusEnum = 'SUCCESS' | 'DATA_VALIDATION_ERROR' | 'DATA_EXECUTION_ERROR';
+    export type StatusEnum = 'SUCCESS' | 'DATA_VALIDATION_ERROR' | 'DATA_EXECUTION_ERROR' | 'INFO';
     export const StatusEnum = {
         Success: 'SUCCESS' as StatusEnum,
         DataValidationError: 'DATA_VALIDATION_ERROR' as StatusEnum,
-        DataExecutionError: 'DATA_EXECUTION_ERROR' as StatusEnum
+        DataExecutionError: 'DATA_EXECUTION_ERROR' as StatusEnum,
+        Info: 'INFO' as StatusEnum
     };
 }
 

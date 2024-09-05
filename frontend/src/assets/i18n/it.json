@@ -1473,6 +1473,11 @@
       "DOWNLOAD": "Modello di importazione",
       "DISABLED_MESSAGE": "Selezionare l'applicazione, l'oggetto e lo scenario per creare il modello di importazione."
     },
+    "RESULT": {
+      "SUCCESS": "Con successo",
+      "ERROR": "Erroneo",
+      "INFO": "Ignorato"
+    },
     "ERROR": {
       "EXCEL_CONVERSION": "Non è stato possibile leggere correttamente il file Excel utilizzato. Assicuratevi di utilizzare il file secondo il modello.\nFonte dell'errore in riga:{{rowIndex}}, colonna:{{columnIndex}}",
       "FILE_HEADER": "Il file utilizzato non ha la riga di intestazione prevista. Assicuratevi di utilizzare il file secondo il modello."
