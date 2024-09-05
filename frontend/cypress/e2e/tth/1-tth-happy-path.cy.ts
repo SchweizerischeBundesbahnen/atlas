@@ -62,8 +62,8 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
     cy.intercept('GET', 'line-directory/v1/timetable-hearing/years?**').as('loadYears');
     cy.get(DataCy.NEW_STATEMENT_BUTTON).click();
 
-    CommonUtils.selectItemFromDropDown(DataCy.TTH_DETAIL_SELECT_YEAR, String(selectedHearingYear));
     cy.wait('@loadYears').its('response.statusCode').should('eq', 200);
+    CommonUtils.selectItemFromDropDown(DataCy.TTH_DETAIL_SELECT_YEAR, String(selectedHearingYear));
 
     CommonUtils.getClearType(DataCy.STATEMENT_STOP_PLACE, 'Wiesenbach');
     CommonUtils.getClearType(DataCy.STATEMENT_FIRTS_NAME, 'Khvicha');
