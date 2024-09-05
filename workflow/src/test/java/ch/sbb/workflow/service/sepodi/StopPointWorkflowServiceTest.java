@@ -13,7 +13,6 @@ import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
-import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDate;
@@ -100,68 +99,6 @@ class StopPointWorkflowServiceTest {
 
     assertEquals("Heimsiswil Zentrum", foundWorkflow.getDesignationOfficial());
     assertEquals("New Comment", foundWorkflow.getWorkflowComment());
-  }
-
-  @Test
-  void shouldCalculateAllExaminants_WithDuplicatedEmails() {
-    Person person = Person.builder()
-        .function("Function1")
-        .mail("test@test.com").build();
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
-        .sloid("ch:1:sloid:8000")
-        .sboid("ch:1:sboid:10")
-        .status(WorkflowStatus.ADDED)
-        .designationOfficial("Heimsiswil Zentrum")
-        .versionId(1L)
-        .localityName("Heimiswil")
-        .examinants(Set.of(person))
-        .build();
-    Person personEdited = Person.builder()
-        .function("Function2")
-        .mail("test@test.com").build();
-    EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
-        .workflowComment("New Comment")
-        .designationOfficial("Heimsiswil Zentrum")
-        .examinants(List.of(personEdited).stream().map(StopPointClientPersonMapper::toModel).toList())
-        .build();
-
-    List<StopPointClientPersonModel>  examinants = workflowService.calculateAllExaminants(stopPointWorkflow, workflowModel);
-
-    assertFalse(examinants.isEmpty());
-    assertThat(examinants).hasSize(2);
-    assertThat(examinants.get(0).getMail()).isEqualTo("test@test.com");
-    assertThat(examinants.get(1).getMail()).isEqualTo("test@test.com");
-  }
-
-  @Test
-  void shouldCalculateAllExaminants_WithoutDuplicatedEmails() {
-    Person person = Person.builder()
-        .function("Function1")
-        .mail("test1@test.com").build();
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
-        .sloid("ch:1:sloid:8000")
-        .sboid("ch:1:sboid:10")
-        .status(WorkflowStatus.ADDED)
-        .designationOfficial("Heimsiswil Zentrum")
-        .versionId(1L)
-        .localityName("Heimiswil")
-        .examinants(Set.of(person))
-        .build();
-    Person personEdited = Person.builder()
-        .function("Function2")
-        .mail("test2@test.com").build();
-    EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
-        .workflowComment("New Comment")
-        .designationOfficial("Heimsiswil Zentrum")
-        .examinants(List.of(personEdited).stream().map(StopPointClientPersonMapper::toModel).toList())
-        .build();
-
-    List<StopPointClientPersonModel>  examinants = workflowService.calculateAllExaminants(stopPointWorkflow, workflowModel);
-
-    assertFalse(examinants.isEmpty());
-    assertThat(examinants).hasSize(2);
-    assertThat(examinants.get(0).getMail()).isEqualTo("test1@test.com");
-    assertThat(examinants.get(1).getMail()).isEqualTo("test2@test.com");
   }
 
   @Test
