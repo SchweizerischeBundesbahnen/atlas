@@ -23,6 +23,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.ImportFiles;
 import ch.sbb.importservice.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.entity.BulkImport;
+import ch.sbb.importservice.model.BulkImportRequest;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.repository.BulkImportRepository;
@@ -102,8 +103,12 @@ class BulkImportLogFileIntegrationTest {
     // When
     MockMultipartFile multipartFile = new MockMultipartFile("file", "service-point"
         + "-update-mix.csv", CSV_CONTENT_TYPE, Files.readAllBytes(file.toPath()));
-    bulkImportController.startServicePointImportBatch(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.UPDATE,
-        multipartFile);
+    BulkImportRequest importRequest = BulkImportRequest.builder()
+                    .applicationType(ApplicationType.SEPODI)
+                    .objectType(BusinessObjectType.SERVICE_POINT)
+                    .importType(ImportType.UPDATE)
+                    .build();
+    bulkImportController.startServicePointImportBatch(importRequest, multipartFile);
 
     // Then
     assertThat(bulkImportRepository.count()).isEqualTo(1);
