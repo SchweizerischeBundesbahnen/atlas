@@ -25,7 +25,7 @@ class ConstraintViolationMapperTest {
     assertThat(actual).hasSize(1);
     Detail detail = actual.first();
     assertThat(detail.getField()).isEqualTo("designationOfficial");
-    assertThat(detail.getDisplayInfo().getCode()).isEqualTo("ERROR.CONSTRAINT.SIZE");
+    assertThat(detail.getDisplayInfo().getCode()).isEqualTo("ERROR.CONSTRAINT_VIOLATION.SIZE");
 
     List<Parameter> neededDetails = List.of(
         new Parameter("propertyPath", "designationOfficial"),
