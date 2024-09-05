@@ -20,7 +20,7 @@ public class UserInformationApiController implements UserInformationApiV1 {
   @Override
   public List<UserModel> searchUsers(String searchQuery, boolean searchInAtlas, ApplicationType applicationType) {
 
-    if (searchInAtlas) {
+    if (!searchInAtlas) {
       return graphApiService.searchUsers(searchQuery);
     }
     else {
