@@ -55,6 +55,8 @@
       <app-user-select
         *ngIf="isUserSelectEnabled"
         [form]="form.controls.userSearchForm"
+        [searchInAtlas]="true"
+        [applicationType]="form.controls.applicationType.value!"
       ></app-user-select>
     </div>
     <div class="d-flex flex-column col-3 pe-3">
