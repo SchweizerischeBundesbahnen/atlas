@@ -14,7 +14,7 @@ public class ServicePointGeoLocationUtils {
     DiffResult<ServicePointGeolocation> geolocationDiffResult = getServicePointGeolocationDiffResult(
         current, updated);
 
-    return geolocationDiffResult.getDiffs().size() > 0;
+    return !geolocationDiffResult.getDiffs().isEmpty();
   }
 
   public static String getDiffServicePointGeolocationAsMessage(ServicePointGeolocation current,

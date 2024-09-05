@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.geodata.mapper;
+package ch.sbb.atlas.servicepointdirectory.model;
 
 import static ch.sbb.atlas.servicepointdirectory.service.georeference.ServicePointGeoLocationUtils.getDiffServicePointGeolocationAsMessage;
 
@@ -6,18 +6,12 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.FieldNameConstants;
-import lombok.experimental.SuperBuilder;
+import lombok.Getter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@EqualsAndHashCode
-@SuperBuilder
-@FieldNameConstants
+@Getter
+@Builder
 public class UpdateGeoLocationResultContainer {
 
   private Long id;
@@ -54,10 +48,8 @@ public class UpdateGeoLocationResultContainer {
   }
 
   @AllArgsConstructor
-  @NoArgsConstructor
   @Data
-  @EqualsAndHashCode
-  @SuperBuilder
+  @Builder
   public static class VersionDataRage {
 
     private LocalDate validFrom;
