@@ -21,12 +21,16 @@ import lombok.NoArgsConstructor;
 public class BulkImportItemExecutionResult {
 
   private int lineNumber;
-
   private ErrorResponse errorResponse;
 
   @JsonIgnore
   public boolean isSuccess() {
     return errorResponse == null;
+  }
+
+  @JsonIgnore
+  public boolean isInfo() {
+    return errorResponse.getStatus() == ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS;
   }
 
   @JsonIgnore
