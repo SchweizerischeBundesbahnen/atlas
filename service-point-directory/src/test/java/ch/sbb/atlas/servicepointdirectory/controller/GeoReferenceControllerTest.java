@@ -9,10 +9,10 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
-import ch.sbb.atlas.imports.ItemImportResponseStatus;
+import ch.sbb.atlas.imports.ItemProcessResponseStatus;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.atlas.servicepointdirectory.geodata.mapper.UpdateGeoLocationResultContainer;
+import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceJobService;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,7 +64,7 @@ class GeoReferenceControllerTest {
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getStatus()).isEqualTo(ItemImportResponseStatus.SUCCESS);
+    assertThat(result.getStatus()).isEqualTo(ItemProcessResponseStatus.SUCCESS);
     assertThat(result.getSloid()).isEqualTo(sloid);
     assertThat(result.getId()).isEqualTo(id);
     assertThat(result.getMessage()).isEqualTo(
@@ -96,7 +96,7 @@ class GeoReferenceControllerTest {
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getStatus()).isEqualTo(ItemImportResponseStatus.FAILED);
+    assertThat(result.getStatus()).isEqualTo(ItemProcessResponseStatus.FAILED);
     assertThat(result.getSloid()).isEqualTo(sloid);
     assertThat(result.getId()).isEqualTo(id);
     assertThat(result.getMessage()).isEqualTo("Exception");

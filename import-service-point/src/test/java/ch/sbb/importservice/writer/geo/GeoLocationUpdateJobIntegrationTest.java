@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.importservice.client.ServicePointClient;
 import ch.sbb.importservice.service.mail.MailProducerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
@@ -24,7 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class GeoLocationUpdateJobIntegrationTest {
+class GeoLocationUpdateJobIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;
@@ -32,6 +33,9 @@ public class GeoLocationUpdateJobIntegrationTest {
   @Qualifier(UPDATE_SERVICE_POINT_GEO_JOB)
   @Autowired
   private Job updateServicePointGeoJob;
+
+  @MockBean
+  private ServicePointClient servicePointClient;
 
   @MockBean
   private MailProducerService mailProducerService;
