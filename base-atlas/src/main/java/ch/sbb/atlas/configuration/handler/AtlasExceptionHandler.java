@@ -307,6 +307,7 @@ public class AtlasExceptionHandler {
   }
 
   public ErrorResponse mapToErrorResponse(Exception exception) {
+    log.error("Data Execution Error! Mapping Excecption", exception);
     if (exception instanceof AtlasException atlasException) {
       return atlasException(atlasException).getBody();
     }
