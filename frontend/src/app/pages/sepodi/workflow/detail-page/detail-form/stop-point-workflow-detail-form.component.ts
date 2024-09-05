@@ -105,8 +105,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   addExaminant() {
     const examinantsControl = this.form.controls.examinants;
     ValidationService.validateForm(examinantsControl);
-    const allDisabled = examinantsControl.controls.every(control => control.disabled);
-    if (allDisabled || examinantsControl.valid) {
+    if (examinantsControl.disabled || examinantsControl.valid) {
       examinantsControl.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     }
   }
