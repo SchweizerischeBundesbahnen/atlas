@@ -1,5 +1,97 @@
-@if (bulkImportId$ | async; as data) {
-  <p>{{ data.id }}</p>
+@if (data$ | async; as data) {
+  @if (data.importResult) {
+    <p>{{ data.id }}</p>
+    <p>{{ data.importResult | json }}</p>
+
+    <h1>Import Result</h1>
+
+    <div class="d-flex">
+      <aside>
+        <p><span class="font-bold-base">Import Type: </span>{{ data.importResult.importType }}</p>
+        <p>
+          <span class="font-bold-base">Object Type: </span
+          >{{ data.importResult.businessObjectType }}
+        </p>
+        <p><span class="font-bold-base">Durchgeführt von: </span>{{ data.importResult.creator }}</p>
+        <p>
+          <span class="font-bold-base">Durchgeführt am: </span>{{ data.importResult.creationDate }}
+        </p>
+        @if (data.importResult.inNameOf) {
+          <p><span class="font-bold-base">Im Namen von: </span>{{ data.importResult.inNameOf }}</p>
+        }
+
+        <ng-template #statusTemplate let-color="color" let-text="text" let-nbOfLines="nbOfLines">
+          <div class="d-flex align-items-center">
+            <div class="square-{{ color }}"></div>
+            <span class="ps-2">{{ nbOfLines }}</span>
+            <span class="font-bold-base ps-2">({{ text }})</span>
+          </div>
+        </ng-template>
+
+        @for (
+          item of [
+            {
+              color: 'success',
+              text: 'BULK_IMPORT.RESULT.SUCCESS' | translate,
+              nbOfLines: data.importResult.nbOfSuccess,
+            },
+            {
+              color: 'info',
+              text: 'BULK_IMPORT.RESULT.INFO' | translate,
+              nbOfLines: data.importResult.nbOfInfo,
+            },
+            {
+              color: 'error',
+              text: 'BULK_IMPORT.RESULT.ERROR' | translate,
+              nbOfLines: data.importResult.nbOfError,
+            },
+          ];
+          track $index
+        ) {
+          <ng-container
+            [ngTemplateOutlet]="statusTemplate"
+            [ngTemplateOutletContext]="item"
+          ></ng-container>
+        }
+      </aside>
+
+      <main class="w-100">
+        @for (entry of data.importResult.logEntries; track $index) {
+          <div class="d-flex align-items-center p-2">
+            <span class="font-bold-base pe-2">{{ entry.lineNumber }}</span>
+            <div
+              class="d-flex align-items-center closed-box p-2 cursor-pointer"
+              (click)="entry.expanded = !entry.expanded"
+            >
+              <div
+                class="square-{{
+                  entry.status === 'SUCCESS'
+                    ? 'success'
+                    : entry.status === 'INFO'
+                      ? 'info'
+                      : 'error'
+                }}"
+              ></div>
+              <div class="d-flex justify-content-between w-100 ps-2">
+                <span>{{ entry.status }}</span>
+                <span>{{ entry.errors?.length }}</span>
+              </div>
+              <i [class]="entry.expanded ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+            </div>
+          </div>
+          @if (entry.expanded) {
+            <ul>
+              <li>error1</li>
+              <li>error2</li>
+              <li>error3</li>
+            </ul>
+          }
+        }
+      </main>
+    </div>
+  } @else {
+    <p>id not valid</p>
+  }
 } @else {
-  <p>You are lost bro</p>
+  <app-loading-spinner [isLoading]="true"></app-loading-spinner>
 }

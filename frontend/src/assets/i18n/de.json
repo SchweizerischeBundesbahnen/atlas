@@ -1473,6 +1473,11 @@
       "DOWNLOAD": "Importvorlage",
       "DISABLED_MESSAGE": "Bitte wählen Sie Applikation, Objekt und Szenario aus damit die Importvorlage erstellt werden kann."
     },
+    "RESULT": {
+      "SUCCESS": "Erfolgreich",
+      "ERROR": "Fehlerhaft",
+      "INFO": "Ignoriert"
+    },
     "ERROR": {
       "EXCEL_CONVERSION": "Die verwendete Excel-Datei konnte nicht richtig gelesen werden. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen.\nFehlerquelle in Zeile:{{rowIndex}}, Spalte:{{columnIndex}}",
       "FILE_HEADER": "Die verwendete Datei hat nicht die erwartete Kopfzeile. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen."

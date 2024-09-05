@@ -1,0 +1,28 @@
+@use 'src/styles/variables' as v;
+
+.square {
+  border: 1px solid v.$black;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+
+  &-error {
+    @extend .square;
+    background-color: red;
+  }
+
+  &-info {
+    @extend .square;
+    background-color: blue;
+  }
+
+  &-success {
+    @extend .square;
+    background-color: green;
+  }
+}
+
+.closed-box {
+  width: 100%;
+  border: 2px solid v.$primary-400;
+}

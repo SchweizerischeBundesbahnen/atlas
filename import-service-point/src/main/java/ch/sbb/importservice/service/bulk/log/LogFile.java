@@ -14,6 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LogFile {
 
+  private Long nbOfSuccess;
+  private Long nbOfInfo;
+  private Long nbOfError;
+
   @Builder.Default
   private List<BulkImportLogEntry> logEntries = new ArrayList<>();
 
