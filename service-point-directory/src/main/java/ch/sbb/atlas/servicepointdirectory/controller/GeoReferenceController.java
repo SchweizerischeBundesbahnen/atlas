@@ -1,11 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static ch.sbb.atlas.imports.ItemProcessResponseStatus.FAILED;
+import static ch.sbb.atlas.imports.ItemProcessResponseStatus.SUCCESS;
+
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
-import ch.sbb.atlas.imports.ItemImportResponseStatus;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.api.GeoReferenceApiV1;
-import ch.sbb.atlas.servicepointdirectory.geodata.mapper.UpdateGeoLocationResultContainer;
+import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceJobService;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import lombok.RequiredArgsConstructor;
@@ -30,11 +32,20 @@ public class GeoReferenceController implements GeoReferenceApiV1 {
     try {
       UpdateGeoLocationResultContainer result = geoReferenceJobService.updateGeoLocation(id);
       if (result != null) {
-        return new GeoUpdateItemResultModel(result.getSloid(), result.getId(),
-            result.getResponseMessage(), ItemImportResponseStatus.SUCCESS);
+        return GeoUpdateItemResultModel.builder()
+            .sloid(result.getSloid())
+            .id(result.getId())
+            .message(result.getResponseMessage())
+            .status(SUCCESS)
+            .build();
       }
     } catch (Exception e) {
-      return new GeoUpdateItemResultModel(sloid, id, e.getMessage(), ItemImportResponseStatus.FAILED);
+      return GeoUpdateItemResultModel.builder()
+          .sloid(sloid)
+          .id(id)
+          .message(e.getMessage())
+          .status(FAILED)
+          .build();
     }
     return null;
   }
