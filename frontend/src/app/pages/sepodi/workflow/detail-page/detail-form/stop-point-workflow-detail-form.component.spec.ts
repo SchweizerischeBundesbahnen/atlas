@@ -72,6 +72,20 @@ describe('StopPointWorkflowDetailFormComponent', () => {
   });
 
   it('should remove examinant', () => {
+    const firstExaminant = component.form.controls.examinants.at(0);
+    firstExaminant.controls.firstName.setValue('firstName');
+    firstExaminant.controls.lastName.setValue('lastName');
+    firstExaminant.controls.personFunction.setValue('personFunction');
+    firstExaminant.controls.organisation.setValue('organisation');
+    firstExaminant.controls.mail.setValue('mail@sbb.ch');
+
+    component.addExaminant();
+    expect(component.form.controls.examinants.length).toBe(2);
+
+    component.form.controls.examinants.at(0).disable();
+    component.form.controls.examinants.at(1).disable();
+    component.removeExaminant(0);
+    expect(component.form.controls.examinants.length).toBe(1);
     component.removeExaminant(0);
     expect(component.form.controls.examinants.length).toBe(0);
   });
