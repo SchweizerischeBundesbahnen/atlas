@@ -15,6 +15,9 @@ public class BulkImportResult {
   private String creator;
   private LocalDateTime creationDate;
   private String inNameOf;
+  private Long nbOfSuccess;
+  private Long nbOfInfo;
+  private Long nbOfError;
   private List<BulkImportLogEntry> logEntries;
 
 }

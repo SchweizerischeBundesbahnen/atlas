@@ -54,7 +54,6 @@ public interface BulkImportApiV1 {
       @PathVariable ImportType importType);
 
   @GetMapping("{id}")
-  BulkImportResult getBulkImportResults(@PathVariable Long id,
-      @RequestParam(name = "onlyFailures", defaultValue = "true") boolean onlyFailures);
+  BulkImportResult getBulkImportResults(@PathVariable Long id);
 
 }

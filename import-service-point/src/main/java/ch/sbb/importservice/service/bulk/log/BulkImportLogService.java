@@ -2,6 +2,7 @@ package ch.sbb.importservice.service.bulk.log;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
+import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportStatus;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.entity.BulkImportLog;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -53,17 +56,23 @@ public class BulkImportLogService {
         .map(i -> mapToLogEntry(i.getLogEntry()))
         .sorted(Comparator.comparing(BulkImportLogEntry::getLineNumber))
         .toList();
+    Map<BulkImportStatus, Long> statusCounts = logEntries.stream().collect(Collectors.groupingBy(i -> i.getStatus(),
+        Collectors.counting()));
     return LogFile.builder()
-        .logEntries(logEntries)
+        .nbOfSuccess(statusCounts.getOrDefault(BulkImportStatus.SUCCESS, 0L))
+        .nbOfInfo(statusCounts.getOrDefault(BulkImportStatus.INFO, 0L))
+        .nbOfError(statusCounts.getOrDefault(BulkImportStatus.DATA_EXECUTION_ERROR, 0L) + statusCounts.getOrDefault(
+            BulkImportStatus.DATA_VALIDATION_ERROR, 0L))
+        .logEntries(logEntries.stream().filter(i -> i.getStatus() != BulkImportStatus.SUCCESS).toList())
         .build();
   }
 
-  public List<BulkImportLogEntry> getLogEntriesFromS3LogFile(String logFileUrl) {
+  public LogFile getLogFileFromS3(String logFileUrl) {
     File logFile = bulkImportS3BucketService.downloadImportFile(logFileUrl);
     try {
-      return objectMapper.readValue(logFile, LogFile.class).getLogEntries();
+      return objectMapper.readValue(logFile, LogFile.class);
     } catch (IOException e) {
-      throw new RuntimeException("Unexpected exception during parsing of Bulk Import Result Log File to Java List occurred!", e);
+      throw new RuntimeException("Unexpected exception during parsing of Bulk Import Result Log File!", e);
     }
   }
 
