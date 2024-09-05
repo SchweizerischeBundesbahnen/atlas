@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -57,24 +56,11 @@ public class StopPointWorkflowService {
     return workflowRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
-  public List<StopPointClientPersonModel> calculateAllExaminants(StopPointWorkflow stopPointWorkflow,
-      EditStopPointWorkflowModel workflowModel) {
-    List<StopPointClientPersonModel> existingExaminantsModel = stopPointWorkflow.getExaminants().stream()
-        .map(StopPointClientPersonMapper::toModel)
-        .collect(Collectors.toList());
-    List<StopPointClientPersonModel> newExaminantsModel = workflowModel.getExaminants();
-    if (newExaminantsModel != null) {
-      existingExaminantsModel.addAll(newExaminantsModel);
-    }
-    return existingExaminantsModel;
-  }
-
   public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
-    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    List<StopPointClientPersonModel> allExaminants = calculateAllExaminants(stopPointWorkflow, workflowModel);
-    if (allExaminants != null && !allExaminants.isEmpty()) {
+    if (workflowModel.getExaminants() != null && !workflowModel.getExaminants().isEmpty()) {
       checkIfAllExaminantEmailsAreUnique(workflowModel.getExaminants());
     }
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
 
     if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
       throw new StopPointWorkflowStatusMustBeAddedException();
