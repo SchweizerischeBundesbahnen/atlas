@@ -11,7 +11,7 @@ const compat = new FlatCompat({
 });
 
 module.exports = [{
-    ignores: ["projects/**/*", "**node_modules/**/*", "src/app/api/**/*"],
+    ignores: ["projects/**/*", "**node_modules/**/*", "src/app/api/**/*", "cypress.config.ts"],
 }, ...compat.extends(
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -48,7 +48,24 @@ module.exports = [{
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
     },
-}, ...compat.extends("plugin:@angular-eslint/template/recommended").map(config => ({
+}, {
+  files: ["cypress/**/*.ts"],
+
+  languageOptions: {
+    ecmaVersion: 5,
+    sourceType: "script",
+
+    parserOptions: {
+      project: ["cypress/tsconfig.json"],
+      createDefaultProgram: true,
+    },
+  },
+
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+  },
+},
+  ...compat.extends("plugin:@angular-eslint/template/recommended").map(config => ({
     ...config,
     files: ["**/*.html"],
 })), {
