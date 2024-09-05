@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.service;
 
+import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
@@ -11,6 +12,7 @@ import ch.sbb.atlas.user.administration.mapper.UserPermissionCreateMapper;
 import ch.sbb.atlas.user.administration.mapper.UserPermissionMapper;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -86,5 +88,19 @@ public class UserAdministrationService {
         .filter(userPermission -> userPermission.getApplication()
             == applicationType)
         .findFirst();
+  }
+
+  public List<UserModel> filterForUserInAtlas(List<UserModel> foundUsers, ApplicationType applicationType){
+    List<UserModel> test = new ArrayList<>();
+
+    for (UserModel userModel : foundUsers) {
+      List<UserPermission> list = userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication(userModel.getSbbUserId(), applicationType);
+      for (UserPermission userPermission : list) {
+        System.out.println("test");
+      }
+
+    }
+
+    return test;
   }
 }
