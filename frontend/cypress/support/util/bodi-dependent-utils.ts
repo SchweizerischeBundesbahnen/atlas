@@ -1,8 +1,10 @@
+import Chainable = Cypress.Chainable;
+
 export default class BodiDependentUtils {
 
   static BO_DESCRIPTION = 'e2e-dependent-desc-de';
 
-  static createDependentBusinessOrganisation(): Promise<string> {
+  static createDependentBusinessOrganisation(): Chainable<string> {
     return cy.request({
       method: 'POST',
       failOnStatusCode: false,
@@ -16,12 +18,12 @@ export default class BodiDependentUtils {
         const sboidParameters = response.body.details[0].displayInfo.parameters.filter((parameter: {
           key: string;
         }) => parameter.key == "sboid");
-        const sboid = sboidParameters[0].value;
+        const sboid: string = sboidParameters[0].value;
         window.sessionStorage.setItem('sboid', sboid);
         return sboid;
       } else {
         expect(response).property('status').to.equal(201);
-        const sboid = response.body.sboid;
+        const sboid: string = response.body.sboid;
         window.sessionStorage.setItem('sboid', sboid);
         return sboid;
       }

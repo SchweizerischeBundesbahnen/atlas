@@ -59,9 +59,12 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
     cy.get(DataCy.TTH_TAB_ACTIVE).should('be.visible').click();
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Tessin');
 
+    cy.intercept('GET', 'line-directory/v1/timetable-hearing/years?**').as('loadYears');
     cy.get(DataCy.NEW_STATEMENT_BUTTON).click();
 
+    cy.wait('@loadYears').its('response.statusCode').should('eq', 200);
     CommonUtils.selectItemFromDropDown(DataCy.TTH_DETAIL_SELECT_YEAR, String(selectedHearingYear));
+
     CommonUtils.getClearType(DataCy.STATEMENT_STOP_PLACE, 'Wiesenbach');
     CommonUtils.getClearType(DataCy.STATEMENT_FIRTS_NAME, 'Khvicha');
     CommonUtils.getClearType(DataCy.STATEMENT_LAST_NAME, 'Kvaratskhelia');
