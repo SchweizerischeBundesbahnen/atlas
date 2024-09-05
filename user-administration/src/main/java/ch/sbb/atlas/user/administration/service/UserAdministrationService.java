@@ -91,16 +91,21 @@ public class UserAdministrationService {
   }
 
   public List<UserModel> filterForUserInAtlas(List<UserModel> foundUsers, ApplicationType applicationType){
-    List<UserModel> test = new ArrayList<>();
+    List<UserModel> permittedUser = new ArrayList<>();
 
     for (UserModel userModel : foundUsers) {
+
+      //TODO:  findBySbbUserIdIgnoreCaseAndApplication nicht zu liste deklarieren.
       List<UserPermission> list = userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication(userModel.getSbbUserId(), applicationType);
       for (UserPermission userPermission : list) {
-        System.out.println("test");
+        //TODO: Reader und explizit_reader sind nicht berechtigt und werden nicht zurückgegeben.
+        if (userPermission.getSbbUserId().equals(userModel.getSbbUserId())){
+          permittedUser.add(userModel);
+        }
       }
 
     }
 
-    return test;
+    return permittedUser;
   }
 }
