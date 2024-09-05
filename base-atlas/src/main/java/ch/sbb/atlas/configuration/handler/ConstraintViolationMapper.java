@@ -4,7 +4,9 @@ import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo.DisplayInfoBuilder;
 import jakarta.validation.ConstraintViolation;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -13,6 +15,15 @@ import org.hibernate.validator.internal.engine.path.PathImpl;
 
 @RequiredArgsConstructor
 public class ConstraintViolationMapper {
+
+  private static final Map<String, String> ERROR_CODE_MAP = new HashMap<>();
+
+  static {
+    ERROR_CODE_MAP.put("{jakarta.validation.constraints.Size.message}", "ERROR.CONSTRAINT_VIOLATION.SIZE");
+    ERROR_CODE_MAP.put("{jakarta.validation.constraints.Pattern.message}", "ERROR.CONSTRAINT_VIOLATION.PATTERN");
+    ERROR_CODE_MAP.put("{jakarta.validation.constraints.NotBlank.message}", "ERROR.CONSTRAINT_VIOLATION.NOT_BLANK");
+    ERROR_CODE_MAP.put("{jakarta.validation.constraints.NotNull.message}", "ERROR.CONSTRAINT_VIOLATION.NOT_NULL");
+  }
 
   private final Set<ConstraintViolation<?>> constraintViolations;
 
@@ -41,17 +52,7 @@ public class ConstraintViolationMapper {
   }
 
   private String getErrorCodeForConstraintMessageTemplate(String messageTemplate) {
-    return switch (messageTemplate) {
-      case "{jakarta.validation.constraints.Size.message}" -> "ERROR.CONSTRAINT_VIOLATION.SIZE";
-      case "{jakarta.validation.constraints.Pattern.message}" -> "ERROR.CONSTRAINT_VIOLATION.PATTERN";
-      case "{jakarta.validation.constraints.NotBlank.message}" -> "ERROR.CONSTRAINT_VIOLATION.NOT_BLANK";
-      case "{jakarta.validation.constraints.NotNull.message}" -> "ERROR.CONSTRAINT_VIOLATION.NOT_NULL";
-      case "StopPointType only allowed for StopPoint" -> "ERROR.CONSTRAINT_VIOLATION.STOP_POINT_TYPE_ONLY_ALLOWED_FOR_STOPPOINT";
-      case "FreightServicePoint in CH needs sortCodeOfDestinationStation" -> "ERROR.CONSTRAINT_VIOLATION.FREIGHT_SERVICE_POINT";
-      case "At most one of OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set" -> "ERROR"
-          + ".CONSTRAINT_VIOLATION.SERVICE_POINT_TYPE";
-      default -> "ERROR.CONSTRAINT_VIOLATION.DEFAULT";
-    };
+    return ERROR_CODE_MAP.getOrDefault(messageTemplate, "ERROR.CONSTRAINT_VIOLATION.DEFAULT");
   }
 
   public String getMessage() {
