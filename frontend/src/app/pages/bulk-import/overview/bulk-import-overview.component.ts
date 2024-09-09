@@ -14,6 +14,7 @@ import {
   OPTIONS_SCENARIO
 } from "../detail/bulk-import-options";
 import {ActivatedRoute, Router} from "@angular/router";
+import {NotificationService} from "../../../core/notification/notification.service";
 
 @Component({
   templateUrl: './bulk-import-overview.component.html'
@@ -51,6 +52,8 @@ export class BulkImportOverviewComponent implements OnInit{
               private bulkImportService: BulkImportService,
               private readonly router: Router,
               private readonly route: ActivatedRoute,
+              private readonly notificationService: NotificationService,
+
   ) {
   }
 
@@ -64,16 +67,8 @@ export class BulkImportOverviewComponent implements OnInit{
     this.form.controls.applicationType.valueChanges.subscribe(value => {
       if(value){
         this.isApplicationSelected = true;
-
         this.OPTIONS_OBJECT_TYPE = this.OPTIONS_OBJECTS[value]
-
-        this.isEnabledToStartImport = false;
-        this.enableUserSelect(false);
-        this.uploadedFiles = [];
-
-
-        this.form.controls.userSearchForm.controls.userSearch.setValue(null, { emitEvent: false });
-        this.form.controls.objectType.setValue(null, { emitEvent: false });
+        this.resetConfiguration(false)
       }
     })
 
@@ -102,8 +97,9 @@ export class BulkImportOverviewComponent implements OnInit{
 
     this.bulkImportService.startServicePointImportBatch(bulkImportRequest, this.uploadedFiles[0])
       .pipe(catchError(() => this.handleError(controlsAlreadyDisabled)))
-      .subscribe((bulkImport) => {
-        //TODO disable again start button
+      .subscribe(() => {
+        this.notificationService.success('PAGES.BULK_IMPORT.SUCCESS')
+        this.resetConfiguration(true);
       });
   }
 
@@ -126,5 +122,21 @@ export class BulkImportOverviewComponent implements OnInit{
 
   onFileChange(files: File[]){
     this.isFileUploaded = files.length > 0;
+  }
+
+  resetConfiguration(resetAll: boolean){
+    this.isEnabledToStartImport = false;
+    this.enableUserSelect(false);
+    this.uploadedFiles = [];
+
+
+    this.form.controls.userSearchForm.controls.userSearch.setValue(null, { emitEvent: false });
+    this.form.controls.objectType.setValue(null, { emitEvent: false });
+
+    if(resetAll){
+      this.form.controls.applicationType.setValue(null, { emitEvent: false });
+      this.form.controls.importType.setValue(null, { emitEvent: false });
+      this.form.controls.emails.setValue([], { emitEvent: false })
+    }
   }
 }
