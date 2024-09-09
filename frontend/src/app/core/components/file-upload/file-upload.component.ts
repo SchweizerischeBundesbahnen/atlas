@@ -35,6 +35,7 @@ export class FileUploadComponent {
     if (fileList) {
       this.addFileListToFile(fileList);
     }
+    element.value = '';
   }
 
   addFileListToFile(fileList: FileList) {
