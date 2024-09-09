@@ -9,8 +9,8 @@ import {PermissionService} from "../../../core/auth/permission/permission.servic
 import {catchError, EMPTY} from "rxjs";
 import {
   ALLOWED_FILE_TYPES_BULK_IMPORT,
-  OPTIONS_APPLICATION_TYPE,
-  OPTIONS_OBJECT_TYPE,
+  OPTIONS_APPLICATION_TYPE, OPTIONS_OBJECT_TYPE_BODI, OPTIONS_OBJECT_TYPE_LIDI,
+  OPTIONS_OBJECT_TYPE_PRM, OPTIONS_OBJECT_TYPE_SEPODI, OPTIONS_OBJECT_TYPE_TIMETABLE_HEARING, OPTIONS_OBJECT_TYPE_TTFN,
   OPTIONS_SCENARIO
 } from "../detail/bulk-import-options";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -20,18 +20,28 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class BulkImportOverviewComponent implements OnInit{
   protected readonly OPTIONS_SCENARIO = OPTIONS_SCENARIO;
-  protected readonly OPTIONS_OBJECT_TYPE = OPTIONS_OBJECT_TYPE;
   protected readonly OPTIONS_APPLICATION_TYPE = OPTIONS_APPLICATION_TYPE;
   protected readonly ALLOWED_FILE_TYPES_BULK_IMPORT = ALLOWED_FILE_TYPES_BULK_IMPORT;
+
+  OPTIONS_OBJECTS = {
+    SEPODI: OPTIONS_OBJECT_TYPE_SEPODI,
+    PRM: OPTIONS_OBJECT_TYPE_PRM,
+    TIMETABLE_HEARING: OPTIONS_OBJECT_TYPE_TIMETABLE_HEARING,
+    BODI: OPTIONS_OBJECT_TYPE_BODI,
+    LIDI: OPTIONS_OBJECT_TYPE_LIDI,
+    TTFN: OPTIONS_OBJECT_TYPE_TTFN
+  };
+
+  OPTIONS_OBJECT_TYPE!: string[];
 
   form!: FormGroup<BulkImportFormGroup>;
   isUserSelectEnabled = false;
   uploadedFiles: File[] = [];
 
   userName: string | undefined;
-  //TODO: Filter - wenn PRM ausgewählt, dann BusinessObjectTypes von PRM werden angezeigt
 
   isAdmin = false;
+  isApplicationSelected = false;
 
   isEnabledToStartImport = false;
   isFileUploaded = false;
@@ -50,6 +60,23 @@ export class BulkImportOverviewComponent implements OnInit{
     this.userAdministrationService.getCurrentUser().subscribe((user) => {
       this.userName = this.removeDepartment(user.displayName);
     });
+
+    this.form.controls.applicationType.valueChanges.subscribe(value => {
+      if(value){
+        this.isApplicationSelected = true;
+
+        this.OPTIONS_OBJECT_TYPE = this.OPTIONS_OBJECTS[value]
+
+        this.isEnabledToStartImport = false;
+        this.enableUserSelect(false);
+        this.uploadedFiles = [];
+
+
+        this.form.controls.userSearchForm.controls.userSearch.setValue(null, { emitEvent: false });
+        this.form.controls.objectType.setValue(null, { emitEvent: false });
+      }
+    })
+
     this.form.valueChanges.subscribe(value => {
       if(value.importType != null && value.applicationType != null && value.objectType != null) {
         this.isEnabledToStartImport = true
