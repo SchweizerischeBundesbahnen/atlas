@@ -21,15 +21,26 @@ import {DetailPageContainerComponent} from "../../../../core/components/detail-p
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
 import {of} from "rxjs";
-import {ReadStopPointWorkflow, StopPointWorkflowService} from "../../../../api";
+import {
+  DecisionType,
+  JudgementType,
+  ReadServicePointVersion,
+  ReadStopPointWorkflow,
+  StopPointWorkflowService
+} from "../../../../api";
 import {Router} from "@angular/router";
 import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
 import {UserService} from "../../../../core/auth/user/user.service";
 import {DialogFooterComponent} from "../../../../core/components/dialog/footer/dialog-footer.component";
 import {DialogContentComponent} from "../../../../core/components/dialog/content/dialog-content.component";
 import {DialogCloseComponent} from "../../../../core/components/dialog/close/dialog-close.component";
-import {StopPointWorkflowDetailFormComponent} from "../detail-page/detail-form/stop-point-workflow-detail-form.component";
 import {ValidationService} from "../../../../core/validation/validation.service";
+import {
+  ExaminantFormGroup,
+  StopPointWorkflowDetailFormGroup
+} from "../detail-page/detail-form/stop-point-workflow-detail-form-group";
+import {FormArray, FormControl, FormGroup} from "@angular/forms";
+import {Component, Input} from "@angular/core";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -55,6 +66,17 @@ const workflowDialogData: AddStopPointWorkflowDialogData = {
   stopPoint: BERN_WYLEREGG,
 }
 
+@Component({
+  selector: 'stop-point-workflow-detail-form',
+  template: '<p>Mock AddStopPointWorkflowDetailForm Component</p>'
+})
+export class MockStopPointWorkflowDetailFormComponent {
+  @Input() stopPoint!: ReadServicePointVersion;
+  @Input() oldDesignation?: string;
+  @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
+  @Input() currentWorkflow?: ReadStopPointWorkflow;
+}
+
 describe('AddStopPointWorkflowComponent', () => {
   let component: AddStopPointWorkflowComponent;
   let fixture: ComponentFixture<AddStopPointWorkflowComponent>;
@@ -68,7 +90,7 @@ describe('AddStopPointWorkflowComponent', () => {
         CommentComponent,
         ErrorNotificationComponent,
         MockAtlasButtonComponent,
-        StopPointWorkflowDetailFormComponent,
+        MockStopPointWorkflowDetailFormComponent,
         StringListComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
@@ -119,8 +141,8 @@ describe('AddStopPointWorkflowComponent', () => {
     spyOn(ValidationService, 'validateForm').and.callThrough();
 
     const firstExaminant = component.form.controls.examinants.at(0);
-    firstExaminant.controls.firstName.setValue('firstName');
-    firstExaminant.controls.lastName.setValue('lastName');
+    firstExaminant.controls.firstName.setValue('');
+    firstExaminant.controls.lastName.setValue('');
     firstExaminant.controls.personFunction.setValue('personFunction');
     firstExaminant.controls.organisation.setValue('organisation');
     firstExaminant.controls.mail.setValue('mail@sbb.ch');
@@ -130,6 +152,45 @@ describe('AddStopPointWorkflowComponent', () => {
     component.addWorkflow();
 
     expect(stopPointWorkflowService.addStopPointWorkflow).toHaveBeenCalled();
+    expect(notificationServiceSpy.success).toHaveBeenCalled();
+    expect(dialogRefSpy.close).toHaveBeenCalled();
+  });
+
+  it('should transform examinants firstName and lastName to null if empty', () => {
+    spyOn(ValidationService, 'validateForm').and.callThrough();
+
+    const examinantFormGroup = new FormGroup<ExaminantFormGroup>({
+      id: new FormControl<number | null>(null),
+      firstName: new FormControl<string | null>(''),
+      lastName: new FormControl<string | null>(''),
+      personFunction: new FormControl<string | null>('personFunction1'),
+      organisation: new FormControl<string | null>('organisation1'),
+      mail: new FormControl<string | null>('mail1@sbb.ch'),
+      judgementIcon: new FormControl<string | null>(null),
+      judgement: new FormControl<JudgementType | null>(null),
+      decisionType: new FormControl<DecisionType | null>(null),
+    });
+
+    const formArray = new FormArray<FormGroup<ExaminantFormGroup>>([examinantFormGroup]);
+    const formGroup = new FormGroup<StopPointWorkflowDetailFormGroup>({
+      ccEmails: new FormControl<Array<string> | null>(null),
+      workflowComment: new FormControl<string | null>('Workflow comment 1'),
+      designationOfficial: new FormControl<string | null>(null),
+      examinants: formArray,
+    });
+    component.form = formGroup;
+
+    component.addWorkflow();
+
+    expect(stopPointWorkflowService.addStopPointWorkflow).toHaveBeenCalledWith(jasmine.objectContaining({
+      examinants: [
+        jasmine.objectContaining({
+          firstName: null,
+          lastName: null,
+        })
+      ]
+    }));
+
     expect(notificationServiceSpy.success).toHaveBeenCalled();
     expect(dialogRefSpy.close).toHaveBeenCalled();
   });

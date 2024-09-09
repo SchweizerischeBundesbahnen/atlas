@@ -56,7 +56,6 @@ public class StopPointWorkflowService {
     return workflowRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
-
   public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
     if (workflowModel.getExaminants() != null && !workflowModel.getExaminants().isEmpty()) {
       checkIfAllExaminantEmailsAreUnique(workflowModel.getExaminants());
