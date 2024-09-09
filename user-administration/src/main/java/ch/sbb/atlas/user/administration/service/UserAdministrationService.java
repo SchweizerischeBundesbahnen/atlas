@@ -2,6 +2,7 @@ package ch.sbb.atlas.user.administration.service;
 
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
@@ -95,15 +96,16 @@ public class UserAdministrationService {
 
     for (UserModel userModel : foundUsers) {
 
-      //TODO:  findBySbbUserIdIgnoreCaseAndApplication nicht zu liste deklarieren.
-      List<UserPermission> list = userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication(userModel.getSbbUserId(), applicationType);
-      for (UserPermission userPermission : list) {
-        //TODO: Reader und explizit_reader sind nicht berechtigt und werden nicht zurückgegeben.
-        if (userPermission.getSbbUserId().equals(userModel.getSbbUserId())){
+      Optional<UserPermission> userPermission = userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication(userModel.getSbbUserId(), applicationType);
+
+      if (userPermission.isPresent()) {
+        ApplicationRole role = userPermission.get().getRole();
+        boolean existsUser = userPermission.get().getSbbUserId().equals(userModel.getSbbUserId());
+
+        if (existsUser && !role.equals(ApplicationRole.READER) && !role.equals(ApplicationRole.EXPLICIT_READER)) {
           permittedUser.add(userModel);
         }
       }
-
     }
 
     return permittedUser;
