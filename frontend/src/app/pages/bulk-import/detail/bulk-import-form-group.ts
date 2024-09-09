@@ -28,7 +28,7 @@ export class BulkImportFormGroupBuilder {
       applicationType: formGroup.controls.applicationType.value!,
       objectType: formGroup.controls.objectType.value!,
       importType: formGroup.controls.importType.value!,
-      inNameOf: formGroup.controls.userSearchForm.controls.userSearch.value?.userId!,
+      inNameOf: formGroup.controls.userSearchForm.controls.userSearch.value?.userId! ?? null,
       emails: formGroup.controls.emails.value!,
     }
   }
