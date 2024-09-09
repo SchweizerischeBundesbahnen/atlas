@@ -6,6 +6,8 @@ import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import java.io.File;
 import java.net.URL;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -26,7 +28,7 @@ public class BulkImportService {
   private static final String UNDERSCORE_DELIMITER = "_";
 
   @Async
-  public void startBulkImport(BulkImport bulkImport, File file) {
+  public void startBulkImport(BulkImport bulkImport, File file, List<String> emails) {
     String s3ObjectKey = uploadImportFile(file, bulkImport);
     bulkImport.setImportFileUrl(s3ObjectKey);
 

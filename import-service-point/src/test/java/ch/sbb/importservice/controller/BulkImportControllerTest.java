@@ -17,10 +17,14 @@ import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.ImportFiles;
 import ch.sbb.importservice.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.entity.BulkImport;
+import ch.sbb.importservice.model.BulkImportRequest;
+import ch.sbb.importservice.model.BusinessObjectType;
+import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +35,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Stream;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +82,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
     bulkImportRepository.deleteAll();
   }
 
-  /*@Test
+  @Test
   void shouldAcceptGenericBulkImportWithFile() throws Exception {
     when(servicePointBulkImportClient.bulkImportUpdate(eq(null), any())).thenReturn(
         List.of(BulkImportItemExecutionResult.builder()
@@ -84,9 +90,28 @@ class BulkImportControllerTest extends BaseControllerApiTest {
             .build()));
 
     File file = ImportFiles.getFileByPath("import-files/valid/service-point-update.csv");
-    mvc.perform(multipart("/v1/import/bulk/SEPODI/SERVICE_POINT/UPDATE")
-            .file(new MockMultipartFile("file", "service-point-update.csv", CSV_CONTENT_TYPE, Files.readAllBytes(file.toPath()))))
-        .andExpect(status().isAccepted());
+
+    BulkImportRequest bulkImportRequest = BulkImportRequest.builder()
+            .applicationType(ApplicationType.SEPODI)
+            .objectType(BusinessObjectType.SERVICE_POINT)
+            .importType(ImportType.UPDATE)
+            .inNameOf("Test Name")
+            .emails(List.of("test@example.com", "techsupport@atlas-sbb.ch"))
+            .build();
+
+    MockMultipartFile mockBulkImportRequest = new MockMultipartFile(
+            "bulkImportRequest",
+            "",
+            MediaType.APPLICATION_JSON_VALUE,
+            new ObjectMapper().writeValueAsBytes(bulkImportRequest));
+
+    mvc.perform(multipart("/v1/import/bulk")
+                    .file(new MockMultipartFile("file", "service-point-update.csv", CSV_CONTENT_TYPE, Files.readAllBytes(file.toPath())))
+                    .file(mockBulkImportRequest)
+                    .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+            .andExpect(status().isAccepted());
+
+
 
     verify(amazonService, times(2)).putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), eq(todaysDirectory));
     verify(servicePointBulkImportClient, atLeastOnce()).bulkImportUpdate(eq(null), any());
@@ -95,7 +120,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
     BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
     assertThat(bulkImport.getId()).isNotNull();
     assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/service-point-update.csv");
-  }*/
+  }
 
   @ParameterizedTest
   @MethodSource("getArgumentsForDifferentTemplates")
