@@ -27,8 +27,10 @@ public class ServicePointUpdateGeoLocationService {
   public List<ServicePointSwissWithGeoModel> getActualServicePointWithGeolocation() {
     log.info("Get service points with geo location to update...");
     List<ServicePointSwissWithGeoModel> servicePointWithGeolocation = servicePointClient.getActualServicePointWithGeolocation();
-    log.info("Found {} service points with geo location to update.", servicePointWithGeolocation.size());
-    stepExecution.getExecutionContext().put(GEO_LOCATION_VERSIONS_KEY, servicePointWithGeolocation.size());
+    int servicePointVersionWithGeolocationSize = servicePointWithGeolocation.stream()
+        .mapToInt(swissWithGeoModel -> swissWithGeoModel.getDetails().size()).sum();
+    log.info("Found {} service points with geo location to update.", servicePointVersionWithGeolocationSize);
+    stepExecution.getExecutionContext().put(GEO_LOCATION_VERSIONS_KEY, servicePointVersionWithGeolocationSize);
     return servicePointWithGeolocation;
   }
 
