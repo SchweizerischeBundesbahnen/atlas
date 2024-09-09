@@ -69,9 +69,6 @@ public class BulkImport {
 
   private String inNameOf;
 
-  @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-  private List<String> emails;
-
   @CreationTimestamp
   private LocalDateTime creationDate;
 
