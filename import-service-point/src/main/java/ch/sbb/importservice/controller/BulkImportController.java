@@ -9,6 +9,7 @@ import ch.sbb.importservice.service.bulk.BulkImportFileValidationService;
 import ch.sbb.importservice.service.bulk.BulkImportService;
 import java.io.File;
 import java.util.Collections;
+import java.util.List;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -48,12 +49,12 @@ public class BulkImportController implements BulkImportApiV1 {
         .importType(bulkImportRequest.getImportType())
         .creator(UserService.getUserIdentifier())
         .inNameOf(bulkImportRequest.getInNameOf() != null ? bulkImportRequest.getInNameOf() : null)
-        .emails(bulkImportRequest.getEmails() != null ? bulkImportRequest.getEmails() : Collections.emptyList())
         .build();
 
     File csvFile = bulkImportFileValidationService.validateFileAndPrepareFile(file, bulkImport.getBulkImportConfig());
+    List<String> emails = bulkImportRequest.getEmails() != null ? bulkImportRequest.getEmails() : Collections.emptyList();
 
-    bulkImportService.startBulkImport(bulkImport, csvFile);
+    bulkImportService.startBulkImport(bulkImport, csvFile, emails);
   }
 
   @Override
