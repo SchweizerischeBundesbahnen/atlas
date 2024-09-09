@@ -2,8 +2,12 @@ package ch.sbb.atlas.servicepointdirectory.model;
 
 import static ch.sbb.atlas.servicepointdirectory.service.georeference.ServicePointGeoLocationUtils.getDiffServicePointGeolocationAsMessage;
 
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +30,19 @@ public class UpdateGeoLocationResultContainer {
 
   private List<VersionDataRage> updatedVersionsDataRange;
 
+  @AllArgsConstructor
+  @Data
+  @Builder
+  public static class VersionDataRage {
+
+    private LocalDate validFrom;
+    private LocalDate validTo;
+
+    public String toString() {
+      return "DataRange(validFrom=" + this.getValidFrom() + " validTo=" + this.getValidTo() + ")";
+    }
+  }
+
   public boolean isHasNumberOfVersionsChanged() {
     if (currentVersionsDataRange != null && updatedVersionsDataRange != null) {
       return currentVersionsDataRange.size() != updatedVersionsDataRange.size();
@@ -47,17 +64,23 @@ public class UpdateGeoLocationResultContainer {
     return false;
   }
 
-  @AllArgsConstructor
-  @Data
-  @Builder
-  public static class VersionDataRage {
+  public static List<VersionDataRage> mapToUpdatedVersionDataRages(
+      List<ReadServicePointVersionModel> readServicePointVersionModels) {
+    List<VersionDataRage> updatedVersionsDataRange = new ArrayList<>(readServicePointVersionModels.stream()
+        .map(servicePointVersionModel ->
+            new VersionDataRage(servicePointVersionModel.getValidFrom(), servicePointVersionModel.getValidTo())
+        ).toList());
+    updatedVersionsDataRange.sort(Comparator.comparing(VersionDataRage::getValidFrom));
+    return updatedVersionsDataRange;
+  }
 
-    private LocalDate validFrom;
-    private LocalDate validTo;
-
-    public String toString() {
-      return "DataRange(validFrom=" + this.getValidFrom() + " validTo=" + this.getValidTo() + ")";
-    }
+  public static List<VersionDataRage> mapToCurrentVersionDataRages(List<ServicePointVersion> currentVersions) {
+    List<VersionDataRage> currentVersionsDataRange = new ArrayList<>(currentVersions.stream()
+        .map(servicePointVersionModel ->
+            new VersionDataRage(servicePointVersionModel.getValidFrom(), servicePointVersionModel.getValidTo())
+        ).toList());
+    currentVersionsDataRange.sort(Comparator.comparing(VersionDataRage::getValidFrom));
+    return currentVersionsDataRange;
   }
 
   public String getResponseMessage() {
