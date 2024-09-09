@@ -47,11 +47,17 @@ export class AddStopPointWorkflowComponent implements OnInit {
         sloid: this.data.stopPoint.sloid!,
         workflowComment: this.form.controls.workflowComment.value!,
         ccEmails: this.form.controls.ccEmails.value!,
-        examinants: this.form.controls.examinants.value.map(examinant => {
-          if (!examinant.firstName) examinant.firstName = null;
-          if (!examinant.lastName) examinant.lastName = null;
-          return examinant as StopPointPerson;
-        })
+        examinants: this.form.controls.examinants.controls
+          .filter(control => !control.disabled)
+          .map(examinant => {
+            if (!examinant.value.firstName) {
+              examinant.controls.firstName.setValue(null);
+            }
+            if (!examinant.value.lastName) {
+              examinant.controls.lastName.setValue(null);
+            }
+            return examinant.value as StopPointPerson;
+          })
       }
       this.form.disable();
       this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe((createdWorkflow) => {
