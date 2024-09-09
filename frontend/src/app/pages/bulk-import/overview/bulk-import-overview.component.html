@@ -48,7 +48,9 @@
     <div class="d-flex flex-column col-3 pe-3">
       <mat-checkbox
         *ngIf="isAdmin"
+        [disabled]="!isApplicationSelected"
         (change)="enableUserSelect($event.checked)"
+        [checked]="isUserSelectEnabled"
         data-cy="checkboxBulkImport">
         {{ 'PAGES.BULK_IMPORT.IMPORT_FOR_SOMEONE_ELSE' | translate }}
       </mat-checkbox>

@@ -23,6 +23,5 @@ export class UserSelectComponent {
       return;
     }
     this.userSearchResults$ = this.userService.searchUsers(searchQuery, this.searchInAtlas, this.applicationType);
-    console.log("user resutlts ", this.userSearchResults$)
   }
 }
