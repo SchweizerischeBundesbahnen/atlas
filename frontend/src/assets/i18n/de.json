@@ -201,7 +201,8 @@
       "IMPORT_EXECUTED_BY": "Import wird durchgeführt durch:",
       "IMPORT_FOR_SOMEONE_ELSE": "Ich importiere für jemanden anders.",
       "ADDITIONAL_IMPORT_REPORT": "Zusätzlicher Empfänger Importbericht",
-      "START_BULK_IMPORT": "Start Import"
+      "START_BULK_IMPORT": "Start Import",
+      "SUCCESS": "Import erfolgreich gestartet"
     },
     "LIDI": {
       "TITLE": "Linien und Teillinien verwalten",
