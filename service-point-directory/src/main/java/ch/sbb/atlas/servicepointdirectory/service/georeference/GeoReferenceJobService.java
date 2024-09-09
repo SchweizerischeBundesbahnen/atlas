@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.georeference;
 
+import static ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer.mapToCurrentVersionDataRages;
+import static ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer.mapToUpdatedVersionDataRages;
 import static ch.sbb.atlas.servicepointdirectory.service.georeference.ServicePointGeoLocationUtils.hasDiffServicePointGeolocation;
 
 import ch.sbb.atlas.api.servicepoint.GeoReference;
@@ -7,11 +9,8 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer;
-import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer.VersionDataRage;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,8 +45,8 @@ public class GeoReferenceJobService {
           .updatedServicePointGeolocation(updatedServicePointGeolocation)
           .id(servicePointVersionToUpdate.getId())
           .sloid(servicePointVersionToUpdate.getSloid())
-          .updatedVersionsDataRange(getUpdatedVersionDataRages(updatedServicePointVersionModels))
-          .currentVersionsDataRange(getCurrentVersionDataRages(currentVersions))
+          .updatedVersionsDataRange(mapToUpdatedVersionDataRages(updatedServicePointVersionModels))
+          .currentVersionsDataRange(mapToCurrentVersionDataRages(currentVersions))
           .build();
     }
     return null;
@@ -67,25 +66,6 @@ public class GeoReferenceJobService {
         .swissMunicipalityName(geoReference.getSwissMunicipalityName())
         .swissLocalityName(geoReference.getSwissLocalityName())
         .build();
-  }
-
-  private static List<VersionDataRage> getUpdatedVersionDataRages(
-      List<ReadServicePointVersionModel> readServicePointVersionModels) {
-    List<VersionDataRage> updatedVersionsDataRange = new ArrayList<>(readServicePointVersionModels.stream()
-        .map(servicePointVersionModel ->
-            new VersionDataRage(servicePointVersionModel.getValidFrom(), servicePointVersionModel.getValidTo())
-        ).toList());
-    updatedVersionsDataRange.sort(Comparator.comparing(VersionDataRage::getValidFrom));
-    return updatedVersionsDataRange;
-  }
-
-  private static List<VersionDataRage> getCurrentVersionDataRages(List<ServicePointVersion> currentVersions) {
-    List<VersionDataRage> currentVersionsDataRange = new ArrayList<>(currentVersions.stream()
-        .map(servicePointVersionModel ->
-            new VersionDataRage(servicePointVersionModel.getValidFrom(), servicePointVersionModel.getValidTo())
-        ).toList());
-    currentVersionsDataRange.sort(Comparator.comparing(VersionDataRage::getValidFrom));
-    return currentVersionsDataRange;
   }
 
 }
