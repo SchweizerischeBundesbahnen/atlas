@@ -1,4 +1,4 @@
-import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AddStopPointWorkflowComponent} from './add-stop-point-workflow.component';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
@@ -21,20 +21,26 @@ import {DetailPageContainerComponent} from "../../../../core/components/detail-p
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
 import {of} from "rxjs";
-import {DecisionType, JudgementType, ReadStopPointWorkflow, StopPointWorkflowService} from "../../../../api";
+import {
+  DecisionType,
+  JudgementType,
+  ReadServicePointVersion,
+  ReadStopPointWorkflow,
+  StopPointWorkflowService
+} from "../../../../api";
 import {Router} from "@angular/router";
 import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
 import {UserService} from "../../../../core/auth/user/user.service";
 import {DialogFooterComponent} from "../../../../core/components/dialog/footer/dialog-footer.component";
 import {DialogContentComponent} from "../../../../core/components/dialog/content/dialog-content.component";
 import {DialogCloseComponent} from "../../../../core/components/dialog/close/dialog-close.component";
-import {StopPointWorkflowDetailFormComponent} from "../detail-page/detail-form/stop-point-workflow-detail-form.component";
 import {ValidationService} from "../../../../core/validation/validation.service";
 import {
   ExaminantFormGroup,
   StopPointWorkflowDetailFormGroup
 } from "../detail-page/detail-form/stop-point-workflow-detail-form-group";
 import {FormArray, FormControl, FormGroup} from "@angular/forms";
+import {Component, Input} from "@angular/core";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -60,6 +66,17 @@ const workflowDialogData: AddStopPointWorkflowDialogData = {
   stopPoint: BERN_WYLEREGG,
 }
 
+@Component({
+  selector: 'stop-point-workflow-detail-form',
+  template: '<p>Mock AddStopPointWorkflowDetailForm Component</p>'
+})
+export class MockStopPointWorkflowDetailFormComponent {
+  @Input() stopPoint!: ReadServicePointVersion;
+  @Input() oldDesignation?: string;
+  @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
+  @Input() currentWorkflow?: ReadStopPointWorkflow;
+}
+
 describe('AddStopPointWorkflowComponent', () => {
   let component: AddStopPointWorkflowComponent;
   let fixture: ComponentFixture<AddStopPointWorkflowComponent>;
@@ -73,7 +90,7 @@ describe('AddStopPointWorkflowComponent', () => {
         CommentComponent,
         ErrorNotificationComponent,
         MockAtlasButtonComponent,
-        StopPointWorkflowDetailFormComponent,
+        MockStopPointWorkflowDetailFormComponent,
         StringListComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
@@ -120,7 +137,7 @@ describe('AddStopPointWorkflowComponent', () => {
     expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 
-  it('should add workflow via service', fakeAsync(() => {
+  it('should add workflow via service', () => {
     spyOn(ValidationService, 'validateForm').and.callThrough();
 
     const firstExaminant = component.form.controls.examinants.at(0);
@@ -133,14 +150,13 @@ describe('AddStopPointWorkflowComponent', () => {
     component.form.controls.workflowComment.setValue('YB isch wida Meista');
 
     component.addWorkflow();
-    tick(30000);
 
     expect(stopPointWorkflowService.addStopPointWorkflow).toHaveBeenCalled();
     expect(notificationServiceSpy.success).toHaveBeenCalled();
     expect(dialogRefSpy.close).toHaveBeenCalled();
-  }));
+  });
 
-  it('should transform examinants firstName and lastName to null if empty', fakeAsync(() => {
+  it('should transform examinants firstName and lastName to null if empty', () => {
     spyOn(ValidationService, 'validateForm').and.callThrough();
 
     const examinantFormGroup = new FormGroup<ExaminantFormGroup>({
@@ -165,7 +181,6 @@ describe('AddStopPointWorkflowComponent', () => {
     component.form = formGroup;
 
     component.addWorkflow();
-    tick(30000);
 
     expect(stopPointWorkflowService.addStopPointWorkflow).toHaveBeenCalledWith(jasmine.objectContaining({
       examinants: [
@@ -178,6 +193,6 @@ describe('AddStopPointWorkflowComponent', () => {
 
     expect(notificationServiceSpy.success).toHaveBeenCalled();
     expect(dialogRefSpy.close).toHaveBeenCalled();
-  }));
+  });
 
 });
