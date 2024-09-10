@@ -6,7 +6,7 @@ import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.location.LocationService;
@@ -250,15 +250,15 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
-  public List<ServicePointSwissWithGeoModel> getActualServicePointWithGeolocation() {
+  public List<ServicePointSwissWithGeoLocationModel> getActualServicePointWithGeolocation() {
     List<ServicePointSwissWithGeoTransfer> actualServicePointWithGeolocation =
         servicePointService.findActualServicePointWithGeolocation();
 
-    List<ServicePointSwissWithGeoModel> swissWithGeoModels = new ArrayList<>();
+    List<ServicePointSwissWithGeoLocationModel> swissWithGeoModels = new ArrayList<>();
     actualServicePointWithGeolocation.stream()
         .collect(Collectors.groupingBy(ServicePointSwissWithGeoTransfer::getSloid))
         .forEach((sloid, swissWithGeoTransfers) ->
-            swissWithGeoModels.add(ServicePointSwissWithGeoMapper.mapTo(sloid, swissWithGeoTransfers)));
+            swissWithGeoModels.add(ServicePointSwissWithGeoMapper.toModel(sloid, swissWithGeoTransfers)));
 
     return swissWithGeoModels;
   }
