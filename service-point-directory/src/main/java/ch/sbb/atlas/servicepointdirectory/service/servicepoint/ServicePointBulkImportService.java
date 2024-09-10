@@ -28,17 +28,8 @@ public class ServicePointBulkImportService {
   @RunAsUser
   public void updateServicePointByUserName(@RunAsUserParameter String userName,
       BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
-
-    ServicePointUpdateCsvModel servicePointUpdate = bulkImportContainer.getObject();
-
-    List<ServicePointVersion> currentVersions = getCurrentVersions(servicePointUpdate);
-    ServicePointVersion currentVersion = ImportUtils.getCurrentVersion(currentVersions,
-        servicePointUpdate.getValidFrom(), servicePointUpdate.getValidTo());
-
-    ServicePointVersion editedVersion = ServicePointBulkImportUpdate.applyUpdateFromCsv(currentVersion, servicePointUpdate);
-    ServicePointBulkImportUpdate.applyNulling(bulkImportContainer.getAttributesToNull(), editedVersion);
-
-    servicePointService.update(currentVersion, editedVersion, currentVersions);
+    log.info("Update versions in name of the user: {}", userName);
+    updateServicePoint(bulkImportContainer);
   }
 
   public void updateServicePoint(BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
