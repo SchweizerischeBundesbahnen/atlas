@@ -12,8 +12,8 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 @Builder
-@Schema(name = "servicePointSwissWithGeo")
-public class ServicePointSwissWithGeoModel {
+@Schema(name = "servicePointSwissWithGeoLocation")
+public class ServicePointSwissWithGeoLocationModel {
 
   @NotNull
   private String sloid;

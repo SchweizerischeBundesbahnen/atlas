@@ -1,6 +1,6 @@
 package ch.sbb.importservice.writer.geo;
 
-import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
 import ch.sbb.importservice.entity.GeoUpdateProcessItem;
 import ch.sbb.importservice.repository.GeoUpdateProcessItemRepository;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @StepScope
-public class ServicePointUpdateGeoApiWriter implements ItemWriter<ServicePointSwissWithGeoModel> {
+public class ServicePointUpdateGeoLocationApiWriter implements ItemWriter<ServicePointSwissWithGeoLocationModel> {
 
   private StepExecution stepExecution;
 
@@ -35,13 +35,14 @@ public class ServicePointUpdateGeoApiWriter implements ItemWriter<ServicePointSw
   }
 
   @Override
-  public void write(Chunk<? extends ServicePointSwissWithGeoModel> servicePointSwissWithGeoModels) {
-    List<ServicePointSwissWithGeoModel> servicePointCsvModels = new ArrayList<>(servicePointSwissWithGeoModels.getItems());
-    doWrite(servicePointCsvModels);
+  public void write(Chunk<? extends ServicePointSwissWithGeoLocationModel> servicePointSwissWithGeoModels) {
+    List<ServicePointSwissWithGeoLocationModel> servicePointSwissWithGeoLocationModels =
+        new ArrayList<>(servicePointSwissWithGeoModels.getItems());
+    doWrite(servicePointSwissWithGeoLocationModels);
   }
 
-  void doWrite(List<ServicePointSwissWithGeoModel> servicePointCsvModels) {
-    servicePointCsvModels.forEach(swissWithGeoModel -> swissWithGeoModel.getDetails()
+  void doWrite(List<ServicePointSwissWithGeoLocationModel> servicePointSwissWithGeoLocationModels) {
+    servicePointSwissWithGeoLocationModels.forEach(swissWithGeoModel -> swissWithGeoModel.getDetails()
         .forEach(detail -> {
           GeoUpdateItemResultModel result =
               sePoDiClientService.updateServicePointGeoLocation(swissWithGeoModel.getSloid(), detail.getId());
