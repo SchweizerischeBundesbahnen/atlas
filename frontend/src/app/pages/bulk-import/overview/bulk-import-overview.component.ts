@@ -19,7 +19,7 @@ import {NotificationService} from "../../../core/notification/notification.servi
 @Component({
   templateUrl: './bulk-import-overview.component.html'
 })
-export class BulkImportOverviewComponent implements OnInit{
+export class BulkImportOverviewComponent implements OnInit {
   protected readonly OPTIONS_SCENARIO = OPTIONS_SCENARIO;
   protected readonly OPTIONS_APPLICATION_TYPE = OPTIONS_APPLICATION_TYPE;
   protected readonly ALLOWED_FILE_TYPES_BULK_IMPORT = ALLOWED_FILE_TYPES_BULK_IMPORT;
@@ -53,7 +53,6 @@ export class BulkImportOverviewComponent implements OnInit{
               private readonly router: Router,
               private readonly route: ActivatedRoute,
               private readonly notificationService: NotificationService,
-
   ) {
   }
 
@@ -65,18 +64,18 @@ export class BulkImportOverviewComponent implements OnInit{
     });
 
     this.form.controls.applicationType.valueChanges.subscribe(value => {
-      if(value){
+      if (value) {
         this.isApplicationSelected = true;
         this.OPTIONS_OBJECT_TYPE = this.OPTIONS_OBJECTS[value]
         this.resetConfiguration(false)
       }
-    })
+    });
 
     this.form.valueChanges.subscribe(value => {
-      if(value.importType != null && value.applicationType != null && value.objectType != null) {
+      if (value.importType != null && value.applicationType != null && value.objectType != null) {
         this.isEnabledToStartImport = true
       }
-    })
+    });
   }
 
   removeDepartment(username?: string) {
@@ -106,27 +105,27 @@ export class BulkImportOverviewComponent implements OnInit{
     this.isUserSelectEnabled = isEnabled;
   }
 
-  back(){
-    this.router.navigate(['..'], { relativeTo: this.route }).then();
+  back() {
+    this.router.navigate(['..'], {relativeTo: this.route}).then();
   }
 
-  onFileChange(files: File[]){
+  onFileChange(files: File[]) {
     this.isFileUploaded = files.length > 0;
   }
 
-  resetConfiguration(resetAll: boolean){
+  resetConfiguration(resetAll: boolean) {
     this.isEnabledToStartImport = false;
     this.enableUserSelect(false);
     this.uploadedFiles = [];
 
 
-    this.form.controls.userSearchForm.controls.userSearch.setValue(null, { emitEvent: false });
-    this.form.controls.objectType.setValue(null, { emitEvent: false });
+    this.form.controls.userSearchForm.controls.userSearch.setValue(null, {emitEvent: false});
+    this.form.controls.objectType.setValue(null, {emitEvent: false});
 
-    if(resetAll){
-      this.form.controls.applicationType.setValue(null, { emitEvent: false });
-      this.form.controls.importType.setValue(null, { emitEvent: false });
-      this.form.controls.emails.setValue([], { emitEvent: false })
+    if (resetAll) {
+      this.form.controls.applicationType.setValue(null, {emitEvent: false});
+      this.form.controls.importType.setValue(null, {emitEvent: false});
+      this.form.controls.emails.setValue([], {emitEvent: false});
     }
   }
 }
