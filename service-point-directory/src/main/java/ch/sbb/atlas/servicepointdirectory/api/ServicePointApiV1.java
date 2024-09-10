@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.configuration.Role;
@@ -87,10 +88,10 @@ public interface ServicePointApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
@@ -101,11 +102,11 @@ public interface ServicePointApiV1 {
   );
 
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
-          + ".ApplicationType).SEPODI)")
+      + ".ApplicationType).SEPODI)")
   @PutMapping(path = "/update-designation-official/{id}")
   ReadServicePointVersionModel updateDesingationOfficialServicePoint(
-          @PathVariable Long id,
-          @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
+      @PathVariable Long id,
+      @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
   );
 
   @PutMapping(path = "/status/{sloid}/{id}")
@@ -133,4 +134,9 @@ public interface ServicePointApiV1 {
   @PostMapping("/sync-service-points")
   @Operation(description = "Write all Service Points to kafka again for redistribution")
   void syncServicePoints();
+
+  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @GetMapping("/actual-swiss-service-point-with-geo")
+  List<ServicePointSwissWithGeoLocationModel> getActualServicePointWithGeolocation();
+
 }

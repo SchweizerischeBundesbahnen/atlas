@@ -5,10 +5,8 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_ID_
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import ch.sbb.importservice.service.bulk.BulkImportS3BucketService;
-import ch.sbb.importservice.service.bulk.log.LogFile;
 import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
-import ch.sbb.importservice.service.mail.MailNotificationService;
-import ch.sbb.importservice.service.mail.MailProducerService;
+import ch.sbb.importservice.service.bulk.log.LogFile;
 import java.net.URL;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +20,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class BulkImportJobCompletionListener implements JobExecutionListener {
 
-  private final MailNotificationService mailNotificationService;
-  private final MailProducerService mailProducerService;
   private final BulkImportLogService bulkImportLogService;
   private final BulkImportS3BucketService s3BucketService;
   private final BulkImportRepository bulkImportRepository;

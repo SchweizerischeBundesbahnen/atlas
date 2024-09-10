@@ -1136,6 +1136,7 @@
       "CANTON": "Canton",
       "MUNICIPALITY": "Commune",
       "DISTRICT": "Localité",
+      "DISTRICT_NAME": "District",
       "GEOGRAPHY_INFORMATION": "Si activé, les coordonnées doivent être saisies dans l'un des deux systèmes de coordonnées."
     },
     "MAP_STYLES": {

@@ -151,7 +151,7 @@
 
     <ng-template #locationInformationTemplate let-locationInformation>
       <div class="d-flex flex-row mt-2">
-        <div class="col-3 pe-3 flex-column">
+        <div class="col-2 pe-3 flex-column">
           <div class="font-bold-lg color-gray-900">
             {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
           </div>
@@ -159,7 +159,7 @@
             {{ locationInformation?.isoCountryCode ?? '-' }}
           </div>
         </div>
-        <div class="col-3 pe-3">
+        <div class="col-2 pe-3">
           <div class="font-bold-lg color-gray-900">
             {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
           </div>
@@ -167,7 +167,7 @@
             {{ locationInformation?.canton | displayCanton }}
           </div>
         </div>
-        <div class="col-3 pe-3">
+        <div class="col-2 pe-3">
           <div class="font-bold-lg color-gray-900">
             {{ 'SEPODI.GEOLOCATION.MUNICIPALITY' | translate }}
           </div>
@@ -175,12 +175,20 @@
             {{ locationInformation?.municipalityName ?? '-' }}
           </div>
         </div>
-        <div class="col-3 pe-3">
+        <div class="col-2 pe-3">
           <div class="font-bold-lg color-gray-900">
             {{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}
           </div>
           <div class="color-gray-900">
             {{ locationInformation?.localityName ?? '-' }}
+          </div>
+        </div>
+        <div class="col-2 pe-3">
+          <div class="font-bold-lg color-gray-900">
+            {{ 'SEPODI.GEOLOCATION.DISTRICT_NAME' | translate }}
+          </div>
+          <div class="color-gray-900">
+            {{ locationInformation?.swissDistrictName ?? '-' }}
           </div>
         </div>
       </div>
