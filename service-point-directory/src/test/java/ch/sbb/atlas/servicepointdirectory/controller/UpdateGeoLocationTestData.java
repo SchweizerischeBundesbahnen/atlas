@@ -12,7 +12,7 @@ import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class UpdateGeoLocationTesData {
+public class UpdateGeoLocationTestData {
 
   public UpdateGeoLocationResultContainer getModel() {
     ServicePointGeolocation currentServicePointGeolocation = getServicePointGeolocationBernMittelland();
