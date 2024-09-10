@@ -45,7 +45,7 @@ class ServicePointBulkImportControllerTest {
                 .sloid("ch:1:sloid:7000")
                 .build())
             .build();
-    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(null,
         List.of(updateContainer));
 
     verify(servicePointBulkImportService).updateServicePoint(updateContainer);
@@ -63,7 +63,7 @@ class ServicePointBulkImportControllerTest {
                 .sloid("ch:1:sloid:7000")
                 .build())
             .build();
-    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(null,
         List.of(updateContainer));
 
     verify(servicePointBulkImportService).updateServicePoint(updateContainer);
