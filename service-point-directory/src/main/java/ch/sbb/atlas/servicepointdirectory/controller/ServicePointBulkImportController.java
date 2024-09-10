@@ -21,13 +21,16 @@ public class ServicePointBulkImportController implements ServicePointBulkImportA
   private final AtlasExceptionHandler atlasExceptionHandler;
 
   @Override
-  public List<BulkImportItemExecutionResult> bulkImportUpdate(
+  public List<BulkImportItemExecutionResult> bulkImportUpdate(String userName,
       List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> bulkImportContainers) {
     List<BulkImportItemExecutionResult> results = new ArrayList<>();
     bulkImportContainers.forEach(bulkImportContainer -> {
       try {
-        servicePointBulkImportService.updateServicePointByUserName("u242492", bulkImportContainer);
-        //        servicePointBulkImportService.updateServicePoint(bulkImportContainer);
+        if (userName != null) {
+          servicePointBulkImportService.updateServicePointByUserName(userName, bulkImportContainer);
+        } else {
+          servicePointBulkImportService.updateServicePoint(bulkImportContainer);
+        }
 
         results.add(BulkImportItemExecutionResult.builder()
             .lineNumber(bulkImportContainer.getLineNumber())

@@ -23,9 +23,10 @@ public class ServicePointUpdateWriter extends ServicePointUpdate implements Bulk
   public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
     List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers =
         WriterUtil.getContainersWithoutDataValidationErrors(items);
-
+    //TODO: get userName
+    String userName = null;
     log.info("Writing {} containers to service-point-directory", updateContainers.size());
-    List<BulkImportItemExecutionResult> importResult = servicePointBulkImportClient.bulkImportUpdate(updateContainers);
+    List<BulkImportItemExecutionResult> importResult = servicePointBulkImportClient.bulkImportUpdate(userName, updateContainers);
 
     WriterUtil.mapExecutionResultToLogEntry(importResult, updateContainers);
   }
