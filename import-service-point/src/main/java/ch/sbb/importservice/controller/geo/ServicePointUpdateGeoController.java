@@ -14,7 +14,7 @@ public class ServicePointUpdateGeoController implements ServicePointUpdateGeoApi
   private final ServicePointUpdateGeoLocationJobService updateServicePointGeoJob;
 
   @Override
-  public void startServicePointImportBatch() throws JobExecutionException {
+  public void startServicePointUpdateGeoLocation() throws JobExecutionException {
     updateServicePointGeoJob.runGeoLocationUpdateJob();
   }
 }

@@ -13,6 +13,6 @@ public interface ServicePointUpdateGeoApiV1 {
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("update-geo")
-  void startServicePointImportBatch() throws JobExecutionException;
+  void startServicePointUpdateGeoLocation() throws JobExecutionException;
 
 }

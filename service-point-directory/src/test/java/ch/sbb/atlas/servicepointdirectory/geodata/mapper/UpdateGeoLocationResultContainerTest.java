@@ -2,10 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.geodata.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.servicepointdirectory.controller.UpdateGeoLocationTesData;
+import ch.sbb.atlas.servicepointdirectory.controller.UpdateGeoLocationTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer;
-import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer.VersionDataRage;
+import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer.VersionDataRange;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,11 @@ class UpdateGeoLocationResultContainerTest {
   @Test
   void shouldGetResponseMessageWithoutVersioning() {
     //when
-    UpdateGeoLocationResultContainer resultModel = UpdateGeoLocationTesData.getModel();
+    UpdateGeoLocationResultContainer resultModel = UpdateGeoLocationTestData.getModel();
 
     //then
     assertThat(resultModel).isNotNull();
-    assertThat(resultModel.isHasMergedVersions()).isFalse();
+    assertThat(resultModel.hasMergedVersions()).isFalse();
     assertThat(resultModel.getResponseMessage()).isNotNull();
     assertThat(resultModel.getResponseMessage()).isEqualTo(
         "No versioning changes happened!<br> [SwissMunicipalityNumber=351,SwissMunicipalityName=Bern,SwissLocalityName=Bern] "
@@ -30,15 +30,15 @@ class UpdateGeoLocationResultContainerTest {
   @Test
   void shouldGetResponseMessageWithMerging() {
     //given
-    ServicePointGeolocation currentServicePointGeolocation = UpdateGeoLocationTesData.getModel()
+    ServicePointGeolocation currentServicePointGeolocation = UpdateGeoLocationTestData.getModel()
         .getCurrentServicePointGeolocation();
-    ServicePointGeolocation updatedServicePointGeolocation = UpdateGeoLocationTesData.getModel()
+    ServicePointGeolocation updatedServicePointGeolocation = UpdateGeoLocationTestData.getModel()
         .getUpdatedServicePointGeolocation();
-    List<VersionDataRage> currentVersionsDataRange = new ArrayList<>();
-    currentVersionsDataRange.add(new VersionDataRage(LocalDate.of(2000, 1, 1), LocalDate.of(2000, 12, 31)));
-    currentVersionsDataRange.add(new VersionDataRage(LocalDate.of(2001, 1, 1), LocalDate.of(2001, 12, 31)));
-    List<VersionDataRage> updatedVersionsDataRange = new ArrayList<>();
-    updatedVersionsDataRange.add(new VersionDataRage(LocalDate.of(2000, 1, 1), LocalDate.of(2001, 12, 31)));
+    List<VersionDataRange> currentVersionsDataRange = new ArrayList<>();
+    currentVersionsDataRange.add(new VersionDataRange(LocalDate.of(2000, 1, 1), LocalDate.of(2000, 12, 31)));
+    currentVersionsDataRange.add(new VersionDataRange(LocalDate.of(2001, 1, 1), LocalDate.of(2001, 12, 31)));
+    List<VersionDataRange> updatedVersionsDataRange = new ArrayList<>();
+    updatedVersionsDataRange.add(new VersionDataRange(LocalDate.of(2000, 1, 1), LocalDate.of(2001, 12, 31)));
 
     //when
     UpdateGeoLocationResultContainer resultModel =
@@ -53,7 +53,7 @@ class UpdateGeoLocationResultContainerTest {
 
     //then
     assertThat(resultModel).isNotNull();
-    assertThat(resultModel.isHasMergedVersions()).isTrue();
+    assertThat(resultModel.hasMergedVersions()).isTrue();
     assertThat(resultModel.getResponseMessage()).isNotNull();
     assertThat(resultModel.getResponseMessage()).isEqualTo(
         "Merged versions: <br>before [DataRange(validFrom=2000-01-01 validTo=2000-12-31), DataRange"
@@ -65,17 +65,17 @@ class UpdateGeoLocationResultContainerTest {
   @Test
   void shouldGetResponseMessageWithNewVersions() {
     //given
-    ServicePointGeolocation currentServicePointGeolocation = UpdateGeoLocationTesData.getModel()
+    ServicePointGeolocation currentServicePointGeolocation = UpdateGeoLocationTestData.getModel()
         .getCurrentServicePointGeolocation();
-    ServicePointGeolocation updatedServicePointGeolocation = UpdateGeoLocationTesData.getModel()
+    ServicePointGeolocation updatedServicePointGeolocation = UpdateGeoLocationTestData.getModel()
         .getUpdatedServicePointGeolocation();
-    List<VersionDataRage> currentVersionsDataRange = new ArrayList<>();
-    currentVersionsDataRange.add(new VersionDataRage(LocalDate.of(2000, 1, 1), LocalDate.of(2000, 12, 31)));
-    currentVersionsDataRange.add(new VersionDataRage(LocalDate.of(2001, 1, 1), LocalDate.of(2001, 12, 31)));
-    List<VersionDataRage> updatedVersionsDataRange = new ArrayList<>();
-    updatedVersionsDataRange.add(new VersionDataRage(LocalDate.of(2000, 1, 1), LocalDate.of(2000, 12, 31)));
-    updatedVersionsDataRange.add(new VersionDataRage(LocalDate.of(2001, 1, 1), LocalDate.of(2000, 6, 1)));
-    updatedVersionsDataRange.add(new VersionDataRage(LocalDate.of(2001, 6, 2), LocalDate.of(2000, 12, 31)));
+    List<VersionDataRange> currentVersionsDataRange = new ArrayList<>();
+    currentVersionsDataRange.add(new VersionDataRange(LocalDate.of(2000, 1, 1), LocalDate.of(2000, 12, 31)));
+    currentVersionsDataRange.add(new VersionDataRange(LocalDate.of(2001, 1, 1), LocalDate.of(2001, 12, 31)));
+    List<VersionDataRange> updatedVersionsDataRange = new ArrayList<>();
+    updatedVersionsDataRange.add(new VersionDataRange(LocalDate.of(2000, 1, 1), LocalDate.of(2000, 12, 31)));
+    updatedVersionsDataRange.add(new VersionDataRange(LocalDate.of(2001, 1, 1), LocalDate.of(2000, 6, 1)));
+    updatedVersionsDataRange.add(new VersionDataRange(LocalDate.of(2001, 6, 2), LocalDate.of(2000, 12, 31)));
 
     //when
     UpdateGeoLocationResultContainer resultModel =
@@ -90,9 +90,9 @@ class UpdateGeoLocationResultContainerTest {
 
     //then
     assertThat(resultModel).isNotNull();
-    assertThat(resultModel.isHasMergedVersions()).isFalse();
-    assertThat(resultModel.isHasAdditionalVersionsGenerated()).isTrue();
-    assertThat(resultModel.isHasNumberOfVersionsChanged()).isTrue();
+    assertThat(resultModel.hasMergedVersions()).isFalse();
+    assertThat(resultModel.hasAdditionalVersionsGenerated()).isTrue();
+    assertThat(resultModel.hasNumberOfVersionsChanged()).isTrue();
     assertThat(resultModel.getResponseMessage()).isNotNull();
     assertThat(resultModel.getResponseMessage()).isEqualTo(
         "Generated additional versions: <br>before [DataRange(validFrom=2000-01-01 validTo=2000-12-31), DataRange"
