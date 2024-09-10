@@ -1136,6 +1136,7 @@
       "CANTON": "Kanton",
       "MUNICIPALITY": "Gemeinde",
       "DISTRICT": "Ortschaft",
+      "DISTRICT_NAME": "Bezirk",
       "GEOGRAPHY_INFORMATION": "Wenn aktiviert, muss die geografische Lage in einem der beiden Koordinatensysteme erfasst werden."
     },
     "MAP_STYLES": {

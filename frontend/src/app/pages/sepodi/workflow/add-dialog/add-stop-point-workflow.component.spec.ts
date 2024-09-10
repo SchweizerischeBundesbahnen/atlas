@@ -56,8 +56,7 @@ const detailHelperService = jasmine.createSpyObj({
   confirmLeaveDirtyForm: of(true),
 });
 const stopPointWorkflowService = jasmine.createSpyObj('StopPointWorkflowService', {
-  addStopPointWorkflow: of(workflow),
-  getExaminants: of([])
+  addStopPointWorkflow: of(workflow)
 });
 
 const workflowDialogData: AddStopPointWorkflowDialogData = {
@@ -172,13 +171,12 @@ describe('AddStopPointWorkflowComponent', () => {
     });
 
     const formArray = new FormArray<FormGroup<ExaminantFormGroup>>([examinantFormGroup]);
-    const formGroup = new FormGroup<StopPointWorkflowDetailFormGroup>({
+    component.form = new FormGroup<StopPointWorkflowDetailFormGroup>({
       ccEmails: new FormControl<Array<string> | null>(null),
       workflowComment: new FormControl<string | null>('Workflow comment 1'),
       designationOfficial: new FormControl<string | null>(null),
       examinants: formArray,
     });
-    component.form = formGroup;
 
     component.addWorkflow();
 

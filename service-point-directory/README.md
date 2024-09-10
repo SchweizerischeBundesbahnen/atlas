@@ -12,8 +12,8 @@
   * [Test](#test)
   * [Integration](#integration)
   * [Production](#production)
+- [GeoLocation Update Job](#geolocation-update-job)
 - [Legacy Documentation - DB Schema - Didok](#legacy-documentation---db-schema---didok)
-- [Full clean import of service points, traffic point elements and loading points](#full-clean-import-of-service-points-traffic-point-elements-and-loading-points)
 
 <!-- tocstop -->
 
@@ -126,6 +126,14 @@ Maps, OpenStreetMap, etc.
 * Swagger
   UI:  https://service-point-directory.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 
+## GeoLocation Update Job
+
+GeoLocation can change (slight border shifts, name changes, etc.). This must be adjusted in our data so that the country,
+canton, district, municipality and tow are stored correctly.
+The GeoLocation data are weekly updated with a batch job.   
+
+![GeoLocationJob](documentation/geolocation-job.svg)
+
 ## Legacy Documentation - DB Schema - Didok
 
 - Model: https://confluence.sbb.ch/display/ADIDOK/Datenbank
@@ -133,96 +141,3 @@ Maps, OpenStreetMap, etc.
   plan: https://sbb.sharepoint.com/:x:/s/didok-atlas/ERrMJki5bFtMqGjShTeKSOQBkUqI2hq4cPixMOXZHqUucg?e=etg8dr
 - ServicePoint Category
   Tree: https://confluence.sbb.ch/display/ADIDOK/Big+Picture#BigPicture-Kategorienbaum
-
-## Full clean import of service points, traffic point elements and loading points
-
-To do a full import of service points, traffic point elements and loading points from csv we need to delete all the existing data
-from the service-point db:
-
-```sql
--- Service Points
-delete
-from service_point_version_means_of_transport;
-
-delete
-from service_point_version_categories;
-
-delete
-from service_point_version;
-
--- faster delete without fk constraint
-alter table service_point_version drop constraint fk_service_point_geolocation_id;
-
-delete
-from service_point_version_geolocation;
-
-alter table service_point_version
-    add constraint fk_service_point_geolocation_id
-        FOREIGN KEY (service_point_geolocation_id)
-            REFERENCES service_point_version_geolocation (id);
-
-delete
-from service_point_fot_comment;
-
--- Traffic Point Elements
-delete
-from traffic_point_element_version;
-
--- faster delete without fk constraint
-alter table traffic_point_element_version drop constraint fk_traffic_point_element_version_geolocation_id;
-
-delete
-from traffic_point_element_version_geolocation;
-
-alter table traffic_point_element_version
-    add constraint fk_traffic_point_element_version_geolocation_id
-        FOREIGN KEY (traffic_point_geolocation_id)
-            REFERENCES traffic_point_element_version_geolocation (id);
-
--- Loading Points
-delete
-from loading_point_version;
-```
-
-Further we need to clear the import-service-point db: see * [Reset Batch](../documentation/batch_util.md).
-
-And the Location DB:
-
-For Traffic Point Elements:
-
-```sql
-delete
-from allocated_sloid
-where sloidtype = 'AREA'
-   or sloidtype = 'PLATFORM';
-```
-
-For Service Points:
-
-```sql
-delete
-from allocated_sloid
-where sloidtype = 'SERVICE_POINT';
-
-truncate table available_service_point_sloid;
-
-insert into available_service_point_sloid
-select ('ch:1:sloid:' || available_sloids) as sloid, 'SWITZERLAND' as country
-from generate_series(1, 99999) as available_sloids;
-
-insert into available_service_point_sloid
-select ('ch:1:sloid:' || available_sloids + 1100000) as sloid, 'GERMANY_BUS' as country
-from generate_series(1, 99999) as available_sloids;
-
-insert into available_service_point_sloid
-select ('ch:1:sloid:' || available_sloids + 1200000) as sloid, 'AUSTRIA_BUS' as country
-from generate_series(1, 99999) as available_sloids;
-
-insert into available_service_point_sloid
-select ('ch:1:sloid:' || available_sloids + 1300000) as sloid, 'ITALY_BUS' as country
-from generate_series(1, 99999) as available_sloids;
-
-insert into available_service_point_sloid
-select ('ch:1:sloid:' || available_sloids + 1400000) as sloid, 'FRANCE_BUS' as country
-from generate_series(1, 99999) as available_sloids;
-```

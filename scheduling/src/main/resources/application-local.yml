@@ -113,6 +113,10 @@ scheduler:
         future:
           chron: "0 40 3 * * ?" #At 03:25:00am every day
 
+  import-service-point:
+    geo-location-update-trigger-batch:
+      chron: "0 0 23 * * SUN" #At 23:00 on Sunday.
+
   export-service-point:
     service-point-trigger-batch:
       chron: "0 1 0 * * ?" #At 00:01:00am every day
