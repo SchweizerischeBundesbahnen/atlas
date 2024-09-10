@@ -15,6 +15,7 @@
       <form [formGroup]="mail">
         <p>{{ 'WORKFLOW.DECISION.MAIL_INFO' | translate }}</p>
         <atlas-text-field
+          (keyup.enter)="completeObtainOtpStep()"
           [formGroup]="mail"
           [required]="true"
           controlName="mail"
@@ -40,6 +41,7 @@
       <form [formGroup]="pin">
         <p>{{ 'WORKFLOW.DECISION.PIN_INFO' | translate }}</p>
         <atlas-text-field
+          (keyup.enter)="completeVerifyPinStep()"
           [formGroup]="pin"
           [required]="true"
           controlName="pin"
