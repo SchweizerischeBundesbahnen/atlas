@@ -7,6 +7,7 @@ import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
+import ch.sbb.atlas.user.administration.security.aspect.RunAsUser;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class ServicePointBulkImportService {
 
   private final ServicePointService servicePointService;
+
+  @RunAsUser()
+  public void updateServicePointByUserName(String userName,
+      BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
+
+    ServicePointUpdateCsvModel servicePointUpdate = bulkImportContainer.getObject();
+
+    List<ServicePointVersion> currentVersions = getCurrentVersions(servicePointUpdate);
+    ServicePointVersion currentVersion = ImportUtils.getCurrentVersion(currentVersions,
+        servicePointUpdate.getValidFrom(), servicePointUpdate.getValidTo());
+
+    ServicePointVersion editedVersion = ServicePointBulkImportUpdate.applyUpdateFromCsv(currentVersion, servicePointUpdate);
+    ServicePointBulkImportUpdate.applyNulling(bulkImportContainer.getAttributesToNull(), editedVersion);
+
+    servicePointService.update(currentVersion, editedVersion, currentVersions);
+  }
 
   public void updateServicePoint(BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
     ServicePointUpdateCsvModel servicePointUpdate = bulkImportContainer.getObject();
