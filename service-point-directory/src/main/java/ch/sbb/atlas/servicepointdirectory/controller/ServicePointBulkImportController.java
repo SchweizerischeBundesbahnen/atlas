@@ -26,7 +26,9 @@ public class ServicePointBulkImportController implements ServicePointBulkImportA
     List<BulkImportItemExecutionResult> results = new ArrayList<>();
     bulkImportContainers.forEach(bulkImportContainer -> {
       try {
-        servicePointBulkImportService.updateServicePoint(bulkImportContainer);
+        servicePointBulkImportService.updateServicePointByUserName("***REMOVED***", bulkImportContainer);
+        //        servicePointBulkImportService.updateServicePoint(bulkImportContainer);
+
         results.add(BulkImportItemExecutionResult.builder()
             .lineNumber(bulkImportContainer.getLineNumber())
             .build());
