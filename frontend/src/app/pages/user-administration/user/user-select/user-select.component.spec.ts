@@ -46,7 +46,7 @@ describe('UserSelectComponent', () => {
       ])
     );
     component.searchUser('testQuery');
-    expect(userServiceSpy.searchUsers).toHaveBeenCalledOnceWith('testQuery');
+    expect(userServiceSpy.searchUsers).toHaveBeenCalledOnceWith('testQuery', undefined, undefined);
     component.userSearchResults$.subscribe((val) => {
       expect(val).toEqual([
         {
