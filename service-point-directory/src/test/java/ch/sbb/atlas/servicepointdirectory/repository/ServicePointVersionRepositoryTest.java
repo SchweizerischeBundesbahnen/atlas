@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
@@ -9,17 +11,15 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
  class ServicePointVersionRepositoryTest {
@@ -282,6 +282,61 @@ import static org.assertj.core.api.Assertions.assertThat;
 
     // then
     assertThat(result).isFalse();
+  }
+
+  @Test
+  void shouldFindActualServicePointWithGeolocation() {
+    // given
+    ServicePointVersion servicePointSwissWithGeoLocationVersion1 = ServicePointTestData.getBernWyleregg();
+    servicePointSwissWithGeoLocationVersion1.setValidFrom(LocalDate.now().plusDays(1));
+    servicePointSwissWithGeoLocationVersion1.setValidTo(LocalDate.now().plusDays(30));
+    servicePointSwissWithGeoLocationVersion1.setDesignationOfficial("bern");
+    servicePointVersionRepository.save(servicePointSwissWithGeoLocationVersion1);
+    ServicePointVersion servicePointSwissWithGeoLocationVersion2 = ServicePointTestData.getBernWyleregg();
+    servicePointSwissWithGeoLocationVersion2.setValidFrom(LocalDate.now().plusDays(31));
+    servicePointSwissWithGeoLocationVersion2.setValidTo(LocalDate.now().plusDays(60));
+    servicePointSwissWithGeoLocationVersion2.setDesignationOfficial("bern2");
+    servicePointVersionRepository.save(servicePointSwissWithGeoLocationVersion2);
+
+    ServicePointVersion servicePointSwissWithoutGeoLocation = ServicePointTestData.getBernWyleregg();
+    servicePointSwissWithoutGeoLocation.setServicePointGeolocation(null);
+    servicePointSwissWithoutGeoLocation.setDesignationOfficial("1");
+    servicePointSwissWithoutGeoLocation.setSloid("ch:1:sloid:89001");
+    servicePointSwissWithoutGeoLocation.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589001));
+    servicePointSwissWithoutGeoLocation.setNumberShort(89001);
+    servicePointSwissWithoutGeoLocation.setValidTo(LocalDate.now().plusDays(1));
+    servicePointVersionRepository.save(servicePointSwissWithoutGeoLocation);
+
+    ServicePointVersion servicePointSwissWithGeoLocationRevoked = ServicePointTestData.getBernWyleregg();
+    servicePointSwissWithGeoLocationRevoked.setValidTo(LocalDate.now().plusDays(1));
+    servicePointSwissWithGeoLocationRevoked.setStatus(Status.REVOKED);
+    servicePointSwissWithGeoLocationRevoked.setDesignationOfficial("2");
+    servicePointSwissWithGeoLocationRevoked.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589002));
+    servicePointSwissWithGeoLocationRevoked.setSloid("ch:1:sloid:89002");
+    servicePointSwissWithGeoLocationRevoked.setNumberShort(89002);
+    servicePointVersionRepository.save(servicePointSwissWithGeoLocationRevoked);
+
+    ServicePointVersion servicePointSwissWithGeoLocationInReview = ServicePointTestData.getBernWyleregg();
+    servicePointSwissWithGeoLocationInReview.setValidTo(LocalDate.now().plusDays(1));
+    servicePointSwissWithGeoLocationInReview.setStatus(Status.IN_REVIEW);
+    servicePointSwissWithGeoLocationInReview.setSloid("ch:1:sloid:89003");
+    servicePointSwissWithGeoLocationInReview.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589003));
+    servicePointSwissWithGeoLocationInReview.setDesignationOfficial("3");
+    servicePointSwissWithGeoLocationInReview.setNumberShort(89003);
+    servicePointVersionRepository.save(servicePointSwissWithGeoLocationInReview);
+
+    // when
+    List<ServicePointSwissWithGeoTransfer> result = servicePointVersionRepository.findActualServicePointWithGeolocation();
+
+    // then
+    assertThat(result).hasSize(2);
+    assertThat(result.getFirst().getId()).isEqualTo(servicePointSwissWithGeoLocationVersion1.getId());
+    assertThat(result.getFirst().getSloid()).isEqualTo(servicePointSwissWithGeoLocationVersion1.getSloid());
+    assertThat(result.getFirst().getValidFrom()).isEqualTo(servicePointSwissWithGeoLocationVersion1.getValidFrom());
+    assertThat(result.getLast().getId()).isEqualTo(servicePointSwissWithGeoLocationVersion2.getId());
+    assertThat(result.getLast().getSloid()).isEqualTo(servicePointSwissWithGeoLocationVersion2.getSloid());
+    assertThat(result.getLast().getValidFrom()).isEqualTo(servicePointSwissWithGeoLocationVersion2.getValidFrom());
+
   }
 
   @Test
