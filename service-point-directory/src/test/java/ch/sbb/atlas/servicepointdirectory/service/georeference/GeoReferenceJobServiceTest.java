@@ -14,7 +14,7 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer;
-import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer.VersionDataRage;
+import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer.VersionDataRange;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import java.time.LocalDate;
@@ -124,10 +124,10 @@ class GeoReferenceJobServiceTest {
     assertThat(result.getResponseMessage()).isNotNull();
 
     assertThat(result.getCurrentVersionsDataRange()).hasSize(1).containsExactlyInAnyOrder(
-        new VersionDataRage(bernWyleregg.getValidFrom(), bernWyleregg.getValidTo()));
+        new VersionDataRange(bernWyleregg.getValidFrom(), bernWyleregg.getValidTo()));
     assertThat(result.getUpdatedVersionsDataRange()).hasSize(2).containsExactly(
-        new VersionDataRage(versionsResult.getFirst().getValidFrom(), versionsResult.getFirst().getValidTo()),
-        new VersionDataRage(versionsResult.getLast().getValidFrom(), versionsResult.getLast().getValidTo()));
+        new VersionDataRange(versionsResult.getFirst().getValidFrom(), versionsResult.getFirst().getValidTo()),
+        new VersionDataRange(versionsResult.getLast().getValidFrom(), versionsResult.getLast().getValidTo()));
     assertThat(result.getResponseMessage()).isNotNull();
 
   }
@@ -188,10 +188,10 @@ class GeoReferenceJobServiceTest {
     assertThat(updatedServicePointGeolocationResult.getSwissLocalityName()).isEqualTo(geoReference.getSwissLocalityName());
 
     assertThat(result.getCurrentVersionsDataRange()).hasSize(2).containsExactlyInAnyOrder(
-        new VersionDataRage(servicePointVersion.getValidFrom(), servicePointVersion.getValidTo()),
-        new VersionDataRage(newValidFrom, newValidTo));
+        new VersionDataRange(servicePointVersion.getValidFrom(), servicePointVersion.getValidTo()),
+        new VersionDataRange(newValidFrom, newValidTo));
     assertThat(result.getUpdatedVersionsDataRange()).hasSize(1).containsExactly(
-        new VersionDataRage(updatedVersion.getValidFrom(), updatedVersion.getValidTo()));
+        new VersionDataRange(updatedVersion.getValidFrom(), updatedVersion.getValidTo()));
     assertThat(result.getResponseMessage()).isNotNull();
   }
 

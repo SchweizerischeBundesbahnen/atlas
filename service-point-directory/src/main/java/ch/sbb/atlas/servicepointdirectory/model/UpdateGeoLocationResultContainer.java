@@ -26,14 +26,14 @@ public class UpdateGeoLocationResultContainer {
 
   private ServicePointGeolocation updatedServicePointGeolocation;
 
-  private List<VersionDataRage> currentVersionsDataRange;
+  private List<VersionDataRange> currentVersionsDataRange;
 
-  private List<VersionDataRage> updatedVersionsDataRange;
+  private List<VersionDataRange> updatedVersionsDataRange;
 
   @AllArgsConstructor
   @Data
   @Builder
-  public static class VersionDataRage {
+  public static class VersionDataRange {
 
     private LocalDate validFrom;
     private LocalDate validTo;
@@ -43,63 +43,64 @@ public class UpdateGeoLocationResultContainer {
     }
   }
 
-  public boolean isHasNumberOfVersionsChanged() {
+  public boolean hasNumberOfVersionsChanged() {
     if (currentVersionsDataRange != null && updatedVersionsDataRange != null) {
       return currentVersionsDataRange.size() != updatedVersionsDataRange.size();
     }
     return false;
   }
 
-  public boolean isHasMergedVersions() {
+  public boolean hasMergedVersions() {
     if (currentVersionsDataRange != null && updatedVersionsDataRange != null) {
       return updatedVersionsDataRange.size() < currentVersionsDataRange.size();
     }
     return false;
   }
 
-  public boolean isHasAdditionalVersionsGenerated() {
+  public boolean hasAdditionalVersionsGenerated() {
     if (currentVersionsDataRange != null && updatedVersionsDataRange != null) {
       return updatedVersionsDataRange.size() > currentVersionsDataRange.size();
     }
     return false;
   }
 
-  public static List<VersionDataRage> mapToUpdatedVersionDataRages(
+  public static List<VersionDataRange> mapToUpdatedVersionDataRages(
       List<ReadServicePointVersionModel> readServicePointVersionModels) {
-    List<VersionDataRage> updatedVersionsDataRange = new ArrayList<>(readServicePointVersionModels.stream()
+    List<VersionDataRange> updatedVersionsDataRange = new ArrayList<>(readServicePointVersionModels.stream()
         .map(servicePointVersionModel ->
-            new VersionDataRage(servicePointVersionModel.getValidFrom(), servicePointVersionModel.getValidTo())
+            new VersionDataRange(servicePointVersionModel.getValidFrom(), servicePointVersionModel.getValidTo())
         ).toList());
-    updatedVersionsDataRange.sort(Comparator.comparing(VersionDataRage::getValidFrom));
+    updatedVersionsDataRange.sort(Comparator.comparing(VersionDataRange::getValidFrom));
     return updatedVersionsDataRange;
   }
 
-  public static List<VersionDataRage> mapToCurrentVersionDataRages(List<ServicePointVersion> currentVersions) {
-    List<VersionDataRage> currentVersionsDataRange = new ArrayList<>(currentVersions.stream()
+  public static List<VersionDataRange> mapToCurrentVersionDataRages(List<ServicePointVersion> currentVersions) {
+    List<VersionDataRange> currentVersionsDataRange = new ArrayList<>(currentVersions.stream()
         .map(servicePointVersionModel ->
-            new VersionDataRage(servicePointVersionModel.getValidFrom(), servicePointVersionModel.getValidTo())
+            new VersionDataRange(servicePointVersionModel.getValidFrom(), servicePointVersionModel.getValidTo())
         ).toList());
-    currentVersionsDataRange.sort(Comparator.comparing(VersionDataRage::getValidFrom));
+    currentVersionsDataRange.sort(Comparator.comparing(VersionDataRange::getValidFrom));
     return currentVersionsDataRange;
   }
 
   public String getResponseMessage() {
-    String msg = "";
-    if (!isHasNumberOfVersionsChanged()) {
-      msg += "No versioning changes happened!<br> ";
+    StringBuilder msgBuilder = new StringBuilder();
+    if (!hasNumberOfVersionsChanged()) {
+      msgBuilder.append("No versioning changes happened!<br> ");
     } else {
-      if (isHasAdditionalVersionsGenerated()) {
-        msg += String.format("Generated additional versions: <br>before %s <br>after %s", this.getCurrentVersionsDataRange(),
-            this.getUpdatedVersionsDataRange());
+      if (hasAdditionalVersionsGenerated()) {
+        msgBuilder.append(
+            String.format("Generated additional versions: <br>before %s <br>after %s", this.getCurrentVersionsDataRange(),
+                this.getUpdatedVersionsDataRange()));
       }
-      if (this.isHasMergedVersions()) {
-        msg += String.format("Merged versions: <br>before %s <br>after %s", this.getCurrentVersionsDataRange(),
-            this.getUpdatedVersionsDataRange());
+      if (this.hasMergedVersions()) {
+        msgBuilder.append(String.format("Merged versions: <br>before %s <br>after %s", this.getCurrentVersionsDataRange(),
+            this.getUpdatedVersionsDataRange()));
       }
     }
-    msg += getDiffServicePointGeolocationAsMessage(this.getCurrentServicePointGeolocation(),
-        this.getUpdatedServicePointGeolocation());
-    return msg;
+    msgBuilder.append(getDiffServicePointGeolocationAsMessage(this.getCurrentServicePointGeolocation(),
+        this.getUpdatedServicePointGeolocation()));
+    return msgBuilder.toString();
   }
 
 }
