@@ -91,12 +91,11 @@ export class BulkImportOverviewComponent implements OnInit{
   startBulkImport() {
     const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
 
-    const controlsAlreadyDisabled = Object.keys(this.form.controls).filter(
-      (key) => this.form.get(key)?.disabled,
-    );
-
     this.bulkImportService.startServicePointImportBatch(bulkImportRequest, this.uploadedFiles[0])
-      .pipe(catchError(() => this.handleError(controlsAlreadyDisabled)))
+      .pipe(catchError(() => {
+        this.resetConfiguration(true);
+        return EMPTY
+      }))
       .subscribe(() => {
         this.notificationService.success('PAGES.BULK_IMPORT.SUCCESS')
         this.resetConfiguration(true);
@@ -109,15 +108,6 @@ export class BulkImportOverviewComponent implements OnInit{
 
   back(){
     this.router.navigate(['..'], { relativeTo: this.route }).then();
-  }
-
-  private readonly handleError = (excludedControls: string[]) => {
-    Object.keys(this.form.controls).forEach((key) => {
-      if (!excludedControls.includes(key)) {
-        this.form.get(key)?.enable({ emitEvent: false });
-      }
-    });
-    return EMPTY;
   }
 
   onFileChange(files: File[]){
