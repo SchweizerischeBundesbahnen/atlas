@@ -57,7 +57,7 @@ class GeoReferenceControllerTest {
     //given
     Long id = 1000L;
     String sloid = "ch:1:sloid:7000";
-    UpdateGeoLocationResultContainer resultModel = UpdateGeoLocationTesData.getModel();
+    UpdateGeoLocationResultContainer resultModel = UpdateGeoLocationTestData.getModel();
     when(geoReferenceJobService.updateGeoLocation(id)).thenReturn(resultModel);
     //when
     GeoUpdateItemResultModel result = geoReferenceController.updateServicePointGeoLocation(sloid, id);

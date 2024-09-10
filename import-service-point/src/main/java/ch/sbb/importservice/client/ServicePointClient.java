@@ -1,6 +1,6 @@
 package ch.sbb.importservice.client;
 
-import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
 import ch.sbb.importservice.config.OAuthFeignConfig;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 public interface ServicePointClient {
 
   @GetMapping("v1/service-points/actual-swiss-service-point-with-geo")
-  List<ServicePointSwissWithGeoModel> getActualServicePointWithGeolocation();
+  List<ServicePointSwissWithGeoLocationModel> getActualSwissServicePointWithGeolocation();
 
   @PutMapping("v1/geodata/update-geo/{sloid}/{id}")
   GeoUpdateItemResultModel updateServicePointGeoLocation(@PathVariable("sloid") String sloid, @PathVariable("id") Long id);
