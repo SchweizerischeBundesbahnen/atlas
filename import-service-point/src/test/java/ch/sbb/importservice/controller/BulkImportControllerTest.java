@@ -78,7 +78,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldAcceptGenericBulkImportWithFile() throws Exception {
-    when(servicePointBulkImportClient.bulkImportUpdate(any())).thenReturn(
+    when(servicePointBulkImportClient.bulkImportUpdate(eq(null), any())).thenReturn(
         List.of(BulkImportItemExecutionResult.builder()
             .lineNumber(1)
             .build()));
@@ -89,7 +89,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
         .andExpect(status().isAccepted());
 
     verify(amazonService, times(2)).putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), eq(todaysDirectory));
-    verify(servicePointBulkImportClient, atLeastOnce()).bulkImportUpdate(any());
+    verify(servicePointBulkImportClient, atLeastOnce()).bulkImportUpdate(eq(null), any());
 
     assertThat(bulkImportRepository.count()).isEqualTo(1);
     BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
