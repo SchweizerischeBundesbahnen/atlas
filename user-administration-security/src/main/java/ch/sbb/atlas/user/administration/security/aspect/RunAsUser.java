@@ -30,6 +30,5 @@ import org.springframework.context.annotation.Bean;
 @Documented
 public @interface RunAsUser {
 
-//  String userName();
 
 }

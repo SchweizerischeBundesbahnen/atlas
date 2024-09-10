@@ -8,6 +8,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUser;
+import ch.sbb.atlas.user.administration.security.aspect.RunAsUserParameter;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,8 @@ public class ServicePointBulkImportService {
 
   private final ServicePointService servicePointService;
 
-  @RunAsUser()
-  public void updateServicePointByUserName(String userName,
+  @RunAsUser
+  public void updateServicePointByUserName(@RunAsUserParameter String userName,
       BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
 
     ServicePointUpdateCsvModel servicePointUpdate = bulkImportContainer.getObject();
