@@ -9,7 +9,7 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.configuration.Role;
@@ -137,6 +137,6 @@ public interface ServicePointApiV1 {
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @GetMapping("/actual-swiss-service-point-with-geo")
-  List<ServicePointSwissWithGeoModel> getActualServicePointWithGeolocation();
+  List<ServicePointSwissWithGeoLocationModel> getActualServicePointWithGeolocation();
 
 }

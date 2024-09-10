@@ -1,15 +1,16 @@
 package ch.sbb.importservice.config;
 
-import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.importservice.listener.GeoLocationJobCompletionListener;
 import ch.sbb.importservice.listener.StepTracerListener;
 import ch.sbb.importservice.reader.ThreadSafeListItemReader;
 import ch.sbb.importservice.service.geo.ServicePointUpdateGeoLocationService;
 import ch.sbb.importservice.utils.StepUtils;
-import ch.sbb.importservice.writer.geo.ServicePointUpdateGeoApiWriter;
+import ch.sbb.importservice.writer.geo.ServicePointUpdateGeoLocationApiWriter;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -24,6 +25,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
+@RequiredArgsConstructor
 @Configuration
 @Slf4j
 public class ServicePointGeoLocationUpdateConfig {
@@ -37,33 +39,24 @@ public class ServicePointGeoLocationUpdateConfig {
   private final GeoLocationJobCompletionListener geoLocationJobCompletionListener;
   private final StepTracerListener stepTracerListener;
   private final ServicePointUpdateGeoLocationService geoLocationService;
-  private final ServicePointUpdateGeoApiWriter geoApiWriter;
-
-  public ServicePointGeoLocationUpdateConfig(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-      GeoLocationJobCompletionListener geoLocationJobCompletionListener, StepTracerListener stepTracerListener,
-      ServicePointUpdateGeoLocationService geoLocationService, ServicePointUpdateGeoApiWriter geoApiWriter) {
-    this.jobRepository = jobRepository;
-    this.transactionManager = transactionManager;
-    this.geoLocationJobCompletionListener = geoLocationJobCompletionListener;
-    this.stepTracerListener = stepTracerListener;
-    this.geoLocationService = geoLocationService;
-    this.geoApiWriter = geoApiWriter;
-  }
-
+  private final ServicePointUpdateGeoLocationApiWriter geoApiWriter;
+  
   @StepScope
   @Bean
-  public ThreadSafeListItemReader<ServicePointSwissWithGeoModel> servicePointGeoLocationListItemReader() {
-    List<ServicePointSwissWithGeoModel> servicePointWithGeolocation = geoLocationService.getActualServicePointWithGeolocation();
+  public ThreadSafeListItemReader<ServicePointSwissWithGeoLocationModel> servicePointGeoLocationListItemReader() {
+    List<ServicePointSwissWithGeoLocationModel> servicePointWithGeolocation =
+        geoLocationService.getActualServicePointWithGeolocation();
     log.info("Start sending requests to service-point-directory with chunkSize: {}...", SERVICE_POINT_CHUNK_SIZE);
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(servicePointWithGeolocation));
   }
 
   @Bean
   public Step updateServicePointGeoLocationStep(
-      ThreadSafeListItemReader<ServicePointSwissWithGeoModel> servicePointListItemReader) {
+      ThreadSafeListItemReader<ServicePointSwissWithGeoLocationModel> servicePointListItemReader) {
     String stepName = "parseServicePointCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<ServicePointSwissWithGeoModel, ServicePointSwissWithGeoModel>chunk(SERVICE_POINT_CHUNK_SIZE, transactionManager)
+        .<ServicePointSwissWithGeoLocationModel, ServicePointSwissWithGeoLocationModel>chunk(SERVICE_POINT_CHUNK_SIZE,
+            transactionManager)
         .reader(servicePointListItemReader)
         .writer(geoApiWriter)
         .faultTolerant()
@@ -75,7 +68,8 @@ public class ServicePointGeoLocationUpdateConfig {
   }
 
   @Bean
-  public Job updateServicePointGeoJob(ThreadSafeListItemReader<ServicePointSwissWithGeoModel> servicePointListItemReader) {
+  public Job updateServicePointGeoJob(
+      ThreadSafeListItemReader<ServicePointSwissWithGeoLocationModel> servicePointListItemReader) {
     return new JobBuilder(UPDATE_SERVICE_POINT_GEO_JOB, jobRepository)
         .listener(geoLocationJobCompletionListener)
         .incrementer(new RunIdIncrementer())
