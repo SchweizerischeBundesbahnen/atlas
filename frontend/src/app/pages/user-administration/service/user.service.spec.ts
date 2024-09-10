@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { UserService } from './user.service';
 import {
+  ApplicationType,
   ClientCredentialAdministrationService,
   ContainerUser,
   User,
@@ -88,8 +89,8 @@ describe('UserService', () => {
       of([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]),
     );
 
-    service.searchUsers('test').subscribe((res) => {
-      expect(userInformationServiceMock.searchUsers).toHaveBeenCalledOnceWith('test');
+    service.searchUsers('test', false, ApplicationType.Sepodi).subscribe((res) => {
+      expect(userInformationServiceMock.searchUsers).toHaveBeenCalledOnceWith('test', false, ApplicationType.Sepodi);
       expect(res).toEqual([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]);
       done();
     });
