@@ -61,7 +61,7 @@
         }
 
         table {
-            width: 100%;
+            /*width: 100%;*/
             text-align: left;
             position: relative;
             border-collapse: collapse;
@@ -70,7 +70,7 @@
 
         td, th {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 3px;
         }
 
         th {
@@ -78,7 +78,7 @@
             color: black;
             border-radius: 0;
             top: 0;
-            padding: 10px;
+            padding: 5px;
         }
 
         caption {
@@ -115,60 +115,59 @@
     <div class="message mt-1" th:text="'The job ' + ${properties.get(0).get('jobName')} + ' was successfully executed.'"></div>
     <ul>
         <li><b th:text="'Step Execution Information: ' + ${properties.get(0).get('stepExecutionInformation')} "></b></li>
-        <li><b th:text="'Total Imported CSV lines: ' + ${properties.get(0).get('importProcessItemsSize')} "></b>
+        <li><b
+                th:text="'Total Found ServicePoints with GeoLocation to process: ' + ${properties.get(0).get('geoLocationVersionsToProcess')} "></b>
+        </li>
+        <li><b
+                th:text="'Total Processed ServicePoints with GeoLocation to update: ' + ${properties.get(0).get('geoUpdateProcessItemsSize')} "></b>
         </li>
         <li>
-            <b th:text="'Total Success Imported CSV lines: ' + ${properties.get(0).get('successImportedItemsSize')}  "></b>
-        </li>
-        <li th:if="${!properties.get(0).get('warningImportedItems').isEmpty()}">
-            <b th:text="'Total Success with Warnings Imported CSV lines: ' + ${properties.get(0).get('warningImportedItemsSize')}"></b>
+            <b th:text="'Total Successfully updated GeoLocations: ' + ${properties.get(0).get('successUpdatedGeoSize')}  "></b>
         </li>
         <li>
-            <b th:text="'Total Failed Imported CSV lines: ' + ${properties.get(0).get('failedImportedItemsSize')}"></b>
+            <b th:text="'Total Failed updated GeoLocations: ' + ${properties.get(0).get('failedUpdatedGeoItemsSize')}"></b>
         </li>
     </ul>
-    <!-- new -->
-    <div class='message mt-1' th:if="${!properties.get(0).get('warningImportedItems').isEmpty()}"
-         th:text="'See the Warnings in the following table:'">
-    </div>
-    <div class='mt-1' th:if="${!properties.get(0).get('warningImportedItems').isEmpty()}">
+
+    <div class='mt-1' th:if="${!properties.get(0).get('successUpdatedGeoItems').isEmpty()}">
         <table>
             <thead>
-            <caption>Imported items with Warnings</caption>
+            <caption>Updated GeoLocation items with Success</caption>
             <tr>
-                <th>Item Number</th>
+                <th>SLOID</th>
+                <th>ID</th>
                 <th>Response Status</th>
                 <th>Response Message</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="item : ${properties.get(0).get('warningImportedItems')}">
-                <td th:text='${item.processedItem}'></td>
-                <td th:text='${item.processedItemStatus}'></td>
-                <td th:text='${item.processedItemMessage}'></td>
+            <tr th:each="item : ${properties.get(0).get('successUpdatedGeoItems')}">
+                <td th:utext='${item.processedItem}'></td>
+                <td th:utext='${item.processedItemId}'></td>
+                <td th:utext='${item.processedItemStatus}'></td>
+                <td th:utext='${item.processedItemMessage}'></td>
             </tr>
             </tbody>
         </table>
     </div>
 
-    <div class='message mt-1' th:if="${!properties.get(0).get('failedImportedItems').isEmpty()}"
-         th:text="'See the failed to import Objects summary in the following table:'">
-    </div>
-    <div class='mt-1' th:if="${!properties.get(0).get('failedImportedItems').isEmpty()}">
+    <div class='mt-1' th:if="${!properties.get(0).get('failedUpdatedGeoItems').isEmpty()}">
         <table>
             <thead>
-            <caption>Failed to import items</caption>
+            <caption>Failed GeoLocation to update</caption>
             <tr>
-                <th>Item Number</th>
+                <th>SLOID</th>
+                <th>ID</th>
                 <th>Response Status</th>
                 <th>Response Message</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="item : ${properties.get(0).get('failedImportedItems')}">
-                <td th:text='${item.processedItem}'></td>
-                <td th:text='${item.processedItemStatus}'></td>
-                <td th:text='${item.processedItemMessage}'></td>
+            <tr th:each="item : ${properties.get(0).get('failedUpdatedGeoItems')}">
+                <td th:utext='${item.processedItem}'></td>
+                <td th:utext='${item.processedItemId}'></td>
+                <td th:utext='${item.processedItemStatus}'></td>
+                <td th:utext='${item.processedItemMessage}'></td>
             </tr>
             </tbody>
         </table>

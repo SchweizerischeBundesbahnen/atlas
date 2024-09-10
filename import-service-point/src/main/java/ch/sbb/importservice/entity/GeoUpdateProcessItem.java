@@ -1,6 +1,6 @@
 package ch.sbb.importservice.entity;
 
-import ch.sbb.atlas.imports.ItemImportResponseStatus;
+import ch.sbb.atlas.imports.ItemProcessResponseStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,10 +23,10 @@ import lombok.experimental.FieldNameConstants;
 @ToString
 @Builder
 @FieldNameConstants
-@Entity(name = "import_process_item")
-public class ImportProcessItem {
+@Entity(name = "geo_update_import_process_item")
+public class GeoUpdateProcessItem {
 
-  private static final String VERSION_SEQ = "import_process_item_seq";
+  private static final String VERSION_SEQ = "geo_update_import_process_item_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -37,10 +37,12 @@ public class ImportProcessItem {
 
   private String jobExecutionName;
 
-  private String itemNumber;
+  private String sloid;
+
+  private Long servicePointId;
 
   @Enumerated(EnumType.STRING)
-  private ItemImportResponseStatus responseStatus;
+  private ItemProcessResponseStatus responseStatus;
 
   private String responseMessage;
 }
