@@ -36,18 +36,22 @@
         [options]="OPTIONS_SCENARIO"
       >
       </atlas-select>
-
-      <div class="mt-4">
+    </div>
+<!--    <div class="d-flex flex-column col-3 pe-3 ms-5">-->
+    <div class="d-flex flex-column col-3 justify-content-end align-items-end">
+      <div class="mt-5">
         <atlas-button
           (buttonClicked)="downloadExcel()"
-          *ngIf="isDownloadButtonVisible"
-          [disabled]="false"
+          [disabled]="!isDownloadButtonVisible"
           buttonDataCy="download-csv"
           buttonText="BULK_IMPORT.BUTTON.DOWNLOAD"
           buttonType="create"
         >
           <ng-template #rightIcon>
-            <download-icon [readonly]="true" class="ps-2"></download-icon>
+            <download-icon
+              [readonly]="true"
+              class="ps-2"
+            ></download-icon>
           </ng-template>
         </atlas-button>
       </div>
@@ -77,7 +81,7 @@
         [applicationType]="form.controls.applicationType.value!"
       ></app-user-select>
     </div>
-    <div class="d-flex flex-column col-3 pe-3">
+    <div class="d-flex flex-column col-6 pe-3">
       <atlas-text-list
         [formGroup]="form"
         fieldLabel="PAGES.BULK_IMPORT.ADDITIONAL_IMPORT_REPORT"
@@ -86,6 +90,9 @@
         controlName="emails">
       </atlas-text-list>
     </div>
+<!--    <div class="d-flex flex-column col-3 pe-3">-->
+<!--    </div>-->
+
 
   </div>
     <div class="mt-5">
