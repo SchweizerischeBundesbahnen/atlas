@@ -16,6 +16,7 @@
       buttonDataCy="download-csv"
       buttonText="BULK_IMPORT.BUTTON.DOWNLOAD"
       buttonType="create"
+      [attr.title]="isDownloadButtonDisabled ? ( 'BULK_IMPORT.BUTTON.DISABLED_MESSAGE' | translate ) : ''"
       (click)="$event.stopPropagation()"
     >
       <ng-template #rightIcon>

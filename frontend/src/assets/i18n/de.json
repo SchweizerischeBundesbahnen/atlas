@@ -1468,7 +1468,8 @@
   },
   "BULK_IMPORT": {
     "BUTTON": {
-      "DOWNLOAD": "Importvorlage"
+      "DOWNLOAD": "Importvorlage",
+      "DISABLED_MESSAGE": "Bitte wählen Sie die erforderlichen Felder aus, um den Download zu aktivieren"
     },
     "ERROR": {
       "EXCEL_CONVERSION": "Die verwendete Excel-Datei konnte nicht richtig gelesen werden. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen.\nFehlerquelle in Zeile:{{rowIndex}}, Spalte:{{columnIndex}}",
