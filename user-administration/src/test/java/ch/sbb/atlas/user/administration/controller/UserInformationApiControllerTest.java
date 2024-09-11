@@ -9,7 +9,9 @@ import ch.sbb.atlas.user.administration.service.UserAdministrationService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,6 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 class UserInformationApiControllerTest extends BaseControllerApiTest {
+
+    @Autowired
+    protected MockMvc mvc;
 
     @MockBean
     private GraphApiService graphApiService;
