@@ -26,16 +26,12 @@ export class FileUploadComponent {
 
   @ViewChild('fileInput') fileInputRef!: ElementRef;
 
-  protected clickTarget: 'upload' | 'download' | 'none' = 'none';
-
   onFilesDropped(fileList: FileList) {
     this.addFileListToFile(fileList);
   }
 
   selectFilesFromSystem() {
-    if (this.clickTarget === 'upload') {
-      this.fileInputRef.nativeElement.click();
-    }
+    this.fileInputRef.nativeElement.click();
   }
 
   onFileInputChanged($event: Event) {
@@ -117,13 +113,7 @@ export class FileUploadComponent {
   }
 
   downloadExcel() {
-    this.clickTarget = 'download';
     this.downloadExcelClick.emit();
-    this.clickTarget = 'none';
   }
 
-  onUploadClick() {
-    this.clickTarget = 'upload';
-    this.clickTarget = 'none';
-  }
 }
