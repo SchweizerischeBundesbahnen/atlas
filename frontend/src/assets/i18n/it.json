@@ -1468,7 +1468,8 @@
   },
   "BULK_IMPORT": {
     "BUTTON": {
-      "DOWNLOAD": "Modello di importazione"
+      "DOWNLOAD": "Modello di importazione",
+      "DISABLED_MESSAGE": "Selezionare i campi richiesti per abilitare il download"
     },
     "ERROR": {
       "EXCEL_CONVERSION": "Non è stato possibile leggere correttamente il file Excel utilizzato. Assicuratevi di utilizzare il file secondo il modello.\nFonte dell'errore in riga:{{rowIndex}}, colonna:{{columnIndex}}",
