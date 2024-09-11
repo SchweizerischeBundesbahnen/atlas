@@ -1,124 +1,121 @@
 <div class="h-100 ps-5 pt-5">
 
   <form [formGroup]="form">
-  <h2 class="font-bold-4xl mb-4">
-    {{ 'PAGES.BULK_IMPORT.CONFIGURATION' | translate }}
-  </h2>
+    <h2 class="font-bold-4xl mb-4">
+      {{ 'PAGES.BULK_IMPORT.CONFIGURATION' | translate }}
+    </h2>
 
-  <div class="white-table-container-no-tabs">
-  <div class=" col-12 d-flex justify-content-between">
-    <div class="d-flex flex-column col-3 pe-5">
-      <atlas-select
-        [formGroup]="form"
-        controlName="applicationType"
-        label="{{ 'PAGES.BULK_IMPORT.APPLICATION' | translate }}"
-        optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
-        [options]="OPTIONS_APPLICATION_TYPE"
-      >
-      </atlas-select>
-    </div>
-    <div class="d-flex flex-column col-3 pe-5">
-      <atlas-select
-        [formGroup]="form"
-        controlName="objectType"
-        label="{{ 'PAGES.BULK_IMPORT.OBJECT' | translate }}"
-        optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
-        [options]="OPTIONS_OBJECT_TYPE"
-      >
-      </atlas-select>
-    </div>
-    <div class="d-flex flex-column col-3 pe-5">
-      <atlas-select
-        [formGroup]="form"
-        controlName="importType"
-        label="{{ 'PAGES.BULK_IMPORT.SCENARIO' | translate }}"
-        optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
-        [options]="OPTIONS_SCENARIO"
-      >
-      </atlas-select>
-    </div>
-<!--    <div class="d-flex flex-column col-3 pe-3 ms-5">-->
-    <div class="d-flex flex-column col-3 justify-content-end align-items-end">
+    <div class="white-table-container-no-tabs">
+      <div class=" col-12 d-flex justify-content-between">
+        <div class="d-flex flex-column col-3 pe-5">
+          <atlas-select
+            [formGroup]="form"
+            controlName="applicationType"
+            label="{{ 'PAGES.BULK_IMPORT.APPLICATION' | translate }}"
+            optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
+            [options]="OPTIONS_APPLICATION_TYPE"
+          >
+          </atlas-select>
+        </div>
+        <div class="d-flex flex-column col-3 pe-5">
+          <atlas-select
+            [formGroup]="form"
+            controlName="objectType"
+            label="{{ 'PAGES.BULK_IMPORT.OBJECT' | translate }}"
+            optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
+            [options]="OPTIONS_OBJECT_TYPE"
+          >
+          </atlas-select>
+        </div>
+        <div class="d-flex flex-column col-3 pe-5">
+          <atlas-select
+            [formGroup]="form"
+            controlName="importType"
+            label="{{ 'PAGES.BULK_IMPORT.SCENARIO' | translate }}"
+            optionTranslateLabelPrefix="PAGES.BULK_IMPORT."
+            [options]="OPTIONS_SCENARIO"
+          >
+          </atlas-select>
+        </div>
+        <div class="d-flex flex-column col-3 justify-content-end align-items-end">
+          <div class="mt-5">
+            <atlas-button
+              (buttonClicked)="downloadExcel()"
+              [disabled]="!isDownloadButtonVisible"
+              buttonDataCy="download-csv"
+              buttonText="BULK_IMPORT.BUTTON.DOWNLOAD"
+              buttonType="create"
+            >
+              <ng-template #rightIcon>
+                <download-icon
+                  [readonly]="true"
+                  class="ps-2"
+                ></download-icon>
+              </ng-template>
+            </atlas-button>
+          </div>
+        </div>
+
+      </div>
+
+      <br>
+      <div class="col-12 d-flex justify-content-between">
+        <div class="d-flex flex-column col-3 pe-3">
+          <p>
+            {{ 'PAGES.BULK_IMPORT.IMPORT_EXECUTED_BY' | translate }} {{ userName }}
+          </p>
+        </div>
+        <div class="d-flex flex-column col-3 pe-3">
+          <mat-checkbox
+            *ngIf="isAdmin"
+            [disabled]="!isApplicationSelected"
+            (change)="enableUserSelect($event.checked)"
+            [checked]="isUserSelectEnabled"
+            data-cy="checkboxBulkImport">
+            {{ 'PAGES.BULK_IMPORT.IMPORT_FOR_SOMEONE_ELSE' | translate }}
+          </mat-checkbox>
+          <app-user-select
+            *ngIf="isUserSelectEnabled"
+            [form]="form.controls.userSearchForm"
+            [searchInAtlas]="true"
+            [applicationType]="form.controls.applicationType.value!"
+          ></app-user-select>
+        </div>
+        <div class="d-flex flex-column col-6 pe-3">
+          <atlas-text-list
+            [stretchTheField]="true"
+            [formGroup]="form"
+            fieldLabel="PAGES.BULK_IMPORT.ADDITIONAL_IMPORT_REPORT"
+            [required]="true"
+            placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
+            controlName="emails">
+          </atlas-text-list>
+        </div>
+
+      </div>
       <div class="mt-5">
+        <atlas-file-upload
+          [(uploadedFiles)]="uploadedFiles"
+          [maxFileCount]="1"
+          [maxFileSize]="20 * 1024 * 1024"
+          [acceptedFileType]="ALLOWED_FILE_TYPES_BULK_IMPORT"
+          (uploadedFilesChange)="onFileChange($event)"
+
+        ></atlas-file-upload>
+      </div>
+      <div class="mt-5 me-5 d-flex justify-content-end">
         <atlas-button
-          (buttonClicked)="downloadExcel()"
-          [disabled]="!isDownloadButtonVisible"
-          buttonDataCy="download-csv"
-          buttonText="BULK_IMPORT.BUTTON.DOWNLOAD"
-          buttonType="create"
-        >
-          <ng-template #rightIcon>
-            <download-icon
-              [readonly]="true"
-              class="ps-2"
-            ></download-icon>
-          </ng-template>
-        </atlas-button>
+          (buttonClicked)="startBulkImport()"
+          [footerEdit]="form.enabled"
+          buttonDataCy="save"
+          buttonText="PAGES.BULK_IMPORT.START_BULK_IMPORT"
+          buttonType="whiteFooterEdit"
+          wrapperStyleClass="ms-3"
+          [disabled]="!isEnabledToStartImport || !isFileUploaded"
+        ></atlas-button>
       </div>
     </div>
-  </div>
-
-  <br>
-  <div class="col-12 d-flex justify-content-between">
-    <div class="d-flex flex-column col-3 pe-3">
-      <p>
-        {{ 'PAGES.BULK_IMPORT.IMPORT_EXECUTED_BY' | translate }} {{ userName }}
-      </p>
-    </div>
-    <div class="d-flex flex-column col-3 pe-3">
-      <mat-checkbox
-        *ngIf="isAdmin"
-        [disabled]="!isApplicationSelected"
-        (change)="enableUserSelect($event.checked)"
-        [checked]="isUserSelectEnabled"
-        data-cy="checkboxBulkImport">
-        {{ 'PAGES.BULK_IMPORT.IMPORT_FOR_SOMEONE_ELSE' | translate }}
-      </mat-checkbox>
-      <app-user-select
-        *ngIf="isUserSelectEnabled"
-        [form]="form.controls.userSearchForm"
-        [searchInAtlas]="true"
-        [applicationType]="form.controls.applicationType.value!"
-      ></app-user-select>
-    </div>
-    <div class="d-flex flex-column col-6 pe-3">
-      <atlas-text-list
-        [stretchTheField]="true"
-        [formGroup]="form"
-        fieldLabel="PAGES.BULK_IMPORT.ADDITIONAL_IMPORT_REPORT"
-        [required]="true"
-        placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
-        controlName="emails">
-      </atlas-text-list>
-    </div>
-<!--    <div class="d-flex flex-column col-3 pe-3">-->
-<!--    </div>-->
-
-
-  </div>
-    <div class="mt-5">
-      <atlas-file-upload
-        [(uploadedFiles)]="uploadedFiles"
-        [maxFileCount]="1"
-        [maxFileSize]="20 * 1024 * 1024"
-        [acceptedFileType]="ALLOWED_FILE_TYPES_BULK_IMPORT"
-        (uploadedFilesChange)="onFileChange($event)"
-
-      ></atlas-file-upload>
-    </div>
-    <div class="mt-5 me-5 d-flex justify-content-end">
-      <atlas-button
-        (buttonClicked)="startBulkImport()"
-        [footerEdit]="form.enabled"
-        buttonDataCy="save"
-        buttonText="PAGES.BULK_IMPORT.START_BULK_IMPORT"
-        buttonType="whiteFooterEdit"
-        wrapperStyleClass="ms-3"
-        [disabled]="!isEnabledToStartImport || !isFileUploaded"
-      ></atlas-button>
-    </div>
-  </div>
-</form>
+  </form>
 
 </div>
 
