@@ -36,8 +36,24 @@
         [options]="OPTIONS_SCENARIO"
       >
       </atlas-select>
+
+      <div class="mt-4">
+        <atlas-button
+          (buttonClicked)="downloadExcel()"
+          *ngIf="isDownloadButtonVisible"
+          [disabled]="false"
+          buttonDataCy="download-csv"
+          buttonText="BULK_IMPORT.BUTTON.DOWNLOAD"
+          buttonType="create"
+        >
+          <ng-template #rightIcon>
+            <download-icon [readonly]="true" class="ps-2"></download-icon>
+          </ng-template>
+        </atlas-button>
+      </div>
     </div>
   </div>
+
   <br>
   <div class="col-12 d-flex justify-content-between">
     <div class="d-flex flex-column col-3 pe-3">
