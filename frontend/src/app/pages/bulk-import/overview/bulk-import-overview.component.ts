@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 import {BulkImportFormGroup, BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
-import {BulkImportService, UserAdministrationService} from "../../../api";
+import {BulkImportService, BusinessObjectType, ImportType, UserAdministrationService} from "../../../api";
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {catchError, EMPTY} from "rxjs";
 import {
@@ -136,14 +136,27 @@ export class BulkImportOverviewComponent implements OnInit {
 
   get isDownloadButtonVisible(): boolean {
     return (
+      this.checkForNull && this.sepodiCombination
+    );
+  }
+
+  get checkForNull(): boolean {
+    return (
       this.form.controls.applicationType.value !== null &&
       this.form.controls.objectType.value !== null &&
       this.form.controls.importType.value !== null
     );
   }
 
+  get sepodiCombination(): boolean {
+    return (
+      (this.form.controls.objectType.value == BusinessObjectType.ServicePoint || this.form.controls.objectType.value == BusinessObjectType.TrafficPoint) &&
+      (this.form.controls.importType.value == ImportType.Create || this.form.controls.importType.value == ImportType.Update)
+    );
+  }
+
   get isDownloadButtonDisabled(): boolean {
-    return !this.isDownloadButtonVisible;  // Button is disabled if the conditions are not met
+    return !this.isDownloadButtonVisible;
   }
 
   downloadExcel() {
