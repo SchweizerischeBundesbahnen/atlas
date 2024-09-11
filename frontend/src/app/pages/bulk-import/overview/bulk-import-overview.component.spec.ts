@@ -1,12 +1,13 @@
 import {BulkImportOverviewComponent} from "./bulk-import-overview.component";
-import {TestBed} from "@angular/core/testing";
-import {BulkImportService} from "../../../api";
+import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {ApplicationType, BulkImportService, BusinessObjectType, ImportType} from "../../../api";
 import SpyObj = jasmine.SpyObj;
 import {AppTestingModule} from "../../../app.testing.module";
 import {BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
 import {of} from "rxjs";
 import {NotificationService} from "../../../core/notification/notification.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe} from "@ngx-translate/core";
 
 describe('BulkImportOverviewComponent', () => {
   let component: BulkImportOverviewComponent;
@@ -15,6 +16,7 @@ describe('BulkImportOverviewComponent', () => {
   let notificationServiceSpy: SpyObj<NotificationService>;
   let routerSpy: SpyObj<Router>;
   let activatedRouteStub:ActivatedRoute;
+  let fixture: ComponentFixture<BulkImportOverviewComponent>;
 
   beforeEach(() => {
     bulkImportServiceSpy = jasmine.createSpyObj(['startServicePointImportBatch']);
@@ -23,7 +25,11 @@ describe('BulkImportOverviewComponent', () => {
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
     TestBed.configureTestingModule({
-      imports: [AppTestingModule],
+      imports: [AppTestingModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        })
+      ],
       providers: [
         BulkImportOverviewComponent,
         {
@@ -40,9 +46,11 @@ describe('BulkImportOverviewComponent', () => {
         },
         { provide: ActivatedRoute, useValue: activatedRouteStub }
       ],
+      declarations: [BulkImportOverviewComponent, TranslatePipe],
     });
 
-    component = TestBed.inject(BulkImportOverviewComponent);
+    fixture = TestBed.createComponent(BulkImportOverviewComponent);
+    component = fixture.componentInstance;
   });
 
 
@@ -53,6 +61,14 @@ describe('BulkImportOverviewComponent', () => {
   it('should remove department', () => {
     //when
     const result = component.removeDepartment('Ammann Luca (IT-PTR-CEN1-YPT1)');
+
+    //then
+    expect(result).toBe('Ammann Luca');
+  });
+
+  it('should not remove department if not exists', () => {
+    //when
+    const result = component.removeDepartment('Ammann Luca');
 
     //then
     expect(result).toBe('Ammann Luca');
@@ -109,6 +125,31 @@ describe('BulkImportOverviewComponent', () => {
     expect(component.form.controls.applicationType.value).toBeNull();
     expect(component.form.controls.importType.value).toBeNull();
     expect(component.form.controls.emails.value).toEqual([]);
+  });
+
+
+  it('should set isApplicationSelected and OPTIONS_OBJECT_TYPE when applicationType changes', () => {
+    fixture.detectChanges()
+    component.ngOnInit();
+
+    component.form.controls.applicationType.setValue(ApplicationType.Sepodi);
+    fixture.detectChanges();
+
+
+    expect(component.isApplicationSelected).toBeTrue();
+    expect(component.OPTIONS_OBJECT_TYPE).toEqual(component.OPTIONS_OBJECTS[ApplicationType.Sepodi]);
+  });
+
+  it('should enable import when all conditions are met', () => {
+    fixture.detectChanges()
+
+    const form = component.form;
+    form.controls.applicationType.setValue(ApplicationType.Sepodi);
+    form.controls.importType.setValue(ImportType.Create);
+    form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
+
+    fixture.detectChanges()
+    expect(component.isEnabledToStartImport).toBeTrue();
   });
 
 });
