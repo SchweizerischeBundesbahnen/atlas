@@ -2,7 +2,7 @@
   @if (formGroup?.enabled) {
     <div class="d-flex flex-row col-12">
       <div class="d-flex flex-grow-1">
-        <atlas-text-field
+        <atlas-text-field [class]="stretchTheField ? 'w-50': ''"
           [controlName]="inputCtrlName"
           [formGroup]="strListFormGroup"
           [fieldLabel]="fieldLabel"
