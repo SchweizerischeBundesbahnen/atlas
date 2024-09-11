@@ -1,8 +1,8 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
-import { FieldExample } from '../text-field/field-example';
-import { concat, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+import {FieldExample} from '../text-field/field-example';
+import {concat, Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'atlas-text-list',
@@ -19,6 +19,7 @@ export class StringListComponent implements OnChanges {
   @Input() fieldLabel!: string;
   @Input() infoIconTitle!: string;
   @Input() infoIconLink!: string;
+  @Input() stretchTheField: boolean = false;
   @Input() required!: boolean;
   @Input() fieldExamples!: Array<FieldExample>;
   @Input() placeHolderText!: string;
