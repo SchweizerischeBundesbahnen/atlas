@@ -16,7 +16,7 @@
       buttonDataCy="download-csv"
       buttonText="BULK_IMPORT.BUTTON.DOWNLOAD"
       buttonType="create"
-      (click)="clickTarget = 'download'"
+      (click)="$event.stopPropagation()"
     >
       <ng-template #rightIcon>
         <download-icon [readonly]="true" [disabled]="isDownloadButtonDisabled" class="ps-2"></download-icon>
@@ -24,11 +24,9 @@
     </atlas-button>
 
     <atlas-button
-      (buttonClicked)="onUploadClick()"
       buttonText="COMMON.FILEUPLOAD.SELECT_FILES"
       buttonType="create"
       wrapperStyleClass="mb-3"
-      (click)="clickTarget = 'upload'"
     >
       <ng-template #rightIcon>
         <upload-icon class="ps-2"></upload-icon>
