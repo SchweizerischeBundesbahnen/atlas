@@ -1,5 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { FileUploadError } from './file-upload-error';
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {FileUploadError} from './file-upload-error';
 
 @Component({
   selector: 'atlas-file-upload',
@@ -17,16 +17,25 @@ export class FileUploadComponent {
   @Input() alreadySavedFileNames: string[] = [];
   @Output() uploadedFilesChange = new EventEmitter<File[]>();
 
+  @Input() isDownloadButtonVisible: boolean = false;
+  @Input() isDownloadButtonDisabled: boolean = false;
+
+  @Output() downloadExcelClick = new EventEmitter<void>();
+
   errorFiles: FileUploadError[] = [];
 
   @ViewChild('fileInput') fileInputRef!: ElementRef;
+
+  protected clickTarget: 'upload' | 'download' | 'none' = 'none';
 
   onFilesDropped(fileList: FileList) {
     this.addFileListToFile(fileList);
   }
 
   selectFilesFromSystem() {
-    this.fileInputRef.nativeElement.click();
+    if (this.clickTarget === 'upload') {
+      this.fileInputRef.nativeElement.click();
+    }
   }
 
   onFileInputChanged($event: Event) {
@@ -105,5 +114,16 @@ export class FileUploadComponent {
     this.uploadedFiles = this.uploadedFiles.filter((item) => item.name !== file.name);
     this.clearErrors();
     this.uploadedFilesChange.emit(this.uploadedFiles);
+  }
+
+  downloadExcel() {
+    this.clickTarget = 'download';
+    this.downloadExcelClick.emit();
+    this.clickTarget = 'none';
+  }
+
+  onUploadClick() {
+    this.clickTarget = 'upload';
+    this.clickTarget = 'none';
   }
 }
