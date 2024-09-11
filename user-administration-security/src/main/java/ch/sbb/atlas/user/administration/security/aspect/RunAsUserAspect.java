@@ -76,8 +76,8 @@ public class RunAsUserAspect {
 
       for (Annotation a : annotations) {
         if (a.annotationType() == RunAsUserParameter.class) {
-          if (joinPoint.getArgs()[i] instanceof String) {
-            return (String) joinPoint.getArgs()[i];
+          if (joinPoint.getArgs()[i] instanceof String value) {
+            return value;
           }
           throw new IllegalStateException("Parameter marked with @RunAsUserParameter must be a String!");
         }
