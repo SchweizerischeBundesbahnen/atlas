@@ -1,20 +1,23 @@
 import {Component, OnInit} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 import {BulkImportFormGroup, BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
-import {
-  BulkImportService,
-  UserAdministrationService
-} from "../../../api";
+import {BulkImportService, UserAdministrationService} from "../../../api";
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {catchError, EMPTY} from "rxjs";
 import {
   ALLOWED_FILE_TYPES_BULK_IMPORT,
-  OPTIONS_APPLICATION_TYPE, OPTIONS_OBJECT_TYPE_BODI, OPTIONS_OBJECT_TYPE_LIDI,
-  OPTIONS_OBJECT_TYPE_PRM, OPTIONS_OBJECT_TYPE_SEPODI, OPTIONS_OBJECT_TYPE_TIMETABLE_HEARING, OPTIONS_OBJECT_TYPE_TTFN,
+  OPTIONS_APPLICATION_TYPE,
+  OPTIONS_OBJECT_TYPE_BODI,
+  OPTIONS_OBJECT_TYPE_LIDI,
+  OPTIONS_OBJECT_TYPE_PRM,
+  OPTIONS_OBJECT_TYPE_SEPODI,
+  OPTIONS_OBJECT_TYPE_TIMETABLE_HEARING,
+  OPTIONS_OBJECT_TYPE_TTFN,
   OPTIONS_SCENARIO
 } from "../detail/bulk-import-options";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../core/notification/notification.service";
+import {FileDownloadService} from "../../../core/components/file-upload/file/file-download.service";
 
 @Component({
   templateUrl: './bulk-import-overview.component.html'
@@ -130,4 +133,25 @@ export class BulkImportOverviewComponent implements OnInit {
       this.form.controls.emails.setValue([], {emitEvent: false});
     }
   }
+
+  get isDownloadButtonVisible(): boolean {
+    return (
+      this.form.controls.applicationType.value !== null &&
+      this.form.controls.objectType.value !== null &&
+      this.form.controls.importType.value !== null
+    );
+  }
+
+  downloadExcel() {
+    const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
+    if (bulkImportRequest.objectType && bulkImportRequest.importType) {
+      const filename = `${bulkImportRequest.importType.toLowerCase()}_${bulkImportRequest.objectType.toLowerCase()}.xlsx`;
+      this.bulkImportService
+        .downloadTemplate(bulkImportRequest.objectType, bulkImportRequest.importType)
+        .subscribe((response) => FileDownloadService.downloadFile(filename, response));
+    } else {
+      console.error('Please select both a Business Object Type and an Import Type.');
+    }
+  }
+
 }
