@@ -7,7 +7,7 @@
 
   <div class="white-table-container-no-tabs">
   <div class=" col-12 d-flex justify-content-between">
-    <div class="d-flex flex-column col-3 pe-3">
+    <div class="d-flex flex-column col-3 pe-5">
       <atlas-select
         [formGroup]="form"
         controlName="applicationType"
@@ -17,7 +17,7 @@
       >
       </atlas-select>
     </div>
-    <div class="d-flex flex-column col-3 pe-3">
+    <div class="d-flex flex-column col-3 pe-5">
       <atlas-select
         [formGroup]="form"
         controlName="objectType"
@@ -27,7 +27,7 @@
       >
       </atlas-select>
     </div>
-    <div class="d-flex flex-column col-3 pe-3">
+    <div class="d-flex flex-column col-3 pe-5">
       <atlas-select
         [formGroup]="form"
         controlName="importType"
@@ -83,6 +83,7 @@
     </div>
     <div class="d-flex flex-column col-6 pe-3">
       <atlas-text-list
+        [stretchTheField]="true"
         [formGroup]="form"
         fieldLabel="PAGES.BULK_IMPORT.ADDITIONAL_IMPORT_REPORT"
         [required]="true"
