@@ -1,13 +1,14 @@
 import {BulkImportOverviewComponent} from "./bulk-import-overview.component";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ApplicationType, BulkImportService, BusinessObjectType, ImportType} from "../../../api";
-import SpyObj = jasmine.SpyObj;
 import {AppTestingModule} from "../../../app.testing.module";
 import {BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
 import {of} from "rxjs";
 import {NotificationService} from "../../../core/notification/notification.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe} from "@ngx-translate/core";
+import {FileDownloadService} from "../../../core/components/file-upload/file/file-download.service";
+import SpyObj = jasmine.SpyObj;
 
 describe('BulkImportOverviewComponent', () => {
   let component: BulkImportOverviewComponent;
@@ -19,7 +20,7 @@ describe('BulkImportOverviewComponent', () => {
   let fixture: ComponentFixture<BulkImportOverviewComponent>;
 
   beforeEach(() => {
-    bulkImportServiceSpy = jasmine.createSpyObj(['startServicePointImportBatch']);
+    bulkImportServiceSpy = jasmine.createSpyObj('BulkImportService', ['startServicePointImportBatch', 'downloadTemplate']);
     notificationServiceSpy = jasmine.createSpyObj(['success']);
     routerSpy = jasmine.createSpyObj(['navigate']);
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
@@ -150,6 +151,46 @@ describe('BulkImportOverviewComponent', () => {
 
     fixture.detectChanges()
     expect(component.isEnabledToStartImport).toBeTrue();
+  });
+
+  it('should show download button when all dropdowns are selected', () => {
+    component.form = BulkImportFormGroupBuilder.initFormGroup();
+    component.form.controls.applicationType.setValue(ApplicationType.Sepodi);
+    component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
+    component.form.controls.importType.setValue(ImportType.Create);
+
+    component.form.updateValueAndValidity();
+
+    expect(component.isDownloadButtonVisible).toBeTrue();
+  });
+
+  it('should hide download button when one or more dropdowns are not selected', () => {
+    component.form = BulkImportFormGroupBuilder.initFormGroup();
+    component.form.controls.applicationType.setValue(null);
+    component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
+    component.form.controls.importType.setValue(ImportType.Create);
+
+    component.form.updateValueAndValidity();
+
+    expect(component.isDownloadButtonVisible).toBeFalse();
+  });
+
+  it('should download the Excel file', () => {
+    component.form = BulkImportFormGroupBuilder.initFormGroup();
+    component.form.controls.applicationType.setValue(ApplicationType.Sepodi);
+    component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
+    component.form.controls.importType.setValue(ImportType.Create);
+
+    const blob = new Blob(['test'], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    // const blob = new Blob(['test'], { type: 'text/csv' });
+    bulkImportServiceSpy.downloadTemplate.and.returnValue(of(blob));
+    const fileDownloadSpy = spyOn(FileDownloadService, 'downloadFile');
+
+    component.downloadExcel();
+
+    expect(bulkImportServiceSpy.downloadTemplate).toHaveBeenCalledWith(BusinessObjectType.ServicePoint, ImportType.Create);
+    expect(fileDownloadSpy).toHaveBeenCalledWith('create_service_point.xlsx', blob);
+    // expect(fileDownloadSpy).toHaveBeenCalledWith('create_service_point.csv', blob);
   });
 
 });
