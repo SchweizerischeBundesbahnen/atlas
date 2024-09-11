@@ -3,21 +3,50 @@
     <p>{{ data.id }}</p>
     <p>{{ data.importResult | json }}</p>
 
-    <h1>Import Result</h1>
+    <h1 class="ps-4">Import Result</h1>
 
-    <div class="d-flex">
-      <aside>
-        <p><span class="font-bold-base">Import Type: </span>{{ data.importResult.importType }}</p>
-        <p>
-          <span class="font-bold-base">Object Type: </span
-          >{{ data.importResult.businessObjectType }}
-        </p>
-        <p><span class="font-bold-base">Durchgeführt von: </span>{{ data.importResult.creator }}</p>
-        <p>
-          <span class="font-bold-base">Durchgeführt am: </span>{{ data.importResult.creationDate }}
-        </p>
+    <div class="d-flex justify-content-center">
+      <aside class="ps-4 me-4 result-grid">
+        <ng-template #resultInfo let-label="label" let-value="value">
+          <div class="d-flex flex-column">
+            <label class="font-bold-base">{{ label }}</label>
+            <span>{{ value }}</span>
+          </div>
+        </ng-template>
+
+        @for (
+          item of [
+            {
+              label: 'Object Type',
+              value: data.importResult.businessObjectType,
+            },
+            {
+              label: 'Import Type',
+              value: data.importResult.importType,
+            },
+            {
+              label: 'Durchgeführt von',
+              value: data.importResult.creator,
+            },
+            {
+              label: 'Durchgeführt am',
+              value: data.importResult.creationDate | date: 'dd.MM.yyyy HH:mm',
+            },
+          ];
+          track $index
+        ) {
+          <ng-container [ngTemplateOutlet]="resultInfo" [ngTemplateOutletContext]="item">
+          </ng-container>
+        }
+
         @if (data.importResult.inNameOf) {
-          <p><span class="font-bold-base">Im Namen von: </span>{{ data.importResult.inNameOf }}</p>
+          <ng-container
+            [ngTemplateOutlet]="resultInfo"
+            [ngTemplateOutletContext]="{
+              label: 'Im Namen von',
+              value: data.importResult.inNameOf,
+            }"
+          ></ng-container>
         }
 
         <ng-template #statusTemplate let-color="color" let-text="text" let-nbOfLines="nbOfLines">
@@ -55,10 +84,12 @@
         }
       </aside>
 
-      <main class="w-100">
+      <main class="w-70 pe-4 log-grid">
+        <label class="font-bold-base">Zeilennummer</label>
+        <label class="font-bold-base" style="justify-self: start">Resultat</label>
         @for (entry of data.importResult.logEntries; track $index) {
-          <div class="d-flex align-items-center p-2">
-            <span class="font-bold-base pe-2">{{ entry.lineNumber }}</span>
+          <span class="font-bold-base">{{ entry.lineNumber }}</span>
+          <div class="w-100">
             <div
               class="d-flex align-items-center closed-box p-2 cursor-pointer"
               (click)="entry.expanded = !entry.expanded"
@@ -78,14 +109,23 @@
               </div>
               <i [class]="entry.expanded ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
             </div>
+            @if (entry.expanded) {
+              <ul class="border-error-box m-0">
+                @for (error of entry.errors; track $index) {
+                  @if (error.displayInfo) {
+                    <li>
+                      {{
+                        error.displayInfo.code
+                          | translate: (error.displayInfo.parameters | paramsForTranslation)
+                      }}
+                    </li>
+                  } @else {
+                    <li>{{ error.errorMessage }} (Anzeigeinformationen fehlen)</li>
+                  }
+                }
+              </ul>
+            }
           </div>
-          @if (entry.expanded) {
-            <ul>
-              <li>error1</li>
-              <li>error2</li>
-              <li>error3</li>
-            </ul>
-          }
         }
       </main>
     </div>
