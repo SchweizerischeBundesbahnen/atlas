@@ -142,6 +142,10 @@ export class BulkImportOverviewComponent implements OnInit {
     );
   }
 
+  get isDownloadButtonDisabled(): boolean {
+    return !this.isDownloadButtonVisible;  // Button is disabled if the conditions are not met
+  }
+
   downloadExcel() {
     const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
     if (bulkImportRequest.objectType && bulkImportRequest.importType) {
