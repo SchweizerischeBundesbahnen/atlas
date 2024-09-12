@@ -2,6 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
@@ -15,6 +17,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.user.administration.security.service.CountryAndBusinessOrganisationBasedUserAdministrationService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +30,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 @IntegrationTest
 class ServicePointBulkImportServiceTest {
+
+  @MockBean
+  private CountryAndBusinessOrganisationBasedUserAdministrationService administrationService;
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -44,6 +50,7 @@ class ServicePointBulkImportServiceTest {
 
   @BeforeEach
   void setUp() {
+    doReturn(true).when(administrationService).hasUserPermissionsToUpdateCountryBased(any(), any(), any());
     bernWyleregg = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
   }
 
@@ -66,6 +73,25 @@ class ServicePointBulkImportServiceTest {
             .build())
         .build());
 
+    ServicePointVersion bulkUpdateResult = servicePointVersionRepository.findById(bernWyleregg.getId()).orElseThrow();
+    assertThat(bulkUpdateResult.getDesignationLong()).isEqualTo("Bern, am Wyleregg");
+  }
+
+  @Test
+  void shouldUpdateBulkWithUserInNameOf() {
+    //given
+
+    //when
+    servicePointBulkImportService.updateServicePointByUserName("e123456",
+        BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
+            .object(ServicePointUpdateCsvModel.builder()
+                .sloid(bernWyleregg.getSloid())
+                .validFrom(bernWyleregg.getValidFrom())
+                .validTo(bernWyleregg.getValidTo())
+                .designationLong("Bern, am Wyleregg")
+                .build())
+            .build());
+    //then
     ServicePointVersion bulkUpdateResult = servicePointVersionRepository.findById(bernWyleregg.getId()).orElseThrow();
     assertThat(bulkUpdateResult.getDesignationLong()).isEqualTo("Bern, am Wyleregg");
   }

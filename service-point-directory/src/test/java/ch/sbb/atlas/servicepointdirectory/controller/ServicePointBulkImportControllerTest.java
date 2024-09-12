@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,10 +46,29 @@ class ServicePointBulkImportControllerTest {
                 .sloid("ch:1:sloid:7000")
                 .build())
             .build();
-    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(null,
         List.of(updateContainer));
 
+    verify(servicePointBulkImportService, never()).updateServicePointByUserName("userName", updateContainer);
     verify(servicePointBulkImportService).updateServicePoint(updateContainer);
+    assertThat(bulkImportItemExecutionResults).hasSize(1).first().extracting(BulkImportItemExecutionResult::isSuccess)
+        .isEqualTo(true);
+  }
+
+  @Test
+  void shouldBulkUpdateViaServiceWithUserName() {
+    BulkImportUpdateContainer<ServicePointUpdateCsvModel> updateContainer =
+        BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
+            .object(ServicePointUpdateCsvModel.builder()
+                .sloid("ch:1:sloid:7000")
+                .build())
+            .build();
+    String userName = "e123456";
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(
+        userName, List.of(updateContainer));
+
+    verify(servicePointBulkImportService).updateServicePointByUserName(userName, updateContainer);
+    verify(servicePointBulkImportService, never()).updateServicePoint(updateContainer);
     assertThat(bulkImportItemExecutionResults).hasSize(1).first().extracting(BulkImportItemExecutionResult::isSuccess)
         .isEqualTo(true);
   }
@@ -63,7 +83,7 @@ class ServicePointBulkImportControllerTest {
                 .sloid("ch:1:sloid:7000")
                 .build())
             .build();
-    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(null,
         List.of(updateContainer));
 
     verify(servicePointBulkImportService).updateServicePoint(updateContainer);
