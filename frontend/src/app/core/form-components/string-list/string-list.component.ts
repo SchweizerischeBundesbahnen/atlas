@@ -19,7 +19,6 @@ export class StringListComponent implements OnChanges {
   @Input() fieldLabel!: string;
   @Input() infoIconTitle!: string;
   @Input() infoIconLink!: string;
-  @Input() stretchTheField: boolean = false;
   @Input() required!: boolean;
   @Input() fieldExamples!: Array<FieldExample>;
   @Input() placeHolderText!: string;
