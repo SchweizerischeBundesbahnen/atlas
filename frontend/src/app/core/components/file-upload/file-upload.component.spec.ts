@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FileUploadComponent } from './file-upload.component';
-import { AppTestingModule } from '../../../app.testing.module';
-import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
+import {FileUploadComponent} from './file-upload.component';
+import {AppTestingModule} from '../../../app.testing.module';
+import {MockAtlasButtonComponent} from '../../../app.testing.mocks';
 
 function getMockFileList(
   fileName: string,
@@ -109,4 +109,19 @@ describe('FileUploadComponent', () => {
     expect(component.uploadedFiles.length).toBe(0);
     expect(component.uploadedFilesChange.emit).toHaveBeenCalled();
   });
+
+  it('should display the download button when isDownloadButtonVisible is true', () => {
+    component.isDownloadButtonVisible = true;
+    fixture.detectChanges();
+    const downloadButton = fixture.nativeElement.querySelector('[buttonDataCy="download-csv"]');
+    expect(downloadButton).toBeTruthy();
+  });
+
+  it('should not display the download button when isDownloadButtonVisible is false', () => {
+    component.isDownloadButtonVisible = false;
+    fixture.detectChanges();
+    const downloadButton = fixture.nativeElement.querySelector('[buttonDataCy="download-csv"]');
+    expect(downloadButton).toBeNull();
+  });
+
 });
