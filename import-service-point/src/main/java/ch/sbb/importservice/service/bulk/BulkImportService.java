@@ -7,7 +7,6 @@ import ch.sbb.importservice.repository.BulkImportRepository;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -23,7 +22,7 @@ public class BulkImportService {
   private final BulkImportJobService bulkImportJobService;
 
   private static final String ROOT_TEMPLATES_BUCKET_FOLDER = "templates";
-  private static final String FILE_EXTENSION = ".xlsx";
+  private static final String FILE_EXTENSION = ".csv";
   private static final String PATH_DELIMITER = "/";
   private static final String UNDERSCORE_DELIMITER = "_";
 
