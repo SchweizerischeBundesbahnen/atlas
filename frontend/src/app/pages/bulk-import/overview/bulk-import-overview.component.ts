@@ -163,7 +163,7 @@ export class BulkImportOverviewComponent implements OnInit {
   downloadExcel() {
     const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
     if (bulkImportRequest.objectType && bulkImportRequest.importType) {
-      const filename = `${bulkImportRequest.importType.toLowerCase()}_${bulkImportRequest.objectType.toLowerCase()}.xlsx`;
+      const filename = `${bulkImportRequest.importType.toLowerCase()}_${bulkImportRequest.objectType.toLowerCase()}.csv`;
       this.bulkImportService
         .downloadTemplate(bulkImportRequest.objectType, bulkImportRequest.importType)
         .subscribe((response) => FileDownloadService.downloadFile(filename, response));

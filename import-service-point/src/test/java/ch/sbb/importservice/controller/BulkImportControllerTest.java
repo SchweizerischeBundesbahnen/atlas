@@ -26,6 +26,7 @@ import ch.sbb.importservice.model.BulkImportRequest;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.repository.BulkImportRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -35,8 +36,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Stream;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -161,7 +160,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
   @Test
   void shouldReturnBadRequestWhenAmazonDoesNotFindTemplate() throws Exception {
     // Given
-    when(amazonService.pullFile(AmazonBucket.BULK_IMPORT, "templates/service_point/create_service_point.xlsx"))
+    when(amazonService.pullFile(AmazonBucket.BULK_IMPORT, "templates/service_point/create_service_point.csv"))
         .thenReturn(null);
 
     // When & Then
@@ -172,13 +171,13 @@ class BulkImportControllerTest extends BaseControllerApiTest {
 
   static Stream<Arguments> getArgumentsForDifferentTemplates() {
     return Stream.of(
-        Arguments.of("templates/create_service_point.xlsx", "templates/service_point/create_service_point.xlsx",
+        Arguments.of("templates/create_service_point.xlsx", "templates/service_point/create_service_point.csv",
             "/v1/import/bulk/template/SERVICE_POINT/CREATE"),
-        Arguments.of("templates/create_traffic_point.xlsx", "templates/traffic_point/create_traffic_point.xlsx",
+        Arguments.of("templates/create_traffic_point.xlsx", "templates/traffic_point/create_traffic_point.csv",
             "/v1/import/bulk/template/TRAFFIC_POINT/CREATE"),
-        Arguments.of("templates/update_traffic_point.xlsx", "templates/traffic_point/update_traffic_point.xlsx",
+        Arguments.of("templates/update_traffic_point.xlsx", "templates/traffic_point/update_traffic_point.csv",
             "/v1/import/bulk/template/TRAFFIC_POINT/UPDATE"),
-        Arguments.of("templates/update_service_point.xlsx", "templates/service_point/update_service_point.xlsx",
+        Arguments.of("templates/update_service_point.xlsx", "templates/service_point/update_service_point.csv",
             "/v1/import/bulk/template/SERVICE_POINT/UPDATE"));
   }
 
