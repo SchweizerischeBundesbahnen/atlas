@@ -153,7 +153,7 @@ describe('BulkImportOverviewComponent', () => {
     expect(component.isEnabledToStartImport).toBeTrue();
   });
 
-  it('should show download button when all dropdowns are selected', () => {
+  it('should enable download button when all correct dropdowns are selected', () => {
     component.form = BulkImportFormGroupBuilder.initFormGroup();
     component.form.controls.applicationType.setValue(ApplicationType.Sepodi);
     component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
@@ -161,18 +161,18 @@ describe('BulkImportOverviewComponent', () => {
 
     component.form.updateValueAndValidity();
 
-    expect(component.isDownloadButtonVisible).toBeTrue();
+    expect(component.isDownloadButtonDisabled).toBeFalse();
   });
 
-  it('should hide download button when one or more dropdowns are not selected', () => {
+  it('should disable download button when some dropdowns are not correctly selected', () => {
     component.form = BulkImportFormGroupBuilder.initFormGroup();
     component.form.controls.applicationType.setValue(null);
-    component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
+    component.form.controls.objectType.setValue(BusinessObjectType.Toilet);
     component.form.controls.importType.setValue(ImportType.Create);
 
     component.form.updateValueAndValidity();
 
-    expect(component.isDownloadButtonVisible).toBeFalse();
+    expect(component.isDownloadButtonDisabled).toBeTrue();
   });
 
   it('should download the Excel file', () => {
