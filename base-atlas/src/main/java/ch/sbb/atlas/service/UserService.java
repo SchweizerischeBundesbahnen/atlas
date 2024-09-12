@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 @UtilityClass
 public final class UserService {
 
-  static final String SBBUID_CLAIM = "sbbuid";
+  public static final String SBBUID_CLAIM = "sbbuid";
   static final String AZP_CLAIM = "azp";
 
   public static Jwt getAccessToken() {
