@@ -1469,7 +1469,7 @@
   "BULK_IMPORT": {
     "BUTTON": {
       "DOWNLOAD": "Modèle d'import",
-      "DISABLED_MESSAGE": "Veuillez sélectionner les champs obligatoires pour activer le téléchargement"
+      "DISABLED_MESSAGE": "Veuillez sélectionner l'application, l'objet et le scénario pour que le modèle d'importation puisse être créé."
     },
     "ERROR": {
       "EXCEL_CONVERSION": "Le fichier Excel utilisé n'a pas pu être lu correctement. Veuillez vous assurer que vous utilisez le fichier conformément au modèle.\nSource d'erreur dans la ligne:{{rowIndex}}, la colonne:{{columnIndex}}",

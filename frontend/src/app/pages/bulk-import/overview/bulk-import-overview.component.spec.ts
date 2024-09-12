@@ -8,6 +8,17 @@ import {NotificationService} from "../../../core/notification/notification.servi
 import {ActivatedRoute, Router} from "@angular/router";
 import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe} from "@ngx-translate/core";
 import {FileDownloadService} from "../../../core/components/file-upload/file/file-download.service";
+import {AtlasButtonComponent} from "../../../core/components/button/atlas-button.component";
+import {DetailFooterComponent} from "../../../core/components/detail-footer/detail-footer.component";
+import {FileUploadComponent} from "../../../core/components/file-upload/file-upload.component";
+import {UploadIconComponent} from "../../../core/form-components/upload-icon/upload-icon.component";
+import {DownloadIconComponent} from "../../../core/form-components/download-icon/download-icon.component";
+import {StringListComponent} from "../../../core/form-components/string-list/string-list.component";
+import {SelectComponent} from "../../../core/form-components/select/select.component";
+import {TextFieldComponent} from "../../../core/form-components/text-field/text-field.component";
+import {AtlasFieldErrorComponent} from "../../../core/form-components/atlas-field-error/atlas-field-error.component";
+import {AtlasSpacerComponent} from "../../../core/components/spacer/atlas-spacer.component";
+import {AtlasLabelFieldComponent} from "../../../core/form-components/atlas-label-field/atlas-label-field.component";
 import SpyObj = jasmine.SpyObj;
 
 describe('BulkImportOverviewComponent', () => {
@@ -47,7 +58,21 @@ describe('BulkImportOverviewComponent', () => {
         },
         { provide: ActivatedRoute, useValue: activatedRouteStub }
       ],
-      declarations: [BulkImportOverviewComponent, TranslatePipe],
+      declarations: [
+        BulkImportOverviewComponent,
+        AtlasButtonComponent,
+        DetailFooterComponent,
+        UploadIconComponent,
+        DownloadIconComponent,
+        AtlasFieldErrorComponent,
+        AtlasLabelFieldComponent,
+        StringListComponent,
+        SelectComponent,
+        AtlasSpacerComponent,
+        TextFieldComponent,
+        FileUploadComponent,
+        TranslatePipe
+      ],
     });
 
     fixture = TestBed.createComponent(BulkImportOverviewComponent);
@@ -181,16 +206,16 @@ describe('BulkImportOverviewComponent', () => {
     component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
     component.form.controls.importType.setValue(ImportType.Create);
 
-    const blob = new Blob(['test'], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    // const blob = new Blob(['test'], { type: 'text/csv' });
+    // const blob = new Blob(['test'], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blob = new Blob(['test'], { type: 'text/csv' });
     bulkImportServiceSpy.downloadTemplate.and.returnValue(of(blob));
     const fileDownloadSpy = spyOn(FileDownloadService, 'downloadFile');
 
     component.downloadExcel();
 
     expect(bulkImportServiceSpy.downloadTemplate).toHaveBeenCalledWith(BusinessObjectType.ServicePoint, ImportType.Create);
-    expect(fileDownloadSpy).toHaveBeenCalledWith('create_service_point.xlsx', blob);
-    // expect(fileDownloadSpy).toHaveBeenCalledWith('create_service_point.csv', blob);
+    // expect(fileDownloadSpy).toHaveBeenCalledWith('create_service_point.xlsx', blob);
+    expect(fileDownloadSpy).toHaveBeenCalledWith('create_service_point.csv', blob);
   });
 
 });
