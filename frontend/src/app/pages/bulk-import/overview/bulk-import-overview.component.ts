@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 import {BulkImportFormGroup, BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
-import {BulkImportService, BusinessObjectType, ImportType, UserAdministrationService} from "../../../api";
+import {ApplicationType, BulkImportService, BusinessObjectType, ImportType, UserAdministrationService} from "../../../api";
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {catchError, EMPTY} from "rxjs";
 import {
@@ -134,12 +134,6 @@ export class BulkImportOverviewComponent implements OnInit {
     }
   }
 
-  get isDownloadButtonVisible(): boolean {
-    return (
-      this.checkForNull && this.sepodiCombination
-    );
-  }
-
   get checkForNull(): boolean {
     return (
       this.form.controls.applicationType.value !== null &&
@@ -148,15 +142,22 @@ export class BulkImportOverviewComponent implements OnInit {
     );
   }
 
-  get sepodiCombination(): boolean {
+  get combinationForActiveDownloadButton(): boolean {
     return (
-      (this.form.controls.objectType.value == BusinessObjectType.ServicePoint || this.form.controls.objectType.value == BusinessObjectType.TrafficPoint) &&
-      (this.form.controls.importType.value == ImportType.Create || this.form.controls.importType.value == ImportType.Update)
+      this.form.controls.applicationType.value == ApplicationType.Sepodi
+      && (
+        this.form.controls.objectType.value == BusinessObjectType.ServicePoint
+        || this.form.controls.objectType.value == BusinessObjectType.TrafficPoint
+      )
+      && (
+        this.form.controls.importType.value == ImportType.Create
+        || this.form.controls.importType.value == ImportType.Update
+      )
     );
   }
 
   get isDownloadButtonDisabled(): boolean {
-    return !this.isDownloadButtonVisible;
+    return !(this.checkForNull && this.combinationForActiveDownloadButton);
   }
 
   downloadExcel() {
