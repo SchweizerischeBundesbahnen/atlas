@@ -19,6 +19,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../core/notification/notification.service";
 import {FileDownloadService} from "../../../core/components/file-upload/file/file-download.service";
 
+const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = [
+  [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Create],
+  [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update],
+  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Create],
+  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Update],
+  [ApplicationType.Prm, BusinessObjectType.LoadingPoint, ImportType.Terminate]
+];
+
 @Component({
   templateUrl: './bulk-import-overview.component.html'
 })
@@ -26,6 +34,9 @@ export class BulkImportOverviewComponent implements OnInit {
   protected readonly OPTIONS_SCENARIO = OPTIONS_SCENARIO;
   protected readonly OPTIONS_APPLICATION_TYPE = OPTIONS_APPLICATION_TYPE;
   protected readonly ALLOWED_FILE_TYPES_BULK_IMPORT = ALLOWED_FILE_TYPES_BULK_IMPORT;
+  isCheckForNull: boolean = false;
+  isCombinationForActiveDownloadButton: boolean = false;
+  isDownloadButtonDisabled: boolean = true;
 
   OPTIONS_OBJECTS = {
     SEPODI: OPTIONS_OBJECT_TYPE_SEPODI,
@@ -79,6 +90,7 @@ export class BulkImportOverviewComponent implements OnInit {
       if (value.importType != null && value.applicationType != null && value.objectType != null) {
         this.isEnabledToStartImport = true
       }
+      this.updateFlags();
     });
   }
 
@@ -134,7 +146,13 @@ export class BulkImportOverviewComponent implements OnInit {
     }
   }
 
-  get checkForNull(): boolean {
+  updateFlags() {
+    this.isCheckForNull = this.checkForNull();
+    this.isCombinationForActiveDownloadButton = this.combinationForActiveDownloadButton();
+    this.isDownloadButtonDisabled = !(this.isCheckForNull && this.isCombinationForActiveDownloadButton);
+  }
+
+  checkForNull(): boolean {
     return (
       this.form.controls.applicationType.value !== null &&
       this.form.controls.objectType.value !== null &&
@@ -142,34 +160,24 @@ export class BulkImportOverviewComponent implements OnInit {
     );
   }
 
-  get combinationForActiveDownloadButton(): boolean {
-    return (
-      this.form.controls.applicationType.value == ApplicationType.Sepodi
-      && (
-        this.form.controls.objectType.value == BusinessObjectType.ServicePoint
-        || this.form.controls.objectType.value == BusinessObjectType.TrafficPoint
-      )
-      && (
-        this.form.controls.importType.value == ImportType.Create
-        || this.form.controls.importType.value == ImportType.Update
-      )
-    );
-  }
+  combinationForActiveDownloadButton(): boolean {
+    const applicationType = this.form.controls.applicationType.value;
+    const objectType = this.form.controls.objectType.value;
+    const importType = this.form.controls.importType.value;
 
-  get isDownloadButtonDisabled(): boolean {
-    return !(this.checkForNull && this.combinationForActiveDownloadButton);
+    return VALID_COMBINATIONS.some(([appType, objType, impType]) =>
+      appType === applicationType &&
+      objType === objectType &&
+      impType === importType
+    );
   }
 
   downloadExcel() {
     const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
-    if (bulkImportRequest.objectType && bulkImportRequest.importType) {
-      const filename = `${bulkImportRequest.importType.toLowerCase()}_${bulkImportRequest.objectType.toLowerCase()}.csv`;
-      this.bulkImportService
-        .downloadTemplate(bulkImportRequest.objectType, bulkImportRequest.importType)
-        .subscribe((response) => FileDownloadService.downloadFile(filename, response));
-    } else {
-      console.error('Please select both a Business Object Type and an Import Type.');
-    }
+    const filename = `${bulkImportRequest.importType.toLowerCase()}_${bulkImportRequest.objectType.toLowerCase()}.csv`;
+    this.bulkImportService
+      .downloadTemplate(bulkImportRequest.objectType, bulkImportRequest.importType)
+      .subscribe((response) => FileDownloadService.downloadFile(filename, response));
   }
 
 }
