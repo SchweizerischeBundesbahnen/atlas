@@ -178,26 +178,50 @@ describe('BulkImportOverviewComponent', () => {
     expect(component.isEnabledToStartImport).toBeTrue();
   });
 
-  it('should enable download button when all correct dropdowns are selected', () => {
+  it('should return true for checkForNull when none of the form controls are null', () => {
     component.form = BulkImportFormGroupBuilder.initFormGroup();
+
     component.form.controls.applicationType.setValue(ApplicationType.Sepodi);
     component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
     component.form.controls.importType.setValue(ImportType.Create);
 
-    component.form.updateValueAndValidity();
-
-    expect(component.isDownloadButtonDisabled).toBeFalse();
+    expect(component.checkForNull()).toBeTrue();
   });
 
-  it('should disable download button when some dropdowns are not correctly selected', () => {
+  it('should return false for checkForNull when any form control is null', () => {
     component.form = BulkImportFormGroupBuilder.initFormGroup();
+
     component.form.controls.applicationType.setValue(null);
-    component.form.controls.objectType.setValue(BusinessObjectType.Toilet);
+    component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
     component.form.controls.importType.setValue(ImportType.Create);
 
-    component.form.updateValueAndValidity();
+    expect(component.checkForNull()).toBeFalse();
+  });
 
-    expect(component.isDownloadButtonDisabled).toBeTrue();
+  it('should return true for combinationForActiveDownloadButton for valid combinations', () => {
+    component.form = BulkImportFormGroupBuilder.initFormGroup();
+
+    const validCombination = {
+      applicationType: ApplicationType.Sepodi,
+      objectType: BusinessObjectType.ServicePoint,
+      importType: ImportType.Create
+    };
+
+    component.form.controls.applicationType.setValue(validCombination.applicationType);
+    component.form.controls.objectType.setValue(validCombination.objectType);
+    component.form.controls.importType.setValue(validCombination.importType);
+
+    expect(component.combinationForActiveDownloadButton()).toBeTrue();
+  });
+
+  it('should return false for combinationForActiveDownloadButton for invalid combinations', () => {
+    component.form = BulkImportFormGroupBuilder.initFormGroup();
+
+    component.form.controls.applicationType.setValue(ApplicationType.Prm);
+    component.form.controls.objectType.setValue(BusinessObjectType.TrafficPoint);
+    component.form.controls.importType.setValue(ImportType.Terminate);
+
+    expect(component.combinationForActiveDownloadButton()).toBeFalse();
   });
 
   it('should download the Excel file', () => {
@@ -206,7 +230,6 @@ describe('BulkImportOverviewComponent', () => {
     component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
     component.form.controls.importType.setValue(ImportType.Create);
 
-    // const blob = new Blob(['test'], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const blob = new Blob(['test'], { type: 'text/csv' });
     bulkImportServiceSpy.downloadTemplate.and.returnValue(of(blob));
     const fileDownloadSpy = spyOn(FileDownloadService, 'downloadFile');
@@ -214,7 +237,6 @@ describe('BulkImportOverviewComponent', () => {
     component.downloadExcel();
 
     expect(bulkImportServiceSpy.downloadTemplate).toHaveBeenCalledWith(BusinessObjectType.ServicePoint, ImportType.Create);
-    // expect(fileDownloadSpy).toHaveBeenCalledWith('create_service_point.xlsx', blob);
     expect(fileDownloadSpy).toHaveBeenCalledWith('create_service_point.csv', blob);
   });
 
