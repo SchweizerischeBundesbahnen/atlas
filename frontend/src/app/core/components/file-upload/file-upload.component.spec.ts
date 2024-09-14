@@ -124,4 +124,11 @@ describe('FileUploadComponent', () => {
     expect(downloadButton).toBeNull();
   });
 
+  it('should emit downloadExcelClick event when downloadExcel is called', () => {
+    spyOn(component.downloadExcelClick, 'emit');
+
+    component.downloadExcel();
+
+    expect(component.downloadExcelClick.emit).toHaveBeenCalled();
+  });
 });
