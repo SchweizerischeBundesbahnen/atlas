@@ -42,8 +42,12 @@ export class UserService {
     return this.userAdministrationService.getUser(userId);
   }
 
-  searchUsers(searchQuery: string, searchInAtlas?: boolean, application?: ApplicationType): Observable<User[]> {
-    return this.userInformationService.searchUsers(searchQuery, searchInAtlas, application);
+  searchUsers(searchQuery: string): Observable<User[]> {
+    return this.userInformationService.searchUsers(searchQuery);
+  }
+
+  searchUsersInAtlas(searchQuery: string, applicationType: ApplicationType): Observable<User[]> {
+    return this.userInformationService.searchUsersInAtlas(searchQuery, applicationType);
   }
 
   hasUserPermissions(userId: string): Observable<boolean> {
