@@ -15,8 +15,11 @@ public interface UserInformationApiV1 {
   @GetMapping("search")
   @Operation(description = "Look up Users in SBB Azure AD via Graph API")
   List<UserModel> searchUsers(
-          @RequestParam String searchQuery,
-          @RequestParam(required = false) boolean searchInAtlas,
-          @RequestParam(required = false)ApplicationType application);
+          @RequestParam String searchQuery);
 
+  @GetMapping("search-in-atlas")
+  @Operation(description = "Look up Users in SBB Atlas")
+  List<UserModel> searchUsersInAtlas(
+          @RequestParam String searchQuery,
+          @RequestParam ApplicationType applicationType);
 }
