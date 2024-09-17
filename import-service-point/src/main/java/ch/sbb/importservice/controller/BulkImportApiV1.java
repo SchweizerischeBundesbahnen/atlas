@@ -29,13 +29,12 @@ import org.springframework.web.multipart.MultipartFile;
 public interface BulkImportApiV1 {
 
 
-  @PostMapping(path = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   @ResponseStatus(HttpStatus.ACCEPTED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "202"),
   })
-  @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(#bulkImportRequest.applicationType)""")
+  @PreAuthorize("@bulkImportUserAdministrationService.hasPermissionsForBulkImport(#bulkImportRequest.applicationType)")
   void startServicePointImportBatch(
           @Parameter(description = "Bulk Import Request")
           @RequestPart("bulkImportRequest") @Valid BulkImportRequest bulkImportRequest,
