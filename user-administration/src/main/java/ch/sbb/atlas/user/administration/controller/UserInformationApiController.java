@@ -18,15 +18,13 @@ public class UserInformationApiController implements UserInformationApiV1 {
   private final UserAdministrationService administrationService;
 
   @Override
-  public List<UserModel> searchUsers(String searchQuery, boolean searchInAtlas, ApplicationType applicationType) {
-
-    if (!searchInAtlas) {
+  public List<UserModel> searchUsers(String searchQuery) {
       return graphApiService.searchUsers(searchQuery);
-    }
-    else {
-      List<UserModel> foundUsers = graphApiService.searchUsers(searchQuery);
-      return administrationService.filterForUserInAtlas(foundUsers, applicationType);
-    }
   }
 
+  @Override
+  public List<UserModel> searchUsersInAtlas(String searchQuery, ApplicationType applicationType) {
+    List<UserModel> foundUsers = graphApiService.searchUsers(searchQuery);
+    return administrationService.filterForUserInAtlas(foundUsers, applicationType);
+  }
 }
