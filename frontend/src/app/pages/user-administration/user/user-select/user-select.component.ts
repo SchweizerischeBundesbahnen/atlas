@@ -22,6 +22,13 @@ export class UserSelectComponent {
     if (!searchQuery) {
       return;
     }
-    this.userSearchResults$ = this.userService.searchUsers(searchQuery, this.searchInAtlas, this.applicationType);
+    this.userSearchResults$ = this.userService.searchUsers(searchQuery);
+  }
+
+  searchUserInAtlas(searchQuery: string): void {
+    if (!searchQuery) {
+      return;
+    }
+    this.userSearchResults$ = this.userService.searchUsersInAtlas(searchQuery, this.applicationType!);
   }
 }
