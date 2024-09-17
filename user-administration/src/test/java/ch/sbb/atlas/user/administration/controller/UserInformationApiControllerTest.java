@@ -6,8 +6,6 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.user.administration.service.GraphApiService;
 import ch.sbb.atlas.user.administration.service.UserAdministrationService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -54,8 +52,7 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
         when(graphApiService.searchUsers("testQuery")).thenReturn(List.of(userModel, userModel2));
 
         mvc.perform(get("/v1/search")
-                .param("searchQuery", "testQuery")
-                .param("searchInAtlas", "false"))
+                .param("searchQuery", "testQuery"))
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(status().isOk());
 
@@ -90,9 +87,8 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
                 .thenReturn(filteredUsers);
 
 
-        mvc.perform(get("/v1/search")
+        mvc.perform(get("/v1/search-in-atlas")
                         .param("searchQuery", "testQuery")
-                        .param("searchInAtlas", "true")
                         .param("applicationType", "SEPODI"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
