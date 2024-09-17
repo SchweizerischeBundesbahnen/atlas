@@ -98,14 +98,14 @@ public class UserAdministrationService {
 
       Optional<UserPermission> userPermission = userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication(userModel.getSbbUserId(), applicationType);
 
-      if (userPermission.isPresent()) {
-        ApplicationRole role = userPermission.get().getRole();
-        boolean existsUser = userPermission.get().getSbbUserId().equals(userModel.getSbbUserId());
+      userPermission.ifPresent(permission -> {
+        ApplicationRole role = permission.getRole();
+        boolean existsUser = permission.getSbbUserId().equals(userModel.getSbbUserId());
 
         if (existsUser && !role.equals(ApplicationRole.READER) && !role.equals(ApplicationRole.EXPLICIT_READER)) {
           permittedUser.add(userModel);
         }
-      }
+      });
     }
 
     return permittedUser;
