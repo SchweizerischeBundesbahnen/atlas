@@ -48,7 +48,7 @@ public class BulkImportController implements BulkImportApiV1 {
         .objectType(bulkImportRequest.getObjectType())
         .importType(bulkImportRequest.getImportType())
         .creator(UserService.getUserIdentifier())
-        .inNameOf(bulkImportRequest.getInNameOf() != null ? bulkImportRequest.getInNameOf() : null)
+        .inNameOf(bulkImportRequest.getInNameOf())
         .build();
 
     File csvFile = bulkImportFileValidationService.validateFileAndPrepareFile(file, bulkImport.getBulkImportConfig());

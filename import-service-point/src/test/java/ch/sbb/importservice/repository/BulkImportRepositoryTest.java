@@ -17,10 +17,10 @@ class BulkImportRepositoryTest {
   @Autowired
   private BulkImportRepository bulkImportRepository;
 
-  /*@AfterEach
+  @AfterEach
   void tearDown() {
     bulkImportRepository.deleteAll();
-  }*/
+  }
 
   @Test
   void shouldSaveNewImport() {
