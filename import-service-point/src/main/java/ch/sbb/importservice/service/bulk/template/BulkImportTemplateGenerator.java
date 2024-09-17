@@ -2,7 +2,6 @@ package ch.sbb.importservice.service.bulk.template;
 
 import static ch.sbb.importservice.service.bulk.template.ServicePointTemplateGenerator.getServicePointCsvTemplate;
 
-import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.exception.BulkImportNotImplementedException;
@@ -22,8 +21,8 @@ public class BulkImportTemplateGenerator {
   public static File generateCsvTemplate(BulkImportConfig importConfig) {
     Object example = bulkImportExample(importConfig);
     File csvFile = new File(importConfig.getTemplateFileName());
-    ObjectWriter objectWriter = new AtlasCsvMapper(example.getClass()).getObjectWriter();
-    return CsvExportWriter.writeToFile(csvFile, List.of(example), objectWriter);
+    ObjectWriter objectWriter = new TemplateCsvMapper(example.getClass()).getObjectWriter();
+    return CsvExportWriter.writeToFileWithoutOrderMark(csvFile, List.of(example), objectWriter);
   }
 
   private Object bulkImportExample(BulkImportConfig importConfig) {
