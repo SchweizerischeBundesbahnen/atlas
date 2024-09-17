@@ -1,14 +1,10 @@
 @if (data$ | async; as data) {
   @if (data.importResult) {
-    <p>{{ data.id }}</p>
-    <p>{{ data.importResult | json }}</p>
-
-    <h1 class="ps-4">Import Result</h1>
-
-    <div class="d-flex justify-content-center">
-      <aside class="ps-4 me-4 result-grid">
+    <h1 class="ps-4 pt-4">Import {{ data.id }}</h1>
+    <div class="d-flex ps-4 pe-4 pb-4">
+      <aside class="p-4 me-4 result-grid">
         <ng-template #resultInfo let-label="label" let-value="value">
-          <div class="d-flex flex-column">
+          <div class="d-flex flex-column text-nowrap">
             <label class="font-bold-base">{{ label }}</label>
             <span>{{ value }}</span>
           </div>
@@ -50,7 +46,7 @@
         }
 
         <ng-template #statusTemplate let-color="color" let-text="text" let-nbOfLines="nbOfLines">
-          <div class="d-flex align-items-center">
+          <div class="d-flex align-items-center text-nowrap">
             <div class="square-{{ color }}"></div>
             <span class="ps-2">{{ nbOfLines }}</span>
             <span class="font-bold-base ps-2">({{ text }})</span>
@@ -84,10 +80,17 @@
         }
       </aside>
 
-      <main class="w-70 pe-4 log-grid">
+      <main class="w-100 log-grid">
+        <mat-paginator
+          style="grid-column: 2; background-color: inherit"
+          class="font-regular-base"
+          [pageSizeOptions]="[5, 20]"
+          [length]="data.importResult.logEntries?.length"
+          (page)="pageChanged($event, data.importResult.logEntries)"
+        ></mat-paginator>
         <label class="font-bold-base">Zeilennummer</label>
         <label class="font-bold-base" style="justify-self: start">Resultat</label>
-        @for (entry of data.importResult.logEntries; track $index) {
+        @for (entry of pagedLogEntries; track $index) {
           <span class="font-bold-base">{{ entry.lineNumber }}</span>
           <div class="w-100">
             <div
@@ -126,11 +129,13 @@
               </ul>
             }
           </div>
+        } @empty {
+          <p style="grid-column: 2; justify-self: start">Keine Resultate vorhanden</p>
         }
       </main>
     </div>
   } @else {
-    <p>id not valid</p>
+    <p>Import-Id: "{{ data.id }}" ist nicht valid (erwartet wird eine Nummer)</p>
   }
 } @else {
   <app-loading-spinner [isLoading]="true"></app-loading-spinner>
