@@ -1,8 +1,7 @@
 package ch.sbb.atlas.user.administration.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.InstanceOfAssertFactories.COLLECTION;
-import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -118,8 +117,8 @@ class UserAdministrationServiceTest {
 
     List<UserModel> permittedUsers = userAdministrationService.filterForUserInAtlas(foundUsers, applicationType);
 
-    assertEquals(1, permittedUsers.size());
-    assertEquals(user1.getSbbUserId(), permittedUsers.get(0).getSbbUserId());
+    assertThat(1).isEqualTo(permittedUsers.size());
+    assertThat(user1.getSbbUserId()).isEqualTo(permittedUsers.getFirst().getSbbUserId());
 
     verify(userPermissionRepositoryMock, times(3)).findBySbbUserIdIgnoreCaseAndApplication(anyString(), eq(applicationType));
   }

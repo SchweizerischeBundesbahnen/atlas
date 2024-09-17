@@ -32,16 +32,6 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
     @MockBean
     private UserAdministrationService userAdministrationService;
 
-    @BeforeEach
-    void setUp() {
-
-    }
-
-
-    @AfterEach
-    void tearDown() {}
-
-
     @Test
     void shoudSearchUserInAD() throws Exception {
         UserModel userModel = UserModel.builder()
