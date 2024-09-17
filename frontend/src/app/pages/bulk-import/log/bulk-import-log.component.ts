@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { BulkImportLogEntry, BulkImportResult, BulkImportService } from '../../../api';
 
 @Component({
@@ -10,7 +10,8 @@ import { BulkImportLogEntry, BulkImportResult, BulkImportService } from '../../.
   styleUrl: 'bulk-import-log.component.scss',
 })
 export class BulkImportLogComponent implements OnInit {
-  data$?: Observable<{ importResult?: BulkImportResultTemplate; id: number | null }>;
+  data$?: Observable<{ importResult?: BulkImportResultTemplate; id: any }>;
+  pagedLogEntries: Array<BulkImportLogEntryTemplate> = [];
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -19,19 +20,9 @@ export class BulkImportLogComponent implements OnInit {
 
   ngOnInit() {
     this.data$ = this.route.params.pipe(
-      map((params) => {
-        if (!params.id) return null;
+      switchMap((params) => {
         if (Number(params.id) || Number(params.id) === 0) {
-          return params.id;
-        } else {
-          return null;
-        }
-      }),
-      switchMap((id: number | null) => {
-        if (id === null) {
-          return of({ id });
-        } else {
-          return this.getLogs(id).pipe(
+          return this.getLogs(params.id).pipe(
             map((importResult: BulkImportResult) => ({
               importResult: {
                 ...importResult,
@@ -40,16 +31,29 @@ export class BulkImportLogComponent implements OnInit {
                   expanded: false,
                 })),
               },
-              id,
+              id: params.id,
             })),
+            tap((result) =>
+              this.pageChanged({ pageIndex: 0, pageSize: 5 }, result.importResult.logEntries),
+            ),
           );
+        } else {
+          return of({ id: params.id });
         }
       }),
     );
   }
 
+  pageChanged(
+    e: { pageIndex: number; pageSize: number },
+    array?: Array<BulkImportLogEntryTemplate>,
+  ): void {
+    if (!array || array.length === 0) return;
+    const start = e.pageIndex * e.pageSize;
+    this.pagedLogEntries = array.slice(start, start + e.pageSize);
+  }
+
   private getLogs(id: number): Observable<BulkImportResult> {
-    console.log('request logs with bulk import id:', id);
     return this.bulkImportService.getBulkImportResults(id);
   }
 }
