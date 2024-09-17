@@ -21,7 +21,7 @@ describe('UserSelectComponent', () => {
   let component: UserSelectComponent;
   let fixture: ComponentFixture<UserSelectComponent>;
 
-  const userServiceSpy = jasmine.createSpyObj('UserService', ['searchUsers']);
+  const userServiceSpy = jasmine.createSpyObj('UserService', ['searchUsers', 'searchUsersInAtlas']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -47,7 +47,9 @@ describe('UserSelectComponent', () => {
       ])
     );
     component.searchUser('testQuery');
-    expect(userServiceSpy.searchUsers).toHaveBeenCalledOnceWith('testQuery', undefined, undefined);
+    component.searchInAtlas = false;
+    fixture.detectChanges();
+    expect(userServiceSpy.searchUsers).toHaveBeenCalledOnceWith('testQuery');
     component.userSearchResults$.subscribe((val) => {
       expect(val).toEqual([
         {
@@ -59,7 +61,7 @@ describe('UserSelectComponent', () => {
   });
 
   it('test searchUser in atlas', (done) => {
-    userServiceSpy.searchUsers.and.returnValue(
+    userServiceSpy.searchUsersInAtlas.and.returnValue(
       of([
         {
           sbbUserId: 'u236171',
@@ -69,8 +71,8 @@ describe('UserSelectComponent', () => {
     component.searchInAtlas = true;
     component.applicationType = ApplicationType.Sepodi;
     fixture.detectChanges();
-    component.searchUser('testQuery');
-    expect(userServiceSpy.searchUsers).toHaveBeenCalledOnceWith('testQuery', true, ApplicationType.Sepodi);
+    component.searchUserInAtlas('testQuery');
+    expect(userServiceSpy.searchUsersInAtlas).toHaveBeenCalledOnceWith('testQuery', ApplicationType.Sepodi);
     component.userSearchResults$.subscribe((val) => {
       expect(val).toEqual([
         {
