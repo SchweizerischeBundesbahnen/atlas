@@ -44,5 +44,6 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
 
   private void sendMailToImporter(BulkImport bulkImport) {
     // Send mail with link to atlas log gui
+    
   }
 }
