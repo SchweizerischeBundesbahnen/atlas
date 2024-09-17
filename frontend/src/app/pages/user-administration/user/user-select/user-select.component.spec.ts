@@ -4,6 +4,7 @@ import { UserSelectComponent } from './user-select.component';
 import { UserService } from '../../service/user.service';
 import { of } from 'rxjs';
 import { Component, Input } from '@angular/core';
+import {ApplicationType} from "../../../../api";
 
 @Component({
   selector: 'form-search-select',
@@ -47,6 +48,29 @@ describe('UserSelectComponent', () => {
     );
     component.searchUser('testQuery');
     expect(userServiceSpy.searchUsers).toHaveBeenCalledOnceWith('testQuery', undefined, undefined);
+    component.userSearchResults$.subscribe((val) => {
+      expect(val).toEqual([
+        {
+          sbbUserId: 'u236171',
+        },
+      ]);
+      done();
+    });
+  });
+
+  it('test searchUser in atlas', (done) => {
+    userServiceSpy.searchUsers.and.returnValue(
+      of([
+        {
+          sbbUserId: 'u236171',
+        },
+      ])
+    );
+    component.searchInAtlas = true;
+    component.applicationType = ApplicationType.Sepodi;
+    fixture.detectChanges();
+    component.searchUser('testQuery');
+    expect(userServiceSpy.searchUsers).toHaveBeenCalledOnceWith('testQuery', true, ApplicationType.Sepodi);
     component.userSearchResults$.subscribe((val) => {
       expect(val).toEqual([
         {
