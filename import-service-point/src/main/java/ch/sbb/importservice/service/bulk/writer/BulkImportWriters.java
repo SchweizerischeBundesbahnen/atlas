@@ -4,10 +4,13 @@ import ch.sbb.importservice.model.BulkImportConfig;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@StepScope
 public class BulkImportWriters {
 
   private static final Map<BulkImportConfig, BulkImportItemWriter> WRITERS = new HashMap<>();
