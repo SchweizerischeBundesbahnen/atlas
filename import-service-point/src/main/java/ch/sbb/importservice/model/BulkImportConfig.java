@@ -15,5 +15,6 @@ public class BulkImportConfig {
   private final ApplicationType application;
   private final BusinessObjectType objectType;
   private final ImportType importType;
+  private final String inNameOf;
 
 }
