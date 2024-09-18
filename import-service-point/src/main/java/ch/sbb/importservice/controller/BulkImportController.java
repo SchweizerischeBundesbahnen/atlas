@@ -10,19 +10,24 @@ import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.service.bulk.BulkImportFileValidationService;
 import ch.sbb.importservice.service.bulk.BulkImportService;
 import ch.sbb.importservice.service.bulk.template.BulkImportTemplateGenerator;
+import jakarta.validation.constraints.NotNull;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @RestController
 @RequiredArgsConstructor
@@ -56,7 +61,7 @@ public class BulkImportController implements BulkImportApiV1 {
   }
 
   @Override
-  public ResponseEntity<StreamingResponseBody> downloadTemplate(ApplicationType applicationType, BusinessObjectType objectType,
+  public ResponseEntity<Resource> downloadTemplate(ApplicationType applicationType, BusinessObjectType objectType,
       ImportType importType) {
     log.info("ApplicationType={}, BusinessObject={}, ImportType={}", applicationType, objectType, importType);
     BulkImportConfig importConfig = BulkImportConfig.builder().application(applicationType).objectType(objectType)
@@ -69,16 +74,27 @@ public class BulkImportController implements BulkImportApiV1 {
           objectType, importType);
       return ResponseEntity.notFound().build();
     }
-
+    Resource resource = getDeletableResource(file);
     return ResponseEntity.ok()
         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
         .contentType(MediaType.APPLICATION_OCTET_STREAM)
         .contentLength(file.length())
-        .body(os -> {
-              Files.copy(file.toPath(), os);
-              Files.delete(file.toPath());
-            }
-        );
+        .body(resource);
+  }
+
+  private static Resource getDeletableResource(File file) {
+    return new FileSystemResource(file) {
+      @Override
+      public @NotNull InputStream getInputStream() throws IOException {
+        return new FileInputStream(file) {
+          @Override
+          public void close() throws IOException {
+            super.close();
+            Files.delete(file.toPath());
+          }
+        };
+      }
+    };
   }
 
 }
