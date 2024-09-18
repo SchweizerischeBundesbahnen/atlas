@@ -133,11 +133,11 @@ export class BulkImportOverviewComponent implements OnInit {
     this.isEnabledToStartImport = false;
     this.enableUserSelect(false);
     this.uploadedFiles = [];
+    this.isFileUploaded = false;
     this.isApplicationSelected = false;
 
-
-    this.form.controls.userSearchForm.controls.userSearch.setValue(null, {emitEvent: false});
-    this.form.controls.objectType.setValue(null, {emitEvent: false});
+    this.form.controls.userSearchForm.controls.userSearch.reset(null, {onlySelf:true, emitEvent: false})
+    this.form.controls.objectType.reset(null, {onlySelf:true, emitEvent: false});
 
     if (resetAll) {
       this.form = BulkImportFormGroupBuilder.initFormGroup();
