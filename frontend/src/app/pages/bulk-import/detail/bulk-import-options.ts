@@ -28,8 +28,8 @@ export const OPTIONS_OBJECT_TYPE_TTFN: string[] = Object.values([]);
 
 export const OPTIONS_SCENARIO: string[] = Object.values([
   ImportType.Create,
-  ImportType.Terminate,
-  ImportType.Update
+  ImportType.Update,
+  ImportType.Terminate
 ]);
 
 export const ALLOWED_FILE_TYPES_BULK_IMPORT: string[] =["text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"]
