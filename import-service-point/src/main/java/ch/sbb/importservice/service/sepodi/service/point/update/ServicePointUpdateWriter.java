@@ -36,7 +36,16 @@ public class ServicePointUpdateWriter extends ServicePointUpdate implements Bulk
         WriterUtil.getContainersWithoutDataValidationErrors(items);
     JobParameters jobParameters = stepExecution.getJobExecution().getJobParameters();
     Map<String, JobParameter<?>> parameters = jobParameters.getParameters();
-    String inNameOf = String.valueOf(parameters.get("inNameOf").getValue());
+    String inNameOf;
+
+    if(parameters.containsKey("inNameOf")){
+     inNameOf  = String.valueOf(parameters.get("inNameOf").getValue());
+    }
+    else{
+      inNameOf = null;
+    }
+
+
     log.info("Writing {} containers to service-point-directory", updateContainers.size());
 
     List<BulkImportItemExecutionResult> importResult = servicePointBulkImportClient.bulkImportUpdate(inNameOf, updateContainers);
