@@ -32,5 +32,5 @@ export const OPTIONS_SCENARIO: string[] = Object.values([
   ImportType.Update
 ]);
 
-export const ALLOWED_FILE_TYPES_BULK_IMPORT: string[] =["text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+export const ALLOWED_FILE_TYPES_BULK_IMPORT: string[] =["text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"]
 
