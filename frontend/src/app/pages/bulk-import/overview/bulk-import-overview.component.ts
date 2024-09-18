@@ -66,9 +66,9 @@ export class BulkImportOverviewComponent implements OnInit {
 
     this.form.controls.applicationType.valueChanges.subscribe(value => {
       if (value) {
-        this.isApplicationSelected = true;
         this.OPTIONS_OBJECT_TYPE = this.OPTIONS_OBJECTS[value]
         this.resetConfiguration(false)
+        this.isApplicationSelected = true;
       }
     });
 
@@ -118,6 +118,7 @@ export class BulkImportOverviewComponent implements OnInit {
     this.isEnabledToStartImport = false;
     this.enableUserSelect(false);
     this.uploadedFiles = [];
+    this.isApplicationSelected = false;
 
 
     this.form.controls.userSearchForm.controls.userSearch.setValue(null, {emitEvent: false});
