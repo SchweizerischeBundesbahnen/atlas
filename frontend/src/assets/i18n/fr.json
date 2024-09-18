@@ -202,7 +202,8 @@
       "IMPORT_FOR_SOMEONE_ELSE": "J'importe pour quelqu'un d'autre.",
       "ADDITIONAL_IMPORT_REPORT": "Destinataire supplémentaire Rapport d'importation",
       "START_BULK_IMPORT": "Démarrer l'importation",
-      "SUCCESS": "Importation lancée avec succès"
+      "SUCCESS": "Importation lancée avec succès",
+      "CONFIGURATION": "Configuration"
     },
     "LIDI": {
       "TITLE": "Gérer des lignes et lignes partielles",
