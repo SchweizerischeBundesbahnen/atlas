@@ -140,9 +140,7 @@ export class BulkImportOverviewComponent implements OnInit {
     this.form.controls.objectType.setValue(null, {emitEvent: false});
 
     if (resetAll) {
-      this.form.controls.applicationType.setValue(null, {emitEvent: false});
-      this.form.controls.importType.setValue(null, {emitEvent: false});
-      this.form.controls.emails.setValue([], {emitEvent: false});
+      this.form = BulkImportFormGroupBuilder.initFormGroup();
     }
   }
 
