@@ -37,25 +37,6 @@
           >
           </atlas-select>
         </div>
-        <div class="d-flex flex-column col-3 justify-content-end align-items-end">
-          <div class="mt-5">
-            <atlas-button
-              (buttonClicked)="downloadExcel()"
-              [disabled]="!isDownloadButtonVisible"
-              buttonDataCy="download-csv"
-              buttonText="BULK_IMPORT.BUTTON.DOWNLOAD"
-              buttonType="create"
-            >
-              <ng-template #rightIcon>
-                <download-icon
-                  [readonly]="true"
-                  class="ps-2"
-                ></download-icon>
-              </ng-template>
-            </atlas-button>
-          </div>
-        </div>
-
       </div>
       <br>
       <div class="col-12 d-flex justify-content-between">
@@ -80,9 +61,8 @@
             [applicationType]="form.controls.applicationType.value!"
           ></app-user-select>
         </div>
-        <div class="d-flex flex-column col-6 pe-3">
+        <div class="d-flex flex-column col-3 pe-3">
           <atlas-text-list
-            [stretchTheField]="true"
             [formGroup]="form"
             fieldLabel="PAGES.BULK_IMPORT.ADDITIONAL_IMPORT_REPORT"
             [required]="true"
