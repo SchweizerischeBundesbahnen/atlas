@@ -7,13 +7,12 @@ import ch.sbb.atlas.user.administration.entity.UserPermission;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @IntegrationTest
 @Transactional
@@ -47,12 +46,17 @@ class UserPermissionRepositoryTest {
 
     @Test
     void findBySbbUserIdIgnoreCase() {
-
+        List<UserPermission> userPermission = userPermissionRepository.findBySbbUserIdIgnoreCase("u239096");
+        List<UserPermission> userPermission2 = userPermissionRepository.findBySbbUserIdIgnoreCase("U239096");
+        assertThat(userPermission).hasSize(1);
+        assertThat(userPermission2).hasSize(1);
     }
 
     @Test
     void findBySbbUserIdIgnoreCaseAndApplication() {
         Optional<UserPermission> userPermission = userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication("u123456", ApplicationType.SEPODI);
+        Optional<UserPermission> userPermission2 = userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication("U123456", ApplicationType.SEPODI);
         assertThat(userPermission.isPresent()).isTrue();
+        assertThat(userPermission2.isPresent()).isTrue();
     }
 }

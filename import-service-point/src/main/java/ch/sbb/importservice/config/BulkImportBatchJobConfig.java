@@ -109,13 +109,15 @@ public class BulkImportBatchJobConfig {
   public ItemWriter<BulkImportUpdateContainer<?>> itemWriter(
       @Value("#{jobParameters[application]}") String application,
       @Value("#{jobParameters[objectType]}") String objectType,
-      @Value("#{jobParameters[importType]}") String importType
+      @Value("#{jobParameters[importType]}") String importType,
+      @Value("#{jobParameters[inNameOf]}") String inNameOf
   ) {
 
     BulkImportConfig config = BulkImportConfig.builder()
         .application(ApplicationType.valueOf(application))
         .objectType(BusinessObjectType.valueOf(objectType))
         .importType(ImportType.valueOf(importType))
+        .inNameOf(inNameOf)
         .build();
     return items -> bulkImportWriters.getWriter(config).accept(items);
   }
