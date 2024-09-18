@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Tag(name = "Bulk Import")
 @RequestMapping("v1/import/bulk")
@@ -48,7 +48,7 @@ public interface BulkImportApiV1 {
       @ApiResponse(responseCode = "404", description = "Template not found"),
       @ApiResponse(responseCode = "500", description = "Internal server error")
   })
-  ResponseEntity<StreamingResponseBody> downloadTemplate(@PathVariable ApplicationType applicationType,
+  ResponseEntity<Resource> downloadTemplate(@PathVariable ApplicationType applicationType,
       @PathVariable BusinessObjectType objectType,
       @PathVariable ImportType importType);
 
