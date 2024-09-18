@@ -202,7 +202,8 @@
       "IMPORT_FOR_SOMEONE_ELSE": "Sto importando per conto di qualcun altro.",
       "ADDITIONAL_IMPORT_REPORT": "Destinatario aggiuntivo Rapporto di importazione",
       "START_BULK_IMPORT": "Avviare l'importazione",
-      "SUCCESS": "Importazione avviata con successo"
+      "SUCCESS": "Importazione avviata con successo",
+      "CONFIGURATION": "Configurazione"
     },
     "LIDI": {
       "TITLE": "Gestione dei numeri dell'elenco delle linee",
