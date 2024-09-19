@@ -1,5 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { FileUploadError } from './file-upload-error';
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {FileUploadError} from './file-upload-error';
 
 @Component({
   selector: 'atlas-file-upload',
@@ -8,13 +8,19 @@ import { FileUploadError } from './file-upload-error';
 })
 export class FileUploadComponent {
   @Input() acceptedFileExtension!: string;
-  @Input() acceptedFileType!: string;
+
+  @Input() acceptedFileType!: string[];
   @Input() maxFileSize!: number;
   @Input() maxFileCount!: number;
 
   @Input() uploadedFiles: File[] = [];
   @Input() alreadySavedFileNames: string[] = [];
   @Output() uploadedFilesChange = new EventEmitter<File[]>();
+
+  @Input() isDownloadButtonVisible: boolean = false;
+  @Input() isDownloadButtonDisabled: boolean = false;
+
+  @Output() downloadExcelClick = new EventEmitter<void>();
 
   errorFiles: FileUploadError[] = [];
 
@@ -34,6 +40,7 @@ export class FileUploadComponent {
     if (fileList) {
       this.addFileListToFile(fileList);
     }
+    element.value = '';
   }
 
   addFileListToFile(fileList: FileList) {
@@ -54,7 +61,7 @@ export class FileUploadComponent {
   }
 
   private validateFile(file: File) {
-    if (file.type !== this.acceptedFileType) {
+    if(!this.acceptedFileType.includes(file.type)){
       this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.TYPE');
       return false;
     }
@@ -104,4 +111,9 @@ export class FileUploadComponent {
     this.clearErrors();
     this.uploadedFilesChange.emit(this.uploadedFiles);
   }
+
+  downloadExcel() {
+    this.downloadExcelClick.emit();
+  }
+
 }

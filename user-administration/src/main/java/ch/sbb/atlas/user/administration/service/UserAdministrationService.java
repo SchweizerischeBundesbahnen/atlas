@@ -1,6 +1,8 @@
 package ch.sbb.atlas.user.administration.service;
 
+import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
@@ -11,6 +13,7 @@ import ch.sbb.atlas.user.administration.mapper.UserPermissionCreateMapper;
 import ch.sbb.atlas.user.administration.mapper.UserPermissionMapper;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -86,5 +89,25 @@ public class UserAdministrationService {
         .filter(userPermission -> userPermission.getApplication()
             == applicationType)
         .findFirst();
+  }
+
+  public List<UserModel> filterForPermittedUserInAtlas(List<UserModel> foundUsers, ApplicationType applicationType){
+    List<UserModel> permittedUser = new ArrayList<>();
+
+    for (UserModel userModel : foundUsers) {
+
+      Optional<UserPermission> userPermission = userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication(userModel.getSbbUserId(), applicationType);
+
+      userPermission.ifPresent(permission -> {
+        ApplicationRole role = permission.getRole();
+        boolean existsUser = permission.getSbbUserId().equals(userModel.getSbbUserId());
+
+        if (existsUser && !role.equals(ApplicationRole.READER) && !role.equals(ApplicationRole.EXPLICIT_READER)) {
+          permittedUser.add(userModel);
+        }
+      });
+    }
+
+    return permittedUser;
   }
 }
