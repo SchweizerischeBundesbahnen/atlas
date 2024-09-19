@@ -24,6 +24,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RunAsUserAspect {
 
+  public static final String AUD_CLAIM = "aud";
+
   @Around("@annotation(ch.sbb.atlas.user.administration.security.aspect.RunAsUser)")
   public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
     String userName = resolveRunAsUserParameter(joinPoint);
@@ -48,14 +50,16 @@ public class RunAsUserAspect {
     Map<String, Object> claims = accessToken.getClaims();
     Map<String, Object> temporaryDownGradedClaims = new HashMap<>();
     claims.forEach((key, value) -> {
-      if (key.equals(SBBUID_CLAIM)) {
-        temporaryDownGradedClaims.put(SBBUID_CLAIM, userName);
-      } else if (key.equals(ROLES_JWT_KEY)) {
-        temporaryDownGradedClaims.put(ROLES_JWT_KEY, new ArrayList<>());
-      } else {
-        temporaryDownGradedClaims.put(key, value);
+      switch (key) {
+        case SBBUID_CLAIM -> temporaryDownGradedClaims.put(SBBUID_CLAIM, userName);
+        case ROLES_JWT_KEY -> temporaryDownGradedClaims.put(ROLES_JWT_KEY, new ArrayList<>());
+        case AUD_CLAIM -> temporaryDownGradedClaims.put(AUD_CLAIM, new ArrayList<>());
+        default -> temporaryDownGradedClaims.put(key, value);
       }
     });
+    if (claims.get(SBBUID_CLAIM) == null) {
+      temporaryDownGradedClaims.put(SBBUID_CLAIM, userName);
+    }
     return new Jwt(accessToken.getTokenValue(), accessToken.getIssuedAt(), accessToken.getExpiresAt(),
         accessToken.getHeaders(), temporaryDownGradedClaims);
   }
