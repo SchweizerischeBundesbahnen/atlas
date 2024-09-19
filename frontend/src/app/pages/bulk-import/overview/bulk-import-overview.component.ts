@@ -56,8 +56,7 @@ export class BulkImportOverviewComponent implements OnInit {
 
   userName: string | undefined;
 
-  isAdmin = false;
-  isApplicationSelected = false;
+  isAtLeastSupervisor = false;
 
   isEnabledToStartImport = false;
   isFileUploaded = false;
@@ -73,16 +72,15 @@ export class BulkImportOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = BulkImportFormGroupBuilder.initFormGroup();
-    this.isAdmin = this.permissionService.isAdmin;
     this.userAdministrationService.getCurrentUser().subscribe((user) => {
       this.userName = this.removeDepartment(user.displayName);
     });
 
     this.form.controls.applicationType.valueChanges.subscribe(value => {
       if (value) {
+        this.isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(value)
         this.OPTIONS_OBJECT_TYPE = this.OPTIONS_OBJECTS[value]
         this.resetConfiguration(false)
-        this.isApplicationSelected = true;
       }
     });
 
@@ -134,7 +132,6 @@ export class BulkImportOverviewComponent implements OnInit {
     this.enableUserSelect(false);
     this.uploadedFiles = [];
     this.isFileUploaded = false;
-    this.isApplicationSelected = false;
 
     this.form.controls.userSearchForm.controls.userSearch.reset(null, {onlySelf:true, emitEvent: false})
     this.form.controls.objectType.reset(null, {onlySelf:true, emitEvent: false});

@@ -47,8 +47,7 @@
         </div>
         <div class="d-flex flex-column col-3 pe-3">
           <mat-checkbox
-            *ngIf="isAdmin"
-            [disabled]="!isApplicationSelected"
+            *ngIf="isAtLeastSupervisor"
             (change)="enableUserSelect($event.checked)"
             [checked]="isUserSelectEnabled"
             data-cy="checkboxBulkImport">
