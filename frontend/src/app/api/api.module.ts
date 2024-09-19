@@ -8,14 +8,13 @@ import { ClientCredentialAdministrationService } from './api/clientCredentialAdm
 import { CompaniesService } from './api/companies.service';
 import { ExportServicePointBatchService } from './api/exportServicePointBatch.service';
 import { GeoDataService } from './api/geoData.service';
-import { ImportDidokUserBatchService } from './api/importDidokUserBatch.service';
-import { ImportPrmBatchService } from './api/importPrmBatch.service';
-import { ImportServicePointBatchService } from './api/importServicePointBatch.service';
 import { LinesService } from './api/lines.service';
 import { LoadingPointsService } from './api/loadingPoints.service';
 import { PersonWithReducedMobilityService } from './api/personWithReducedMobility.service';
 import { PersonWithReducedMobilityExportService } from './api/personWithReducedMobilityExport.service';
+import { ServicePointUpdateGeoService } from './api/servicePointUpdateGeo.service';
 import { ServicePointsService } from './api/servicePoints.service';
+import { ServicePointsBulkImportService } from './api/servicePointsBulkImport.service';
 import { StopPointWorkflowService } from './api/stopPointWorkflow.service';
 import { SublinesService } from './api/sublines.service';
 import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
