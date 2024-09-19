@@ -6,15 +6,34 @@
 >
   <div class="file-upload-description">{{ 'COMMON.FILEUPLOAD.DROPZONE' | translate }}</div>
   <div class="file-upload-description">{{ 'COMMON.FILEUPLOAD.OR' | translate }}</div>
-  <atlas-button
-    buttonText="COMMON.FILEUPLOAD.SELECT_FILES"
-    buttonType="create"
-    wrapperStyleClass="mb-3"
-  >
-    <ng-template #rightIcon>
-      <upload-icon class="ps-2"></upload-icon>
-    </ng-template>
-  </atlas-button>
+
+  <div class="d-flex justify-content-center gap-3">
+    <atlas-button
+      *ngIf="isDownloadButtonVisible"
+      (buttonClicked)="downloadExcel()"
+      [disabled]="isDownloadButtonDisabled"
+      buttonDataCy="download-csv"
+      buttonText="BULK_IMPORT.BUTTON.DOWNLOAD"
+      buttonType="create"
+      [attr.title]="isDownloadButtonDisabled ? ( 'BULK_IMPORT.BUTTON.DISABLED_MESSAGE' | translate ) : ''"
+      (click)="$event.stopPropagation()"
+    >
+      <ng-template #rightIcon>
+        <download-icon [readonly]="true" [disabled]="isDownloadButtonDisabled" class="ps-2"></download-icon>
+      </ng-template>
+    </atlas-button>
+
+    <atlas-button
+      buttonText="COMMON.FILEUPLOAD.SELECT_FILES"
+      buttonType="create"
+      wrapperStyleClass="mb-3"
+    >
+      <ng-template #rightIcon>
+        <upload-icon class="ps-2"></upload-icon>
+      </ng-template>
+    </atlas-button>
+  </div>
+
   <input
     #fileInput
     type="file"
