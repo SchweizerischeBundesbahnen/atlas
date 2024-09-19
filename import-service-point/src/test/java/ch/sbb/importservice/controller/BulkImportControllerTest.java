@@ -17,21 +17,24 @@ import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.ImportFiles;
 import ch.sbb.importservice.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.entity.BulkImport;
+import ch.sbb.importservice.model.BulkImportConfig;
+import ch.sbb.importservice.model.BulkImportRequest;
+import ch.sbb.importservice.model.BusinessObjectType;
+import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.repository.BulkImportRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Stream;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,14 +43,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 
 class BulkImportControllerTest extends BaseControllerApiTest {
 
@@ -78,18 +77,37 @@ class BulkImportControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldAcceptGenericBulkImportWithFile() throws Exception {
-    when(servicePointBulkImportClient.bulkImportUpdate(eq(null), any())).thenReturn(
+    when(servicePointBulkImportClient.bulkImportUpdate(eq("Test Name"), any())).thenReturn(
         List.of(BulkImportItemExecutionResult.builder()
             .lineNumber(1)
             .build()));
 
     File file = ImportFiles.getFileByPath("import-files/valid/service-point-update.csv");
-    mvc.perform(multipart("/v1/import/bulk/SEPODI/SERVICE_POINT/UPDATE")
-            .file(new MockMultipartFile("file", "service-point-update.csv", CSV_CONTENT_TYPE, Files.readAllBytes(file.toPath()))))
-        .andExpect(status().isAccepted());
+
+    BulkImportRequest bulkImportRequest = BulkImportRequest.builder()
+            .applicationType(ApplicationType.SEPODI)
+            .objectType(BusinessObjectType.SERVICE_POINT)
+            .importType(ImportType.UPDATE)
+            .inNameOf("Test Name")
+            .emails(List.of("test@example.com", "techsupport@atlas-sbb.ch"))
+            .build();
+
+    MockMultipartFile mockBulkImportRequest = new MockMultipartFile(
+            "bulkImportRequest",
+            "",
+            MediaType.APPLICATION_JSON_VALUE,
+            new ObjectMapper().writeValueAsBytes(bulkImportRequest));
+
+    mvc.perform(multipart("/v1/import/bulk")
+                    .file(new MockMultipartFile("file", "service-point-update.csv", CSV_CONTENT_TYPE, Files.readAllBytes(file.toPath())))
+                    .file(mockBulkImportRequest)
+                    .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+            .andExpect(status().isAccepted());
+
+
 
     verify(amazonService, times(2)).putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), eq(todaysDirectory));
-    verify(servicePointBulkImportClient, atLeastOnce()).bulkImportUpdate(eq(null), any());
+    verify(servicePointBulkImportClient, atLeastOnce()).bulkImportUpdate(eq("Test Name"), any());
 
     assertThat(bulkImportRepository.count()).isEqualTo(1);
     BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
@@ -98,63 +116,50 @@ class BulkImportControllerTest extends BaseControllerApiTest {
   }
 
   @ParameterizedTest
-  @MethodSource("getArgumentsForDifferentTemplates")
-  void shouldDownloadTemplateSuccessfully(String classPathResource, String amazonServicePath, String requestPath) throws Exception {
-    // Given
-    ClassPathResource resource = new ClassPathResource(classPathResource);
-    File file = resource.getFile();
-
-    when(amazonService.pullFile(AmazonBucket.BULK_IMPORT, amazonServicePath))
-        .thenReturn(file);
-
+  @MethodSource("getArgumentsImplementedTemplates")
+  void shouldDownloadTemplateSuccessfully(BulkImportConfig importConfig) throws Exception {
     // When
-    MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(requestPath))
+    String urlTemplatePath =
+        "/v1/import/bulk/template/" + importConfig.getApplication() + "/" + importConfig.getObjectType() + "/"
+            + importConfig.getImportType();
+    mvc.perform(MockMvcRequestBuilders.get(urlTemplatePath))
         .andExpect(status().isOk())
-        .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\""))
+        .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION,
+            "attachment; filename=\"" + importConfig.getTemplateFileName() + "\""))
         .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE))
         .andReturn();
-
-    // Then
-    MockHttpServletResponse response = mvcResult.getResponse();
-    byte[] responseContent = response.getContentAsByteArray();
-
-    try (InputStream fileInputStream = new FileInputStream(file)) {
-      byte[] fileContent = IOUtils.toByteArray(fileInputStream);
-      assertThat(responseContent)
-          .as("The downloaded file should match the original file")
-          .isEqualTo(fileContent);
-    }
   }
 
-  @Test
-  void shouldDownloadTemplateWithIncorrectPathVariablesUnsuccessfully() throws Exception {
-    mvc.perform(MockMvcRequestBuilders.get("/v1/import/bulk/template/WRONG_VALUE/INCORRECT_VALUE"))
-        .andExpect(status().isBadRequest())
+  @ParameterizedTest
+  @MethodSource("getArgumentsForNotImplementedTemplates")
+  void shouldDownloadTemplateForNotImplementedUseCasesUnsuccessfully(BulkImportConfig importConfig) throws Exception {
+    //given
+    String urlTemplatePath =
+        "/v1/import/bulk/template/" + importConfig.getApplication() + "/" + importConfig.getObjectType() + "/"
+            + importConfig.getImportType();
+    //when & then
+    mvc.perform(MockMvcRequestBuilders.get(urlTemplatePath))
+        .andExpect(status().isNotImplemented())
         .andReturn();
   }
 
-  @Test
-  void shouldReturnBadRequestWhenAmazonDoesNotFindTemplate() throws Exception {
-    // Given
-    when(amazonService.pullFile(AmazonBucket.BULK_IMPORT, "templates/service_point/create_service_point.xlsx"))
-        .thenReturn(null);
-
-    // When & Then
-    mvc.perform(MockMvcRequestBuilders.get("/v1/import/bulk/template/SERVICE_POINT/CREATE"))
-        .andExpect(status().isNotFound())
-        .andReturn();
-  }
-
-  static Stream<Arguments> getArgumentsForDifferentTemplates() {
+  static Stream<Arguments> getArgumentsForNotImplementedTemplates() {
     return Stream.of(
-        Arguments.of("templates/create_service_point.xlsx", "templates/service_point/create_service_point.xlsx",
-            "/v1/import/bulk/template/SERVICE_POINT/CREATE"),
-        Arguments.of("templates/create_traffic_point.xlsx", "templates/traffic_point/create_traffic_point.xlsx",
-            "/v1/import/bulk/template/TRAFFIC_POINT/CREATE"),
-        Arguments.of("templates/update_traffic_point.xlsx", "templates/traffic_point/update_traffic_point.xlsx",
-            "/v1/import/bulk/template/TRAFFIC_POINT/UPDATE"),
-        Arguments.of("templates/update_service_point.xlsx", "templates/service_point/update_service_point.xlsx",
-            "/v1/import/bulk/template/SERVICE_POINT/UPDATE"));
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.TERMINATE)),
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.CREATE)),
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.CREATE)),
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.UPDATE)),
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.TERMINATE)),
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.CREATE)),
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.UPDATE)),
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.TERMINATE))
+    );
+  }
+
+  static Stream<Arguments> getArgumentsImplementedTemplates() {
+    return Stream.of(
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.UPDATE))
+    );
   }
 
 }

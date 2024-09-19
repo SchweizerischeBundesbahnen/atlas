@@ -1,8 +1,8 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
-import { FieldExample } from '../text-field/field-example';
-import { concat, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+import {FieldExample} from '../text-field/field-example';
+import {concat, Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'atlas-text-list',

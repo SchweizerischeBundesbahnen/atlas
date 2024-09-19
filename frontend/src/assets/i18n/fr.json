@@ -179,7 +179,31 @@
       "TITLE": "Importation de données par fichier",
       "TITLE_MENU": "Importation en masse",
       "DESCRIPTION": "Traiter les données en masse par fileupload (*.csv ou Excel).",
-      "PATH_TEXT": "Importation en masse"
+      "PATH_TEXT": "Importation en masse",
+      "APPLICATION": "Application",
+      "SEPODI": "Départements",
+      "PRM": "LHand",
+      "OBJECT": "Objet",
+      "SERVICE_POINT": "Service",
+      "TRAFFIC_POINT": "Bordure d'arrêt",
+      "LOADING_POINT": "Placs de chargement",
+      "REFERENCE_POINT": "Point de référence",
+      "STOP_POINT": "Arrêt",
+      "CONTACT_POINT": "Guichet",
+      "PARKING_LOT": "Place de stationnement",
+      "RELATION": "Relation",
+      "PLATFORM": "Bordure d’arrêt",
+      "TOILET": "Toilette",
+      "SCENARIO": "Scénario",
+      "CREATE": "Création",
+      "UPDATE": "Mise à jour",
+      "TERMINATE": "Terminaison",
+      "IMPORT_EXECUTED_BY": "L'importation est effectuée par:",
+      "IMPORT_FOR_SOMEONE_ELSE": "J'importe pour quelqu'un d'autre.",
+      "ADDITIONAL_IMPORT_REPORT": "Destinataire supplémentaire Rapport d'importation",
+      "START_BULK_IMPORT": "Démarrer l'importation",
+      "SUCCESS": "Importation lancée avec succès",
+      "CONFIGURATION": "Configuration"
     },
     "LIDI": {
       "TITLE": "Gérer des lignes et lignes partielles",
@@ -1443,6 +1467,10 @@
     }
   },
   "BULK_IMPORT": {
+    "BUTTON": {
+      "DOWNLOAD": "Modèle d'import",
+      "DISABLED_MESSAGE": "Veuillez sélectionner l'application, l'objet et le scénario pour que le modèle d'importation puisse être créé."
+    },
     "ERROR": {
       "EXCEL_CONVERSION": "Le fichier Excel utilisé n'a pas pu être lu correctement. Veuillez vous assurer que vous utilisez le fichier conformément au modèle.\nSource d'erreur dans la ligne:{{rowIndex}}, la colonne:{{columnIndex}}",
       "FILE_HEADER": "Le fichier utilisé n'a pas l'en-tête attendu. Veuillez vous assurer que vous utilisez le fichier conformément au modèle."
