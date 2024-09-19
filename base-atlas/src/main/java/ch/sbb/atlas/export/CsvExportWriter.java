@@ -29,11 +29,21 @@ public class CsvExportWriter {
     return writeToFile(file, csvData, objectWriter);
   }
 
+  public File writeToFileWithoutOrderMark(File file, Iterable<?> csvData, ObjectWriter objectWriter) {
+    return doWriteToFile(file, csvData, objectWriter, false);
+  }
+
   public File writeToFile(File file, Iterable<?> csvData, ObjectWriter objectWriter) {
+    return doWriteToFile(file, csvData, objectWriter, true);
+  }
+
+  private File doWriteToFile(File file, Iterable<?> csvData, ObjectWriter objectWriter, boolean isOrderMark) {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
         SequenceWriter sequenceWriter = objectWriter.writeValues(bufferedWriter)) {
-      bufferedWriter.write(UTF_8_BYTE_ORDER_MARK);
+      if (isOrderMark) {
+        bufferedWriter.write(UTF_8_BYTE_ORDER_MARK);
+      }
       sequenceWriter.writeAll(csvData);
       return file;
     } catch (IOException e) {

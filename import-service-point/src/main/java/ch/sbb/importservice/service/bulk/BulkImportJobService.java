@@ -7,10 +7,11 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PA
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.importservice.entity.BulkImport;
-import ch.sbb.importservice.model.BulkImportConfig.Fields;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -36,13 +37,19 @@ public class BulkImportJobService {
 
   @Transactional(propagation = Propagation.NOT_SUPPORTED)
   public void startBulkImportJob(BulkImport bulkImport, File file) {
-    JobParameters jobParameters = new JobParametersBuilder()
-        .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
-        .addLong(BULK_IMPORT_ID_JOB_PARAMETER, bulkImport.getId())
-        .addString(Fields.application, bulkImport.getApplication().toString())
-        .addString(Fields.objectType, bulkImport.getObjectType().toString())
-        .addString(Fields.importType, bulkImport.getImportType().toString())
-        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    Optional<String> inNameOf = Optional.ofNullable(bulkImport.getInNameOf());
+
+    JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
+            .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
+            .addLong(BULK_IMPORT_ID_JOB_PARAMETER, bulkImport.getId())
+            .addString(BulkImport.Fields.application, bulkImport.getApplication().toString())
+            .addString(BulkImport.Fields.objectType, bulkImport.getObjectType().toString())
+            .addString(BulkImport.Fields.importType, bulkImport.getImportType().toString())
+            .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis());
+
+    inNameOf.ifPresent(value -> jobParametersBuilder.addString(BulkImport.Fields.inNameOf, value));
+    JobParameters jobParameters = jobParametersBuilder.toJobParameters();
+
     try {
       JobExecution execution = jobLauncher.run(bulkImportJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());

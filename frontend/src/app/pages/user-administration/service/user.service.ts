@@ -46,6 +46,10 @@ export class UserService {
     return this.userInformationService.searchUsers(searchQuery);
   }
 
+  searchUsersInAtlas(searchQuery: string, applicationType: ApplicationType): Observable<User[]> {
+    return this.userInformationService.searchUsersInAtlas(searchQuery, applicationType);
+  }
+
   hasUserPermissions(userId: string): Observable<boolean> {
     return this.getUser(userId).pipe(
       map((user) => {

@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { UserService } from './user.service';
 import {
+  ApplicationType,
   ClientCredentialAdministrationService,
   ContainerUser,
   User,
@@ -19,6 +20,7 @@ describe('UserService', () => {
   ]);
   const userInformationServiceMock = jasmine.createSpyObj('userInformationService', [
     'searchUsers',
+    'searchUsersInAtlas'
   ]);
 
   let clientCredentialAdministrationServiceSpy;
@@ -90,6 +92,18 @@ describe('UserService', () => {
 
     service.searchUsers('test').subscribe((res) => {
       expect(userInformationServiceMock.searchUsers).toHaveBeenCalledOnceWith('test');
+      expect(res).toEqual([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]);
+      done();
+    });
+  });
+
+  it('test searchUsers in atlas', (done) => {
+    userInformationServiceMock.searchUsersInAtlas.and.returnValue(
+      of([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]),
+    );
+
+    service.searchUsersInAtlas('test', ApplicationType.Sepodi).subscribe((res) => {
+      expect(userInformationServiceMock.searchUsersInAtlas).toHaveBeenCalledOnceWith('test', ApplicationType.Sepodi);
       expect(res).toEqual([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]);
       done();
     });
