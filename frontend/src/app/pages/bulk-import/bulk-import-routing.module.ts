@@ -2,12 +2,14 @@ import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {BulkImportOverviewComponent} from "./overview/bulk-import-overview.component";
 import {canLeaveDirtyForm} from "../../core/leave-guard/leave-dirty-form-guard.service";
+import {loggedInUsers} from "../../core/auth/guards/auth-guard";
 
 const routes: Routes = [
   {
     path: '',
     component: BulkImportOverviewComponent,
     canDeactivate: [canLeaveDirtyForm],
+    canActivate: [loggedInUsers],
     runGuardsAndResolvers: 'always'
   }
 ]
