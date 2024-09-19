@@ -235,7 +235,7 @@ describe('BulkImportOverviewComponent', () => {
 
     component.downloadExcel();
 
-    expect(bulkImportServiceSpy.downloadTemplate).toHaveBeenCalledWith(BusinessObjectType.ServicePoint, ImportType.Create);
+    expect(bulkImportServiceSpy.downloadTemplate).toHaveBeenCalledWith(ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Create);
     expect(fileDownloadSpy).toHaveBeenCalledWith('create_service_point.csv', blob);
   });
 
