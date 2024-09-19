@@ -179,7 +179,31 @@
       "TITLE": "Datenimport mittels Datei",
       "TITLE_MENU": "Massenimport",
       "DESCRIPTION": "Massenverarbeitung von Daten mittels Fileupload (*.csv oder Excel).",
-      "PATH_TEXT": "Massenimport"
+      "PATH_TEXT": "Massenimport",
+      "APPLICATION": "Applikation",
+      "SEPODI": "Dienststellen",
+      "PRM": "BehiG",
+      "OBJECT": "Objekt",
+      "SERVICE_POINT": "Dienststelle",
+      "TRAFFIC_POINT": "Haltekante",
+      "LOADING_POINT": "Ladestelle",
+      "REFERENCE_POINT": "Referenzpunkt",
+      "STOP_POINT": "Haltestelle",
+      "CONTACT_POINT": "Schalter",
+      "PARKING_LOT": "Parkplatz",
+      "RELATION": "Verbindung",
+      "PLATFORM": "Haltekante",
+      "TOILET": "Toilette",
+      "SCENARIO": "Szenario",
+      "CREATE": "Erfassung",
+      "UPDATE": "Aktualisierung",
+      "TERMINATE": "Terminierung",
+      "IMPORT_EXECUTED_BY": "Import wird durchgeführt durch:",
+      "IMPORT_FOR_SOMEONE_ELSE": "Ich importiere für jemanden anders.",
+      "ADDITIONAL_IMPORT_REPORT": "Zusätzlicher Empfänger Importbericht",
+      "START_BULK_IMPORT": "Start Import",
+      "SUCCESS": "Import erfolgreich gestartet",
+      "CONFIGURATION": "Konfiguration"
     },
     "LIDI": {
       "TITLE": "Linien und Teillinien verwalten",
@@ -1443,6 +1467,10 @@
     }
   },
   "BULK_IMPORT": {
+    "BUTTON": {
+      "DOWNLOAD": "Importvorlage",
+      "DISABLED_MESSAGE": "Bitte wählen Sie Applikation, Objekt und Szenario aus damit die Importvorlage erstellt werden kann."
+    },
     "ERROR": {
       "EXCEL_CONVERSION": "Die verwendete Excel-Datei konnte nicht richtig gelesen werden. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen.\nFehlerquelle in Zeile:{{rowIndex}}, Spalte:{{columnIndex}}",
       "FILE_HEADER": "Die verwendete Datei hat nicht die erwartete Kopfzeile. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen."

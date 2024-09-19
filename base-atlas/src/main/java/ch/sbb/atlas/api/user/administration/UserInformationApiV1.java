@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.user.administration;
 
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -13,6 +14,12 @@ public interface UserInformationApiV1 {
 
   @GetMapping("search")
   @Operation(description = "Look up Users in SBB Azure AD via Graph API")
-  List<UserModel> searchUsers(@RequestParam String searchQuery);
+  List<UserModel> searchUsers(
+          @RequestParam String searchQuery);
 
+  @GetMapping("search-in-atlas")
+  @Operation(description = "Look up Users in SBB Atlas")
+  List<UserModel> searchUsersInAtlas(
+          @RequestParam String searchQuery,
+          @RequestParam ApplicationType applicationType);
 }
