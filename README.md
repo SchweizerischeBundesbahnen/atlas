@@ -2,7 +2,6 @@
 
 This is the repository for business relevant services for ATLAS.
 
-
 <!-- toc -->
 
 - [Big Picture](#big-picture)
@@ -273,4 +272,3 @@ ATLAS Angular App. See [Frontend documentation](frontend/README.md);
 ## Troubleshooting 
 
 * [Sonarqube](documentation/Troubleshooting.md)
-
