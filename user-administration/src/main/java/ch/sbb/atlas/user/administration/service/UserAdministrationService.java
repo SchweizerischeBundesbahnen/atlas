@@ -101,11 +101,8 @@ public class UserAdministrationService {
       userPermission.ifPresent(permission -> {
         ApplicationRole role = permission.getRole();
         boolean existsUser = permission.getSbbUserId().equals(userModel.getSbbUserId());
-        boolean hasRestrictionTypeBulkImport = permission.getPermissionRestrictions().stream().anyMatch(userPermission2 ->
-               !userPermission2.getRestriction().equals("false")
-                       && userPermission2.getType() == PermissionRestrictionType.BULK_IMPORT);
 
-        if ((existsUser && !role.equals(ApplicationRole.READER) && !role.equals(ApplicationRole.EXPLICIT_READER)) || (existsUser && hasRestrictionTypeBulkImport)) {
+        if (existsUser && !role.equals(ApplicationRole.READER) && !role.equals(ApplicationRole.EXPLICIT_READER)) {
           permittedUser.add(userModel);
         }
       });
