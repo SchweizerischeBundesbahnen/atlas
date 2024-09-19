@@ -91,7 +91,7 @@ public class UserAdministrationService {
         .findFirst();
   }
 
-  public List<UserModel> filterForUserInAtlas(List<UserModel> foundUsers, ApplicationType applicationType){
+  public List<UserModel> filterForPermittedUserInAtlas(List<UserModel> foundUsers, ApplicationType applicationType){
     List<UserModel> permittedUser = new ArrayList<>();
 
     for (UserModel userModel : foundUsers) {
@@ -101,8 +101,11 @@ public class UserAdministrationService {
       userPermission.ifPresent(permission -> {
         ApplicationRole role = permission.getRole();
         boolean existsUser = permission.getSbbUserId().equals(userModel.getSbbUserId());
+        boolean hasRestrictionTypeBulkImport = permission.getPermissionRestrictions().stream().anyMatch(userPermission2 ->
+               !userPermission2.getRestriction().equals("false")
+                       && userPermission2.getType() == PermissionRestrictionType.BULK_IMPORT);
 
-        if (existsUser && !role.equals(ApplicationRole.READER) && !role.equals(ApplicationRole.EXPLICIT_READER)) {
+        if ((existsUser && !role.equals(ApplicationRole.READER) && !role.equals(ApplicationRole.EXPLICIT_READER)) || (existsUser && hasRestrictionTypeBulkImport)) {
           permittedUser.add(userModel);
         }
       });
