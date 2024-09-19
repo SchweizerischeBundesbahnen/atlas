@@ -154,7 +154,7 @@ describe('BulkImportOverviewComponent', () => {
   });
 
 
-  it('should set isApplicationSelected and OPTIONS_OBJECT_TYPE when applicationType changes', () => {
+  it('should set OPTIONS_OBJECT_TYPE when applicationType changes', () => {
     fixture.detectChanges()
     component.ngOnInit();
 
@@ -162,7 +162,6 @@ describe('BulkImportOverviewComponent', () => {
     fixture.detectChanges();
 
 
-    expect(component.isApplicationSelected).toBeTrue();
     expect(component.OPTIONS_OBJECT_TYPE).toEqual(component.OPTIONS_OBJECTS[ApplicationType.Sepodi]);
   });
 
