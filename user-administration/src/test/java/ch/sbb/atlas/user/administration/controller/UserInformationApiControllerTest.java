@@ -83,7 +83,7 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
 
         List<UserModel> filteredUsers = Collections.singletonList(userModel);
 
-        when(userAdministrationService.filterForUserInAtlas(userModels, ApplicationType.SEPODI))
+        when(userAdministrationService.filterForPermittedUserInAtlas(userModels, ApplicationType.SEPODI))
                 .thenReturn(filteredUsers);
 
 
@@ -95,7 +95,7 @@ class UserInformationApiControllerTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].sbbUserId").value("u239096"));
 
         verify(graphApiService, times(1)).searchUsers("testQuery");
-        verify(userAdministrationService, times(1)).filterForUserInAtlas(userModels, ApplicationType.SEPODI);
+        verify(userAdministrationService, times(1)).filterForPermittedUserInAtlas(userModels, ApplicationType.SEPODI);
 
     }
 }
