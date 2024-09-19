@@ -171,7 +171,7 @@ export class BulkImportOverviewComponent implements OnInit {
     const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
     const filename = `${bulkImportRequest.importType.toLowerCase()}_${bulkImportRequest.objectType.toLowerCase()}.csv`;
     this.bulkImportService
-      .downloadTemplate(bulkImportRequest.objectType, bulkImportRequest.importType)
+      .downloadTemplate(bulkImportRequest.applicationType, bulkImportRequest.objectType, bulkImportRequest.importType)
       .subscribe((response) => FileDownloadService.downloadFile(filename, response));
   }
 
