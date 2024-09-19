@@ -114,7 +114,7 @@ class UserAdministrationServiceTest {
     when(userPermissionRepositoryMock.findBySbbUserIdIgnoreCaseAndApplication(user3.getSbbUserId(), applicationType))
             .thenReturn(Optional.of(permissionUser3));
 
-    List<UserModel> permittedUsers = userAdministrationService.filterForUserInAtlas(foundUsers, applicationType);
+    List<UserModel> permittedUsers = userAdministrationService.filterForPermittedUserInAtlas(foundUsers, applicationType);
 
     assertThat(1).isEqualTo(permittedUsers.size());
     assertThat(user1.getSbbUserId()).isEqualTo(permittedUsers.getFirst().getSbbUserId());
