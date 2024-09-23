@@ -24,7 +24,7 @@
     </atlas-button>
 
     <atlas-button
-      buttonText="COMMON.FILEUPLOAD.SELECT_FILES"
+      [buttonText]="maxFileCount > 1 ? ('COMMON.FILEUPLOAD.SELECT_FILES' | translate) : ('COMMON.FILEUPLOAD.SELECT_FILE' | translate)"
       buttonType="create"
       wrapperStyleClass="mb-3"
     >
