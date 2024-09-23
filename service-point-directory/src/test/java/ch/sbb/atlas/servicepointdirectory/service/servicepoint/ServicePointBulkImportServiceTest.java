@@ -15,7 +15,6 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.user.administration.security.service.CountryAndBusinessOrganisationBasedUserAdministrationService;
 import java.time.LocalDate;
@@ -41,9 +40,6 @@ class ServicePointBulkImportServiceTest {
   private ServicePointVersionRepository servicePointVersionRepository;
 
   @Autowired
-  private ServicePointFotCommentRepository servicePointFotCommentRepository;
-
-  @Autowired
   private ServicePointBulkImportService servicePointBulkImportService;
 
   private ServicePointVersion bernWyleregg;
@@ -56,7 +52,6 @@ class ServicePointBulkImportServiceTest {
 
   @AfterEach
   void tearDown() {
-    servicePointFotCommentRepository.deleteAll();
     servicePointVersionRepository.deleteAll();
   }
 
