@@ -46,8 +46,7 @@ class ServicePointBulkImportControllerTest {
                 .sloid("ch:1:sloid:7000")
                 .build())
             .build();
-    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(null,
-        List.of(updateContainer));
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(List.of(updateContainer));
 
     verify(servicePointBulkImportService, never()).updateServicePointByUserName("userName", updateContainer);
     verify(servicePointBulkImportService).updateServicePoint(updateContainer);
@@ -57,15 +56,16 @@ class ServicePointBulkImportControllerTest {
 
   @Test
   void shouldBulkUpdateViaServiceWithUserName() {
+    String userName = "e123456";
     BulkImportUpdateContainer<ServicePointUpdateCsvModel> updateContainer =
         BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
             .object(ServicePointUpdateCsvModel.builder()
                 .sloid("ch:1:sloid:7000")
                 .build())
+            .inNameOf(userName)
             .build();
-    String userName = "e123456";
     List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(
-        userName, List.of(updateContainer));
+        List.of(updateContainer));
 
     verify(servicePointBulkImportService).updateServicePointByUserName(userName, updateContainer);
     verify(servicePointBulkImportService, never()).updateServicePoint(updateContainer);
@@ -83,8 +83,7 @@ class ServicePointBulkImportControllerTest {
                 .sloid("ch:1:sloid:7000")
                 .build())
             .build();
-    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(null,
-        List.of(updateContainer));
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(List.of(updateContainer));
 
     verify(servicePointBulkImportService).updateServicePoint(updateContainer);
     assertThat(bulkImportItemExecutionResults).hasSize(1).first().extracting(BulkImportItemExecutionResult::isSuccess)
