@@ -26,6 +26,8 @@ public class BulkImportUpdateContainer<T> implements BulkImportContainer {
   @Builder.Default
   private List<String> attributesToNull = new ArrayList<>();
 
+  private String inNameOf;
+
   private BulkImportLogEntry bulkImportLogEntry;
 
   @JsonIgnore
