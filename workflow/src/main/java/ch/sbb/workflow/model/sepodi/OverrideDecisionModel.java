@@ -39,7 +39,6 @@ public class OverrideDecisionModel {
 
   @Schema(description = "Motivation", example = "I agree")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String fotMotivation;
 
   @JsonIgnore

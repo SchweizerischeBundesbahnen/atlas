@@ -33,7 +33,6 @@ export class DecisionOverrideFormGroupBuilder {
         ]),
         [this._fotMotivation]: new FormControl(existingDecision?.fotMotivation, [
           AtlasFieldLengthValidator.comments,
-          AtlasCharsetsValidator.iso88591,
         ]),
       },
       {
