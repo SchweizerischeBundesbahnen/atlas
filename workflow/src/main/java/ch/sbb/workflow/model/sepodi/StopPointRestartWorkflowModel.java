@@ -28,7 +28,6 @@ public class StopPointRestartWorkflowModel extends BasePersonModel {
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
   private String organisation;
 
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   @Schema(description = "Restart motivation")
   private String motivationComment;

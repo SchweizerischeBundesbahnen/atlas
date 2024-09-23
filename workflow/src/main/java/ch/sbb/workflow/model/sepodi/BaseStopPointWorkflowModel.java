@@ -39,7 +39,6 @@ public abstract class BaseStopPointWorkflowModel {
   @Schema(description = "List of cc emails for status of hearing")
   private List<@Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS) @Size(max = AtlasFieldLengths.LENGTH_100) String> ccEmails;
 
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   @Size(min = 2, max = AtlasFieldLengths.LENGTH_1500)
   @Schema(description = "Hearing reasons")

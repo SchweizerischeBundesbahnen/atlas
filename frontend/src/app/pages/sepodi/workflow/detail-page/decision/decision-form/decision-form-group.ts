@@ -42,7 +42,6 @@ export class DecisionFormGroupBuilder {
         [this._judgement]: new FormControl(existingDecision?.judgement, [Validators.required]),
         [this._motivation]: new FormControl(existingDecision?.motivation, [
           AtlasFieldLengthValidator.comments,
-          AtlasCharsetsValidator.iso88591,
         ]),
       },
       {
