@@ -36,6 +36,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
@@ -129,7 +130,8 @@ public class BulkImportBatchJobConfig {
     taskExecutor.setQueueCapacity(THREAD_EXECUTION_SIZE);
     taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
     taskExecutor.setThreadNamePrefix("Thread-");
-    return taskExecutor;
+    taskExecutor.initialize();
+    return new DelegatingSecurityContextAsyncTaskExecutor(taskExecutor);
   }
 
 }
