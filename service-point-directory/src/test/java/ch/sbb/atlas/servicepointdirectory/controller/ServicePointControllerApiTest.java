@@ -22,8 +22,6 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel.Fields;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
@@ -43,7 +41,6 @@ import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
 import java.time.LocalDate;
@@ -78,15 +75,12 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   private LocationService locationService;
 
   private final ServicePointVersionRepository repository;
-  private final ServicePointFotCommentRepository fotCommentRepository;
   private final ServicePointController servicePointController;
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  ServicePointControllerApiTest(ServicePointVersionRepository repository,
-      ServicePointFotCommentRepository fotCommentRepository, ServicePointController servicePointController) {
+  ServicePointControllerApiTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
     this.repository = repository;
-    this.fotCommentRepository = fotCommentRepository;
     this.servicePointController = servicePointController;
   }
 
@@ -104,7 +98,6 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   @AfterEach
   void cleanUpDb() {
     repository.deleteAll();
-    fotCommentRepository.deleteAll();
   }
 
   @Test
@@ -1104,32 +1097,6 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
     verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
-  }
-
-  @Test
-  void shouldCreateServicePointFotComment() throws Exception {
-    ServicePointFotCommentModel fotComment = ServicePointFotCommentModel.builder()
-        .fotComment("Very important on demand service point")
-        .build();
-
-    mvc.perform(put("/v1/service-points/" + servicePointVersion.getNumber().getValue() + "/fot-comment")
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(fotComment)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$." + Fields.fotComment, is("Very important on demand service point")));
-  }
-
-  @Test
-  void shouldGetServicePointFotComment() throws Exception {
-    ServicePointFotCommentModel fotComment = ServicePointFotCommentModel.builder()
-        .fotComment("Very important on demand service point")
-        .build();
-
-    servicePointController.saveFotComment(servicePointVersion.getNumber().getValue(), fotComment);
-
-    mvc.perform(get("/v1/service-points/" + servicePointVersion.getNumber().getValue() + "/fot-comment"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$." + Fields.fotComment, is("Very important on demand service point")));
   }
 
   @Test
