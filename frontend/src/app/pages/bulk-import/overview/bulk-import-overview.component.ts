@@ -112,6 +112,7 @@ export class BulkImportOverviewComponent implements OnInit {
       .subscribe(() => {
         this.notificationService.success('PAGES.BULK_IMPORT.SUCCESS')
         this.resetConfiguration(true);
+        this.ngOnInit();
       });
   }
 
