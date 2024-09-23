@@ -6,19 +6,19 @@ export const OPTIONS_APPLICATION_TYPE: string[] = Object.values([
 ]);
 
  export const OPTIONS_OBJECT_TYPE_SEPODI: string[] = Object.values([
-  BusinessObjectType.ReferencePoint,
   BusinessObjectType.ServicePoint,
-  BusinessObjectType.LoadingPoint,
   BusinessObjectType.TrafficPoint,
+  BusinessObjectType.LoadingPoint,
 ]);
 
 export const OPTIONS_OBJECT_TYPE_PRM: string[] = Object.values([
   BusinessObjectType.StopPoint,
+  BusinessObjectType.ReferencePoint,
+  BusinessObjectType.Platform,
   BusinessObjectType.ContactPoint,
+  BusinessObjectType.Toilet,
   BusinessObjectType.ParkingLot,
   BusinessObjectType.Relation,
-  BusinessObjectType.Platform,
-  BusinessObjectType.Toilet
 ]);
 
 export const OPTIONS_OBJECT_TYPE_TIMETABLE_HEARING: string[] = Object.values([]);
