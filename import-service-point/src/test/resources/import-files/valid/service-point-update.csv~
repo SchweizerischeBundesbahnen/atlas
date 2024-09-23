@@ -1,2 +1,0 @@
-sloid;number;validFrom;validTo;designationOfficial;designationLong;stopPointType;freightServicePoint;operatingPointType;operatingPointTechnicalTimetableType;meansOfTransport;categories;operatingPointTrafficPointType;sortCodeOfDestinationStation;businessOrganisation;east;north;spatialReference;height
-ch:1:sloid:1;;01.04.2021;31.12.2099;Bern;;ORDERLY;true;;;TRAIN|BUS;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;<null>
