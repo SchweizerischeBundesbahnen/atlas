@@ -125,7 +125,7 @@ public class StopPointWorkflowService {
     Set<String> emailSet = new HashSet<>();
     for (StopPointClientPersonModel examinant : examinants) {
       String email = examinant.getMail().toLowerCase();
-      if (!emailSet.add(email)) {
+      if (email.equals(Examinants.NON_PROD_EMAIL_ATLAS.toLowerCase()) || email.equals(Examinants.NON_PROD_EMAIL_CANTON.toLowerCase()) || !emailSet.add(email)) {
           throw new StopPointWorkflowExaminantEmailNotUniqueException();
       }
     }
