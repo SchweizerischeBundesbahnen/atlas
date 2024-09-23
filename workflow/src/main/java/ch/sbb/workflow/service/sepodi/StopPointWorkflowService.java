@@ -42,6 +42,9 @@ public class StopPointWorkflowService {
   private final SePoDiClientService sePoDiClientService;
   private final Examinants examinants;
 
+  public static String TECH_SUPPORT_ATLAS = "TechSupport-ATLAS@sbb.ch";
+  public static String TEST_USER_ATLAS = "testuser-atlas@sbb.ch";
+
   @Redacted(redactedClassType = StopPointWorkflow.class)
   public StopPointWorkflow getWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
@@ -125,7 +128,7 @@ public class StopPointWorkflowService {
     Set<String> emailSet = new HashSet<>();
     for (StopPointClientPersonModel examinant : examinants) {
       String email = examinant.getMail().toLowerCase();
-      if (!emailSet.add(email)) {
+      if (email.equals(TECH_SUPPORT_ATLAS.toLowerCase()) || email.equals(TEST_USER_ATLAS.toLowerCase()) || !emailSet.add(email)) {
           throw new StopPointWorkflowExaminantEmailNotUniqueException();
       }
     }
