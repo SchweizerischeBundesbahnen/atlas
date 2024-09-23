@@ -90,6 +90,7 @@
       "DROPZONE": "Faire glisser le fichier sur cette surface",
       "OR": "ou",
       "SELECT_FILES": "Sélectionner des fichiers",
+      "SELECT_FILE": "Datei auswählen",
       "ERROR": {
         "FILE_SIZE": "{{filename}} n'a pas pu être ajouté. La limite de {{maxsize}} a été dépassée.",
         "TYPE": "{{filename}} n'a pas pu être ajouté. Le type de fichier n'est pas pris en charge.",
@@ -182,7 +183,7 @@
       "PATH_TEXT": "Importation en masse",
       "APPLICATION": "Application",
       "SEPODI": "Départements",
-      "PRM": "LHand",
+      "PRM": "Accessibilité",
       "OBJECT": "Objet",
       "SERVICE_POINT": "Service",
       "TRAFFIC_POINT": "Bordure d'arrêt",
@@ -200,7 +201,7 @@
       "TERMINATE": "Terminaison",
       "IMPORT_EXECUTED_BY": "L'importation est effectuée par:",
       "IMPORT_FOR_SOMEONE_ELSE": "J'importe pour quelqu'un d'autre.",
-      "ADDITIONAL_IMPORT_REPORT": "Destinataire supplémentaire Rapport d'importation",
+      "ADDITIONAL_IMPORT_REPORT": "Destinataires supplémentaires Rapport d'importation",
       "START_BULK_IMPORT": "Démarrer l'importation",
       "SUCCESS": "Importation lancée avec succès",
       "CONFIGURATION": "Configuration"
