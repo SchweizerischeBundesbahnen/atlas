@@ -15,7 +15,6 @@ import {
   OPTIONS_OBJECT_TYPE_TTFN,
   OPTIONS_SCENARIO
 } from "../detail/bulk-import-options";
-import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../core/notification/notification.service";
 import {FileDownloadService} from "../../../core/components/file-upload/file/file-download.service";
 
@@ -64,8 +63,6 @@ export class BulkImportOverviewComponent implements OnInit {
   constructor(private userAdministrationService: UserAdministrationService,
               private permissionService: PermissionService,
               private bulkImportService: BulkImportService,
-              private readonly router: Router,
-              private readonly route: ActivatedRoute,
               private readonly notificationService: NotificationService,
   ) {
   }
@@ -118,10 +115,6 @@ export class BulkImportOverviewComponent implements OnInit {
 
   enableUserSelect(isEnabled: boolean) {
     this.isUserSelectEnabled = isEnabled;
-  }
-
-  back() {
-    this.router.navigate(['..'], {relativeTo: this.route}).then();
   }
 
   onFileChange(files: File[]) {
