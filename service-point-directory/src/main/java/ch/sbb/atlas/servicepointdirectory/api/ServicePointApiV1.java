@@ -16,8 +16,6 @@ import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -54,17 +52,9 @@ public interface ServicePointApiV1 {
           ServicePointVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject ServicePointRequestParams servicePointRequestParams);
 
-  @PostMapping("search")
-  List<ServicePointSearchResult> searchServicePoints(@RequestBody @Valid ServicePointSearchRequest value);
-
-  @PostMapping("search-sp-with-route-network")
-  List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(@RequestBody @Valid ServicePointSearchRequest value);
-
-  @PostMapping("search-swiss-only")
-  List<ServicePointSearchResult> searchSwissOnlyServicePoints(@RequestBody @Valid ServicePointSearchRequest value);
-
   @GetMapping("{servicePointNumber}")
   List<ReadServicePointVersionModel> getServicePointVersions(@PathVariable Integer servicePointNumber);
+
   @GetMapping("sloid/{sloid}")
   List<ReadServicePointVersionModel> getServicePointVersionsBySloid(@PathVariable String sloid);
 
@@ -104,7 +94,7 @@ public interface ServicePointApiV1 {
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).SEPODI)")
   @PutMapping(path = "/update-designation-official/{id}")
-  ReadServicePointVersionModel updateDesingationOfficialServicePoint(
+  ReadServicePointVersionModel updateDesignationOfficial(
       @PathVariable Long id,
       @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
   );

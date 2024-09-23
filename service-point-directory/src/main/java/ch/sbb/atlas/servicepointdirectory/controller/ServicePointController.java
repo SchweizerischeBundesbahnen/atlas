@@ -32,8 +32,6 @@ import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointValidationService;
 import java.util.ArrayList;
@@ -72,21 +70,6 @@ public class ServicePointController implements ServicePointApiV1 {
         .objects(servicePointVersions.stream().map(ServicePointVersionMapper::toModel).toList())
         .totalCount(servicePointVersions.getTotalElements())
         .build();
-  }
-
-  @Override
-  public List<ServicePointSearchResult> searchServicePoints(ServicePointSearchRequest searchRequest) {
-    return servicePointService.searchServicePointVersion(searchRequest.getValue());
-  }
-
-  @Override
-  public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(ServicePointSearchRequest searchRequest) {
-    return servicePointService.searchServicePointsWithRouteNetworkTrue(searchRequest.getValue());
-  }
-
-  @Override
-  public List<ServicePointSearchResult> searchSwissOnlyServicePoints(ServicePointSearchRequest searchRequest) {
-    return servicePointService.searchSwissOnlyServicePointVersion(searchRequest.getValue());
   }
 
   @Override
@@ -191,7 +174,7 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
-  public ReadServicePointVersionModel updateDesingationOfficialServicePoint(Long id,
+  public ReadServicePointVersionModel updateDesignationOfficial(Long id,
       UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
 
     List<ReadServicePointVersionModel> updatedServicePoints = servicePointService.updateDesignationOfficial(id,
