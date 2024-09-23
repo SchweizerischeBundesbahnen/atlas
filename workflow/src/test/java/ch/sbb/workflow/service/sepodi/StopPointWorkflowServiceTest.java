@@ -1,6 +1,7 @@
 package ch.sbb.workflow.service.sepodi;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,10 +10,12 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
 import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDate;
@@ -252,6 +255,83 @@ class StopPointWorkflowServiceTest {
 
     //then
     assertThat(result).hasSize(1);
+  }
+
+  @Test
+  void shouldThrowExceptionOnDuplicateMails() {
+    //given
+    List<StopPointClientPersonModel> stopPointClientPersonModels = new ArrayList<>();
+
+    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+            .firstName("Marek")
+            .lastName("Hamsik")
+            .personFunction("Centrocampista")
+            .organisation("BAV")
+            .mail("marek@hamsik.com").build();
+
+    StopPointClientPersonModel person2 = StopPointClientPersonModel.builder()
+            .firstName("Hans")
+            .lastName("Müller")
+            .personFunction("Centrocampista")
+            .organisation("BAV")
+            .mail("marek@hamsik.com").build();
+
+    stopPointClientPersonModels.add(person);
+    stopPointClientPersonModels.add(person2);
+
+    //when & then
+    assertThrows(StopPointWorkflowExaminantEmailNotUniqueException.class, () -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels));
+
+  }
+
+  @Test
+  void shouldThrowExceptionOnUsingAtlasMails() {
+    List<StopPointClientPersonModel> stopPointClientPersonModels = new ArrayList<>();
+
+    //given
+    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+            .firstName("Marek")
+            .lastName("Hamsik")
+            .personFunction("Centrocampista")
+            .organisation("BAV")
+            .mail("TechSupport-ATLAS@sbb.ch").build();
+
+    StopPointClientPersonModel person2 = StopPointClientPersonModel.builder()
+            .firstName("Hans")
+            .lastName("Müller")
+            .personFunction("Centrocampista")
+            .organisation("BAV")
+            .mail("testuser-atlas@sbb.ch").build();
+    stopPointClientPersonModels.add(person);
+    stopPointClientPersonModels.add(person2);
+
+    //when & then
+    assertThrows(StopPointWorkflowExaminantEmailNotUniqueException.class, () -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels));
+  }
+
+  @Test
+  void shouldNotThrowExceptionCheckMailsToBeUnique() {
+    List<StopPointClientPersonModel> stopPointClientPersonModels = new ArrayList<>();
+
+    //given
+    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+            .firstName("Marek")
+            .lastName("Hamsik")
+            .personFunction("Centrocampista")
+            .organisation("BAV")
+            .mail("marek@hamsik.com").build();
+
+    StopPointClientPersonModel person2 = StopPointClientPersonModel.builder()
+            .firstName("Hans")
+            .lastName("Müller")
+            .personFunction("Centrocampista")
+            .organisation("BAV")
+            .mail("hans@mueller.com").build();
+    stopPointClientPersonModels.add(person);
+    stopPointClientPersonModels.add(person2);
+
+    //when & then
+    assertDoesNotThrow(() -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels));
   }
 
 }
