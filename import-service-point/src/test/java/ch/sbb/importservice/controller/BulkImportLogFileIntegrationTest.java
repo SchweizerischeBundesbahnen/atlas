@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -123,8 +122,8 @@ class BulkImportLogFileIntegrationTest {
   }
 
   private void setupSepodiResponsesForMix() {
-    when(servicePointBulkImportClient.bulkImportUpdate(isNull(), any())).thenAnswer(i -> {
-      List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> argument = i.getArgument(1, List.class);
+    when(servicePointBulkImportClient.bulkImportUpdate(any())).thenAnswer(i -> {
+      List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> argument = i.getArgument(0, List.class);
       List<BulkImportItemExecutionResult> answer = new ArrayList<>();
       argument.forEach(container -> {
         switch (container.getLineNumber()) {
