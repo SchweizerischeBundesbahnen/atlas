@@ -7,12 +7,8 @@ import ch.sbb.importservice.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.service.bulk.writer.BulkImportItemWriter;
 import ch.sbb.importservice.service.bulk.writer.WriterUtil;
 import java.util.List;
-import java.util.Map;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.JobParameter;
-import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.Chunk;
@@ -34,22 +30,13 @@ public class ServicePointUpdateWriter extends ServicePointUpdate implements Bulk
   public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
     List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers =
         WriterUtil.getContainersWithoutDataValidationErrors(items);
-    JobParameters jobParameters = stepExecution.getJobExecution().getJobParameters();
-    Map<String, JobParameter<?>> parameters = jobParameters.getParameters();
-    String inNameOf;
-
-    if(parameters.containsKey("inNameOf")){
-     inNameOf  = String.valueOf(parameters.get("inNameOf").getValue());
-    }
-    else{
-      inNameOf = null;
-    }
-
+    WriterUtil.addInNameOfTo(stepExecution, updateContainers);
 
     log.info("Writing {} containers to service-point-directory", updateContainers.size());
 
-    List<BulkImportItemExecutionResult> importResult = servicePointBulkImportClient.bulkImportUpdate(inNameOf, updateContainers);
+    List<BulkImportItemExecutionResult> importResult = servicePointBulkImportClient.bulkImportUpdate(updateContainers);
 
     WriterUtil.mapExecutionResultToLogEntry(importResult, updateContainers);
   }
+
 }
