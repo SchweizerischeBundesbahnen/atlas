@@ -302,11 +302,10 @@ class StopPointWorkflowServiceTest {
             .personFunction("Centrocampista")
             .organisation("BAV")
             .mail("testuser-atlas@sbb.ch").build();
-    //when
     stopPointClientPersonModels.add(person);
     stopPointClientPersonModels.add(person2);
 
-    //then
+    //when & then
     assertThrows(StopPointWorkflowExaminantEmailNotUniqueException.class, () -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels));
   }
 
@@ -328,11 +327,10 @@ class StopPointWorkflowServiceTest {
             .personFunction("Centrocampista")
             .organisation("BAV")
             .mail("hans@mueller.com").build();
-    //when
     stopPointClientPersonModels.add(person);
     stopPointClientPersonModels.add(person2);
 
-    //then
+    //when & then
     assertDoesNotThrow(() -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels));
   }
 
