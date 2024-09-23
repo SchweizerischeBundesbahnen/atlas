@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
 public class Examinants {
 
   private static String PROD_PROFILE = "prod";
-  public static String NON_PROD_EMAIL_CANTON = "TechSupport-ATLAS@sbb.ch";
-  public static String NON_PROD_EMAIL_ATLAS = "testuser-atlas@sbb.ch";
+  public static final String NON_PROD_EMAIL_CANTON = "TechSupport-ATLAS@sbb.ch";
+  public static final String NON_PROD_EMAIL_ATLAS = "testuser-atlas@sbb.ch";
 
   @Value("${spring.profiles.active:local}")
   @Setter
