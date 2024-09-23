@@ -90,6 +90,7 @@
       "DROPZONE": "Trascinare il file su questa superficie",
       "OR": "o",
       "SELECT_FILES": "Selezionare i file",
+      "SELECT_FILE": "Datei auswählen",
       "ERROR": {
         "FILE_SIZE": "Non è stato possibile aggiungere {{filename}}. Il limite di {{maxsize}} è stato superato.",
         "TYPE": "Non è stato possibile aggiungere {{filename}}. Il tipo di file non è supportato.",
@@ -182,7 +183,7 @@
       "PATH_TEXT": "Importazione di massa",
       "APPLICATION": "Applicazione",
       "SEPODI": "Dipartimenti",
-      "PRM": "LDis",
+      "PRM": "Accessibilità",
       "OBJECT": "Oggetto",
       "SERVICE_POINT": "Posto di servizio",
       "TRAFFIC_POINT": "Bordo di fermata",
@@ -200,7 +201,7 @@
       "TERMINATE": "Programmazione",
       "IMPORT_EXECUTED_BY": "L'importazione viene effettuata da:",
       "IMPORT_FOR_SOMEONE_ELSE": "Sto importando per conto di qualcun altro.",
-      "ADDITIONAL_IMPORT_REPORT": "Destinatario aggiuntivo Rapporto di importazione",
+      "ADDITIONAL_IMPORT_REPORT": "Destinatari aggiuntivi Rapporto di importazione",
       "START_BULK_IMPORT": "Avviare l'importazione",
       "SUCCESS": "Importazione avviata con successo",
       "CONFIGURATION": "Configurazione"
