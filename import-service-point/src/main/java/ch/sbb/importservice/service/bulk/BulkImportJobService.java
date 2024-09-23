@@ -37,8 +37,6 @@ public class BulkImportJobService {
 
   @Transactional(propagation = Propagation.NOT_SUPPORTED)
   public void startBulkImportJob(BulkImport bulkImport, File file) {
-    Optional<String> inNameOf = Optional.ofNullable(bulkImport.getInNameOf());
-
     JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
             .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
             .addLong(BULK_IMPORT_ID_JOB_PARAMETER, bulkImport.getId())
@@ -47,9 +45,10 @@ public class BulkImportJobService {
             .addString(BulkImport.Fields.importType, bulkImport.getImportType().toString())
             .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis());
 
+    Optional<String> inNameOf = Optional.ofNullable(bulkImport.getInNameOf());
     inNameOf.ifPresent(value -> jobParametersBuilder.addString(BulkImport.Fields.inNameOf, value));
-    JobParameters jobParameters = jobParametersBuilder.toJobParameters();
 
+    JobParameters jobParameters = jobParametersBuilder.toJobParameters();
     try {
       JobExecution execution = jobLauncher.run(bulkImportJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
