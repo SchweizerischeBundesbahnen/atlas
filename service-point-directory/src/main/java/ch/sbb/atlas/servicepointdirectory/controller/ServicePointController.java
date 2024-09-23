@@ -149,19 +149,9 @@ public class ServicePointController implements ServicePointApiV1 {
       servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, manualServicePointNumber);
     }
     addGeoReferenceInformation(servicePointVersion);
-    setCreationDateAndCreatorToNull(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.create(servicePointVersion, Optional.empty(), List.of());
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return ServicePointVersionMapper.toModel(createdVersion);
-  }
-
-  /**
-   * @deprecated Only necessary as long as we use BaseDidokImportEntity
-   */
-  @Deprecated(forRemoval = false)
-  private static void setCreationDateAndCreatorToNull(ServicePointVersion servicePointVersion) {
-    servicePointVersion.setCreator(null);
-    servicePointVersion.setCreationDate(null);
   }
 
   @Override
