@@ -1,4 +1,4 @@
-<div class="h-100 ps-5 pt-5">
+<div class="ps-5 pt-5">
 
   <form [formGroup]="form">
     <h2 class="font-bold-4xl mb-4">
@@ -83,7 +83,7 @@
           (downloadExcelClick)="downloadExcel()"
         ></atlas-file-upload>
       </div>
-      <div class="mt-5 me-5 d-flex justify-content-end">
+      <div class="mt-5 d-flex justify-content-end">
         <atlas-button
           (buttonClicked)="startBulkImport()"
           [footerEdit]="form.enabled"
@@ -96,15 +96,4 @@
       </div>
     </div>
   </form>
-
 </div>
-
-<atlas-detail-footer>
-  <atlas-button
-    (buttonClicked)="back()"
-    [disabled]="false"
-    buttonDataCy="back"
-    buttonText="COMMON.BACK"
-    buttonType="whiteFooterNonEdit"
-  ></atlas-button>
-</atlas-detail-footer>
