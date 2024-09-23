@@ -36,7 +36,6 @@ export class StopPointWorkflowDetailFormGroupBuilder {
         Validators.required,
         Validators.minLength(2),
         AtlasFieldLengthValidator.comments,
-        AtlasCharsetsValidator.iso88591,
       ]),
       designationOfficial: new FormControl(workflow?.designationOfficial, [
         Validators.required,
