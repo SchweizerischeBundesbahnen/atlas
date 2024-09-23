@@ -30,7 +30,6 @@ public class DecisionModel extends OtpVerificationModel {
 
   @Schema(description = "Motivation", example = "I agree")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String motivation;
 
   @Schema(description = "Firstname", example = "John")

@@ -33,7 +33,6 @@ public class StopPointRejectWorkflowModel extends BasePersonModel {
   @NotBlank
   private String mail;
 
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   @Schema(description = "Reject motivation")
   private String motivationComment;
