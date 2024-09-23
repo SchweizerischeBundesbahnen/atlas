@@ -90,6 +90,7 @@
       "DROPZONE": "Datei auf diese Fläche ziehen",
       "OR": "oder",
       "SELECT_FILES": "Dateien auswählen",
+      "SELECT_FILE": "Datei auswählen",
       "ERROR": {
         "FILE_SIZE": "{{filename}} konnte nicht hinzugefügt werden. Die Grenze von {{maxsize}} wurde überschritten.",
         "TYPE": "{{filename}} konnte nicht hinzugefügt werden. Der Dateityp wird nicht unterstützt.",
@@ -182,7 +183,7 @@
       "PATH_TEXT": "Massenimport",
       "APPLICATION": "Applikation",
       "SEPODI": "Dienststellen",
-      "PRM": "BehiG",
+      "PRM": "Barrierefreiheit",
       "OBJECT": "Objekt",
       "SERVICE_POINT": "Dienststelle",
       "TRAFFIC_POINT": "Haltekante",
@@ -200,7 +201,7 @@
       "TERMINATE": "Terminierung",
       "IMPORT_EXECUTED_BY": "Import wird durchgeführt durch:",
       "IMPORT_FOR_SOMEONE_ELSE": "Ich importiere für jemanden anders.",
-      "ADDITIONAL_IMPORT_REPORT": "Zusätzlicher Empfänger Importbericht",
+      "ADDITIONAL_IMPORT_REPORT": "Zusätzliche Empfänger Importbericht",
       "START_BULK_IMPORT": "Start Import",
       "SUCCESS": "Import erfolgreich gestartet",
       "CONFIGURATION": "Konfiguration"
