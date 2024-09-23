@@ -94,8 +94,8 @@ public class ServicePointVersion extends BaseEntity implements Versionable,
   @AtlasVersionableProperty
   private Country country;
 
-  @Size(max = AtlasFieldLengths.LENGTH_50)
   @Size(min = 2, max = AtlasFieldLengths.LENGTH_50)
+  @AtlasVersionableProperty
   private String designationLong;
 
   @NotBlank
