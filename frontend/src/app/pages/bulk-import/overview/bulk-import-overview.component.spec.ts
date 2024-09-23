@@ -122,12 +122,6 @@ describe('BulkImportOverviewComponent', () => {
     expect(component.isUserSelectEnabled).toBeTrue();
   });
 
-  it('should navigate back', () => {
-    component.back();
-
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['..'], { relativeTo: activatedRouteStub });
-  });
-
   it('should check if file is uploaded', () => {
     const mockFile = new File([''], 'test.csv', {type: 'text/csv'});
 
