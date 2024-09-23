@@ -300,7 +300,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     ServicePointVersion servicePointSwissWithoutGeoLocation = ServicePointTestData.getBernWyleregg();
     servicePointSwissWithoutGeoLocation.setServicePointGeolocation(null);
-    servicePointSwissWithoutGeoLocation.setDesignationOfficial("1");
+    servicePointSwissWithoutGeoLocation.setDesignationOfficial("d1");
     servicePointSwissWithoutGeoLocation.setSloid("ch:1:sloid:89001");
     servicePointSwissWithoutGeoLocation.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589001));
     servicePointSwissWithoutGeoLocation.setNumberShort(89001);
@@ -310,7 +310,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     ServicePointVersion servicePointSwissWithGeoLocationRevoked = ServicePointTestData.getBernWyleregg();
     servicePointSwissWithGeoLocationRevoked.setValidTo(LocalDate.now().plusDays(1));
     servicePointSwissWithGeoLocationRevoked.setStatus(Status.REVOKED);
-    servicePointSwissWithGeoLocationRevoked.setDesignationOfficial("2");
+    servicePointSwissWithGeoLocationRevoked.setDesignationOfficial("d2");
     servicePointSwissWithGeoLocationRevoked.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589002));
     servicePointSwissWithGeoLocationRevoked.setSloid("ch:1:sloid:89002");
     servicePointSwissWithGeoLocationRevoked.setNumberShort(89002);
@@ -321,7 +321,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     servicePointSwissWithGeoLocationInReview.setStatus(Status.IN_REVIEW);
     servicePointSwissWithGeoLocationInReview.setSloid("ch:1:sloid:89003");
     servicePointSwissWithGeoLocationInReview.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589003));
-    servicePointSwissWithGeoLocationInReview.setDesignationOfficial("3");
+    servicePointSwissWithGeoLocationInReview.setDesignationOfficial("d3");
     servicePointSwissWithGeoLocationInReview.setNumberShort(89003);
     servicePointVersionRepository.save(servicePointSwissWithGeoLocationInReview);
 
