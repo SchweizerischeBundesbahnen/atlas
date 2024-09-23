@@ -42,8 +42,8 @@ public class StopPointWorkflowService {
   private final SePoDiClientService sePoDiClientService;
   private final Examinants examinants;
 
-  public static String TECH_SUPPORT_ATLAS = "TechSupport-ATLAS@sbb.ch";
-  public static String TEST_USER_ATLAS = "testuser-atlas@sbb.ch";
+  private static final String TECH_SUPPORT_ATLAS = "TechSupport-ATLAS@sbb.ch";
+  private static final String TEST_USER_ATLAS = "testuser-atlas@sbb.ch";
 
   @Redacted(redactedClassType = StopPointWorkflow.class)
   public StopPointWorkflow getWorkflow(Long id) {
