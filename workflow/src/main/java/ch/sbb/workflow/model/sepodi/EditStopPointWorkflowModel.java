@@ -24,7 +24,6 @@ public class EditStopPointWorkflowModel {
       , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
   private String designationOfficial;
 
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   @Schema(description = "Hearing reasons")
   private String workflowComment;
