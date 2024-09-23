@@ -40,8 +40,7 @@ class ServicePointControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    servicePointController = new ServicePointController(servicePointService, servicePointFotCommentService,
-        geoReferenceService, servicePointDistributor, locationService, servicePointValidationService);
+    servicePointController = new ServicePointController(servicePointService, geoReferenceService, servicePointDistributor, locationService, servicePointValidationService);
 
     when(servicePointService.create(any(), any(), any())).then(i -> i.getArgument(0, ServicePointVersion.class));
   }

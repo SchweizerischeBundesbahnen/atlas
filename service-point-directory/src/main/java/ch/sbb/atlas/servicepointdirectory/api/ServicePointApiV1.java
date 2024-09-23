@@ -8,7 +8,6 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
@@ -25,7 +24,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -102,23 +100,6 @@ public interface ServicePointApiV1 {
   @PutMapping(path = "/status/{sloid}/{id}")
   ReadServicePointVersionModel updateServicePointStatus(@PathVariable String sloid, @PathVariable Long id,
       @RequestBody @Valid Status status);
-
-  @GetMapping("{servicePointNumber}/fot-comment")
-  Optional<ServicePointFotCommentModel> getFotComment(@PathVariable Integer servicePointNumber);
-
-  @PutMapping("{servicePointNumber}/fot-comment")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
-      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-      @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
-      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
-  })
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).SEPODI)")
-  ServicePointFotCommentModel saveFotComment(@PathVariable Integer servicePointNumber,
-      @Valid @RequestBody ServicePointFotCommentModel fotComment);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("/sync-service-points")
