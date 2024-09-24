@@ -22,14 +22,12 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel.Fields;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
-import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.journey.poi.model.CountryCode;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.LocalDateTimeMatchers;
@@ -43,10 +41,8 @@ import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -56,7 +52,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -80,15 +75,12 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   private LocationService locationService;
 
   private final ServicePointVersionRepository repository;
-  private final ServicePointFotCommentRepository fotCommentRepository;
   private final ServicePointController servicePointController;
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  ServicePointControllerApiTest(ServicePointVersionRepository repository,
-      ServicePointFotCommentRepository fotCommentRepository, ServicePointController servicePointController) {
+  ServicePointControllerApiTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
     this.repository = repository;
-    this.fotCommentRepository = fotCommentRepository;
     this.servicePointController = servicePointController;
   }
 
@@ -106,7 +98,6 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   @AfterEach
   void cleanUpDb() {
     repository.deleteAll();
-    fotCommentRepository.deleteAll();
   }
 
   @Test
@@ -149,134 +140,6 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetServicePointVersionById() throws Exception {
     mvc.perform(get("/v1/service-points/versions/" + servicePointVersion.getId())).andExpect(status().isOk());
-  }
-
-  @Test
-  void shouldSearchServicePointSuccessfully() throws Exception {
-    // given
-    ServicePointSearchRequest request = new ServicePointSearchRequest("bern");
-    String jsonString = mapper.writeValueAsString(request);
-
-    // when
-    mvc.perform(post("/v1/service-points/search")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].number", is(8589008)))
-        .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
-  }
-
-  @Test
-  void whenSearchRequestForSearchSePoWithNetworkTrueValidThenShouldFindServicePointSuccessfully() throws Exception {
-    // given
-    ServicePointSearchRequest request = new ServicePointSearchRequest("bern");
-    String jsonString = mapper.writeValueAsString(request);
-
-    // when
-    mvc.perform(post("/v1/service-points/search-sp-with-route-network")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].number", is(8589008)))
-        .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
-  }
-
-  @Test
-  void shouldSearchSwissOnlyServicePointSuccessfully() throws Exception {
-    // given
-    repository.save(ServicePointTestData.createAbroadServicePointVersion());
-
-    ServicePointSearchRequest request = new ServicePointSearchRequest("bern");
-    String jsonString = mapper.writeValueAsString(request);
-
-    // when
-    mvc.perform(post("/v1/service-points/search-swiss-only")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].number", is(8589008)))
-        .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
-  }
-
-  @Test
-  void shouldReturnEmptyListWhenNoMatchFound() throws Exception {
-    // given
-    ServicePointSearchRequest request = new ServicePointSearchRequest("zug");
-    String jsonString = mapper.writeValueAsString(request);
-
-    // when
-    mvc.perform(post("/v1/service-points/search")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(0)));
-  }
-
-  @Test
-  void whenSearchRequestForSearchSePoWithNetworkTrueValidThenShouldReturnEmptyList() throws Exception {
-    // given
-    ServicePointSearchRequest request = new ServicePointSearchRequest("zug");
-    String jsonString = mapper.writeValueAsString(request);
-
-    // when
-    mvc.perform(post("/v1/service-points/search-sp-with-route-network")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(0)));
-  }
-
-  @Test
-  void shouldReturnBadRequestWhenSearchWhitLessThanTwoDigit() throws Exception {
-    // given
-    ServicePointSearchRequest request = new ServicePointSearchRequest("b");
-    String jsonString = mapper.writeValueAsString(request);
-
-    // when
-    mvc.perform(post("/v1/service-points/search")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
-  }
-
-  @Test
-  void whenSearchRequestForSearchSePoWithNetworkTrueWithLessThanTwoDigitsThenShouldReturnBadRequest() throws Exception {
-    // given
-    ServicePointSearchRequest request = new ServicePointSearchRequest("b");
-    String jsonString = mapper.writeValueAsString(request);
-
-    // when
-    mvc.perform(post("/v1/service-points/search-sp-with-route-network")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
-  }
-
-  @Test
-  void whenSearchRequestForSearchSePoWithNetworkTrueNullThenShouldReturnBadRequest() throws Exception {
-    // given
-    ServicePointSearchRequest request = new ServicePointSearchRequest(null);
-    String jsonString = mapper.writeValueAsString(request);
-
-    // when
-    mvc.perform(post("/v1/service-points/search-sp-with-route-network")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
   }
 
   @Test
@@ -1234,32 +1097,6 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
     verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
-  }
-
-  @Test
-  void shouldCreateServicePointFotComment() throws Exception {
-    ServicePointFotCommentModel fotComment = ServicePointFotCommentModel.builder()
-        .fotComment("Very important on demand service point")
-        .build();
-
-    mvc.perform(put("/v1/service-points/" + servicePointVersion.getNumber().getValue() + "/fot-comment")
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(fotComment)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$." + Fields.fotComment, is("Very important on demand service point")));
-  }
-
-  @Test
-  void shouldGetServicePointFotComment() throws Exception {
-    ServicePointFotCommentModel fotComment = ServicePointFotCommentModel.builder()
-        .fotComment("Very important on demand service point")
-        .build();
-
-    servicePointController.saveFotComment(servicePointVersion.getNumber().getValue(), fotComment);
-
-    mvc.perform(get("/v1/service-points/" + servicePointVersion.getNumber().getValue() + "/fot-comment"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$." + Fields.fotComment, is("Very important on demand service point")));
   }
 
   @Test

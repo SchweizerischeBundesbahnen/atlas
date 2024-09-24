@@ -42,7 +42,7 @@ public class ServicePointBulkImportService {
     ServicePointVersion editedVersion = ServicePointBulkImportUpdate.applyUpdateFromCsv(currentVersion, servicePointUpdate);
     ServicePointBulkImportUpdate.applyNulling(bulkImportContainer.getAttributesToNull(), editedVersion);
 
-    servicePointService.update(currentVersion, editedVersion, currentVersions);
+    servicePointService.updateAndPublish(currentVersion, editedVersion, currentVersions);
   }
 
   private List<ServicePointVersion> getCurrentVersions(ServicePointUpdateCsvModel servicePointUpdate) {
