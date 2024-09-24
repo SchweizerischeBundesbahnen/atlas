@@ -50,18 +50,13 @@ class ServicePointServiceTest {
   private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
 
   @Mock
-  private ServicePointStatusDecider servicePointStatusDecider;
-
-  @Mock
    private ServicePointDistributor servicePointDistributor;
-
 
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
-        servicePointValidationService, servicePointTerminationService,
-        servicePointStatusDecider, servicePointDistributor);
+        servicePointValidationService, servicePointTerminationService, servicePointDistributor);
   }
 
   @Test
