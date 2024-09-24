@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
@@ -38,7 +38,7 @@ class ServicePointValidationServiceTest {
     bern.setValidFrom(LocalDate.of(2020, 1, 1));
     bern.setValidTo(LocalDate.of(2022, 1, 1));
 
-    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    ServicePointVersion updateVersion = ServicePointTestData.getBern();
     updateVersion.setValidFrom(LocalDate.of(2019, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2023, 1, 1));
 
@@ -60,7 +60,7 @@ class ServicePointValidationServiceTest {
     bern2.setValidFrom(LocalDate.of(2023, 1, 1));
     bern2.setValidTo(LocalDate.of(2025, 1, 1));
 
-    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    ServicePointVersion updateVersion = ServicePointTestData.getBern();
     updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2026, 1, 1));
 
@@ -77,7 +77,7 @@ class ServicePointValidationServiceTest {
     bern.setValidFrom(LocalDate.of(2020, 1, 1));
     bern.setValidTo(LocalDate.of(2022, 1, 1));
 
-    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    ServicePointVersion updateVersion = ServicePointTestData.getBern();
     updateVersion.setValidFrom(LocalDate.of(2024, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2026, 1, 1));
 
@@ -91,7 +91,7 @@ class ServicePointValidationServiceTest {
     bern.setValidFrom(LocalDate.of(2020, 1, 1));
     bern.setValidTo(LocalDate.of(2022, 1, 1));
 
-    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    ServicePointVersion updateVersion = ServicePointTestData.getBern();
     updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2021, 8, 1));
 
@@ -108,7 +108,7 @@ class ServicePointValidationServiceTest {
     bern.setValidFrom(LocalDate.of(2020, 1, 1));
     bern.setValidTo(LocalDate.of(2022, 1, 1));
 
-    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    ServicePointVersion updateVersion = ServicePointTestData.getBern();
     updateVersion.setValidFrom(LocalDate.of(2018, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2020, 1, 1));
 
@@ -125,7 +125,7 @@ class ServicePointValidationServiceTest {
     bern.setValidFrom(LocalDate.of(2020, 1, 1));
     bern.setValidTo(LocalDate.of(2022, 1, 1));
 
-    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    ServicePointVersion updateVersion = ServicePointTestData.getBern();
     updateVersion.setValidFrom(LocalDate.of(2022, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2024, 1, 1));
 
@@ -142,7 +142,7 @@ class ServicePointValidationServiceTest {
     bern.setValidFrom(LocalDate.of(2020, 1, 1));
     bern.setValidTo(LocalDate.of(2022, 1, 1));
 
-    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    ServicePointVersion updateVersion = ServicePointTestData.getBern();
     updateVersion.setValidFrom(LocalDate.of(2020, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2021, 1, 1));
 
@@ -159,7 +159,7 @@ class ServicePointValidationServiceTest {
     bern.setValidFrom(LocalDate.of(2020, 1, 1));
     bern.setValidTo(LocalDate.of(2022, 1, 1));
 
-    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    ServicePointVersion updateVersion = ServicePointTestData.getBern();
     updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2022, 1, 1));
 
@@ -176,7 +176,7 @@ class ServicePointValidationServiceTest {
     bern.setValidFrom(LocalDate.of(2020, 1, 1));
     bern.setValidTo(LocalDate.of(2022, 1, 1));
 
-    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    ServicePointVersion updateVersion = ServicePointTestData.getBern();
     updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2022, 1, 1));
 
@@ -190,7 +190,7 @@ class ServicePointValidationServiceTest {
     bern.setValidFrom(LocalDate.of(2020, 1, 1));
     bern.setValidTo(LocalDate.of(2022, 1, 1));
 
-    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    ServicePointVersion updateVersion = ServicePointTestData.getBern();
     updateVersion.setValidFrom(LocalDate.of(2018, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2021, 1, 1));
 
@@ -207,7 +207,7 @@ class ServicePointValidationServiceTest {
     bern.setValidFrom(LocalDate.of(2020, 1, 1));
     bern.setValidTo(LocalDate.of(2022, 1, 1));
 
-    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    ServicePointVersion updateVersion = ServicePointTestData.getBern();
     updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     updateVersion.setValidTo(LocalDate.of(2023, 1, 1));
 
