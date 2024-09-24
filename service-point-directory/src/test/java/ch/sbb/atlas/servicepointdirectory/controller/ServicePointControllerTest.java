@@ -5,13 +5,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
-import ch.sbb.atlas.location.LocationService;
-import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointValidationService;
 import java.time.LocalDate;
@@ -25,11 +23,7 @@ class ServicePointControllerTest {
   @Mock
   private ServicePointService servicePointService;
   @Mock
-  private ServicePointFotCommentService servicePointFotCommentService;
-  @Mock
   private GeoReferenceService geoReferenceService;
-  @Mock
-  private ServicePointDistributor servicePointDistributor;
   @Mock
   private LocationService locationService;
   @Mock
@@ -40,9 +34,9 @@ class ServicePointControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    servicePointController = new ServicePointController(servicePointService, geoReferenceService, servicePointDistributor, locationService, servicePointValidationService);
+    servicePointController = new ServicePointController(servicePointService, geoReferenceService, locationService, servicePointValidationService);
 
-    when(servicePointService.create(any(), any(), any())).then(i -> i.getArgument(0, ServicePointVersion.class));
+    when(servicePointService.createAndPublish(any(), any(), any())).then(i -> i.getArgument(0, ServicePointVersion.class));
   }
 
   @Test

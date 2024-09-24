@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -13,6 +12,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongC
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.versioning.model.Versionable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -116,18 +116,17 @@ public class ServicePointValidationService {
             editedVersion.getAbbreviation()));
   }
 
-  public void checkNotAffectingInReviewVersions(List<ServicePointVersion> existingVersions,
-      UpdateServicePointVersionModel updateVersionModel) {
+  public void checkNotAffectingInReviewVersions(List<ServicePointVersion> existingVersions,      ServicePointVersion editedVersion) {
     List<ServicePointVersion> affectedVersions =
         existingVersions.stream()
-            .filter(version -> version.getStatus() == Status.IN_REVIEW && new AffectingVersionValidator(updateVersionModel,
+            .filter(version -> version.getStatus() == Status.IN_REVIEW && new AffectingVersionValidator(editedVersion,
                 version).check())
             .toList();
 
-    if (affectedVersions.size() != 0) {
+    if (!affectedVersions.isEmpty()) {
       throw new UpdateAffectsInReviewVersionException(
-          updateVersionModel.getValidFrom(),
-          updateVersionModel.getValidTo(),
+          editedVersion.getValidFrom(),
+          editedVersion.getValidTo(),
           affectedVersions
       );
     }
@@ -167,7 +166,7 @@ public class ServicePointValidationService {
   @RequiredArgsConstructor
   private static final class AffectingVersionValidator {
 
-    private final UpdateServicePointVersionModel updateVersionModel;
+    private final Versionable updateVersionModel;
     private final ServicePointVersion version;
 
     private boolean check() {

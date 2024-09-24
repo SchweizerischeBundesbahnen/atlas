@@ -25,7 +25,6 @@ import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointSwissWithGeoMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSwissWithGeoTransfer;
-import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
@@ -47,7 +46,6 @@ public class ServicePointController implements ServicePointApiV1 {
 
   private final ServicePointService servicePointService;
   private final GeoReferenceService geoReferenceService;
-  private final ServicePointDistributor servicePointDistributor;
   private final LocationService locationService;
   private final ServicePointValidationService servicePointValidationService;
 
@@ -127,8 +125,7 @@ public class ServicePointController implements ServicePointApiV1 {
       servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, manualServicePointNumber);
     }
     addGeoReferenceInformation(servicePointVersion);
-    ServicePointVersion createdVersion = servicePointService.create(servicePointVersion, Optional.empty(), List.of());
-    servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
+    ServicePointVersion createdVersion = servicePointService.createAndPublish(servicePointVersion, Optional.empty(), List.of());
     return ServicePointVersionMapper.toModel(createdVersion);
   }
 
@@ -158,7 +155,6 @@ public class ServicePointController implements ServicePointApiV1 {
     List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
         servicePointVersionToUpdate.getNumber());
 
-    servicePointValidationService.checkNotAffectingInReviewVersions(currentVersions, updateServicePointVersionModel);
 
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
         servicePointVersionToUpdate.getNumber());
@@ -197,8 +193,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public void syncServicePoints() {
-    log.info("Syncing all Service Points");
-    servicePointDistributor.syncServicePoints();
+    servicePointService.publishAllServicePoints();
   }
 
   @Override
