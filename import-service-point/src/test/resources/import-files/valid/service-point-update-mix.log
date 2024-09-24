@@ -1,12 +1,10 @@
 {
+  "nbOfSuccess": 1,
+  "nbOfInfo": 1,
+  "nbOfError": 3,
   "logEntries": [
     {
-      "lineNumber": 1,
-      "status": "SUCCESS",
-      "errors": []
-    },
-    {
-      "lineNumber": 2,
+      "lineNumber": 3,
       "status": "DATA_VALIDATION_ERROR",
       "errors": [
         {
@@ -50,7 +48,7 @@
       ]
     },
     {
-      "lineNumber": 3,
+      "lineNumber": 4,
       "status": "DATA_VALIDATION_ERROR",
       "errors": [
         {
@@ -316,7 +314,7 @@
       ]
     },
     {
-      "lineNumber": 4,
+      "lineNumber": 5,
       "status": "DATA_EXECUTION_ERROR",
       "errors": [
         {
@@ -338,8 +336,8 @@
       ]
     },
     {
-      "lineNumber": 5,
-      "status": "DATA_EXECUTION_ERROR",
+      "lineNumber": 6,
+      "status": "INFO",
       "errors": [
         {
           "errorMessage": "No entities were modified after versioning execution.",

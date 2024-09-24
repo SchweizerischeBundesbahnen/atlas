@@ -3,12 +3,13 @@ package ch.sbb.workflow.helper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
 import org.junit.jupiter.api.Test;
 
- class AtlasFrontendBaseUrlTest {
+class AtlasFrontendBaseUrlTest {
 
   @Test
-   void shouldReturnLocalUrl() {
+  void shouldReturnLocalUrl() {
     //when
     String result = AtlasFrontendBaseUrl.getUrl("local");
 
@@ -18,7 +19,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnLocalUrlWhenActiveProfileIsNull() {
+  void shouldReturnLocalUrlWhenActiveProfileIsNull() {
     //when
     String result = AtlasFrontendBaseUrl.getUrl(null);
 
@@ -28,7 +29,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnDevUrl() {
+  void shouldReturnDevUrl() {
     //when
     String result = AtlasFrontendBaseUrl.getUrl("dev");
 
@@ -38,7 +39,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnTestUrl() {
+  void shouldReturnTestUrl() {
     //when
     String result = AtlasFrontendBaseUrl.getUrl("test");
 
@@ -48,7 +49,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnIntUrl() {
+  void shouldReturnIntUrl() {
     //when
     String result = AtlasFrontendBaseUrl.getUrl("int");
 
@@ -58,7 +59,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnProdUrl() {
+  void shouldReturnProdUrl() {
     //when
     String result = AtlasFrontendBaseUrl.getUrl("prod");
 
@@ -68,7 +69,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldThrowExceptionWithWrongActiveProfile() {
+  void shouldThrowExceptionWithWrongActiveProfile() {
     //when
     assertThrows(IllegalStateException.class, () -> AtlasFrontendBaseUrl.getUrl("napoli"));
 
