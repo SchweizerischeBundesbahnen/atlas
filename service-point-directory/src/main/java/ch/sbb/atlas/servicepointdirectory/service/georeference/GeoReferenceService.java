@@ -7,6 +7,8 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
 import feign.FeignException.FeignClientException;
 import lombok.RequiredArgsConstructor;
@@ -103,6 +105,25 @@ public class GeoReferenceService {
       return new GeoAdminHeightResponse();
     } else {
       throw new HeightNotCalculatableException();
+    }
+  }
+
+  public void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {
+    if (servicePointVersion.hasGeolocation()) {
+      ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
+      GeoReference geoReference = getGeoReference(servicePointGeolocation.asCoordinatePair(),servicePointGeolocation.getHeight() == null);
+
+      if (geoReference.getHeight() != null) {
+        servicePointGeolocation.setHeight(geoReference.getHeight());
+      }
+
+      servicePointGeolocation.setCountry(geoReference.getCountry());
+      servicePointGeolocation.setSwissCanton(geoReference.getSwissCanton());
+      servicePointGeolocation.setSwissDistrictNumber(geoReference.getSwissDistrictNumber());
+      servicePointGeolocation.setSwissDistrictName(geoReference.getSwissDistrictName());
+      servicePointGeolocation.setSwissMunicipalityNumber(geoReference.getSwissMunicipalityNumber());
+      servicePointGeolocation.setSwissMunicipalityName(geoReference.getSwissMunicipalityName());
+      servicePointGeolocation.setSwissLocalityName(geoReference.getSwissLocalityName());
     }
   }
 }
