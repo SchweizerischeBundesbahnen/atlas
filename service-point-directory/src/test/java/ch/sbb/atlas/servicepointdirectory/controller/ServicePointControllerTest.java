@@ -11,7 +11,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointValidationService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,15 +25,13 @@ class ServicePointControllerTest {
   private GeoReferenceService geoReferenceService;
   @Mock
   private LocationService locationService;
-  @Mock
-  private ServicePointValidationService servicePointValidationService;
 
   private ServicePointController servicePointController;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    servicePointController = new ServicePointController(servicePointService, geoReferenceService, locationService, servicePointValidationService);
+    servicePointController = new ServicePointController(servicePointService, geoReferenceService, locationService);
 
     when(servicePointService.createAndPublish(any(), any(), any())).then(i -> i.getArgument(0, ServicePointVersion.class));
   }
