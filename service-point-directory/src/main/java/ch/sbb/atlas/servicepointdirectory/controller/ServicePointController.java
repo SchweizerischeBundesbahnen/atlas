@@ -1,25 +1,20 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
-import ch.sbb.atlas.location.LocationService;
-import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusRevokedChangeNotAllowedException;
+import ch.sbb.atlas.servicepointdirectory.mapper.CreateServicePointMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointSwissWithGeoMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
@@ -44,7 +39,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   private final ServicePointService servicePointService;
   private final GeoReferenceService geoReferenceService;
-  private final LocationService locationService;
+  private final CreateServicePointMapper createServicePointMapper;
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -103,25 +98,8 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
-    ServicePointVersion servicePointVersion;
-
-    if (createServicePointVersionModel.shouldGenerateServicePointNumber()) {
-      // case 85,11-14
-      String generatedSloid = locationService.generateSloid(SloidType.SERVICE_POINT, createServicePointVersionModel.getCountry());
-      log.info("Generated new SLOID={}", generatedSloid);
-      ServicePointNumber servicePointNumber = SloidHelper.getServicePointNumber(generatedSloid);
-      log.info("Generated new service point number={}", servicePointNumber);
-      servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, servicePointNumber);
-    } else {
-      // case foreign country
-      ServicePointNumber manualServicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(),
-          createServicePointVersionModel.getNumberShort());
-      if (servicePointService.isServicePointNumberExisting(manualServicePointNumber)) {
-        throw new ServicePointNumberAlreadyExistsException(manualServicePointNumber);
-      }
-      servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, manualServicePointNumber);
-    }
-    addGeoReferenceInformation(servicePointVersion);
+    ServicePointVersion servicePointVersion = createServicePointMapper.toEntity(createServicePointVersionModel);
+    geoReferenceService.addGeoReferenceInformation(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.createAndPublish(servicePointVersion, Optional.empty(), List.of());
     return ServicePointVersionMapper.toModel(createdVersion);
   }
@@ -152,7 +130,7 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
         servicePointVersionToUpdate.getNumber());
 
-    addGeoReferenceInformation(editedVersion);
+    geoReferenceService.addGeoReferenceInformation(editedVersion);
 
     return servicePointService.updateAndPublish(servicePointVersionToUpdate, editedVersion, currentVersions);
   }
@@ -202,25 +180,4 @@ public class ServicePointController implements ServicePointApiV1 {
 
     return swissWithGeoModels;
   }
-
-  private void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {
-    if (servicePointVersion.hasGeolocation()) {
-      ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
-      GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair(),
-          servicePointGeolocation.getHeight() == null);
-
-      if (geoReference.getHeight() != null) {
-        servicePointGeolocation.setHeight(geoReference.getHeight());
-      }
-
-      servicePointGeolocation.setCountry(geoReference.getCountry());
-      servicePointGeolocation.setSwissCanton(geoReference.getSwissCanton());
-      servicePointGeolocation.setSwissDistrictNumber(geoReference.getSwissDistrictNumber());
-      servicePointGeolocation.setSwissDistrictName(geoReference.getSwissDistrictName());
-      servicePointGeolocation.setSwissMunicipalityNumber(geoReference.getSwissMunicipalityNumber());
-      servicePointGeolocation.setSwissMunicipalityName(geoReference.getSwissMunicipalityName());
-      servicePointGeolocation.setSwissLocalityName(geoReference.getSwissLocalityName());
-    }
-  }
-
 }

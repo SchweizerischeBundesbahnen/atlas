@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.controller;
+package ch.sbb.atlas.servicepointdirectory.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -7,9 +7,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
-import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,23 +15,19 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class ServicePointControllerTest {
+class CreateServicePointMapperTest {
 
   @Mock
   private ServicePointService servicePointService;
   @Mock
-  private GeoReferenceService geoReferenceService;
-  @Mock
   private LocationService locationService;
 
-  private ServicePointController servicePointController;
+  private CreateServicePointMapper createServicePointMapper;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    servicePointController = new ServicePointController(servicePointService, geoReferenceService, locationService);
-
-    when(servicePointService.createAndPublish(any(), any(), any())).then(i -> i.getArgument(0, ServicePointVersion.class));
+    createServicePointMapper = new CreateServicePointMapper(locationService, servicePointService);
   }
 
   @Test
@@ -49,6 +43,6 @@ class ServicePointControllerTest {
         .build();
 
     assertThrows(ServicePointNumberAlreadyExistsException.class,
-        () -> servicePointController.createServicePoint(servicePointVersionModel));
+        () -> createServicePointMapper.toEntity(servicePointVersionModel));
   }
 }
