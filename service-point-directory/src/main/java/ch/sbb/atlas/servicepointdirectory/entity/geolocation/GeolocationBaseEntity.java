@@ -53,7 +53,4 @@ public abstract class GeolocationBaseEntity extends BaseEntity implements Transf
         .build();
   }
 
-  public boolean isValid() {
-    return (east != null && north != null);
-  }
 }
