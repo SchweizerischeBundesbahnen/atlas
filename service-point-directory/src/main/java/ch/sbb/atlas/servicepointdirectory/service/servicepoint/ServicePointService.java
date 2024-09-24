@@ -10,7 +10,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInReviewException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSwissWithGeoTransfer;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
@@ -19,7 +18,6 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
 import java.util.Optional;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
@@ -29,40 +27,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Getter
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class ServicePointService {
 
-  private static final int SEARCH_RESULT_SIZE = 200;
-
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final VersionableService versionableService;
   private final ServicePointValidationService servicePointValidationService;
-  private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
   private final ServicePointTerminationService servicePointTerminationService;
-  private final ServicePointStatusDecider servicePointStatusDecider;
   private final ServicePointDistributor servicePointDistributor;
-
-
-  public List<ServicePointSearchResult> searchServicePointVersion(String value) {
-    List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
-    return getSearchResults(servicePointSearchResults);
-  }
-
-  public List<ServicePointSearchResult> searchSwissOnlyServicePointVersion(String value) {
-    List<ServicePointSearchResult> servicePointSearchResults =
-        servicePointSearchVersionRepository.searchSwissOnlyStopPointServicePoints(value);
-    return getSearchResults(servicePointSearchResults);
-  }
-
-  public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(String value) {
-    List<ServicePointSearchResult> servicePointSearchResults =
-        servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue(
-            value);
-    return getSearchResults(servicePointSearchResults);
-  }
 
   public Page<ServicePointVersion> findAll(ServicePointSearchRestrictions servicePointSearchRestrictions) {
     return servicePointVersionRepository.loadByIdsFindBySpecification(servicePointSearchRestrictions.getSpecification(),
@@ -75,11 +49,6 @@ public class ServicePointService {
 
   public List<ServicePointVersion> findBySloidAndOrderByValidFrom(String sloid) {
     return servicePointVersionRepository.findBySloidOrderByValidFrom(sloid);
-  }
-
-  public List<ServicePointVersion> findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
-      ServicePointNumber servicePointNumber) {
-    return servicePointVersionRepository.findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(servicePointNumber);
   }
 
   public boolean isServicePointNumberExisting(ServicePointNumber servicePointNumber) {
@@ -112,30 +81,41 @@ public class ServicePointService {
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
-  @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
-      + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public ServicePointVersion create(ServicePointVersion servicePointVersion,
-      Optional<ServicePointVersion> currentVersion,
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  public ServicePointVersion createAndPublish(ServicePointVersion servicePointVersion, Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
-    preSaveChecks(servicePointVersion, currentVersion, currentVersions);
-    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
+    ServicePointVersion createdVersion = save(servicePointVersion, currentVersion, currentVersions);
+    servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
+    return createdVersion;
   }
 
-  private void preSaveChecks(ServicePointVersion servicePointVersion,
-      Optional<ServicePointVersion> currentVersion,
-      List<ServicePointVersion> currentVersions) {
-    servicePointVersion.setStatus(servicePointStatusDecider
-        .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
-    servicePointValidationService.validateAndSetAbbreviation(servicePointVersion);
-    servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#editedVersion,
+      #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  public List<ReadServicePointVersionModel> updateAndPublish(ServicePointVersion servicePointVersionToUpdate,
+      ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
+    return updateAndPublishInternal(servicePointVersionToUpdate, editedVersion, currentVersions);
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#editedVersion, "
-          + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public void update(ServicePointVersion currentVersion, ServicePointVersion editedVersion,
-      List<ServicePointVersion> currentVersions) {
-    updateServicePointVersion(currentVersion, editedVersion, currentVersions);
+  private List<ReadServicePointVersionModel> updateAndPublishInternal(ServicePointVersion servicePointVersionToUpdate,
+      ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
+    servicePointValidationService.checkIfServicePointStatusRevoked(servicePointVersionToUpdate);
+    servicePointValidationService.checkIfServicePointStatusInReview(servicePointVersionToUpdate, editedVersion);
+    servicePointValidationService.checkNotAffectingInReviewVersions(currentVersions, editedVersion);
+
+    // Actual Update
+    updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions);
+
+    // Publish to PRM
+    List<ServicePointVersion> servicePoint = findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber());
+    servicePointDistributor.publishServicePointsWithNumbers(servicePointVersionToUpdate.getNumber());
+
+    return servicePoint
+        .stream()
+        .map(ServicePointVersionMapper::toModel)
+        .toList();
   }
 
   public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion,
@@ -166,22 +146,21 @@ public class ServicePointService {
     return currentVersion;
   }
 
-  void save(ServicePointVersion servicePointVersion,
-      Optional<ServicePointVersion> currentVersion,
+  private ServicePointVersion save(ServicePointVersion servicePointVersion, Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
     preSaveChecks(servicePointVersion, currentVersion, currentVersions);
-    servicePointVersionRepository.saveAndFlush(servicePointVersion);
+    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
-  private List<ServicePointSearchResult> getSearchResults(List<ServicePointSearchResult> servicePointSearchResults) {
-    if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
-      return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
-    }
-    return servicePointSearchResults;
+  private void preSaveChecks(ServicePointVersion servicePointVersion, Optional<ServicePointVersion> currentVersion,
+      List<ServicePointVersion> currentVersions) {
+    Status status = ServicePointStatusDecider.getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions);
+    servicePointVersion.setStatus(status);
+    servicePointValidationService.validateAndSetAbbreviation(servicePointVersion);
+    servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
   }
 
   public List<ReadServicePointVersionModel> updateDesignationOfficial(Long id, UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
-
     ServicePointVersion servicePointVersionToUpdate = findById(id).orElseThrow(() -> new NotFoundException.IdNotFoundException(id));
 
     List<ServicePointVersion> currentVersions = findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber());
@@ -193,22 +172,12 @@ public class ServicePointService {
             .toBuilder().designationOfficial(updateDesignationOfficialServicePointModel.getDesignationOfficial())
             .build();
 
-    updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions);
-
-    List<ServicePointVersion> servicePoint = findAllByNumberOrderByValidFrom(
-            servicePointVersionToUpdate.getNumber());
-    servicePointDistributor.publishServicePointsWithNumbers(servicePointVersionToUpdate.getNumber());
-
-    return servicePoint
-            .stream()
-            .map(ServicePointVersionMapper::toModel)
-            .toList();
-
+    return updateAndPublishInternal(servicePointVersionToUpdate, editedVersion, currentVersions);
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased"
-          + "(#servicePointVersion, #servicePointVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#servicePointVersion,
+      #servicePointVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public ServicePointVersion updateStopPointStatusForWorkflow(ServicePointVersion servicePointVersion,
       List<ServicePointVersion> servicePointVersions, Status statusToChange) {
     ServicePointHelper.validateIsStopPointLocatedInSwitzerland(servicePointVersion);
@@ -222,17 +191,8 @@ public class ServicePointService {
     return servicePointVersionRepository.findActualServicePointWithGeolocation();
   }
 
-  public List<ReadServicePointVersionModel> updateAndPublish(ServicePointVersion servicePointVersionToUpdate,
-      ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
-    update(servicePointVersionToUpdate, editedVersion, currentVersions);
-
-    List<ServicePointVersion> servicePoint = findAllByNumberOrderByValidFrom(
-        servicePointVersionToUpdate.getNumber());
-    servicePointDistributor.publishServicePointsWithNumbers(servicePointVersionToUpdate.getNumber());
-
-    return servicePoint
-        .stream()
-        .map(ServicePointVersionMapper::toModel)
-        .toList();
+  public void publishAllServicePoints() {
+    log.info("Syncing all Service Points");
+    servicePointDistributor.syncServicePoints();
   }
 }

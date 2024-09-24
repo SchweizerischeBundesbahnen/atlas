@@ -51,7 +51,7 @@ class GeoReferenceJobServiceTest {
   @Test
   void shouldNotUpdateGeoLocationWithOneVersion() {
     //given
-    ServicePointVersion servicePointVersion = servicePointService.create(ServicePointTestData.getBernWyleregg(),
+    ServicePointVersion servicePointVersion = servicePointService.createAndPublish(ServicePointTestData.getBernWyleregg(),
         Optional.empty(), List.of());
     GeoReference geoReference = GeoReference.builder()
         .country(Country.SWITZERLAND)
@@ -79,7 +79,7 @@ class GeoReferenceJobServiceTest {
     //given
     ServicePointVersion bernWyleregg = ServicePointTestData.getBernWyleregg();
     bernWyleregg.setValidTo(LocalDate.of(9999, 1, 31));
-    ServicePointVersion servicePointVersion = servicePointService.create(bernWyleregg,
+    ServicePointVersion servicePointVersion = servicePointService.createAndPublish(bernWyleregg,
         Optional.empty(), List.of());
     GeoReference geoReference = GeoReference.builder()
         .country(Country.SWITZERLAND)
@@ -137,7 +137,7 @@ class GeoReferenceJobServiceTest {
     //given
     ServicePointVersion version = ServicePointTestData.getBernWyleregg();
     version.setValidTo(LocalDate.of(9999, 1, 31));
-    ServicePointVersion servicePointVersion = servicePointService.create(version, Optional.empty(), List.of());
+    ServicePointVersion servicePointVersion = servicePointService.createAndPublish(version, Optional.empty(), List.of());
     ServicePointVersion servicePointVersionEdited = servicePointService.getServicePointVersionById(servicePointVersion.getId());
     servicePointVersionEdited.getServicePointGeolocation().setSwissDistrictName("Changed");
     LocalDate newValidFrom = version.getValidTo().plusDays(1);

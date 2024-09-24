@@ -50,18 +50,13 @@ class ServicePointServiceTest {
   private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
 
   @Mock
-  private ServicePointStatusDecider servicePointStatusDecider;
-
-  @Mock
    private ServicePointDistributor servicePointDistributor;
-
 
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
-        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService,
-        servicePointStatusDecider, servicePointDistributor);
+        servicePointValidationService, servicePointTerminationService, servicePointDistributor);
   }
 
   @Test
@@ -74,19 +69,6 @@ class ServicePointServiceTest {
 
     // then
     verify(servicePointVersionRepositoryMock).findAllByNumberOrderByValidFrom(eq(servicePointNumber));
-  }
-
-  @Test
-  void shouldCallFindServicePointWithRouteNetworkTrue() {
-    // given
-    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(1234567);
-
-    // when
-    servicePointService.findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(servicePointNumber);
-
-    // then
-    verify(servicePointVersionRepositoryMock).findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
-        eq(servicePointNumber));
   }
 
   @Test
