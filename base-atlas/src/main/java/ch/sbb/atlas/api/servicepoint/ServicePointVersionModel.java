@@ -64,7 +64,7 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "Indicates if this a Service Point for freights.")
   private boolean freightServicePoint;
 
-  @Size(max = 5)
+  @Size(max = AtlasFieldLengths.LENGTH_5)
   @Schema(description = "SortCodeOfDestinationStation - only for FreightServicePoint", example = "1234")
   private String sortCodeOfDestinationStation;
 
