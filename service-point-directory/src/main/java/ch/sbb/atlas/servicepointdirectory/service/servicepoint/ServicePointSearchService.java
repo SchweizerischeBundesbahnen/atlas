@@ -2,14 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import java.util.List;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-@Getter
-@Slf4j
 @RequiredArgsConstructor
 public class ServicePointSearchService {
 
