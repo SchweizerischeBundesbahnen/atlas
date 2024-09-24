@@ -22,10 +22,8 @@ public class CreateServicePointMapper {
 
   public ServicePointVersion toEntity(CreateServicePointVersionModel createServicePointVersionModel) {
     if (createServicePointVersionModel.shouldGenerateServicePointNumber()) {
-      // case 85,11-14
       return generateSloidAndMap(createServicePointVersionModel);
     } else {
-      // case foreign country
       return checkNumberUniqueAndMap(createServicePointVersionModel);
     }
   }
