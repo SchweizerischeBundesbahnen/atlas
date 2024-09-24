@@ -8,6 +8,7 @@ export * from './bulkImportItemExecutionResult';
 export * from './bulkImportLogEntry';
 export * from './bulkImportPermissionRestrictionModel';
 export * from './bulkImportRequest';
+export * from './bulkImportResult';
 export * from './bulkImportUpdateContainerServicePointUpdateCsvModel';
 export * from './businessObjectType';
 export * from './businessOrganisation';

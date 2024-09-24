@@ -1,10 +1,10 @@
 @if (data$ | async; as data) {
   @if (data.importResult) {
     <h1 class="ps-4 pt-4">Import {{ data.id }}</h1>
-    <div class="d-flex ps-4 pe-4 pb-4">
-      <aside class="p-4 me-4 result-grid">
+    <div class="ps-4 pe-4 pb-4">
+      <section class="p-4 result-grid">
         <ng-template #resultInfo let-label="label" let-value="value">
-          <div class="d-flex flex-column text-nowrap">
+          <div class="d-flex flex-column align-items-center text-nowrap">
             <label class="font-bold-base">{{ label }}</label>
             <span>{{ value }}</span>
           </div>
@@ -22,7 +22,7 @@
             },
             {
               label: 'Durchgeführt von',
-              value: data.importResult.creator,
+              value: data.importResult.creator | userDisplayName | async,
             },
             {
               label: 'Durchgeführt am',
@@ -36,17 +36,18 @@
         }
 
         @if (data.importResult.inNameOf) {
+          <!--          todo: check display with grid, add translations for validation errors and labels-->
           <ng-container
             [ngTemplateOutlet]="resultInfo"
             [ngTemplateOutletContext]="{
               label: 'Im Namen von',
-              value: data.importResult.inNameOf,
+              value: data.importResult.inNameOf | userDisplayName | async,
             }"
           ></ng-container>
         }
 
         <ng-template #statusTemplate let-color="color" let-text="text" let-nbOfLines="nbOfLines">
-          <div class="d-flex align-items-center text-nowrap">
+          <div class="d-flex align-items-center justify-content-center text-nowrap">
             <div class="square-{{ color }}"></div>
             <span class="ps-2">{{ nbOfLines }}</span>
             <span class="font-bold-base ps-2">({{ text }})</span>
@@ -78,16 +79,9 @@
             [ngTemplateOutletContext]="item"
           ></ng-container>
         }
-      </aside>
+      </section>
 
-      <main class="w-100 log-grid">
-        <mat-paginator
-          style="grid-column: 2; background-color: inherit"
-          class="font-regular-base"
-          [pageSizeOptions]="[5, 20]"
-          [length]="data.importResult.logEntries?.length"
-          (page)="pageChanged($event, data.importResult.logEntries)"
-        ></mat-paginator>
+      <main class="mt-3 log-grid">
         <label class="font-bold-base">Zeilennummer</label>
         <label class="font-bold-base" style="justify-self: start">Resultat</label>
         @for (entry of pagedLogEntries; track $index) {
@@ -132,6 +126,14 @@
         } @empty {
           <p style="grid-column: 2; justify-self: start">Keine Resultate vorhanden</p>
         }
+
+        <mat-paginator
+          style="grid-column: 2; background-color: inherit"
+          class="font-regular-base"
+          [pageSizeOptions]="[5, 20]"
+          [length]="data.importResult.logEntries?.length"
+          (page)="pageChanged($event, data.importResult.logEntries)"
+        ></mat-paginator>
       </main>
     </div>
   } @else {
