@@ -71,11 +71,11 @@ include::{snippets}/service-point-controller-api-test/should-update-service-poin
 
 == Get ServicePoint FotComment
 
-include::{snippets}/service-point-controller-api-test/should-get-service-point-fot-comment/atlas-doc.adoc[]
+include::{snippets}/service-point-fot-comment-controller-api-test/should-get-service-point-fot-comment/atlas-doc.adoc[]
 
 == Create ServicePoint FotComment
 
-include::{snippets}/service-point-controller-api-test/should-create-service-point-fot-comment/atlas-doc.adoc[]
+include::{snippets}/service-point-fot-comment-controller-api-test/should-create-service-point-fot-comment/atlas-doc.adoc[]
 
 
 link:rest-api.html[*< Back to main*]
