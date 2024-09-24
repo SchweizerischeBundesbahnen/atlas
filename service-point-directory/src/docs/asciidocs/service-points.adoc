@@ -27,31 +27,31 @@ include::{snippets}/service-point-controller-api-test/should-fail-on-invalid-ser
 
 == Search ServicePoint successfully
 
-include::{snippets}/service-point-controller-api-test/should-search-service-point-successfully/atlas-doc.adoc[]
+include::{snippets}/service-point-search-controller-api-test/should-search-service-point-successfully/atlas-doc.adoc[]
 
 == Search ServicePoint when no match
 
-include::{snippets}/service-point-controller-api-test/should-return-empty-list-when-no-match-found/atlas-doc.adoc[]
+include::{snippets}/service-point-search-controller-api-test/should-return-empty-list-when-no-match-found/atlas-doc.adoc[]
 
 == Search ServicePoint when try to search with less than 2 digits
 
-include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/atlas-doc.adoc[]
+include::{snippets}/service-point-search-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/atlas-doc.adoc[]
 
 == Search ServicePoint with route network true successfully
 
-include::{snippets}/service-point-controller-api-test/when-search-request-for-search-se-po-with-network-true-valid-then-should-find-service-point-successfully/atlas-doc.adoc[]
+include::{snippets}/service-point-search-controller-api-test/when-search-request-for-search-se-po-with-network-true-valid-then-should-find-service-point-successfully/atlas-doc.adoc[]
 
 == Search ServicePoint when no match
 
-include::{snippets}/service-point-controller-api-test/should-return-empty-list-when-no-match-found/atlas-doc.adoc[]
+include::{snippets}/service-point-search-controller-api-test/should-return-empty-list-when-no-match-found/atlas-doc.adoc[]
 
 == Search ServicePoint when try to search with less than 2 digits
 
-include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/atlas-doc.adoc[]
+include::{snippets}/service-point-search-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/atlas-doc.adoc[]
 
 == Search SwissOnly ServicePoint successfully
 
-include::{snippets}/service-point-controller-api-test/should-search-swiss-only-service-point-successfully/atlas-doc.adoc[]
+include::{snippets}/service-point-search-controller-api-test/should-search-swiss-only-service-point-successfully/atlas-doc.adoc[]
 
 == Create ServicePoint
 
@@ -71,11 +71,11 @@ include::{snippets}/service-point-controller-api-test/should-update-service-poin
 
 == Get ServicePoint FotComment
 
-include::{snippets}/service-point-controller-api-test/should-get-service-point-fot-comment/atlas-doc.adoc[]
+include::{snippets}/service-point-fot-comment-controller-api-test/should-get-service-point-fot-comment/atlas-doc.adoc[]
 
 == Create ServicePoint FotComment
 
-include::{snippets}/service-point-controller-api-test/should-create-service-point-fot-comment/atlas-doc.adoc[]
+include::{snippets}/service-point-fot-comment-controller-api-test/should-create-service-point-fot-comment/atlas-doc.adoc[]
 
 
 link:rest-api.html[*< Back to main*]
