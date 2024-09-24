@@ -10,6 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ForbiddenDueToChosenServiceP
 import ch.sbb.atlas.servicepointdirectory.exception.InvalidAbbreviationException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
+import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusRevokedChangeNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.versioning.model.Versionable;
@@ -70,14 +71,14 @@ public class ServicePointValidationService {
   }
 
   public void validateAndSetAbbreviation(ServicePointVersion editedVersion) {
-    boolean isBussinesOrganisationInList = ServicePointAbbreviationAllowList.SBOIDS.contains(
+    boolean isBusinessOrganisationInList = ServicePointAbbreviationAllowList.SBOIDS.contains(
         editedVersion.getBusinessOrganisation());
 
     if ((isAbbreviationEqualWithPreviousVersions(editedVersion) || isServicePointNew(editedVersion))) {
       return;
     }
 
-    if (!isBussinesOrganisationInList || hasServicePointVersionsAbbreviation(editedVersion)) {
+    if (!isBusinessOrganisationInList || hasServicePointVersionsAbbreviation(editedVersion)) {
       throw new AbbreviationUpdateNotAllowedException();
     }
 
@@ -89,7 +90,7 @@ public class ServicePointValidationService {
   private boolean isAbbreviationUnique(ServicePointVersion servicePointVersion) {
     return servicePointVersionRepository.findServicePointVersionByAbbreviation(servicePointVersion.getAbbreviation())
         .stream()
-        .noneMatch(obj -> !obj.getNumber().equals(servicePointVersion.getNumber()));
+        .allMatch(obj -> obj.getNumber().equals(servicePointVersion.getNumber()));
   }
 
   private boolean isServicePointHighDateVersion(ServicePointVersion servicePointVersion) {
@@ -128,6 +129,23 @@ public class ServicePointValidationService {
           editedVersion.getValidFrom(),
           editedVersion.getValidTo(),
           affectedVersions
+      );
+    }
+  }
+
+  public void checkIfServicePointStatusRevoked(ServicePointVersion servicePointVersion) {
+    if (servicePointVersion.getStatus().equals(Status.REVOKED)) {
+      throw new ServicePointStatusRevokedChangeNotAllowedException(servicePointVersion.getNumber(),
+          servicePointVersion.getStatus());
+    }
+  }
+
+  public void checkIfServicePointStatusInReview(ServicePointVersion currentVersion, ServicePointVersion editedVersion) {
+    if (currentVersion.getStatus().equals(Status.IN_REVIEW)) {
+      throw new UpdateAffectsInReviewVersionException(
+          editedVersion.getValidFrom(),
+          editedVersion.getValidTo(),
+          List.of(currentVersion)
       );
     }
   }
