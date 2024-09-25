@@ -17,7 +17,6 @@
 
         .logo-container {
             width: 12%;
-            background-color: white;
             float: left;
         }
 
@@ -42,11 +41,8 @@
             font-weight: bold;
         }
 
-        .header-title {
-            font-size: x-large;
-            text-align: center;
-            justify-content: center;
-            align-items: center;
+        .ski-color {
+            color: #06348b
         }
 
         .header-container {
@@ -56,47 +52,140 @@
             text-align: justify;
         }
 
-        .header-right {
-            float: left;
-            width: 79%;
-            padding-top: 35px;
-            font-weight: bold;
-            text-align: center;
-            display: inline-block;
-        }
-
-        .content {
-            padding-top: 150px;
-            padding-left: 40px;
-            padding-right: 40px;
-            padding-bottom: 40px;
-        }
-
-        .footer {
+        .content-container {
             margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:active {
+            text-decoration: underline;
+        }
+
+        .mail-container {
+            padding-bottom: 30px;
+        }
+
+        hr {
+            height: 2px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
         }
     </style>
 </head>
 <body>
-<div class='header-container'>
-    <div class='logo-container'>
-        <div class='logo'>
-            <img src="logo-atlas.jpeg" th:src="'cid:' + ${logo}" th:width='45'/>
-            <div class='logo-title'>
-                atlas
+<div class="mail-container">
+    <div class='header-container'>
+        <div class='logo-container'>
+            <div class='logo'>
+                <img src="logo-atlas.jpeg" th:src="'cid:' + ${logo}" th:width='45'/>
+                <div class='logo-title'>
+                    atlas
+                </div>
             </div>
         </div>
     </div>
-    <div class='header-right'>
-        <span class='header-title'>Atlas</span>
-    </div>
-</div>
-<div class='content'>
-    <span>Hello, your import is finished and you can see the results over the following link: <a
-            th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a>.</span>
-    <div class="footer">
-        Best Regards,<br/>
-        Atlas
+    <div class='content-container'>
+        <div>
+            <i>Pour la version française voir ci-dessous. / Per la versione in lingua italiana vedi sotto.</i>
+            <br><br>
+            <hr>
+            <div>
+                <br>
+                <span>Guten Tag</span>
+                <br><br>
+                <span>
+                    Die Daten in der Applikation [[${properties.get(0).get('applicationTypeDe')}]] zum Objekt
+                    [[${properties.get(0).get('objectTypeDe')}]] wurden
+                    [[${properties.get(0).get('importTypeDe')}]].
+                </span>
+                <br><br>
+                <span>Mit diesem Link (<a
+                        th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a>)
+                    können die genauen Resultate dieses Imports eingesehen werden.
+                </span>
+                <br><br>
+                <span>Bei Fragen können Sie sich an die Fachstelle atlas wenden <a href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>.
+                </span>
+                <div>
+                    <br>Freundliche Grüsse<br><br>
+                    Fachstelle atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>SBB AG</b><br>
+                    Infrastruktur, Fahrplan und Betrieb, Kundeninformation<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <br>
+                <span>Bonjours</span>
+                <br><br>
+                <span>
+                    Les données dans l'application [[${properties.get(0).get('applicationTypeFr')}]] concernant l'objet
+                    [[${properties.get(0).get('objectTypeFr')}]] ont été mises à
+                    [[${properties.get(0).get('importTypeFr')}]].
+                </span>
+                <br><br>
+                <span>Ce lien (<a
+                        th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a>)
+                    permet de consulter les résultats exacts de cette importation.
+                </span>
+                <br><br>
+                <span>Si vous avez des questions, vous pouvez vous adresser au service <a href="mailto:atlas@sbb.ch">atlas@sbb
+                    .ch</a>.
+                </span>
+                <div>
+                    <br>Meilleures Salutations<br><br>
+                    Service spécialisé atlas<br>
+                    <b>Tâches systémiques d'information à la clientele</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>CFF SA</b><br>
+                    Incrastructure – Horaire et Exploitation, Information à la clientèle<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <br>
+                <span>Buogiorno</span>
+                <br><br>
+                <span>
+                    I dati nell'applicazione [[${properties.get(0).get('applicationTypeIt')}]] per l'oggetto
+                    [[${properties.get(0).get('objectTypeIt')}]] sono stati
+                    [[${properties.get(0).get('importTypeIt')}]].
+                </span>
+                <br><br>
+                <span>I risultati esatti di questa importazione possono essere consultati a questo link (<a
+                        th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a>).
+                </span>
+                <br><br>
+                <span>Per qualsiasi domanda, si prega di contattare il servizio atlante <a href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>.
+                </span>
+                <div>
+                    <br>Cordiali saluti<br><br>
+                    Servizio specializzato atlas<br>
+                    <b>Attività di sistema informazioni alla clientela</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>FFS SA</b><br>
+                    Infrastrutture – Orario ed Esercizio, Informazione della clientela<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
