@@ -36,6 +36,7 @@ public class BulkImportController implements BulkImportApiV1 {
 
   private final BulkImportService bulkImportService;
   private final BulkImportFileValidationService bulkImportFileValidationService;
+  private final BulkImportTemplateGenerator bulkImportTemplateGenerator;
 
   @Override
   public void startServicePointImportBatch(BulkImportRequest bulkImportRequest, MultipartFile file) {
@@ -67,7 +68,7 @@ public class BulkImportController implements BulkImportApiV1 {
     BulkImportConfig importConfig = BulkImportConfig.builder().application(applicationType).objectType(objectType)
         .importType(importType)
         .build();
-    File file = BulkImportTemplateGenerator.generateCsvTemplate(importConfig);
+    File file = bulkImportTemplateGenerator.generateCsvTemplate(importConfig);
 
     if (file == null || !file.exists()) {
       log.warn("Unable to generate template file for applicationType={}, objectType={}, importType={}", applicationType,
