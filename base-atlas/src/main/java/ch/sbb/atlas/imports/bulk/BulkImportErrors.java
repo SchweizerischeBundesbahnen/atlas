@@ -31,4 +31,14 @@ public class BulkImportErrors {
             .code("BULK_IMPORT.VALIDATION.INVALID_SERVICE_POINT_NUMBER")
             .build()).build();
   }
+
+  public static BulkImportError duplicatedValue(String fieldName, String duplicatedValue) {
+    return BulkImportError.builder()
+        .errorMessage(fieldName + " with value " + duplicatedValue + " occurred more than once")
+        .displayInfo(DisplayInfo.builder()
+            .code("BULK_IMPORT.VALIDATION.DUPLICATE_" + fieldName.toUpperCase())
+            .with("value", duplicatedValue)
+            .build())
+        .build();
+  }
 }
