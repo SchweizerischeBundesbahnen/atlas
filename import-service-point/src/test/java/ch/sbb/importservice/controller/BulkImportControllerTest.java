@@ -73,6 +73,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
   @AfterEach
   void tearDown() {
     bulkImportRepository.deleteAll();
+    bulkImportRepository.flush();
   }
 
   @Test
@@ -85,26 +86,24 @@ class BulkImportControllerTest extends BaseControllerApiTest {
     File file = ImportFiles.getFileByPath("import-files/valid/service-point-update.csv");
 
     BulkImportRequest bulkImportRequest = BulkImportRequest.builder()
-            .applicationType(ApplicationType.SEPODI)
-            .objectType(BusinessObjectType.SERVICE_POINT)
-            .importType(ImportType.UPDATE)
-            .inNameOf("Test Name")
-            .emails(List.of("test@example.com", "techsupport@atlas-sbb.ch"))
-            .build();
+        .applicationType(ApplicationType.SEPODI)
+        .objectType(BusinessObjectType.SERVICE_POINT)
+        .importType(ImportType.UPDATE)
+        .inNameOf("Test Name")
+        .emails(List.of("test@example.com", "techsupport@atlas-sbb.ch"))
+        .build();
 
     MockMultipartFile mockBulkImportRequest = new MockMultipartFile(
-            "bulkImportRequest",
-            "",
-            MediaType.APPLICATION_JSON_VALUE,
-            new ObjectMapper().writeValueAsBytes(bulkImportRequest));
+        "bulkImportRequest",
+        "",
+        MediaType.APPLICATION_JSON_VALUE,
+        new ObjectMapper().writeValueAsBytes(bulkImportRequest));
 
     mvc.perform(multipart("/v1/import/bulk")
-                    .file(new MockMultipartFile("file", "service-point-update.csv", CSV_CONTENT_TYPE, Files.readAllBytes(file.toPath())))
-                    .file(mockBulkImportRequest)
-                    .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
-            .andExpect(status().isAccepted());
-
-
+            .file(new MockMultipartFile("file", "service-point-update.csv", CSV_CONTENT_TYPE, Files.readAllBytes(file.toPath())))
+            .file(mockBulkImportRequest)
+            .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+        .andExpect(status().isAccepted());
 
     verify(amazonService, times(2)).putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), eq(todaysDirectory));
     verify(servicePointBulkImportClient, atLeastOnce()).bulkImportUpdate(any());
