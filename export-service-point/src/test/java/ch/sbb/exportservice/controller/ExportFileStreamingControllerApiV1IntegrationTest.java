@@ -11,7 +11,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
+public class ExportFileStreamingControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
     @MockBean
     private ExportServicePointJobService exportServicePointJobService;

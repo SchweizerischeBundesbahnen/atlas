@@ -26,7 +26,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 
-class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
+class FileStreamingControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
   @MockBean
   private AmazonFileStreamingService amazonFileStreamingService;
