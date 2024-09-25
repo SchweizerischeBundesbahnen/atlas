@@ -12,6 +12,7 @@ import ch.sbb.importservice.service.bulk.BulkImportS3BucketService;
 import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
 import ch.sbb.importservice.service.bulk.log.LogFile;
 import ch.sbb.importservice.service.mail.MailProducerService;
+import ch.sbb.importservice.utils.Translation;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -57,11 +58,22 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
 
   private void sendMailToImporter(BulkImport bulkImport) {
     MailNotification mailNotification = MailNotification.builder()
-        .to(List.of(userAdministrationClient.getCurrentUser().getMail())) // todo: what happens when its a client id
+        .to(List.of(userAdministrationClient.getCurrentUser().getMail()))
         .subject("Import Result " + bulkImport.getId())
         .mailType(MailType.BULK_IMPORT_RESULT_NOTIFICATION)
         .templateProperties(List.of(
-            Map.of("url", AtlasFrontendBaseUrl.getUrl(activeProfile) + "bulk-import/" + bulkImport.getId())
+            Map.of(
+                "url", AtlasFrontendBaseUrl.getUrl(activeProfile) + "bulk-import/" + bulkImport.getId(),
+                "applicationTypeDe", Translation.getLang(bulkImport.getApplication()).getDe(),
+                "applicationTypeFr", Translation.getLang(bulkImport.getApplication()).getFr(),
+                "applicationTypeIt", Translation.getLang(bulkImport.getApplication()).getIt(),
+                "objectTypeDe", Translation.getLang(bulkImport.getObjectType()).getDe(),
+                "objectTypeFr", Translation.getLang(bulkImport.getObjectType()).getFr(),
+                "objectTypeIt", Translation.getLang(bulkImport.getObjectType()).getIt(),
+                "importTypeDe", Translation.getLang(bulkImport.getImportType()).getDe(),
+                "importTypeFr", Translation.getLang(bulkImport.getImportType()).getFr(),
+                "importTypeIt", Translation.getLang(bulkImport.getImportType()).getIt()
+            )
         ))
         .build();
     mailProducerService.produceMailNotification(mailNotification);

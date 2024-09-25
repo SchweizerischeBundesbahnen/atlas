@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -98,6 +99,12 @@ class BulkImportLogFileIntegrationTest {
     when(userAdministrationClient.getCurrentUser()).thenReturn(UserModel.builder().mail("test@atlas.ch").build());
   }
 
+  @AfterEach
+  void tearDown() {
+    bulkImportRepository.deleteAll();
+    bulkImportRepository.flush(); // todo: sequence changed
+  }
+
   /**
    * service-point-update-mix.csv contains the following lines
    * 1 - updates successfully
@@ -139,7 +146,18 @@ class BulkImportLogFileIntegrationTest {
         .subject("Import Result 1000")
         .mailType(MailType.BULK_IMPORT_RESULT_NOTIFICATION)
         .templateProperties(List.of(
-            Map.of("url", "http://localhost:4200/bulk-import/1000")
+            Map.of(
+                "url", "http://localhost:4200/bulk-import/1000",
+                "applicationTypeDe", "Dienststellen",
+                "applicationTypeFr", "points de services",
+                "applicationTypeIt", "posto di servizio",
+                "objectTypeDe", "Dienststelle",
+                "objectTypeFr", "service",
+                "objectTypeIt", "posto di servizio",
+                "importTypeDe", "aktualisiert",
+                "importTypeFr", "mises à jour",
+                "importTypeIt", "aggiornati"
+            )
         ))
         .build()));
   }
