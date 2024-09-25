@@ -349,6 +349,78 @@
           }
         }
       ]
+    },
+    {
+      "lineNumber": 6,
+      "status": "DATA_VALIDATION_ERROR",
+      "errors": [
+        {
+          "errorMessage": "sloid with value ch:1:sloid:notunique occurred more than once",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_SLOID",
+            "parameters": [
+              {
+                "key": "value",
+                "value": "ch:1:sloid:notunique"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lineNumber": 7,
+      "status": "DATA_VALIDATION_ERROR",
+      "errors": [
+        {
+          "errorMessage": "sloid with value ch:1:sloid:notunique occurred more than once",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_SLOID",
+            "parameters": [
+              {
+                "key": "value",
+                "value": "ch:1:sloid:notunique"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lineNumber": 8,
+      "status": "DATA_VALIDATION_ERROR",
+      "errors": [
+        {
+          "errorMessage": "number with value 8507000 occurred more than once",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_NUMBER",
+            "parameters": [
+              {
+                "key": "value",
+                "value": "8507000"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lineNumber": 9,
+      "status": "DATA_VALIDATION_ERROR",
+      "errors": [
+        {
+          "errorMessage": "number with value 8507000 occurred more than once",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_NUMBER",
+            "parameters": [
+              {
+                "key": "value",
+                "value": "8507000"
+              }
+            ]
+          }
+        }
+      ]
     }
   ]
 }
