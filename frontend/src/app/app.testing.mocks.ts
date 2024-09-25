@@ -149,6 +149,8 @@ export class MockAtlasFieldErrorComponent {
 export class MockMatPaginatorComponent {
   @Input() pageSizeOptions?: number[];
   @Input() length?: number;
+
+  @Output() page = new EventEmitter();
 }
 
 @Component({
