@@ -3,6 +3,7 @@ package ch.sbb.line.directory.service.hearing;
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS;
 
 import ch.sbb.line.directory.entity.StatementDocument;
+import ch.sbb.line.directory.exception.NotAPdfDocumentException;
 import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import java.io.File;
 import java.util.List;
@@ -19,16 +20,13 @@ public class StatementDocumentFilesValidationService {
     this.tikaService = tikaService;
   }
 
-  public void validateAllFilessArePdfs(List<File> files) {
+  public void validateAllFilesArePdfs(List<File> files) {
     List<String> documentFileNames = files.stream()
       .filter(file -> !tikaService.isFilePdf(file))
       .map(File::getName)
       .toList();
     if (!documentFileNames.isEmpty()) {
-      String exceptionMessage = documentFileNames.stream()
-        .map(documentName -> "The given document: " + documentName + " is not a valid PDF file.")
-        .collect(Collectors.joining(File.separator));
-      throw new PdfDocumentConstraintViolationException(exceptionMessage);
+      throw new NotAPdfDocumentException(documentFileNames);
     }
   }
 
