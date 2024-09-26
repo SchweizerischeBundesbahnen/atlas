@@ -33,7 +33,7 @@ public class ConstraintViolationMapper {
       DisplayInfoBuilder displayInfoBuilder = DisplayInfo.builder()
           .code(getErrorCodeForConstraintMessageTemplate(constraintViolation.getMessageTemplate()))
           .with("propertyPath", constraintViolation.getPropertyPath().toString())
-          .with("value", constraintViolation.getInvalidValue().toString());
+          .with("value", String.valueOf(constraintViolation.getInvalidValue()));
       constraintViolation.getConstraintDescriptor().getAttributes()
           .forEach((key, value) -> {
             if (!value.toString().contains("java.lang.Class")) {

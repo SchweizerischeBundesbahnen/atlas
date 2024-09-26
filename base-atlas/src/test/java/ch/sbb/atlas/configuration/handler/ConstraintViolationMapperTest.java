@@ -48,4 +48,34 @@ class ConstraintViolationMapperTest {
     return new ConstraintViolationException(validator.validate(servicePointVersionModel));
   }
 
+  @Test
+  void shouldMapToErrorResponseDesignationOfficialNotNull() {
+    ConstraintViolationMapper constraintViolationMapper = new ConstraintViolationMapper(
+        getExampleConstraintViolationDesignationOfficialNull().getConstraintViolations());
+
+    SortedSet<Detail> actual = constraintViolationMapper.getDetails();
+
+    assertThat(actual).hasSize(1);
+    Detail detail = actual.first();
+    assertThat(detail.getField()).isEqualTo("designationOfficial");
+    assertThat(detail.getDisplayInfo().getCode()).isEqualTo("ERROR.CONSTRAINT_VIOLATION.NOT_NULL");
+
+    List<Parameter> neededDetails = List.of(
+        new Parameter("propertyPath", "designationOfficial"),
+        new Parameter("value", "null"),
+        new Parameter("message", "{jakarta.validation.constraints.NotNull.message}"));
+    assertThat(detail.getDisplayInfo().getParameters()).containsExactlyInAnyOrderElementsOf(neededDetails);
+  }
+
+  static ConstraintViolationException getExampleConstraintViolationDesignationOfficialNull() {
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
+        .businessOrganisation("ch:1:sboid:5846489645")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    return new ConstraintViolationException(validator.validate(servicePointVersionModel));
+  }
+
 }
