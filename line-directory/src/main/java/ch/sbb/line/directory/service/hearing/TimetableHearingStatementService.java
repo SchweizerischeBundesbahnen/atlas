@@ -172,7 +172,7 @@ public class TimetableHearingStatementService {
     statementDocumentFilesValidationService.validateMaxSizeOfFiles(files, alreadySavedDocuments, MAX_DOCUMENTS_SIZE);
 
     log.info("Starting PDF filetype validation.");
-    statementDocumentFilesValidationService.validateAllFilessArePdfs(files);
+    statementDocumentFilesValidationService.validateAllFilesArePdfs(files);
     log.info("Concluded files validation.");
   }
 

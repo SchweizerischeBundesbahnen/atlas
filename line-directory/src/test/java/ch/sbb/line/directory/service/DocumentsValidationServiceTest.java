@@ -1,12 +1,14 @@
 package ch.sbb.line.directory.service;
 
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS_SIZE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.entity.StatementDocument;
+import ch.sbb.line.directory.exception.NotAPdfDocumentException;
 import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.helper.PdfFiles;
 import ch.sbb.line.directory.service.hearing.StatementDocumentFilesValidationService;
@@ -65,14 +67,14 @@ import org.junit.jupiter.api.function.Executable;
     pdfFiles.add(files.get(1));
     pdfFiles.add(files.get(2));
     pdfFiles.add(files.get(3));
-    assertDoesNotThrow(() -> documentsValidationService.validateAllFilessArePdfs(pdfFiles));
+    assertDoesNotThrow(() -> documentsValidationService.validateAllFilesArePdfs(pdfFiles));
   }
 
   @Test
    void givenListOfFilesValidateTheyAreNotPdf() {
-    Executable executable = () -> documentsValidationService.validateAllFilessArePdfs(files);
-    Exception exception = assertThrows(PdfDocumentConstraintViolationException.class, executable);
-    assertEquals(exception.getMessage(), "The given document: test.txt is not a valid PDF file." + (File.separator) + "The given document: test1.txt is not a valid PDF file.");
+    Executable executable = () -> documentsValidationService.validateAllFilesArePdfs(files);
+    Exception exception = assertThrows(NotAPdfDocumentException.class, executable);
+    assertThat(exception.getMessage()).isEqualTo("The files test.txt,test1.txt are not PDFs");
   }
 
   @Test
