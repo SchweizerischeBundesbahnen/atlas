@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
@@ -217,5 +218,48 @@ class ServicePointBulkImportServiceTest {
                 .build())
             .build());
     assertThatExceptionOfType(ServicePointNumberNotFoundException.class).isThrownBy(update);
+  }
+
+  @Test
+  void shouldUpdateBulkAddingPropertyNotTouchingUnexistingGeolocation() {
+    ServicePointVersion servicePointVersion = servicePointVersionRepository.save(
+        ServicePointTestData.createServicePointVersionWithoutServicePointGeolocation());
+
+    assertThat(servicePointVersion.getDesignationLong()).isNull();
+    assertThat(servicePointVersion.hasGeolocation()).isFalse();
+
+    servicePointBulkImportService.updateServicePoint(BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
+        .object(ServicePointUpdateCsvModel.builder()
+            .sloid(servicePointVersion.getSloid())
+            .validFrom(servicePointVersion.getValidFrom())
+            .validTo(servicePointVersion.getValidTo())
+            .designationLong("Bern, am Wyleregg")
+            .build())
+        .build());
+
+    ServicePointVersion bulkUpdateResult = servicePointVersionRepository.findById(servicePointVersion.getId()).orElseThrow();
+    assertThat(bulkUpdateResult.getDesignationLong()).isEqualTo("Bern, am Wyleregg");
+  }
+
+  @Test
+  void shouldUpdateBulkAddingGeolocationProperty() {
+    ServicePointVersion servicePointVersion = servicePointVersionRepository.save(
+        ServicePointTestData.createServicePointVersionWithoutServicePointGeolocation());
+
+    assertThat(servicePointVersion.hasGeolocation()).isFalse();
+
+    servicePointBulkImportService.updateServicePoint(BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
+        .object(ServicePointUpdateCsvModel.builder()
+            .sloid(servicePointVersion.getSloid())
+            .validFrom(servicePointVersion.getValidFrom())
+            .validTo(servicePointVersion.getValidTo())
+            .east(2604525.0)
+            .north(1259900.0)
+            .spatialReference(SpatialReference.LV95)
+            .build())
+        .build());
+
+    ServicePointVersion bulkUpdateResult = servicePointVersionRepository.findById(servicePointVersion.getId()).orElseThrow();
+    assertThat(bulkUpdateResult.hasGeolocation()).isTrue();
   }
 }

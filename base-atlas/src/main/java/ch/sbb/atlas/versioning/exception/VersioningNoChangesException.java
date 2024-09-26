@@ -1,14 +1,12 @@
 package ch.sbb.atlas.versioning.exception;
 
+import static ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo.builder;
+
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.model.exception.AtlasException;
-import org.springframework.http.HttpStatus;
-
 import java.util.List;
 import java.util.TreeSet;
-
-import static ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo.builder;
 
 public class VersioningNoChangesException extends AtlasException {
 
@@ -17,19 +15,19 @@ public class VersioningNoChangesException extends AtlasException {
     @Override
     public ErrorResponse getErrorResponse() {
         return ErrorResponse.builder()
-                .status(HttpStatus.BAD_REQUEST.value())
-                .error(NO_ENTITIES_WERE_MODIFIED_MESSAGE)
-                .message(NO_ENTITIES_WERE_MODIFIED_MESSAGE)
-                .details(new TreeSet<>(getErrorDetails()))
-                .build();
+            .status(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
+            .error(NO_ENTITIES_WERE_MODIFIED_MESSAGE)
+            .message(NO_ENTITIES_WERE_MODIFIED_MESSAGE)
+            .details(new TreeSet<>(getErrorDetails()))
+            .build();
     }
 
     private List<Detail> getErrorDetails() {
         return List.of(Detail.builder()
-                .message(NO_ENTITIES_WERE_MODIFIED_MESSAGE)
-                .displayInfo(builder()
-                        .code("ERROR.WARNING.VERSIONING_NO_CHANGES")
-                        .build())
-                .build());
+            .message(NO_ENTITIES_WERE_MODIFIED_MESSAGE)
+            .displayInfo(builder()
+                .code("ERROR.WARNING.VERSIONING_NO_CHANGES")
+                .build())
+            .build());
     }
 }
