@@ -10,23 +10,23 @@ import org.junit.jupiter.api.Test;
 class TranslationTest {
 
   @Test
-  void getLangForApplicationType() {
-    assertThat(Translation.getLang(ApplicationType.SEPODI).getDe()).isEqualTo("Dienststellen");
-    assertThat(Translation.getLang(ApplicationType.SEPODI).getFr()).isEqualTo("points de services");
-    assertThat(Translation.getLang(ApplicationType.SEPODI).getIt()).isEqualTo("posto di servizio");
+  void getForApplicationType() {
+    assertThat(Translation.of(ApplicationType.SEPODI).getDe()).isEqualTo("Dienststellen");
+    assertThat(Translation.of(ApplicationType.SEPODI).getFr()).isEqualTo("points de services");
+    assertThat(Translation.of(ApplicationType.SEPODI).getIt()).isEqualTo("posto di servizio");
   }
 
   @Test
-  void getLangForObjectType() {
-    assertThat(Translation.getLang(BusinessObjectType.LOADING_POINT).getDe()).isEqualTo("Ladestelle");
-    assertThat(Translation.getLang(BusinessObjectType.LOADING_POINT).getFr()).isEqualTo("places de chargement");
-    assertThat(Translation.getLang(BusinessObjectType.LOADING_POINT).getIt()).isEqualTo("posti di carico");
+  void getForObjectType() {
+    assertThat(Translation.of(BusinessObjectType.LOADING_POINT).getDe()).isEqualTo("Ladestelle");
+    assertThat(Translation.of(BusinessObjectType.LOADING_POINT).getFr()).isEqualTo("places de chargement");
+    assertThat(Translation.of(BusinessObjectType.LOADING_POINT).getIt()).isEqualTo("posti di carico");
   }
 
   @Test
-  void getLangForImportType() {
-    assertThat(Translation.getLang(ImportType.CREATE).getDe()).isEqualTo("erstellt");
-    assertThat(Translation.getLang(ImportType.CREATE).getFr()).isEqualTo("créées");
-    assertThat(Translation.getLang(ImportType.CREATE).getIt()).isEqualTo("creati");
+  void getForImportType() {
+    assertThat(Translation.of(ImportType.CREATE).getDe()).isEqualTo("erstellt");
+    assertThat(Translation.of(ImportType.CREATE).getFr()).isEqualTo("créées");
+    assertThat(Translation.of(ImportType.CREATE).getIt()).isEqualTo("creati");
   }
 }
