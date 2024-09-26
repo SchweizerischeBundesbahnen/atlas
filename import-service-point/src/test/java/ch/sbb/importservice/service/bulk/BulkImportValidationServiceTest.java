@@ -36,8 +36,7 @@ class BulkImportValidationServiceTest {
                 .build())
             .build();
 
-    BulkImportValidationService.validateUniqueness(List.of(container1, container2, container3),
-        ServicePointUpdateCsvModel::getSloid, "sloid");
+    BulkImportValidationService.validateUniqueness(List.of(container1, container2, container3));
 
     assertThat(container1.getBulkImportLogEntry().getErrors()).hasSize(1);
     assertThat(container2.getBulkImportLogEntry()).isNull();
@@ -68,8 +67,7 @@ class BulkImportValidationServiceTest {
             .lineNumber(3)
             .build();
 
-    BulkImportValidationService.validateUniqueness(List.of(container1, container2), ServicePointUpdateCsvModel::getSloid,
-        "sloid");
+    BulkImportValidationService.validateUniqueness(List.of(container1, container2));
 
     assertThat(container1.getBulkImportLogEntry()).isNull();
     assertThat(container2.getBulkImportLogEntry()).isNull();
