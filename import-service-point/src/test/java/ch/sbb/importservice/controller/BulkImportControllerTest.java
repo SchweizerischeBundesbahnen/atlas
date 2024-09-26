@@ -73,7 +73,6 @@ class BulkImportControllerTest extends BaseControllerApiTest {
   @AfterEach
   void tearDown() {
     bulkImportRepository.deleteAll();
-    bulkImportRepository.flush();
   }
 
   @Test

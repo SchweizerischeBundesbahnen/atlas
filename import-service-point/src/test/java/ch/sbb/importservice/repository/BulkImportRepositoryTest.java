@@ -20,7 +20,6 @@ class BulkImportRepositoryTest {
   @AfterEach
   void tearDown() {
     bulkImportRepository.deleteAll();
-    bulkImportRepository.flush();
   }
 
   @Test
