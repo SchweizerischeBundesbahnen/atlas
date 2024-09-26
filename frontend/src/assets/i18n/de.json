@@ -96,7 +96,8 @@
         "TYPE": "{{filename}} konnte nicht hinzugefügt werden. Der Dateityp wird nicht unterstützt.",
         "FILE_COUNT": "Es sind maximal {{maxFileCount}} Dateien erlaubt.",
         "ALREADY_SAVED": "Die Datei {{filename}} wurde bereits hochgeladen und gespeichert.",
-        "ALREADY_ADDED": "Die Datei {{filename}} wurde bereits hinzugefügt."
+        "ALREADY_ADDED": "Die Datei {{filename}} wurde bereits hinzugefügt.",
+        "NOT_A_PDF": "Die Dokumente {{documents}} sind keine gültigen PDF Dateien."
       }
     }
   },
