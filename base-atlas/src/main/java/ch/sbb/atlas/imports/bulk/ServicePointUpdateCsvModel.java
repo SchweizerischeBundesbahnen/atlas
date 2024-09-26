@@ -37,7 +37,7 @@ import lombok.experimental.FieldNameConstants;
     Fields.operatingPointTechnicalTimetableType, Fields.meansOfTransport, Fields.categories,
     Fields.operatingPointTrafficPointType, Fields.sortCodeOfDestinationStation, Fields.businessOrganisation,
     Fields.east, Fields.north, Fields.spatialReference, Fields.height})
-public class ServicePointUpdateCsvModel implements Validatable {
+public class ServicePointUpdateCsvModel implements Validatable<ServicePointUpdateCsvModel> {
 
   private String sloid;
 
@@ -101,4 +101,9 @@ public class ServicePointUpdateCsvModel implements Validatable {
     return errors;
   }
 
+  @Override
+  public List<UniqueField<ServicePointUpdateCsvModel>> uniqueFields() {
+    return List.of(new UniqueField<>(Fields.sloid, ServicePointUpdateCsvModel::getSloid),
+        new UniqueField<>(Fields.number, ServicePointUpdateCsvModel::getNumber));
+  }
 }
