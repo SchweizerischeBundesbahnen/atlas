@@ -64,15 +64,15 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
         .templateProperties(List.of(
             Map.of(
                 "url", AtlasFrontendBaseUrl.getUrl(activeProfile) + "bulk-import/" + bulkImport.getId(),
-                "applicationTypeDe", Translation.getLang(bulkImport.getApplication()).getDe(),
-                "applicationTypeFr", Translation.getLang(bulkImport.getApplication()).getFr(),
-                "applicationTypeIt", Translation.getLang(bulkImport.getApplication()).getIt(),
-                "objectTypeDe", Translation.getLang(bulkImport.getObjectType()).getDe(),
-                "objectTypeFr", Translation.getLang(bulkImport.getObjectType()).getFr(),
-                "objectTypeIt", Translation.getLang(bulkImport.getObjectType()).getIt(),
-                "importTypeDe", Translation.getLang(bulkImport.getImportType()).getDe(),
-                "importTypeFr", Translation.getLang(bulkImport.getImportType()).getFr(),
-                "importTypeIt", Translation.getLang(bulkImport.getImportType()).getIt()
+                "applicationTypeDe", Translation.of(bulkImport.getApplication()).getDe(),
+                "applicationTypeFr", Translation.of(bulkImport.getApplication()).getFr(),
+                "applicationTypeIt", Translation.of(bulkImport.getApplication()).getIt(),
+                "objectTypeDe", Translation.of(bulkImport.getObjectType()).getDe(),
+                "objectTypeFr", Translation.of(bulkImport.getObjectType()).getFr(),
+                "objectTypeIt", Translation.of(bulkImport.getObjectType()).getIt(),
+                "importTypeDe", Translation.of(bulkImport.getImportType()).getDe(),
+                "importTypeFr", Translation.of(bulkImport.getImportType()).getFr(),
+                "importTypeIt", Translation.of(bulkImport.getImportType()).getIt()
             )
         ))
         .build();

@@ -209,7 +209,8 @@ public class AtlasExceptionHandler {
         .displayInfo(
             DisplayInfo.builder()
                 .code("ERROR.NOTALLOWED")
-                .build())
+                .build()
+        )
         .build());
     ErrorResponse errorResponse = ErrorResponse.builder().status(HttpStatus.FORBIDDEN.value())
         .message(
