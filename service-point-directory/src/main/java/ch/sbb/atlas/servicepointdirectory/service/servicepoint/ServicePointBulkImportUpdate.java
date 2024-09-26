@@ -54,10 +54,14 @@ public class ServicePointBulkImportUpdate {
     applyUpdateIfValueNotNull(update.getSortCodeOfDestinationStation(), editedVersion::setSortCodeOfDestinationStation);
     applyUpdateIfValueNotNull(update.getBusinessOrganisation(), editedVersion::setBusinessOrganisation);
 
+    if (editedVersion.getServicePointGeolocation() == null
+        && update.getNorth() == null && update.getEast() == null && update.getSpatialReference() == null) {
+      return editedVersion;
+    }
+
     ServicePointGeolocation servicePointGeolocation =
         editedVersion.getServicePointGeolocation() == null ? new ServicePointGeolocation()
             : editedVersion.getServicePointGeolocation().toBuilder().build();
-
     applyUpdateIfValueNotNull(update.getNorth(), servicePointGeolocation::setNorth);
     applyUpdateIfValueNotNull(update.getEast(), servicePointGeolocation::setEast);
     applyUpdateIfValueNotNull(update.getSpatialReference(), servicePointGeolocation::setSpatialReference);
