@@ -102,7 +102,6 @@ class BulkImportLogFileIntegrationTest {
   @AfterEach
   void tearDown() {
     bulkImportRepository.deleteAll();
-    bulkImportRepository.flush(); // todo: sequence changed
   }
 
   /**
@@ -132,7 +131,9 @@ class BulkImportLogFileIntegrationTest {
     bulkImportController.startServicePointImportBatch(importRequest, multipartFile);
 
     // Then
-    assertThat(bulkImportRepository.count()).isEqualTo(1);
+    List<BulkImport> bulkImports = bulkImportRepository.findAll();
+    assertThat(bulkImports).hasSize(1);
+    BulkImport bulkImport = bulkImports.get(0);
     verify(bulkImportLogService).writeLogToFile(logFileCaptor.capture(), any(BulkImport.class));
 
     LogFile writtenLogFile = logFileCaptor.getValue();
@@ -143,11 +144,11 @@ class BulkImportLogFileIntegrationTest {
     assertThat(writtenLogFile).isEqualTo(expected);
     verify(mailProducerService).produceMailNotification(eq(MailNotification.builder()
         .to(List.of("test@atlas.ch"))
-        .subject("Import Result 1000")
+        .subject("Import Result " + bulkImport.getId())
         .mailType(MailType.BULK_IMPORT_RESULT_NOTIFICATION)
         .templateProperties(List.of(
             Map.of(
-                "url", "http://localhost:4200/bulk-import/1000",
+                "url", "http://localhost:4200/bulk-import/" + bulkImport.getId(),
                 "applicationTypeDe", "Dienststellen",
                 "applicationTypeFr", "points de services",
                 "applicationTypeIt", "posto di servizio",
