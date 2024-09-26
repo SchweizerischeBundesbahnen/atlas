@@ -1,5 +1,12 @@
 {
   "ERROR": {
+    "CONSTRAINT_VIOLATION": {
+      "DEFAULT": "",
+      "SIZE": "",
+      "PATTERN": "",
+      "NOT_BLANK": "",
+      "NOT_NULL": ""
+    },
     "CLIENT": {
       "GENERIC": "Ein Fehler auf der Webseite ist aufgetreten, bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle atlas."
     },
@@ -1469,6 +1476,30 @@
     }
   },
   "BULK_IMPORT": {
+    "VALIDATION": {
+      "DATA_MAPPING_ERROR": "Beim Attribut {{field}} wurde der Typ {{expectedType}} erwartet, der angegebene Wert war allerdings {{errorValue}}.",
+      "SLOID_XOR_NUMBER": "Es muss entweder die sloid oder die number (nicht beides) angegeben werden.",
+      "INVALID_SERVICE_POINT_NUMBER": "Die Dienststellennummer ist ungültig.",
+      "FIELD_MANDATORY": "Das Attribut {{field}} darf nicht gelöscht werden."
+    },
+    "STATUS": {
+      "INFO": "Information",
+      "DATA_VALIDATION_ERROR": "Datenvalidierungsfehler",
+      "DATA_EXECUTION_ERROR": "Datenverarbeitungsfehler"
+    },
+    "LABEL": {
+      "OBJECT_TYPE": "Objekttyp",
+      "IMPORT_TYPE": "Importtyp",
+      "EXECUTED_FROM": "Durchgeführt von",
+      "EXECUTED_AT": "Durchgeführt am",
+      "IN_NAME_OF": "Im Namen von",
+      "LINE_NUMBER": "Zeilennummer",
+      "RESULT": "Resultat",
+      "MISSING_DISPLAY_INFO": "Anzeigeinformationen fehlen",
+      "UNEXPECTED_ERROR": "Unerwarteter Fehler",
+      "NO_RESULTS": "Keine Resultate",
+      "NOT_VALID_ID": "Import-Id: \"{{id}}\" ist nicht valid (erwartet wird eine Nummer)"
+    },
     "BUTTON": {
       "DOWNLOAD": "Importvorlage",
       "DISABLED_MESSAGE": "Bitte wählen Sie Applikation, Objekt und Szenario aus damit die Importvorlage erstellt werden kann."

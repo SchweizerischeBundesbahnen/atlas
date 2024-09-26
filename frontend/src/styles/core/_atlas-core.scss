@@ -67,3 +67,11 @@ input[type='number'] {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.justify-self-start {
+  justify-self: start;
+}
+
+@mixin gc($value) {
+  grid-column: $value;
+}
