@@ -67,7 +67,7 @@ class BulkImportValidationServiceTest {
             .lineNumber(3)
             .build();
 
-    BulkImportValidationService.validateUniqueness(List.of(container1, container2));
+    BulkImportValidationService.validateUniqueness(List.of(container1, container2, container3));
 
     assertThat(container1.getBulkImportLogEntry()).isNull();
     assertThat(container2.getBulkImportLogEntry()).isNull();
