@@ -230,14 +230,27 @@ public class ServicePointVersion extends BaseEntity implements Versionable,
     return getCountry() == getNumber().getCountry();
   }
 
-  @AssertTrue(message = "At most one of OperatingPointTechnicalTimetableType, "
-      + "OperatingPointTrafficPointType may be set")
+  @AssertTrue(message = """
+      ServicePoint rejected due to invalid type information.
+      A ServicePoint might either have:
+       - OperatingPointType
+       - OperatingPointTechnicalTimetableType
+       - OperatingPointTrafficPointType
+       - MeansOfTransport or FreightServicePoint
+      """)
   public boolean isValidType() {
     long mutualTypes = Stream.of(
+            // Betriebspunkt
+            getOperatingPointType() != null,
+            // Reiner Betriebspunkt
             getOperatingPointTechnicalTimetableType() != null,
+            // Haltestelle und/oder Bedienpunkt
+            (!getMeansOfTransport().isEmpty() || isFreightServicePoint()),
+            // Tarifhaltestelle
             getOperatingPointTrafficPointType() != null)
         .filter(i -> i)
         .count();
+    // Dienststelle (eg. Verkaufsstelle) hat keines dieser Informationen
     return mutualTypes <= 1;
   }
 
