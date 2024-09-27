@@ -360,6 +360,10 @@
             "code": "BULK_IMPORT.VALIDATION.DUPLICATE_SLOID",
             "parameters": [
               {
+                "key": "field",
+                "value": "sloid"
+              },
+              {
                 "key": "value",
                 "value": "ch:1:sloid:notunique"
               }
@@ -377,6 +381,10 @@
           "displayInfo": {
             "code": "BULK_IMPORT.VALIDATION.DUPLICATE_SLOID",
             "parameters": [
+              {
+                "key": "field",
+                "value": "sloid"
+              },
               {
                 "key": "value",
                 "value": "ch:1:sloid:notunique"
@@ -396,6 +404,10 @@
             "code": "BULK_IMPORT.VALIDATION.DUPLICATE_NUMBER",
             "parameters": [
               {
+                "key": "field",
+                "value": "number"
+              },
+              {
                 "key": "value",
                 "value": "8507000"
               }
@@ -413,6 +425,10 @@
           "displayInfo": {
             "code": "BULK_IMPORT.VALIDATION.DUPLICATE_NUMBER",
             "parameters": [
+              {
+                "key": "field",
+                "value": "number"
+              },
               {
                 "key": "value",
                 "value": "8507000"
