@@ -5,8 +5,6 @@ import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.model.exception.NotFoundException;
-import ch.sbb.atlas.versioning.exception.VersioningException;
-import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
 import jakarta.validation.ConstraintViolation;
@@ -47,44 +45,6 @@ public class AtlasExceptionHandler {
   @Autowired
   private ObjectMapper objectMapper;
 
-  @ExceptionHandler(value = VersioningNoChangesException.class)
-  public ResponseEntity<ErrorResponse> versioningNoChangesException(
-      VersioningNoChangesException ex) {
-    SortedSet<Detail> details = new TreeSet<>();
-    details.add(
-        Detail.builder()
-            .message(ex.getMessage())
-            .displayInfo(DisplayInfo.builder().code("ERROR.WARNING.VERSIONING_NO_CHANGES").build())
-            .build());
-
-    ErrorResponse errorResponse = ErrorResponse.builder()
-        .message(ex.getMessage())
-        .status(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
-        .error("No changes after versioning")
-        .details(details)
-        .build();
-    return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
-  }
-
-  @ExceptionHandler(value = VersioningException.class)
-  public ResponseEntity<ErrorResponse> versioningException(
-      VersioningException versioningException) {
-    SortedSet<Detail> details = new TreeSet<>();
-    details.add(
-        Detail.builder()
-            .message(versioningException.getMessage())
-            .displayInfo(DisplayInfo.builder().code("ERROR.VERSIONING").build())
-            .build());
-
-    ErrorResponse errorResponse = ErrorResponse.builder()
-        .message(versioningException.getMessage())
-        .status(HttpStatus.NOT_IMPLEMENTED.value())
-        .error("Versioning scenario not implemented")
-        .details(details)
-        .build();
-    return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getStatus()));
-  }
-
   @ExceptionHandler(value = MultipartException.class)
   public ResponseEntity<ErrorResponse> multipartException(
       MultipartException multipartException) {
@@ -107,7 +67,7 @@ public class AtlasExceptionHandler {
   @ExceptionHandler(value = {AtlasException.class})
   public ResponseEntity<ErrorResponse> atlasException(AtlasException conflictException) {
     ErrorResponse errorResponse = conflictException.getErrorResponse();
-    return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getStatus()));
+    return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
   }
 
   @ExceptionHandler(value = {NotFoundException.class})
@@ -301,9 +261,6 @@ public class AtlasExceptionHandler {
     log.error("Data Execution Error! Mapping Excecption", exception);
     if (exception instanceof AtlasException atlasException) {
       return atlasException(atlasException).getBody();
-    }
-    if (exception instanceof VersioningException versioningException) {
-      return versioningException(versioningException).getBody();
     }
     if (exception instanceof MethodArgumentNotValidException methodArgumentNotValidException) {
       return methodArgumentNotValidException(methodArgumentNotValidException).getBody();
