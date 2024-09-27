@@ -92,6 +92,8 @@ class BulkImportLogFileIntegrationTest {
    * 3 - has all the type mapping problems possible
    * 4 - Returns Entity not found simulated by mock
    * 5 - Mocks no update during Versioning
+   * 6 & 7 - Duplicated sloid
+   * 8 & 9 - Duplicated number
    */
   @Test
   void shouldImportMixFileAndCreateLogFileCorrectly() throws IOException {
