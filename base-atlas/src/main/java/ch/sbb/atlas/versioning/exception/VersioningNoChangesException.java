@@ -16,7 +16,7 @@ public class VersioningNoChangesException extends AtlasException {
     public ErrorResponse getErrorResponse() {
         return ErrorResponse.builder()
             .status(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
-            .error(NO_ENTITIES_WERE_MODIFIED_MESSAGE)
+            .error("No changes after versioning")
             .message(NO_ENTITIES_WERE_MODIFIED_MESSAGE)
             .details(new TreeSet<>(getErrorDetails()))
             .build();
