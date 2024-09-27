@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.imports.bulk.AttributeNullingNotSupportedException;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -28,7 +29,7 @@ public class ServicePointBulkImportUpdate {
           }
         }
         case Fields.east, Fields.north, Fields.spatialReference -> editedVersion.setServicePointGeolocation(null);
-        default -> throw new UnsupportedOperationException("Field " + attributeToNull + " not supported for attribute nulling");
+        default -> throw new AttributeNullingNotSupportedException(attributeToNull);
       }
     }
   }
