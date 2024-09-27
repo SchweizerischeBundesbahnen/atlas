@@ -37,6 +37,7 @@ public class BulkImportErrors {
         .errorMessage(fieldName + " with value " + duplicatedValue + " occurred more than once")
         .displayInfo(DisplayInfo.builder()
             .code("BULK_IMPORT.VALIDATION.DUPLICATE_" + fieldName.toUpperCase())
+            .with("field", fieldName)
             .with("value", duplicatedValue)
             .build())
         .build();
