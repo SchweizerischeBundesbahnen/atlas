@@ -14,11 +14,11 @@
           item of [
             {
               label: 'BULK_IMPORT.LABEL.OBJECT_TYPE' | translate,
-              value: data.importResult.businessObjectType,
+              value: 'PAGES.BULK_IMPORT.' + data.importResult.businessObjectType | translate,
             },
             {
               label: 'BULK_IMPORT.LABEL.IMPORT_TYPE' | translate,
-              value: data.importResult.importType,
+              value: 'PAGES.BULK_IMPORT.' + data.importResult.importType | translate,
             },
             {
               label: 'BULK_IMPORT.LABEL.EXECUTED_FROM' | translate,
@@ -81,7 +81,9 @@
       </section>
 
       <main class="mt-3 log-grid">
-        <label class="font-bold-base">{{ 'BULK_IMPORT.LABEL.LINE_NUMBER' | translate }}</label>
+        <label class="font-bold-base text-nowrap">{{
+          'BULK_IMPORT.LABEL.LINE_NUMBER' | translate
+        }}</label>
         <label class="font-bold-base justify-self-start">{{
           'BULK_IMPORT.LABEL.RESULT' | translate
         }}</label>
