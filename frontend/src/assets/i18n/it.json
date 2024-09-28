@@ -1,5 +1,12 @@
 {
   "ERROR": {
+    "CONSTRAINT_VIOLATION": {
+      "DEFAULT": "Una condizione per il campo {{propertyPath}} non è stata soddisfatta con il valore {{value}}.",
+      "SIZE": "La condizione per la lunghezza del valore del campo {{propertyPath}} non è stata soddisfatta con il valore {{value}}.",
+      "PATTERN": "La condizione per la struttura del valore del campo {{propertyPath}} non è stata soddisfatta con il valore {{value}}.",
+      "NOT_BLANK": "La condizione \"non deve essere vuoto\" per il campo {{propertyPath}} non è stata soddisfatta con il valore {{value}}.",
+      "NOT_NULL": "La condizione \"deve essere definita\" per il campo {{propertyPath}} non è stata soddisfatta con il valore {{value}}."
+    },
     "CLIENT": {
       "GENERIC": "Si è verificato un errore nella pagina web, ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato atlas."
     },
@@ -1469,6 +1476,30 @@
     }
   },
   "BULK_IMPORT": {
+    "VALIDATION": {
+      "DATA_MAPPING_ERROR": "Per l'attributo {{campo}} era previsto il tipo {{expectedType}}, ma il valore specificato era {{errorValue}}.",
+      "SLOID_XOR_NUMBER": "Deve essere specificato o lo sloide o il numero (non entrambi).",
+      "INVALID_SERVICE_POINT_NUMBER": "Il numero del centro di assistenza non è valido.",
+      "FIELD_MANDATORY": "L'attributo {{campo}} non deve essere cancellato."
+    },
+    "STATUS": {
+      "INFO": "informazione",
+      "DATA_VALIDATION_ERROR": "Errore di convalida",
+      "DATA_EXECUTION_ERROR": "Errori di elaborazione"
+    },
+    "LABEL": {
+      "OBJECT_TYPE": "Tipo di oggetto",
+      "IMPORT_TYPE": "Tipo di importazione",
+      "EXECUTED_FROM": "Eseguito da",
+      "EXECUTED_AT": "Data esecuzione",
+      "IN_NAME_OF": "A nome di",
+      "LINE_NUMBER": "Numero di riga",
+      "RESULT": "Risultato",
+      "MISSING_DISPLAY_INFO": "Mancano le informazioni sul display",
+      "UNEXPECTED_ERROR": "Errore imprevisto",
+      "NO_RESULTS": "Nessun risultato",
+      "NOT_VALID_ID": "Import-Id: \"{{id}}\" non è valido (ci si aspetta un numero)"
+    },
     "BUTTON": {
       "DOWNLOAD": "Modello di importazione",
       "DISABLED_MESSAGE": "Selezionare l'applicazione, l'oggetto e lo scenario per creare il modello di importazione."
