@@ -1,6 +1,6 @@
 <atlas-detail-page-container>
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column pe-3">
+  <div class="col-12 d-flex mt-3 flex-row ">
+    <div class="d-flex pe-3 col-12 justify-content-between">
       <app-switch-version
         *ngIf="showVersionSwitch && selectedVersion"
         (switchVersion)="switchVersion($event)"
@@ -8,6 +8,10 @@
         [records]="servicePointVersions"
         [switchDisabled]="isSwitchVersionDisabled"
       ></app-switch-version>
+      <div style="cursor: pointer" class="d-flex flex-column pe-3 align-items-center" (click)="navigateToPrm()">
+        <img src="assets/images/prm/person-wheelchair.svg">
+        <p>{{ 'PAGES.PRM.TITLE_HEADER' | translate }}</p>
+      </div>
     </div>
   </div>
 

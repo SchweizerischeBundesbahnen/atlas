@@ -341,4 +341,10 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   addWorkflow() {
     this.addStopPointWorkflowDialogService.openDialog(this.selectedVersion!);
   }
+
+  navigateToPrm(){
+    this.router.navigate(['/prm-directory/stop-points/' + this.selectedVersion?.sloid + '/stop-point'], {
+      relativeTo: this.route,
+    })
+  }
 }
