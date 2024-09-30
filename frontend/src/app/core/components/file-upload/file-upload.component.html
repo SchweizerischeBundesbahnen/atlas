@@ -2,7 +2,7 @@
   class="file-upload-container d-flex flex-column align-items-center"
   atlas-file-drop
   (filesDropped)="onFilesDropped($event)"
-  (click)="maxFileCount != uploadedFiles.length && selectFilesFromSystem()"
+  (click)="maxFileCount !== uploadedFiles.length && selectFilesFromSystem()"
 >
   <div class="file-upload-description">{{ 'COMMON.FILEUPLOAD.DROPZONE' | translate }}</div>
   <div class="file-upload-description">{{ 'COMMON.FILEUPLOAD.OR' | translate }}</div>
@@ -27,7 +27,7 @@
       [buttonText]="maxFileCount > 1 ? ('COMMON.FILEUPLOAD.SELECT_FILES' | translate) : ('COMMON.FILEUPLOAD.SELECT_FILE' | translate)"
       buttonType="create"
       wrapperStyleClass="mb-3"
-      [disabled]="maxFileCount == uploadedFiles.length"
+      [disabled]="maxFileCount === uploadedFiles.length"
     >
       <ng-template #rightIcon>
         <upload-icon class="ps-2"></upload-icon>
