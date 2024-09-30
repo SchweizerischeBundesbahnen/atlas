@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.imports.bulk.AttributeNullingNotSupportedException;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -28,7 +29,7 @@ public class ServicePointBulkImportUpdate {
           }
         }
         case Fields.east, Fields.north, Fields.spatialReference -> editedVersion.setServicePointGeolocation(null);
-        default -> throw new UnsupportedOperationException("Field " + attributeToNull + " not supported for attribute nulling");
+        default -> throw new AttributeNullingNotSupportedException(attributeToNull);
       }
     }
   }
@@ -54,10 +55,14 @@ public class ServicePointBulkImportUpdate {
     applyUpdateIfValueNotNull(update.getSortCodeOfDestinationStation(), editedVersion::setSortCodeOfDestinationStation);
     applyUpdateIfValueNotNull(update.getBusinessOrganisation(), editedVersion::setBusinessOrganisation);
 
+    if (editedVersion.getServicePointGeolocation() == null
+        && update.getNorth() == null && update.getEast() == null && update.getSpatialReference() == null) {
+      return editedVersion;
+    }
+
     ServicePointGeolocation servicePointGeolocation =
         editedVersion.getServicePointGeolocation() == null ? new ServicePointGeolocation()
             : editedVersion.getServicePointGeolocation().toBuilder().build();
-
     applyUpdateIfValueNotNull(update.getNorth(), servicePointGeolocation::setNorth);
     applyUpdateIfValueNotNull(update.getEast(), servicePointGeolocation::setEast);
     applyUpdateIfValueNotNull(update.getSpatialReference(), servicePointGeolocation::setSpatialReference);
