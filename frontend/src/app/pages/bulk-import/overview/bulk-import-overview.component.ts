@@ -19,11 +19,7 @@ import {NotificationService} from "../../../core/notification/notification.servi
 import {FileDownloadService} from "../../../core/components/file-upload/file/file-download.service";
 
 const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = [
-  [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Create],
-  [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update],
-  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Create],
-  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Update],
-  [ApplicationType.Prm, BusinessObjectType.LoadingPoint, ImportType.Terminate]
+  [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update]
 ];
 
 @Component({
