@@ -197,7 +197,7 @@ describe('BulkImportOverviewComponent', () => {
     const validCombination = {
       applicationType: ApplicationType.Sepodi,
       objectType: BusinessObjectType.ServicePoint,
-      importType: ImportType.Create
+      importType: ImportType.Update
     };
 
     component.form.controls.applicationType.setValue(validCombination.applicationType);
