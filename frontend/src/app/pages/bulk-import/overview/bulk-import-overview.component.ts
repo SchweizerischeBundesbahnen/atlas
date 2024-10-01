@@ -104,6 +104,7 @@ export class BulkImportOverviewComponent implements OnInit {
     this.bulkImportService.startServicePointImportBatch(bulkImportRequest, this.uploadedFiles[0])
       .pipe(catchError(() => {
         this.resetConfiguration(true);
+        this.ngOnInit();
         return EMPTY
       }))
       .subscribe(() => {
