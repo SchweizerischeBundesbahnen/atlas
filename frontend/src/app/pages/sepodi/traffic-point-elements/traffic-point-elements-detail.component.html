@@ -1,4 +1,5 @@
 <atlas-detail-page-container>
+
   <div class="font-bold-4xl detail-title mb-3" data-cy="traffic-point-header">
     {{
       isTrafficPointArea
@@ -34,7 +35,7 @@
       ></atlas-sloid>
     </div>
 
-    <div class="col-12 d-flex mt-3">
+    <div class="col-12 d-flex flex-row mt-3 justify-content-between">
       <div class="d-flex flex-column pe-3">
         <app-switch-version
           (switchVersion)="switchVersion($event)"
@@ -44,6 +45,10 @@
           [switchDisabled]="isSwitchVersionDisabled"
           [showStatus]="false"
         ></app-switch-version>
+      </div>
+      <div style="cursor: pointer" class="d-flex flex-column pe-3 align-items-center" (click)="navigateToPrm()">
+        <img src="assets/images/prm/person-wheelchair.svg">
+        <p>{{ 'PAGES.PRM.TITLE_HEADER' | translate }}</p>
       </div>
     </div>
 

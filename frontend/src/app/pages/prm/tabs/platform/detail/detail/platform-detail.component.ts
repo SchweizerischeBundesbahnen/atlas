@@ -185,4 +185,11 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       })
       .then(() => this.ngOnInit());
   }
+
+  navigateToSePoDi(){
+    this.router.navigate(['/service-point-directory/traffic-point-elements/' + this.selectedVersion.sloid], {
+      relativeTo: this.route.parent,
+    })
+      .then(() => this.ngOnInit())
+  }
 }
