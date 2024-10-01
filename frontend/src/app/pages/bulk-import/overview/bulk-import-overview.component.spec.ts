@@ -3,7 +3,7 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ApplicationType, BulkImportService, BusinessObjectType, ImportType} from "../../../api";
 import {AppTestingModule} from "../../../app.testing.module";
 import {BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
-import {of} from "rxjs";
+import {of, throwError} from "rxjs";
 import {NotificationService} from "../../../core/notification/notification.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe} from "@ngx-translate/core";
@@ -147,6 +147,18 @@ describe('BulkImportOverviewComponent', () => {
     expect(component.form.controls.emails.value).toEqual([]);
   });
 
+  it('should reset configuration and reinitialize on error', () => {
+    const errorResponse = new Error('Test error');
+    component.form = BulkImportFormGroupBuilder.initFormGroup();
+
+    bulkImportServiceSpy.startServicePointImportBatch.and.returnValue(throwError(() => errorResponse));
+    spyOn(component, 'resetConfiguration');
+    spyOn(component, 'ngOnInit');
+    component.startBulkImport();
+
+    expect(component.resetConfiguration).toHaveBeenCalledWith(true);
+    expect(component.ngOnInit).toHaveBeenCalled();
+  });
 
   it('should set OPTIONS_OBJECT_TYPE when applicationType changes', () => {
     fixture.detectChanges()
