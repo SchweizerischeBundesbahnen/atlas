@@ -110,4 +110,9 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     });
     return mergedOverview;
   }
+
+  navigateToSePoDi(){
+    const number = this.route.parent!.snapshot.data.servicePoints[0].number.number;
+    this.router.navigateByUrl('/service-point-directory/service-points/' + number + '/traffic-point-elements')
+  }
 }
