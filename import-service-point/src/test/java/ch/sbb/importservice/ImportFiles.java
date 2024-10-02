@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.importservice.service.bulk.reader.BulkImportCsvReader;
@@ -49,6 +50,19 @@ public class ImportFiles {
         .east(2600037.945)
         .north(1199749.812)
         .spatialReference(SpatialReference.LV95)
+        .build();
+  }
+
+  public static TrafficPointUpdateCsvModel getExpectedTrafficPointUpdateCsvModel() {
+    return TrafficPointUpdateCsvModel.builder()
+        .sloid("ch:1:sloid:7000")
+        .validFrom(LocalDate.of(2021, 4, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .designation("Bern")
+        .east(2600037.945)
+        .north(1199749.812)
+        .spatialReference(SpatialReference.LV95)
+        .height(540.2)
         .build();
   }
 
