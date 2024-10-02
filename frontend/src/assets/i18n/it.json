@@ -97,7 +97,7 @@
         "FILE_COUNT": "È consentito un massimo di {{maxFileCount}} file.",
         "ALREADY_SAVED": "Il file {{filename}} è già stato caricato e salvato.",
         "ALREADY_ADDED": "Il file {{filename}} è già stato aggiunto.",
-        "NOT_A_PDF": "I documenti {{documenti}} non sono file PDF validi."
+        "NOT_A_PDF": "I documenti {{documents}} non sono file PDF validi."
       }
     }
   },
