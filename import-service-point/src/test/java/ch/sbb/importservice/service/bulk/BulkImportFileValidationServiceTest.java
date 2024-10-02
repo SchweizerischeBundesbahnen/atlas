@@ -11,6 +11,7 @@ import ch.sbb.importservice.ImportFiles;
 import ch.sbb.importservice.exception.ContentTypeFileValidationException;
 import ch.sbb.importservice.exception.FileHeaderValidationException;
 import ch.sbb.importservice.service.sepodi.service.point.update.ServicePointUpdate;
+import ch.sbb.importservice.service.sepodi.traffic.point.update.TrafficPointUpdate;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,6 +32,16 @@ class BulkImportFileValidationServiceTest {
         Files.readAllBytes(file.toPath()));
 
     File result = bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile, ServicePointUpdate.CONFIG);
+    assertThat(result.length()).isEqualTo(file.length());
+  }
+
+  @Test
+  void shouldValidateSuccessfullyValidTrafficPointUpdateCsvFile() throws IOException {
+    File file = ImportFiles.getFileByPath("import-files/valid/traffic-point-update.csv");
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "traffic-point-update.csv", CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    File result = bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile, TrafficPointUpdate.CONFIG);
     assertThat(result.length()).isEqualTo(file.length());
   }
 
@@ -63,6 +74,17 @@ class BulkImportFileValidationServiceTest {
     assertThatExceptionOfType(FileHeaderValidationException.class).isThrownBy(
         () -> bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile,
             ServicePointUpdate.CONFIG));
+  }
+
+  @Test
+  void shouldReportInvalidFileHeaderOnTrafficPointUpdateInvalidHeaderCsvFile() throws IOException {
+    File file = ImportFiles.getFileByPath("import-files/invalid/traffic-point-update-invalid-header.csv");
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "traffic-point-update-invalid-header.csv", CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    assertThatExceptionOfType(FileHeaderValidationException.class).isThrownBy(
+        () -> bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile,
+            TrafficPointUpdate.CONFIG));
   }
 
   @Test
