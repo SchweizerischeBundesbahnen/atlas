@@ -25,7 +25,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @AutoConfigureMockMvc(addFilters = false)
-public class ExportContactPointIntegrationTest extends BasePrmSqlIntegrationTest {
+class ExportContactPointIntegrationTest extends BasePrmSqlIntegrationTest {
 
     @MockBean
     private AmazonService amazonService;
