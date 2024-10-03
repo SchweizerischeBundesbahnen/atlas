@@ -33,8 +33,12 @@ export class BulkImportLogComponent implements OnInit {
               },
               id: params.id,
             })),
-            tap((result) =>
-              this.pageChanged({ pageIndex: 0, pageSize: 5 }, result.importResult.logEntries),
+            tap(
+              (result) =>
+                (this.pagedLogEntries = this.pageChanged(
+                  { pageIndex: 0, pageSize: 5 },
+                  result.importResult.logEntries,
+                )),
             ),
           );
         } else {
@@ -47,10 +51,10 @@ export class BulkImportLogComponent implements OnInit {
   pageChanged(
     e: { pageIndex: number; pageSize: number },
     array?: Array<BulkImportLogEntryTemplate>,
-  ): void {
-    if (!array || array.length === 0) return;
+  ): Array<BulkImportLogEntryTemplate> {
+    if (!array || array.length === 0) return [];
     const start = e.pageIndex * e.pageSize;
-    this.pagedLogEntries = array.slice(start, start + e.pageSize);
+    return array.slice(start, start + e.pageSize);
   }
 
   private getLogs(id: number): Observable<BulkImportResult> {
