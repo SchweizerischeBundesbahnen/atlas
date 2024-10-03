@@ -44,7 +44,7 @@ public abstract class BasePrmServiceTest {
     @Test
     void shouldVerifyRepoIsNotEmpty() {
         List<SharedServicePoint> servicePointList = sharedServicePointRepository.findAll();
-        assertThat(servicePointList.isEmpty()).isFalse();
+        assertThat(servicePointList).isNotEmpty();
     }
 
 }
