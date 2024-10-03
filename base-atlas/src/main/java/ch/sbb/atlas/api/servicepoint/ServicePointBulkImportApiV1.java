@@ -20,5 +20,3 @@ public interface ServicePointBulkImportApiV1 {
           + ".ApplicationType).SEPODI)")
   List<BulkImportItemExecutionResult> bulkImportUpdate(@RequestBody List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> bulkImportContainers);
 }
-
-
