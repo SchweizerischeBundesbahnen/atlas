@@ -416,6 +416,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   private handleError() {
     return () => {
+      this.isLoading = false
       this.form.enable();
       return EMPTY;
     };
