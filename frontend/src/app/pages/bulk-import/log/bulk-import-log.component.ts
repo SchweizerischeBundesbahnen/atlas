@@ -52,7 +52,9 @@ export class BulkImportLogComponent implements OnInit {
     e: { pageIndex: number; pageSize: number },
     array?: Array<BulkImportLogEntryTemplate>,
   ): Array<BulkImportLogEntryTemplate> {
-    if (!array || array.length === 0) return [];
+    if (!array || array.length === 0) {
+      return [];
+    }
     const start = e.pageIndex * e.pageSize;
     return array.slice(start, start + e.pageSize);
   }
