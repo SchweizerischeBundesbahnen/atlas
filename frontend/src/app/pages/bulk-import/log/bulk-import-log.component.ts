@@ -10,7 +10,7 @@ import { BulkImportLogEntry, BulkImportResult, BulkImportService } from '../../.
   styleUrl: 'bulk-import-log.component.scss',
 })
 export class BulkImportLogComponent implements OnInit {
-  data$?: Observable<{ importResult?: BulkImportResultTemplate; id: any }>;
+  data$?: Observable<{ importResult?: BulkImportResultTemplate; id: unknown }>;
   pagedLogEntries: Array<BulkImportLogEntryTemplate> = [];
 
   constructor(
