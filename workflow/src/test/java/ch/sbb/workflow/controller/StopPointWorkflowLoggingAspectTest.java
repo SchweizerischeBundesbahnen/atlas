@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-public class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
+class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
 
   static final String MAIL_ADDRESS = "marek@hamsik.com";
 
