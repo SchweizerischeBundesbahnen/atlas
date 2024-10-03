@@ -95,13 +95,11 @@
               (click)="entry.expanded = !entry.expanded"
             >
               <div
-                class="square-{{
-                  entry.status === 'SUCCESS'
-                    ? 'success'
-                    : entry.status === 'INFO'
-                      ? 'info'
-                      : 'error'
-                }}"
+                [ngClass]="{
+                  'square-success': entry.status === 'SUCCESS',
+                  'square-info': entry.status === 'INFO',
+                  'square-error': entry.status !== 'INFO' && entry.status !== 'SUCCESS',
+                }"
               ></div>
               <div class="d-flex justify-content-between w-100 ps-2">
                 <span>{{ 'BULK_IMPORT.STATUS.' + entry.status | translate }}</span>
@@ -142,7 +140,7 @@
           class="font-regular-base"
           [pageSizeOptions]="[5, 20]"
           [length]="data.importResult.logEntries?.length"
-          (page)="pageChanged($event, data.importResult.logEntries)"
+          (page)="pagedLogEntries = pageChanged($event, data.importResult.logEntries)"
         ></mat-paginator>
       </main>
     </div>

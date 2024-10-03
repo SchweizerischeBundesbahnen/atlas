@@ -9,10 +9,7 @@ describe('UserDisplayNamePipe', () => {
 
   it('empty observable if userId undefined', (done) => {
     const pipe = new UserDisplayNamePipe(jasmine.createSpyObj(['getUserDisplayName']));
-    pipe.transform().subscribe((result) => {
-      expect(result).toBeUndefined();
-      done();
-    });
+    pipe.transform().subscribe({ complete: () => done() });
   });
 
   it('should return displayName over service', (done) => {
