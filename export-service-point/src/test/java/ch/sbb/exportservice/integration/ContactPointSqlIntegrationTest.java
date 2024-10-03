@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class ContactPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
+class ContactPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
 
     @Test
     void shouldReturnFullContactPoints() throws SQLException {

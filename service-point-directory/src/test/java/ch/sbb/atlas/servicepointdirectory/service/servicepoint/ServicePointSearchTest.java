@@ -24,7 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 @IntegrationTest
- class ServicePointSearchTest {
+class ServicePointSearchTest {
 
   private final ServicePointService servicePointService;
   private final ServicePointVersionRepository servicePointVersionRepository;
@@ -348,7 +348,7 @@ import org.springframework.data.domain.Sort;
                 .operatingPointTechnicalTimetableTypes(List.of(OperatingPointTechnicalTimetableType.PROPERTY_LINE))
                 .build()).build());
     // Then
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
   @Test

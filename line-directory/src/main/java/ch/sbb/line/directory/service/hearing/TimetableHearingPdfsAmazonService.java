@@ -17,9 +17,7 @@ public class TimetableHearingPdfsAmazonService {
 
   public void uploadPdfFiles(List<File> files, String dirName) {
     log.info("Starting upload to S3 Bucket");
-    files.forEach(file -> {
-      amazonService.putFile(AmazonBucket.HEARING_DOCUMENT, file, dirName);
-    });
+    files.forEach(file -> amazonService.putFile(AmazonBucket.HEARING_DOCUMENT, file, dirName));
     log.info("Upload complete.");
   }
 
