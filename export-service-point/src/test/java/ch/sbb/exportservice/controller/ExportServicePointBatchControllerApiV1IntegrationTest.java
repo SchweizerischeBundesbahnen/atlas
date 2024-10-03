@@ -1,5 +1,9 @@
 package ch.sbb.exportservice.controller;
 
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
@@ -7,11 +11,7 @@ import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
+class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
     @MockBean
     private ExportServicePointJobService exportServicePointJobService;
