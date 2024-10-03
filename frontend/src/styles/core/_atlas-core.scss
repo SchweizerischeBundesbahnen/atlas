@@ -71,7 +71,3 @@ input[type='number'] {
 .justify-self-start {
   justify-self: start;
 }
-
-@mixin gc($value) {
-  grid-column: $value;
-}
