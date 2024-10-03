@@ -1,11 +1,11 @@
-package ch.sbb.importservice.security;
+package ch.sbb.atlas.user.administration.security.service;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
-import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
+
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
