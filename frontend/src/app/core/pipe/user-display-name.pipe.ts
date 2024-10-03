@@ -11,7 +11,9 @@ export class UserDisplayNamePipe implements PipeTransform {
   constructor(private readonly userAdministrationService: UserAdministrationService) {}
 
   transform(userId?: string): Observable<string | undefined> {
-    if (!userId) return of();
+    if (!userId) {
+      return of();
+    }
     return this.userAdministrationService
       .getUserDisplayName(userId)
       .pipe(map((userInfo) => userInfo.displayName));

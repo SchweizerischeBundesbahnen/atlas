@@ -35,4 +35,20 @@ class BulkImportItemExecutionResultTest {
     assertThat(result.getErrors()).isNotEmpty();
     assertThat(result.getErrors()).first().extracting(BulkImportError::getDisplayInfo).isEqualTo(displayInfo);
   }
+
+  @Test
+  void isInfoShouldBeTrue() {
+    BulkImportItemExecutionResult result = BulkImportItemExecutionResult.builder()
+        .errorResponse(ErrorResponse.builder().status(520).build())
+        .build();
+    assertThat(result.isInfo()).isTrue();
+  }
+
+  @Test
+  void isInfoShouldBeFalse() {
+    BulkImportItemExecutionResult result = BulkImportItemExecutionResult.builder()
+        .errorResponse(ErrorResponse.builder().status(400).build())
+        .build();
+    assertThat(result.isInfo()).isFalse();
+  }
 }
