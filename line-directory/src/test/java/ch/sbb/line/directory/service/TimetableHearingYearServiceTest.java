@@ -109,7 +109,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         timetableHearingYearService.getHearingYears(TimetableHearingYearSearchRestrictions.builder()
             .statusRestrictions(Set.of(HearingStatus.ACTIVE))
             .build());
-    assertThat(hearingYears.size()).isZero();
+    assertThat(hearingYears).isEmpty();
   }
 
   @Test
