@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString(exclude = "trafficPointElementVersion")
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @AtlasVersionable
 @Entity(name = "traffic_point_element_version_geolocation")
