@@ -12,6 +12,8 @@ import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestricti
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
 import java.util.Optional;
 import java.util.Set;
+
+import ch.sbb.atlas.user.administration.security.service.BulkImportUserAdministrationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
