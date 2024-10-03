@@ -21,3 +21,4 @@ public interface ServicePointBulkImportApiV1 {
   List<BulkImportItemExecutionResult> bulkImportUpdate(@RequestBody List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> bulkImportContainers);
 }
 
+
