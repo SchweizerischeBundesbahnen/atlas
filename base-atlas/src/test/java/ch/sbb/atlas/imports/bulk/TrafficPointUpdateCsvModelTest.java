@@ -21,9 +21,15 @@ class TrafficPointUpdateCsvModelTest {
   @Test
   void shouldReportErrorInTrafficPointUpdateCsvModel() {
     TrafficPointUpdateCsvModel bern = TrafficPointUpdateCsvModel.builder()
-        .sloid("ch:1:sloid:7000:5")
         .build();
-    assertThat(bern.validate()).hasSize(2);
+    assertThat(bern.validate()).hasSize(3);
+  }
+
+  @Test
+  void shouldCheckUniqueFieldsInTrafficPointUpdateCsvModel() {
+    TrafficPointUpdateCsvModel bern = TrafficPointUpdateCsvModel.builder()
+        .build();
+    assertThat(bern.uniqueFields()).hasSize(1);
   }
 
 }

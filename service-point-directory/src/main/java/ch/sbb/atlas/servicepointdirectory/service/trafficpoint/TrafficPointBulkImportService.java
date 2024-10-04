@@ -65,14 +65,11 @@ public class TrafficPointBulkImportService {
   }
 
   private List<ServicePointVersion> getCurrentServicePointVersions(ServicePointNumber servicePointNumber) {
-    if (servicePointNumber != null) {
-      List<ServicePointVersion> servicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
-      if (servicePointVersions.isEmpty()) {
-        throw new ServicePointNumberNotFoundException(servicePointNumber);
-      }
-      return servicePointVersions;
+    List<ServicePointVersion> servicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
+    if (servicePointVersions.isEmpty()) {
+      throw new ServicePointNumberNotFoundException(servicePointNumber);
     }
-    throw new IllegalStateException("Service point number should be given");
+    return servicePointVersions;
   }
 
 }
