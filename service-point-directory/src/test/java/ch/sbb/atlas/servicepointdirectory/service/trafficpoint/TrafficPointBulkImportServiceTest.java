@@ -14,6 +14,7 @@ import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.user.administration.security.service.CountryAndBusinessOrganisationBasedUserAdministrationService;
@@ -156,6 +157,34 @@ class TrafficPointBulkImportServiceTest {
                 .build())
             .build());
     assertThatExceptionOfType(SloidNotFoundException.class).isThrownBy(update);
+  }
+
+  @Test
+  void shouldThrowIllegalStateException() {
+    ThrowingCallable update = () -> trafficPointBulkImportService.updateTrafficPoint(
+        BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
+            .object(TrafficPointUpdateCsvModel.builder()
+                .validFrom(LocalDate.of(2023, 1, 1))
+                .validTo(LocalDate.of(2023, 6, 30))
+                .designation(BERN_DESIGNATION)
+                .build())
+            .build());
+    assertThatExceptionOfType(IllegalStateException.class).isThrownBy(update);
+  }
+
+  @Test
+  void shouldThrowServicePointNumberNotFoundException() {
+    servicePointVersionRepository.deleteAll();
+    ThrowingCallable update = () -> trafficPointBulkImportService.updateTrafficPoint(
+        BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
+            .object(TrafficPointUpdateCsvModel.builder()
+                .sloid(bernWylereggPlatform.getSloid())
+                .validFrom(LocalDate.of(2023, 1, 1))
+                .validTo(LocalDate.of(2023, 6, 30))
+                .designation(BERN_DESIGNATION)
+                .build())
+            .build());
+    assertThatExceptionOfType(ServicePointNumberNotFoundException.class).isThrownBy(update);
   }
 
   @Test
