@@ -8,43 +8,47 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableTyp
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.importservice.exception.BulkImportNotImplementedException;
-import ch.sbb.importservice.model.BulkImportConfig;
-import ch.sbb.importservice.model.ImportType;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointTemplateGenerator {
 
-  public static Object getServicePointCsvTemplate(BulkImportConfig importConfig) {
-    if (Objects.requireNonNull(importConfig.getImportType()) == ImportType.UPDATE) {
-      return getServicePointUpdateCsvModelExample();
-    }
-    throw new BulkImportNotImplementedException(importConfig);
-  }
+  private static final String DEFAULT_SLOID = "ch:1:sloid:7000";
+  private static final int DEFAULT_VALID_FROM_YEAR = 2021;
+  private static final int DEFAULT_VALID_FROM_MONTH = 4;
+  private static final int DEFAULT_VALID_FROM_DAY = 1;
+  private static final int DEFAULT_VALID_TO_YEAR = 2099;
+  private static final int DEFAULT_VALID_TO_MONTH = 12;
+  private static final int DEFAULT_VALID_TO_DAY = 31;
+  private static final String DEFAULT_DESIGNATION_OFFICIAL = "Bern";
+  private static final String DEFAULT_BUSINESS_ORGANISATION = "ch:1:sboid:1";
+  private static final String DEFAULT_DESIGNATION_LONG = "Bern";
+  private static final Double DEFAULT_EAST = 2600037.945;
+  private static final Double DEFAULT_NORTH = 1199749.812;
+  private static final Double DEFAULT_HEIGHT = 540.2;
+  private static final String DEFAULT_CODE_OF_DESTINATION_STATION = "1857";
 
-  private static ServicePointUpdateCsvModel getServicePointUpdateCsvModelExample() {
+  public static ServicePointUpdateCsvModel getServicePointUpdateCsvModelExample() {
     return ServicePointUpdateCsvModel.builder()
-        .sloid("ch:1:sloid:7000")
-        .validFrom(LocalDate.of(2021, 4, 1))
-        .validTo(LocalDate.of(2099, 12, 31))
-        .designationOfficial("Bern")
+        .sloid(DEFAULT_SLOID)
+        .validFrom(LocalDate.of(DEFAULT_VALID_FROM_YEAR, DEFAULT_VALID_FROM_MONTH, DEFAULT_VALID_FROM_DAY))
+        .validTo(LocalDate.of(DEFAULT_VALID_TO_YEAR, DEFAULT_VALID_TO_MONTH, DEFAULT_VALID_TO_DAY))
+        .designationOfficial(DEFAULT_DESIGNATION_OFFICIAL)
         .freightServicePoint(false)
         .stopPointType(StopPointType.ORDERLY)
         .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
-        .businessOrganisation("ch:1:sboid:1")
+        .businessOrganisation(DEFAULT_BUSINESS_ORGANISATION)
         .categories(Set.of(Category.HOSTNAME, Category.GALLERY, Category.POINT_OF_SALE))
-        .designationLong("Bern")
-        .east(2600037.945)
-        .north(1199749.812)
-        .height(540.2)
+        .designationLong(DEFAULT_DESIGNATION_LONG)
+        .east(DEFAULT_EAST)
+        .north(DEFAULT_NORTH)
+        .height(DEFAULT_HEIGHT)
         .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAIN))
         .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ASSIGNED_OPERATING_POINT)
         .operatingPointType(OperatingPointType.RAILNET_POINT)
-        .sortCodeOfDestinationStation("1857")
+        .sortCodeOfDestinationStation(DEFAULT_CODE_OF_DESTINATION_STATION)
         .spatialReference(SpatialReference.LV95)
         .build();
   }
