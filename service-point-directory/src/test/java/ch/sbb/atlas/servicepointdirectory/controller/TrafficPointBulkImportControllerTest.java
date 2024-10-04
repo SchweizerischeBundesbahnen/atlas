@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class TrafficPointBulkImportControllerTest {
+class TrafficPointBulkImportControllerTest {
 
   @Mock
   private TrafficPointBulkImportService trafficPointBulkImportService;
