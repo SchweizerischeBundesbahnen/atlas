@@ -26,7 +26,7 @@ public class TrafficPointBulkImportUpdate {
           }
         }
         case Fields.east, Fields.north, Fields.spatialReference -> editedVersion.setTrafficPointElementGeolocation(null);
-        // TODO: Wait for parent
+        case Fields.parentSloid -> editedVersion.setParentSloid(null);
         default -> throw new AttributeNullingNotSupportedException(attributeToNull);
       }
     }
@@ -43,6 +43,7 @@ public class TrafficPointBulkImportUpdate {
     applyUpdateIfValueNotNull(update.getLength(), editedVersion::setLength);
     applyUpdateIfValueNotNull(update.getBoardingAreaHeight(), editedVersion::setBoardingAreaHeight);
     applyUpdateIfValueNotNull(update.getCompassDirection(), editedVersion::setCompassDirection);
+    applyUpdateIfValueNotNull(update.getParentSloid(), editedVersion::setParentSloid);
 
     if (editedVersion.getTrafficPointElementGeolocation() == null && update.getNorth() == null
     && update.getEast() == null && update.getSpatialReference() == null) {
