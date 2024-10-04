@@ -42,7 +42,7 @@ class BulkImportFileValidationServiceTest {
         Files.readAllBytes(file.toPath()));
 
     File result = bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile, TrafficPointUpdate.CONFIG);
-    assertThat(file.length()).isEqualTo(result.length());
+    assertThat(result.length()).isEqualTo(file.length());
   }
 
   @Test
