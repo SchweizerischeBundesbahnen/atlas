@@ -1,7 +1,7 @@
 package ch.sbb.importservice.service.bulk.template;
 
-import static ch.sbb.importservice.service.bulk.template.ServicePointTemplateGenerator.getServicePointCsvTemplate;
-import static ch.sbb.importservice.service.bulk.template.TrafficPointTemplateGenerator.getTrafficPointCsvTemplate;
+import static ch.sbb.importservice.service.bulk.template.ServicePointTemplateGenerator.getServicePointUpdateCsvModelExample;
+import static ch.sbb.importservice.service.bulk.template.TrafficPointTemplateGenerator.getTrafficPointUpdateCsvModelExample;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.CsvExportWriter;
@@ -9,6 +9,7 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.exception.BulkImportNotImplementedException;
 import ch.sbb.importservice.model.BulkImportConfig;
 import ch.sbb.importservice.model.BusinessObjectType;
+import ch.sbb.importservice.model.ImportType;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.File;
 import java.util.List;
@@ -32,18 +33,28 @@ public class BulkImportTemplateGenerator {
   }
 
   private Object bulkImportExample(BulkImportConfig importConfig) {
-
     BulkImportNotImplementedException bulkImportNotImplementedException = new BulkImportNotImplementedException(importConfig);
+    ApplicationType applicationType = Objects.requireNonNull(importConfig.getApplication(),
+        "ApplicationType cannot be null");
+    BusinessObjectType businessObjectType = Objects.requireNonNull(importConfig.getObjectType(),
+        "BusinessObjectType cannot be null");
+    ImportType importType = Objects.requireNonNull(importConfig.getImportType(),
+        "ImportType cannot be null");
 
-    if (Objects.requireNonNull(importConfig.getApplication()) == ApplicationType.SEPODI) {
-      if (Objects.requireNonNull(importConfig.getObjectType()) == BusinessObjectType.SERVICE_POINT) {
-        return getServicePointCsvTemplate(importConfig);
-      } else if (Objects.requireNonNull(importConfig.getObjectType()) == BusinessObjectType.TRAFFIC_POINT) {
-        return getTrafficPointCsvTemplate(importConfig);
-      }
-      throw bulkImportNotImplementedException;
-    }
-    throw bulkImportNotImplementedException;
+    return switch (applicationType) {
+      case SEPODI -> switch (businessObjectType) {
+        case SERVICE_POINT -> switch (importType) {
+          case UPDATE -> getServicePointUpdateCsvModelExample();
+          default -> throw bulkImportNotImplementedException;
+        };
+        case TRAFFIC_POINT -> switch (importType) {
+          case UPDATE -> getTrafficPointUpdateCsvModelExample();
+          default -> throw bulkImportNotImplementedException;
+        };
+        default -> throw bulkImportNotImplementedException;
+      };
+      default -> throw bulkImportNotImplementedException;
+    };
   }
 
 }
