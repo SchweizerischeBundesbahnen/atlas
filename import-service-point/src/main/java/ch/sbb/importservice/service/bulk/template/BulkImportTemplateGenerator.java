@@ -1,6 +1,7 @@
 package ch.sbb.importservice.service.bulk.template;
 
 import static ch.sbb.importservice.service.bulk.template.ServicePointTemplateGenerator.getServicePointCsvTemplate;
+import static ch.sbb.importservice.service.bulk.template.TrafficPointTemplateGenerator.getTrafficPointCsvTemplate;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.CsvExportWriter;
@@ -37,6 +38,8 @@ public class BulkImportTemplateGenerator {
     if (Objects.requireNonNull(importConfig.getApplication()) == ApplicationType.SEPODI) {
       if (Objects.requireNonNull(importConfig.getObjectType()) == BusinessObjectType.SERVICE_POINT) {
         return getServicePointCsvTemplate(importConfig);
+      } else if (Objects.requireNonNull(importConfig.getObjectType()) == BusinessObjectType.TRAFFIC_POINT) {
+        return getTrafficPointCsvTemplate(importConfig);
       }
       throw bulkImportNotImplementedException;
     }
