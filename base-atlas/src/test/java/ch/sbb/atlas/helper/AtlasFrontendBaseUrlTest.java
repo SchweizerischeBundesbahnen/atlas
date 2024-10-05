@@ -1,9 +1,8 @@
-package ch.sbb.workflow.helper;
+package ch.sbb.atlas.helper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
 import org.junit.jupiter.api.Test;
 
 class AtlasFrontendBaseUrlTest {
@@ -72,7 +71,6 @@ class AtlasFrontendBaseUrlTest {
   void shouldThrowExceptionWithWrongActiveProfile() {
     //when
     assertThrows(IllegalStateException.class, () -> AtlasFrontendBaseUrl.getUrl("napoli"));
-
   }
 
 }
