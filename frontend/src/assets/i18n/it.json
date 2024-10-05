@@ -1477,10 +1477,10 @@
   },
   "BULK_IMPORT": {
     "VALIDATION": {
-      "DATA_MAPPING_ERROR": "Per l'attributo {{campo}} era previsto il tipo {{expectedType}}, ma il valore specificato era {{errorValue}}.",
+      "DATA_MAPPING_ERROR": "Per l'attributo {{field}} era previsto il tipo {{expectedType}}, ma il valore specificato era {{errorValue}}.",
       "SLOID_XOR_NUMBER": "Deve essere specificato o lo sloide o il numero (non entrambi).",
       "INVALID_SERVICE_POINT_NUMBER": "Il numero del centro di assistenza non è valido.",
-      "FIELD_MANDATORY": "L'attributo {{campo}} non deve essere cancellato."
+      "FIELD_MANDATORY": "L'attributo {{field}} non deve essere cancellato."
     },
     "STATUS": {
       "INFO": "informazione",
