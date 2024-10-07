@@ -16,12 +16,8 @@ import lombok.experimental.UtilityClass;
 public class ServicePointTemplateGenerator {
 
   private static final String DEFAULT_SLOID = "ch:1:sloid:7000";
-  private static final int DEFAULT_VALID_FROM_YEAR = 2021;
-  private static final int DEFAULT_VALID_FROM_MONTH = 4;
-  private static final int DEFAULT_VALID_FROM_DAY = 1;
-  private static final int DEFAULT_VALID_TO_YEAR = 2099;
-  private static final int DEFAULT_VALID_TO_MONTH = 12;
-  private static final int DEFAULT_VALID_TO_DAY = 31;
+  private static final LocalDate DEFAULT_VALID_FROM = LocalDate.of(2021, 4, 1);
+  private static final LocalDate DEFAULT_VALID_TO = LocalDate.of(2099, 12, 31);
   private static final String DEFAULT_DESIGNATION_OFFICIAL = "Bern";
   private static final String DEFAULT_BUSINESS_ORGANISATION = "ch:1:sboid:1";
   private static final String DEFAULT_DESIGNATION_LONG = "Bern";
@@ -33,8 +29,8 @@ public class ServicePointTemplateGenerator {
   public static ServicePointUpdateCsvModel getServicePointUpdateCsvModelExample() {
     return ServicePointUpdateCsvModel.builder()
         .sloid(DEFAULT_SLOID)
-        .validFrom(LocalDate.of(DEFAULT_VALID_FROM_YEAR, DEFAULT_VALID_FROM_MONTH, DEFAULT_VALID_FROM_DAY))
-        .validTo(LocalDate.of(DEFAULT_VALID_TO_YEAR, DEFAULT_VALID_TO_MONTH, DEFAULT_VALID_TO_DAY))
+        .validFrom(DEFAULT_VALID_FROM)
+        .validTo(DEFAULT_VALID_TO)
         .designationOfficial(DEFAULT_DESIGNATION_OFFICIAL)
         .freightServicePoint(false)
         .stopPointType(StopPointType.ORDERLY)
