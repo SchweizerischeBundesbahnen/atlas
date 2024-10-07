@@ -73,7 +73,7 @@ public class ServicePointBulkImportUpdate {
     return editedVersion;
   }
 
-  private <T> void applyUpdateIfValueNotNull(T value, Consumer<T> setterFunction) {
+  public static <T> void applyUpdateIfValueNotNull(T value, Consumer<T> setterFunction) {
     if (value != null) {
       setterFunction.accept(value);
     }
