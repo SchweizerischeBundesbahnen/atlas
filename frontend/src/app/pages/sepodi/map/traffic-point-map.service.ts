@@ -40,7 +40,6 @@ export class TrafficPointMapService {
   }
 
   displayTrafficPointsOnMap(servicePointNumber: number) {
-    console.log("test display")
     this.mapService.mapInitialized
       .pipe(
         filter((initialized) => initialized),
@@ -66,11 +65,9 @@ export class TrafficPointMapService {
   }
 
   setDisplayedTrafficPoints(trafficPoints: DisplayableTrafficPoint[]) {
-    console.log("test 16")
     const source = this.mapService.map.getSource(MAP_TRAFFIC_POINT_LAYER_NAME) as
       | GeoJSONSource
       | undefined;
-    console.log("nach test")
     const trafficPointGeoInformation: Feature[] = trafficPoints.map((point) => {
       return {
         type: 'Feature',
