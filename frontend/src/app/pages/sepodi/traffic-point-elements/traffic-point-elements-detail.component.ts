@@ -78,12 +78,10 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   ) {}
 
   ngOnInit() {
-    console.log("test")
     this.isTrafficPointArea = history.state.isTrafficPointArea;
     this.numberColons = this.isTrafficPointArea ? NUMBER_COLONS_AREA : NUMBER_COLONS_PLATFORM;
 
     this.route.data.subscribe((next) => {
-      console.log("next ", next)
       this.trafficPointVersions = next.trafficPoint;
       this.initTrafficPoint();
     });
@@ -320,7 +318,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     }
   }
 
-  navigateToPrm(){
+  navigateToPlatform(){
     this.router.navigateByUrl('/prm-directory/stop-points/' + this.selectedVersion?.servicePointSloid + '/platforms/' + this.selectedVersion.sloid + '/detail');
   }
 }
