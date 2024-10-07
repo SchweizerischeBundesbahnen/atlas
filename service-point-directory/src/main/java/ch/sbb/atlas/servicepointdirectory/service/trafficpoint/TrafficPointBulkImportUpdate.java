@@ -1,6 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
-import static ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointBulkImportUpdate.applyUpdateIfValueNotNull;
+import static ch.sbb.atlas.servicepointdirectory.service.GeolocationUpdateUtility.applyGeolocationUpdates;
+import static ch.sbb.atlas.servicepointdirectory.service.GeolocationUpdateUtility.applyUpdateIfValueNotNull;
+import static ch.sbb.atlas.servicepointdirectory.service.GeolocationUpdateUtility.geolocationValuesAreNull;
 
 import ch.sbb.atlas.imports.bulk.AttributeNullingNotSupportedException;
 import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
@@ -46,17 +48,13 @@ public class TrafficPointBulkImportUpdate {
     applyUpdateIfValueNotNull(update.getCompassDirection(), editedVersion::setCompassDirection);
     applyUpdateIfValueNotNull(update.getParentSloid(), editedVersion::setParentSloid);
 
-    if (editedVersion.getTrafficPointElementGeolocation() == null && update.getNorth() == null
-    && update.getEast() == null && update.getSpatialReference() == null) {
+    if (geolocationValuesAreNull(editedVersion.getTrafficPointElementGeolocation(), update)) {
       return editedVersion;
     }
-
     TrafficPointElementGeolocation trafficPointElementGeolocation = editedVersion.getTrafficPointElementGeolocation() == null ?
         new TrafficPointElementGeolocation() : editedVersion.getTrafficPointElementGeolocation().toBuilder().build();
-    applyUpdateIfValueNotNull(update.getNorth(), trafficPointElementGeolocation::setNorth);
-    applyUpdateIfValueNotNull(update.getEast(), trafficPointElementGeolocation::setEast);
-    applyUpdateIfValueNotNull(update.getSpatialReference(), trafficPointElementGeolocation::setSpatialReference);
-    applyUpdateIfValueNotNull(update.getHeight(), trafficPointElementGeolocation::setHeight);
+
+    applyGeolocationUpdates(update, trafficPointElementGeolocation);
 
     editedVersion.setTrafficPointElementGeolocation(trafficPointElementGeolocation);
     return editedVersion;
