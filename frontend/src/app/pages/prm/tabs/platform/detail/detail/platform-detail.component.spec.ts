@@ -32,7 +32,7 @@ import {
 import {DetailPageContentComponent} from "../../../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../../../core/components/detail-footer/detail-footer.component";
 import {AppTestingModule} from "../../../../../../app.testing.module";
-import {ActivatedRoute, RouterModule} from "@angular/router";
+import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
 import {TranslatePipe} from "@ngx-translate/core";
 import {SplitServicePointNumberPipe} from "../../../../../../core/search-service-point/split-service-point-number.pipe";
@@ -130,6 +130,9 @@ describe('PlatformDetailComponent', () => {
   const dialogService: SpyObj<DialogService> = jasmine.createSpyObj('dialogService', ['confirm']);
   dialogService.confirm.and.returnValue(of(true));
 
+  const routerSpy: SpyObj<Router> = jasmine.createSpyObj(['navigate']);
+  routerSpy.navigate.and.returnValue(Promise.resolve(true));
+
   const activatedRouteMock = {
     snapshot: {
       parent: {
@@ -179,6 +182,7 @@ describe('PlatformDetailComponent', () => {
         {provide: NotificationService, useValue: notificationService},
         {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService},
         {provide: DialogService, useValue: dialogService},
+        {provide: Router, useValue: routerSpy},
         TranslatePipe,
         SplitServicePointNumberPipe,
       ],
@@ -318,6 +322,15 @@ describe('PlatformDetailComponent', () => {
       component.save();
       expect(personWithReducedMobilityService.createPlatform).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
+    });
+
+    fit('should navigate to the correct route and call ngOnInit', async () => {
+      component.selectedVersion = reducedPlatform[0];
+      component.navigateToTrafficPointElement();
+
+      expect(routerSpy.navigate).toHaveBeenCalledWith(
+        ['/service-point-directory/traffic-point-elements/' + component.selectedVersion.sloid]
+      );
     });
   });
 });
