@@ -1,12 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import static ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointBulkImportUpdate.applyUpdateIfValueNotNull;
+
 import ch.sbb.atlas.imports.bulk.AttributeNullingNotSupportedException;
 import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import java.util.List;
-import java.util.function.Consumer;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -59,12 +60,6 @@ public class TrafficPointBulkImportUpdate {
 
     editedVersion.setTrafficPointElementGeolocation(trafficPointElementGeolocation);
     return editedVersion;
-  }
-
-  private <T> void applyUpdateIfValueNotNull(T value, Consumer<T> setterFunction) {
-    if (value != null) {
-      setterFunction.accept(value);
-    }
   }
 
 }
