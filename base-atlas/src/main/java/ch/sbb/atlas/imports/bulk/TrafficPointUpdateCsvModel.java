@@ -27,7 +27,7 @@ import lombok.experimental.FieldNameConstants;
 @JsonPropertyOrder({Fields.sloid, Fields.validFrom, Fields.validTo, Fields.designation,
     Fields.designationOperational, Fields.length, Fields.boardingAreaHeight, Fields.compassDirection,
     Fields.east, Fields.north, Fields.spatialReference, Fields.height, Fields.parentSloid})
-public class TrafficPointUpdateCsvModel implements Validatable<TrafficPointUpdateCsvModel> {
+public class TrafficPointUpdateCsvModel implements Validatable<TrafficPointUpdateCsvModel>, UpdateGeolocationModel {
 
   private String sloid;
 

@@ -1,12 +1,15 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import static ch.sbb.atlas.servicepointdirectory.service.GeolocationUpdateUtility.applyGeolocationUpdates;
+import static ch.sbb.atlas.servicepointdirectory.service.GeolocationUpdateUtility.applyUpdateIfValueNotNull;
+import static ch.sbb.atlas.servicepointdirectory.service.GeolocationUpdateUtility.geolocationValuesAreNull;
+
 import ch.sbb.atlas.imports.bulk.AttributeNullingNotSupportedException;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import java.util.List;
-import java.util.function.Consumer;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -55,28 +58,18 @@ public class ServicePointBulkImportUpdate {
     applyUpdateIfValueNotNull(update.getSortCodeOfDestinationStation(), editedVersion::setSortCodeOfDestinationStation);
     applyUpdateIfValueNotNull(update.getBusinessOrganisation(), editedVersion::setBusinessOrganisation);
 
-    if (editedVersion.getServicePointGeolocation() == null
-        && update.getNorth() == null && update.getEast() == null && update.getSpatialReference() == null) {
+    if (geolocationValuesAreNull(editedVersion.getServicePointGeolocation(), update)) {
       return editedVersion;
     }
 
     ServicePointGeolocation servicePointGeolocation =
         editedVersion.getServicePointGeolocation() == null ? new ServicePointGeolocation()
             : editedVersion.getServicePointGeolocation().toBuilder().build();
-    applyUpdateIfValueNotNull(update.getNorth(), servicePointGeolocation::setNorth);
-    applyUpdateIfValueNotNull(update.getEast(), servicePointGeolocation::setEast);
-    applyUpdateIfValueNotNull(update.getSpatialReference(), servicePointGeolocation::setSpatialReference);
 
-    applyUpdateIfValueNotNull(update.getHeight(), servicePointGeolocation::setHeight);
+    applyGeolocationUpdates(update, servicePointGeolocation);
 
     editedVersion.setServicePointGeolocation(servicePointGeolocation);
     return editedVersion;
-  }
-
-  public static <T> void applyUpdateIfValueNotNull(T value, Consumer<T> setterFunction) {
-    if (value != null) {
-      setterFunction.accept(value);
-    }
   }
 
 }
