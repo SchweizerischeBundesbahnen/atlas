@@ -1,8 +1,5 @@
 package ch.sbb.importservice.service.bulk.template;
 
-import static ch.sbb.importservice.service.bulk.template.ServicePointTemplateGenerator.getServicePointUpdateCsvModelExample;
-import static ch.sbb.importservice.service.bulk.template.TrafficPointTemplateGenerator.getTrafficPointUpdateCsvModelExample;
-
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
@@ -12,14 +9,38 @@ import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class BulkImportTemplateGenerator {
+
+  private static final Map<BulkImportConfig, Supplier<Object>> templateLookup = new HashMap<>();
+
+  static {
+    templateLookup.put(
+        BulkImportConfig.builder()
+            .application(ApplicationType.SEPODI)
+            .objectType(BusinessObjectType.SERVICE_POINT)
+            .importType(ImportType.UPDATE)
+            .build(),
+        ServicePointTemplateGenerator::getServicePointUpdateCsvModelExample
+    );
+
+    templateLookup.put(
+        BulkImportConfig.builder()
+            .application(ApplicationType.SEPODI)
+            .objectType(BusinessObjectType.TRAFFIC_POINT)
+            .importType(ImportType.UPDATE)
+            .build(),
+        TrafficPointTemplateGenerator::getTrafficPointUpdateCsvModelExample
+    );
+  }
 
   public static final String CSV_EXTENSION = ".csv";
 
@@ -32,29 +53,13 @@ public class BulkImportTemplateGenerator {
     return CsvExportWriter.writeToFileWithoutOrderMark(csvFile, List.of(example), objectWriter);
   }
 
-  private Object bulkImportExample(BulkImportConfig importConfig) {
-    BulkImportNotImplementedException bulkImportNotImplementedException = new BulkImportNotImplementedException(importConfig);
-    ApplicationType applicationType = Objects.requireNonNull(importConfig.getApplication(),
-        "ApplicationType cannot be null");
-    BusinessObjectType businessObjectType = Objects.requireNonNull(importConfig.getObjectType(),
-        "BusinessObjectType cannot be null");
-    ImportType importType = Objects.requireNonNull(importConfig.getImportType(),
-        "ImportType cannot be null");
-
-    return switch (applicationType) {
-      case SEPODI -> switch (businessObjectType) {
-        case SERVICE_POINT -> switch (importType) {
-          case UPDATE -> getServicePointUpdateCsvModelExample();
-          default -> throw bulkImportNotImplementedException;
-        };
-        case TRAFFIC_POINT -> switch (importType) {
-          case UPDATE -> getTrafficPointUpdateCsvModelExample();
-          default -> throw bulkImportNotImplementedException;
-        };
-        default -> throw bulkImportNotImplementedException;
-      };
-      default -> throw bulkImportNotImplementedException;
-    };
+  public Object bulkImportExample(BulkImportConfig importConfig) {
+    Supplier<Object> templateGeneratorMethod = templateLookup.get(importConfig);
+    if (templateGeneratorMethod != null) {
+      return templateGeneratorMethod.get();
+    } else {
+      throw new BulkImportNotImplementedException(importConfig);
+    }
   }
 
 }

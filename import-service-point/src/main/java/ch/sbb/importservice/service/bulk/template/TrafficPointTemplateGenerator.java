@@ -8,13 +8,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class TrafficPointTemplateGenerator {
 
-  private static final String DEFAULT_SLOID = "ch:1:sloid:7000:23";
-  private static final int DEFAULT_VALID_FROM_YEAR = 2021;
-  private static final int DEFAULT_VALID_FROM_MONTH = 4;
-  private static final int DEFAULT_VALID_FROM_DAY = 1;
-  private static final int DEFAULT_VALID_TO_YEAR = 2099;
-  private static final int DEFAULT_VALID_TO_MONTH = 12;
-  private static final int DEFAULT_VALID_TO_DAY = 31;
+  private static final String DEFAULT_SLOID = "ch:1:sloid:7000:1:2";
+  private static final LocalDate DEFAULT_VALID_FROM = LocalDate.of(2021, 4, 1);
+  private static final LocalDate DEFAULT_VALID_TO = LocalDate.of(2099, 12, 31);
   private static final String DEFAULT_DESIGNATION = "Perron 3";
   private static final String DEFAULT_DESIGNATION_OPEATIONAL = "CAMPSTR2";
   private static final Double DEFAULT_LENGTH = 12.000;
@@ -23,13 +19,13 @@ public class TrafficPointTemplateGenerator {
   private static final Double DEFAULT_EAST = 2600037.945;
   private static final Double DEFAULT_NORTH = 1199749.812;
   private static final Double DEFAULT_HEIGHT = 540.2;
-  private static final String DEFAULT_PARENT_SLOID = "ch:1:sloid:7000";
+  private static final String DEFAULT_PARENT_SLOID = "ch:1:sloid:7000:1";
 
   public static TrafficPointUpdateCsvModel getTrafficPointUpdateCsvModelExample() {
     return TrafficPointUpdateCsvModel.builder()
         .sloid(DEFAULT_SLOID)
-        .validFrom(LocalDate.of(DEFAULT_VALID_FROM_YEAR, DEFAULT_VALID_FROM_MONTH, DEFAULT_VALID_FROM_DAY))
-        .validTo(LocalDate.of(DEFAULT_VALID_TO_YEAR, DEFAULT_VALID_TO_MONTH, DEFAULT_VALID_TO_DAY))
+        .validFrom(DEFAULT_VALID_FROM)
+        .validTo(DEFAULT_VALID_TO)
         .designation(DEFAULT_DESIGNATION)
         .designationOperational(DEFAULT_DESIGNATION_OPEATIONAL)
         .length(DEFAULT_LENGTH)
