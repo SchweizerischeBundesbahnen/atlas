@@ -116,10 +116,8 @@ export class TrafficPointElementsTableComponent implements OnInit {
     });
   }
 
-  navigateToPrm(){
+  navigateToPlatforms(){
     const sloid = this.route.parent!.snapshot.data.servicePoint[0].sloid;
-    this.router.navigate(['/prm-directory/stop-points/' + sloid + '/platforms'], {
-      relativeTo: this.route,
-    })
+    this.router.navigateByUrl('/prm-directory/stop-points/' + sloid + '/platforms')
   }
 }
