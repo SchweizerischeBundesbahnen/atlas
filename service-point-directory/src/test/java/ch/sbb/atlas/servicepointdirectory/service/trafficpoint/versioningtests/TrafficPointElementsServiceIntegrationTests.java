@@ -13,15 +13,15 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPointElementsServiceIntegrationTest{
+class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPointElementsServiceIntegrationTest{
 
     @Autowired
-    public TrafficPointElementsServiceIntegrationTests(TrafficPointElementVersionRepository trafficPointElementVersionRepository, TrafficPointElementService trafficPointElementService) {
+    TrafficPointElementsServiceIntegrationTests(TrafficPointElementVersionRepository trafficPointElementVersionRepository, TrafficPointElementService trafficPointElementService) {
         super(trafficPointElementVersionRepository, trafficPointElementService);
     }
 
     @Test
-    public void scenario3UpdateVersion2ByAddingTrafficPointElementGeolocation() {
+    void scenario3UpdateVersion2ByAddingTrafficPointElementGeolocation() {
         // given
         version1 = trafficPointElementVersionRepository.save(version1);
         version2 = trafficPointElementVersionRepository.save(version2);
@@ -99,7 +99,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
     }
 
     @Test
-    public void scenario3UpdateVersion3ByChangingTrafficPointElementGeolocationCreatorAndEditor() {
+    void scenario3UpdateVersion3ByChangingTrafficPointElementGeolocationCreatorAndEditor() {
         // given
         version1 = trafficPointElementVersionRepository.save(version1);
         version2 = trafficPointElementVersionRepository.save(version2);
