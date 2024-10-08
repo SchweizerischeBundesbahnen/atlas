@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class GeolocationUpdateUtility {
+public class BulkImportUtility {
 
   public static <G extends GeolocationBaseEntity, U extends UpdateGeolocationModel>
   boolean geolocationValuesAreNull(G geolocation, U update) {
