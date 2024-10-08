@@ -75,7 +75,7 @@
     "@angular/cli": "18.2.7",
     "@angular/localize": "18.2.7",
     "@cypress/schematic": "^2.5.2",
-    "@openapitools/openapi-generator-cli": "~2.13.13",
+    "@openapitools/openapi-generator-cli": "~2.14.0",
     "@playwright/test": "^1.47.2",
     "@types/jasmine": "^5.1.4",
     "@types/node": "^22.7.4",
