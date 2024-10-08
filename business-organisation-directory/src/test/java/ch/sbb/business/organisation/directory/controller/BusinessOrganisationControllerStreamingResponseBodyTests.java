@@ -15,7 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-public class BusinessOrganisationControllerStreamingResponseBodyTests extends BaseControllerApiTest {
+class BusinessOrganisationControllerStreamingResponseBodyTests extends BaseControllerApiTest {
 
     @MockBean
     private BusinessOrganisationAmazonService businessOrganisationAmazonService;

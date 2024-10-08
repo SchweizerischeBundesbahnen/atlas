@@ -27,6 +27,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -44,7 +46,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "traffic_point_element_version")
 @AtlasVersionable
@@ -68,12 +70,16 @@ public class TrafficPointElementVersion extends BaseEntity implements Versionabl
   private String designationOperational;
 
   @AtlasVersionableProperty
+  @Min(0)
   private Double length;
 
   @AtlasVersionableProperty
+  @Min(0)
   private Double boardingAreaHeight;
 
   @AtlasVersionableProperty
+  @Min(0)
+  @Max(360)
   private Double compassDirection;
 
   @NotNull

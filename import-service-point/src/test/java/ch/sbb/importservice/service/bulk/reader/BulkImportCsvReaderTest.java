@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.ImportFiles;
 import java.io.File;
@@ -19,6 +20,10 @@ class BulkImportCsvReaderTest {
 
   private static final String SERVICE_POINT_UPDATE_HEADER = """
       sloid;number;validFrom;validTo;designationOfficial;designationLong;stopPointType;freightServicePoint;operatingPointType;operatingPointTechnicalTimetableType;meansOfTransport;categories;operatingPointTrafficPointType;sortCodeOfDestinationStation;businessOrganisation;east;north;spatialReference;height
+      """;
+
+  private static final String TRAFFIC_POINT_UPDATE_HEADER = """
+      sloid;validFrom;validTo;designation;designationOperational;length;boardingAreaHeight;compassDirection;east;north;spatialReference;height;parentSloid
       """;
 
   @Test
@@ -38,7 +43,23 @@ class BulkImportCsvReaderTest {
   }
 
   @Test
-  void shouldReportAllDataMappingErrors() throws IOException {
+  void shouldReadTrafficPointUpdateCsvCorrectlyWithNullingAndPipedSet() {
+    File file = ImportFiles.getFileByPath("import-files/valid/traffic-point-update.csv");
+
+    List<BulkImportUpdateContainer<TrafficPointUpdateCsvModel>> trafficPointUpdates =
+        BulkImportCsvReader.readLinesFromFileWithNullingValue(
+            file, TrafficPointUpdateCsvModel.class);
+
+    assertThat(trafficPointUpdates).hasSize(1);
+    assertThat(trafficPointUpdates.getFirst().getAttributesToNull()).containsExactly("parentSloid");
+
+    TrafficPointUpdateCsvModel expected = ImportFiles.getExpectedTrafficPointUpdateCsvModel();
+    TrafficPointUpdateCsvModel actual = trafficPointUpdates.getFirst().getObject();
+    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+  }
+
+  @Test
+  void shouldReportAllDataMappingErrorsForServicePointUpdate() throws IOException {
     String csvLine = """
         ch:1:sloid:7000;num;tomorrow;31.12.2099;Bern;;STOP;idk;;;CAR|TAXI;;;code;ch:1:sboid:100001;north;1199749.812;LV97;20m
         """;
@@ -61,4 +82,30 @@ class BulkImportCsvReaderTest {
         "Expected ENUM but got LV97 in column spatialReference",
         "Expected DOUBLE but got 20m in column height");
   }
+
+  @Test
+  void shouldReportAllDataMappingErrorsForTrafficPointUpdate() throws IOException {
+    String csvLine = """
+        ch:1:sloid:7000:5;num;tomorrow;Bern;Bern;STOP;idk;aaa;east;north;111;height;ch:1:sloid:7000
+        """;
+    BulkImportUpdateContainer<TrafficPointUpdateCsvModel> result = BulkImportCsvReader.readObject(
+        TrafficPointUpdateCsvModel.class, TRAFFIC_POINT_UPDATE_HEADER, csvLine, 1);
+
+    assertThat(result.getBulkImportLogEntry().getErrors()).hasSize(9);
+
+    List<String> errorMessages = result.getBulkImportLogEntry().getErrors().stream()
+        .map(BulkImportError::getErrorMessage)
+        .toList();
+    assertThat(errorMessages).containsExactlyInAnyOrder(
+        "Expected DATE but got num in column validFrom",
+        "Expected DATE but got tomorrow in column validTo",
+        "Expected DOUBLE but got STOP in column length",
+        "Expected DOUBLE but got idk in column boardingAreaHeight",
+        "Expected DOUBLE but got aaa in column compassDirection",
+        "Expected DOUBLE but got east in column east",
+        "Expected DOUBLE but got north in column north",
+        "Expected ENUM but got 111 in column spatialReference",
+        "Expected DOUBLE but got height in column height");
+  }
+
 }
