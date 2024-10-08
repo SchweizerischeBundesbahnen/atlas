@@ -28,5 +28,6 @@ public class BulkImportLogEntry {
     SUCCESS,
     DATA_VALIDATION_ERROR,
     DATA_EXECUTION_ERROR,
+    INFO
   }
 }
