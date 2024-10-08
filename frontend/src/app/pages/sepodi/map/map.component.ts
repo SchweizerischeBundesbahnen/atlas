@@ -2,10 +2,9 @@ import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChil
 import {Map} from 'maplibre-gl';
 import {MapService} from './map.service';
 import {MAP_STYLES, MapStyle} from './map-options';
-import {Router} from '@angular/router';
-import {take} from 'rxjs';
+import {Subject, take} from 'rxjs';
 import {ApplicationType} from '../../../api';
-import {filter} from 'rxjs/operators';
+import {filter, takeUntil} from 'rxjs/operators';
 import {MapIcon, MapIconsService} from './map-icons.service';
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {UserService} from "../../../core/auth/user/user.service";
@@ -29,12 +28,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   map!: Map;
 
+  private onDestroy$ = new Subject<boolean>();
+
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
   constructor(
     private readonly mapService: MapService,
-    private readonly router: Router,
     private readonly userService: UserService,
     private readonly permissionService: PermissionService,
   ) {}
@@ -44,23 +44,27 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         filter((loaded) => loaded),
         take(1),
+        takeUntil(this.onDestroy$)
       )
       .subscribe(() => {
         this.canCreateServicePoint = this.permissionService.hasPermissionsToCreate(
           ApplicationType.Sepodi,
         );
       });
+    this.mapService.servicePointsShown.pipe(takeUntil(this.onDestroy$)).subscribe(value => this.servicePointsShown = value);
   }
 
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
-    this.mapService.servicePointsShown.subscribe(value => this.servicePointsShown = value);
     this.currentMapStyle = this.mapService.currentMapStyle;
     MapIconsService.getLegendIconsAsImages().then((icons) => (this.legend = icons));
   }
 
   ngOnDestroy() {
     this.mapService.removeMap();
+    this.mapService.mapInitialized.next(false);
+    this.onDestroy$.complete();
+    this.onDestroy$.next(true);
   }
 
   toggleStyleSelection() {
