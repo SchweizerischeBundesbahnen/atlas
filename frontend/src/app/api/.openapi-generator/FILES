@@ -41,6 +41,7 @@ model/bulkImportItemExecutionResult.ts
 model/bulkImportLogEntry.ts
 model/bulkImportPermissionRestrictionModel.ts
 model/bulkImportRequest.ts
+model/bulkImportResult.ts
 model/bulkImportUpdateContainerServicePointUpdateCsvModel.ts
 model/businessObjectType.ts
 model/businessOrganisation.ts
