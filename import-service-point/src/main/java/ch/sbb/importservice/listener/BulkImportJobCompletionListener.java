@@ -1,5 +1,6 @@
 package ch.sbb.importservice.listener;
 
+import static ch.sbb.importservice.service.bulk.BulkImportJobService.EMAILS_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_ID_JOB_PARAMETER;
 
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
@@ -47,7 +48,8 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
     uploadLogFile(logFile, currentImport);
     bulkImportLogService.deleteLog(jobExecution.getId());
 
-    sendMailToImporter(currentImport);
+    sendMailToImporter(currentImport,
+        (List<String>) jobExecution.getJobParameters().getParameter(EMAILS_JOB_PARAMETER).getValue());
   }
 
   private void uploadLogFile(LogFile logFile, BulkImport bulkImport) {
@@ -56,9 +58,10 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
     bulkImportRepository.save(bulkImport);
   }
 
-  private void sendMailToImporter(BulkImport bulkImport) {
+  private void sendMailToImporter(BulkImport bulkImport, List<String> emails) {
     MailNotification mailNotification = MailNotification.builder()
         .to(List.of(userAdministrationClient.getCurrentUser().getMail()))
+        .cc(emails)
         .subject("Import Result " + bulkImport.getId())
         .mailType(MailType.BULK_IMPORT_RESULT_NOTIFICATION)
         .templateProperties(List.of(
