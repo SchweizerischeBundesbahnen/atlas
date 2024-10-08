@@ -349,6 +349,12 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   navigateToStopPoint(){
-    this.router.navigateByUrl('/' + Pages.PRM.path + '/' + Pages.STOP_POINTS.path + '/' + this.selectedVersion?.sloid + '/stop-point');
+    this.router.navigate([
+      '/',
+      Pages.PRM.path,
+      Pages.STOP_POINTS.path,
+      this.selectedVersion!.sloid,
+      'stop-point'
+    ]);
   }
 }
