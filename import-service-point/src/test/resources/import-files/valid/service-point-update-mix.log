@@ -1,12 +1,10 @@
 {
+  "nbOfSuccess": 1,
+  "nbOfInfo": 1,
+  "nbOfError": 7,
   "logEntries": [
     {
-      "lineNumber": 1,
-      "status": "SUCCESS",
-      "errors": []
-    },
-    {
-      "lineNumber": 2,
+      "lineNumber": 3,
       "status": "DATA_VALIDATION_ERROR",
       "errors": [
         {
@@ -50,7 +48,7 @@
       ]
     },
     {
-      "lineNumber": 3,
+      "lineNumber": 4,
       "status": "DATA_VALIDATION_ERROR",
       "errors": [
         {
@@ -316,7 +314,7 @@
       ]
     },
     {
-      "lineNumber": 4,
+      "lineNumber": 5,
       "status": "DATA_EXECUTION_ERROR",
       "errors": [
         {
@@ -338,36 +336,14 @@
       ]
     },
     {
-      "lineNumber": 5,
-      "status": "DATA_EXECUTION_ERROR",
+      "lineNumber": 6,
+      "status": "INFO",
       "errors": [
         {
           "errorMessage": "No entities were modified after versioning execution.",
           "displayInfo": {
             "code": "ERROR.WARNING.VERSIONING_NO_CHANGES",
             "parameters": []
-          }
-        }
-      ]
-    },
-    {
-      "lineNumber": 6,
-      "status": "DATA_VALIDATION_ERROR",
-      "errors": [
-        {
-          "errorMessage": "sloid with value ch:1:sloid:notunique occurred more than once",
-          "displayInfo": {
-            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_SLOID",
-            "parameters": [
-              {
-                "key": "field",
-                "value": "sloid"
-              },
-              {
-                "key": "value",
-                "value": "ch:1:sloid:notunique"
-              }
-            ]
           }
         }
       ]
@@ -399,6 +375,28 @@
       "status": "DATA_VALIDATION_ERROR",
       "errors": [
         {
+          "errorMessage": "sloid with value ch:1:sloid:notunique occurred more than once",
+          "displayInfo": {
+            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_SLOID",
+            "parameters": [
+              {
+                "key": "field",
+                "value": "sloid"
+              },
+              {
+                "key": "value",
+                "value": "ch:1:sloid:notunique"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lineNumber": 9,
+      "status": "DATA_VALIDATION_ERROR",
+      "errors": [
+        {
           "errorMessage": "number with value 8507000 occurred more than once",
           "displayInfo": {
             "code": "BULK_IMPORT.VALIDATION.DUPLICATE_NUMBER",
@@ -417,7 +415,7 @@
       ]
     },
     {
-      "lineNumber": 9,
+      "lineNumber": 10,
       "status": "DATA_VALIDATION_ERROR",
       "errors": [
         {
