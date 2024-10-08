@@ -9,11 +9,11 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class ServicePointRequestParamsTest extends BaseValidatorTest {
+
   @Test
-  void shouldNotAcceptWhenServicePointNumberLessThan1000000(){
+  void shouldNotAcceptWhenServicePointNumberLessThan1000000() {
     //given
-    ServicePointRequestParams requestParams = ServicePointRequestParams.builder().numbers(List.of(123))
-        .build();
+    ServicePointRequestParams requestParams = ServicePointRequestParams.builder().numbers(List.of(123)).build();
     //when
     Set<ConstraintViolation<ServicePointRequestParams>> violations = validator.validate(requestParams);
 
@@ -23,15 +23,13 @@ class ServicePointRequestParamsTest extends BaseValidatorTest {
         .map(ConstraintViolation::getMessage)
         .toList();
     assertThat(violationMessages).hasSize(1);
-    assertThat(violationMessages.get(0)).isEqualTo("must be greater than or equal to 1000000");
-
+    assertThat(violationMessages.getFirst()).isEqualTo("must be greater than or equal to 1000000");
   }
+
   @Test
-  void shouldNotAcceptWhenServicePointNumberBiggerThan9999999(){
+  void shouldNotAcceptWhenServicePointNumberBiggerThan9999999() {
     //given
-    ServicePointRequestParams requestParams = ServicePointRequestParams.builder().numbers(List.of(
-            10000000))
-        .build();
+    ServicePointRequestParams requestParams = ServicePointRequestParams.builder().numbers(List.of(10000000)).build();
     //when
     Set<ConstraintViolation<ServicePointRequestParams>> violations = validator.validate(requestParams);
 
@@ -41,21 +39,26 @@ class ServicePointRequestParamsTest extends BaseValidatorTest {
         .map(ConstraintViolation::getMessage)
         .toList();
     assertThat(violationMessages).hasSize(1);
-    assertThat(violationMessages.get(0)).isEqualTo("must be less than or equal to 9999999");
-
+    assertThat(violationMessages.getFirst()).isEqualTo("must be less than or equal to 9999999");
   }
 
   @Test
-  void shouldAcceptServicePointNumberWith7Digits(){
+  void shouldAcceptServicePointNumberWith7Digits() {
     //given
-    ServicePointRequestParams requestParams = ServicePointRequestParams.builder().numbers(List.of(
-            8507000))
-        .build();
+    ServicePointRequestParams requestParams = ServicePointRequestParams.builder().numbers(List.of(8507000)).build();
     //when
     Set<ConstraintViolation<ServicePointRequestParams>> violations = validator.validate(requestParams);
 
     //then
     assertThat(violations).isEmpty();
+  }
+
+  @Test
+  void shouldAcceptServicePointNumbersNullWithoutError() {
+    ServicePointRequestParams requestParams = new ServicePointRequestParams();
+    requestParams.setNumbers(null);
+
+    assertThat(requestParams.getServicePointNumbers()).isNotNull().isEmpty();
   }
 
 }
