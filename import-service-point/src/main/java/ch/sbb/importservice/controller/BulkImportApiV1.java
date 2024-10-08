@@ -1,6 +1,7 @@
 package ch.sbb.importservice.controller;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.importservice.model.BulkImportResult;
 import ch.sbb.importservice.model.BulkImportRequest;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
@@ -51,5 +52,8 @@ public interface BulkImportApiV1 {
   ResponseEntity<Resource> downloadTemplate(@PathVariable ApplicationType applicationType,
       @PathVariable BusinessObjectType objectType,
       @PathVariable ImportType importType);
+
+  @GetMapping("{id}")
+  BulkImportResult getBulkImportResults(@PathVariable Long id);
 
 }

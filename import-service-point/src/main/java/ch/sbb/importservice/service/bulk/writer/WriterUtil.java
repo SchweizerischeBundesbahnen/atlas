@@ -28,7 +28,8 @@ public class WriterUtil {
           .filter(i -> i.getLineNumber() == updateContainer.getLineNumber()).findFirst().orElseThrow();
       updateContainer.setBulkImportLogEntry(BulkImportLogEntry.builder()
           .lineNumber(updateContainer.getLineNumber())
-          .status(correspondingResult.isSuccess() ? BulkImportStatus.SUCCESS : BulkImportStatus.DATA_EXECUTION_ERROR)
+          .status(correspondingResult.isSuccess() ? BulkImportStatus.SUCCESS :
+              correspondingResult.isInfo() ? BulkImportStatus.INFO : BulkImportStatus.DATA_EXECUTION_ERROR)
           .errors(correspondingResult.getErrors())
           .build());
     });

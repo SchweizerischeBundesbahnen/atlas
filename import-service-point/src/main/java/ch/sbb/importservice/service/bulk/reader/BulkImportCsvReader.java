@@ -27,9 +27,9 @@ public class BulkImportCsvReader {
     String header = "";
 
     try (Scanner scanner = new Scanner(file)) {
-      for (int lineNumber = 0; scanner.hasNext(); lineNumber++) {
+      for (int lineNumber = 1; scanner.hasNext(); lineNumber++) {
         String line = scanner.nextLine();
-        if (lineNumber == 0) {
+        if (lineNumber == 1) {
           header = line + "\n";
         } else {
           mappedObjects.add(readObject(clazz, header, line, lineNumber));

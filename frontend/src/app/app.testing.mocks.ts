@@ -143,6 +143,17 @@ export class MockAtlasFieldErrorComponent {
 }
 
 @Component({
+  selector: 'mat-paginator',
+  template: '',
+})
+export class MockMatPaginatorComponent {
+  @Input() pageSizeOptions?: number[];
+  @Input() length?: number;
+
+  @Output() page = new EventEmitter();
+}
+
+@Component({
   selector: 'app-atlas-label-field',
   template: '',
 })
@@ -205,6 +216,7 @@ export const authServiceSpy = jasmine.createSpyObj<AuthService>(['login', 'logou
     MockAtlasFieldErrorComponent,
     MockInfoIconComponent,
     MockSwitchVersionComponent,
+    MockMatPaginatorComponent,
   ],
   exports: [
     MockBoSelectComponent,
