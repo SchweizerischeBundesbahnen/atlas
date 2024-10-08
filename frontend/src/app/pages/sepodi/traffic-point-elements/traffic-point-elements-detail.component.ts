@@ -327,5 +327,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       Pages.PLATFORMS.path,
       this.selectedVersion.sloid,
       'detail'
-    ]);  }
+    ]);
+  }
 }
