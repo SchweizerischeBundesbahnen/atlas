@@ -10,11 +10,13 @@ import {PersonWithReducedMobilityService, TrafficPointElementsService} from "../
 import {of} from "rxjs";
 import {BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER} from "../../../../../test/data/traffic-point-element";
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
+import {Pages} from "../../../pages";
+import SpyObj = jasmine.SpyObj;
 
 describe('PlatformTableComponent', () => {
   let component: PlatformTableComponent;
   let fixture: ComponentFixture<PlatformTableComponent>;
-  let router:Router;
+  let routerSpy: SpyObj<Router>;
 
   const personWithReducedMobilityService = jasmine.createSpyObj('personWithReducedMobilityService', ['getPlatformOverview']);
   personWithReducedMobilityService.getPlatformOverview.and.returnValue(of([]));
@@ -32,6 +34,8 @@ describe('PlatformTableComponent', () => {
   };
 
   beforeEach(() => {
+    routerSpy = jasmine.createSpyObj(['navigate']);
+
     TestBed.configureTestingModule({
       declarations: [PlatformTableComponent, MockAtlasButtonComponent, MockTableComponent, DetailFooterComponent],
       imports: [AppTestingModule],
@@ -39,12 +43,13 @@ describe('PlatformTableComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
         { provide: TrafficPointElementsService, useValue: trafficPointElementsService },
+        {provide: Router, useValue: routerSpy},
+
       ],
     });
     fixture = TestBed.createComponent(PlatformTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    router = TestBed.inject(Router);
   });
 
   it('should create', () => {
@@ -59,12 +64,25 @@ describe('PlatformTableComponent', () => {
   });
 
   it('should navigate to platform on table click', () => {
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
     component.getOverview({page: 0, size: 10});
 
     component.rowClicked(component.platforms[0]);
-    expect(router.navigate).toHaveBeenCalled();
+    expect(routerSpy.navigate).toHaveBeenCalled();
   });
 
+  it('should navigate to the correct traffic point elements URL', () => {
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
+
+    component.navigateToTrafficPointElements();
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith([
+      '/',
+      Pages.SEPODI.path,
+      Pages.SERVICE_POINTS.path,
+      8589008,
+      Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
+    ]);
+  });
 });
