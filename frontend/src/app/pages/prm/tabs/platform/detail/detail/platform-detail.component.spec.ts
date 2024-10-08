@@ -32,13 +32,14 @@ import {
 import {DetailPageContentComponent} from "../../../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../../../core/components/detail-footer/detail-footer.component";
 import {AppTestingModule} from "../../../../../../app.testing.module";
-import {ActivatedRoute, RouterModule} from "@angular/router";
+import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
 import {TranslatePipe} from "@ngx-translate/core";
 import {SplitServicePointNumberPipe} from "../../../../../../core/search-service-point/split-service-point-number.pipe";
 import moment from "moment";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import SpyObj = jasmine.SpyObj;
+import {Pages} from "../../../../../pages";
 
 const reducedPlatform: ReadPlatformVersion[] = [
   {
@@ -125,6 +126,7 @@ describe('PlatformDetailComponent', () => {
   );
   personWithReducedMobilityService.createPlatform.and.returnValue(of(reducedPlatform[0]));
   personWithReducedMobilityService.updatePlatform.and.returnValue(of(reducedPlatform));
+  let routerSpy: SpyObj<Router>;
 
   const notificationService = jasmine.createSpyObj('notificationService', ['success']);
   const dialogService: SpyObj<DialogService> = jasmine.createSpyObj('dialogService', ['confirm']);
@@ -144,6 +146,9 @@ describe('PlatformDetailComponent', () => {
   };
 
   beforeEach(() => {
+    routerSpy = jasmine.createSpyObj(['navigate']);
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
+
     TestBed.configureTestingModule({
       declarations: [
         PlatformDetailComponent,
@@ -179,6 +184,7 @@ describe('PlatformDetailComponent', () => {
         {provide: NotificationService, useValue: notificationService},
         {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService},
         {provide: DialogService, useValue: dialogService},
+        {provide: Router, useValue: routerSpy},
         TranslatePipe,
         SplitServicePointNumberPipe,
       ],
@@ -318,6 +324,19 @@ describe('PlatformDetailComponent', () => {
       component.save();
       expect(personWithReducedMobilityService.createPlatform).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
+    });
+
+    it('should navigate to the correct traffic point element URL', () => {
+      component.selectedVersion = reducedPlatform[0];
+
+      component.navigateToTrafficPointElement();
+
+      expect(routerSpy.navigate).toHaveBeenCalledWith([
+        '/',
+        Pages.SEPODI.path,
+        Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
+        reducedPlatform[0].sloid
+      ]);
     });
   });
 });
