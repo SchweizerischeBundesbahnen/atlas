@@ -319,6 +319,13 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   }
 
   navigateToPlatform(){
-    this.router.navigateByUrl('/' + Pages.PRM.path + '/' + Pages.STOP_POINTS.path + '/' + this.selectedVersion?.servicePointSloid + '/' + Pages.PLATFORMS.path + '/' + this.selectedVersion.sloid + '/detail');
-  }
+    this.router.navigate([
+      '/',
+      Pages.PRM.path,
+      Pages.STOP_POINTS.path,
+      this.selectedVersion?.servicePointSloid,
+      Pages.PLATFORMS.path,
+      this.selectedVersion.sloid,
+      'detail'
+    ]);  }
 }
