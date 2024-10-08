@@ -5,12 +5,15 @@ import ch.sbb.atlas.service.UserService;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.model.BulkImportConfig;
 import ch.sbb.importservice.model.BulkImportRequest;
+import ch.sbb.importservice.model.BulkImportResult;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.service.bulk.BulkImportFileValidationService;
 import ch.sbb.importservice.service.bulk.BulkImportService;
 import ch.sbb.importservice.service.bulk.template.BulkImportTemplateGenerator;
 import jakarta.validation.constraints.NotNull;
+import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
+import ch.sbb.importservice.service.bulk.log.LogFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -35,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class BulkImportController implements BulkImportApiV1 {
 
   private final BulkImportService bulkImportService;
+  private final BulkImportLogService bulkImportLogService;
   private final BulkImportFileValidationService bulkImportFileValidationService;
   private final BulkImportTemplateGenerator bulkImportTemplateGenerator;
 
@@ -81,6 +85,24 @@ public class BulkImportController implements BulkImportApiV1 {
         .contentType(MediaType.APPLICATION_OCTET_STREAM)
         .contentLength(file.length())
         .body(resource);
+  }
+
+  @Override
+  public BulkImportResult getBulkImportResults(Long id) {
+    BulkImport bulkImport = bulkImportService.getBulkImport(id);
+    LogFile logFile = bulkImportLogService.getLogFileFromS3(bulkImport.getLogFileUrl());
+
+    return BulkImportResult.builder()
+        .businessObjectType(bulkImport.getObjectType())
+        .creationDate(bulkImport.getCreationDate())
+        .creator(bulkImport.getCreator())
+        .inNameOf(bulkImport.getInNameOf())
+        .importType(bulkImport.getImportType())
+        .logEntries(logFile.getLogEntries())
+        .nbOfSuccess(logFile.getNbOfSuccess())
+        .nbOfInfo(logFile.getNbOfInfo())
+        .nbOfError(logFile.getNbOfError())
+        .build();
   }
 
   private static Resource getDeletableResource(File file) {
