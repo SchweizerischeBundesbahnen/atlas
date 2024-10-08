@@ -65,8 +65,8 @@ public class AtlasExceptionHandler {
   }
 
   @ExceptionHandler(value = {AtlasException.class})
-  public ResponseEntity<ErrorResponse> atlasException(AtlasException conflictException) {
-    ErrorResponse errorResponse = conflictException.getErrorResponse();
+  public ResponseEntity<ErrorResponse> atlasException(AtlasException atlasException) {
+    ErrorResponse errorResponse = atlasException.getErrorResponse();
     return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
   }
 
@@ -259,7 +259,7 @@ public class AtlasExceptionHandler {
   }
 
   public ErrorResponse mapToErrorResponse(Exception exception) {
-    log.error("Data Execution Error! Mapping Excecption", exception);
+    log.error("Data Execution Error! Mapping Exception", exception);
     if (exception instanceof AtlasException atlasException) {
       return atlasException(atlasException).getBody();
     }

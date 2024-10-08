@@ -26,7 +26,7 @@ public class BulkImportService {
     bulkImport.setImportFileUrl(s3ObjectKey);
 
     BulkImport bulkImportData = saveBulkImportMetaData(bulkImport);
-    bulkImportJobService.startBulkImportJob(bulkImportData, file);
+    bulkImportJobService.startBulkImportJob(bulkImportData, file, emails);
   }
 
   private String uploadImportFile(File file, BulkImport bulkImport) {
