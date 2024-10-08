@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -100,6 +101,9 @@ public class ServicePointRequestParams extends VersionedObjectDateRequestParams 
   private Boolean withTimetable;
 
   public List<ServicePointNumber> getServicePointNumbers() {
+    if (numbers == null) {
+      return Collections.emptyList();
+    }
     return numbers.stream().map(ServicePointNumber::ofNumberWithoutCheckDigit).toList();
   }
 }
