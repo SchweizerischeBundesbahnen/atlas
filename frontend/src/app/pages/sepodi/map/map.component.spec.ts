@@ -40,6 +40,7 @@ const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove'
 mapSpy.getCanvas.and.returnValue(mapCanvasMock);
 mapService.clickedGeographyCoordinates = clickedGeographyCoordinatesSubject; // Weise dem Spion den BehaviorSubject zu
 mapService.servicePointsShown = new BehaviorSubject(false);
+mapService.mapInitialized = new BehaviorSubject(false);
 
 mapService.initMap.and.returnValue(mapSpy);
 
@@ -62,7 +63,7 @@ describe('MapComponent', () => {
     }).compileComponents();
 
     spyOn(maplibregl, 'Marker').and.returnValue(markerSpy);
-
+    mapService.mapInitialized.next(true);
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
