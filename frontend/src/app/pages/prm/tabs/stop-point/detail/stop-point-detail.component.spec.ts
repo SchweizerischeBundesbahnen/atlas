@@ -26,13 +26,14 @@ import {DetailFooterComponent} from "../../../../../core/components/detail-foote
 import {PrmVariantInfoServiceService} from "../prm-variant-info-service.service";
 import SpyObj = jasmine.SpyObj;
 import {ValidityService} from "../../../../sepodi/validity/validity.service";
+import {Pages} from "../../../../pages";
 
 const authService: Partial<AuthService> = {};
 describe('StopPointDetailComponent', () => {
   let component: StopPointDetailComponent;
   let fixture: ComponentFixture<StopPointDetailComponent>;
   let dialogService: SpyObj<DialogService>;
-  let router: Router;
+  let routerSpy: SpyObj<Router>;
 
   const personWithReducedMobilityService = jasmine.createSpyObj(
     'personWithReducedMobilityService',
@@ -57,6 +58,8 @@ describe('StopPointDetailComponent', () => {
   };
 
   beforeEach(() => {
+    routerSpy = jasmine.createSpyObj(['navigate']);
+
     dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
     dialogService.confirm.and.returnValue(of(true));
     TestBed.configureTestingModule({
@@ -84,13 +87,13 @@ describe('StopPointDetailComponent', () => {
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
         { provide: PrmVariantInfoServiceService, useValue: prmVariantInfoServiceService },
         { provide: NotificationService, useValue: notificationService },
+        { provide: Router, useValue: routerSpy },
         TranslatePipe,
       ],
     });
     fixture = TestBed.createComponent(StopPointDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    router = TestBed.inject(Router);
   });
 
   it('should create', () => {
@@ -193,7 +196,7 @@ describe('StopPointDetailComponent', () => {
 
   it('should save when stopPoint isNew', () => {
     //given
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
     spyOn(component, 'reloadPage');
 
     component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT);
@@ -208,7 +211,7 @@ describe('StopPointDetailComponent', () => {
 
   it('should save without prm variant change when stopPoint update ', () => {
     //given
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
     spyOn(component, 'reloadPage');
     spyOn(component, 'updateStopPoint');
 
@@ -222,7 +225,7 @@ describe('StopPointDetailComponent', () => {
 
   it('should update stopPoint', () => {
     //given
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
     spyOn(component, 'reloadPage');
 
     component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT);
@@ -237,7 +240,7 @@ describe('StopPointDetailComponent', () => {
 
   it('should update without prm variant change', () => {
     //given
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
     spyOn(component, 'reloadPage');
     spyOn(component, 'doUpdateStopPoint');
 
@@ -252,7 +255,7 @@ describe('StopPointDetailComponent', () => {
 
   it('should update with prm variant change', () => {
     //given
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
     spyOn(component, 'reloadPage');
     spyOn(component, 'showPrmChangeVariantConfirmationDialog');
 
@@ -302,5 +305,20 @@ describe('StopPointDetailComponent', () => {
     expect(component.form.controls.number.value).toEqual(BERN_WYLEREGG.number.number);
     expect(component.form.controls.sloid.value).toEqual(BERN_WYLEREGG.sloid);
     expect(buildEmptyWithReducedValidationFormGroupSpy).toHaveBeenCalled();
+  });
+
+  it('should navigate to the correct SePoDi url', () => {
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
+    component.selectedVersion =  STOP_POINT;
+
+    component.navigateToSePoDi();
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith([
+      '/',
+      Pages.SEPODI.path,
+      Pages.SERVICE_POINTS.path,
+      STOP_POINT.number.number,
+      'service-point'
+    ]);
   });
 });
