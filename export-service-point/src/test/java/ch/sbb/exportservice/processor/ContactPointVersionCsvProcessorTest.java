@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
-public class ContactPointVersionCsvProcessorTest {
+class ContactPointVersionCsvProcessorTest {
 
   private final ContactPointVersionCsvProcessor processor = new ContactPointVersionCsvProcessor();
 

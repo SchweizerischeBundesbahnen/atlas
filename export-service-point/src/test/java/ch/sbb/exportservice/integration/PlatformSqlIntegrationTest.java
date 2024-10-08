@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class PlatformSqlIntegrationTest extends BasePrmSqlIntegrationTest {
+class PlatformSqlIntegrationTest extends BasePrmSqlIntegrationTest {
 
     @Test
     void shouldReturnFullPlatforms() throws SQLException {
