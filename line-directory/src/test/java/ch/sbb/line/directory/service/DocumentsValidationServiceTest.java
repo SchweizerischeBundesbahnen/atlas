@@ -81,7 +81,7 @@ import org.junit.jupiter.api.function.Executable;
    void givenListOfFilesValidateNumberOfFilesIsGreaterThanAllowed() {
     Executable executable = () -> documentsValidationService.validateMaxNumberOfFiles(files.size());
     Exception exception = assertThrows(PdfDocumentConstraintViolationException.class, executable);
-    assertEquals(exception.getMessage(), "Overall number of documents is: 6 which exceeds the number of allowed documents of 3.");
+    assertEquals("Overall number of documents is: 6 which exceeds the number of allowed documents of 3.", exception.getMessage());
   }
 
   @Test
@@ -93,7 +93,7 @@ import org.junit.jupiter.api.function.Executable;
    void givenListOfFilesAndStatementDocumentsValidateSizeOfFilesGreaterThanAllowed() {
     Executable executable = () -> documentsValidationService.validateMaxSizeOfFiles(files, statementDocumentsWithFilesSizeAlmost20MB(), MAX_DOCUMENTS_SIZE);
     Exception exception = assertThrows(PdfDocumentConstraintViolationException.class, executable);
-    assertEquals(exception.getMessage(), "The combined size of all documents in bytes is: 21023860 which exceeds the maximum allowed size of 20MB.");
+    assertEquals("The combined size of all documents in bytes is: 21023860 which exceeds the maximum allowed size of 20MB.", exception.getMessage());
   }
 
   @Test
@@ -105,7 +105,7 @@ import org.junit.jupiter.api.function.Executable;
    void givenListOfFilesAndStatementDocumentsValidateThereAreDuplicateNames() {
     Executable executable = () -> documentsValidationService.validateNoFileNameDuplicate(files, statementDocumentsWithDuplicatedFileNames());
     Exception exception = assertThrows(PdfDocumentConstraintViolationException.class, executable);
-    assertEquals(exception.getMessage(), "FileName must be unique");
+    assertEquals("FileName must be unique", exception.getMessage());
   }
 
 }
