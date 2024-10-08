@@ -10,12 +10,14 @@ import ch.sbb.importservice.entity.BulkImport;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
@@ -32,18 +34,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class BulkImportJobService {
 
+  public static final String EMAILS_JOB_PARAMETER = "emails";
+
   private final JobLauncher jobLauncher;
   private final Job bulkImportJob;
 
   @Transactional(propagation = Propagation.NOT_SUPPORTED)
-  public void startBulkImportJob(BulkImport bulkImport, File file) {
+  public void startBulkImportJob(BulkImport bulkImport, File file, List<String> emails) {
     JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
-            .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
-            .addLong(BULK_IMPORT_ID_JOB_PARAMETER, bulkImport.getId())
-            .addString(BulkImport.Fields.application, bulkImport.getApplication().toString())
-            .addString(BulkImport.Fields.objectType, bulkImport.getObjectType().toString())
-            .addString(BulkImport.Fields.importType, bulkImport.getImportType().toString())
-            .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis());
+        .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
+        .addLong(BULK_IMPORT_ID_JOB_PARAMETER, bulkImport.getId())
+        .addString(BulkImport.Fields.application, bulkImport.getApplication().toString())
+        .addString(BulkImport.Fields.objectType, bulkImport.getObjectType().toString())
+        .addString(BulkImport.Fields.importType, bulkImport.getImportType().toString())
+        .addJobParameter(EMAILS_JOB_PARAMETER, new JobParameter(emails, List.class))
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis());
 
     Optional<String> inNameOf = Optional.ofNullable(bulkImport.getInNameOf());
     inNameOf.ifPresent(value -> jobParametersBuilder.addString(BulkImport.Fields.inNameOf, value));
