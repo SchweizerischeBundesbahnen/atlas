@@ -11,7 +11,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface GeoReferenceApiV1 {
 
     @GetMapping("/reverse-geocode")
-    GeoReference getLocationInformation(@Valid @RequestBody CoordinatePair coordinatePair);
+    GeoReference getLocationInformation(@Valid CoordinatePair coordinatePair);
 
     @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
     @ResponseStatus(HttpStatus.OK)
