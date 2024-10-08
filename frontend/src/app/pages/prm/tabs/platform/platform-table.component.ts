@@ -114,6 +114,6 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
   navigateToTrafficPointElements(){
     const servicePoints = this.route.parent!.snapshot.data.servicePoints;
     const number = servicePoints[servicePoints.length - 1].number.number;
-    this.router.navigateByUrl('/service-point-directory/service-points/' + number + '/traffic-point-elements')
+    this.router.navigateByUrl('/' + Pages.SEPODI.path + '/' + Pages.SERVICE_POINTS.path + '/' + number + '/' + Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path);
   }
 }
