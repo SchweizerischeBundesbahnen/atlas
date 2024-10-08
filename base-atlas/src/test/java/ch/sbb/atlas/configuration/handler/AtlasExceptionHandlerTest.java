@@ -198,4 +198,11 @@ public class AtlasExceptionHandlerTest {
     return new ConstraintViolationException(validator.validate(servicePointVersionModel));
   }
 
+  @Test
+  void shouldMapAccessDeniedExceptionToErrorResponse() {
+    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(new AccessDeniedException("no"));
+    assertThat(errorResponse.getMessage()).isEqualTo("You are not allowed to perform this operation on the ATLAS platform.");
+    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo("ERROR.NOTALLOWED");
+  }
+
 }
