@@ -2,6 +2,7 @@ package ch.sbb.mail.model;
 
 import static ch.sbb.atlas.kafka.model.mail.MailType.APPROVED_STOP_POINT_WORKFLOW_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.ATLAS_STANDARD;
+import static ch.sbb.atlas.kafka.model.mail.MailType.BULK_IMPORT_RESULT_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.CANCEL_STOP_POINT_WORKFLOW_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.REJECT_STOP_POINT_WORKFLOW_NOTIFICATION;
@@ -43,10 +44,12 @@ public enum MailTemplateConfig {
   REJECT_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("reject_stop_point_workflow_notification", null, null, true, false, true),
   STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION_TEMPLATE("stop_point_workflow_pincode_notification", null, null, true, false, true),
   APPROVED_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("approved_stop_point_workflow_notification", null, null, true, false, true),
-  CANCEL_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("reject_and_cancel_stop_point_workflow_notification", null, null, true, false, true),
+  CANCEL_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("reject_and_cancel_stop_point_workflow_notification", null, null, true, false,
+      true),
   STOP_POINT_WORKFLOW_RESTART_NOTIFICATION_TEMPLATE("stop_point_workflow_restart_notification", null, null, true, false, true),
   STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION_TEMPLATE("stop_point_workflow_restart_cc_notification", null, null, true, false,
       true),
+  BULK_IMPORT_RESULT_TEMPLATE("bulk-import-result-template", null, null, true, false, true),
 
   ;
 
@@ -77,6 +80,7 @@ public enum MailTemplateConfig {
     MAIL_TYPE_TEMPLATE_CONFIG.put(STOP_POINT_WORKFLOW_RESTART_NOTIFICATION, STOP_POINT_WORKFLOW_RESTART_NOTIFICATION_TEMPLATE);
     MAIL_TYPE_TEMPLATE_CONFIG.put(STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION,
         STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION_TEMPLATE);
+    MAIL_TYPE_TEMPLATE_CONFIG.put(BULK_IMPORT_RESULT_NOTIFICATION, BULK_IMPORT_RESULT_TEMPLATE);
   }
 
   public static MailTemplateConfig getMailTemplateConfig(MailType mailType) {

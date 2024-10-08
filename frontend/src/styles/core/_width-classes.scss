@@ -1,0 +1,12 @@
+$widths: (
+  30: 30%,
+  40: 40%,
+  60: 60%,
+  70: 70%,
+);
+
+@each $class, $value in $widths {
+  .w-#{$class} {
+    width: $value;
+  }
+}
