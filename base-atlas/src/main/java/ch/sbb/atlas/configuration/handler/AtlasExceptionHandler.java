@@ -263,6 +263,9 @@ public class AtlasExceptionHandler {
     if (exception instanceof AtlasException atlasException) {
       return atlasException(atlasException).getBody();
     }
+    if (exception instanceof AccessDeniedException accessDeniedException) {
+      return handleAccessDeniedException(accessDeniedException).getBody();
+    }
     if (exception instanceof MethodArgumentNotValidException methodArgumentNotValidException) {
       return methodArgumentNotValidException(methodArgumentNotValidException).getBody();
     }
