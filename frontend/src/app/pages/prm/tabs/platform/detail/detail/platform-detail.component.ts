@@ -19,6 +19,7 @@ import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import {catchError, EMPTY} from "rxjs";
+import {Pages} from "../../../../../pages";
 
 @Component({
   selector: 'app-platforms',
@@ -187,6 +188,6 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
   }
 
   navigateToTrafficPointElement(){
-    this.router.navigateByUrl('/service-point-directory/traffic-point-elements/' + this.selectedVersion.sloid)
+    this.router.navigateByUrl('/' + Pages.SEPODI.path + '/' + Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path + '/' + this.selectedVersion.sloid);
   }
 }

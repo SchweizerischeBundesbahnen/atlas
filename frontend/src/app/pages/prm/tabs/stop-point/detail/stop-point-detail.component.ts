@@ -269,6 +269,6 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   navigateToSePoDi(){
-    this.router.navigateByUrl('/service-point-directory/service-points/' + this.selectedVersion?.number.number + '/service-point')
+    this.router.navigateByUrl('/' + Pages.SEPODI.path + '/' + Pages.SERVICE_POINTS.path + '/' + this.selectedVersion?.number.number + '/service-point');
   }
 }

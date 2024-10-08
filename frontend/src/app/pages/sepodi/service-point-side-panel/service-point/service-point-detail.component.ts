@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {VersionsHandlingService} from '../../../../core/versioning/versions-handling.service';
 import {
@@ -349,6 +349,6 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   navigateToStopPoint(){
-    this.router.navigateByUrl('/prm-directory/stop-points/' + this.selectedVersion?.sloid + '/stop-point')
+    this.router.navigateByUrl('/' + Pages.PRM.path + '/' + Pages.STOP_POINTS.path + '/' + this.selectedVersion?.sloid + '/stop-point');
   }
 }
