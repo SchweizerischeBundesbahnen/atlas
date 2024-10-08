@@ -5,7 +5,7 @@ import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
-import ch.sbb.workflow.helper.AtlasFrontendBaseUrl;
+import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
