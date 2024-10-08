@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {VersionsHandlingService} from '../../../../core/versioning/versions-handling.service';
 import {
@@ -12,7 +12,7 @@ import {
 import {FormGroup} from '@angular/forms';
 import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder,} from './service-point-detail-form-group';
 import {MapService} from '../../map/map.service';
-import {BehaviorSubject, catchError, EMPTY, Observable, of, take} from 'rxjs';
+import {BehaviorSubject, catchError, EMPTY, Observable, of, Subject, take} from 'rxjs';
 import {Pages} from '../../../pages';
 import {DialogService} from '../../../../core/components/dialog/dialog.service';
 import {ValidationService} from '../../../../core/validation/validation.service';
@@ -24,6 +24,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ValidityService} from '../../validity/validity.service';
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-service-point',
@@ -32,6 +33,7 @@ import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-s
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   readonly servicePointStatus = Status;
+  private onDestroy$ = new Subject<boolean>();
 
   servicePointVersions!: ReadServicePointVersion[];
   selectedVersion?: ReadServicePointVersion;
@@ -101,6 +103,8 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
 
   ngOnDestroy() {
     this.mapService.deselectServicePoint();
+    this.onDestroy$.next(true);
+    this.onDestroy$.complete();
   }
 
   switchVersion(newIndex: number) {
@@ -153,7 +157,9 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   private displayAndSelectServicePointOnMap() {
-    this.mapService.mapInitialized.subscribe((initialized) => {
+    this.mapService.mapInitialized.pipe(
+      takeUntil(this.onDestroy$))
+      .subscribe((initialized) => {
       if (initialized) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);

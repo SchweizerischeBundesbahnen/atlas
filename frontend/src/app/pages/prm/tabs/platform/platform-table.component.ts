@@ -112,7 +112,8 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
   }
 
   navigateToTrafficPointElements(){
-    const number = this.route.parent!.snapshot.data.servicePoints[0].number.number;
+    const servicePoints = this.route.parent!.snapshot.data.servicePoints;
+    const number = servicePoints[servicePoints.length - 1].number.number;
     this.router.navigateByUrl('/service-point-directory/service-points/' + number + '/traffic-point-elements')
   }
 }

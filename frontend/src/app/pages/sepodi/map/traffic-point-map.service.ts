@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import { GeoJSONSource, MapGeoJSONFeature } from 'maplibre-gl';
 import { MAP_TRAFFIC_POINT_LAYER_NAME } from './map-style';
 import { Feature } from 'geojson';
 import { CoordinatePair, TrafficPointElementsService, TrafficPointElementType } from '../../../api';
 import { Pages } from '../../pages';
 import { MapService } from './map.service';
-import { filter } from 'rxjs/operators';
-import { take } from 'rxjs';
+import {filter, takeUntil} from 'rxjs/operators';
+import {Subject, take} from 'rxjs';
 
 export interface DisplayableTrafficPoint {
   type: TrafficPointElementType;
@@ -18,7 +18,9 @@ export interface DisplayableTrafficPoint {
 @Injectable({
   providedIn: 'root',
 })
-export class TrafficPointMapService {
+export class TrafficPointMapService implements OnDestroy {
+  private onDestroy$ = new Subject<boolean>();
+
   constructor(
     private mapService: MapService,
     private trafficPointElementsService: TrafficPointElementsService,
@@ -39,11 +41,18 @@ export class TrafficPointMapService {
     return popupHtml;
   }
 
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(true);
+    this.onDestroy$.complete();
+  }
+
   displayTrafficPointsOnMap(servicePointNumber: number) {
     this.mapService.mapInitialized
       .pipe(
         filter((initialized) => initialized),
         take(1),
+        takeUntil(this.onDestroy$)
       )
       .subscribe(() => {
         this.trafficPointElementsService
@@ -97,6 +106,7 @@ export class TrafficPointMapService {
       .pipe(
         filter((initialized) => initialized),
         take(1),
+        takeUntil(this.onDestroy$)
       )
       .subscribe(() => {
         const source = this.mapService.map.getSource('current_traffic_point') as GeoJSONSource;
