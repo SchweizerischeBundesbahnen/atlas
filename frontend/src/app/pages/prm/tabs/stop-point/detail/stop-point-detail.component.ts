@@ -267,4 +267,13 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       message: 'PRM.DIALOG.PRM_VARIANT_CHANGES_MSG',
     });
   }
+
+  navigateToSePoDi(){
+    this.router.navigate([
+      Pages.SEPODI.path,
+      Pages.SERVICE_POINTS.path,
+      this.selectedVersion!.number.number,
+      Pages.SEPODI_TAB.path
+    ]);
+  }
 }
