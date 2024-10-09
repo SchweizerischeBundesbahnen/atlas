@@ -240,6 +240,101 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldTerminateTrafficPointLikePostAutoUsingTerminateEndpoint() throws Exception {
+    assertThat(trafficPointElementVersion.getValidTo()).isEqualTo(LocalDate.of(2099, 12, 31));
+
+    String edited = """
+        {
+             "creationDate": null,
+             "creator": null,
+             "editionDate": null,
+             "editor": null,
+             "id": %d,
+             "designation": "Bezeichnung",
+             "designationOperational": "gali00",
+             "length": null,
+             "boardingAreaHeight": null,
+             "compassDirection": 277.0,
+             "trafficPointElementType": "BOARDING_PLATFORM",
+             "sloid": "ch:1:sloid:1400015:0:310240",
+             "parentSloid": "ch:1:sloid:1400015:310240",
+             "validFrom": "2020-01-06",
+             "validTo": "2024-03-03",
+
+             "numberWithoutCheckDigit": 1400015,
+             "trafficPointElementGeolocation": {
+                 "spatialReference": "LV95",
+                 "north": 1116323.213,
+                 "east": 2505236.389,
+                 "height": -9999.0
+             },
+             "hasGeolocation": true
+         }
+        """.formatted(trafficPointElementVersion.getId());
+    mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/" + trafficPointElementVersion.getId())
+            .contentType(contentType)
+            .content(edited))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].validTo", is("2024-03-03")));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenTerminateTrafficPointLikePostAutoUsingTerminateEndpoint() throws Exception {
+    repository.deleteAll();
+    trafficPointElementVersion.setValidFrom(LocalDate.of(2025, 1, 1));
+    trafficPointElementVersion.setValidTo(LocalDate.of(2030, 12, 31));
+    TrafficPointElementVersion trafficPointElementVersion1 = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementVersion1.setValidFrom(LocalDate.of(2020, 1, 1));
+    trafficPointElementVersion1.setValidTo(LocalDate.of(2024, 12, 31));
+    trafficPointElementVersion1.setDesignation("Bezeichnung1");
+    TrafficPointElementVersion firstSaved = repository.save(trafficPointElementVersion1);
+    repository.save(trafficPointElementVersion);
+
+    String edited = """
+        {
+             "creationDate": null,
+             "creator": null,
+             "editionDate": null,
+             "editor": null,
+             "id": %d,
+             "designation": "Bezeichnung",
+             "designationOperational": "gali00",
+             "length": null,
+             "boardingAreaHeight": null,
+             "compassDirection": 277.0,
+             "trafficPointElementType": "BOARDING_PLATFORM",
+             "sloid": "ch:1:sloid:1400015:0:310240",
+             "parentSloid": "ch:1:sloid:1400015:310240",
+             "validFrom": "2020-01-01",
+             "validTo": "2024-03-03",
+             "numberWithoutCheckDigit": 1400015,
+             "trafficPointElementGeolocation": {
+                 "spatialReference": "LV95",
+                 "north": 1116323.213,
+                 "east": 2505236.389,
+                 "height": -9999.0
+             },
+             "hasGeolocation": true
+         }
+        """.formatted(firstSaved.getId());
+
+
+    // when
+    MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/" + firstSaved.getId())
+            .contentType(contentType)
+            .content(edited))
+        .andExpect(status().isForbidden()).andReturn();
+
+    // then
+    ErrorResponse errorResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
+    assertThat(errorResponse.getMessage()).isEqualTo(
+        "Termination not allowed for sloid ch:1:sloid:1400015:0:310240 since the version with the given id "
+            + firstSaved.getId() + " is not the last version. Termination is only allowed for the last version.");
+  }
+
+  @Test
   void shouldCreateTrafficPointElementPlatformWithGivenSloid() throws Exception {
     repository.deleteAll();
     CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
