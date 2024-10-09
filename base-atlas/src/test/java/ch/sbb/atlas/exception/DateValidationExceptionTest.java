@@ -2,6 +2,7 @@ package ch.sbb.atlas.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
+import ch.sbb.atlas.api.model.ErrorResponse.Parameter;
 import ch.sbb.atlas.versioning.exception.DateValidationException;
 import org.junit.jupiter.api.Test;
 
@@ -22,10 +23,14 @@ class DateValidationExceptionTest {
         assertThat(displayInfo.getParameters()).hasSize(1);
         assertThat(displayInfo
                 .getCode()).isEqualTo("VALIDATION.DATE_RANGE_ERROR");
+
+        Parameter onlyParameter = displayInfo.getParameters().getFirst();
+        assertThat(onlyParameter.getKey()).isEqualTo("date");
+        assertThat(onlyParameter.getValue()).isEqualTo("Date: 31.12.9999");
     }
 
     @Test
-    void shouldDisplayErrorMessage2(){
+    void shouldDisplayErrorMessageWithDateRange(){
         // given
         DateValidationException exception = new DateValidationException("Edited ValidFrom 31.12.9999 is bigger than edited ValidTo 01.01.2000");
         // when & then
@@ -38,5 +43,9 @@ class DateValidationExceptionTest {
         assertThat(displayInfo.getParameters()).hasSize(1);
         assertThat(displayInfo
                 .getCode()).isEqualTo("VALIDATION.DATE_RANGE_ERROR");
+
+        Parameter onlyParameter = displayInfo.getParameters().getFirst();
+        assertThat(onlyParameter.getKey()).isEqualTo("date");
+        assertThat(onlyParameter.getValue()).isEqualTo("Valid From: 31.12.9999, Valid To: 01.01.2000");
     }
 }
