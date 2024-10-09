@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {ServicePointDetailComponent} from './service-point-detail.component';
 import {AppTestingModule} from '../../../../app.testing.module';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {BehaviorSubject, of} from 'rxjs';
 import {FormGroup, FormsModule} from '@angular/forms';
 import {TextFieldComponent} from '../../../../core/form-components/text-field/text-field.component';
@@ -21,7 +21,7 @@ import {NotificationService} from '../../../../core/notification/notification.se
 import {DisplayCantonPipe} from '../../../../core/cantons/display-canton.pipe';
 import {MapService} from '../../map/map.service';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {BERN} from '../../../../../test/data/service-point';
+import {BERN, BERN_WYLEREGG} from '../../../../../test/data/service-point';
 import {UserDetailInfoComponent} from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
@@ -29,6 +29,8 @@ import {DetailFooterComponent} from "../../../../core/components/detail-footer/d
 import {ValidityService} from "../../validity/validity.service";
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
+import SpyObj = jasmine.SpyObj;
+import {Pages} from "../../../pages";
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
@@ -69,12 +71,16 @@ class ServicePointGeographyMockComponent {
 describe('ServicePointDetailComponent', () => {
   let component: ServicePointDetailComponent;
   let fixture: ComponentFixture<ServicePointDetailComponent>;
+  let routerSpy: SpyObj<Router>;
 
   const activatedRouteMock = {parent: {data: of({servicePoint: BERN})}};
 
   let validityService: ValidityService;
 
   beforeEach(async () => {
+    routerSpy = jasmine.createSpyObj(['navigate']);
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
+
     await TestBed.configureTestingModule({
       declarations: [
         ServicePointDetailComponent,
@@ -106,6 +112,7 @@ describe('ServicePointDetailComponent', () => {
         {provide: TranslatePipe},
         {provide: MapService, useValue: mapServiceSpy},
         {provide: AddStopPointWorkflowDialogService, useValue: addStopPointWorkflowDialogService},
+        {provide: Router, useValue: routerSpy},
       ],
     }).compileComponents();
 
@@ -395,4 +402,16 @@ describe('ServicePointDetailComponent', () => {
     expect(addStopPointWorkflowDialogService.openDialog).toHaveBeenCalled();
   });
 
+  it('should navigate to the correct stop point URL', () => {
+    component.selectedVersion = BERN_WYLEREGG;
+
+    component.navigateToStopPoint();
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith([
+      Pages.PRM.path,
+      Pages.STOP_POINTS.path,
+      component.selectedVersion!.sloid,
+      Pages.PRM_STOP_POINT_TAB.path
+    ]);
+  });
 });
