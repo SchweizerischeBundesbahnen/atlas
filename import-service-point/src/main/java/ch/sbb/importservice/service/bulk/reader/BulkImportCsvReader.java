@@ -1,6 +1,7 @@
 package ch.sbb.importservice.service.bulk.reader;
 
 import ch.sbb.atlas.exception.CsvException;
+import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportStatus;
@@ -21,6 +22,10 @@ public class BulkImportCsvReader {
 
   public static final String NULLING_VALUE = "<null>";
 
+  public static String readHeaderLineIgnoringBom(String rawLine) {
+    return rawLine.replaceAll(String.valueOf(CsvExportWriter.UTF_8_BYTE_ORDER_MARK), "");
+  }
+
   public <T> List<BulkImportUpdateContainer<T>> readLinesFromFileWithNullingValue(File file, Class<T> clazz) {
     List<BulkImportUpdateContainer<T>> mappedObjects = new ArrayList<>();
 
@@ -28,7 +33,7 @@ public class BulkImportCsvReader {
 
     try (Scanner scanner = new Scanner(file)) {
       for (int lineNumber = 1; scanner.hasNext(); lineNumber++) {
-        String line = scanner.nextLine();
+        String line = readHeaderLineIgnoringBom(scanner.nextLine());
         if (lineNumber == 1) {
           header = line + "\n";
         } else {
