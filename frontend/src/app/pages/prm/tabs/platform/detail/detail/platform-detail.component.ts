@@ -189,7 +189,6 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
 
   navigateToTrafficPointElement(){
     this.router.navigate([
-      '/',
       Pages.SEPODI.path,
       Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
       this.selectedVersion.sloid

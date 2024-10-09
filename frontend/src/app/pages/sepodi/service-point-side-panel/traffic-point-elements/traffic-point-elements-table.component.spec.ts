@@ -93,7 +93,6 @@ describe('TrafficPointElementsTableComponent', () => {
     component.navigateToPlatforms();
 
     expect(routerSpy.navigate).toHaveBeenCalledWith([
-      '/',
       Pages.PRM.path,
       Pages.STOP_POINTS.path,
       'ch:1:sloid:89008',

@@ -63,8 +63,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.mapService.removeMap();
     this.mapService.mapInitialized.next(false);
-    this.onDestroy$.complete();
     this.onDestroy$.next(true);
+    this.onDestroy$.complete();
   }
 
   toggleStyleSelection() {

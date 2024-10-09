@@ -332,7 +332,6 @@ describe('PlatformDetailComponent', () => {
       component.navigateToTrafficPointElement();
 
       expect(routerSpy.navigate).toHaveBeenCalledWith([
-        '/',
         Pages.SEPODI.path,
         Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
         reducedPlatform[0].sloid
