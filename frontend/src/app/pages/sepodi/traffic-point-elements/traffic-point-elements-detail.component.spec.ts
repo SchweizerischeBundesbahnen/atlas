@@ -36,6 +36,9 @@ import { UserDetailInfoComponent } from '../../../core/components/base-detail/us
 import {DetailPageContainerComponent} from "../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../core/components/detail-footer/detail-footer.component";
+import SpyObj = jasmine.SpyObj;
+import {Pages} from "../../pages";
+import {PRM_DETAIL_TAB_LINK} from "../../prm/tabs/relation/tab/detail-with-relation-tab.component";
 const authService: Partial<AuthService> = {};
 const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
   'displayTrafficPointsOnMap',
@@ -47,7 +50,7 @@ const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
 describe('TrafficPointElementsDetailComponent', () => {
   let component: TrafficPointElementsDetailComponent;
   let fixture: ComponentFixture<TrafficPointElementsDetailComponent>;
-  let router: Router;
+  let routerSpy: SpyObj<Router>;
 
   const mapService = jasmine.createSpyObj<MapService>([
     'placeMarkerAndFlyTo',
@@ -79,13 +82,15 @@ describe('TrafficPointElementsDetailComponent', () => {
 
   describe('for existing Version', () => {
     beforeEach(() => {
+      routerSpy = jasmine.createSpyObj('Router', ['navigate'], { events: of(null) });
+      routerSpy.navigate.and.returnValue(Promise.resolve(true));
+
       window.history.pushState({ isTrafficPointArea: false }, '', '');
       const activatedRouteMock = { data: of({ trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]] }) };
       setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-      router = TestBed.inject(Router);
     });
 
     it('should display current designationOperational and validity', () => {
@@ -114,10 +119,10 @@ describe('TrafficPointElementsDetailComponent', () => {
     });
 
     it('should go back to servicepoint', () => {
-      spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+      routerSpy.navigate.and.returnValue(Promise.resolve(true));
       component.backToTrafficPointElements('traffic-point-elements');
 
-      expect(router.navigate).toHaveBeenCalledWith([
+      expect(routerSpy.navigate).toHaveBeenCalledWith([
         'service-point-directory',
         'service-points',
         8589008,
@@ -145,13 +150,15 @@ describe('TrafficPointElementsDetailComponent', () => {
 
   describe('for new Version', () => {
     beforeEach(() => {
+      routerSpy = jasmine.createSpyObj('Router', ['navigate'], { events: of(null) });
+      routerSpy.navigate.and.returnValue(Promise.resolve(true));
+
       window.history.pushState({ isTrafficPointArea: false }, '', '');
       const activatedRouteMock = { data: of({ trafficPoint: [] }) };
       setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-      router = TestBed.inject(Router);
     });
 
     it('should not display current version', () => {
@@ -167,6 +174,21 @@ describe('TrafficPointElementsDetailComponent', () => {
       component.save();
 
       expect(trafficPointService.createTrafficPoint).toHaveBeenCalled();
+    });
+
+    it('should navigate to the correct platform URL', () => {
+      routerSpy.navigate.and.returnValue(Promise.resolve(true));
+      component.selectedVersion = BERN_WYLEREGG_TRAFFIC_POINTS[0]
+      component.navigateToPlatform();
+
+      expect(routerSpy.navigate).toHaveBeenCalledWith([
+        Pages.PRM.path,
+        Pages.STOP_POINTS.path,
+        component.selectedVersion?.servicePointSloid,
+        Pages.PLATFORMS.path,
+        component.selectedVersion.sloid,
+        PRM_DETAIL_TAB_LINK
+      ]);
     });
   });
 
@@ -205,6 +227,7 @@ describe('TrafficPointElementsDetailComponent', () => {
         { provide: ServicePointsService, useValue: servicePointService },
         { provide: TrafficPointElementsService, useValue: trafficPointService },
         { provide: DialogService, useValue: dialogService },
+        {provide: Router, useValue: routerSpy},
         SplitServicePointNumberPipe,
         TranslatePipe,
       ],
