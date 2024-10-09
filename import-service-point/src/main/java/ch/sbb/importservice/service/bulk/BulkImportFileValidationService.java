@@ -6,6 +6,7 @@ import ch.sbb.importservice.exception.ContentTypeFileValidationException;
 import ch.sbb.importservice.exception.FileHeaderValidationException;
 import ch.sbb.importservice.model.BulkImportConfig;
 import ch.sbb.importservice.service.ExcelToCsvConverter;
+import ch.sbb.importservice.service.bulk.reader.BulkImportCsvReader;
 import ch.sbb.importservice.service.bulk.reader.BulkImportReaders;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.io.File;
@@ -74,7 +75,7 @@ public class BulkImportFileValidationService {
   private static String getFileHeader(File file) {
     try (Scanner scanner = new Scanner(file)) {
       if (scanner.hasNext()) {
-        return scanner.nextLine();
+        return BulkImportCsvReader.readHeaderLineIgnoringBom(scanner.nextLine());
       }
       return null;
     } catch (IOException ex) {
