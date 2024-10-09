@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {VersionsHandlingService} from '../../../../core/versioning/versions-handling.service';
 import {
   ApplicationRole,
-  ApplicationType, BusinessObjectType,
+  ApplicationType,
   CreateServicePointVersion,
   ReadServicePointVersion,
   ServicePointsService,
@@ -353,7 +353,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
       Pages.PRM.path,
       Pages.STOP_POINTS.path,
       this.selectedVersion!.sloid,
-      BusinessObjectType.StopPoint
+      Pages.PRM_STOP_POINT_TAB.path
     ]);
   }
 }
