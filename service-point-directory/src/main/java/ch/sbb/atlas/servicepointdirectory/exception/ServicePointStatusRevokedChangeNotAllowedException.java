@@ -37,7 +37,7 @@ public class ServicePointStatusRevokedChangeNotAllowedException extends AtlasExc
         return List.of(Detail.builder()
                 .message(ERROR_MESSAGE)
                 .displayInfo(builder()
-                        .code("SEPODI.SERVICE_POINTS.CONFLICT.STATUS")
+                        .code("SEPODI.SERVICE_POINTS.ERROR.STATUS_CHANGE_NOT_POSSIBLE")
                         .build())
                 .build());
     }
