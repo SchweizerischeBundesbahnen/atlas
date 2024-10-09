@@ -21,13 +21,13 @@ public class ServicePointStatusRevokedChangeNotAllowedException extends AtlasExc
 
     private final ServicePointNumber servicePointNumber;
     private final Status servicePointStatus;
-    private static final String message = "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!";
+    private static final String MESSAGE = "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!";
 
     @Override
     public ErrorResponse getErrorResponse() {
         return ErrorResponse.builder()
             .status(HttpStatus.PRECONDITION_FAILED.value())
-            .message(message)
+            .message(MESSAGE)
             .error("Trying to update status for ServicePointNumber " + servicePointNumber.getNumber() + " and current status: " + servicePointStatus)
             .details(new TreeSet<>(getErrorDetails()))
             .build();
@@ -35,7 +35,7 @@ public class ServicePointStatusRevokedChangeNotAllowedException extends AtlasExc
 
     private List<Detail> getErrorDetails() {
         return List.of(Detail.builder()
-                .message(message)
+                .message(MESSAGE)
                 .displayInfo(builder()
                         .code("SEPODI.SERVICE_POINTS.CONFLICT.STATUS")
                         .build())
