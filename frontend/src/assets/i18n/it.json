@@ -1059,8 +1059,10 @@
       },
       "CONFLICT": {
         "DESIGNATION_OFFICIAL": "La denominazione ufficiale {{designationOfficial}} è già assegnata nel periodo dal {{validFrom}} al {{validTo}} da {{number}}.",
-        "DESIGNATION_LONG": "La denominazione lunga {{designationLong}} è già assegnata nel periodo dal {{validFrom}} al {{validTo}} da {{number}}.",
-        "STATUS": "Lo stato del servizio non può essere modificato per lo stato REVOKED e può essere aggiornato solo da DRAFT a VALIDATED!"
+        "DESIGNATION_LONG": "La denominazione lunga {{designationLong}} è già assegnata nel periodo dal {{validFrom}} al {{validTo}} da {{number}}."
+      },
+      "ERROR": {
+        "STATUS_CHANGE_NOT_POSSIBLE": "Lo stato del servizio non può essere modificato per lo stato REVOKED e può essere aggiornato solo da DRAFT a VALIDATED!"
       },
       "TERMINATION_FORBIDDEN": "Non siete autorizzati a terminare la fermata. Utilizzate il modulo all'indirizzo https://www.tp-info.ch/it/soppressione-fermata.",
       "TERMINATION_NOT_ALLOWED_WITH_VERSION_IN_REVIEW": "La terminazione della fermata non è possibile in quanto una versione è attualmente in fase di udienza.",
