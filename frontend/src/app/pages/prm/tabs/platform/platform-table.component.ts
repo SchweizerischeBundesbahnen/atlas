@@ -110,4 +110,14 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     });
     return mergedOverview;
   }
+
+  navigateToTrafficPointElements(){
+    const number = this.route.parent!.snapshot.data.servicePoints[0].number.number;
+    this.router.navigate([
+      Pages.SEPODI.path,
+      Pages.SERVICE_POINTS.path,
+      number,
+      Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path
+    ]);
+  }
 }

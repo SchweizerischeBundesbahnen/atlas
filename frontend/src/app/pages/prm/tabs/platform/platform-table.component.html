@@ -1,4 +1,10 @@
 <div class="tab-detail-container">
+  <div class="d-flex flex-row pe-3 col-12 justify-content-end">
+    <div class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigateToTrafficPointElements()">
+      <img alt="traffic-point-elements" src="assets/images/service-point-symbols/switzerland.svg">
+      <p>{{ 'PAGES.SERVICE_POINTS.TITLE_HEADER' | translate }}</p>
+    </div>
+  </div>
   <app-table
     data-cy="platform-overview-table"
     [tableData]="platforms"

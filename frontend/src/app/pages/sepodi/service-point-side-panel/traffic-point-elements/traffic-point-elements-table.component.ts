@@ -115,4 +115,14 @@ export class TrafficPointElementsTableComponent implements OnInit {
       this.totalCount$ = container.totalCount!;
     });
   }
+
+  navigateToPlatforms(){
+    const sloid = this.route.parent!.snapshot.data.servicePoint[0].sloid;
+    this.router.navigate([
+      Pages.PRM.path,
+      Pages.STOP_POINTS.path,
+      sloid,
+      Pages.PLATFORMS.path
+    ]);
+  }
 }
