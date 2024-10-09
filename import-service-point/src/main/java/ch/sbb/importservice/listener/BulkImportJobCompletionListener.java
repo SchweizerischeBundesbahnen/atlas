@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
+import org.springframework.batch.core.JobParameter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -48,8 +49,9 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
     uploadLogFile(logFile, currentImport);
     bulkImportLogService.deleteLog(jobExecution.getId());
 
-    sendMailToImporter(currentImport,
-        (List<String>) jobExecution.getJobParameters().getParameter(EMAILS_JOB_PARAMETER).getValue());
+    JobParameter<List<String>> emailsJobParameter = (JobParameter<List<String>>) jobExecution.getJobParameters()
+        .getParameter(EMAILS_JOB_PARAMETER);
+    sendMailToImporter(currentImport, emailsJobParameter != null ? emailsJobParameter.getValue() : null);
   }
 
   private void uploadLogFile(LogFile logFile, BulkImport bulkImport) {
