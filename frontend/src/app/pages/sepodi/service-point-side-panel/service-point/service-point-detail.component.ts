@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {VersionsHandlingService} from '../../../../core/versioning/versions-handling.service';
 import {
   ApplicationRole,
-  ApplicationType,
+  ApplicationType, BusinessObjectType,
   CreateServicePointVersion,
   ReadServicePointVersion,
   ServicePointsService,
@@ -350,11 +350,10 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
 
   navigateToStopPoint(){
     this.router.navigate([
-      '/',
       Pages.PRM.path,
       Pages.STOP_POINTS.path,
       this.selectedVersion!.sloid,
-      'stop-point'
+      BusinessObjectType.StopPoint
     ]);
   }
 }
