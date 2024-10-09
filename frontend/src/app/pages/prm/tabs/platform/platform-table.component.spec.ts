@@ -78,7 +78,6 @@ describe('PlatformTableComponent', () => {
     component.navigateToTrafficPointElements();
 
     expect(routerSpy.navigate).toHaveBeenCalledWith([
-      '/',
       Pages.SEPODI.path,
       Pages.SERVICE_POINTS.path,
       8589008,
