@@ -5,6 +5,7 @@ import static ch.sbb.importservice.service.bulk.BulkImportFileValidationService.
 import static ch.sbb.importservice.service.bulk.BulkImportFileValidationService.XLS_CONTENT_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.ImportFiles;
@@ -96,6 +97,16 @@ class BulkImportFileValidationServiceTest {
     assertThatExceptionOfType(FileHeaderValidationException.class).isThrownBy(
         () -> bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile,
             ServicePointUpdate.CONFIG));
+  }
+
+  @Test
+  void shouldIgnoreBomAtFileStart() throws IOException {
+    File file = ImportFiles.getFileByPath("import-files/valid/service-point-update-with-bom.csv");
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "service-point-update-with-bom.csv", CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    assertThatNoException().isThrownBy(
+        () -> bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile, ServicePointUpdate.CONFIG));
   }
 
   @Test
