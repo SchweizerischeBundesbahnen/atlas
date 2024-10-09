@@ -53,7 +53,7 @@ const routes: Routes = [
         runGuardsAndResolvers: 'always',
         children: [
           {
-            path: 'service-point',
+            path: Pages.SEPODI_TAB.path,
             component: ServicePointDetailComponent,
             canDeactivate: [canLeaveDirtyForm],
           },
@@ -78,7 +78,7 @@ const routes: Routes = [
           },
           {
             path: '**',
-            redirectTo: 'service-point',
+            redirectTo: Pages.SEPODI_TAB.path,
           },
         ],
       },
