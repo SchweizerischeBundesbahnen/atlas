@@ -16,5 +16,7 @@ class DateValidationExceptionTest {
         assertThat(errorResponse.getStatus()).isEqualTo(400);
         assertThat(errorResponse.getMessage()).isEqualTo("ValidTo cannot be after 31.12.9999.");
         assertThat(errorResponse.getError()).isEqualTo("ValidTo cannot be after 31.12.9999.");
+        assertThat(exception.getErrorResponse().getDetails().iterator().next().getDisplayInfo()
+                .getCode()).isEqualTo("VALIDATION.DATE_RANGE_ERROR");
     }
 }
