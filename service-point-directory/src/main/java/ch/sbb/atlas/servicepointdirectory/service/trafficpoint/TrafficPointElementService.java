@@ -8,6 +8,7 @@ import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionNotLastException;
 import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
@@ -99,6 +100,16 @@ public class TrafficPointElementService {
     updateTrafficPointElementVersion(currentVersion, editedVersion);
   }
 
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
+      (#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  public void terminate(TrafficPointElementVersion editedVersion,
+      List<ServicePointVersion> currentVersions) {
+    TrafficPointElementVersion trafficPointElementVersionToUpdate = findBySloidOrderByValidFrom(editedVersion.getSloid()).getLast();
+    trafficPointElementVersionToUpdate.setValidTo(editedVersion.getValidTo());
+    trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersionToUpdate);
+  }
+
   public void updateTrafficPointElementVersion(TrafficPointElementVersion currentVersion,
       TrafficPointElementVersion editedVersion) {
     trafficPointElementVersionRepository.incrementVersion(currentVersion.getSloid());
@@ -157,5 +168,17 @@ public class TrafficPointElementService {
           trafficPointElementGeolocation.asCoordinatePair());
       trafficPointElementGeolocation.setHeight(geoAdminHeightResponse.getHeight());
     }
+  }
+
+  public boolean isGivenVersionTheLastVersion(TrafficPointElementVersion trafficPointElementVersion) {
+    List<TrafficPointElementVersion> trafficPointElementVersions =
+        trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(trafficPointElementVersion.getSloid());
+    TrafficPointElementVersion lastElement = trafficPointElementVersions.getLast();
+
+    if (!trafficPointElementVersion.getValidFrom().equals(lastElement.getValidFrom())) {
+      throw new TerminationNotAllowedWhenVersionNotLastException(trafficPointElementVersion.getSloid(),
+          trafficPointElementVersion.getId());
+    }
+    return true;
   }
 }
