@@ -17,7 +17,7 @@ import {MeansOfTransportPickerComponent} from '../../../../sepodi/means-of-trans
 import {AtlasSpacerComponent} from '../../../../../core/components/spacer/atlas-spacer.component';
 import {DialogService} from '../../../../../core/components/dialog/dialog.service';
 import {StopPointFormGroupBuilder} from '../form/stop-point-detail-form-group';
-import {MeanOfTransport, PersonWithReducedMobilityService} from '../../../../../api';
+import {BusinessObjectType, MeanOfTransport, PersonWithReducedMobilityService} from '../../../../../api';
 import {NotificationService} from '../../../../../core/notification/notification.service';
 import {STOP_POINT, STOP_POINT_COMPLETE} from '../../../util/stop-point-test-data.spec';
 import {BERN_WYLEREGG} from '../../../../../../test/data/service-point';
@@ -314,11 +314,10 @@ describe('StopPointDetailComponent', () => {
     component.navigateToSePoDi();
 
     expect(routerSpy.navigate).toHaveBeenCalledWith([
-      '/',
       Pages.SEPODI.path,
       Pages.SERVICE_POINTS.path,
       STOP_POINT.number.number,
-      'service-point'
+      BusinessObjectType.ServicePoint
     ]);
   });
 });

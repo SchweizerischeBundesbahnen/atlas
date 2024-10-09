@@ -10,6 +10,7 @@ import {DetailFormComponent} from '../../../../../core/leave-guard/leave-dirty-f
 import {StopPointDetailFormGroup, StopPointFormGroupBuilder,} from '../form/stop-point-detail-form-group';
 import {PrmTabsService} from '../../../prm-panel/prm-tabs.service';
 import {
+  BusinessObjectType,
   PersonWithReducedMobilityService,
   ReadServicePointVersion,
   ReadStopPointVersion,
@@ -270,11 +271,10 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
 
   navigateToSePoDi(){
     this.router.navigate([
-      '/',
       Pages.SEPODI.path,
       Pages.SERVICE_POINTS.path,
       this.selectedVersion!.number.number,
-      'service-point'
+      BusinessObjectType.ServicePoint
     ]);
   }
 }
