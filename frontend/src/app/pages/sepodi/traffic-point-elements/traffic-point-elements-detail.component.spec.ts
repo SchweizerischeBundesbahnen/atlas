@@ -38,6 +38,7 @@ import {DetailPageContentComponent} from "../../../core/components/detail-page-c
 import {DetailFooterComponent} from "../../../core/components/detail-footer/detail-footer.component";
 import SpyObj = jasmine.SpyObj;
 import {Pages} from "../../pages";
+import {PRM_DETAIL_TAB_LINK} from "../../prm/tabs/relation/tab/detail-with-relation-tab.component";
 const authService: Partial<AuthService> = {};
 const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
   'displayTrafficPointsOnMap',
@@ -181,13 +182,12 @@ describe('TrafficPointElementsDetailComponent', () => {
       component.navigateToPlatform();
 
       expect(routerSpy.navigate).toHaveBeenCalledWith([
-        '/',
         Pages.PRM.path,
         Pages.STOP_POINTS.path,
         component.selectedVersion?.servicePointSloid,
         Pages.PLATFORMS.path,
         component.selectedVersion.sloid,
-        'detail'
+        PRM_DETAIL_TAB_LINK
       ]);
     });
   });
