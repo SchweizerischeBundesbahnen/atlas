@@ -19,6 +19,7 @@ import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import {catchError, EMPTY} from "rxjs";
+import {Pages} from "../../../../../pages";
 
 @Component({
   selector: 'app-platforms',
@@ -184,5 +185,13 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
         relativeTo: this.route.parent,
       })
       .then(() => this.ngOnInit());
+  }
+
+  navigateToTrafficPointElement(){
+    this.router.navigate([
+      Pages.SEPODI.path,
+      Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
+      this.selectedVersion.sloid
+    ]);
   }
 }

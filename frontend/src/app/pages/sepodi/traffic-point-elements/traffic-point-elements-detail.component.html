@@ -34,7 +34,7 @@
       ></atlas-sloid>
     </div>
 
-    <div class="col-12 d-flex mt-3">
+    <div class="col-12 d-flex flex-row mt-3 justify-content-between">
       <div class="d-flex flex-column pe-3">
         <app-switch-version
           (switchVersion)="switchVersion($event)"
@@ -44,6 +44,10 @@
           [switchDisabled]="isSwitchVersionDisabled"
           [showStatus]="false"
         ></app-switch-version>
+      </div>
+      <div class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigateToPlatform()">
+        <img alt="platform" src="assets/images/prm/person-wheelchair.svg">
+        <p>{{ 'PAGES.PRM.TITLE_HEADER' | translate }}</p>
       </div>
     </div>
 
