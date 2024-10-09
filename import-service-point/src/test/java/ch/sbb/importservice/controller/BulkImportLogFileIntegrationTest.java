@@ -127,6 +127,7 @@ class BulkImportLogFileIntegrationTest {
         .applicationType(ApplicationType.SEPODI)
         .objectType(BusinessObjectType.SERVICE_POINT)
         .importType(ImportType.UPDATE)
+        .emails(List.of("test-cc@atlas.ch"))
         .build();
     bulkImportController.startServicePointImportBatch(importRequest, multipartFile);
 
@@ -144,6 +145,7 @@ class BulkImportLogFileIntegrationTest {
     assertThat(writtenLogFile).isEqualTo(expected);
     verify(mailProducerService).produceMailNotification(eq(MailNotification.builder()
         .to(List.of("test@atlas.ch"))
+        .cc(List.of("test-cc@atlas.ch"))
         .subject("Import Result " + bulkImport.getId())
         .mailType(MailType.BULK_IMPORT_RESULT_NOTIFICATION)
         .templateProperties(List.of(
