@@ -16,7 +16,7 @@ import {AtlasSpacerComponent} from '../../../../core/components/spacer/atlas-spa
 import {Record} from '../../../../core/components/base-detail/record';
 import {adminPermissionServiceMock, MockAtlasButtonComponent} from '../../../../app.testing.mocks';
 import {DialogService} from '../../../../core/components/dialog/dialog.service';
-import {Country, ReadServicePointVersion, ServicePointsService, Status,} from '../../../../api';
+import {BusinessObjectType, Country, ReadServicePointVersion, ServicePointsService, Status,} from '../../../../api';
 import {NotificationService} from '../../../../core/notification/notification.service';
 import {DisplayCantonPipe} from '../../../../core/cantons/display-canton.pipe';
 import {MapService} from '../../map/map.service';
@@ -408,11 +408,10 @@ describe('ServicePointDetailComponent', () => {
     component.navigateToStopPoint();
 
     expect(routerSpy.navigate).toHaveBeenCalledWith([
-      '/',
       Pages.PRM.path,
       Pages.STOP_POINTS.path,
       component.selectedVersion!.sloid,
-      'stop-point'
+      BusinessObjectType.StopPoint
     ]);
   });
 });
