@@ -1,5 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
@@ -29,8 +33,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import static ch.sbb.atlas.model.ResponseCodeDescription.*;
 
 @Tag(name = "Traffic Point Elements")
 @RequestMapping("v1/traffic-point-elements")
@@ -81,6 +83,12 @@ public interface TrafficPointElementApiV1 {
   })
   @PutMapping(path = "{id}")
   List<ReadTrafficPointElementVersionModel> updateTrafficPoint(
+      @PathVariable Long id,
+      @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
+  );
+
+  @PutMapping(path = "terminate/{id}")
+  List<ReadTrafficPointElementVersionModel> terminateTrafficPoint(
       @PathVariable Long id,
       @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
   );
