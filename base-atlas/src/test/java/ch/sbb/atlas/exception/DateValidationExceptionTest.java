@@ -1,6 +1,7 @@
 package ch.sbb.atlas.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.versioning.exception.DateValidationException;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,26 @@ class DateValidationExceptionTest {
         assertThat(errorResponse.getStatus()).isEqualTo(400);
         assertThat(errorResponse.getMessage()).isEqualTo("ValidTo cannot be after 31.12.9999.");
         assertThat(errorResponse.getError()).isEqualTo("ValidTo cannot be after 31.12.9999.");
-        assertThat(exception.getErrorResponse().getDetails().iterator().next().getDisplayInfo()
+        DisplayInfo displayInfo = exception.getErrorResponse().getDetails().iterator().next().getDisplayInfo();
+
+        assertThat(displayInfo.getParameters()).hasSize(1);
+        assertThat(displayInfo
+                .getCode()).isEqualTo("VALIDATION.DATE_RANGE_ERROR");
+    }
+
+    @Test
+    void shouldDisplayErrorMessage2(){
+        // given
+        DateValidationException exception = new DateValidationException("Edited ValidFrom 31.12.9999 is bigger than edited ValidTo 01.01.2000");
+        // when & then
+        ErrorResponse errorResponse = exception.getErrorResponse();
+        assertThat(errorResponse.getStatus()).isEqualTo(400);
+        assertThat(errorResponse.getMessage()).isEqualTo("Edited ValidFrom 31.12.9999 is bigger than edited ValidTo 01.01.2000");
+        assertThat(errorResponse.getError()).isEqualTo("Edited ValidFrom 31.12.9999 is bigger than edited ValidTo 01.01.2000");
+        DisplayInfo displayInfo = exception.getErrorResponse().getDetails().iterator().next().getDisplayInfo();
+
+        assertThat(displayInfo.getParameters()).hasSize(1);
+        assertThat(displayInfo
                 .getCode()).isEqualTo("VALIDATION.DATE_RANGE_ERROR");
     }
 }
