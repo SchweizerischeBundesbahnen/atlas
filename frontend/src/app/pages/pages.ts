@@ -257,6 +257,11 @@ export class Pages {
     path: 'stop-point',
   };
 
+  public static SEPODI_TAB: Page = {
+    title: 'SEPODI.SERVICE_POINTS.SERVICE_POINT',
+    path: 'service-point',
+  };
+
   public static pages: Page[] = [
     Pages.HOME,
     Pages.LIDI,
