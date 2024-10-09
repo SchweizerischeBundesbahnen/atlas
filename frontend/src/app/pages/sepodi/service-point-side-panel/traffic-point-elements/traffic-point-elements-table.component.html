@@ -1,17 +1,24 @@
 <div class="traffic-point-element-table p-5 position-relative">
-  <atlas-button
-    *ngIf="createVisible"
-    (buttonClicked)="addNewTrafficPointElement()"
-    applicationType="SEPODI"
-    buttonDataCy="new-traffic-point-element"
-    buttonText="{{
+  <div class="d-flex flex-row pe-3 col-12 justify-content-between">
+    <atlas-button
+      *ngIf="createVisible"
+      (buttonClicked)="addNewTrafficPointElement()"
+      applicationType="SEPODI"
+      buttonDataCy="new-traffic-point-element"
+      buttonText="{{
       isTrafficPointArea
         ? ('SEPODI.BOARDING_AREAS.NEW' | translate)
         : ('SEPODI.TRAFFIC_POINT_ELEMENTS.NEW' | translate)
     }}"
-    buttonType="createCheckingPermission"
-    wrapperStyleClass="mb-3"
-  ></atlas-button>
+      buttonType="createCheckingPermission"
+      wrapperStyleClass="mb-3"
+    ></atlas-button>
+    <div class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigateToPlatforms()">
+      <img alt="platforms" src="assets/images/prm/person-wheelchair.svg">
+      <p>{{ 'PAGES.PRM.TITLE_HEADER' | translate }}</p>
+    </div>
+  </div>
+
 
   <div class="font-bold-2xl mt-5">
     {{
@@ -20,7 +27,6 @@
         : ('SEPODI.TRAFFIC_POINT_ELEMENTS.TRAFFIC_POINT_ELEMENTS' | translate)
     }}
   </div>
-
   <app-table
     data-cy="traffic-point-elements-table"
     [tableData]="trafficPointElementRows"
