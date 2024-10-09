@@ -8,7 +8,7 @@
         [records]="servicePointVersions"
         [switchDisabled]="isSwitchVersionDisabled"
       ></app-switch-version>
-      <div role="button" class="d-flex flex-column pe-3 align-items-center" (click)="navigateToStopPoint()">
+      <div class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigateToStopPoint()">
         <img alt="stop-point" src="assets/images/prm/person-wheelchair.svg">
         <p>{{ 'PAGES.PRM.TITLE_HEADER' | translate }}</p>
       </div>
