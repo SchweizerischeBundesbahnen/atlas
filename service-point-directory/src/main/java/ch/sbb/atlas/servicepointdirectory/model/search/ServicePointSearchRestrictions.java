@@ -92,6 +92,7 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
         .and(new ValidOrEditionTimerangeSpecification<>(
             servicePointRequestParams.getFromDate(),
             servicePointRequestParams.getToDate(),
+            servicePointRequestParams.getValidToFromDate(),
             servicePointRequestParams.getCreatedAfter(),
             servicePointRequestParams.getModifiedAfter()));
   }
