@@ -1488,7 +1488,8 @@
       "DATA_MAPPING_ERROR": "Per l'attributo {{field}} era previsto il tipo {{expectedType}}, ma il valore specificato era {{errorValue}}.",
       "SLOID_XOR_NUMBER": "Deve essere specificato o lo sloide o il numero (non entrambi).",
       "INVALID_SERVICE_POINT_NUMBER": "Il numero del centro di assistenza non è valido.",
-      "FIELD_MANDATORY": "L'attributo {{field}} non deve essere cancellato."
+      "FIELD_MANDATORY": "L'attributo {{field}} non deve essere cancellato.",
+      "DUPLICATE_FIELD": "L'attributo {{field}} con il valore {{value}} ricorre più volte."
     },
     "STATUS": {
       "INFO": "informazione",
@@ -1519,7 +1520,8 @@
     },
     "ERROR": {
       "EXCEL_CONVERSION": "Non è stato possibile leggere correttamente il file Excel utilizzato. Assicuratevi di utilizzare il file secondo il modello.\nFonte dell'errore in riga:{{rowIndex}}, colonna:{{columnIndex}}",
-      "FILE_HEADER": "Il file utilizzato non ha la riga di intestazione prevista. Assicuratevi di utilizzare il file secondo il modello."
+      "FILE_HEADER": "Il file utilizzato non ha la riga di intestazione prevista. Assicuratevi di utilizzare il file secondo il modello.",
+      "ATTRIBUTE_NULLING_NOT_SUPPORTED": "L'attributo {{field}} non deve essere cancellato."
     }
   }
 }
