@@ -25,12 +25,16 @@ class DateOrderExceptionTest {
         assertThat(errorResponse.getError()).isEqualTo("Edited ValidFrom is bigger than edited ValidTo");
         DisplayInfo displayInfo = exception.getErrorResponse().getDetails().iterator().next().getDisplayInfo();
 
-        assertThat(displayInfo.getParameters()).hasSize(1);
+        assertThat(displayInfo.getParameters()).hasSize(2);
         assertThat(displayInfo
-                .getCode()).isEqualTo("VALIDATION.DATE_RANGE_ERROR");
+                .getCode()).isEqualTo("VALIDATION.DATE_ORDER_ERROR");
 
         Parameter onlyParameter = displayInfo.getParameters().getFirst();
-        assertThat(onlyParameter.getKey()).isEqualTo("date");
-        assertThat(onlyParameter.getValue()).isEqualTo("Valid From: 2300-01-01, Valid To: 2000-01-01");
+        assertThat(onlyParameter.getKey()).isEqualTo("validFrom");
+        assertThat(onlyParameter.getValue()).isEqualTo("01.01.2300");
+
+        Parameter secondParameter = displayInfo.getParameters().get(1);
+        assertThat(secondParameter.getKey()).isEqualTo("validTo");
+        assertThat(secondParameter.getValue()).isEqualTo("01.01.2000");
     }
 }
