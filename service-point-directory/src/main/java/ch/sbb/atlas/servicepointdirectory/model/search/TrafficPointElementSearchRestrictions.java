@@ -49,6 +49,7 @@ public class TrafficPointElementSearchRestrictions {
         .and(new ValidOrEditionTimerangeSpecification<>(
             trafficPointElementRequestParams.getFromDate(),
             trafficPointElementRequestParams.getToDate(),
+            trafficPointElementRequestParams.getValidToFromDate(),
             trafficPointElementRequestParams.getCreatedAfter(),
             trafficPointElementRequestParams.getModifiedAfter()));
   }
