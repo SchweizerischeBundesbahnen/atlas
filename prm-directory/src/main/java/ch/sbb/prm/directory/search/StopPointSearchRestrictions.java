@@ -34,6 +34,7 @@ public class StopPointSearchRestrictions {
         .and(new ValidOrEditionTimerangeSpecification<>(
             stopPointRequestParams.getFromDate(),
             stopPointRequestParams.getToDate(),
+            stopPointRequestParams.getValidToFromDate(),
             stopPointRequestParams.getCreatedAfter(),
             stopPointRequestParams.getModifiedAfter()));
 
