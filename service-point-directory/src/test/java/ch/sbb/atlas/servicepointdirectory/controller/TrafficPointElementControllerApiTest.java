@@ -240,47 +240,57 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldTerminateTrafficPointLikePostAutoUsingTerminateEndpoint() throws Exception {
+  void shouldTerminateTrafficPointSuccessfully() throws Exception {
     assertThat(trafficPointElementVersion.getValidTo()).isEqualTo(LocalDate.of(2099, 12, 31));
+    LocalDate validTo = LocalDate.of(2024, 3, 3);
 
-    String edited = """
-        {
-             "creationDate": null,
-             "creator": null,
-             "editionDate": null,
-             "editor": null,
-             "id": %d,
-             "designation": "Bezeichnung",
-             "designationOperational": "gali00",
-             "length": null,
-             "boardingAreaHeight": null,
-             "compassDirection": 277.0,
-             "trafficPointElementType": "BOARDING_PLATFORM",
-             "sloid": "ch:1:sloid:1400015:0:310240",
-             "parentSloid": "ch:1:sloid:1400015:310240",
-             "validFrom": "2020-01-06",
-             "validTo": "2024-03-03",
-
-             "numberWithoutCheckDigit": 1400015,
-             "trafficPointElementGeolocation": {
-                 "spatialReference": "LV95",
-                 "north": 1116323.213,
-                 "east": 2505236.389,
-                 "height": -9999.0
-             },
-             "hasGeolocation": true
-         }
-        """.formatted(trafficPointElementVersion.getId());
-    mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/" + trafficPointElementVersion.getId())
-            .contentType(contentType)
-            .content(edited))
+    mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/"
+                + trafficPointElementVersion.getSloid() + "/" + validTo)
+            .contentType(contentType))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(jsonPath("$[0].validTo", is("2024-03-03")));
   }
 
   @Test
-  void shouldThrowExceptionWhenTerminateTrafficPointLikePostAutoUsingTerminateEndpoint() throws Exception {
+  void shouldThrowSloidNotFoundExceptionWhenTerminateTrafficPoint() throws Exception {
+    assertThat(trafficPointElementVersion.getValidTo()).isEqualTo(LocalDate.of(2099, 12, 31));
+    LocalDate validTo = LocalDate.of(2024, 3, 3);
+
+    MvcResult mvcResult =
+        mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/"
+                    + "ch:1:sloid:1400015:0:55555" + "/" + validTo)
+                .contentType(contentType))
+            .andExpect(status().isNotFound()).andReturn();
+
+    ErrorResponse errorResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+    assertThat(errorResponse.getMessage()).isEqualTo("Entity not found");
+  }
+
+  @Test
+  void shouldTerminateTrafficPointSettingLastVersionOnOneDayDuration() throws Exception {
+    repository.deleteAll();
+    LocalDate localDate = LocalDate.of(2025, 1, 1);
+    trafficPointElementVersion.setValidFrom(localDate);
+    trafficPointElementVersion.setValidTo(LocalDate.of(2030, 12, 31));
+    TrafficPointElementVersion trafficPointElementVersion1 = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementVersion1.setValidFrom(LocalDate.of(2020, 1, 1));
+    trafficPointElementVersion1.setValidTo(LocalDate.of(2024, 12, 31));
+    trafficPointElementVersion1.setDesignation("Bezeichnung1");
+    repository.save(trafficPointElementVersion1);
+    repository.save(trafficPointElementVersion);
+
+    mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/"
+                + trafficPointElementVersion.getSloid() + "/" + localDate)
+            .contentType(contentType))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(2)))
+        .andExpect(jsonPath("$[1].validTo", is("2025-01-01")));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenTerminatingTrafficPoint() throws Exception {
     repository.deleteAll();
     trafficPointElementVersion.setValidFrom(LocalDate.of(2025, 1, 1));
     trafficPointElementVersion.setValidTo(LocalDate.of(2030, 12, 31));
@@ -290,48 +300,22 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
     trafficPointElementVersion1.setDesignation("Bezeichnung1");
     TrafficPointElementVersion firstSaved = repository.save(trafficPointElementVersion1);
     repository.save(trafficPointElementVersion);
-
-    String edited = """
-        {
-             "creationDate": null,
-             "creator": null,
-             "editionDate": null,
-             "editor": null,
-             "id": %d,
-             "designation": "Bezeichnung",
-             "designationOperational": "gali00",
-             "length": null,
-             "boardingAreaHeight": null,
-             "compassDirection": 277.0,
-             "trafficPointElementType": "BOARDING_PLATFORM",
-             "sloid": "ch:1:sloid:1400015:0:310240",
-             "parentSloid": "ch:1:sloid:1400015:310240",
-             "validFrom": "2020-01-01",
-             "validTo": "2024-03-03",
-             "numberWithoutCheckDigit": 1400015,
-             "trafficPointElementGeolocation": {
-                 "spatialReference": "LV95",
-                 "north": 1116323.213,
-                 "east": 2505236.389,
-                 "height": -9999.0
-             },
-             "hasGeolocation": true
-         }
-        """.formatted(firstSaved.getId());
-
+    LocalDate validTo = LocalDate.of(2024, 3, 3);
 
     // when
-    MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/" + firstSaved.getId())
-            .contentType(contentType)
-            .content(edited))
+    MvcResult mvcResult =
+        mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/" +
+                    firstSaved.getSloid() + "/" + validTo)
+            .contentType(contentType))
         .andExpect(status().isForbidden()).andReturn();
 
     // then
     ErrorResponse errorResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
     assertThat(errorResponse.getMessage()).isEqualTo(
-        "Termination not allowed for sloid ch:1:sloid:1400015:0:310240 since the version with the given id "
-            + firstSaved.getId() + " is not the last version. Termination is only allowed for the last version.");
+        "Termination not allowed for sloid " + firstSaved.getSloid() + " since the date range for the last version "
+            + "is from " + trafficPointElementVersion.getValidFrom() + " until " + trafficPointElementVersion.getValidTo() +
+            ". And requested validTo value " + validTo + " is not within the range.");
   }
 
   @Test

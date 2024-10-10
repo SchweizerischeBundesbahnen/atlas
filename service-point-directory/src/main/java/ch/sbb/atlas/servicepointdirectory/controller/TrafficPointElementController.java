@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -11,6 +12,7 @@ import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedValidToNotWithinLastVersionRangeException;
 import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
@@ -109,7 +111,11 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
     TrafficPointElementVersion trafficPointElementVersionToUpdate = trafficPointElementService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
-    validateSloid(trafficPointElementVersionModel, trafficPointElementVersionToUpdate);
+    if (!trafficPointElementVersionToUpdate.getSloid().equals(trafficPointElementVersionModel.getSloid())) {
+      String exceptionMessage = "Sloid for provided id: " + trafficPointElementVersionToUpdate.getSloid() +
+          " and sloid in the request body: " + trafficPointElementVersionModel.getSloid() + " are not equal.";
+      throw new SloidsNotEqualException(exceptionMessage);
+    }
 
     update(trafficPointElementVersionToUpdate,
         TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel));
@@ -118,16 +124,17 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   }
 
   @Override
-  public List<ReadTrafficPointElementVersionModel> terminateTrafficPoint(Long id,
-      CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
+  public List<ReadTrafficPointElementVersionModel> terminateTrafficPoint(String sloid,
+      LocalDate validTo) {
+    List<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementService.findBySloidOrderByValidFrom(sloid);
+    if (trafficPointElementVersions.isEmpty()) {
+      throw new SloidNotFoundException(sloid);
+    }
+    TrafficPointElementVersion lastTrafficPointElementVersion = trafficPointElementVersions.getLast();
 
-    TrafficPointElementVersion currentTrafficPointElementVersion = trafficPointElementService.findById(id)
-        .orElseThrow(() -> new IdNotFoundException(id));
-
-    validateSloid(trafficPointElementVersionModel, currentTrafficPointElementVersion);
-
-    TrafficPointElementVersion updatingVersion = TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel);
-    terminate(currentTrafficPointElementVersion, updatingVersion);
+    TrafficPointElementVersion updatingVersion = lastTrafficPointElementVersion.toBuilder().build();
+    updatingVersion.setValidTo(validTo);
+    terminate(lastTrafficPointElementVersion, updatingVersion);
 
     return getReadTrafficPointElementVersionModels(updatingVersion);
   }
@@ -141,15 +148,6 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
         .stream()
         .map(TrafficPointElementVersionMapper::toModel)
         .toList();
-  }
-
-  private static void validateSloid(CreateTrafficPointElementVersionModel trafficPointElementVersionModel,
-      TrafficPointElementVersion currentTrafficPointElementVersion) {
-    if (!currentTrafficPointElementVersion.getSloid().equals(trafficPointElementVersionModel.getSloid())) {
-      String exceptionMessage = "Sloid for provided id: " + currentTrafficPointElementVersion.getSloid() +
-          " and sloid in the request body: " + trafficPointElementVersionModel.getSloid() + " are not equal.";
-      throw new SloidsNotEqualException(exceptionMessage);
-    }
   }
 
   private TrafficPointElementVersion createTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
@@ -168,11 +166,15 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
     trafficPointElementService.update(currentVersion, editedVersion, allServicePointVersions);
   }
 
-  private void terminate(TrafficPointElementVersion currentVersion, TrafficPointElementVersion updatingVersion) {
+  private void terminate(TrafficPointElementVersion currentVersion, TrafficPointElementVersion editedVersion) {
     ServicePointNumber servicePointNumber = currentVersion.getServicePointNumber();
     List<ServicePointVersion> allServicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
-    if (trafficPointElementService.isGivenVersionTheLastVersion(updatingVersion)) {
-      trafficPointElementService.terminate(updatingVersion, allServicePointVersions);
+    DateRange dateRange = new DateRange(currentVersion.getValidFrom(), currentVersion.getValidTo());
+    if (dateRange.contains(editedVersion.getValidTo())) {
+      trafficPointElementService.update(currentVersion, editedVersion, allServicePointVersions);
+    } else {
+      throw new TerminationNotAllowedValidToNotWithinLastVersionRangeException(editedVersion.getSloid(),
+          editedVersion.getValidTo(), currentVersion.getValidFrom(), currentVersion.getValidTo());
     }
   }
 }
