@@ -88,9 +88,20 @@ public interface TrafficPointElementApiV1 {
       @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
   );
 
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "403", description = "Termination not allowed", content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "404", description = "Not found", content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+  })
+  @Operation(summary = "Terminate traffic point",
+      description = "Terminates the last version of traffic point for the given sloid by setting the given validTo value")
   @PutMapping(path = "terminate/{sloid}/{validTo}")
   List<ReadTrafficPointElementVersionModel> terminateTrafficPoint(
+      @Parameter(description = "Sloid in the format 'ch:1:sloid:1400015:0:55555'", example = "ch:1:sloid:1400015:0:55555")
       @PathVariable String sloid,
+      @Parameter(description = "ValidTo date in the format 'YYYY-MM-DD'", example = "2024-03-03")
       @PathVariable LocalDate validTo
   );
 
