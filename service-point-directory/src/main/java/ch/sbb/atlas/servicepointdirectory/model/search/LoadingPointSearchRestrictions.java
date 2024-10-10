@@ -44,6 +44,7 @@ public class LoadingPointSearchRestrictions {
                 .and(new ValidOrEditionTimerangeSpecification<>(
                         loadingPointRequestParams.getFromDate(),
                         loadingPointRequestParams.getToDate(),
+                        loadingPointRequestParams.getValidToFromDate(),
                         loadingPointRequestParams.getCreatedAfter(),
                         loadingPointRequestParams.getModifiedAfter()));
 

@@ -51,6 +51,7 @@ public class BusinessOrganisationVersionSearchRestrictions {
             .and(new ValidOrEditionTimerangeSpecification<>(
                 businessOrganisationVersionRequestParams.getFromDate(),
                 businessOrganisationVersionRequestParams.getToDate(),
+                businessOrganisationVersionRequestParams.getValidToFromDate(),
                 businessOrganisationVersionRequestParams.getCreatedAfter(),
                 businessOrganisationVersionRequestParams.getModifiedAfter())));
   }
