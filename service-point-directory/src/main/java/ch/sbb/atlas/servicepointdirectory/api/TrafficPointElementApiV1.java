@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
@@ -87,10 +88,10 @@ public interface TrafficPointElementApiV1 {
       @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
   );
 
-  @PutMapping(path = "terminate/{id}")
+  @PutMapping(path = "terminate/{sloid}/{validTo}")
   List<ReadTrafficPointElementVersionModel> terminateTrafficPoint(
-      @PathVariable Long id,
-      @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
+      @PathVariable String sloid,
+      @PathVariable LocalDate validTo
   );
 
 }
