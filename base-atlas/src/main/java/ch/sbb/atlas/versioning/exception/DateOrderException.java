@@ -34,13 +34,12 @@ public class DateOrderException extends AtlasException {
     }
 
     private List<Detail> getErrorDetails() {
-        String dateRange = "Valid From: " + validFrom + ", Valid To: " + validTo;
-
         return List.of(Detail.builder()
                 .message(message)
                 .displayInfo(builder()
-                        .code("VALIDATION.DATE_RANGE_ERROR")
-                        .with("date", dateRange)
+                        .code("VALIDATION.DATE_ORDER_ERROR")
+                        .with("validFrom", validFrom)
+                        .with("validTo", validTo)
                         .build())
                 .build());
     }
