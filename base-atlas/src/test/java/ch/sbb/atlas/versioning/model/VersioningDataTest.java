@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.atlas.versioning.BaseTest.VersionableObject;
+import ch.sbb.atlas.versioning.exception.DateOrderException;
 import ch.sbb.atlas.versioning.exception.DateValidationException;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import java.time.LocalDate;
@@ -75,9 +76,11 @@ public class VersioningDataTest {
       new VersioningData(editedVersion, currentVersion, editedEntity,
           toVersioningList);
       //then
-    }).isInstanceOf(DateValidationException.class)
+    }).isInstanceOf(DateOrderException.class)
       .hasMessageContaining(
-          "Edited ValidFrom 2020-01-02 is bigger than edited ValidTo 2019-01-02");
+          "Edited ValidFrom is bigger than edited ValidTo")
+            .extracting("validFrom", "validTo")
+            .containsExactly(LocalDate.of(2020, 1, 2), LocalDate.of(2019, 1, 2));
   }
 
   @Test
@@ -93,14 +96,16 @@ public class VersioningDataTest {
       //then
     }).isInstanceOf(DateValidationException.class)
       .hasMessageContaining(
-          "ValidFrom cannot be before 1.1.1700.");
+          "ValidFrom cannot be before:")
+            .extracting("date", "validationType")
+            .containsExactly(LocalDate.of(1700, 1, 1), DateValidationException.ValidationType.MIN);
   }
 
   @Test
-   void shouldThrowDateValidationExceptionWhenValidToIsAfter2099_12_31() {
+   void shouldThrowDateValidationExceptionWhenValidToIsAfter9999_12_31() {
     //given
-    editedVersion.setValidFrom(LocalDate.of(1699, 12, 31));
-    editedVersion.setValidTo(LocalDate.of(2019, 1, 2));
+    editedVersion.setValidFrom(LocalDate.of(2000, 12, 31));
+    editedVersion.setValidTo(LocalDate.of(10000, 1, 2));
 
     //when
     assertThatThrownBy(() -> {
@@ -109,7 +114,9 @@ public class VersioningDataTest {
       //then
     }).isInstanceOf(DateValidationException.class)
       .hasMessageContaining(
-          "ValidFrom cannot be before 1.1.1700.");
+          "ValidTo cannot be after: ")
+            .extracting("date", "validationType")
+            .containsExactly(LocalDate.of(9999, 12, 31), DateValidationException.ValidationType.MAX);
   }
 
   @Test
