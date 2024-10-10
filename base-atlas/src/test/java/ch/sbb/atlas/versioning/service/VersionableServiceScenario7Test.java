@@ -4,7 +4,7 @@ import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.sbb.atlas.versioning.exception.DateValidationException;
+import ch.sbb.atlas.versioning.exception.DateOrderException;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -349,9 +349,11 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
           editedVersion,
           Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
       //then
-    }).isInstanceOf(DateValidationException.class)
-        .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger than edited ValidTo 2029-12-08");
-
+    }).isInstanceOf(DateOrderException.class)
+            .hasMessageContaining(
+                    "Edited ValidFrom is bigger than edited ValidTo")
+            .extracting("validFrom", "validTo")
+            .containsExactly(LocalDate.of(2029, 12, 9), LocalDate.of(2029, 12, 8));
   }
 
 }
