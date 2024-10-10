@@ -45,7 +45,7 @@
           [showStatus]="false"
         ></app-switch-version>
       </div>
-      <div class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigateToPlatform()">
+      <div *ngIf="!isNew" class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigateToPlatform()">
         <img alt="platform" src="assets/images/prm/person-wheelchair.svg">
         <p>{{ 'PAGES.PRM.TITLE_HEADER' | translate }}</p>
       </div>

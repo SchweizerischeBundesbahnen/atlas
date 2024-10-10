@@ -43,7 +43,9 @@ export class PlatformDetailPanelComponent implements OnInit {
         this.maxValidity = VersionsHandlingService.getMaxValidity(this.platform);
       }
       this.stopPoint = data.stopPoint;
-      this.isReduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
+      if (this.stopPoint.length > 0) {
+        this.isReduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
+      }
     });
   }
 

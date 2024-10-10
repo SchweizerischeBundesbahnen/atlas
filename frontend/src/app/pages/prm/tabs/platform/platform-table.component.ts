@@ -72,7 +72,6 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
 
   getOverview(pagination: TablePagination) {
     const sloid = this.route.parent!.snapshot.params.stopPointSloid!;
-
     this.trafficPointElementsService
       .getPlatformsOfServicePoint(SloidHelper.servicePointSloidToNumber(sloid))
       .pipe(

@@ -1,4 +1,4 @@
-<atlas-detail-page-content>
+<atlas-detail-page-content *ngIf="existStopPoint">
   <ng-container *ngIf="!mayCreate; else authorized">
     <div class="font-regular mb-3">
       {{ 'PRM.PLATFORMS.NO_RECORD' | translate }}
@@ -51,7 +51,7 @@
     </div>
   </ng-template>
 </atlas-detail-page-content>
-<atlas-detail-footer>
+<atlas-detail-footer *ngIf="existStopPoint">
   <atlas-button
     (buttonClicked)="back()"
     [disabled]="false"

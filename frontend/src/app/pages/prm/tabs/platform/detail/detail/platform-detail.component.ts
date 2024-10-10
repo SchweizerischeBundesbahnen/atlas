@@ -13,7 +13,11 @@ import {FormGroup} from "@angular/forms";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
 import {PrmMeanOfTransportHelper} from "../../../../util/prm-mean-of-transport-helper";
 import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
-import {CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup} from "../form/platform-form-group";
+import {
+  CompletePlatformFormGroup,
+  PlatformFormGroupBuilder,
+  ReducedPlatformFormGroup
+} from "../form/platform-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
@@ -42,6 +46,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
   showVersionSwitch = false;
   selectedVersionIndex!: number;
   mayCreate = true;
+  existStopPoint = false
 
   get reducedForm(): FormGroup<ReducedPlatformFormGroup> {
     return this.form as FormGroup<ReducedPlatformFormGroup>;
@@ -66,23 +71,34 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     this.stopPoint = this.route.snapshot.parent!.data.stopPoint;
 
     this.platform = this.route.snapshot.parent!.data.platform;
-    this.reduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
+    this.existStopPoint = this.stopPoint.length > 0
 
-    this.isNew = this.platform.length === 0;
+    if (this.existStopPoint) {
+      this.reduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
+      this.isNew = this.platform.length === 0;
 
-    if (this.isNew) {
-      this.mayCreate = this.hasPermissionToCreateNewStopPoint();
-    } else {
-      VersionsHandlingService.addVersionNumbers(this.platform);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.platform);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.platform);
-      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.platform,
-      );
-      this.selectedVersionIndex = this.platform.indexOf(this.selectedVersion);
+      if (this.isNew) {
+        this.mayCreate = this.hasPermissionToCreateNewStopPoint();
+      } else {
+        VersionsHandlingService.addVersionNumbers(this.platform);
+        this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.platform);
+        this.maxValidity = VersionsHandlingService.getMaxValidity(this.platform);
+        this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
+          this.platform,
+        );
+        this.selectedVersionIndex = this.platform.indexOf(this.selectedVersion);
+      }
+
+      this.initForm();
     }
-
-    this.initForm();
+    else {
+      this.router.navigate([
+        Pages.PRM.path,
+        Pages.STOP_POINTS.path,
+        this.servicePoint?.sloid,
+        Pages.PRM_STOP_POINT_TAB.path
+      ]);
+    }
   }
 
   private initForm() {
@@ -187,7 +203,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       .then(() => this.ngOnInit());
   }
 
-  navigateToTrafficPointElement(){
+  navigateToTrafficPointElement() {
     this.router.navigate([
       Pages.SEPODI.path,
       Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
