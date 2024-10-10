@@ -48,6 +48,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   preferredId?: number;
 
   isSwitchVersionDisabled = false;
+  isLocatedInSwitzerland = false;
 
   _showRevokeButton = false;
 
@@ -150,6 +151,12 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this.isSelectedVersionHighDate(this.servicePointVersions, version);
     this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
+    if(this.selectedVersion.number.uicCountryCode == 85) {
+      this.isLocatedInSwitzerland = true;
+    }
+    else {
+      this.isLocatedInSwitzerland = false;
+    }
   }
 
   initShowRevokeButton(version: ReadServicePointVersion) {
