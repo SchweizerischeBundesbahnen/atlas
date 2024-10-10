@@ -2,7 +2,9 @@ package ch.sbb.atlas.versioning.model;
 
 import static java.util.Comparator.comparing;
 
+import ch.sbb.atlas.versioning.exception.DateOrderException;
 import ch.sbb.atlas.versioning.exception.DateValidationException;
+import ch.sbb.atlas.versioning.exception.DateValidationException.ValidationType;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.version.VersioningHelper;
 import java.time.LocalDate;
@@ -83,21 +85,20 @@ public class VersioningData {
   private void validateDateRange(Versionable editedVersion) {
     if (editedVersion.getValidFrom() != null && editedVersion.getValidTo() != null
         && editedVersion.getValidFrom().isAfter(editedVersion.getValidTo())) {
-      throw new DateValidationException(
-          "Edited ValidFrom " + this.editedValidFrom + " is bigger than edited ValidTo "
-              + this.editedValidTo);
+      throw new DateOrderException(
+          "Edited ValidFrom is bigger than edited ValidTo", this.editedValidFrom, this.editedValidTo);
     }
   }
 
   private void validateValidTo(LocalDate validTo) {
     if (validTo.isAfter(MAX_DATE)) {
-      throw new DateValidationException("ValidTo cannot be after 31.12.9999.");
+      throw new DateValidationException("ValidTo cannot be after: ", LocalDate.of(9999,12,31), ValidationType.MAX);
     }
   }
 
   private void validateValidFrom(LocalDate validFrom) {
     if (validFrom.isBefore(MIN_DATE)) {
-      throw new DateValidationException("ValidFrom cannot be before 1.1.1700.");
+      throw new DateValidationException("ValidFrom cannot be before: ", LocalDate.of(1700,1, 1), ValidationType.MIN);
     }
   }
 
