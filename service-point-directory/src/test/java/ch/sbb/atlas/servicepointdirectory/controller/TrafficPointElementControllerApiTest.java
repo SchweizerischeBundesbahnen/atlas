@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.location.LocationService;
@@ -32,6 +33,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.SortedSet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -237,6 +239,91 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(jsonPath("$[0].validTo", is("2024-03-03")));
+  }
+
+  @Test
+  void shouldTerminateTrafficPointSuccessfully() throws Exception {
+    assertThat(trafficPointElementVersion.getValidTo()).isEqualTo(LocalDate.of(2099, 12, 31));
+    LocalDate validTo = LocalDate.of(2024, 3, 3);
+
+    mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/"
+                + trafficPointElementVersion.getSloid() + "/" + validTo)
+            .contentType(contentType))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].validTo", is("2024-03-03")));
+  }
+
+  @Test
+  void shouldThrowSloidNotFoundExceptionWhenTerminateTrafficPoint() throws Exception {
+    assertThat(trafficPointElementVersion.getValidTo()).isEqualTo(LocalDate.of(2099, 12, 31));
+    LocalDate validTo = LocalDate.of(2024, 3, 3);
+
+    MvcResult mvcResult =
+        mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/"
+                    + "ch:1:sloid:1400015:0:55555" + "/" + validTo)
+                .contentType(contentType))
+            .andExpect(status().isNotFound()).andReturn();
+
+    ErrorResponse errorResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+    assertThat(errorResponse.getMessage()).isEqualTo("Entity not found");
+  }
+
+  @Test
+  void shouldTerminateTrafficPointSettingLastVersionOnOneDayDuration() throws Exception {
+    repository.deleteAll();
+    LocalDate localDate = LocalDate.of(2025, 1, 1);
+    trafficPointElementVersion.setValidFrom(localDate);
+    trafficPointElementVersion.setValidTo(LocalDate.of(2030, 12, 31));
+    TrafficPointElementVersion trafficPointElementVersion1 = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementVersion1.setValidFrom(LocalDate.of(2020, 1, 1));
+    trafficPointElementVersion1.setValidTo(LocalDate.of(2024, 12, 31));
+    trafficPointElementVersion1.setDesignation("Bezeichnung1");
+    repository.save(trafficPointElementVersion1);
+    repository.save(trafficPointElementVersion);
+
+    mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/"
+                + trafficPointElementVersion.getSloid() + "/" + localDate)
+            .contentType(contentType))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(2)))
+        .andExpect(jsonPath("$[1].validTo", is("2025-01-01")));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenTerminatingTrafficPoint() throws Exception {
+    repository.deleteAll();
+    trafficPointElementVersion.setValidFrom(LocalDate.of(2025, 1, 1));
+    trafficPointElementVersion.setValidTo(LocalDate.of(2030, 12, 31));
+    TrafficPointElementVersion trafficPointElementVersion1 = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementVersion1.setValidFrom(LocalDate.of(2020, 1, 1));
+    trafficPointElementVersion1.setValidTo(LocalDate.of(2024, 12, 31));
+    trafficPointElementVersion1.setDesignation("Bezeichnung1");
+    TrafficPointElementVersion firstSaved = repository.save(trafficPointElementVersion1);
+    repository.save(trafficPointElementVersion);
+    LocalDate validTo = LocalDate.of(2024, 3, 3);
+
+    // when
+    MvcResult mvcResult =
+        mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/" +
+                    firstSaved.getSloid() + "/" + validTo)
+            .contentType(contentType))
+        .andExpect(status().isForbidden()).andReturn();
+
+    // then
+    ErrorResponse errorResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
+    assertThat(errorResponse.getMessage()).isEqualTo(
+        "Termination not allowed for sloid " + firstSaved.getSloid() + " since the date range for the last version "
+            + "is from " + trafficPointElementVersion.getValidFrom() + " until " + trafficPointElementVersion.getValidTo() +
+            ". And requested validTo value " + validTo + " is not within the range.");
+
+    SortedSet<Detail> errorResponseDetails = errorResponse.getDetails();
+    assertThat(errorResponseDetails).hasSize(1);
+    Detail detail = errorResponseDetails.stream().toList().get(0);
+    assertThat(detail.getMessage()).isEqualTo("Termination not allowed for non latest version.");
+    assertThat(detail.getField()).isEqualTo("termination");
   }
 
   @Test
