@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.location.LocationService;
@@ -32,6 +33,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.SortedSet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -316,6 +318,12 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
         "Termination not allowed for sloid " + firstSaved.getSloid() + " since the date range for the last version "
             + "is from " + trafficPointElementVersion.getValidFrom() + " until " + trafficPointElementVersion.getValidTo() +
             ". And requested validTo value " + validTo + " is not within the range.");
+
+    SortedSet<Detail> errorResponseDetails = errorResponse.getDetails();
+    assertThat(errorResponseDetails).hasSize(1);
+    Detail detail = errorResponseDetails.stream().toList().get(0);
+    assertThat(detail.getMessage()).isEqualTo("Termination not allowed for non latest version.");
+    assertThat(detail.getField()).isEqualTo("termination");
   }
 
   @Test
