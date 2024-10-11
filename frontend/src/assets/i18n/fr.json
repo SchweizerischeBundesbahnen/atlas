@@ -1063,7 +1063,7 @@
       },
       "TERMINATION_FORBIDDEN": "Vous n'êtes pas autorisé à planifier l'arrêt. Pour ce faire, veuillez utiliser le formulaire disponible sur https://www.tp-info.ch/fr/suppression-dun-arret.",
       "TERMINATION_NOT_ALLOWED_WITH_VERSION_IN_REVIEW": "Il n'est pas possible de fixer une date, car une version est en cours d'audition.",
-      "TERMINATION_NOT_ALLOWED_FOR_NON_LATEST_VERSION": "La résiliation n'est possible que pour la dernière version.",
+      "TERMINATION_NOT_ALLOWED_FOR_NON_LATEST_VERSION": "La suppression n'a pas pu être effectuée. La date souhaitée ne se trouve pas dans la dernière version.",
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organisation commerciale du service n'est pas autorisée à ajouter des abréviations ou le service dispose déjà d'une abréviation qui ne peut pas être modifiée ou supprimée.",
       "ABBREVIATION_NOT_UNIQUE": "L'abréviation est déjà utilisée ou la version du service choisie n'est pas la plus récente.",
       "HEIGHT_SERVICE_UNAVAILABLE": "Le service d'altitude n'est pas disponible. Veuillez réessayer dans 30 minutes. Si le problème persiste, veuillez vous adresser au service spécialisé atlas.",
