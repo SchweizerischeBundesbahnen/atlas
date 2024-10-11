@@ -305,6 +305,28 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetLoadingPointsByValidToFromDate() throws Exception {
+    LoadingPointVersion loadingPoint = LoadingPointVersion
+        .builder()
+        .number(NUMBER)
+        .designation("Piazzale1")
+        .designationLong("Piazzaleee")
+        .connectionPoint(false)
+        .servicePointNumber(servicePointVersion.getNumber())
+        .validFrom(LocalDate.of(2100, 1, 1))
+        .validTo(LocalDate.of(2100, 12, 31))
+        .creator("fs45117")
+        .creationDate(LocalDateTime.of(2017, 12, 4, 13, 11, 3))
+        .editor("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(2018, 6, 28, 11, 48, 56))
+        .build();
+    repository.save(loadingPoint);
+    mvc.perform(get("/v1/loading-points?validToFromDate=2100-06-01"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
   void shouldReturnBadRequestWhenPageSizeExceeded() throws Exception {
     mvc.perform(get("/v1/loading-points?size=5000"))
         .andExpect(status().isBadRequest())
