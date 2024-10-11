@@ -53,4 +53,16 @@ include::{snippets}/traffic-point-element-controller-api-test/should-throw-sloid
 
 include::{snippets}/traffic-point-element-controller-api-test/should-return-optimistic-locking-error-response/atlas-doc.adoc[]
 
+== Terminate TrafficPointElement - Successfully
+
+include::{snippets}/traffic-point-element-controller-api-test/should-terminate-traffic-point-successfully/atlas-doc.adoc[]
+
+== Terminate TrafficPointElement - Unsuccessfully SLOID not found
+
+include::{snippets}/traffic-point-element-controller-api-test/should-throw-sloid-not-found-exception-when-terminate-traffic-point/atlas-doc.adoc[]
+
+== Terminate TrafficPointElement - Unsuccessfully FORBIDDEN
+
+include::{snippets}/traffic-point-element-controller-api-test/should-throw-exception-when-terminating-traffic-point/atlas-doc.adoc[]
+
 link:rest-api.html[*< Back to main*]
