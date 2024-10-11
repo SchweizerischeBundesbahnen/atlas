@@ -1,5 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
@@ -15,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
@@ -29,8 +34,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import static ch.sbb.atlas.model.ResponseCodeDescription.*;
 
 @Tag(name = "Traffic Point Elements")
 @RequestMapping("v1/traffic-point-elements")
@@ -83,6 +86,23 @@ public interface TrafficPointElementApiV1 {
   List<ReadTrafficPointElementVersionModel> updateTrafficPoint(
       @PathVariable Long id,
       @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
+  );
+
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "403", description = "Termination not allowed", content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "404", description = "Not found", content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+  })
+  @Operation(summary = "Terminate traffic point",
+      description = "Terminates the last version of traffic point for the given sloid by setting the given validTo value")
+  @PutMapping(path = "terminate/{sloid}/{validTo}")
+  List<ReadTrafficPointElementVersionModel> terminateTrafficPoint(
+      @Parameter(description = "Sloid in the format 'ch:1:sloid:1400015:0:55555'", example = "ch:1:sloid:1400015:0:55555")
+      @PathVariable String sloid,
+      @Parameter(description = "ValidTo date in the format 'YYYY-MM-DD'", example = "2024-03-03")
+      @PathVariable LocalDate validTo
   );
 
 }
