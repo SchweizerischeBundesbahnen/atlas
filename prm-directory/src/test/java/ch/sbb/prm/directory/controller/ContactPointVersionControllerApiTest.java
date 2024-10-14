@@ -178,6 +178,22 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetContactPointsByValidToFromDate() throws Exception {
+    //given
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointRepository.save(contactPointVersion);
+    ContactPointVersion contactPoint = ContactPointTestData.getContactPointVersion();
+    contactPoint.setValidFrom(LocalDate.of(2001, 1, 1));
+    contactPoint.setValidTo(LocalDate.of(2001, 12, 31));
+    contactPoint.setDesignation("Designation1");
+    contactPointRepository.save(contactPoint);
+    //when & then
+    mvc.perform(get("/v1/contact-points?validToFromDate=" + contactPoint.getValidFrom()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
   void shouldGetAllContactPointVersions() throws Exception {
     //given
     ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
