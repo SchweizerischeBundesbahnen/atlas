@@ -111,7 +111,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     return mergedOverview;
   }
 
-  navigateToTrafficPointElements(){
+  navigateToTrafficPointElements = () => {
     const number = this.route.parent!.snapshot.data.servicePoints[0].number.number;
     this.router.navigate([
       Pages.SEPODI.path,
