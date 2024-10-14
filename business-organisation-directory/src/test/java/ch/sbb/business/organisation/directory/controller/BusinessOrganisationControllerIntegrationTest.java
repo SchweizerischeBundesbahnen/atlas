@@ -553,4 +553,30 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerWithAm
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is("The page size is limited to 2000")));
   }
+
+  @Test
+  void shouldGetBusinessOrganisationsByValidToFromDate() throws Exception {
+    BusinessOrganisationVersion businessOrganisation = BusinessOrganisationVersion
+        .builder()
+        .sboid("ch:1:sboid:1000008")
+        .abbreviationDe("de")
+        .abbreviationFr("fr")
+        .abbreviationIt("it")
+        .abbreviationEn("en")
+        .descriptionDe("desc-de")
+        .descriptionFr("desc-fr")
+        .descriptionIt("desc-it")
+        .descriptionEn("desc-en")
+        .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
+        .contactEnterpriseEmail("mail8@mail.ch")
+        .organisationNumber(1238)
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2015, 1, 1))
+        .validTo(LocalDate.of(2015, 12, 31))
+        .build();
+    versionRepository.save(businessOrganisation);
+    mvc.perform(get("/v1/business-organisations/versions?validToFromDate=" + businessOrganisation.getValidFrom()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1));
+  }
 }
