@@ -319,7 +319,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     }
   }
 
-  navigateToPlatform(){
+  navigateToPlatform = () => {
     this.router.navigate([
       Pages.PRM.path,
       Pages.STOP_POINTS.path,

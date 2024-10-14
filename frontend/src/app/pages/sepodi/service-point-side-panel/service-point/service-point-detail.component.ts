@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {VersionsHandlingService} from '../../../../core/versioning/versions-handling.service';
 import {
   ApplicationRole,
-  ApplicationType, Country,
+  ApplicationType,
   CreateServicePointVersion,
   ReadServicePointVersion,
   ServicePointsService,
@@ -25,7 +25,7 @@ import {ValidityService} from '../../validity/validity.service';
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
 import {takeUntil} from "rxjs/operators";
-import {Countries} from "../../../../core/country/Countries";
+import {Cantons} from "../../../../core/cantons/Cantons";
 
 @Component({
   selector: 'app-service-point',
@@ -152,7 +152,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this.isSelectedVersionHighDate(this.servicePointVersions, version);
     this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
-    this.isLocatedInSwitzerland = Countries.fromUicCode(this.selectedVersion.number.uicCountryCode).enumCountry === Country.Switzerland;
+    this.isLocatedInSwitzerland = this.selectedVersion.servicePointGeolocation?.isoCountryCode === Cantons.swiss.short
   }
 
   initShowRevokeButton(version: ReadServicePointVersion) {
@@ -351,7 +351,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this.addStopPointWorkflowDialogService.openDialog(this.selectedVersion!);
   }
 
-  navigateToStopPoint(){
+  navigateToStopPoint = () => {
     this.router.navigate([
       Pages.PRM.path,
       Pages.STOP_POINTS.path,
