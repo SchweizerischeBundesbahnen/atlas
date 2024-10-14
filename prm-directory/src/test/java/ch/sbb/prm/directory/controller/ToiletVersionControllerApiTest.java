@@ -352,4 +352,20 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.objects", hasSize(0)));
   }
 
+  @Test
+  void shouldGetToiletVersionsByValidToFromDate() throws Exception {
+    //given
+    toiletRepository.save(ToiletTestData.getToiletVersion());
+    ToiletVersion toilet = ToiletTestData.getToiletVersion();
+    toilet.setValidFrom(LocalDate.of(2001, 1, 1));
+    toilet.setValidTo(LocalDate.of(2001, 12, 31));
+    toilet.setDesignation("Designation1");
+    toiletRepository.save(toilet);
+
+    //when & then
+    mvc.perform(get("/v1/toilets?validToFromDate=" + ToiletTestData.getToiletVersion().getValidTo()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(2)));
+  }
+
 }
