@@ -63,6 +63,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   numberColons!: number;
   trafficPointElementVersion!:CreateTrafficPointElementVersion;
 
+
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
   constructor(
@@ -326,6 +327,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       Pages.PLATFORMS.path,
       this.selectedVersion.sloid,
       PRM_DETAIL_TAB_LINK
-    ])
+    ]);
   }
 }
