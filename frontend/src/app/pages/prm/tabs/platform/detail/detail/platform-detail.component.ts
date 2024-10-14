@@ -203,7 +203,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       .then(() => this.ngOnInit());
   }
 
-  navigateToTrafficPointElement() {
+  navigateToTrafficPointElement = () =>  {
     this.router.navigate([
       Pages.SEPODI.path,
       Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
