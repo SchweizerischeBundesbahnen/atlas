@@ -112,6 +112,23 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetPlatformsVersionByValidToFromDate() throws Exception {
+    //given
+    platformRepository.save(PlatformTestData.getPlatformVersion());
+    PlatformVersion platform = PlatformTestData.getPlatformVersion();
+    platform.setValidFrom(LocalDate.of(2001, 1, 1));
+    platform.setValidTo(LocalDate.of(2001, 12, 31));
+    platform.setAdviceAccessInfo("Another Access Information Advice");
+    platformRepository.save(platform);
+
+    //when & then
+    mvc.perform(
+            get("/v1/platforms?validToFromDate=" + platform.getValidFrom()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
   void shouldGetPlatformBySloid() throws Exception {
     //given
     platformRepository.save(PlatformTestData.getPlatformVersion());
