@@ -191,6 +191,19 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetTrafficPointElementVersionsByValidToFromDate() throws Exception {
+    TrafficPointElementVersion trafficPoint = TrafficPointTestData.getTrafficPoint();
+    trafficPoint.setValidFrom(LocalDate.of(2100, 1, 1));
+    trafficPoint.setValidTo(LocalDate.of(2101, 12, 31));
+    trafficPoint.setDesignation("Bezeichnung1");
+    repository.save(trafficPoint);
+    LocalDate validToFromDate = trafficPointElementVersion.getValidTo();
+    mvc.perform(get("/v1/traffic-point-elements?validToFromDate=" + validToFromDate))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(2)));
+  }
+
+  @Test
   void shouldGetTrafficPointElementVersionById() throws Exception {
     mvc.perform(get("/v1/traffic-point-elements/versions/" + trafficPointElementVersion.getId())).andExpect(status().isOk());
   }
