@@ -45,10 +45,7 @@
           [showStatus]="false"
         ></app-switch-version>
       </div>
-      <div *ngIf="!isNew" class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigateToPlatform()">
-        <img alt="platform" src="assets/images/prm/person-wheelchair.svg">
-        <p>{{ 'PAGES.PRM.TITLE_HEADER' | translate }}</p>
-      </div>
+      <app-navigation-sepodi-prm *ngIf="!isNew" [navigateToSepodi]="false" [navigate]="navigateToPlatform" ></app-navigation-sepodi-prm>
     </div>
 
     <div class="col-12 d-flex mt-5">
