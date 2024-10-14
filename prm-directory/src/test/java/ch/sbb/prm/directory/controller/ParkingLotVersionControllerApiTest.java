@@ -188,6 +188,22 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetParkingLotVersionsByValidFromToDateFilter() throws Exception {
+    //given
+    parkingLotRepository.save(ParkingLotTestData.getParkingLotVersion());
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
+    parkingLot.setValidFrom(LocalDate.of(2001, 1, 1));
+    parkingLot.setValidTo(LocalDate.of(2001, 12, 31));
+    parkingLot.setDesignation("Designation1");
+    parkingLotRepository.save(parkingLot);
+
+    //when & then
+    mvc.perform(get("/v1/parking-lots?validToFromDate=" + parkingLot.getValidFrom()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
   void shouldCreateParkingLot() throws Exception {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();

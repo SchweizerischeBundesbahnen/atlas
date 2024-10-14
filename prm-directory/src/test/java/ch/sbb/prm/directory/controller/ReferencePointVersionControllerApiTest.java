@@ -154,6 +154,22 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetReferencePointVersionsByValidToFromDateFilter() throws Exception {
+    //given
+    referencePointRepository.saveAndFlush(ReferencePointTestData.getReferencePointVersion());
+    ReferencePointVersion version = ReferencePointTestData.getReferencePointVersion();
+    version.setValidFrom(LocalDate.of(2001, 1, 1));
+    version.setValidTo(LocalDate.of(2001, 12, 31));
+    version.setDesignation("Designation1");
+    referencePointRepository.save(version);
+
+        //when & then
+    mvc.perform(get("/v1/reference-points?validToFromDate=" + version.getValidFrom()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
   void shouldNotGetReferencePointVersionsWithFilterOnStatusRevoked() throws Exception {
     //given
     ReferencePointVersion version = referencePointRepository.saveAndFlush(ReferencePointTestData.getReferencePointVersion());
