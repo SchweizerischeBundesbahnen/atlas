@@ -36,8 +36,6 @@ public class ValidOrEditionTimerangeSpecification<T> implements Specification<T>
     if (validToFromDate != null) {
       predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("validTo"), validToFromDate));
     }
-
-
     if (createdAfter != null) {
       predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("creationDate"), createdAfter));
     }
