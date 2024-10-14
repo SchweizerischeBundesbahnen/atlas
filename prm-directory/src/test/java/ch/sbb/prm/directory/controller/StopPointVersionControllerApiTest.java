@@ -108,6 +108,21 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetStopPointVersionsWithValidToFromDateFilter() throws Exception {
+    //given
+    StopPointVersion stopPoint = StopPointTestData.getStopPointVersion();
+    stopPoint.setValidFrom(LocalDate.of(2001, 1, 1));
+    stopPoint.setValidTo(LocalDate.of(2001, 12, 31));
+    stopPoint.setFreeText("Another free text.");
+    stopPointRepository.save(StopPointTestData.getStopPointVersion());
+    stopPointRepository.save(stopPoint);
+    //when & then
+    mvc.perform(get("/v1/stop-points?validToFromDate=" + stopPoint.getValidFrom()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
   void shouldNotGetStopPointVersionsWithFilter() throws Exception {
     //given
     stopPointRepository.save(StopPointTestData.getStopPointVersion());

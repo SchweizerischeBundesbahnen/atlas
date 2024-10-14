@@ -202,6 +202,20 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldFindAllServicePointVersionsByValidToFromDate() throws Exception {
+    ServicePointVersion servicePoint = ServicePointTestData.getBernWyleregg();
+    servicePoint.setValidFrom(LocalDate.of(2024, 4, 1));
+    servicePoint.setValidTo(LocalDate.of(2025, 3, 31));
+    servicePoint.setDesignationOfficial("Bern, Wyleregg1");
+    repository.save(servicePoint);
+    String validToFromDate = servicePointVersion.getValidTo().plusDays(1)
+        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+    mvc.perform(get("/v1/service-points?validToFromDate=" + validToFromDate))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
   void shouldFailOnInvalidServicePointNumber() throws Exception {
     mvc.perform(get("/v1/service-points/1234567"))
         .andExpect(status().isNotFound());
