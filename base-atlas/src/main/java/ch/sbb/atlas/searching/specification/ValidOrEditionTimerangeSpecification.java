@@ -20,6 +20,7 @@ public class ValidOrEditionTimerangeSpecification<T> implements Specification<T>
 
   private final LocalDate fromDate;
   private final LocalDate toDate;
+  private final LocalDate validToFromDate;
   private final LocalDateTime createdAfter;
   private final LocalDateTime modifiedAfter;
 
@@ -32,7 +33,9 @@ public class ValidOrEditionTimerangeSpecification<T> implements Specification<T>
     if (toDate != null) {
       predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("validTo"), toDate));
     }
-
+    if (validToFromDate != null) {
+      predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("validTo"), validToFromDate));
+    }
     if (createdAfter != null) {
       predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("creationDate"), createdAfter));
     }
