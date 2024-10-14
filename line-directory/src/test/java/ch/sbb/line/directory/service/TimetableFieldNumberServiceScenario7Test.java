@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.versioning.exception.DateValidationException;
+import ch.sbb.atlas.versioning.exception.DateOrderException;
 import ch.sbb.line.directory.entity.TimetableFieldLineRelation;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
@@ -427,8 +427,10 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThatThrownBy(() -> {
       timetableFieldNumberService.updateVersion(version1, editedVersion);
       //then
-    }).isInstanceOf(DateValidationException.class)
-      .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger than edited ValidTo 2029-12-08");
-  }
+    }).isInstanceOf(DateOrderException.class)
+            .hasMessageContaining(
+                    "Edited ValidFrom is bigger than edited ValidTo")
+            .extracting("validFrom", "validTo")
+            .containsExactly(LocalDate.of(2029, 12, 9), LocalDate.of(2029, 12, 8));  }
 
 }
