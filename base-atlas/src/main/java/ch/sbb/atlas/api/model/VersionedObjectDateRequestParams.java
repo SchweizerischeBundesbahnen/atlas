@@ -32,6 +32,14 @@ public class VersionedObjectDateRequestParams {
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN)
   private LocalDate toDate;
 
+  @Parameter(description = "[validToFromDate] <= validTo. Filters for all versions where validTo is greater than "
+          + "or equal to validToFromDate. "
+          + "Example: If validToFromDate is set to '2020-01-01', only versions where validTo is on "
+          + "or after '2020-01-01' will be included. "
+          + "Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
+  @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN)
+  private LocalDate validToFromDate;
+
   @Parameter(description = "creationDate >= [createdAfter]. DateTime format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN + ", " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T + ", " + AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN)
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T, AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN })
   private LocalDateTime createdAfter;

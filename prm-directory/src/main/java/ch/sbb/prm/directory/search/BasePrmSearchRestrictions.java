@@ -30,6 +30,7 @@ public abstract class BasePrmSearchRestrictions<T extends BasePrmEntityVersion> 
         .and(new ValidOrEditionTimerangeSpecification<>(
             prmObjectRequestParams.getFromDate(),
             prmObjectRequestParams.getToDate(),
+            prmObjectRequestParams.getValidToFromDate(),
             prmObjectRequestParams.getCreatedAfter(),
             prmObjectRequestParams.getModifiedAfter()));
 
