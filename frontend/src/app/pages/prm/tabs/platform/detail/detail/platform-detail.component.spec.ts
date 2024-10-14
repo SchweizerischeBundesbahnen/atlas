@@ -338,4 +338,39 @@ describe('PlatformDetailComponent', () => {
       ]);
     });
   });
+
+
+  describe('navigate back to stoppoint create if stoppoint does not exist', () => {
+    beforeEach(() => {
+      TestBed.overrideProvider(ActivatedRoute, {
+        useValue: {
+          snapshot: {
+            parent: {
+              data: {
+                stopPoint: [],
+                servicePoint: [BERN_WYLEREGG],
+                platform: [],
+                trafficPoint: [],
+              },
+            },
+          },
+        },
+      });
+      fixture = TestBed.createComponent(PlatformDetailComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+
+    it('navigate to stoppoint create if stoppoint does not exist', () => {
+      component.ngOnInit();
+
+      expect(routerSpy.navigate).toHaveBeenCalledWith([
+        Pages.PRM.path,
+        Pages.STOP_POINTS.path,
+        component.servicePoint.sloid,
+        Pages.PRM_STOP_POINT_TAB.path
+      ]);
+    });
+  });
 });
