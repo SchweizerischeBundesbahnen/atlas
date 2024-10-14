@@ -330,4 +330,30 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.totalCount", is(0)));
   }
 
+  @Test
+  void shouldGetRelationVersionsByValidToFromDate() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    stopPointRepository.save(StopPointTestData.builderVersion1().sloid(parentServicePointSloid).build());
+    String referencePointSloid = "ch:1:sloid:7000:1";
+    RelationVersion version = RelationTestData.builderVersion1().build();
+    version.setParentServicePointSloid(parentServicePointSloid);
+    version.setValidFrom(LocalDate.of(2000, 1, 1));
+    version.setValidTo(LocalDate.of(2000, 12, 31));
+    version.setSloid("ch:1:sloid:7000:11");
+    version.setReferencePointSloid(referencePointSloid);
+    relationRepository.saveAndFlush(version);
+    RelationVersion version1 = RelationTestData.builderVersion1().build();
+    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setValidFrom(LocalDate.of(2001, 1, 1));
+    version1.setValidTo(LocalDate.of(2001, 12, 31));
+    version1.setSloid("ch:1:sloid:7000:11");
+    version1.setReferencePointSloid(referencePointSloid);
+    relationRepository.saveAndFlush(version1);
+    //when & then
+    mvc.perform(get("/v1/relations?validToFromDate=2001-01-01"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
 }
