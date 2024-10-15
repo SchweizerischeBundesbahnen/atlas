@@ -11,6 +11,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.ImportFiles;
 import ch.sbb.importservice.exception.ContentTypeFileValidationException;
 import ch.sbb.importservice.exception.FileHeaderValidationException;
+import ch.sbb.importservice.service.prm.platform.update.PlatformUpdate;
 import ch.sbb.importservice.service.sepodi.service.point.update.ServicePointUpdate;
 import ch.sbb.importservice.service.sepodi.traffic.point.update.TrafficPointUpdate;
 import java.io.File;
@@ -43,6 +44,16 @@ class BulkImportFileValidationServiceTest {
         Files.readAllBytes(file.toPath()));
 
     File result = bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile, TrafficPointUpdate.CONFIG);
+    assertThat(result).hasSize(file.length());
+  }
+
+  @Test
+  void shouldValidateSuccessfullyValidPlatformUpdateCsvFile() throws IOException {
+    File file = ImportFiles.getFileByPath("import-files/valid/platform-update.csv");
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "platform-update.csv", CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    File result = bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile, PlatformUpdate.CONFIG);
     assertThat(result).hasSize(file.length());
   }
 
@@ -81,6 +92,17 @@ class BulkImportFileValidationServiceTest {
   void shouldReportInvalidFileHeaderOnTrafficPointUpdateInvalidHeaderCsvFile() throws IOException {
     File file = ImportFiles.getFileByPath("import-files/invalid/traffic-point-update-invalid-header.csv");
     MockMultipartFile multipartFile = new MockMultipartFile("file", "traffic-point-update-invalid-header.csv", CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    assertThatExceptionOfType(FileHeaderValidationException.class).isThrownBy(
+        () -> bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile,
+            TrafficPointUpdate.CONFIG));
+  }
+
+  @Test
+  void shouldReportInvalidFileHeaderOnPlatformUpdateInvalidHeaderCsvFile() throws IOException {
+    File file = ImportFiles.getFileByPath("import-files/invalid/platform-update-invalid-header.csv");
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "platform-update-invalid-header.csv", CSV_CONTENT_TYPE,
         Files.readAllBytes(file.toPath()));
 
     assertThatExceptionOfType(FileHeaderValidationException.class).isThrownBy(
