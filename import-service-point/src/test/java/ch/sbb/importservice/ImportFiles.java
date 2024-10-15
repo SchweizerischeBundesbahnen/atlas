@@ -1,9 +1,13 @@
 package ch.sbb.importservice;
 
+import static ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType.STATIC_VISUAL_INFORMATION;
+import static ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType.TO_BE_COMPLETED;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -63,6 +67,24 @@ public class ImportFiles {
         .north(1199749.812)
         .spatialReference(SpatialReference.LV95)
         .height(540.2)
+        .build();
+  }
+
+  public static PlatformUpdateCsvModel getExpectedPlatformUpdateCsvModel() {
+    return PlatformUpdateCsvModel.builder()
+        .sloid("ch:1:sloid:88253:0:1")
+        .validFrom(LocalDate.of(2021, 4, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .additionalInformation("Die Buslinie 160 Fahrtrichtung Münsingen Bahnhof Konolfingen "
+            + "Dorf bedienen diese Haltekante.")
+        .height(16.000)
+        .inclinationLongitudinal(2.000)
+        .infoOpportunities(Set.of(STATIC_VISUAL_INFORMATION))
+        .partialElevation(false)
+        .tactileSystem(BooleanOptionalAttributeType.NO)
+        .vehicleAccess(TO_BE_COMPLETED)
+        .wheelchairAreaLength(300.000)
+        .wheelchairAreaWidth(null)
         .build();
   }
 

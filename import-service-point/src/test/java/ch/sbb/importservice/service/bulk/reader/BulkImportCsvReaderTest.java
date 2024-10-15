@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -24,6 +25,10 @@ class BulkImportCsvReaderTest {
 
   private static final String TRAFFIC_POINT_UPDATE_HEADER = """
       sloid;validFrom;validTo;designation;designationOperational;length;boardingAreaHeight;compassDirection;east;north;spatialReference;height;parentSloid
+      """;
+
+  private static final String PLATFORM_UPDATE_HEADER = """
+      sloid;validFrom;validTo;additionalInformation;height;inclinationLongitudinal;infoOpportunities;partialElevation;tactileSystem;vehicleAccess;wheelchairAreaLength;wheelchairAreaWidth
       """;
 
   @Test
@@ -55,6 +60,22 @@ class BulkImportCsvReaderTest {
 
     TrafficPointUpdateCsvModel expected = ImportFiles.getExpectedTrafficPointUpdateCsvModel();
     TrafficPointUpdateCsvModel actual = trafficPointUpdates.getFirst().getObject();
+    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+  }
+
+  @Test
+  void shouldReadPlatformUpdateCsvCorrectlyWithNullingAndPipedSet() {
+    File file = ImportFiles.getFileByPath("import-files/valid/platform-update.csv");
+
+    List<BulkImportUpdateContainer<PlatformUpdateCsvModel>> platformUpdates =
+        BulkImportCsvReader.readLinesFromFileWithNullingValue(
+            file, PlatformUpdateCsvModel.class);
+
+    assertThat(platformUpdates).hasSize(1);
+    assertThat(platformUpdates.getFirst().getAttributesToNull()).containsExactly("wheelchairAreaWidth");
+
+    PlatformUpdateCsvModel expected = ImportFiles.getExpectedPlatformUpdateCsvModel();
+    PlatformUpdateCsvModel actual = platformUpdates.getFirst().getObject();
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
@@ -106,6 +127,33 @@ class BulkImportCsvReaderTest {
         "Expected DOUBLE but got north in column north",
         "Expected ENUM but got 111 in column spatialReference",
         "Expected DOUBLE but got height in column height");
+  }
+
+  @Test
+  void shouldReportAllDataMappingErrorsForPlatformUpdate() throws IOException {
+    String csvLine = """
+        ch:1:sloid:88253:0:1;num;tomorrow;5.000;Bern;STOP;idk;aaa;east;north;fake;height
+        """;
+    BulkImportUpdateContainer<PlatformUpdateCsvModel> result = BulkImportCsvReader.readObject(
+        PlatformUpdateCsvModel.class, PLATFORM_UPDATE_HEADER, csvLine, 1);
+
+    assertThat(result.getBulkImportLogEntry().getErrors()).hasSize(10);
+
+    List<String> errorMessages = result.getBulkImportLogEntry().getErrors().stream()
+        .map(BulkImportError::getErrorMessage)
+        .toList();
+    assertThat(errorMessages).containsExactlyInAnyOrder(
+        "Expected DATE but got num in column validFrom",
+        "Expected DATE but got tomorrow in column validTo",
+        "Expected DOUBLE but got Bern in column height",
+        "Expected DOUBLE but got STOP in column inclinationLongitudinal",
+        "Expected ENUM but got idk in column infoOpportunities",
+        "Expected BOOLEAN but got aaa in column partialElevation",
+        "Expected ENUM but got east in column tactileSystem",
+        "Expected ENUM but got north in column vehicleAccess",
+        "Expected DOUBLE but got fake in column wheelchairAreaLength",
+        "Expected DOUBLE but got height in column wheelchairAreaWidth"
+    );
   }
 
 }
