@@ -28,6 +28,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
   platforms: PlatformOverviewRow[] = [];
   totalCount = 0;
   trafficPointElements: ReadTrafficPointElementVersion[] = [];
+  navigateToTrafficPointsTableUrl: string[] = [];
 
   tableColumns: TableColumn<PlatformOverviewRow>[] = [
     { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
@@ -60,6 +61,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     this.showCurrentTab(this.route.parent!.snapshot.data);
 
     this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.PLATFORMS);
+    this.setUrl();
   }
 
   getTab(): Tab {
@@ -111,13 +113,13 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     return mergedOverview;
   }
 
-  navigateToTrafficPointElements = () => {
+  setUrl() {
     const number = this.route.parent!.snapshot.data.servicePoints[0].number.number;
-    this.router.navigate([
+    this.navigateToTrafficPointsTableUrl = [
       Pages.SEPODI.path,
       Pages.SERVICE_POINTS.path,
-      number,
+      number.toString(),
       Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path
-    ]);
+    ]
   }
 }
