@@ -62,7 +62,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   isTrafficPointArea = false;
   numberColons!: number;
   trafficPointElementVersion!:CreateTrafficPointElementVersion;
-
+  navigateToPlatformUrl: string[] = [];
 
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
@@ -84,6 +84,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
 
     this.route.data.subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
+      console.log("traffic ", this.trafficPointVersions)
       this.initTrafficPoint();
     });
   }
@@ -148,6 +149,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
           );
           this.areaOptions = options;
         });
+      this.setUrl();
     }
   }
 
@@ -328,5 +330,16 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       this.selectedVersion.sloid,
       PRM_DETAIL_TAB_LINK
     ]);
+  }
+
+  setUrl() {
+    this.navigateToPlatformUrl = [
+      Pages.PRM.path,
+      Pages.STOP_POINTS.path,
+      this.selectedVersion.servicePointSloid!,
+      Pages.PLATFORMS.path,
+      this.selectedVersion.sloid!,
+      PRM_DETAIL_TAB_LINK
+    ]
   }
 }

@@ -39,6 +39,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   preferredId?: number;
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   isReduced!: boolean | undefined;
+  navigateToSepodiUrl: string[] = [];
 
   constructor(
     private readonly router: Router,
@@ -166,6 +167,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     this.selectedVersionIndex = this.stopPointVersions.indexOf(this.selectedVersion);
     this.initSelectedVersion();
     this.disableForm();
+    this.setUrl();
   }
 
   enableForm() {
@@ -268,12 +270,12 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     });
   }
 
-  navigateToSePoDi(){
-    this.router.navigate([
+  setUrl() {
+    this.navigateToSepodiUrl = [
       Pages.SEPODI.path,
       Pages.SERVICE_POINTS.path,
-      this.selectedVersion!.number.number,
+      this.selectedVersion!.number!.number.toString(),
       Pages.SEPODI_TAB.path
-    ]);
+    ]
   }
 }
