@@ -45,7 +45,7 @@
           [showStatus]="false"
         ></app-switch-version>
       </div>
-      <app-navigation-sepodi-prm *ngIf="!isNew" [navigateToSepodi]="false" [navigate]="navigateToPlatform" ></app-navigation-sepodi-prm>
+      <app-navigation-sepodi-prm *ngIf="!isNew" [showPrmIcon]="true" [url]="navigateToPlatformUrl" ></app-navigation-sepodi-prm>
     </div>
 
     <div class="col-12 d-flex mt-5">
