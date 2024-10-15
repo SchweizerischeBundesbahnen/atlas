@@ -8,7 +8,7 @@
         [records]="servicePointVersions"
         [switchDisabled]="isSwitchVersionDisabled"
       ></app-switch-version>
-      <app-navigation-sepodi-prm *ngIf="isLocatedInSwitzerland" [showPrmIcon]="true" [url]="navigateToStopPointUrl"></app-navigation-sepodi-prm>
+      <app-navigation-sepodi-prm *ngIf="isLocatedInSwitzerland" [icon]="NavigationToIconType.PRM" [url]="navigateToStopPointUrl"></app-navigation-sepodi-prm>
     </div>
   </div>
 

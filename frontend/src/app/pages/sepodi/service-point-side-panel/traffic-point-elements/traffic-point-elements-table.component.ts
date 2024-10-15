@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { TableService } from '../../../../core/components/table/table.service';
+import {NavigationToIconType} from "../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-service-point-traffic-point-elements-table',
@@ -17,6 +18,8 @@ import { TableService } from '../../../../core/components/table/table.service';
   styleUrls: ['./traffic-point-elements-table.component.scss'],
 })
 export class TrafficPointElementsTableComponent implements OnInit {
+  readonly NavigationToIconType = NavigationToIconType;
+
   tableColumnsPlatforms: TableColumn<ReadTrafficPointElementVersion>[] = [
     { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
