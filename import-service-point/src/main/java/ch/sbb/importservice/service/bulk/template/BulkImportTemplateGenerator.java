@@ -40,6 +40,15 @@ public class BulkImportTemplateGenerator {
             .build(),
         TrafficPointTemplateGenerator::getTrafficPointUpdateCsvModelExample
     );
+
+    templateLookup.put(
+        BulkImportConfig.builder()
+            .application(ApplicationType.PRM)
+            .objectType(BusinessObjectType.PLATFORM)
+            .importType(ImportType.UPDATE)
+            .build(),
+        PlatformTemplateGenerator::getPlatformUpdateCsvModelExample
+    );
   }
 
   public static final String CSV_EXTENSION = ".csv";
