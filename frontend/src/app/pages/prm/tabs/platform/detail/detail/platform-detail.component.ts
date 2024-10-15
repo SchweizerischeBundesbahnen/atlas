@@ -47,6 +47,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
   selectedVersionIndex!: number;
   mayCreate = true;
   existStopPoint = false
+  navigateToTrafficPointUrl: string[] = [];
 
   get reducedForm(): FormGroup<ReducedPlatformFormGroup> {
     return this.form as FormGroup<ReducedPlatformFormGroup>;
@@ -86,6 +87,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
         this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
           this.platform,
         );
+        this.setUrl();
         this.selectedVersionIndex = this.platform.indexOf(this.selectedVersion);
       }
 
@@ -203,11 +205,11 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       .then(() => this.ngOnInit());
   }
 
-  navigateToTrafficPointElement = () =>  {
-    this.router.navigate([
+  setUrl() {
+    this.navigateToTrafficPointUrl = [
       Pages.SEPODI.path,
       Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
-      this.selectedVersion.sloid
-    ]);
+      this.selectedVersion.sloid!
+    ]
   }
 }

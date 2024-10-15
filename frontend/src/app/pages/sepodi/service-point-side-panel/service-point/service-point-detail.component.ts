@@ -53,6 +53,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
 
   _showRevokeButton = false;
 
+  navigateToStopPointUrl: string[] = [];
   get showRevokeButton(): boolean {
     return this._showRevokeButton;
   }
@@ -153,6 +154,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
     this.isLocatedInSwitzerland = this.selectedVersion.servicePointGeolocation?.isoCountryCode === Cantons.swiss.short
+    this.setUrl();
   }
 
   initShowRevokeButton(version: ReadServicePointVersion) {
@@ -351,12 +353,12 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this.addStopPointWorkflowDialogService.openDialog(this.selectedVersion!);
   }
 
-  navigateToStopPoint = () => {
-    this.router.navigate([
+  setUrl() {
+    this.navigateToStopPointUrl = [
       Pages.PRM.path,
       Pages.STOP_POINTS.path,
-      this.selectedVersion!.sloid,
+      this.selectedVersion!.sloid!,
       Pages.PRM_STOP_POINT_TAB.path
-    ]);
+    ]
   }
 }
