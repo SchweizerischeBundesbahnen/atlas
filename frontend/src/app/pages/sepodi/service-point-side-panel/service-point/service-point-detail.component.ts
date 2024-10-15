@@ -26,6 +26,9 @@ import {PermissionService} from "../../../../core/auth/permission/permission.ser
 import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
 import {takeUntil} from "rxjs/operators";
 import {Cantons} from "../../../../core/cantons/Cantons";
+import {
+  NavigationToIconType
+} from "../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-service-point',
@@ -34,6 +37,8 @@ import {Cantons} from "../../../../core/cantons/Cantons";
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   readonly servicePointStatus = Status;
+  readonly NavigationToIconType = NavigationToIconType;
+
   private onDestroy$ = new Subject<boolean>();
 
   servicePointVersions!: ReadServicePointVersion[];
@@ -361,4 +366,5 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
       Pages.PRM_STOP_POINT_TAB.path
     ]
   }
+
 }
