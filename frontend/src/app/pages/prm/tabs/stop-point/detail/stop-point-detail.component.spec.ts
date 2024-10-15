@@ -308,15 +308,14 @@ describe('StopPointDetailComponent', () => {
   });
 
   it('should navigate to the correct SePoDi url', () => {
-    routerSpy.navigate.and.returnValue(Promise.resolve(true));
     component.selectedVersion =  STOP_POINT;
 
-    component.navigateToSePoDi();
+    component.setUrl();
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith([
+    expect(component.navigateToSepodiUrl).toEqual([
       Pages.SEPODI.path,
       Pages.SERVICE_POINTS.path,
-      STOP_POINT.number.number,
+      STOP_POINT.number.number.toString(),
       Pages.SEPODI_TAB.path
     ]);
   });

@@ -90,9 +90,9 @@ describe('TrafficPointElementsTableComponent', () => {
   });
 
   it('should navigate to the correct platforms url', () => {
-    component.navigateToPlatforms();
+    component.setUrl();
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith([
+    expect(component.navigateToPlatformsUrl).toEqual([
       Pages.PRM.path,
       Pages.STOP_POINTS.path,
       'ch:1:sloid:89008',

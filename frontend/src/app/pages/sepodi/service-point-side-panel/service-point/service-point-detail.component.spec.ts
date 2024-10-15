@@ -405,12 +405,12 @@ describe('ServicePointDetailComponent', () => {
   it('should navigate to the correct stop point URL', () => {
     component.selectedVersion = BERN_WYLEREGG;
 
-    component.navigateToStopPoint();
+    component.setUrl();
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith([
+    expect(component.navigateToStopPointUrl).toEqual([
       Pages.PRM.path,
       Pages.STOP_POINTS.path,
-      component.selectedVersion!.sloid,
+      component.selectedVersion.sloid!,
       Pages.PRM_STOP_POINT_TAB.path
     ]);
   });

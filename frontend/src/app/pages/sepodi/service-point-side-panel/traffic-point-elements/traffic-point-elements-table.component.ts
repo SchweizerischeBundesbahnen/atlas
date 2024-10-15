@@ -41,6 +41,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
   createVisible = false;
 
   tableFilterConfig!: TableFilter<unknown>[][];
+  navigateToPlatformsUrl: string[] = [];
 
   constructor(
     private trafficPointElementService: TrafficPointElementsService,
@@ -59,6 +60,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
           ? Pages.TRAFFIC_POINT_ELEMENTS_AREA
           : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM,
       );
+      this.setUrl();
     });
   }
 
@@ -116,13 +118,13 @@ export class TrafficPointElementsTableComponent implements OnInit {
     });
   }
 
-  navigateToPlatforms(){
+  setUrl() {
     const sloid = this.route.parent!.snapshot.data.servicePoint[0].sloid;
-    this.router.navigate([
+    this.navigateToPlatformsUrl = [
       Pages.PRM.path,
       Pages.STOP_POINTS.path,
-      sloid,
+      sloid!,
       Pages.PLATFORMS.path
-    ]);
+    ]
   }
 }

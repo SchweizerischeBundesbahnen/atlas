@@ -73,14 +73,13 @@ describe('PlatformTableComponent', () => {
   });
 
   it('should navigate to the correct traffic point elements URL', () => {
-    routerSpy.navigate.and.returnValue(Promise.resolve(true));
+    const number = 8589008;
+    component.setUrl();
 
-    component.navigateToTrafficPointElements();
-
-    expect(routerSpy.navigate).toHaveBeenCalledWith([
+    expect(component.navigateToTrafficPointsTableUrl).toEqual([
       Pages.SEPODI.path,
       Pages.SERVICE_POINTS.path,
-      8589008,
+      number.toString(),
       Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
     ]);
   });

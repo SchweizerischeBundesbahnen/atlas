@@ -329,12 +329,12 @@ describe('PlatformDetailComponent', () => {
     it('should navigate to the correct traffic point element URL', () => {
       component.selectedVersion = reducedPlatform[0];
 
-      component.navigateToTrafficPointElement();
+      component.setUrl();
 
-      expect(routerSpy.navigate).toHaveBeenCalledWith([
+      expect(component.navigateToTrafficPointUrl).toEqual([
         Pages.SEPODI.path,
         Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
-        reducedPlatform[0].sloid
+        reducedPlatform[0].sloid!
       ]);
     });
   });
