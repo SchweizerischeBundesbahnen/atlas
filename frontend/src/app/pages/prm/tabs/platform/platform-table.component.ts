@@ -19,12 +19,15 @@ import { mergeMap } from 'rxjs';
 import { SloidHelper } from '../../../../core/util/sloidHelper';
 import { tap } from 'rxjs/operators';
 import { TableContentPaginationAndSorting } from '../../../../core/components/table/table-content-pagination-and-sorting';
+import {NavigationToIconType} from "../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-platform',
   templateUrl: './platform-table.component.html',
 })
 export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {
+  readonly NavigationToIconType = NavigationToIconType;
+
   platforms: PlatformOverviewRow[] = [];
   totalCount = 0;
   trafficPointElements: ReadTrafficPointElementVersion[] = [];
