@@ -24,6 +24,7 @@ import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import {catchError, EMPTY} from "rxjs";
 import {Pages} from "../../../../../pages";
+import {NavigationToIconType} from "../../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-platforms',
@@ -31,6 +32,8 @@ import {Pages} from "../../../../../pages";
   providers: [ValidityService]
 })
 export class PlatformDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
+  readonly NavigationToIconType = NavigationToIconType;
+
   isNew = false;
   platform: ReadPlatformVersion[] = [];
   selectedVersion!: ReadPlatformVersion;
