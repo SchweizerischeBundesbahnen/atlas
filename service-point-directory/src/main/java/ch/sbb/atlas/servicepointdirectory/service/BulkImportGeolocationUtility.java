@@ -1,12 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
+import static ch.sbb.atlas.imports.util.BulkImportUtility.applyUpdateIfValueNotNull;
+
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
-import java.util.function.Consumer;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class BulkImportUtility {
+public class BulkImportGeolocationUtility {
 
   public static <G extends GeolocationBaseEntity, U extends UpdateGeolocationModel>
   boolean geolocationValuesAreNull(G geolocation, U update) {
@@ -14,12 +15,6 @@ public class BulkImportUtility {
         update.getNorth() == null &&
         update.getEast() == null &&
         update.getSpatialReference() == null;
-  }
-
-  public static <T> void applyUpdateIfValueNotNull(T value, Consumer<T> setterFunction) {
-    if (value != null) {
-      setterFunction.accept(value);
-    }
   }
 
   public static <G extends GeolocationBaseEntity, U extends UpdateGeolocationModel>
