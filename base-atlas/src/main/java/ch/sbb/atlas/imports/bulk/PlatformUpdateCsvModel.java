@@ -61,16 +61,16 @@ public class PlatformUpdateCsvModel implements Validatable<PlatformUpdateCsvMode
   @Override
   public List<BulkImportError> validate() {
     List<BulkImportError> errors = new ArrayList<>();
-    if (sloid == null) {
-      errors.add(BulkImportErrors.notNull(Fields.sloid));
-    }
-    if (validFrom == null) {
-      errors.add(BulkImportErrors.notNull(Fields.validFrom));
-    }
-    if (validTo == null) {
-      errors.add(BulkImportErrors.notNull(Fields.validTo));
-    }
+    mandatoryFieldIsNotNull(sloid, Fields.sloid, errors);
+    mandatoryFieldIsNotNull(validFrom, Fields.validFrom, errors);
+    mandatoryFieldIsNotNull(validTo, Fields.validTo, errors);
     return errors;
+  }
+
+  private void mandatoryFieldIsNotNull(Object fieldValue, String fieldName, List<BulkImportError> errors) {
+    if (fieldValue == null) {
+      errors.add(BulkImportErrors.notNull(fieldName));
+    }
   }
 
   @Override
