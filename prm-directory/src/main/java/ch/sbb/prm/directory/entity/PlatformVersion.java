@@ -23,6 +23,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.Min;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -38,7 +39,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "platform_version")
 @AtlasVersionable
@@ -81,6 +82,7 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
 
   @AtlasVersionableProperty
   @PrmVariant(variant = RecordingVariant.REDUCED)
+  @Min(0)
   private Double height;
 
   @PrmVariant(variant = RecordingVariant.COMPLETE)
@@ -126,10 +128,12 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
 
   @PrmVariant(variant = RecordingVariant.REDUCED)
   @AtlasVersionableProperty
+  @Min(0)
   private Double wheelchairAreaLength;
 
   @PrmVariant(variant = RecordingVariant.REDUCED)
   @AtlasVersionableProperty
+  @Min(0)
   private Double wheelchairAreaWidth;
 
   public Set<InfoOpportunityAttributeType> getInfoOpportunities() {
