@@ -54,12 +54,12 @@ public class TrafficPointBulkImportService {
 
   private List<TrafficPointElementVersion> getCurrentTrafficPointVersions(TrafficPointUpdateCsvModel trafficPointUpdateCsvModel) {
     if (trafficPointUpdateCsvModel.getSloid() != null) {
-      List<TrafficPointElementVersion> servicePointVersions =
+      List<TrafficPointElementVersion> trafficPointElementVersions =
           trafficPointElementService.findBySloidOrderByValidFrom(trafficPointUpdateCsvModel.getSloid());
-      if (servicePointVersions.isEmpty()) {
+      if (trafficPointElementVersions.isEmpty()) {
         throw new SloidNotFoundException(trafficPointUpdateCsvModel.getSloid());
       }
-      return servicePointVersions;
+      return trafficPointElementVersions;
     }
     throw new IllegalStateException("Sloid should be given");
   }
