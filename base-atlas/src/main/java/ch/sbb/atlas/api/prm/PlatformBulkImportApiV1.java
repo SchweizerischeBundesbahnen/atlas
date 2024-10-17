@@ -13,8 +13,8 @@ public interface PlatformBulkImportApiV1 {
 
   String BASEPATH = "v1/platform/bulk-import";
 
-  @PostMapping(value = BASEPATH + "/update")
-  List<BulkImportItemExecutionResult> bulkImportUpdate(
+  @PostMapping(value = BASEPATH + "/update-platform")
+  List<BulkImportItemExecutionResult> bulkImportPlatformUpdate(
       @RequestBody List<BulkImportUpdateContainer<PlatformUpdateCsvModel>> bulkImportUpdateContainers);
 
 }
