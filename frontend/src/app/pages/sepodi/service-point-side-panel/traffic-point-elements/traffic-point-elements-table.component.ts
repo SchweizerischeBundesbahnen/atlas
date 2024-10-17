@@ -45,7 +45,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
 
   tableFilterConfig!: TableFilter<unknown>[][];
   navigateToPlatformsUrl: string[] = [];
-  sloid!: string;
+  servicePointVersion!: ReadServicePointVersion;
 
   constructor(
     private trafficPointElementService: TrafficPointElementsService,
@@ -64,7 +64,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
           ? Pages.TRAFFIC_POINT_ELEMENTS_AREA
           : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM,
       );
-      this.sloid = this.route.parent!.snapshot.data.servicePoint[0].sloid;
+      this.servicePointVersion = this.route.parent!.snapshot.data.servicePoint[0];
     });
   }
 

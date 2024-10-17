@@ -42,7 +42,7 @@ const NUMBER_COLONS_AREA = 0;
 export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
   readonly extractSloid = (option: AreaOption) => option.sloid;
   readonly displayExtractor = (option: AreaOption) => option.displayText;
-  readonly NavigationToIconType = NavigationToPage;
+  readonly NavigationToPage = NavigationToPage;
 
   trafficPointVersions!: ReadTrafficPointElementVersion[];
   selectedVersion!: ReadTrafficPointElementVersion;
@@ -343,6 +343,4 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       PRM_DETAIL_TAB_LINK
     ]
   }
-
-  protected readonly NavigationToPage = NavigationToPage;
 }
