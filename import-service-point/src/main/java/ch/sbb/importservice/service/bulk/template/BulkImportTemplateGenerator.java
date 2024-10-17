@@ -59,7 +59,7 @@ public class BulkImportTemplateGenerator {
     Object example = bulkImportExample(importConfig);
     File csvFile = new File(fileService.getDir() + importConfig.getTemplateFileName());
     ObjectWriter objectWriter = new TemplateCsvMapper(example.getClass()).getObjectWriter();
-    return CsvExportWriter.writeToFileWithoutOrderMark(csvFile, List.of(example), objectWriter);
+    return CsvExportWriter.writeToFile(csvFile, List.of(example), objectWriter);
   }
 
   public Object bulkImportExample(BulkImportConfig importConfig) {
