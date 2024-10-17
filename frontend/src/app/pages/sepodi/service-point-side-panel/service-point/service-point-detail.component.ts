@@ -27,7 +27,7 @@ import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-s
 import {takeUntil} from "rxjs/operators";
 import {Cantons} from "../../../../core/cantons/Cantons";
 import {
-  NavigationToIconType
+  NavigationToPage
 } from "../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
@@ -37,7 +37,7 @@ import {
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   readonly servicePointStatus = Status;
-  readonly NavigationToIconType = NavigationToIconType;
+  readonly NavigationToPage = NavigationToPage;
 
   private onDestroy$ = new Subject<boolean>();
 
@@ -159,7 +159,6 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
     this.isLocatedInSwitzerland = this.selectedVersion.servicePointGeolocation?.isoCountryCode === Cantons.swiss.short
-    this.setUrl();
   }
 
   initShowRevokeButton(version: ReadServicePointVersion) {
@@ -167,6 +166,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   private displayAndSelectServicePointOnMap() {
+    console.log("klick")
     this.mapService.mapInitialized.pipe(
       takeUntil(this.onDestroy$))
       .subscribe((initialized) => {
@@ -357,14 +357,4 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   addWorkflow() {
     this.addStopPointWorkflowDialogService.openDialog(this.selectedVersion!);
   }
-
-  setUrl() {
-    this.navigateToStopPointUrl = [
-      Pages.PRM.path,
-      Pages.STOP_POINTS.path,
-      this.selectedVersion!.sloid!,
-      Pages.PRM_STOP_POINT_TAB.path
-    ]
-  }
-
 }
