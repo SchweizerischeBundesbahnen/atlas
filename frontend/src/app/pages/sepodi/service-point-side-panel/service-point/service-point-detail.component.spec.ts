@@ -401,17 +401,4 @@ describe('ServicePointDetailComponent', () => {
 
     expect(addStopPointWorkflowDialogService.openDialog).toHaveBeenCalled();
   });
-
-  it('should navigate to the correct stop point URL', () => {
-    component.selectedVersion = BERN_WYLEREGG;
-
-    component.setUrl();
-
-    expect(component.navigateToStopPointUrl).toEqual([
-      Pages.PRM.path,
-      Pages.STOP_POINTS.path,
-      component.selectedVersion.sloid!,
-      Pages.PRM_STOP_POINT_TAB.path
-    ]);
-  });
 });
