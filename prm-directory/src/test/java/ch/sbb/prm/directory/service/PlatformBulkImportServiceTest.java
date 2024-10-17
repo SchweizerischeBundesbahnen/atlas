@@ -104,7 +104,9 @@ class PlatformBulkImportServiceTest {
             .validFrom(platformVersion.getValidFrom())
             .validTo(platformVersion.getValidTo())
             .build())
-        .attributesToNull(List.of(Fields.height))
+        .attributesToNull(List.of(Fields.height, Fields.additionalInformation, Fields.inclinationLongitudinal,
+            Fields.infoOpportunities, Fields.partialElevation, Fields.tactileSystem, Fields.vehicleAccess,
+            Fields.wheelchairAreaLength, Fields.wheelchairAreaWidth))
         .build());
 
     PlatformVersion platformVersion1 =
