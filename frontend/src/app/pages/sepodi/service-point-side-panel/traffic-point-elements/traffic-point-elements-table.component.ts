@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { TableService } from '../../../../core/components/table/table.service';
-import {NavigationToIconType} from "../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
+import {NavigationToPage} from "../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-service-point-traffic-point-elements-table',
@@ -18,7 +18,7 @@ import {NavigationToIconType} from "../../../../core/navigation-sepodi-prm/navig
   styleUrls: ['./traffic-point-elements-table.component.scss'],
 })
 export class TrafficPointElementsTableComponent implements OnInit {
-  readonly NavigationToIconType = NavigationToIconType;
+  protected readonly NavigationToPage = NavigationToPage;
 
   tableColumnsPlatforms: TableColumn<ReadTrafficPointElementVersion>[] = [
     { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
@@ -45,6 +45,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
 
   tableFilterConfig!: TableFilter<unknown>[][];
   navigateToPlatformsUrl: string[] = [];
+  sloid!: string;
 
   constructor(
     private trafficPointElementService: TrafficPointElementsService,
@@ -63,7 +64,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
           ? Pages.TRAFFIC_POINT_ELEMENTS_AREA
           : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM,
       );
-      this.setUrl();
+      this.sloid = this.route.parent!.snapshot.data.servicePoint[0].sloid;
     });
   }
 
@@ -119,15 +120,5 @@ export class TrafficPointElementsTableComponent implements OnInit {
       this.trafficPointElementRows = container.objects!;
       this.totalCount$ = container.totalCount!;
     });
-  }
-
-  setUrl() {
-    const sloid = this.route.parent!.snapshot.data.servicePoint[0].sloid;
-    this.navigateToPlatformsUrl = [
-      Pages.PRM.path,
-      Pages.STOP_POINTS.path,
-      sloid!,
-      Pages.PLATFORMS.path
-    ]
   }
 }
