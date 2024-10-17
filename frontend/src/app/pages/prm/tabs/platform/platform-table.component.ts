@@ -5,7 +5,7 @@ import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
 import {
   PersonWithReducedMobilityService,
-  PlatformOverview,
+  PlatformOverview, ReadServicePointVersion,
   ReadTrafficPointElementVersion,
   TrafficPointElementsService,
 } from '../../../../api';
@@ -49,7 +49,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     },
   ];
   tableFilterConfig!: TableFilter<unknown>[][];
-  number!: number;
+  servicePointVersion!: ReadServicePointVersion;
 
   constructor(
     readonly router: Router,
@@ -65,7 +65,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     this.showCurrentTab(this.route.parent!.snapshot.data);
 
     this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.PLATFORMS);
-    this.number = this.route.parent!.snapshot.data.servicePoints[0].number.number;
+    this.servicePointVersion = this.route.parent!.snapshot.data.servicePoints[0];
   }
 
   getTab(): Tab {
