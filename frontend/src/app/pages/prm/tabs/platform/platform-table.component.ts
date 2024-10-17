@@ -19,14 +19,14 @@ import { mergeMap } from 'rxjs';
 import { SloidHelper } from '../../../../core/util/sloidHelper';
 import { tap } from 'rxjs/operators';
 import { TableContentPaginationAndSorting } from '../../../../core/components/table/table-content-pagination-and-sorting';
-import {NavigationToIconType} from "../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
+import {NavigationToPage} from "../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-platform',
   templateUrl: './platform-table.component.html',
 })
 export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {
-  readonly NavigationToIconType = NavigationToIconType;
+  readonly NavigationToPage = NavigationToPage;
 
   platforms: PlatformOverviewRow[] = [];
   totalCount = 0;
@@ -49,6 +49,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     },
   ];
   tableFilterConfig!: TableFilter<unknown>[][];
+  number!: number;
 
   constructor(
     readonly router: Router,
@@ -64,7 +65,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     this.showCurrentTab(this.route.parent!.snapshot.data);
 
     this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.PLATFORMS);
-    this.setUrl();
+    this.number = this.route.parent!.snapshot.data.servicePoints[0].number.number;
   }
 
   getTab(): Tab {
@@ -114,15 +115,5 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
       });
     });
     return mergedOverview;
-  }
-
-  setUrl() {
-    const number = this.route.parent!.snapshot.data.servicePoints[0].number.number;
-    this.navigateToTrafficPointsTableUrl = [
-      Pages.SEPODI.path,
-      Pages.SERVICE_POINTS.path,
-      number.toString(),
-      Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path
-    ]
   }
 }
