@@ -24,7 +24,7 @@ import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import {catchError, EMPTY} from "rxjs";
 import {Pages} from "../../../../../pages";
-import {NavigationToIconType} from "../../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
+import {NavigationToPage} from "../../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-platforms',
@@ -32,7 +32,7 @@ import {NavigationToIconType} from "../../../../../../core/navigation-sepodi-prm
   providers: [ValidityService]
 })
 export class PlatformDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
-  readonly NavigationToIconType = NavigationToIconType;
+  readonly NavigationToIconType = NavigationToPage;
 
   isNew = false;
   platform: ReadPlatformVersion[] = [];
@@ -49,7 +49,6 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
   showVersionSwitch = false;
   selectedVersionIndex!: number;
   mayCreate = true;
-  existStopPoint = false
   navigateToTrafficPointUrl: string[] = [];
 
   get reducedForm(): FormGroup<ReducedPlatformFormGroup> {
@@ -73,11 +72,8 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
   ngOnInit(): void {
     this.initSePoDiData();
     this.stopPoint = this.route.snapshot.parent!.data.stopPoint;
-
     this.platform = this.route.snapshot.parent!.data.platform;
-    this.existStopPoint = this.stopPoint.length > 0
 
-    if (this.existStopPoint) {
       this.reduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
       this.isNew = this.platform.length === 0;
 
@@ -95,15 +91,6 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       }
 
       this.initForm();
-    }
-    else {
-      this.router.navigate([
-        Pages.PRM.path,
-        Pages.STOP_POINTS.path,
-        this.servicePoint?.sloid,
-        Pages.PRM_STOP_POINT_TAB.path
-      ]);
-    }
   }
 
   private initForm() {
@@ -215,4 +202,6 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       this.selectedVersion.sloid!
     ]
   }
+
+  protected readonly NavigationToPage = NavigationToPage;
 }
