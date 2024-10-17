@@ -1,6 +1,11 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {PersonWithReducedMobilityService} from "../../api";
+import {
+  PersonWithReducedMobilityService, ReadPlatformVersion,
+  ReadServicePointVersion, ReadStopPointVersion, ReadTrafficPointElementVersion,
+  ServicePointNumber,
+  ServicePointsService
+} from "../../api";
 
 export enum NavigationToPage {
   PRM = 'prm',
@@ -17,41 +22,42 @@ export enum NavigationToPage {
 })
 export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
 
-  @Input() sloid!: string;
-  @Input() platform_sloid!: string;
-
-  @Input() number!: number;
   @Input() targetPage!: NavigationToPage;
+  @Input() currentElement?: ReadServicePointVersion | ReadStopPointVersion | ReadTrafficPointElementVersion | ReadPlatformVersion
 
   targetUrl!: string;
   isTargetViewSepodi!: boolean;
 
   constructor(
     private router: Router,
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService
+    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private readonly servicePointsService: ServicePointsService
   ) {}
 
   ngOnInit(): void {
-    console.log(this.sloid)
-    const urlMapping = this.getUrlMappings(this.number, this.sloid, this.platform_sloid)
-    this.isTargetViewSepodi = urlMapping[this.targetPage].icon === NavigationToPage.SEPODI;
-    this.targetUrl = urlMapping[this.targetPage].url
+    //const test = this.currentElement as any ['number'] ?? this.currentElement as any ['servicePointNumber'];
+    console.log(this.currentElement)
+    this.init();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log("logggg")
+  ngOnChanges(): void {
+    this.init();
   }
 
-
+  init() {
+    //const urlMapping = this.getUrlMappings(this.number, this.sloid, this.platformSloid);
+    //this.isTargetViewSepodi = urlMapping[this.targetPage].icon === NavigationToPage.SEPODI;
+    //this.targetUrl = urlMapping[this.targetPage].url;
+  }
 
   navigate() {
     if(!this.isTargetViewSepodi) {
-      this.checkStoppointExists(this.sloid);
+      //this.checkStopPointExists(this.sloid!);
     }
     this.router.navigateByUrl(this.targetUrl);
   }
 
-  getUrlMappings(number?: number, sloid?: string, platform_sloid?: string) {
+  getUrlMappings(number?: number, sloid?: string, platformSloid?: string) {
     return {
       sepodi: {
         url: `/service-point-directory/service-points/${number}/service-point`,
@@ -74,18 +80,27 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
         icon: NavigationToPage.SEPODI
       },
       platform_detail: {
-        url: `/prm-directory/stop-points/${sloid}/platforms/${platform_sloid}/detail`,
+        url: `/prm-directory/stop-points/${sloid}/platforms/${platformSloid}/detail`,
         icon: NavigationToPage.PRM
       }
     };
   }
 
-  checkStoppointExists(sloid: string) {
+  checkStopPointExists(sloid: string) {
     this.personWithReducedMobilityService.getStopPointVersions(sloid).subscribe((stoppoint) => {
       console.log("stop point ", stoppoint)
+      //is swiss
       if(stoppoint.length === 0) {
         this.router.navigateByUrl(`/prm-directory/stop-points/${sloid}/stop-point`)
       }
+    })
+  }
+
+  checkServicePointIsLocatedInSwitzerland(number: number){
+    this.servicePointsService.getServicePointVersion(number).subscribe((servicePoint) => {
+      console.log("service point ", servicePoint)
+      //is swiss?
+      //is haltestelle
     })
   }
 }
