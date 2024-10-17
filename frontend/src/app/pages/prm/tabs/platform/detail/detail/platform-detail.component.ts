@@ -32,7 +32,7 @@ import {NavigationToPage} from "../../../../../../core/navigation-sepodi-prm/nav
   providers: [ValidityService]
 })
 export class PlatformDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
-  readonly NavigationToIconType = NavigationToPage;
+  protected readonly NavigationToPage = NavigationToPage;
 
   isNew = false;
   platform: ReadPlatformVersion[] = [];
@@ -49,7 +49,6 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
   showVersionSwitch = false;
   selectedVersionIndex!: number;
   mayCreate = true;
-  navigateToTrafficPointUrl: string[] = [];
 
   get reducedForm(): FormGroup<ReducedPlatformFormGroup> {
     return this.form as FormGroup<ReducedPlatformFormGroup>;
@@ -86,7 +85,6 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
         this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
           this.platform,
         );
-        this.setUrl();
         this.selectedVersionIndex = this.platform.indexOf(this.selectedVersion);
       }
 
@@ -194,14 +192,4 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       })
       .then(() => this.ngOnInit());
   }
-
-  setUrl() {
-    this.navigateToTrafficPointUrl = [
-      Pages.SEPODI.path,
-      Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
-      this.selectedVersion.sloid!
-    ]
-  }
-
-  protected readonly NavigationToPage = NavigationToPage;
 }

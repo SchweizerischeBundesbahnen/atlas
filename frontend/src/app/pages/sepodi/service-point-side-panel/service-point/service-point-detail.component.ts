@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {VersionsHandlingService} from '../../../../core/versioning/versions-handling.service';
 import {
   ApplicationRole,
-  ApplicationType,
+  ApplicationType, Country,
   CreateServicePointVersion,
   ReadServicePointVersion,
   ServicePointsService,
@@ -25,10 +25,11 @@ import {ValidityService} from '../../validity/validity.service';
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
 import {takeUntil} from "rxjs/operators";
-import {Cantons} from "../../../../core/cantons/Cantons";
 import {
   NavigationToPage
 } from "../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
+import {Cantons} from "../../../../core/cantons/Cantons";
+import {Countries} from "../../../../core/country/Countries";
 
 @Component({
   selector: 'app-service-point',
@@ -54,11 +55,10 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   preferredId?: number;
 
   isSwitchVersionDisabled = false;
-  isLocatedInSwitzerland = false;
+  isSwissServicePoint = false;
 
   _showRevokeButton = false;
 
-  navigateToStopPointUrl: string[] = [];
   get showRevokeButton(): boolean {
     return this._showRevokeButton;
   }
@@ -158,7 +158,9 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this.isSelectedVersionHighDate(this.servicePointVersions, version);
     this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
-    this.isLocatedInSwitzerland = this.selectedVersion.servicePointGeolocation?.isoCountryCode === Cantons.swiss.short
+
+    console.log(this.selectedVersion)
+    this.isSwissServicePoint = Countries.fromUicCode(this.selectedVersion.number.uicCountryCode).enumCountry === Country.Switzerland;
   }
 
   initShowRevokeButton(version: ReadServicePointVersion) {
@@ -166,7 +168,6 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   private displayAndSelectServicePointOnMap() {
-    console.log("klick")
     this.mapService.mapInitialized.pipe(
       takeUntil(this.onDestroy$))
       .subscribe((initialized) => {
