@@ -45,7 +45,7 @@
           [showStatus]="false"
         ></app-switch-version>
       </div>
-      <app-navigation-sepodi-prm *ngIf="!isNew" [targetPage]="NavigationToPage.PLATFORM_DETAIL" [sloid]="selectedVersion.servicePointSloid!" [platform_sloid]="selectedVersion.sloid!"></app-navigation-sepodi-prm>
+      <app-navigation-sepodi-prm *ngIf="!isNew" [targetPage]="NavigationToPage.PLATFORM_DETAIL" [currentElement]="selectedVersion"></app-navigation-sepodi-prm>
     </div>
 
     <div class="col-12 d-flex mt-5">
