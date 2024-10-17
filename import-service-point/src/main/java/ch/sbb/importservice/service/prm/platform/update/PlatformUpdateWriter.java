@@ -34,7 +34,7 @@ public class PlatformUpdateWriter extends PlatformUpdate implements BulkImportIt
 
     log.info("Writing {} containers to prm", updateContainers.size());
 
-    List<BulkImportItemExecutionResult> importResult = platformBulkImportClient.bulkImportUpdate(updateContainers);
+    List<BulkImportItemExecutionResult> importResult = platformBulkImportClient.bulkImportPlatformUpdate(updateContainers);
 
     WriterUtil.mapExecutionResultToLogEntry(importResult, updateContainers);
   }

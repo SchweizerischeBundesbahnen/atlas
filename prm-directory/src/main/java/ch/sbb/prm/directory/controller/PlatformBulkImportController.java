@@ -21,7 +21,7 @@ public class PlatformBulkImportController implements PlatformBulkImportApiV1 {
   private final AtlasExceptionHandler atlasExceptionHandler;
 
   @Override
-  public List<BulkImportItemExecutionResult> bulkImportUpdate(List<BulkImportUpdateContainer<PlatformUpdateCsvModel>> bulkImportContainers) {
+  public List<BulkImportItemExecutionResult> bulkImportPlatformUpdate(List<BulkImportUpdateContainer<PlatformUpdateCsvModel>> bulkImportContainers) {
     List<BulkImportItemExecutionResult> results = new ArrayList<>();
     bulkImportContainers.forEach(bulkImportContainer -> {
       try {
