@@ -19,7 +19,9 @@ import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-help
 import {ValidityService} from "../../../../sepodi/validity/validity.service";
 import {ReferencePointCreationHintService} from "./reference-point-creation-hint/reference-point-creation-hint.service";
 import {PermissionService} from "../../../../../core/auth/permission/permission.service";
-import {NavigationToIconType} from "../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
+import {
+  NavigationToPage,
+} from "../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -27,6 +29,8 @@ import {NavigationToIconType} from "../../../../../core/navigation-sepodi-prm/na
   providers: [ValidityService]
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {
+  protected readonly NavigationToPage = NavigationToPage;
+
   isNew = false;
   isAuthorizedToCreateStopPoint = true;
   stopPointVersions!: ReadStopPointVersion[];
@@ -168,7 +172,6 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     this.selectedVersionIndex = this.stopPointVersions.indexOf(this.selectedVersion);
     this.initSelectedVersion();
     this.disableForm();
-    this.setUrl();
   }
 
   enableForm() {
@@ -270,15 +273,4 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       message: 'PRM.DIALOG.PRM_VARIANT_CHANGES_MSG',
     });
   }
-
-  setUrl() {
-    this.navigateToSepodiUrl = [
-      Pages.SEPODI.path,
-      Pages.SERVICE_POINTS.path,
-      this.selectedVersion!.number!.number.toString(),
-      Pages.SEPODI_TAB.path
-    ]
-  }
-
-  protected readonly NavigationToIconType = NavigationToIconType;
 }

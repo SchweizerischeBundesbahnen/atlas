@@ -23,7 +23,7 @@ import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-gu
 import {GeographyFormGroup, GeographyFormGroupBuilder} from '../geography/geography-form-group';
 import {ValidityService} from "../validity/validity.service";
 import {PRM_DETAIL_TAB_LINK} from "../../prm/tabs/relation/tab/detail-with-relation-tab.component";
-import {NavigationToIconType} from "../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
+import {NavigationToPage} from "../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 interface AreaOption {
   sloid: string | undefined;
@@ -42,7 +42,7 @@ const NUMBER_COLONS_AREA = 0;
 export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
   readonly extractSloid = (option: AreaOption) => option.sloid;
   readonly displayExtractor = (option: AreaOption) => option.displayText;
-  readonly NavigationToIconType = NavigationToIconType;
+  readonly NavigationToIconType = NavigationToPage;
 
   trafficPointVersions!: ReadTrafficPointElementVersion[];
   selectedVersion!: ReadTrafficPointElementVersion;
@@ -86,7 +86,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
 
     this.route.data.subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
-      console.log("traffic ", this.trafficPointVersions)
       this.initTrafficPoint();
     });
   }
@@ -344,4 +343,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       PRM_DETAIL_TAB_LINK
     ]
   }
+
+  protected readonly NavigationToPage = NavigationToPage;
 }

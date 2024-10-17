@@ -1,4 +1,4 @@
-<atlas-detail-page-content *ngIf="existStopPoint">
+<atlas-detail-page-content>
   <ng-container *ngIf="!mayCreate; else authorized">
     <div class="font-regular mb-3">
       {{ 'PRM.PLATFORMS.NO_RECORD' | translate }}
@@ -17,7 +17,7 @@
           [showStatus]="false"
         ></app-switch-version>
       </div>
-      <app-navigation-sepodi-prm [icon]="NavigationToIconType.SEPODI" [url]="navigateToTrafficPointUrl" ></app-navigation-sepodi-prm>
+      <app-navigation-sepodi-prm [targetPage]="NavigationToPage.TRAFFIC_POINT_DETAIL" [sloid]="selectedVersion.sloid!" ></app-navigation-sepodi-prm>
     </div>
 
     <h2 class="font-bold-2xl color-gray-900" *ngIf="!isNew">
@@ -48,7 +48,7 @@
     </div>
   </ng-template>
 </atlas-detail-page-content>
-<atlas-detail-footer *ngIf="existStopPoint">
+<atlas-detail-footer>
   <atlas-button
     (buttonClicked)="back()"
     [disabled]="false"
