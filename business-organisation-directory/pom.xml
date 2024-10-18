@@ -63,11 +63,11 @@
          <artifactId>spring-ws-security</artifactId>
          <groupId>org.springframework.ws</groupId>
       </dependency>
-      <dependency>
-         <artifactId>httpclient</artifactId>
-         <groupId>org.apache.httpcomponents</groupId>
-         <version>4.5.14</version>
-      </dependency>
+<!--      <dependency>-->
+<!--         <artifactId>httpclient</artifactId>-->
+<!--         <groupId>org.apache.httpcomponents</groupId>-->
+<!--         <version>4.5.14</version>-->
+<!--      </dependency>-->
       <dependency>
          <artifactId>saaj-impl</artifactId>
          <groupId>com.sun.xml.messaging.saaj</groupId>
