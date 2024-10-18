@@ -20,7 +20,8 @@ import {FileDownloadService} from "../../../core/components/file-upload/file/fil
 
 const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = [
   [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update],
-  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Update]
+  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Update],
+  [ApplicationType.Prm, BusinessObjectType.PlatformReduced, ImportType.Update]
 ];
 
 @Component({
@@ -125,8 +126,8 @@ export class BulkImportOverviewComponent implements OnInit {
     this.uploadedFiles = [];
     this.isFileUploaded = false;
 
-    this.form.controls.userSearchForm.controls.userSearch.reset(null, {onlySelf:true, emitEvent: false})
-    this.form.controls.objectType.reset(null, {onlySelf:true, emitEvent: false});
+    this.form.controls.userSearchForm.controls.userSearch.reset(null, {onlySelf: true, emitEvent: false})
+    this.form.controls.objectType.reset(null, {onlySelf: true, emitEvent: false});
 
     if (resetAll) {
       this.form = BulkImportFormGroupBuilder.initFormGroup();
