@@ -25,7 +25,8 @@ class TrafficPointBulkImportControllerTest {
   @Mock
   private TrafficPointBulkImportService trafficPointBulkImportService;
 
-  @Mock AtlasExceptionHandler atlasExceptionHandler;
+  @Mock
+  private AtlasExceptionHandler atlasExceptionHandler;
 
   private TrafficPointBulkImportController trafficPointBulkImportController;
 

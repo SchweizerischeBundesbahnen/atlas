@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
-import static ch.sbb.atlas.servicepointdirectory.service.BulkImportUtility.applyGeolocationUpdates;
-import static ch.sbb.atlas.servicepointdirectory.service.BulkImportUtility.applyUpdateIfValueNotNull;
-import static ch.sbb.atlas.servicepointdirectory.service.BulkImportUtility.geolocationValuesAreNull;
+import static ch.sbb.atlas.imports.util.BulkImportUtility.applyUpdateIfValueNotNull;
+import static ch.sbb.atlas.servicepointdirectory.service.BulkImportGeolocationUtility.applyGeolocationUpdates;
+import static ch.sbb.atlas.servicepointdirectory.service.BulkImportGeolocationUtility.geolocationValuesAreNull;
 
 import ch.sbb.atlas.imports.bulk.AttributeNullingNotSupportedException;
 import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;

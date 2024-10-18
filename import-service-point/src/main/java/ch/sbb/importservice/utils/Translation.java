@@ -25,17 +25,21 @@ public class Translation {
       ApplicationType.PRM, new Values("Barrierefreiheit", "accessibilité", "accessibilità")
   );
 
-  private final static Map<BusinessObjectType, Values> objectTypeTranslations = Map.of(
-      BusinessObjectType.SERVICE_POINT, new Values("Dienststelle", "service", "posto di servizio"),
-      BusinessObjectType.TRAFFIC_POINT, new Values("Haltekante", "bordure d'arrêt", "bordo di fermata"),
-      BusinessObjectType.LOADING_POINT, new Values("Ladestelle", "places de chargement", "posti di carico"),
-      BusinessObjectType.STOP_POINT, new Values("Haltestelle", "l'arrêt", "fermata"),
-      BusinessObjectType.CONTACT_POINT, new Values("Schalter", "guichet", "sportello"),
-      BusinessObjectType.PARKING_LOT, new Values("Parkplatz", "places de stationnement", "parcheggio"),
-      BusinessObjectType.PLATFORM, new Values("Haltekante", "bordure d'arrêt", "bordo di fermata"),
-      BusinessObjectType.REFERENCE_POINT, new Values("Referenzpunkt", "point de référence", "punto di riferimento"),
-      BusinessObjectType.RELATION, new Values("Verbindungen", "relations", "collegamenti"),
-      BusinessObjectType.TOILET, new Values("Toilette", "toilettes", "servizi igienici")
+  private final static Map<BusinessObjectType, Values> objectTypeTranslations = Map.ofEntries(
+      Map.entry(BusinessObjectType.SERVICE_POINT, new Values("Dienststelle", "service", "posto di servizio")),
+      Map.entry(BusinessObjectType.TRAFFIC_POINT, new Values("Haltekante", "bordure d'arrêt", "bordo di fermata")),
+      Map.entry(BusinessObjectType.LOADING_POINT, new Values("Ladestelle", "places de chargement", "posti di carico")),
+      Map.entry(BusinessObjectType.STOP_POINT, new Values("Haltestelle", "l'arrêt", "fermata")),
+      Map.entry(BusinessObjectType.CONTACT_POINT, new Values("Schalter", "guichet", "sportello")),
+      Map.entry(BusinessObjectType.PARKING_LOT, new Values("Parkplatz", "places de stationnement", "parcheggio")),
+      Map.entry(BusinessObjectType.PLATFORM_REDUCED, new Values("Haltekante (reduziert)",
+          "Bordures d’arrêt (réduit)", "Bordi fermata (ridotto)")),
+      Map.entry(BusinessObjectType.PLATFORM_COMPLETE, new Values("Haltekante (komplett)",
+          "Bordures d’arrêt (complet)", "Bordi fermata (completo)")),
+      Map.entry(BusinessObjectType.REFERENCE_POINT, new Values("Referenzpunkt",
+          "point de référence", "punto di riferimento")),
+      Map.entry(BusinessObjectType.RELATION, new Values("Verbindungen", "relations", "collegamenti")),
+      Map.entry(BusinessObjectType.TOILET, new Values("Toilette", "toilettes", "servizi igienici"))
   );
 
   private final static Map<ImportType, Values> importTypeTranslations = Map.of(
