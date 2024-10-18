@@ -2,7 +2,7 @@ package ch.sbb.importservice.service.prm.platform.update;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
 import ch.sbb.importservice.client.PlatformBulkImportClient;
 import ch.sbb.importservice.service.bulk.writer.BulkImportItemWriter;
 import ch.sbb.importservice.service.bulk.writer.WriterUtil;
@@ -28,13 +28,13 @@ public class PlatformUpdateWriter extends PlatformUpdate implements BulkImportIt
 
   @Override
   public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
-    List<BulkImportUpdateContainer<PlatformUpdateCsvModel>> updateContainers =
+    List<BulkImportUpdateContainer<PlatformReducedUpdateCsvModel>> updateContainers =
         WriterUtil.getContainersWithoutDataValidationErrors(items);
     WriterUtil.addInNameOfTo(stepExecution, updateContainers);
 
     log.info("Writing {} containers to prm", updateContainers.size());
 
-    List<BulkImportItemExecutionResult> importResult = platformBulkImportClient.bulkImportPlatformUpdate(updateContainers);
+    List<BulkImportItemExecutionResult> importResult = platformBulkImportClient.bulkImportPlatformReducedUpdate(updateContainers);
 
     WriterUtil.mapExecutionResultToLogEntry(importResult, updateContainers);
   }

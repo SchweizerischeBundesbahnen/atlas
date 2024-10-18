@@ -44,10 +44,10 @@ public class BulkImportTemplateGenerator {
     templateLookup.put(
         BulkImportConfig.builder()
             .application(ApplicationType.PRM)
-            .objectType(BusinessObjectType.PLATFORM)
+            .objectType(BusinessObjectType.PLATFORM_REDUCED)
             .importType(ImportType.UPDATE)
             .build(),
-        PlatformTemplateGenerator::getPlatformUpdateCsvModelExample
+        PlatformTemplateGenerator::getPlatformReducedUpdateCsvModelExample
     );
   }
 
