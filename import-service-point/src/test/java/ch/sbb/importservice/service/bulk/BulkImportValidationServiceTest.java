@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
 import java.util.List;
@@ -85,27 +85,27 @@ class BulkImportValidationServiceTest {
   }
 
   @Test
-  void shouldValidateAndStoreBulkImportLogEntryForPlatformUpdateCsvModel() {
-    BulkImportUpdateContainer<PlatformUpdateCsvModel> container1 =
-        BulkImportUpdateContainer.<PlatformUpdateCsvModel>builder()
+  void shouldValidateAndStoreBulkImportLogEntryForPlatformReducedUpdateCsvModel() {
+    BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> container1 =
+        BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
             .lineNumber(1)
-            .object(PlatformUpdateCsvModel.builder()
+            .object(PlatformReducedUpdateCsvModel.builder()
                 .sloid("sloid:1")
                 .build())
             .build();
 
-    BulkImportUpdateContainer<PlatformUpdateCsvModel> container2 =
-        BulkImportUpdateContainer.<PlatformUpdateCsvModel>builder()
+    BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> container2 =
+        BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
             .lineNumber(2)
-            .object(PlatformUpdateCsvModel.builder()
+            .object(PlatformReducedUpdateCsvModel.builder()
                 .sloid("sloid:2")
                 .build())
             .build();
 
-    BulkImportUpdateContainer<PlatformUpdateCsvModel> container3 =
-        BulkImportUpdateContainer.<PlatformUpdateCsvModel>builder()
+    BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> container3 =
+        BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
             .lineNumber(3)
-            .object(PlatformUpdateCsvModel.builder()
+            .object(PlatformReducedUpdateCsvModel.builder()
                 .sloid("sloid:1")
                 .build())
             .build();

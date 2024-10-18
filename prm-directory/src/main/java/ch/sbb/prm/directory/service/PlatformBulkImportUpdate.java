@@ -3,8 +3,8 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.atlas.imports.util.BulkImportUtility.applyUpdateIfValueNotNull;
 
 import ch.sbb.atlas.imports.bulk.AttributeNullingNotSupportedException;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel.Fields;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import java.util.List;
 import lombok.experimental.UtilityClass;
@@ -29,7 +29,7 @@ public class PlatformBulkImportUpdate {
     }
   }
 
-  public PlatformVersion applyUpdateFromCsv(PlatformVersion currentVersion, PlatformUpdateCsvModel update) {
+  public PlatformVersion applyUpdateFromCsv(PlatformVersion currentVersion, PlatformReducedUpdateCsvModel update) {
     PlatformVersion editedVersion = currentVersion.toBuilder().build();
     editedVersion.setValidFrom(update.getValidFrom());
     editedVersion.setValidTo(update.getValidTo());
