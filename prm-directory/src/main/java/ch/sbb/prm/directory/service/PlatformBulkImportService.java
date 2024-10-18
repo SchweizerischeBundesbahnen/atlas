@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUser;
@@ -24,29 +24,29 @@ public class PlatformBulkImportService {
   private final PlatformService platformService;
 
   @RunAsUser
-  public void updatePlatformByUsername(@RunAsUserParameter String username,
-      BulkImportUpdateContainer<PlatformUpdateCsvModel> bulkImportContainer) {
+  public void updatePlatformReducedByUsername(@RunAsUserParameter String username,
+      BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> bulkImportContainer) {
     log.info("Update versions in name of the user: {}", username);
-    updatePlatform(bulkImportContainer);
+    updatePlatformReduced(bulkImportContainer);
   }
 
-  public void updatePlatform(BulkImportUpdateContainer<PlatformUpdateCsvModel> bulkImportUpdateContainer) {
-    PlatformUpdateCsvModel platformUpdateCsvModel = bulkImportUpdateContainer.getObject();
+  public void updatePlatformReduced(BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> bulkImportUpdateContainer) {
+    PlatformReducedUpdateCsvModel platformReducedUpdateCsvModel = bulkImportUpdateContainer.getObject();
 
-    List<PlatformVersion> currentPlatformVersions = getCurrentPlatformVersions(platformUpdateCsvModel);
+    List<PlatformVersion> currentPlatformVersions = getCurrentPlatformVersions(platformReducedUpdateCsvModel);
     PlatformVersion currentVersion = ImportUtils.getCurrentVersion(currentPlatformVersions,
-        platformUpdateCsvModel.getValidFrom(), platformUpdateCsvModel.getValidTo());
-    PlatformVersion editedVersion = PlatformBulkImportUpdate.applyUpdateFromCsv(currentVersion, platformUpdateCsvModel);
+        platformReducedUpdateCsvModel.getValidFrom(), platformReducedUpdateCsvModel.getValidTo());
+    PlatformVersion editedVersion = PlatformBulkImportUpdate.applyUpdateFromCsv(currentVersion, platformReducedUpdateCsvModel);
     PlatformBulkImportUpdate.applyNulling(bulkImportUpdateContainer.getAttributesToNull(), editedVersion);
 
     platformService.updatePlatformVersion(currentVersion, editedVersion);
   }
 
-  private List<PlatformVersion> getCurrentPlatformVersions(PlatformUpdateCsvModel platformUpdateCsvModel) {
-    if (platformUpdateCsvModel.getSloid() != null) {
-      List<PlatformVersion> platformVersions = platformService.getAllVersions(platformUpdateCsvModel.getSloid());
+  private List<PlatformVersion> getCurrentPlatformVersions(PlatformReducedUpdateCsvModel platformReducedUpdateCsvModel) {
+    if (platformReducedUpdateCsvModel.getSloid() != null) {
+      List<PlatformVersion> platformVersions = platformService.getAllVersions(platformReducedUpdateCsvModel.getSloid());
       if (platformVersions.isEmpty()) {
-        throw new SloidNotFoundException(platformUpdateCsvModel.getSloid());
+        throw new SloidNotFoundException(platformReducedUpdateCsvModel.getSloid());
       }
       return platformVersions;
     }

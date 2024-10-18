@@ -1,7 +1,7 @@
 package ch.sbb.importservice.service.prm.platform.update;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
 import ch.sbb.importservice.service.bulk.reader.BulkImportItemReader;
 import ch.sbb.importservice.service.bulk.reader.ReaderUtil;
 import java.io.File;
@@ -18,14 +18,14 @@ public class PlatformUpdateReader extends PlatformUpdate implements BulkImportIt
 
   @Override
   public List<BulkImportUpdateContainer<?>> apply(File file) {
-    List<BulkImportUpdateContainer<PlatformUpdateCsvModel>> platformUpdateCsvModels = ReaderUtil.readAndValidate(file,
-        PlatformUpdateCsvModel.class);
+    List<BulkImportUpdateContainer<PlatformReducedUpdateCsvModel>> platformUpdateCsvModels = ReaderUtil.readAndValidate(file,
+        PlatformReducedUpdateCsvModel.class);
 
     log.info("Read {} lines to import", platformUpdateCsvModels.size());
     return new ArrayList<>(platformUpdateCsvModels);
   }
 
   @Override
-  public Class<?> getCsvModelClass() { return PlatformUpdateCsvModel.class; }
+  public Class<?> getCsvModelClass() { return PlatformReducedUpdateCsvModel.class; }
 
 }

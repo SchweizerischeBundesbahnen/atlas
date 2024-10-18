@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel.Fields;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDate;
@@ -30,7 +30,7 @@ import lombok.experimental.FieldNameConstants;
 @JsonPropertyOrder({Fields.sloid, Fields.validFrom, Fields.validTo, Fields.additionalInformation, Fields.height,
     Fields.inclinationLongitudinal, Fields.infoOpportunities, Fields.partialElevation, Fields.tactileSystem,
     Fields.vehicleAccess, Fields.wheelchairAreaLength, Fields.wheelchairAreaWidth})
-public class PlatformUpdateCsvModel implements Validatable<PlatformUpdateCsvModel> {
+public class PlatformReducedUpdateCsvModel implements Validatable<PlatformReducedUpdateCsvModel> {
 
   private String sloid;
 
@@ -74,8 +74,8 @@ public class PlatformUpdateCsvModel implements Validatable<PlatformUpdateCsvMode
   }
 
   @Override
-  public List<UniqueField<PlatformUpdateCsvModel>> uniqueFields() {
-    return List.of(new UniqueField<>(Fields.sloid, PlatformUpdateCsvModel::getSloid));
+  public List<UniqueField<PlatformReducedUpdateCsvModel>> uniqueFields() {
+    return List.of(new UniqueField<>(Fields.sloid, PlatformReducedUpdateCsvModel::getSloid));
   }
 
 }
