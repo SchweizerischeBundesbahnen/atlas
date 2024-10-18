@@ -1,18 +1,17 @@
 package ch.sbb.business.organisation.directory.service.crd;
 
 import ch.sbb.business.organisation.directory.service.SoapMessageLoggerInterceptor;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBElement;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.springframework.boot.webservices.client.WebServiceTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -82,7 +81,7 @@ public class CrdSoapClientConfig {
     HttpsUrlConnectionMessageSender webServiceMessageSender = new HttpsUrlConnectionMessageSender();
     webServiceMessageSender.setKeyManagers(createKeyManagerFactory().getKeyManagers());
     webServiceMessageSender.setTrustManagers(createTrustManagerFactory().getTrustManagers());
-    webServiceMessageSender.setHostnameVerifier(NoopHostnameVerifier.INSTANCE);
+    webServiceMessageSender.setHostnameVerifier((s, sslSession) -> true);
     return webServiceMessageSender;
   }
 
