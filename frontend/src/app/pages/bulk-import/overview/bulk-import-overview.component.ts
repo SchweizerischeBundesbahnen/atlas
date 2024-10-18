@@ -21,7 +21,7 @@ import {FileDownloadService} from "../../../core/components/file-upload/file/fil
 const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = [
   [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update],
   [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Update],
-  [ApplicationType.Prm, BusinessObjectType.Platform, ImportType.Update]
+  [ApplicationType.Prm, BusinessObjectType.PlatformReduced, ImportType.Update]
 ];
 
 @Component({

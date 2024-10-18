@@ -6,8 +6,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel.Fields;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.PlatformTestData;
@@ -64,8 +64,8 @@ class PlatformBulkImportServiceTest {
   void shouldUpdateBulkAddingProperty() {
     assertThat(platformVersion.getAdditionalInformation()).isNull();
 
-    platformBulkImportService.updatePlatform(BulkImportUpdateContainer.<PlatformUpdateCsvModel>builder()
-        .object(PlatformUpdateCsvModel.builder()
+    platformBulkImportService.updatePlatformReduced(BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+        .object(PlatformReducedUpdateCsvModel.builder()
             .sloid(platformVersion.getSloid())
             .validFrom(platformVersion.getValidFrom())
             .validTo(platformVersion.getValidTo())
@@ -79,9 +79,9 @@ class PlatformBulkImportServiceTest {
 
   @Test
   void shouldUpdateBulkWithUserInNameOf() {
-    platformBulkImportService.updatePlatformByUsername("e123456",
-        BulkImportUpdateContainer.<PlatformUpdateCsvModel>builder()
-            .object(PlatformUpdateCsvModel.builder()
+    platformBulkImportService.updatePlatformReducedByUsername("e123456",
+        BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+            .object(PlatformReducedUpdateCsvModel.builder()
                 .sloid(platformVersion.getSloid())
                 .validFrom(platformVersion.getValidFrom())
                 .validTo(platformVersion.getValidTo())
@@ -98,8 +98,8 @@ class PlatformBulkImportServiceTest {
   void shouldUpdateBulkRemovingProperty() {
     assertThat(platformVersion.getHeight()).isEqualTo(123.12);
 
-    platformBulkImportService.updatePlatform(BulkImportUpdateContainer.<PlatformUpdateCsvModel>builder()
-        .object(PlatformUpdateCsvModel.builder()
+    platformBulkImportService.updatePlatformReduced(BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+        .object(PlatformReducedUpdateCsvModel.builder()
             .sloid(platformVersion.getSloid())
             .validFrom(platformVersion.getValidFrom())
             .validTo(platformVersion.getValidTo())
@@ -118,8 +118,8 @@ class PlatformBulkImportServiceTest {
   void shouldUpdateAndGetMoreVersions() {
     assertThat(platformRepository.findAllBySloidOrderByValidFrom(platformVersion.getSloid())).hasSize(1);
 
-    platformBulkImportService.updatePlatform(BulkImportUpdateContainer.<PlatformUpdateCsvModel>builder()
-        .object(PlatformUpdateCsvModel.builder()
+    platformBulkImportService.updatePlatformReduced(BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+        .object(PlatformReducedUpdateCsvModel.builder()
             .sloid(platformVersion.getSloid())
             .validFrom(LocalDate.of(2000, 4, 1))
             .validTo(LocalDate.of(2000, 7, 31))
@@ -149,9 +149,9 @@ class PlatformBulkImportServiceTest {
 
   @Test
   void shouldThrowSloidNotFoundException() {
-    ThrowingCallable update = () -> platformBulkImportService.updatePlatform(
-        BulkImportUpdateContainer.<PlatformUpdateCsvModel>builder()
-            .object(PlatformUpdateCsvModel.builder()
+    ThrowingCallable update = () -> platformBulkImportService.updatePlatformReduced(
+        BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+            .object(PlatformReducedUpdateCsvModel.builder()
                 .sloid("unknown:sloid")
                 .validFrom(LocalDate.of(2023, 1, 1))
                 .validTo(LocalDate.of(2023, 6, 30))
@@ -163,9 +163,9 @@ class PlatformBulkImportServiceTest {
 
   @Test
   void shouldThrowIllegalStateException() {
-    ThrowingCallable update = () -> platformBulkImportService.updatePlatform(
-        BulkImportUpdateContainer.<PlatformUpdateCsvModel>builder()
-            .object(PlatformUpdateCsvModel.builder()
+    ThrowingCallable update = () -> platformBulkImportService.updatePlatformReduced(
+        BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+            .object(PlatformReducedUpdateCsvModel.builder()
                 .validFrom(LocalDate.of(2023, 1, 1))
                 .validTo(LocalDate.of(2023, 6, 30))
                 .additionalInformation(ADDITIONAL_INFORMATION)
