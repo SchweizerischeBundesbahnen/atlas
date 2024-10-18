@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -64,18 +64,18 @@ class BulkImportCsvReaderTest {
   }
 
   @Test
-  void shouldReadPlatformUpdateCsvCorrectlyWithNullingAndPipedSet() {
-    File file = ImportFiles.getFileByPath("import-files/valid/platform-update.csv");
+  void shouldReadPlatformReducedUpdateCsvCorrectlyWithNullingAndPipedSet() {
+    File file = ImportFiles.getFileByPath("import-files/valid/platform-reduced-update.csv");
 
-    List<BulkImportUpdateContainer<PlatformUpdateCsvModel>> platformUpdates =
+    List<BulkImportUpdateContainer<PlatformReducedUpdateCsvModel>> platformUpdates =
         BulkImportCsvReader.readLinesFromFileWithNullingValue(
-            file, PlatformUpdateCsvModel.class);
+            file, PlatformReducedUpdateCsvModel.class);
 
     assertThat(platformUpdates).hasSize(1);
     assertThat(platformUpdates.getFirst().getAttributesToNull()).containsExactly("wheelchairAreaWidth");
 
-    PlatformUpdateCsvModel expected = ImportFiles.getExpectedPlatformUpdateCsvModel();
-    PlatformUpdateCsvModel actual = platformUpdates.getFirst().getObject();
+    PlatformReducedUpdateCsvModel expected = ImportFiles.getExpectedPlatformReducedUpdateCsvModel();
+    PlatformReducedUpdateCsvModel actual = platformUpdates.getFirst().getObject();
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
@@ -130,12 +130,12 @@ class BulkImportCsvReaderTest {
   }
 
   @Test
-  void shouldReportAllDataMappingErrorsForPlatformUpdate() throws IOException {
+  void shouldReportAllDataMappingErrorsForPlatformReducedUpdate() throws IOException {
     String csvLine = """
         ch:1:sloid:88253:0:1;num;tomorrow;5.000;Bern;STOP;idk;aaa;east;north;fake;height
         """;
-    BulkImportUpdateContainer<PlatformUpdateCsvModel> result = BulkImportCsvReader.readObject(
-        PlatformUpdateCsvModel.class, PLATFORM_UPDATE_HEADER, csvLine, 1);
+    BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> result = BulkImportCsvReader.readObject(
+        PlatformReducedUpdateCsvModel.class, PLATFORM_UPDATE_HEADER, csvLine, 1);
 
     assertThat(result.getBulkImportLogEntry().getErrors()).hasSize(10);
 

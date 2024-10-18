@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
 import java.time.LocalDate;
@@ -44,10 +44,10 @@ class BulkImportItemValidationServiceTest {
   }
 
   @Test
-  void shouldValidateAndStoreBulkImportLogEntryForPlatformUpdateCsvModel() {
-    BulkImportUpdateContainer<PlatformUpdateCsvModel> container =
-        BulkImportUpdateContainer.<PlatformUpdateCsvModel>builder()
-            .object(PlatformUpdateCsvModel.builder().build())
+  void shouldValidateAndStoreBulkImportLogEntryForPlatformReducedUpdateCsvModel() {
+    BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> container =
+        BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+            .object(PlatformReducedUpdateCsvModel.builder().build())
             .build();
     BulkImportItemValidationService.validateAll(List.of(container));
 
