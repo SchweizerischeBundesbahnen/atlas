@@ -11,14 +11,15 @@
  */
 
 
-export type BusinessObjectType = 'SERVICE_POINT' | 'TRAFFIC_POINT' | 'LOADING_POINT' | 'STOP_POINT' | 'PLATFORM' | 'REFERENCE_POINT' | 'PARKING_LOT' | 'CONTACT_POINT' | 'TOILET' | 'RELATION';
+export type BusinessObjectType = 'SERVICE_POINT' | 'TRAFFIC_POINT' | 'LOADING_POINT' | 'STOP_POINT' | 'PLATFORM_REDUCED' | 'PLATFORM_COMPLETE' | 'REFERENCE_POINT' | 'PARKING_LOT' | 'CONTACT_POINT' | 'TOILET' | 'RELATION';
 
 export const BusinessObjectType = {
     ServicePoint: 'SERVICE_POINT' as BusinessObjectType,
     TrafficPoint: 'TRAFFIC_POINT' as BusinessObjectType,
     LoadingPoint: 'LOADING_POINT' as BusinessObjectType,
     StopPoint: 'STOP_POINT' as BusinessObjectType,
-    Platform: 'PLATFORM' as BusinessObjectType,
+    PlatformReduced: 'PLATFORM_REDUCED' as BusinessObjectType,
+    PlatformComplete: 'PLATFORM_COMPLETE' as BusinessObjectType,
     ReferencePoint: 'REFERENCE_POINT' as BusinessObjectType,
     ParkingLot: 'PARKING_LOT' as BusinessObjectType,
     ContactPoint: 'CONTACT_POINT' as BusinessObjectType,

@@ -48,9 +48,9 @@ class BulkImportFileValidationServiceTest {
   }
 
   @Test
-  void shouldValidateSuccessfullyValidPlatformUpdateCsvFile() throws IOException {
-    File file = ImportFiles.getFileByPath("import-files/valid/platform-update.csv");
-    MockMultipartFile multipartFile = new MockMultipartFile("file", "platform-update.csv", CSV_CONTENT_TYPE,
+  void shouldValidateSuccessfullyValidPlatformReducedUpdateCsvFile() throws IOException {
+    File file = ImportFiles.getFileByPath("import-files/valid/platform-reduced-update.csv");
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "platform-reduced-update.csv", CSV_CONTENT_TYPE,
         Files.readAllBytes(file.toPath()));
 
     File result = bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile, PlatformUpdate.CONFIG);
@@ -100,9 +100,9 @@ class BulkImportFileValidationServiceTest {
   }
 
   @Test
-  void shouldReportInvalidFileHeaderOnPlatformUpdateInvalidHeaderCsvFile() throws IOException {
-    File file = ImportFiles.getFileByPath("import-files/invalid/platform-update-invalid-header.csv");
-    MockMultipartFile multipartFile = new MockMultipartFile("file", "platform-update-invalid-header.csv", CSV_CONTENT_TYPE,
+  void shouldReportInvalidFileHeaderOnPlatformReducedUpdateInvalidHeaderCsvFile() throws IOException {
+    File file = ImportFiles.getFileByPath("import-files/invalid/platform-reduced-update-invalid-header.csv");
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "platform-reduced-update-invalid-header.csv", CSV_CONTENT_TYPE,
         Files.readAllBytes(file.toPath()));
 
     assertThatExceptionOfType(FileHeaderValidationException.class).isThrownBy(
