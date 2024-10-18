@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
 import java.util.List;
@@ -69,6 +70,42 @@ class BulkImportValidationServiceTest {
         BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
             .lineNumber(3)
             .object(TrafficPointUpdateCsvModel.builder()
+                .sloid("sloid:1")
+                .build())
+            .build();
+
+    BulkImportValidationService.validateUniqueness(List.of(container1, container2, container3));
+
+    assertThat(container1.getBulkImportLogEntry().getErrors()).hasSize(1);
+    assertThat(container2.getBulkImportLogEntry()).isNull();
+    assertThat(container3.getBulkImportLogEntry().getErrors()).hasSize(1);
+    List<String> errorMessages = container1.getBulkImportLogEntry().getErrors().stream().map(BulkImportError::getErrorMessage)
+        .toList();
+    assertThat(errorMessages).containsExactlyInAnyOrder("sloid with value sloid:1 occurred more than once");
+  }
+
+  @Test
+  void shouldValidateAndStoreBulkImportLogEntryForPlatformReducedUpdateCsvModel() {
+    BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> container1 =
+        BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+            .lineNumber(1)
+            .object(PlatformReducedUpdateCsvModel.builder()
+                .sloid("sloid:1")
+                .build())
+            .build();
+
+    BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> container2 =
+        BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+            .lineNumber(2)
+            .object(PlatformReducedUpdateCsvModel.builder()
+                .sloid("sloid:2")
+                .build())
+            .build();
+
+    BulkImportUpdateContainer<PlatformReducedUpdateCsvModel> container3 =
+        BulkImportUpdateContainer.<PlatformReducedUpdateCsvModel>builder()
+            .lineNumber(3)
+            .object(PlatformReducedUpdateCsvModel.builder()
                 .sloid("sloid:1")
                 .build())
             .build();
