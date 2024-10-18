@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.prm.PlatformBulkImportApiV1;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
 import ch.sbb.prm.directory.service.PlatformBulkImportService;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +21,14 @@ public class PlatformBulkImportController implements PlatformBulkImportApiV1 {
   private final AtlasExceptionHandler atlasExceptionHandler;
 
   @Override
-  public List<BulkImportItemExecutionResult> bulkImportPlatformUpdate(List<BulkImportUpdateContainer<PlatformUpdateCsvModel>> bulkImportContainers) {
+  public List<BulkImportItemExecutionResult> bulkImportPlatformReducedUpdate(List<BulkImportUpdateContainer<PlatformReducedUpdateCsvModel>> bulkImportContainers) {
     List<BulkImportItemExecutionResult> results = new ArrayList<>();
     bulkImportContainers.forEach(bulkImportContainer -> {
       try {
         if (bulkImportContainer.getInNameOf() != null) {
-          platformBulkImportService.updatePlatformByUsername(bulkImportContainer.getInNameOf(), bulkImportContainer);
+          platformBulkImportService.updatePlatformReducedByUsername(bulkImportContainer.getInNameOf(), bulkImportContainer);
         } else {
-          platformBulkImportService.updatePlatform(bulkImportContainer);
+          platformBulkImportService.updatePlatformReduced(bulkImportContainer);
         }
         results.add(BulkImportItemExecutionResult.builder()
             .lineNumber(bulkImportContainer.getLineNumber())
