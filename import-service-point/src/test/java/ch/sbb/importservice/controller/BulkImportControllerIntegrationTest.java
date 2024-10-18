@@ -199,7 +199,8 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
   static Stream<Arguments> getArgumentsImplementedTemplates() {
     return Stream.of(
         Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.UPDATE)),
-        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.UPDATE))
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.UPDATE)),
+        Arguments.of(new BulkImportConfig(ApplicationType.PRM, BusinessObjectType.PLATFORM_REDUCED, ImportType.UPDATE))
     );
   }
 

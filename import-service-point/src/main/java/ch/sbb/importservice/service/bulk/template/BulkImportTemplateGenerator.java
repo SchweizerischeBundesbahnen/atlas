@@ -40,6 +40,15 @@ public class BulkImportTemplateGenerator {
             .build(),
         TrafficPointTemplateGenerator::getTrafficPointUpdateCsvModelExample
     );
+
+    templateLookup.put(
+        BulkImportConfig.builder()
+            .application(ApplicationType.PRM)
+            .objectType(BusinessObjectType.PLATFORM_REDUCED)
+            .importType(ImportType.UPDATE)
+            .build(),
+        PlatformTemplateGenerator::getPlatformReducedUpdateCsvModelExample
+    );
   }
 
   public static final String CSV_EXTENSION = ".csv";
@@ -50,7 +59,7 @@ public class BulkImportTemplateGenerator {
     Object example = bulkImportExample(importConfig);
     File csvFile = new File(fileService.getDir() + importConfig.getTemplateFileName());
     ObjectWriter objectWriter = new TemplateCsvMapper(example.getClass()).getObjectWriter();
-    return CsvExportWriter.writeToFileWithoutOrderMark(csvFile, List.of(example), objectWriter);
+    return CsvExportWriter.writeToFile(csvFile, List.of(example), objectWriter);
   }
 
   public Object bulkImportExample(BulkImportConfig importConfig) {

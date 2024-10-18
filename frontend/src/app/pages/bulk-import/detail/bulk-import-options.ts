@@ -14,7 +14,8 @@ export const OPTIONS_APPLICATION_TYPE: string[] = Object.values([
 export const OPTIONS_OBJECT_TYPE_PRM: string[] = Object.values([
   BusinessObjectType.StopPoint,
   BusinessObjectType.ReferencePoint,
-  BusinessObjectType.Platform,
+  BusinessObjectType.PlatformReduced,
+  BusinessObjectType.PlatformComplete,
   BusinessObjectType.ContactPoint,
   BusinessObjectType.Toilet,
   BusinessObjectType.ParkingLot,
