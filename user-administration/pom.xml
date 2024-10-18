@@ -14,7 +14,7 @@
    <artifactId>user-administration</artifactId>
 
    <properties>
-      <microsoft-graph-sdk-version>6.18.0</microsoft-graph-sdk-version>
+      <microsoft-graph-sdk-version>6.19.0</microsoft-graph-sdk-version>
       <azure-identity-version>1.14.0</azure-identity-version>
    </properties>
    <dependencies>
