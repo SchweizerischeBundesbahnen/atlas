@@ -6,7 +6,7 @@ import static ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType.TO_BE_
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
-import ch.sbb.atlas.imports.bulk.PlatformUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -29,8 +29,8 @@ public class PlatformTemplateGenerator {
   private static final Double DEFAULT_WHEELCHAIR_AREA_LENGTH = 300.000;
   private static final Double DEFAULT_WHEELCHAIR_AREA_WIDTH = 257.000;
 
-  public static PlatformUpdateCsvModel getPlatformUpdateCsvModelExample() {
-    return PlatformUpdateCsvModel.builder()
+  public static PlatformReducedUpdateCsvModel getPlatformReducedUpdateCsvModelExample() {
+    return PlatformReducedUpdateCsvModel.builder()
         .sloid(DEFAULT_SLOID)
         .validFrom(DEFAULT_VALID_FROM)
         .validTo(DEFAULT_VALID_TO)
