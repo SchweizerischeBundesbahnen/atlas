@@ -21,7 +21,7 @@ import {NotificationService} from '../../../../core/notification/notification.se
 import {DisplayCantonPipe} from '../../../../core/cantons/display-canton.pipe';
 import {MapService} from '../../map/map.service';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {BERN, BERN_WYLEREGG} from '../../../../../test/data/service-point';
+import {BERN} from '../../../../../test/data/service-point';
 import {UserDetailInfoComponent} from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
@@ -30,7 +30,6 @@ import {ValidityService} from "../../validity/validity.service";
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
 import SpyObj = jasmine.SpyObj;
-import {Pages} from "../../../pages";
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [

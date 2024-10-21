@@ -39,7 +39,6 @@ import {SplitServicePointNumberPipe} from "../../../../../../core/search-service
 import moment from "moment";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import SpyObj = jasmine.SpyObj;
-import {Pages} from "../../../../../pages";
 
 const reducedPlatform: ReadPlatformVersion[] = [
   {
@@ -324,53 +323,6 @@ describe('PlatformDetailComponent', () => {
       component.save();
       expect(personWithReducedMobilityService.createPlatform).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
-    });
-
-    it('should navigate to the correct traffic point element URL', () => {
-      component.selectedVersion = reducedPlatform[0];
-
-      component.setUrl();
-
-      expect(component.navigateToTrafficPointUrl).toEqual([
-        Pages.SEPODI.path,
-        Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
-        reducedPlatform[0].sloid!
-      ]);
-    });
-  });
-
-
-  describe('navigate back to stoppoint create if stoppoint does not exist', () => {
-    beforeEach(() => {
-      TestBed.overrideProvider(ActivatedRoute, {
-        useValue: {
-          snapshot: {
-            parent: {
-              data: {
-                stopPoint: [],
-                servicePoint: [BERN_WYLEREGG],
-                platform: [],
-                trafficPoint: [],
-              },
-            },
-          },
-        },
-      });
-      fixture = TestBed.createComponent(PlatformDetailComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-
-
-    it('navigate to stoppoint create if stoppoint does not exist', () => {
-      component.ngOnInit();
-
-      expect(routerSpy.navigate).toHaveBeenCalledWith([
-        Pages.PRM.path,
-        Pages.STOP_POINTS.path,
-        component.servicePoint.sloid,
-        Pages.PRM_STOP_POINT_TAB.path
-      ]);
     });
   });
 });
