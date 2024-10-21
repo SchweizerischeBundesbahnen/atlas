@@ -28,8 +28,8 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
 
   targetUrl!: string;
   isTargetViewSepodi!: boolean;
-  isStopPoint = true;
-  isSwissServicePoint = false;
+  isStopPoint!: boolean;
+  isSwissServicePoint!: boolean;
 
   constructor(
     private router: Router,
