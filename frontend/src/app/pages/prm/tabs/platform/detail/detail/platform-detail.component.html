@@ -17,7 +17,7 @@
           [showStatus]="false"
         ></app-switch-version>
       </div>
-      <app-navigation-sepodi-prm [targetPage]="NavigationToPage.TRAFFIC_POINT_DETAIL" [currentElement]="selectedVersion"></app-navigation-sepodi-prm>
+      <app-navigation-sepodi-prm targetPage="traffic-point-detail" [sloid]="selectedVersion.sloid"></app-navigation-sepodi-prm>
     </div>
 
     <h2 class="font-bold-2xl color-gray-900" *ngIf="!isNew">
