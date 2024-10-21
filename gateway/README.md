@@ -6,10 +6,10 @@
 - [Versioning](#versioning)
 - [Gateway](#gateway)
 - [Links](#links)
-    * [Development](#development)
-    * [Test](#test)
-    * [Integration](#integration)
-    * [Production](#production)
+  * [Development](#development)
+  * [Test](#test)
+  * [Integration](#integration)
+  * [Production](#production)
 
 <!-- tocstop -->
 
