@@ -43,7 +43,7 @@
     </sonar.coverage.exclusions>
     <jenkins.build-javascript.reportsDirectory>reports/</jenkins.build-javascript.reportsDirectory>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <skip.npm.exec.ci>false</skip.npm.exec.ci>
+    <skip.npm.exec.ci>true</skip.npm.exec.ci>
     <skip.npm.exec.build>true</skip.npm.exec.build>
     <skip.npm.exec.lint>false</skip.npm.exec.lint>
     <skip.npm.exec.test>false</skip.npm.exec.test>
