@@ -126,7 +126,7 @@
         "failOnQualityGateFailure": true,
         "owaspDependencyCheck": {
           "enabled": true,
-          "additionalParams": "--disableNodeAudit"
+          "additionalParams": "--disableNodeAudit --nodePackageSkipDevDependencies"
         }
       },
       "stages": [
@@ -169,7 +169,7 @@
         },
         "owaspDependencyCheck": {
           "enabled": true,
-          "additionalParams": "--disableNodeAudit"
+          "additionalParams": "--disableNodeAudit --nodePackageSkipDevDependencies"
         },
         "failOnQualityGateFailure": true
       },
