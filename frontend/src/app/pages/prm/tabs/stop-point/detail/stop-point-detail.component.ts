@@ -40,7 +40,6 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   preferredId?: number;
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   isReduced!: boolean | undefined;
-  navigateToSepodiUrl: string[] = [];
 
   constructor(
     private readonly router: Router,

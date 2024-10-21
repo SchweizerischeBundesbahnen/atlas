@@ -22,7 +22,6 @@ import {ValidityConfirmationService} from '../validity/validity-confirmation.ser
 import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import {GeographyFormGroup, GeographyFormGroupBuilder} from '../geography/geography-form-group';
 import {ValidityService} from "../validity/validity.service";
-import {PRM_DETAIL_TAB_LINK} from "../../prm/tabs/relation/tab/detail-with-relation-tab.component";
 
 interface AreaOption {
   sloid: string | undefined;
@@ -316,16 +315,5 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       );
       this.form.markAsDirty();
     }
-  }
-
-  navigateToPlatform = () => {
-    this.router.navigate([
-      Pages.PRM.path,
-      Pages.STOP_POINTS.path,
-      this.selectedVersion?.servicePointSloid,
-      Pages.PLATFORMS.path,
-      this.selectedVersion.sloid,
-      PRM_DETAIL_TAB_LINK
-    ]);
   }
 }
