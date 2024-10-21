@@ -156,6 +156,12 @@
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-resources-plugin</artifactId>
+            <configuration>
+               <propertiesEncoding>UTF-8</propertiesEncoding>
+               <nonFilteredFileExtensions>
+                  <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+               </nonFilteredFileExtensions>
+            </configuration>
          </plugin>
       </plugins>
    </build>
