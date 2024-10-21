@@ -25,9 +25,6 @@ import {ValidityService} from '../../validity/validity.service';
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
 import {takeUntil} from "rxjs/operators";
-import {
-  NavigationToPage
-} from "../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-service-point',
@@ -36,7 +33,6 @@ import {
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   readonly servicePointStatus = Status;
-  readonly NavigationToPage = NavigationToPage;
 
   private onDestroy$ = new Subject<boolean>();
 
