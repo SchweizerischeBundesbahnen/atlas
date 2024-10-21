@@ -23,7 +23,6 @@ import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import {catchError, EMPTY} from "rxjs";
-import {Pages} from "../../../../../pages";
 import {NavigationToPage} from "../../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({

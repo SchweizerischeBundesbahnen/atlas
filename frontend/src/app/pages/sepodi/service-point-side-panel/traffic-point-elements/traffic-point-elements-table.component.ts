@@ -64,7 +64,8 @@ export class TrafficPointElementsTableComponent implements OnInit {
           ? Pages.TRAFFIC_POINT_ELEMENTS_AREA
           : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM,
       );
-      this.servicePointVersion = this.route.parent!.snapshot.data.servicePoint[0];
+      const servicePoints= this.route.parent!.snapshot.data.servicePoint;
+      this.servicePointVersion = servicePoints[servicePoints.length - 1];
     });
   }
 
