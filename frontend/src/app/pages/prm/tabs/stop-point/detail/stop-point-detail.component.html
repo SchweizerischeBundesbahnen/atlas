@@ -16,7 +16,7 @@
           [switchDisabled]="isSwitchVersionDisabled"
           [showStatus]="false"
         ></app-switch-version>
-        <app-navigation-sepodi-prm [targetPage]="NavigationToPage.SEPODI" [currentElement]="selectedVersion"></app-navigation-sepodi-prm>
+        <app-navigation-sepodi-prm [number]="selectedVersion.number.number" targetPage="service-point"></app-navigation-sepodi-prm>
       </div>
     </div>
     <div class="col-12 d-flex mt-5">

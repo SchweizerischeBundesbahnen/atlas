@@ -19,9 +19,6 @@ import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-help
 import {ValidityService} from "../../../../sepodi/validity/validity.service";
 import {ReferencePointCreationHintService} from "./reference-point-creation-hint/reference-point-creation-hint.service";
 import {PermissionService} from "../../../../../core/auth/permission/permission.service";
-import {
-  NavigationToPage,
-} from "../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -29,7 +26,6 @@ import {
   providers: [ValidityService]
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {
-  protected readonly NavigationToPage = NavigationToPage;
 
   isNew = false;
   isAuthorizedToCreateStopPoint = true;
