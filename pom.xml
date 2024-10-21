@@ -173,10 +173,6 @@
                               <filtering>true</filtering>
                            </resource>
                         </resources>
-                        <propertiesEncoding>UTF-8</propertiesEncoding>
-                        <nonFilteredFileExtensions>
-                           <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
-                        </nonFilteredFileExtensions>
                      </configuration>
                   </execution>
                   <execution>
