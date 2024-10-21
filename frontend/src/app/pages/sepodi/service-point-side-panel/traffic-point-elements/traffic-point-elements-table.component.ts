@@ -44,7 +44,6 @@ export class TrafficPointElementsTableComponent implements OnInit {
   createVisible = false;
 
   tableFilterConfig!: TableFilter<unknown>[][];
-  navigateToPlatformsUrl: string[] = [];
   servicePointVersion!: ReadServicePointVersion;
 
   constructor(
@@ -64,7 +63,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
           ? Pages.TRAFFIC_POINT_ELEMENTS_AREA
           : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM,
       );
-      const servicePoints= this.route.parent!.snapshot.data.servicePoint;
+      const servicePoints: ReadServicePointVersion[] = this.route.parent!.snapshot.data.servicePoint;
       this.servicePointVersion = servicePoints[servicePoints.length - 1];
     });
   }
