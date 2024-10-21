@@ -1,11 +1,12 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {
+  Country,
   PersonWithReducedMobilityService, ReadPlatformVersion,
   ReadServicePointVersion, ReadStopPointVersion, ReadTrafficPointElementVersion,
-  ServicePointNumber,
   ServicePointsService
 } from "../../api";
+import {Countries} from "../country/Countries";
 
 export enum NavigationToPage {
   PRM = 'prm',
@@ -23,10 +24,12 @@ export enum NavigationToPage {
 export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
 
   @Input() targetPage!: NavigationToPage;
-  @Input() currentElement?: ReadServicePointVersion | ReadStopPointVersion | ReadTrafficPointElementVersion | ReadPlatformVersion
+  @Input() currentElement?: ReadServicePointVersion | ReadStopPointVersion | ReadTrafficPointElementVersion | ReadPlatformVersion;
 
   targetUrl!: string;
   isTargetViewSepodi!: boolean;
+  isStopPoint = true;
+  isSwissServicePoint = false;
 
   constructor(
     private router: Router,
@@ -35,8 +38,6 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    //const test = this.currentElement as any ['number'] ?? this.currentElement as any ['servicePointNumber'];
-    console.log(this.currentElement)
     this.init();
   }
 
@@ -45,19 +46,22 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
   }
 
   init() {
-    //const urlMapping = this.getUrlMappings(this.number, this.sloid, this.platformSloid);
-    //this.isTargetViewSepodi = urlMapping[this.targetPage].icon === NavigationToPage.SEPODI;
-    //this.targetUrl = urlMapping[this.targetPage].url;
+    const urlMapping = this.getUrlMappings(this.getElementNumber(), this.currentElement?.sloid, this.getElementParentSloid());
+    this.isTargetViewSepodi = urlMapping[this.targetPage].icon === NavigationToPage.SEPODI;
+    this.targetUrl = urlMapping[this.targetPage].url;
+    if(!this.isTargetViewSepodi){
+      this.checkServicePointIsLocatedInSwitzerland(this.getElementNumber()!);
+    }
   }
 
   navigate() {
     if(!this.isTargetViewSepodi) {
-      //this.checkStopPointExists(this.sloid!);
+      this.checkStopPointExists(this.getElementSloid()!);
     }
     this.router.navigateByUrl(this.targetUrl);
   }
 
-  getUrlMappings(number?: number, sloid?: string, platformSloid?: string) {
+  getUrlMappings(number?: number, sloid?: string, parentSloid?: string) {
     return {
       sepodi: {
         url: `/service-point-directory/service-points/${number}/service-point`,
@@ -80,7 +84,7 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
         icon: NavigationToPage.SEPODI
       },
       platform_detail: {
-        url: `/prm-directory/stop-points/${sloid}/platforms/${platformSloid}/detail`,
+        url: `/prm-directory/stop-points/${parentSloid}/platforms/${sloid}/detail`,
         icon: NavigationToPage.PRM
       }
     };
@@ -88,19 +92,56 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
 
   checkStopPointExists(sloid: string) {
     this.personWithReducedMobilityService.getStopPointVersions(sloid).subscribe((stoppoint) => {
-      console.log("stop point ", stoppoint)
-      //is swiss
       if(stoppoint.length === 0) {
-        this.router.navigateByUrl(`/prm-directory/stop-points/${sloid}/stop-point`)
+        this.router.navigateByUrl(`/prm-directory/stop-points/${sloid}/stop-point`);
       }
     })
   }
 
   checkServicePointIsLocatedInSwitzerland(number: number){
-    this.servicePointsService.getServicePointVersion(number).subscribe((servicePoint) => {
-      console.log("service point ", servicePoint)
-      //is swiss?
-      //is haltestelle
-    })
+      this.servicePointsService.getServicePointVersions(number).subscribe((servicePointVersion) => {
+        const servicePoint = servicePointVersion[servicePointVersion.length - 1]
+        this.isSwissServicePoint = Countries.fromUicCode(servicePoint.number.uicCountryCode).enumCountry === Country.Switzerland;
+        this.isStopPoint = servicePointVersion.filter((sp) => sp.stopPoint).length > 0;
+      });
+  }
+
+
+  private getElementNumber(): number | undefined {
+    if(!this.currentElement) {
+      return undefined;
+    }
+    if('number' in this.currentElement) {
+      return this.currentElement.number.number;
+    }
+
+    if ('servicePointNumber' in this.currentElement) {
+      return this.currentElement.servicePointNumber.number;
+    }
+    return undefined;
+  }
+
+  private getElementParentSloid(): string | undefined {
+    if(!this.currentElement) {
+      return undefined;
+    }
+    if('servicePointSloid' in this.currentElement) {
+      return this.currentElement.servicePointSloid;
+    }
+
+    return undefined;
+  }
+
+  private getElementSloid(): string | undefined {
+    if(!this.currentElement) {
+      return undefined;
+    }
+    if('servicePointSloid' in this.currentElement) {
+      return this.currentElement.servicePointSloid;
+    }
+    else
+    {
+      return this.currentElement.sloid
+    }
   }
 }

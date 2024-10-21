@@ -8,7 +8,7 @@
         [records]="servicePointVersions"
         [switchDisabled]="isSwitchVersionDisabled"
       ></app-switch-version>
-      <app-navigation-sepodi-prm *ngIf="isSwissServicePoint" [currentElement]="selectedVersion!" [targetPage]="NavigationToPage.PRM"></app-navigation-sepodi-prm>
+      <app-navigation-sepodi-prm [currentElement]="selectedVersion!" [targetPage]="NavigationToPage.PRM"></app-navigation-sepodi-prm>
     </div>
   </div>
 
