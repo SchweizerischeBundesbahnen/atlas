@@ -22,6 +22,7 @@ api/timetableHearingStatements.service.ts
 api/timetableHearingYears.service.ts
 api/timetableYearChange.service.ts
 api/trafficPointElements.service.ts
+api/trafficPointsBulkImport.service.ts
 api/transportCompanies.service.ts
 api/transportCompanyRelations.service.ts
 api/userAdministration.service.ts
@@ -43,6 +44,7 @@ model/bulkImportPermissionRestrictionModel.ts
 model/bulkImportRequest.ts
 model/bulkImportResult.ts
 model/bulkImportUpdateContainerServicePointUpdateCsvModel.ts
+model/bulkImportUpdateContainerTrafficPointUpdateCsvModel.ts
 model/businessObjectType.ts
 model/businessOrganisation.ts
 model/businessOrganisationVersion.ts
@@ -86,6 +88,7 @@ model/coverage.ts
 model/coverageType.ts
 model/createLoadingPointVersion.ts
 model/createServicePointVersion.ts
+model/createStatementExternal1Request.ts
 model/createTrafficPointElementVersion.ts
 model/decision.ts
 model/decisionType.ts
@@ -103,11 +106,6 @@ model/geolocationCreate.ts
 model/hearingStatus.ts
 model/importType.ts
 model/infoOpportunityAttributeType.ts
-model/inlineObject.ts
-model/inlineObject1.ts
-model/inlineObject2.ts
-model/inlineObject3.ts
-model/inlineObject4.ts
 model/itemProcessResponseStatus.ts
 model/judgementType.ts
 model/line.ts
@@ -130,6 +128,7 @@ model/parkingLotOverview.ts
 model/parkingLotVersion.ts
 model/paymentType.ts
 model/permission.ts
+model/permissionPermissionRestrictionsInner.ts
 model/permissionRestrictionObject.ts
 model/permissionRestrictionType.ts
 model/person.ts
@@ -167,6 +166,7 @@ model/servicePointUpdateCsvModel.ts
 model/sortObject.ts
 model/spatialReference.ts
 model/standardAttributeType.ts
+model/startServicePointImportBatchRequest.ts
 model/statementStatus.ts
 model/status.ts
 model/stepFreeAccessAttributeType.ts
@@ -195,12 +195,14 @@ model/timetableHearingYear.ts
 model/toiletOverview.ts
 model/toiletVersion.ts
 model/trafficPointElementType.ts
+model/trafficPointUpdateCsvModel.ts
 model/transportCompany.ts
 model/transportCompanyBoRelation.ts
 model/transportCompanyRelation.ts
 model/transportCompanyStatus.ts
 model/updateDesignationOfficialServicePoint.ts
 model/updateHearingCanton.ts
+model/updateHearingStatementRequest.ts
 model/updateHearingStatementStatus.ts
 model/updateServicePointVersion.ts
 model/updateTransportCompanyRelation.ts
@@ -213,4 +215,5 @@ model/workflow.ts
 model/workflowProcessingStatus.ts
 model/workflowStart.ts
 model/workflowStatus.ts
+param.ts
 variables.ts
