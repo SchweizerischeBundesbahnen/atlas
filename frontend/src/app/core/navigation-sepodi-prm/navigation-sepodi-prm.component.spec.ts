@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {NavigationSepodiPrmComponent, NavigationToPage} from './navigation-sepodi-prm.component';
+import {NavigationSepodiPrmComponent} from './navigation-sepodi-prm.component';
 import {AppTestingModule} from "../../app.testing.module";
 import {Router} from "@angular/router";
 import {
@@ -42,9 +42,8 @@ describe('NavigationSepodiPrmComponent', () => {
 
     fixture = TestBed.createComponent(NavigationSepodiPrmComponent);
     component = fixture.componentInstance;
-    component.targetPage = NavigationToPage.PRM;
+    component.targetPage = 'stop-point';
     servicePointsServiceSpy.getServicePointVersions.and.returnValue(of([BERN_WYLEREGG]));
-
     fixture.detectChanges();
   });
 
@@ -53,14 +52,13 @@ describe('NavigationSepodiPrmComponent', () => {
   });
 
   it('should navigate to the correct URL when navigate is called', () => {
-    component.currentElement = BERN_WYLEREGG;
     personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
+    component.sloid = 'ch:1:sloid:89008';
 
     component.init();
     component.navigate();
-
-    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith(component.targetUrl);
     expect(component.isTargetViewSepodi).toBeFalse();
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith(`/prm-directory/stop-points/${component.sloid}/stop-point`);
   });
 
   it('should navigate to create stop point when the stop point returns an empty array', () => {

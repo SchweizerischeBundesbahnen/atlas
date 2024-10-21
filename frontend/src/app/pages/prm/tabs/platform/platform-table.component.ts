@@ -19,19 +19,16 @@ import { mergeMap } from 'rxjs';
 import { SloidHelper } from '../../../../core/util/sloidHelper';
 import { tap } from 'rxjs/operators';
 import { TableContentPaginationAndSorting } from '../../../../core/components/table/table-content-pagination-and-sorting';
-import {NavigationToPage} from "../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-platform',
   templateUrl: './platform-table.component.html',
 })
 export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {
-  readonly NavigationToPage = NavigationToPage;
 
   platforms: PlatformOverviewRow[] = [];
   totalCount = 0;
   trafficPointElements: ReadTrafficPointElementVersion[] = [];
-  navigateToTrafficPointsTableUrl: string[] = [];
 
   tableColumns: TableColumn<PlatformOverviewRow>[] = [
     { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },

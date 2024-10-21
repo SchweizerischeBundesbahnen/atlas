@@ -23,7 +23,6 @@ import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import {catchError, EMPTY} from "rxjs";
-import {NavigationToPage} from "../../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component";
 
 @Component({
   selector: 'app-platforms',
@@ -31,7 +30,6 @@ import {NavigationToPage} from "../../../../../../core/navigation-sepodi-prm/nav
   providers: [ValidityService]
 })
 export class PlatformDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
-  protected readonly NavigationToPage = NavigationToPage;
 
   isNew = false;
   platform: ReadPlatformVersion[] = [];
