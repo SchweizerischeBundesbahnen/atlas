@@ -9,7 +9,7 @@ import {
   ReadStopPointVersion,
   ServicePointsService
 } from "../../api";
-import {BERN_WYLEREGG, ZURICH} from "../../../test/data/service-point";
+import {BERN_WYLEREGG} from "../../../test/data/service-point";
 import SpyObj = jasmine.SpyObj;
 import {of} from "rxjs";
 import {STOP_POINT} from "../../pages/prm/util/stop-point-test-data.spec";
@@ -92,7 +92,7 @@ describe('NavigationSepodiPrmComponent', () => {
   it('should set isStopPoint to true when the service point has version with stopPoint true', () => {
     //Bern Wyleregg number
     const number = 8589008;
-    const mockResponse: ReadServicePointVersion[] = ZURICH;
+    const mockResponse: ReadServicePointVersion[] = [BERN_WYLEREGG];
 
     servicePointsServiceSpy.getServicePointVersions.and.returnValue(of(mockResponse));
 
