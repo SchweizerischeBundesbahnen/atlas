@@ -9,16 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PlatformReducedUpdateCsvModel } from './platformReducedUpdateCsvModel';
+import { BulkImportLogEntry } from './bulkImportLogEntry';
 
 
-export type SePoDiExportType = 'SWISS_ONLY_FULL' | 'SWISS_ONLY_ACTUAL' | 'SWISS_ONLY_TIMETABLE_FUTURE' | 'WORLD_FULL' | 'WORLD_ONLY_ACTUAL' | 'WORLD_ONLY_TIMETABLE_FUTURE';
-
-export const SePoDiExportType = {
-    SwissOnlyFull: 'SWISS_ONLY_FULL' as SePoDiExportType,
-    SwissOnlyActual: 'SWISS_ONLY_ACTUAL' as SePoDiExportType,
-    SwissOnlyTimetableFuture: 'SWISS_ONLY_TIMETABLE_FUTURE' as SePoDiExportType,
-    WorldFull: 'WORLD_FULL' as SePoDiExportType,
-    WorldOnlyActual: 'WORLD_ONLY_ACTUAL' as SePoDiExportType,
-    WorldOnlyTimetableFuture: 'WORLD_ONLY_TIMETABLE_FUTURE' as SePoDiExportType
-};
+export interface BulkImportUpdateContainerPlatformReducedUpdateCsvModel { 
+    lineNumber?: number;
+    object?: PlatformReducedUpdateCsvModel;
+    attributesToNull?: Array<string>;
+    inNameOf?: string;
+    bulkImportLogEntry?: BulkImportLogEntry;
+}
 
