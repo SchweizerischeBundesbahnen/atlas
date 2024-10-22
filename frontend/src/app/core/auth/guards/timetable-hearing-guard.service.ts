@@ -1,18 +1,20 @@
-import {inject, Injectable} from '@angular/core';
-import {CanActivateFn, Router} from '@angular/router';
-import {filter, map} from 'rxjs/operators';
-import {PermissionService} from "../permission/permission.service";
-import {UserService} from "../user/user.service";
+import { inject, Injectable } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { filter, map } from 'rxjs/operators';
+import { PermissionService } from '../permission/permission.service';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TimetableHearingGuard {
+  constructor(
+    private permissionService: PermissionService,
+    private userService: UserService,
+    private router: Router,
+  ) {}
 
-  constructor(private permissionService: PermissionService,
-              private userService: UserService,
-              private router: Router) {}
-
+  // todo: make async
   canActivate() {
     if (!this.userService.loggedIn) {
       return this.router.parseUrl('/');
@@ -25,7 +27,7 @@ export class TimetableHearingGuard {
         } else {
           return this.router.parseUrl('/');
         }
-      })
+      }),
     );
   }
 }
