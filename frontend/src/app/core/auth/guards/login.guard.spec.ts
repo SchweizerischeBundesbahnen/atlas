@@ -1,14 +1,14 @@
-import {AuthService} from '../auth.service';
-import {TestBed} from '@angular/core/testing';
-import {OAuthLogger, OAuthService, UrlHelperService} from 'angular-oauth2-oidc';
-import {AuthGuard} from './auth-guard';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {RouterModule} from "@angular/router";
-import {adminUserServiceMock, authServiceSpy} from "../../../app.testing.mocks";
-import {UserService} from "../user/user.service";
+import { AuthService } from '../auth.service';
+import { TestBed } from '@angular/core/testing';
+import { OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
+import { LoginGuard } from './login.guard';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterModule } from '@angular/router';
+import { adminUserServiceMock, authServiceSpy } from '../../../app.testing.mocks';
+import { UserService } from '../user/user.service';
 
 describe('AuthGuard', () => {
-  let authGuard: AuthGuard;
+  let authGuard: LoginGuard;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -17,13 +17,13 @@ describe('AuthGuard', () => {
         { provide: UserService, useValue: adminUserServiceMock },
         { provide: AuthService, useValue: authServiceSpy },
         OAuthService,
-        AuthGuard,
+        LoginGuard,
         UrlHelperService,
         OAuthLogger,
       ],
     });
 
-    authGuard = TestBed.inject(AuthGuard);
+    authGuard = TestBed.inject(LoginGuard);
   });
 
   it('should be created', () => {

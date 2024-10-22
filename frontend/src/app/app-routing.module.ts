@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { Pages } from './pages/pages';
-import { adminUsers } from './core/auth/guards/admin.guard';
 import { canActivateTimetableHearing } from './core/auth/guards/timetable-hearing-guard.service';
-import { loggedInUsers } from './core/auth/guards/auth-guard';
+import { loggedInUsers } from './core/auth/guards/login.guard';
+import { AdminGuard } from './core/auth/guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -52,7 +52,7 @@ const routes: Routes = [
         (m) => m.UserAdministrationModule,
       ),
     data: { headerTitle: Pages.USER_ADMINISTRATION.headerTitle },
-    canActivate: [loggedInUsers, adminUsers],
+    canActivate: [() => inject(AdminGuard).canActivate()],
   },
   {
     path: Pages.HOME.path,
