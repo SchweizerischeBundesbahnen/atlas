@@ -12,6 +12,7 @@ api/lines.service.ts
 api/loadingPoints.service.ts
 api/personWithReducedMobility.service.ts
 api/personWithReducedMobilityExport.service.ts
+api/platformBulkImport.service.ts
 api/servicePointUpdateGeo.service.ts
 api/servicePoints.service.ts
 api/servicePointsBulkImport.service.ts
@@ -43,6 +44,7 @@ model/bulkImportLogEntry.ts
 model/bulkImportPermissionRestrictionModel.ts
 model/bulkImportRequest.ts
 model/bulkImportResult.ts
+model/bulkImportUpdateContainerPlatformReducedUpdateCsvModel.ts
 model/bulkImportUpdateContainerServicePointUpdateCsvModel.ts
 model/bulkImportUpdateContainerTrafficPointUpdateCsvModel.ts
 model/businessObjectType.ts
@@ -88,7 +90,6 @@ model/coverage.ts
 model/coverageType.ts
 model/createLoadingPointVersion.ts
 model/createServicePointVersion.ts
-model/createStatementExternal1Request.ts
 model/createTrafficPointElementVersion.ts
 model/decision.ts
 model/decisionType.ts
@@ -106,6 +107,11 @@ model/geolocationCreate.ts
 model/hearingStatus.ts
 model/importType.ts
 model/infoOpportunityAttributeType.ts
+model/inlineObject.ts
+model/inlineObject1.ts
+model/inlineObject2.ts
+model/inlineObject3.ts
+model/inlineObject4.ts
 model/itemProcessResponseStatus.ts
 model/judgementType.ts
 model/line.ts
@@ -128,11 +134,11 @@ model/parkingLotOverview.ts
 model/parkingLotVersion.ts
 model/paymentType.ts
 model/permission.ts
-model/permissionPermissionRestrictionsInner.ts
 model/permissionRestrictionObject.ts
 model/permissionRestrictionType.ts
 model/person.ts
 model/platformOverview.ts
+model/platformReducedUpdateCsvModel.ts
 model/platformVersion.ts
 model/prmBatchExportFileName.ts
 model/prmExportType.ts
@@ -166,7 +172,6 @@ model/servicePointUpdateCsvModel.ts
 model/sortObject.ts
 model/spatialReference.ts
 model/standardAttributeType.ts
-model/startServicePointImportBatchRequest.ts
 model/statementStatus.ts
 model/status.ts
 model/stepFreeAccessAttributeType.ts
@@ -202,7 +207,6 @@ model/transportCompanyRelation.ts
 model/transportCompanyStatus.ts
 model/updateDesignationOfficialServicePoint.ts
 model/updateHearingCanton.ts
-model/updateHearingStatementRequest.ts
 model/updateHearingStatementStatus.ts
 model/updateServicePointVersion.ts
 model/updateTransportCompanyRelation.ts
@@ -215,5 +219,4 @@ model/workflow.ts
 model/workflowProcessingStatus.ts
 model/workflowStart.ts
 model/workflowStatus.ts
-param.ts
 variables.ts
