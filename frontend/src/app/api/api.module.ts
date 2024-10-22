@@ -2,6 +2,33 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
+import { BulkImportService } from './api/bulkImport.service';
+import { BusinessOrganisationsService } from './api/businessOrganisations.service';
+import { ClientCredentialAdministrationService } from './api/clientCredentialAdministration.service';
+import { CompaniesService } from './api/companies.service';
+import { ExportServicePointBatchService } from './api/exportServicePointBatch.service';
+import { GeoDataService } from './api/geoData.service';
+import { LinesService } from './api/lines.service';
+import { LoadingPointsService } from './api/loadingPoints.service';
+import { PersonWithReducedMobilityService } from './api/personWithReducedMobility.service';
+import { PersonWithReducedMobilityExportService } from './api/personWithReducedMobilityExport.service';
+import { PlatformBulkImportService } from './api/platformBulkImport.service';
+import { ServicePointUpdateGeoService } from './api/servicePointUpdateGeo.service';
+import { ServicePointsService } from './api/servicePoints.service';
+import { ServicePointsBulkImportService } from './api/servicePointsBulkImport.service';
+import { StopPointWorkflowService } from './api/stopPointWorkflow.service';
+import { SublinesService } from './api/sublines.service';
+import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
+import { TimetableHearingStatementsService } from './api/timetableHearingStatements.service';
+import { TimetableHearingYearsService } from './api/timetableHearingYears.service';
+import { TimetableYearChangeService } from './api/timetableYearChange.service';
+import { TrafficPointElementsService } from './api/trafficPointElements.service';
+import { TrafficPointsBulkImportService } from './api/trafficPointsBulkImport.service';
+import { TransportCompaniesService } from './api/transportCompanies.service';
+import { TransportCompanyRelationsService } from './api/transportCompanyRelations.service';
+import { UserAdministrationService } from './api/userAdministration.service';
+import { UserInformationService } from './api/userInformation.service';
+import { WorkflowService } from './api/workflow.service';
 
 @NgModule({
   imports:      [],
