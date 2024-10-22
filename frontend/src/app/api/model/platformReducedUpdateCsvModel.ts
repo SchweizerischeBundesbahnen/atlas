@@ -9,16 +9,23 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BooleanOptionalAttributeType } from './booleanOptionalAttributeType';
+import { VehicleAccessAttributeType } from './vehicleAccessAttributeType';
+import { InfoOpportunityAttributeType } from './infoOpportunityAttributeType';
 
 
-export type SePoDiExportType = 'SWISS_ONLY_FULL' | 'SWISS_ONLY_ACTUAL' | 'SWISS_ONLY_TIMETABLE_FUTURE' | 'WORLD_FULL' | 'WORLD_ONLY_ACTUAL' | 'WORLD_ONLY_TIMETABLE_FUTURE';
-
-export const SePoDiExportType = {
-    SwissOnlyFull: 'SWISS_ONLY_FULL' as SePoDiExportType,
-    SwissOnlyActual: 'SWISS_ONLY_ACTUAL' as SePoDiExportType,
-    SwissOnlyTimetableFuture: 'SWISS_ONLY_TIMETABLE_FUTURE' as SePoDiExportType,
-    WorldFull: 'WORLD_FULL' as SePoDiExportType,
-    WorldOnlyActual: 'WORLD_ONLY_ACTUAL' as SePoDiExportType,
-    WorldOnlyTimetableFuture: 'WORLD_ONLY_TIMETABLE_FUTURE' as SePoDiExportType
-};
+export interface PlatformReducedUpdateCsvModel { 
+    sloid?: string;
+    validFrom?: Date;
+    validTo?: Date;
+    additionalInformation?: string;
+    height?: number;
+    inclinationLongitudinal?: number;
+    infoOpportunities?: Set<InfoOpportunityAttributeType>;
+    partialElevation?: boolean;
+    tactileSystem?: BooleanOptionalAttributeType;
+    vehicleAccess?: VehicleAccessAttributeType;
+    wheelchairAreaLength?: number;
+    wheelchairAreaWidth?: number;
+}
 
