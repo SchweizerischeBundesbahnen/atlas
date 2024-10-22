@@ -18,7 +18,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { BulkImportItemExecutionResult } from '../model/models';
-import { BulkImportUpdateContainerServicePointUpdateCsvModel } from '../model/models';
+import { BulkImportUpdateContainerPlatformReducedUpdateCsvModel } from '../model/models';
 import { ErrorResponse } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -29,7 +29,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class ServicePointsBulkImportService {
+export class PlatformBulkImportService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -87,16 +87,16 @@ export class ServicePointsBulkImportService {
     }
 
     /**
-     * @param bulkImportUpdateContainerServicePointUpdateCsvModel 
+     * @param bulkImportUpdateContainerPlatformReducedUpdateCsvModel 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public bulkImportUpdate1(bulkImportUpdateContainerServicePointUpdateCsvModel: Array<BulkImportUpdateContainerServicePointUpdateCsvModel>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<BulkImportItemExecutionResult>>;
-    public bulkImportUpdate1(bulkImportUpdateContainerServicePointUpdateCsvModel: Array<BulkImportUpdateContainerServicePointUpdateCsvModel>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<BulkImportItemExecutionResult>>>;
-    public bulkImportUpdate1(bulkImportUpdateContainerServicePointUpdateCsvModel: Array<BulkImportUpdateContainerServicePointUpdateCsvModel>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<BulkImportItemExecutionResult>>>;
-    public bulkImportUpdate1(bulkImportUpdateContainerServicePointUpdateCsvModel: Array<BulkImportUpdateContainerServicePointUpdateCsvModel>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (bulkImportUpdateContainerServicePointUpdateCsvModel === null || bulkImportUpdateContainerServicePointUpdateCsvModel === undefined) {
-            throw new Error('Required parameter bulkImportUpdateContainerServicePointUpdateCsvModel was null or undefined when calling bulkImportUpdate1.');
+    public bulkImportPlatformReducedUpdate(bulkImportUpdateContainerPlatformReducedUpdateCsvModel: Array<BulkImportUpdateContainerPlatformReducedUpdateCsvModel>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<BulkImportItemExecutionResult>>;
+    public bulkImportPlatformReducedUpdate(bulkImportUpdateContainerPlatformReducedUpdateCsvModel: Array<BulkImportUpdateContainerPlatformReducedUpdateCsvModel>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<BulkImportItemExecutionResult>>>;
+    public bulkImportPlatformReducedUpdate(bulkImportUpdateContainerPlatformReducedUpdateCsvModel: Array<BulkImportUpdateContainerPlatformReducedUpdateCsvModel>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<BulkImportItemExecutionResult>>>;
+    public bulkImportPlatformReducedUpdate(bulkImportUpdateContainerPlatformReducedUpdateCsvModel: Array<BulkImportUpdateContainerPlatformReducedUpdateCsvModel>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (bulkImportUpdateContainerPlatformReducedUpdateCsvModel === null || bulkImportUpdateContainerPlatformReducedUpdateCsvModel === undefined) {
+            throw new Error('Required parameter bulkImportUpdateContainerPlatformReducedUpdateCsvModel was null or undefined when calling bulkImportPlatformReducedUpdate.');
         }
 
         let headers = this.defaultHeaders;
@@ -128,8 +128,8 @@ export class ServicePointsBulkImportService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<Array<BulkImportItemExecutionResult>>(`${this.configuration.basePath}/service-point-directory/v1/service-points/bulk-import/update`,
-            bulkImportUpdateContainerServicePointUpdateCsvModel,
+        return this.httpClient.post<Array<BulkImportItemExecutionResult>>(`${this.configuration.basePath}/prm-directory/v1/platform/bulk-import/update-platform-reduced`,
+            bulkImportUpdateContainerPlatformReducedUpdateCsvModel,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
