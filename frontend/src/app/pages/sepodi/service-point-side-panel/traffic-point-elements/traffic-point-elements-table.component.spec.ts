@@ -12,7 +12,6 @@ import {DetailPageContainerComponent} from "../../../../core/components/detail-p
 import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 import SpyObj = jasmine.SpyObj;
-import {Pages} from "../../../pages";
 import {BERN_WYLEREGG} from "../../../../../test/data/service-point";
 
 describe('TrafficPointElementsTableComponent', () => {
@@ -87,16 +86,5 @@ describe('TrafficPointElementsTableComponent', () => {
       10,
       ['designation,asc'],
     );
-  });
-
-  it('should navigate to the correct platforms url', () => {
-    component.navigateToPlatforms();
-
-    expect(routerSpy.navigate).toHaveBeenCalledWith([
-      Pages.PRM.path,
-      Pages.STOP_POINTS.path,
-      'ch:1:sloid:89008',
-      Pages.PLATFORMS.path
-    ]);
   });
 });

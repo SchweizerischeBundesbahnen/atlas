@@ -10,7 +10,6 @@ import {PersonWithReducedMobilityService, TrafficPointElementsService} from "../
 import {of} from "rxjs";
 import {BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER} from "../../../../../test/data/traffic-point-element";
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
-import {Pages} from "../../../pages";
 import SpyObj = jasmine.SpyObj;
 
 describe('PlatformTableComponent', () => {
@@ -70,18 +69,5 @@ describe('PlatformTableComponent', () => {
 
     component.rowClicked(component.platforms[0]);
     expect(routerSpy.navigate).toHaveBeenCalled();
-  });
-
-  it('should navigate to the correct traffic point elements URL', () => {
-    routerSpy.navigate.and.returnValue(Promise.resolve(true));
-
-    component.navigateToTrafficPointElements();
-
-    expect(routerSpy.navigate).toHaveBeenCalledWith([
-      Pages.SEPODI.path,
-      Pages.SERVICE_POINTS.path,
-      8589008,
-      Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
-    ]);
   });
 });

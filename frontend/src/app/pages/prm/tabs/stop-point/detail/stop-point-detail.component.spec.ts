@@ -26,7 +26,6 @@ import {DetailFooterComponent} from "../../../../../core/components/detail-foote
 import {PrmVariantInfoServiceService} from "../prm-variant-info-service.service";
 import SpyObj = jasmine.SpyObj;
 import {ValidityService} from "../../../../sepodi/validity/validity.service";
-import {Pages} from "../../../../pages";
 
 const authService: Partial<AuthService> = {};
 describe('StopPointDetailComponent', () => {
@@ -305,19 +304,5 @@ describe('StopPointDetailComponent', () => {
     expect(component.form.controls.number.value).toEqual(BERN_WYLEREGG.number.number);
     expect(component.form.controls.sloid.value).toEqual(BERN_WYLEREGG.sloid);
     expect(buildEmptyWithReducedValidationFormGroupSpy).toHaveBeenCalled();
-  });
-
-  it('should navigate to the correct SePoDi url', () => {
-    routerSpy.navigate.and.returnValue(Promise.resolve(true));
-    component.selectedVersion =  STOP_POINT;
-
-    component.navigateToSePoDi();
-
-    expect(routerSpy.navigate).toHaveBeenCalledWith([
-      Pages.SEPODI.path,
-      Pages.SERVICE_POINTS.path,
-      STOP_POINT.number.number,
-      Pages.SEPODI_TAB.path
-    ]);
   });
 });

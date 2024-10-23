@@ -13,10 +13,7 @@
       buttonType="createCheckingPermission"
       wrapperStyleClass="mb-3"
     ></atlas-button>
-    <div class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigateToPlatforms()">
-      <img alt="platforms" src="assets/images/prm/person-wheelchair.svg">
-      <p>{{ 'PAGES.PRM.TITLE_HEADER' | translate }}</p>
-    </div>
+    <app-navigation-sepodi-prm *ngIf="!isTrafficPointArea" targetPage="platform-table" [number]="servicePointVersion.number!.number" [sloid]="servicePointVersion.sloid!"></app-navigation-sepodi-prm>
   </div>
 
 

@@ -59,6 +59,7 @@ import { OAuthCookieStorage } from '../cookies/oauth-cookie-storage';
 import { DialogContentComponent } from '../components/dialog/content/dialog-content.component';
 import { DialogFooterComponent } from '../components/dialog/footer/dialog-footer.component';
 import { SearchServicePointPanelComponent } from '../search-service-point-panel/search-service-point-panel.component';
+import { NavigationSepodiPrmComponent } from '../navigation-sepodi-prm/navigation-sepodi-prm.component';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -108,6 +109,7 @@ const coreComponents = [
   SearchServicePointPanelComponent,
   SplitServicePointNumberPipe,
   MeansOfTransportPickerComponent,
+  NavigationSepodiPrmComponent,
 ];
 
 @NgModule({
