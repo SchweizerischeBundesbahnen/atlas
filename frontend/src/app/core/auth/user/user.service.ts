@@ -11,6 +11,7 @@ import { User } from './user';
 export class UserService {
   readonly userChanged = new Subject<void>();
   readonly permissionsLoaded = new BehaviorSubject(false);
+  // todo: create function for getting Observable<true> to get permissionLoadedState
 
   currentUser?: User = undefined;
 
@@ -41,7 +42,6 @@ export class UserService {
     if (!this.loggedIn) {
       throw new Error('Can not load Permissions if not logged in');
     }
-    this.permissionsLoaded.next(false);
     return this.userAdministrationService.getCurrentUser().pipe(
       tap((response) => {
         this.currentUser!.permissions = response.permissions

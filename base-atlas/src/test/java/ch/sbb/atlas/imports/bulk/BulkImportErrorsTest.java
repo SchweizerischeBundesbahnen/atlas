@@ -29,13 +29,14 @@ class BulkImportErrorsTest {
   void shouldBuildBulkImportErrorForDuplicatedSloid() {
     BulkImportError bulkImportError = BulkImportErrors.duplicatedValue("sloid", "ch:sloid:1");
     assertThat(bulkImportError.getErrorMessage()).isEqualTo("sloid with value ch:sloid:1 occurred more than once");
-    assertThat(bulkImportError.getDisplayInfo().getCode()).isEqualTo("BULK_IMPORT.VALIDATION.DUPLICATE_SLOID");
+    assertThat(bulkImportError.getDisplayInfo().getCode()).isEqualTo("BULK_IMPORT.VALIDATION.DUPLICATE_FIELD");
   }
 
   @Test
   void shouldBuildBulkImportErrorForDuplicatedNumber() {
     BulkImportError bulkImportError = BulkImportErrors.duplicatedValue("number", "8507000");
     assertThat(bulkImportError.getErrorMessage()).isEqualTo("number with value 8507000 occurred more than once");
-    assertThat(bulkImportError.getDisplayInfo().getCode()).isEqualTo("BULK_IMPORT.VALIDATION.DUPLICATE_NUMBER");
+    assertThat(bulkImportError.getDisplayInfo().getCode()).isEqualTo("BULK_IMPORT.VALIDATION.DUPLICATE_FIELD");
   }
+
 }
