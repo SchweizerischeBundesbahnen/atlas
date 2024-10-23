@@ -26,6 +26,7 @@ import {PermissionService} from "../../../../../core/auth/permission/permission.
   providers: [ValidityService]
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {
+
   isNew = false;
   isAuthorizedToCreateStopPoint = true;
   stopPointVersions!: ReadStopPointVersion[];
@@ -266,14 +267,5 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       title: 'PRM.DIALOG.PRM_VARIANT_CHANGES_TITLE',
       message: 'PRM.DIALOG.PRM_VARIANT_CHANGES_MSG',
     });
-  }
-
-  navigateToSePoDi(){
-    this.router.navigate([
-      Pages.SEPODI.path,
-      Pages.SERVICE_POINTS.path,
-      this.selectedVersion!.number.number,
-      Pages.SEPODI_TAB.path
-    ]);
   }
 }
