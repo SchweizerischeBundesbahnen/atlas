@@ -17,6 +17,7 @@ import { TableService } from '../../../../core/components/table/table.service';
   styleUrls: ['./traffic-point-elements-table.component.scss'],
 })
 export class TrafficPointElementsTableComponent implements OnInit {
+
   tableColumnsPlatforms: TableColumn<ReadTrafficPointElementVersion>[] = [
     { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
@@ -41,6 +42,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
   createVisible = false;
 
   tableFilterConfig!: TableFilter<unknown>[][];
+  servicePointVersion!: ReadServicePointVersion;
 
   constructor(
     private trafficPointElementService: TrafficPointElementsService,
@@ -59,6 +61,8 @@ export class TrafficPointElementsTableComponent implements OnInit {
           ? Pages.TRAFFIC_POINT_ELEMENTS_AREA
           : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM,
       );
+      const servicePoints: ReadServicePointVersion[] = this.route.parent!.snapshot.data.servicePoint;
+      this.servicePointVersion = servicePoints[servicePoints.length - 1];
     });
   }
 
@@ -114,15 +118,5 @@ export class TrafficPointElementsTableComponent implements OnInit {
       this.trafficPointElementRows = container.objects!;
       this.totalCount$ = container.totalCount!;
     });
-  }
-
-  navigateToPlatforms(){
-    const sloid = this.route.parent!.snapshot.data.servicePoint[0].sloid;
-    this.router.navigate([
-      Pages.PRM.path,
-      Pages.STOP_POINTS.path,
-      sloid,
-      Pages.PLATFORMS.path
-    ]);
   }
 }
