@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
 import { map } from 'rxjs/operators';
@@ -26,4 +26,6 @@ export class AdminGuard {
   }
 }
 
-// todo: test e2e login and maven build
+export const adminUser = () => {
+  return inject(AdminGuard).canActivate();
+};

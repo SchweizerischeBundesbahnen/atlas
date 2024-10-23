@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { AdminGuard } from './admin.guard';
 import SpyObj = jasmine.SpyObj;
 
-fdescribe('AdminGuard', () => {
+describe('AdminGuard', () => {
   let router: Router;
   let adminGuard: AdminGuard;
 
