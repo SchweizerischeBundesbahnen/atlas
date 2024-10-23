@@ -33,6 +33,7 @@ import {takeUntil} from "rxjs/operators";
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   readonly servicePointStatus = Status;
+
   private onDestroy$ = new Subject<boolean>();
 
   servicePointVersions!: ReadServicePointVersion[];
@@ -346,14 +347,5 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
 
   addWorkflow() {
     this.addStopPointWorkflowDialogService.openDialog(this.selectedVersion!);
-  }
-
-  navigateToStopPoint(){
-    this.router.navigate([
-      Pages.PRM.path,
-      Pages.STOP_POINTS.path,
-      this.selectedVersion!.sloid,
-      Pages.PRM_STOP_POINT_TAB.path
-    ]);
   }
 }
