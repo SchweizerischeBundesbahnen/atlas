@@ -5,7 +5,7 @@ import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
 import {
   PersonWithReducedMobilityService,
-  PlatformOverview,
+  PlatformOverview, ReadServicePointVersion,
   ReadTrafficPointElementVersion,
   TrafficPointElementsService,
 } from '../../../../api';
@@ -25,6 +25,7 @@ import { TableContentPaginationAndSorting } from '../../../../core/components/ta
   templateUrl: './platform-table.component.html',
 })
 export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {
+
   platforms: PlatformOverviewRow[] = [];
   totalCount = 0;
   trafficPointElements: ReadTrafficPointElementVersion[] = [];
@@ -45,6 +46,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     },
   ];
   tableFilterConfig!: TableFilter<unknown>[][];
+  servicePointVersion!: ReadServicePointVersion;
 
   constructor(
     readonly router: Router,
@@ -60,6 +62,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     this.showCurrentTab(this.route.parent!.snapshot.data);
 
     this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.PLATFORMS);
+    this.servicePointVersion = this.route.parent!.snapshot.data.servicePoints[0];
   }
 
   getTab(): Tab {
@@ -109,15 +112,5 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
       });
     });
     return mergedOverview;
-  }
-
-  navigateToTrafficPointElements(){
-    const number = this.route.parent!.snapshot.data.servicePoints[0].number.number;
-    this.router.navigate([
-      Pages.SEPODI.path,
-      Pages.SERVICE_POINTS.path,
-      number,
-      Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path
-    ]);
   }
 }
