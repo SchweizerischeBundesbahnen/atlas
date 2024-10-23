@@ -17,10 +17,7 @@
           [showStatus]="false"
         ></app-switch-version>
       </div>
-      <div class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigateToTrafficPointElement()">
-        <img alt="traffic-point-element" src="assets/images/service-point-symbols/switzerland.svg">
-        <p>{{ 'PAGES.SERVICE_POINTS.TITLE_HEADER' | translate }}</p>
-      </div>
+      <app-navigation-sepodi-prm targetPage="traffic-point-detail" [sloid]="selectedVersion.sloid"></app-navigation-sepodi-prm>
     </div>
 
     <h2 class="font-bold-2xl color-gray-900" *ngIf="!isNew">

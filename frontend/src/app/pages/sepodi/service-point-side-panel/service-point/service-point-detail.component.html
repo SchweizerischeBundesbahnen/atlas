@@ -8,10 +8,7 @@
         [records]="servicePointVersions"
         [switchDisabled]="isSwitchVersionDisabled"
       ></app-switch-version>
-      <div class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigateToStopPoint()">
-        <img alt="stop-point" src="assets/images/prm/person-wheelchair.svg">
-        <p>{{ 'PAGES.PRM.TITLE_HEADER' | translate }}</p>
-      </div>
+      <app-navigation-sepodi-prm [number]="selectedVersion?.number!.number" [sloid]="selectedVersion?.sloid" targetPage="stop-point"></app-navigation-sepodi-prm>
     </div>
   </div>
 
