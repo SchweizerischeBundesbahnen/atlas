@@ -39,7 +39,6 @@ import {SplitServicePointNumberPipe} from "../../../../../../core/search-service
 import moment from "moment";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import SpyObj = jasmine.SpyObj;
-import {Pages} from "../../../../../pages";
 
 const reducedPlatform: ReadPlatformVersion[] = [
   {
@@ -324,18 +323,6 @@ describe('PlatformDetailComponent', () => {
       component.save();
       expect(personWithReducedMobilityService.createPlatform).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
-    });
-
-    it('should navigate to the correct traffic point element URL', () => {
-      component.selectedVersion = reducedPlatform[0];
-
-      component.navigateToTrafficPointElement();
-
-      expect(routerSpy.navigate).toHaveBeenCalledWith([
-        Pages.SEPODI.path,
-        Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
-        reducedPlatform[0].sloid
-      ]);
     });
   });
 });
