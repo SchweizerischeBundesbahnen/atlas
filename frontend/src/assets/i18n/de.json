@@ -213,7 +213,9 @@
       "ADDITIONAL_IMPORT_REPORT": "Zusätzliche Empfänger Importbericht",
       "START_BULK_IMPORT": "Start Import",
       "SUCCESS": "Import erfolgreich gestartet",
-      "CONFIGURATION": "Konfiguration"
+      "CONFIGURATION": "Konfiguration",
+      "TEMPLATE_TO_EXCEL": "Wir empfehlen das heruntergeladene CSV-File in Excel zu bearbeiten und im Dateiformat *.xlsx hochzuladen.",
+      "DIALOG_TEMPLATE_TO_EXCEL": "Empfehlung: CSV-File in Excel zu bearbeiten"
     },
     "LIDI": {
       "TITLE": "Linien und Teillinien verwalten",

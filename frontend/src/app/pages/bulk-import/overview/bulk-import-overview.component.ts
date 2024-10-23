@@ -17,6 +17,7 @@ import {
 } from "../detail/bulk-import-options";
 import {NotificationService} from "../../../core/notification/notification.service";
 import {FileDownloadService} from "../../../core/components/file-upload/file/file-download.service";
+import {DialogService} from "../../../core/components/dialog/dialog.service";
 
 const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = [
   [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update],
@@ -62,6 +63,7 @@ export class BulkImportOverviewComponent implements OnInit {
               private permissionService: PermissionService,
               private bulkImportService: BulkImportService,
               private readonly notificationService: NotificationService,
+              private readonly dialogService: DialogService
   ) {
   }
 
@@ -165,7 +167,13 @@ export class BulkImportOverviewComponent implements OnInit {
     const filename = `${bulkImportRequest.importType.toLowerCase()}_${bulkImportRequest.objectType.toLowerCase()}.csv`;
     this.bulkImportService
       .downloadTemplate(bulkImportRequest.applicationType, bulkImportRequest.objectType, bulkImportRequest.importType)
-      .subscribe((response) => FileDownloadService.downloadFile(filename, response));
+      .subscribe((response) => {
+        FileDownloadService.downloadFile(filename, response);
+        this.dialogService.showInfo({
+          title: 'PAGES.BULK_IMPORT.DIALOG_TEMPLATE_TO_EXCEL',
+          message: 'PAGES.BULK_IMPORT.TEMPLATE_TO_EXCEL'
+        })
+      });
   }
 
 }

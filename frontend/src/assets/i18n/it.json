@@ -213,7 +213,9 @@
       "ADDITIONAL_IMPORT_REPORT": "Destinatari aggiuntivi Rapporto di importazione",
       "START_BULK_IMPORT": "Avviare l'importazione",
       "SUCCESS": "Importazione avviata con successo",
-      "CONFIGURATION": "Configurazione"
+      "CONFIGURATION": "Configurazione",
+      "TEMPLATE_TO_EXCEL": "Ti consigliamo di modificare il file CSV scaricato in Excel e di caricarlo nel formato file *.xlsx.",
+      "DIALOG_TEMPLATE_TO_EXCEL": "Raccomandazione: modifica il file CSV in Excel"
     },
     "LIDI": {
       "TITLE": "Gestione dei numeri dell'elenco delle linee",
