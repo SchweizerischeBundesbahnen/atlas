@@ -4,7 +4,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { Pages } from './pages/pages';
 import { canActivateTimetableHearing } from './core/auth/guards/timetable-hearing-guard.service';
 import { loggedInUsers } from './core/auth/guards/login.guard';
-import { AdminGuard } from './core/auth/guards/admin.guard';
+import { AdminGuard, adminUser } from './core/auth/guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -52,7 +52,7 @@ const routes: Routes = [
         (m) => m.UserAdministrationModule,
       ),
     data: { headerTitle: Pages.USER_ADMINISTRATION.headerTitle },
-    canActivate: [() => inject(AdminGuard).canActivate()],
+    canActivate: [adminUser],
   },
   {
     path: Pages.HOME.path,

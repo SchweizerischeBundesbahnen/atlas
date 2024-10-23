@@ -1,18 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TrafficPointElementsTableComponent } from './traffic-point-elements-table.component';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
+import {
+  MockAtlasButtonComponent,
+  MockNavigationSepodiPrmComponent,
+  MockTableComponent,
+} from '../../../../app.testing.mocks';
 import { TrafficPointElementsService } from '../../../../api';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER } from '../../../../../test/data/traffic-point-element';
-import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
-import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
-import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import SpyObj = jasmine.SpyObj;
-import {BERN_WYLEREGG} from "../../../../../test/data/service-point";
+import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 
 describe('TrafficPointElementsTableComponent', () => {
   let component: TrafficPointElementsTableComponent;
@@ -30,13 +33,12 @@ describe('TrafficPointElementsTableComponent', () => {
     parent: {
       snapshot: {
         params: {
-          id: 8507000
+          id: 8507000,
         },
         data: {
           servicePoint: [BERN_WYLEREGG],
-        }
-      }
-
+        },
+      },
     },
     data: of({
       isTrafficPointArea: false,
@@ -54,14 +56,14 @@ describe('TrafficPointElementsTableComponent', () => {
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
+        MockNavigationSepodiPrmComponent,
       ],
       imports: [AppTestingModule],
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: TrafficPointElementsService, useValue: trafficPointElementsService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        {provide: Router, useValue: routerSpy},
-
+        { provide: Router, useValue: routerSpy },
       ],
     }).compileComponents();
 

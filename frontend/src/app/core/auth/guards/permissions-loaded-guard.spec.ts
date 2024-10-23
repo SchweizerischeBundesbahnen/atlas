@@ -1,9 +1,14 @@
-import {TestBed} from '@angular/core/testing';
-import {ActivatedRouteSnapshot, convertToParamMap, RouterModule, RouterStateSnapshot} from "@angular/router";
-import {adminUserServiceMock} from "../../../app.testing.mocks";
-import {UserService} from "../user/user.service";
-import {permissionsLoaded, PermissionsLoadedGuard} from "./permissions-loaded-guard";
-import {Observable} from "rxjs";
+import { TestBed } from '@angular/core/testing';
+import {
+  ActivatedRouteSnapshot,
+  convertToParamMap,
+  RouterModule,
+  RouterStateSnapshot,
+} from '@angular/router';
+import { adminUserServiceMock } from '../../../app.testing.mocks';
+import { UserService } from '../user/user.service';
+import { permissionsLoaded, PermissionsLoadedGuard } from './permissions-loaded-guard';
+import { Observable } from 'rxjs';
 
 describe('PermissionsLoadedGuard', () => {
   let guard: PermissionsLoadedGuard;
@@ -25,15 +30,16 @@ describe('PermissionsLoadedGuard', () => {
     expect(guard).toBeTruthy();
   });
 
-  it('should wait for permissions to be loaded', () => {
-    const mockRoute = {paramMap: convertToParamMap({id: '1234'})} as ActivatedRouteSnapshot;
-    const result = TestBed.runInInjectionContext(
-      () => permissionsLoaded(mockRoute, {} as RouterStateSnapshot)) as Observable<boolean>;
+  it('should wait for permissions to be loaded', (done) => {
+    const mockRoute = { paramMap: convertToParamMap({ id: '1234' }) } as ActivatedRouteSnapshot;
+    const result = TestBed.runInInjectionContext(() =>
+      permissionsLoaded(mockRoute, {} as RouterStateSnapshot),
+    ) as Observable<boolean>;
 
     expect(result).toBeDefined();
-    result.subscribe(result => {
+    result.subscribe((result) => {
       expect(result).toBeTrue();
-    })
+      done();
+    });
   });
-
 });
