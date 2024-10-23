@@ -50,7 +50,7 @@ export class StopPointWorkflowDetailResolver {
     );
   }
 }
-// todo: why the permissions are needed to be loaded here?
+
 export const stopPointWorkflowDetailResolver: ResolveFn<StopPointWorkflowDetailData | undefined> = (
   route: ActivatedRouteSnapshot,
 ) => inject(StopPointWorkflowDetailResolver).resolve(route);
