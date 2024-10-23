@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { DialogComponent } from './dialog.component';
-import { DialogData } from './dialog.data';
+import {Injectable} from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {DialogComponent} from './dialog.component';
+import {DialogData} from './dialog.data';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,8 @@ import { DialogData } from './dialog.data';
 export class DialogService {
   private confirmDialog?: MatDialogRef<DialogComponent>;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) {
+  }
 
   confirm(dialogData: DialogData): Observable<boolean> {
     this.confirmDialog = this.dialog.open(DialogComponent, {
@@ -33,5 +34,10 @@ export class DialogService {
       title: 'DIALOG.DISCARD_CHANGES_TITLE',
       message: 'DIALOG.LEAVE_SITE',
     });
+  }
+
+  showInfo(dialogData: DialogData): Observable<boolean> {
+    dialogData.isInfo = true;
+    return this.confirm(dialogData);
   }
 }
