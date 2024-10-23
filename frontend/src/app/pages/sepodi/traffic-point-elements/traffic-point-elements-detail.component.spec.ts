@@ -1,11 +1,14 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TrafficPointElementsDetailComponent } from './traffic-point-elements-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { BehaviorSubject, of, Subject } from 'rxjs';
-import { ActivatedRouteMockType, MockAtlasButtonComponent } from '../../../app.testing.mocks';
+import {
+  ActivatedRouteMockType,
+  MockAtlasButtonComponent,
+  MockNavigationSepodiPrmComponent,
+} from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
@@ -29,14 +32,13 @@ import { ServicePointsService, TrafficPointElementsService } from '../../../api'
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
-import {
-  BERN_WYLEREGG_TRAFFIC_POINTS,
-} from '../../../../test/data/traffic-point-element';
+import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
 import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
-import {DetailPageContainerComponent} from "../../../core/components/detail-page-container/detail-page-container.component";
-import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
-import {DetailFooterComponent} from "../../../core/components/detail-footer/detail-footer.component";
+import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
+import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
 import SpyObj = jasmine.SpyObj;
+
 const authService: Partial<AuthService> = {};
 const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
   'displayTrafficPointsOnMap',
@@ -79,13 +81,13 @@ describe('TrafficPointElementsDetailComponent', () => {
   dialogService.confirm.and.returnValue(of(true));
 
   describe('for existing Version', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       routerSpy = jasmine.createSpyObj('Router', ['navigate'], { events: of(null) });
       routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
       window.history.pushState({ isTrafficPointArea: false }, '', '');
       const activatedRouteMock = { data: of({ trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]] }) };
-      setupTestBed(activatedRouteMock);
+      await setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -147,13 +149,13 @@ describe('TrafficPointElementsDetailComponent', () => {
   });
 
   describe('for new Version', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       routerSpy = jasmine.createSpyObj('Router', ['navigate'], { events: of(null) });
       routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
       window.history.pushState({ isTrafficPointArea: false }, '', '');
       const activatedRouteMock = { data: of({ trafficPoint: [] }) };
-      setupTestBed(activatedRouteMock);
+      await setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -176,7 +178,7 @@ describe('TrafficPointElementsDetailComponent', () => {
   });
 
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
-    TestBed.configureTestingModule({
+    return TestBed.configureTestingModule({
       declarations: [
         TrafficPointElementsDetailComponent,
         DisplayDatePipe,
@@ -199,6 +201,7 @@ describe('TrafficPointElementsDetailComponent', () => {
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
+        MockNavigationSepodiPrmComponent,
       ],
       imports: [AppTestingModule],
       providers: [
@@ -210,7 +213,7 @@ describe('TrafficPointElementsDetailComponent', () => {
         { provide: ServicePointsService, useValue: servicePointService },
         { provide: TrafficPointElementsService, useValue: trafficPointService },
         { provide: DialogService, useValue: dialogService },
-        {provide: Router, useValue: routerSpy},
+        { provide: Router, useValue: routerSpy },
         SplitServicePointNumberPipe,
         TranslatePipe,
       ],
