@@ -51,7 +51,7 @@ describe('NavigationSepodiPrmComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to the correct URL when navigate is called', () => {
+  it('should navigate to the correct URL when targetPage is stop point', () => {
     personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
     component.sloid = 'ch:1:sloid:89008';
 
@@ -59,6 +59,62 @@ describe('NavigationSepodiPrmComponent', () => {
     component.navigate();
     expect(component.isTargetViewSepodi).toBeFalse();
     expect(routerSpy.navigateByUrl).toHaveBeenCalledWith(`/prm-directory/stop-points/${component.sloid}/stop-point`);
+  });
+
+  it('should navigate to the correct URL when targetPage is service point', () => {
+    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
+    component.number = 8589008;
+    component.targetPage = 'service-point';
+
+    component.init();
+    component.navigate();
+    expect(component.isTargetViewSepodi).toBeTrue();
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith(`/service-point-directory/service-points/${component.number}/service-point`);
+  });
+
+  it('should navigate to the correct URL when targetPage is traffic point table', () => {
+    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
+    component.number = 8589008;
+    component.targetPage = 'traffic-point-table';
+
+    component.init();
+    component.navigate();
+    expect(component.isTargetViewSepodi).toBeTrue();
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith(`/service-point-directory/service-points/${component.number}/traffic-point-elements`);
+  });
+
+  it('should navigate to the correct URL when targetPage is traffic point detail', () => {
+    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
+    component.sloid = 'ch:1:sloid:89008';
+    component.targetPage = 'traffic-point-detail';
+
+    component.init();
+    component.navigate();
+    expect(component.isTargetViewSepodi).toBeTrue();
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith(`/service-point-directory/traffic-point-elements/${component.sloid}`);
+  });
+
+  it('should navigate to the correct URL when targetPage is platform table', () => {
+    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
+    component.sloid = 'ch:1:sloid:89008';
+    component.targetPage = 'platform-table';
+
+    component.init();
+    component.navigate();
+    expect(component.isTargetViewSepodi).toBeFalse();
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith(`/prm-directory/stop-points/${component.sloid}/platforms`);
+  });
+
+  it('should navigate to the correct URL when targetPage is platform detail', () => {
+    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
+    component.parentSloid = 'ch:1:sloid:89008';
+    component.sloid = 'ch:1:sloid:89008:0:1';
+    component.targetPage = 'platform-detail';
+
+    component.init();
+    component.navigate();
+    expect(component.isTargetViewSepodi).toBeFalse();
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith(`/prm-directory/stop-points/${component.parentSloid}/platforms/${component.sloid}/detail`);
   });
 
   it('should navigate to create stop point when the stop point returns an empty array', () => {
