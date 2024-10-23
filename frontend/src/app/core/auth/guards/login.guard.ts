@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { UserService } from '../user/user.service';
 import { map, skipWhile } from 'rxjs/operators';
@@ -16,7 +16,6 @@ export class LoginGuard {
 
   canActivate() {
     return this.userService.permissionsLoaded.pipe(
-      skipWhile((loaded) => !loaded),
       map(() => {
         if (this.userService.loggedIn) {
           return true;
@@ -28,6 +27,6 @@ export class LoginGuard {
   }
 }
 
-export const loggedInUsers: CanActivateFn = () => {
+export const loggedInUsers = () => {
   return inject(LoginGuard).canActivate();
 };
