@@ -18,6 +18,7 @@ import {
 import {NotificationService} from "../../../core/notification/notification.service";
 import {FileDownloadService} from "../../../core/components/file-upload/file/file-download.service";
 import {DialogService} from "../../../core/components/dialog/dialog.service";
+import {StartBulkImportService} from "./start-bulk-import.service";
 
 const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = [
   [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update],
@@ -62,6 +63,7 @@ export class BulkImportOverviewComponent implements OnInit {
   constructor(private userAdministrationService: UserAdministrationService,
               private permissionService: PermissionService,
               private bulkImportService: BulkImportService,
+              private startBulkImportService: StartBulkImportService,
               private readonly notificationService: NotificationService,
               private readonly dialogService: DialogService
   ) {
@@ -101,7 +103,7 @@ export class BulkImportOverviewComponent implements OnInit {
   startBulkImport() {
     const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
 
-    this.bulkImportService.startServicePointImportBatch(bulkImportRequest, this.uploadedFiles[0])
+    this.startBulkImportService.startServicePointImportBatch(bulkImportRequest, this.uploadedFiles[0])
       .pipe(catchError(() => {
         this.resetConfiguration(true);
         this.ngOnInit();
