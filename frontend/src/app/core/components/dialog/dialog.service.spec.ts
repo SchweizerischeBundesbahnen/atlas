@@ -1,10 +1,11 @@
-import { TestBed } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
-import { DialogService } from './dialog.service';
-import { of } from 'rxjs';
+import {TestBed} from '@angular/core/testing';
+import {MatDialog} from '@angular/material/dialog';
+import {TranslateModule} from '@ngx-translate/core';
+import {DialogService} from './dialog.service';
+import {of} from 'rxjs';
+import {DialogData} from "./dialog.data";
 
-const dialogData = {
+const dialogData: DialogData = {
   title: 'Question',
   message: 'Do you want to be a rockstar?',
 };
@@ -31,9 +32,18 @@ describe('DialogService', () => {
   });
 
   it('should open confirmation dialog and pass cancel value - false', () => {
-    dialogSpy.open.and.returnValue({ afterClosed: () => of(false) });
+    dialogSpy.open.and.returnValue({afterClosed: () => of(false)});
 
     service.confirm(dialogData).subscribe((result) => expect(result).toBeFalse());
+
+    expect(dialogSpy.open).toHaveBeenCalled();
+  });
+
+  it('should open info dialog and pass cancel value - false', () => {
+    dialogData.isInfo = true;
+    dialogSpy.open.and.returnValue({afterClosed: () => of(false)});
+
+    service.showInfo(dialogData).subscribe((result) => expect(result).toBeFalse());
 
     expect(dialogSpy.open).toHaveBeenCalled();
   });
