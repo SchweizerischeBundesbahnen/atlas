@@ -1,4 +1,4 @@
-import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output,} from '@angular/core';
+import {Component, ContentChild, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ServicePointDetailFormGroup} from '../service-point-detail-form-group';
 import {ServicePointType} from '../service-point-type';
@@ -20,13 +20,14 @@ import {DialogService} from '../../../../../core/components/dialog/dialog.servic
 import {GeographyComponent} from '../../../geography/geography.component';
 import {Countries} from '../../../../../core/country/Countries';
 import {PermissionService} from "../../../../../core/auth/permission/permission.service";
+import {AtLeastOneValidator} from "../../../../../core/validation/boolean-cross-validator/at-least-one-validator";
 
 @Component({
   selector: 'service-point-form',
   templateUrl: './service-point-form.component.html',
   styleUrls: ['./service-point-form.component.scss'],
 })
-export class ServicePointFormComponent implements OnInit, OnDestroy {
+export class ServicePointFormComponent implements OnInit, OnChanges, OnDestroy {
   @ContentChild(GeographyComponent, {static: true}) geographyComponent?: GeographyComponent;
 
   locationInformation$?: Observable<LocationInformation>;
@@ -90,7 +91,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     this.isNew = !this.currentVersion?.id;
     this.initSortedOperatingPointTypes();
     this.initBoSboidRestriction();
-
+    this.setStopPointValidator();
     if (!this.isNew) {
       this.geographyComponent?.coordinatesChanged.subscribe((coordinatePair) => {
         if (coordinatePair.north && coordinatePair.east) {
@@ -109,6 +110,10 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  ngOnChanges(): void {
+    this.setStopPointValidator();
   }
 
   ngOnDestroy() {
@@ -205,6 +210,12 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     } else {
       this.form.controls.operatingPointKilometer.setValue(false);
       this.form.controls.operatingPointKilometerMaster.reset();
+    }
+  }
+
+  setStopPointValidator() {
+    if(this.form?.controls.selectedType.value === ServicePointType.StopPoint) {
+      this.form!.addValidators(AtLeastOneValidator.of('stopPoint', 'freightServicePoint'));
     }
   }
 }
