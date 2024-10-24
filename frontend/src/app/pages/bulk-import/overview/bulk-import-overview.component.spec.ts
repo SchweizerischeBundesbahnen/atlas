@@ -19,6 +19,7 @@ import {TextFieldComponent} from "../../../core/form-components/text-field/text-
 import {AtlasFieldErrorComponent} from "../../../core/form-components/atlas-field-error/atlas-field-error.component";
 import {AtlasSpacerComponent} from "../../../core/components/spacer/atlas-spacer.component";
 import {AtlasLabelFieldComponent} from "../../../core/form-components/atlas-label-field/atlas-label-field.component";
+import {DialogService} from "../../../core/components/dialog/dialog.service";
 import SpyObj = jasmine.SpyObj;
 
 describe('BulkImportOverviewComponent', () => {
@@ -29,12 +30,14 @@ describe('BulkImportOverviewComponent', () => {
   let routerSpy: SpyObj<Router>;
   let activatedRouteStub:ActivatedRoute;
   let fixture: ComponentFixture<BulkImportOverviewComponent>;
+  let dialogServiceSpy: SpyObj<DialogService>;
 
   beforeEach(() => {
     bulkImportServiceSpy = jasmine.createSpyObj('BulkImportService', ['startServicePointImportBatch', 'downloadTemplate']);
     notificationServiceSpy = jasmine.createSpyObj(['success']);
     routerSpy = jasmine.createSpyObj(['navigate']);
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
+    dialogServiceSpy = jasmine.createSpyObj('dialogService', ['showInfo']);
 
     TestBed.configureTestingModule({
       imports: [AppTestingModule,
@@ -56,7 +59,8 @@ describe('BulkImportOverviewComponent', () => {
           provide: Router,
           useValue: routerSpy,
         },
-        { provide: ActivatedRoute, useValue: activatedRouteStub }
+        {provide: DialogService, useValue: dialogServiceSpy},
+        {provide: ActivatedRoute, useValue: activatedRouteStub}
       ],
       declarations: [
         BulkImportOverviewComponent,
@@ -242,6 +246,7 @@ describe('BulkImportOverviewComponent', () => {
     component.downloadExcel();
 
     expect(bulkImportServiceSpy.downloadTemplate).toHaveBeenCalledWith(ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Create);
+    expect(dialogServiceSpy.showInfo).toHaveBeenCalled();
     expect(fileDownloadSpy).toHaveBeenCalledWith('create_service_point.csv', blob);
   });
 

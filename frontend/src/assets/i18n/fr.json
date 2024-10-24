@@ -213,7 +213,9 @@
       "ADDITIONAL_IMPORT_REPORT": "Destinataires supplémentaires Rapport d'importation",
       "START_BULK_IMPORT": "Démarrer l'importation",
       "SUCCESS": "Importation lancée avec succès",
-      "CONFIGURATION": "Configuration"
+      "CONFIGURATION": "Configuration",
+      "TEMPLATE_TO_EXCEL": "Nous recommandons de modifier le fichier CSV téléchargé dans Excel et de le transmettre au format *.xlsx.",
+      "DIALOG_TEMPLATE_TO_EXCEL": "Recommandation : modifier le fichier CSV dans Excel"
     },
     "LIDI": {
       "TITLE": "Gérer des lignes et lignes partielles",
