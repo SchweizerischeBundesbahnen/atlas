@@ -21,6 +21,7 @@ import {AtlasSpacerComponent} from "../../../core/components/spacer/atlas-spacer
 import {AtlasLabelFieldComponent} from "../../../core/form-components/atlas-label-field/atlas-label-field.component";
 import {DialogService} from "../../../core/components/dialog/dialog.service";
 import SpyObj = jasmine.SpyObj;
+import {StartBulkImportService} from "./start-bulk-import.service";
 
 describe('BulkImportOverviewComponent', () => {
   let component: BulkImportOverviewComponent;
@@ -34,6 +35,7 @@ describe('BulkImportOverviewComponent', () => {
 
   beforeEach(() => {
     bulkImportServiceSpy = jasmine.createSpyObj('BulkImportService', ['startServicePointImportBatch', 'downloadTemplate']);
+    const startBulkImportServiceSpy = jasmine.createSpyObj('StartBulkImportService', ['startServicePointImportBatch']);
     notificationServiceSpy = jasmine.createSpyObj(['success']);
     routerSpy = jasmine.createSpyObj(['navigate']);
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
@@ -50,6 +52,9 @@ describe('BulkImportOverviewComponent', () => {
         {
           provide: BulkImportService,
           useValue: bulkImportServiceSpy,
+        },{
+          provide: StartBulkImportService,
+          useValue: startBulkImportServiceSpy,
         },
         {
           provide: NotificationService,
