@@ -1,5 +1,9 @@
 package ch.sbb.atlas.api.lidi;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.api.model.Container;
@@ -32,8 +36,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static ch.sbb.atlas.model.ResponseCodeDescription.*;
-
 @Tag(name = "Sublines")
 @RequestMapping("v1/sublines")
 public interface SublineApiV1 {
@@ -65,6 +67,7 @@ public interface SublineApiV1 {
   SublineVersionModel createSublineVersion(
       @RequestBody @Valid SublineVersionModel newSublineVersion);
 
+  @Deprecated(forRemoval = true, since = "2.328.0")
   @GetMapping("versions/{slnid}")
   List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);
 
