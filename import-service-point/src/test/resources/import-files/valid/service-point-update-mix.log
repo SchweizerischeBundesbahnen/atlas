@@ -355,7 +355,7 @@
         {
           "errorMessage": "sloid with value ch:1:sloid:notunique occurred more than once",
           "displayInfo": {
-            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_SLOID",
+            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_FIELD",
             "parameters": [
               {
                 "key": "field",
@@ -377,7 +377,7 @@
         {
           "errorMessage": "sloid with value ch:1:sloid:notunique occurred more than once",
           "displayInfo": {
-            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_SLOID",
+            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_FIELD",
             "parameters": [
               {
                 "key": "field",
@@ -399,7 +399,7 @@
         {
           "errorMessage": "number with value 8507000 occurred more than once",
           "displayInfo": {
-            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_NUMBER",
+            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_FIELD",
             "parameters": [
               {
                 "key": "field",
@@ -421,7 +421,7 @@
         {
           "errorMessage": "number with value 8507000 occurred more than once",
           "displayInfo": {
-            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_NUMBER",
+            "code": "BULK_IMPORT.VALIDATION.DUPLICATE_FIELD",
             "parameters": [
               {
                 "key": "field",

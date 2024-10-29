@@ -1,34 +1,38 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {ServicePointDetailComponent} from './service-point-detail.component';
-import {AppTestingModule} from '../../../../app.testing.module';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BehaviorSubject, of} from 'rxjs';
-import {FormGroup, FormsModule} from '@angular/forms';
-import {TextFieldComponent} from '../../../../core/form-components/text-field/text-field.component';
-import {MeansOfTransportPickerComponent} from '../../means-of-transport-picker/means-of-transport-picker.component';
-import {SelectComponent} from '../../../../core/form-components/select/select.component';
-import {SwitchVersionComponent} from '../../../../core/components/switch-version/switch-version.component';
-import {AtlasSlideToggleComponent} from '../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
-import {TranslatePipe} from '@ngx-translate/core';
-import {AtlasLabelFieldComponent} from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import {AtlasFieldErrorComponent} from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import {AtlasSpacerComponent} from '../../../../core/components/spacer/atlas-spacer.component';
-import {Record} from '../../../../core/components/base-detail/record';
-import {adminPermissionServiceMock, MockAtlasButtonComponent} from '../../../../app.testing.mocks';
-import {DialogService} from '../../../../core/components/dialog/dialog.service';
-import {Country, ReadServicePointVersion, ServicePointsService, Status,} from '../../../../api';
-import {NotificationService} from '../../../../core/notification/notification.service';
-import {DisplayCantonPipe} from '../../../../core/cantons/display-canton.pipe';
-import {MapService} from '../../map/map.service';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {BERN} from '../../../../../test/data/service-point';
-import {UserDetailInfoComponent} from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
-import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
-import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
-import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
-import {ValidityService} from "../../validity/validity.service";
-import {PermissionService} from "../../../../core/auth/permission/permission.service";
-import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ServicePointDetailComponent } from './service-point-detail.component';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, of } from 'rxjs';
+import { FormGroup, FormsModule } from '@angular/forms';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { MeansOfTransportPickerComponent } from '../../means-of-transport-picker/means-of-transport-picker.component';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
+import { AtlasSlideToggleComponent } from '../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
+import { Record } from '../../../../core/components/base-detail/record';
+import {
+  adminPermissionServiceMock,
+  MockAtlasButtonComponent,
+  MockNavigationSepodiPrmComponent,
+} from '../../../../app.testing.mocks';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { Country, ReadServicePointVersion, ServicePointsService, Status } from '../../../../api';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
+import { MapService } from '../../map/map.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { BERN } from '../../../../../test/data/service-point';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { ValidityService } from '../../validity/validity.service';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { AddStopPointWorkflowDialogService } from '../../workflow/add-dialog/add-stop-point-workflow-dialog.service';
 import SpyObj = jasmine.SpyObj;
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
@@ -45,7 +49,10 @@ const mapServiceSpy = jasmine.createSpyObj('MapService', [
 ]);
 mapServiceSpy.mapInitialized = new BehaviorSubject<boolean>(false);
 
-const addStopPointWorkflowDialogService = jasmine.createSpyObj('addStopPointWorkflowDialogService', ['openDialog']);
+const addStopPointWorkflowDialogService = jasmine.createSpyObj(
+  'addStopPointWorkflowDialogService',
+  ['openDialog'],
+);
 
 @Component({
   selector: 'service-point-form',
@@ -72,7 +79,7 @@ describe('ServicePointDetailComponent', () => {
   let fixture: ComponentFixture<ServicePointDetailComponent>;
   let routerSpy: SpyObj<Router>;
 
-  const activatedRouteMock = {parent: {data: of({servicePoint: BERN})}};
+  const activatedRouteMock = { parent: { data: of({ servicePoint: BERN }) } };
 
   let validityService: ValidityService;
 
@@ -99,25 +106,26 @@ describe('ServicePointDetailComponent', () => {
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
+        MockNavigationSepodiPrmComponent,
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [
         ValidityService,
-        {provide: PermissionService, useValue: adminPermissionServiceMock},
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
-        {provide: DialogService, useValue: dialogServiceSpy},
-        {provide: ServicePointsService, useValue: servicePointsServiceSpy},
-        {provide: NotificationService, useValue: notificationServiceSpy},
-        {provide: TranslatePipe},
-        {provide: MapService, useValue: mapServiceSpy},
-        {provide: AddStopPointWorkflowDialogService, useValue: addStopPointWorkflowDialogService},
-        {provide: Router, useValue: routerSpy},
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: DialogService, useValue: dialogServiceSpy },
+        { provide: ServicePointsService, useValue: servicePointsServiceSpy },
+        { provide: NotificationService, useValue: notificationServiceSpy },
+        { provide: TranslatePipe },
+        { provide: MapService, useValue: mapServiceSpy },
+        { provide: AddStopPointWorkflowDialogService, useValue: addStopPointWorkflowDialogService },
+        { provide: Router, useValue: routerSpy },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ServicePointDetailComponent);
     component = fixture.componentInstance;
-    validityService = TestBed.inject(ValidityService)
+    validityService = TestBed.inject(ValidityService);
     fixture.detectChanges();
   });
 
@@ -156,14 +164,14 @@ describe('ServicePointDetailComponent', () => {
         checkDigit: 0,
       },
       status: 'IN_REVIEW',
-      country: Country.Switzerland
+      country: Country.Switzerland,
     };
     component.servicePointVersions.push(version);
 
     component.initShowRevokeButton(version);
     expect(component.showRevokeButton).toBeFalsy();
     component.servicePointVersions = [];
-    fixture.detectChanges()
+    fixture.detectChanges();
   });
 
   it('should not show revoke button when status in revoked', () => {
@@ -179,14 +187,14 @@ describe('ServicePointDetailComponent', () => {
         checkDigit: 0,
       },
       status: 'REVOKED',
-      country: Country.Switzerland
+      country: Country.Switzerland,
     };
     component.servicePointVersions.push(version);
 
     component.initShowRevokeButton(version);
     expect(component.showRevokeButton).toBeFalsy();
     component.servicePointVersions = [];
-    fixture.detectChanges()
+    fixture.detectChanges();
   });
 
   it('should show revoke button', () => {
@@ -202,16 +210,16 @@ describe('ServicePointDetailComponent', () => {
         checkDigit: 0,
       },
       status: 'VALIDATED',
-      country: Country.Switzerland
+      country: Country.Switzerland,
     };
     component.servicePointVersions = [];
     component.servicePointVersions.push(version);
 
-    fixture.detectChanges()
+    fixture.detectChanges();
     component.initShowRevokeButton(version);
     expect(component.showRevokeButton).toBeTrue();
     component.servicePointVersions = [];
-    fixture.detectChanges()
+    fixture.detectChanges();
   });
 
   it('should switch to readonly mode when not dirty without confirmation', () => {
@@ -316,7 +324,7 @@ describe('ServicePointDetailComponent', () => {
         designationOfficial: 'efgh',
         validFrom: new Date(1999, 0, 1),
         validTo: new Date(2002, 0, 1),
-        number: {number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0},
+        number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
         status: Status.Validated,
         country: Country.Switzerland,
       },
@@ -350,7 +358,7 @@ describe('ServicePointDetailComponent', () => {
         designationOfficial: 'efgh',
         validFrom: new Date(2020, 0, 1),
         validTo: new Date(2099, 0, 1),
-        number: {number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0},
+        number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
         status: Status.Validated,
         country: Country.Switzerland,
       },
