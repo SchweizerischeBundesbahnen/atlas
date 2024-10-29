@@ -12,11 +12,12 @@ import { BaseDetailController } from './core/components/base-detail/base-detail-
 import { Record } from './core/components/base-detail/record';
 import { AuthService } from './core/auth/auth.service';
 import { UserService } from './core/auth/user/user.service';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { PermissionService } from './core/auth/permission/permission.service';
 import { PageService } from './core/pages/page.service';
 import { Pages } from './pages/pages';
 import { FieldExample } from './core/form-components/text-field/field-example';
+import { TargetPageType } from './core/navigation-sepodi-prm/navigation-sepodi-prm.component';
 
 @Component({
   selector: 'app-switch-version',
@@ -165,6 +166,17 @@ export class MockAtlasLabelFieldComponent {
   @Input() fieldExamples!: Array<FieldExample>;
 }
 
+@Component({
+  selector: 'app-navigation-sepodi-prm',
+  template: '<h1>MockNavigationSepodiPrmComponent</h1>',
+})
+export class MockNavigationSepodiPrmComponent {
+  @Input() targetPage!: TargetPageType;
+  @Input() sloid?: string;
+  @Input() number?: number;
+  @Input() parentSloid?: string;
+}
+
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export type ActivatedRouteMockType = { data: any };
 
@@ -180,7 +192,6 @@ export const adminUserServiceMock: Partial<UserService> = {
   loggedIn: true,
   isAdmin: true,
   permissions: [],
-  permissionsLoaded: new BehaviorSubject(true),
 };
 
 export const adminPermissionServiceMock: Partial<PermissionService> = {
@@ -217,15 +228,7 @@ export const authServiceSpy = jasmine.createSpyObj<AuthService>(['login', 'logou
     MockInfoIconComponent,
     MockSwitchVersionComponent,
     MockMatPaginatorComponent,
-  ],
-  exports: [
-    MockBoSelectComponent,
-    MockAtlasButtonComponent,
-    MockTableComponent,
-    MockSelectComponent,
-    MockSwitchVersionComponent,
-    MockInfoIconComponent,
-    MockAtlasFieldErrorComponent,
+    MockNavigationSepodiPrmComponent,
   ],
 })
 export class AppMockComponents {}
