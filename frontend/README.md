@@ -1,5 +1,6 @@
 # ATLAS Frontend
 
+
 This project was generated
 from [esta-cloud-angular](https://code.sbb.ch/projects/KD_ESTA_BLUEPRINTS/repos/esta-cloud-angular/browse).
 See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
