@@ -61,11 +61,11 @@ public class TrafficPointElementVersion extends BaseEntity implements Versionabl
       initialValue = 1000)
   private Long id;
 
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_40)
+  @Size(max = AtlasFieldLengths.LENGTH_40)
   @AtlasVersionableProperty
   private String designation;
 
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_20)
+  @Size(max = AtlasFieldLengths.LENGTH_20)
   @AtlasVersionableProperty
   private String designationOperational;
 
