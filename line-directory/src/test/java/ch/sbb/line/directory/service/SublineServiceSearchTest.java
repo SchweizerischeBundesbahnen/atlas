@@ -279,7 +279,7 @@ import org.springframework.transaction.annotation.Transactional;
     sublineVersionRepository.saveAndFlush(version1);
     sublineVersionRepository.saveAndFlush(version2);
 
-    version3.setSublineType(SublineType.COMPENSATION);
+    version3.setSublineType(SublineType.CONCESSION);
     sublineVersionRepository.saveAndFlush(version3);
     // When
     Page<Subline> result = sublineService.findAll(
@@ -287,7 +287,7 @@ import org.springframework.transaction.annotation.Transactional;
             .pageable(Pageable.unpaged())
             .typeRestrictions(List.of(
                 SublineType.TECHNICAL,
-                SublineType.COMPENSATION))
+                SublineType.CONCESSION))
             .build());
 
     // Then
