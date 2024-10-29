@@ -41,4 +41,8 @@ include::{snippets}/subline-controller-api-test/should-return-subline-outside-of
 
 include::{snippets}/subline-controller-api-test/should-get-subline-coverage/atlas-doc.adoc[]
 
+== Get Subline Version V2
+
+include::{snippets}/subline-controller-api-v2-test/should-get-subjine-version/atlas-doc.adoc[]
+
 link:rest-api.html[*< Back to main*]

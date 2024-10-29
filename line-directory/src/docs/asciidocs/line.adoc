@@ -53,4 +53,8 @@ include::{snippets}/line-controller-api-test/should-return-not-found-error-respo
 
 include::{snippets}/line-controller-api-test/should-get-subline-coverage/atlas-doc.adoc[]
 
+== Get LineVersion V2
+
+include::{snippets}/line-controller-api-v2-test/should-get-line-version/atlas-doc.adoc[]
+
 link:rest-api.html[*< Back to main*]
