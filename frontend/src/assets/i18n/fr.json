@@ -1488,7 +1488,8 @@
       "DATA_MAPPING_ERROR": "Pour l'attribut {{field}}, le type {{expectedType}} était attendu, mais la valeur indiquée était {{errorValue}}.",
       "SLOID_XOR_NUMBER": "Il faut indiquer soit le sloid, soit le number (pas les deux).",
       "INVALID_SERVICE_POINT_NUMBER": "Le numéro de service n'est pas valide.",
-      "FIELD_MANDATORY": "L'attribut {{field}} ne doit pas être supprimé."
+      "FIELD_MANDATORY": "L'attribut {{field}} ne doit pas être supprimé.",
+      "DUPLICATE_FIELD": "L'attribut {{field}} avec la valeur {{value}} apparaît plusieurs fois."
     },
     "STATUS": {
       "INFO": "Renseignements",
@@ -1519,7 +1520,8 @@
     },
     "ERROR": {
       "EXCEL_CONVERSION": "Le fichier Excel utilisé n'a pas pu être lu correctement. Veuillez vous assurer que vous utilisez le fichier conformément au modèle.\nSource d'erreur dans la ligne:{{rowIndex}}, la colonne:{{columnIndex}}",
-      "FILE_HEADER": "Le fichier utilisé n'a pas l'en-tête attendu. Veuillez vous assurer que vous utilisez le fichier conformément au modèle."
+      "FILE_HEADER": "Le fichier utilisé n'a pas l'en-tête attendu. Veuillez vous assurer que vous utilisez le fichier conformément au modèle.",
+      "ATTRIBUTE_NULLING_NOT_SUPPORTED": "L'attribut {{field}} ne doit pas être supprimé."
     }
   }
 }

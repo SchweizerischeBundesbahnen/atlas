@@ -1,14 +1,13 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {GeoJsonProperties} from 'geojson';
-import {Router} from '@angular/router';
-import {Pages} from '../../pages';
-import {MapService} from '../map/map.service';
-import {Subscription, take} from 'rxjs';
-import {ServicePointSearch} from "../../../core/search-service-point/service-point-search";
-import {filter} from "rxjs/operators";
-import {ApplicationType} from "../../../api";
-import {UserService} from "../../../core/auth/user/user.service";
-import {PermissionService} from "../../../core/auth/permission/permission.service";
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { GeoJsonProperties } from 'geojson';
+import { Router } from '@angular/router';
+import { Pages } from '../../pages';
+import { MapService } from '../map/map.service';
+import { Subscription } from 'rxjs';
+import { ServicePointSearch } from '../../../core/search-service-point/service-point-search';
+import { ApplicationType } from '../../../api';
+import { UserService } from '../../../core/auth/user/user.service';
+import { PermissionService } from '../../../core/auth/permission/permission.service';
 
 @Component({
   selector: 'app-sepodi-mapview',
@@ -75,16 +74,11 @@ export class SepodiMapviewComponent implements AfterViewInit, OnDestroy, OnInit 
   }
 
   ngOnInit(): void {
-    this.userService.permissionsLoaded
-      .pipe(
-        filter((loaded) => loaded),
-        take(1),
-      )
-      .subscribe(() => {
-        this.canCreateServicePoint = this.permissionService.hasPermissionsToCreate(
-          ApplicationType.Sepodi,
-        );
-      });
+    this.userService.onPermissionsLoaded().subscribe(() => {
+      this.canCreateServicePoint = this.permissionService.hasPermissionsToCreate(
+        ApplicationType.Sepodi,
+      );
+    });
   }
 
   routeToNewSP(): void {
