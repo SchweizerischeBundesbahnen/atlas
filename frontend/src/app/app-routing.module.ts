@@ -1,10 +1,10 @@
-import { inject, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { Pages } from './pages/pages';
-import { canActivateTimetableHearing } from './core/auth/guards/timetable-hearing-guard.service';
+import { canActivateTimetableHearing } from './core/auth/guards/timetable-hearing.guard';
 import { loggedInUsers } from './core/auth/guards/login.guard';
-import { AdminGuard, adminUser } from './core/auth/guards/admin.guard';
+import { adminUser } from './core/auth/guards/admin.guard';
 
 const routes: Routes = [
   {
