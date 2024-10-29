@@ -3,7 +3,7 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ApplicationType, BulkImportService, BusinessObjectType, ImportType} from "../../../api";
 import {AppTestingModule} from "../../../app.testing.module";
 import {BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
-import {of} from "rxjs";
+import {of, throwError} from "rxjs";
 import {NotificationService} from "../../../core/notification/notification.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe} from "@ngx-translate/core";
