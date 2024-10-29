@@ -3,17 +3,14 @@ import {HttpClient} from "@angular/common/http";
 import {BulkImportRequest} from "../../../api";
 import {Observable} from "rxjs";
 import {ApiConfigService} from "../../../core/configuration/api-config.service";
-import {ajax} from "rxjs/internal/ajax/ajax";
-import {map} from "rxjs/operators";
-import {OAuthService} from "angular-oauth2-oidc";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StartBulkImportService {
 
-  constructor(private apiConfigService: ApiConfigService,
-              private oAuthService: OAuthService) {
+  constructor(private httpClient: HttpClient,
+              private apiConfigService: ApiConfigService) {
   }
 
   public startServicePointImportBatch(bulkImportRequest: BulkImportRequest, file: Blob): Observable<void> {
@@ -25,15 +22,8 @@ export class StartBulkImportService {
       formParams.append('file', file);
     }
     console.log("Executing POST");
-    return ajax({
-      method: 'POST',
-      url: `${this.apiConfigService.apiBasePath}/import-service-point/v1/import/bulk`,
-      body: formParams,
-      responseType: 'json',
-      headers: {'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`}
-    })
-      .pipe(map(() => {
-      }));
+    return this.httpClient.post<void>(`${this.apiConfigService.apiBasePath}/import-service-point/v1/import/bulk`,
+      formParams, {responseType: 'json'});
   }
 
 }
