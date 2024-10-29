@@ -25,8 +25,4 @@ export class ApiConfigService {
       this.configuration.basePath = environment.atlasUnauthApiUrl;
     }
   }
-
-  get apiBasePath() {
-    return this.configuration.basePath;
-  }
 }
