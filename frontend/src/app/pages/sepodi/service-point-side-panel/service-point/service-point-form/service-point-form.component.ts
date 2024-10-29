@@ -20,6 +20,7 @@ import {DialogService} from '../../../../../core/components/dialog/dialog.servic
 import {GeographyComponent} from '../../../geography/geography.component';
 import {Countries} from '../../../../../core/country/Countries';
 import {PermissionService} from "../../../../../core/auth/permission/permission.service";
+import {AtLeastOneValidator} from "../../../../../core/validation/boolean-cross-validator/at-least-one-validator";
 
 @Component({
   selector: 'service-point-form',
@@ -53,6 +54,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   @Input() set currentVersion(version: ReadServicePointVersion | undefined) {
     this._currentVersion = version;
+    this.setStopPointValidator();
     this.locationInformation$ = of({
       isoCountryCode: version?.servicePointGeolocation?.isoCountryCode,
       canton: version?.servicePointGeolocation?.swissLocation?.canton,
@@ -90,7 +92,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     this.isNew = !this.currentVersion?.id;
     this.initSortedOperatingPointTypes();
     this.initBoSboidRestriction();
-
     if (!this.isNew) {
       this.geographyComponent?.coordinatesChanged.subscribe((coordinatePair) => {
         if (coordinatePair.north && coordinatePair.east) {
@@ -205,6 +206,12 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     } else {
       this.form.controls.operatingPointKilometer.setValue(false);
       this.form.controls.operatingPointKilometerMaster.reset();
+    }
+  }
+
+  setStopPointValidator() {
+    if(this.form?.controls.selectedType.value === ServicePointType.StopPoint) {
+      this.form!.addValidators(AtLeastOneValidator.of('stopPoint', 'freightServicePoint'));
     }
   }
 }
