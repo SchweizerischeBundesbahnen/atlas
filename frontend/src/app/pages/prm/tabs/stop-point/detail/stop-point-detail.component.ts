@@ -1,32 +1,34 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Data, Router} from '@angular/router';
-import {BehaviorSubject, catchError, EMPTY, Observable, of, take} from 'rxjs';
-import {FormGroup} from '@angular/forms';
-import {VersionsHandlingService} from '../../../../../core/versioning/versions-handling.service';
-import {Pages} from '../../../../pages';
-import {NotificationService} from '../../../../../core/notification/notification.service';
-import {DialogService} from '../../../../../core/components/dialog/dialog.service';
-import {DetailFormComponent} from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {StopPointDetailFormGroup, StopPointFormGroupBuilder,} from '../form/stop-point-detail-form-group';
-import {PrmTabsService} from '../../../prm-panel/prm-tabs.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Data, Router } from '@angular/router';
+import { BehaviorSubject, catchError, EMPTY, Observable, of, take } from 'rxjs';
+import { FormGroup } from '@angular/forms';
+import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
+import { Pages } from '../../../../pages';
+import { NotificationService } from '../../../../../core/notification/notification.service';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
+import {
+  StopPointDetailFormGroup,
+  StopPointFormGroupBuilder,
+} from '../form/stop-point-detail-form-group';
+import { PrmTabsService } from '../../../prm-panel/prm-tabs.service';
 import {
   PersonWithReducedMobilityService,
   ReadServicePointVersion,
   ReadStopPointVersion,
   StopPointVersion,
 } from '../../../../../api';
-import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
-import {ValidityService} from "../../../../sepodi/validity/validity.service";
-import {ReferencePointCreationHintService} from "./reference-point-creation-hint/reference-point-creation-hint.service";
-import {PermissionService} from "../../../../../core/auth/permission/permission.service";
+import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
+import { ValidityService } from '../../../../sepodi/validity/validity.service';
+import { ReferencePointCreationHintService } from './reference-point-creation-hint/reference-point-creation-hint.service';
+import { PermissionService } from '../../../../../core/auth/permission/permission.service';
 
 @Component({
   selector: 'app-stop-point-detail',
   templateUrl: './stop-point-detail.component.html',
-  providers: [ValidityService]
+  providers: [ValidityService],
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {
-
   isNew = false;
   isAuthorizedToCreateStopPoint = true;
   stopPointVersions!: ReadStopPointVersion[];
@@ -50,9 +52,8 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     private permissionService: PermissionService,
     private prmTabsService: PrmTabsService,
     private referencePointCreationHintService: ReferencePointCreationHintService,
-    private validityService: ValidityService
-  ) {
-  }
+    private validityService: ValidityService,
+  ) {}
 
   ngOnInit(): void {
     this.route.parent?.data.subscribe((data) => {
@@ -82,7 +83,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
-      this.validityService.initValidity(this.form)
+      this.validityService.initValidity(this.form);
       this.enableForm();
     }
   }
@@ -99,7 +100,10 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       const writableStopPoint = StopPointFormGroupBuilder.getWritableStopPoint(this.form);
       if (!this.isNew) {
         this.validityService.updateValidity(this.form);
-        this.validityService.validateAndDisableCustom(() => this.updateStopPoint(writableStopPoint), () => this.disableForm());
+        this.validityService.validateAndDisableCustom(
+          () => this.updateStopPoint(writableStopPoint),
+          () => this.disableForm(),
+        );
       } else {
         this.disableForm();
         this.createStopPoint(writableStopPoint);
@@ -145,7 +149,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   disableForm(): void {
-    this.form.disable({emitEvent: false});
+    this.form.disable({ emitEvent: false });
     this.isFormEnabled$.next(false);
   }
 
@@ -170,13 +174,13 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   enableForm() {
-    this.form.enable({emitEvent: false});
+    this.form.enable({ emitEvent: false });
     this.isFormEnabled$.next(true);
   }
 
   updateStopPoint(writableStopPoint: StopPointVersion) {
     const isEditedReduced = PrmMeanOfTransportHelper.isReduced(writableStopPoint.meansOfTransport);
-    const isCurrentReduced = this.selectedVersion.reduced
+    const isCurrentReduced = this.selectedVersion.reduced;
     if (isEditedReduced !== isCurrentReduced) {
       this.showPrmChangeVariantConfirmationDialog(writableStopPoint);
     } else {
@@ -197,10 +201,12 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   doUpdateStopPoint(writableStopPoint: StopPointVersion) {
     this.personWithReducedMobilityService
       .updateStopPoint(this.selectedVersion.id!, writableStopPoint)
-      .pipe(catchError(() => {
-        this.ngOnInit();
-        return EMPTY;
-      }))
+      .pipe(
+        catchError(() => {
+          this.ngOnInit();
+          return EMPTY;
+        }),
+      )
       .subscribe(() => {
         this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.EDIT_SUCCESS');
         this.reloadPage();
@@ -210,10 +216,12 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   private createStopPoint(writableStopPoint: StopPointVersion) {
     this.personWithReducedMobilityService
       .createStopPoint(writableStopPoint)
-      .pipe(catchError(() => {
-        this.ngOnInit();
-        return EMPTY;
-      }))
+      .pipe(
+        catchError(() => {
+          this.ngOnInit();
+          return EMPTY;
+        }),
+      )
       .subscribe((stopPoint) => {
         this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.prmTabsService.initTabs([stopPoint]);
