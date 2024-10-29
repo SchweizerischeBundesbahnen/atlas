@@ -1,5 +1,5 @@
 import { ServicePointFormComponent } from './service-point-form.component';
-import { FormControl, FormGroup } from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {
   ApplicationRole,
   ApplicationType,
@@ -13,25 +13,31 @@ import {
 import { EventEmitter } from '@angular/core';
 import { GeographyComponent } from '../../../geography/geography.component';
 import { of } from 'rxjs';
-import SpyObj = jasmine.SpyObj;
+import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder} from "../service-point-detail-form-group";
+import {AtLeastOneValidator} from "../../../../../core/validation/boolean-cross-validator/at-least-one-validator";
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  let spy: SpyObj<any>;
+
   const translationSortingServiceSpy = jasmine.createSpyObj(['sort'], {
     translateService: { onLangChange: jasmine.createSpyObj(['subscribe']) },
   });
   const geoDataServiceSpy = jasmine.createSpyObj(['getLocationInformation']);
   const authServiceSpy = jasmine.createSpyObj(['getApplicationUserPermission']);
   authServiceSpy.isAdmin = true;
+  let servicePointFormGroup: FormGroup<ServicePointDetailFormGroup>;
+  const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
+
 
   beforeEach(() => {
+    dialogServiceSpy.confirm.and.returnValue(of(true));
+    servicePointFormGroup = ServicePointFormGroupBuilder.buildEmptyFormGroup();
+
     component = new ServicePointFormComponent(
       translationSortingServiceSpy,
-      spy,
+      dialogServiceSpy,
       geoDataServiceSpy,
-      authServiceSpy,
+      authServiceSpy
     );
   });
 
@@ -200,5 +206,14 @@ describe('ServicePointFormComponent', () => {
 
     expect(component.isNew).toBeTrue();
     expect(component.boSboidRestriction).toHaveSize(1);
+  });
+
+  it('should add AtLeastOneValidator if selectedType is StopPoint', () => {
+    component.form = servicePointFormGroup;
+    component.form.controls['selectedType'].setValue('STOP_POINT');
+    spyOn(AtLeastOneValidator, 'of').and.callThrough();
+
+    component.setStopPointValidator();
+    expect(AtLeastOneValidator.of).toHaveBeenCalledWith('stopPoint', 'freightServicePoint');
   });
 });
