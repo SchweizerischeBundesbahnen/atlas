@@ -1488,7 +1488,8 @@
       "DATA_MAPPING_ERROR": "Beim Attribut {{field}} wurde der Typ {{expectedType}} erwartet, der angegebene Wert war allerdings {{errorValue}}.",
       "SLOID_XOR_NUMBER": "Es muss entweder die sloid oder die number (nicht beides) angegeben werden.",
       "INVALID_SERVICE_POINT_NUMBER": "Die Dienststellennummer ist ungültig.",
-      "FIELD_MANDATORY": "Das Attribut {{field}} darf nicht gelöscht werden."
+      "FIELD_MANDATORY": "Das Attribut {{field}} darf nicht gelöscht werden.",
+      "DUPLICATE_FIELD": "Das Attribut {{field}} mit dem Wert {{value}} kommt mehrmals vor."
     },
     "STATUS": {
       "INFO": "Information",
@@ -1519,7 +1520,8 @@
     },
     "ERROR": {
       "EXCEL_CONVERSION": "Die verwendete Excel-Datei konnte nicht richtig gelesen werden. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen.\nFehlerquelle in Zeile:{{rowIndex}}, Spalte:{{columnIndex}}",
-      "FILE_HEADER": "Die verwendete Datei hat nicht die erwartete Kopfzeile. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen."
+      "FILE_HEADER": "Die verwendete Datei hat nicht die erwartete Kopfzeile. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen.",
+      "ATTRIBUTE_NULLING_NOT_SUPPORTED": "Das Attribut {{field}} darf nicht gelöscht werden."
     }
   }
 }
