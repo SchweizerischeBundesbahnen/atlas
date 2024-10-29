@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { UserService } from '../user/user.service';
-import { map, skipWhile } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class LoginGuard {
   ) {}
 
   canActivate() {
-    return this.userService.permissionsLoaded.pipe(
+    return this.userService.onPermissionsLoaded().pipe(
       map(() => {
         if (this.userService.loggedIn) {
           return true;
