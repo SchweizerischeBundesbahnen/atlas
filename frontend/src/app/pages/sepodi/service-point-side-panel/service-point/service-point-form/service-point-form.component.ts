@@ -1,4 +1,4 @@
-import {Component, ContentChild, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,} from '@angular/core';
+import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output,} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ServicePointDetailFormGroup} from '../service-point-detail-form-group';
 import {ServicePointType} from '../service-point-type';
@@ -27,7 +27,7 @@ import {AtLeastOneValidator} from "../../../../../core/validation/boolean-cross-
   templateUrl: './service-point-form.component.html',
   styleUrls: ['./service-point-form.component.scss'],
 })
-export class ServicePointFormComponent implements OnInit, OnChanges, OnDestroy {
+export class ServicePointFormComponent implements OnInit, OnDestroy {
   @ContentChild(GeographyComponent, {static: true}) geographyComponent?: GeographyComponent;
 
   locationInformation$?: Observable<LocationInformation>;
@@ -54,6 +54,7 @@ export class ServicePointFormComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() set currentVersion(version: ReadServicePointVersion | undefined) {
     this._currentVersion = version;
+    this.setStopPointValidator();
     this.locationInformation$ = of({
       isoCountryCode: version?.servicePointGeolocation?.isoCountryCode,
       canton: version?.servicePointGeolocation?.swissLocation?.canton,
@@ -91,7 +92,6 @@ export class ServicePointFormComponent implements OnInit, OnChanges, OnDestroy {
     this.isNew = !this.currentVersion?.id;
     this.initSortedOperatingPointTypes();
     this.initBoSboidRestriction();
-    this.setStopPointValidator();
     if (!this.isNew) {
       this.geographyComponent?.coordinatesChanged.subscribe((coordinatePair) => {
         if (coordinatePair.north && coordinatePair.east) {
@@ -110,10 +110,6 @@ export class ServicePointFormComponent implements OnInit, OnChanges, OnDestroy {
         }
       });
     }
-  }
-
-  ngOnChanges(): void {
-    this.setStopPointValidator();
   }
 
   ngOnDestroy() {
