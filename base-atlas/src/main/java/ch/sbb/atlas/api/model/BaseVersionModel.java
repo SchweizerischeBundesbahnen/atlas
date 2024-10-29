@@ -7,12 +7,14 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @SuperBuilder
+@FieldNameConstants
 public abstract class BaseVersionModel {
 
   @Schema(description = "Object creation date", example = "01.01.2000", accessMode = AccessMode.READ_ONLY)
