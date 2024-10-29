@@ -1,4 +1,5 @@
 import {Injectable} from "@angular/core";
+import {HttpClient} from "@angular/common/http";
 import {BulkImportRequest} from "../../../api";
 import {Observable} from "rxjs";
 import {ApiConfigService} from "../../../core/configuration/api-config.service";
