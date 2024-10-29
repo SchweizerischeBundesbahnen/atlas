@@ -104,6 +104,23 @@ describe('BulkImportOverviewComponent', () => {
     expect(result).toBe('Ammann Luca');
   });
 
+
+  it('should start bulk import', () => {
+    component.form = BulkImportFormGroupBuilder.initFormGroup();
+    const mockBulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(component.form);
+
+    const mockFile = new File([''], 'test.csv', {type: 'text/csv'});
+
+    component.uploadedFiles = [mockFile];
+
+    bulkImportServiceSpy.startServicePointImportBatch.and.returnValue(of({}));
+
+    component.startBulkImport();
+
+    expect(bulkImportServiceSpy.startServicePointImportBatch).toHaveBeenCalledWith(mockBulkImportRequest, mockFile);
+    expect(notificationServiceSpy.success).toHaveBeenCalledWith('PAGES.BULK_IMPORT.SUCCESS');
+  });
+
   it('should enable User select', () => {
     component.enableUserSelect(true);
     expect(component.isUserSelectEnabled).toBeTrue();
@@ -132,6 +149,19 @@ describe('BulkImportOverviewComponent', () => {
     expect(component.form.controls.applicationType.value).toBeNull();
     expect(component.form.controls.importType.value).toBeNull();
     expect(component.form.controls.emails.value).toEqual([]);
+  });
+
+  it('should reset configuration and reinitialize on error', () => {
+    const errorResponse = new Error('Test error');
+    component.form = BulkImportFormGroupBuilder.initFormGroup();
+
+    bulkImportServiceSpy.startServicePointImportBatch.and.returnValue(throwError(() => errorResponse));
+    spyOn(component, 'resetConfiguration');
+    spyOn(component, 'ngOnInit');
+    component.startBulkImport();
+
+    expect(component.resetConfiguration).toHaveBeenCalledWith(true);
+    expect(component.ngOnInit).toHaveBeenCalled();
   });
 
   it('should set OPTIONS_OBJECT_TYPE when applicationType changes', () => {
