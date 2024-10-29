@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject, skipLast, Subject, take } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ApiConfigService } from '../../configuration/api-config.service';
 import { Permission, UserAdministrationService } from '../../../api';
@@ -9,11 +9,9 @@ import { User } from './user';
   providedIn: 'root',
 })
 export class UserService {
-  readonly userChanged = new Subject<void>();
-  readonly permissionsLoaded = new BehaviorSubject(false);
-  // todo: create function for getting Observable<true> to get permissionLoadedState
-
   currentUser?: User = undefined;
+  readonly userChanged = new Subject<void>();
+  private readonly permissionsLoaded = new ReplaySubject<void>(1);
 
   constructor(
     private userAdministrationService: UserAdministrationService,
@@ -31,27 +29,15 @@ export class UserService {
     this.currentUser = undefined;
     this.apiConfigService.setToUnauthenticatedUrl();
     this.userChanged.next();
-    this.permissionsLoaded.next(true);
+    this.permissionsLoaded.next();
+  }
+
+  onPermissionsLoaded() {
+    return this.permissionsLoaded.pipe(take(1));
   }
 
   get loggedIn() {
     return !!this.currentUser;
-  }
-
-  loadPermissions(): Observable<User> {
-    if (!this.loggedIn) {
-      throw new Error('Can not load Permissions if not logged in');
-    }
-    return this.userAdministrationService.getCurrentUser().pipe(
-      tap((response) => {
-        this.currentUser!.permissions = response.permissions
-          ? Array.from(response.permissions)
-          : [];
-        this.permissionsLoaded.next(true);
-        this.userChanged.next();
-      }),
-      map(() => this.currentUser!),
-    );
   }
 
   get permissions(): Permission[] {
@@ -61,5 +47,21 @@ export class UserService {
   get isAdmin(): boolean {
     // Return true here if you want to be admin locally
     return this.currentUser?.isAdmin ?? false;
+  }
+
+  private loadPermissions(): Observable<User> {
+    if (!this.loggedIn) {
+      throw new Error('Can not load Permissions if not logged in');
+    }
+    return this.userAdministrationService.getCurrentUser().pipe(
+      tap((response) => {
+        this.currentUser!.permissions = response.permissions
+          ? Array.from(response.permissions)
+          : [];
+        this.permissionsLoaded.next();
+        this.userChanged.next();
+      }),
+      map(() => this.currentUser!),
+    );
   }
 }
