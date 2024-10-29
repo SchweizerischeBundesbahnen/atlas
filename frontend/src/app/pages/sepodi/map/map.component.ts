@@ -1,14 +1,22 @@
-import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild,} from '@angular/core';
-import {Map} from 'maplibre-gl';
-import {MapService} from './map.service';
-import {MAP_STYLES, MapStyle} from './map-options';
-import {Subject, take} from 'rxjs';
-import {ApplicationType} from '../../../api';
-import {filter, takeUntil} from 'rxjs/operators';
-import {MapIcon, MapIconsService} from './map-icons.service';
-import {PermissionService} from "../../../core/auth/permission/permission.service";
-import {UserService} from "../../../core/auth/user/user.service";
-import {SERVICE_POINT_MIN_ZOOM} from "./map-style";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { Map } from 'maplibre-gl';
+import { MapService } from './map.service';
+import { MAP_STYLES, MapStyle } from './map-options';
+import { Subject } from 'rxjs';
+import { ApplicationType } from '../../../api';
+import { takeUntil } from 'rxjs/operators';
+import { MapIcon, MapIconsService } from './map-icons.service';
+import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { UserService } from '../../../core/auth/user/user.service';
+import { SERVICE_POINT_MIN_ZOOM } from './map-style';
 
 @Component({
   selector: 'atlas-map',
@@ -40,18 +48,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.userService.permissionsLoaded
-      .pipe(
-        filter((loaded) => loaded),
-        take(1),
-        takeUntil(this.onDestroy$)
-      )
-      .subscribe(() => {
-        this.canCreateServicePoint = this.permissionService.hasPermissionsToCreate(
-          ApplicationType.Sepodi,
-        );
-      });
-    this.mapService.servicePointsShown.pipe(takeUntil(this.onDestroy$)).subscribe(value => this.servicePointsShown = value);
+    this.userService.onPermissionsLoaded().subscribe(() => {
+      this.canCreateServicePoint = this.permissionService.hasPermissionsToCreate(
+        ApplicationType.Sepodi,
+      );
+    });
+    this.mapService.servicePointsShown
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((value) => (this.servicePointsShown = value));
   }
 
   ngAfterViewInit() {
@@ -118,5 +122,4 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       speed: 0.8,
     });
   }
-
 }
