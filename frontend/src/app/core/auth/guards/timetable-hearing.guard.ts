@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { PermissionService } from '../permission/permission.service';
 import { UserService } from '../user/user.service';
 
@@ -14,19 +14,13 @@ export class TimetableHearingGuard {
     private router: Router,
   ) {}
 
-  // todo: make async
   canActivate() {
-    if (!this.userService.loggedIn) {
-      return this.router.parseUrl('/');
-    }
-    return this.userService.permissionsLoaded.pipe(
-      filter((loaded) => loaded),
+    return this.userService.onPermissionsLoaded().pipe(
       map(() => {
-        if (this.permissionService.mayAccessTimetableHearing()) {
-          return true;
-        } else {
+        if (!this.userService.loggedIn || !this.permissionService.mayAccessTimetableHearing()) {
           return this.router.parseUrl('/');
         }
+        return true;
       }),
     );
   }
