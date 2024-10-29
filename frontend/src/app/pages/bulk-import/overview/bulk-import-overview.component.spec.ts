@@ -3,7 +3,7 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ApplicationType, BulkImportService, BusinessObjectType, ImportType} from "../../../api";
 import {AppTestingModule} from "../../../app.testing.module";
 import {BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
-import {of} from "rxjs";
+import {of, throwError} from "rxjs";
 import {NotificationService} from "../../../core/notification/notification.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe} from "@ngx-translate/core";
@@ -21,7 +21,6 @@ import {AtlasSpacerComponent} from "../../../core/components/spacer/atlas-spacer
 import {AtlasLabelFieldComponent} from "../../../core/form-components/atlas-label-field/atlas-label-field.component";
 import {DialogService} from "../../../core/components/dialog/dialog.service";
 import SpyObj = jasmine.SpyObj;
-import {StartBulkImportService} from "./start-bulk-import.service";
 
 describe('BulkImportOverviewComponent', () => {
   let component: BulkImportOverviewComponent;
@@ -35,7 +34,6 @@ describe('BulkImportOverviewComponent', () => {
 
   beforeEach(() => {
     bulkImportServiceSpy = jasmine.createSpyObj('BulkImportService', ['startServicePointImportBatch', 'downloadTemplate']);
-    const startBulkImportServiceSpy = jasmine.createSpyObj('StartBulkImportService', ['startServicePointImportBatch']);
     notificationServiceSpy = jasmine.createSpyObj(['success']);
     routerSpy = jasmine.createSpyObj(['navigate']);
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
@@ -52,9 +50,6 @@ describe('BulkImportOverviewComponent', () => {
         {
           provide: BulkImportService,
           useValue: bulkImportServiceSpy,
-        },{
-          provide: StartBulkImportService,
-          useValue: startBulkImportServiceSpy,
         },
         {
           provide: NotificationService,
@@ -109,6 +104,23 @@ describe('BulkImportOverviewComponent', () => {
     expect(result).toBe('Ammann Luca');
   });
 
+
+  it('should start bulk import', () => {
+    component.form = BulkImportFormGroupBuilder.initFormGroup();
+    const mockBulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(component.form);
+
+    const mockFile = new File([''], 'test.csv', {type: 'text/csv'});
+
+    component.uploadedFiles = [mockFile];
+
+    bulkImportServiceSpy.startServicePointImportBatch.and.returnValue(of({}));
+
+    component.startBulkImport();
+
+    expect(bulkImportServiceSpy.startServicePointImportBatch).toHaveBeenCalledWith(mockBulkImportRequest, mockFile);
+    expect(notificationServiceSpy.success).toHaveBeenCalledWith('PAGES.BULK_IMPORT.SUCCESS');
+  });
+
   it('should enable User select', () => {
     component.enableUserSelect(true);
     expect(component.isUserSelectEnabled).toBeTrue();
@@ -137,6 +149,19 @@ describe('BulkImportOverviewComponent', () => {
     expect(component.form.controls.applicationType.value).toBeNull();
     expect(component.form.controls.importType.value).toBeNull();
     expect(component.form.controls.emails.value).toEqual([]);
+  });
+
+  it('should reset configuration and reinitialize on error', () => {
+    const errorResponse = new Error('Test error');
+    component.form = BulkImportFormGroupBuilder.initFormGroup();
+
+    bulkImportServiceSpy.startServicePointImportBatch.and.returnValue(throwError(() => errorResponse));
+    spyOn(component, 'resetConfiguration');
+    spyOn(component, 'ngOnInit');
+    component.startBulkImport();
+
+    expect(component.resetConfiguration).toHaveBeenCalledWith(true);
+    expect(component.ngOnInit).toHaveBeenCalled();
   });
 
   it('should set OPTIONS_OBJECT_TYPE when applicationType changes', () => {
