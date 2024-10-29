@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, ReplaySubject, skipLast, Subject, take } from 'rxjs';
+import { Observable, ReplaySubject, Subject, take } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ApiConfigService } from '../../configuration/api-config.service';
 import { Permission, UserAdministrationService } from '../../../api';
