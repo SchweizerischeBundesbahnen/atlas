@@ -51,4 +51,4 @@ info:
     name: api-auth-gateway
 logging:
   level:
-    root: INFO
+    root: ERROR
