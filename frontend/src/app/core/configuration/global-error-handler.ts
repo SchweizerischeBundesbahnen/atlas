@@ -7,7 +7,9 @@ export class GlobalErrorHandler implements ErrorHandler {
   constructor(private injector: Injector) {}
 
   handleError(error: Error | HttpErrorResponse) {
+    console.log('hallo');
     const notificationService = this.injector.get(NotificationService);
     notificationService.error(error);
   }
 }
+// todo: check if needed
