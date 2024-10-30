@@ -24,7 +24,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
         }
         console.error(error);
         return EMPTY;
-      })
+      }),
     );
   }
 
