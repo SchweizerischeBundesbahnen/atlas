@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.lidi;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -28,12 +29,11 @@ public class LineVersionModelV2 extends BaseLineVersionModel  {
   private LineConcessionType lineConcessionType;
 
   @Schema(description = "ShortNumber", example = "61")
-  @Size(max = AtlasFieldLengths.LENGTH_50)//todo: ask Judith
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
+  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String shortNumber;
 
-  @Schema(description = "offerCategory", example = "IC")
-  @Size(max = AtlasFieldLengths.LENGTH_50)//todo: ask Judith
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
-  private String offerCategory;
+  @Schema(description = "offerCategory")
+  @NotNull
+  private OfferCategory offerCategory;
 }
