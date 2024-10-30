@@ -1,5 +1,6 @@
-package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
+package ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk;
 
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
@@ -7,27 +8,24 @@ import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUser;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUserParameter;
 import java.util.List;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@Getter
 @Slf4j
+@Service
 @RequiredArgsConstructor
-@Transactional
 public class ServicePointBulkImportService {
 
   private final ServicePointService servicePointService;
+  private final ServicePointApiClient servicePointApiClient;
 
   @RunAsUser
-  public void updateServicePointByUserName(@RunAsUserParameter String userName,
-      BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
+  public void updateServicePointByUserName(@RunAsUserParameter String userName, BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
     log.info("Update versions in name of the user: {}", userName);
     updateServicePoint(bulkImportContainer);
   }
@@ -39,10 +37,10 @@ public class ServicePointBulkImportService {
     ServicePointVersion currentVersion = ImportUtils.getCurrentVersion(currentVersions,
         servicePointUpdate.getValidFrom(), servicePointUpdate.getValidTo());
 
-    ServicePointVersion editedVersion = ServicePointBulkImportUpdate.applyUpdateFromCsv(currentVersion, servicePointUpdate);
-    ServicePointBulkImportUpdate.applyNulling(bulkImportContainer.getAttributesToNull(), editedVersion);
+    UpdateServicePointVersionModel updateModel = ServicePointBulkImportUpdate.applyUpdateFromCsv(currentVersion, servicePointUpdate);
+    ServicePointBulkImportUpdate.applyNulling(bulkImportContainer.getAttributesToNull(), updateModel);
 
-    servicePointService.updateAndPublish(currentVersion, editedVersion, currentVersions);
+    servicePointApiClient.updateServicePoint(currentVersion.getId(), updateModel);
   }
 
   private List<ServicePointVersion> getCurrentVersions(ServicePointUpdateCsvModel servicePointUpdate) {
