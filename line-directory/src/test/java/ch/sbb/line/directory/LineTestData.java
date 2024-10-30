@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2.LineVersionModelV2Builder;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.Line;
@@ -82,7 +83,7 @@ public class LineTestData {
         .lineType(LineType.DISPOSITION)
         .lineConcessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
         .shortNumber("61")
-        .offerCategory("IC")
+        .offerCategory(OfferCategory.IC)
         .number("IC61")
         .alternativeName("alternativeName")
         .combinationName("combinationName")

@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.lidi;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,13 +45,11 @@ public class SublineVersionModelV2 extends BaseSublineVersionModel implements Da
   private SublineConcessionType sublineConcessionType;
 
   @Schema(description = "ShortNumber", example = "61", accessMode = AccessMode.READ_ONLY)
-  @Size(max = AtlasFieldLengths.LENGTH_50)//todo: ask Judith
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
+  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String shortNumber;
 
   @Schema(description = "offerCategory", example = "IC", accessMode = AccessMode.READ_ONLY)
-  @Size(max = AtlasFieldLengths.LENGTH_50)//todo: ask Judith
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
-  private String offerCategory;
+  private OfferCategory offerCategory;
 
 }

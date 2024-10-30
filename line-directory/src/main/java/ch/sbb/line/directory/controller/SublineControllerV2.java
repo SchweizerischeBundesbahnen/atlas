@@ -3,6 +3,7 @@ package ch.sbb.line.directory.controller;
 import ch.sbb.atlas.api.lidi.SublineApiV2;
 import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
 import java.time.LocalDate;
@@ -36,7 +37,7 @@ public class SublineControllerV2 implements SublineApiV2 {
         .lineConcessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
         .sublineType(SublineType.DISPOSITION)
         .shortNumber("61")
-        .offerCategory("IC")
+        .offerCategory(OfferCategory.IC)
         .longName("longName")
         .description("Basel SBB - Olten - Bern - LBT - Brig - Domodossola")
         .validFrom(VALID_FROM)

@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.model.Status;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class LineControllerV2 implements LineApiV2 {
         .lineType(LineType.DISPOSITION)
         .lineConcessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
         .shortNumber("61")
-        .offerCategory("IC")
+        .offerCategory(OfferCategory.IC)
         .number("IC61")
         .alternativeName("alternativeName")
         .combinationName("combinationName")
