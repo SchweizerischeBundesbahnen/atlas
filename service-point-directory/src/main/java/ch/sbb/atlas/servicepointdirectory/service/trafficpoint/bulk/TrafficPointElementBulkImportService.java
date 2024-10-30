@@ -1,5 +1,6 @@
-package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
+package ch.sbb.atlas.servicepointdirectory.service.trafficpoint.bulk;
 
+import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
@@ -9,6 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUser;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUserParameter;
 import java.util.List;
@@ -23,10 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class TrafficPointBulkImportService {
+public class TrafficPointElementBulkImportService {
 
   private final TrafficPointElementService trafficPointElementService;
-  private final ServicePointService servicePointService;
+  private final TrafficPointElementApiClient trafficPointElementApiClient;
 
   @RunAsUser
   public void updateTrafficPointByUserName(@RunAsUserParameter String userName,
@@ -42,14 +44,11 @@ public class TrafficPointBulkImportService {
     TrafficPointElementVersion currentVersion = ImportUtils.getCurrentVersion(currentTrafficPointVersions,
         trafficPointUpdateCsvModel.getValidFrom(), trafficPointUpdateCsvModel.getValidTo());
 
-    List<ServicePointVersion> currentServicePointVersions =
-        getCurrentServicePointVersions(currentVersion.getServicePointNumber());
-
-    TrafficPointElementVersion editedVersion = TrafficPointBulkImportUpdate
+    CreateTrafficPointElementVersionModel updateModel = TrafficPointElementBulkImportUpdate
         .applyUpdateFromCsv(currentVersion, trafficPointUpdateCsvModel);
-    TrafficPointBulkImportUpdate.applyNulling(bulkImportContainer.getAttributesToNull(), editedVersion);
+    TrafficPointElementBulkImportUpdate.applyNulling(bulkImportContainer.getAttributesToNull(), updateModel);
 
-    trafficPointElementService.update(currentVersion, editedVersion, currentServicePointVersions);
+    trafficPointElementApiClient.updateServicePoint(currentVersion.getId(), updateModel);
   }
 
   private List<TrafficPointElementVersion> getCurrentTrafficPointVersions(TrafficPointUpdateCsvModel trafficPointUpdateCsvModel) {
@@ -62,14 +61,6 @@ public class TrafficPointBulkImportService {
       return trafficPointElementVersions;
     }
     throw new IllegalStateException("Sloid should be given");
-  }
-
-  private List<ServicePointVersion> getCurrentServicePointVersions(ServicePointNumber servicePointNumber) {
-    List<ServicePointVersion> servicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
-    if (servicePointVersions.isEmpty()) {
-      throw new ServicePointNumberNotFoundException(servicePointNumber);
-    }
-    return servicePointVersions;
   }
 
 }
