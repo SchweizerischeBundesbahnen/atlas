@@ -17,6 +17,8 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
+import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.bulk.TrafficPointElementBulkImportService;
 import ch.sbb.atlas.user.administration.security.service.CountryAndBusinessOrganisationBasedUserAdministrationService;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,10 +30,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @IntegrationTest
-class TrafficPointBulkImportServiceTest {
+class TrafficPointElementBulkImportServiceTest {
 
   @MockBean
   private CountryAndBusinessOrganisationBasedUserAdministrationService administrationService;
+
+  @MockBean
+  private GeoReferenceService geoReferenceService;
 
   @Autowired
   private TrafficPointElementVersionRepository trafficPointElementVersionRepository;
@@ -40,7 +45,7 @@ class TrafficPointBulkImportServiceTest {
   private ServicePointVersionRepository servicePointVersionRepository;
 
   @Autowired
-  private TrafficPointBulkImportService trafficPointBulkImportService;
+  private TrafficPointElementBulkImportService trafficPointElementBulkImportService;
 
   private TrafficPointElementVersion bernWylereggPlatform;
 
@@ -63,7 +68,7 @@ class TrafficPointBulkImportServiceTest {
   void shouldUpdateBulkAddingProperty() {
     assertThat(bernWylereggPlatform.getDesignation()).isNull();
 
-    trafficPointBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
+    trafficPointElementBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
             .object(TrafficPointUpdateCsvModel.builder()
                 .sloid(bernWylereggPlatform.getSloid())
                 .validFrom(bernWylereggPlatform.getValidFrom())
@@ -78,7 +83,7 @@ class TrafficPointBulkImportServiceTest {
 
   @Test
   void shouldUpdateBulkWithUserInNameOf() {
-    trafficPointBulkImportService.updateTrafficPointByUserName("e123456",
+    trafficPointElementBulkImportService.updateTrafficPointByUserName("e123456",
         BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
             .object(TrafficPointUpdateCsvModel.builder()
                 .sloid(bernWylereggPlatform.getSloid())
@@ -97,7 +102,7 @@ class TrafficPointBulkImportServiceTest {
   void shouldUpdateBulkRemovingProperty() {
     assertThat(bernWylereggPlatform.getTrafficPointElementGeolocation().getHeight()).isEqualTo(555.98);
 
-    trafficPointBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
+    trafficPointElementBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
         .object(TrafficPointUpdateCsvModel.builder()
             .sloid(bernWylereggPlatform.getSloid())
             .validFrom(bernWylereggPlatform.getValidFrom())
@@ -116,7 +121,7 @@ class TrafficPointBulkImportServiceTest {
     assertThat(trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(bernWylereggPlatform.getSloid()))
         .hasSize(1);
 
-    trafficPointBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
+    trafficPointElementBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
         .object(TrafficPointUpdateCsvModel.builder()
             .sloid(bernWylereggPlatform.getSloid())
             .validFrom(LocalDate.of(2023, 1, 1))
@@ -147,7 +152,7 @@ class TrafficPointBulkImportServiceTest {
 
   @Test
   void shouldThrowSloidNotFoundException() {
-    ThrowingCallable update = () -> trafficPointBulkImportService.updateTrafficPoint(
+    ThrowingCallable update = () -> trafficPointElementBulkImportService.updateTrafficPoint(
         BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
             .object(TrafficPointUpdateCsvModel.builder()
                 .sloid("unknown:sloid")
@@ -161,7 +166,7 @@ class TrafficPointBulkImportServiceTest {
 
   @Test
   void shouldThrowIllegalStateException() {
-    ThrowingCallable update = () -> trafficPointBulkImportService.updateTrafficPoint(
+    ThrowingCallable update = () -> trafficPointElementBulkImportService.updateTrafficPoint(
         BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
             .object(TrafficPointUpdateCsvModel.builder()
                 .validFrom(LocalDate.of(2023, 1, 1))
@@ -175,7 +180,7 @@ class TrafficPointBulkImportServiceTest {
   @Test
   void shouldThrowServicePointNumberNotFoundException() {
     servicePointVersionRepository.deleteAll();
-    ThrowingCallable update = () -> trafficPointBulkImportService.updateTrafficPoint(
+    ThrowingCallable update = () -> trafficPointElementBulkImportService.updateTrafficPoint(
         BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
             .object(TrafficPointUpdateCsvModel.builder()
                 .sloid(bernWylereggPlatform.getSloid())
@@ -193,7 +198,7 @@ class TrafficPointBulkImportServiceTest {
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(bernWylereggPlatform);
     assertThat(trafficPointElementVersion.hasGeolocation()).isFalse();
 
-    trafficPointBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
+    trafficPointElementBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
         .object(TrafficPointUpdateCsvModel.builder()
             .sloid(bernWylereggPlatform.getSloid())
             .validFrom(bernWylereggPlatform.getValidFrom())
@@ -214,7 +219,7 @@ class TrafficPointBulkImportServiceTest {
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(bernWylereggPlatform);
     assertThat(trafficPointElementVersion.hasGeolocation()).isFalse();
 
-    trafficPointBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
+    trafficPointElementBulkImportService.updateTrafficPoint(BulkImportUpdateContainer.<TrafficPointUpdateCsvModel>builder()
         .object(TrafficPointUpdateCsvModel.builder()
             .sloid(bernWylereggPlatform.getSloid())
             .validFrom(bernWylereggPlatform.getValidFrom())

@@ -1,34 +1,30 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import ch.sbb.atlas.api.servicepoint.TrafficPointBulkImportApiV1;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
-import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointBulkImportService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@Slf4j
 @RequiredArgsConstructor
-public class TrafficPointBulkImportController implements TrafficPointBulkImportApiV1 {
+public abstract class BaseBulkImportController {
 
-  private final TrafficPointBulkImportService trafficPointBulkImportService;
   private final AtlasExceptionHandler atlasExceptionHandler;
 
-  @Override
-  public List<BulkImportItemExecutionResult> bulkImportUpdate(List<BulkImportUpdateContainer<TrafficPointUpdateCsvModel>> bulkImportContainers) {
+  protected <T> List<BulkImportItemExecutionResult> executeBulkImport(
+      List<BulkImportUpdateContainer<T>> bulkImportContainers,
+      BiConsumer<String, BulkImportUpdateContainer<T>> updateByUserFunction,
+      Consumer<BulkImportUpdateContainer<T>> updateFunction) {
     List<BulkImportItemExecutionResult> results = new ArrayList<>();
     bulkImportContainers.forEach(bulkImportContainer -> {
       try {
         if (bulkImportContainer.getInNameOf() != null) {
-          trafficPointBulkImportService.updateTrafficPointByUserName(bulkImportContainer.getInNameOf(), bulkImportContainer);
+          updateByUserFunction.accept(bulkImportContainer.getInNameOf(), bulkImportContainer);
         } else {
-          trafficPointBulkImportService.updateTrafficPoint(bulkImportContainer);
+          updateFunction.accept(bulkImportContainer);
         }
 
         results.add(BulkImportItemExecutionResult.builder()
