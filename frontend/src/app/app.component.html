@@ -9,7 +9,10 @@
       </mat-sidenav>
       <mat-sidenav-content [class.content-menu-closed]="!sideNavOpened">
         <div id="scrollbar-content-container" class="full-height">
-          <app-loading-spinner [isLoading]="loadingSpinnerService.isLoading" [fullScreen]="true">
+          <app-loading-spinner
+            [isLoading]="!!(loadingSpinnerService.loading | async)"
+            [fullScreen]="true"
+          >
           </app-loading-spinner>
           <router-outlet></router-outlet>
         </div>
