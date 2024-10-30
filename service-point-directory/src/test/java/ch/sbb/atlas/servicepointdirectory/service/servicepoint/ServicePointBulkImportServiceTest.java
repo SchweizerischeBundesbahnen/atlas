@@ -17,6 +17,8 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.ServicePointBulkImportService;
 import ch.sbb.atlas.user.administration.security.service.CountryAndBusinessOrganisationBasedUserAdministrationService;
 import java.time.LocalDate;
 import java.util.List;
@@ -36,6 +38,9 @@ class ServicePointBulkImportServiceTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
+
+  @MockBean
+  private GeoReferenceService geoReferenceService;
 
   @Autowired
   private ServicePointVersionRepository servicePointVersionRepository;

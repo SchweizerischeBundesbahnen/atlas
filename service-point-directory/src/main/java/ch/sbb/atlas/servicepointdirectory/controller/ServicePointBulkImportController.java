@@ -5,43 +5,27 @@ import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointBulkImportService;
-import java.util.ArrayList;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.ServicePointBulkImportService;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Slf4j
-@RequiredArgsConstructor
-public class ServicePointBulkImportController implements ServicePointBulkImportApiV1 {
+public class ServicePointBulkImportController extends BaseBulkImportController implements ServicePointBulkImportApiV1 {
 
   private final ServicePointBulkImportService servicePointBulkImportService;
-  private final AtlasExceptionHandler atlasExceptionHandler;
+
+  public ServicePointBulkImportController(
+      AtlasExceptionHandler atlasExceptionHandler,
+      ServicePointBulkImportService servicePointBulkImportService) {
+    super(atlasExceptionHandler);
+    this.servicePointBulkImportService = servicePointBulkImportService;
+  }
 
   @Override
   public List<BulkImportItemExecutionResult> bulkImportUpdate(List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> bulkImportContainers) {
-    List<BulkImportItemExecutionResult> results = new ArrayList<>();
-    bulkImportContainers.forEach(bulkImportContainer -> {
-      try {
-        if (bulkImportContainer.getInNameOf() != null) {
-          servicePointBulkImportService.updateServicePointByUserName(bulkImportContainer.getInNameOf(), bulkImportContainer);
-        } else {
-          servicePointBulkImportService.updateServicePoint(bulkImportContainer);
-        }
-
-        results.add(BulkImportItemExecutionResult.builder()
-            .lineNumber(bulkImportContainer.getLineNumber())
-            .build());
-      } catch (Exception exception) {
-        results.add(BulkImportItemExecutionResult.builder()
-            .lineNumber(bulkImportContainer.getLineNumber())
-            .errorResponse(atlasExceptionHandler.mapToErrorResponse(exception))
-            .build());
-      }
-    });
-    return results;
+    return executeBulkImport(bulkImportContainers,
+        servicePointBulkImportService::updateServicePointByUserName,
+        servicePointBulkImportService::updateServicePoint);
   }
 
 }

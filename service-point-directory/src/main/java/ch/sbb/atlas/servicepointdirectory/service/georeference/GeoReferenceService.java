@@ -8,7 +8,9 @@ import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
 import feign.FeignException.FeignClientException;
 import lombok.RequiredArgsConstructor;
@@ -124,6 +126,15 @@ public class GeoReferenceService {
       servicePointGeolocation.setSwissMunicipalityNumber(geoReference.getSwissMunicipalityNumber());
       servicePointGeolocation.setSwissMunicipalityName(geoReference.getSwissMunicipalityName());
       servicePointGeolocation.setSwissLocalityName(geoReference.getSwissLocalityName());
+    }
+  }
+
+  public void addHeightToTrafficPoints(TrafficPointElementVersion trafficPointElementVersion) {
+    TrafficPointElementGeolocation trafficPointElementGeolocation =
+        trafficPointElementVersion.getTrafficPointElementGeolocation();
+    if (trafficPointElementGeolocation != null && trafficPointElementGeolocation.getHeight() == null) {
+      GeoAdminHeightResponse geoAdminHeightResponse = getHeight(trafficPointElementGeolocation.asCoordinatePair());
+      trafficPointElementGeolocation.setHeight(geoAdminHeightResponse.getHeight());
     }
   }
 }
