@@ -13,7 +13,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointBulkImportService;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.ServicePointBulkImportService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class ServicePointBulkImportControllerTest {
     MockitoAnnotations.initMocks(this);
     when(atlasExceptionHandler.mapToErrorResponse(any())).thenAnswer(
         i -> i.getArgument(0, AtlasException.class).getErrorResponse());
-    servicePointBulkImportController = new ServicePointBulkImportController(servicePointBulkImportService, atlasExceptionHandler);
+    servicePointBulkImportController = new ServicePointBulkImportController(atlasExceptionHandler, servicePointBulkImportService);
   }
 
   @Test
@@ -46,7 +46,8 @@ class ServicePointBulkImportControllerTest {
                 .sloid("ch:1:sloid:7000")
                 .build())
             .build();
-    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(List.of(updateContainer));
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(
+        List.of(updateContainer));
 
     verify(servicePointBulkImportService, never()).updateServicePointByUserName("userName", updateContainer);
     verify(servicePointBulkImportService).updateServicePoint(updateContainer);
@@ -83,7 +84,8 @@ class ServicePointBulkImportControllerTest {
                 .sloid("ch:1:sloid:7000")
                 .build())
             .build();
-    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(List.of(updateContainer));
+    List<BulkImportItemExecutionResult> bulkImportItemExecutionResults = servicePointBulkImportController.bulkImportUpdate(
+        List.of(updateContainer));
 
     verify(servicePointBulkImportService).updateServicePoint(updateContainer);
     assertThat(bulkImportItemExecutionResults).hasSize(1).first().extracting(BulkImportItemExecutionResult::isSuccess)
