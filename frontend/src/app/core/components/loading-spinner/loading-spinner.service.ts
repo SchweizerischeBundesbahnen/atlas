@@ -6,20 +6,20 @@ import {
   NavigationStart,
   Router,
 } from '@angular/router';
-import { merge, of } from 'rxjs';
+import { BehaviorSubject, merge, of } from 'rxjs';
 import { delay, filter, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoadingSpinnerService {
-  private loading = false;
+  loading = new BehaviorSubject(false);
 
   constructor(private router: Router) {}
 
-  initLoadingSpinner(): void {
+  /*initLoadingSpinner(): void {
     const navigationStart$ = this.router.events.pipe(
-      filter((event) => event instanceof NavigationStart)
+      filter((event) => event instanceof NavigationStart),
     );
 
     const navigationEnd$ = this.router.events.pipe(
@@ -27,8 +27,8 @@ export class LoadingSpinnerService {
         (event) =>
           event instanceof NavigationEnd ||
           event instanceof NavigationCancel ||
-          event instanceof NavigationError
-      )
+          event instanceof NavigationError,
+      ),
     );
 
     // short delay before navigation end, because of the NG100 error:
@@ -38,16 +38,12 @@ export class LoadingSpinnerService {
           of(true),
           navigationEnd$.pipe(
             delay(1),
-            map(() => false)
-          )
-        )
-      )
+            map(() => false),
+          ),
+        ),
+      ),
     );
 
     isLoadingStatus$.subscribe((loading) => (this.loading = loading));
-  }
-
-  get isLoading() {
-    return this.loading;
-  }
+  }*/
 }
