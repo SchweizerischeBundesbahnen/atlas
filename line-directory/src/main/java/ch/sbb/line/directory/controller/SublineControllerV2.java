@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.lidi.SublineApiV2;
 import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
+import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
 import java.time.LocalDate;
@@ -35,6 +36,7 @@ public class SublineControllerV2 implements SublineApiV2 {
         .businessOrganisation("ch:1:slnid:1024336")
         .status(Status.VALIDATED)
         .lineConcessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
+        .sublineConcessionType(SublineConcessionType.LINE_ABROAD)
         .sublineType(SublineType.DISPOSITION)
         .shortNumber("61")
         .offerCategory(OfferCategory.IC)
