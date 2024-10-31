@@ -32,14 +32,14 @@ public class CantonBasedUserAdministrationService extends BaseUserAdministration
   }
 
   private boolean isAtLeast(ApplicationRole applicationRole, ApplicationType applicationType, SwissCanton swissCanton) {
-    log.info("Checking if user {} is at least {} for canton {}", getCurrentUserSbbUid(), applicationRole, swissCanton);
+    log.debug("Checking if user {} is at least {} for canton {}", getCurrentUserSbbUid(), applicationRole, swissCanton);
     if (isAdmin()) {
-      log.info("User {} is admin", getCurrentUserSbbUid());
+      log.debug("User {} is admin", getCurrentUserSbbUid());
       return true;
     }
     ApplicationRole cantonBasedUserPermissions = getCantonBasedUserPermissions(applicationType, swissCanton);
     boolean hasRequiredRank = applicationRole.getRank() <= cantonBasedUserPermissions.getRank();
-    log.info("User {} has permissions: {}", getCurrentUserSbbUid(), hasRequiredRank);
+    log.debug("User {} has permissions: {}", getCurrentUserSbbUid(), hasRequiredRank);
     return hasRequiredRank;
   }
 
