@@ -6,7 +6,7 @@ import static ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType.TO_BE_
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
-import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
