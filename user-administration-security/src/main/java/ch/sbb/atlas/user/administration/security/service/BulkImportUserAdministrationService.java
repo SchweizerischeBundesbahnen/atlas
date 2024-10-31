@@ -32,7 +32,7 @@ public class BulkImportUserAdministrationService extends BusinessOrganisationBas
     }
 
     boolean hasPermissionsForBulkImport = hasExplicitBulkImportPermission || isAtLeastSupervisor(applicationType);
-    log.info("User {} hasPermissionsForBulkImport={}", getCurrentUserSbbUid(), hasPermissionsForBulkImport);
+    log.debug("User {} hasPermissionsForBulkImport={}", getCurrentUserSbbUid(), hasPermissionsForBulkImport);
     return hasPermissionsForBulkImport;
   }
 
