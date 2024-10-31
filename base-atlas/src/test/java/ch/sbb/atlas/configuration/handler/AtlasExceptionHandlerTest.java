@@ -12,7 +12,6 @@ import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -34,7 +33,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 public class AtlasExceptionHandlerTest {
 
-  private final AtlasExceptionHandler atlasExceptionHandler = new AtlasExceptionHandler(new ObjectMapper());
+  private final AtlasExceptionHandler atlasExceptionHandler = new AtlasExceptionHandler();
 
   @Test
   void shouldConvertMethodArgumentExceptionToErrorResponse() {
