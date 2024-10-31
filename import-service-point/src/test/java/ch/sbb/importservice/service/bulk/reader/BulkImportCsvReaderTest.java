@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
-import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.ImportFiles;
 import java.io.File;

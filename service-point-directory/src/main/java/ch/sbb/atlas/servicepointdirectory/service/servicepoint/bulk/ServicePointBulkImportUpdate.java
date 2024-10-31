@@ -2,8 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk;
 
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.imports.bulk.AttributeNullingNotSupportedException;
-import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
-import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import java.util.ArrayList;
 import java.util.List;
