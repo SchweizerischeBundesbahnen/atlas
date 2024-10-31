@@ -7,8 +7,8 @@ import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel.Fields;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;

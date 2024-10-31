@@ -1,9 +1,12 @@
-package ch.sbb.atlas.imports.bulk;
+package ch.sbb.atlas.imports.model;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
+import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
+import ch.sbb.atlas.imports.bulk.Validatable;
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel.Fields;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDate;
