@@ -1,11 +1,13 @@
-package ch.sbb.atlas.imports.bulk;
+package ch.sbb.atlas.imports.model;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
+import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
-import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.bulk.Validatable;
+import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel.Fields;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDate;

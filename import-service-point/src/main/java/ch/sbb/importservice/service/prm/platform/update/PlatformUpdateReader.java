@@ -1,7 +1,7 @@
 package ch.sbb.importservice.service.prm.platform.update;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.importservice.service.bulk.reader.BulkImportItemReader;
 import ch.sbb.importservice.service.bulk.reader.ReaderUtil;
 import java.io.File;

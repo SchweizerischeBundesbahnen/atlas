@@ -1,9 +1,12 @@
-package ch.sbb.atlas.imports.bulk;
+package ch.sbb.atlas.imports.model;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
+import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
-import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
+import ch.sbb.atlas.imports.bulk.Validatable;
+import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
