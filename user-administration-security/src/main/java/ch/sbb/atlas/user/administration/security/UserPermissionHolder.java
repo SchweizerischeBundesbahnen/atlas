@@ -43,7 +43,7 @@ public class UserPermissionHolder {
             .build())
         .collect(Collectors.toSet());
     return UserAdministrationModel.builder()
-        .userId(permissions.get(0).getIdentifier())
+        .userId(permissions.getFirst().getIdentifier())
         .permissions(permissionModels)
         .build();
   }
