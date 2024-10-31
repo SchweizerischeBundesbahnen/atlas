@@ -1,7 +1,7 @@
 package ch.sbb.importservice.service.bulk.template;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
