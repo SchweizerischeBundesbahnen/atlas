@@ -8,6 +8,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.bulk.TrafficPointElementBulkImportService;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,7 +23,10 @@ public class TrafficPointElementBulkImportController extends BaseBulkImportContr
   }
 
   @Override
-  public List<BulkImportItemExecutionResult> bulkImportUpdate(List<BulkImportUpdateContainer<TrafficPointUpdateCsvModel>> bulkImportContainers) {
+  @PreAuthorize("""
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  public List<BulkImportItemExecutionResult> bulkImportUpdate(
+      List<BulkImportUpdateContainer<TrafficPointUpdateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,
         trafficPointElementBulkImportService::updateTrafficPointByUserName,
         trafficPointElementBulkImportService::updateTrafficPoint);
