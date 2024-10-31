@@ -32,13 +32,13 @@ public class CountryAndBusinessOrganisationBasedUserAdministrationService extend
       log.error("List of ServicePointVersions was empty. Cannot perform check permissions. Will deny operation");
       return false;
     }
-    log.info("Checking if user may create or edit any of given list");
+    log.debug("Checking if user may create or edit any of given list");
     return servicePointVersions.stream().anyMatch(obj -> hasUserPermissionsToCreate(obj, applicationType));
   }
 
   public boolean hasUserPermissionsToCreate(CountryAndBusinessOrganisationAssociated businessObject,
       ApplicationType applicationType) {
-    log.info("Checking if user {} may create object with country {} and sboid {}",
+    log.debug("Checking if user {} may create object with country {} and sboid {}",
         getCurrentUserSbbUid(), businessObject.getCountry(), businessObject.getBusinessOrganisation());
 
     boolean hasPermissionsOnCountry = hasPermissionsForCountry(applicationType,
@@ -47,13 +47,13 @@ public class CountryAndBusinessOrganisationBasedUserAdministrationService extend
 
     boolean permissionsToCreate = hasPermissionsOnCountry && hasPermissionsOnBusinessOrganisation;
 
-    log.info("User {} has permissions: {}", getCurrentUserSbbUid(), permissionsToCreate);
+    log.debug("User {} has permissions: {}", getCurrentUserSbbUid(), permissionsToCreate);
     return permissionsToCreate;
   }
 
   public boolean hasUserPermissionsToUpdateCountryBased(CountryAndBusinessOrganisationAssociated editedBusinessObject,
       List<CountryAndBusinessOrganisationAssociated> currentBusinessObjects, ApplicationType applicationType) {
-    log.info("Checking if user {} may update object {}", getCurrentUserSbbUid(), editedBusinessObject);
+    log.debug("Checking if user {} may update object {}", getCurrentUserSbbUid(), editedBusinessObject);
 
     boolean permissionsToUpdateBasedOnBusinessOrganisation = super.hasUserPermissionsToUpdate(editedBusinessObject,
         currentBusinessObjects.stream().map(i -> (BusinessOrganisationAssociated) i).toList(), applicationType);
@@ -67,7 +67,7 @@ public class CountryAndBusinessOrganisationBasedUserAdministrationService extend
 
     boolean permissionsToUpdate = permissionsToUpdateBasedOnBusinessOrganisation && permissionsToUpdateBasedOnCountry;
 
-    log.info("User {} has permissions: {}", getCurrentUserSbbUid(), permissionsToUpdate);
+    log.debug("User {} has permissions: {}", getCurrentUserSbbUid(), permissionsToUpdate);
     return permissionsToUpdate;
   }
 

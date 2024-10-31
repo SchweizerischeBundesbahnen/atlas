@@ -32,7 +32,7 @@ public class BusinessOrganisationBasedUserAdministrationService extends BaseUser
 
   public boolean hasUserPermissionsForBusinessOrganisation(String sboid,
       ApplicationType applicationType) {
-    log.info("Checking if user {} has enough rights for an object with sboid {}",
+    log.debug("Checking if user {} has enough rights for an object with sboid {}",
         getCurrentUserSbbUid(),
         sboid);
 
@@ -42,14 +42,14 @@ public class BusinessOrganisationBasedUserAdministrationService extends BaseUser
                     .map(UserAdministrationPermissionRestrictionModel::getValue).collect(Collectors.toSet())
                     .contains(sboid));
 
-    log.info("User {} has permissions: {}", getCurrentUserSbbUid(), permissionsToCreate);
+    log.debug("User {} has permissions: {}", getCurrentUserSbbUid(), permissionsToCreate);
     return permissionsToCreate;
   }
 
   public boolean hasUserPermissionsToUpdate(BusinessOrganisationAssociated editedBusinessObject,
       List<BusinessOrganisationAssociated> currentBusinessObjects,
       ApplicationType applicationType) {
-    log.info("Checking if user {} may update object {}", getCurrentUserSbbUid(), editedBusinessObject);
+    log.debug("Checking if user {} may update object {}", getCurrentUserSbbUid(), editedBusinessObject);
 
     boolean permissionsToUpdate = hasUserPermissions(applicationType,
         permissions -> permissions.getRestrictions().stream()
@@ -60,13 +60,13 @@ public class BusinessOrganisationBasedUserAdministrationService extends BaseUser
                     currentBusinessObjects).stream()
                 .map(BusinessOrganisationAssociated::getBusinessOrganisation)
                 .toList()));
-    log.info("User {} has permissions: {}", getCurrentUserSbbUid(), permissionsToUpdate);
+    log.debug("User {} has permissions: {}", getCurrentUserSbbUid(), permissionsToUpdate);
 
     return permissionsToUpdate;
   }
 
   public boolean isAtLeastSupervisor(ApplicationType applicationType) {
-    log.info("Checking if user {} is at least supervisor for {}", getCurrentUserSbbUid(), applicationType);
+    log.debug("Checking if user {} is at least supervisor for {}", getCurrentUserSbbUid(), applicationType);
 
     if (isAdmin()) {
       return true;
