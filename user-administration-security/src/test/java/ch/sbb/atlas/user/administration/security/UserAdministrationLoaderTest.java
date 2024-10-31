@@ -15,6 +15,7 @@ import ch.sbb.atlas.user.administration.security.entity.Permission;
 import ch.sbb.atlas.user.administration.security.repository.PermissionRepository;
 import java.util.List;
 import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -35,6 +36,11 @@ class UserAdministrationLoaderTest {
       UserAdministrationLoader userAdministrationLoader) {
     this.permissionRepository = permissionRepository;
     this.userAdministrationLoader = userAdministrationLoader;
+  }
+
+  @AfterEach
+  void tearDown() {
+    permissionRepository.deleteAll();
   }
 
   @Test
