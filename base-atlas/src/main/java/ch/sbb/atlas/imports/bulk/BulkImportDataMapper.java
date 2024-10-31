@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports.util;
+package ch.sbb.atlas.imports.bulk;
 
 import java.util.function.Consumer;
 
