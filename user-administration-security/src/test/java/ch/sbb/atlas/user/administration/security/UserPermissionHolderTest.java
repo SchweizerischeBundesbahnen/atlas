@@ -29,10 +29,14 @@ class UserPermissionHolderTest {
   @MockBean
   private SharedTransportCompanyConfig sharedTransportCompanyConfig;
 
+  private final UserPermissionHolder userPermissionHolder;
+  private final PermissionRepository permissionRepository;
+
   @Autowired
-  private UserPermissionHolder userPermissionHolder;
-  @Autowired
-  private PermissionRepository permissionRepository;
+  public UserPermissionHolderTest(UserPermissionHolder userPermissionHolder, PermissionRepository permissionRepository) {
+    this.userPermissionHolder = userPermissionHolder;
+    this.permissionRepository = permissionRepository;
+  }
 
   @BeforeEach
   void setUp() {
