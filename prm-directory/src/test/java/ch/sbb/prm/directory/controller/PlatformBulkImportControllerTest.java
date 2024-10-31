@@ -13,7 +13,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
-import ch.sbb.prm.directory.service.PlatformBulkImportService;
+import ch.sbb.prm.directory.service.bulk.PlatformBulkImportService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class PlatformBulkImportControllerTest {
     MockitoAnnotations.initMocks(this);
     when(atlasExceptionHandler.mapToErrorResponse(any()))
         .thenAnswer(i -> i.getArgument(0, AtlasException.class).getErrorResponse());
-    platformBulkImportController = new PlatformBulkImportController(platformBulkImportService, atlasExceptionHandler);
+    platformBulkImportController = new PlatformBulkImportController(atlasExceptionHandler, platformBulkImportService);
   }
 
   @Test
