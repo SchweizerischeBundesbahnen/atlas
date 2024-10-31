@@ -11,24 +11,25 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 
+@IntegrationTest
 class BaseBulkImportControllerTest {
 
+  @Autowired
+  private AtlasExceptionHandler atlasExceptionHandler;
 
   private BaseBulkImportController bulkImportController;
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
-    AtlasExceptionHandler atlasExceptionHandler = new AtlasExceptionHandler(new ObjectMapper());
     bulkImportController = new BaseBulkImportController(atlasExceptionHandler);
   }
 
