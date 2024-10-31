@@ -2,7 +2,7 @@ package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -2,7 +2,7 @@ package ch.sbb.importservice.service.sepodi.traffic.point.update;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.importservice.client.TrafficPointBulkImportClient;
 import ch.sbb.importservice.service.bulk.writer.BulkImportItemWriter;
 import ch.sbb.importservice.service.bulk.writer.WriterUtil;

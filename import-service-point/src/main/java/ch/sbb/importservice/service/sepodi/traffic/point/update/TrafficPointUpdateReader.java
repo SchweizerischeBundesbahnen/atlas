@@ -1,7 +1,7 @@
 package ch.sbb.importservice.service.sepodi.traffic.point.update;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.importservice.service.bulk.reader.BulkImportItemReader;
 import ch.sbb.importservice.service.bulk.reader.ReaderUtil;
 import java.io.File;

@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public abstract class BaseBulkImportController {
+public class BaseBulkImportController {
 
   private final AtlasExceptionHandler atlasExceptionHandler;
 
