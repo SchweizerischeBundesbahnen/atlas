@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk;
 
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
-import ch.sbb.atlas.imports.util.BulkImportDataMapper;
+import ch.sbb.atlas.imports.bulk.BulkImportDataMapper;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 
 public abstract class GeolocationBulkImportDataMapper extends BulkImportDataMapper {
