@@ -1,5 +1,5 @@
 # Dockerfile for ESTA Web
-FROM esta.docker.bin.sbb.ch/esta/ubi9/nginx-124:1
+FROM esta.docker.bin.sbb.ch/esta/ubi9/nginx-124:1-10
 
 USER root
 
