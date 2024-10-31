@@ -2,14 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint.bulk;
 
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
-import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUser;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUserParameter;

@@ -2,8 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint.bulk;
 
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.imports.bulk.AttributeNullingNotSupportedException;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.GeolocationBulkImportDataMapper;
 import java.util.List;
