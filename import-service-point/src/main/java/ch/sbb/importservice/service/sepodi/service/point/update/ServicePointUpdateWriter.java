@@ -28,6 +28,8 @@ public class ServicePointUpdateWriter extends ServicePointUpdate implements Bulk
 
   @Override
   public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
+    log.info("Writing {} items", items.size());
+
     List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers =
         WriterUtil.getContainersWithoutDataValidationErrors(items);
     WriterUtil.addInNameOfTo(stepExecution, updateContainers);
