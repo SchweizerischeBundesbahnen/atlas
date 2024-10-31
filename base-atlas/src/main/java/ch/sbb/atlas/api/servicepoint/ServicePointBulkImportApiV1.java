@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "Service Points Bulk Import")
+@Tag(name = "Service Point Bulk Import")
 public interface ServicePointBulkImportApiV1 {
 
   String BASEPATH = "v1/service-points/bulk-import";
