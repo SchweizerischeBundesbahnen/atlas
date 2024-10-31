@@ -5,7 +5,7 @@ import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BaseBulkImportController;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.ServicePointBulkImportService;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
