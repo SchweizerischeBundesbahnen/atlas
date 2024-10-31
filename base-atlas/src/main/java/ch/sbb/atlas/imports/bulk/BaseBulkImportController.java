@@ -1,8 +1,7 @@
-package ch.sbb.atlas.servicepointdirectory.controller;
+package ch.sbb.atlas.imports.bulk;
 
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
-import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;

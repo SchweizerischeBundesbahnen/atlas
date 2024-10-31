@@ -17,6 +17,7 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.security.PrmUserAdministrationService;
+import ch.sbb.prm.directory.service.bulk.PlatformBulkImportService;
 import java.time.LocalDate;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
