@@ -35,6 +35,7 @@ public abstract class BulkImportDataMapper<T, U, V> {
       String propertyToNull = fieldToNull.getAnnotation(Nulling.class).property();
       String pathToNull = StringUtils.isBlank(propertyToNull) ? fieldToNull.getName() : propertyToNull;
       ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(targetModel);
+      propertyAccessor.setAutoGrowNestedPaths(true);
       propertyAccessor.setPropertyValue(pathToNull, null);
     }
   }
@@ -62,7 +63,7 @@ public abstract class BulkImportDataMapper<T, U, V> {
   }
 
   private void setFieldValue(Field targetField, V targetModel, Object defaultValue) {
-    if (targetField.getType() == List.class) {
+    if (targetField.getType() == List.class && defaultValue instanceof Collection) {
       ReflectionUtils.setField(targetField, targetModel, new ArrayList<>((Collection<?>) defaultValue));
     } else {
       ReflectionUtils.setField(targetField, targetModel, defaultValue);
