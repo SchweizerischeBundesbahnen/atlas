@@ -41,7 +41,7 @@ public class TrafficPointElementBulkImportService {
         trafficPointUpdateCsvModel.getValidFrom(), trafficPointUpdateCsvModel.getValidTo());
 
     CreateTrafficPointElementVersionModel updateModel = TrafficPointElementBulkImportUpdate.apply(bulkImportContainer,
-        currentVersion, new CreateTrafficPointElementVersionModel());
+        currentVersion);
 
     trafficPointElementApiClient.updateServicePoint(currentVersion.getId(), updateModel);
   }
