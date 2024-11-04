@@ -1,5 +1,7 @@
 package ch.sbb.line.directory.service;
 
+import static ch.sbb.atlas.versioning.date.DateHelper.isBetween;
+
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -12,6 +14,7 @@ import ch.sbb.line.directory.model.search.SublineSearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -111,6 +114,35 @@ public class SublineService {
 
     versionableService.applyVersioning(SublineVersion.class, versionedObjects, this::save,
         this::deleteById);
+  }
+
+  public LineVersion getMainLineVersion(String mainSlnid) {
+    List<LineVersion> lineVersions = lineService.findLineVersions(mainSlnid);
+    if (lineVersions.isEmpty()) {
+      throw new IllegalStateException("No match for LineVersion!");
+    }
+
+    if (lineVersions.size() == 1) {
+      return lineVersions.getFirst();
+    }
+
+    LocalDate today = LocalDate.now();
+    //isToday
+    Optional<LineVersion> lineVersionToday = lineVersions.stream()
+        .filter(lv -> isBetween(lv.getValidFrom(), lv.getValidTo(), today))
+        .findFirst();
+    if (lineVersionToday.isPresent()) {
+      return lineVersionToday.get();
+    }
+    //future
+    if (today.isBefore(lineVersions.getFirst().getValidFrom())) {
+      return lineVersions.getFirst();
+    }
+    //past
+    if (today.isAfter(lineVersions.getLast().getValidFrom())) {
+      return lineVersions.getLast();
+    }
+    throw new IllegalStateException("No match for LineVersion!");
   }
 
 }

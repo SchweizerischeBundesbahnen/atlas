@@ -1,14 +1,16 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.model.entity.BusinessIdGeneration;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.model.CmykColor;
@@ -74,6 +76,7 @@ public class LineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private LineType lineType;
 
+  @Deprecated(forRemoval = true, since = "2.328.0")
   @NotNull
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
@@ -83,10 +86,12 @@ public class LineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private String number;
 
+  @Deprecated(forRemoval = true, since = "2.328.0")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String alternativeName;
 
+  @Deprecated(forRemoval = true, since = "2.328.0")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String combinationName;
@@ -143,5 +148,17 @@ public class LineVersion extends BaseVersion implements Versionable,
   @Builder.Default
   @OneToMany(mappedBy = "lineVersion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<LineVersionWorkflow> lineVersionWorkflows = new HashSet<>();
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private LineConcessionType concessionType;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private OfferCategory offerCategory;
+
+  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @AtlasVersionableProperty
+  private String shortNumber;
 
 }
