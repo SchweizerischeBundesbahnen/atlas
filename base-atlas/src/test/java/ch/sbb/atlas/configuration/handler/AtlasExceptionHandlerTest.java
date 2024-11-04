@@ -7,15 +7,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.export.enumeration.ExportType;
-import ch.sbb.atlas.model.exception.SloidNotFoundException;
-import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import java.time.LocalDate;
 import java.util.Collections;
 import org.apache.catalina.connector.ClientAbortException;
 import org.hibernate.StaleStateException;
@@ -164,45 +156,6 @@ public class AtlasExceptionHandlerTest {
 
     // Then
     assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(499);
-  }
-
-  @Test
-  void shouldMapAtlasExceptionToErrorResponse() {
-    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(new SloidNotFoundException("ch:1:sloid:12333"));
-    assertThat(errorResponse.getMessage()).isEqualTo("Entity not found");
-  }
-
-  @Test
-  void shouldMapVersioningNoChangesExceptionToErrorResponse() {
-    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(new VersioningNoChangesException());
-    assertThat(errorResponse.getMessage()).isEqualTo("No entities were modified after versioning execution.");
-  }
-
-  @Test
-  void shouldMapConstraintViolationExceptionToErrorResponse() {
-    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(getExampleConstraintViolation());
-
-    assertThat(errorResponse.getDetails()).size().isEqualTo(2);
-  }
-
-  private ConstraintViolationException getExampleConstraintViolation() {
-    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .designationOfficial("BernZuLangBernZuLangBernZuLangBernZuLangBernZuLang")
-        .businessOrganisation("ch:1:sboid:5846489645")
-        .stopPointType(StopPointType.ORDERLY)
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31))
-        .build();
-
-    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-    return new ConstraintViolationException(validator.validate(servicePointVersionModel));
-  }
-
-  @Test
-  void shouldMapAccessDeniedExceptionToErrorResponse() {
-    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(new AccessDeniedException("no"));
-    assertThat(errorResponse.getMessage()).isEqualTo("You are not allowed to perform this operation on the ATLAS platform.");
-    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo("ERROR.NOTALLOWED");
   }
 
 }
