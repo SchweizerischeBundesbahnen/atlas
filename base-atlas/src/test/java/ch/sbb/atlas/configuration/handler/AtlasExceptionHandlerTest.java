@@ -8,20 +8,29 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.export.enumeration.ExportType;
+import ch.sbb.atlas.model.exception.AtlasException;
+import ch.sbb.atlas.model.exception.FileNotFoundOnS3Exception;
 import java.util.Collections;
 import org.apache.catalina.connector.ClientAbortException;
+import org.hibernate.StaleObjectStateException;
 import org.hibernate.StaleStateException;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
+import org.springframework.data.mapping.PropertyReferenceException;
+import org.springframework.data.util.TypeInformation;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.async.AsyncRequestNotUsableException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 public class AtlasExceptionHandlerTest {
 
@@ -158,4 +167,76 @@ public class AtlasExceptionHandlerTest {
     assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(499);
   }
 
+  @Test
+  void shouldHandleMultipartException() {
+    // Given
+    MultipartException exception = new MultipartException("No file");
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.multipartException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(400);
+    assertThat(errorResponseEntity.getBody().getDetails().getFirst().getDisplayInfo().getCode()).isEqualTo("ERROR.MULTIPART");
+  }
+
+  @Test
+  void shouldHandleAtlasException() {
+    // Given
+    AtlasException exception = new FileNotFoundOnS3Exception("file.txt");
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.atlasException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(500);
+  }
+
+  @Test
+  void shouldHandlePropertyReferenceException() {
+    // Given
+    PropertyReferenceException exception = new PropertyReferenceException("id", TypeInformation.of(Long.class), Collections.emptyList());
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.propertyReferenceException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(400);
+  }
+
+  @Test
+  void shouldHandleStaleObjectStateException() {
+    // Given
+    StaleObjectStateException exception = new StaleObjectStateException("entity", 1L);
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.staleObjectStateException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(412);
+  }
+
+  @Test
+  void shouldHandleNoResourceFoundException () {
+    // Given
+    NoResourceFoundException exception = new NoResourceFoundException (HttpMethod.GET, "/resource");
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.handleNoResourceFoundException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(404);
+  }
+
+  @Test
+  void shouldHandleHttpRequestMethodNotSupportedException  () {
+    // Given
+    HttpRequestMethodNotSupportedException  exception = new HttpRequestMethodNotSupportedException("method");
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.handleHttpRequestMethodNotSupportedException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(400);
+  }
 }
