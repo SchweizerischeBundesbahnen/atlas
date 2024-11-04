@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Supports setting to null indicated via <null> in a BulkImport value
+ * For use with {@link BulkImportDataMapper}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
