@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class BaseBulkImportController {
 
@@ -28,6 +30,7 @@ public class BaseBulkImportController {
             .lineNumber(bulkImportContainer.getLineNumber())
             .build());
       } catch (Exception exception) {
+        log.error("Data Execution Error! Mapping Exception", exception);
         results.add(BulkImportItemExecutionResult.builder()
             .lineNumber(bulkImportContainer.getLineNumber())
             .errorResponse(ErrorResponseMapper.mapToErrorResponse(exception))
