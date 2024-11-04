@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
 
-public abstract class GeolocationBulkImportDataMapper extends BulkImportDataMapper {
+public abstract class GeolocationBulkImportDataMapper<T, U, V> extends BulkImportDataMapper<T, U, V> {
 
   protected static GeolocationBaseCreateModel applyGeolocationUpdate(GeolocationBaseEntity currentGeolocation,
       UpdateGeolocationModel update) {
