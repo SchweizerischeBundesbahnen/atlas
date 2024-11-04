@@ -67,6 +67,9 @@ public interface SublineApiV1 {
   SublineVersionModel createSublineVersion(
       @RequestBody @Valid SublineVersionModel newSublineVersion);
 
+  /**
+   * @deprecated
+   */
   @Deprecated(forRemoval = true, since = "2.328.0")
   @GetMapping("versions/{slnid}")
   List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);

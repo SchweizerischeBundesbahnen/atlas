@@ -1,12 +1,11 @@
 package ch.sbb.atlas.versioning.date;
 
+import static java.util.Objects.isNull;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.versioning.exception.VersioningException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
-import static java.util.Objects.isNull;
 
 public final class DateHelper {
 
@@ -40,5 +39,10 @@ public final class DateHelper {
 
   public static String getDateAsSqlString(LocalDate localDate) {
     return localDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+  }
+
+  public static boolean isBetween(LocalDate validFrom, LocalDate validTo, LocalDate current) {
+    return !current.isBefore(validFrom)
+        && !current.isAfter(validTo);
   }
 }

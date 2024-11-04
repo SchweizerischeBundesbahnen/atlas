@@ -16,12 +16,14 @@ import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.service.CoverageService;
+import ch.sbb.line.directory.service.LineService;
 import ch.sbb.line.directory.service.SublineService;
 import ch.sbb.line.directory.service.export.SublineVersionExportService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -31,13 +33,18 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
- class SublineControllerTest {
+class SublineControllerTest {
 
   private static final String[] RECURSIVE_COMPARISION_IGNORE_FIELDS = {"editor", "creator",
       "editionDate", "creationDate", "version", "etagVersion"};
 
+  private static final String[] SUBLINE_VERSION_V2_COMPARISION_IGNORE_FIELDS = {"concessionType", "number"};
+
   @Mock
   private SublineService sublineService;
+
+  @Mock
+  private LineService lineService;
 
   @Mock
   private CoverageService coverageService;
@@ -92,7 +99,7 @@ import org.springframework.data.domain.Pageable;
     assertThat(sublineContainer.getObjects()).hasSize(1)
         .first()
         .usingRecursiveComparison()
-        .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
+        .ignoringFields(ArrayUtils.addAll(RECURSIVE_COMPARISION_IGNORE_FIELDS, SUBLINE_VERSION_V2_COMPARISION_IGNORE_FIELDS))
         .isEqualTo(subline);
     assertThat(sublineContainer.getTotalCount()).isEqualTo(1);
   }
@@ -126,7 +133,7 @@ import org.springframework.data.domain.Pageable;
     // Then
     verify(sublineService).create(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
-        .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
+        .ignoringFields(ArrayUtils.addAll(RECURSIVE_COMPARISION_IGNORE_FIELDS, SUBLINE_VERSION_V2_COMPARISION_IGNORE_FIELDS))
         .isEqualTo(sublineVersionModel);
   }
 

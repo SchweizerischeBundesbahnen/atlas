@@ -1,13 +1,13 @@
 package ch.sbb.line.directory.model.search;
 
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.searching.BusinessOrganisationDependentSearchRestriction;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.Subline_;
-import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import java.util.List;
 import jakarta.persistence.metamodel.SingularAttribute;
+import java.util.List;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
@@ -41,8 +41,7 @@ public class SublineSearchRestrictions extends
             List.of(Subline.Fields.swissSublineNumber,
                 Subline.Fields.description,
                 Subline.Fields.swissLineNumber,
-                Subline.Fields.slnid,
-                Subline.Fields.number))
+                Subline.Fields.slnid))
         .validFromAttribute(Subline_.validFrom)
         .validToAttribute(Subline_.validTo)
         .build();

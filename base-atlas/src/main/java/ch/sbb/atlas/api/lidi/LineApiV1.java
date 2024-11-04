@@ -77,6 +77,9 @@ public interface LineApiV1 {
   })
   LineVersionModel createLineVersion(@RequestBody @Valid LineVersionModel newVersion);
 
+  /**
+   * @deprecated
+   */
   @Deprecated(forRemoval = true, since = "2.328.0")
   @GetMapping("versions/{slnid}")
   List<LineVersionModel> getLineVersions(@PathVariable String slnid);
