@@ -4,6 +4,8 @@ import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
+import ch.sbb.atlas.imports.bulk.DefaultMapping;
+import ch.sbb.atlas.imports.bulk.Nulling;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
 import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
@@ -46,40 +48,67 @@ public class ServicePointUpdateCsvModel implements Validatable<ServicePointUpdat
 
   private Integer number;
 
+  @DefaultMapping
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validFrom;
 
+  @DefaultMapping
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validTo;
 
+  @DefaultMapping
+  @Nulling
   private String designationOfficial;
 
+  @DefaultMapping
+  @Nulling
   private String designationLong;
 
+  @DefaultMapping
+  @Nulling
   private StopPointType stopPointType;
 
+  @DefaultMapping
+  @Nulling
   private Boolean freightServicePoint;
 
+  @DefaultMapping
+  @Nulling
   private OperatingPointType operatingPointType;
 
+  @DefaultMapping
+  @Nulling
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
+  @DefaultMapping
+  @Nulling
   private Set<MeanOfTransport> meansOfTransport;
 
+  @DefaultMapping
+  @Nulling
   private Set<Category> categories;
 
+  @DefaultMapping
+  @Nulling
   private OperatingPointTrafficPointType operatingPointTrafficPointType;
 
+  @DefaultMapping
+  @Nulling
   private String sortCodeOfDestinationStation;
 
+  @DefaultMapping
   private String businessOrganisation;
 
+  @Nulling(property = "servicePointGeolocation")
   private Double east;
 
+  @Nulling(property = "servicePointGeolocation")
   private Double north;
 
+  @Nulling(property = "servicePointGeolocation")
   private SpatialReference spatialReference;
 
+  @Nulling(property = "servicePointGeolocation.height")
   private Double height;
 
   @Override
