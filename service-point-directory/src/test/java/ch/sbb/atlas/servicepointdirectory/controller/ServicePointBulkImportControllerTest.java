@@ -5,13 +5,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
-import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.ServicePointBulkImportService;
 import java.util.List;
@@ -25,17 +22,12 @@ class ServicePointBulkImportControllerTest {
   @Mock
   private ServicePointBulkImportService servicePointBulkImportService;
 
-  @Mock
-  private AtlasExceptionHandler atlasExceptionHandler;
-
   private ServicePointBulkImportController servicePointBulkImportController;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.initMocks(this);
-    when(atlasExceptionHandler.mapToErrorResponse(any())).thenAnswer(
-        i -> i.getArgument(0, AtlasException.class).getErrorResponse());
-    servicePointBulkImportController = new ServicePointBulkImportController(atlasExceptionHandler, servicePointBulkImportService);
+    servicePointBulkImportController = new ServicePointBulkImportController(servicePointBulkImportService);
   }
 
   @Test

@@ -1,6 +1,6 @@
 package ch.sbb.atlas.imports.bulk;
 
-import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
+import ch.sbb.atlas.configuration.handler.ErrorResponseMapper;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class BaseBulkImportController {
-
-  private final AtlasExceptionHandler atlasExceptionHandler;
 
   protected <T> List<BulkImportItemExecutionResult> executeBulkImport(
       List<BulkImportUpdateContainer<T>> bulkImportContainers,
@@ -32,7 +30,7 @@ public class BaseBulkImportController {
       } catch (Exception exception) {
         results.add(BulkImportItemExecutionResult.builder()
             .lineNumber(bulkImportContainer.getLineNumber())
-            .errorResponse(atlasExceptionHandler.mapToErrorResponse(exception))
+            .errorResponse(ErrorResponseMapper.mapToErrorResponse(exception))
             .build());
       }
     });
