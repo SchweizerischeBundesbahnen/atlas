@@ -37,8 +37,8 @@ public class ServicePointBulkImportService {
     ServicePointVersion currentVersion = ImportUtils.getCurrentVersion(currentVersions,
         servicePointUpdate.getValidFrom(), servicePointUpdate.getValidTo());
 
-    UpdateServicePointVersionModel updateModel = ServicePointBulkImportUpdate.applyUpdateFromCsv(currentVersion, servicePointUpdate);
-    ServicePointBulkImportUpdate.applyNulling(bulkImportContainer.getAttributesToNull(), updateModel);
+    UpdateServicePointVersionModel updateModel = ServicePointBulkImportUpdate.apply(bulkImportContainer,
+        currentVersion, new UpdateServicePointVersionModel());
 
     servicePointApiClient.updateServicePoint(currentVersion.getId(), updateModel);
   }
