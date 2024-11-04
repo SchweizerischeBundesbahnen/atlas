@@ -5,8 +5,8 @@ import ch.sbb.atlas.api.lidi.SublineApiV1;
 import ch.sbb.atlas.api.lidi.SublineModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
@@ -61,7 +61,6 @@ public class SublineController implements SublineApiV1 {
   private SublineModel toModel(Subline sublineVersion) {
     return SublineModel.builder()
         .swissSublineNumber(sublineVersion.getSwissSublineNumber())
-        .number(sublineVersion.getNumber())
         .swissLineNumber(sublineVersion.getSwissLineNumber())
         .status(sublineVersion.getStatus())
         .sublineType(sublineVersion.getSublineType())
@@ -154,7 +153,7 @@ public class SublineController implements SublineApiV1 {
         .paymentType(sublineVersion.getPaymentType())
         .validFrom(sublineVersion.getValidFrom())
         .validTo(sublineVersion.getValidTo())
-        .businessOrganisation(sublineVersion.getBusinessOrganisation())
+        .businessOrganisation(sublineVersion.getBusinessOrganisation())//
         .etagVersion(sublineVersion.getVersion())
         .creator(sublineVersion.getCreator())
         .creationDate(sublineVersion.getCreationDate())

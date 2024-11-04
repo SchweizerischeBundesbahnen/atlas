@@ -1,14 +1,14 @@
 package ch.sbb.line.directory.controller;
 
+import static java.util.stream.Collectors.toSet;
+
 import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
-import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
-import ch.sbb.atlas.model.Status;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collections;
+import ch.sbb.line.directory.converter.CmykColorConverter;
+import ch.sbb.line.directory.converter.RgbColorConverter;
+import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.mapper.LineVersionWorkflowMapper;
+import ch.sbb.line.directory.service.LineService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,47 +19,46 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class LineControllerV2 implements LineApiV2 {
 
-  public static final LocalDate VALID_FROM = LocalDate.of(2020, 1, 1);
-  public static final LocalDate VALID_TO = LocalDate.of(9999, 12, 31);
+  private final LineService lineService;
 
   @Override
   public List<LineVersionModelV2> getLineVersions(String slnid) {
-    return List.of(getLineVersionV2DraftModel());
+    return lineService.findLineVersions(slnid).stream().map(this::toModel).toList();
   }
 
-  private LineVersionModelV2 getLineVersionV2DraftModel() {
+  private LineVersionModelV2 toModel(LineVersion lineVersion) {
     return LineVersionModelV2.builder()
-        .id(1L)
-        .slnid("ch:1:slnid:1024336")
-        .status(Status.VALIDATED)
-        .lineType(LineType.DISPOSITION)
-        .lineConcessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
-        .shortNumber("61")
-        .offerCategory(OfferCategory.IC)
-        .number("IC61")
-        .alternativeName("alternativeName")
-        .combinationName("combinationName")
-        .longName("longName")
-        .colorFontRgb("#FFFFFF")
-        .colorBackRgb("#FFFFFF")
-        .colorFontCmyk("0,0,0,0")
-        .colorBackCmyk("0,0,0,0")
-        .description("Basel SBB - Olten - Bern - LBT - Brig - Domodossola")
-        .validFrom(VALID_FROM)
-        .validTo(VALID_TO)
-        .businessOrganisation("ch:1:sboid:123")
-        .comment("""
-            Frankfurt - Basel SBB und Brig - Milano nur teilweise
-            Konzessionsrecht gilt nur für den schweizerischen Linienabschnitt
-            Einzelzüge via Lötschberg-Bergstrecke
-            """)
-        .status(Status.VALIDATED)
-        .lineVersionWorkflows(Collections.emptySet())
-        .swissLineNumber("b0.IC6")
-        .creationDate(LocalDateTime.now())
-        .creator("Calipso")
-        .editionDate(LocalDateTime.now())
-        .editor("Neptun")
+        .id(lineVersion.getId())
+        .status(lineVersion.getStatus())
+        .lineType(lineVersion.getLineType())
+        .slnid(lineVersion.getSlnid())
+        .number(lineVersion.getNumber())
+        .longName(lineVersion.getLongName())
+        .lineConcessionType(lineVersion.getConcessionType())
+        .shortNumber(lineVersion.getShortNumber())
+        .offerCategory(lineVersion.getOfferCategory())
+        .colorFontRgb(RgbColorConverter.toHex(lineVersion.getColorFontRgb()))
+        .colorBackRgb(RgbColorConverter.toHex(lineVersion.getColorBackRgb()))
+        .colorFontCmyk(CmykColorConverter.toCmykString(
+            lineVersion.getColorFontCmyk()))
+        .colorBackCmyk(
+            CmykColorConverter.toCmykString(lineVersion.getColorBackCmyk()))
+        .description(lineVersion.getDescription())
+        .icon(lineVersion.getIcon())
+        .validFrom(lineVersion.getValidFrom())
+        .validTo(lineVersion.getValidTo())
+        .businessOrganisation(lineVersion.getBusinessOrganisation())
+        .comment(lineVersion.getComment())
+        .swissLineNumber(lineVersion.getSwissLineNumber())
+        .etagVersion(lineVersion.getVersion())
+        .lineVersionWorkflows(
+            lineVersion.getLineVersionWorkflows()
+                .stream()
+                .map(LineVersionWorkflowMapper::toModel).collect(toSet()))
+        .creator(lineVersion.getCreator())
+        .creationDate(lineVersion.getCreationDate())
+        .editor(lineVersion.getEditor())
+        .editionDate(lineVersion.getEditionDate())
         .build();
   }
 }
