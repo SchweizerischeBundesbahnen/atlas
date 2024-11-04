@@ -1,14 +1,15 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
-import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
+import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.model.entity.BusinessIdGeneration;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -72,6 +73,7 @@ public class SublineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private String description;
 
+  @Deprecated(forRemoval = true, since = "2.328.0")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String number;
@@ -80,6 +82,7 @@ public class SublineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private String longName;
 
+  @Deprecated(forRemoval = true, since = "2.328.0")
   @NotNull
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
@@ -97,5 +100,9 @@ public class SublineVersion extends BaseVersion implements Versionable,
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String businessOrganisation;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private SublineConcessionType concessionType;
 
 }

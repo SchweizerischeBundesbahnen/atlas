@@ -13,6 +13,7 @@ import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
+import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
@@ -20,7 +21,10 @@ import ch.sbb.line.directory.model.search.SublineSearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import org.hibernate.StaleObjectStateException;
@@ -196,7 +200,7 @@ class SublineServiceTest {
   }
 
   @Test
-   void shouldThrowStaleExceptionOnDifferentVersion() {
+  void shouldThrowStaleExceptionOnDifferentVersion() {
     //given
     SublineVersionBuilder<?, ?> version = SublineVersion.builder().slnid("slnid");
 
@@ -206,4 +210,85 @@ class SublineServiceTest {
     //then
     verify(sublineVersionRepository).incrementVersion("slnid");
   }
+
+  @Test
+  void shouldReturnMainLineVersionWhenOneLineVersion() {
+    //given
+    String mainSlnid = "ch:1:slnid:8000";
+    LineVersion lineVersion =
+        LineVersion.builder().slnid(mainSlnid).validFrom(LocalDate.now()).validTo(LocalDate.now()).id(1L).build();
+    when(lineService.findLineVersions(mainSlnid)).thenReturn(List.of(lineVersion));
+    //when
+    LineVersion result = sublineService.getMainLineVersion(mainSlnid);
+    //then
+    assertThat(result).isNotNull();
+
+  }
+
+  @Test
+  void shouldReturnMainLineVersionWhenLineVersionToday() {
+    //given
+    String mainSlnid = "ch:1:slnid:8000";
+    LocalDate today = LocalDate.now();
+    LineVersion lineVersion =
+        LineVersion.builder().slnid(mainSlnid).validFrom(today).validTo(today).id(1L).build();
+    LineVersion lineVersion1 =
+        LineVersion.builder().slnid(mainSlnid).validFrom(today.plusDays(30)).validTo(today.plusDays(30)).id(1L).build();
+    List<LineVersion> versions = new java.util.ArrayList<>(List.of(lineVersion, lineVersion1));
+    versions.sort(Comparator.comparing(LineVersion::getValidFrom));
+    when(lineService.findLineVersions(mainSlnid)).thenReturn(versions);
+    //when
+    LineVersion result = sublineService.getMainLineVersion(mainSlnid);
+    //then
+    assertThat(result).isNotNull().isEqualTo(lineVersion);
+
+  }
+
+  @Test
+  void shouldReturnMainLineVersionWhenLineVersionIsFuture() {
+    //given
+    String mainSlnid = "ch:1:slnid:8000";
+    LocalDate today = LocalDate.now();
+    LineVersion lineVersion =
+        LineVersion.builder().slnid(mainSlnid).validFrom(today.plusDays(100)).validTo(today.plusDays(100)).id(1L).build();
+    LineVersion lineVersion1 =
+        LineVersion.builder().slnid(mainSlnid).validFrom(today.plusDays(30)).validTo(today.plusDays(30)).id(1L).build();
+    List<LineVersion> versions = new java.util.ArrayList<>(List.of(lineVersion, lineVersion1));
+    versions.sort(Comparator.comparing(LineVersion::getValidFrom));
+    when(lineService.findLineVersions(mainSlnid)).thenReturn(versions);
+    //when
+    LineVersion result = sublineService.getMainLineVersion(mainSlnid);
+    //then
+    assertThat(result).isNotNull().isEqualTo(lineVersion1);
+
+  }
+
+  @Test
+  void shouldReturnMainLineVersionWhenLineVersionIsPast() {
+    //given
+    String mainSlnid = "ch:1:slnid:8000";
+    LocalDate today = LocalDate.now();
+    LineVersion lineVersion =
+        LineVersion.builder().slnid(mainSlnid).validFrom(today.minusDays(100)).validTo(today.minusDays(100)).id(1L).build();
+    LineVersion lineVersion1 =
+        LineVersion.builder().slnid(mainSlnid).validFrom(today.minusDays(30)).validTo(today.minusDays(30)).id(1L).build();
+    List<LineVersion> versions = new java.util.ArrayList<>(List.of(lineVersion, lineVersion1));
+    versions.sort(Comparator.comparing(LineVersion::getValidFrom));
+    when(lineService.findLineVersions(mainSlnid)).thenReturn(versions);
+    //when
+    LineVersion result = sublineService.getMainLineVersion(mainSlnid);
+    //then
+    assertThat(result).isNotNull().isEqualTo(lineVersion1);
+
+  }
+
+  @Test
+  void shouldThrowExceptionWhenNoMainLineVersionMatch() {
+    //given
+    when(lineService.findLineVersions(any())).thenReturn(new ArrayList<>());
+    //when && then
+    assertThrows(IllegalStateException.class, () -> sublineService.getMainLineVersion(any()));
+
+  }
+
 }

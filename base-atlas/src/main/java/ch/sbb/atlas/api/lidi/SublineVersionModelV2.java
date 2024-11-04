@@ -47,7 +47,7 @@ public class SublineVersionModelV2 extends BaseSublineVersionModel implements Da
   @Schema(description = "ShortNumber", example = "61", accessMode = AccessMode.READ_ONLY)
   @Size(max = AtlasFieldLengths.LENGTH_10)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  private String shortNumber;
+  private String mainShortNumber;
 
   @Schema(description = "offerCategory", example = "IC", accessMode = AccessMode.READ_ONLY)
   private OfferCategory offerCategory;

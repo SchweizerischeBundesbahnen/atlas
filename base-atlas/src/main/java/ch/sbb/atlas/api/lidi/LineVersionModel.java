@@ -1,8 +1,12 @@
 package ch.sbb.atlas.api.lidi;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,11 +21,24 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "LineVersion", description = "Deprecated in favor of LineVersionV2")
+/**
+ * @deprecated since V2.328.0
+ */
 @Deprecated(forRemoval = true, since = "2.328.0")
 public class LineVersionModel extends BaseLineVersionModel {
 
   @Schema(description = "PaymentType")
   @NotNull
   private PaymentType paymentType;
+
+  @Schema(description = "AlternativeName", example = "L1")
+  @Size(max = AtlasFieldLengths.LENGTH_50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String alternativeName;
+
+  @Schema(description = "CombinationName", example = "S L1")
+  @Size(max = AtlasFieldLengths.LENGTH_50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String combinationName;
 
 }

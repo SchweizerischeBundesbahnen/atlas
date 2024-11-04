@@ -50,6 +50,13 @@ public class LineTestData {
         .swissLineNumber("swissLineNumber");
   }
 
+  public static LineVersionBuilder<?, ?> lineVersionV2Builder() {
+    return lineVersionBuilder()
+        .concessionType(LineConcessionType.COLLECTION_LINE)
+        .shortNumber("6")
+        .offerCategory(OfferCategory.IC);
+  }
+
   public static LineVersion lineVersion() {
     return lineVersionBuilder().build();
   }
@@ -85,8 +92,6 @@ public class LineTestData {
         .shortNumber("61")
         .offerCategory(OfferCategory.IC)
         .number("IC61")
-        .alternativeName("alternativeName")
-        .combinationName("combinationName")
         .longName("longName")
         .colorFontRgb("#FFFFFF")
         .colorBackRgb("#FFFFFF")
