@@ -39,8 +39,7 @@ public class PlatformBulkImportService {
     List<PlatformVersion> currentPlatformVersions = getCurrentPlatformVersions(platformReducedUpdateCsvModel);
     PlatformVersion currentVersion = ImportUtils.getCurrentVersion(currentPlatformVersions,
         platformReducedUpdateCsvModel.getValidFrom(), platformReducedUpdateCsvModel.getValidTo());
-    PlatformVersionModel updateModel = PlatformBulkImportUpdate.applyUpdateFromCsv(currentVersion, platformReducedUpdateCsvModel);
-    PlatformBulkImportUpdate.applyNulling(bulkImportUpdateContainer.getAttributesToNull(), updateModel);
+    PlatformVersionModel updateModel = PlatformBulkImportUpdate.apply(bulkImportUpdateContainer, currentVersion);
 
     platformApiClient.updatePlatform(currentVersion.getId(), updateModel);
   }

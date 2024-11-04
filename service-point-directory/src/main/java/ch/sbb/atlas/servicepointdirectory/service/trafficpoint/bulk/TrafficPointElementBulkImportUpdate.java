@@ -6,12 +6,15 @@ import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.GeolocationBulkImportDataMapper;
 
-public class TrafficPointElementBulkImportUpdate extends GeolocationBulkImportDataMapper<TrafficPointUpdateCsvModel, TrafficPointElementVersion,
-    CreateTrafficPointElementVersionModel> {
+public class TrafficPointElementBulkImportUpdate extends
+    GeolocationBulkImportDataMapper<TrafficPointUpdateCsvModel, TrafficPointElementVersion,
+        CreateTrafficPointElementVersionModel> {
 
-  public static CreateTrafficPointElementVersionModel apply(BulkImportUpdateContainer<TrafficPointUpdateCsvModel> bulkImportContainer,
-      TrafficPointElementVersion currentVersion, CreateTrafficPointElementVersionModel updateModel) {
-    return new TrafficPointElementBulkImportUpdate().applyUpdate(bulkImportContainer, currentVersion, updateModel);
+  public static CreateTrafficPointElementVersionModel apply(
+      BulkImportUpdateContainer<TrafficPointUpdateCsvModel> bulkImportContainer,
+      TrafficPointElementVersion currentVersion) {
+    return new TrafficPointElementBulkImportUpdate().applyUpdate(bulkImportContainer, currentVersion,
+        new CreateTrafficPointElementVersionModel());
   }
 
   @Override
@@ -20,7 +23,8 @@ public class TrafficPointElementBulkImportUpdate extends GeolocationBulkImportDa
 
     setNonUpdatableValues(currentVersion, updateModel);
 
-    updateModel.setTrafficPointElementGeolocation(applyGeolocationUpdate(currentVersion.getTrafficPointElementGeolocation(), update));
+    updateModel.setTrafficPointElementGeolocation(
+        applyGeolocationUpdate(currentVersion.getTrafficPointElementGeolocation(), update));
   }
 
   private static void setNonUpdatableValues(TrafficPointElementVersion currentVersion,
