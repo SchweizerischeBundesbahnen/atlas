@@ -1,12 +1,12 @@
 package ch.sbb.line.directory.controller;
 
-import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.alternativeName;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
-import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.combinationName;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.lineType;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.longName;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.slnid;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.swissLineNumber;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.alternativeName;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.combinationName;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.paymentType;
 import static ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE;
 import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;

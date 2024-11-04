@@ -57,16 +57,6 @@ public abstract class BaseLineVersionModel extends BaseVersionModel implements D
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String number;
 
-  @Schema(description = "AlternativeName", example = "L1")
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  private String alternativeName;
-
-  @Schema(description = "CombinationName", example = "S L1")
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  private String combinationName;
-
   @Schema(description = "LongName", example = "Spiseggfräser; Talstation - Bergstation; Ersatzbus")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
