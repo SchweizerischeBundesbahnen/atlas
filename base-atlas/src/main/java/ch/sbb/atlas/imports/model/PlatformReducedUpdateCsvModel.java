@@ -6,6 +6,8 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
+import ch.sbb.atlas.imports.bulk.DefaultMapping;
+import ch.sbb.atlas.imports.bulk.Nulling;
 import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel.Fields;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -36,28 +38,48 @@ public class PlatformReducedUpdateCsvModel implements Validatable<PlatformReduce
 
   private String sloid;
 
+  @DefaultMapping
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validFrom;
 
+  @DefaultMapping
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validTo;
 
+  @DefaultMapping
+  @Nulling
   private String additionalInformation;
 
+  @DefaultMapping
+  @Nulling
   private Double height;
 
+  @DefaultMapping
+  @Nulling
   private Double inclinationLongitudinal;
 
+  @DefaultMapping
+  @Nulling
   private Set<InfoOpportunityAttributeType> infoOpportunities;
 
+  @DefaultMapping
+  @Nulling
   private Boolean partialElevation;
 
+  @DefaultMapping
+  @Nulling
   private BooleanOptionalAttributeType tactileSystem;
 
+  @DefaultMapping
+  @Nulling
   private VehicleAccessAttributeType vehicleAccess;
 
+  @DefaultMapping
+  @Nulling
   private Double wheelchairAreaLength;
 
+  @DefaultMapping
+  @Nulling
   private Double wheelchairAreaWidth;
 
   @Override
