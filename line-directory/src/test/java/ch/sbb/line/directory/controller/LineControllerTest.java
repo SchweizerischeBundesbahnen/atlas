@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -32,10 +33,13 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
- class LineControllerTest {
+class LineControllerTest {
 
   private static final String[] RECURSIVE_COMPARISION_IGNORE_FIELDS = {"editor", "creator",
       "editionDate", "creationDate", "version"};
+
+  private static final String[] LINE_VERSION_V2_COMPARISION_IGNORE_FIELDS = {"paymentType", "alternativeName", "combinationName",
+      "shortNumber", "concessionType", "offerCategory"};
 
   @Mock
   private LineService lineService;
@@ -82,7 +86,7 @@ import org.springframework.data.domain.Pageable;
   }
 
   @Test
-   void shouldSaveNewVersion() {
+  void shouldSaveNewVersion() {
     // Given
     LineVersionModel lineVersionModel = createModel();
 
@@ -92,7 +96,7 @@ import org.springframework.data.domain.Pageable;
     // Then
     verify(lineService).create(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
-        .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
+        .ignoringFields(ArrayUtils.addAll(RECURSIVE_COMPARISION_IGNORE_FIELDS, LINE_VERSION_V2_COMPARISION_IGNORE_FIELDS))
         .ignoringFieldsMatchingRegexes("color.*")
         .isEqualTo(lineVersionModel);
   }
