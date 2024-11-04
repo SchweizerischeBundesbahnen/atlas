@@ -9,8 +9,9 @@ public class ServicePointBulkImportUpdate extends
     GeolocationBulkImportDataMapper<ServicePointUpdateCsvModel, ServicePointVersion, UpdateServicePointVersionModel> {
 
   public static UpdateServicePointVersionModel apply(BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer,
-      ServicePointVersion currentVersion, UpdateServicePointVersionModel updateServicePointVersionModel) {
-    return new ServicePointBulkImportUpdate().applyUpdate(bulkImportContainer, currentVersion, updateServicePointVersionModel);
+      ServicePointVersion currentVersion) {
+    return new ServicePointBulkImportUpdate().applyUpdate(bulkImportContainer, currentVersion,
+        new UpdateServicePointVersionModel());
   }
 
   @Override
