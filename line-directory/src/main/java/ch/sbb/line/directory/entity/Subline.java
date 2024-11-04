@@ -1,13 +1,13 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import java.time.LocalDate;
+import ch.sbb.atlas.model.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,8 +27,6 @@ import org.hibernate.annotations.Immutable;
 public class Subline {
 
   private String swissSublineNumber;
-
-  private String number;
 
   private String description;
 

@@ -2,13 +2,9 @@ package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.api.lidi.SublineApiV2;
 import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
-import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
-import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
-import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
-import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import ch.sbb.atlas.model.Status;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.service.SublineService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,37 +15,39 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SublineControllerV2 implements SublineApiV2 {
 
-  public static final LocalDate VALID_FROM = LocalDate.of(2020, 1, 1);
-  public static final LocalDate VALID_TO = LocalDate.of(9999, 12, 31);
+  private final SublineService sublineService;
 
   @Override
   public List<SublineVersionModelV2> getSublineVersion(String slnid) {
-    return List.of(getSublineVersionV2DraftModel());
+    List<SublineVersion> versions = sublineService.findSubline(slnid);
+    String lineSlnid = versions.getFirst().getMainlineSlnid();
+    LineVersion lineVersion = sublineService.getMainLineVersion(lineSlnid);
+    return versions.stream().map(sublineVersion -> toModel(sublineVersion, lineVersion)).toList();
+
   }
 
-  private SublineVersionModelV2 getSublineVersionV2DraftModel() {
+  private SublineVersionModelV2 toModel(SublineVersion sublineVersion, LineVersion lineVersion) {
     return SublineVersionModelV2.builder()
-        .id(1L)
-        .slnid("ch:1:slnid:1024336:1")
-        .mainlineSlnid("ch:1:slnid:1024336")
-        .swissSublineNumber("b0.IC6:EC")
-        .businessOrganisation("ch:1:slnid:1024336")
-        .status(Status.VALIDATED)
-        .lineConcessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
-        .sublineConcessionType(SublineConcessionType.LINE_ABROAD)
-        .sublineType(SublineType.DISPOSITION)
-        .shortNumber("61")
-        .offerCategory(OfferCategory.IC)
-        .longName("longName")
-        .description("Basel SBB - Olten - Bern - LBT - Brig - Domodossola")
-        .validFrom(VALID_FROM)
-        .validTo(VALID_TO)
-        .status(Status.VALIDATED)
-        .mainSwissLineNumber("b0.IC6")
-        .creationDate(LocalDateTime.now())
-        .creator("Calipso")
-        .editionDate(LocalDateTime.now())
-        .editor("Neptun")
+        .id(sublineVersion.getId())
+        .swissSublineNumber(sublineVersion.getSwissSublineNumber())
+        .mainlineSlnid(sublineVersion.getMainlineSlnid())
+        .lineConcessionType(lineVersion.getConcessionType())
+        .mainSwissLineNumber(lineVersion.getSwissLineNumber())
+        .mainShortNumber(lineVersion.getShortNumber())
+        .status(sublineVersion.getStatus())
+        .sublineType(sublineVersion.getSublineType())
+        .slnid(sublineVersion.getSlnid())
+        .description(sublineVersion.getDescription())
+        .longName(sublineVersion.getLongName())
+        .validFrom(sublineVersion.getValidFrom())
+        .validTo(sublineVersion.getValidTo())
+        .businessOrganisation(sublineVersion.getBusinessOrganisation())//
+        .etagVersion(sublineVersion.getVersion())
+        .creator(sublineVersion.getCreator())
+        .creationDate(sublineVersion.getCreationDate())
+        .editor(sublineVersion.getEditor())
+        .editionDate(sublineVersion.getEditionDate())
         .build();
   }
+
 }
