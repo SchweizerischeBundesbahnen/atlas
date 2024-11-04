@@ -35,13 +35,12 @@ public abstract class GeolocationBulkImportDataMapper<T, U, V> extends BulkImpor
         .orElse(currentGeolocation == null ? null : currentGeolocation.getSpatialReference());
     geolocationModel.setSpatialReference(spatialReference);
 
-    applyValueWithDefault(roundToSpatialReferencePrecision(update.getNorth(), spatialReference),
-        currentGeolocation == null ? null : currentGeolocation.getNorth(), geolocationModel::setNorth);
-    applyValueWithDefault(roundToSpatialReferencePrecision(update.getEast(), spatialReference),
-        currentGeolocation == null ? null : currentGeolocation.getEast(), geolocationModel::setEast);
-
-    applyValueWithDefault(update.getHeight(), currentGeolocation == null ? null : currentGeolocation.getHeight(),
-        geolocationModel::setHeight);
+    geolocationModel.setNorth(Optional.ofNullable(roundToSpatialReferencePrecision(update.getNorth(), spatialReference))
+        .orElse(currentGeolocation == null ? null : currentGeolocation.getNorth()));
+    geolocationModel.setEast(Optional.ofNullable(roundToSpatialReferencePrecision(update.getEast(), spatialReference))
+        .orElse(currentGeolocation == null ? null : currentGeolocation.getEast()));
+    geolocationModel.setHeight(
+        Optional.ofNullable(update.getHeight()).orElse(currentGeolocation == null ? null : currentGeolocation.getHeight()));
 
     return geolocationModel;
   }

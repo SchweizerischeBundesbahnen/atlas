@@ -4,6 +4,8 @@ import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
+import ch.sbb.atlas.imports.bulk.DefaultMapping;
+import ch.sbb.atlas.imports.bulk.Nulling;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
 import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel.Fields;
@@ -34,30 +36,48 @@ public class TrafficPointUpdateCsvModel implements Validatable<TrafficPointUpdat
 
   private String sloid;
 
+  @DefaultMapping
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validFrom;
 
+  @DefaultMapping
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validTo;
 
+  @DefaultMapping
+  @Nulling
   private String designation;
 
+  @DefaultMapping
+  @Nulling
   private String designationOperational;
 
+  @DefaultMapping
+  @Nulling
   private Double length;
 
+  @DefaultMapping
+  @Nulling
   private Double boardingAreaHeight;
 
+  @DefaultMapping
+  @Nulling
   private Double compassDirection;
 
+  @Nulling(property = "trafficPointElementGeolocation")
   private Double east;
 
+  @Nulling(property = "trafficPointElementGeolocation")
   private Double north;
 
+  @Nulling(property = "trafficPointElementGeolocation")
   private SpatialReference spatialReference;
 
+  @Nulling(property = "trafficPointElementGeolocation.height")
   private Double height;
 
+  @DefaultMapping
+  @Nulling
   private String parentSloid;
 
   @Override
