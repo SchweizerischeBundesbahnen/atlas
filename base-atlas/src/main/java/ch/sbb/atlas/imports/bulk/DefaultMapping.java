@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates fieldName based copying of value property
+ * For use with {@link BulkImportDataMapper}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
