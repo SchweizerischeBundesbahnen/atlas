@@ -1,14 +1,15 @@
 package ch.sbb.line.directory;
 
-import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
+import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.Subline.SublineBuilder;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
-import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import java.time.LocalDate;
 
 public class SublineTestData {
@@ -33,6 +34,11 @@ public class SublineTestData {
         .mainlineSlnid(MAINLINE_SLNID)
         .swissSublineNumber(
             "swissSublineNumber");
+  }
+
+  public static SublineVersionBuilder<?, ?> sublineVersionV2Builder() {
+    return sublineVersionBuilder()
+        .concessionType(SublineConcessionType.LINE_ABROAD);
   }
 
   public static SublineVersion sublineVersion() {
