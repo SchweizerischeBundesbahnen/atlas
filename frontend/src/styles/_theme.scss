@@ -15,10 +15,19 @@ $theme: mat.define-theme((
   )
 ));
 
-// **Be sure that you only ever include this mixin once!**
 @include mat.core();
 
 html {
   @include mat.all-component-themes($theme);
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif
+  }
+
+  --mat-list-active-indicator-shape: unset;
+  --mat-sidenav-container-shape: unset;
+  --mat-sidenav-container-width: 239px;
+
+  --mat-tab-header-divider-height: 0;
 }
 
