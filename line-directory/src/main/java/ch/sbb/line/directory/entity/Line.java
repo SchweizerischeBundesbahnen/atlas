@@ -1,13 +1,13 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +23,7 @@ import org.hibernate.annotations.Immutable;
 @Builder
 @Immutable
 @FieldNameConstants
-@Entity(name = "line")
+@Entity(name = "overview_line_subline")
 public class Line {
 
   private String swissLineNumber;
@@ -36,7 +36,7 @@ public class Line {
   private Status status;
 
   @Enumerated(EnumType.STRING)
-  private LineType lineType;
+  private LidiElementType lidiElementType;
 
   private String businessOrganisation;
 
