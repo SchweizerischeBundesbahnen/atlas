@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionModel.LineVersionModelBuilder;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2.LineVersionModelV2Builder;
+import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
@@ -110,7 +111,7 @@ public class LineTestData {
   public static LineBuilder lineBuilder() {
     return Line.builder()
         .status(Status.VALIDATED)
-        .lineType(LineType.ORDERLY)
+        .lidiElementType(LidiElementType.CONCESSION)
         .number("number")
         .description("description")
         .validFrom(LocalDate.of(2020, 1, 1))

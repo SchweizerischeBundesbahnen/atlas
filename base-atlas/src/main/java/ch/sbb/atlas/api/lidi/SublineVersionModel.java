@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -28,8 +28,7 @@ import lombok.experimental.SuperBuilder;
 @Deprecated(forRemoval = true, since = "2.328.0")
 public class SublineVersionModel extends BaseSublineVersionModel implements DatesValidator {
 
-  @Schema(description = "PaymentType")
-  @NotNull
+  @Schema(description = "PaymentType deprecated since V2.328.0", accessMode = AccessMode.READ_ONLY)
   private PaymentType paymentType;
 
   @Schema(description = "Number", example = "L1")
