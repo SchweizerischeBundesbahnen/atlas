@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.atlas.api.lidi.enumaration.ElementType;
 import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.model.Status;
 import jakarta.persistence.Column;
@@ -37,6 +38,9 @@ public class Line {
 
   @Enumerated(EnumType.STRING)
   private LidiElementType lidiElementType;
+
+  @Enumerated(EnumType.STRING)
+  private ElementType elementType;
 
   private String businessOrganisation;
 
