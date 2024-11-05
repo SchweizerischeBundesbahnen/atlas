@@ -12,6 +12,8 @@ import lombok.Getter;
 @Schema(enumAsRef = true)
 public enum OfferCategory {
 
+  EV(null),
+
   IC(MeanOfTransport.TRAIN),
   EC(MeanOfTransport.TRAIN),
   EN(MeanOfTransport.TRAIN),
@@ -61,8 +63,10 @@ public enum OfferCategory {
     if (meanOfTransport == MeanOfTransport.UNKNOWN) {
       throw new IllegalArgumentException("MeanOfTransport [" + meanOfTransport + "] not supported by OfferCategory!");
     }
-    return Arrays.stream(OfferCategory.values())
-        .filter(offerCategory -> offerCategory.getMeanOfTransport() == meanOfTransport).toList();
+    List<OfferCategory> categories = new java.util.ArrayList<>(Arrays.stream(OfferCategory.values())
+        .filter(offerCategory -> offerCategory.getMeanOfTransport() == meanOfTransport).toList());
+    categories.add(OfferCategory.EV);
+    return categories;
   }
 
 }
