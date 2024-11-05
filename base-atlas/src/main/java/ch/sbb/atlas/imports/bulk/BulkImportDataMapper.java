@@ -21,7 +21,7 @@ public abstract class BulkImportDataMapper<T, U, V> {
 
   public V applyUpdate(BulkImportUpdateContainer<T> container, U currentEntity, V targetModel) {
     applyDefaultMapping(container.getObject(), currentEntity, targetModel);
-    applyAdditionalDefaultMapping(container.getObject(), currentEntity, targetModel);
+    applyCopyFromCurrentVersion(container.getObject(), currentEntity, targetModel);
     applySpecificUpdate(container.getObject(), currentEntity, targetModel);
 
     applyNulling(container, targetModel);
@@ -78,7 +78,7 @@ public abstract class BulkImportDataMapper<T, U, V> {
     }
   }
 
-  private void applyAdditionalDefaultMapping(T update, U currentEntity, V targetModel) {
+  private void applyCopyFromCurrentVersion(T update, U currentEntity, V targetModel) {
     if (update.getClass().isAnnotationPresent(CopyFromCurrentVersion.class)) {
       CopyFromCurrentVersion copyFromCurrentVersion = update.getClass().getAnnotation(CopyFromCurrentVersion.class);
       Map<String, String> mappings = Stream.of(copyFromCurrentVersion.value())
