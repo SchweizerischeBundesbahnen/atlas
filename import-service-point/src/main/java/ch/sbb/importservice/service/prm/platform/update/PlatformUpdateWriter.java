@@ -2,7 +2,7 @@ package ch.sbb.importservice.service.prm.platform.update;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.importservice.client.PlatformBulkImportClient;
 import ch.sbb.importservice.service.bulk.writer.BulkImportItemWriter;
 import ch.sbb.importservice.service.bulk.writer.WriterUtil;

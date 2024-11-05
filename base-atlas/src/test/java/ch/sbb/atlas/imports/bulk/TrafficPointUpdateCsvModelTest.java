@@ -2,6 +2,7 @@ package ch.sbb.atlas.imports.bulk;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 

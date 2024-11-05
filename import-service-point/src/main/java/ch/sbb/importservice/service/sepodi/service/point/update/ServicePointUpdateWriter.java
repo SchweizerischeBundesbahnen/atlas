@@ -2,7 +2,7 @@ package ch.sbb.importservice.service.sepodi.service.point.update;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.importservice.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.service.bulk.writer.BulkImportItemWriter;
 import ch.sbb.importservice.service.bulk.writer.WriterUtil;
@@ -28,6 +28,8 @@ public class ServicePointUpdateWriter extends ServicePointUpdate implements Bulk
 
   @Override
   public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
+    log.info("Writing {} items", items.size());
+
     List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers =
         WriterUtil.getContainersWithoutDataValidationErrors(items);
     WriterUtil.addInNameOfTo(stepExecution, updateContainers);
