@@ -97,6 +97,7 @@ model/detail.ts
 model/displayInfo.ts
 model/district.ts
 model/editStopPointWorkflow.ts
+model/elementType.ts
 model/errorDetail.ts
 model/errorResponse.ts
 model/examinantWorkflowCheck.ts
