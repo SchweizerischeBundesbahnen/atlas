@@ -6,7 +6,7 @@ import {BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
 import {of, throwError} from "rxjs";
 import {NotificationService} from "../../../core/notification/notification.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe} from "@ngx-translate/core";
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {FileDownloadService} from "../../../core/components/file-upload/file/file-download.service";
 import {AtlasButtonComponent} from "../../../core/components/button/atlas-button.component";
 import {DetailFooterComponent} from "../../../core/components/detail-footer/detail-footer.component";
@@ -75,7 +75,6 @@ describe('BulkImportOverviewComponent', () => {
         AtlasSpacerComponent,
         TextFieldComponent,
         FileUploadComponent,
-        TranslatePipe
       ],
     });
 
