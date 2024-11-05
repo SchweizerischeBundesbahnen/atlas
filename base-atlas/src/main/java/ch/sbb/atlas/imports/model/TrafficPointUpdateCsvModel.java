@@ -1,9 +1,16 @@
-package ch.sbb.atlas.imports.bulk;
+package ch.sbb.atlas.imports.model;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
+import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion;
+import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion.Mapping;
+import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
-import ch.sbb.atlas.imports.bulk.TrafficPointUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.annotation.DefaultMapping;
+import ch.sbb.atlas.imports.annotation.Nulling;
+import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
+import ch.sbb.atlas.imports.bulk.Validatable;
+import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel.Fields;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDate;
@@ -27,34 +34,58 @@ import lombok.experimental.FieldNameConstants;
 @JsonPropertyOrder({Fields.sloid, Fields.validFrom, Fields.validTo, Fields.designation,
     Fields.designationOperational, Fields.length, Fields.boardingAreaHeight, Fields.compassDirection,
     Fields.east, Fields.north, Fields.spatialReference, Fields.height, Fields.parentSloid})
+@CopyFromCurrentVersion({
+    @Mapping(target = "id", current = "id"),
+    @Mapping(target = "etagVersion", current = "version"),
+    @Mapping(target = "sloid", current = "sloid"),
+    @Mapping(target = "numberWithoutCheckDigit", current = "servicePointNumber.value"),
+})
 public class TrafficPointUpdateCsvModel implements Validatable<TrafficPointUpdateCsvModel>, UpdateGeolocationModel {
 
   private String sloid;
 
+  @DefaultMapping
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validFrom;
 
+  @DefaultMapping
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validTo;
 
+  @DefaultMapping
+  @Nulling
   private String designation;
 
+  @DefaultMapping
+  @Nulling
   private String designationOperational;
 
+  @DefaultMapping
+  @Nulling
   private Double length;
 
+  @DefaultMapping
+  @Nulling
   private Double boardingAreaHeight;
 
+  @DefaultMapping
+  @Nulling
   private Double compassDirection;
 
+  @Nulling(property = "trafficPointElementGeolocation")
   private Double east;
 
+  @Nulling(property = "trafficPointElementGeolocation")
   private Double north;
 
+  @Nulling(property = "trafficPointElementGeolocation")
   private SpatialReference spatialReference;
 
+  @Nulling(property = "trafficPointElementGeolocation.height")
   private Double height;
 
+  @DefaultMapping
+  @Nulling
   private String parentSloid;
 
   @Override

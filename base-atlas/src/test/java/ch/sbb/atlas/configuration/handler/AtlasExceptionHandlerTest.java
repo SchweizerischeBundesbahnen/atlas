@@ -7,29 +7,30 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.export.enumeration.ExportType;
-import ch.sbb.atlas.model.exception.SloidNotFoundException;
-import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import java.time.LocalDate;
+import ch.sbb.atlas.model.exception.AtlasException;
+import ch.sbb.atlas.model.exception.FileNotFoundOnS3Exception;
 import java.util.Collections;
 import org.apache.catalina.connector.ClientAbortException;
+import org.hibernate.StaleObjectStateException;
 import org.hibernate.StaleStateException;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
+import org.springframework.data.mapping.PropertyReferenceException;
+import org.springframework.data.util.TypeInformation;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.async.AsyncRequestNotUsableException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 public class AtlasExceptionHandlerTest {
 
@@ -167,42 +168,75 @@ public class AtlasExceptionHandlerTest {
   }
 
   @Test
-  void shouldMapAtlasExceptionToErrorResponse() {
-    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(new SloidNotFoundException("ch:1:sloid:12333"));
-    assertThat(errorResponse.getMessage()).isEqualTo("Entity not found");
+  void shouldHandleMultipartException() {
+    // Given
+    MultipartException exception = new MultipartException("No file");
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.multipartException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(400);
+    assertThat(errorResponseEntity.getBody().getDetails().getFirst().getDisplayInfo().getCode()).isEqualTo("ERROR.MULTIPART");
   }
 
   @Test
-  void shouldMapVersioningNoChangesExceptionToErrorResponse() {
-    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(new VersioningNoChangesException());
-    assertThat(errorResponse.getMessage()).isEqualTo("No entities were modified after versioning execution.");
+  void shouldHandleAtlasException() {
+    // Given
+    AtlasException exception = new FileNotFoundOnS3Exception("file.txt");
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.atlasException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(500);
   }
 
   @Test
-  void shouldMapConstraintViolationExceptionToErrorResponse() {
-    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(getExampleConstraintViolation());
+  void shouldHandlePropertyReferenceException() {
+    // Given
+    PropertyReferenceException exception = new PropertyReferenceException("id", TypeInformation.of(Long.class), Collections.emptyList());
 
-    assertThat(errorResponse.getDetails()).size().isEqualTo(2);
-  }
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.propertyReferenceException(exception);
 
-  private ConstraintViolationException getExampleConstraintViolation() {
-    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .designationOfficial("BernZuLangBernZuLangBernZuLangBernZuLangBernZuLang")
-        .businessOrganisation("ch:1:sboid:5846489645")
-        .stopPointType(StopPointType.ORDERLY)
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31))
-        .build();
-
-    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-    return new ConstraintViolationException(validator.validate(servicePointVersionModel));
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(400);
   }
 
   @Test
-  void shouldMapAccessDeniedExceptionToErrorResponse() {
-    ErrorResponse errorResponse = atlasExceptionHandler.mapToErrorResponse(new AccessDeniedException("no"));
-    assertThat(errorResponse.getMessage()).isEqualTo("You are not allowed to perform this operation on the ATLAS platform.");
-    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo("ERROR.NOTALLOWED");
+  void shouldHandleStaleObjectStateException() {
+    // Given
+    StaleObjectStateException exception = new StaleObjectStateException("entity", 1L);
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.staleObjectStateException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(412);
   }
 
+  @Test
+  void shouldHandleNoResourceFoundException () {
+    // Given
+    NoResourceFoundException exception = new NoResourceFoundException (HttpMethod.GET, "/resource");
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.handleNoResourceFoundException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(404);
+  }
+
+  @Test
+  void shouldHandleHttpRequestMethodNotSupportedException  () {
+    // Given
+    HttpRequestMethodNotSupportedException  exception = new HttpRequestMethodNotSupportedException("method");
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.handleHttpRequestMethodNotSupportedException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(400);
+  }
 }
