@@ -437,7 +437,6 @@
       "DETAIL_SUBLINE_INFORMATION": "Angaben zur Teillinie",
       "NEW_SUBLINE_INFORMATION": "Angaben zur neuen Teillinie",
       "SUBLINE": "Teillinie",
-      "SUBLINES": "Teillinien",
       "CONFLICT": {
         "SWISS_NUMBER": "Die CH-Teilliniennummer {{swissSublineNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{slnid}} vergeben.",
         "ASSIGN_DIFFERENT_LINE_CONFLICT": "Die Hauptline darf nicht geändert werden."
