@@ -1,5 +1,6 @@
-package ch.sbb.atlas.imports.bulk;
+package ch.sbb.atlas.imports.annotation;
 
+import ch.sbb.atlas.imports.bulk.BulkImportDataMapper;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
