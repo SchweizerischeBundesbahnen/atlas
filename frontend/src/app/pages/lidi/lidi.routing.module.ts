@@ -1,17 +1,16 @@
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { LidiOverviewComponent } from './overview/lidi-overview.component';
-import { LineDetailComponent } from './lines/detail/line-detail.component';
-import { lineResolver } from './lines/detail/line-detail.resolver';
-import { Pages } from '../pages';
-import { SublineDetailComponent } from './sublines/detail/subline-detail.component';
-import { sublineResolver } from './sublines/detail/subline-detail.resolver';
-import { LinesComponent } from './lines/lines.component';
-import { SublinesComponent } from './sublines/sublines.component';
-import { LidiWorkflowOverviewComponent } from './workflow/overview/lidi-workflow-overview.component';
-import { lineVersionSnapshotResolver } from './workflow/detail/line-version-snapshot.resolver';
-import { LineVersionSnapshotDetailComponent } from './workflow/detail/line-version-snapshot-detail.component';
-import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
+import {RouterModule, Routes} from '@angular/router';
+import {NgModule} from '@angular/core';
+import {LidiOverviewComponent} from './overview/lidi-overview.component';
+import {LineDetailComponent} from './lines/detail/line-detail.component';
+import {lineResolver} from './lines/detail/line-detail.resolver';
+import {Pages} from '../pages';
+import {SublineDetailComponent} from './sublines/detail/subline-detail.component';
+import {sublineResolver} from './sublines/detail/subline-detail.resolver';
+import {LinesComponent} from './lines/lines.component';
+import {LidiWorkflowOverviewComponent} from './workflow/overview/lidi-workflow-overview.component';
+import {lineVersionSnapshotResolver} from './workflow/detail/line-version-snapshot.resolver';
+import {LineVersionSnapshotDetailComponent} from './workflow/detail/line-version-snapshot-detail.component';
+import {canLeaveDirtyForm} from '../../core/leave-guard/leave-dirty-form-guard.service';
 
 const routes: Routes = [
   {
@@ -47,10 +46,6 @@ const routes: Routes = [
       {
         path: Pages.LINES.path,
         component: LinesComponent,
-      },
-      {
-        path: Pages.SUBLINES.path,
-        component: SublinesComponent,
       },
       {
         path: Pages.WORKFLOWS.path,
