@@ -62,7 +62,7 @@ public abstract class BaseUserAdministrationService {
                     applicationType))
         .toList();
     if (userPermissionsForCurrentApplication.size() == 1) {
-      return userPermissionsForCurrentApplication.get(0);
+      return userPermissionsForCurrentApplication.getFirst();
     }
     if (userPermissionsForCurrentApplication.isEmpty()) {
       return UserAdministrationPermissionModel.builder().application(applicationType).role(ApplicationRole.READER).build();
