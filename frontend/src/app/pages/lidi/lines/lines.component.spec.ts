@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
-import { LinesComponent } from './lines.component';
-import { ContainerLine, LinesService, LineType, Status } from '../../../api';
-import { AppTestingModule } from '../../../app.testing.module';
-import { TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../app.testing.mocks';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {Observable, of} from 'rxjs';
+import {LinesComponent} from './lines.component';
+import {ContainerLine, ElementType, LidiElementType, LinesService, Status} from '../../../api';
+import {AppTestingModule} from '../../../app.testing.module';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MockTableComponent} from '../../../app.testing.mocks';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
@@ -18,7 +18,8 @@ const versionContainer: ContainerLine = {
       validTo: new Date('2029-06-01'),
       businessOrganisation: 'SBB',
       swissLineNumber: 'L1',
-      lineType: LineType.Orderly,
+      lidiElementType: LidiElementType.Orderly,
+      elementType: ElementType.Line
     },
   ],
   totalCount: 1,
