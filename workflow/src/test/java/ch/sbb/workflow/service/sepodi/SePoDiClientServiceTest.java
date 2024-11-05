@@ -64,6 +64,21 @@ class SePoDiClientServiceTest {
         () -> service.updateStopPointStatusToInReview(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
   }
 
+  @Test
+  void shouldUpdateStatusInReviewAsAdmin() {
+    //given
+    String sloid = "ch:1:sloid:8000";
+    long versionId = 1L;
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder()
+            .sloid(sloid)
+            .id(versionId)
+            .status(Status.IN_REVIEW).build();
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient).postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW);
+    //when && then
+    assertDoesNotThrow(
+            () -> service.updateStopPointStatusToInReviewAsAdmin(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
+  }
+
   @ParameterizedTest
   @EnumSource(value = Status.class, names = {"REVOKED", "DRAFT", "WITHDRAWN", "VALIDATED"})
   void shouldNotUpdateStatusInReview(Status status) {
@@ -130,6 +145,18 @@ class SePoDiClientServiceTest {
         stopPointWorkflow.getVersionId(), Status.DRAFT);
     //when && then
     assertThrows(SePoDiClientWrongStatusReturnedException.class, () -> service.updateStopPointStatusToDraft(stopPointWorkflow));
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = Status.class, names = {"REVOKED", "WITHDRAWN", "VALIDATED"})
+  void shouldNotUpdateStatusToDraftAsAdmin(Status status) {
+    //given
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(status)
+            .build();
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient).postServicePointsStatusUpdate(stopPointWorkflow.getSloid(),
+            stopPointWorkflow.getVersionId(), Status.DRAFT);
+    //when && then
+    assertThrows(SePoDiClientWrongStatusReturnedException.class, () -> service.updateStopPointStatusToDraftAsAdmin(stopPointWorkflow));
   }
 
   @Test
