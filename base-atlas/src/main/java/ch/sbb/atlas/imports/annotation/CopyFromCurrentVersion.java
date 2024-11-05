@@ -11,13 +11,13 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface AdditionalDefaultMappings {
+public @interface CopyFromCurrentVersion {
 
-  AdditionalDefaultMapping[] value() default {};
+  Mapping[] value() default {};
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE})
-  @interface AdditionalDefaultMapping {
+  @interface Mapping {
 
     String target();
 
