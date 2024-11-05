@@ -3,6 +3,7 @@ package ch.sbb.atlas.imports.model;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings;
+import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings.AdditionalDefaultMapping;
 import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.annotation.DefaultMapping;
@@ -34,10 +35,10 @@ import lombok.experimental.FieldNameConstants;
     Fields.designationOperational, Fields.length, Fields.boardingAreaHeight, Fields.compassDirection,
     Fields.east, Fields.north, Fields.spatialReference, Fields.height, Fields.parentSloid})
 @AdditionalDefaultMappings({
-    @DefaultMapping(target = "id", current = "id"),
-    @DefaultMapping(target = "etagVersion", current = "version"),
-    @DefaultMapping(target = "sloid", current = "sloid"),
-    @DefaultMapping(target = "numberWithoutCheckDigit", current = "servicePointNumber.value"),
+    @AdditionalDefaultMapping(target = "id", current = "id"),
+    @AdditionalDefaultMapping(target = "etagVersion", current = "version"),
+    @AdditionalDefaultMapping(target = "sloid", current = "sloid"),
+    @AdditionalDefaultMapping(target = "numberWithoutCheckDigit", current = "servicePointNumber.value"),
 })
 public class TrafficPointUpdateCsvModel implements Validatable<TrafficPointUpdateCsvModel>, UpdateGeolocationModel {
 
