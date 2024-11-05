@@ -251,17 +251,18 @@ public class LineController implements LineApiV1 {
         .build();
   }
 
-  private LineModel toModel(Line lineVersion) {
+  private LineModel toModel(Line line) {
     return LineModel.builder()
-        .status(lineVersion.getStatus())
-        .lidiElementType(lineVersion.getLidiElementType())
-        .slnid(lineVersion.getSlnid())
-        .number(lineVersion.getNumber())
-        .description(lineVersion.getDescription())
-        .validFrom(lineVersion.getValidFrom())
-        .validTo(lineVersion.getValidTo())
-        .businessOrganisation(lineVersion.getBusinessOrganisation())
-        .swissLineNumber(lineVersion.getSwissLineNumber())
+        .status(line.getStatus())
+        .lidiElementType(line.getLidiElementType())
+        .elementType(line.getElementType())
+        .slnid(line.getSlnid())
+        .number(line.getNumber())
+        .description(line.getDescription())
+        .validFrom(line.getValidFrom())
+        .validTo(line.getValidTo())
+        .businessOrganisation(line.getBusinessOrganisation())
+        .swissLineNumber(line.getSwissLineNumber())
         .build();
   }
 
