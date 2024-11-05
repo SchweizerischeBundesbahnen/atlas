@@ -13,6 +13,14 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface AdditionalDefaultMappings {
 
-  DefaultMapping[] value() default {};
+  AdditionalDefaultMapping[] value() default {};
 
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target({ElementType.TYPE})
+  @interface AdditionalDefaultMapping {
+
+    String target();
+
+    String current();
+  }
 }
