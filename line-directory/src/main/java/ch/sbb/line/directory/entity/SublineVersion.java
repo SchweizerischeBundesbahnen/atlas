@@ -83,7 +83,6 @@ public class SublineVersion extends BaseVersion implements Versionable,
   private String longName;
 
   @Deprecated(forRemoval = true, since = "2.328.0")
-  @NotNull
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private PaymentType paymentType;
