@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * @deprecated since V2.328.0
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -21,9 +24,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "LineVersion", description = "Deprecated in favor of LineVersionV2")
-/**
- * @deprecated since V2.328.0
- */
 @Deprecated(forRemoval = true, since = "2.328.0")
 public class LineVersionModel extends BaseLineVersionModel {
 
