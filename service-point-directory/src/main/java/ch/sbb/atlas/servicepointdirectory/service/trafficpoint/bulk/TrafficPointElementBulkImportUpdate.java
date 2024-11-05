@@ -20,20 +20,8 @@ public class TrafficPointElementBulkImportUpdate extends
   @Override
   protected void applySpecificUpdate(TrafficPointUpdateCsvModel update, TrafficPointElementVersion currentVersion,
       CreateTrafficPointElementVersionModel updateModel) {
-
-    setNonUpdatableValues(currentVersion, updateModel);
-
     updateModel.setTrafficPointElementGeolocation(
         applyGeolocationUpdate(currentVersion.getTrafficPointElementGeolocation(), update));
-  }
-
-  private static void setNonUpdatableValues(TrafficPointElementVersion currentVersion,
-      CreateTrafficPointElementVersionModel updateModel) {
-    updateModel.setId(currentVersion.getId());
-    updateModel.setEtagVersion(currentVersion.getVersion());
-
-    updateModel.setNumberWithoutCheckDigit(currentVersion.getServicePointNumber().getNumber());
-    updateModel.setSloid(currentVersion.getSloid());
   }
 
 }

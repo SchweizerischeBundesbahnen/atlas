@@ -2,10 +2,12 @@ package ch.sbb.atlas.imports.model;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
+import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings;
+import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings.AdditionalDefaultMapping;
 import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
-import ch.sbb.atlas.imports.bulk.DefaultMapping;
-import ch.sbb.atlas.imports.bulk.Nulling;
+import ch.sbb.atlas.imports.annotation.DefaultMapping;
+import ch.sbb.atlas.imports.annotation.Nulling;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
 import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel.Fields;
@@ -32,6 +34,12 @@ import lombok.experimental.FieldNameConstants;
 @JsonPropertyOrder({Fields.sloid, Fields.validFrom, Fields.validTo, Fields.designation,
     Fields.designationOperational, Fields.length, Fields.boardingAreaHeight, Fields.compassDirection,
     Fields.east, Fields.north, Fields.spatialReference, Fields.height, Fields.parentSloid})
+@AdditionalDefaultMappings({
+    @AdditionalDefaultMapping(target = "id", current = "id"),
+    @AdditionalDefaultMapping(target = "etagVersion", current = "version"),
+    @AdditionalDefaultMapping(target = "sloid", current = "sloid"),
+    @AdditionalDefaultMapping(target = "numberWithoutCheckDigit", current = "servicePointNumber.value"),
+})
 public class TrafficPointUpdateCsvModel implements Validatable<TrafficPointUpdateCsvModel>, UpdateGeolocationModel {
 
   private String sloid;

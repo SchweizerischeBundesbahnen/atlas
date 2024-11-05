@@ -1,11 +1,18 @@
 package ch.sbb.atlas.imports.bulk;
 
+import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings;
+import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings.AdditionalDefaultMapping;
+import ch.sbb.atlas.imports.annotation.DefaultMapping;
+import ch.sbb.atlas.imports.annotation.Nulling;
 import io.micrometer.common.util.StringUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.beans.ConfigurablePropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.util.ReflectionUtils;
@@ -14,6 +21,7 @@ public abstract class BulkImportDataMapper<T, U, V> {
 
   public V applyUpdate(BulkImportUpdateContainer<T> container, U currentEntity, V targetModel) {
     applyDefaultMapping(container.getObject(), currentEntity, targetModel);
+    applyAdditionalDefaultMapping(container.getObject(), currentEntity, targetModel);
     applySpecificUpdate(container.getObject(), currentEntity, targetModel);
 
     applyNulling(container, targetModel);
@@ -67,6 +75,25 @@ public abstract class BulkImportDataMapper<T, U, V> {
       ReflectionUtils.setField(targetField, targetModel, new ArrayList<>((Collection<?>) defaultValue));
     } else {
       ReflectionUtils.setField(targetField, targetModel, defaultValue);
+    }
+  }
+
+  private void applyAdditionalDefaultMapping(T update, U currentEntity, V targetModel) {
+    if (update.getClass().isAnnotationPresent(AdditionalDefaultMappings.class)) {
+      AdditionalDefaultMappings additionalDefaultMappings = update.getClass().getAnnotation(AdditionalDefaultMappings.class);
+      Map<String, String> mappings = Stream.of(additionalDefaultMappings.value())
+          .collect(Collectors.toMap(AdditionalDefaultMapping::current, AdditionalDefaultMapping::target));
+
+      mappings.forEach((current, target) -> {
+        ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(currentEntity);
+        if(propertyAccessor.isReadableProperty(current)) {
+          Object currentValue = propertyAccessor.getPropertyValue(current);
+
+          Field targetField = ReflectionUtils.findField(targetModel.getClass(), target);
+          ReflectionUtils.makeAccessible(Objects.requireNonNull(targetField));
+          setFieldValue(targetField, targetModel, currentValue);
+        }
+      });
     }
   }
 

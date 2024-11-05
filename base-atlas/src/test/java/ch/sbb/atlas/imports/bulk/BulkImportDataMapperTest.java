@@ -42,6 +42,25 @@ class BulkImportDataMapperTest {
   }
 
   @Test
+  void shouldApplyAdditionalDefaultMapping() {
+    BulkImportUpdateContainer<ServicePointUpdateCsvModel> container =
+        BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
+            .object(ServicePointUpdateCsvModel.builder()
+                .sloid("sloid")
+                .validFrom(LocalDate.of(2014, 12, 14))
+                .validTo(LocalDate.of(2021, 3, 31))
+                .designationLong("Bern, am Wyleregg")
+                .meansOfTransport(Set.of(MeanOfTransport.BUS))
+                .build())
+            .build();
+    UpdateServicePointVersionModel currentEntity = new UpdateServicePointVersionModel();
+    currentEntity.setId(4L);
+
+    UpdateServicePointVersionModel result = mapper.applyUpdate(container, currentEntity, new UpdateServicePointVersionModel());
+    assertThat(result.getId()).isEqualTo(4L);
+  }
+
+  @Test
   void shouldApplyNullingAfterDefaultMapping() {
     BulkImportUpdateContainer<ServicePointUpdateCsvModel> container =
         BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
