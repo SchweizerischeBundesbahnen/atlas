@@ -1,14 +1,14 @@
 package ch.sbb.line.directory.model.search;
 
+import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.searching.BusinessOrganisationDependentSearchRestriction;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.Line_;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import jakarta.persistence.metamodel.SingularAttribute;
 import java.util.List;
 import java.util.Optional;
-import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -25,7 +25,7 @@ public class LineSearchRestrictions extends BusinessOrganisationDependentSearchR
   private Optional<String> swissLineNumber = Optional.empty();
 
   @Singular(ignoreNullCollections = true)
-  private List<LineType> typeRestrictions;
+  private List<LidiElementType> typeRestrictions;
 
   @Override
   protected SingularAttribute<Line, Status> getStatus() {
@@ -35,7 +35,7 @@ public class LineSearchRestrictions extends BusinessOrganisationDependentSearchR
   @Override
   public Specification<Line> getSpecification() {
     return getBaseSpecification().and(
-            specificationBuilder().enumSpecification(typeRestrictions, Line_.lineType))
+            specificationBuilder().enumSpecification(typeRestrictions, Line_.lidiElementType))
         .and(specificationBuilder().singleStringSpecification(
             swissLineNumber));
   }

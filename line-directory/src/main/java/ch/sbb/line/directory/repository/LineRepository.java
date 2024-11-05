@@ -14,7 +14,7 @@ public interface LineRepository extends JpaRepository<Line, String>,
 
   Optional<Line> findAllBySlnid(String slnid);
 
-  @Query("SELECT l FROM line as l"
+  @Query("SELECT l FROM overview_line_subline as l"
       + " JOIN coverage as c "
       + " ON l.slnid = c.slnid"
       + " WHERE c.modelType = ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE"
