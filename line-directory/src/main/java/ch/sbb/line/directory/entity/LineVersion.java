@@ -77,7 +77,6 @@ public class LineVersion extends BaseVersion implements Versionable,
   private LineType lineType;
 
   @Deprecated(forRemoval = true, since = "2.328.0")
-  @NotNull
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private PaymentType paymentType;
