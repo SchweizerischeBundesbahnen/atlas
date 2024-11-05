@@ -69,7 +69,7 @@ class LineRepositoryTest {
 
     Line line = result.getContent().get(0);
     assertThat(line).usingRecursiveComparison()
-        .ignoringFields("validFrom", "validTo", "lidiElementType")
+        .ignoringFields("validFrom", "validTo", "lidiElementType", "elementType")
         .isEqualTo(validToday);
     assertThat(line.getLidiElementType().name()).isEqualTo(LineType.ORDERLY.name());
     assertThat(line.getValidFrom()).isEqualTo(validLastYear.getValidFrom());
@@ -115,7 +115,7 @@ class LineRepositoryTest {
 
     Line line = result.getContent().get(0);
     assertThat(line).usingRecursiveComparison()
-        .ignoringFields("validFrom", "validTo", "lidiElementType")
+        .ignoringFields("validFrom", "validTo", "lidiElementType", "elementType")
         .isEqualTo(validNextYear);
     assertThat(line.getLidiElementType().name()).isEqualTo(LineType.ORDERLY.name());
     assertThat(line.getValidFrom()).isEqualTo(validLastYear.getValidFrom());
@@ -153,7 +153,7 @@ class LineRepositoryTest {
 
     Line line = result.getContent().get(0);
     assertThat(line).usingRecursiveComparison()
-        .ignoringFields("validFrom", "validTo", "lidiElementType")
+        .ignoringFields("validFrom", "validTo", "lidiElementType", "elementType")
         .isEqualTo(validLastYear);
     assertThat(line.getLidiElementType().name()).isEqualTo(LineType.ORDERLY.name());
     assertThat(line.getValidFrom()).isEqualTo(validEarlier.getValidFrom());
