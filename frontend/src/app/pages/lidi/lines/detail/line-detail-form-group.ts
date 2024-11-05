@@ -1,11 +1,11 @@
-import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
-import { FormControl } from '@angular/forms';
-import { LineType, PaymentType } from '../../../../api';
+import {BaseDetailFormGroup} from '../../../../core/components/base-detail/base-detail-form-group';
+import {FormControl} from '@angular/forms';
+import {LineType, PaymentType} from '../../../../api';
 
 export interface LineDetailFormGroup extends BaseDetailFormGroup {
   swissLineNumber: FormControl<string | null>;
   lineType: FormControl<LineType | null>;
-  paymentType: FormControl<PaymentType | null>;
+  paymentType: FormControl<PaymentType | null | undefined>;
   businessOrganisation: FormControl<string | null>;
   number: FormControl<string | null | undefined>;
   alternativeName: FormControl<string | null | undefined>;
