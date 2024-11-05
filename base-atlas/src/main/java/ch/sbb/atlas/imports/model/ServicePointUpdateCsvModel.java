@@ -2,10 +2,12 @@ package ch.sbb.atlas.imports.model;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
+import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings;
+import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings.AdditionalDefaultMapping;
 import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
-import ch.sbb.atlas.imports.bulk.DefaultMapping;
-import ch.sbb.atlas.imports.bulk.Nulling;
+import ch.sbb.atlas.imports.annotation.DefaultMapping;
+import ch.sbb.atlas.imports.annotation.Nulling;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
 import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
@@ -42,6 +44,13 @@ import lombok.experimental.FieldNameConstants;
     Fields.operatingPointTechnicalTimetableType, Fields.meansOfTransport, Fields.categories,
     Fields.operatingPointTrafficPointType, Fields.sortCodeOfDestinationStation, Fields.businessOrganisation,
     Fields.east, Fields.north, Fields.spatialReference, Fields.height})
+@AdditionalDefaultMappings({
+    @AdditionalDefaultMapping(target = "id", current = "id"),
+    @AdditionalDefaultMapping(target = "etagVersion", current = "version"),
+    @AdditionalDefaultMapping(target = "abbreviation", current = "abbreviation"),
+    @AdditionalDefaultMapping(target = "operatingPointRouteNetwork", current = "operatingPointRouteNetwork"),
+    @AdditionalDefaultMapping(target = "operatingPointKilometerMasterNumber", current = "operatingPointKilometerMaster.value")
+})
 public class ServicePointUpdateCsvModel implements Validatable<ServicePointUpdateCsvModel>, UpdateGeolocationModel {
 
   private String sloid;
