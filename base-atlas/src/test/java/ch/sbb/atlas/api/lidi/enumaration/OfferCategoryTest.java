@@ -14,7 +14,7 @@ class OfferCategoryTest {
     //when
     List<OfferCategory> result = OfferCategory.from(MeanOfTransport.TRAIN);
     //then
-    assertThat(result).hasSize(18);
+    assertThat(result).hasSize(19);
   }
 
   @Test
@@ -22,7 +22,7 @@ class OfferCategoryTest {
     //when
     List<OfferCategory> result = OfferCategory.from(MeanOfTransport.TRAM);
     //then
-    assertThat(result).hasSize(2);
+    assertThat(result).hasSize(3);
   }
 
   @Test
@@ -30,7 +30,7 @@ class OfferCategoryTest {
     //when
     List<OfferCategory> result = OfferCategory.from(MeanOfTransport.METRO);
     //then
-    assertThat(result).hasSize(1);
+    assertThat(result).hasSize(2);
   }
 
   @Test
@@ -38,7 +38,7 @@ class OfferCategoryTest {
     //when
     List<OfferCategory> result = OfferCategory.from(MeanOfTransport.BUS);
     //then
-    assertThat(result).hasSize(7);
+    assertThat(result).hasSize(8);
   }
 
   @Test
@@ -46,7 +46,7 @@ class OfferCategoryTest {
     //when
     List<OfferCategory> result = OfferCategory.from(MeanOfTransport.CABLE_RAILWAY);
     //then
-    assertThat(result).hasSize(1);
+    assertThat(result).hasSize(2);
   }
 
   @Test
@@ -54,7 +54,7 @@ class OfferCategoryTest {
     //when
     List<OfferCategory> result = OfferCategory.from(MeanOfTransport.CABLE_CAR);
     //then
-    assertThat(result).hasSize(2);
+    assertThat(result).hasSize(3);
   }
 
   @Test
@@ -62,7 +62,7 @@ class OfferCategoryTest {
     //when
     List<OfferCategory> result = OfferCategory.from(MeanOfTransport.CHAIRLIFT);
     //then
-    assertThat(result).hasSize(1);
+    assertThat(result).hasSize(2);
   }
 
   @Test
@@ -70,7 +70,7 @@ class OfferCategoryTest {
     //when
     List<OfferCategory> result = OfferCategory.from(MeanOfTransport.ELEVATOR);
     //then
-    assertThat(result).hasSize(1);
+    assertThat(result).hasSize(2);
   }
 
   @Test
@@ -78,7 +78,7 @@ class OfferCategoryTest {
     //when
     List<OfferCategory> result = OfferCategory.from(MeanOfTransport.BOAT);
     //then
-    assertThat(result).hasSize(2);
+    assertThat(result).hasSize(3);
   }
 
   @Test
