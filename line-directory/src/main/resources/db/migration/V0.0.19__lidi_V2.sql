@@ -23,7 +23,7 @@ from (
                                                                l.swiss_line_number,
                                                                s.status,
                                                                s.subline_type,
-                                                               l.business_organisation,
+                                                               s.business_organisation,
                                                                s.slnid,
                                                                s.valid_from,
                                                                s.valid_to
@@ -38,7 +38,7 @@ from (
                                                                l.swiss_line_number,
                                                                s.status,
                                                                s.subline_type,
-                                                               l.business_organisation,
+                                                               s.business_organisation,
                                                                s.slnid,
                                                                s.valid_from,
                                                                s.valid_to
@@ -53,7 +53,7 @@ from (
                                                                l.swiss_line_number,
                                                                s.status,
                                                                s.subline_type,
-                                                               l.business_organisation,
+                                                               s.business_organisation,
                                                                s.slnid,
                                                                s.valid_from,
                                                                s.valid_to
@@ -108,18 +108,20 @@ CREATE OR REPLACE VIEW overview_line_subline as
 select *
 from (select number,
              description,
-             line_type         as type,
-             swiss_line_number as swiss_number,
+             line_type         as lidi_element_type,
+             business_organisation,
+             swiss_line_number as swiss_line_number,
              slnid,
              status,
              valid_from,
              valid_to
       from line lv
       union
-      select '' as number,
+      select ''                   as number,
              description,
-             subline_type         as type,
-             swiss_subline_number as swiss_number,
+             subline_type         as lidi_element_type,
+             business_organisation,
+             swiss_subline_number as swiss_line_number,
              slnid,
              status,
              valid_from,
