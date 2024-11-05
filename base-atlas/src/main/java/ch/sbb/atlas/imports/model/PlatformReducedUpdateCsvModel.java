@@ -5,10 +5,11 @@ import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings;
-import ch.sbb.atlas.imports.annotation.DefaultMapping;
-import ch.sbb.atlas.imports.annotation.Nulling;
+import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings.AdditionalDefaultMapping;
 import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
+import ch.sbb.atlas.imports.annotation.DefaultMapping;
+import ch.sbb.atlas.imports.annotation.Nulling;
 import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel.Fields;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -36,9 +37,9 @@ import lombok.experimental.FieldNameConstants;
     Fields.inclinationLongitudinal, Fields.infoOpportunities, Fields.partialElevation, Fields.tactileSystem,
     Fields.vehicleAccess, Fields.wheelchairAreaLength, Fields.wheelchairAreaWidth})
 @AdditionalDefaultMappings({
-    @DefaultMapping(target = "id", current = "id"),
-    @DefaultMapping(target = "etagVersion", current = "version"),
-    @DefaultMapping(target = "parentServicePointSloid", current = "parentServicePointSloid")
+    @AdditionalDefaultMapping(target = "id", current = "id"),
+    @AdditionalDefaultMapping(target = "etagVersion", current = "version"),
+    @AdditionalDefaultMapping(target = "parentServicePointSloid", current = "parentServicePointSloid")
 })
 public class PlatformReducedUpdateCsvModel implements Validatable<PlatformReducedUpdateCsvModel> {
 
