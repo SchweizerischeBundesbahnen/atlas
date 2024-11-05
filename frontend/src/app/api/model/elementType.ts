@@ -9,42 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Status } from './status';
-import { ElementType } from './elementType';
-import { LidiElementType } from './lidiElementType';
 
 
-export interface Line { 
-    /**
-     * SwissLineNumber
-     */
-    swissLineNumber: string;
-    status?: Status;
-    lidiElementType: LidiElementType;
-    elementType: ElementType;
-    /**
-     * SLNID
-     */
-    readonly slnid?: string;
-    /**
-     * Number
-     */
-    number?: string;
-    /**
-     * Description
-     */
-    description?: string;
-    /**
-     * Valid from
-     */
-    validFrom: Date;
-    /**
-     * Valid to
-     */
-    validTo: Date;
-    /**
-     * BusinessOrganisation SBOID
-     */
-    businessOrganisation: string;
-}
+/**
+ * Line or Subline Type
+ */
+export type ElementType = 'LINE' | 'SUBLINE';
+
+export const ElementType = {
+    Line: 'LINE' as ElementType,
+    Subline: 'SUBLINE' as ElementType
+};
 
