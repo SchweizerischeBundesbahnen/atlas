@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -351,7 +352,7 @@ import org.springframework.transaction.annotation.Transactional;
             List.of("1", "ch:SLNID:1",
                 "yb", "Fan"))
         .typeRestrictions(
-            List.of(LineType.ORDERLY))
+            List.of(LidiElementType.ORDERLY))
         .build());
 
     // Then
@@ -372,8 +373,8 @@ import org.springframework.transaction.annotation.Transactional;
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
         .typeRestrictions(
-            List.of(LineType.ORDERLY,
-                LineType.TEMPORARY))
+            List.of(LidiElementType.ORDERLY,
+                LidiElementType.TEMPORARY))
         .build());
 
     // Then
