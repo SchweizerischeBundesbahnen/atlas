@@ -14,9 +14,10 @@
 /**
  * offerCategory
  */
-export type OfferCategory = 'IC' | 'EC' | 'EN' | 'IR' | 'RE' | 'R' | 'S' | 'SN' | 'PE' | 'EXT' | 'ATZ' | 'ICE' | 'TGV' | 'RJ' | 'TE2' | 'TER' | 'RB' | 'IRE' | 'T' | 'TN' | 'M' | 'CAX' | 'CAR' | 'EXB' | 'B' | 'BN' | 'RUB' | 'BP' | 'FUN' | 'PB' | 'GB' | 'SL' | 'ASC' | 'BAT' | 'FAE';
+export type OfferCategory = 'EV' | 'IC' | 'EC' | 'EN' | 'IR' | 'RE' | 'R' | 'S' | 'SN' | 'PE' | 'EXT' | 'ATZ' | 'ICE' | 'TGV' | 'RJ' | 'TE2' | 'TER' | 'RB' | 'IRE' | 'T' | 'TN' | 'M' | 'CAX' | 'CAR' | 'EXB' | 'B' | 'BN' | 'RUB' | 'BP' | 'FUN' | 'PB' | 'GB' | 'SL' | 'ASC' | 'BAT' | 'FAE';
 
 export const OfferCategory = {
+    Ev: 'EV' as OfferCategory,
     Ic: 'IC' as OfferCategory,
     Ec: 'EC' as OfferCategory,
     En: 'EN' as OfferCategory,
