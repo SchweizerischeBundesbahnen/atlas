@@ -107,7 +107,8 @@ ALTER TABLE line_version_snapshot
 CREATE OR REPLACE VIEW overview_line_subline as
 
 select *
-from (select number,
+from (select 'LINE'            as element_type,
+             number,
              description,
              line_type         as lidi_element_type,
              business_organisation,
@@ -118,7 +119,8 @@ from (select number,
              valid_to
       from line
       union
-      select number,
+      select 'SUBLINE'            as element_type,
+             number,
              description,
              subline_type         as lidi_element_type,
              business_organisation,

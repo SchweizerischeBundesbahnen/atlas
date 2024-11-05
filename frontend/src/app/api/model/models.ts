@@ -62,6 +62,7 @@ export * from './detail';
 export * from './displayInfo';
 export * from './district';
 export * from './editStopPointWorkflow';
+export * from './elementType';
 export * from './errorDetail';
 export * from './errorResponse';
 export * from './examinantWorkflowCheck';
