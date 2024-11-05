@@ -102,7 +102,7 @@
       ],
       "build": {
         "buildDockerImage": false,
-        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.test=false -Dskip.npm.exec.ci=false -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts,**/cypress/**",
+        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.test=false -Dskip.npm.exec.ci=false -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*",
         "sonarScan": {
           "enabled": true
         },
@@ -119,7 +119,7 @@
       ],
       "build": {
         "buildDockerImage": true,
-        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -Dskip.npm.exec.test=false -Dskip.npm.exec.ci=false -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts,**/cypress/**",
+        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -Dskip.npm.exec.test=false -Dskip.npm.exec.ci=false -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*",
         "sonarScan": {
           "enabled": true
         },
@@ -162,7 +162,7 @@
       "build": {
         "deployArtifacts": true,
         "buildDockerImage": true,
-        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -Dskip.npm.exec.test=false -Dskip.npm.exec.ci=false -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts,**/cypress/**",
+        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -Dskip.npm.exec.test=false -Dskip.npm.exec.ci=false -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*",
         "sonarScan": {
           "releaseBranchName": "master",
           "enabled": true

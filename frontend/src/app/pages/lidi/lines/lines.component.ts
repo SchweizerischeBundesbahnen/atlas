@@ -109,7 +109,7 @@ export class LinesComponent implements OnInit, OnDestroy {
     if ($event.elementType == ElementType.Subline) {
       pathToNavigate = Pages.SUBLINES.path;
     }
-    this.router.navigate([Pages.LIDI.path, pathToNavigate, $event!.slnid]).then();
+    this.router.navigate([Pages.LIDI.path, pathToNavigate, $event.slnid]).then();
   }
 
   ngOnDestroy() {
