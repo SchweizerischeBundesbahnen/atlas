@@ -17,20 +17,7 @@ public class ServicePointBulkImportUpdate extends
   @Override
   protected void applySpecificUpdate(ServicePointUpdateCsvModel update, ServicePointVersion currentVersion,
       UpdateServicePointVersionModel updateModel) {
-    setNonUpdatableValues(currentVersion, updateModel);
-
     updateModel.setServicePointGeolocation(applyGeolocationUpdate(currentVersion.getServicePointGeolocation(), update));
-  }
-
-  private static void setNonUpdatableValues(ServicePointVersion currentVersion, UpdateServicePointVersionModel updateModel) {
-    updateModel.setId(currentVersion.getId());
-    updateModel.setEtagVersion(currentVersion.getVersion());
-
-    updateModel.setAbbreviation(currentVersion.getAbbreviation());
-
-    updateModel.setOperatingPointRouteNetwork(currentVersion.isOperatingPointRouteNetwork());
-    updateModel.setOperatingPointKilometerMasterNumber(currentVersion.getOperatingPointKilometerMaster() == null ? null :
-        currentVersion.getOperatingPointKilometerMaster().getNumber());
   }
 
 }

@@ -15,16 +15,4 @@ public class PlatformBulkImportUpdate extends BulkImportDataMapper<PlatformReduc
         new PlatformVersionModel());
   }
 
-  @Override
-  protected void applySpecificUpdate(PlatformReducedUpdateCsvModel update, PlatformVersion currentVersion,      PlatformVersionModel updateModel) {
-    setNonUpdatableValues(currentVersion, updateModel);
-  }
-
-  private static void setNonUpdatableValues(PlatformVersion currentVersion, PlatformVersionModel updateModel) {
-    updateModel.setId(currentVersion.getId());
-    updateModel.setEtagVersion(currentVersion.getVersion());
-
-    updateModel.setParentServicePointSloid(currentVersion.getParentServicePointSloid());
-  }
-
 }
