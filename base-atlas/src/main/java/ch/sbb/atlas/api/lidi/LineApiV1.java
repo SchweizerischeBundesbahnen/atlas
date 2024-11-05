@@ -5,7 +5,7 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFI
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.Status;
@@ -47,7 +47,7 @@ public interface LineApiV1 {
       @RequestParam(required = false) Optional<String> swissLineNumber,
       @RequestParam(required = false) List<String> searchCriteria,
       @RequestParam(required = false) List<Status> statusRestrictions,
-      @RequestParam(required = false) List<LineType> typeRestrictions,
+      @RequestParam(required = false) List<LidiElementType> typeRestrictions,
       @RequestParam(required = false) Optional<String> businessOrganisation,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
 
