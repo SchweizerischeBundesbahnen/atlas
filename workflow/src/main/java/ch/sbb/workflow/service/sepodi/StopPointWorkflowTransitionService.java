@@ -103,7 +103,7 @@ public class StopPointWorkflowTransitionService {
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
 
-    sePoDiClientService.updateStopPointStatusToDraft(stopPointWorkflow);
+    sePoDiClientService.updateStopPointStatusToDraftAsAdmin(stopPointWorkflow);
     notificationService.sendCanceledStopPointWorkflowMail(workflow, stopPointCancelWorkflowModel.getMotivationComment());
     return workflow;
   }
@@ -118,7 +118,10 @@ public class StopPointWorkflowTransitionService {
 
     updateCurrentWorkflow(stopPointWorkflow, newStopPointWorkflow);
 
-    sePoDiClientService.updateDesignationOfficialServicePoint(newStopPointWorkflow);
+    sePoDiClientService.updateStopPointStatusToDraftAsAdmin(newStopPointWorkflow);
+    sePoDiClientService.updateDesignationOfficialServicePointAsAdmin(newStopPointWorkflow);
+    sePoDiClientService.updateStopPointStatusToInReviewAsAdmin(newStopPointWorkflow.getSloid(), newStopPointWorkflow.getVersionId());
+
     notificationService.sendRestartStopPointWorkflowMail(stopPointWorkflow, newStopPointWorkflow);
     return newStopPointWorkflow;
   }
