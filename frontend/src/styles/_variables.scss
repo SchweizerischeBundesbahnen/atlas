@@ -1,6 +1,10 @@
 // STAM: app variables colors, size, etc. (split file when to many)
 // see https://sass-lang.com/documentation/variables
 
+body {
+  font-family: 'IBM Plex Sans', sans-serif
+}
+
 $media-screen-limit: 1920px;
 $media-types: [ 'screen', 'print'];
 
