@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,6 +27,7 @@ import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
+import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
@@ -305,8 +307,9 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     mvc.perform(get("/v1/lines/covered")
             .contentType(contentType)
         ).andExpect(status().isOk())
+        .andDo(print())
         .andExpect(jsonPath("$[0].businessOrganisation", is("sbb")))
-        .andExpect(jsonPath("$[0].lineType", is(LineType.TEMPORARY.toString())))
+        .andExpect(jsonPath("$[0].lidiElementType", is(LidiElementType.TEMPORARY.toString())))
         .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
         .andExpect(jsonPath("$[0].slnid", is(lineVersion.getSlnid())))
         .andExpect(jsonPath("$[0].validFrom", is("2000-01-01")))

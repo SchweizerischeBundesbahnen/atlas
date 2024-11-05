@@ -418,7 +418,10 @@
       "TYPES": {
         "ORDERLY": "Ordinaria",
         "TEMPORARY": "Provvisoria",
-        "OPERATIONAL": "In esercizio"
+        "OPERATIONAL": "In esercizio",
+        "DISPOSITION": "Disposizione",
+        "TECHNICAL": "Tecnica",
+        "CONCESSION": "Concessione"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Linea aggiunta con successo.",

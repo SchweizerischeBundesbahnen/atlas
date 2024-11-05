@@ -2,6 +2,7 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
@@ -16,14 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
- class LineRepositoryTest {
+class LineRepositoryTest {
 
   private static final String SLNID = "slnid";
   private final LineVersionRepository lineVersionRepository;
   private final LineRepository lineRepository;
 
   @Autowired
-   LineRepositoryTest(LineVersionRepository lineVersionRepository,
+  LineRepositoryTest(LineVersionRepository lineVersionRepository,
       LineRepository lineRepository) {
     this.lineVersionRepository = lineVersionRepository;
     this.lineRepository = lineRepository;
@@ -36,27 +37,27 @@ import org.springframework.transaction.annotation.Transactional;
   void shouldDisplayDescriptionOfCurrentDay() {
     // Given
     LineVersion validLastYear = LineTestData.lineVersionBuilder()
-                                            .slnid(SLNID)
-                                            .description("Last Year")
-                                            .validFrom(LocalDate.now().minusYears(2))
-                                            .validTo(LocalDate.now().minusYears(1))
-                                            .build();
+        .slnid(SLNID)
+        .description("Last Year")
+        .validFrom(LocalDate.now().minusYears(2))
+        .validTo(LocalDate.now().minusYears(1))
+        .build();
     lineVersionRepository.saveAndFlush(validLastYear);
 
     LineVersion validToday = LineTestData.lineVersionBuilder()
-                                         .slnid(SLNID)
-                                         .description("Today")
-                                         .validFrom(LocalDate.now().minusDays(1))
-                                         .validTo(LocalDate.now().plusDays(1))
-                                         .build();
+        .slnid(SLNID)
+        .description("Today")
+        .validFrom(LocalDate.now().minusDays(1))
+        .validTo(LocalDate.now().plusDays(1))
+        .build();
     lineVersionRepository.saveAndFlush(validToday);
 
     LineVersion validNextYear = LineTestData.lineVersionBuilder()
-                                            .slnid(SLNID)
-                                            .description("Next Year")
-                                            .validFrom(LocalDate.now().plusYears(1))
-                                            .validTo(LocalDate.now().plusYears(2))
-                                            .build();
+        .slnid(SLNID)
+        .description("Next Year")
+        .validFrom(LocalDate.now().plusYears(1))
+        .validTo(LocalDate.now().plusYears(2))
+        .build();
     lineVersionRepository.saveAndFlush(validNextYear);
 
     // When
@@ -68,8 +69,9 @@ import org.springframework.transaction.annotation.Transactional;
 
     Line line = result.getContent().get(0);
     assertThat(line).usingRecursiveComparison()
-                    .ignoringFields("validFrom", "validTo")
-                    .isEqualTo(validToday);
+        .ignoringFields("validFrom", "validTo", "lidiElementType")
+        .isEqualTo(validToday);
+    assertThat(line.getLidiElementType().name()).isEqualTo(LineType.ORDERLY.name());
     assertThat(line.getValidFrom()).isEqualTo(validLastYear.getValidFrom());
     assertThat(line.getValidTo()).isEqualTo(validNextYear.getValidTo());
   }
@@ -81,27 +83,27 @@ import org.springframework.transaction.annotation.Transactional;
   void shouldDisplayDescriptionOfNextYear() {
     // Given
     LineVersion validLastYear = LineTestData.lineVersionBuilder()
-                                            .slnid(SLNID)
-                                            .description("Last Year")
-                                            .validFrom(LocalDate.now().minusYears(2))
-                                            .validTo(LocalDate.now().minusYears(1))
-                                            .build();
+        .slnid(SLNID)
+        .description("Last Year")
+        .validFrom(LocalDate.now().minusYears(2))
+        .validTo(LocalDate.now().minusYears(1))
+        .build();
     lineVersionRepository.saveAndFlush(validLastYear);
 
     LineVersion validNextYear = LineTestData.lineVersionBuilder()
-                                            .slnid(SLNID)
-                                            .description("Next Year")
-                                            .validFrom(LocalDate.now().plusYears(1))
-                                            .validTo(LocalDate.now().plusYears(2))
-                                            .build();
+        .slnid(SLNID)
+        .description("Next Year")
+        .validFrom(LocalDate.now().plusYears(1))
+        .validTo(LocalDate.now().plusYears(2))
+        .build();
     lineVersionRepository.saveAndFlush(validNextYear);
 
     LineVersion validInTwoYears = LineTestData.lineVersionBuilder()
-                                              .slnid(SLNID)
-                                              .description("Later")
-                                              .validFrom(LocalDate.now().plusYears(3))
-                                              .validTo(LocalDate.now().plusYears(4))
-                                              .build();
+        .slnid(SLNID)
+        .description("Later")
+        .validFrom(LocalDate.now().plusYears(3))
+        .validTo(LocalDate.now().plusYears(4))
+        .build();
     lineVersionRepository.saveAndFlush(validInTwoYears);
 
     // When
@@ -113,8 +115,9 @@ import org.springframework.transaction.annotation.Transactional;
 
     Line line = result.getContent().get(0);
     assertThat(line).usingRecursiveComparison()
-                    .ignoringFields("validFrom", "validTo")
-                    .isEqualTo(validNextYear);
+        .ignoringFields("validFrom", "validTo", "lidiElementType")
+        .isEqualTo(validNextYear);
+    assertThat(line.getLidiElementType().name()).isEqualTo(LineType.ORDERLY.name());
     assertThat(line.getValidFrom()).isEqualTo(validLastYear.getValidFrom());
     assertThat(line.getValidTo()).isEqualTo(validInTwoYears.getValidTo());
   }
@@ -126,19 +129,19 @@ import org.springframework.transaction.annotation.Transactional;
   void shouldDisplayDescriptionOfLastYear() {
     // Given
     LineVersion validEarlier = LineTestData.lineVersionBuilder()
-                                           .slnid(SLNID)
-                                           .description("Earlier")
-                                           .validFrom(LocalDate.now().minusYears(4))
-                                           .validTo(LocalDate.now().minusYears(3))
-                                           .build();
+        .slnid(SLNID)
+        .description("Earlier")
+        .validFrom(LocalDate.now().minusYears(4))
+        .validTo(LocalDate.now().minusYears(3))
+        .build();
     lineVersionRepository.saveAndFlush(validEarlier);
 
     LineVersion validLastYear = LineTestData.lineVersionBuilder()
-                                            .slnid(SLNID)
-                                            .description("Last Year")
-                                            .validFrom(LocalDate.now().minusYears(2))
-                                            .validTo(LocalDate.now().minusYears(1))
-                                            .build();
+        .slnid(SLNID)
+        .description("Last Year")
+        .validFrom(LocalDate.now().minusYears(2))
+        .validTo(LocalDate.now().minusYears(1))
+        .build();
     lineVersionRepository.saveAndFlush(validLastYear);
 
     // When
@@ -150,8 +153,9 @@ import org.springframework.transaction.annotation.Transactional;
 
     Line line = result.getContent().get(0);
     assertThat(line).usingRecursiveComparison()
-                    .ignoringFields("validFrom", "validTo")
-                    .isEqualTo(validLastYear);
+        .ignoringFields("validFrom", "validTo", "lidiElementType")
+        .isEqualTo(validLastYear);
+    assertThat(line.getLidiElementType().name()).isEqualTo(LineType.ORDERLY.name());
     assertThat(line.getValidFrom()).isEqualTo(validEarlier.getValidFrom());
     assertThat(line.getValidTo()).isEqualTo(validLastYear.getValidTo());
   }
@@ -160,19 +164,19 @@ import org.springframework.transaction.annotation.Transactional;
   void shouldDeleteLines() {
     // Given
     LineVersion validEarlier = LineTestData.lineVersionBuilder()
-                                           .slnid(SLNID)
-                                           .description("Earlier")
-                                           .validFrom(LocalDate.now().minusYears(4))
-                                           .validTo(LocalDate.now().minusYears(3))
-                                           .build();
+        .slnid(SLNID)
+        .description("Earlier")
+        .validFrom(LocalDate.now().minusYears(4))
+        .validTo(LocalDate.now().minusYears(3))
+        .build();
     lineVersionRepository.saveAndFlush(validEarlier);
 
     LineVersion validLastYear = LineTestData.lineVersionBuilder()
-                                            .slnid(SLNID)
-                                            .description("Last Year")
-                                            .validFrom(LocalDate.now().minusYears(2))
-                                            .validTo(LocalDate.now().minusYears(1))
-                                            .build();
+        .slnid(SLNID)
+        .description("Last Year")
+        .validFrom(LocalDate.now().minusYears(2))
+        .validTo(LocalDate.now().minusYears(1))
+        .build();
     lineVersionRepository.saveAndFlush(validLastYear);
 
     List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(SLNID);
