@@ -42,7 +42,7 @@ class BulkImportDataMapperTest {
   }
 
   @Test
-  void shouldApplyAdditionalDefaultMapping() {
+  void shouldApplyCopyFromCurrentVersion() {
     BulkImportUpdateContainer<ServicePointUpdateCsvModel> container =
         BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
             .object(ServicePointUpdateCsvModel.builder()
