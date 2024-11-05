@@ -78,6 +78,20 @@ class SePoDiClientServiceTest {
         () -> service.updateStopPointStatusToInReview(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
   }
 
+  @ParameterizedTest
+  @EnumSource(value = Status.class, names = {"REVOKED", "DRAFT", "WITHDRAWN", "VALIDATED"})
+  void shouldNotUpdateStatusInReviewAsAdmin(Status status) {
+    //given
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(status)
+            .build();
+    String sloid = "ch:1:sloid:8000";
+    long versionId = 1L;
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient).postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW);
+    //when && then
+    assertThrows(SePoDiClientWrongStatusReturnedException.class,
+            () -> service.updateStopPointStatusToInReviewAsAdmin(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
+  }
+
   @Test
   void shouldUpdateStatusInDraft() {
     //given
@@ -90,6 +104,20 @@ class SePoDiClientServiceTest {
     //when && then
     assertDoesNotThrow(
         () -> service.updateStopPointStatusToDraft(stopPointWorkflow));
+  }
+
+  @Test
+  void shouldUpdateStatusInDraftAsAdmin() {
+    //given
+    ReadServicePointVersionModel updateServicePointVersionModel =
+            ReadServicePointVersionModel.builder().status(Status.DRAFT).build();
+    String sloid = "ch:1:sloid:8000";
+    long versionId = 1L;
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient).postServicePointsStatusUpdate(sloid, versionId,
+            Status.DRAFT);
+    //when && then
+    assertDoesNotThrow(
+            () -> service.updateStopPointStatusToDraftAsAdmin(stopPointWorkflow));
   }
 
   @ParameterizedTest
@@ -154,6 +182,31 @@ class SePoDiClientServiceTest {
     //when && then
     assertDoesNotThrow(
         () -> service.updateDesignationOfficialServicePoint(stopPointWorkflow));
+  }
+
+  @Test
+  void shouldUpdateDesignationOfficialAsAdmin() {
+    //given
+    String sloid = "ch:1:sloid:8000";
+    long versionId = 1L;
+
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel =
+            UpdateDesignationOfficialServicePointModel.builder()
+                    .designationOfficial("test")
+                    .build();
+
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder()
+            .sloid(sloid)
+            .id(versionId)
+            .status(Status.IN_REVIEW)
+            .designationOfficial("Designerica")
+            .build();
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient)
+            .updateServicePointDesignationOfficial(versionId, updateDesignationOfficialServicePointModel);
+
+    //when && then
+    assertDoesNotThrow(
+            () -> service.updateDesignationOfficialServicePointAsAdmin(stopPointWorkflow));
   }
 
   @Test
