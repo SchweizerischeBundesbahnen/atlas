@@ -6,8 +6,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
-import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel.Fields;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.PlatformTestData;
@@ -17,6 +17,7 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.security.PrmUserAdministrationService;
+import ch.sbb.prm.directory.service.bulk.PlatformBulkImportService;
 import java.time.LocalDate;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;

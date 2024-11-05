@@ -1,12 +1,14 @@
-package ch.sbb.prm.directory.service;
+package ch.sbb.prm.directory.service.bulk;
 
+import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.bulk.PlatformReducedUpdateCsvModel;
+import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUser;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUserParameter;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.service.PlatformService;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlatformBulkImportService {
 
   private final PlatformService platformService;
+  private final PlatformApiClient platformApiClient;
 
   @RunAsUser
   public void updatePlatformReducedByUsername(@RunAsUserParameter String username,
@@ -36,10 +39,9 @@ public class PlatformBulkImportService {
     List<PlatformVersion> currentPlatformVersions = getCurrentPlatformVersions(platformReducedUpdateCsvModel);
     PlatformVersion currentVersion = ImportUtils.getCurrentVersion(currentPlatformVersions,
         platformReducedUpdateCsvModel.getValidFrom(), platformReducedUpdateCsvModel.getValidTo());
-    PlatformVersion editedVersion = PlatformBulkImportUpdate.applyUpdateFromCsv(currentVersion, platformReducedUpdateCsvModel);
-    PlatformBulkImportUpdate.applyNulling(bulkImportUpdateContainer.getAttributesToNull(), editedVersion);
+    PlatformVersionModel updateModel = PlatformBulkImportUpdate.apply(bulkImportUpdateContainer, currentVersion);
 
-    platformService.updatePlatformVersion(currentVersion, editedVersion);
+    platformApiClient.updatePlatform(currentVersion.getId(), updateModel);
   }
 
   private List<PlatformVersion> getCurrentPlatformVersions(PlatformReducedUpdateCsvModel platformReducedUpdateCsvModel) {
