@@ -7,11 +7,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates fieldName based copying of value property
- * For use with {@link BulkImportDataMapper}
+ * Indicates fieldName based copying of value property For use with {@link BulkImportDataMapper}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface DefaultMapping {
 
+  String target() default "";
+
+  String current() default "";
 }

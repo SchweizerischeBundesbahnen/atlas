@@ -1,7 +1,6 @@
 package ch.sbb.atlas.imports.bulk;
 
 import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings;
-import ch.sbb.atlas.imports.annotation.AdditionalDefaultMappings.AdditionalDefaultMapping;
 import ch.sbb.atlas.imports.annotation.DefaultMapping;
 import ch.sbb.atlas.imports.annotation.Nulling;
 import io.micrometer.common.util.StringUtils;
@@ -82,7 +81,7 @@ public abstract class BulkImportDataMapper<T, U, V> {
     if (update.getClass().isAnnotationPresent(AdditionalDefaultMappings.class)) {
       AdditionalDefaultMappings additionalDefaultMappings = update.getClass().getAnnotation(AdditionalDefaultMappings.class);
       Map<String, String> mappings = Stream.of(additionalDefaultMappings.value())
-          .collect(Collectors.toMap(AdditionalDefaultMapping::current, AdditionalDefaultMapping::target));
+          .collect(Collectors.toMap(DefaultMapping::current, DefaultMapping::target));
 
       mappings.forEach((current, target) -> {
         ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(currentEntity);
