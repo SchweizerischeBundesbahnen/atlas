@@ -619,9 +619,9 @@ export class LinesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLineVersions(slnid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<LineVersionV2>>;
-    public getLineVersions(slnid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<LineVersionV2>>>;
-    public getLineVersions(slnid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<LineVersionV2>>>;
+    public getLineVersions(slnid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<LineVersion>>;
+    public getLineVersions(slnid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<LineVersion>>>;
+    public getLineVersions(slnid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<LineVersion>>>;
     public getLineVersions(slnid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (slnid === null || slnid === undefined) {
             throw new Error('Required parameter slnid was null or undefined when calling getLineVersions.');
@@ -647,7 +647,7 @@ export class LinesService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<Array<LineVersionV2>>(`${this.configuration.basePath}/line-directory/v2/lines/versions/${encodeURIComponent(String(slnid))}`,
+        return this.httpClient.get<Array<LineVersion>>(`${this.configuration.basePath}/line-directory/v1/lines/versions/${encodeURIComponent(String(slnid))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -663,12 +663,12 @@ export class LinesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLineVersions1(slnid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<LineVersion>>;
-    public getLineVersions1(slnid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<LineVersion>>>;
-    public getLineVersions1(slnid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<LineVersion>>>;
-    public getLineVersions1(slnid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getLineVersionsV2(slnid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<LineVersionV2>>;
+    public getLineVersionsV2(slnid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<LineVersionV2>>>;
+    public getLineVersionsV2(slnid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<LineVersionV2>>>;
+    public getLineVersionsV2(slnid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (slnid === null || slnid === undefined) {
-            throw new Error('Required parameter slnid was null or undefined when calling getLineVersions1.');
+            throw new Error('Required parameter slnid was null or undefined when calling getLineVersionsV2.');
         }
 
         let headers = this.defaultHeaders;
@@ -691,7 +691,7 @@ export class LinesService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<Array<LineVersion>>(`${this.configuration.basePath}/line-directory/v1/lines/versions/${encodeURIComponent(String(slnid))}`,
+        return this.httpClient.get<Array<LineVersionV2>>(`${this.configuration.basePath}/line-directory/v2/lines/versions/${encodeURIComponent(String(slnid))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
