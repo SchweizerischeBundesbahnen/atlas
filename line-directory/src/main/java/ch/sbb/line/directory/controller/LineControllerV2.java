@@ -22,7 +22,7 @@ public class LineControllerV2 implements LineApiV2 {
   private final LineService lineService;
 
   @Override
-  public List<LineVersionModelV2> getLineVersions(String slnid) {
+  public List<LineVersionModelV2> getLineVersionsV2(String slnid) {
     return lineService.findLineVersions(slnid).stream().map(this::toModel).toList();
   }
 

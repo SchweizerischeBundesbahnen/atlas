@@ -9,15 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import {SortObject} from './sortObject';
+import { SortObject } from './sortObject';
 
 
-export interface PageableObject {
-  offset?: number;
-  sort?: Array<SortObject>;
-  unpaged?: boolean;
-  paged?: boolean;
-  pageNumber?: number;
-  pageSize?: number;
+export interface PageableObject { 
+    offset?: number;
+    sort?: Array<SortObject>;
+    pageNumber?: number;
+    pageSize?: number;
+    unpaged?: boolean;
+    paged?: boolean;
 }
 

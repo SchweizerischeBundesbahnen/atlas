@@ -18,7 +18,7 @@ public class SublineControllerV2 implements SublineApiV2 {
   private final SublineService sublineService;
 
   @Override
-  public List<SublineVersionModelV2> getSublineVersion(String slnid) {
+  public List<SublineVersionModelV2> getSublineVersionV2(String slnid) {
     List<SublineVersion> versions = sublineService.findSubline(slnid);
     String lineSlnid = versions.getFirst().getMainlineSlnid();
     LineVersion lineVersion = sublineService.getMainLineVersion(lineSlnid);
