@@ -452,7 +452,10 @@
       "TYPES": {
         "COMPENSATION": "Compensazione",
         "TECHNICAL": "Tecnica",
-        "CONCESSION": "Concessione"
+        "CONCESSION": "Concessione",
+        "DISPOSITION": "Disposizione",
+        "TEMPORARY": "Provvisoria",
+        "OPERATIONAL": "In esercizio"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Linea parziale aggiunta con successo.",

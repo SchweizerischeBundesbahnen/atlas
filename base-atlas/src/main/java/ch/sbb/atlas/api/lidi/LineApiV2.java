@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface LineApiV2 {
 
   @GetMapping("versions/{slnid}")
-  List<LineVersionModelV2> getLineVersions(@PathVariable String slnid);
+  List<LineVersionModelV2> getLineVersionsV2(@PathVariable String slnid);
 
 }
