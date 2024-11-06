@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface SublineApiV2 {
 
   @GetMapping("versions/{slnid}")
-  List<SublineVersionModelV2> getSublineVersion(@PathVariable String slnid);
+  List<SublineVersionModelV2> getSublineVersionV2(@PathVariable String slnid);
 
 }

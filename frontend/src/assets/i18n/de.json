@@ -452,7 +452,10 @@
       "TYPES": {
         "COMPENSATION": "Kompensation",
         "TECHNICAL": "Technisch",
-        "CONCESSION": "Konzession"
+        "CONCESSION": "Konzession",
+        "DISPOSITION": "Anordnung",
+        "TEMPORARY": "Temporär",
+        "OPERATIONAL": "Betrieblich"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Teillinie wurde erfolgreich hinzugefügt.",

@@ -366,9 +366,9 @@ export class SublinesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSublineVersion(slnid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<SublineVersionV2>>;
-    public getSublineVersion(slnid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<SublineVersionV2>>>;
-    public getSublineVersion(slnid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<SublineVersionV2>>>;
+    public getSublineVersion(slnid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<SublineVersion>>;
+    public getSublineVersion(slnid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<SublineVersion>>>;
+    public getSublineVersion(slnid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<SublineVersion>>>;
     public getSublineVersion(slnid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (slnid === null || slnid === undefined) {
             throw new Error('Required parameter slnid was null or undefined when calling getSublineVersion.');
@@ -394,7 +394,7 @@ export class SublinesService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<Array<SublineVersionV2>>(`${this.configuration.basePath}/line-directory/v2/sublines/versions/${encodeURIComponent(String(slnid))}`,
+        return this.httpClient.get<Array<SublineVersion>>(`${this.configuration.basePath}/line-directory/v1/sublines/versions/${encodeURIComponent(String(slnid))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -410,12 +410,12 @@ export class SublinesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSublineVersion1(slnid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<SublineVersion>>;
-    public getSublineVersion1(slnid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<SublineVersion>>>;
-    public getSublineVersion1(slnid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<SublineVersion>>>;
-    public getSublineVersion1(slnid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getSublineVersionV2(slnid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<SublineVersionV2>>;
+    public getSublineVersionV2(slnid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<SublineVersionV2>>>;
+    public getSublineVersionV2(slnid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<SublineVersionV2>>>;
+    public getSublineVersionV2(slnid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (slnid === null || slnid === undefined) {
-            throw new Error('Required parameter slnid was null or undefined when calling getSublineVersion1.');
+            throw new Error('Required parameter slnid was null or undefined when calling getSublineVersionV2.');
         }
 
         let headers = this.defaultHeaders;
@@ -438,7 +438,7 @@ export class SublinesService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<Array<SublineVersion>>(`${this.configuration.basePath}/line-directory/v1/sublines/versions/${encodeURIComponent(String(slnid))}`,
+        return this.httpClient.get<Array<SublineVersionV2>>(`${this.configuration.basePath}/line-directory/v2/sublines/versions/${encodeURIComponent(String(slnid))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
