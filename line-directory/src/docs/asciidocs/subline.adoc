@@ -5,10 +5,6 @@ image::logo-atlas.svg[50,50,align=left,role=left]
 
 link:rest-api.html[*< Back to main*]
 
-== Get Subline Overview - Successfully
-
-include::{snippets}/subline-controller-api-test/should-get-subline-overview/atlas-doc.adoc[]
-
 == Create Subline - Successfully
 
 include::{snippets}/subline-controller-api-test/should-create-subline/atlas-doc.adoc[]
@@ -40,5 +36,9 @@ include::{snippets}/subline-controller-api-test/should-return-subline-outside-of
 == Get Subline Coverage
 
 include::{snippets}/subline-controller-api-test/should-get-subline-coverage/atlas-doc.adoc[]
+
+== Get Subline Version V2
+
+include::{snippets}/subline-controller-api-v2-test/should-get-subline-version/atlas-doc.adoc[]
 
 link:rest-api.html[*< Back to main*]

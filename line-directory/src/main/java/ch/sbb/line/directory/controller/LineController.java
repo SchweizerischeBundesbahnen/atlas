@@ -7,9 +7,9 @@ import ch.sbb.atlas.api.lidi.LineApiV1;
 import ch.sbb.atlas.api.lidi.LineModel;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.converter.CmykColorConverter;
@@ -50,7 +50,7 @@ public class LineController implements LineApiV1 {
 
   @Override
   public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber,
-      List<String> searchCriteria, List<Status> statusRestrictions, List<LineType> typeRestrictions,
+      List<String> searchCriteria, List<Status> statusRestrictions, List<LidiElementType> typeRestrictions,
       Optional<String> businessOrganisation,
       Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
@@ -251,17 +251,18 @@ public class LineController implements LineApiV1 {
         .build();
   }
 
-  private LineModel toModel(Line lineVersion) {
+  private LineModel toModel(Line line) {
     return LineModel.builder()
-        .status(lineVersion.getStatus())
-        .lineType(lineVersion.getLineType())
-        .slnid(lineVersion.getSlnid())
-        .number(lineVersion.getNumber())
-        .description(lineVersion.getDescription())
-        .validFrom(lineVersion.getValidFrom())
-        .validTo(lineVersion.getValidTo())
-        .businessOrganisation(lineVersion.getBusinessOrganisation())
-        .swissLineNumber(lineVersion.getSwissLineNumber())
+        .status(line.getStatus())
+        .lidiElementType(line.getLidiElementType())
+        .elementType(line.getElementType())
+        .slnid(line.getSlnid())
+        .number(line.getNumber())
+        .description(line.getDescription())
+        .validFrom(line.getValidFrom())
+        .validTo(line.getValidTo())
+        .businessOrganisation(line.getBusinessOrganisation())
+        .swissLineNumber(line.getSwissLineNumber())
         .build();
   }
 

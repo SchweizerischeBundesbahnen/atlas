@@ -1,7 +1,8 @@
 package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.ElementType;
+import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,9 +31,13 @@ public class LineModel implements DatesValidator {
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
   private Status status;
 
-  @Schema(description = "LineType")
+  @Schema(description = "LineType and SublineType", accessMode = AccessMode.READ_ONLY)
   @NotNull
-  private LineType lineType;
+  private LidiElementType lidiElementType;
+
+  @Schema(description = "Line or Subline Type", accessMode = AccessMode.READ_ONLY)
+  @NotNull
+  private ElementType elementType;
 
   @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001234")
   private String slnid;

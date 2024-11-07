@@ -9,8 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
+import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
@@ -85,7 +85,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
   void shouldRevokeTimetableFieldNumber() throws Exception {
     mvc.perform(post("/v1/field-numbers/" + version.getTtfnid() + "/revoke"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]." + Fields.status, is("REVOKED")));
+        .andExpect(jsonPath("$[0]." + BaseVersionModel.Fields.status, is("REVOKED")));
   }
 
   @Test
