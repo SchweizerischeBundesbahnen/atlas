@@ -7,11 +7,8 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
-import ch.sbb.line.directory.model.search.SublineSearchRestrictions;
-import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
 import java.time.LocalDate;
@@ -19,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -32,7 +28,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class SublineService {
 
   private final SublineVersionRepository sublineVersionRepository;
-  private final SublineRepository sublineRepository;
   private final VersionableService versionableService;
   private final LineService lineService;
   private final SublineValidationService sublineValidationService;
@@ -48,11 +43,6 @@ public class SublineService {
       + ".model.user.admin.ApplicationType).LIDI)")
   public void update(SublineVersion currentVersion, SublineVersion editedVersion, List<SublineVersion> currentVersions) {
     updateVersion(currentVersion, editedVersion);
-  }
-
-  public Page<Subline> findAll(SublineSearchRestrictions searchRestrictions) {
-    return sublineRepository.findAll(searchRestrictions.getSpecification(),
-        searchRestrictions.getPageable());
   }
 
   public List<SublineVersion> findSubline(String slnid) {
