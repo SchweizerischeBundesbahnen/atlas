@@ -44,7 +44,7 @@ public class OverviewService {
     return result;
   }
 
-  private static <T extends Versionable> T getDisplayModel(List<T> versions) {
+  public static <T extends Versionable> T getDisplayModel(List<T> versions) {
     List<T> sortedVersions = versions.stream().sorted(Comparator.comparing(T::getValidFrom)).toList();
 
     T versionToShow = getPrioritizedVersion(sortedVersions);

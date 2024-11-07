@@ -1,6 +1,6 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
-import { DataCy } from '../../../support/data-cy';
+import {DataCy} from '../../../support/data-cy';
 import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
 describe('Teillinie', { testIsolation: false }, () => {
@@ -16,7 +16,7 @@ describe('Teillinie', { testIsolation: false }, () => {
   });
 
   it('PreStep-2: check if subline and mainline already exists', () => {
-    LidiUtils.navigateToSublines();
+    LidiUtils.navigateToLines()
     LidiUtils.checkIfSublineAlreadyExists(sublineVersion);
     LidiUtils.navigateToLines();
     LidiUtils.checkIfLineAlreadyExists(LidiUtils.getMainLineVersion());
@@ -26,28 +26,12 @@ describe('Teillinie', { testIsolation: false }, () => {
     mainline = LidiUtils.addMainLine();
   });
 
-  it('Step-3: Navigate to Sublines', () => {
-    LidiUtils.navigateToSublines();
-    LidiUtils.checkHeaderTitle();
-    LidiUtils.assertSublineTitle();
+  it('Step-3: Navigate to Line', () => {
+    LidiUtils.navigateToLines();
   });
 
   it('Step-4: Check the Linienverzeichnis Line Table is visible', () => {
-    CommonUtils.assertTableSearch(0, 0, 'Suche');
-    CommonUtils.assertTableSearch(0, 1, 'Geschäftsorganisation');
-    CommonUtils.assertTableSearch(0, 2, 'Teillinientyp');
-    CommonUtils.assertTableSearch(0, 3, 'Status');
-    CommonUtils.assertTableSearch(0, 4, 'Gültig am');
-
-    CommonUtils.assertTableHeader(0, 0, 'Teilliniennummer');
-    CommonUtils.assertTableHeader(0, 1, 'Teillinienbezeichnung');
-    CommonUtils.assertTableHeader(0, 2, 'CH-Teilliniennummer');
-    CommonUtils.assertTableHeader(0, 3, 'Gehört zu Linie (CHLNR)');
-    CommonUtils.assertTableHeader(0, 4, 'Teillinientyp');
-    CommonUtils.assertTableHeader(0, 5, 'SLNID');
-    CommonUtils.assertTableHeader(0, 6, 'Status');
-    CommonUtils.assertTableHeader(0, 7, 'Gültig von');
-    CommonUtils.assertTableHeader(0, 8, 'Gültig bis');
+    LidiUtils.checkLineTable();
   });
 
   it('Step-5: Go to page Add new Version', () => {
@@ -58,57 +42,63 @@ describe('Teillinie', { testIsolation: false }, () => {
   });
 
   it('Step-6: Navigate to Sublines', () => {
-    CommonUtils.fromDetailBackToSublinesOverview();
+    CommonUtils.fromDetailBackToLinesOverview();
     CommonUtils.navigateToHomeViaHomeLogo();
-    LidiUtils.navigateToSublines();
+    LidiUtils.navigateToLines();
     LidiUtils.checkHeaderTitle();
   });
 
   it('Step-7: Search for added element on the table and navigate to it', () => {
-    const pathToIntercept = '/line-directory/v1/sublines?**';
+    const pathToIntercept = '/line-directory/v1/lines?**';
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       sublineVersion.swissSublineNumber
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       sublineVersion.slnid
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
       'Aktiv'
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
       sublineVersion.type
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
       sublineVersion.validTo
     );
     // Check that the table contains 1 result
-    cy.get(DataCy.LIDI_SUBLINES + ' table tbody tr').should('have.length', 1);
+    cy.get(DataCy.LIDI_LINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
-    cy.contains('td', sublineVersion.swissSublineNumber).parents('tr').click({ force: true });
+    cy.contains('td', sublineVersion.swissSublineNumber).parents('tr').click({force: true});
     CommonUtils.getTotalRange().should('contain', '01.01.2000').should('contain', '31.12.2000');
     LidiUtils.assertContainsSublineVersion(sublineVersion);
   });
 
   it('Step-8: Delete the subline item', () => {
     CommonUtils.deleteItem();
-    LidiUtils.assertIsOnSublines();
+    LidiUtils.assertIsOnLines();
+
+    //clear search values added in previously step
+    CommonUtils.clearSearchChip();
+    CommonUtils.selectItemFromDropdownSearchItem(
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
+      sublineVersion.type
+    );
   });
 
   it('Step-9: Navigate to the mainline item', () => {
-    LidiUtils.changeLiDiTabToLines();
     LidiUtils.searchAndNavigateToLine(mainline);
     CommonUtils.getTotalRange().should('contain', '01.01.2000').should('contain', '31.12.2002');
   });

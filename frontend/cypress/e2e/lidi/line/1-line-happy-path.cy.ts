@@ -18,22 +18,7 @@ describe('Linie', {testIsolation: false}, () => {
   });
 
   it('Step-3: Check the Linienverzeichnis Line Table is visible', () => {
-    LidiUtils.checkHeaderTitle();
-
-    CommonUtils.assertTableSearch(0, 0, 'Suche');
-    CommonUtils.assertTableSearch(0, 1, 'Geschäftsorganisation');
-    CommonUtils.assertTableSearch(0, 2, 'Linientyp');
-    CommonUtils.assertTableSearch(0, 3, 'Status');
-    CommonUtils.assertTableSearch(0, 4, 'Gültig am');
-
-    CommonUtils.assertTableHeader(0, 0, 'Liniennummer');
-    CommonUtils.assertTableHeader(0, 1, 'Linienbezeichnung');
-    CommonUtils.assertTableHeader(0, 2, 'CH-Liniennummer (CHLNR)');
-    CommonUtils.assertTableHeader(0, 3, 'Linientyp');
-    CommonUtils.assertTableHeader(0, 4, 'SLNID');
-    CommonUtils.assertTableHeader(0, 5, 'Status');
-    CommonUtils.assertTableHeader(0, 6, 'Gültig von');
-    CommonUtils.assertTableHeader(0, 7, 'Gültig bis');
+    LidiUtils.checkLineTable();
   });
 
   it('PreStep-4: check if line already exists', () => {

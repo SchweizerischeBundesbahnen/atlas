@@ -217,6 +217,10 @@ export default class CommonUtils {
       });
   }
 
+  static clearSearchChip() {
+    cy.get(DataCy.REMOVE_CHIP_SEARCH).should("be.visible").click({multiple: true, force: true})
+  }
+
   static chooseOneValueFromMultiselect(selector: string, value: string) {
     cy.get(selector).first().click();
     // deselect all

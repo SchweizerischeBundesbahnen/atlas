@@ -1,5 +1,5 @@
 import CommonUtils from './common-utils';
-import { DataCy } from '../data-cy';
+import {DataCy} from '../data-cy';
 import BodiDependentUtils from './bodi-dependent-utils';
 import AngularMaterialConstants from './angular-material-constants';
 
@@ -77,30 +77,37 @@ export default class LidiUtils {
           CommonUtils.deleteItem();
         }
       });
+    //clear selection
+    CommonUtils.clearSearchChip();
+    CommonUtils.selectItemFromDropdownSearchItem(
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
+      line.type,
+    );
+
   }
 
   static checkIfSublineAlreadyExists(sublineVersion: any) {
-    const pathToIntercept = '/line-directory/v1/sublines?**';
+    const pathToIntercept = '/line-directory/v1/lines?**';
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       sublineVersion.swissSublineNumber,
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
       'Aktiv',
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
       sublineVersion.type,
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
       sublineVersion.validTo,
     );
 
@@ -114,6 +121,11 @@ export default class LidiUtils {
           CommonUtils.deleteItem();
         }
       });
+    CommonUtils.clearSearchChip();
+    CommonUtils.selectItemFromDropdownSearchItem(
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
+      sublineVersion.type,
+    );
   }
 
   static clickOnAddNewLineVersion() {
@@ -285,6 +297,26 @@ export default class LidiUtils {
     CommonUtils.fromDetailBackToLinesOverview();
     return line;
   }
+
+  static checkLineTable() {
+    LidiUtils.checkHeaderTitle();
+
+    CommonUtils.assertTableSearch(0, 0, 'Suche');
+    CommonUtils.assertTableSearch(0, 1, 'Geschäftsorganisation');
+    CommonUtils.assertTableSearch(0, 2, 'Linientyp');
+    CommonUtils.assertTableSearch(0, 3, 'Status');
+    CommonUtils.assertTableSearch(0, 4, 'Gültig am');
+
+    CommonUtils.assertTableHeader(0, 0, 'Liniennummer');
+    CommonUtils.assertTableHeader(0, 1, 'Linienbezeichnung');
+    CommonUtils.assertTableHeader(0, 2, 'CH-Liniennummer (CHLNR)');
+    CommonUtils.assertTableHeader(0, 3, 'Linientyp');
+    CommonUtils.assertTableHeader(0, 4, 'SLNID');
+    CommonUtils.assertTableHeader(0, 5, 'Status');
+    CommonUtils.assertTableHeader(0, 6, 'Gültig von');
+    CommonUtils.assertTableHeader(0, 7, 'Gültig bis');
+  }
+
 
   static getMainLineVersion() {
     return {
@@ -507,7 +539,7 @@ export default class LidiUtils {
       swissSublineNumber: 'b0.IC233-E2E',
       mainline: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
-      type: 'Kompensation',
+      type: 'Technisch',
       paymentType: 'International',
       description: 'Lorem Ipus Linie',
       number: 'IC2',
@@ -523,7 +555,7 @@ export default class LidiUtils {
       swissSublineNumber: 'b0.IC233-E2E',
       mainline: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
-      type: 'Technisch',
+      type: 'Anordnung',
       paymentType: 'International',
       description: 'Lorem Ipus Linie',
       number: 'IC2-update',

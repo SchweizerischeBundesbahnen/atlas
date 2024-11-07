@@ -1,7 +1,7 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
-import { DataCy } from '../../../support/data-cy';
 import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
+import {DataCy} from "../../../support/data-cy";
 
 /** Szenario 8e: Letzte Version validTo und props updated
  *  NEU:      |_______________________________________|
@@ -26,7 +26,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', {testIsolation: false}, () => 
   });
 
   it('PreStep-2: check if subline and mainline already exists', () => {
-    LidiUtils.navigateToSublines();
+    LidiUtils.navigateToLines();
     LidiUtils.checkIfSublineAlreadyExists(firstSublineVersion);
     LidiUtils.navigateToLines();
     LidiUtils.checkIfLineAlreadyExists(LidiUtils.getMainLineVersion());
@@ -36,10 +36,9 @@ describe('LiDi: Versioning Teillinie Scenario 4', {testIsolation: false}, () => 
     mainline = LidiUtils.addMainLine();
   });
 
-  it('Step-3: Navigate to Sublines', () => {
-    LidiUtils.navigateToSublines();
+  it('Step-3: Navigate to Lines', () => {
+    LidiUtils.navigateToLines();
     LidiUtils.checkHeaderTitle();
-    LidiUtils.assertSublineTitle();
   });
 
   it('Step-4: Add first Subline Version', () => {
@@ -98,9 +97,9 @@ describe('LiDi: Versioning Teillinie Scenario 4', {testIsolation: false}, () => 
   });
 
   it('Step-10: Navigate to Sublines', () => {
-    CommonUtils.fromDetailBackToSublinesOverview();
+    CommonUtils.fromDetailBackToLinesOverview();
     CommonUtils.navigateToHomeViaHomeLogo();
-    LidiUtils.navigateToSublines();
+    LidiUtils.navigateToLines();
     LidiUtils.checkHeaderTitle();
   });
 
@@ -114,7 +113,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', {testIsolation: false}, () => 
 
   it('Step-12: Delete the subline item ', () => {
     CommonUtils.deleteItem();
-    LidiUtils.assertIsOnSublines();
+    LidiUtils.assertIsOnLines();
   });
 
   it('Step-13: Search and Navigate to the mainline item ', () => {
