@@ -17,11 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ContainerSubline } from '../model/models';
 import { Coverage } from '../model/models';
 import { ErrorResponse } from '../model/models';
-import { Status } from '../model/models';
-import { SublineType } from '../model/models';
 import { SublineVersion } from '../model/models';
 import { SublineVersionV2 } from '../model/models';
 
@@ -440,97 +437,6 @@ export class SublinesService {
 
         return this.httpClient.get<Array<SublineVersionV2>>(`${this.configuration.basePath}/line-directory/v2/sublines/versions/${encodeURIComponent(String(slnid))}`,
             {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param searchCriteria 
-     * @param statusRestrictions 
-     * @param typeRestrictions 
-     * @param businessOrganisation 
-     * @param validOn 
-     * @param page Zero-based page index (0..N)
-     * @param size The size of the page to be returned
-     * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getSublines(searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<SublineType>, businessOrganisation?: string, validOn?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerSubline>;
-    public getSublines(searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<SublineType>, businessOrganisation?: string, validOn?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerSubline>>;
-    public getSublines(searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<SublineType>, businessOrganisation?: string, validOn?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerSubline>>;
-    public getSublines(searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<SublineType>, businessOrganisation?: string, validOn?: Date, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (searchCriteria) {
-            searchCriteria.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'searchCriteria');
-            })
-        }
-        if (statusRestrictions) {
-            statusRestrictions.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'statusRestrictions');
-            })
-        }
-        if (typeRestrictions) {
-            typeRestrictions.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'typeRestrictions');
-            })
-        }
-        if (businessOrganisation !== undefined && businessOrganisation !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>businessOrganisation, 'businessOrganisation');
-        }
-        if (validOn !== undefined && validOn !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>validOn, 'validOn');
-        }
-        if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
-        }
-        if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
-        }
-        if (sort) {
-            sort.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'sort');
-            })
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ContainerSubline>(`${this.configuration.basePath}/line-directory/v1/sublines`,
-            {
-                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
