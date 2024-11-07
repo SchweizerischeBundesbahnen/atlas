@@ -1,7 +1,11 @@
 package ch.sbb.atlas.api.lidi;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.Status;
@@ -33,8 +37,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static ch.sbb.atlas.model.ResponseCodeDescription.*;
-
 @Tag(name = "Lines")
 @RequestMapping("v1/lines")
 public interface LineApiV1 {
@@ -45,7 +47,7 @@ public interface LineApiV1 {
       @RequestParam(required = false) Optional<String> swissLineNumber,
       @RequestParam(required = false) List<String> searchCriteria,
       @RequestParam(required = false) List<Status> statusRestrictions,
-      @RequestParam(required = false) List<LineType> typeRestrictions,
+      @RequestParam(required = false) List<LidiElementType> typeRestrictions,
       @RequestParam(required = false) Optional<String> businessOrganisation,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
 
@@ -75,6 +77,10 @@ public interface LineApiV1 {
   })
   LineVersionModel createLineVersion(@RequestBody @Valid LineVersionModel newVersion);
 
+  /**
+   * @deprecated
+   */
+  @Deprecated(forRemoval = true, since = "2.328.0")
   @GetMapping("versions/{slnid}")
   List<LineVersionModel> getLineVersions(@PathVariable String slnid);
 

@@ -160,7 +160,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
           AtlasCharsetsValidator.sid4pt,
         ]),
         lineType: new FormControl(version.lineType, [Validators.required]),
-        paymentType: new FormControl(version.paymentType, [Validators.required]),
+        paymentType: new FormControl(version.paymentType),
         businessOrganisation: new FormControl(version.businessOrganisation, [
           Validators.required,
           AtlasFieldLengthValidator.length_50,

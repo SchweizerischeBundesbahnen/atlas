@@ -418,7 +418,10 @@
       "TYPES": {
         "ORDERLY": "Ordinaria",
         "TEMPORARY": "Provvisoria",
-        "OPERATIONAL": "In esercizio"
+        "OPERATIONAL": "In esercizio",
+        "DISPOSITION": "Disposizione",
+        "TECHNICAL": "Tecnica",
+        "CONCESSION": "Concessione"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Linea aggiunta con successo.",
@@ -434,7 +437,6 @@
       "DETAIL_SUBLINE_INFORMATION": "Informazioni sulla linea parziale",
       "NEW_SUBLINE_INFORMATION": "Informazioni sulla nuova linea parziale",
       "SUBLINE": "Linea parziale",
-      "SUBLINES": "Linee parziali",
       "CONFLICT": {
         "SWISS_NUMBER": "Il numero di linea parziale CH {{swissSublineNumber}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
         "ASSIGN_DIFFERENT_LINE_CONFLICT": "La linea principale non può essere modificata."
@@ -450,7 +452,10 @@
       "TYPES": {
         "COMPENSATION": "Compensazione",
         "TECHNICAL": "Tecnica",
-        "CONCESSION": "Concessione"
+        "CONCESSION": "Concessione",
+        "DISPOSITION": "Disposizione",
+        "TEMPORARY": "Provvisoria",
+        "OPERATIONAL": "In esercizio"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Linea parziale aggiunta con successo.",

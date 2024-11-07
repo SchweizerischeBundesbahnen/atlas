@@ -1,12 +1,25 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
-import { LinesComponent } from './lines.component';
-import { ContainerLine, LinesService, LineType, Status } from '../../../api';
-import { AppTestingModule } from '../../../app.testing.module';
-import { TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../app.testing.mocks';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {Observable, of} from 'rxjs';
+import {LinesComponent} from './lines.component';
+import {ContainerLine, ElementType, LidiElementType, Line, LinesService, Status} from '../../../api';
+import {AppTestingModule} from '../../../app.testing.module';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MockTableComponent} from '../../../app.testing.mocks';
+import {Router} from "@angular/router";
+import {Pages} from "../../pages";
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
+
+const line: Line = {
+  swissLineNumber: "IC6",
+  elementType: "SUBLINE",
+  status: "VALIDATED",
+  lidiElementType: "CONCESSION",
+  slnid: "ch:1:slnid:8000",
+  businessOrganisation: "ch:1:sboid:123",
+  validFrom: new Date('2021-12-31'),
+  validTo: new Date('2099-12-31')
+}
 
 const versionContainer: ContainerLine = {
   objects: [
@@ -18,7 +31,8 @@ const versionContainer: ContainerLine = {
       validTo: new Date('2029-06-01'),
       businessOrganisation: 'SBB',
       swissLineNumber: 'L1',
-      lineType: LineType.Orderly,
+      lidiElementType: LidiElementType.Orderly,
+      elementType: ElementType.Line
     },
   ],
   totalCount: 1,
@@ -27,6 +41,7 @@ const versionContainer: ContainerLine = {
 describe('LinesComponent', () => {
   let component: LinesComponent;
   let fixture: ComponentFixture<LinesComponent>;
+  let router: Router;
 
   let linesServiceSpy: SpyObj<LinesService>;
 
@@ -45,10 +60,31 @@ describe('LinesComponent', () => {
     fixture = TestBed.createComponent(LinesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    router = TestBed.inject(Router);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should edit line', () => {
+    //given
+    line.elementType = "LINE"
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    //when
+    component.editVersion(line)
+    //then
+    expect(router.navigate).toHaveBeenCalledWith([Pages.LIDI.path, Pages.LINES.path, line.slnid]);
+  });
+
+  it('should edit subline', () => {
+    //given
+    line.elementType = 'SUBLINE'
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    //when
+    component.editVersion(line)
+    //then
+    expect(router.navigate).toHaveBeenCalledWith([Pages.LIDI.path, Pages.SUBLINES.path, line.slnid]);
   });
 
   it('should getOverview', () => {
