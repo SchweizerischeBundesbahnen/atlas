@@ -78,7 +78,6 @@ model/containerReadStopPointVersion.ts
 model/containerReadStopPointWorkflow.ts
 model/containerReadToiletVersion.ts
 model/containerReadTrafficPointElementVersion.ts
-model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
 model/containerTimetableHearingStatementV2.ts
 model/containerTransportCompany.ts
@@ -186,7 +185,6 @@ model/stopPointRejectWorkflow.ts
 model/stopPointRestartWorkflow.ts
 model/stopPointType.ts
 model/stopPointVersion.ts
-model/subline.ts
 model/sublineConcessionType.ts
 model/sublineType.ts
 model/sublineVersion.ts
