@@ -41,8 +41,4 @@ public final class DateHelper {
     return localDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
   }
 
-  public static boolean isBetween(LocalDate validFrom, LocalDate validTo, LocalDate current) {
-    return !current.isBefore(validFrom)
-        && !current.isAfter(validTo);
-  }
 }

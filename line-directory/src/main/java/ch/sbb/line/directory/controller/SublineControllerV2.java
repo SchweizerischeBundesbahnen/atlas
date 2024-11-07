@@ -43,7 +43,7 @@ public class SublineControllerV2 implements SublineApiV2 {
         .longName(sublineVersion.getLongName())
         .validFrom(sublineVersion.getValidFrom())
         .validTo(sublineVersion.getValidTo())
-        .businessOrganisation(sublineVersion.getBusinessOrganisation())//
+        .businessOrganisation(sublineVersion.getBusinessOrganisation())
         .etagVersion(sublineVersion.getVersion())
         .creator(sublineVersion.getCreator())
         .creationDate(sublineVersion.getCreationDate())
