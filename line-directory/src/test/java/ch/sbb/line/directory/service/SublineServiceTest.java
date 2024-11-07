@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -14,11 +13,8 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
-import ch.sbb.line.directory.model.search.SublineSearchRestrictions;
-import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
 import java.time.LocalDate;
@@ -31,11 +27,8 @@ import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.server.ResponseStatusException;
 
 class SublineServiceTest {
@@ -46,16 +39,10 @@ class SublineServiceTest {
   private SublineVersionRepository sublineVersionRepository;
 
   @Mock
-  private SublineRepository sublineRepository;
-
-  @Mock
   private LineService lineService;
 
   @Mock
   private VersionableService versionableService;
-
-  @Mock
-  private Specification<Subline> sublineSpecification;
 
   @Mock
   private SublineValidationService sublineValidationService;
@@ -68,21 +55,8 @@ class SublineServiceTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sublineService = new SublineService(sublineVersionRepository, sublineRepository,
-        versionableService, lineService, sublineValidationService, coverageService);
-  }
-
-  @Test
-  void shouldGetPagableSublinesFromRepository() {
-    // Given
-    when(sublineSpecification.and(any())).thenReturn(sublineSpecification);
-    Pageable pageable = Pageable.unpaged();
-
-    // When
-    sublineService.findAll(SublineSearchRestrictions.builder().pageable(pageable).build());
-
-    // Then
-    verify(sublineRepository).findAll(ArgumentMatchers.<Specification<Subline>>any(), eq(pageable));
+    sublineService = new SublineService(sublineVersionRepository, versionableService, lineService, sublineValidationService,
+        coverageService);
   }
 
   @Test
