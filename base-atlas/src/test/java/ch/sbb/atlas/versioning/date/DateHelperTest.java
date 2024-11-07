@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class DateHelperTest {
 
   @Test
-   void shouldReturnTrueWhenTwoDatesAreSequential() {
+  void shouldReturnTrueWhenTwoDatesAreSequential() {
     //given
     LocalDate current = LocalDate.of(2000, 1, 1);
     LocalDate next = LocalDate.of(2000, 1, 2);
@@ -23,7 +23,7 @@ class DateHelperTest {
   }
 
   @Test
-   void shouldReturnFalseWhenTwoDatesAreNotSequential() {
+  void shouldReturnFalseWhenTwoDatesAreNotSequential() {
     //given
     LocalDate current = LocalDate.of(2000, 1, 1);
     LocalDate next = LocalDate.of(2000, 1, 3);
@@ -36,7 +36,7 @@ class DateHelperTest {
   }
 
   @Test
-   void shouldThrowIllegalStateExceptionWhenCurrentDateIsNull() {
+  void shouldThrowIllegalStateExceptionWhenCurrentDateIsNull() {
     //given
     LocalDate next = LocalDate.of(2000, 1, 3);
 
@@ -45,12 +45,12 @@ class DateHelperTest {
       DateHelper.areDatesSequential(null, next);
       //then
     }).isInstanceOf(VersioningException.class)
-      .hasMessageContaining("Current date is null");
+        .hasMessageContaining("Current date is null");
 
   }
 
   @Test
-   void shouldThrowIllegalStateExceptionWhenNextDateIsNull() {
+  void shouldThrowIllegalStateExceptionWhenNextDateIsNull() {
     //given
     LocalDate current = LocalDate.of(2000, 1, 1);
 
@@ -59,13 +59,12 @@ class DateHelperTest {
       DateHelper.areDatesSequential(current, null);
       //then
     }).isInstanceOf(VersioningException.class)
-      .hasMessageContaining("Next date is null");
+        .hasMessageContaining("Next date is null");
 
   }
 
-
   @Test
-   void shouldReturnMinimumOfTwoEqualsDates() {
+  void shouldReturnMinimumOfTwoEqualsDates() {
     LocalDate date1 = LocalDate.of(2020, 1, 1);
     LocalDate date2 = LocalDate.of(2020, 1, 1);
 
@@ -74,7 +73,7 @@ class DateHelperTest {
   }
 
   @Test
-   void shouldReturnMinimumOfTwoDates() {
+  void shouldReturnMinimumOfTwoDates() {
     LocalDate date1 = LocalDate.of(2020, 1, 2);
     LocalDate date2 = LocalDate.of(2020, 1, 1);
 
@@ -84,4 +83,5 @@ class DateHelperTest {
     result = DateHelper.min(date2, date1);
     assertThat(result).isEqualTo(date2);
   }
+
 }

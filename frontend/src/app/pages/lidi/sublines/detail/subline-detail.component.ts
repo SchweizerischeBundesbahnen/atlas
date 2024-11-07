@@ -135,7 +135,7 @@ export class SublineDetailComponent extends BaseDetailController<SublineVersion>
         slnid: new FormControl(version.slnid),
         status: new FormControl(version.status),
         sublineType: new FormControl(version.sublineType, [Validators.required]),
-        paymentType: new FormControl(version.paymentType, [Validators.required]),
+        paymentType: new FormControl(version.paymentType),
         businessOrganisation: new FormControl(version.businessOrganisation, [
           Validators.required,
           AtlasFieldLengthValidator.length_50,

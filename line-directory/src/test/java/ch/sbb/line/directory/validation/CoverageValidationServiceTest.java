@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.validation;
 
 
-import static ch.sbb.atlas.api.lidi.enumaration.SublineType.COMPENSATION;
+import static ch.sbb.atlas.api.lidi.enumaration.SublineType.CONCESSION;
 import static ch.sbb.atlas.api.lidi.enumaration.SublineType.TECHNICAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -603,9 +603,9 @@ import org.mockito.MockitoAnnotations;
                                                         .slnid("ch:1000")
                                                         .build();
     SublineVersion secondSublineVersion = SublineTestData.sublineVersionBuilder()
-                                                         .validFrom(LocalDate.of(2000, 6, 1))
-                                                         .validTo(LocalDate.of(2000, 12, 31))
-                                                         .sublineType(COMPENSATION)
+        .validFrom(LocalDate.of(2000, 6, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .sublineType(CONCESSION)
                                                          .mainlineSlnid(firstLineVersion.getSlnid())
                                                          .slnid("ch:1001")
                                                          .build();
@@ -912,9 +912,9 @@ import org.mockito.MockitoAnnotations;
                                                          .slnid("ch:1001")
                                                          .build();
     SublineVersion thirdSublineVersion = SublineTestData.sublineVersionBuilder()
-                                                        .validFrom(LocalDate.of(2000, 4, 30))
-                                                        .validTo(LocalDate.of(2000, 10, 31))
-                                                        .sublineType(COMPENSATION)
+        .validFrom(LocalDate.of(2000, 4, 30))
+        .validTo(LocalDate.of(2000, 10, 31))
+        .sublineType(CONCESSION)
                                                         .mainlineSlnid(firstLineVersion.getSlnid())
                                                         .slnid("ch:1002")
                                                         .build();
@@ -974,9 +974,9 @@ import org.mockito.MockitoAnnotations;
                                                          .slnid("ch:1001")
                                                          .build();
     SublineVersion thirdSublineVersion = SublineTestData.sublineVersionBuilder()
-                                                         .validFrom(LocalDate.of(2000, 6, 1))
-                                                         .validTo(LocalDate.of(2000, 12, 31))
-                                                         .sublineType(COMPENSATION)
+        .validFrom(LocalDate.of(2000, 6, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .sublineType(CONCESSION)
                                                          .mainlineSlnid(firstLineVersion.getSlnid())
                                                          .slnid("ch:1002")
                                                          .build();
@@ -1028,16 +1028,16 @@ import org.mockito.MockitoAnnotations;
                                                          .slnid("ch:1001")
                                                          .build();
     SublineVersion thirdSublineVersion = SublineTestData.sublineVersionBuilder()
-                                                        .validFrom(LocalDate.of(2000, 1, 2))
-                                                        .validTo(LocalDate.of(2000, 5, 31))
-                                                         .sublineType(COMPENSATION)
+        .validFrom(LocalDate.of(2000, 1, 2))
+        .validTo(LocalDate.of(2000, 5, 31))
+        .sublineType(CONCESSION)
                                                          .mainlineSlnid(firstLineVersion.getSlnid())
                                                          .slnid("ch:1002")
                                                          .build();
     SublineVersion fourthSublineVersion = SublineTestData.sublineVersionBuilder()
-                                                         .validFrom(LocalDate.of(2000, 6, 1))
-                                                         .validTo(LocalDate.of(2000, 12, 31))
-                                                         .sublineType(COMPENSATION)
+        .validFrom(LocalDate.of(2000, 6, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .sublineType(CONCESSION)
                                                          .mainlineSlnid(firstLineVersion.getSlnid())
                                                          .slnid("ch:1002")
                                                          .build();
