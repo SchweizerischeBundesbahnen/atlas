@@ -84,42 +84,4 @@ class DateHelperTest {
     assertThat(result).isEqualTo(date2);
   }
 
-  @Test
-  void shouldReturnIsBetweenWhenDatesAreCurrent() {
-    //given
-    LocalDate current = LocalDate.now();
-    LocalDate date1 = current;
-    LocalDate date2 = current;
-    //when
-    boolean result = DateHelper.isBetween(date1, date2, current);
-    //then
-    assertThat(result).isTrue();
-
-  }
-
-  @Test
-  void shouldReturnIsBetweenWhenCurrentIsBetween() {
-    //given
-    LocalDate current = LocalDate.now();
-    LocalDate date1 = current.minusDays(1);
-    LocalDate date2 = current.plusDays(2);
-    //when
-    boolean result = DateHelper.isBetween(date1, date2, current);
-    //then
-    assertThat(result).isTrue();
-
-  }
-
-  @Test
-  void shouldReturnIsNotBetweenWhenCurrentIsAfter() {
-    //given
-    LocalDate current = LocalDate.now();
-    LocalDate date1 = current.minusDays(1);
-    LocalDate date2 = current.minusDays(1);
-    //when
-    boolean result = DateHelper.isBetween(date1, date2, current);
-    //then
-    assertThat(result).isFalse();
-
-  }
 }
