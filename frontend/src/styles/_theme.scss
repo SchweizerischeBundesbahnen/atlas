@@ -1,31 +1,41 @@
 @use '@angular/material' as mat;
 @use './palette/atlas-palette' as palette;
-@use './typography/atlas-typography' as typography;
 
-// Define the default theme
-$app-primary: mat.m2-define-palette(palette.$atlas-primary);
-$app-accent: mat.m2-define-palette(palette.$atlas-accent);
-$app-warn: mat.m2-define-palette(palette.$atlas-red);
-$app-theme: mat.m2-define-light-theme(
-  (
-    color: (
-      primary: $app-primary,
-      accent: $app-accent,
-      warn: $app-warn,
-    ),
+$theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: palette.$atlas-primary,
+  ),
+  typography: (
+    brand-family: 'IBM Plex Sans',
+    plain-family: 'IBM Plex Sans'
+  ),
+  density: (
+    scale: -1
   )
-);
+));
 
-// **Be sure that you only ever include this mixin once!**
-// Include the default theme styles (color and default density)
-// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
-//  The following line adds:
-//    1. Default typography styles for all components
-//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
-//  If you specify typography styles for the components you use elsewhere, you should delete this line.
-//  If you don't need the default component typographies but still want the hierarchy styles,
-//  you can delete this line and instead use:
-//    `@include mat.legacy-typography-hierarchy(typography.$atlas-typography);`
-@include mat.all-component-typographies(typography.$atlas-typography);
 @include mat.core();
-@include mat.all-component-themes($app-theme);
+
+html {
+  @include mat.all-component-themes($theme);
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif
+  }
+
+  // SideNav
+  --mat-list-active-indicator-shape: unset;
+  --mat-sidenav-container-shape: unset;
+  --mat-sidenav-container-width: 239px;
+
+  // Tabs
+  --mat-tab-header-divider-height: 0;
+
+  // Calendar
+  --mat-datepicker-calendar-container-elevation-shadow: 0px 2px 4px -1px rgba(0, 0, 0, .2), 0px 4px 5px 0px rgba(0, 0, 0, .14), 0px 1px 10px 0px rgba(0, 0, 0, .12);
+
+  // Dialog
+  --mat-dialog-container-max-width: unset;
+}
+
