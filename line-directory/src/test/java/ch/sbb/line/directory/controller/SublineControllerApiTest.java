@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -11,13 +10,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
-import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.ModelType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
+import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
@@ -100,27 +99,6 @@ import org.springframework.test.web.servlet.MvcResult;
             .contentType(contentType)
             .content(mapper.writeValueAsString(sublineVersionModel)))
         .andExpect(status().isCreated());
-  }
-
-  @Test
-  void shouldGetSublineOverview() throws Exception {
-    //given
-    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel = SublineTestData.sublineVersionModelBuilder()
-        .mainlineSlnid(
-            lineVersionSaved.getSlnid())
-        .build();
-    sublineController.createSublineVersion(sublineVersionModel);
-
-    //when
-    mvc.perform(get("/v1/sublines")
-            .queryParam("page", "0")
-            .queryParam("size", "5")
-            .queryParam("sort", "swissSublineNumber,asc"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount").value(1))
-        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
@@ -564,6 +542,6 @@ import org.springframework.test.web.servlet.MvcResult;
     //when
     mvc.perform(post("/v1/sublines/" + sublineVersionSaved.getSlnid() + "/revoke")
         ).andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]." + Fields.status, is("REVOKED")));
+        .andExpect(jsonPath("$[0]." + BaseVersionModel.Fields.status, is("REVOKED")));
   }
 }

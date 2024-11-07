@@ -418,7 +418,10 @@
       "TYPES": {
         "ORDERLY": "Ordinaire",
         "TEMPORARY": "Temporaire",
-        "OPERATIONAL": "Lié à l’exploitation"
+        "OPERATIONAL": "Lié à l’exploitation",
+        "DISPOSITION": "Disposition",
+        "TECHNICAL": "Technique",
+        "CONCESSION": "Concession"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "La ligne a été ajoutée avec succès.",
@@ -434,7 +437,6 @@
       "DETAIL_SUBLINE_INFORMATION": "Informations sur la ligne partielle",
       "NEW_SUBLINE_INFORMATION": "Informations sur la nouvelle ligne partielle",
       "SUBLINE": "Ligne partielle",
-      "SUBLINES": "Lignes partielles",
       "CONFLICT": {
         "SWISS_NUMBER": "Le numéro de ligne partielle CH {{swissSublineNumber}} est déjà attribué de {{validFrom}} à {{validTo}} par {{slnid}}.",
         "ASSIGN_DIFFERENT_LINE_CONFLICT": "La ligne principale ne peut pas être modifiée."
@@ -450,7 +452,10 @@
       "TYPES": {
         "COMPENSATION": "Compensation",
         "TECHNICAL": "Technique",
-        "CONCESSION": "Concession"
+        "CONCESSION": "Concession",
+        "DISPOSITION": "Disposition",
+        "TEMPORARY": "Temporaire",
+        "OPERATIONAL": "Lié à l’exploitation"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le ligne partielle a été ajoutée avec succès.",
