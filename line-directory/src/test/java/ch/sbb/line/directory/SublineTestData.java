@@ -1,14 +1,13 @@
 package ch.sbb.line.directory;
 
-import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
-import ch.sbb.line.directory.entity.Subline;
-import ch.sbb.line.directory.entity.Subline.SublineBuilder;
+import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
-import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import java.time.LocalDate;
 
 public class SublineTestData {
@@ -35,26 +34,13 @@ public class SublineTestData {
             "swissSublineNumber");
   }
 
+  public static SublineVersionBuilder<?, ?> sublineVersionV2Builder() {
+    return sublineVersionBuilder()
+        .concessionType(SublineConcessionType.LINE_ABROAD);
+  }
+
   public static SublineVersion sublineVersion() {
     return sublineVersionBuilder().build();
-  }
-
-  public static SublineBuilder sublineBuilder() {
-    return Subline.builder()
-        .status(Status.VALIDATED)
-        .sublineType(SublineType.TECHNICAL)
-        .description("description")
-        .slnid("slnid")
-        .swissSublineNumber("swissSublineNumber")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
-        .businessOrganisation(
-            "businessOrganisation")
-        .swissLineNumber("swissLineNumber");
-  }
-
-  public static Subline subline() {
-    return sublineBuilder().build();
   }
 
   public static SublineVersionModelBuilder<?, ?> sublineVersionModelBuilder() {
