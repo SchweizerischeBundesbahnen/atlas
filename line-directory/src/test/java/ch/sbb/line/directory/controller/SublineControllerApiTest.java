@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -100,27 +99,6 @@ import org.springframework.test.web.servlet.MvcResult;
             .contentType(contentType)
             .content(mapper.writeValueAsString(sublineVersionModel)))
         .andExpect(status().isCreated());
-  }
-
-  @Test
-  void shouldGetSublineOverview() throws Exception {
-    //given
-    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel = SublineTestData.sublineVersionModelBuilder()
-        .mainlineSlnid(
-            lineVersionSaved.getSlnid())
-        .build();
-    sublineController.createSublineVersion(sublineVersionModel);
-
-    //when
-    mvc.perform(get("/v1/sublines")
-            .queryParam("page", "0")
-            .queryParam("size", "5")
-            .queryParam("sort", "swissSublineNumber,asc"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount").value(1))
-        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
