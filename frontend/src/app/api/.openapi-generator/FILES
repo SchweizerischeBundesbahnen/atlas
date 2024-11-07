@@ -78,7 +78,6 @@ model/containerReadStopPointVersion.ts
 model/containerReadStopPointWorkflow.ts
 model/containerReadToiletVersion.ts
 model/containerReadTrafficPointElementVersion.ts
-model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
 model/containerTimetableHearingStatementV2.ts
 model/containerTransportCompany.ts
@@ -97,6 +96,7 @@ model/detail.ts
 model/displayInfo.ts
 model/district.ts
 model/editStopPointWorkflow.ts
+model/elementType.ts
 model/errorDetail.ts
 model/errorResponse.ts
 model/examinantWorkflowCheck.ts
@@ -114,14 +114,18 @@ model/inlineObject3.ts
 model/inlineObject4.ts
 model/itemProcessResponseStatus.ts
 model/judgementType.ts
+model/lidiElementType.ts
 model/line.ts
+model/lineConcessionType.ts
 model/lineType.ts
 model/lineVersion.ts
 model/lineVersionSnapshot.ts
+model/lineVersionV2.ts
 model/lineVersionWorkflow.ts
 model/localityMunicipality.ts
 model/meanOfTransport.ts
 model/models.ts
+model/offerCategory.ts
 model/operatingPointTechnicalTimetableType.ts
 model/operatingPointTrafficPointType.ts
 model/operatingPointType.ts
@@ -181,9 +185,10 @@ model/stopPointRejectWorkflow.ts
 model/stopPointRestartWorkflow.ts
 model/stopPointType.ts
 model/stopPointVersion.ts
-model/subline.ts
+model/sublineConcessionType.ts
 model/sublineType.ts
 model/sublineVersion.ts
+model/sublineVersionV2.ts
 model/swissCanton.ts
 model/swissLocation.ts
 model/tactileVisualAttributeType.ts
