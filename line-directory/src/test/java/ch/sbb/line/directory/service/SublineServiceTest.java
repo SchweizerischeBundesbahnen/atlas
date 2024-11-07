@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.BeforeEach;
@@ -261,7 +262,7 @@ class SublineServiceTest {
     //given
     when(lineService.findLineVersions(any())).thenReturn(new ArrayList<>());
     //when && then
-    assertThrows(IllegalStateException.class, () -> sublineService.getMainLineVersion(any()));
+    assertThrows(NoSuchElementException.class, () -> sublineService.getMainLineVersion(any()));
 
   }
 
