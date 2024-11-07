@@ -6,14 +6,11 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.api.lidi.SublineModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.SublineTestData;
-import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
@@ -30,8 +27,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 class SublineControllerTest {
 
@@ -80,28 +75,6 @@ class SublineControllerTest {
     sublineController = new SublineController(sublineService, coverageService,
         sublineVersionExportService);
     when(sublineService.create(any())).then(i -> i.getArgument(0, SublineVersion.class));
-  }
-
-  @Test
-  void shouldGetSublines() {
-    // Given
-    Subline subline = SublineTestData.subline();
-    when(sublineService.findAll(any())).thenReturn(
-        new PageImpl<>(Collections.singletonList(subline)));
-
-    // When
-    Container<SublineModel> sublineContainer = sublineController.getSublines(
-        Pageable.unpaged(), Collections.emptyList(), Collections.emptyList(),
-        Collections.emptyList(), Optional.empty(), Optional.of(LocalDate.now()));
-
-    // Then
-    assertThat(sublineContainer).isNotNull();
-    assertThat(sublineContainer.getObjects()).hasSize(1)
-        .first()
-        .usingRecursiveComparison()
-        .ignoringFields(ArrayUtils.addAll(RECURSIVE_COMPARISION_IGNORE_FIELDS, SUBLINE_VERSION_V2_COMPARISION_IGNORE_FIELDS))
-        .isEqualTo(subline);
-    assertThat(sublineContainer.getTotalCount()).isEqualTo(1);
   }
 
   @Test

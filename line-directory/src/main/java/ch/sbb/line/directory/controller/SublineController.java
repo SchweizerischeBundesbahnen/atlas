@@ -2,28 +2,19 @@ package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.api.lidi.CoverageModel;
 import ch.sbb.atlas.api.lidi.SublineApiV1;
-import ch.sbb.atlas.api.lidi.SublineModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
-import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.mapper.CoverageMapper;
-import ch.sbb.line.directory.model.search.SublineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
 import ch.sbb.line.directory.service.export.SublineVersionExportService;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,43 +27,7 @@ public class SublineController implements SublineApiV1 {
 
   private final SublineVersionExportService sublineVersionExportService;
 
-  @Override
-  public Container<SublineModel> getSublines(Pageable pageable, List<String> searchCriteria,
-      List<Status> statusRestrictions, List<SublineType> typeRestrictions,
-      Optional<String> businessOrganisation,
-      Optional<LocalDate> validOn) {
-    log.info("Load Versions using pageable={}", pageable);
-    Page<Subline> sublines = sublineService.findAll(SublineSearchRestrictions.builder()
-        .pageable(pageable)
-        .searchCriterias(searchCriteria)
-        .statusRestrictions(statusRestrictions)
-        .validOn(validOn)
-        .typeRestrictions(
-            typeRestrictions)
-        .businessOrganisation(
-            businessOrganisation)
-        .build());
-    return Container.<SublineModel>builder()
-        .objects(sublines.stream().map(this::toModel).toList())
-        .totalCount(sublines.getTotalElements())
-        .build();
-  }
-
-  private SublineModel toModel(Subline sublineVersion) {
-    return SublineModel.builder()
-        .swissSublineNumber(sublineVersion.getSwissSublineNumber())
-        .swissLineNumber(sublineVersion.getSwissLineNumber())
-        .status(sublineVersion.getStatus())
-        .sublineType(sublineVersion.getSublineType())
-        .slnid(sublineVersion.getSlnid())
-        .description(sublineVersion.getDescription())
-        .validFrom(sublineVersion.getValidFrom())
-        .validTo(sublineVersion.getValidTo())
-        .businessOrganisation(sublineVersion.getBusinessOrganisation())
-        .build();
-  }
-
-  @Override
+   @Override
   public List<SublineVersionModel> getSublineVersion(String slnid) {
     List<SublineVersionModel> sublineVersionModels = sublineService.findSubline(slnid)
         .stream()
