@@ -7,6 +7,8 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.LoggingAspect;
 import ch.sbb.workflow.aop.MethodLogged;
+import ch.sbb.workflow.client.SePoDiAdminClient;
+import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
@@ -39,6 +41,8 @@ public class StopPointWorkflowTransitionService {
 
   private final DecisionService decisionService;
   private final SePoDiClientService sePoDiClientService;
+  private final SePoDiClient sePoDiClient;
+  private final SePoDiAdminClient sePoDiAdminClient;
   private final Examinants examinants;
   private final StopPointWorkflowNotificationService notificationService;
   private final StopPointWorkflowService stopPointWorkflowService;
@@ -52,9 +56,9 @@ public class StopPointWorkflowTransitionService {
   public StopPointWorkflow addWorkflow(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
     stopPointWorkflowService.checkHasWorkflowAdded(stopPointAddWorkflowModel.getVersionId());
     if (stopPointAddWorkflowModel.getExaminants() != null && !stopPointAddWorkflowModel.getExaminants().isEmpty()) {
-      stopPointWorkflowService.checkIfAllExaminantEmailsAreUnique(stopPointAddWorkflowModel.getExaminants());
+      stopPointWorkflowService.checkIfAllExaminantEmailsAreUnique(stopPointAddWorkflowModel.getExaminants(), true);
     }
-    ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.updateStopPointStatusToInReview(
+    ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient,
         stopPointAddWorkflowModel.getSloid(), stopPointAddWorkflowModel.getVersionId());
     StopPointWorkflow stopPointWorkflow = createStopPointAddWorkflow(stopPointAddWorkflowModel, servicePointVersionModel);
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
@@ -84,7 +88,7 @@ public class StopPointWorkflowTransitionService {
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     stopPointWorkflow.setStatus(REJECTED);
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
-    sePoDiClientService.updateStopPointStatusToDraft(stopPointWorkflow);
+    sePoDiClientService.updateStopPointStatusToDraft(sePoDiClient, stopPointWorkflow);
     notificationService.sendRejectStopPointWorkflowMail(workflow, rejectWorkflowModel.getMotivationComment());
     return stopPointWorkflow;
   }
@@ -103,7 +107,7 @@ public class StopPointWorkflowTransitionService {
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
 
-    sePoDiClientService.updateStopPointStatusToDraftAsAdmin(stopPointWorkflow);
+    sePoDiClientService.updateStopPointStatusToDraft(sePoDiAdminClient, stopPointWorkflow);
     notificationService.sendCanceledStopPointWorkflowMail(workflow, stopPointCancelWorkflowModel.getMotivationComment());
     return workflow;
   }
@@ -118,9 +122,12 @@ public class StopPointWorkflowTransitionService {
 
     updateCurrentWorkflow(stopPointWorkflow, newStopPointWorkflow);
 
-    sePoDiClientService.updateStopPointStatusToDraftAsAdmin(newStopPointWorkflow);
-    sePoDiClientService.updateDesignationOfficialServicePointAsAdmin(newStopPointWorkflow);
-    sePoDiClientService.updateStopPointStatusToInReviewAsAdmin(newStopPointWorkflow.getSloid(), newStopPointWorkflow.getVersionId());
+    //Add test here to check if failed
+    //sePoDiClientService.updateStopPointStatusToDraftAsAdmin(newStopPointWorkflow);
+
+    sePoDiClientService.updateDesignationOfficialServicePoint(sePoDiAdminClient, newStopPointWorkflow);
+
+    //sePoDiClientService.updateStopPointStatusToInReviewAsAdmin(newStopPointWorkflow.getSloid(), newStopPointWorkflow.getVersionId());
 
     notificationService.sendRestartStopPointWorkflowMail(stopPointWorkflow, newStopPointWorkflow);
     return newStopPointWorkflow;
@@ -138,7 +145,7 @@ public class StopPointWorkflowTransitionService {
         notificationService.sendApprovedStopPointWorkflowMail(workflow);
       }
       if (newStatus == WorkflowStatus.REJECTED) {
-        sePoDiClientService.updateStopPointStatusToDraft(workflow);
+        sePoDiClientService.updateStopPointStatusToDraft(sePoDiClient, workflow);
         notificationService.sendCanceledStopPointWorkflowMail(workflow, stopPointWorkflowProgressDecider.getRejectComment());
       }
       workflow.setEndDate(LocalDate.now());
