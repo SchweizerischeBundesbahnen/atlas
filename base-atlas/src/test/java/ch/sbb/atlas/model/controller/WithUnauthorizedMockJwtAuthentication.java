@@ -30,8 +30,12 @@ public @interface WithUnauthorizedMockJwtAuthentication {
 
     @Override
     public SecurityContext createSecurityContext(WithUnauthorizedMockJwtAuthentication annotation) {
+      return createSecurityContext(annotation.sbbuid());
+    }
+
+    public static SecurityContext createSecurityContext(String sbbuid) {
       SecurityContext context = SecurityContextHolder.createEmptyContext();
-      Authentication authentication = new JwtAuthenticationToken(createJwt(annotation.sbbuid()),
+      Authentication authentication = new JwtAuthenticationToken(createJwt(sbbuid),
           AuthorityUtils.createAuthorityList(Role.ROLE_PREFIX + Role.ATLAS_ROLES_UNAUTHORIZED_KEY));
       authentication.setAuthenticated(true);
       context.setAuthentication(authentication);
