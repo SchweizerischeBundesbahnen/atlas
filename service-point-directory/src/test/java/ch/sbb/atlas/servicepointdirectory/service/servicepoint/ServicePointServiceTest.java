@@ -176,10 +176,9 @@ class ServicePointServiceTest {
     when(servicePointVersionRepositoryMock.findAllByNumberOrderByValidFrom(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))).thenReturn(List.of(version1), List.of(updatedVersion));
 
 
-    List<ReadServicePointVersionModel> result = servicePointService.updateDesignationOfficial(1000L, updateDesignationOfficialServicePointModel);
+    ServicePointVersion result = servicePointService.updateDesignationOfficial(1000L, updateDesignationOfficialServicePointModel);
     assertNotNull(result);
-    assertEquals(1, result.size());
-    assertEquals("test", result.get(0).getDesignationOfficial());
+    assertEquals("test", result.getDesignationOfficial());
   }
 
   @Test
