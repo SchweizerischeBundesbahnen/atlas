@@ -69,6 +69,13 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
 
   @Override
   public UserDisplayNameModel getUserDisplayName(String userId) {
+    if (UserService.hasUnauthorizedRole()) {
+      return UserDisplayNameModel.builder()
+          .sbbUserId(userId)
+          .displayName("*****")
+          .build();
+    }
+
     Optional<UserDisplayNameModel> clientCredentialAlias = getClientCredentialAlias(userId);
     if (clientCredentialAlias.isPresent()) {
       return clientCredentialAlias.get();
@@ -82,6 +89,10 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
 
   @Override
   public List<UserDisplayNameModel> getUserInformation(List<String> userIds) {
+    if (UserService.hasUnauthorizedRole()) {
+      return Collections.emptyList();
+    }
+
     if (userIds == null || userIds.isEmpty()) {
       return Collections.emptyList();
     }
