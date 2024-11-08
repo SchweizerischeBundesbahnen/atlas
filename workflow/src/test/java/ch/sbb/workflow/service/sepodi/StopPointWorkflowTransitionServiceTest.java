@@ -6,16 +6,19 @@ import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
+import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,6 +74,7 @@ class StopPointWorkflowTransitionServiceTest {
         .endDate(LocalDate.of(2000, 12, 31))
         .versionId(123456L)
         .status(WorkflowStatus.HEARING)
+        .ccEmails(List.of("test@test.test"))
         .build();
     marek.setStopPointWorkflow(workflow);
     judith.setStopPointWorkflow(workflow);
@@ -140,11 +144,10 @@ class StopPointWorkflowTransitionServiceTest {
 
     stopPointWorkflowTransitionService.progressWorkflowWithNewDecision(workflowInHearing.getId());
 
-    verify(sePoDiClientService).updateStopPointStatusToDraft(any());
+    verify(sePoDiClientService).updateStopPointStatusToDraft(any(), any());
     verify(notificationService).sendCanceledStopPointWorkflowMail(any(), any());
 
     workflowInHearing = workflowRepository.findById(workflowInHearing.getId()).orElseThrow();
     assertThat(workflowInHearing.getStatus()).isEqualTo(WorkflowStatus.REJECTED);
   }
-
 }

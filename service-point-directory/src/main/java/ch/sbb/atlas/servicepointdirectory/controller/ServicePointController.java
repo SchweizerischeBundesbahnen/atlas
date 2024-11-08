@@ -136,16 +136,11 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
-  public ReadServicePointVersionModel updateDesignationOfficial(Long id,
+  public ServicePointVersion updateDesignationOfficial(Long id,
       UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
 
-    List<ReadServicePointVersionModel> updatedServicePoints = servicePointService.updateDesignationOfficial(id,
-        updateDesignationOfficialServicePointModel);
+    return servicePointService.updateDesignationOfficial(id, updateDesignationOfficialServicePointModel);
 
-    return updatedServicePoints.stream()
-        .filter(servicePoint -> servicePoint.getId().equals(id))
-        .findFirst()
-        .orElseThrow(() -> new IdNotFoundException(id));
   }
 
   @Override
