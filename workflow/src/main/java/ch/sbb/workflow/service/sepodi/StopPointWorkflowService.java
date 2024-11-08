@@ -4,6 +4,8 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.Redacted;
+import ch.sbb.workflow.client.SePoDiAdminClient;
+import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
@@ -23,6 +25,8 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +44,7 @@ public class StopPointWorkflowService {
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
   private final SePoDiClientService sePoDiClientService;
+  private final SePoDiAdminClient sePoDiAdminClient;
   private final Examinants examinants;
 
   @Redacted(redactedClassType = StopPointWorkflow.class)
@@ -58,7 +63,7 @@ public class StopPointWorkflowService {
 
   public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
     if (workflowModel.getExaminants() != null && !workflowModel.getExaminants().isEmpty()) {
-      checkIfAllExaminantEmailsAreUnique(workflowModel.getExaminants());
+      checkIfAllExaminantEmailsAreUnique(workflowModel.getExaminants(), false);
     }
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
 
@@ -68,7 +73,7 @@ public class StopPointWorkflowService {
 
     if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())) {
       stopPointWorkflow.setDesignationOfficial(workflowModel.getDesignationOfficial());
-      sePoDiClientService.updateDesignationOfficialServicePoint(stopPointWorkflow);
+      sePoDiClientService.updateDesignationOfficialServicePoint(sePoDiAdminClient, stopPointWorkflow);
     }
 
     stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
@@ -121,12 +126,20 @@ public class StopPointWorkflowService {
     }
   }
 
-  public void checkIfAllExaminantEmailsAreUnique(List<StopPointClientPersonModel> examinants) {
+  public void checkIfAllExaminantEmailsAreUnique(List<StopPointClientPersonModel> examinants, boolean isAddWorkflow) {
     Set<String> emailSet = new HashSet<>();
+
     for (StopPointClientPersonModel examinant : examinants) {
       String email = examinant.getMail().toLowerCase();
-      if (email.equals(Examinants.NON_PROD_EMAIL_ATLAS.toLowerCase()) || email.equals(Examinants.NON_PROD_EMAIL_CANTON.toLowerCase()) || !emailSet.add(email)) {
+
+      if(isAddWorkflow) {
+        if (email.equals(Examinants.NON_PROD_EMAIL_ATLAS.toLowerCase()) || email.equals(Examinants.NON_PROD_EMAIL_CANTON.toLowerCase())) {
           throw new StopPointWorkflowExaminantEmailNotUniqueException();
+        }
+      }
+
+      if (!emailSet.add(email)) {
+        throw new StopPointWorkflowExaminantEmailNotUniqueException();
       }
     }
   }
