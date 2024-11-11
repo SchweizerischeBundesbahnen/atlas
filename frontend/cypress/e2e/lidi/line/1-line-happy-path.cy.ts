@@ -40,6 +40,7 @@ describe('Linie', {testIsolation: false}, () => {
   });
 
   it('Step-6: Search added item in table and navigate to it', () => {
+    //wait until the Table is loaded with items
     LidiUtils.searchAndNavigateToLine(line);
     CommonUtils.getTotalRange().should('contain', '01.01.2000').should('contain', '31.12.2000');
   });

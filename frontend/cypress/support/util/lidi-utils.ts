@@ -216,10 +216,11 @@ export default class LidiUtils {
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       line.slnid,
     );
-
-    CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
-      'Aktiv',
+    
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
+      line.validTo,
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
@@ -227,11 +228,6 @@ export default class LidiUtils {
       line.type,
     );
 
-    CommonUtils.typeSearchInput(
-      pathToIntercept,
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
-      line.validTo,
-    );
     // Check that the table contains 1 result
     cy.get(DataCy.LIDI_LINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
