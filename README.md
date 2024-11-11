@@ -114,6 +114,10 @@ The Cypress Videos results are stored to the following Amazon S3 Bucket:
 * [Monitoring (Instana and Actuator)](documentation/Monitoring.md)
 * [Logging to Splunk](documentation/Logging.md)
 
+## Hotfix Build and Deployment
+
+[Hotfix](documentation/hotfix.md)
+
 ### Correlation-Id
 
 The Atlas services use [Micrometer](https://micrometer.io/) to add to the log a
