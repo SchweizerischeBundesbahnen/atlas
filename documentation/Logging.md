@@ -3,8 +3,8 @@
 Information about splunk is available here:\
 https://confluence.sbb.ch/display/MON/Splunk
 
-* Dashboard: https://search.splunk.sbb.ch/en-US/app/sbb_app_atlas
-* Search: https://search.splunk.sbb.ch/en-US/app/sbb_app_atlas/search
+* Dashboard: https://sbb.splunkcloud.com/en-US/app/sbb_app_atlas
+* Search: https://sbb.splunkcloud.com/en-US/app/sbb_app_atlas/search
 
 ## Indexes
 
