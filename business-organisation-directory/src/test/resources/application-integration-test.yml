@@ -2,14 +2,6 @@ spring:
   test:
     database:
       replace: none
-  datasource:
-    url: jdbc:tc:postgresql:16-alpine:///db
-    username: sa
-    password: sa
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   main:
     banner-mode: OFF
   jpa:
