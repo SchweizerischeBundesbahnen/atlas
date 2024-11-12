@@ -101,11 +101,6 @@
          <artifactId>s3</artifactId>
       </dependency>
       <dependency>
-         <artifactId>postgresql</artifactId>
-         <groupId>org.postgresql</groupId>
-         <scope>runtime</scope>
-      </dependency>
-      <dependency>
          <artifactId>lombok</artifactId>
          <groupId>org.projectlombok</groupId>
          <optional>true</optional>
@@ -128,16 +123,6 @@
       <dependency>
          <artifactId>spring-boot-starter-test</artifactId>
          <groupId>org.springframework.boot</groupId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <artifactId>spring-boot-testcontainers</artifactId>
-         <groupId>org.springframework.boot</groupId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.testcontainers</groupId>
-         <artifactId>postgresql</artifactId>
          <scope>test</scope>
       </dependency>
       <dependency>
