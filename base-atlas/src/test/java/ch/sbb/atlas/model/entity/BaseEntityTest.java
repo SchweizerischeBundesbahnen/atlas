@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.jdbc.Sql;
 
 @IntegrationTest
+@Sql(value = "/base_entity_test_schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class BaseEntityTest {
 
   @Autowired
