@@ -61,7 +61,7 @@ class SePoDiClientServiceTest {
     doReturn(updateServicePointVersionModel).when(sePoDiClient).postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW);
     //when && then
     assertDoesNotThrow(
-        () -> service.updateStopPointStatusToInReview(sePoDiClient, stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
+        () -> service.updateStopPointStatusToInReview(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
   }
 
   @ParameterizedTest
@@ -75,7 +75,7 @@ class SePoDiClientServiceTest {
     doReturn(updateServicePointVersionModel).when(sePoDiClient).postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW);
     //when && then
     assertThrows(SePoDiClientWrongStatusReturnedException.class,
-        () -> service.updateStopPointStatusToInReview(sePoDiClient, stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
+        () -> service.updateStopPointStatusToInReview(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
   }
 
   @Test
@@ -89,7 +89,7 @@ class SePoDiClientServiceTest {
         Status.DRAFT);
     //when && then
     assertDoesNotThrow(
-        () -> service.updateStopPointStatusToDraft(sePoDiClient, stopPointWorkflow));
+        () -> service.updateStopPointStatusToDraft(stopPointWorkflow));
   }
 
   @ParameterizedTest
@@ -101,7 +101,7 @@ class SePoDiClientServiceTest {
     doReturn(updateServicePointVersionModel).when(sePoDiClient).postServicePointsStatusUpdate(stopPointWorkflow.getSloid(),
         stopPointWorkflow.getVersionId(), Status.DRAFT);
     //when && then
-    assertThrows(SePoDiClientWrongStatusReturnedException.class, () -> service.updateStopPointStatusToDraft(sePoDiClient, stopPointWorkflow));
+    assertThrows(SePoDiClientWrongStatusReturnedException.class, () -> service.updateStopPointStatusToDraft(stopPointWorkflow));
   }
 
   @Test
@@ -153,7 +153,7 @@ class SePoDiClientServiceTest {
 
     //when && then
     assertDoesNotThrow(
-        () -> service.updateDesignationOfficialServicePoint(sePoDiClient, stopPointWorkflow));
+        () -> service.updateDesignationOfficialServicePoint(stopPointWorkflow));
   }
 
   @Test
