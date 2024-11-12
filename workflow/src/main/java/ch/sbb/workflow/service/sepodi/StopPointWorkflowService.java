@@ -4,8 +4,6 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.Redacted;
-import ch.sbb.workflow.client.SePoDiAdminClient;
-import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
@@ -25,8 +23,6 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +40,6 @@ public class StopPointWorkflowService {
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
   private final SePoDiClientService sePoDiClientService;
-  private final SePoDiAdminClient sePoDiAdminClient;
   private final Examinants examinants;
 
   @Redacted(redactedClassType = StopPointWorkflow.class)
@@ -73,7 +68,7 @@ public class StopPointWorkflowService {
 
     if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())) {
       stopPointWorkflow.setDesignationOfficial(workflowModel.getDesignationOfficial());
-      sePoDiClientService.updateDesignationOfficialServicePoint(sePoDiAdminClient, stopPointWorkflow);
+      sePoDiClientService.updateDesignationOfficialServicePoint(stopPointWorkflow);
     }
 
     stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());

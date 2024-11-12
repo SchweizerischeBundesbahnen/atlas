@@ -3,6 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -15,6 +17,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
@@ -45,6 +48,9 @@ class ServicePointServiceTest {
 
   @Mock
   private ServicePointTerminationService servicePointTerminationService;
+
+  @Mock
+  private ServicePointVersionMapper servicePointVersionMapper;
 
   @Mock
   private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
@@ -109,8 +115,8 @@ class ServicePointServiceTest {
     ServicePointVersion result = servicePointService.updateServicePointVersion(version1, edited, Collections.emptyList());
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
-    assertThat(result.getValidTo()).isEqualTo(LocalDate.of(2000, 6, 1));
+    assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 2));
+    assertThat(result.getValidTo()).isEqualTo(LocalDate.of(2000, 12, 30));
 
     verify(servicePointTerminationService).checkTerminationAllowed(anyList(), anyList());
   }
@@ -158,27 +164,18 @@ class ServicePointServiceTest {
             .version(0)
             .build();
 
-    ServicePointVersion updatedVersion = ServicePointVersion.builder()
-            .id(1000L)
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 6, 1))
-            .designationOfficial("test")
-            .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
-            .version(0)
-            .build();
-
     UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel
             .builder()
             .designationOfficial("test")
             .build();
 
     when(servicePointVersionRepositoryMock.findById(1000L)).thenReturn(Optional.of(version1));
-    when(servicePointVersionRepositoryMock.findAllByNumberOrderByValidFrom(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))).thenReturn(List.of(version1), List.of(updatedVersion));
+    when(servicePointVersionRepositoryMock.findAllByNumberOrderByValidFrom(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))).thenReturn(List.of(version1));
 
+    ReadServicePointVersionModel result = servicePointService.updateDesignationOfficial(1000L, updateDesignationOfficialServicePointModel);
 
-    ServicePointVersion result = servicePointService.updateDesignationOfficial(1000L, updateDesignationOfficialServicePointModel);
-    assertNotNull(result);
-    assertEquals("test", result.getDesignationOfficial());
+    assertThat(result).isNotNull();
+    assertThat(result.getDesignationOfficial()).isEqualTo("test");
   }
 
   @Test
