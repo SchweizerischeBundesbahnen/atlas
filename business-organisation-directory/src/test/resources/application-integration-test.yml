@@ -28,7 +28,7 @@ external:
     url: https://www.output.tu-verzeichnisse.bav.admin.ch
 logging:
   level:
-    root: INFO
+    root: ERROR
     org:
       hibernate: ERROR
       jboss: ERROR
