@@ -92,7 +92,7 @@ public interface ServicePointApiV1 {
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).SEPODI)")
   @PutMapping(path = "/update-designation-official/{id}")
-  ServicePointVersion updateDesignationOfficial(
+  ReadServicePointVersionModel updateDesignationOfficial(
       @PathVariable Long id,
       @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
   );

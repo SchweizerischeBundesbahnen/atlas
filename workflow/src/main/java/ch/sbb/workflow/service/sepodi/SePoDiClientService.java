@@ -23,8 +23,8 @@ public class SePoDiClientService {
   private final SePoDiClient sePoDiClient;
   private final SePoDiAdminClient sePoDiAdminClient;
 
-  public ReadServicePointVersionModel updateStopPointStatusToInReview(SePoDiApi client, String sloid, Long id) {
-    ReadServicePointVersionModel updateServicePointVersionModel = client.postServicePointsStatusUpdate(
+  public ReadServicePointVersionModel updateStopPointStatusToInReview(String sloid, Long id) {
+    ReadServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsStatusUpdate(
         sloid, id, Status.IN_REVIEW);
     if (updateServicePointVersionModel != null && Status.IN_REVIEW != updateServicePointVersionModel.getStatus()) {
       throw new SePoDiClientWrongStatusReturnedException(Status.IN_REVIEW, updateServicePointVersionModel.getStatus());
@@ -41,7 +41,15 @@ public class SePoDiClientService {
     }
   }
 
-  public ReadServicePointVersionModel updateStopPointStatusToDraft(SePoDiApi client, StopPointWorkflow stopPointWorkflow) {
+  public ReadServicePointVersionModel updateStopPointStatusToDraftAsAdmin(StopPointWorkflow stopPointWorkflow) {
+    return updateStopPointStatusToDraft(sePoDiAdminClient, stopPointWorkflow);
+  }
+
+  public ReadServicePointVersionModel updateStopPointStatusToDraft(StopPointWorkflow stopPointWorkflow) {
+    return updateStopPointStatusToDraft(sePoDiClient, stopPointWorkflow);
+  }
+
+  private ReadServicePointVersionModel updateStopPointStatusToDraft(SePoDiApi client, StopPointWorkflow stopPointWorkflow) {
     ReadServicePointVersionModel updateServicePointVersionModel = client.postServicePointsStatusUpdate(
         stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId(), Status.DRAFT);
     if (updateServicePointVersionModel != null && Status.DRAFT != updateServicePointVersionModel.getStatus()) {
@@ -68,14 +76,16 @@ public class SePoDiClientService {
     return null;
   }
 
-  public ReadServicePointVersionModel updateDesignationOfficialServicePoint(SePoDiApi client, StopPointWorkflow stopPointWorkflow) {
+
+
+  public ReadServicePointVersionModel updateDesignationOfficialServicePoint(StopPointWorkflow stopPointWorkflow) {
     UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel =
         UpdateDesignationOfficialServicePointModel
             .builder()
             .designationOfficial(stopPointWorkflow.getDesignationOfficial())
             .build();
 
-    return client.updateServicePointDesignationOfficial(stopPointWorkflow.getVersionId(),
+    return sePoDiAdminClient.updateServicePointDesignationOfficial(stopPointWorkflow.getVersionId(),
         updateDesignationOfficialServicePointModel);
   }
 }
