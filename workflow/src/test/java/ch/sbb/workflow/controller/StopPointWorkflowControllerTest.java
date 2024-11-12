@@ -82,10 +82,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @MockBean
   private StopPointWorkflowNotificationService notificationService;
 
-  @MockBean
-  private SePoDiClient sePoDiClient;
-
-
   @AfterEach
   void tearDown() {
     otpRepository.deleteAll();
@@ -96,7 +92,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @Test
   void shouldGetExaminants() throws Exception {
     StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel.getSloid(), workflowModel.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
     controller.addStopPointWorkflow(workflowModel);
 
@@ -115,7 +111,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
     StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel.getSloid(), workflowModel.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel);
@@ -130,7 +126,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   void shouldFilterWorkflowsByNoDecision() throws Exception {
     StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflowWithMultipleExaminants();
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel.getSloid(), workflowModel.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel);
@@ -274,10 +270,10 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel1.getSloid(), workflowModel1.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel2.getSloid(), workflowModel2.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
@@ -295,10 +291,10 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel1.getSloid(), workflowModel1.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel2.getSloid(), workflowModel2.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
@@ -316,10 +312,10 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel1.getSloid(), workflowModel1.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel2.getSloid(), workflowModel2.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
@@ -337,10 +333,10 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel1.getSloid(), workflowModel1.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel2.getSloid(), workflowModel2.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
@@ -358,10 +354,10 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel1.getSloid(), workflowModel1.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel2.getSloid(), workflowModel2.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
@@ -379,10 +375,10 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel1.getSloid(), workflowModel1.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel2.getSloid(), workflowModel2.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
@@ -512,7 +508,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .applicantMail("a@b.ch")
         .versionId(versionId)
         .build();
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, sloid, versionId))
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     //given
@@ -547,7 +543,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .applicantMail("a@b.ch")
         .versionId(versionId)
         .build();
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, sloid, versionId))
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     //given
@@ -582,7 +578,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .applicantMail("a@b.ch")
         .versionId(versionId)
         .build();
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, sloid, versionId))
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
         .thenThrow(new IdNotFoundException(versionId));
 
     //given
@@ -642,7 +638,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .applicantMail("a@b.ch")
         .versionId(versionId)
         .build();
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, sloid, versionId))
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     //given
@@ -855,7 +851,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionResult.getMotivation()).isEqualTo(stopPointCancelWorkflowModel.getMotivationComment());
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.CANCELED);
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
-    verify(sePoDiClientService).updateStopPointStatusToDraft(any(), any(StopPointWorkflow.class));
+    verify(sePoDiClientService).updateStopPointStatusToDraft(any(StopPointWorkflow.class));
   }
 
   @Test
