@@ -18,7 +18,6 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -307,7 +306,6 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     mvc.perform(get("/v1/lines/covered")
             .contentType(contentType)
         ).andExpect(status().isOk())
-        .andDo(print())
         .andExpect(jsonPath("$[0].businessOrganisation", is("sbb")))
         .andExpect(jsonPath("$[0].lidiElementType", is(LidiElementType.TEMPORARY.toString())))
         .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
