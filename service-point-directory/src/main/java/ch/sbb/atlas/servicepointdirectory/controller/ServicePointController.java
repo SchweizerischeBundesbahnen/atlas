@@ -136,7 +136,7 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
-  public ServicePointVersion updateDesignationOfficial(Long id,
+  public ReadServicePointVersionModel updateDesignationOfficial(Long id,
       UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
 
     return servicePointService.updateDesignationOfficial(id, updateDesignationOfficialServicePointModel);
