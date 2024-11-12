@@ -6,6 +6,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    generate-ddl: true
   kafka:
     bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
     consumer:
