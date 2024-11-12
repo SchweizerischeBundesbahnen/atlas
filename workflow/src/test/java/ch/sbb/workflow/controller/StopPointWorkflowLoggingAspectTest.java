@@ -92,7 +92,7 @@ class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
         .versionId(versionId)
         .build();
 
-    when(sePoDiClientService.updateStopPointStatusToInReview(sePoDiClient, workflowModel.getSloid(), workflowModel.getVersionId()))
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
         .thenThrow(new IllegalStateException());
 
     // when & then
