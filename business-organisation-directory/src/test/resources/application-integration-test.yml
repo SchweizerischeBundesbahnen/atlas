@@ -1,7 +1,4 @@
 spring:
-  test:
-    database:
-      replace: none
   main:
     banner-mode: OFF
   jpa:
