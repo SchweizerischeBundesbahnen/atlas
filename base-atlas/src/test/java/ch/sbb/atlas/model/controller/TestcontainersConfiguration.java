@@ -2,7 +2,6 @@ package ch.sbb.atlas.model.controller;
 
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
@@ -11,7 +10,6 @@ import org.testcontainers.utility.DockerImageName;
  * href="https://confluence.sbb.ch/display/CLEW/Advanced+Topics#AdvancedTopics-Knownissuesandtroubleshooting">Testcontainers</a>
  * on Kubedock troubleshooting
  */
-@Configuration
 public class TestcontainersConfiguration {
 
   private static final String KUBEDOCK_RUNAS_USER_LABEL_NAME = "com.joyrex2001.kubedock.runas-user";
