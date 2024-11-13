@@ -105,6 +105,32 @@ class SePoDiClientServiceTest {
   }
 
   @Test
+  void shouldUpdateStatusInDraftAsAdmin() {
+    //given
+    ReadServicePointVersionModel updateServicePointVersionModel =
+            ReadServicePointVersionModel.builder().status(Status.DRAFT).build();
+    String sloid = "ch:1:sloid:8000";
+    long versionId = 1L;
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient).postServicePointsStatusUpdate(sloid, versionId,
+            Status.DRAFT);
+    //when && then
+    assertDoesNotThrow(
+            () -> service.updateStopPointStatusToDraft(stopPointWorkflow));
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = Status.class, names = {"REVOKED", "WITHDRAWN", "VALIDATED"})
+  void shouldNotUpdateStatusToDraftAsAdmin(Status status) {
+    //given
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(status)
+            .build();
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient).postServicePointsStatusUpdate(stopPointWorkflow.getSloid(),
+            stopPointWorkflow.getVersionId(), Status.DRAFT);
+    //when && then
+    assertThrows(SePoDiClientWrongStatusReturnedException.class, () -> service.updateStopPointStatusToDraftAsAdmin(stopPointWorkflow));
+  }
+
+  @Test
   void shouldUpdateStatusToValidated() {
     //given
     ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(Status.VALIDATED)
@@ -148,12 +174,12 @@ class SePoDiClientServiceTest {
         .status(Status.IN_REVIEW)
         .designationOfficial("Designerica")
         .build();
-    doReturn(updateServicePointVersionModel).when(sePoDiClient)
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient)
         .updateServicePointDesignationOfficial(versionId, updateDesignationOfficialServicePointModel);
 
     //when && then
     assertDoesNotThrow(
-        () -> service.updateDesignationOfficialServicePoint(stopPointWorkflow));
+        () -> service.updateDesignationOfficialServicePointAsAdmin(stopPointWorkflow));
   }
 
   @Test
