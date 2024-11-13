@@ -114,6 +114,32 @@
       "branchNamePrefixes": [
         "master"
       ],
+      "tasks": [
+        {
+          "name": "atlas-start-deploy-dev-pipeline",
+          "taskRef": "atlas-start-pipeline",
+          "params": {
+            "GIT_PROJECT": "KI_ATLAS",
+            "GIT_REPOSITORY": "atlas-deploy-dev",
+            "GIT_REVISION": "refs/heads/master",
+            "PIPELINE_CONFIG_NAME": "continuous",
+            "PIPELINE_PARAMETERS_JSON": "{\"VERSION_TO_DEPLOY\":\"${VERSION_TAG}\"}"
+          },
+          "runAfter": "maven-deploy"
+        },
+        {
+          "name": "atlas-start-deploy-test-pipeline",
+          "taskRef": "atlas-start-pipeline",
+          "params": {
+            "GIT_PROJECT": "KI_ATLAS",
+            "GIT_REPOSITORY": "atlas-deploy-test",
+            "GIT_REVISION": "refs/heads/master",
+            "PIPELINE_CONFIG_NAME": "continuous",
+            "PIPELINE_PARAMETERS_JSON": "{\"VERSION_TO_DEPLOY\":\"${VERSION_TAG}\"}"
+          },
+          "runAfter": "maven-deploy"
+        }
+      ],
       "triggerType": [
         "USER"
       ],
@@ -153,6 +179,32 @@
       "triggerType": [
         "GITEVENT"
       ],
+      "tasks": [
+        {
+          "name": "atlas-start-deploy-dev-pipeline",
+          "taskRef": "atlas-start-pipeline",
+          "params": {
+            "GIT_PROJECT": "KI_ATLAS",
+            "GIT_REPOSITORY": "atlas-deploy-dev",
+            "GIT_REVISION": "refs/heads/master",
+            "PIPELINE_CONFIG_NAME": "continuous",
+            "PIPELINE_PARAMETERS_JSON": "{\"VERSION_TO_DEPLOY\":\"${VERSION_TAG}\"}"
+          },
+          "runAfter": "maven-deploy"
+        },
+        {
+          "name": "atlas-start-deploy-test-pipeline",
+          "taskRef": "atlas-start-pipeline",
+          "params": {
+            "GIT_PROJECT": "KI_ATLAS",
+            "GIT_REPOSITORY": "atlas-deploy-test",
+            "GIT_REVISION": "refs/heads/master",
+            "PIPELINE_CONFIG_NAME": "continuous",
+            "PIPELINE_PARAMETERS_JSON": "{\"VERSION_TO_DEPLOY\":\"${VERSION_TAG}\"}"
+          },
+          "runAfter": "maven-deploy"
+        }
+      ],
       "tagging": {
         "versionIncrementPosition": "minor"
       },
@@ -172,38 +224,6 @@
           "additionalParams": "--disableNodeAudit --nodePackageSkipDevDependencies"
         },
         "failOnQualityGateFailure": true
-      },
-      "stages": [
-        "dev",
-        "test"
-      ]
-    }
-  ],
-  "stages": [
-    {
-      "stageName": "dev",
-      "argoCD": {
-        "waitUntilHealthy": true,
-        "argoCdAppName": "applications.argoproj.io/app-name=atlas-dev",
-        "argoCdAppSyncFlags": "-l",
-        "autoSync": true
-      },
-      "helm": {
-        "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
-        "chartFilePath": "./clusters/aws01t/atlas-dev/values.yaml",
-        "versionProperties": [
-          ".appVersion"
-        ]
-      }
-    },
-    {
-      "stageName": "test",
-      "helm": {
-        "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
-        "chartFilePath": "./clusters/aws01t/atlas-test/values.yaml",
-        "versionProperties": [
-          ".appVersion"
-        ]
       }
     }
   ],
