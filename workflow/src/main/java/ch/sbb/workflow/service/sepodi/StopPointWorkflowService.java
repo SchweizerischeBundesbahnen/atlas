@@ -58,7 +58,7 @@ public class StopPointWorkflowService {
 
   public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
     if (workflowModel.getExaminants() != null && !workflowModel.getExaminants().isEmpty()) {
-      checkIfAllExaminantEmailsAreUnique(workflowModel.getExaminants());
+      checkIfAllExaminantEmailsAreUnique(workflowModel.getExaminants(), false);
     }
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
 
@@ -121,12 +121,20 @@ public class StopPointWorkflowService {
     }
   }
 
-  public void checkIfAllExaminantEmailsAreUnique(List<StopPointClientPersonModel> examinants) {
+  public void checkIfAllExaminantEmailsAreUnique(List<StopPointClientPersonModel> examinants, boolean isAddWorkflow) {
     Set<String> emailSet = new HashSet<>();
+
     for (StopPointClientPersonModel examinant : examinants) {
       String email = examinant.getMail().toLowerCase();
-      if (email.equals(Examinants.NON_PROD_EMAIL_ATLAS.toLowerCase()) || email.equals(Examinants.NON_PROD_EMAIL_CANTON.toLowerCase()) || !emailSet.add(email)) {
+
+      if(isAddWorkflow &&
+        (email.equals(Examinants.NON_PROD_EMAIL_ATLAS.toLowerCase()) ||
+        email.equals(Examinants.NON_PROD_EMAIL_CANTON.toLowerCase()))) {
           throw new StopPointWorkflowExaminantEmailNotUniqueException();
+      }
+
+      if (!emailSet.add(email)) {
+        throw new StopPointWorkflowExaminantEmailNotUniqueException();
       }
     }
   }
