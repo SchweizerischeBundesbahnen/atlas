@@ -1,25 +1,33 @@
 package ch.sbb.atlas.model.controller;
 
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.utility.DockerImageName;
+import org.testcontainers.lifecycle.Startables;
 
-/**
- * <a
- * href="https://confluence.sbb.ch/display/CLEW/Advanced+Topics#AdvancedTopics-Knownissuesandtroubleshooting">Testcontainers</a>
- * on Kubedock troubleshooting
- */
+@TestConfiguration(proxyBeanMethods = false)
 public class TestcontainersConfiguration {
 
-  private static final String KUBEDOCK_RUNAS_USER_LABEL_NAME = "com.joyrex2001.kubedock.runas-user";
-  private static final String KUBEDOCK_RUNAS_USER = "999";
+  @Bean
+  public GeneralServiceTestContainer generalServiceTestContainer() {
+    return new GeneralServiceTestContainer();
+  }
 
-  @Bean(destroyMethod = "stop")
-  @ServiceConnection
-  public PostgreSQLContainer<?> postgreSQLContainer() {
-    return new PostgreSQLContainer<>(DockerImageName.parse("postgres:16.4"))
-        .withLabel(KUBEDOCK_RUNAS_USER_LABEL_NAME, KUBEDOCK_RUNAS_USER);
+  public static class GeneralServiceTestContainer implements BeanFactoryPostProcessor {
+
+    public static PostgreSQLContainer<?> postgreSQLContainer = PostgreSQLTestContainer.create();
+
+    static {
+      Startables.deepStart(postgreSQLContainer).join();
+    }
+
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+      PostgreSQLTestContainer.setSystemPropertiesForDatasource("spring.datasource", postgreSQLContainer);
+    }
   }
 
 }
