@@ -13,7 +13,6 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.LoggingAspect;
-import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
@@ -42,9 +41,6 @@ class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
 
   @Autowired
   private StopPointWorkflowRepository workflowRepository;
-
-  @Autowired
-  private SePoDiClient sePoDiClient;
 
   @Autowired
   private DecisionRepository decisionRepository;
