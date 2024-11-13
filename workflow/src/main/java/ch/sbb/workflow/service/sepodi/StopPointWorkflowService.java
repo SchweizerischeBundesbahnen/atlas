@@ -127,10 +127,10 @@ public class StopPointWorkflowService {
     for (StopPointClientPersonModel examinant : examinants) {
       String email = examinant.getMail().toLowerCase();
 
-      if(isAddWorkflow) {
-        if (email.equals(Examinants.NON_PROD_EMAIL_ATLAS.toLowerCase()) || email.equals(Examinants.NON_PROD_EMAIL_CANTON.toLowerCase())) {
+      if(isAddWorkflow &&
+        (email.equals(Examinants.NON_PROD_EMAIL_ATLAS.toLowerCase()) ||
+        email.equals(Examinants.NON_PROD_EMAIL_CANTON.toLowerCase()))) {
           throw new StopPointWorkflowExaminantEmailNotUniqueException();
-        }
       }
 
       if (!emailSet.add(email)) {
