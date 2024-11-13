@@ -154,11 +154,7 @@
           "enabled": true,
           "additionalParams": "--disableNodeAudit --nodePackageSkipDevDependencies"
         }
-      },
-      "stages": [
-        "dev",
-        "test"
-      ]
+      }
     },
     {
       "name": "taggingMinor",
