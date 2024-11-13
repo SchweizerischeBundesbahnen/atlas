@@ -117,7 +117,7 @@ public class StopPointWorkflowTransitionService {
 
     updateCurrentWorkflow(stopPointWorkflow, newStopPointWorkflow);
 
-    sePoDiClientService.updateDesignationOfficialServicePoint(newStopPointWorkflow);
+    sePoDiClientService.updateDesignationOfficialServicePointAsAdmin(newStopPointWorkflow);
 
     notificationService.sendRestartStopPointWorkflowMail(stopPointWorkflow, newStopPointWorkflow);
     return newStopPointWorkflow;

@@ -58,7 +58,6 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.servicePointSubscription = this.route.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
-      console.log("service ", this.servicePointVersions)
       this.initVersioning();
       if (Countries.geolocationCountries.includes(this.servicePointVersions[0].country)) {
         this.tabs = TABS;
@@ -70,7 +69,6 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
         this.servicePointVersions[0].number.number,
       );
     });
-
   }
 
   ngOnDestroy() {
@@ -84,7 +82,5 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
       this.servicePointVersions,
     );
-    console.log("selected version ", this.selectedVersion)
-
   }
 }

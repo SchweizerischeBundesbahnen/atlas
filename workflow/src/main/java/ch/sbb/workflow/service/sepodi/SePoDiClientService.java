@@ -5,7 +5,6 @@ import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.workflow.client.SePoDiAdminClient;
-import ch.sbb.workflow.client.SePoDiApi;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.SePoDiClientWrongStatusReturnedException;
@@ -42,16 +41,18 @@ public class SePoDiClientService {
   }
 
   public ReadServicePointVersionModel updateStopPointStatusToDraftAsAdmin(StopPointWorkflow stopPointWorkflow) {
-    return updateStopPointStatusToDraft(sePoDiAdminClient, stopPointWorkflow);
+    ReadServicePointVersionModel updateServicePointVersionModel = sePoDiAdminClient.postServicePointsStatusUpdate(
+        stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId(), Status.DRAFT);
+    return validateStatusIsNotDraft(updateServicePointVersionModel);
   }
 
   public ReadServicePointVersionModel updateStopPointStatusToDraft(StopPointWorkflow stopPointWorkflow) {
-    return updateStopPointStatusToDraft(sePoDiClient, stopPointWorkflow);
+    ReadServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsStatusUpdate(
+            stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId(), Status.DRAFT);
+    return validateStatusIsNotDraft(updateServicePointVersionModel);
   }
 
-  private ReadServicePointVersionModel updateStopPointStatusToDraft(SePoDiApi client, StopPointWorkflow stopPointWorkflow) {
-    ReadServicePointVersionModel updateServicePointVersionModel = client.postServicePointsStatusUpdate(
-        stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId(), Status.DRAFT);
+  private ReadServicePointVersionModel validateStatusIsNotDraft(ReadServicePointVersionModel updateServicePointVersionModel) {
     if (updateServicePointVersionModel != null && Status.DRAFT != updateServicePointVersionModel.getStatus()) {
       throw new SePoDiClientWrongStatusReturnedException(Status.DRAFT, updateServicePointVersionModel.getStatus());
     }
@@ -76,16 +77,24 @@ public class SePoDiClientService {
     return null;
   }
 
-
-
   public ReadServicePointVersionModel updateDesignationOfficialServicePoint(StopPointWorkflow stopPointWorkflow) {
     UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel =
-        UpdateDesignationOfficialServicePointModel
+            buildUpdateDesignationOfficialModel(stopPointWorkflow);
+    return sePoDiClient.updateServicePointDesignationOfficial(stopPointWorkflow.getVersionId(),
+            updateDesignationOfficialServicePointModel);
+  }
+
+  public ReadServicePointVersionModel updateDesignationOfficialServicePointAsAdmin(StopPointWorkflow stopPointWorkflow) {
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel =
+            buildUpdateDesignationOfficialModel(stopPointWorkflow);
+    return sePoDiAdminClient.updateServicePointDesignationOfficial(stopPointWorkflow.getVersionId(),
+        updateDesignationOfficialServicePointModel);
+  }
+
+  private UpdateDesignationOfficialServicePointModel buildUpdateDesignationOfficialModel(StopPointWorkflow stopPointWorkflow) {
+    return UpdateDesignationOfficialServicePointModel
             .builder()
             .designationOfficial(stopPointWorkflow.getDesignationOfficial())
             .build();
-
-    return sePoDiAdminClient.updateServicePointDesignationOfficial(stopPointWorkflow.getVersionId(),
-        updateDesignationOfficialServicePointModel);
   }
 }
