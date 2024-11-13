@@ -849,7 +849,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionResult.getMotivation()).isEqualTo(stopPointCancelWorkflowModel.getMotivationComment());
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.CANCELED);
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
-    verify(sePoDiClientService).updateStopPointStatusToDraft(any(StopPointWorkflow.class));
+    verify(sePoDiClientService).updateStopPointStatusToDraftAsAdmin(any(StopPointWorkflow.class));
   }
 
   @Test
@@ -1006,6 +1006,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(workflows.get(1).getExaminants()).hasSize(1);
 
     verify(notificationService).sendRestartStopPointWorkflowMail(any(StopPointWorkflow.class), any(StopPointWorkflow.class));
+    verify(sePoDiClientService).updateDesignationOfficialServicePointAsAdmin(any(StopPointWorkflow.class));
   }
 
   @Test
