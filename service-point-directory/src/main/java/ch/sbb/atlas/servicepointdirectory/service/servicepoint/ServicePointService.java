@@ -143,7 +143,7 @@ public class ServicePointService {
         currentVersion, existingDbVersionInReview);
 
     servicePointTerminationService.checkTerminationAllowed(currentVersions, afterUpdateServicePoint);
-    return currentVersion;
+    return editedVersion;
   }
 
   private ServicePointVersion save(ServicePointVersion servicePointVersion, Optional<ServicePointVersion> currentVersion,
@@ -160,7 +160,7 @@ public class ServicePointService {
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
   }
 
-  public List<ReadServicePointVersionModel> updateDesignationOfficial(Long id, UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
+  public ReadServicePointVersionModel updateDesignationOfficial(Long id, UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
     ServicePointVersion servicePointVersionToUpdate = findById(id).orElseThrow(() -> new NotFoundException.IdNotFoundException(id));
 
     List<ServicePointVersion> currentVersions = findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber());
@@ -172,7 +172,7 @@ public class ServicePointService {
             .toBuilder().designationOfficial(updateDesignationOfficialServicePointModel.getDesignationOfficial())
             .build();
 
-    return updateAndPublishInternal(servicePointVersionToUpdate, editedVersion, currentVersions);
+    return ServicePointVersionMapper.toModel(updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions));
   }
 
   @PreAuthorize("""
