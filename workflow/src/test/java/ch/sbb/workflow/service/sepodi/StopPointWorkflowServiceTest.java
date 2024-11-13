@@ -280,7 +280,7 @@ class StopPointWorkflowServiceTest {
     stopPointClientPersonModels.add(person2);
 
     //when & then
-    assertThrows(StopPointWorkflowExaminantEmailNotUniqueException.class, () -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels));
+    assertThrows(StopPointWorkflowExaminantEmailNotUniqueException.class, () -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels, false));
 
   }
 
@@ -306,7 +306,7 @@ class StopPointWorkflowServiceTest {
     stopPointClientPersonModels.add(person2);
 
     //when & then
-    assertThrows(StopPointWorkflowExaminantEmailNotUniqueException.class, () -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels));
+    assertThrows(StopPointWorkflowExaminantEmailNotUniqueException.class, () -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels, true));
   }
 
   @Test
@@ -331,7 +331,7 @@ class StopPointWorkflowServiceTest {
     stopPointClientPersonModels.add(person2);
 
     //when & then
-    assertDoesNotThrow(() -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels));
+    assertDoesNotThrow(() -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels, false));
   }
 
 }

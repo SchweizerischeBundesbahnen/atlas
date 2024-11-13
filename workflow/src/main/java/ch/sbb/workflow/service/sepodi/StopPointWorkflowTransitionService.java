@@ -52,10 +52,9 @@ public class StopPointWorkflowTransitionService {
   public StopPointWorkflow addWorkflow(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
     stopPointWorkflowService.checkHasWorkflowAdded(stopPointAddWorkflowModel.getVersionId());
     if (stopPointAddWorkflowModel.getExaminants() != null && !stopPointAddWorkflowModel.getExaminants().isEmpty()) {
-      stopPointWorkflowService.checkIfAllExaminantEmailsAreUnique(stopPointAddWorkflowModel.getExaminants());
+      stopPointWorkflowService.checkIfAllExaminantEmailsAreUnique(stopPointAddWorkflowModel.getExaminants(), true);
     }
-    ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.updateStopPointStatusToInReview(
-        stopPointAddWorkflowModel.getSloid(), stopPointAddWorkflowModel.getVersionId());
+    ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.updateStopPointStatusToInReview(stopPointAddWorkflowModel.getSloid(), stopPointAddWorkflowModel.getVersionId());
     StopPointWorkflow stopPointWorkflow = createStopPointAddWorkflow(stopPointAddWorkflowModel, servicePointVersionModel);
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
     return stopPointWorkflowService.save(stopPointWorkflow);
@@ -103,7 +102,7 @@ public class StopPointWorkflowTransitionService {
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
 
-    sePoDiClientService.updateStopPointStatusToDraft(stopPointWorkflow);
+    sePoDiClientService.updateStopPointStatusToDraftAsAdmin(stopPointWorkflow);
     notificationService.sendCanceledStopPointWorkflowMail(workflow, stopPointCancelWorkflowModel.getMotivationComment());
     return workflow;
   }
@@ -118,7 +117,8 @@ public class StopPointWorkflowTransitionService {
 
     updateCurrentWorkflow(stopPointWorkflow, newStopPointWorkflow);
 
-    sePoDiClientService.updateDesignationOfficialServicePoint(newStopPointWorkflow);
+    sePoDiClientService.updateDesignationOfficialServicePointAsAdmin(newStopPointWorkflow);
+
     notificationService.sendRestartStopPointWorkflowMail(stopPointWorkflow, newStopPointWorkflow);
     return newStopPointWorkflow;
   }
