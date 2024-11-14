@@ -26,6 +26,7 @@ public class TestcontainersConfiguration {
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+      System.setProperty("spring.datasource.hikari.maximum-pool-size", "2");
       PostgreSQLTestContainer.setSystemPropertiesForDatasource("spring.datasource", postgreSQLContainer);
     }
   }
