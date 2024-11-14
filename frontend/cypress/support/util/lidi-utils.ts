@@ -73,7 +73,7 @@ export default class LidiUtils {
   static checkIfLineAlreadyExists(line: any) {
     const pathToIntercept = '/line-directory/v1/lines?**';
 
-    this.searchForSwissLineNumber();
+    this.searchForSwissLineNumber(pathToIntercept, line);
 
     CommonUtils.selectItemFromDropdownSearchItem(
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
