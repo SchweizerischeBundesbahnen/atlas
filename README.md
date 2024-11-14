@@ -4,12 +4,16 @@ This is the repository for business relevant services for ATLAS.
 
 <!-- toc -->
 
+- [CI/CD Status](#cicd-status)
+- [SonarQube Static Code Analysis](#sonarqube-static-code-analysis)
 - [Big Picture](#big-picture)
 - [Links](#links)
 - [ATLAS CI/CD with Tekton](#atlas-cicd-with-tekton)
+  * [Continuous Deployment Pipeline](#continuous-deployment-pipeline)
   * [E2E Videos Results](#e2e-videos-results)
 - [Stages and their purpose](#stages-and-their-purpose)
 - [Monitoring and Logging](#monitoring-and-logging)
+- [Hotfix Build and Deployment](#hotfix-build-and-deployment)
   * [Correlation-Id](#correlation-id)
 - [Timeouts](#timeouts)
 - [Development](#development)
@@ -36,16 +40,20 @@ This is the repository for business relevant services for ATLAS.
 
 <!-- tocstop -->
 
-Tekton CI/CD
-Status: [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas/build)](https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas)
+## CI/CD Status
 
+| Pipeline                 | Status                                                                                                                                                                                                                                    |
+|--------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Tekton CI Build**      | [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas/build)](https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas)                           |
+| **Tekton CD -> DEV/INT** | [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas-deploy-dev/build)](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas-deploy-dev/build)   |
+| **Tekton CD -> TEST**    | [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas-deploy-test/build)](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas-deploy-test/build) |
 
-SonarQube:
-[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
-[![Maintainability Rating](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=sqale_rating&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
-[![Vulnerabilities](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=vulnerabilities&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
-[![Technical Debt](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=sqale_index&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
-[![Coverage](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=coverage&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+## SonarQube Static Code Analysis
+* [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+* [![Maintainability Rating](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=sqale_rating&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+* [![Vulnerabilities](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=vulnerabilities&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+* [![Technical Debt](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=sqale_index&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+* [![Coverage](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=coverage&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
 
 ## Big Picture
 
@@ -98,6 +106,16 @@ To apply the CI/CD we use the following additional repository:
 * [atlas-argocd](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse): contains the Charts used to deploy atlas Apps,
   Jobs, Atlas ArgoCD, etc... See the [documentation](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse/README.md)
 
+### Continuous Deployment Pipeline
+
+The atlas **Continuous Deployment** process is divided in multiple pipeline:
+
+1. _Tagging_: defined in [estaTektonPipeline.json](estaTektonPipeline.json)
+2. _Build/Release_: defined in [estaTektonPipeline.json](estaTektonPipeline.json)
+3. _DEV deploy, E2E-Tests, INT deploy_: defined
+   in [atlas-deploy-dev Repo](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-deploy-dev/browse)
+4. _TEST Deploy_: defined in [atlas-deploy-test Repo](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-deploy-test/browse)
+
 ### E2E Videos Results
 
 The Cypress Videos results are stored to the following Amazon S3 Bucket:
@@ -127,11 +145,13 @@ We can use the **Correlation-Id** to search it in [Splunk](documentation/Logging
 
 ## Timeouts
 
-At the moment there are no timeouts for requests to the atlas platform. 
+At the moment there are no timeouts for requests to the atlas platform.
 
-However, the used apim-gateway currently has a limited request time of one minute. The responsible property could be found here: https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse/applications/apim-gateway/values.yaml#106
+However, the used apim-gateway currently has a limited request time of one minute. The responsible property could be found
+here: https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse/applications/apim-gateway/values.yaml#106
 
-API users experiencing timeouts when downloading a bigger json file should switch to the compressed (gzipped) version of the endpoint.
+API users experiencing timeouts when downloading a bigger json file should switch to the compressed (gzipped) version of the
+endpoint.
 
 ## Development
 
@@ -273,6 +293,6 @@ Libraries used to perform:
 
 ATLAS Angular App. See [Frontend documentation](frontend/README.md);
 
-## Troubleshooting 
+## Troubleshooting
 
 * [Sonarqube](documentation/Troubleshooting.md)
