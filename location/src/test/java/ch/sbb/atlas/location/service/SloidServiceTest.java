@@ -13,9 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 @IntegrationTest
 @LocationSchemaCreation
+@EnableAutoConfiguration
 class SloidServiceTest extends BaseLocationIntegrationTest {
 
   private final SloidRepository sloidRepository;
