@@ -6,7 +6,7 @@
   infoIconTitle="{{ infoIconTitle }}"
 ></app-atlas-label-field>
 <form [formGroup]="formGroup">
-  <div class="text-field-wrapper">
+  <div [class]="customWrapperStyleClass">
     <div class="text-field-flex">
       <ng-container
         #customChildInputPrefixTemplate
