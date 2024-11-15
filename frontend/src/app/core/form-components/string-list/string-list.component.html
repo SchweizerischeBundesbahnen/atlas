@@ -12,6 +12,7 @@
           [fieldExamples]="fieldExamples"
           [placeholder]="(showPlaceHolder$ | async) ? placeHolderText : ''"
           (keyup.enter)="addItem()"
+          customWrapperStyleClass=""
         >
           <i
             style="font-size: 1.5rem"
