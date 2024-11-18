@@ -6,18 +6,14 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.location.BaseLocationIntegrationTest;
 import ch.sbb.atlas.location.LocationSchemaCreation;
 import ch.sbb.atlas.location.repository.SloidRepository;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.Country;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
-@IntegrationTest
 @LocationSchemaCreation
-@EnableAutoConfiguration
 class SloidServiceTest extends BaseLocationIntegrationTest {
 
   private final SloidRepository sloidRepository;
