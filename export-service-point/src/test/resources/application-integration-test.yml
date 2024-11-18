@@ -1,15 +1,5 @@
 spring:
   datasource:
-    service-point:
-      driver-class-name: org.h2.Driver
-      url: jdbc:h2:mem:servicepoint;DB_CLOSE_ON_EXIT=FALSE
-      username: sa
-      password: sa
-    prm:
-      url: jdbc:h2:mem:prm;DB_CLOSE_ON_EXIT=FALSE
-      username: user
-      password: pwd
-      driver-class-name: org.h2.Driver
     hikari:
       minimumIdle: 12
       maximumPoolSize: 60
@@ -17,11 +7,6 @@ spring:
       connectionTimeout: 300000
       leakDetectionThreshold: 300000
   batch:
-    datasource:
-      driver-class-name: org.h2.Driver
-      url: jdbc:h2:mem:batch;DB_CLOSE_ON_EXIT=FALSE
-      username: sa
-      password: sa
     jdbc:
       initialize-schema: NEVER
       isolation-level-for-create: default
@@ -29,10 +14,6 @@ spring:
       enabled: false
   kafka:
     bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
 
   main:
     banner-mode: OFF
