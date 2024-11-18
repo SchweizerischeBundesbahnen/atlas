@@ -29,12 +29,6 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', { testIsolation: 
     mainline = LidiUtils.addMainLine();
   });
 
-  it('Step-3: Navigate to Sublines', () => {
-    LidiUtils.navigateToSublines();
-    LidiUtils.checkHeaderTitle();
-    LidiUtils.assertSublineTitle();
-  });
-
   it('Step-4: Add Subline Version', () => {
     LidiUtils.clickOnAddNewSublineVersion();
     LidiUtils.fillSublineVersionForm(sublineVersion);
@@ -54,24 +48,24 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', { testIsolation: 
     LidiUtils.assertContainsSublineVersion(sublineVersion);
   });
 
-  it('Step-7: Navigate to Sublines', () => {
-    CommonUtils.fromDetailBackToSublinesOverview();
+  it('Step-7: Navigate to Lines', () => {
+    CommonUtils.fromDetailBackToLinesOverview();
     CommonUtils.navigateToHomeViaHomeLogo();
-    LidiUtils.navigateToSublines();
+    LidiUtils.navigateToLines();
   });
 
   it('Step-8: Check the added is present on the table result and navigate to it ', () => {
-    LidiUtils.searchAndNavigateToSubline(sublineVersion);
+    LidiUtils.searchSublineAndNavigateToLines(sublineVersion);
   });
 
   it('Step-9: Delete the subline item ', () => {
     CommonUtils.deleteItem();
-    LidiUtils.assertIsOnSublines();
+    LidiUtils.assertIsOnLines();
   });
 
   it('Step-10: Delete the mainline item ', () => {
-    LidiUtils.navigateToLine(mainline);
-    cy.contains(mainline.number);
+    cy.reload();
+    LidiUtils.clickOnLineInOverview(mainline);
     LidiUtils.assertContainsLineVersion(mainline);
 
     CommonUtils.deleteItem();

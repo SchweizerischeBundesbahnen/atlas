@@ -47,14 +47,33 @@ export default class LidiUtils {
       .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
   }
 
-  static checkIfLineAlreadyExists(line: any) {
-    const pathToIntercept = '/line-directory/v1/lines?**';
-
+  private static searchForSwissLineNumber(pathToIntercept: string, line: any) {
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       line.swissLineNumber,
     );
+  }
+
+  static clickOnLineInOverview(line: any) {
+    const pathToIntercept = '/line-directory/v1/lines?**';
+
+    this.searchForSwissLineNumber(pathToIntercept, line);
+
+    cy.get('tbody')
+      .find('tr')
+      .should('have.length', 1)
+      .then(($el) => {
+        if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)) {
+          $el.trigger('click');
+        }
+      });
+  }
+
+  static checkIfLineAlreadyExists(line: any) {
+    const pathToIntercept = '/line-directory/v1/lines?**';
+
+    this.searchForSwissLineNumber(pathToIntercept, line);
 
     CommonUtils.selectItemFromDropdownSearchItem(
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
@@ -216,7 +235,7 @@ export default class LidiUtils {
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       line.slnid,
     );
-    
+
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
@@ -484,23 +503,23 @@ export default class LidiUtils {
     cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
   }
 
-  static searchAndNavigateToSubline(subline: any) {
-    const pathToIntercept = '/line-directory/v1/sublines?**';
+  static searchSublineAndNavigateToLines(subline: any) {
+    const pathToIntercept = '/line-directory/v1/lines?**';
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       subline.swissSublineNumber,
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       subline.slnid,
     );
 
     // Check that the table contains 1 result
-    cy.get(DataCy.LIDI_SUBLINES + ' table tbody tr').should('have.length', 1);
+    cy.get(DataCy.LIDI_LINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
     cy.contains('td', subline.swissSublineNumber).parents('tr').click({ force: true });
     this.assertContainsSublineVersion(subline);
