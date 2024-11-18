@@ -17,6 +17,7 @@ export class TextFieldComponent {
   @Input() fieldExamples!: Array<FieldExample>;
   @Input() customInputNgStyle!: Record<string, string | undefined | null>;
   @Input() customError!: AtlasFieldCustomError;
+  @Input() paddingBottom = true;
   @ContentChild('customChildInputPostfixTemplate')
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   customChildInputPostfixTemplate!: TemplateRef<any>;
