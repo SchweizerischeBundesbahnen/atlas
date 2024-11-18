@@ -103,11 +103,6 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-         <artifactId>h2</artifactId>
-         <groupId>com.h2database</groupId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
          <artifactId>spring-security-test</artifactId>
          <groupId>org.springframework.security</groupId>
          <scope>test</scope>
