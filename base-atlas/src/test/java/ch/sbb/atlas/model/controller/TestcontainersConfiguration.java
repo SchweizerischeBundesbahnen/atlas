@@ -26,6 +26,7 @@ public class TestcontainersConfiguration {
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+      // To avoid too many connections by integration-tests to the same postgres instance.
       System.setProperty("spring.datasource.hikari.maximum-pool-size", "2");
       PostgreSQLTestContainer.setSystemPropertiesForDatasource("spring.datasource", postgreSQLContainer);
     }

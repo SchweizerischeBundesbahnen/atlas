@@ -14,10 +14,6 @@ spring:
       enabled: false
   kafka:
     bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
 
   main:
     banner-mode: OFF
