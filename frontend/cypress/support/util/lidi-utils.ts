@@ -58,6 +58,7 @@ export default class LidiUtils {
   static clickOnLineInOverview(line: any) {
     const pathToIntercept = '/line-directory/v1/lines?**';
 
+    CommonUtils.clearSearchChip();
     this.searchForSwissLineNumber(pathToIntercept, line);
 
     cy.get('tbody')
