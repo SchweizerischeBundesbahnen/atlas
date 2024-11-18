@@ -143,12 +143,14 @@ import org.springframework.beans.factory.annotation.Autowired;
             clientUpdate.getClientCredentialId());
     assertThat(savedPermissions).isNotEmpty();
 
-    ClientCredentialPermission savedPermission = savedPermissions.get(0);
+    ClientCredentialPermission savedPermission =
+        savedPermissions.stream().filter(i -> i.getApplication()==ApplicationType.TIMETABLE_HEARING).findFirst().orElseThrow();
     assertThat(savedPermission.getRole()).isEqualTo(ApplicationRole.WRITER);
     assertThat(savedPermission.getApplication()).isEqualTo(ApplicationType.TIMETABLE_HEARING);
     assertThat(savedPermission.getPermissionRestrictions()).hasSize(2);
 
-    savedPermission = savedPermissions.get(1);
+    savedPermission =
+        savedPermissions.stream().filter(i -> i.getApplication()==ApplicationType.LIDI).findFirst().orElseThrow();
     assertThat(savedPermission.getRole()).isEqualTo(ApplicationRole.WRITER);
     assertThat(savedPermission.getApplication()).isEqualTo(ApplicationType.LIDI);
     assertThat(savedPermission.getPermissionRestrictions()).hasSize(2);

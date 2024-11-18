@@ -101,11 +101,6 @@
          <artifactId>s3</artifactId>
       </dependency>
       <dependency>
-         <artifactId>postgresql</artifactId>
-         <groupId>org.postgresql</groupId>
-         <scope>runtime</scope>
-      </dependency>
-      <dependency>
          <artifactId>lombok</artifactId>
          <groupId>org.projectlombok</groupId>
          <optional>true</optional>
@@ -133,11 +128,6 @@
       <dependency>
          <groupId>org.springframework.kafka</groupId>
          <artifactId>spring-kafka-test</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <artifactId>h2</artifactId>
-         <groupId>com.h2database</groupId>
          <scope>test</scope>
       </dependency>
       <dependency>
