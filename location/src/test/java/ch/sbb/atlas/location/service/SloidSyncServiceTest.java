@@ -13,7 +13,6 @@ import ch.sbb.atlas.location.repository.SloidRepository;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -143,8 +142,7 @@ class SloidSyncServiceTest {
     assertThat(result).isNotNull().hasSize(3);
   }
 
-  private Set<String> getClaimedAvailableSloid() throws SQLException {
-    Objects.requireNonNull(locationJdbcTemplate.getJdbcTemplate().getDataSource()).getConnection().commit();
+  private Set<String> getClaimedAvailableSloid() {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     String sqlQuery = "select sloid from available_service_point_sloid where claimed = true";
     return new HashSet<>(locationJdbcTemplate.query(sqlQuery, mapSqlParameterSource, (rs, row) -> rs.getString("sloid")));
