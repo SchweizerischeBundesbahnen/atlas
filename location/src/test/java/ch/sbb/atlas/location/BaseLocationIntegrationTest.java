@@ -16,16 +16,17 @@ public abstract class BaseLocationIntegrationTest extends BaseControllerApiTest 
   }
 
   @AfterEach
-  void cleanUp(){
+  void cleanUp() {
     Arrays.stream(SloidType.values()).toList().forEach(sloidType -> {
       Set<String> allocatedSloid = sloidRepository.getAllocatedSloids(sloidType);
-      if(sloidType == SloidType.SERVICE_POINT){
-        sloidRepository.setAvailableSloidsToUnclaimed(allocatedSloid);
-        sloidRepository.deleteAllocatedSloids(allocatedSloid,SloidType.SERVICE_POINT);
-      }else {
-        sloidRepository.deleteAllocatedSloids(allocatedSloid,sloidType);
+      if (!allocatedSloid.isEmpty()) {
+        if (sloidType == SloidType.SERVICE_POINT) {
+          sloidRepository.setAvailableSloidsToUnclaimed(allocatedSloid);
+          sloidRepository.deleteAllocatedSloids(allocatedSloid, SloidType.SERVICE_POINT);
+        } else {
+          sloidRepository.deleteAllocatedSloids(allocatedSloid, sloidType);
+        }
       }
-
     });
   }
 
