@@ -25,7 +25,6 @@ export class LineDetailFormComponent {
   readonly extractOfferCategory = (category: Category) => category.value;
 
   TYPE_OPTIONS = Object.values(LineType);
-  OFFER_CATEGORY_OPTIONS = Object.values(OfferCategory);
   LINE_CONCESSION_TYPE_OPTIONS = Object.values(LineConcessionType);
   OFFER_CATEGORY_GROUP: OfferCategoryGroup[] = [
     {
