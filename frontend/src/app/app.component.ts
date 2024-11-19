@@ -14,11 +14,9 @@ export class AppComponent {
   sideNavOpened = true;
 
   constructor(
-    public loadingSpinnerService: LoadingSpinnerService,
+    public readonly loadingSpinnerService: LoadingSpinnerService,
     private readonly _swService: ServiceWorkerService,
-  ) {
-    // loadingSpinnerService.initLoadingSpinner();
-  }
+  ) {}
 }
 
 Date.prototype.toISOString = function () {
