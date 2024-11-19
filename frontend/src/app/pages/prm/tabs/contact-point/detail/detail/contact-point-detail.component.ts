@@ -1,27 +1,36 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {DetailFormComponent} from "../../../../../../core/leave-guard/leave-dirty-form-guard.service";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DetailFormComponent } from '../../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import {
   ContactPointVersion,
   PersonWithReducedMobilityService,
   ReadContactPointVersion,
-  ReadServicePointVersion
-} from "../../../../../../api";
-import {FormGroup} from "@angular/forms";
-import {NotificationService} from "../../../../../../core/notification/notification.service";
-import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
-import {ContactPointFormGroup, ContactPointFormGroupBuilder} from "../form/contact-point-form-group";
-import {DateRange} from "../../../../../../core/versioning/date-range";
-import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
-import {ValidityService} from "../../../../../sepodi/validity/validity.service";
-import {catchError, EMPTY} from "rxjs";
+  ReadServicePointVersion,
+} from '../../../../../../api';
+import { FormGroup } from '@angular/forms';
+import { NotificationService } from '../../../../../../core/notification/notification.service';
+import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
+import {
+  ContactPointFormGroup,
+  ContactPointFormGroupBuilder,
+} from '../form/contact-point-form-group';
+import { DateRange } from '../../../../../../core/versioning/date-range';
+import {
+  DetailHelperService,
+  DetailWithCancelEdit,
+} from '../../../../../../core/detail/detail-helper.service';
+import { ValidityService } from '../../../../../sepodi/validity/validity.service';
+import { catchError, EMPTY, finalize, from, Observable, switchMap, take } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contact-point-detail',
   templateUrl: './contact-point-detail.component.html',
-  providers: [ValidityService]
+  providers: [ValidityService],
 })
-export class ContactPointDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
+export class ContactPointDetailComponent
+  implements OnInit, DetailFormComponent, DetailWithCancelEdit
+{
   isNew = false;
   contactPoint: ReadContactPointVersion[] = [];
   selectedVersion!: ReadContactPointVersion;
@@ -34,6 +43,8 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
   selectedVersionIndex!: number;
 
   businessOrganisations: string[] = [];
+
+  saving = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -73,7 +84,8 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
   }
 
   private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.parent!.data.servicePoint;
+    const servicePointVersions: ReadServicePointVersion[] =
+      this.route.snapshot.parent!.data.servicePoint;
     this.servicePoint =
       VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
     this.businessOrganisations = [
@@ -100,7 +112,25 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
     }
   }
 
-  save() {
+  save(): void {
+    this.saving = true;
+    this.saveProcess()
+      .pipe(
+        take(1),
+        tap(() => {
+          console.log('what if empty obs');
+          this.ngOnInit();
+        }),
+        catchError(() => {
+          this.ngOnInit();
+          return EMPTY;
+        }),
+        finalize(() => (this.saving = false)),
+      )
+      .subscribe();
+  }
+
+  saveProcess(): Observable<ReadContactPointVersion | ReadContactPointVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const contactPointVersion = ContactPointFormGroupBuilder.getWritableForm(
@@ -108,45 +138,57 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
         this.servicePoint.sloid!,
       );
       if (this.isNew) {
-        this.create(contactPointVersion);
+        return this.create(contactPointVersion);
       } else {
         this.validityService.updateValidity(this.form);
-        this.validityService.validateAndDisableForm(() => this.update(contactPointVersion), this.form);
+        return this.validityService.validateAndDisableForm().pipe(
+          switchMap((dialogRes) => {
+            if (dialogRes) {
+              this.form.disable();
+              return this.update(contactPointVersion);
+            } else {
+              return EMPTY;
+            }
+          }),
+        );
       }
+    } else {
+      return EMPTY;
     }
   }
 
+  test = (notification: string, routeParam: string) => {
+    this.notificationService.success(notification);
+    return from(
+      this.router.navigate(['..', routeParam], {
+        relativeTo: this.route.parent,
+      }),
+    );
+  };
+
   private create(contactPointVersion: ContactPointVersion) {
-    this.personWithReducedMobilityService
-      .createContactPoint(contactPointVersion)
-      .pipe(catchError(() => {
-        this.ngOnInit();
-        return EMPTY;
-      }))
-      .subscribe((createdVersion) => {
-        this.notificationService.success('PRM.CONTACT_POINTS.NOTIFICATION.ADD_SUCCESS');
-        this.router
-          .navigate(['..', createdVersion.sloid], {
-            relativeTo: this.route.parent,
-          })
-          .then(() => this.ngOnInit());
-      });
+    return this.personWithReducedMobilityService.createContactPoint(contactPointVersion).pipe(
+      switchMap((createdVersion) => {
+        return this.test('PRM.CONTACT_POINTS.NOTIFICATION.ADD_SUCCESS', createdVersion.sloid!).pipe(
+          map(() => createdVersion),
+        );
+      }),
+    );
   }
 
-  update(contactPointVersion: ContactPointVersion) {
-    this.personWithReducedMobilityService
+  private update(contactPointVersion: ContactPointVersion) {
+    return this.personWithReducedMobilityService
       .updateContactPoint(this.selectedVersion.id!, contactPointVersion)
-      .pipe(catchError(() => {
-        this.ngOnInit();
-        return EMPTY;
-      }))
-      .subscribe(() => {
-        this.notificationService.success('PRM.CONTACT_POINTS.NOTIFICATION.EDIT_SUCCESS');
-        this.router
-          .navigate(['..', this.selectedVersion.sloid], {
-            relativeTo: this.route.parent,
-          })
-          .then(() => this.ngOnInit());
-      });
+      .pipe(
+        switchMap((updatedVersions) => {
+          return this.test(
+            'PRM.CONTACT_POINTS.NOTIFICATION.EDIT_SUCCESS',
+            this.selectedVersion.sloid!,
+          ).pipe(map(() => updatedVersions));
+        }),
+      );
   }
 }
+
+// todo: handle save disable on prm components
+// todo: tests

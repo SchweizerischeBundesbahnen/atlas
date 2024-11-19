@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/module/core.module';
@@ -12,7 +12,7 @@ import { AtlasApiModule, Configuration } from './api';
 import { DateModule } from './core/module/date.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ServerErrorInterceptor } from './core/configuration/server-error-interceptor';
-import { LoadingInterceptor } from './core/configuration/loading.interceptor';
+import { GlobalErrorHandler } from './core/configuration/global-error-handler';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
@@ -44,8 +44,7 @@ function withBasePath(basePath: string) {
     }),
   ],
   providers: [
-    // todo: check { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: ServerErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
