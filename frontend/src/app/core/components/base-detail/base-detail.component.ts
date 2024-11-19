@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ContentChild, Input, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {BaseDetailController} from './base-detail-controller';
 import {KeepaliveService} from '../../keepalive/keepalive.service';
 import {Record} from './record';
@@ -16,6 +16,8 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   @Input() formDetailHeading!: string;
   selectedRecord!: Record;
   private recordSubscription!: Subscription;
+
+  @ContentChild('additionalInfo') additionalInfo!: TemplateRef<any>;
 
   constructor(
     private readonly keepaliveService: KeepaliveService,
