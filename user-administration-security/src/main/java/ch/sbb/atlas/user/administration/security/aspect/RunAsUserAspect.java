@@ -4,16 +4,14 @@ import static ch.sbb.atlas.configuration.Role.ROLES_JWT_KEY;
 import static ch.sbb.atlas.service.UserService.SBBUID_CLAIM;
 
 import ch.sbb.atlas.service.UserService;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -64,29 +62,15 @@ public class RunAsUserAspect {
         accessToken.getHeaders(), temporaryDownGradedClaims);
   }
 
-  String resolveRunAsUserParameter(ProceedingJoinPoint joinPoint) throws NoSuchMethodException {
-
-    MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-    Method method = signature.getMethod();
-    Class<?>[] parameterTypes = method.getParameterTypes();
-
-    Annotation[][] parameterAnnotations = joinPoint.getTarget()
-        .getClass()
-        .getMethod(method.getName(), parameterTypes)
-        .getParameterAnnotations();
-
-    for (int i = 0; i < joinPoint.getArgs().length; i++) {
-      Annotation[] annotations = parameterAnnotations[i];
-
-      for (Annotation a : annotations) {
-        if (a.annotationType() == RunAsUserParameter.class) {
-          if (joinPoint.getArgs()[i] instanceof String value) {
-            return value;
-          }
-          throw new IllegalStateException("Parameter marked with @RunAsUserParameter must be a String!");
-        }
+  String resolveRunAsUserParameter(ProceedingJoinPoint joinPoint) {
+    Optional<Object> parameterValue = AopUtils.resolveParameterValueByAnnotation(joinPoint, RunAsUserParameter.class);
+    if (parameterValue.isPresent()) {
+      if (parameterValue.get() instanceof String stringValue) {
+        return stringValue;
       }
+      throw new IllegalStateException("Parameter marked with @RunAsUserParameter must be a String!");
     }
+
     throw new IllegalStateException("You have to mark @RunAsUserParameter the userName parameter for the method annotated with "
         + "@RunAsUser!");
   }
