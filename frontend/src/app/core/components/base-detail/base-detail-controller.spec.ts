@@ -1,30 +1,33 @@
-import {BaseDetailController} from './base-detail-controller';
-import {OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {Record} from './record';
-import {DialogService} from '../dialog/dialog.service';
-import {TestBed} from '@angular/core/testing';
-import {of} from 'rxjs';
+import { BaseDetailController } from './base-detail-controller';
+import { OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Record } from './record';
+import { DialogService } from '../dialog/dialog.service';
+import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 import moment from 'moment';
-import {Page} from '../../model/page';
-import {NotificationService} from '../../notification/notification.service';
-import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
-import {ActivatedRoute, Router, RouterModule} from '@angular/router';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {MaterialModule} from '../../module/material.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {MatDialogRef} from '@angular/material/dialog';
-import {ApplicationType} from 'src/app/api';
-import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
-import {PermissionService} from "../../auth/permission/permission.service";
-import {adminPermissionServiceMock} from "../../../app.testing.mocks";
+import { Page } from '../../model/page';
+import { NotificationService } from '../../notification/notification.service';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MaterialModule } from '../../module/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { ApplicationType } from 'src/app/api';
+import { ValidityService } from '../../../pages/sepodi/validity/validity.service';
+import { PermissionService } from '../../auth/permission/permission.service';
+import { adminPermissionServiceMock } from '../../../app.testing.mocks';
 
 const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const validityService = jasmine.createSpyObj<ValidityService>([
-  'initValidity', 'updateValidity', 'validateAndDisableForm'
+  'initValidity',
+  'updateValidity',
+  'validateAndDisableCustom',
 ]);
+
 describe('BaseDetailController', () => {
   const dummyController = jasmine.createSpyObj('controller', [
     'backToOverview',
@@ -38,7 +41,14 @@ describe('BaseDetailController', () => {
 
   class DummyBaseDetailController extends BaseDetailController<Record> implements OnInit {
     constructor() {
-      super(router, dialogService, notificationService, permissionService, activatedRoute, validityService);
+      super(
+        router,
+        dialogService,
+        notificationService,
+        permissionService,
+        activatedRoute,
+        validityService,
+      );
     }
 
     getPageType(): Page {
@@ -151,7 +161,7 @@ describe('BaseDetailController', () => {
 
       controller.toggleEdit();
       expect(controller.form.enabled).toBeTrue();
-      expect(validityService.initValidity).toHaveBeenCalled()
+      expect(validityService.initValidity).toHaveBeenCalled();
 
       controller.toggleEdit();
       expect(controller.form.enabled).toBeFalse();
@@ -163,7 +173,7 @@ describe('BaseDetailController', () => {
       controller.toggleEdit();
       controller.form.markAsDirty();
       controller.save();
-      expect(validityService.validateAndDisableForm).toHaveBeenCalled();
+      expect(validityService.validateAndDisableCustom).toHaveBeenCalled();
     });
 
     it('should ask for confirmation to cancel when dirty', () => {
