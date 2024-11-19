@@ -16,7 +16,10 @@
           [switchDisabled]="isSwitchVersionDisabled"
           [showStatus]="false"
         ></app-switch-version>
-        <app-navigation-sepodi-prm [number]="selectedVersion.number.number" targetPage="service-point"></app-navigation-sepodi-prm>
+        <app-navigation-sepodi-prm
+          [number]="selectedVersion.number.number"
+          targetPage="service-point"
+        ></app-navigation-sepodi-prm>
       </div>
     </div>
     <div class="col-12 d-flex mt-5">
@@ -72,7 +75,7 @@
     *ngIf="form"
     (click)="save()"
     [footerEdit]="isNew || ((isFormEnabled$ | async) ?? false)"
-    [disabled]="!form.dirty"
+    [disabled]="!form.dirty || saving"
     [submitButton]="true"
     buttonDataCy="save-item"
     buttonText="COMMON.SAVE"

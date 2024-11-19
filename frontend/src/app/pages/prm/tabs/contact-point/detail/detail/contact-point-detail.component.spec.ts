@@ -164,7 +164,7 @@ describe('ContactPointDetailComponent', () => {
       component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
       component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
 
-      component.saveProcess();
+      component.save();
 
       expect(personWithReducedMobilityService.createContactPoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
@@ -224,7 +224,7 @@ describe('ContactPointDetailComponent', () => {
       component.form.controls.designation.setValue('new designation');
       component.form.controls.designation.markAsDirty();
 
-      component.saveProcess();
+      component.save();
       expect(personWithReducedMobilityService.updateContactPoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
