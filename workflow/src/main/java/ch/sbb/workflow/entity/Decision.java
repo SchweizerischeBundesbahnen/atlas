@@ -1,6 +1,7 @@
 package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.workflow.aop.Redacted;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +31,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "decision")
+@Redacted
 public class Decision extends BaseWorkflowEntity {
 
   private static final String VERSION_SEQ = "decision_seq";
@@ -48,6 +50,7 @@ public class Decision extends BaseWorkflowEntity {
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String motivation;
 
+  @Redacted
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "examinant_id", referencedColumnName = "id")
   private Person examinant;
@@ -61,6 +64,7 @@ public class Decision extends BaseWorkflowEntity {
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String fotMotivation;
 
+  @Redacted
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "fot_overrider_id", referencedColumnName = "id")
   private Person fotOverrider;

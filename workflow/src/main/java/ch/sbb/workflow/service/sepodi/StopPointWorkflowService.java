@@ -42,7 +42,7 @@ public class StopPointWorkflowService {
   private final SePoDiClientService sePoDiClientService;
   private final Examinants examinants;
 
-  @Redacted(redactedClassType = StopPointWorkflow.class)
+  @Redacted
   public StopPointWorkflow getWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
@@ -51,7 +51,7 @@ public class StopPointWorkflowService {
     return workflowRepository.findStopPointWorkflowByFollowUpWorkflow(id);
   }
 
-  @Redacted(redactedClassType = StopPointWorkflow.class)
+  @Redacted
   public Page<StopPointWorkflow> getWorkflows(StopPointWorkflowSearchRestrictions searchRestrictions) {
     return workflowRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
@@ -113,6 +113,10 @@ public class StopPointWorkflowService {
 
   public StopPointWorkflow findStopPointWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  }
+
+  public StopPointWorkflow findStopPointWorkflowByPersonId(Long personId) {
+    return workflowRepository.findByPersonId(personId).orElseThrow(() -> new IdNotFoundException(personId));
   }
 
   public void checkHasWorkflowAdded(Long versionId) {
