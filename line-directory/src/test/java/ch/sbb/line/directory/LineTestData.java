@@ -1,9 +1,13 @@
 package ch.sbb.line.directory;
 
+import ch.sbb.atlas.api.lidi.CreateLineVersionModelV2;
+import ch.sbb.atlas.api.lidi.CreateLineVersionModelV2.CreateLineVersionModelV2Builder;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionModel.LineVersionModelBuilder;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2.LineVersionModelV2Builder;
+import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
+import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2.UpdateLineVersionModelV2Builder;
 import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
@@ -70,6 +74,51 @@ public class LineTestData {
         .number("number")
         .alternativeName("alternativeName")
         .combinationName("combinationName")
+        .longName("longName")
+        .colorFontRgb("#FFFFFF")
+        .colorBackRgb("#FFFFFF")
+        .colorFontCmyk("0,0,0,0")
+        .colorBackCmyk("0,0,0,0")
+        .description("description")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .businessOrganisation(
+            "businessOrganisation")
+        .comment("comment")
+        .lineVersionWorkflows(Collections.emptySet())
+        .swissLineNumber("swissLineNumber");
+  }
+
+  public static CreateLineVersionModelV2Builder<?, ?> createLineVersionModelBuilder() {
+    return CreateLineVersionModelV2.builder()
+        .status(Status.VALIDATED)
+        .lineType(LineType.ORDERLY)
+        .lineConcessionType(LineConcessionType.COLLECTION_LINE)
+        .offerCategory(OfferCategory.IC)
+        .shortNumber("6")
+        .number("number")
+        .longName("longName")
+        .colorFontRgb("#FFFFFF")
+        .colorBackRgb("#FFFFFF")
+        .colorFontCmyk("0,0,0,0")
+        .colorBackCmyk("0,0,0,0")
+        .description("description")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .businessOrganisation(
+            "businessOrganisation")
+        .comment("comment")
+        .lineVersionWorkflows(Collections.emptySet())
+        .swissLineNumber("swissLineNumber");
+  }
+
+  public static UpdateLineVersionModelV2Builder<?, ?> updateLineVersionModelBuilder() {
+    return UpdateLineVersionModelV2.builder()
+        .status(Status.VALIDATED)
+        .lineConcessionType(LineConcessionType.COLLECTION_LINE)
+        .offerCategory(OfferCategory.IC)
+        .shortNumber("6")
+        .number("number")
         .longName("longName")
         .colorFontRgb("#FFFFFF")
         .colorBackRgb("#FFFFFF")
