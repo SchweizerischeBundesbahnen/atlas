@@ -117,10 +117,7 @@ export class ContactPointDetailComponent
     this.saveProcess()
       .pipe(
         take(1),
-        tap(() => {
-          console.log('what if empty obs');
-          this.ngOnInit();
-        }),
+        tap(() => this.ngOnInit()),
         catchError(() => {
           this.ngOnInit();
           return EMPTY;
@@ -130,7 +127,7 @@ export class ContactPointDetailComponent
       .subscribe();
   }
 
-  saveProcess(): Observable<ReadContactPointVersion | ReadContactPointVersion[]> {
+  private saveProcess(): Observable<ReadContactPointVersion | ReadContactPointVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const contactPointVersion = ContactPointFormGroupBuilder.getWritableForm(
@@ -157,21 +154,13 @@ export class ContactPointDetailComponent
     }
   }
 
-  test = (notification: string, routeParam: string) => {
-    this.notificationService.success(notification);
-    return from(
-      this.router.navigate(['..', routeParam], {
-        relativeTo: this.route.parent,
-      }),
-    );
-  };
-
   private create(contactPointVersion: ContactPointVersion) {
     return this.personWithReducedMobilityService.createContactPoint(contactPointVersion).pipe(
       switchMap((createdVersion) => {
-        return this.test('PRM.CONTACT_POINTS.NOTIFICATION.ADD_SUCCESS', createdVersion.sloid!).pipe(
-          map(() => createdVersion),
-        );
+        return this.notificateAndNavigate(
+          'PRM.CONTACT_POINTS.NOTIFICATION.ADD_SUCCESS',
+          createdVersion.sloid!,
+        ).pipe(map(() => createdVersion));
       }),
     );
   }
@@ -181,13 +170,22 @@ export class ContactPointDetailComponent
       .updateContactPoint(this.selectedVersion.id!, contactPointVersion)
       .pipe(
         switchMap((updatedVersions) => {
-          return this.test(
+          return this.notificateAndNavigate(
             'PRM.CONTACT_POINTS.NOTIFICATION.EDIT_SUCCESS',
             this.selectedVersion.sloid!,
           ).pipe(map(() => updatedVersions));
         }),
       );
   }
+
+  private notificateAndNavigate = (notification: string, routeParam: string) => {
+    this.notificationService.success(notification);
+    return from(
+      this.router.navigate(['..', routeParam], {
+        relativeTo: this.route.parent,
+      }),
+    );
+  };
 }
 
 // todo: handle save disable on prm components

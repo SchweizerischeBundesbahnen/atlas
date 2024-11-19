@@ -179,9 +179,9 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
               this.form.disable();
             } else {
               this.validityService.updateValidity(this.form);
-              this.validityService.validateAndDisableForm(
+              this.validityService.validateAndDisableCustom(
                 () => this.update(this.selectedVersion.id!, this.loadingPointVersion),
-                this.form,
+                () => this.form.disable(),
               );
             }
           }

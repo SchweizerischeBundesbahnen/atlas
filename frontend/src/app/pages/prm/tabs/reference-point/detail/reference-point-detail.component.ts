@@ -1,27 +1,36 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {VersionsHandlingService} from '../../../../../core/versioning/versions-handling.service';
-import {CompleteReferencePointFormGroup, ReferencePointFormGroupBuilder,} from './form/reference-point-form-group';
-import {DetailFormComponent} from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {DateRange} from '../../../../../core/versioning/date-range';
-import {FormGroup} from '@angular/forms';
-import {NotificationService} from '../../../../../core/notification/notification.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
+import {
+  CompleteReferencePointFormGroup,
+  ReferencePointFormGroupBuilder,
+} from './form/reference-point-form-group';
+import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { DateRange } from '../../../../../core/versioning/date-range';
+import { FormGroup } from '@angular/forms';
+import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
   PersonWithReducedMobilityService,
   ReadReferencePointVersion,
   ReadServicePointVersion,
   ReferencePointVersion,
 } from '../../../../../api';
-import {DetailHelperService, DetailWithCancelEdit} from "../../../../../core/detail/detail-helper.service";
-import {ValidityService} from "../../../../sepodi/validity/validity.service";
-import {catchError, EMPTY} from "rxjs";
+import {
+  DetailHelperService,
+  DetailWithCancelEdit,
+} from '../../../../../core/detail/detail-helper.service';
+import { ValidityService } from '../../../../sepodi/validity/validity.service';
+import { catchError, EMPTY, finalize, from, Observable, switchMap, take } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-reference-point',
   templateUrl: './reference-point-detail.component.html',
   providers: [ValidityService],
 })
-export class ReferencePointDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
+export class ReferencePointDetailComponent
+  implements OnInit, DetailFormComponent, DetailWithCancelEdit
+{
   isNew = false;
   referencePoint: ReadReferencePointVersion[] = [];
   selectedVersion!: ReadReferencePointVersion;
@@ -35,13 +44,15 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
 
   businessOrganisations: string[] = [];
 
+  saving = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
-    private validityService: ValidityService
+    private validityService: ValidityService,
   ) {}
 
   ngOnInit(): void {
@@ -95,12 +106,27 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
-      this.validityService.initValidity(this.form)
+      this.validityService.initValidity(this.form);
       this.form.enable();
     }
   }
 
   save() {
+    this.saving = true;
+    this.saveProcess()
+      .pipe(
+        take(1),
+        tap(() => this.ngOnInit()),
+        catchError(() => {
+          this.ngOnInit();
+          return EMPTY;
+        }),
+        finalize(() => (this.saving = false)),
+      )
+      .subscribe();
+  }
+
+  private saveProcess(): Observable<ReadReferencePointVersion | ReadReferencePointVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const referencePointVersion = ReferencePointFormGroupBuilder.getWritableForm(
@@ -108,42 +134,55 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
         this.servicePoint.sloid!,
       );
       if (this.isNew) {
-        this.create(referencePointVersion);
-        this.form.disable();
+        return this.create(referencePointVersion);
       } else {
         this.validityService.updateValidity(this.form);
-        this.validityService.validateAndDisableForm(() => this.update(referencePointVersion), this.form);
+        return this.validityService.validateAndDisableForm().pipe(
+          switchMap((dialogRes) => {
+            if (dialogRes) {
+              this.form.disable();
+              return this.update(referencePointVersion);
+            } else {
+              return EMPTY;
+            }
+          }),
+        );
       }
+    } else {
+      return EMPTY;
     }
   }
 
   private create(referencePointVersion: ReferencePointVersion) {
-    this.personWithReducedMobilityService
-      .createReferencePoint(referencePointVersion)
-      .subscribe((createdVersion) => {
-        this.notificationService.success('PRM.REFERENCE_POINTS.NOTIFICATION.ADD_SUCCESS');
-        this.router
-          .navigate(['..', createdVersion.sloid], {
-            relativeTo: this.route,
-          })
-          .then(() => this.ngOnInit());
-      });
+    return this.personWithReducedMobilityService.createReferencePoint(referencePointVersion).pipe(
+      switchMap((createdVersion) => {
+        return this.notificateAndNavigate(
+          'PRM.REFERENCE_POINTS.NOTIFICATION.ADD_SUCCESS',
+          createdVersion.sloid!,
+        ).pipe(map(() => createdVersion));
+      }),
+    );
   }
 
-  update(referencePointVersion: ReferencePointVersion) {
-    this.personWithReducedMobilityService
+  private update(referencePointVersion: ReferencePointVersion) {
+    return this.personWithReducedMobilityService
       .updateReferencePoint(this.selectedVersion.id!, referencePointVersion)
-      .pipe(catchError(() => {
-        this.ngOnInit();
-        return EMPTY;
-      }))
-      .subscribe(() => {
-        this.notificationService.success('PRM.REFERENCE_POINTS.NOTIFICATION.EDIT_SUCCESS');
-        this.router
-          .navigate(['..', this.selectedVersion.sloid], {
-            relativeTo: this.route,
-          })
-          .then(() => this.ngOnInit());
-      });
+      .pipe(
+        switchMap((updatedVersions) => {
+          return this.notificateAndNavigate(
+            'PRM.REFERENCE_POINTS.NOTIFICATION.EDIT_SUCCESS',
+            this.selectedVersion.sloid!,
+          ).pipe(map(() => updatedVersions));
+        }),
+      );
   }
+
+  private notificateAndNavigate = (notification: string, routeParam: string) => {
+    this.notificationService.success(notification);
+    return from(
+      this.router.navigate(['..', routeParam], {
+        relativeTo: this.route,
+      }),
+    );
+  };
 }

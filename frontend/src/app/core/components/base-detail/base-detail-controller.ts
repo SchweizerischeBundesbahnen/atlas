@@ -120,7 +120,10 @@ export abstract class BaseDetailController<TYPE extends Record>
         this.confirmBoTransfer().subscribe((confirmed) => {
           if (confirmed) {
             this.validityService.updateValidity(this.form);
-            this.validityService.validateAndDisableForm(() => this.updateRecord(), this.form);
+            this.validityService.validateAndDisableCustom(
+              () => this.updateRecord(),
+              () => this.form.disable(),
+            );
           } else {
             this.form.enable();
           }

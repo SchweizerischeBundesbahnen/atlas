@@ -1,6 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
-import { BehaviorSubject, catchError, EMPTY, Observable, of, take } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  EMPTY,
+  finalize,
+  from,
+  Observable,
+  of,
+  switchMap,
+  take,
+} from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { Pages } from '../../../../pages';
@@ -22,6 +32,7 @@ import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-he
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { ReferencePointCreationHintService } from './reference-point-creation-hint/reference-point-creation-hint.service';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -42,6 +53,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   preferredId?: number;
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   isReduced!: boolean | undefined;
+  saving = false;
 
   constructor(
     private readonly router: Router,
@@ -94,20 +106,42 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     this.initSelectedVersion();
   }
 
-  save() {
+  save(): void {
+    this.saving = true;
+    this.saveProcess()
+      .pipe(
+        take(1),
+        catchError(() => {
+          this.ngOnInit();
+          return EMPTY;
+        }),
+        finalize(() => (this.saving = false)),
+      )
+      .subscribe();
+  }
+
+  private saveProcess(): Observable<ReadStopPointVersion | ReadStopPointVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const writableStopPoint = StopPointFormGroupBuilder.getWritableStopPoint(this.form);
-      if (!this.isNew) {
-        this.validityService.updateValidity(this.form);
-        this.validityService.validateAndDisableCustom(
-          () => this.updateStopPoint(writableStopPoint),
-          () => this.disableForm(),
-        );
-      } else {
+      if (this.isNew) {
         this.disableForm();
-        this.createStopPoint(writableStopPoint);
+        return this.createStopPoint(writableStopPoint);
+      } else {
+        this.validityService.updateValidity(this.form);
+        return this.validityService.validateAndDisableForm().pipe(
+          switchMap((dialogRes) => {
+            if (dialogRes) {
+              this.disableForm();
+              return this.updateStopPoint(writableStopPoint);
+            } else {
+              return EMPTY;
+            }
+          }),
+        );
       }
+    } else {
+      return EMPTY;
     }
   }
 
@@ -182,62 +216,49 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     const isEditedReduced = PrmMeanOfTransportHelper.isReduced(writableStopPoint.meansOfTransport);
     const isCurrentReduced = this.selectedVersion.reduced;
     if (isEditedReduced !== isCurrentReduced) {
-      this.showPrmChangeVariantConfirmationDialog(writableStopPoint);
+      return this.showPrmChangeVariantConfirmationDialog().pipe(
+        filter((res) => res),
+        switchMap(() => this.doUpdateStopPoint(writableStopPoint)),
+      );
     } else {
-      this.doUpdateStopPoint(writableStopPoint);
+      return this.doUpdateStopPoint(writableStopPoint);
     }
   }
 
-  showPrmChangeVariantConfirmationDialog(writableStopPoint: StopPointVersion) {
-    this.confirmPrmVariantChange()
-      .pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.doUpdateStopPoint(writableStopPoint);
-        }
-      });
+  showPrmChangeVariantConfirmationDialog() {
+    return this.confirmPrmVariantChange().pipe(take(1));
   }
 
   doUpdateStopPoint(writableStopPoint: StopPointVersion) {
-    this.personWithReducedMobilityService
+    return this.personWithReducedMobilityService
       .updateStopPoint(this.selectedVersion.id!, writableStopPoint)
       .pipe(
-        catchError(() => {
-          this.ngOnInit();
-          return EMPTY;
+        switchMap((updatedVersions) => {
+          this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.EDIT_SUCCESS');
+          return this.reloadPage().pipe(map(() => updatedVersions));
         }),
-      )
-      .subscribe(() => {
-        this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.EDIT_SUCCESS');
-        this.reloadPage();
-      });
+      );
   }
 
   private createStopPoint(writableStopPoint: StopPointVersion) {
-    this.personWithReducedMobilityService
-      .createStopPoint(writableStopPoint)
-      .pipe(
-        catchError(() => {
-          this.ngOnInit();
-          return EMPTY;
-        }),
-      )
-      .subscribe((stopPoint) => {
+    return this.personWithReducedMobilityService.createStopPoint(writableStopPoint).pipe(
+      switchMap((stopPoint) => {
         this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.prmTabsService.initTabs([stopPoint]);
-        this.reloadPage();
         if (!stopPoint.reduced) {
           this.referencePointCreationHintService.showHint();
         }
-      });
+        return this.reloadPage().pipe(map(() => stopPoint));
+      }),
+    );
   }
 
-  reloadPage() {
-    this.router
-      .navigate([Pages.PRM.path, Pages.STOP_POINTS.path, this.form.controls.number], {
+  private reloadPage() {
+    return from(
+      this.router.navigate([Pages.PRM.path, Pages.STOP_POINTS.path, this.form.controls.number], {
         relativeTo: this.route,
-      })
-      .then(() => (this.isNew = false));
+      }),
+    );
   }
 
   showConfirmationDialog() {
