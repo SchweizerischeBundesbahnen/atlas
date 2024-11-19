@@ -44,7 +44,6 @@ export interface LineVersion {
      * SwissLineNumber
      */
     swissLineNumber: string;
-    lineType: LineType;
     /**
      * SLNID
      */
@@ -105,6 +104,7 @@ export interface LineVersion {
      * Workflows related to the line version
      */
     readonly lineVersionWorkflows?: Set<LineVersionWorkflow>;
+    lineType: LineType;
     paymentType?: PaymentType;
     /**
      * AlternativeName
