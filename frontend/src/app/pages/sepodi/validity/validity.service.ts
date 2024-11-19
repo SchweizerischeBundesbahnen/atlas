@@ -40,7 +40,8 @@ export class ValidityService {
     return of(true);
   }
 
-  validateAndDisableForm(updateFunction?: () => void, form?: FormGroup) {
+  // todo: renames
+  validateAndDisableForm() {
     return this.confirmValidityDialog().pipe(take(1));
   }
 
