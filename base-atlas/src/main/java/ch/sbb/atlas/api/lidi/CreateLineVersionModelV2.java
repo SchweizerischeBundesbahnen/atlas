@@ -2,10 +2,10 @@ package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -16,34 +16,29 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
-/**
- * @deprecated since V2.328.0
- */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "LineVersion", description = "Deprecated in favor of LineVersionV2")
-@Deprecated(forRemoval = true, since = "2.328.0")
-public class LineVersionModel extends BaseLineVersionModel {
+@Schema(name = "CreateLineVersionV2")
+public class CreateLineVersionModelV2 extends BaseLineVersionModel  {
 
   @Schema(description = "LineType")
   @NotNull
   private LineType lineType;
 
-  @Schema(description = "PaymentType deprecated since V2.328.0", accessMode = AccessMode.READ_ONLY)
-  private PaymentType paymentType;
+  @Schema(description = "ConcessionType")
+  @NotNull
+  private LineConcessionType lineConcessionType;
 
-  @Schema(description = "AlternativeName", example = "L1")
-  @Size(max = AtlasFieldLengths.LENGTH_50)
+  @Schema(description = "ShortNumber", example = "61")
+  @Size(max = AtlasFieldLengths.LENGTH_10)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  private String alternativeName;
+  private String shortNumber;
 
-  @Schema(description = "CombinationName", example = "S L1")
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  private String combinationName;
-
+  @Schema(description = "offerCategory")
+  @NotNull
+  private OfferCategory offerCategory;
 }
