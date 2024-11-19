@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toSet;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.aop.Redacted;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -42,6 +43,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "stop_point_workflow")
+@Redacted
 public class StopPointWorkflow extends BaseWorkflowEntity {
 
   private static final String VERSION_SEQ = "stop_point_workflow_seq";
@@ -66,6 +68,7 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
   @AtlasVersionableProperty
   private String localityName;
 
+  @Redacted(showFirstChar = true)
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String applicantMail;
@@ -78,9 +81,11 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
   @JoinColumn(name = "follow_up_workflow_id", referencedColumnName = "id")
   private StopPointWorkflow followUpWorkflow;
 
+  @Redacted
   @OneToMany(mappedBy = "stopPointWorkflow", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<Person> examinants = new HashSet<>();
 
+  @Redacted(showFirstChar = true)
   @Size(max = AtlasFieldLengths.LENGTH_10)
   @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
   private List<String> ccEmails;
