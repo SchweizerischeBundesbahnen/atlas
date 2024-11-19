@@ -16,7 +16,7 @@ import { OfferCategory } from './offerCategory';
 import { LineType } from './lineType';
 
 
-export interface LineVersionV2 { 
+export interface CreateLineVersionV2 { 
     /**
      * Object creation date
      */

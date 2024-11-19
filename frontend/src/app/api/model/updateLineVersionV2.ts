@@ -9,15 +9,103 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
+import { Status } from './status';
+import { LineVersionWorkflow } from './lineVersionWorkflow';
+import { LineConcessionType } from './lineConcessionType';
+import { OfferCategory } from './offerCategory';
 
 
-export interface PageableObject { 
-    offset?: number;
-    sort?: Array<SortObject>;
-    pageSize?: number;
-    pageNumber?: number;
-    unpaged?: boolean;
-    paged?: boolean;
+export interface UpdateLineVersionV2 { 
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * User creator
+     */
+    readonly creator?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    status?: Status;
+    /**
+     * This ID helps identify versions of a line in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a line. To do this, use the slnid in combination with the data range (valid from/valid until). 
+     */
+    readonly id?: number;
+    /**
+     * SwissLineNumber
+     */
+    swissLineNumber: string;
+    /**
+     * SLNID
+     */
+    readonly slnid?: string;
+    /**
+     * Number
+     */
+    number?: string;
+    /**
+     * LongName
+     */
+    longName?: string;
+    /**
+     * Color of the font in RGB
+     */
+    colorFontRgb: string;
+    /**
+     * Color of the background in RGB
+     */
+    colorBackRgb: string;
+    /**
+     * Color of the font in CMYK
+     */
+    colorFontCmyk: string;
+    /**
+     * Color of the background in CMYK
+     */
+    colorBackCmyk: string;
+    /**
+     * Icon
+     */
+    icon?: string;
+    /**
+     * Description
+     */
+    description?: string;
+    /**
+     * Valid from
+     */
+    validFrom: Date;
+    /**
+     * Valid to
+     */
+    validTo: Date;
+    /**
+     * BusinessOrganisation SBOID
+     */
+    businessOrganisation: string;
+    /**
+     * Comment
+     */
+    comment?: string;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    etagVersion?: number;
+    /**
+     * Workflows related to the line version
+     */
+    readonly lineVersionWorkflows?: Set<LineVersionWorkflow>;
+    lineConcessionType: LineConcessionType;
+    /**
+     * ShortNumber
+     */
+    shortNumber?: string;
+    offerCategory: OfferCategory;
 }
 

@@ -87,6 +87,7 @@ model/country.ts
 model/countryPermissionRestrictionModel.ts
 model/coverage.ts
 model/coverageType.ts
+model/createLineVersionV2.ts
 model/createLoadingPointVersion.ts
 model/createServicePointVersion.ts
 model/createTrafficPointElementVersion.ts
@@ -213,6 +214,7 @@ model/transportCompanyStatus.ts
 model/updateDesignationOfficialServicePoint.ts
 model/updateHearingCanton.ts
 model/updateHearingStatementStatus.ts
+model/updateLineVersionV2.ts
 model/updateServicePointVersion.ts
 model/updateTransportCompanyRelation.ts
 model/user.ts

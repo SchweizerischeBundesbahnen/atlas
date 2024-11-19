@@ -14,12 +14,12 @@
 /**
  * LineType
  */
-export type LineType = 'ORDERLY' | 'TEMPORARY' | 'OPERATIONAL' | 'DISPOSITION';
+export type LineType = 'ORDERLY' | 'DISPOSITION' | 'TEMPORARY' | 'OPERATIONAL';
 
 export const LineType = {
     Orderly: 'ORDERLY' as LineType,
+    Disposition: 'DISPOSITION' as LineType,
     Temporary: 'TEMPORARY' as LineType,
-    Operational: 'OPERATIONAL' as LineType,
-    Disposition: 'DISPOSITION' as LineType
+    Operational: 'OPERATIONAL' as LineType
 };
 
