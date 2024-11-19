@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {
   ApplicationType,
+  CreateLineVersionV2,
   LinesService,
   LineType,
   LineVersion,
@@ -122,16 +123,13 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
   }
 
   updateRecord(): void {
-    const lineForm = this.form.value;
+    const lineForm = this.form.value;//pass to update?
     const updateLine: UpdateLineVersionV2 = {
       creationDate: lineForm.creationDate,
       creator: lineForm.creator,
       editionDate: lineForm.editionDate,
       editor: lineForm.editor,
-      status: lineForm.status,//pass?
-      id: lineForm.id,//pass?
       swissLineNumber: lineForm.swissLineNumber,
-      slnid: lineForm.slnid,//pass?
       number: lineForm.number,
       longName: lineForm.longName,
       icon: lineForm.icon,
@@ -169,8 +167,34 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
   }
 
   createRecord(): void {
+    const lineForm = this.form.value; //pass to create
+    const createLineVersionV2: CreateLineVersionV2 = {
+      lineType: lineForm.lineType,
+      creationDate: lineForm.creationDate,
+      creator: lineForm.creator,
+      editionDate: lineForm.editionDate,
+      editor: lineForm.editor,
+      swissLineNumber: lineForm.swissLineNumber,
+      number: lineForm.number,
+      longName: lineForm.longName,
+      icon: lineForm.icon,
+      description: lineForm.description,
+      validFrom: lineForm.validFrom,
+      validTo: lineForm.validTo,
+      businessOrganisation: lineForm.businessOrganisation,
+      comment: lineForm.comment,
+      etagVersion: lineForm.etagVersion,
+      lineVersionWorkflows: lineForm.lineVersionWorkflows,
+      lineConcessionType: lineForm.lineConcessionType,
+      shortNumber: lineForm.shortNumber,
+      offerCategory: lineForm.offerCategory,
+      colorBackCmyk: lineForm.colorBackCmyk,
+      colorBackRgb: lineForm.colorBackRgb,
+      colorFontCmyk: lineForm.colorFontCmyk,
+      colorFontRgb: lineForm.colorBackRgb,
+    }
     this.linesService
-      .createLineVersion(this.form.value)
+      .createLineVersionV2(createLineVersionV2)
       .pipe(catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');

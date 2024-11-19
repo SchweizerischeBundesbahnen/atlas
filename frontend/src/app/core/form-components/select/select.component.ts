@@ -83,6 +83,9 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   private _isAllSelected = false;
 
   ngOnInit(): void {
+    if (this.optionsGroup!.length > 0 && this.options!.length > 0) {
+      throw new Error('You cannot select both options!!!')
+    }
     if (!this.formGroup) {
       this.initDummyForm();
     }
