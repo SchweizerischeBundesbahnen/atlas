@@ -2,7 +2,6 @@ package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,10 +43,6 @@ public abstract class BaseLineVersionModel extends BaseVersionModel implements D
   @Size(min = 1, max = 50)
   @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   private String swissLineNumber;
-
-  @Schema(description = "LineType")
-  @NotNull
-  private LineType lineType;
 
   @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001234")
   private String slnid;

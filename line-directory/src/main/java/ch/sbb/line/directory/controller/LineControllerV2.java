@@ -2,8 +2,12 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toSet;
 
+import ch.sbb.atlas.api.lidi.CreateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
+import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -24,6 +28,24 @@ public class LineControllerV2 implements LineApiV2 {
   @Override
   public List<LineVersionModelV2> getLineVersionsV2(String slnid) {
     return lineService.findLineVersions(slnid).stream().map(this::toModel).toList();
+  }
+
+  @Override
+  public LineVersionModelV2 createLineVersionV2(CreateLineVersionModelV2 newVersion) {
+    LineVersion newLineVersion = toEntity(newVersion);
+    newLineVersion.setStatus(Status.VALIDATED);
+    LineVersion createdVersion = lineService.create(newLineVersion);
+    return toModel(createdVersion);
+  }
+
+  @Override
+  public List<LineVersionModelV2> updateLineVersion(Long id, UpdateLineVersionModelV2 newVersion) {
+    LineVersion versionToUpdate = lineService.findById(id)
+        .orElseThrow(() -> new IdNotFoundException(id));
+    lineService.update(versionToUpdate, toEntityFromUpdate(newVersion, versionToUpdate), lineService.findLineVersions(
+        versionToUpdate.getSlnid()));
+    return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
+        .toList();
   }
 
   private LineVersionModelV2 toModel(LineVersion lineVersion) {
@@ -61,4 +83,67 @@ public class LineControllerV2 implements LineApiV2 {
         .editionDate(lineVersion.getEditionDate())
         .build();
   }
+
+  private LineVersion toEntity(CreateLineVersionModelV2 lineVersionModel) {
+    return LineVersion.builder()
+        .id(lineVersionModel.getId())
+        .lineType(lineVersionModel.getLineType())
+        .slnid(lineVersionModel.getSlnid())
+        .number(lineVersionModel.getNumber())
+        .longName(lineVersionModel.getLongName())
+        .concessionType(lineVersionModel.getLineConcessionType())
+        .shortNumber(lineVersionModel.getShortNumber())
+        .offerCategory(lineVersionModel.getOfferCategory())
+        .colorFontRgb(RgbColorConverter.fromHex(lineVersionModel.getColorFontRgb()))
+        .colorBackRgb(RgbColorConverter.fromHex(lineVersionModel.getColorBackRgb()))
+        .colorFontCmyk(
+            CmykColorConverter.fromCmykString(lineVersionModel.getColorFontCmyk()))
+        .colorBackCmyk(
+            CmykColorConverter.fromCmykString(lineVersionModel.getColorBackCmyk()))
+        .description(lineVersionModel.getDescription())
+        .icon(lineVersionModel.getIcon())
+        .validFrom(lineVersionModel.getValidFrom())
+        .validTo(lineVersionModel.getValidTo())
+        .businessOrganisation(lineVersionModel.getBusinessOrganisation())
+        .comment(lineVersionModel.getComment())
+        .swissLineNumber(lineVersionModel.getSwissLineNumber())
+        .creationDate(lineVersionModel.getCreationDate())
+        .creator(lineVersionModel.getCreator())
+        .editionDate(lineVersionModel.getEditionDate())
+        .editor(lineVersionModel.getEditor())
+        .version(lineVersionModel.getEtagVersion())
+        .build();
+  }
+
+  private LineVersion toEntityFromUpdate(UpdateLineVersionModelV2 lineVersionModel, LineVersion versionToUpdate) {
+    return LineVersion.builder()
+        .id(lineVersionModel.getId())
+        .slnid(lineVersionModel.getSlnid())
+        .lineType(versionToUpdate.getLineType())
+        .number(lineVersionModel.getNumber())
+        .longName(lineVersionModel.getLongName())
+        .concessionType(lineVersionModel.getLineConcessionType())
+        .shortNumber(lineVersionModel.getShortNumber())
+        .offerCategory(lineVersionModel.getOfferCategory())
+        .colorFontRgb(RgbColorConverter.fromHex(lineVersionModel.getColorFontRgb()))
+        .colorBackRgb(RgbColorConverter.fromHex(lineVersionModel.getColorBackRgb()))
+        .colorFontCmyk(
+            CmykColorConverter.fromCmykString(lineVersionModel.getColorFontCmyk()))
+        .colorBackCmyk(
+            CmykColorConverter.fromCmykString(lineVersionModel.getColorBackCmyk()))
+        .description(lineVersionModel.getDescription())
+        .icon(lineVersionModel.getIcon())
+        .validFrom(lineVersionModel.getValidFrom())
+        .validTo(lineVersionModel.getValidTo())
+        .businessOrganisation(lineVersionModel.getBusinessOrganisation())
+        .comment(lineVersionModel.getComment())
+        .swissLineNumber(lineVersionModel.getSwissLineNumber())
+        .creationDate(lineVersionModel.getCreationDate())
+        .creator(lineVersionModel.getCreator())
+        .editionDate(lineVersionModel.getEditionDate())
+        .editor(lineVersionModel.getEditor())
+        .version(lineVersionModel.getEtagVersion())
+        .build();
+  }
+
 }
