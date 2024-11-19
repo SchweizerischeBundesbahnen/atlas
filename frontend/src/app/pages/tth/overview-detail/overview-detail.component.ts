@@ -188,7 +188,6 @@ export class OverviewDetailComponent implements OnInit {
       )
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((container) => {
-        console.log('test');
         this.timeTableHearingStatements = container.objects!;
         this.totalCount$ = container.totalCount!;
         this.isTableColumnsInitialized = true;

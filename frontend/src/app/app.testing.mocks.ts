@@ -12,12 +12,13 @@ import {BaseDetailController} from './core/components/base-detail/base-detail-co
 import {Record} from './core/components/base-detail/record';
 import {AuthService} from './core/auth/auth.service';
 import {UserService} from './core/auth/user/user.service';
-import {Subject} from 'rxjs';
-import {PermissionService} from './core/auth/permission/permission.service';
-import {PageService} from './core/pages/page.service';
-import {Pages} from './pages/pages';
-import {FieldExample} from './core/form-components/text-field/field-example';
-import {TargetPageType} from './core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import {Observable, of, Subject } from 'rxjs';
+import { PermissionService } from './core/auth/permission/permission.service';
+import { PageService } from './core/pages/page.service';
+import { Pages } from './pages/pages';
+import { FieldExample } from './core/form-components/text-field/field-example';
+import { TargetPageType } from './core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { Page } from './core/model/page';
 
 @Component({
   selector: 'app-switch-version',
@@ -213,7 +214,9 @@ export const adminPermissionServiceMock: Partial<PermissionService> = {
 };
 
 export const pageServiceMock: Partial<PageService> = {
-  enabledPages: [...Pages.pages],
+  get enabledPages(): Observable<Page[]> {
+    return of([...Pages.pages]);
+  },
 };
 
 export const authServiceSpy = jasmine.createSpyObj<AuthService>(['login', 'logout']);

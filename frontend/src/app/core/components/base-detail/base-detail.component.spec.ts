@@ -1,22 +1,24 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {BaseDetailComponent} from './base-detail.component';
-import {By} from '@angular/platform-browser';
-import {BaseDetailController} from './base-detail-controller';
-import {of, Subject} from 'rxjs';
-import {AppTestingModule} from '../../../app.testing.module';
-import {Component, Input} from '@angular/core';
-import {ApplicationType, Status} from '../../../api';
-import {adminPermissionServiceMock, MockUserDetailInfoComponent} from '../../../app.testing.mocks';
-import {AtlasButtonComponent} from '../button/atlas-button.component';
-import {NotificationService} from '../../notification/notification.service';
-import {DetailPageContainerComponent} from '../detail-page-container/detail-page-container.component';
-import {DetailFooterComponent} from '../detail-footer/detail-footer.component';
-import {DateRangeTextComponent} from '../../versioning/date-range-text/date-range-text.component';
-import {Record} from './record';
-import {Page} from '../../model/page';
-import {DetailPageContentComponent} from "../detail-page-content/detail-page-content.component";
-import {PermissionService} from "../../auth/permission/permission.service";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BaseDetailComponent } from './base-detail.component';
+import { By } from '@angular/platform-browser';
+import { BaseDetailController } from './base-detail-controller';
+import { of, Subject } from 'rxjs';
+import { AppTestingModule } from '../../../app.testing.module';
+import { Component, Input } from '@angular/core';
+import { ApplicationType, Status } from '../../../api';
+import {
+  adminPermissionServiceMock,
+  MockUserDetailInfoComponent,
+} from '../../../app.testing.mocks';
+import { AtlasButtonComponent } from '../button/atlas-button.component';
+import { NotificationService } from '../../notification/notification.service';
+import { DetailPageContainerComponent } from '../detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../detail-footer/detail-footer.component';
+import { DateRangeTextComponent } from '../../versioning/date-range-text/date-range-text.component';
+import { Record } from './record';
+import { Page } from '../../model/page';
+import { DetailPageContentComponent } from '../detail-page-content/detail-page-content.component';
+import { PermissionService } from '../../auth/permission/permission.service';
 
 @Component({
   selector: 'app-coverage',

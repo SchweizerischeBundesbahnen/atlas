@@ -1,10 +1,9 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
-
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { ValidityService } from './validity.service';
-import {FormControl, FormGroup} from "@angular/forms";
-import moment from "moment";
-import {of} from "rxjs";
-import {DialogService} from "../../../core/components/dialog/dialog.service";
+import { FormControl, FormGroup } from '@angular/forms';
+import moment from 'moment';
+import { of } from 'rxjs';
+import { DialogService } from '../../../core/components/dialog/dialog.service';
 import SpyObj = jasmine.SpyObj;
 
 describe('ValidityService', () => {
@@ -14,10 +13,7 @@ describe('ValidityService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ValidityService,
-        { provide: DialogService, useValue: dialogService },
-      ],
+      providers: [ValidityService, { provide: DialogService, useValue: dialogService }],
     });
     service = TestBed.inject(ValidityService);
   });
@@ -43,10 +39,12 @@ describe('ValidityService', () => {
   });
 
   it('should update validity correctly', () => {
-    service.initValidity(new FormGroup({
-      validFrom: new FormControl(moment('2023-01-01')),
-      validTo: new FormControl(moment('2023-12-31')),
-    }));
+    service.initValidity(
+      new FormGroup({
+        validFrom: new FormControl(moment('2023-01-01')),
+        validTo: new FormControl(moment('2023-12-31')),
+      }),
+    );
 
     const updateForm = new FormGroup({
       validFrom: new FormControl(moment('2024-01-01')),
@@ -60,7 +58,6 @@ describe('ValidityService', () => {
   });
 
   it('should confirm validity unchanged with a dialog', fakeAsync(() => {
-
     service.validity = {
       initValidFrom: moment('2023-01-01'),
       initValidTo: moment('2023-12-31'),
@@ -68,7 +65,7 @@ describe('ValidityService', () => {
       formValidTo: moment('2023-12-31'),
     };
 
-    service.confirmValidityDialog().subscribe(result => {
+    service.confirmValidityDialog().subscribe((result) => {
       expect(result).toBeTrue();
       expect(dialogService.confirm).toHaveBeenCalled();
     });
@@ -83,7 +80,7 @@ describe('ValidityService', () => {
       formValidFrom: moment('2023-01-01'),
       formValidTo: moment('2023-12-31'),
     };
-    service.validateAndDisableForm(updateFunctionSpy, form);
+    service.validateAndDisableCustom(updateFunctionSpy, () => form.disable());
 
     expect(form.disabled).toBeTrue();
     expect(updateFunctionSpy).toHaveBeenCalled();
