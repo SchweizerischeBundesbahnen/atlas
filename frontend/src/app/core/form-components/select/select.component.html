@@ -39,6 +39,17 @@
         {{ displayExtractor(option) }}
       </ng-template>
     </mat-option>
+
+    <mat-optgroup *ngFor="let optionGroup of optionsGroup">
+      <ng-template
+        *ngTemplateOutlet="matOptionGroupPrefix; context: getAsObject(optionGroup)"
+      ></ng-template>
+      <mat-option *ngFor="let list of optionGroup.category" [value]="valueExtractor(list)">
+        {{ valueExtractor(list) }}
+      </mat-option>
+
+    </mat-optgroup>
+
   </mat-select>
   <app-atlas-field-error
     *ngIf="formGroup"

@@ -374,8 +374,7 @@
     "SWISS_LINE_NUMBER": "CH-Liniennummer\n(CHLNR)",
     "SWISS_LINE_NUMBER_INFO_LINK": "https://www.bav.admin.ch/bav/de/home/rechtliches/rechtsgrundlagen-vorschriften/richtlinien/richtlinien-allgemein/richtlinie-581-582.html",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
-    "ALTERNATIVE_NAME": "Alternativbezeichnung",
-    "COMBINATION_NAME": "Kombinationsbezeichnung",
+    "SHORT_NUMBER": "Kurznummer",
     "LONG_NAME": "Langbezeichnung",
     "ICON": "URL für Linien-Logo",
     "TYPE": "Linientyp",
@@ -391,6 +390,21 @@
       "LOCAL": "Lokal",
       "OTHER": "Andere",
       "NONE": "Keine"
+    },
+    "OFFER_CATEGORY": {
+      "TYPE": "Angebotskategorie"
+    },
+    "LINE_CONCESSION": {
+      "TYPE": "Konzessionstyp",
+      "FEDERALLY_LICENSED_OR_APPROVED_LINE": "Eidg. konzessionierte oder bewilligte Linie (EK)",
+      "VARIANT_OF_A_FRANCHISED_LINE": "Variante einer konzessionierten Linie (VK)",
+      "FEDERAL_TERRITORIAL_CONCESSION": "Eidg. Gebietskonzession (GK)",
+      "LINE_OF_A_TERRITORIAL_CONCESSION": "Linie einer Gebietskonzession (LG)",
+      "CANTONALLY_APPROVED_LINE": "Kantonal bewilligte Linie (KB)",
+      "RACK_FREE_TRIPS": "Regalfreie Fahrten (RF)",
+      "RACK_FREE_UNPUBLISHED_LINE": "Regalfreie/nicht publizierte Linie (NP)",
+      "COLLECTION_LINE": "Sammellinie (SL)",
+      "LINE_ABROAD": "Linie im Ausland (AL)"
     },
     "LINE": {
       "LINE": "Linie",
@@ -419,7 +433,7 @@
         "ORDERLY": "Ordentlich",
         "TEMPORARY": "Temporär",
         "OPERATIONAL": "Betrieblich",
-        "DISPOSITION": "Anordnung",
+        "DISPOSITION": "Disposition",
         "TECHNICAL": "Technisch",
         "CONCESSION": "Konzession"
       },
@@ -453,7 +467,7 @@
         "COMPENSATION": "Kompensation",
         "TECHNICAL": "Technisch",
         "CONCESSION": "Konzession",
-        "DISPOSITION": "Anordnung",
+        "DISPOSITION": "Disposition",
         "TEMPORARY": "Temporär",
         "OPERATIONAL": "Betrieblich"
       },
