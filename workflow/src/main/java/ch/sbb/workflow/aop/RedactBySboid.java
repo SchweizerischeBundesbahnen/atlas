@@ -1,14 +1,14 @@
 package ch.sbb.workflow.aop;
 
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.METHOD, ElementType.TYPE, ElementType.FIELD})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Redacted {
+public @interface RedactBySboid {
 
-  boolean showFirstChar() default false;
-
+  ApplicationType application();
 }
