@@ -120,7 +120,6 @@ export class SearchServicePointComponent implements OnInit {
   }
 
   private searchServicePoint(term: string) {
-    // todo: directly with httpClient we could give a param for loadingInterceptor to ignore loading
     return this.servicePointService.searchServicePoints({ value: term }).pipe(
       catchError(() => of([])),
       tap(() => (this.loading = false)),

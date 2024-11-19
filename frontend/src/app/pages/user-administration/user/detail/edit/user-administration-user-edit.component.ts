@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
-import { TranslatePipe } from '@ngx-translate/core';
 import { UserService } from '../../../service/user.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
@@ -22,8 +21,6 @@ export class UserAdministrationUserEditComponent implements OnInit {
 
   constructor(
     private readonly notificationService: NotificationService,
-    private readonly boService: BusinessOrganisationsService,
-    private readonly translatePipe: TranslatePipe,
     private readonly userService: UserService,
     private readonly dialogService: DialogService,
     private readonly router: Router,
