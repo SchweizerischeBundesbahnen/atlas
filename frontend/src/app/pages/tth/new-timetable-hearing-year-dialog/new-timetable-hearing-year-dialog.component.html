@@ -10,7 +10,7 @@
     <div class="d-flex flex-column col-6 pe-3">
       <app-atlas-label-field
         [fieldExamples]="[
-          { label: 'TTH.NEW_YEAR.DIALOG.PLAN_DROPDOWN_DESCRIPTION', translate: true }
+          { label: 'TTH.NEW_YEAR.DIALOG.PLAN_DROPDOWN_DESCRIPTION', translate: true },
         ]"
         [formGroup]="form"
         fieldLabel="TTH.NEW_YEAR.DIALOG.PLAN_DROPDOWN_TITLE"
@@ -51,6 +51,7 @@
       </button>
       <button
         (click)="createNewTimetableHearingYear()"
+        [disabled]="!saveEnabled"
         class="atlas-primary-btn primary-color-btn"
         data-cy="dialog-confirm-button"
       >
