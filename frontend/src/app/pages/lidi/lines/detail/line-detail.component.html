@@ -3,6 +3,10 @@
   formDetailHeading="LIDI.DETAIL_LINE_INFORMATION"
   headingNew="LIDI.LINE.NEW"
 >
+  <ng-template #additionalInfo>
+    <span class=" ps-3 font-bold-lg color-gray-900">{{ 'LIDI.TYPE' | translate }} </span>
+    <span class="color-gray-900">{{ 'LIDI.LINE.TYPES.' + lineType | translate }}</span>
+  </ng-template>
   <div class="workflow-link mb-3">
     <atlas-link label="LIDI.LINE_VERSION_SNAPSHOT.NAVIGATE_TO_SNAPHOT" (linkClicked)="navigateToSnapshot()"></atlas-link>
   </div>
