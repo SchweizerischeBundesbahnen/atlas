@@ -1,6 +1,7 @@
 package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.workflow.aop.Redacted;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +27,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "person")
+@Redacted
 public class Person extends BaseWorkflowEntity {
 
   private static final String VERSION_SEQ = "person_seq";
@@ -35,15 +37,18 @@ public class Person extends BaseWorkflowEntity {
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
+  @Redacted(showFirstChar = true)
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String firstName;
 
+  @Redacted(showFirstChar = true)
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String lastName;
 
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String function;
 
+  @Redacted(showFirstChar = true)
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String mail;
 

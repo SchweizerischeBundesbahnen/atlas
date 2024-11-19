@@ -8,10 +8,18 @@ public class StringHelper {
   private static final String REPLACEMENT = "*****";
 
   public static String redactString(String string) {
-    if (string != null && !string.isEmpty()) {
-      return string.charAt(0) + REPLACEMENT;
+    return redactString(string, false);
+  }
+
+  public static String redactString(String string, boolean showFirstChar) {
+    if (showFirstChar) {
+      if (string != null && !string.isEmpty()) {
+        return string.charAt(0) + REPLACEMENT;
+      }
+      return string;
+    } else {
+      return REPLACEMENT;
     }
-    return string;
   }
 
 }
