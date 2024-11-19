@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.controller;
 
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
-import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.lineType;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.longName;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.slnid;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.swissLineNumber;
@@ -23,6 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
+import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
+import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
@@ -191,7 +192,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
         .andExpect(jsonPath("$[0]." + alternativeName, is("alternative")))
         .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
         .andExpect(jsonPath("$[0]." + longName, is("long name")))
-        .andExpect(jsonPath("$[0]." + lineType, is(LineType.TEMPORARY.toString())))
+        .andExpect(jsonPath("$[0]." + Fields.lineType, is(LineType.TEMPORARY.toString())))
         .andExpect(jsonPath("$[0]." + paymentType, is(PaymentType.LOCAL.toString())))
         .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC2")))
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
@@ -339,7 +340,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
         .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
         .andExpect(jsonPath("$[0]." + longName, is("long name")))
         .andExpect(jsonPath("$[0]." + slnid, is(lineVersion.getSlnid())))
-        .andExpect(jsonPath("$[0]." + lineType, is(LineType.TEMPORARY.toString())))
+        .andExpect(jsonPath("$[0]." + LineVersionModelV2.Fields.lineType, is(LineType.TEMPORARY.toString())))
         .andExpect(jsonPath("$[0]." + paymentType, is(PaymentType.LOCAL.toString())))
         .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC5")))
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("sbb")))
