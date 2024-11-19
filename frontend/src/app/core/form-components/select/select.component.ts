@@ -10,8 +10,8 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatOption } from '@angular/material/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatOption} from '@angular/material/core';
 
 @Component({
   selector: 'atlas-select',
@@ -24,6 +24,8 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() infoIconTitle?: string;
   @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
   @Input() optionTranslateLabelPrefix: string | undefined;
+
+  groupExtractor = 'groupName';
 
   @Input()
   valueExtractor(option: TYPE): any {
@@ -65,10 +67,12 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() controlName: string | null = null;
   @Input() formGroup!: FormGroup;
 
-  @Input() options: TYPE[] = [];
+  @Input() options?: TYPE[] = [];
+  @Input() optionsGroup?: any[] = [];
   @Input() value: any;
 
   @ContentChild('matOptionPrefix') matOptionPrefix!: TemplateRef<any>;
+  @ContentChild('matOptionGroupPrefix') matOptionGroupPrefix!: TemplateRef<any>;
 
   @Output() selectChanged = new EventEmitter();
 
@@ -120,7 +124,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
       if (this.allSelected.selected) {
         this.allSelected.deselect();
       }
-      if (this.getFormControlName()?.value.length == this.options.length) {
+      if (this.getFormControlName()?.value.length == this.options?.length) {
         this.allSelected.select();
       }
     }

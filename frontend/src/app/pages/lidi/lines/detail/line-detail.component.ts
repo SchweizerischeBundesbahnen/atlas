@@ -1,11 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {ApplicationType, LinesService, LineType, LineVersion, LineVersionWorkflow, Status,} from '../../../../api';
-import {BaseDetailController} from '../../../../core/components/base-detail/base-detail-controller';
+import {
+  ApplicationType,
+  LinesService,
+  LineType,
+  LineVersion,
+  LineVersionV2,
+  LineVersionWorkflow,
+  Status,
+  UpdateLineVersionV2,
+} from '../../../../api';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {NotificationService} from '../../../../core/notification/notification.service';
 import {DialogService} from '../../../../core/components/dialog/dialog.service';
-import {catchError} from 'rxjs';
 import moment from 'moment';
 import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
 import {Pages} from '../../../pages';
@@ -16,6 +22,9 @@ import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengt
 import {LineDetailFormGroup} from './line-detail-form-group';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import {BaseDetailController} from "../../../../core/components/base-detail/base-detail-controller";
+import {catchError} from "rxjs";
+import {NotificationService} from "../../../../core/notification/notification.service";
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -24,6 +33,16 @@ import {PermissionService} from "../../../../core/auth/permission/permission.ser
 })
 export class LineDetailComponent extends BaseDetailController<LineVersion> implements OnInit {
   isShowLineSnapshotHistory = false;
+
+  _lineType!: LineType;
+  get lineType(): LineType {
+    return this._lineType;
+  }
+
+  set lineType(lineType: LineType) {
+    this._lineType = lineType;
+  }
+
 
   constructor(
     protected router: Router,
@@ -40,6 +59,9 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
   ngOnInit() {
     super.ngOnInit();
     this.isShowLineSnapshotHistory = this.showSnapshotHistoryLink();
+    if (!this.isNewRecord()) {
+      this.lineType = this.form.value.lineType
+    }
   }
 
   getPageType(): Page {
@@ -100,8 +122,37 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
   }
 
   updateRecord(): void {
+    const lineForm = this.form.value;
+    const updateLine: UpdateLineVersionV2 = {
+      creationDate: lineForm.creationDate,
+      creator: lineForm.creator,
+      editionDate: lineForm.editionDate,
+      editor: lineForm.editor,
+      status: lineForm.status,//pass?
+      id: lineForm.id,//pass?
+      swissLineNumber: lineForm.swissLineNumber,
+      slnid: lineForm.slnid,//pass?
+      number: lineForm.number,
+      longName: lineForm.longName,
+      icon: lineForm.icon,
+      description: lineForm.description,
+      validFrom: lineForm.validFrom,
+      validTo: lineForm.validTo,
+      businessOrganisation: lineForm.businessOrganisation,
+      comment: lineForm.comment,
+      etagVersion: lineForm.etagVersion,
+      lineVersionWorkflows: lineForm.lineVersionWorkflows,
+      lineConcessionType: lineForm.lineConcessionType,
+      shortNumber: lineForm.shortNumber,
+      offerCategory: lineForm.offerCategory,
+      colorBackCmyk: lineForm.colorBackCmyk,
+      colorBackRgb: lineForm.colorBackRgb,
+      colorFontCmyk: lineForm.colorFontCmyk,
+      colorFontRgb: lineForm.colorBackRgb,
+    }
+
     this.linesService
-      .updateLineVersion(this.getId(), this.form.value)
+      .updateLineVersion(this.getId(), updateLine)
       .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
@@ -151,7 +202,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
     }
   }
 
-  getFormGroup(version: LineVersion): FormGroup {
+  getFormGroup(version: LineVersionV2): FormGroup {
     return new FormGroup<LineDetailFormGroup>(
       {
         swissLineNumber: new FormControl(version.swissLineNumber, [
@@ -160,7 +211,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
           AtlasCharsetsValidator.sid4pt,
         ]),
         lineType: new FormControl(version.lineType, [Validators.required]),
-        paymentType: new FormControl(version.paymentType),
+        offerCategory: new FormControl(version.offerCategory, [Validators.required]),
         businessOrganisation: new FormControl(version.businessOrganisation, [
           Validators.required,
           AtlasFieldLengthValidator.length_50,
@@ -171,16 +222,12 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        alternativeName: new FormControl(version.alternativeName, [
-          AtlasFieldLengthValidator.length_50,
+        shortNumber: new FormControl(version.shortNumber, [
+          AtlasFieldLengthValidator.length_10,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        combinationName: new FormControl(version.combinationName, [
-          AtlasFieldLengthValidator.length_50,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
+        lineConcessionType: new FormControl(version.lineConcessionType, [Validators.required]),
         longName: new FormControl(version.longName, [
           AtlasFieldLengthValidator.length_255,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
@@ -224,6 +271,10 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
   }
 
   getFormControlsToDisable(): string[] {
+    if (!this.isNewRecord()) {
+      return ['lineType'];
+    }
     return this.record.status === Status.InReview ? ['validFrom', 'validTo', 'lineType'] : [];
   }
+
 }
