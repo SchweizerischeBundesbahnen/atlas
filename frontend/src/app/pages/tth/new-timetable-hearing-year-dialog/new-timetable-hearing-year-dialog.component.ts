@@ -38,6 +38,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   );
   YEAR_OPTIONS: number[] = [];
   defaultYearSelection = this.YEAR_OPTIONS[0];
+  saveEnabled = true;
 
   private readonly ngUnsubscribe = new Subject<void>();
 
@@ -74,16 +75,22 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   }
 
   createNewTimetableHearingYear() {
+    this.saveEnabled = false;
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       const timetableHearingYear = this.form.value as TimetableHearingYear;
       this.timetableHearingYearsService
         .createHearingYear(timetableHearingYear)
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(() => {
-          this.notificationService.success('TTH.NEW_YEAR.DIALOG.NOTIFICATION_SUCCESS');
-          this.dialogRef.close(true);
+        .subscribe({
+          next: () => {
+            this.notificationService.success('TTH.NEW_YEAR.DIALOG.NOTIFICATION_SUCCESS');
+            this.dialogRef.close(true);
+          },
+          error: () => (this.saveEnabled = true),
         });
+    } else {
+      this.saveEnabled = true;
     }
   }
 

@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Sort, SortDirection} from '@angular/material/sort';
-import {PageEvent} from '@angular/material/paginator';
-import {TableColumn} from './table-column';
-import {TableService} from './table.service';
-import {TablePagination} from './table-pagination';
-import {ColumnDropDownEvent} from './column-drop-down-event';
-import {SelectionModel} from '@angular/cdk/collections';
-import {MatCheckboxChange} from '@angular/material/checkbox';
-import {TableFilter} from '../table-filter/config/table-filter';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Sort, SortDirection } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator';
+import { TableColumn } from './table-column';
+import { TableService } from './table.service';
+import { TablePagination } from './table-pagination';
+import { ColumnDropDownEvent } from './column-drop-down-event';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { TableFilter } from '../table-filter/config/table-filter';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][editElementEvent]',
@@ -31,7 +31,7 @@ export class TableComponent<DATATYPE> implements OnInit {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Output() buttonClickEvent = new EventEmitter<any>();
   @Output() checkedBoxEvent = new EventEmitter<SelectionModel<DATATYPE>>();
-  isLoading = false;
+  isLoading = true;
 
   constructor(private readonly tableService: TableService) {}
 
