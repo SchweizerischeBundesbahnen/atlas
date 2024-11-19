@@ -206,7 +206,7 @@ describe('LineDetailComponent for new lineVersion', () => {
       lineVersion.status = Status.Validated;
       lineVersion.lineType = LineType.Orderly;
       lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.record = lineVersion;
+      fixture.componentInstance.line = lineVersion;
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
       //then
@@ -218,7 +218,7 @@ describe('LineDetailComponent for new lineVersion', () => {
       lineVersion.status = Status.Validated;
       lineVersion.lineType = LineType.Temporary;
       lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.record = lineVersion;
+      fixture.componentInstance.line = lineVersion;
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
       //then
@@ -230,7 +230,7 @@ describe('LineDetailComponent for new lineVersion', () => {
       lineVersion.status = Status.Validated;
       lineVersion.lineType = LineType.Operational;
       lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.record = lineVersion;
+      fixture.componentInstance.line = lineVersion;
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
       //then
@@ -244,7 +244,7 @@ describe('LineDetailComponent for new lineVersion', () => {
         workflowProcessingStatus: WorkflowProcessingStatus.Evaluated,
       };
       lineVersion.lineVersionWorkflows?.add(lineWorkflow);
-      fixture.componentInstance.record = lineVersion;
+      fixture.componentInstance.line = lineVersion;
 
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
@@ -259,7 +259,7 @@ describe('LineDetailComponent for new lineVersion', () => {
         workflowProcessingStatus: WorkflowProcessingStatus.InProgress,
       };
       lineVersion.lineVersionWorkflows?.add(lineWorkflow);
-      fixture.componentInstance.record = lineVersion;
+      fixture.componentInstance.line = lineVersion;
 
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
