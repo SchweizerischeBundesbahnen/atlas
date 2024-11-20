@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { DetailFormComponent } from '../../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import {
   ParkingLotVersion,
@@ -7,18 +6,13 @@ import {
   ReadParkingLotVersion,
   ReadServicePointVersion,
 } from '../../../../../../api';
-import { FormGroup } from '@angular/forms';
-import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
-import { ParkingLotFormGroup, ParkingLotFormGroupBuilder } from '../form/parking-lot-form-group';
+import { ParkingLotFormGroupBuilder } from '../form/parking-lot-form-group';
 import { DateRange } from '../../../../../../core/versioning/date-range';
-import {
-  DetailHelperService,
-  DetailWithCancelEdit,
-} from '../../../../../../core/detail/detail-helper.service';
 import { ValidityService } from '../../../../../sepodi/validity/validity.service';
-import { catchError, EMPTY, finalize, from, Observable, switchMap, take } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { EMPTY, Observable, switchMap } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { TabDetail } from '../../../../shared/tab-detail';
 
 @Component({
   selector: 'app-parking-lot-detail',
@@ -26,53 +20,39 @@ import { map, tap } from 'rxjs/operators';
   providers: [ValidityService],
 })
 export class ParkingLotDetailComponent
-  implements OnInit, DetailFormComponent, DetailWithCancelEdit
+  extends TabDetail<ReadParkingLotVersion>
+  implements DetailFormComponent
 {
-  isNew = false;
-  parkingLot: ReadParkingLotVersion[] = [];
-  selectedVersion!: ReadParkingLotVersion;
-
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
-
-  form!: FormGroup<ParkingLotFormGroup>;
   showVersionSwitch = false;
-  selectedVersionIndex!: number;
-
   businessOrganisations: string[] = [];
 
-  saving = false;
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private notificationService: NotificationService,
-    private detailHelperService: DetailHelperService,
-    private validityService: ValidityService,
-  ) {}
+  constructor(private readonly personWithReducedMobilityService: PersonWithReducedMobilityService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.initSePoDiData();
 
-    this.parkingLot = this.route.snapshot.parent!.data.parkingLot;
+    this.versions = this.route.snapshot.parent!.data.parkingLot;
 
-    this.isNew = this.parkingLot.length === 0;
+    this.isNew = this.versions.length === 0;
 
     if (!this.isNew) {
-      VersionsHandlingService.addVersionNumbers(this.parkingLot);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.parkingLot);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.parkingLot);
+      VersionsHandlingService.addVersionNumbers(this.versions);
+      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
       this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.parkingLot,
+        this.versions,
       );
-      this.selectedVersionIndex = this.parkingLot.indexOf(this.selectedVersion);
+      this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
     }
 
     this.initForm();
   }
 
-  private initForm() {
+  initForm() {
     this.form = ParkingLotFormGroupBuilder.buildFormGroup(this.selectedVersion);
 
     if (!this.isNew) {
@@ -80,51 +60,7 @@ export class ParkingLotDetailComponent
     }
   }
 
-  private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] =
-      this.route.snapshot.parent!.data.servicePoint;
-    this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
-    this.businessOrganisations = [
-      ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
-    ];
-  }
-
-  switchVersion(newIndex: number) {
-    this.selectedVersionIndex = newIndex;
-    this.selectedVersion = this.parkingLot[newIndex];
-    this.initForm();
-  }
-
-  back() {
-    this.router.navigate(['..'], { relativeTo: this.route.parent }).then();
-  }
-
-  toggleEdit() {
-    if (this.form.enabled) {
-      this.detailHelperService.showCancelEditDialog(this);
-    } else {
-      this.validityService.initValidity(this.form);
-      this.form.enable();
-    }
-  }
-
-  save(): void {
-    this.saving = true;
-    this.saveProcess()
-      .pipe(
-        take(1),
-        tap(() => this.ngOnInit()),
-        catchError(() => {
-          this.ngOnInit();
-          return EMPTY;
-        }),
-        finalize(() => (this.saving = false)),
-      )
-      .subscribe();
-  }
-
-  private saveProcess(): Observable<ReadParkingLotVersion | ReadParkingLotVersion[]> {
+  saveProcess(): Observable<ReadParkingLotVersion | ReadParkingLotVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const parkingLotVersion = ParkingLotFormGroupBuilder.getWritableForm(
@@ -150,6 +86,15 @@ export class ParkingLotDetailComponent
       return EMPTY;
     }
   }
+  private initSePoDiData() {
+    const servicePointVersions: ReadServicePointVersion[] =
+      this.route.snapshot.parent!.data.servicePoint;
+    this.servicePoint =
+      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+    this.businessOrganisations = [
+      ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
+    ];
+  }
 
   private create(parkingLotVersion: ParkingLotVersion) {
     return this.personWithReducedMobilityService.createParkingLot(parkingLotVersion).pipe(
@@ -174,13 +119,4 @@ export class ParkingLotDetailComponent
         }),
       );
   }
-
-  private notificateAndNavigate = (notification: string, routeParam: string) => {
-    this.notificationService.success(notification);
-    return from(
-      this.router.navigate(['..', routeParam], {
-        relativeTo: this.route.parent,
-      }),
-    );
-  };
 }
