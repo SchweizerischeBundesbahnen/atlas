@@ -16,7 +16,7 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   @Input() formDetailHeading!: string;
   selectedRecord!: Record;
   private recordSubscription!: Subscription;
-
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @ContentChild('additionalInfo') additionalInfo!: TemplateRef<any>;
 
   constructor(

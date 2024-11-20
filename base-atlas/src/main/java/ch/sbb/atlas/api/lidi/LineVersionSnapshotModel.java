@@ -72,27 +72,7 @@ public class LineVersionSnapshotModel extends BaseVersionModel {
   @Schema(description = "LongName", example = "Spiseggfräser; Talstation - Bergstation; Ersatzbus", accessMode =
       AccessMode.READ_ONLY)
   private String longName;
-
-  @Schema(description = "Color of the font in RGB", example = "#FF0000", accessMode = AccessMode.READ_ONLY)
-  @NotNull
-  private String colorFontRgb;
-
-  @Schema(description = "Color of the background in RGB", example = "#FF0000", accessMode = AccessMode.READ_ONLY)
-  @NotNull
-  private String colorBackRgb;
-
-  @Schema(description = "Color of the font in CMYK", example = "10,100,0,50", accessMode = AccessMode.READ_ONLY)
-  @NotNull
-  private String colorFontCmyk;
-
-  @Schema(description = "Color of the background in CMYK", example = "10,100,0,50", accessMode = AccessMode.READ_ONLY)
-  @NotNull
-  private String colorBackCmyk;
-
-  @Schema(description = "Icon", example = "https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg", accessMode =
-      AccessMode.READ_ONLY)
-  private String icon;
-
+  
   @Schema(description = "Description", example = "Meiringen - Innertkirchen", accessMode = AccessMode.READ_ONLY)
   private String description;
 
