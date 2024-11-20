@@ -133,7 +133,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
         return this.create(toiletVersion);
       } else {
         this.validityService.updateValidity(this.form);
-        return this.validityService.validateAndDisableForm().pipe(
+        return this.validityService.validate().pipe(
           switchMap((dialogRes) => {
             if (dialogRes) {
               this.form.disable();

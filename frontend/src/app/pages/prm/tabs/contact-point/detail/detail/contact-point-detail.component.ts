@@ -138,7 +138,7 @@ export class ContactPointDetailComponent
         return this.create(contactPointVersion);
       } else {
         this.validityService.updateValidity(this.form);
-        return this.validityService.validateAndDisableForm().pipe(
+        return this.validityService.validate().pipe(
           switchMap((dialogRes) => {
             if (dialogRes) {
               this.form.disable();
@@ -187,6 +187,3 @@ export class ContactPointDetailComponent
     );
   };
 }
-
-// todo: handle save disable on prm components
-// todo: tests
