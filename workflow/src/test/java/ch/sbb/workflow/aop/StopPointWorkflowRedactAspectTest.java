@@ -48,7 +48,7 @@ class StopPointWorkflowRedactAspectTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    redactAspect = new RedactAspect(businessOrganisationBasedUserAdministrationService, stopPointWorkflowRepository);
+    redactAspect = new RedactAspect(businessOrganisationBasedUserAdministrationService);
   }
 
   @Test

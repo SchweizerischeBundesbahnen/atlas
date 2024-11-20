@@ -63,7 +63,7 @@ public class RunAsUserAspect {
   }
 
   String resolveRunAsUserParameter(ProceedingJoinPoint joinPoint) {
-    Optional<Object> parameterValue = AopUtils.resolveParameterValueByAnnotation(joinPoint, RunAsUserParameter.class);
+    Optional<Object> parameterValue = ParameterInfoReflectionResolver.valueByAnnotation(joinPoint, RunAsUserParameter.class);
     if (parameterValue.isPresent()) {
       if (parameterValue.get() instanceof String stringValue) {
         return stringValue;
