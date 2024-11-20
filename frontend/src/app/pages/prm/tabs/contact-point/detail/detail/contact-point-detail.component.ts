@@ -23,6 +23,7 @@ import { ValidityService } from '../../../../../sepodi/validity/validity.service
 import { catchError, EMPTY, finalize, from, Observable, switchMap, take } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
+// todo: map this comp to tabDetail and look at pr comments, check jasmine tests and e2e-tests with cypress:run
 @Component({
   selector: 'app-contact-point-detail',
   templateUrl: './contact-point-detail.component.html',
