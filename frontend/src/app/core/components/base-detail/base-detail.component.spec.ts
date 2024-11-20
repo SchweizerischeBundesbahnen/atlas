@@ -143,8 +143,6 @@ function createDummyForm(enabledForm: boolean) {
   dummyController.getId.and.callFake(BaseDetailController.prototype.getId);
   dummyController.isNewRecord.and.callFake(BaseDetailController.prototype.isNewRecord);
   dummyController.isExistingRecord.and.callFake(BaseDetailController.prototype.isExistingRecord);
-  dummyController.save.and.callFake(BaseDetailController.prototype.save);
-  dummyController.toggleEdit.and.callFake(BaseDetailController.prototype.toggleEdit);
   dummyController.confirmLeave.and.returnValue(of(true));
   dummyController.confirmBoTransfer.and.returnValue(of(true));
   dummyController.getApplicationType.and.returnValue(ApplicationType.Bodi);

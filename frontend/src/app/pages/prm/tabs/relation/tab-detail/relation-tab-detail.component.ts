@@ -129,7 +129,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
         referencePointSloid: this.selectedReferencePointSloid,
       };
       this.validityService.updateValidity(this.form);
-      return this.validityService.validateAndDisableForm().pipe(
+      return this.validityService.validate().pipe(
         switchMap((dialogRes) => {
           if (dialogRes) {
             this.editing = false;

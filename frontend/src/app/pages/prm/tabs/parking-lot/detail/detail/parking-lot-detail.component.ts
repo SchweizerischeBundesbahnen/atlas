@@ -135,7 +135,7 @@ export class ParkingLotDetailComponent
         return this.create(parkingLotVersion);
       } else {
         this.validityService.updateValidity(this.form);
-        return this.validityService.validateAndDisableForm().pipe(
+        return this.validityService.validate().pipe(
           switchMap((dialogRes) => {
             if (dialogRes) {
               this.form.disable();

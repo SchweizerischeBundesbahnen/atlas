@@ -40,8 +40,7 @@ export class ValidityService {
     return of(true);
   }
 
-  // todo: renames
-  validateAndDisableForm() {
+  validate() {
     return this.confirmValidityDialog().pipe(take(1));
   }
 
