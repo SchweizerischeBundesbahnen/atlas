@@ -3,8 +3,10 @@ package ch.sbb.workflow.entity;
 import static java.util.stream.Collectors.toSet;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.aop.RedactBySboid;
 import ch.sbb.workflow.aop.Redacted;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -60,6 +62,7 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
   @Size(max = AtlasFieldLengths.LENGTH_500)
   private String sloid;
 
+  @RedactBySboid(application = ApplicationType.SEPODI)
   @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_32)
   private String sboid;

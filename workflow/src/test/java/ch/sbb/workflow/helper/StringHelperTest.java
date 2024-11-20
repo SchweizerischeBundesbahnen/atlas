@@ -11,7 +11,7 @@ class StringHelperTest {
     //given
     String string = "asd@bc.ch";
     //when
-    String result = StringHelper.redactString(string);
+    String result = StringHelper.redactString(string, true);
     //then
     assertThat(result).isNotNull().isEqualTo("a*****");
   }
@@ -21,7 +21,7 @@ class StringHelperTest {
     //given
     String string = "l";
     //when
-    String result = StringHelper.redactString(string);
+    String result = StringHelper.redactString(string, true);
     //then
     assertThat(result).isNotNull().isEqualTo("l*****");
   }
@@ -30,7 +30,7 @@ class StringHelperTest {
   void shouldNotRedactStringWhenStringIsNull(){
     //given
     //when
-    String result = StringHelper.redactString(null);
+    String result = StringHelper.redactString(null, true);
     //then
     assertThat(result).isNull();
   }
