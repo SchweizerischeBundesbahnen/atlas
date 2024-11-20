@@ -1,4 +1,4 @@
-package ch.sbb.workflow.aop;
+package ch.sbb.atlas.user.administration.security.redact;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
