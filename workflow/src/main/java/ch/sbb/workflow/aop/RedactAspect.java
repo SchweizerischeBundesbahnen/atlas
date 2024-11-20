@@ -27,11 +27,7 @@ public class RedactAspect {
   private final RedactDecider redactDecider;
 
   @Around("@annotation(ch.sbb.workflow.aop.Redacted)")
-  public Object redactSensitiveData(final ProceedingJoinPoint joinPoint) throws Throwable {
-    return redact(joinPoint);
-  }
-
-  Object redact(ProceedingJoinPoint joinPoint) throws Throwable {
+  public Object redactSensitiveData(ProceedingJoinPoint joinPoint) throws Throwable {
     Object resultObject = joinPoint.proceed();
 
     boolean shouldRedact = redactDecider.shouldRedact(joinPoint, resultObject);
@@ -42,7 +38,7 @@ public class RedactAspect {
     return redactResult(resultObject);
   }
 
-  private Object redactResult(Object resultObject) {
+  Object redactResult(Object resultObject) {
     if (resultObject instanceof Page<?> page) {
       List<Object> redactedPage = page.getContent().stream().map(pageItem -> new ObjectRedactor(pageItem).accept()).toList();
       return new PageImpl<>(redactedPage, page.getPageable(), page.getTotalElements());
@@ -102,8 +98,8 @@ public class RedactAspect {
     }
 
     public void accept() {
-      if (currentFieldValue instanceof String stringValue) {
-        performRedact(StringHelper.redactString(stringValue, showFirstChar));
+      if (field.getGenericType().equals(String.class)) {
+        performRedact(StringHelper.redactString((String) currentFieldValue, showFirstChar));
       }
 
       if (field.getGenericType() instanceof ParameterizedType parameterizedType) {
