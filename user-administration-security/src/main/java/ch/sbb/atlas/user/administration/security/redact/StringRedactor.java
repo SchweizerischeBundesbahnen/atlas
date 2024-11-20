@@ -1,10 +1,10 @@
-package ch.sbb.workflow.helper;
+package ch.sbb.atlas.user.administration.security.redact;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 
 @UtilityClass
-public class StringHelper {
+public class StringRedactor {
 
   private static final String REPLACEMENT = "*****";
 

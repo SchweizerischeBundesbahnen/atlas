@@ -3,7 +3,7 @@ package ch.sbb.workflow.service.sepodi;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.workflow.aop.Redacted;
+import ch.sbb.atlas.user.administration.security.redact.Redacted;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;

@@ -1,4 +1,4 @@
-package ch.sbb.workflow.aop;
+package ch.sbb.atlas.user.administration.security.redact;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
