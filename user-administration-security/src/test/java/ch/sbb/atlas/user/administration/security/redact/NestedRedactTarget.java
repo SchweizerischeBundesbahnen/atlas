@@ -1,4 +1,4 @@
-package ch.sbb.workflow.aop;
+package ch.sbb.atlas.user.administration.security.redact;
 
 import lombok.Builder;
 import lombok.Data;
