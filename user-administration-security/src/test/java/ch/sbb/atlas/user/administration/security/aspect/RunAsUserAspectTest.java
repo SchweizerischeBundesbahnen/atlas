@@ -81,7 +81,6 @@ class RunAsUserAspectTest {
     when(joinPoint.getSignature()).thenReturn(methodSignature);
     String userName = "e123456";
     when(methodSignature.getMethod()).thenReturn(foo(userName));
-    when(joinPoint.getTarget()).thenReturn(new RunAsUserAspectTest());
     String[] args = {userName};
     when(joinPoint.getArgs()).thenReturn(args);
 
@@ -100,7 +99,6 @@ class RunAsUserAspectTest {
     when(joinPoint.getSignature()).thenReturn(methodSignature);
     String userName = "e123456";
     when(methodSignature.getMethod()).thenReturn(fooWithoutRunAsUserParameter(userName));
-    when(joinPoint.getTarget()).thenReturn(new RunAsUserAspectTest());
     String[] args = {userName};
     when(joinPoint.getArgs()).thenReturn(args);
 
@@ -115,7 +113,6 @@ class RunAsUserAspectTest {
     MethodSignature methodSignature = mock(MethodSignature.class);
     when(joinPoint.getSignature()).thenReturn(methodSignature);
     when(methodSignature.getMethod()).thenReturn(fooWithWrongType(true));
-    when(joinPoint.getTarget()).thenReturn(new RunAsUserAspectTest());
     Boolean[] args = {true};
     when(joinPoint.getArgs()).thenReturn(args);
 

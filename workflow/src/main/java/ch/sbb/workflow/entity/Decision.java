@@ -1,7 +1,7 @@
 package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.workflow.aop.Redacted;
+import ch.sbb.atlas.user.administration.security.redact.Redacted;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
