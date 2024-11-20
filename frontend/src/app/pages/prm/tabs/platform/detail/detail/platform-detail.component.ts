@@ -172,7 +172,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
         return this.create(platformVersion);
       } else {
         this.validityService.updateValidity(this.form);
-        return this.validityService.validateAndDisableForm().pipe(
+        return this.validityService.validate().pipe(
           switchMap((dialogRes) => {
             if (dialogRes) {
               this.form.disable();
