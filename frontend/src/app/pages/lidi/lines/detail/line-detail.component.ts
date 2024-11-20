@@ -4,7 +4,6 @@ import {
   CreateLineVersionV2,
   LinesService,
   LineType,
-  LineVersion,
   LineVersionV2,
   LineVersionWorkflow,
   Status,
@@ -32,7 +31,7 @@ import {NotificationService} from "../../../../core/notification/notification.se
   styleUrls: ['./line-detail.component.scss'],
   providers: [ValidityService],
 })
-export class LineDetailComponent extends BaseDetailController<LineVersion> implements OnInit {
+export class LineDetailComponent extends BaseDetailController<LineVersionV2> implements OnInit {
   isShowLineSnapshotHistory = false;
 
   _lineType!: LineType;
@@ -73,15 +72,15 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
     return ApplicationType.Lidi;
   }
 
-  readRecord(): LineVersion {
+  readRecord(): LineVersionV2 {
     return this.activatedRoute.snapshot.data.lineDetail;
   }
 
-  getDetailHeading(record: LineVersion): string {
+  getDetailHeading(record: LineVersionV2): string {
     return `${record.number ?? ''} - ${record.description ?? ''}`;
   }
 
-  getDetailSubheading(record: LineVersion): string {
+  getDetailSubheading(record: LineVersionV2): string {
     return record.slnid!;
   }
 
@@ -132,7 +131,6 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
       swissLineNumber: lineForm.swissLineNumber,
       number: lineForm.number,
       longName: lineForm.longName,
-      icon: lineForm.icon,
       description: lineForm.description,
       validFrom: lineForm.validFrom,
       validTo: lineForm.validTo,
@@ -142,11 +140,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
       lineVersionWorkflows: lineForm.lineVersionWorkflows,
       lineConcessionType: lineForm.lineConcessionType,
       shortNumber: lineForm.shortNumber,
-      offerCategory: lineForm.offerCategory,
-      colorBackCmyk: lineForm.colorBackCmyk,
-      colorBackRgb: lineForm.colorBackRgb,
-      colorFontCmyk: lineForm.colorFontCmyk,
-      colorFontRgb: lineForm.colorBackRgb,
+      offerCategory: lineForm.offerCategory
     }
 
     this.linesService
@@ -177,7 +171,6 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
       swissLineNumber: lineForm.swissLineNumber,
       number: lineForm.number,
       longName: lineForm.longName,
-      icon: lineForm.icon,
       description: lineForm.description,
       validFrom: lineForm.validFrom,
       validTo: lineForm.validTo,
@@ -187,11 +180,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
       lineVersionWorkflows: lineForm.lineVersionWorkflows,
       lineConcessionType: lineForm.lineConcessionType,
       shortNumber: lineForm.shortNumber,
-      offerCategory: lineForm.offerCategory,
-      colorBackCmyk: lineForm.colorBackCmyk,
-      colorBackRgb: lineForm.colorBackRgb,
-      colorFontCmyk: lineForm.colorFontCmyk,
-      colorFontRgb: lineForm.colorBackRgb,
+      offerCategory: lineForm.offerCategory
     }
     this.linesService
       .createLineVersionV2(createLineVersionV2)
@@ -205,7 +194,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
   }
 
   revokeRecord(): void {
-    const selectedLineVersion: LineVersion = this.getSelectedRecord();
+    const selectedLineVersion: LineVersionV2 = this.getSelectedRecord();
     if (selectedLineVersion.slnid) {
       this.linesService.revokeLine(selectedLineVersion.slnid).subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.REVOKE_SUCCESS');
@@ -217,7 +206,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
   }
 
   deleteRecord(): void {
-    const selectedLineVersion: LineVersion = this.getSelectedRecord();
+    const selectedLineVersion: LineVersionV2 = this.getSelectedRecord();
     if (selectedLineVersion.slnid != null) {
       this.linesService.deleteLines(selectedLineVersion.slnid).subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
@@ -257,17 +246,6 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        icon: new FormControl(version.icon, [
-          AtlasFieldLengthValidator.length_255,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        colorFontRgb: new FormControl(version.colorFontRgb || '#000000', [Validators.required]),
-        colorBackRgb: new FormControl(version.colorBackRgb || '#FFFFFF', [Validators.required]),
-        colorFontCmyk: new FormControl(version.colorFontCmyk || '100,100,100,100', [
-          Validators.required,
-        ]),
-        colorBackCmyk: new FormControl(version.colorBackCmyk || '0,0,0,0', [Validators.required]),
         description: new FormControl(version.description, [
           AtlasFieldLengthValidator.length_255,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
@@ -295,9 +273,6 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
   }
 
   getFormControlsToDisable(): string[] {
-    if (!this.isNewRecord()) {
-      return ['lineType'];
-    }
     return this.record.status === Status.InReview ? ['validFrom', 'validTo', 'lineType'] : [];
   }
 

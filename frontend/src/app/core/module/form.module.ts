@@ -4,7 +4,6 @@ import {DateRangeComponent} from '../form-components/date-range/date-range.compo
 import {MaterialModule} from './material.module';
 import {TranslateModule} from '@ngx-translate/core';
 import {CommentComponent} from '../form-components/comment/comment.component';
-import {UrlComponent} from '../form-components/url/url.component';
 import {DateIconComponent} from '../form-components/date-icon/date-icon.component';
 import {InfoIconComponent} from '../form-components/info-icon/info-icon.component';
 import {SearchSelectComponent} from '../form-components/search-select/search-select.component';
@@ -39,7 +38,6 @@ import {DialogCloseComponent} from "../components/dialog/close/dialog-close.comp
     DateRangeComponent,
     TodayAndFutureTimetableHeaderComponent,
     CommentComponent,
-    UrlComponent,
     DateIconComponent,
     DownloadIconComponent,
     UploadIconComponent,
@@ -66,7 +64,6 @@ import {DialogCloseComponent} from "../components/dialog/close/dialog-close.comp
     TransportCompanySelectComponent,
     DateRangeComponent,
     CommentComponent,
-    UrlComponent,
     DateIconComponent,
     DownloadIconComponent,
     UploadIconComponent,

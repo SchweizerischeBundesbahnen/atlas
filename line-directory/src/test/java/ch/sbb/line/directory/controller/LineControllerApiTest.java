@@ -8,8 +8,6 @@ import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.alternativeName;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.combinationName;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.paymentType;
 import static ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE;
-import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
-import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -618,10 +616,6 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
         .alternativeName("alternativeName")
         .combinationName("combinationName")
         .longName("longName")
-        .colorFontRgb(fromHex("#FFFFFF"))
-        .colorBackRgb(fromHex("#FFFFFF"))
-        .colorFontCmyk(fromCmykString("0,0,0,0"))
-        .colorBackCmyk(fromCmykString("0,0,0,0"))
         .description("description")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))

@@ -25,8 +25,6 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
   @Input() optionTranslateLabelPrefix: string | undefined;
 
-  groupExtractor = 'groupName';
-
   @Input()
   valueExtractor(option: TYPE): any {
     return option;
