@@ -1,8 +1,6 @@
 package ch.sbb.line.directory.mapper;
 
 import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
-import ch.sbb.line.directory.converter.CmykColorConverter;
-import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import lombok.experimental.UtilityClass;
 
@@ -23,11 +21,6 @@ public class LineVersionSnapshotMapper {
         .alternativeName(lineVersionSnapshot.getAlternativeName())
         .combinationName(lineVersionSnapshot.getCombinationName())
         .longName(lineVersionSnapshot.getLongName())
-        .colorFontRgb(RgbColorConverter.toHex(lineVersionSnapshot.getColorFontRgb()))
-        .colorBackRgb(RgbColorConverter.toHex(lineVersionSnapshot.getColorBackRgb()))
-        .colorFontCmyk(CmykColorConverter.toCmykString(lineVersionSnapshot.getColorFontCmyk()))
-        .colorBackCmyk(CmykColorConverter.toCmykString(lineVersionSnapshot.getColorBackCmyk()))
-        .icon(lineVersionSnapshot.getIcon())
         .description(lineVersionSnapshot.getDescription())
         .validFrom(lineVersionSnapshot.getValidFrom())
         .validTo(lineVersionSnapshot.getValidTo())

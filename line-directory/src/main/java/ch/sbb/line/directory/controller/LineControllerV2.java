@@ -8,8 +8,6 @@ import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.converter.CmykColorConverter;
-import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.mapper.LineVersionWorkflowMapper;
 import ch.sbb.line.directory.service.LineService;
@@ -59,14 +57,7 @@ public class LineControllerV2 implements LineApiV2 {
         .lineConcessionType(lineVersion.getConcessionType())
         .shortNumber(lineVersion.getShortNumber())
         .offerCategory(lineVersion.getOfferCategory())
-        .colorFontRgb(RgbColorConverter.toHex(lineVersion.getColorFontRgb()))
-        .colorBackRgb(RgbColorConverter.toHex(lineVersion.getColorBackRgb()))
-        .colorFontCmyk(CmykColorConverter.toCmykString(
-            lineVersion.getColorFontCmyk()))
-        .colorBackCmyk(
-            CmykColorConverter.toCmykString(lineVersion.getColorBackCmyk()))
         .description(lineVersion.getDescription())
-        .icon(lineVersion.getIcon())
         .validFrom(lineVersion.getValidFrom())
         .validTo(lineVersion.getValidTo())
         .businessOrganisation(lineVersion.getBusinessOrganisation())
@@ -94,14 +85,7 @@ public class LineControllerV2 implements LineApiV2 {
         .concessionType(lineVersionModel.getLineConcessionType())
         .shortNumber(lineVersionModel.getShortNumber())
         .offerCategory(lineVersionModel.getOfferCategory())
-        .colorFontRgb(RgbColorConverter.fromHex(lineVersionModel.getColorFontRgb()))
-        .colorBackRgb(RgbColorConverter.fromHex(lineVersionModel.getColorBackRgb()))
-        .colorFontCmyk(
-            CmykColorConverter.fromCmykString(lineVersionModel.getColorFontCmyk()))
-        .colorBackCmyk(
-            CmykColorConverter.fromCmykString(lineVersionModel.getColorBackCmyk()))
         .description(lineVersionModel.getDescription())
-        .icon(lineVersionModel.getIcon())
         .validFrom(lineVersionModel.getValidFrom())
         .validTo(lineVersionModel.getValidTo())
         .businessOrganisation(lineVersionModel.getBusinessOrganisation())
@@ -125,14 +109,7 @@ public class LineControllerV2 implements LineApiV2 {
         .concessionType(lineVersionModel.getLineConcessionType())
         .shortNumber(lineVersionModel.getShortNumber())
         .offerCategory(lineVersionModel.getOfferCategory())
-        .colorFontRgb(RgbColorConverter.fromHex(lineVersionModel.getColorFontRgb()))
-        .colorBackRgb(RgbColorConverter.fromHex(lineVersionModel.getColorBackRgb()))
-        .colorFontCmyk(
-            CmykColorConverter.fromCmykString(lineVersionModel.getColorFontCmyk()))
-        .colorBackCmyk(
-            CmykColorConverter.fromCmykString(lineVersionModel.getColorBackCmyk()))
         .description(lineVersionModel.getDescription())
-        .icon(lineVersionModel.getIcon())
         .validFrom(lineVersionModel.getValidFrom())
         .validTo(lineVersionModel.getValidTo())
         .businessOrganisation(lineVersionModel.getBusinessOrganisation())

@@ -69,26 +69,6 @@ export interface LineVersionSnapshot {
      */
     readonly longName?: string;
     /**
-     * Color of the font in RGB
-     */
-    readonly colorFontRgb: string;
-    /**
-     * Color of the background in RGB
-     */
-    readonly colorBackRgb: string;
-    /**
-     * Color of the font in CMYK
-     */
-    readonly colorFontCmyk: string;
-    /**
-     * Color of the background in CMYK
-     */
-    readonly colorBackCmyk: string;
-    /**
-     * Icon
-     */
-    readonly icon?: string;
-    /**
      * Description
      */
     readonly description?: string;

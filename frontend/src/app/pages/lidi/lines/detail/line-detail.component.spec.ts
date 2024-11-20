@@ -2,15 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of, throwError} from 'rxjs';
-import {
-  LinesService,
-  LineType,
-  LineVersion,
-  LineVersionWorkflow,
-  PaymentType,
-  Status,
-  WorkflowProcessingStatus,
-} from '../../../../api';
+import {LinesService, LineType, LineVersionV2, LineVersionWorkflow, Status, WorkflowProcessingStatus,} from '../../../../api';
 import {LineDetailComponent} from './line-detail.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AppTestingModule} from '../../../../app.testing.module';
@@ -24,7 +16,9 @@ import {FormModule} from '../../../../core/module/form.module';
 import {TranslatePipe} from '@ngx-translate/core';
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
-const lineVersion: LineVersion = {
+const lineVersion: LineVersionV2 = {
+  lineConcessionType: "CANTONALLY_APPROVED_LINE",
+  offerCategory: "ASC",
   id: 1234,
   slnid: 'slnid',
   number: 'name',
@@ -33,14 +27,9 @@ const lineVersion: LineVersion = {
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
-  paymentType: PaymentType.None,
   swissLineNumber: 'L1',
   lineType: LineType.Orderly,
-  colorBackCmyk: '',
-  colorBackRgb: '',
-  colorFontCmyk: '',
-  colorFontRgb: '',
-  lineVersionWorkflows: new Set<LineVersionWorkflow>(),
+  lineVersionWorkflows: new Set<LineVersionWorkflow>()
 };
 
 const error = new HttpErrorResponse({
@@ -158,7 +147,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
 });
 
 describe('LineDetailComponent for new lineVersion', () => {
-  const mockLinesService = jasmine.createSpyObj('linesService', ['createLineVersion']);
+  const mockLinesService = jasmine.createSpyObj('linesService', ['createLineVersionV2']);
   const mockData = {
     lineDetail: 'add',
   };
@@ -179,7 +168,7 @@ describe('LineDetailComponent for new lineVersion', () => {
   describe('create new Version', () => {
     it('successfully', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-      mockLinesService.createLineVersion.and.returnValue(of(lineVersion));
+      mockLinesService.createLineVersionV2.and.returnValue(of(lineVersion));
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
@@ -192,7 +181,7 @@ describe('LineDetailComponent for new lineVersion', () => {
     });
 
     it('displaying error', () => {
-      mockLinesService.createLineVersion.and.returnValue(throwError(() => error));
+      mockLinesService.createLineVersionV2.and.returnValue(throwError(() => error));
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
@@ -206,7 +195,7 @@ describe('LineDetailComponent for new lineVersion', () => {
       lineVersion.status = Status.Validated;
       lineVersion.lineType = LineType.Orderly;
       lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.line = lineVersion;
+      fixture.componentInstance.record = lineVersion;
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
       //then
@@ -218,7 +207,7 @@ describe('LineDetailComponent for new lineVersion', () => {
       lineVersion.status = Status.Validated;
       lineVersion.lineType = LineType.Temporary;
       lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.line = lineVersion;
+      fixture.componentInstance.record = lineVersion;
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
       //then
@@ -230,7 +219,7 @@ describe('LineDetailComponent for new lineVersion', () => {
       lineVersion.status = Status.Validated;
       lineVersion.lineType = LineType.Operational;
       lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.line = lineVersion;
+      fixture.componentInstance.record = lineVersion;
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
       //then
@@ -244,7 +233,7 @@ describe('LineDetailComponent for new lineVersion', () => {
         workflowProcessingStatus: WorkflowProcessingStatus.Evaluated,
       };
       lineVersion.lineVersionWorkflows?.add(lineWorkflow);
-      fixture.componentInstance.line = lineVersion;
+      fixture.componentInstance.record = lineVersion;
 
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
@@ -259,7 +248,7 @@ describe('LineDetailComponent for new lineVersion', () => {
         workflowProcessingStatus: WorkflowProcessingStatus.InProgress,
       };
       lineVersion.lineVersionWorkflows?.add(lineWorkflow);
-      fixture.componentInstance.line = lineVersion;
+      fixture.componentInstance.record = lineVersion;
 
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
@@ -269,7 +258,7 @@ describe('LineDetailComponent for new lineVersion', () => {
   });
 });
 
-function setupTestBed(linesService: LinesService, data: { lineDetail: string | LineVersion }) {
+function setupTestBed(linesService: LinesService, data: { lineDetail: string | LineVersionV2 }) {
   TestBed.configureTestingModule({
     declarations: [
       LineDetailComponent,
@@ -279,7 +268,7 @@ function setupTestBed(linesService: LinesService, data: { lineDetail: string | L
       ErrorNotificationComponent,
       InfoIconComponent,
       CommentComponent,
-      LinkIconComponent,
+      LinkIconComponent
     ],
     imports: [AppTestingModule, FormModule],
     providers: [
