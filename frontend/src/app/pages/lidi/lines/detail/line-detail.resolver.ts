@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, ResolveFn, Router} from '@angular/router';
 import {catchError, Observable, of} from 'rxjs';
-import {LinesService, LineVersion, LineVersionV2} from '../../../../api';
+import {LinesService, LineVersionV2} from '../../../../api';
 import {Pages} from '../../../pages';
 
 @Injectable({ providedIn: 'root' })
@@ -27,5 +27,5 @@ export class LineDetailResolver {
   }
 }
 
-export const lineResolver: ResolveFn<Array<LineVersion>> = (route: ActivatedRouteSnapshot) =>
+export const lineResolver: ResolveFn<Array<LineVersionV2>> = (route: ActivatedRouteSnapshot) =>
   inject(LineDetailResolver).resolve(route);

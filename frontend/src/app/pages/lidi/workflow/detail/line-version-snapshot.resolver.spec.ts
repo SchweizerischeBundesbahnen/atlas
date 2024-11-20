@@ -1,24 +1,11 @@
-import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import {
-  lineVersionSnapshotResolver,
-  LineVersionSnapshotResolver,
-} from './line-version-snapshot.resolver';
-import {
-  LinesService,
-  LineType,
-  LineVersionSnapshot,
-  PaymentType,
-  WorkflowStatus,
-} from '../../../../api';
-import { AppTestingModule } from '../../../../app.testing.module';
+import {TestBed} from '@angular/core/testing';
+import {ActivatedRouteSnapshot} from '@angular/router';
+import {Observable, of} from 'rxjs';
+import {lineVersionSnapshotResolver, LineVersionSnapshotResolver,} from './line-version-snapshot.resolver';
+import {LinesService, LineType, LineVersionSnapshot, PaymentType, WorkflowStatus,} from '../../../../api';
+import {AppTestingModule} from '../../../../app.testing.module';
 
 const version: LineVersionSnapshot = {
-  colorBackCmyk: '',
-  colorBackRgb: '',
-  colorFontCmyk: '',
-  colorFontRgb: '',
   lineType: LineType.Operational,
   parentObjectId: 0,
   paymentType: PaymentType.International,
