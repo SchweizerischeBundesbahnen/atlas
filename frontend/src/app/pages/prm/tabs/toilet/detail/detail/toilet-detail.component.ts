@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
-import { ToiletFormGroup, ToiletFormGroupBuilder } from '../form/toilet-form-group';
+import { ToiletFormGroupBuilder } from '../form/toilet-form-group';
 import {
   PersonWithReducedMobilityService,
   ReadServicePointVersion,
@@ -9,68 +9,50 @@ import {
 } from '../../../../../../api';
 import { DetailFormComponent } from '../../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { DateRange } from '../../../../../../core/versioning/date-range';
-import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NotificationService } from '../../../../../../core/notification/notification.service';
-import {
-  DetailHelperService,
-  DetailWithCancelEdit,
-} from '../../../../../../core/detail/detail-helper.service';
 import { ValidityService } from '../../../../../sepodi/validity/validity.service';
-import { catchError, EMPTY, finalize, from, Observable, switchMap, take } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { EMPTY, Observable, switchMap } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { TabDetail } from '../../../../shared/tab-detail';
 
 @Component({
   selector: 'app-toilet-detail',
   templateUrl: './toilet-detail.component.html',
   providers: [ValidityService],
 })
-export class ToiletDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
-  isNew = false;
-  toiletVersions: ReadToiletVersion[] = [];
-  selectedVersion!: ReadToiletVersion;
-
+export class ToiletDetailComponent
+  extends TabDetail<ReadToiletVersion>
+  implements DetailFormComponent
+{
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
-
-  form!: FormGroup<ToiletFormGroup>;
   showVersionSwitch = false;
-  selectedVersionIndex!: number;
-
   businessOrganisations: string[] = [];
 
-  saving = false;
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private notificationService: NotificationService,
-    private detailHelperService: DetailHelperService,
-    private validityService: ValidityService,
-  ) {}
+  constructor(private readonly personWithReducedMobilityService: PersonWithReducedMobilityService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.initSePoDiData();
 
-    this.toiletVersions = this.route.snapshot.parent!.data.toilet;
+    this.versions = this.route.snapshot.parent!.data.toilet;
 
-    this.isNew = this.toiletVersions.length === 0;
+    this.isNew = this.versions.length === 0;
 
     if (!this.isNew) {
-      VersionsHandlingService.addVersionNumbers(this.toiletVersions);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.toiletVersions);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.toiletVersions);
+      VersionsHandlingService.addVersionNumbers(this.versions);
+      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
       this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.toiletVersions,
+        this.versions,
       );
-      this.selectedVersionIndex = this.toiletVersions.indexOf(this.selectedVersion);
+      this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
     }
 
     this.initForm();
   }
 
-  private initForm() {
+  initForm() {
     this.form = ToiletFormGroupBuilder.buildFormGroup(this.selectedVersion);
 
     if (!this.isNew) {
@@ -78,51 +60,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
     }
   }
 
-  private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] =
-      this.route.snapshot.parent!.data.servicePoint;
-    this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
-    this.businessOrganisations = [
-      ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
-    ];
-  }
-
-  switchVersion(newIndex: number) {
-    this.selectedVersionIndex = newIndex;
-    this.selectedVersion = this.toiletVersions[newIndex];
-    this.initForm();
-  }
-
-  back() {
-    this.router.navigate(['..'], { relativeTo: this.route.parent }).then();
-  }
-
-  toggleEdit() {
-    if (this.form.enabled) {
-      this.detailHelperService.showCancelEditDialog(this);
-    } else {
-      this.validityService.initValidity(this.form);
-      this.form.enable();
-    }
-  }
-
-  save(): void {
-    this.saving = true;
-    this.saveProcess()
-      .pipe(
-        take(1),
-        tap(() => this.ngOnInit()),
-        catchError(() => {
-          this.ngOnInit();
-          return EMPTY;
-        }),
-        finalize(() => (this.saving = false)),
-      )
-      .subscribe();
-  }
-
-  private saveProcess(): Observable<ReadToiletVersion | ReadToiletVersion[]> {
+  saveProcess(): Observable<ReadToiletVersion | ReadToiletVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const toiletVersion = ToiletFormGroupBuilder.getWritableForm(
@@ -149,6 +87,16 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
     }
   }
 
+  private initSePoDiData() {
+    const servicePointVersions: ReadServicePointVersion[] =
+      this.route.snapshot.parent!.data.servicePoint;
+    this.servicePoint =
+      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+    this.businessOrganisations = [
+      ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
+    ];
+  }
+
   private create(toiletVersion: ToiletVersion) {
     return this.personWithReducedMobilityService.createToiletVersion(toiletVersion).pipe(
       switchMap((createdVersion) => {
@@ -172,13 +120,4 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
         }),
       );
   }
-
-  private notificateAndNavigate = (notification: string, routeParam: string) => {
-    this.notificationService.success(notification);
-    return from(
-      this.router.navigate(['..', routeParam], {
-        relativeTo: this.route.parent,
-      }),
-    );
-  };
 }
