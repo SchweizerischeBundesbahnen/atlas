@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { DetailFormComponent } from '../../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import {
   PersonWithReducedMobilityService,
@@ -10,7 +9,6 @@ import {
   ReadTrafficPointElementVersion,
 } from '../../../../../../api';
 import { FormGroup } from '@angular/forms';
-import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { PrmMeanOfTransportHelper } from '../../../../util/prm-mean-of-transport-helper';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import {
@@ -19,25 +17,21 @@ import {
   ReducedPlatformFormGroup,
 } from '../form/platform-form-group';
 import { DateRange } from '../../../../../../core/versioning/date-range';
-import {
-  DetailHelperService,
-  DetailWithCancelEdit,
-} from '../../../../../../core/detail/detail-helper.service';
 import { ValidityService } from '../../../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
-import { catchError, EMPTY, finalize, from, Observable, switchMap, take } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { EMPTY, Observable, switchMap } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { TabDetail } from '../../../../shared/tab-detail';
 
 @Component({
   selector: 'app-platforms',
   templateUrl: './platform-detail.component.html',
   providers: [ValidityService],
 })
-export class PlatformDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
-  isNew = false;
-  platform: ReadPlatformVersion[] = [];
-  selectedVersion!: ReadPlatformVersion;
-
+export class PlatformDetailComponent
+  extends TabDetail<ReadPlatformVersion>
+  implements DetailFormComponent
+{
   servicePoint!: ReadServicePointVersion;
   trafficPoint!: ReadTrafficPointElementVersion;
   maxValidity!: DateRange;
@@ -45,12 +39,8 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
   businessOrganisations: string[] = [];
 
   reduced = false;
-  form!: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>;
   showVersionSwitch = false;
-  selectedVersionIndex!: number;
   mayCreate = true;
-
-  saving = false;
 
   get reducedForm(): FormGroup<ReducedPlatformFormGroup> {
     return this.form as FormGroup<ReducedPlatformFormGroup>;
@@ -61,39 +51,36 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
   }
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private notificationService: NotificationService,
-    private detailHelperService: DetailHelperService,
-    private permissionService: PermissionService,
-    private validityService: ValidityService,
-  ) {}
+    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private readonly permissionService: PermissionService,
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.initSePoDiData();
     this.stopPoint = this.route.snapshot.parent!.data.stopPoint;
-    this.platform = this.route.snapshot.parent!.data.platform;
+    this.versions = this.route.snapshot.parent!.data.platform;
 
     this.reduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
-    this.isNew = this.platform.length === 0;
+    this.isNew = this.versions.length === 0;
 
     if (this.isNew) {
       this.mayCreate = this.hasPermissionToCreateNewStopPoint();
     } else {
-      VersionsHandlingService.addVersionNumbers(this.platform);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.platform);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.platform);
+      VersionsHandlingService.addVersionNumbers(this.versions);
+      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
       this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.platform,
+        this.versions,
       );
-      this.selectedVersionIndex = this.platform.indexOf(this.selectedVersion);
+      this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
     }
 
     this.initForm();
   }
 
-  private initForm() {
+  initForm() {
     if (this.reduced) {
       this.form = PlatformFormGroupBuilder.buildReducedFormGroup(this.selectedVersion);
     } else {
@@ -106,61 +93,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     }
   }
 
-  private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] =
-      this.route.snapshot.parent!.data.servicePoint;
-    this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
-    this.businessOrganisations = [
-      ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
-    ];
-    this.trafficPoint = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.route.snapshot.parent!.data.trafficPoint,
-    );
-  }
-
-  hasPermissionToCreateNewStopPoint(): boolean {
-    const sboidsPermissions = this.businessOrganisations.map((bo) =>
-      this.permissionService.hasPermissionsToWrite('PRM', bo),
-    );
-    return sboidsPermissions.includes(true);
-  }
-
-  switchVersion(newIndex: number) {
-    this.selectedVersionIndex = newIndex;
-    this.selectedVersion = this.platform[newIndex];
-    this.initForm();
-  }
-
-  back() {
-    this.router.navigate(['..'], { relativeTo: this.route.parent }).then();
-  }
-
-  toggleEdit() {
-    if (this.form.enabled) {
-      this.detailHelperService.showCancelEditDialog(this);
-    } else {
-      this.validityService.initValidity(this.form);
-      this.form.enable();
-    }
-  }
-
-  save(): void {
-    this.saving = true;
-    this.saveProcess()
-      .pipe(
-        take(1),
-        tap(() => this.ngOnInit()),
-        catchError(() => {
-          this.ngOnInit();
-          return EMPTY;
-        }),
-        finalize(() => (this.saving = false)),
-      )
-      .subscribe();
-  }
-
-  private saveProcess(): Observable<ReadPlatformVersion | ReadPlatformVersion[]> {
+  saveProcess(): Observable<ReadPlatformVersion | ReadPlatformVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const platformVersion = PlatformFormGroupBuilder.getWritableForm(
@@ -188,6 +121,26 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     }
   }
 
+  private initSePoDiData() {
+    const servicePointVersions: ReadServicePointVersion[] =
+      this.route.snapshot.parent!.data.servicePoint;
+    this.servicePoint =
+      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+    this.businessOrganisations = [
+      ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
+    ];
+    this.trafficPoint = VersionsHandlingService.determineDefaultVersionByValidity(
+      this.route.snapshot.parent!.data.trafficPoint,
+    );
+  }
+
+  private hasPermissionToCreateNewStopPoint(): boolean {
+    const sboidsPermissions = this.businessOrganisations.map((bo) =>
+      this.permissionService.hasPermissionsToWrite('PRM', bo),
+    );
+    return sboidsPermissions.includes(true);
+  }
+
   private create(platformVersion: PlatformVersion) {
     return this.personWithReducedMobilityService.createPlatform(platformVersion).pipe(
       switchMap((createdVersion) => {
@@ -201,7 +154,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
 
   private update(platformVersion: PlatformVersion) {
     return this.personWithReducedMobilityService
-      .updatePlatform(this.selectedVersion.id!, platformVersion)
+      .updatePlatform(this.selectedVersion!.id!, platformVersion)
       .pipe(
         switchMap((updatedVersions) => {
           return this.notificateAndNavigate(
@@ -211,13 +164,4 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
         }),
       );
   }
-
-  private notificateAndNavigate = (notification: string, routeParam: string) => {
-    this.notificationService.success(notification);
-    return from(
-      this.router.navigate(['..', routeParam], {
-        relativeTo: this.route.parent,
-      }),
-    );
-  };
 }
