@@ -99,26 +99,23 @@ public class LineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private String longName;
 
-  @NotNull
   @Convert(converter = RgbColorConverter.class)
   @AtlasVersionableProperty
   private RgbColor colorFontRgb;
 
-  @NotNull
   @Convert(converter = RgbColorConverter.class)
   @AtlasVersionableProperty
   private RgbColor colorBackRgb;
 
-  @NotNull
   @Convert(converter = CmykColorConverter.class)
   @AtlasVersionableProperty
   private CmykColor colorFontCmyk;
 
-  @NotNull
   @Convert(converter = CmykColorConverter.class)
   @AtlasVersionableProperty
   private CmykColor colorBackCmyk;
 
+  @Deprecated(forRemoval = true, since = "2.328.0")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String icon;

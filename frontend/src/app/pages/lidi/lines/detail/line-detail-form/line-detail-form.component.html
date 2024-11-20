@@ -50,7 +50,7 @@
     </div>
   </div>
   <div class="col-12 d-flex">
-    <div class="d-flex flex-column col-4 pe-3">
+    <div class="d-flex flex-column col-4 pe-2">
       <atlas-text-field
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
@@ -65,7 +65,7 @@
       >
       </atlas-text-field>
     </div>
-    <div class="d-flex flex-column col-4 pe-3">
+    <div class="d-flex flex-column col-4 pe-2">
       <atlas-text-field
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
@@ -104,7 +104,7 @@
   </div>
 
   <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column col-5 pe-3">
+    <div class="d-flex flex-column col-4 pe-3">
       <atlas-select
         [formGroup]="form"
         controlName="lineConcessionType"
@@ -117,7 +117,7 @@
       >
       </atlas-select>
     </div>
-    <div class="d-flex flex-column col-5 pe-3">
+    <div class="d-flex flex-column col-4 pe-3">
       <atlas-text-field
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
@@ -148,55 +148,6 @@
         controlName="businessOrganisation"
         data-cy="businessOrganisation"
       ></bo-select>
-    </div>
-  </div>
-
-  <span class="font-bold-2xl">{{ 'FORM.DESIGN_INFORMATION' | translate }}</span>
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column col-6 pe-3">
-      <form-url-component [formGroup]="form"></form-url-component>
-    </div>
-    <div class="d-flex flex-column col-3 pe-3">
-      <app-rgb-picker
-        [formGroup]="form"
-        attributeName="colorFontRgb"
-        data-cy="colorFontRgb"
-        defaultColor="#000000"
-        label="LIDI.LINE.FONT_RGB"
-      ></app-rgb-picker>
-    </div>
-    <div class="d-flex flex-column col-3">
-      <app-cmyk-picker
-        [formGroup]="form"
-        attributeName="colorFontCmyk"
-        data-cy="colorFontCmyk"
-        defaultColor="100,100,100,100"
-        exampleLabel="0,0,0,100"
-        label="LIDI.LINE.FONT_CMYK"
-      ></app-cmyk-picker>
-    </div>
-  </div>
-
-  <div class="col-12 d-flex justify-content-end mt-3">
-    <div class="d-flex flex-column col-3 pe-3">
-      <app-rgb-picker
-        [formGroup]="form"
-        attributeName="colorBackRgb"
-        data-cy="colorBackRgb"
-        defaultColor="#FFFFFF"
-        label="LIDI.LINE.BACKGROUND_RGB"
-      ></app-rgb-picker>
-    </div>
-
-    <div class="d-flex flex-column col-3">
-      <app-cmyk-picker
-        [formGroup]="form"
-        attributeName="colorBackCmyk"
-        data-cy="colorBackCmyk"
-        defaultColor="0,0,0,0"
-        exampleLabel="85,10,65,0"
-        label="LIDI.LINE.BACKGROUND_CMYK"
-      ></app-cmyk-picker>
     </div>
   </div>
 

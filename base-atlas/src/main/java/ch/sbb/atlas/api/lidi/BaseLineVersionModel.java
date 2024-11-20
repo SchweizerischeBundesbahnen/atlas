@@ -27,9 +27,6 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 public abstract class BaseLineVersionModel extends BaseVersionModel implements DatesValidator {
 
-  private static final String HEX_COLOR_PATTERN = "^#([a-fA-F0-9]{6})$";
-  private static final String CMYK_COLOR_PATTERN = "^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$";
-
   @Schema(description = """
       This ID helps identify versions of a line in the use case front end and/or update.
       This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a line.
@@ -56,31 +53,6 @@ public abstract class BaseLineVersionModel extends BaseVersionModel implements D
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String longName;
-
-  @Schema(description = "Color of the font in RGB", example = "#FF0000")
-  @Pattern(regexp = HEX_COLOR_PATTERN)
-  @NotNull
-  private String colorFontRgb;
-
-  @Schema(description = "Color of the background in RGB", example = "#FF0000")
-  @Pattern(regexp = HEX_COLOR_PATTERN)
-  @NotNull
-  private String colorBackRgb;
-
-  @Schema(description = "Color of the font in CMYK", example = "10,100,0,50")
-  @Pattern(regexp = CMYK_COLOR_PATTERN)
-  @NotNull
-  private String colorFontCmyk;
-
-  @Schema(description = "Color of the background in CMYK", example = "10,100,0,50")
-  @Pattern(regexp = CMYK_COLOR_PATTERN)
-  @NotNull
-  private String colorBackCmyk;
-
-  @Schema(description = "Icon", example = "https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg")
-  @Size(max = AtlasFieldLengths.LENGTH_255)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  private String icon;
 
   @Schema(description = "Description", example = "Meiringen - Innertkirchen")
   @Size(max = AtlasFieldLengths.LENGTH_255)

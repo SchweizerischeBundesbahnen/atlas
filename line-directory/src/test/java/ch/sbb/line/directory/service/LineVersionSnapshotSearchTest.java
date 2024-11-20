@@ -1,7 +1,5 @@
 package ch.sbb.line.directory.service;
 
-import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
-import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
@@ -341,7 +339,7 @@ import org.springframework.transaction.annotation.Transactional;
     assertThat(result.getContent()).hasSize(2);
   }
 
-  private LineVersionSnapshotBuilder getBaseVersionBuilder() {
+  private LineVersionSnapshotBuilder<?, ?> getBaseVersionBuilder() {
     return LineVersionSnapshot.builder()
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
@@ -351,10 +349,6 @@ import org.springframework.transaction.annotation.Transactional;
         .alternativeName("alternativeName")
         .combinationName("combinationName")
         .longName("longName")
-        .colorFontRgb(fromHex("#FFFFFF"))
-        .colorBackRgb(fromHex("#FFFFFF"))
-        .colorFontCmyk(fromCmykString("0,0,0,0"))
-        .colorBackCmyk(fromCmykString("0,0,0,0"))
         .description("description")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
