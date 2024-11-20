@@ -1,17 +1,17 @@
-package ch.sbb.workflow.helper;
+package ch.sbb.atlas.user.administration.security.redact;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-class StringHelperTest {
+class StringRedactorTest {
 
   @Test
   void shouldRedactString(){
     //given
     String string = "asd@bc.ch";
     //when
-    String result = StringHelper.redactString(string, true);
+    String result = StringRedactor.redactString(string, true);
     //then
     assertThat(result).isNotNull().isEqualTo("a*****");
   }
@@ -21,7 +21,7 @@ class StringHelperTest {
     //given
     String string = "l";
     //when
-    String result = StringHelper.redactString(string, true);
+    String result = StringRedactor.redactString(string, true);
     //then
     assertThat(result).isNotNull().isEqualTo("l*****");
   }
@@ -30,7 +30,7 @@ class StringHelperTest {
   void shouldNotRedactStringWhenStringIsNull(){
     //given
     //when
-    String result = StringHelper.redactString(null, true);
+    String result = StringRedactor.redactString(null, true);
     //then
     assertThat(result).isNull();
   }

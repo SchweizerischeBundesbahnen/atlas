@@ -1,7 +1,6 @@
-package ch.sbb.workflow.aop;
+package ch.sbb.atlas.user.administration.security.redact;
 
 import ch.sbb.atlas.versioning.convert.ReflectionHelper;
-import ch.sbb.workflow.helper.StringHelper;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -26,7 +25,7 @@ public class RedactAspect {
 
   private final RedactDecider redactDecider;
 
-  @Around("@annotation(ch.sbb.workflow.aop.Redacted)")
+  @Around("@annotation(ch.sbb.atlas.user.administration.security.redact.Redacted)")
   public Object redactSensitiveData(ProceedingJoinPoint joinPoint) throws Throwable {
     Object resultObject = joinPoint.proceed();
 
@@ -99,7 +98,7 @@ public class RedactAspect {
 
     public void accept() {
       if (field.getGenericType().equals(String.class)) {
-        performRedact(StringHelper.redactString((String) currentFieldValue, showFirstChar));
+        performRedact(StringRedactor.redactString((String) currentFieldValue, showFirstChar));
       }
 
       if (field.getGenericType() instanceof ParameterizedType parameterizedType) {
@@ -107,7 +106,7 @@ public class RedactAspect {
 
         if (actualTypeArgument.equals(String.class)) {
           if (currentFieldValue instanceof List<?> list) {
-            List<String> redactedList = list.stream().map(i -> StringHelper.redactString((String) i, showFirstChar))
+            List<String> redactedList = list.stream().map(i -> StringRedactor.redactString((String) i, showFirstChar))
                 .toList();
             performRedact(redactedList);
           }
