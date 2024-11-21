@@ -180,6 +180,12 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
     this.form.updateValueAndValidity();
   }
 
+  subscribeToConditionalValidation() {
+    this.form.controls.lineType.valueChanges.subscribe(() => {
+      this.conditionalValidation()
+    });
+  }
+
   createRecord(): void {
     const lineForm = this.form.value; //pass to create
     const createLineVersionV2: CreateLineVersionV2 = {
@@ -237,7 +243,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
   }
 
   getFormGroup(version: LineVersionV2): FormGroup {
-    let formGroup = new FormGroup<LineDetailFormGroup>(
+    return new FormGroup<LineDetailFormGroup>(
       {
         swissLineNumber: new FormControl(version.swissLineNumber, [
           Validators.required,
@@ -292,7 +298,6 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
-    return formGroup;
   }
 
   getFormControlsToDisable(): string[] {
