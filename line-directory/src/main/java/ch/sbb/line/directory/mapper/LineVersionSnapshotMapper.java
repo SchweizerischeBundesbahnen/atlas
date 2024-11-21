@@ -10,6 +10,9 @@ public class LineVersionSnapshotMapper {
   public static LineVersionSnapshotModel toModel(LineVersionSnapshot lineVersionSnapshot) {
     return LineVersionSnapshotModel.builder()
         .id(lineVersionSnapshot.getId())
+        .lineConcessionType(lineVersionSnapshot.getConcessionType())
+        .shortNumber(lineVersionSnapshot.getShortNumber())
+        .offerCategory(lineVersionSnapshot.getOfferCategory())
         .workflowId(lineVersionSnapshot.getWorkflowId())
         .workflowStatus(lineVersionSnapshot.getWorkflowStatus())
         .parentObjectId(lineVersionSnapshot.getParentObjectId())
@@ -18,8 +21,6 @@ public class LineVersionSnapshotMapper {
         .lineType(lineVersionSnapshot.getLineType())
         .paymentType(lineVersionSnapshot.getPaymentType())
         .number(lineVersionSnapshot.getNumber())
-        .alternativeName(lineVersionSnapshot.getAlternativeName())
-        .combinationName(lineVersionSnapshot.getCombinationName())
         .longName(lineVersionSnapshot.getLongName())
         .description(lineVersionSnapshot.getDescription())
         .validFrom(lineVersionSnapshot.getValidFrom())

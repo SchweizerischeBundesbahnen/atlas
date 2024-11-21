@@ -26,7 +26,9 @@ import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
 import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.api.model.BaseVersionModel;
@@ -610,11 +612,12 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     LineVersionSnapshot lineVersionSnapshot = LineVersionSnapshot.builder()
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
+        .concessionType(LineConcessionType.COLLECTION_LINE)
+        .offerCategory(OfferCategory.IC)
+        .shortNumber("asd")
         .workflowStatus(WorkflowStatus.STARTED)
         .paymentType(PaymentType.INTERNATIONAL)
         .number("number")
-        .alternativeName("alternativeName")
-        .combinationName("combinationName")
         .longName("longName")
         .description("description")
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -643,8 +646,6 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
         ).andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount").value(1))
         .andExpect(jsonPath("$.objects", hasSize(1)))
-        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.alternativeName, is("alternativeName")))
-        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.combinationName, is("combinationName")))
         .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.longName, is("longName")))
         .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.lineType, is(LineType.ORDERLY.toString())))
         .andExpect(

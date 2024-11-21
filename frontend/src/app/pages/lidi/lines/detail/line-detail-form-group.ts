@@ -9,7 +9,7 @@ export interface LineDetailFormGroup extends BaseDetailFormGroup {
   businessOrganisation: FormControl<string | null>;
   number: FormControl<string | null | undefined>;
   shortNumber: FormControl<string | null | undefined>;
-  lineConcessionType: FormControl<LineConcessionType | null>;
+  lineConcessionType: FormControl<LineConcessionType | null | undefined>;
   longName: FormControl<string | null | undefined>;
   description: FormControl<string | null | undefined>;
   comment: FormControl<string | null | undefined>;
