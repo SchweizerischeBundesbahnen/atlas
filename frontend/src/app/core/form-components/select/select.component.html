@@ -21,6 +21,7 @@
     [multiple]="multiple"
     [hideSingleSelectionIndicator]="true"
   >
+    <mat-option *ngIf="isOptional">{{ '-' }}</mat-option>
     <mat-option *ngIf="isSelectAllEnabled" #allSelected (click)="toggleAllSelection()">{{
       selectAll | translate
     }}</mat-option>

@@ -21,6 +21,7 @@ export class LineDetailFormComponent {
   @Input() form!: FormGroup;
   @Input() newRecord = false;
   @Input() boSboidRestriction: string[] = [];
+  @Input() isLineConcessionTypeRequired = true;
 
   readonly extractOfferCategory = (category: Category) => category.value;
 

@@ -18,6 +18,9 @@ const version: LineVersionSnapshot = {
   validTo: new Date('2029-06-01'),
   number: '1.1',
   businessOrganisation: 'sbb',
+  offerCategory: 'BAT',
+  lineConcessionType: 'CANTONALLY_APPROVED_LINE',
+  shortNumber: 'short'
 };
 
 const routerStateSnapshot = jasmine.createSpyObj('RouterStateSnapshot', ['']);
