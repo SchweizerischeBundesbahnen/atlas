@@ -85,7 +85,6 @@ public class LineVersionSnapshotModel extends BaseVersionModel {
   private LocalDate validTo;
 
   @Schema(description = "ConcessionType")
-  @NotNull
   private LineConcessionType lineConcessionType;
 
   @Schema(description = "ShortNumber", example = "61")
