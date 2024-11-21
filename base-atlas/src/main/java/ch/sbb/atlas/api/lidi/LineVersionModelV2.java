@@ -30,7 +30,6 @@ public class LineVersionModelV2 extends BaseLineVersionModel {
   private LineType lineType;
 
   @Schema(description = "ConcessionType")
-  @NotNull
   private LineConcessionType lineConcessionType;
 
   @Schema(description = "ShortNumber", example = "61")

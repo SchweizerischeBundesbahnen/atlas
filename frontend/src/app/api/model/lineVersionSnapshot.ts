@@ -11,6 +11,8 @@
  */
 import { Status } from './status';
 import { PaymentType } from './paymentType';
+import { LineConcessionType } from './lineConcessionType';
+import { OfferCategory } from './offerCategory';
 import { LineType } from './lineType';
 import { WorkflowStatus } from './workflowStatus';
 
@@ -57,14 +59,6 @@ export interface LineVersionSnapshot {
      */
     readonly number?: string;
     /**
-     * AlternativeName
-     */
-    readonly alternativeName?: string;
-    /**
-     * CombinationName
-     */
-    readonly combinationName?: string;
-    /**
      * LongName
      */
     readonly longName?: string;
@@ -80,6 +74,12 @@ export interface LineVersionSnapshot {
      * Valid to
      */
     readonly validTo: Date;
+    lineConcessionType: LineConcessionType;
+    /**
+     * ShortNumber
+     */
+    shortNumber?: string;
+    offerCategory: OfferCategory;
     /**
      * BusinessOrganisation SBOID
      */

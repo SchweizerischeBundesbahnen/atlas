@@ -112,8 +112,9 @@
         label="LIDI.LINE_CONCESSION.TYPE"
         optionTranslateLabelPrefix="LIDI.LINE_CONCESSION."
         [options]="LINE_CONCESSION_TYPE_OPTIONS"
-        [required]="true"
+        [required]="isLineConcessionTypeRequired"
         [additionalLabelspace]="24"
+        [isOptional]="true"
       >
       </atlas-select>
     </div>
