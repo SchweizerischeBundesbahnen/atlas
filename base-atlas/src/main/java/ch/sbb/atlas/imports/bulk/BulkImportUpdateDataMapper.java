@@ -17,7 +17,7 @@ import org.springframework.beans.ConfigurablePropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.util.ReflectionUtils;
 
-public abstract class BulkImportDataMapper<T, U, V> {
+public abstract class BulkImportUpdateDataMapper<T, U, V> {
 
   public V applyUpdate(BulkImportUpdateContainer<T> container, U currentEntity, V targetModel) {
     applyDefaultMapping(container.getObject(), currentEntity, targetModel);
