@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.experimental.UtilityClass;
+import org.springframework.util.ReflectionUtils;
 
 @UtilityClass
 public final class ReflectionHelper {
@@ -35,10 +36,10 @@ public final class ReflectionHelper {
   public static Object copyObjectViaBuilder(Object object) {
     try {
       Method toBuilder = object.getClass().getDeclaredMethod("toBuilder");
-      toBuilder.setAccessible(true);
+      ReflectionUtils.makeAccessible(toBuilder);
       Object builder = toBuilder.invoke(object);
       Method build = builder.getClass().getMethod("build");
-      build.setAccessible(true);
+      ReflectionUtils.makeAccessible(build);
       return build.invoke(builder);
     } catch (Exception e) {
       throw new IllegalStateException(
