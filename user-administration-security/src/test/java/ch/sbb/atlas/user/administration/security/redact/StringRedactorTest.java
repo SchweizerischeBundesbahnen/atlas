@@ -35,4 +35,24 @@ class StringRedactorTest {
     assertThat(result).isNull();
   }
 
+  @Test
+  void shouldRedactEmptyCharString(){
+    //given
+    String string = "";
+    //when
+    String result = StringRedactor.redactString(string, true);
+    //then
+    assertThat(result).isNotNull().isEqualTo("");
+  }
+
+  @Test
+  void shouldRedactSingleCharStringNotShowingFirstChar(){
+    //given
+    String string = "l";
+    //when
+    String result = StringRedactor.redactString(string, false);
+    //then
+    assertThat(result).isNotNull().isEqualTo("*****");
+  }
+
 }
