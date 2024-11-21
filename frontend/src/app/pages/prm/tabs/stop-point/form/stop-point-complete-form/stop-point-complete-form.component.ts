@@ -20,21 +20,22 @@ import { PrmVariantInfoService } from '../../prm-variant-info.service';
 })
 export class StopPointCompleteFormComponent implements OnInit {
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
-  standardAttributeTypes: string[] = [];
-  booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   @Input() selectedMeansOfTransport!: MeanOfTransport[];
   @Input() isNew = false;
+  standardAttributeTypes: string[] = [];
+  booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   meansOfTransportToShow: MeanOfTransport[] | undefined;
+
   constructor(
     private readonly translationSortingService: TranslationSortingService,
-    private readonly prmVariantInfoServiceService: PrmVariantInfoService,
+    private readonly prmVariantInfoService: PrmVariantInfoService,
   ) {}
 
   ngOnInit(): void {
     if (this.isNew) {
       this.initForm();
     }
-    this.meansOfTransportToShow = this.prmVariantInfoServiceService.getPrmMeansOfTransportToShow(
+    this.meansOfTransportToShow = this.prmVariantInfoService.getPrmMeansOfTransportToShow(
       this.form.controls.meansOfTransport.value!,
     );
     this.setSortedOperatingPointTypes();
