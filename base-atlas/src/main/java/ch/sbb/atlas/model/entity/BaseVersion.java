@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @MappedSuperclass
 public abstract class BaseVersion extends BaseEntity implements DatesValidator {
 

@@ -70,8 +70,7 @@ import org.junit.jupiter.api.Test;
      Object copy = ReflectionHelper.copyObjectViaBuilder(original);
 
      // Then
-     assertThat(copy).isNotSameAs(original);
-     assertThat(copy).isEqualTo(original);
+     assertThat(copy).isNotSameAs(original).isEqualTo(original);
    }
 
    @Test
