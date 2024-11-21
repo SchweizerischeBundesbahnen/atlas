@@ -61,6 +61,7 @@ public class RedactAspect {
 
         for (Field field : object.getClass().getDeclaredFields()) {
           if (field.isAnnotationPresent(Redacted.class) && field.getType().isAnnotationPresent(Redacted.class)) {
+            ReflectionUtils.makeAccessible(field);
             Object fieldObject = ReflectionUtils.getField(field, object);
             Object redactObject = new ObjectRedactor(fieldObject).accept();
             ReflectionUtils.setField(field, object, redactObject);

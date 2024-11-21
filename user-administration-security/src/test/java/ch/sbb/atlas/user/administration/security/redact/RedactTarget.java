@@ -22,6 +22,12 @@ class RedactTarget {
   @Redacted
   private Set<NestedRedactTarget> examinants;
 
+  @Redacted
+  private NestedRedactTarget examinant;
+
+  @Redacted
+  private NestedRedactTarget nullObject;
+
   @Redacted(showFirstChar = true)
   private List<String> ccEmails;
 
