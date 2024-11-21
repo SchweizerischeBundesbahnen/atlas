@@ -6,12 +6,12 @@ import { DialogService } from '../../../../../core/components/dialog/dialog.serv
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BusinessOrganisationsService, User } from '../../../../../api';
+import { User } from '../../../../../api';
 
 @Component({
   selector: 'app-user-administration-edit',
   templateUrl: './user-administration-user-edit.component.html',
-  viewProviders: [BusinessOrganisationsService, UserPermissionManager],
+  viewProviders: [UserPermissionManager],
 })
 export class UserAdministrationUserEditComponent implements OnInit {
   @Input() user?: User;

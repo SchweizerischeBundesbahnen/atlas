@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { DetailFormComponent } from '../../../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { Component, OnInit } from '@angular/core';
 import {
   PersonWithReducedMobilityService,
   PlatformVersion,
@@ -21,7 +20,7 @@ import { ValidityService } from '../../../../../sepodi/validity/validity.service
 import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
 import { EMPTY, Observable, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TabDetail } from '../../../../shared/tab-detail';
+import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
 
 @Component({
   selector: 'app-platforms',
@@ -29,8 +28,8 @@ import { TabDetail } from '../../../../shared/tab-detail';
   providers: [ValidityService],
 })
 export class PlatformDetailComponent
-  extends TabDetail<ReadPlatformVersion>
-  implements DetailFormComponent
+  extends PrmTabDetailBaseComponent<ReadPlatformVersion>
+  implements OnInit
 {
   servicePoint!: ReadServicePointVersion;
   trafficPoint!: ReadTrafficPointElementVersion;
@@ -80,7 +79,7 @@ export class PlatformDetailComponent
     this.initForm();
   }
 
-  initForm() {
+  protected initForm() {
     if (this.reduced) {
       this.form = PlatformFormGroupBuilder.buildReducedFormGroup(this.selectedVersion);
     } else {
@@ -93,7 +92,7 @@ export class PlatformDetailComponent
     }
   }
 
-  saveProcess(): Observable<ReadPlatformVersion | ReadPlatformVersion[]> {
+  protected saveProcess(): Observable<ReadPlatformVersion | ReadPlatformVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const platformVersion = PlatformFormGroupBuilder.getWritableForm(
