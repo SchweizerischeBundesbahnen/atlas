@@ -52,7 +52,14 @@ class RedactAspectTest {
             .function("Wildhüter von Hogwarts")
             .mail("h*****")
             .build()))
+        .examinant(NestedRedactTarget.builder()
+            .firstName("M*****")
+            .lastName("M*****")
+            .function("Prof. für Verwandlung")
+            .mail("m*****")
+            .build())
         .build();
+
     assertThat(redactedResult).isEqualTo(expectedResult);
   }
 
@@ -84,6 +91,12 @@ class RedactAspectTest {
             .function("Wildhüter von Hogwarts")
             .mail("hagrid@hogwarts.uk")
             .build()))
+        .examinant(NestedRedactTarget.builder()
+            .firstName("Minerva")
+            .lastName("McGonnagal")
+            .function("Prof. für Verwandlung")
+            .mail("mcg@hogwarts.uk")
+            .build())
         .build();
   }
 
