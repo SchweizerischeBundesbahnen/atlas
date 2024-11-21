@@ -9,11 +9,14 @@ import { FormGroup } from '@angular/forms';
 import { ValidityService } from '../../sepodi/validity/validity.service';
 import { catchError, EMPTY, finalize, from, Observable, take } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 
 @Component({
   template: '',
 })
-export abstract class TabDetail<T> implements DetailWithCancelEdit, OnInit {
+export abstract class PrmTabDetailBaseComponent<T>
+  implements OnInit, DetailFormComponent, DetailWithCancelEdit
+{
   protected readonly notificationService: NotificationService = inject(NotificationService);
   protected readonly router: Router = inject(Router);
   protected readonly route: ActivatedRoute = inject(ActivatedRoute);
@@ -28,12 +31,18 @@ export abstract class TabDetail<T> implements DetailWithCancelEdit, OnInit {
   selectedVersion!: T;
   protected saving = false;
 
-  abstract initForm(): void;
-  abstract saveProcess(): Observable<object>;
+  protected nbrOfBackPaths = 2;
+
+  protected abstract initForm(): void;
+  protected abstract saveProcess(): Observable<object>;
   abstract ngOnInit(): void;
 
   back() {
-    this.router.navigate(['..'], { relativeTo: this.route.parent }).then();
+    this.router
+      .navigate([Array<string>(this.nbrOfBackPaths).fill('../').join('')], {
+        relativeTo: this.route,
+      })
+      .then();
   }
 
   toggleEdit() {
@@ -69,8 +78,8 @@ export abstract class TabDetail<T> implements DetailWithCancelEdit, OnInit {
   notificateAndNavigate(notification: string, routeParam: string) {
     this.notificationService.success(notification);
     return from(
-      this.router.navigate(['..', routeParam], {
-        relativeTo: this.route.parent,
+      this.router.navigate([...Array<string>(this.nbrOfBackPaths).fill('..'), routeParam], {
+        relativeTo: this.route,
       }),
     );
   }
