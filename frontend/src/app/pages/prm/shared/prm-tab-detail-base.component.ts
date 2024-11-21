@@ -38,11 +38,7 @@ export abstract class PrmTabDetailBaseComponent<T>
   abstract ngOnInit(): void;
 
   back() {
-    this.router
-      .navigate([Array<string>(this.nbrOfBackPaths).fill('../').join('')], {
-        relativeTo: this.route,
-      })
-      .then();
+    this.routeToParent().then();
   }
 
   toggleEdit() {
@@ -77,10 +73,15 @@ export abstract class PrmTabDetailBaseComponent<T>
 
   notificateAndNavigate(notification: string, routeParam: string) {
     this.notificationService.success(notification);
-    return from(
-      this.router.navigate([...Array<string>(this.nbrOfBackPaths).fill('..'), routeParam], {
+    return from(this.routeToParent(routeParam));
+  }
+
+  private routeToParent(routeParam: string = '') {
+    return this.router.navigate(
+      [Array<string>(this.nbrOfBackPaths).fill('../').join(''), routeParam],
+      {
         relativeTo: this.route,
-      }),
+      },
     );
   }
 }
