@@ -41,6 +41,8 @@ public class RedactAspect {
     if (resultObject instanceof Page<?> page) {
       List<Object> redactedPage = page.getContent().stream().map(pageItem -> new ObjectRedactor(pageItem).accept()).toList();
       return new PageImpl<>(redactedPage, page.getPageable(), page.getTotalElements());
+    } else if (resultObject instanceof List<?> list) {
+      return list.stream().map(pageItem -> new ObjectRedactor(pageItem).accept()).toList();
     } else {
       return new ObjectRedactor(resultObject).accept();
     }
@@ -59,9 +61,8 @@ public class RedactAspect {
 
         object = ReflectionHelper.copyObjectViaBuilder(object);
 
-        for (Field field : object.getClass().getDeclaredFields()) {
+        for (Field field : ReflectionHelper.getAllFieldsAccessible(object.getClass())) {
           if (field.isAnnotationPresent(Redacted.class) && field.getType().isAnnotationPresent(Redacted.class)) {
-            ReflectionUtils.makeAccessible(field);
             Object fieldObject = ReflectionUtils.getField(field, object);
             Object redactObject = new ObjectRedactor(fieldObject).accept();
             ReflectionUtils.setField(field, object, redactObject);
