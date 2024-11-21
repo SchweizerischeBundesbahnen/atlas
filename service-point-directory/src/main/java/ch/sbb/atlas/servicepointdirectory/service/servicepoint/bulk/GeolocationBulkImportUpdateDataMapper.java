@@ -5,14 +5,14 @@ import static ch.sbb.atlas.api.AtlasApiConstants.ATLAS_WGS84_MAX_DIGITS;
 
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
-import ch.sbb.atlas.imports.bulk.BulkImportDataMapper;
+import ch.sbb.atlas.imports.bulk.BulkImportUpdateDataMapper;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
 
-public abstract class GeolocationBulkImportDataMapper<T, U, V> extends BulkImportDataMapper<T, U, V> {
+public abstract class GeolocationBulkImportUpdateDataMapper<T, U, V> extends BulkImportUpdateDataMapper<T, U, V> {
 
   protected static GeolocationBaseCreateModel applyGeolocationUpdate(GeolocationBaseEntity currentGeolocation,
       UpdateGeolocationModel update) {
