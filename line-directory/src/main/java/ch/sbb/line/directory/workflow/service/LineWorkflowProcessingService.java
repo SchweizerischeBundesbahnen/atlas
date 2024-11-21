@@ -74,6 +74,9 @@ public class LineWorkflowProcessingService extends
   private LineVersionSnapshot buildLineVersionSnapshot(WorkflowEvent workflowEvent, LineVersion lineVersion) {
     return LineVersionSnapshot.builder()
         .parentObjectId(lineVersion.getId())
+        .concessionType(lineVersion.getConcessionType())
+        .offerCategory(lineVersion.getOfferCategory())
+        .shortNumber(lineVersion.getShortNumber())
         .workflowId(workflowEvent.getWorkflowId())
         .workflowStatus(workflowEvent.getWorkflowStatus())
         .validFrom(lineVersion.getValidFrom())
@@ -84,8 +87,6 @@ public class LineWorkflowProcessingService extends
         .lineType(lineVersion.getLineType())
         .paymentType(lineVersion.getPaymentType())
         .number(lineVersion.getNumber())
-        .alternativeName(lineVersion.getAlternativeName())
-        .combinationName(lineVersion.getCombinationName())
         .longName(lineVersion.getLongName())
         .description(lineVersion.getDescription())
         .businessOrganisation(lineVersion.getBusinessOrganisation())
