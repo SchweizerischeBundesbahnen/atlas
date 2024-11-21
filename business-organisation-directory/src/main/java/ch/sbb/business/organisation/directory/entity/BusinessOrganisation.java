@@ -2,6 +2,7 @@ package ch.sbb.business.organisation.directory.entity;
 
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.user.administration.security.redact.Redacted;
 import ch.sbb.business.organisation.directory.converter.BusinessTypeConverter;
 import java.time.LocalDate;
 import java.util.Set;
@@ -31,10 +32,11 @@ import org.hibernate.annotations.Subselect;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Immutable
 @Entity
+@Redacted
 @Subselect(BusinessOrganisation.VIEW_DEFINITION)
 public class BusinessOrganisation {
 
@@ -61,6 +63,7 @@ public class BusinessOrganisation {
 
   private Integer organisationNumber;
 
+  @Redacted
   private String contactEnterpriseEmail;
 
   @Enumerated(EnumType.STRING)
