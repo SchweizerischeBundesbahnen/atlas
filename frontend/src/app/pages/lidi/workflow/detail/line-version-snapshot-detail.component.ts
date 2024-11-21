@@ -1,13 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {
-  LineConcessionType,
-  LinesService,
-  LineVersion,
-  LineVersionSnapshot,
-  OfferCategory,
-  Workflow,
-  WorkflowService,
-} from '../../../../api';
+import {LinesService, LineVersion, LineVersionSnapshot, Workflow, WorkflowService,} from '../../../../api';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup} from '@angular/forms';
 import moment from 'moment';
@@ -76,9 +68,9 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
     version: LineVersionSnapshot,
   ): FormGroup<LineVersionSnapshotDetailFormGroup> {
     return new FormGroup<LineVersionSnapshotDetailFormGroup>({
-      lineConcessionType: new FormControl(LineConcessionType.CollectionLine),//todo: fix
-      offerCategory: new FormControl(OfferCategory.Asc), //todo: fix
-      shortNumber: new FormControl("8"),//todo: fix
+      lineConcessionType: new FormControl(version.lineConcessionType),
+      offerCategory: new FormControl(version.offerCategory),
+      shortNumber: new FormControl(version.shortNumber),
       parentObjectId: new FormControl(version.parentObjectId),
       workflowId: new FormControl(version.workflowId),
       workflowStatus: new FormControl(version.workflowStatus),

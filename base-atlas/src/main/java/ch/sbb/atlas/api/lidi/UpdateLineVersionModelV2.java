@@ -25,7 +25,6 @@ import lombok.experimental.SuperBuilder;
 public class UpdateLineVersionModelV2 extends BaseLineVersionModel  {
 
   @Schema(description = "ConcessionType")
-  @NotNull
   private LineConcessionType lineConcessionType;
 
   @Schema(description = "ShortNumber", example = "61")

@@ -19,3 +19,7 @@ ALTER TABLE line_version_snapshot
     DROP COLUMN color_font_rgb;
 ALTER TABLE line_version_snapshot
     DROP COLUMN icon;
+ALTER TABLE line_version_snapshot
+    DROP COLUMN alternative_name;
+ALTER TABLE line_version_snapshot
+    DROP COLUMN combination_name;

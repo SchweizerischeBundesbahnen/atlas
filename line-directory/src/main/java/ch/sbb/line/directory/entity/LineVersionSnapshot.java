@@ -1,9 +1,12 @@
 package ch.sbb.line.directory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -65,12 +68,6 @@ public class LineVersionSnapshot extends BaseVersionSnapshot {
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String number;
 
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  private String alternativeName;
-
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  private String combinationName;
-
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String longName;
 
@@ -107,5 +104,17 @@ public class LineVersionSnapshot extends BaseVersionSnapshot {
   @Version
   @NotNull
   private Integer version;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private LineConcessionType concessionType;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private OfferCategory offerCategory;
+
+  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @AtlasVersionableProperty
+  private String shortNumber;
 
 }
