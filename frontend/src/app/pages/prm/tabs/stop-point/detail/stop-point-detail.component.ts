@@ -59,12 +59,12 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private notificationService: NotificationService,
-    private dialogService: DialogService,
-    private permissionService: PermissionService,
-    private prmTabsService: PrmTabsService,
-    private referencePointCreationHintService: ReferencePointCreationHintService,
-    private validityService: ValidityService,
+    private readonly notificationService: NotificationService,
+    private readonly dialogService: DialogService,
+    private readonly permissionService: PermissionService,
+    private readonly prmTabsService: PrmTabsService,
+    private readonly referencePointCreationHintService: ReferencePointCreationHintService,
+    private readonly validityService: ValidityService,
   ) {}
 
   ngOnInit(): void {

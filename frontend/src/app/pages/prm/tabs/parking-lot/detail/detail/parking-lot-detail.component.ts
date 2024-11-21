@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { DetailFormComponent } from '../../../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { Component, OnInit } from '@angular/core';
 import {
   ParkingLotVersion,
   PersonWithReducedMobilityService,
@@ -12,7 +11,7 @@ import { DateRange } from '../../../../../../core/versioning/date-range';
 import { ValidityService } from '../../../../../sepodi/validity/validity.service';
 import { EMPTY, Observable, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TabDetail } from '../../../../shared/tab-detail';
+import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
 
 @Component({
   selector: 'app-parking-lot-detail',
@@ -20,8 +19,8 @@ import { TabDetail } from '../../../../shared/tab-detail';
   providers: [ValidityService],
 })
 export class ParkingLotDetailComponent
-  extends TabDetail<ReadParkingLotVersion>
-  implements DetailFormComponent
+  extends PrmTabDetailBaseComponent<ReadParkingLotVersion>
+  implements OnInit
 {
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
@@ -52,7 +51,7 @@ export class ParkingLotDetailComponent
     this.initForm();
   }
 
-  initForm() {
+  protected initForm() {
     this.form = ParkingLotFormGroupBuilder.buildFormGroup(this.selectedVersion);
 
     if (!this.isNew) {
@@ -60,7 +59,7 @@ export class ParkingLotDetailComponent
     }
   }
 
-  saveProcess(): Observable<ReadParkingLotVersion | ReadParkingLotVersion[]> {
+  protected saveProcess(): Observable<ReadParkingLotVersion | ReadParkingLotVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const parkingLotVersion = ParkingLotFormGroupBuilder.getWritableForm(
