@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-class BulkImportDataMapperTest {
+class BulkImportUpdateDataMapperTest {
 
-  private final DummyBulkImportDataMapper mapper = new DummyBulkImportDataMapper();
+  private final DummyBulkImportUpdateDataMapper mapper = new DummyBulkImportUpdateDataMapper();
 
   @Test
   void shouldApplyDefaultMapping() {
@@ -107,8 +107,8 @@ class BulkImportDataMapperTest {
         currentEntity, new UpdateServicePointVersionModel()));
   }
 
-  private static class DummyBulkImportDataMapper extends BulkImportDataMapper<ServicePointUpdateCsvModel,
-      UpdateServicePointVersionModel, UpdateServicePointVersionModel> {
+  private static class DummyBulkImportUpdateDataMapper extends BulkImportUpdateDataMapper<ServicePointUpdateCsvModel,
+        UpdateServicePointVersionModel, UpdateServicePointVersionModel> {
 
   }
 
