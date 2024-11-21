@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import { ToiletFormGroupBuilder } from '../form/toilet-form-group';
 import {
@@ -7,12 +7,11 @@ import {
   ReadToiletVersion,
   ToiletVersion,
 } from '../../../../../../api';
-import { DetailFormComponent } from '../../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { DateRange } from '../../../../../../core/versioning/date-range';
 import { ValidityService } from '../../../../../sepodi/validity/validity.service';
 import { EMPTY, Observable, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TabDetail } from '../../../../shared/tab-detail';
+import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
 
 @Component({
   selector: 'app-toilet-detail',
@@ -20,8 +19,8 @@ import { TabDetail } from '../../../../shared/tab-detail';
   providers: [ValidityService],
 })
 export class ToiletDetailComponent
-  extends TabDetail<ReadToiletVersion>
-  implements DetailFormComponent
+  extends PrmTabDetailBaseComponent<ReadToiletVersion>
+  implements OnInit
 {
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
@@ -52,7 +51,7 @@ export class ToiletDetailComponent
     this.initForm();
   }
 
-  initForm() {
+  protected initForm() {
     this.form = ToiletFormGroupBuilder.buildFormGroup(this.selectedVersion);
 
     if (!this.isNew) {
@@ -60,7 +59,7 @@ export class ToiletDetailComponent
     }
   }
 
-  saveProcess(): Observable<ReadToiletVersion | ReadToiletVersion[]> {
+  protected saveProcess(): Observable<ReadToiletVersion | ReadToiletVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const toiletVersion = ToiletFormGroupBuilder.getWritableForm(

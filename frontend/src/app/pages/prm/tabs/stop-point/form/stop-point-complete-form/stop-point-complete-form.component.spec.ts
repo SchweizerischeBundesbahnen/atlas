@@ -22,10 +22,10 @@ describe('StopPointCompleteFormComponent', () => {
   let component: StopPointCompleteFormComponent;
   let fixture: ComponentFixture<StopPointCompleteFormComponent>;
 
-  const prmVariantInfoServiceService = jasmine.createSpyObj('prmVariantInfoServiceService', [
+  const prmVariantInfoService = jasmine.createSpyObj('prmVariantInfoService', [
     'getPrmMeansOfTransportToShow',
   ]);
-  prmVariantInfoServiceService.getPrmMeansOfTransportToShow.and.returnValue(
+  prmVariantInfoService.getPrmMeansOfTransportToShow.and.returnValue(
     Object.values(MeanOfTransport),
   );
 
@@ -44,7 +44,7 @@ describe('StopPointCompleteFormComponent', () => {
       imports: [AppTestingModule],
       providers: [
         { provide: TranslatePipe },
-        { provide: PrmVariantInfoService, useValue: prmVariantInfoServiceService },
+        { provide: PrmVariantInfoService, useValue: prmVariantInfoService },
       ],
     });
     fixture = TestBed.createComponent(StopPointCompleteFormComponent);

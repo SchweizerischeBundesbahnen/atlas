@@ -8,7 +8,7 @@ import {
 import { MeanOfTransport } from '../../../../api';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 
-describe('PrmVariantInfoServiceService', () => {
+describe('PrmVariantInfoService', () => {
   let service: PrmVariantInfoService;
 
   const isAtLeastSupervisorMock: Partial<PermissionService> = {

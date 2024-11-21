@@ -60,7 +60,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
     private readonly dialogService: DialogService,
     private readonly notificationService: NotificationService,
-    private validityService: ValidityService,
+    private readonly validityService: ValidityService,
   ) {}
 
   ngOnInit(): void {
@@ -98,7 +98,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   }
 
   back() {
-    this.router.navigate(['../..'], { relativeTo: this.route });
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   save(): void {
