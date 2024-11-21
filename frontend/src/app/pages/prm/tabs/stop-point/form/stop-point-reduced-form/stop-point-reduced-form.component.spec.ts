@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { StopPointReducedFormComponent } from './stop-point-reduced-form.component';
 import { StopPointFormGroupBuilder } from '../stop-point-detail-form-group';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -21,10 +20,10 @@ describe('StopPointReducedFormComponent', () => {
   let component: StopPointReducedFormComponent;
   let fixture: ComponentFixture<StopPointReducedFormComponent>;
 
-  const prmVariantInfoServiceService = jasmine.createSpyObj('prmVariantInfoServiceService', [
+  const prmVariantInfoService = jasmine.createSpyObj('prmVariantInfoService', [
     'getPrmMeansOfTransportToShow',
   ]);
-  prmVariantInfoServiceService.getPrmMeansOfTransportToShow.and.returnValue(
+  prmVariantInfoService.getPrmMeansOfTransportToShow.and.returnValue(
     Object.values(MeanOfTransport),
   );
 
@@ -43,7 +42,7 @@ describe('StopPointReducedFormComponent', () => {
       imports: [AppTestingModule],
       providers: [
         { provide: TranslatePipe },
-        { provide: PrmVariantInfoService, useValue: prmVariantInfoServiceService },
+        { provide: PrmVariantInfoService, useValue: prmVariantInfoService },
       ],
     });
     fixture = TestBed.createComponent(StopPointReducedFormComponent);
