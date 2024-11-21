@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -40,6 +41,16 @@ public class ServicePointBulkImportService {
     UpdateServicePointVersionModel updateModel = ServicePointBulkImportUpdate.apply(bulkImportContainer, currentVersion);
 
     servicePointApiClient.updateServicePoint(currentVersion.getId(), updateModel);
+  }
+
+  public void createServicePoint(BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
+    ServicePointCreateCsvModel servicePointUpdate = bulkImportContainer.getObject();
+
+    //TODO create ServicePointCreateModel
+    //TODO create mapper
+    //TODO create servicePointbulkimportcreate
+
+    //servicePointApiClient.createServicePoint();
   }
 
   private List<ServicePointVersion> getCurrentVersions(ServicePointUpdateCsvModel servicePointUpdate) {
