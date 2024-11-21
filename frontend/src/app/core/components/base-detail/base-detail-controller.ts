@@ -16,8 +16,7 @@ import {PermissionService} from "../../auth/permission/permission.service";
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record>
-  implements OnInit, DetailFormComponent
-{
+  implements OnInit, DetailFormComponent {
   record!: TYPE;
   selectedRecordChange = new Subject<Record>();
   records!: Array<TYPE>;
@@ -35,7 +34,8 @@ export abstract class BaseDetailController<TYPE extends Record>
     protected permissionService: PermissionService,
     protected activatedRoute: ActivatedRoute,
     protected validityService: ValidityService
-  ) {}
+  ) {
+  }
 
   get versionNumberOfCurrentRecord(): number {
     return this.record.versionNumber!;
@@ -106,12 +106,14 @@ export abstract class BaseDetailController<TYPE extends Record>
       this.showConfirmationDialog();
     } else {
       this.form.enable();
+      this.conditionalValidation();
       this.validityService.initValidity(this.form);
       this.disableUneditableFormFields();
     }
   }
 
   save() {
+    this.conditionalValidation();
     ValidationService.validateForm(this.form);
     this.switchedIndex = undefined;
     if (this.form.valid) {
@@ -119,16 +121,19 @@ export abstract class BaseDetailController<TYPE extends Record>
         this.confirmBoTransfer().subscribe((confirmed) => {
           if (confirmed) {
             this.validityService.updateValidity(this.form)
-            this.validityService.validateAndDisableForm(()=> this.updateRecord(), this.form)
+            this.validityService.validateAndDisableForm(() => this.updateRecord(), this.form)
           } else {
             this.form.enable();
           }
         });
       } else {
-        this.form.disable();
         this.createRecord();
       }
     }
+  }
+
+  protected conditionalValidation() {
+    // implement me to add conditional Validation
   }
 
   revoke() {
@@ -195,7 +200,7 @@ export abstract class BaseDetailController<TYPE extends Record>
 
   backToOverview(): void {
     this.form.reset();
-    this.router.navigate(['..'], { relativeTo: this.activatedRoute }).then();
+    this.router.navigate(['..'], {relativeTo: this.activatedRoute}).then();
   }
 
   closeConfirmDialog(): void {

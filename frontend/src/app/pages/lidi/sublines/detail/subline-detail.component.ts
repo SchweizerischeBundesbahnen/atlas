@@ -76,6 +76,7 @@ export class SublineDetailComponent extends BaseDetailController<SublineVersion>
   }
 
   updateRecord(): void {
+    this.form.disable();
     this.sublinesService
       .updateSublineVersion(this.getId(), this.form.value)
       .pipe(catchError(this.handleError))

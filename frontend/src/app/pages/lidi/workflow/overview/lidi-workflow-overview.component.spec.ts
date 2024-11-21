@@ -22,7 +22,10 @@ const versionContainer: ContainerLineVersionSnapshot = {
       lineType: LineType.Orderly,
       workflowId: 1,
       parentObjectId: 1,
-      paymentType: 'INTERNATIONAL'
+      paymentType: 'INTERNATIONAL',
+      shortNumber: 'asd',
+      lineConcessionType: 'CANTONALLY_APPROVED_LINE',
+      offerCategory: "BAT"
     },
   ],
   totalCount: 1,

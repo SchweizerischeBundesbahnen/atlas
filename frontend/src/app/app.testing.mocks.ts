@@ -83,6 +83,7 @@ export class MockSelectComponent {
   @Input() displayExtractor: any;
   /* eslint-enable  @typescript-eslint/no-explicit-any */
   @Input() disabled = false;
+  @Input() isOptional = false;
   @Output() selectChanged = new EventEmitter();
 }
 
