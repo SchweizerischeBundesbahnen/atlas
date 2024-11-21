@@ -233,5 +233,8 @@ export const authServiceSpy = jasmine.createSpyObj<AuthService>(['login', 'logou
     MockMatPaginatorComponent,
     MockNavigationSepodiPrmComponent,
   ],
+  exports: [
+    MockSelectComponent
+  ]
 })
 export class AppMockComponents {}
