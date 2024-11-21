@@ -136,6 +136,10 @@ export abstract class BaseDetailController<TYPE extends Record>
     // implement me to add conditional Validation
   }
 
+  protected subscribeToConditionalValidation() {
+    // implement me to add conditional Validation
+  }
+
   revoke() {
     this.dialogService
       .confirm({
@@ -238,6 +242,7 @@ export abstract class BaseDetailController<TYPE extends Record>
     if (this.isExistingRecord()) {
       this.form.disable();
     } else {
+      this.subscribeToConditionalValidation();
       this.form.enable();
     }
   }
