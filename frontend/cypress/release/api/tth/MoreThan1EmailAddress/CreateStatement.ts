@@ -32,6 +32,8 @@ describe('TTH: Create a statement with several email-addresses', {testIsolation:
     });
   }
 
+  // ----------------------------------------------------------------------------------------------------------------
+
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
   });
@@ -57,19 +59,30 @@ describe('TTH: Create a statement with several email-addresses', {testIsolation:
     });
   });
 
-  it('Step-3: Create a timetable hearing year', () => {
+  it('Step-3: Create and start a timetable hearing year', () => {
     // Given: There is no active timetable hearing year
     const allStatusChoices = 'ACTIVE,PLANNED,ARCHIVED';
     get('/line-directory/v1/timetable-hearing/years?statusChoices=' + allStatusChoices).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).to.be.an('array');
-      console.log(response.body)
 
-      const timeTableYearCount = response.body.length;
-      // When: There is no (active, planned, archived) timetable year at all
-      if (timeTableYearCount === 0) {
+      const tthYears = response.body
+      const activeYears = tthYears.filter(year => year.hearingStatus === "ACTIVE").map(year => year.timetableYear);
+      expect(activeYears.length, "There shouldn't be any active year.").to.eq(0);
 
+      const usedYears = tthYears.filter(year =>
+        (year.hearingStatus === "PLANNED" ||
+          year.hearingStatus === "ARCHIVED")).map(year => year.timetableYear);
+
+      // The TTH-years are always one year later than the current one.
+      let nextUnoccupiedYear = new Date().getFullYear() + 1;
+
+      // When: There is another next unused year...
+      while (usedYears.includes(nextUnoccupiedYear)) {
+        nextUnoccupiedYear++; // Increment the year until we find one that's not used
       }
+
+      // Then: Create and start the next year
 
     });
   });
