@@ -45,6 +45,9 @@ const lineVersionSnapsot: LineVersionSnapshot = {
   parentObjectId: 1234,
   workflowId: 1,
   workflowStatus: 'ADDED',
+  shortNumber: 'short',
+  lineConcessionType: 'LINE_OF_A_TERRITORIAL_CONCESSION',
+  offerCategory: 'ASC'
 };
 
 const lineVersion: LineVersion = {

@@ -43,6 +43,14 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
     this._lineType = lineType;
   }
 
+  _isLineConcessionTypeRequired = true;
+  get isLineConcessionTypeRequired(): boolean {
+    return this._isLineConcessionTypeRequired;
+  }
+
+  set isLineConcessionTypeRequired(isRequired) {
+    this._isLineConcessionTypeRequired = isRequired;
+  }
 
   constructor(
     protected router: Router,
@@ -142,7 +150,6 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
       shortNumber: lineForm.shortNumber,
       offerCategory: lineForm.offerCategory
     }
-
     this.linesService
       .updateLineVersion(this.getId(), updateLine)
       .pipe(catchError(this.handleError))
@@ -158,6 +165,19 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
     this.router
       .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
       .then(() => this.ngOnInit());
+  }
+
+  conditionalValidation() {
+    if (this.form.controls.lineType.value !== LineType.Orderly) {
+      this.isLineConcessionTypeRequired = false;
+      this.form.controls.lineConcessionType.clearValidators();
+      this.form.controls.lineConcessionType.updateValueAndValidity();
+    } else {
+      this.isLineConcessionTypeRequired = true;
+      this.form.controls.lineConcessionType.setValidators([Validators.required]);
+      this.form.controls.lineConcessionType.updateValueAndValidity();
+    }
+    this.form.updateValueAndValidity();
   }
 
   createRecord(): void {
@@ -182,6 +202,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
       shortNumber: lineForm.shortNumber,
       offerCategory: lineForm.offerCategory
     }
+    this.form.disable();
     this.linesService
       .createLineVersionV2(createLineVersionV2)
       .pipe(catchError(this.handleError))
@@ -216,7 +237,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
   }
 
   getFormGroup(version: LineVersionV2): FormGroup {
-    return new FormGroup<LineDetailFormGroup>(
+    let formGroup = new FormGroup<LineDetailFormGroup>(
       {
         swissLineNumber: new FormControl(version.swissLineNumber, [
           Validators.required,
@@ -241,6 +262,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
           AtlasCharsetsValidator.iso88591,
         ]),
         lineConcessionType: new FormControl(version.lineConcessionType, [Validators.required]),
+        // lineConcessionType: new FormControl(version.lineConcessionType, version.lineType == "ORDERLY" ? [Validators.required] : []),
         longName: new FormControl(version.longName, [
           AtlasFieldLengthValidator.length_255,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
@@ -270,10 +292,10 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
+    return formGroup;
   }
 
   getFormControlsToDisable(): string[] {
     return this.record.status === Status.InReview ? ['validFrom', 'validTo', 'lineType'] : [];
   }
-
 }

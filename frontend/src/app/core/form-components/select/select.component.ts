@@ -79,6 +79,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   private _isDummyForm = false;
 
   private _isAllSelected = false;
+  @Input() isOptional = false;
 
   ngOnInit(): void {
     if (this.optionsGroup!.length > 0 && this.options!.length > 0) {
