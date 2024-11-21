@@ -1,6 +1,10 @@
 package ch.sbb.atlas.api.lidi;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.Status;
@@ -8,6 +12,8 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -63,16 +69,10 @@ public class LineVersionSnapshotModel extends BaseVersionModel {
   @Schema(description = "Number", example = "L1", accessMode = AccessMode.READ_ONLY)
   private String number;
 
-  @Schema(description = "AlternativeName", example = "L1", accessMode = AccessMode.READ_ONLY)
-  private String alternativeName;
-
-  @Schema(description = "CombinationName", example = "S L1", accessMode = AccessMode.READ_ONLY)
-  private String combinationName;
-
   @Schema(description = "LongName", example = "Spiseggfräser; Talstation - Bergstation; Ersatzbus", accessMode =
       AccessMode.READ_ONLY)
   private String longName;
-  
+
   @Schema(description = "Description", example = "Meiringen - Innertkirchen", accessMode = AccessMode.READ_ONLY)
   private String description;
 
@@ -83,6 +83,19 @@ public class LineVersionSnapshotModel extends BaseVersionModel {
   @Schema(description = "Valid to", accessMode = AccessMode.READ_ONLY)
   @NotNull
   private LocalDate validTo;
+
+  @Schema(description = "ConcessionType")
+  @NotNull
+  private LineConcessionType lineConcessionType;
+
+  @Schema(description = "ShortNumber", example = "61")
+  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String shortNumber;
+
+  @Schema(description = "offerCategory")
+  @NotNull
+  private OfferCategory offerCategory;
 
   @Schema(description = "BusinessOrganisation SBOID", example = "ch:1:sboid:100001", accessMode = AccessMode.READ_ONLY)
   @NotNull

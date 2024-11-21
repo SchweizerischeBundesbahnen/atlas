@@ -83,7 +83,7 @@ export interface CreateLineVersionV2 {
      */
     readonly lineVersionWorkflows?: Set<LineVersionWorkflow>;
     lineType: LineType;
-    lineConcessionType: LineConcessionType;
+    lineConcessionType?: LineConcessionType;
     /**
      * ShortNumber
      */
