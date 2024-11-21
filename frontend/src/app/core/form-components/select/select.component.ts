@@ -81,9 +81,14 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   private _isAllSelected = false;
   @Input() isOptional = false;
 
+  @Input() groupValueExtractorProperty!: string;
+
   ngOnInit(): void {
     if (this.optionsGroup!.length > 0 && this.options!.length > 0) {
       throw new Error('You cannot select both options!!!')
+    }
+    if (this.optionsGroup!.length > 0 && !this.groupValueExtractorProperty) {
+      throw new Error('A groupValueExtractorProperty must be defined for optionsGroup!!!')
     }
     if (!this.formGroup) {
       this.initDummyForm();
