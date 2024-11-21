@@ -1,27 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
-import {
-  CompleteReferencePointFormGroup,
-  ReferencePointFormGroupBuilder,
-} from './form/reference-point-form-group';
-import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { ReferencePointFormGroupBuilder } from './form/reference-point-form-group';
 import { DateRange } from '../../../../../core/versioning/date-range';
-import { FormGroup } from '@angular/forms';
-import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
   PersonWithReducedMobilityService,
   ReadReferencePointVersion,
   ReadServicePointVersion,
   ReferencePointVersion,
 } from '../../../../../api';
-import {
-  DetailHelperService,
-  DetailWithCancelEdit,
-} from '../../../../../core/detail/detail-helper.service';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
-import { catchError, EMPTY, finalize, from, Observable, switchMap, take } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { EMPTY, Observable, switchMap } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { PrmTabDetailBaseComponent } from '../../../shared/prm-tab-detail-base.component';
 
 @Component({
   selector: 'app-reference-point',
@@ -29,53 +19,40 @@ import { map, tap } from 'rxjs/operators';
   providers: [ValidityService],
 })
 export class ReferencePointDetailComponent
-  implements OnInit, DetailFormComponent, DetailWithCancelEdit
+  extends PrmTabDetailBaseComponent<ReadReferencePointVersion>
+  implements OnInit
 {
-  isNew = false;
-  referencePoint: ReadReferencePointVersion[] = [];
-  selectedVersion!: ReadReferencePointVersion;
-
   servicePoint!: ReadServicePointVersion;
   maxValidity!: DateRange;
-
-  form!: FormGroup<CompleteReferencePointFormGroup>;
   showVersionSwitch = false;
-  selectedVersionIndex!: number;
-
   businessOrganisations: string[] = [];
+  protected readonly nbrOfBackPaths = 1;
 
-  saving = false;
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private notificationService: NotificationService,
-    private detailHelperService: DetailHelperService,
-    private validityService: ValidityService,
-  ) {}
+  constructor(private readonly personWithReducedMobilityService: PersonWithReducedMobilityService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.initSePoDiData();
 
-    this.referencePoint = this.route.snapshot.data.referencePoint;
+    this.versions = this.route.snapshot.data.referencePoint;
 
-    this.isNew = this.referencePoint.length === 0;
+    this.isNew = this.versions.length === 0;
 
     if (!this.isNew) {
-      VersionsHandlingService.addVersionNumbers(this.referencePoint);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.referencePoint);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.referencePoint);
+      VersionsHandlingService.addVersionNumbers(this.versions);
+      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
       this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.referencePoint,
+        this.versions,
       );
-      this.selectedVersionIndex = this.referencePoint.indexOf(this.selectedVersion);
+      this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
     }
 
     this.initForm();
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = ReferencePointFormGroupBuilder.buildCompleteFormGroup(this.selectedVersion);
 
     if (!this.isNew) {
@@ -92,41 +69,7 @@ export class ReferencePointDetailComponent
     ];
   }
 
-  switchVersion(newIndex: number) {
-    this.selectedVersionIndex = newIndex;
-    this.selectedVersion = this.referencePoint[newIndex];
-    this.initForm();
-  }
-
-  back() {
-    this.router.navigate(['..'], { relativeTo: this.route }).then();
-  }
-
-  toggleEdit() {
-    if (this.form.enabled) {
-      this.detailHelperService.showCancelEditDialog(this);
-    } else {
-      this.validityService.initValidity(this.form);
-      this.form.enable();
-    }
-  }
-
-  save() {
-    this.saving = true;
-    this.saveProcess()
-      .pipe(
-        take(1),
-        tap(() => this.ngOnInit()),
-        catchError(() => {
-          this.ngOnInit();
-          return EMPTY;
-        }),
-        finalize(() => (this.saving = false)),
-      )
-      .subscribe();
-  }
-
-  private saveProcess(): Observable<ReadReferencePointVersion | ReadReferencePointVersion[]> {
+  protected saveProcess(): Observable<ReadReferencePointVersion | ReadReferencePointVersion[]> {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const referencePointVersion = ReferencePointFormGroupBuilder.getWritableForm(
@@ -176,13 +119,4 @@ export class ReferencePointDetailComponent
         }),
       );
   }
-
-  private notificateAndNavigate = (notification: string, routeParam: string) => {
-    this.notificationService.success(notification);
-    return from(
-      this.router.navigate(['..', routeParam], {
-        relativeTo: this.route,
-      }),
-    );
-  };
 }

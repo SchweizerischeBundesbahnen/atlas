@@ -3,13 +3,14 @@ import { Pages } from '../../pages/pages';
 import { Page } from '../model/page';
 import { PermissionService } from '../auth/permission/permission.service';
 import { environment } from '../../../environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PageService {
-  private viewablePages: BehaviorSubject<Page[]> = new BehaviorSubject([...Pages.pages]);
+  private _viewablePages: BehaviorSubject<Page[]> = new BehaviorSubject([...Pages.pages]);
+  enabledPages: Observable<Page[]> = this._viewablePages.asObservable();
 
   constructor(private readonly permissionService: PermissionService) {}
 
@@ -23,14 +24,10 @@ export class PageService {
       ...(this.permissionService.isAdmin ? [...Pages.adminPages] : []),
     ];
 
-    this.viewablePages.next([...this.viewablePages.value, ...pagesToAdd]);
+    this._viewablePages.next([...this._viewablePages.value, ...pagesToAdd]);
   }
 
   resetPages() {
-    this.viewablePages.next([...Pages.pages]);
-  }
-
-  get enabledPages() {
-    return this.viewablePages.asObservable();
+    this._viewablePages.next([...Pages.pages]);
   }
 }
