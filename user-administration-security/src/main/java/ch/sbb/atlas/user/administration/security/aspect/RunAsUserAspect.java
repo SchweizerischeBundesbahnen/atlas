@@ -3,6 +3,7 @@ package ch.sbb.atlas.user.administration.security.aspect;
 import static ch.sbb.atlas.configuration.Role.ROLES_JWT_KEY;
 import static ch.sbb.atlas.service.UserService.SBBUID_CLAIM;
 
+import ch.sbb.atlas.reflection.ParameterInfoReflectionResolver;
 import ch.sbb.atlas.service.UserService;
 import java.util.ArrayList;
 import java.util.HashMap;
