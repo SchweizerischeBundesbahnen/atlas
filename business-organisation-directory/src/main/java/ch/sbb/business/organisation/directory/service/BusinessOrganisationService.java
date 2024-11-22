@@ -2,7 +2,7 @@ package ch.sbb.business.organisation.directory.service;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.user.administration.security.redact.Redacted;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.business.organisation.directory.controller.BusinessOrganisationSearchRestrictions;

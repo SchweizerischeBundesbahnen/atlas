@@ -3,7 +3,7 @@ package ch.sbb.workflow.service.lidi;
 import ch.sbb.atlas.api.client.line.workflow.LineWorkflowClient;
 import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.user.administration.security.redact.Redacted;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.atlas.workflow.model.WorkflowEvent;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;

@@ -20,7 +20,7 @@ public final class ReflectionHelper {
 
   public static List<Field> getAllFieldsAccessible(Class<?> clazz) {
     List<Field> fields = getAllFields(clazz);
-    fields.forEach(i -> i.setAccessible(true));
+    fields.forEach(ReflectionUtils::makeAccessible);
     return fields;
   }
 

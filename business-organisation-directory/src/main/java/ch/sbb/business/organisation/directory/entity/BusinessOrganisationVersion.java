@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.model.entity.BusinessIdGeneration;
-import ch.sbb.atlas.user.administration.security.redact.Redacted;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;

@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security.redact;
+package ch.sbb.atlas.redact;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import java.lang.annotation.ElementType;
