@@ -88,7 +88,7 @@ export default class CommonUtils {
   }
 
   static saveLine() {
-    this.saveVersionWithWait('line-directory/v1/lines/versions/*');
+    this.saveVersionWithWait('line-directory/v2/lines/versions/*');
   }
 
   static saveLineConfirmValidity() {

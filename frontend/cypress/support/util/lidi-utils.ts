@@ -184,8 +184,18 @@ export default class LidiUtils {
     CommonUtils.visit(itemToDeleteUrl);
   }
 
-  static fillLineVersionForm(version: any) {
+  static fillLineVersionForm(version: any, skipAddLineTye = false) {
     // force-workaround for disabled input field error (https://github.com/cypress-io/cypress/issues/5830)
+    if (!skipAddLineTye) {
+      CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
+    }
+    CommonUtils.selectItemFromDropDown(DataCy.LINE_CONCESSION_TYPE, version.lineConcessionType);
+    CommonUtils.getClearType(DataCy.DESCRIPTION, version.description);
+    CommonUtils.getClearType(DataCy.NUMBER, version.number);
+
+    CommonUtils.getClearType(DataCy.SHORT_NUMBER, version.shortNumber);
+    CommonUtils.selectItemFromDropDown(DataCy.OFFER_CATEGORY, version.offerCategory);
+    CommonUtils.getClearType(DataCy.LONG_NAME, version.longName);
     CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
     CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
     CommonUtils.getClearType(DataCy.SWISS_LINE_NUMBER, version.swissLineNumber, true);
@@ -195,28 +205,6 @@ export default class LidiUtils {
       version.businessOrganisation,
     );
 
-    CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
-    CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
-
-    cy.get(DataCy.COLOR_FONT_RGB + ' ' + DataCy.RGB_PICKER_INPUT).type(
-      '{selectall}' + version.colorFontRgb,
-    );
-    cy.get(DataCy.COLOR_BACK_RGB + ' ' + DataCy.RGB_PICKER_INPUT).type(
-      '{selectall}' + version.colorBackRgb,
-    );
-    cy.get(DataCy.COLOR_FONT_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT).type(
-      '{selectall}' + version.colorFontCmyk,
-    );
-    cy.get(DataCy.COLOR_BACK_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT).type(
-      '{selectall}' + version.colorBackCmyk,
-    );
-
-    CommonUtils.getClearType(DataCy.DESCRIPTION, version.description);
-    CommonUtils.getClearType(DataCy.NUMBER, version.number);
-    CommonUtils.getClearType(DataCy.ALTERNATIVE_NAME, version.alternativeName);
-    CommonUtils.getClearType(DataCy.COMBINATION_NAME, version.combinationName);
-    CommonUtils.getClearType(DataCy.LONG_NAME, version.longName);
-    CommonUtils.getClearType(DataCy.ICON, version.icon);
     CommonUtils.getClearType(DataCy.COMMENT, version.comment);
 
     cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
@@ -256,40 +244,26 @@ export default class LidiUtils {
   }
 
   static assertContainsLineVersion(version: any) {
-    CommonUtils.assertItemValue(DataCy.VALID_FROM, version.validFrom);
-    CommonUtils.assertItemValue(DataCy.VALID_TO, version.validTo);
-    CommonUtils.assertItemValue(DataCy.SWISS_LINE_NUMBER, version.swissLineNumber);
-    cy.get(DataCy.BUSINESS_ORGANISATION).should('contain.text', version.businessOrganisation);
+    cy.get(DataCy.LINE_TYPE_READ_ONLY).should('contain.text', version.type);
     CommonUtils.assertItemText(
-      DataCy.TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
-      version.type,
-    );
-    CommonUtils.assertItemText(
-      DataCy.PAYMENT_TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
-      version.paymentType,
-    );
-    CommonUtils.assertItemValue(
-      DataCy.COLOR_FONT_RGB + ' ' + DataCy.RGB_PICKER_INPUT,
-      version.colorFontRgb,
-    );
-    CommonUtils.assertItemValue(
-      DataCy.COLOR_BACK_RGB + ' ' + DataCy.RGB_PICKER_INPUT,
-      version.colorBackRgb,
-    );
-    CommonUtils.assertItemValue(
-      DataCy.COLOR_FONT_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT,
-      version.colorFontCmyk,
-    );
-    CommonUtils.assertItemValue(
-      DataCy.COLOR_BACK_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT,
-      version.colorBackCmyk,
+      DataCy.LINE_CONCESSION_TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
+      version.lineConcessionType,
     );
     CommonUtils.assertItemValue(DataCy.DESCRIPTION, version.description);
     CommonUtils.assertItemValue(DataCy.NUMBER, version.number);
-    CommonUtils.assertItemValue(DataCy.ALTERNATIVE_NAME, version.alternativeName);
-    CommonUtils.assertItemValue(DataCy.COMBINATION_NAME, version.combinationName);
+    CommonUtils.assertItemValue(DataCy.SHORT_NUMBER, version.shortNumber);
+    CommonUtils.assertItemText(
+      DataCy.OFFER_CATEGORY + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
+      version.offerCategory,
+    );
+
     CommonUtils.assertItemValue(DataCy.LONG_NAME, version.longName);
-    CommonUtils.assertItemValue(DataCy.ICON, version.icon);
+
+    CommonUtils.assertItemValue(DataCy.VALID_FROM, version.validFrom);
+    CommonUtils.assertItemValue(DataCy.VALID_TO, version.validTo);
+    CommonUtils.assertItemValue(DataCy.SWISS_LINE_NUMBER, version.swissLineNumber);
+
+    cy.get(DataCy.BUSINESS_ORGANISATION).should('contain.text', version.businessOrganisation);
     CommonUtils.assertItemValue(DataCy.COMMENT, version.comment);
 
     cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
@@ -404,7 +378,7 @@ export default class LidiUtils {
     };
   }
 
-  static getFirstLineVersion() {
+  static fillCreateFirstLineVersionV2() {
     return {
       slnid: '',
       validFrom: '01.01.2000',
@@ -412,18 +386,13 @@ export default class LidiUtils {
       swissLineNumber: 'b0.IC2-E2E',
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Betrieblich',
-      paymentType: 'International',
-      colorFontRgb: '#FFFFFF',
-      colorBackRgb: '#FFFFFF',
-      colorFontCmyk: '10,10,0,100',
-      colorBackCmyk: '10,10,0,100',
+      lineConcessionType: 'Sammellinie (SL)',
+      offerCategory: 'IC',
+      shortNumber: 'short',
       description: 'Lorem Ipus Linie',
       number: 'IC2',
-      alternativeName: 'IC2 alt',
-      combinationName: 'IC2 comb',
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
-      icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
       comment: 'Kommentar',
     };
   }
@@ -435,18 +404,13 @@ export default class LidiUtils {
       swissLineNumber: 'b0.IC2-E2E',
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Betrieblich',
-      paymentType: 'International',
-      colorFontRgb: '#FFFFFF',
-      colorBackRgb: '#FFFFFF',
-      colorFontCmyk: '10,10,0,100',
-      colorBackCmyk: '10,10,0,100',
+      lineConcessionType: 'Sammellinie (SL)',
+      offerCategory: 'IC',
+      shortNumber: 'short',
       description: 'Lorem Ipus Linie',
       number: 'IC2',
-      alternativeName: 'IC2 alt',
-      combinationName: 'IC2 comb',
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
-      icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
       comment: 'Kommentar-1',
     };
   }
@@ -458,15 +422,11 @@ export default class LidiUtils {
       swissLineNumber: 'b0.IC2-E2E',
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Betrieblich',
-      paymentType: 'International',
-      colorFontRgb: '#FFFFFF',
-      colorBackRgb: '#FFFFFF',
-      colorFontCmyk: '10,10,0,100',
-      colorBackCmyk: '10,10,0,100',
+      lineConcessionType: 'Sammellinie (SL)',
+      offerCategory: 'IC',
+      shortNumber: 'short',
       description: 'Lorem Ipus Linie',
       number: 'IC2',
-      alternativeName: 'IC2 alt',
-      combinationName: 'IC2 comb',
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
@@ -478,7 +438,7 @@ export default class LidiUtils {
     return {
       validFrom: '01.06.2000',
       validTo: '01.06.2002',
-      alternativeName: 'IC2 alt edit',
+      shortNumber: 'edit',
     };
   }
 
