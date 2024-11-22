@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security.redact;
+package ch.sbb.atlas.redact;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -6,9 +6,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Optional;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,14 +27,14 @@ class RedactDeciderTest {
   private MethodSignature methodSignature;
 
   @Mock
-  private BusinessOrganisationBasedUserAdministrationService businessOrganisationBasedUserAdministrationService;
+  private RedactBySboidDecider redactBySboidDecider;
 
   private RedactDecider redactDecider;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    redactDecider = new RedactDecider(businessOrganisationBasedUserAdministrationService);
+    redactDecider = new RedactDecider(Optional.of(redactBySboidDecider));
 
     when(joinPoint.getSignature()).thenReturn(methodSignature);
   }
@@ -52,8 +52,7 @@ class RedactDeciderTest {
 
     //then
     assertThat(shouldRedact).isTrue();
-    verify(businessOrganisationBasedUserAdministrationService)
-        .hasUserPermissionsForBusinessOrganisation(SBOID, ApplicationType.SEPODI);
+    verify(redactBySboidDecider).hasUserPermissionsForBusinessOrganisation(SBOID, ApplicationType.SEPODI);
   }
 
   @Test
@@ -68,8 +67,7 @@ class RedactDeciderTest {
     boolean shouldRedact = redactDecider.shouldRedact(joinPoint, getExampleWithImplicitSboid(1L));
     //then
     assertThat(shouldRedact).isTrue();
-    verify(businessOrganisationBasedUserAdministrationService)
-        .hasUserPermissionsForBusinessOrganisation(SBOID, ApplicationType.SEPODI);
+    verify(redactBySboidDecider).hasUserPermissionsForBusinessOrganisation(SBOID, ApplicationType.SEPODI);
   }
 
   @Test
@@ -79,7 +77,7 @@ class RedactDeciderTest {
     when(joinPoint.getArgs()).thenReturn(new Object[]{1L});
 
     MockSecurityContext.setSecurityContextToAuthorized();
-    doReturn(true).when(businessOrganisationBasedUserAdministrationService).hasUserPermissionsForBusinessOrganisation(SBOID,
+    doReturn(true).when(redactBySboidDecider).hasUserPermissionsForBusinessOrganisation(SBOID,
         ApplicationType.SEPODI);
 
     //when
@@ -87,8 +85,7 @@ class RedactDeciderTest {
 
     //then
     assertThat(shouldRedact).isFalse();
-    verify(businessOrganisationBasedUserAdministrationService)
-        .hasUserPermissionsForBusinessOrganisation(SBOID, ApplicationType.SEPODI);
+    verify(redactBySboidDecider).hasUserPermissionsForBusinessOrganisation(SBOID, ApplicationType.SEPODI);
   }
 
   @Test
@@ -99,7 +96,7 @@ class RedactDeciderTest {
     when(joinPoint.getArgs()).thenReturn(new Object[]{1L, sboidParameter});
 
     MockSecurityContext.setSecurityContextToAuthorized();
-    doReturn(true).when(businessOrganisationBasedUserAdministrationService).hasUserPermissionsForBusinessOrganisation(sboidParameter,
+    doReturn(true).when(redactBySboidDecider).hasUserPermissionsForBusinessOrganisation(sboidParameter,
         ApplicationType.SEPODI);
 
     //when
@@ -107,8 +104,7 @@ class RedactDeciderTest {
 
     //then
     assertThat(shouldRedact).isFalse();
-    verify(businessOrganisationBasedUserAdministrationService)
-        .hasUserPermissionsForBusinessOrganisation(sboidParameter, ApplicationType.SEPODI);
+    verify(redactBySboidDecider).hasUserPermissionsForBusinessOrganisation(sboidParameter, ApplicationType.SEPODI);
   }
 
   private Method getMethodByName(String methodName) {

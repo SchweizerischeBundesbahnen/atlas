@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security.redact;
+package ch.sbb.atlas.redact;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
