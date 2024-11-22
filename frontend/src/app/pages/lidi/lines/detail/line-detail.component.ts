@@ -1,14 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {
-  ApplicationType,
-  CreateLineVersionV2,
-  LinesService,
-  LineType,
-  LineVersionV2,
-  LineVersionWorkflow,
-  Status,
-  UpdateLineVersionV2,
-} from '../../../../api';
+import {ApplicationType, LinesService, LineType, LineVersionV2, LineVersionWorkflow, Status,} from '../../../../api';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DialogService} from '../../../../core/components/dialog/dialog.service';
@@ -130,28 +121,8 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
   }
 
   updateRecord(): void {
-    const lineForm = this.form.value;//pass to update?
-    const updateLine: UpdateLineVersionV2 = {
-      creationDate: lineForm.creationDate,
-      creator: lineForm.creator,
-      editionDate: lineForm.editionDate,
-      editor: lineForm.editor,
-      swissLineNumber: lineForm.swissLineNumber,
-      number: lineForm.number,
-      longName: lineForm.longName,
-      description: lineForm.description,
-      validFrom: lineForm.validFrom,
-      validTo: lineForm.validTo,
-      businessOrganisation: lineForm.businessOrganisation,
-      comment: lineForm.comment,
-      etagVersion: lineForm.etagVersion,
-      lineVersionWorkflows: lineForm.lineVersionWorkflows,
-      lineConcessionType: lineForm.lineConcessionType,
-      shortNumber: lineForm.shortNumber,
-      offerCategory: lineForm.offerCategory
-    }
     this.linesService
-      .updateLineVersion(this.getId(), updateLine)
+      .updateLineVersion(this.getId(), this.form.value)
       .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
@@ -188,29 +159,9 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
 
   createRecord(): void {
     const lineForm = this.form.value; //pass to create
-    const createLineVersionV2: CreateLineVersionV2 = {
-      lineType: lineForm.lineType,
-      creationDate: lineForm.creationDate,
-      creator: lineForm.creator,
-      editionDate: lineForm.editionDate,
-      editor: lineForm.editor,
-      swissLineNumber: lineForm.swissLineNumber,
-      number: lineForm.number,
-      longName: lineForm.longName,
-      description: lineForm.description,
-      validFrom: lineForm.validFrom,
-      validTo: lineForm.validTo,
-      businessOrganisation: lineForm.businessOrganisation,
-      comment: lineForm.comment,
-      etagVersion: lineForm.etagVersion,
-      lineVersionWorkflows: lineForm.lineVersionWorkflows,
-      lineConcessionType: lineForm.lineConcessionType,
-      shortNumber: lineForm.shortNumber,
-      offerCategory: lineForm.offerCategory
-    }
     this.form.disable();
     this.linesService
-      .createLineVersionV2(createLineVersionV2)
+      .createLineVersionV2(lineForm)
       .pipe(catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
