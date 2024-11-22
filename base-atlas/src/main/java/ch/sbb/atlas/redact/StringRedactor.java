@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security.redact;
+package ch.sbb.atlas.redact;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
