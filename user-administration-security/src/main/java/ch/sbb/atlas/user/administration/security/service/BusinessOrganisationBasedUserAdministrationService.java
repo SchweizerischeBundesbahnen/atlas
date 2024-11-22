@@ -7,7 +7,9 @@ import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
+import ch.sbb.atlas.redact.RedactBySboidDecider;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,9 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class BusinessOrganisationBasedUserAdministrationService extends BaseUserAdministrationService {
+@Primary
+public class BusinessOrganisationBasedUserAdministrationService extends BaseUserAdministrationService implements
+    RedactBySboidDecider {
 
   private static final Predicate<UserAdministrationPermissionRestrictionModel> IS_BUSINESS_ORGANISATION_RESTRICTION =
           i -> i.getRestrictionType() == PermissionRestrictionType.BUSINESS_ORGANISATION;
@@ -30,6 +34,7 @@ public class BusinessOrganisationBasedUserAdministrationService extends BaseUser
     return hasUserPermissionsForBusinessOrganisation(businessObject.getBusinessOrganisation(), applicationType);
   }
 
+  @Override
   public boolean hasUserPermissionsForBusinessOrganisation(String sboid,
       ApplicationType applicationType) {
     log.debug("Checking if user {} has enough rights for an object with sboid {}",

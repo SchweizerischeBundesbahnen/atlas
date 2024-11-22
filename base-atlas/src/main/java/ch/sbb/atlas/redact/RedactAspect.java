@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security.redact;
+package ch.sbb.atlas.redact;
 
 import ch.sbb.atlas.versioning.convert.ReflectionHelper;
 import java.lang.reflect.Field;
@@ -15,17 +15,15 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
 @Aspect
-@Component
 @RequiredArgsConstructor
 public class RedactAspect {
 
   private final RedactDecider redactDecider;
 
-  @Around("@annotation(ch.sbb.atlas.user.administration.security.redact.Redacted)")
+  @Around("@annotation(ch.sbb.atlas.redact.Redacted)")
   public Object redactSensitiveData(ProceedingJoinPoint joinPoint) throws Throwable {
     Object resultObject = joinPoint.proceed();
 

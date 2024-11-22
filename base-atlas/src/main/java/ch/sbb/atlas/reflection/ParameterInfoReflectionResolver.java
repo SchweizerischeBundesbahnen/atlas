@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security.aspect;
+package ch.sbb.atlas.reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

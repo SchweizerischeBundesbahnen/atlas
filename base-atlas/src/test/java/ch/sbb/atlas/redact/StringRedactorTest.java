@@ -1,7 +1,8 @@
-package ch.sbb.atlas.user.administration.security.redact;
+package ch.sbb.atlas.redact;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.redact.StringRedactor;
 import org.junit.jupiter.api.Test;
 
 class StringRedactorTest {
