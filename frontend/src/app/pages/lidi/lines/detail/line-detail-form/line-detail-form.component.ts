@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {LineConcessionType, LineType, MeanOfTransport, OfferCategory} from '../../../../../api';
+import {group} from "@angular/animations";
 
 
 interface Category {
@@ -67,4 +68,5 @@ export class LineDetailFormComponent {
       category: [{value: 'BAT'}, {value: 'FAE'}]
     }
   ];
+  protected readonly group = group;
 }
