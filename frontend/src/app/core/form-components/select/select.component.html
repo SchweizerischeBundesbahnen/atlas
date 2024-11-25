@@ -41,12 +41,13 @@
       </ng-template>
     </mat-option>
 
-    <mat-optgroup *ngFor="let optionGroup of optionsGroup">
+    <mat-optgroup *ngFor="let optionGroup of optionsGroup!.options">
       <ng-template
         *ngTemplateOutlet="matOptionGroupPrefix; context: getAsObject(optionGroup)"
       ></ng-template>
-      <mat-option *ngFor="let list of  optionGroup[groupValueExtractorProperty]" [value]="valueExtractor(list)">
-        {{ valueExtractor(list) }}
+      <mat-option *ngFor="let list of  optionGroup[optionsGroup!.groupValueExtractorProperty]"
+                  [value]="optionsGroup!.valueExtractor(list)">
+        {{ optionsGroup!.valueExtractor(list) }}
       </mat-option>
 
     </mat-optgroup>
