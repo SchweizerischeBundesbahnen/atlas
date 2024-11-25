@@ -13,6 +13,13 @@ import {
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatOption} from '@angular/material/core';
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+export interface SelectOptionGroup {
+  groupValueExtractorProperty: string,
+  options: any[],
+  valueExtractor: (arg0: any) => void
+}
+
 @Component({
   selector: 'atlas-select',
   templateUrl: './select.component.html',
@@ -66,7 +73,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() formGroup!: FormGroup;
 
   @Input() options?: TYPE[] = [];
-  @Input() optionsGroup?: any[] = [];
+  @Input() optionsGroup?: SelectOptionGroup = {options: [], valueExtractor: Function, groupValueExtractorProperty: ''};
   @Input() value: any;
 
   @ContentChild('matOptionPrefix') matOptionPrefix!: TemplateRef<any>;
@@ -84,11 +91,8 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() groupValueExtractorProperty!: string;
 
   ngOnInit(): void {
-    if (this.optionsGroup!.length > 0 && this.options!.length > 0) {
+    if (this.optionsGroup!.options.length > 0 && this.options!.length > 0) {
       throw new Error('You cannot select both options!!!')
-    }
-    if (this.optionsGroup!.length > 0 && !this.groupValueExtractorProperty) {
-      throw new Error('A groupValueExtractorProperty must be defined for optionsGroup!!!')
     }
     if (!this.formGroup) {
       this.initDummyForm();
