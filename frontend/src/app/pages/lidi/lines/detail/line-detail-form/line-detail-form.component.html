@@ -85,11 +85,9 @@
         controlName="offerCategory"
         dataCy="offerCategory"
         label="LIDI.OFFER_CATEGORY.TYPE"
-        [optionsGroup]="OFFER_CATEGORY_GROUP"
+        [optionsGroup]="offerCategoryOptionGroup"
         [required]="true"
         [additionalLabelspace]="22"
-        [valueExtractor]="extractOfferCategory"
-        groupValueExtractorProperty="category"
       >
         <ng-template #matOptionGroupPrefix let-group="option">
           <img
