@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {LineConcessionType, LineType, MeanOfTransport, OfferCategory} from '../../../../../api';
+import {SelectOptionGroup} from "../../../../../core/form-components/select/select.component";
 
 
 interface Category {
@@ -22,8 +23,6 @@ export class LineDetailFormComponent {
   @Input() newRecord = false;
   @Input() boSboidRestriction: string[] = [];
   @Input() isLineConcessionTypeRequired = true;
-
-  readonly extractOfferCategory = (category: Category) => category.value;
 
   TYPE_OPTIONS = Object.values(LineType);
   LINE_CONCESSION_TYPE_OPTIONS = Object.values(LineConcessionType);
@@ -67,4 +66,10 @@ export class LineDetailFormComponent {
       category: [{value: 'BAT'}, {value: 'FAE'}]
     }
   ];
+
+  offerCategoryOptionGroup: SelectOptionGroup = {
+    options: this.OFFER_CATEGORY_GROUP,
+    groupValueExtractorProperty: 'category',
+    valueExtractor: (category: Category) => category.value,
+  }
 }
