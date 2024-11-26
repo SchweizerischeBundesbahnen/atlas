@@ -1,18 +1,18 @@
-import {Directive, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {Record} from './record';
-import {DialogService} from '../dialog/dialog.service';
-import {EMPTY, Observable, of, Subject} from 'rxjs';
-import {Page} from '../../model/page';
-import {NotificationService} from '../../notification/notification.service';
-import {ApplicationRole, ApplicationType, Status} from '../../../api';
-import {ValidationService} from '../../validation/validation.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {DetailFormComponent} from '../../leave-guard/leave-dirty-form-guard.service';
-import {VersionsHandlingService} from '../../versioning/versions-handling.service';
-import {DateRange} from '../../versioning/date-range';
-import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
-import {PermissionService} from "../../auth/permission/permission.service";
+import { Directive, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Record } from './record';
+import { DialogService } from '../dialog/dialog.service';
+import { EMPTY, Observable, of, Subject } from 'rxjs';
+import { Page } from '../../model/page';
+import { NotificationService } from '../../notification/notification.service';
+import { ApplicationRole, ApplicationType, Status } from '../../../api';
+import { ValidationService } from '../../validation/validation.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DetailFormComponent } from '../../leave-guard/leave-dirty-form-guard.service';
+import { VersionsHandlingService } from '../../versioning/versions-handling.service';
+import { DateRange } from '../../versioning/date-range';
+import { ValidityService } from '../../../pages/sepodi/validity/validity.service';
+import { PermissionService } from '../../auth/permission/permission.service';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record>
@@ -26,14 +26,13 @@ export abstract class BaseDetailController<TYPE extends Record>
   switchVersionEvent = new Subject<Record>();
   maxValidity!: DateRange;
 
-
   protected constructor(
     protected router: Router,
     protected dialogService: DialogService,
     protected notificationService: NotificationService,
     protected permissionService: PermissionService,
     protected activatedRoute: ActivatedRoute,
-    protected validityService: ValidityService
+    protected validityService: ValidityService,
   ) {
   }
 
@@ -120,8 +119,11 @@ export abstract class BaseDetailController<TYPE extends Record>
       if (this.getId()) {
         this.confirmBoTransfer().subscribe((confirmed) => {
           if (confirmed) {
-            this.validityService.updateValidity(this.form)
-            this.validityService.validateAndDisableForm(() => this.updateRecord(), this.form)
+            this.validityService.updateValidity(this.form);
+            this.validityService.validateAndDisableCustom(
+              () => this.updateRecord(),
+              () => this.form.disable(),
+            );
           } else {
             this.form.enable();
           }
@@ -215,7 +217,9 @@ export abstract class BaseDetailController<TYPE extends Record>
     if (this.isExistingRecord() || this.permissionService.isAdmin) {
       return [];
     }
-    const permission = this.permissionService.getApplicationUserPermission(this.getApplicationType());
+    const permission = this.permissionService.getApplicationUserPermission(
+      this.getApplicationType(),
+    );
     if (permission.role === ApplicationRole.Writer) {
       return PermissionService.getSboidRestrictions(permission);
     }
@@ -299,7 +303,9 @@ export abstract class BaseDetailController<TYPE extends Record>
 
   confirmBoTransfer(): Observable<boolean> {
     const currentlySelectedBo = this.form.value.businessOrganisation;
-    const permission = this.permissionService.getApplicationUserPermission(this.getApplicationType());
+    const permission = this.permissionService.getApplicationUserPermission(
+      this.getApplicationType(),
+    );
     if (
       !this.permissionService.isAdmin &&
       permission.role == ApplicationRole.Writer &&

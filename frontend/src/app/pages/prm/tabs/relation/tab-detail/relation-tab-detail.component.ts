@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   PersonWithReducedMobilityService,
   ReadReferencePointVersion,
@@ -10,18 +10,18 @@ import {
   StepFreeAccessAttributeType,
   TactileVisualAttributeType,
 } from '../../../../../api';
-import {PrmMeanOfTransportHelper} from '../../../util/prm-mean-of-transport-helper';
-import {Pages} from '../../../../pages';
-import {catchError, EMPTY, Observable, of, take} from 'rxjs';
-import {FormGroup} from '@angular/forms';
-import {DialogService} from '../../../../../core/components/dialog/dialog.service';
-import {NotificationService} from '../../../../../core/notification/notification.service';
-import {map} from 'rxjs/operators';
-import {VersionsHandlingService} from '../../../../../core/versioning/versions-handling.service';
-import {DetailFormComponent} from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {RelationFormGroup, RelationFormGroupBuilder} from './relation-form-group';
-import {MatSelectChange} from '@angular/material/select';
-import {ValidityService} from "../../../../sepodi/validity/validity.service";
+import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
+import { Pages } from '../../../../pages';
+import { catchError, EMPTY, finalize, Observable, of, switchMap, take } from 'rxjs';
+import { FormGroup } from '@angular/forms';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { NotificationService } from '../../../../../core/notification/notification.service';
+import { map, tap } from 'rxjs/operators';
+import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
+import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { RelationFormGroup, RelationFormGroupBuilder } from './relation-form-group';
+import { MatSelectChange } from '@angular/material/select';
+import { ValidityService } from '../../../../sepodi/validity/validity.service';
 
 @Component({
   selector: 'app-relation-tab-detail',
@@ -48,6 +48,8 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   businessOrganisations: string[] = [];
   editing = false;
 
+  saving = false;
+
   readonly extractSloid = (option: ReadReferencePointVersion) => option.sloid;
   readonly displayExtractor = (option: ReadReferencePointVersion) =>
     `${option.designation} - ${option.sloid}`;
@@ -58,8 +60,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
     private readonly dialogService: DialogService,
     private readonly notificationService: NotificationService,
-    private validityService: ValidityService
-
+    private readonly validityService: ValidityService,
   ) {}
 
   ngOnInit(): void {
@@ -97,22 +98,58 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   }
 
   back() {
-    this.router.navigate(['../..'], { relativeTo: this.route });
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
-  save() {
+  save(): void {
+    this.saving = true;
+    this.saveProcess()
+      .pipe(
+        take(1),
+        tap(() => {
+          this.notificationService.success('PRM.RELATIONS.NOTIFICATION.EDIT_SUCCESS');
+          this.loadRelations(this.selectedReferencePointSloid!);
+        }),
+        catchError(() => {
+          this.loadRelations(this.selectedReferencePointSloid!);
+          return EMPTY;
+        }),
+        finalize(() => (this.saving = false)),
+      )
+      .subscribe();
+  }
+
+  private saveProcess(): Observable<ReadRelationVersion[]> {
     this.form?.markAllAsTouched();
     if (this.form?.valid) {
-      this.editing = false;
       let relationVersion = RelationFormGroupBuilder.getWritableForm(this.form);
       relationVersion = {
         ...relationVersion,
         parentServicePointSloid: this.parentServicePointSloid,
         referencePointSloid: this.selectedReferencePointSloid,
       };
-      this.validityService.updateValidity(this.form!);
-      this.validityService.validateAndDisableForm(() => this.update(relationVersion), this.form);
+      this.validityService.updateValidity(this.form);
+      return this.validityService.validate().pipe(
+        switchMap((dialogRes) => {
+          if (dialogRes) {
+            this.editing = false;
+            this.form?.disable();
+            return this.update(relationVersion);
+          } else {
+            return EMPTY;
+          }
+        }),
+      );
+    } else {
+      return EMPTY;
     }
+  }
+
+  private update(relationVersion: RelationVersion) {
+    return this.personWithReducedMobilityService.updateRelation(
+      this.currentRelationId,
+      relationVersion,
+    );
   }
 
   toggleEdit() {
@@ -120,33 +157,10 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
       this.showCancelEditDialog();
     } else {
       this.form?.enable();
-      this.validityService.initValidity(this.form!)
+      this.validityService.initValidity(this.form!);
       this.editing = true;
     }
   }
-
-  private checkIfRelationsAvailable() {
-    const stopPoint = this.route.parent!.snapshot.data.stopPoint;
-    const reduced = PrmMeanOfTransportHelper.isReduced(stopPoint[0].meansOfTransport);
-    if (reduced) {
-      this.router.navigate([Pages.PRM.path, Pages.STOP_POINTS.path, stopPoint[0].sloid]).then();
-    }
-  }
-
-  update(relationVersion: RelationVersion) {
-    this.personWithReducedMobilityService
-      .updateRelation(this.currentRelationId, relationVersion)
-      .pipe(catchError(this.handleError))
-      .subscribe(() => {
-        this.notificationService.success('PRM.RELATIONS.NOTIFICATION.EDIT_SUCCESS');
-        this.loadRelations(this.selectedReferencePointSloid!);
-      });
-  }
-
-  private handleError = () => {
-    this.loadRelations(this.selectedReferencePointSloid!);
-    return EMPTY;
-  };
 
   private loadRelations(referencePointSloid: string) {
     this.relations$ = this.personWithReducedMobilityService
@@ -165,6 +179,14 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
           return relationsOfSelectedRP;
         }),
       );
+  }
+
+  private checkIfRelationsAvailable() {
+    const stopPoint = this.route.parent!.snapshot.data.stopPoint;
+    const reduced = PrmMeanOfTransportHelper.isReduced(stopPoint[0].meansOfTransport);
+    if (reduced) {
+      this.router.navigate([Pages.PRM.path, Pages.STOP_POINTS.path, stopPoint[0].sloid]).then();
+    }
   }
 
   private showCancelEditDialog() {

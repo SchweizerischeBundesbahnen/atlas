@@ -1,7 +1,7 @@
-import {Component, ViewChild} from '@angular/core';
-import {LoadingSpinnerService} from './core/components/loading-spinner/loading-spinner.service';
-import {ServiceWorkerService} from './service-worker.service';
-import {MatSidenav} from '@angular/material/sidenav';
+import { Component, ViewChild } from '@angular/core';
+import { LoadingSpinnerService } from './core/components/loading-spinner/loading-spinner.service';
+import { ServiceWorkerService } from './service-worker.service';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +14,9 @@ export class AppComponent {
   sideNavOpened = true;
 
   constructor(
-    public loadingSpinnerService: LoadingSpinnerService,
+    public readonly loadingSpinnerService: LoadingSpinnerService,
     private readonly _swService: ServiceWorkerService,
-  ) {
-    loadingSpinnerService.initLoadingSpinner();
-  }
+  ) {}
 }
 
 Date.prototype.toISOString = function () {

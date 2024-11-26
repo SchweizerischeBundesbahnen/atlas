@@ -251,7 +251,7 @@
               [maxFileCount]="3 - (form.value.documents?.length ?? 0)"
               [maxFileSize]="20 * 1024 * 1024"
               acceptedFileExtension=".pdf"
-              [acceptedFileType]='["application/pdf"]'
+              [acceptedFileType]="['application/pdf']"
             ></atlas-file-upload>
           </ng-container>
 
@@ -366,7 +366,7 @@
       </atlas-button>
       <atlas-button
         (click)="save()"
-        [disabled]="saveButtonDisabled()"
+        [disabled]="!(this.form.dirty || this.uploadedFiles.length > 0)"
         [footerEdit]="form.enabled"
         [submitButton]="true"
         buttonDataCy="save-item"

@@ -124,7 +124,7 @@
   <atlas-button
     (buttonClicked)="save()"
     [footerEdit]="editing"
-    [disabled]="!form?.dirty"
+    [disabled]="!form?.dirty || saving"
     buttonDataCy="save-item"
     buttonText="COMMON.SAVE"
     buttonType="whiteFooterEdit"

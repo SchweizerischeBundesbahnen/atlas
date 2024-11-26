@@ -1,10 +1,10 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {AtlasButtonComponent} from './atlas-button.component';
-import {AppTestingModule} from '../../../app.testing.module';
-import {ApplicationRole, ApplicationType, Permission} from '../../../api';
-import {AtlasButtonType} from './atlas-button.type';
-import {By} from '@angular/platform-browser';
-import {PermissionService} from "../../auth/permission/permission.service";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AtlasButtonComponent } from './atlas-button.component';
+import { AppTestingModule } from '../../../app.testing.module';
+import { ApplicationRole, ApplicationType, Permission } from '../../../api';
+import { AtlasButtonType } from './atlas-button.type';
+import { By } from '@angular/platform-browser';
+import { PermissionService } from '../../auth/permission/permission.service';
 
 let component: AtlasButtonComponent;
 let fixture: ComponentFixture<AtlasButtonComponent>;
