@@ -10,8 +10,15 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatOption } from '@angular/material/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatOption} from '@angular/material/core';
+
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+export interface SelectOptionGroup {
+  groupValueExtractorProperty: string,
+  options: any[],
+  valueExtractor: (arg0: any) => void
+}
 
 @Component({
   selector: 'atlas-select',
@@ -65,10 +72,12 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() controlName: string | null = null;
   @Input() formGroup!: FormGroup;
 
-  @Input() options: TYPE[] = [];
+  @Input() options?: TYPE[] = [];
+  @Input() optionsGroup?: SelectOptionGroup = {options: [], valueExtractor: Function, groupValueExtractorProperty: ''};
   @Input() value: any;
 
   @ContentChild('matOptionPrefix') matOptionPrefix!: TemplateRef<any>;
+  @ContentChild('matOptionGroupPrefix') matOptionGroupPrefix!: TemplateRef<any>;
 
   @Output() selectChanged = new EventEmitter();
 
@@ -77,8 +86,14 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   private _isDummyForm = false;
 
   private _isAllSelected = false;
+  @Input() isOptional = false;
+
+  @Input() groupValueExtractorProperty!: string;
 
   ngOnInit(): void {
+    if (this.optionsGroup!.options.length > 0 && this.options!.length > 0) {
+      throw new Error('You cannot select both options!!!')
+    }
     if (!this.formGroup) {
       this.initDummyForm();
     }
@@ -120,7 +135,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
       if (this.allSelected.selected) {
         this.allSelected.deselect();
       }
-      if (this.getFormControlName()?.value.length == this.options.length) {
+      if (this.getFormControlName()?.value.length == this.options?.length) {
         this.allSelected.select();
       }
     }

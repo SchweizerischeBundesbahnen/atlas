@@ -45,8 +45,9 @@
           <div>
             <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
             <span class="color-gray-900">{{
-                'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate
+              'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate
               }}</span>
+            <ng-container #additionalInfo *ngTemplateOutlet="additionalInfo"></ng-container>
           </div>
           <div *ngIf="controller.form.disabled">
             <app-workflow
