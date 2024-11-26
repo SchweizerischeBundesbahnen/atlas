@@ -9,7 +9,7 @@ import {
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import {catchError, EMPTY, Observable, of} from 'rxjs';
+import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
@@ -22,14 +22,14 @@ import { NotificationService } from '../../../core/notification/notification.ser
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {Validity} from "../../model/validity";
-import {ValidityService} from "../validity/validity.service";
+import { Validity } from '../../model/validity';
+import { ValidityService } from '../validity/validity.service';
 
 @Component({
   selector: 'app-loading-points',
   templateUrl: './loading-points-detail.component.html',
   styleUrls: ['./loading-points-detail.component.scss'],
-  providers: [ValidityService]
+  providers: [ValidityService],
 })
 export class LoadingPointsDetailComponent implements DetailFormComponent {
   loadingPointVersions!: ReadLoadingPointVersion[];
@@ -47,7 +47,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
   validity!: Validity;
-  loadingPointVersion!: CreateLoadingPointVersion
+  loadingPointVersion!: CreateLoadingPointVersion;
 
   constructor(
     private route: ActivatedRoute,
@@ -178,9 +178,11 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
               this.create(this.loadingPointVersion);
               this.form.disable();
             } else {
-
               this.validityService.updateValidity(this.form);
-              this.validityService.validateAndDisableForm(() => this.update(this.selectedVersion.id!, this.loadingPointVersion), this.form);
+              this.validityService.validateAndDisableCustom(
+                () => this.update(this.selectedVersion.id!, this.loadingPointVersion),
+                () => this.form.disable(),
+              );
             }
           }
         });

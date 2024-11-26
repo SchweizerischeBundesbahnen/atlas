@@ -1,13 +1,13 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {SideNavComponent} from './side-nav.component';
-import {By} from '@angular/platform-browser';
-import {Router, RouterModule} from '@angular/router';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {Pages} from '../../../pages/pages';
-import {LidiOverviewComponent} from '../../../pages/lidi/overview/lidi-overview.component';
-import {TimetableFieldNumberOverviewComponent} from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
-import {pageServiceMock} from "../../../app.testing.mocks";
-import {PageService} from "../../pages/page.service";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SideNavComponent } from './side-nav.component';
+import { By } from '@angular/platform-browser';
+import { Router, RouterModule } from '@angular/router';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Pages } from '../../../pages/pages';
+import { LidiOverviewComponent } from '../../../pages/lidi/overview/lidi-overview.component';
+import { TimetableFieldNumberOverviewComponent } from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
+import { pageServiceMock } from '../../../app.testing.mocks';
+import { PageService } from '../../pages/page.service';
 
 describe('SideNavComponent', () => {
   let component: SideNavComponent;
@@ -55,8 +55,8 @@ describe('SideNavComponent', () => {
   it('should show side-nav', () => {
     const result = fixture.debugElement.queryAll(By.css('a'));
     expect(result).toBeDefined();
-    expect(result[0].nativeElement.textContent.trim()).toBe(component.enabledPages[0].titleMenu);
-    expect(result[1].nativeElement.textContent.trim()).toBe(component.enabledPages[1].titleMenu);
+    expect(result[0].nativeElement.textContent.trim()).toBe(Pages.pages[0].titleMenu);
+    expect(result[1].nativeElement.textContent.trim()).toBe(Pages.pages[1].titleMenu);
   });
 
   it('home route should be active', () => {
@@ -82,19 +82,19 @@ describe('SideNavComponent', () => {
 
   it('should set activePageIndex correct', () => {
     const currentUrl = '/service-point-directory';
-    component.getActivePageIndex(currentUrl);
+    component['setActivePage'](currentUrl, Pages.pages);
     expect(component.activePageIndex).toBe(3);
   });
 
   it('should set activeSubPageIndex correct', () => {
     const currentUrl = '/service-point-directory/workflows';
-    component.getActivePageIndex(currentUrl);
+    component['setActivePage'](currentUrl, Pages.pages);
     expect(component.activeSubPageIndex).toBe(0);
     expect(component.activePageIndex).toBeNull();
   });
 
   it('should set index for unknown page to 0', () => {
-    component.getActivePageIndex('/unknown');
+    component['setActivePage']('/unknown', Pages.pages);
     expect(component.activePageIndex).toBe(0);
     expect(component.activeSubPageIndex).toBe(0);
   });
