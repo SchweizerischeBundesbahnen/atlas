@@ -1,4 +1,4 @@
-package ch.sbb.atlas.auto.rest.doc.test.dummy.model;
+package ch.sbb.atlas.auto.rest.doc.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

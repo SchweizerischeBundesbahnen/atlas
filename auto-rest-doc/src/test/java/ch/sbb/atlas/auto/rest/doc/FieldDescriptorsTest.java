@@ -1,10 +1,10 @@
-package ch.sbb.atlas.auto.rest.doc.test;
+package ch.sbb.atlas.auto.rest.doc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.auto.rest.doc.descriptor.FieldDescriptor;
 import ch.sbb.atlas.auto.rest.doc.descriptor.FieldDescriptors;
-import ch.sbb.atlas.auto.rest.doc.test.dummy.model.DummyCreateServicePointVersionModel;
+import ch.sbb.atlas.auto.rest.doc.model.DummyCreateServicePointVersionModel;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
