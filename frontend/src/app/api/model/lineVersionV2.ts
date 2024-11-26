@@ -42,7 +42,6 @@ export interface LineVersionV2 {
      * SwissLineNumber
      */
     swissLineNumber: string;
-    lineType: LineType;
     /**
      * SLNID
      */
@@ -55,26 +54,6 @@ export interface LineVersionV2 {
      * LongName
      */
     longName?: string;
-    /**
-     * Color of the font in RGB
-     */
-    colorFontRgb: string;
-    /**
-     * Color of the background in RGB
-     */
-    colorBackRgb: string;
-    /**
-     * Color of the font in CMYK
-     */
-    colorFontCmyk: string;
-    /**
-     * Color of the background in CMYK
-     */
-    colorBackCmyk: string;
-    /**
-     * Icon
-     */
-    icon?: string;
     /**
      * Description
      */
@@ -103,7 +82,8 @@ export interface LineVersionV2 {
      * Workflows related to the line version
      */
     readonly lineVersionWorkflows?: Set<LineVersionWorkflow>;
-    lineConcessionType: LineConcessionType;
+    lineType: LineType;
+    lineConcessionType?: LineConcessionType;
     /**
      * ShortNumber
      */

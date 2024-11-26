@@ -1,9 +1,0 @@
-@use 'src/styles/variables' as variables;
-
-svg path {
-  fill: variables.$primary-400;
-}
-
-a {
-  padding-left: 0.3rem;
-}

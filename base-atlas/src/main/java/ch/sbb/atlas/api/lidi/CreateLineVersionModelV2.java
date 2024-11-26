@@ -5,7 +5,9 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -22,8 +24,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "LineVersionV2")
-public class LineVersionModelV2 extends BaseLineVersionModel {
+@Schema(name = "CreateLineVersionV2")
+public class CreateLineVersionModelV2 extends BaseLineVersionModel  {
 
   @Schema(description = "LineType")
   @NotNull
@@ -40,4 +42,15 @@ public class LineVersionModelV2 extends BaseLineVersionModel {
   @Schema(description = "offerCategory")
   @NotNull
   private OfferCategory offerCategory;
+
+  @Schema(hidden = true)
+  @JsonIgnore
+  @AssertTrue(message = "When LineType is Orderly LineConcessionType must not be null")
+  boolean isLineConcessionTypeMandatory() {
+    if (lineType != LineType.ORDERLY) {
+      return true;
+    }
+    return lineConcessionType != null;
+  }
+
 }

@@ -84,6 +84,7 @@ describe('BaseDetailController', () => {
     }
 
     updateRecord(): void {
+      this.form.disable();
       dummyController.updateRecord();
     }
 
