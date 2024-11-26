@@ -1,21 +1,24 @@
 import {Component, OnInit} from '@angular/core';
-import {ApplicationType, Line, LinesService, PaymentType, SublinesService, SublineType, SublineVersion,} from '../../../../api';
+import {
+  ApplicationType,
+  Line,
+  LinesService,
+  SublineConcessionType,
+  SublinesService,
+  SublineType,
+  SublineVersion, SublineVersionV2,
+} from '../../../../api';
 import {BaseDetailController} from '../../../../core/components/base-detail/base-detail-controller';
 import {catchError, Observable, of} from 'rxjs';
 import {DialogService} from '../../../../core/components/dialog/dialog.service';
 import {NotificationService} from '../../../../core/notification/notification.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Page} from '../../../../core/model/page';
 import {Pages} from '../../../pages';
-import moment from 'moment';
-import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
 import {map} from 'rxjs/operators';
-import {AtlasCharsetsValidator} from '../../../../core/validation/charsets/atlas-charsets-validator';
 import {ValidationService} from '../../../../core/validation/validation.service';
-import {WhitespaceValidator} from '../../../../core/validation/whitespace/whitespace-validator';
-import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import {SublineDetailFormGroup} from './subline-detail-form-group';
+import {SublineFormGroupBuilder} from './subline-detail-form-group';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
@@ -26,7 +29,13 @@ import {PermissionService} from "../../../../core/auth/permission/permission.ser
 })
 export class SublineDetailComponent extends BaseDetailController<SublineVersion> implements OnInit {
   TYPE_OPTIONS = Object.values(SublineType);
-  PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
+  // CONCESSION_TYPE_OPTIONS = [LineConcessionType.FederallyLicensedOrApprovedLine,
+  //   LineConcessionType.VariantOfAFranchisedLine,
+  //   LineConcessionType.CantonallyApprovedLine,
+  //   LineConcessionType.RackFreeTrips,
+  //   LineConcessionType.RackFreeUnpublishedLine,
+  //   LineConcessionType.LineAbroad];
+  CONCESSION_TYPE_OPTIONS= Object.values(SublineConcessionType);
 
   mainlines$: Observable<Line[]> = of([]);
 
@@ -123,56 +132,7 @@ export class SublineDetailComponent extends BaseDetailController<SublineVersion>
   }
 
   getFormGroup(version: SublineVersion): FormGroup {
-    return new FormGroup<SublineDetailFormGroup>(
-      {
-        swissSublineNumber: new FormControl(version.swissSublineNumber, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_50,
-          AtlasCharsetsValidator.sid4pt,
-        ]),
-        [this.mainlineSlnidFormControlName]: new FormControl(version.mainlineSlnid, [
-          Validators.required,
-        ]),
-        slnid: new FormControl(version.slnid),
-        status: new FormControl(version.status),
-        sublineType: new FormControl(version.sublineType, [Validators.required]),
-        paymentType: new FormControl(version.paymentType),
-        businessOrganisation: new FormControl(version.businessOrganisation, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_50,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        number: new FormControl(version.number, [
-          AtlasFieldLengthValidator.length_50,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        longName: new FormControl(version.longName, [
-          AtlasFieldLengthValidator.length_255,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        description: new FormControl(version.description, [
-          AtlasFieldLengthValidator.length_255,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        validFrom: new FormControl(
-          version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
-        ),
-        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
-          Validators.required,
-        ]),
-        etagVersion: new FormControl(version.etagVersion),
-        creationDate: new FormControl(version.creationDate),
-        editionDate: new FormControl(version.editionDate),
-        editor: new FormControl(version.editor),
-        creator: new FormControl(version.creator),
-      },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
-    );
+    return SublineFormGroupBuilder.buildFormGroup(version as SublineVersionV2);
   }
 
   getValidation(inputForm: string) {
@@ -185,9 +145,8 @@ export class SublineDetailComponent extends BaseDetailController<SublineVersion>
 
   searchMainlines(searchString: string) {
     this.mainlines$ = this.linesService
-      .getLines(searchString, [], [], [], undefined, undefined, undefined, undefined, [
-        'swissLineNumber,ASC',
-      ])
+      .getLines(undefined, [searchString], undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+        undefined, undefined, undefined, ['swissLineNumber,ASC'])
       .pipe(map((value) => value.objects ?? []));
   }
 
