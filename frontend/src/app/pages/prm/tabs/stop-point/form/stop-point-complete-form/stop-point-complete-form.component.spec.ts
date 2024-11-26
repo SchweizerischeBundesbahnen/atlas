@@ -1,31 +1,33 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {StopPointCompleteFormComponent} from './stop-point-complete-form.component';
-import {AppTestingModule} from '../../../../../../app.testing.module';
-import {TranslatePipe} from '@ngx-translate/core';
-import {StopPointFormGroupBuilder} from '../stop-point-detail-form-group';
-import {MockAtlasFieldErrorComponent, MockSelectComponent,} from '../../../../../../app.testing.mocks';
-import {TextFieldComponent} from '../../../../../../core/form-components/text-field/text-field.component';
-import {AtlasLabelFieldComponent} from '../../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { StopPointCompleteFormComponent } from './stop-point-complete-form.component';
+import { AppTestingModule } from '../../../../../../app.testing.module';
+import { TranslatePipe } from '@ngx-translate/core';
+import { StopPointFormGroupBuilder } from '../stop-point-detail-form-group';
 import {
-  MeansOfTransportPickerComponent
-} from '../../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
-import {AtlasSpacerComponent} from '../../../../../../core/components/spacer/atlas-spacer.component';
-import {By} from '@angular/platform-browser';
-import {InfoIconComponent} from '../../../../../../core/form-components/info-icon/info-icon.component';
-import {PrmVariantInfoServiceService} from "../../prm-variant-info-service.service";
-import {MeanOfTransport} from "../../../../../../api";
+  MockAtlasFieldErrorComponent,
+  MockSelectComponent,
+} from '../../../../../../app.testing.mocks';
+import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
+import { AtlasLabelFieldComponent } from '../../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { MeansOfTransportPickerComponent } from '../../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
+import { AtlasSpacerComponent } from '../../../../../../core/components/spacer/atlas-spacer.component';
+import { By } from '@angular/platform-browser';
+import { InfoIconComponent } from '../../../../../../core/form-components/info-icon/info-icon.component';
+import { PrmVariantInfoService } from '../../prm-variant-info.service';
+import { MeanOfTransport } from '../../../../../../api';
 import arrayContaining = jasmine.arrayContaining;
 
 describe('StopPointCompleteFormComponent', () => {
   let component: StopPointCompleteFormComponent;
   let fixture: ComponentFixture<StopPointCompleteFormComponent>;
 
-  const prmVariantInfoServiceService = jasmine.createSpyObj(
-    'prmVariantInfoServiceService',
-    ['getPrmMeansOfTransportToShow'],
+  const prmVariantInfoService = jasmine.createSpyObj('prmVariantInfoService', [
+    'getPrmMeansOfTransportToShow',
+  ]);
+  prmVariantInfoService.getPrmMeansOfTransportToShow.and.returnValue(
+    Object.values(MeanOfTransport),
   );
-  prmVariantInfoServiceService.getPrmMeansOfTransportToShow.and.returnValue(Object.values(MeanOfTransport));
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,7 +44,7 @@ describe('StopPointCompleteFormComponent', () => {
       imports: [AppTestingModule],
       providers: [
         { provide: TranslatePipe },
-        { provide: PrmVariantInfoServiceService, useValue: prmVariantInfoServiceService },
+        { provide: PrmVariantInfoService, useValue: prmVariantInfoService },
       ],
     });
     fixture = TestBed.createComponent(StopPointCompleteFormComponent);

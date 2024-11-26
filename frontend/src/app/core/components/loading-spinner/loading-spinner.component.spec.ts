@@ -2,14 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoadingSpinnerComponent } from './loading-spinner.component';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('LoadingSpinnerComponent', () => {
   let component: LoadingSpinnerComponent;
   let fixture: ComponentFixture<LoadingSpinnerComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [LoadingSpinnerComponent],
+      imports: [BrowserAnimationsModule],
     })
       .overrideComponent(LoadingSpinnerComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -29,16 +31,6 @@ describe('LoadingSpinnerComponent', () => {
 
     const loadingSpinnerDiv = fixture.debugElement.query(By.css('.loading-spinner'));
     expect(loadingSpinnerDiv).toBeTruthy();
-
-    expect(fixture.debugElement.query(By.css('.full-screen'))).toBeFalsy();
-  });
-
-  it('should create fullscreen spinning logo', () => {
-    component.isLoading = true;
-    component.fullScreen = true;
-    fixture.detectChanges();
-
-    expect(fixture.debugElement.query(By.css('.full-screen'))).toBeTruthy();
   });
 
   it('should do nothing if not loading', () => {

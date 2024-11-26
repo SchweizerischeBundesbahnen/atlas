@@ -1,12 +1,11 @@
 <div class="ps-5 pt-5">
-
   <form [formGroup]="form">
     <h2 class="font-bold-4xl mb-4">
       {{ 'PAGES.BULK_IMPORT.CONFIGURATION' | translate }}
     </h2>
 
     <div class="white-table-container-no-tabs">
-      <div class=" col-12 d-flex justify-content-between">
+      <div class="col-12 d-flex justify-content-between">
         <div class="d-flex flex-column col-3 pe-3">
           <atlas-select
             [formGroup]="form"
@@ -38,19 +37,18 @@
           </atlas-select>
         </div>
       </div>
-      <br>
+      <br />
       <div class="col-12 d-flex justify-content-between">
         <div class="d-flex flex-column col-3 pe-3">
-          <p>
-            {{ 'PAGES.BULK_IMPORT.IMPORT_EXECUTED_BY' | translate }} {{ userName }}
-          </p>
+          <p>{{ 'PAGES.BULK_IMPORT.IMPORT_EXECUTED_BY' | translate }} {{ userName }}</p>
         </div>
         <div class="d-flex flex-column col-3 pe-3">
           <mat-checkbox
             *ngIf="isAtLeastSupervisor"
             (change)="enableUserSelect($event.checked)"
             [checked]="isUserSelectEnabled"
-            data-cy="checkboxBulkImport">
+            data-cy="checkboxBulkImport"
+          >
             {{ 'PAGES.BULK_IMPORT.IMPORT_FOR_SOMEONE_ELSE' | translate }}
           </mat-checkbox>
           <app-user-select
@@ -66,10 +64,10 @@
             fieldLabel="PAGES.BULK_IMPORT.ADDITIONAL_IMPORT_REPORT"
             [required]="false"
             placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
-            controlName="emails">
+            controlName="emails"
+          >
           </atlas-text-list>
         </div>
-
       </div>
       <div class="mt-5">
         <atlas-file-upload
@@ -91,7 +89,7 @@
           buttonText="PAGES.BULK_IMPORT.START_BULK_IMPORT"
           buttonType="whiteFooterEdit"
           wrapperStyleClass="ms-3"
-          [disabled]="!isEnabledToStartImport || !isFileUploaded"
+          [disabled]="!isEnabledToStartImport || !isFileUploaded || saving"
         ></atlas-button>
       </div>
     </div>
