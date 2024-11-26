@@ -94,6 +94,11 @@ export class LinesComponent implements OnInit, OnDestroy {
         this.tableService.filter.multiSelectLineType.getActiveSearch(),
         this.tableService.filter.searchSelect.getActiveSearch()?.sboid,
         this.tableService.filter.dateSelect.getActiveSearch(),
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'slnid,asc')
