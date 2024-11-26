@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { ContainerLine } from '../model/models';
 import { ContainerLineVersionSnapshot } from '../model/models';
 import { Coverage } from '../model/models';
+import { CreateLineVersionV2 } from '../model/models';
 import { ErrorResponse } from '../model/models';
 import { LidiElementType } from '../model/models';
 import { Line } from '../model/models';
@@ -27,6 +28,7 @@ import { LineVersion } from '../model/models';
 import { LineVersionSnapshot } from '../model/models';
 import { LineVersionV2 } from '../model/models';
 import { Status } from '../model/models';
+import { UpdateLineVersionV2 } from '../model/models';
 import { WorkflowStatus } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -138,6 +140,60 @@ export class LinesService {
 
         return this.httpClient.post<LineVersion>(`${this.configuration.basePath}/line-directory/v1/lines/versions`,
             lineVersion,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param createLineVersionV2 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public createLineVersionV2(createLineVersionV2: CreateLineVersionV2, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<LineVersionV2>;
+    public createLineVersionV2(createLineVersionV2: CreateLineVersionV2, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<LineVersionV2>>;
+    public createLineVersionV2(createLineVersionV2: CreateLineVersionV2, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<LineVersionV2>>;
+    public createLineVersionV2(createLineVersionV2: CreateLineVersionV2, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (createLineVersionV2 === null || createLineVersionV2 === undefined) {
+            throw new Error('Required parameter createLineVersionV2 was null or undefined when calling createLineVersionV2.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<LineVersionV2>(`${this.configuration.basePath}/line-directory/v2/lines/versions`,
+            createLineVersionV2,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -890,19 +946,77 @@ export class LinesService {
 
     /**
      * @param id 
+     * @param updateLineVersionV2 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateLineVersion(id: number, updateLineVersionV2: UpdateLineVersionV2, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<LineVersionV2>>;
+    public updateLineVersion(id: number, updateLineVersionV2: UpdateLineVersionV2, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<LineVersionV2>>>;
+    public updateLineVersion(id: number, updateLineVersionV2: UpdateLineVersionV2, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<LineVersionV2>>>;
+    public updateLineVersion(id: number, updateLineVersionV2: UpdateLineVersionV2, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling updateLineVersion.');
+        }
+        if (updateLineVersionV2 === null || updateLineVersionV2 === undefined) {
+            throw new Error('Required parameter updateLineVersionV2 was null or undefined when calling updateLineVersion.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<Array<LineVersionV2>>(`${this.configuration.basePath}/line-directory/v2/lines/versions/${encodeURIComponent(String(id))}`,
+            updateLineVersionV2,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
      * @param lineVersion 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateLineVersion(id: number, lineVersion: LineVersion, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<LineVersion>>;
-    public updateLineVersion(id: number, lineVersion: LineVersion, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<LineVersion>>>;
-    public updateLineVersion(id: number, lineVersion: LineVersion, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<LineVersion>>>;
-    public updateLineVersion(id: number, lineVersion: LineVersion, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public updateLineVersion1(id: number, lineVersion: LineVersion, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<LineVersion>>;
+    public updateLineVersion1(id: number, lineVersion: LineVersion, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<LineVersion>>>;
+    public updateLineVersion1(id: number, lineVersion: LineVersion, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<LineVersion>>>;
+    public updateLineVersion1(id: number, lineVersion: LineVersion, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling updateLineVersion.');
+            throw new Error('Required parameter id was null or undefined when calling updateLineVersion1.');
         }
         if (lineVersion === null || lineVersion === undefined) {
-            throw new Error('Required parameter lineVersion was null or undefined when calling updateLineVersion.');
+            throw new Error('Required parameter lineVersion was null or undefined when calling updateLineVersion1.');
         }
 
         let headers = this.defaultHeaders;

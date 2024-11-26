@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.controller;
 
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
-import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.lineType;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.longName;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.slnid;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.swissLineNumber;
@@ -9,8 +8,6 @@ import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.alternativeName;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.combinationName;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.paymentType;
 import static ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE;
-import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
-import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -23,11 +20,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
+import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
+import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
 import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.api.model.BaseVersionModel;
@@ -191,7 +192,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
         .andExpect(jsonPath("$[0]." + alternativeName, is("alternative")))
         .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
         .andExpect(jsonPath("$[0]." + longName, is("long name")))
-        .andExpect(jsonPath("$[0]." + lineType, is(LineType.TEMPORARY.toString())))
+        .andExpect(jsonPath("$[0]." + Fields.lineType, is(LineType.TEMPORARY.toString())))
         .andExpect(jsonPath("$[0]." + paymentType, is(PaymentType.LOCAL.toString())))
         .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC2")))
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
@@ -339,7 +340,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
         .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
         .andExpect(jsonPath("$[0]." + longName, is("long name")))
         .andExpect(jsonPath("$[0]." + slnid, is(lineVersion.getSlnid())))
-        .andExpect(jsonPath("$[0]." + lineType, is(LineType.TEMPORARY.toString())))
+        .andExpect(jsonPath("$[0]." + LineVersionModelV2.Fields.lineType, is(LineType.TEMPORARY.toString())))
         .andExpect(jsonPath("$[0]." + paymentType, is(PaymentType.LOCAL.toString())))
         .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC5")))
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("sbb")))
@@ -611,16 +612,13 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     LineVersionSnapshot lineVersionSnapshot = LineVersionSnapshot.builder()
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
+        .concessionType(LineConcessionType.COLLECTION_LINE)
+        .offerCategory(OfferCategory.IC)
+        .shortNumber("asd")
         .workflowStatus(WorkflowStatus.STARTED)
         .paymentType(PaymentType.INTERNATIONAL)
         .number("number")
-        .alternativeName("alternativeName")
-        .combinationName("combinationName")
         .longName("longName")
-        .colorFontRgb(fromHex("#FFFFFF"))
-        .colorBackRgb(fromHex("#FFFFFF"))
-        .colorFontCmyk(fromCmykString("0,0,0,0"))
-        .colorBackCmyk(fromCmykString("0,0,0,0"))
         .description("description")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
@@ -648,8 +646,6 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
         ).andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount").value(1))
         .andExpect(jsonPath("$.objects", hasSize(1)))
-        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.alternativeName, is("alternativeName")))
-        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.combinationName, is("combinationName")))
         .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.longName, is("longName")))
         .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.lineType, is(LineType.ORDERLY.toString())))
         .andExpect(

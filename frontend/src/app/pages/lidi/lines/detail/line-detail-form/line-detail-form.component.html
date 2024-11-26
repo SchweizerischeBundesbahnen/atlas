@@ -2,24 +2,24 @@
   <h2 *ngIf="newRecord" class="font-bold-2xl mb-4">
     {{ 'LIDI.NEW_LINE_INFORMATION' | translate }}
   </h2>
-
-  <div class="col-12 d-flex">
-    <div class="d-flex flex-column col-3 pe-3">
-      <atlas-text-field
-        [fieldExamples]="[
-          { label: 'FORM.FOR_EXAMPLE', translate: true },
-          { label: 'IC8', translate: false },
-          { label: ' |', translate: false },
-          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
-        ]"
+  <div class="col-12 d-flex" *ngIf="newRecord">
+    <div class="d-flex flex-column col-3 pe-3 pb-3">
+      <atlas-select
         [formGroup]="form"
-        controlName="number"
-        fieldLabel="LIDI.LINE.NUMBER"
-        infoIconTitle="LIDI.LINE.NUMBER_INFO"
+        controlName="lineType"
+        dataCy="type"
+        label="LIDI.TYPE"
+        optionTranslateLabelPrefix="LIDI.LINE.TYPES."
+        [options]="TYPE_OPTIONS"
+        [required]="true"
+        [disabled]="!newRecord"
+        [additionalLabelspace]="10"
       >
-      </atlas-text-field>
+      </atlas-select>
     </div>
-    <div class="d-flex flex-column col-9">
+  </div>
+  <div class="col-12 d-flex">
+    <div class="d-flex flex-column col-6">
       <atlas-text-field
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
@@ -34,10 +34,7 @@
       >
       </atlas-text-field>
     </div>
-  </div>
-
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column col-12">
+    <div class="d-flex flex-column col-6">
       <atlas-text-field
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
@@ -52,8 +49,74 @@
       </atlas-text-field>
     </div>
   </div>
+  <div class="col-12 d-flex">
+    <div class="d-flex flex-column col-4 pe-2">
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: 'IC8', translate: false },
+          { label: ' |', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+        ]"
+        [formGroup]="form"
+        controlName="number"
+        fieldLabel="LIDI.LINE.NUMBER"
+        infoIconTitle="LIDI.LINE.NUMBER_INFO"
+      >
+      </atlas-text-field>
+    </div>
+    <div class="d-flex flex-column col-4 pe-2">
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: '8', translate: false },
+          { label: ' |', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '10' } }
+        ]"
+        [formGroup]="form"
+        controlName="shortNumber"
+        fieldLabel="LIDI.SHORT_NUMBER"
+      >
+      </atlas-text-field>
+    </div>
+    <div class="d-flex flex-column col-4">
+      <atlas-select
+        [formGroup]="form"
+        controlName="offerCategory"
+        dataCy="offerCategory"
+        label="LIDI.OFFER_CATEGORY.TYPE"
+        [optionsGroup]="offerCategoryOptionGroup"
+        [required]="true"
+        [additionalLabelspace]="22"
+      >
+        <ng-template #matOptionGroupPrefix let-group="option">
+          <img
+            class="pe-2"
+            src="../../../../assets/images/means-of-transport/{{ group.name }}.svg"
+            [attr.data-cy]="group.name"
+            [alt]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + group.name | translate"
+          />
+          {{ 'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + group.name | translate }}
+        </ng-template>
+      </atlas-select>
+    </div>
+  </div>
 
   <div class="col-12 d-flex mt-3">
+    <div class="d-flex flex-column col-4 pe-3">
+      <atlas-select
+        [formGroup]="form"
+        controlName="lineConcessionType"
+        dataCy="lineConcessionType"
+        label="LIDI.LINE_CONCESSION.TYPE"
+        optionTranslateLabelPrefix="LIDI.LINE_CONCESSION."
+        [options]="LINE_CONCESSION_TYPE_OPTIONS"
+        [required]="isLineConcessionTypeRequired"
+        [additionalLabelspace]="24"
+        [isOptional]="true"
+      >
+      </atlas-select>
+    </div>
     <div class="d-flex flex-column col-4 pe-3">
       <atlas-text-field
         [fieldExamples]="[
@@ -67,28 +130,6 @@
         controlName="swissLineNumber"
         fieldLabel="LIDI.SWISS_LINE_NUMBER"
         infoIconLink="LIDI.SWISS_LINE_NUMBER_INFO_LINK"
-      ></atlas-text-field>
-    </div>
-
-    <div class="d-flex flex-column col-4 pe-3">
-      <atlas-text-field
-        [fieldExamples]="[
-          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
-        ]"
-        [formGroup]="form"
-        controlName="alternativeName"
-        fieldLabel="LIDI.ALTERNATIVE_NAME"
-      ></atlas-text-field>
-    </div>
-
-    <div class="d-flex flex-column col-4">
-      <atlas-text-field
-        [fieldExamples]="[
-          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
-        ]"
-        [formGroup]="form"
-        controlName="combinationName"
-        fieldLabel="LIDI.COMBINATION_NAME"
       ></atlas-text-field>
     </div>
   </div>
@@ -107,81 +148,6 @@
         controlName="businessOrganisation"
         data-cy="businessOrganisation"
       ></bo-select>
-    </div>
-
-    <div class="d-flex flex-column col-3 pe-3">
-      <atlas-select
-        [formGroup]="form"
-        controlName="lineType"
-        dataCy="type"
-        label="LIDI.TYPE"
-        optionTranslateLabelPrefix="LIDI.LINE.TYPES."
-        [options]="TYPE_OPTIONS"
-        [required]="true"
-      >
-      </atlas-select>
-    </div>
-
-    <div class="d-flex flex-column col-3">
-      <atlas-select
-        [formGroup]="form"
-        controlName="paymentType"
-        dataCy="paymentType"
-        label="LIDI.PAYMENT.TYPE"
-        optionTranslateLabelPrefix="LIDI.PAYMENT."
-        [options]="PAYMENT_TYPE_OPTIONS"
-        [required]="true"
-      >
-      </atlas-select>
-    </div>
-  </div>
-
-  <span class="font-bold-2xl">{{ 'FORM.DESIGN_INFORMATION' | translate }}</span>
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column col-6 pe-3">
-      <form-url-component [formGroup]="form"></form-url-component>
-    </div>
-    <div class="d-flex flex-column col-3 pe-3">
-      <app-rgb-picker
-        [formGroup]="form"
-        attributeName="colorFontRgb"
-        data-cy="colorFontRgb"
-        defaultColor="#000000"
-        label="LIDI.LINE.FONT_RGB"
-      ></app-rgb-picker>
-    </div>
-    <div class="d-flex flex-column col-3">
-      <app-cmyk-picker
-        [formGroup]="form"
-        attributeName="colorFontCmyk"
-        data-cy="colorFontCmyk"
-        defaultColor="100,100,100,100"
-        exampleLabel="0,0,0,100"
-        label="LIDI.LINE.FONT_CMYK"
-      ></app-cmyk-picker>
-    </div>
-  </div>
-
-  <div class="col-12 d-flex justify-content-end mt-3">
-    <div class="d-flex flex-column col-3 pe-3">
-      <app-rgb-picker
-        [formGroup]="form"
-        attributeName="colorBackRgb"
-        data-cy="colorBackRgb"
-        defaultColor="#FFFFFF"
-        label="LIDI.LINE.BACKGROUND_RGB"
-      ></app-rgb-picker>
-    </div>
-
-    <div class="d-flex flex-column col-3">
-      <app-cmyk-picker
-        [formGroup]="form"
-        attributeName="colorBackCmyk"
-        data-cy="colorBackCmyk"
-        defaultColor="0,0,0,0"
-        exampleLabel="85,10,65,0"
-        label="LIDI.LINE.BACKGROUND_CMYK"
-      ></app-cmyk-picker>
     </div>
   </div>
 
