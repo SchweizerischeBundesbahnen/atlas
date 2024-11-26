@@ -13,11 +13,14 @@
         <app-switch-version
           (switchVersion)="switchVersion($event)"
           [currentRecord]="selectedVersion"
-          [records]="platform"
+          [records]="versions"
           [showStatus]="false"
         ></app-switch-version>
       </div>
-      <app-navigation-sepodi-prm targetPage="traffic-point-detail" [sloid]="selectedVersion.sloid"></app-navigation-sepodi-prm>
+      <app-navigation-sepodi-prm
+        targetPage="traffic-point-detail"
+        [sloid]="selectedVersion.sloid"
+      ></app-navigation-sepodi-prm>
     </div>
 
     <h2 class="font-bold-2xl color-gray-900" *ngIf="!isNew">
@@ -78,7 +81,7 @@
     *ngIf="mayCreate"
     (buttonClicked)="save()"
     [footerEdit]="form.enabled"
-    [disabled]="!form.dirty"
+    [disabled]="!form.dirty || saving"
     buttonDataCy="save-item"
     buttonText="COMMON.SAVE"
     buttonType="whiteFooterEdit"

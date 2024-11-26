@@ -1,12 +1,15 @@
-import {Component, Input, ViewChild} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MatStepper} from '@angular/material/stepper';
-import {PrmMeanOfTransportHelper} from '../../../util/prm-mean-of-transport-helper';
-import {MeanOfTransport} from '../../../../../api';
-import {DialogService} from '../../../../../core/components/dialog/dialog.service';
-import {StopPointDetailFormGroup, StopPointFormGroupBuilder,} from '../form/stop-point-detail-form-group';
-import {prmMeansOfTransport} from "../prm-variant-info-service.service";
-import {DetailFormComponent} from "../../../../../core/leave-guard/leave-dirty-form-guard.service";
+import { Component, Input, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
+import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
+import { MeanOfTransport } from '../../../../../api';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import {
+  StopPointDetailFormGroup,
+  StopPointFormGroupBuilder,
+} from '../form/stop-point-detail-form-group';
+import { prmMeansOfTransport } from '../prm-variant-info.service';
+import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
 
 @Component({
   selector: 'app-create-stop-point',
