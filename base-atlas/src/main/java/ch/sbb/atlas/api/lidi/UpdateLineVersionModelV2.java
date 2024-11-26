@@ -3,7 +3,6 @@ package ch.sbb.atlas.api.lidi;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -22,12 +21,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "LineVersionV2")
-public class LineVersionModelV2 extends BaseLineVersionModel {
-
-  @Schema(description = "LineType")
-  @NotNull
-  private LineType lineType;
+@Schema(name = "UpdateLineVersionV2")
+public class UpdateLineVersionModelV2 extends BaseLineVersionModel  {
 
   @Schema(description = "ConcessionType")
   private LineConcessionType lineConcessionType;

@@ -21,6 +21,7 @@
     [multiple]="multiple"
     [hideSingleSelectionIndicator]="true"
   >
+    <mat-option *ngIf="isOptional">{{ '-' }}</mat-option>
     <mat-option *ngIf="isSelectAllEnabled" #allSelected (click)="toggleAllSelection()">{{
       selectAll | translate
     }}</mat-option>
@@ -39,6 +40,18 @@
         {{ displayExtractor(option) }}
       </ng-template>
     </mat-option>
+
+    <mat-optgroup *ngFor="let optionGroup of optionsGroup!.options">
+      <ng-template
+        *ngTemplateOutlet="matOptionGroupPrefix; context: getAsObject(optionGroup)"
+      ></ng-template>
+      <mat-option *ngFor="let list of  optionGroup[optionsGroup!.groupValueExtractorProperty]"
+                  [value]="optionsGroup!.valueExtractor(list)">
+        {{ optionsGroup!.valueExtractor(list) }}
+      </mat-option>
+
+    </mat-optgroup>
+
   </mat-select>
   <app-atlas-field-error
     *ngIf="formGroup"

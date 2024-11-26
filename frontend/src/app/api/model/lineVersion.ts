@@ -44,7 +44,6 @@ export interface LineVersion {
      * SwissLineNumber
      */
     swissLineNumber: string;
-    lineType: LineType;
     /**
      * SLNID
      */
@@ -57,26 +56,6 @@ export interface LineVersion {
      * LongName
      */
     longName?: string;
-    /**
-     * Color of the font in RGB
-     */
-    colorFontRgb: string;
-    /**
-     * Color of the background in RGB
-     */
-    colorBackRgb: string;
-    /**
-     * Color of the font in CMYK
-     */
-    colorFontCmyk: string;
-    /**
-     * Color of the background in CMYK
-     */
-    colorBackCmyk: string;
-    /**
-     * Icon
-     */
-    icon?: string;
     /**
      * Description
      */
@@ -105,6 +84,7 @@ export interface LineVersion {
      * Workflows related to the line version
      */
     readonly lineVersionWorkflows?: Set<LineVersionWorkflow>;
+    lineType: LineType;
     paymentType?: PaymentType;
     /**
      * AlternativeName
@@ -114,5 +94,25 @@ export interface LineVersion {
      * CombinationName
      */
     combinationName?: string;
+    /**
+     * Icon
+     */
+    icon?: string;
+    /**
+     * Color of the font in RGB
+     */
+    colorFontRgb: string;
+    /**
+     * Color of the background in RGB
+     */
+    colorBackRgb: string;
+    /**
+     * Color of the font in CMYK
+     */
+    colorFontCmyk: string;
+    /**
+     * Color of the background in CMYK
+     */
+    colorBackCmyk: string;
 }
 

@@ -86,6 +86,7 @@ export class BusinessOrganisationDetailComponent
   }
 
   createRecord(): void {
+    this.form.disable();
     this.businessOrganisationsService
       .createBusinessOrganisationVersion(this.form.value)
       .pipe(catchError(this.handleError))

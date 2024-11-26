@@ -10,14 +10,12 @@
  * Do not edit the class manually.
  */
 import { Status } from './status';
-import { PaymentType } from './paymentType';
+import { LineVersionWorkflow } from './lineVersionWorkflow';
 import { LineConcessionType } from './lineConcessionType';
 import { OfferCategory } from './offerCategory';
-import { LineType } from './lineType';
-import { WorkflowStatus } from './workflowStatus';
 
 
-export interface LineVersionSnapshot { 
+export interface UpdateLineVersionV2 { 
     /**
      * Object creation date
      */
@@ -36,61 +34,58 @@ export interface LineVersionSnapshot {
     readonly editor?: string;
     status?: Status;
     /**
-     * This ID helps identify versions of a line point in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a line. To do this, use the slnid or number in combination with the data range (valid from/valid until). 
+     * This ID helps identify versions of a line in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a line. To do this, use the slnid in combination with the data range (valid from/valid until). 
      */
     readonly id?: number;
     /**
-     * Workflow Technical identifier
+     * SwissLineNumber
      */
-    readonly workflowId: number;
-    workflowStatus: WorkflowStatus;
-    /**
-     * Parent Object identifier
-     */
-    readonly parentObjectId: number;
-    lineType: LineType;
+    swissLineNumber: string;
     /**
      * SLNID
      */
     readonly slnid?: string;
-    paymentType: PaymentType;
     /**
      * Number
      */
-    readonly number?: string;
+    number?: string;
     /**
      * LongName
      */
-    readonly longName?: string;
+    longName?: string;
     /**
      * Description
      */
-    readonly description?: string;
+    description?: string;
     /**
      * Valid from
      */
-    readonly validFrom: Date;
+    validFrom: Date;
     /**
      * Valid to
      */
-    readonly validTo: Date;
+    validTo: Date;
+    /**
+     * BusinessOrganisation SBOID
+     */
+    businessOrganisation: string;
+    /**
+     * Comment
+     */
+    comment?: string;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    etagVersion?: number;
+    /**
+     * Workflows related to the line version
+     */
+    readonly lineVersionWorkflows?: Set<LineVersionWorkflow>;
     lineConcessionType: LineConcessionType;
     /**
      * ShortNumber
      */
     shortNumber?: string;
     offerCategory: OfferCategory;
-    /**
-     * BusinessOrganisation SBOID
-     */
-    readonly businessOrganisation: string;
-    /**
-     * Comment
-     */
-    readonly comment?: string;
-    /**
-     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
-     */
-    readonly etagVersion?: number;
 }
 
