@@ -2,6 +2,15 @@ package ch.sbb.atlas.configuration;
 
 import lombok.experimental.UtilityClass;
 
+/**
+ * Roles defined on the atlas api:
+ * - atlas-admin:
+ *    Highest privileges. May perform all operations on atlas.
+ * - atlas-internal:
+ *    Any authenticated SBB user, as well as ClientCredential clients used by atlas
+ * - Unauthorized
+ *    Used by the api-auth-gateway to allow the atlas frontend to be publicly available.
+ */
 @UtilityClass
 public class Role {
 
