@@ -374,8 +374,7 @@
     "SWISS_LINE_NUMBER": "Numero di linea CH\n(CHLNR)",
     "SWISS_LINE_NUMBER_INFO_LINK": "https://www.bav.admin.ch/bav/it/home/diritto/basi-giuridiche-e-prescrizioni/direttive/direttive-in-generale/direttiva-582.html",
     "SWISS_SUBLINE_NUMBER": "Numero di linea parziale CH",
-    "ALTERNATIVE_NAME": "Denominazione alternativa",
-    "COMBINATION_NAME": "Denominazione combinata",
+    "SHORT_NUMBER": "Numero breve",
     "LONG_NAME": "Denominazione estesa",
     "ICON": "URL per il logo della linea",
     "TYPE": "Tipo linea",
@@ -391,6 +390,21 @@
       "LOCAL": "Locale",
       "OTHER": "Altro",
       "NONE": "Nessuna"
+    },
+    "OFFER_CATEGORY": {
+      "TYPE": "Categoria di offerta"
+    },
+    "LINE_CONCESSION": {
+      "TYPE": "Tipo di concessione",
+      "FEDERALLY_LICENSED_OR_APPROVED_LINE": "Linea autorizzata o con concessione federale (EK)",
+      "VARIANT_OF_A_FRANCHISED_LINE": "Variante di una linea con concessione (VK)",
+      "FEDERAL_TERRITORIAL_CONCESSION": "Concessione federale territoriale (GK)",
+      "LINE_OF_A_TERRITORIAL_CONCESSION": "Linea territoriale con concessione (LG)",
+      "CANTONALLY_APPROVED_LINE": "Linea autorizzata dal Cantone (KB)",
+      "RACK_FREE_TRIPS": "Corse senza concessione (RF)",
+      "RACK_FREE_UNPUBLISHED_LINE": "Corse senza concessione/non pubblicate (NP)",
+      "COLLECTION_LINE": "Linea di raccolta (SL)",
+      "LINE_ABROAD": "Linea all’estero (AL)"
     },
     "LINE": {
       "LINE": "Linea",

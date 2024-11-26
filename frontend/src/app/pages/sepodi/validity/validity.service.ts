@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Validity} from "../../model/validity";
 import {FormGroup} from "@angular/forms";
 import {of, take} from "rxjs";
@@ -13,8 +13,8 @@ export class ValidityService {
 
   initValidity(form: FormGroup){
     this.validity = {
-      initValidTo: form?.value.validTo,
-      initValidFrom: form?.value.validFrom,
+      initValidTo: form?.getRawValue().validTo,
+      initValidFrom: form?.getRawValue().validFrom,
       formValidTo: undefined,
       formValidFrom: undefined
     };
@@ -23,8 +23,8 @@ export class ValidityService {
   updateValidity(form: FormGroup){
     this.validity = {
       ...this.validity,
-      formValidTo: form?.value?.validTo,
-      formValidFrom: form?.value?.validFrom
+      formValidTo: form?.getRawValue()?.validTo,
+      formValidFrom: form?.getRawValue()?.validFrom
     };
   }
 

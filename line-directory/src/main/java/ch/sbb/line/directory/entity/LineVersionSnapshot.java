@@ -1,18 +1,14 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
-import ch.sbb.line.directory.converter.CmykColorConverter;
-import ch.sbb.line.directory.converter.RgbColorConverter;
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
-import ch.sbb.line.directory.model.CmykColor;
-import ch.sbb.line.directory.model.RgbColor;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,6 +20,8 @@ import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,40 +62,14 @@ public class LineVersionSnapshot extends BaseVersionSnapshot {
   @Enumerated(EnumType.STRING)
   private Status status;
 
-  @NotNull
   @Enumerated(EnumType.STRING)
   private PaymentType paymentType;
 
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String number;
 
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  private String alternativeName;
-
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  private String combinationName;
-
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String longName;
-
-  @NotNull
-  @Convert(converter = RgbColorConverter.class)
-  private RgbColor colorFontRgb;
-
-  @NotNull
-  @Convert(converter = RgbColorConverter.class)
-  private RgbColor colorBackRgb;
-
-  @NotNull
-  @Convert(converter = CmykColorConverter.class)
-  private CmykColor colorFontCmyk;
-
-  @NotNull
-  @Convert(converter = CmykColorConverter.class)
-  private CmykColor colorBackCmyk;
-
-  @Size(max = AtlasFieldLengths.LENGTH_255)
-  private String icon;
 
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String description;
@@ -132,5 +104,17 @@ public class LineVersionSnapshot extends BaseVersionSnapshot {
   @Version
   @NotNull
   private Integer version;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private LineConcessionType concessionType;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private OfferCategory offerCategory;
+
+  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @AtlasVersionableProperty
+  private String shortNumber;
 
 }
