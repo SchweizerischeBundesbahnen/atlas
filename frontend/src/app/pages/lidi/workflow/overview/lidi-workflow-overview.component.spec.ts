@@ -1,11 +1,11 @@
-import { ContainerLineVersionSnapshot } from 'src/app/api/model/containerLineVersionSnapshot';
-import { LinesService, LineType, WorkflowStatus } from '../../../../api';
-import { LidiWorkflowOverviewComponent } from './lidi-workflow-overview.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
-import { AppTestingModule } from '../../../../app.testing.module';
-import { TranslatePipe } from '@ngx-translate/core';
-import { MockTableComponent } from '../../../../app.testing.mocks';
+import {ContainerLineVersionSnapshot} from 'src/app/api/model/containerLineVersionSnapshot';
+import {LinesService, LineType, WorkflowStatus} from '../../../../api';
+import {LidiWorkflowOverviewComponent} from './lidi-workflow-overview.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {Observable, of} from 'rxjs';
+import {AppTestingModule} from '../../../../app.testing.module';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MockTableComponent} from '../../../../app.testing.mocks';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
@@ -23,10 +23,9 @@ const versionContainer: ContainerLineVersionSnapshot = {
       workflowId: 1,
       parentObjectId: 1,
       paymentType: 'INTERNATIONAL',
-      colorBackCmyk: '0.0.0.0',
-      colorFontCmyk: '0.0.0.0',
-      colorBackRgb: '#00000',
-      colorFontRgb: '#00000',
+      shortNumber: 'asd',
+      lineConcessionType: 'CANTONALLY_APPROVED_LINE',
+      offerCategory: "BAT"
     },
   ],
   totalCount: 1,

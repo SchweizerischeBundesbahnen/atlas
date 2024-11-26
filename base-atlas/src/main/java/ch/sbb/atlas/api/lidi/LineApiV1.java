@@ -68,6 +68,10 @@ public interface LineApiV1 {
   @DeleteMapping("{slnid}")
   void deleteLines(@PathVariable String slnid);
 
+  /**
+   * @deprecated
+   */
+  @Deprecated(forRemoval = true, since = "2.328.0")
   @PostMapping("versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
@@ -84,6 +88,10 @@ public interface LineApiV1 {
   @GetMapping("versions/{slnid}")
   List<LineVersionModel> getLineVersions(@PathVariable String slnid);
 
+  /**
+   * @deprecated
+   */
+  @Deprecated(forRemoval = true, since = "2.328.0")
   @PostMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),

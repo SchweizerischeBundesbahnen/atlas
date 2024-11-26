@@ -1,10 +1,10 @@
 package ch.sbb.line.directory.service;
 
-import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
-import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -341,20 +341,17 @@ import org.springframework.transaction.annotation.Transactional;
     assertThat(result.getContent()).hasSize(2);
   }
 
-  private LineVersionSnapshotBuilder getBaseVersionBuilder() {
+  private LineVersionSnapshotBuilder<?, ?> getBaseVersionBuilder() {
     return LineVersionSnapshot.builder()
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
         .workflowStatus(WorkflowStatus.STARTED)
         .paymentType(PaymentType.INTERNATIONAL)
+        .shortNumber("asd")
+        .offerCategory(OfferCategory.IC)
+        .concessionType(LineConcessionType.COLLECTION_LINE)
         .number("number")
-        .alternativeName("alternativeName")
-        .combinationName("combinationName")
         .longName("longName")
-        .colorFontRgb(fromHex("#FFFFFF"))
-        .colorBackRgb(fromHex("#FFFFFF"))
-        .colorFontCmyk(fromCmykString("0,0,0,0"))
-        .colorBackCmyk(fromCmykString("0,0,0,0"))
         .description("description")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))

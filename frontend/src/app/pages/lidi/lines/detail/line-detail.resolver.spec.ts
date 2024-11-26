@@ -1,11 +1,13 @@
-import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
-import { of } from 'rxjs';
-import { LinesService, LineType, LineVersion, PaymentType, Status } from '../../../../api';
-import { LineDetailResolver } from './line-detail.resolver';
-import { AppTestingModule } from '../../../../app.testing.module';
+import {TestBed} from '@angular/core/testing';
+import {ActivatedRouteSnapshot, convertToParamMap} from '@angular/router';
+import {of} from 'rxjs';
+import {LinesService, LineType, LineVersionV2, Status} from '../../../../api';
+import {LineDetailResolver} from './line-detail.resolver';
+import {AppTestingModule} from '../../../../app.testing.module';
 
-const version: LineVersion = {
+const version: LineVersionV2 = {
+  lineConcessionType: "CANTONALLY_APPROVED_LINE",
+  offerCategory: "BAT",
   id: 1234,
   slnid: 'slnid',
   number: 'name',
@@ -14,25 +16,20 @@ const version: LineVersion = {
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
-  paymentType: PaymentType.None,
   swissLineNumber: 'L1',
-  lineType: LineType.Orderly,
-  colorBackCmyk: '',
-  colorBackRgb: '',
-  colorFontCmyk: '',
-  colorFontRgb: '',
+  lineType: LineType.Orderly
 };
 
 describe('LineDetailResolver', () => {
-  const linesServiceSpy = jasmine.createSpyObj('linesService', ['getLineVersions']);
-  linesServiceSpy.getLineVersions.and.returnValue(of([version]));
+  const linesServiceSpy = jasmine.createSpyObj('linesService', ['getLineVersionsV2']);
+  linesServiceSpy.getLineVersionsV2.and.returnValue(of([version]));
 
   let resolver: LineDetailResolver;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      providers: [LineDetailResolver, { provide: LinesService, useValue: linesServiceSpy }],
+      providers: [LineDetailResolver, {provide: LinesService, useValue: linesServiceSpy}],
     });
     resolver = TestBed.inject(LineDetailResolver);
   });

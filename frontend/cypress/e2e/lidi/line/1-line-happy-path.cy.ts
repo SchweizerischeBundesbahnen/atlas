@@ -3,7 +3,7 @@ import CommonUtils from '../../../support/util/common-utils';
 import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
 describe('Linie', {testIsolation: false}, () => {
-  const line = LidiUtils.getFirstLineVersion();
+  const line = LidiUtils.fillCreateFirstLineVersionV2();
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();

@@ -31,13 +31,15 @@ export class DataCy {
   static SWISS_LINE_NUMBER = '[data-cy=swissLineNumber]';
   static BUSINESS_ORGANISATION = '[data-cy=businessOrganisation]';
   static TYPE = '[data-cy=type]';
+  static LINE_TYPE_READ_ONLY = '[data-cy=lineTypeReadOnly]';
+  //deprecated
   static PAYMENT_TYPE = '[data-cy=paymentType]';
+  static LINE_CONCESSION_TYPE = '[data-cy=lineConcessionType]';
   static DESCRIPTION = '[data-cy=description]';
   static NUMBER = '[data-cy=number]';
-  static ALTERNATIVE_NAME = '[data-cy=alternativeName]';
-  static COMBINATION_NAME = '[data-cy=combinationName]';
+  static SHORT_NUMBER = '[data-cy=shortNumber]';
+  static OFFER_CATEGORY = '[data-cy=offerCategory]';
   static LONG_NAME = '[data-cy=longName]';
-  static ICON = '[data-cy=icon]';
   static COMMENT = '[data-cy=comment]';
   static MAINLINE = '[data-cy=mainline]';
   static SWISS_SUBLINE_NUMBER = '[data-cy=swissSublineNumber]';
@@ -45,12 +47,6 @@ export class DataCy {
   static NEW_ITEM = '[data-cy=new-item]';
   static SWISS_TIMETABLE_FIELD_NUMBER = '[data-cy=swissTimetableFieldNumber]';
   static VERSION_SWITCH = '[data-cy=version-switch]';
-  static COLOR_FONT_RGB = '[data-cy=colorFontRgb]';
-  static COLOR_BACK_RGB = '[data-cy=colorBackRgb]';
-  static RGB_PICKER_INPUT = '[data-cy=rgb-picker-input]';
-  static COLOR_FONT_CMYK = '[data-cy=colorFontCmyk]';
-  static CMYK_PICKER_INPUT = '[data-cy=cmyk-picker-input]';
-  static COLOR_BACK_CMYK = '[data-cy=colorBackCmyk]';
   static TABLE_FILTER_CHIP_INPUT = '[data-cy=table-filter-chip-search-0-0]';
   static TABLE_FILTER_CHIP_DIV = '[data-cy=table-filter-chip-div]';
   static TTFN = '[data-cy=ttfn]';

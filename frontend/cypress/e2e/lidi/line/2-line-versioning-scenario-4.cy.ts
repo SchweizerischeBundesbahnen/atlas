@@ -1,6 +1,6 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
-import { DataCy } from '../../../support/data-cy';
+import {DataCy} from '../../../support/data-cy';
 import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
 /**
@@ -15,7 +15,7 @@ import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
  */
 
 describe('LiDi: Versioning Linie Scenario 4', {testIsolation: false}, () => {
-  const firstLinieVersion = LidiUtils.getFirstLineVersion();
+  const firstLinieVersion = LidiUtils.fillCreateFirstLineVersionV2();
   const secondLineVersion = LidiUtils.getSecondLineVersion();
   const thirdLineVersion = LidiUtils.getThirdLineVersion();
   const editedLineVersion = LidiUtils.getEditedLineVersion();
@@ -44,13 +44,13 @@ describe('LiDi: Versioning Linie Scenario 4', {testIsolation: false}, () => {
 
   it('Step-4: Add second Linie Version', () => {
     CommonUtils.clickOnEdit();
-    LidiUtils.fillLineVersionForm(secondLineVersion);
+    LidiUtils.fillLineVersionForm(secondLineVersion, true);
     CommonUtils.saveLine();
   });
 
   it('Step-5: Add third Linie Version', () => {
     CommonUtils.clickOnEdit();
-    LidiUtils.fillLineVersionForm(thirdLineVersion);
+    LidiUtils.fillLineVersionForm(thirdLineVersion, true);
     CommonUtils.saveLine();
   });
 
@@ -58,7 +58,7 @@ describe('LiDi: Versioning Linie Scenario 4', {testIsolation: false}, () => {
     CommonUtils.clickOnEdit();
     cy.get(DataCy.VALID_FROM).clear().type(editedLineVersion.validFrom);
     cy.get(DataCy.VALID_TO).clear().type(editedLineVersion.validTo);
-    cy.get(DataCy.ALTERNATIVE_NAME).clear().type(editedLineVersion.alternativeName);
+    cy.get(DataCy.SHORT_NUMBER).clear().type(editedLineVersion.shortNumber);
     CommonUtils.saveLine();
     CommonUtils.getTotalRange().should('contain', '01.01.2000').should('contain', '31.12.2002');
   });
@@ -78,7 +78,7 @@ describe('LiDi: Versioning Linie Scenario 4', {testIsolation: false}, () => {
 
     thirdLineVersion.validFrom = '01.01.2002';
     thirdLineVersion.validTo = '01.06.2002';
-    thirdLineVersion.alternativeName = editedLineVersion.alternativeName;
+    thirdLineVersion.shortNumber = editedLineVersion.shortNumber;
     LidiUtils.assertContainsLineVersion(thirdLineVersion);
   });
 
@@ -88,7 +88,7 @@ describe('LiDi: Versioning Linie Scenario 4', {testIsolation: false}, () => {
 
     thirdLineVersion.validFrom = '01.01.2001';
     thirdLineVersion.validTo = '31.12.2001';
-    thirdLineVersion.alternativeName = editedLineVersion.alternativeName;
+    thirdLineVersion.shortNumber = editedLineVersion.shortNumber;
     thirdLineVersion.comment = 'Kommentar-1';
     LidiUtils.assertContainsLineVersion(thirdLineVersion);
   });
@@ -99,7 +99,7 @@ describe('LiDi: Versioning Linie Scenario 4', {testIsolation: false}, () => {
 
     secondLineVersion.validFrom = '01.06.2000';
     secondLineVersion.validTo = '31.12.2000';
-    secondLineVersion.alternativeName = editedLineVersion.alternativeName;
+    secondLineVersion.shortNumber = editedLineVersion.shortNumber;
     secondLineVersion.comment = firstLinieVersion.comment;
     LidiUtils.assertContainsLineVersion(secondLineVersion);
   });
