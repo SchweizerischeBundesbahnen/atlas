@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Pages } from '../pages';
 import { Page } from '../../core/model/page';
-import {PageService} from "../../core/pages/page.service";
+import { PageService } from '../../core/pages/page.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -9,11 +11,11 @@ import {PageService} from "../../core/pages/page.service";
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+  readonly enabledPages: Observable<Page[]>;
 
-  constructor(private pageService: PageService) {
-  }
-
-  get enabledPages(): Page[] {
-    return this.pageService.enabledPages.filter((page) => page !== Pages.HOME);
+  constructor(private readonly pageService: PageService) {
+    this.enabledPages = pageService.enabledPages.pipe(
+      map((pages) => pages.filter((page) => page !== Pages.HOME)),
+    );
   }
 }

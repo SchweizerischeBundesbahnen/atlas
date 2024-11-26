@@ -1,30 +1,31 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {StopPointReducedFormComponent} from './stop-point-reduced-form.component';
-import {StopPointFormGroupBuilder} from '../stop-point-detail-form-group';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MockAtlasFieldErrorComponent, MockSelectComponent,} from '../../../../../../app.testing.mocks';
-import {TextFieldComponent} from '../../../../../../core/form-components/text-field/text-field.component';
-import {AtlasLabelFieldComponent} from '../../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { StopPointReducedFormComponent } from './stop-point-reduced-form.component';
+import { StopPointFormGroupBuilder } from '../stop-point-detail-form-group';
+import { TranslatePipe } from '@ngx-translate/core';
 import {
-  MeansOfTransportPickerComponent
-} from '../../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
-import {AtlasSpacerComponent} from '../../../../../../core/components/spacer/atlas-spacer.component';
-import {AppTestingModule} from '../../../../../../app.testing.module';
-import {By} from '@angular/platform-browser';
-import {InfoIconComponent} from '../../../../../../core/form-components/info-icon/info-icon.component';
-import {MeanOfTransport} from "../../../../../../api";
-import {PrmVariantInfoServiceService} from "../../prm-variant-info-service.service";
+  MockAtlasFieldErrorComponent,
+  MockSelectComponent,
+} from '../../../../../../app.testing.mocks';
+import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
+import { AtlasLabelFieldComponent } from '../../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { MeansOfTransportPickerComponent } from '../../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
+import { AtlasSpacerComponent } from '../../../../../../core/components/spacer/atlas-spacer.component';
+import { AppTestingModule } from '../../../../../../app.testing.module';
+import { By } from '@angular/platform-browser';
+import { InfoIconComponent } from '../../../../../../core/form-components/info-icon/info-icon.component';
+import { MeanOfTransport } from '../../../../../../api';
+import { PrmVariantInfoService } from '../../prm-variant-info.service';
 
 describe('StopPointReducedFormComponent', () => {
   let component: StopPointReducedFormComponent;
   let fixture: ComponentFixture<StopPointReducedFormComponent>;
 
-  const prmVariantInfoServiceService = jasmine.createSpyObj(
-    'prmVariantInfoServiceService',
-    ['getPrmMeansOfTransportToShow'],
+  const prmVariantInfoService = jasmine.createSpyObj('prmVariantInfoService', [
+    'getPrmMeansOfTransportToShow',
+  ]);
+  prmVariantInfoService.getPrmMeansOfTransportToShow.and.returnValue(
+    Object.values(MeanOfTransport),
   );
-  prmVariantInfoServiceService.getPrmMeansOfTransportToShow.and.returnValue(Object.values(MeanOfTransport))
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -41,8 +42,8 @@ describe('StopPointReducedFormComponent', () => {
       imports: [AppTestingModule],
       providers: [
         { provide: TranslatePipe },
-        { provide: PrmVariantInfoServiceService, useValue: prmVariantInfoServiceService }
-      ]
+        { provide: PrmVariantInfoService, useValue: prmVariantInfoService },
+      ],
     });
     fixture = TestBed.createComponent(StopPointReducedFormComponent);
     component = fixture.componentInstance;
