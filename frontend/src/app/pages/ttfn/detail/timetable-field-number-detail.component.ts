@@ -56,6 +56,7 @@ export class TimetableFieldNumberDetailComponent
   }
 
   updateRecord(): void {
+    this.form.disable();
     this.timetableFieldNumberService
       .updateVersionWithVersioning(this.getId(), this.form.value)
       .pipe(catchError(this.handleError))
