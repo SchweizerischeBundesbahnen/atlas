@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.LineRequestParams;
 import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
@@ -13,7 +14,6 @@ import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,7 +75,7 @@ import org.springframework.transaction.annotation.Transactional;
     Page<Line> result = lineService.findAll(
         LineSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
-            .validOn(Optional.of(LocalDate.of(2020, 1, 1)))
+            .lineRequestParams(LineRequestParams.builder().validOn(LocalDate.of(2020, 1, 1)).build())
             .build());
 
     // Then
@@ -90,8 +90,9 @@ import org.springframework.transaction.annotation.Transactional;
     lineVersionRepository.saveAndFlush(version3);
     // When
     Page<Line> result = lineService.findAll(
-        LineSearchRestrictions.builder().pageable(Pageable.unpaged()).validOn(
-            Optional.of(LocalDate.of(2019, 1, 1))).build());
+        LineSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .lineRequestParams(LineRequestParams.builder().validOn(LocalDate.of(2019, 1, 1)).build())
+            .build());
 
     // Then
     assertThat(result.getContent()).isEmpty();
@@ -105,7 +106,9 @@ import org.springframework.transaction.annotation.Transactional;
     lineVersionRepository.saveAndFlush(version3);
     // When
     Page<Line> result = lineService.findAll(
-        LineSearchRestrictions.builder().pageable(Pageable.unpaged()).build());
+        LineSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .lineRequestParams(LineRequestParams.builder().build())
+            .build());
 
     // Then
     assertThat(result.getContent()).hasSize(3);
@@ -117,7 +120,8 @@ import org.springframework.transaction.annotation.Transactional;
     lineVersionRepository.saveAndFlush(version1);
     // When
     Page<Line> result = lineService.findAll(
-        LineSearchRestrictions.builder().pageable(Pageable.unpaged()).build());
+        LineSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .lineRequestParams(LineRequestParams.builder().build()).build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -133,11 +137,12 @@ import org.springframework.transaction.annotation.Transactional;
         .pageable(PageRequest.of(0, 20,
             Sort.by("swissLineNumber")
                 .ascending()))
+        .lineRequestParams(LineRequestParams.builder().build())
         .build());
 
     // Then
     assertThat(result.getContent()).hasSize(2);
-    assertThat(result.getContent().get(0).getSwissLineNumber()).isEqualTo("1");
+    assertThat(result.getContent().getFirst().getSwissLineNumber()).isEqualTo("1");
   }
 
   @Test
@@ -150,11 +155,12 @@ import org.springframework.transaction.annotation.Transactional;
         .pageable(PageRequest.of(0, 20,
             Sort.by("swissLineNumber")
                 .descending()))
+        .lineRequestParams(LineRequestParams.builder().build())
         .build());
 
     // Then
     assertThat(result.getContent()).hasSize(2);
-    assertThat(result.getContent().get(0).getSwissLineNumber()).isEqualTo("2");
+    assertThat(result.getContent().getFirst().getSwissLineNumber()).isEqualTo("2");
   }
 
   @Test
@@ -164,7 +170,7 @@ import org.springframework.transaction.annotation.Transactional;
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .searchCriterias(List.of("1"))
+        .lineRequestParams(LineRequestParams.builder().searchCriteria(List.of("1")).build())
         .build());
 
     // Then
@@ -187,7 +193,7 @@ import org.springframework.transaction.annotation.Transactional;
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .searchCriterias(List.of("_"))
+        .lineRequestParams(LineRequestParams.builder().searchCriteria(List.of("_")).build())
         .build());
 
     // Then
@@ -210,7 +216,7 @@ import org.springframework.transaction.annotation.Transactional;
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .searchCriterias(List.of("__"))
+        .lineRequestParams(LineRequestParams.builder().searchCriteria(List.of("__")).build())
         .build());
 
     // Then
@@ -233,7 +239,7 @@ import org.springframework.transaction.annotation.Transactional;
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .searchCriterias(List.of("%"))
+        .lineRequestParams(LineRequestParams.builder().searchCriteria(List.of("%")).build())
         .build());
 
     // Then
@@ -256,7 +262,7 @@ import org.springframework.transaction.annotation.Transactional;
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .searchCriterias(List.of("%%"))
+        .lineRequestParams(LineRequestParams.builder().searchCriteria(List.of("%%")).build())
         .build());
 
     // Then
@@ -273,9 +279,7 @@ import org.springframework.transaction.annotation.Transactional;
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .searchCriterias(
-            List.of("1", "ch:SLNID:1",
-                "yb", "Fan"))
+        .lineRequestParams(LineRequestParams.builder().searchCriteria(List.of("1", "ch:SLNID:1", "yb", "Fan")).build())
         .build());
 
     // Then
@@ -289,7 +293,7 @@ import org.springframework.transaction.annotation.Transactional;
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .searchCriterias(List.of("2"))
+        .lineRequestParams(LineRequestParams.builder().searchCriteria(List.of("2")).build())
         .build());
 
     // Then
@@ -307,9 +311,8 @@ import org.springframework.transaction.annotation.Transactional;
     Page<Line> result = lineService.findAll(
         LineSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
-            .searchCriterias(
-                List.of("1", "ch:SLNID:1", "yb", "Fan"))
-            .statusRestrictions(List.of(Status.VALIDATED))
+            .lineRequestParams(LineRequestParams.builder().searchCriteria(List.of("1", "ch:SLNID:1", "yb", "Fan"))
+                .statusRestrictions(List.of(Status.VALIDATED)).build())
             .build());
 
     // Then
@@ -329,9 +332,7 @@ import org.springframework.transaction.annotation.Transactional;
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .statusRestrictions(
-            List.of(Status.VALIDATED,
-                Status.DRAFT))
+        .lineRequestParams(LineRequestParams.builder().statusRestrictions(List.of(Status.VALIDATED, Status.DRAFT)).build())
         .build());
 
     // Then
@@ -348,11 +349,10 @@ import org.springframework.transaction.annotation.Transactional;
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .searchCriterias(
-            List.of("1", "ch:SLNID:1",
-                "yb", "Fan"))
-        .typeRestrictions(
-            List.of(LidiElementType.ORDERLY))
+        .lineRequestParams(LineRequestParams.builder()
+            .searchCriteria(List.of("1", "ch:SLNID:1", "yb", "Fan"))
+            .typeRestrictions(List.of(LidiElementType.ORDERLY))
+            .build())
         .build());
 
     // Then
@@ -372,9 +372,11 @@ import org.springframework.transaction.annotation.Transactional;
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .typeRestrictions(
-            List.of(LidiElementType.ORDERLY,
-                LidiElementType.TEMPORARY))
+            .lineRequestParams(LineRequestParams.builder()
+                .typeRestrictions(
+                    List.of(LidiElementType.ORDERLY,
+                        LidiElementType.TEMPORARY))
+                .build())
         .build());
 
     // Then
