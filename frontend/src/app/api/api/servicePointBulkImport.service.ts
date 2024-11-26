@@ -17,6 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { BulkImportItemExecutionResult } from '../model/models';
+import { BulkImportUpdateContainerServicePointUpdateCsvModel } from '../model/models';
 import { ErrorResponse } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -27,7 +29,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class ServicePointUpdateGeoService {
+export class ServicePointBulkImportService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -85,13 +87,17 @@ export class ServicePointUpdateGeoService {
     }
 
     /**
+     * @param bulkImportUpdateContainerServicePointUpdateCsvModel 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public startServicePointUpdateGeoLocation(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<any>;
-    public startServicePointUpdateGeoLocation(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<any>>;
-    public startServicePointUpdateGeoLocation(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<any>>;
-    public startServicePointUpdateGeoLocation(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public bulkImportUpdate1(bulkImportUpdateContainerServicePointUpdateCsvModel: Array<BulkImportUpdateContainerServicePointUpdateCsvModel>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<BulkImportItemExecutionResult>>;
+    public bulkImportUpdate1(bulkImportUpdateContainerServicePointUpdateCsvModel: Array<BulkImportUpdateContainerServicePointUpdateCsvModel>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<BulkImportItemExecutionResult>>>;
+    public bulkImportUpdate1(bulkImportUpdateContainerServicePointUpdateCsvModel: Array<BulkImportUpdateContainerServicePointUpdateCsvModel>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<BulkImportItemExecutionResult>>>;
+    public bulkImportUpdate1(bulkImportUpdateContainerServicePointUpdateCsvModel: Array<BulkImportUpdateContainerServicePointUpdateCsvModel>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (bulkImportUpdateContainerServicePointUpdateCsvModel === null || bulkImportUpdateContainerServicePointUpdateCsvModel === undefined) {
+            throw new Error('Required parameter bulkImportUpdateContainerServicePointUpdateCsvModel was null or undefined when calling bulkImportUpdate1.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -108,13 +114,22 @@ export class ServicePointUpdateGeoService {
         }
 
 
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/import-service-point/v1/service-point-job/update-geo`,
-            null,
+        return this.httpClient.post<Array<BulkImportItemExecutionResult>>(`${this.configuration.basePath}/service-point-directory/v1/service-points/bulk-import/update`,
+            bulkImportUpdateContainerServicePointUpdateCsvModel,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
