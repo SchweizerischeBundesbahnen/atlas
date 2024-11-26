@@ -14,7 +14,7 @@
       <app-switch-version
         (switchVersion)="switchVersion($event)"
         [currentRecord]="selectedVersion"
-        [records]="parkingLot"
+        [records]="versions"
         [showStatus]="false"
       ></app-switch-version>
     </div>
@@ -61,7 +61,7 @@
   <atlas-button
     (buttonClicked)="save()"
     [footerEdit]="form.enabled"
-    [disabled]="!form.dirty"
+    [disabled]="!form.dirty || saving"
     buttonDataCy="save"
     buttonText="COMMON.SAVE"
     buttonType="whiteFooterEdit"

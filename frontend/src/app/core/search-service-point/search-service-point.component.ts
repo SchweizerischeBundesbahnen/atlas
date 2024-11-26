@@ -1,10 +1,18 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
-import {ServicePointSearchResult, ServicePointsService} from '../../api';
-import {catchError, concat, debounceTime, distinctUntilChanged, Observable, of, Subject,} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
-import {filter, switchMap, tap} from 'rxjs/operators';
-import {TranslatePipe} from '@ngx-translate/core';
-import {ServicePointSearch, ServicePointSearchType} from './service-point-search';
+import { Component, Input, OnInit, Output } from '@angular/core';
+import { ServicePointSearchResult, ServicePointsService } from '../../api';
+import {
+  catchError,
+  concat,
+  debounceTime,
+  distinctUntilChanged,
+  Observable,
+  of,
+  Subject,
+} from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { filter, switchMap, tap } from 'rxjs/operators';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ServicePointSearch, ServicePointSearchType } from './service-point-search';
 
 const SEARCH_SERVICE_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.SERVICE_POINT';
 const SEARCH_STOP_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.STOP_POINT';
@@ -132,11 +140,9 @@ export class SearchServicePointComponent implements OnInit {
             ? searchResultSelected.number
             : searchResultSelected.sloid,
         ],
-        {relativeTo: this.route},
+        { relativeTo: this.route },
       )
-      .then(() => (
-        this.clearResult()
-      ));
+      .then(() => this.clearResult());
   }
 
   private getNotFoundTranslatedLabel() {

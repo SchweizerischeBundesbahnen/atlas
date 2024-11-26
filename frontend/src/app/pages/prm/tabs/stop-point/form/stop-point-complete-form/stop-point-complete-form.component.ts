@@ -1,32 +1,43 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {StopPointDetailFormGroup, StopPointFormGroupBuilder,} from '../stop-point-detail-form-group';
-import {BooleanOptionalAttributeType, MeanOfTransport, StandardAttributeType,} from '../../../../../../api';
-import {TranslationSortingService} from '../../../../../../core/translation/translation-sorting.service';
-import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
-import {MatSelectChange} from '@angular/material/select';
-import {PrmVariantInfoServiceService} from "../../prm-variant-info-service.service";
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  StopPointDetailFormGroup,
+  StopPointFormGroupBuilder,
+} from '../stop-point-detail-form-group';
+import {
+  BooleanOptionalAttributeType,
+  MeanOfTransport,
+  StandardAttributeType,
+} from '../../../../../../api';
+import { TranslationSortingService } from '../../../../../../core/translation/translation-sorting.service';
+import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
+import { PrmVariantInfoService } from '../../prm-variant-info.service';
 
 @Component({
   selector: 'app-stop-point-complete-form',
   templateUrl: './stop-point-complete-form.component.html',
-  viewProviders: [{provide: ControlContainer, useExisting: NgForm}],
+  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
 })
 export class StopPointCompleteFormComponent implements OnInit {
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
-  standardAttributeTypes: string[] = [];
-  booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   @Input() selectedMeansOfTransport!: MeanOfTransport[];
   @Input() isNew = false;
+  standardAttributeTypes: string[] = [];
+  booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   meansOfTransportToShow: MeanOfTransport[] | undefined;
-  constructor(private readonly translationSortingService: TranslationSortingService,
-              private readonly prmVariantInfoServiceService: PrmVariantInfoServiceService) {
-  }
+
+  constructor(
+    private readonly translationSortingService: TranslationSortingService,
+    private readonly prmVariantInfoService: PrmVariantInfoService,
+  ) {}
 
   ngOnInit(): void {
     if (this.isNew) {
       this.initForm();
     }
-    this.meansOfTransportToShow = this.prmVariantInfoServiceService.getPrmMeansOfTransportToShow(this.form.controls.meansOfTransport.value!)
+    this.meansOfTransportToShow = this.prmVariantInfoService.getPrmMeansOfTransportToShow(
+      this.form.controls.meansOfTransport.value!,
+    );
     this.setSortedOperatingPointTypes();
   }
 
