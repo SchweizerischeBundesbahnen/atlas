@@ -5,9 +5,9 @@
     {{ isNew ? '' : selectedVersion.designation }}
   </div>
   <div *ngIf="!isNew" class="font-xl mb-2">
-      <span data-cy="total-range">
-        <date-range-text [dateRange]="maxValidity"></date-range-text>
-      </span>
+    <span data-cy="total-range">
+      <date-range-text [dateRange]="maxValidity"></date-range-text>
+    </span>
   </div>
   <div *ngIf="!isNew" class="d-flex flex-row mb-5">
     <div class="d-flex flex-column me-5" data-cy="selected-version-sloid">
@@ -32,7 +32,7 @@
         <app-switch-version
           (switchVersion)="switchVersion($event)"
           [currentRecord]="selectedVersion"
-          [records]="referencePoint"
+          [records]="versions"
           [showStatus]="false"
         ></app-switch-version>
       </div>
@@ -79,7 +79,7 @@
     <atlas-button
       (buttonClicked)="save()"
       [footerEdit]="form.enabled"
-      [disabled]="!form.dirty"
+      [disabled]="!form.dirty || saving"
       buttonDataCy="save-item"
       buttonText="COMMON.SAVE"
       buttonType="whiteFooterEdit"

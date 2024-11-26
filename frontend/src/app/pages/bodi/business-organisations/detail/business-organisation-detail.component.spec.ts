@@ -1,20 +1,24 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormBuilder} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {of, throwError} from 'rxjs';
-import {BusinessOrganisationsService, BusinessOrganisationVersion} from '../../../../api';
-import {BusinessOrganisationDetailComponent} from './business-organisation-detail.component';
-import {HttpErrorResponse} from '@angular/common/http';
-import {AppTestingModule} from '../../../../app.testing.module';
-import {ErrorNotificationComponent} from '../../../../core/notification/error/error-notification.component';
-import {InfoIconComponent} from '../../../../core/form-components/info-icon/info-icon.component';
-import {adminPermissionServiceMock, MockAppDetailWrapperComponent, MockSelectComponent} from '../../../../app.testing.mocks';
-import {FormModule} from '../../../../core/module/form.module';
-import {TranslatePipe} from '@ngx-translate/core';
-import {DetailPageContainerComponent} from '../../../../core/components/detail-page-container/detail-page-container.component';
-import {DetailFooterComponent} from '../../../../core/components/detail-footer/detail-footer.component';
-import {ValidityService} from "../../../sepodi/validity/validity.service";
-import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of, throwError } from 'rxjs';
+import { BusinessOrganisationsService, BusinessOrganisationVersion } from '../../../../api';
+import { BusinessOrganisationDetailComponent } from './business-organisation-detail.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
+import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
+import {
+  adminPermissionServiceMock,
+  MockAppDetailWrapperComponent,
+  MockSelectComponent,
+} from '../../../../app.testing.mocks';
+import { FormModule } from '../../../../core/module/form.module';
+import { TranslatePipe } from '@ngx-translate/core';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { ValidityService } from '../../../sepodi/validity/validity.service';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
 
 const businessOrganisationVersion: BusinessOrganisationVersion = {
   id: 1234,
@@ -71,8 +75,6 @@ let component: BusinessOrganisationDetailComponent;
 let fixture: ComponentFixture<BusinessOrganisationDetailComponent>;
 let router: Router;
 
-
-
 describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationVersion', () => {
   const mockBusinessOrganisationsService = jasmine.createSpyObj('businessOrganisationsService', [
     'updateBusinessOrganisationVersion',
@@ -84,11 +86,15 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
   };
 
   const validityService = jasmine.createSpyObj<ValidityService>('validityService', [
-    'initValidity', 'updateValidity', 'validateAndDisableForm', 'validateAndDisableCustom', 'confirmValidityDialog'
+    'initValidity',
+    'updateValidity',
+    'validate',
+    'validateAndDisableCustom',
+    'confirmValidityDialog',
   ]);
 
   beforeEach(() => {
-    setupTestBed(mockBusinessOrganisationsService, validityService , mockData);
+    setupTestBed(mockBusinessOrganisationsService, validityService, mockData);
 
     fixture = TestBed.createComponent(BusinessOrganisationDetailComponent);
     component = fixture.componentInstance;
@@ -102,7 +108,7 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
 
   it('should update BusinessOrganisationVersion successfully', () => {
     mockBusinessOrganisationsService.updateBusinessOrganisationVersion.and.returnValue(
-      of(businessOrganisationVersion)
+      of(businessOrganisationVersion),
     );
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.updateRecord();
@@ -112,7 +118,7 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
       fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent.trim()).toEqual(
-      'BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS'
+      'BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS',
     );
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
@@ -120,7 +126,7 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
 
   it('should not update Version', () => {
     mockBusinessOrganisationsService.updateBusinessOrganisationVersion.and.returnValue(
-      throwError(() => error)
+      throwError(() => error),
     );
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
@@ -138,13 +144,11 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
       fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent.trim()).toBe(
-      'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
+      'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS',
     );
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
-
-
 });
 
 describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersion', () => {
@@ -155,8 +159,10 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
     businessOrganisationDetail: 'add',
   };
 
-  const validityService = jasmine.createSpyObj<ValidityService>('validityService',[
-    'initValidity', 'updateValidity', 'validateAndDisableForm'
+  const validityService = jasmine.createSpyObj<ValidityService>('validityService', [
+    'initValidity',
+    'updateValidity',
+    'validate',
   ]);
   beforeEach(() => {
     setupTestBed(mockLinesService, validityService, mockData);
@@ -175,7 +181,7 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
     it('successfully', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
       mockLinesService.createBusinessOrganisationVersion.and.returnValue(
-        of(businessOrganisationVersion)
+        of(businessOrganisationVersion),
       );
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
@@ -184,7 +190,7 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
         fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
       expect(snackBarContainer).toBeDefined();
       expect(snackBarContainer.textContent.trim()).toBe(
-        'BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS'
+        'BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS',
       );
       expect(snackBarContainer.classList).toContain('success');
       expect(router.navigate).toHaveBeenCalled();
@@ -203,7 +209,7 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
 function setupTestBed(
   businessOrganisationsService: BusinessOrganisationsService,
   validityService: ValidityService,
-  data: { businessOrganisationDetail: string | BusinessOrganisationVersion }
+  data: { businessOrganisationDetail: string | BusinessOrganisationVersion },
 ) {
   TestBed.configureTestingModule({
     declarations: [

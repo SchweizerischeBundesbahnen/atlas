@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
@@ -13,29 +13,29 @@ import {
   TimetableYearChangeService,
   TransportCompany,
 } from '../../../api';
-import {ActivatedRoute, Router} from '@angular/router';
-import {DialogService} from '../../../core/components/dialog/dialog.service';
-import {Cantons} from '../../../core/cantons/Cantons';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AtlasCharsetsValidator} from '../../../core/validation/charsets/atlas-charsets-validator';
-import {AtlasFieldLengthValidator} from '../../../core/validation/field-lengths/atlas-field-length-validator';
-import {WhitespaceValidator} from '../../../core/validation/whitespace/whitespace-validator';
-import {StatementDetailFormGroup, StatementSenderFormGroup} from './statement-detail-form-group';
-import {Canton} from '../../../core/cantons/Canton';
-import {map, takeUntil} from 'rxjs/operators';
-import {catchError, EMPTY, Observable, of, Subject} from 'rxjs';
-import {NotificationService} from '../../../core/notification/notification.service';
-import {ValidationService} from '../../../core/validation/validation.service';
-import {TthUtils} from '../util/tth-utils';
-import {StatementDialogService} from './statement-dialog/service/statement.dialog.service';
-import {FileDownloadService} from '../../../core/components/file-upload/file/file-download.service';
-import {OpenStatementInMailService} from './open-statement-in-mail.service';
-import {StatementShareService} from '../overview-detail/statement-share-service';
-import {Pages} from '../../pages';
-import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
-import {TableService} from '../../../core/components/table/table.service';
-import {addElementsToArrayWhenNotUndefined} from '../../../core/util/arrays';
-import {PermissionService} from '../../../core/auth/permission/permission.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { Cantons } from '../../../core/cantons/Cantons';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
+import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
+import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
+import { StatementDetailFormGroup, StatementSenderFormGroup } from './statement-detail-form-group';
+import { Canton } from '../../../core/cantons/Canton';
+import { map, takeUntil } from 'rxjs/operators';
+import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
+import { NotificationService } from '../../../core/notification/notification.service';
+import { ValidationService } from '../../../core/validation/validation.service';
+import { TthUtils } from '../util/tth-utils';
+import { StatementDialogService } from './statement-dialog/service/statement.dialog.service';
+import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
+import { OpenStatementInMailService } from './open-statement-in-mail.service';
+import { StatementShareService } from '../overview-detail/statement-share-service';
+import { Pages } from '../../pages';
+import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
+import { TableService } from '../../../core/components/table/table.service';
+import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
+import { PermissionService } from '../../../core/auth/permission/permission.service';
 
 @Component({
   selector: 'app-statement-detail',
@@ -242,10 +242,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       etagVersion: new FormControl(statement?.etagVersion),
       editor: new FormControl(statement?.editor),
     });
-  }
-
-  saveButtonDisabled() {
-    return !(this.form.dirty || this.uploadedFiles.length > 0);
   }
 
   removeDocument(fileName: string) {

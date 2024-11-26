@@ -1,4 +1,6 @@
 <div class="d-flex flex-column full-height-no-scroll">
+  <app-loading-spinner [isLoading]="!!(loadingSpinnerService.loading | async)">
+  </app-loading-spinner>
   <app-header></app-header>
   <div class="app-body">
     <mat-sidenav-container class="page-container">
@@ -9,8 +11,6 @@
       </mat-sidenav>
       <mat-sidenav-content [class.content-menu-closed]="!sideNavOpened">
         <div id="scrollbar-content-container" class="full-height">
-          <app-loading-spinner [isLoading]="loadingSpinnerService.isLoading" [fullScreen]="true">
-          </app-loading-spinner>
           <router-outlet></router-outlet>
         </div>
       </mat-sidenav-content>
