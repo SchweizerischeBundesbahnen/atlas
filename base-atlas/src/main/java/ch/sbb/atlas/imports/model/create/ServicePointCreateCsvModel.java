@@ -10,6 +10,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
 import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel.Fields;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -37,10 +38,10 @@ import java.util.Set;
 @Builder
 @FieldNameConstants
 @EqualsAndHashCode
-@JsonPropertyOrder({Fields.numberShort, Fields.validFrom, Fields.validTo, Fields.designationOfficial,
-        Fields.designationLong, Fields.stopPointType, Fields.freightServicePoint, Fields.operatingPointType,
+@JsonPropertyOrder({Fields.numberShort, Fields.uicCountryCode, Fields.validFrom, Fields.validTo, Fields.designationOfficial,
+        Fields.designationLong, Fields.stopPointType, Fields.freightServicePoint, Fields.borderPoint, Fields.operatingPointType,
         Fields.operatingPointTechnicalTimetableType, Fields.meansOfTransport, Fields.categories,
-        Fields.operatingPointTrafficPointType, Fields.sortCodeOfDestinationStation, Fields.businessOrganisation,
+        Fields.operatingPointTrafficPointType, Fields.sortCodeOfDestinationStation, Fields.businessOrganisation, Fields.fotComment,
         Fields.east, Fields.north, Fields.spatialReference, Fields.height})
 @CopyFromCurrentVersion({
         @Mapping(target = "id", current = "id"),
@@ -51,7 +52,10 @@ import java.util.Set;
 })
 public class ServicePointCreateCsvModel implements Validatable<ServicePointCreateCsvModel>, UpdateGeolocationModel {
 
+    @DefaultMapping
     private Integer numberShort;
+
+    private Integer uicCountryCode;
 
     @DefaultMapping
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -62,55 +66,43 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
     private LocalDate validTo;
 
     @DefaultMapping
-    @Nulling
     private String designationOfficial;
 
-    @DefaultMapping
     @Nulling
     private String designationLong;
 
-    @DefaultMapping
     @Nulling
     private StopPointType stopPointType;
 
-    @DefaultMapping
     @Nulling
     private Boolean freightServicePoint;
 
-    /*TODO ask for "BorderPoint"*/
-    @DefaultMapping
     @Nulling
     private Boolean borderPoint;
 
-    @DefaultMapping
     @Nulling
     private OperatingPointType operatingPointType;
 
-
-    @DefaultMapping
     @Nulling
     private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
-    @DefaultMapping
     @Nulling
     private Set<MeanOfTransport> meansOfTransport;
 
-    @DefaultMapping
     @Nulling
     private Set<Category> categories;
 
-    @DefaultMapping
     @Nulling
     private OperatingPointTrafficPointType operatingPointTrafficPointType;
 
-    @DefaultMapping
     @Nulling
     private String sortCodeOfDestinationStation;
 
     @DefaultMapping
     private String businessOrganisation;
 
-    /*TODO FotComment*/
+    @Nulling
+    private String fotComment;
 
     @Nulling(property = "servicePointGeolocation")
     private Double east;
@@ -133,5 +125,4 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
     public List<UniqueField<ServicePointCreateCsvModel>> uniqueFields() {
         return List.of();
     }
-
 }
