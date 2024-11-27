@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         maven(url = "https://bin.sbb.ch/artifactory/mvn")
         maven(url = "https://bin.sbb.ch/artifactory/esta.mvn")
@@ -9,4 +10,7 @@ pluginManagement {
 }
 
 rootProject.name = "atlas"
-include("auto-rest-doc", "kafka", "base-atlas", "location")
+include(":auto-rest-doc")
+include(":kafka")
+include(":base-atlas")
+include(":location")
