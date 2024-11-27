@@ -37,6 +37,13 @@ public interface SublineApiV1 {
   @DeleteMapping("{slnid}")
   void deleteSublines(@PathVariable String slnid);
 
+  /**
+   * @deprecated
+   */
+  @Deprecated(forRemoval = true, since = "2.328.0")
+  @GetMapping("versions/{slnid}")
+  List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);
+
   @PostMapping("versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
@@ -44,15 +51,7 @@ public interface SublineApiV1 {
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  SublineVersionModel createSublineVersion(
-      @RequestBody @Valid SublineVersionModel newSublineVersion);
-
-  /**
-   * @deprecated
-   */
-  @Deprecated(forRemoval = true, since = "2.328.0")
-  @GetMapping("versions/{slnid}")
-  List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);
+  ReadSublineVersionModelV2 createSublineVersion(@RequestBody @Valid SublineVersionModelV2 newSublineVersion);
 
   @PostMapping({"versions/{id}"})
   @ApiResponses(value = {
@@ -66,8 +65,8 @@ public interface SublineApiV1 {
       @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
-  List<SublineVersionModel> updateSublineVersion(@PathVariable Long id,
-      @RequestBody @Valid SublineVersionModel newVersion);
+  List<ReadSublineVersionModelV2> updateSublineVersion(@PathVariable Long id,
+      @RequestBody @Valid SublineVersionModelV2 newVersion);
 
   @GetMapping("subline-coverage/{slnid}")
   CoverageModel getSublineCoverage(@PathVariable String slnid);

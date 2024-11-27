@@ -23,7 +23,8 @@ import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
-import ch.sbb.atlas.api.lidi.SublineVersionModel;
+import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
+import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
 import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
@@ -526,18 +527,16 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .build();
 
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
+    SublineVersionModelV2 sublineVersionModel =
+        SublineVersionModelV2.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
             .sublineType(SublineType.TECHNICAL)
-            .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
-    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
-        sublineVersionModel);
+    ReadSublineVersionModelV2 sublineVersionSaved = sublineController.createSublineVersion(sublineVersionModel);
 
     //when
     mvc.perform(delete("/v1/lines/" + lineVersionSaved.getSlnid())
