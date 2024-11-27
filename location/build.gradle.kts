@@ -1,3 +1,5 @@
+import java.util.Date
+
 plugins {
     java
     `java-library`
@@ -50,6 +52,8 @@ dependencies {
     implementation("org.springframework.security:spring-security-oauth2-client:6.4.1")
     implementation("org.springframework.security:spring-security-oauth2-authorization-server:1.4.0")
 
+    runtimeOnly("org.postgresql:postgresql")
+
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testCompileOnly("org.projectlombok:lombok")
@@ -61,8 +65,6 @@ dependencies {
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc:3.0.2")
     testImplementation("org.testcontainers:postgresql")
     testImplementation(project(":base-atlas", "test"))
-
-    testRuntimeOnly("org.postgresql:postgresql")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
@@ -96,6 +98,16 @@ publishing {
             artifactId = rootProject.name
             groupId = project.group.toString()
             version = project.version.toString()
+        }
+    }
+}
+
+springBoot {
+    buildInfo {
+        properties {
+            additional.set(mapOf(
+                    "time" to "${Date()}"
+            ))
         }
     }
 }
