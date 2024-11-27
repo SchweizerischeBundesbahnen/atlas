@@ -5,17 +5,16 @@ plugins {
 }
 
 subprojects {
-    apply(plugin= "java")
-    apply(plugin= "java-library")
-    apply(plugin= "jacoco")
-    apply(plugin= "maven-publish")
-    apply(plugin= "org.sonarqube")
-    apply(plugin= "org.springframework.boot")
-    apply(plugin= "io.spring.dependency-management")
+    apply(plugin = "org.sonarqube")
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
+
+    extra["springCloudVersion"] = "2023.0.3"
 
     dependencyManagement {
         imports {
             mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
         }
     }
 

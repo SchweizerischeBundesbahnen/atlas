@@ -1,26 +1,11 @@
 plugins {
     id("org.openapi.generator") version "7.10.0"
+    id("buildlogic.java-conventions")
 }
-
-group = "ch.sbb.atlas"
-version = "2.350.0"
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-    withSourcesJar()
-}
-
 
 configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
     create("test")
 }
-
-extra["springCloudVersion"] = "2023.0.3"
 extra["swaggerCoreVersion"] = "2.2.25"
 extra["openapiStarterCommonVersion"] = "2.6.0"
 extra["hibernateVersion"] = "6.5.3.Final" //get from spring dependencies!!
@@ -56,11 +41,6 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka:3.3.0")//get this dependencyy from :kafka use as api does not work
     implementation(project(":kafka"))
 
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-    testCompileOnly("org.projectlombok:lombok")
-    testAnnotationProcessor("org.projectlombok:lombok")
-
     testImplementation(project(":auto-rest-doc"))
     testImplementation("org.springframework.kafka:spring-kafka-test:3.2.4")//get this dependencyy from :kafka use as api does not work
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -79,16 +59,6 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-    }
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
 tasks.getByName("assemble").dependsOn("testJar")
 tasks.register<Jar>("testJar") {
     archiveFileName.set("base-atlas-$version-tests.jar")//use submodule name
@@ -100,23 +70,4 @@ artifacts {
 
 tasks.bootJar {
     enabled = false
-}
-
-publishing {
-    repositories {
-        maven("https://bin.sbb.ch/artifactory/" + System.getenv("ARTIFACTORY_REPO")) {
-            credentials {
-                username = System.getenv("ARTIFACTORY_USER")
-                password = System.getenv("ARTIFACTORY_PASS")
-            }
-        }
-    }
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-            artifactId = rootProject.name
-            groupId = project.group.toString()
-            version = project.version.toString()
-        }
-    }
 }
