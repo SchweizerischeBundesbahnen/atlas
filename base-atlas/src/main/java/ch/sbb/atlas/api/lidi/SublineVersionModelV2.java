@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.ReadOnlyProperty;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +20,6 @@ import org.springframework.data.annotation.ReadOnlyProperty;
 public class SublineVersionModelV2 extends BaseSublineVersionModel implements DatesValidator {
 
   @Schema(description = "SublineConcessionType")
-  @ReadOnlyProperty
   private SublineConcessionType sublineConcessionType;
 
 }
