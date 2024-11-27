@@ -1,12 +1,5 @@
 plugins {
-    java
-    `java-library`
-    id("org.springframework.boot") version "3.3.4"
-    id("io.spring.dependency-management") version "1.1.6"
     id("org.openapi.generator") version "7.10.0"
-    jacoco
-    `maven-publish`
-    id("org.sonarqube") version "5.0.0.4638"
 }
 
 group = "ch.sbb.atlas"
@@ -26,11 +19,6 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-    maven { url = uri("https://repo.spring.io/milestone") }
-}
-
 extra["springCloudVersion"] = "2023.0.3"
 extra["swaggerCoreVersion"] = "2.2.25"
 extra["openapiStarterCommonVersion"] = "2.6.0"
@@ -41,7 +29,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springdoc:springdoc-openapi-starter-common:${property("openapiStarterCommonVersion")}")
     implementation("io.swagger.core.v3:swagger-core:${property("swaggerCoreVersion")}")
-    implementation("org.springframework.restdocs:spring-restdocs-mockmvc:3.0.2")
+    implementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
