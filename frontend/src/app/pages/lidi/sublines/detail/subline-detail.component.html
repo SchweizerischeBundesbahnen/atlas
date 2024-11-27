@@ -1,92 +1,137 @@
-<app-detail-wrapper
-  [controller]="this"
-  formDetailHeading="LIDI.SUBLINE.DETAIL_SUBLINE_INFORMATION"
-  headingNew="LIDI.SUBLINE.NEW"
->
-  <form [formGroup]="form">
-    <h2 *ngIf="isNewRecord()" class="font-bold-2xl mb-4">
-      {{ 'LIDI.SUBLINE.NEW_SUBLINE_INFORMATION' | translate }}
-    </h2>
+<atlas-detail-page-container scrollToTop>
+  <atlas-detail-page-content>
+    <div class="detail-wrapper mt-5">
+      @if (isNew) {
+        <h1 class="font-bold-4xl mb-5">
+          {{ 'LIDI.SUBLINE.NEW' | translate }}
+        </h1>
 
-    <div class="col-12 d-flex mb-4">
-      <div class="d-flex flex-column col-6 pe-3">
-        <div class="mainline-container d-flex col-12">
-          <div class="mainline-select d-flex flex-column">
-            <form-search-select
-              (searchTrigger)="searchMainlines($event)"
-              [bindValueInp]="'slnid'"
-              [controlName]="mainlineSlnidFormControlName"
-              [formGroup]="form"
-              [items$]="mainlines$"
-              data-cy="mainline"
-            >
-              <mat-label class="font-bold-lg required-indicator">{{
-                  'LIDI.SUBLINE.MAINLINE' | translate
-                }}
-              </mat-label>
-              <div class="mat-label-form-field-space-between"></div>
-              <ng-template #labelOptionTemplates let-item>
-                <b>{{item.number}}</b>
-                {{ item | mainlineDescription }}
-              </ng-template>
-            </form-search-select>
+        <h2 class="font-bold-2xl mb-4">
+          {{ 'LIDI.SUBLINE.NEW_SUBLINE_INFORMATION' | translate }}
+        </h2>
+      } @else {
+        <div class="font-bold-4xl detail-title mb-3">
+          {{ selectedVersion.number }}
+        </div>
+        <div class="font-bold-xl mb-2">
+          <span data-cy="detail-subheading-id">{{ selectedVersion.slnid }}</span>
+          <span data-cy="total-range">
+            -
+            <date-range-text [dateRange]="maxValidity"></date-range-text>
+          </span>
+        </div>
+
+        <div class="col-12 d-flex mt-3">
+          <div class="d-flex flex-column col-9 pe-3">
+            <app-switch-version
+              (switchVersion)="switchVersion($event)"
+              *ngIf="showVersionSwitch"
+              [currentRecord]="selectedVersion!"
+              [records]="versions!"
+              [switchDisabled]="form.enabled"
+            ></app-switch-version>
           </div>
-          <div class="mainline-link d-flex flex-column">
-            <a [attr.href]="mainlineUrl()" target="_blank" rel="noopener">
-              <link-icon></link-icon>
-            </a>
+          <div class="d-flex flex-column col-9">
+            <app-coverage
+              [currentRecord]="selectedVersion!"
+              [pageType]="Pages.SUBLINES"
+            ></app-coverage>
           </div>
+        </div>
+
+        <div class="form-title-section">
+          <h2 class="font-bold-2xl color-gray-900">
+            {{ 'LIDI.SUBLINE.DETAIL_SUBLINE_INFORMATION' | translate }} - {{ 'COMMON.VERSION' | translate }}
+            {{ selectedVersionIndex }}
+          </h2>
+          <div>
+            <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
+            <span class="color-gray-900">{{
+                'COMMON.STATUS_TYPES.' + selectedVersion.status | translate
+              }}</span>
+          </div>
+        </div>
+      }
+
+      <div class="col-12 d-flex mb-4">
+        <div class="d-flex flex-column col-6 pe-3">
+          <div class="mainline-container d-flex col-12">
+            <div class="mainline-select d-flex flex-column">
+              <form-search-select
+                (searchTrigger)="searchMainlines($event)"
+                [bindValueInp]="'slnid'"
+                [controlName]="mainlineSlnidFormControlName"
+                [formGroup]="form"
+                [items$]="mainlines$"
+                data-cy="mainline"
+              >
+                <mat-label class="font-bold-lg required-indicator">{{
+                    'LIDI.SUBLINE.MAINLINE' | translate
+                  }}
+                </mat-label>
+                <div class="mat-label-form-field-space-between"></div>
+                <ng-template let-item>
+                  <b>{{ item.number }}</b>
+                  {{ item | mainlineDescription }}
+                </ng-template>
+              </form-search-select>
+            </div>
+            <div class="mainline-link d-flex flex-column">
+              <a [attr.href]="mainlineUrl()" target="_blank" rel="noopener">
+                <link-icon></link-icon>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex flex-column col-3 pe-3">
+          <atlas-select
+            [formGroup]="form"
+            controlName="sublineType"
+            dataCy="type"
+            label="LIDI.SUBLINE_TYPE"
+            optionTranslateLabelPrefix="LIDI.SUBLINE.TYPES."
+            [options]="TYPE_OPTIONS"
+            [required]="true"
+          >
+          </atlas-select>
+        </div>
+
+        <div class="d-flex flex-column col-3">
+          <atlas-select
+            [formGroup]="form"
+            controlName="sublineConcessionType"
+            dataCy="sublineConcessionType"
+            label="LIDI.LINE_CONCESSION.TYPE"
+            optionTranslateLabelPrefix="LIDI.LINE_CONCESSION."
+            [options]="CONCESSION_TYPE_OPTIONS"
+            [required]="true"
+            [isOptional]="true"
+          >
+          </atlas-select>
         </div>
       </div>
 
-      <div class="d-flex flex-column col-3 pe-3">
-        <atlas-select
-          [formGroup]="form"
-          controlName="sublineType"
-          dataCy="type"
-          label="LIDI.SUBLINE_TYPE"
-          optionTranslateLabelPrefix="LIDI.SUBLINE.TYPES."
-          [options]="TYPE_OPTIONS"
-          [required]="true"
-        >
-        </atlas-select>
-      </div>
-
-      <div class="d-flex flex-column col-3">
-        <atlas-select
-          [formGroup]="form"
-          controlName="sublineConcessionType"
-          dataCy="sublineConcessionType"
-          label="LIDI.LINE_CONCESSION.TYPE"
-          optionTranslateLabelPrefix="LIDI.LINE_CONCESSION."
-          [options]="CONCESSION_TYPE_OPTIONS"
-          [required]="true"
-          [isOptional]="true"
-        >
-        </atlas-select>
-      </div>
-    </div>
-
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-4 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
+      <div class="col-12 d-flex">
+        <div class="d-flex flex-column col-4 pe-3">
+          <atlas-text-field
+            [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
             { label: '1', translate: false },
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
           ]"
-          [formGroup]="form"
-          controlName="number"
-          fieldLabel="LIDI.SUBLINE.NUMBER"
-          infoIconTitle="LIDI.SUBLINE.NUMBER_INFO"
-        >
-        </atlas-text-field>
-      </div>
+            [formGroup]="form"
+            controlName="number"
+            fieldLabel="LIDI.SUBLINE.NUMBER"
+            infoIconTitle="LIDI.SUBLINE.NUMBER_INFO"
+          >
+          </atlas-text-field>
+        </div>
 
-      <div class="d-flex flex-column col-8">
-        <atlas-text-field
-          [fieldExamples]="[
+        <div class="d-flex flex-column col-8">
+          <atlas-text-field
+            [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
             { label: 'Thun Bahnhof - Gwatt Deltapark - Einigen - Spiez Bahnhof', translate: false },
             { label: ' |', translate: false },
@@ -96,34 +141,34 @@
               arg: { key: 'numberOfChars', value: '255' }
             }
           ]"
-          [formGroup]="form"
-          controlName="description"
-          fieldLabel="LIDI.SUBLINE.DESCRIPTION"
-        >
-        </atlas-text-field>
+            [formGroup]="form"
+            controlName="description"
+            fieldLabel="LIDI.SUBLINE.DESCRIPTION"
+          >
+          </atlas-text-field>
+        </div>
       </div>
-    </div>
 
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-4 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
+      <div class="col-12 d-flex">
+        <div class="d-flex flex-column col-4 pe-3">
+          <atlas-text-field
+            [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
             { label: 'r.31.001:a', translate: false },
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
           ]"
-          [formGroup]="form"
-          [required]="true"
-          controlName="swissSublineNumber"
-          fieldLabel="LIDI.SWISS_SUBLINE_NUMBER"
-        >
-        </atlas-text-field>
-      </div>
+            [formGroup]="form"
+            [required]="true"
+            controlName="swissSublineNumber"
+            fieldLabel="LIDI.SWISS_SUBLINE_NUMBER"
+          >
+          </atlas-text-field>
+        </div>
 
-      <div class="d-flex flex-column col-8">
-        <atlas-text-field
-          [fieldExamples]="[
+        <div class="d-flex flex-column col-8">
+          <atlas-text-field
+            [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
             {
               label: 'Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof',
@@ -136,28 +181,90 @@
               arg: { key: 'numberOfChars', value: '255' }
             }
           ]"
-          [formGroup]="form"
-          controlName="longName"
-          fieldLabel="LIDI.LONG_NAME"
-        >
-        </atlas-text-field>
+            [formGroup]="form"
+            controlName="longName"
+            fieldLabel="LIDI.LONG_NAME"
+          >
+          </atlas-text-field>
+        </div>
+      </div>
+
+      <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
+      <div class="w-50">
+        <form-date-range [formGroup]="form"></form-date-range>
+      </div>
+
+      <div class="col-12 d-flex pt-3 pb-3">
+        <div class="d-flex flex-column col-6 pe-3">
+          <bo-select
+            [formGroup]="form"
+            [sboidsRestrictions]="boSboidRestriction"
+            controlName="businessOrganisation"
+            data-cy="businessOrganisation"
+          ></bo-select>
+        </div>
       </div>
     </div>
+  </atlas-detail-page-content>
 
-    <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
-    <div class="w-50">
-      <form-date-range [formGroup]="form"></form-date-range>
-    </div>
-
-    <div class="col-12 d-flex pt-3 pb-3">
-      <div class="d-flex flex-column col-6 pe-3">
-        <bo-select
-          [formGroup]="form"
-          [sboidsRestrictions]="getBoSboidRestriction()"
-          controlName="businessOrganisation"
-          data-cy="businessOrganisation"
-        ></bo-select>
-      </div>
-    </div>
-  </form>
-</app-detail-wrapper>
+  <atlas-detail-footer>
+    <atlas-button
+      (click)="back()"
+      [footerEdit]="form.enabled"
+      buttonDataCy="back-to-overview"
+      buttonText="COMMON.BACK_TO_OVERVIEW"
+      buttonType="whiteFooterNonEdit"
+    >
+    </atlas-button>
+    <atlas-button
+      (buttonClicked)="toggleEdit()"
+      [footerEdit]="form.enabled"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="me-3"
+    >
+    </atlas-button>
+    <atlas-button
+      (click)="save()"
+      [disabled]="!form.dirty"
+      [footerEdit]="form.enabled"
+      [submitButton]="true"
+      buttonDataCy="save-item"
+      buttonText="COMMON.SAVE"
+      buttonType="whiteFooterEdit"
+    >
+    </atlas-button>
+    <ng-container *ngIf="!isNew">
+      <atlas-button
+        (buttonClicked)="toggleEdit()"
+        applicationType="LIDI"
+        [businessOrganisation]="selectedVersion.businessOrganisation!"
+        [disabled]="form.enabled || selectedVersion.status === 'REVOKED'"
+        buttonDataCy="edit-item"
+        buttonText="COMMON.EDIT"
+        buttonType="edit"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+      <atlas-button
+        (buttonClicked)="revoke()"
+        applicationType='LIDI'
+        [disabled]="form.enabled || selectedVersion.status === 'REVOKED'"
+        buttonDataCy="revoke-item"
+        buttonText="COMMON.REVOKE"
+        buttonType="revoke"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+      <atlas-button
+        (buttonClicked)="delete()"
+        [disabled]="form.enabled"
+        buttonDataCy="delete-item"
+        buttonText="COMMON.DELETE"
+        buttonType="delete"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+    </ng-container>
+  </atlas-detail-footer>
+</atlas-detail-page-container>
