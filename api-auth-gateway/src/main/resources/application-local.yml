@@ -49,8 +49,8 @@ management:
 info:
   app:
     name: api-auth-gateway
-    version: @version@
-    buildtime: @timestamp@
+    version: ${version}
+    buildtime: ${time}
 logging:
   level:
     root: INFO
