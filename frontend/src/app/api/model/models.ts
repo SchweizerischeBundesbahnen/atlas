@@ -121,6 +121,7 @@ export * from './readRelationVersion';
 export * from './readServicePointVersion';
 export * from './readStopPointVersion';
 export * from './readStopPointWorkflow';
+export * from './readSublineVersionV2';
 export * from './readToiletVersion';
 export * from './readTrafficPointElementVersion';
 export * from './recordingStatus';
