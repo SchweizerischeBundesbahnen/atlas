@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk;
 
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,8 @@ public class ServicePointApiClient {
     servicePointApiV1.updateServicePoint(currentVersionId, servicePointVersionModel);
   }
 
-  public void createServicePoint(CreateServicePointVersionModel servicePointVersionModel) {
-    servicePointApiV1.createServicePoint(servicePointVersionModel);
+  public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel servicePointVersionModel) {
+    return servicePointApiV1.createServicePoint(servicePointVersionModel);
   }
 
 }
