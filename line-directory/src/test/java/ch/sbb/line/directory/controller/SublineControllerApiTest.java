@@ -78,7 +78,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .alternativeName("alternative")
             .combinationName("combination")
             .longName("long name")
-            .lineType(LineType.TEMPORARY)
+            .lineType(LineType.ORDERLY)
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC2-libne")
             .build();
@@ -122,7 +122,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
-            .sublineType(SublineType.TECHNICAL)
+            .sublineType(SublineType.TEMPORARY)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
     ReadSublineVersionModelV2 sublineVersionSaved = sublineController.createSublineVersion(
@@ -161,7 +161,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
-            .sublineType(SublineType.TECHNICAL)
+            .sublineType(SublineType.TEMPORARY)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
     ReadSublineVersionModelV2 sublineVersionSaved = sublineController.createSublineVersion(sublineVersionModel);
@@ -227,7 +227,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
-            .sublineType(SublineType.TECHNICAL)
+            .sublineType(SublineType.TEMPORARY)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
     ReadSublineVersionModelV2 sublineVersionSaved = sublineController.createSublineVersion(sublineVersionModel);
@@ -274,7 +274,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validTo(LocalDate.of(2001, 1, 1))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
-            .sublineType(SublineType.TECHNICAL)
+            .sublineType(SublineType.TEMPORARY)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
 
@@ -307,7 +307,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
-            .sublineType(SublineType.TECHNICAL)
+            .sublineType(SublineType.TEMPORARY)
             .mainlineSlnid(lineVersionModel.getSlnid())
             .build();
     sublineVersionModel = sublineController.createSublineVersion(sublineVersionModel);
