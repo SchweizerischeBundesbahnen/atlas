@@ -29,12 +29,6 @@ import {PermissionService} from "../../../../core/auth/permission/permission.ser
 })
 export class SublineDetailComponent extends BaseDetailController<SublineVersion> implements OnInit {
   TYPE_OPTIONS = Object.values(SublineType);
-  // CONCESSION_TYPE_OPTIONS = [LineConcessionType.FederallyLicensedOrApprovedLine,
-  //   LineConcessionType.VariantOfAFranchisedLine,
-  //   LineConcessionType.CantonallyApprovedLine,
-  //   LineConcessionType.RackFreeTrips,
-  //   LineConcessionType.RackFreeUnpublishedLine,
-  //   LineConcessionType.LineAbroad];
   CONCESSION_TYPE_OPTIONS= Object.values(SublineConcessionType);
 
   mainlines$: Observable<Line[]> = of([]);
