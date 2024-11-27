@@ -9,14 +9,11 @@
   },
   "builder": {
     "java": "21",
-    "node": "20",
-    "maven": "mvnw"
+    "node": "20"
   },
-  "mvn": {
-    "parentPom": "pom.xml",
-    "deployableArtifactsPom": "pom.xml",
+  "gradle": {
     "artifactoryMavenRepo": "atlas.mvn",
-    "buildTaskName": "esta-maven-build-extra-large"
+    "buildTaskName": "esta-gradle-build-extra-large"
   },
   "docker": [
     {
