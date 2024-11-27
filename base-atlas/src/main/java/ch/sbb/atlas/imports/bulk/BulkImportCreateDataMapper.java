@@ -15,12 +15,17 @@ import java.util.Objects;
 
 public abstract class BulkImportCreateDataMapper<T, V> {
 
-  public V applyUpdate(BulkImportUpdateContainer<T> container, V targetModel) {
+  public V applyCreate(BulkImportUpdateContainer<T> container, V targetModel) {
     applyDefaultMapping(container.getObject(), targetModel);
+    applySpecificCreate(container.getObject(), targetModel);
+
     applyNulling(container, targetModel);
     return targetModel;
   }
 
+  protected void applySpecificCreate(T update, V targetModel) {
+    // Override if needed
+  }
 
   private void applyNulling(BulkImportUpdateContainer<T> container, V targetModel) {
     List<String> attributesToNull = container.getAttributesToNull();
