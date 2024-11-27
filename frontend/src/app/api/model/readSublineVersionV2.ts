@@ -10,11 +10,12 @@
  * Do not edit the class manually.
  */
 import { Status } from './status';
+import { OfferCategory } from './offerCategory';
 import { SublineType } from './sublineType';
 import { SublineConcessionType } from './sublineConcessionType';
 
 
-export interface SublineVersionV2 { 
+export interface ReadSublineVersionV2 { 
     /**
      * Object creation date
      */
@@ -74,5 +75,18 @@ export interface SublineVersionV2 {
      */
     etagVersion?: number;
     sublineConcessionType?: SublineConcessionType;
+    /**
+     * MainSwissLineNumber
+     */
+    readonly mainSwissLineNumber: string;
+    /**
+     * MainLineNumber
+     */
+    readonly mainLineNumber: string;
+    /**
+     * ShortNumber
+     */
+    readonly mainShortNumber?: string;
+    mainLineOfferCategory?: OfferCategory;
 }
 

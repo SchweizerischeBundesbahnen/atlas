@@ -157,6 +157,7 @@ model/readRelationVersion.ts
 model/readServicePointVersion.ts
 model/readStopPointVersion.ts
 model/readStopPointWorkflow.ts
+model/readSublineVersionV2.ts
 model/readToiletVersion.ts
 model/readTrafficPointElementVersion.ts
 model/recordingStatus.ts
