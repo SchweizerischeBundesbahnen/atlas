@@ -1,14 +1,8 @@
 import java.util.Date
 
 plugins {
-    java
-    `java-library`
-    id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
     id("org.openapi.generator") version "7.10.0"
-    jacoco
-    `maven-publish`
-    id("org.sonarqube") version "5.0.0.4638"
 }
 
 group = "ch.sbb.atlas"
@@ -26,11 +20,6 @@ configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
-}
-
-repositories {
-    mavenCentral()
-    maven { url = uri("https://repo.spring.io/milestone") }
 }
 
 extra["springCloudVersion"] = "2023.0.3"
