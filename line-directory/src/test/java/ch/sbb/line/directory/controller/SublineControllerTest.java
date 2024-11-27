@@ -7,7 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
+import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.SublineTestData;
@@ -20,7 +21,6 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -52,17 +52,17 @@ class SublineControllerTest {
   @Captor
   private ArgumentCaptor<SublineVersion> versionArgumentCaptor;
 
-  private static SublineVersionModel createModel() {
-    return SublineVersionModel.builder()
+  private static SublineVersionModelV2 createModel() {
+    return SublineVersionModelV2.builder()
         .swissSublineNumber("swissSublineNumber")
         .mainlineSlnid("mainlineSlnid")
         .status(Status.VALIDATED)
         .sublineType(SublineType.TECHNICAL)
         .slnid("slnid")
         .description("description")
-        .number("number")
         .longName("longName")
-        .paymentType(PaymentType.INTERNATIONAL)
+        .sublineConcessionType(SublineConcessionType.RACK_FREE_UNPUBLISHED_LINE)
+        .sublineType(SublineType.OPERATIONAL)
         .validFrom(LocalDate.of(2020, 12, 12))
         .validTo(LocalDate.of(2099, 12, 12))
         .businessOrganisation("businessOrganisation")
@@ -96,21 +96,6 @@ class SublineControllerTest {
   }
 
   @Test
-   void shouldSaveNewVersion() {
-    // Given
-    SublineVersionModel sublineVersionModel = createModel();
-
-    // When
-    sublineController.createSublineVersion(sublineVersionModel);
-
-    // Then
-    verify(sublineService).create(versionArgumentCaptor.capture());
-    assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
-        .ignoringFields(ArrayUtils.addAll(RECURSIVE_COMPARISION_IGNORE_FIELDS, SUBLINE_VERSION_V2_COMPARISION_IGNORE_FIELDS))
-        .isEqualTo(sublineVersionModel);
-  }
-
-  @Test
   void shouldDeleteVersion() {
     // Given
     String slnid = "ch:1:slnid:10000";
@@ -125,8 +110,8 @@ class SublineControllerTest {
   void shouldUpdateVersionWithVersioning() {
     // Given
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    SublineVersionModel sublineVersionModel = createModel();
-    sublineVersionModel.setNumber("New name");
+    SublineVersionModelV2 sublineVersionModel = createModel();
+    sublineVersionModel.setLongName("New name");
 
     when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));
 

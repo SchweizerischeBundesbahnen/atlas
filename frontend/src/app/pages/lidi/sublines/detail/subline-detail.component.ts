@@ -7,7 +7,6 @@ import {
   SublineConcessionType,
   SublinesService,
   SublineType,
-  SublineVersion,
   SublineVersionV2,
 } from '../../../../api';
 import {catchError, EMPTY, Observable, of} from 'rxjs';
@@ -49,8 +48,8 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
 
   maxValidity!: DateRange;
 
-  versions!: SublineVersion[];
-  selectedVersion!: SublineVersion;
+  versions!: SublineVersionV2[];
+  selectedVersion!: SublineVersionV2;
 
   boSboidRestriction: string[] = [];
 
@@ -90,19 +89,9 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
 
   private initSelectedVersion() {
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
-    // this.form = SublineFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    this.form = SublineFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
       this.form.disable();
-    }
-  }
-
-  toggleEdit() {
-    if (this.form.enabled) {
-      this.detailHelperService.showCancelEditDialog(this);
-    } else {
-      this.isSwitchVersionDisabled = true;
-      this.validityService.initValidity(this.form);
-      this.form.enable({ emitEvent: false });
     }
   }
 
@@ -116,6 +105,16 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
       } else {
         this.boSboidRestriction = [];
       }
+    }
+  }
+
+  toggleEdit() {
+    if (this.form.enabled) {
+      this.detailHelperService.showCancelEditDialog(this);
+    } else {
+      this.isSwitchVersionDisabled = true;
+      this.validityService.initValidity(this.form);
+      this.form.enable({emitEvent: false});
     }
   }
 
@@ -144,7 +143,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
     }
   }
 
-  createSubline(sublineVersion:SublineVersion): void {
+  createSubline(sublineVersion: SublineVersionV2): void {
     this.sublinesService
       .createSublineVersion(sublineVersion)
       .pipe(catchError(this.handleError()))
@@ -156,7 +155,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
       });
   }
 
-  updateSubline(id:number, sublineVersion:SublineVersion): void {
+  updateSubline(id: number, sublineVersion: SublineVersionV2): void {
     this.sublinesService
       .updateSublineVersion(id, sublineVersion)
       .pipe(catchError(this.handleError()))
