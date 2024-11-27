@@ -121,6 +121,8 @@ frontend/.npmrc
 .idea/sonarlint/
 .idea/sqldialects.xml
 .idea/kubernetes-settings.xml
+.idea/gradle.xml
+.idea/kotlinc.xml
 
 /line-directory/export/
 /.export/
@@ -128,3 +130,5 @@ frontend/.npmrc
 /frontend/cypress-mochawesome-reporter.log
 *.bkp
 /.gradle/
+/build-logic/.gradle/
+/build-logic/.kotlin/
