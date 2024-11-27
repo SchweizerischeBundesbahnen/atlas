@@ -1,28 +1,10 @@
-import java.util.Date
+import java.util.*
 
 plugins {
-    id("io.spring.dependency-management") version "1.1.6"
     id("org.openapi.generator") version "7.10.0"
+    id("buildlogic.java-conventions")
 }
 
-group = "ch.sbb.atlas"
-version = "2.350.0"
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-    withSourcesJar()
-}
-
-
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-}
-
-extra["springCloudVersion"] = "2023.0.3"
 extra["swaggerCoreVersion"] = "2.2.25"
 extra["openapiStarterCommonVersion"] = "2.6.0"
 extra["hibernateVersion"] = "6.5.3.Final" //get from spring dependencies!!
@@ -43,12 +25,6 @@ dependencies {
 
     runtimeOnly("org.postgresql:postgresql")
 
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-    testCompileOnly("org.projectlombok:lombok")
-    testAnnotationProcessor("org.projectlombok:lombok")
-
-
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(project(":auto-rest-doc"))
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc:3.0.2")
@@ -58,37 +34,8 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-    }
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
 tasks.bootJar {
     enabled = false
-}
-
-publishing {
-    repositories {
-        maven("https://bin.sbb.ch/artifactory/" + System.getenv("ARTIFACTORY_REPO")) {
-            credentials {
-                username = System.getenv("ARTIFACTORY_USER")
-                password = System.getenv("ARTIFACTORY_PASS")
-            }
-        }
-    }
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-            artifactId = rootProject.name
-            groupId = project.group.toString()
-            version = project.version.toString()
-        }
-    }
 }
 
 springBoot {
