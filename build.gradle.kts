@@ -10,6 +10,12 @@ subprojects {
     apply(plugin = "io.spring.dependency-management")
 
     extra["springCloudVersion"] = "2023.0.3"
+    extra["awsS3Version"] = "2.29.1"
+    extra["swaggerCoreVersion"] = "2.2.25"
+    extra["openapiStarterCommonVersion"] = "2.6.0"
+    //Geo Data Libs
+    extra["proj4jVersion"] = "1.3.0"
+    extra["jtsVersion"] = "1.20.0"
 
     dependencyManagement {
         imports {
