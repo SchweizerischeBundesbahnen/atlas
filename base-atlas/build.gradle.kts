@@ -1,12 +1,5 @@
 plugins {
-    java
-    `java-library`
-    id("org.springframework.boot") version "3.3.4"
-    id("io.spring.dependency-management") version "1.1.6"
     id("org.openapi.generator") version "7.10.0"
-    jacoco
-    `maven-publish`
-    id("org.sonarqube") version "5.0.0.4638"
 }
 
 group = "ch.sbb.atlas"
@@ -25,11 +18,6 @@ configurations {
         extendsFrom(configurations.annotationProcessor.get())
     }
     create("test")
-}
-
-repositories {
-    mavenCentral()
-    maven { url = uri("https://repo.spring.io/milestone") }
 }
 
 extra["springCloudVersion"] = "2023.0.3"
@@ -104,7 +92,6 @@ tasks.withType<Test> {
 tasks.getByName("assemble").dependsOn("testJar")
 tasks.register<Jar>("testJar") {
     archiveFileName.set("base-atlas-$version-tests.jar")//use submodule name
-//    include("com/eulenspiegel/helpers/*")
     from(project.the<SourceSetContainer>()["test"].output)
 }
 artifacts {
