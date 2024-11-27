@@ -11,7 +11,8 @@
         </h2>
       } @else {
         <div class="font-bold-4xl detail-title mb-3">
-          {{ selectedVersion.number }}
+<!--          TODO: check what to show here  - mainLineNumber-->
+          {{ selectedVersion.swissSublineNumber }}
         </div>
         <div class="font-bold-xl mb-2">
           <span data-cy="detail-subheading-id">{{ selectedVersion.slnid }}</span>
@@ -113,23 +114,7 @@
       </div>
 
       <div class="col-12 d-flex">
-        <div class="d-flex flex-column col-4 pe-3">
-          <atlas-text-field
-            [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: '1', translate: false },
-            { label: ' |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
-          ]"
-            [formGroup]="form"
-            controlName="number"
-            fieldLabel="LIDI.SUBLINE.NUMBER"
-            infoIconTitle="LIDI.SUBLINE.NUMBER_INFO"
-          >
-          </atlas-text-field>
-        </div>
-
-        <div class="d-flex flex-column col-8">
+        <div class="d-flex flex-column col-12">
           <atlas-text-field
             [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
