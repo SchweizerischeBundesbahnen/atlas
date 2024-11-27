@@ -3,9 +3,6 @@ plugins {
     id("buildlogic.java-conventions")
 }
 
-extra["swaggerCoreVersion"] = "2.2.25"
-extra["openapiStarterCommonVersion"] = "2.6.0"
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")//need it?
     implementation("org.springframework.boot:spring-boot-starter-validation")

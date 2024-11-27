@@ -3,12 +3,9 @@ plugins {
     id("buildlogic.java-conventions")
 }
 
-extra["swaggerCoreVersion"] = "2.2.25"
-extra["openapiStarterCommonVersion"] = "2.6.0"
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.kafka:spring-kafka:3.3.0")//use spring boot dependency management
+    implementation("org.springframework.kafka:spring-kafka")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-logging")
     implementation("io.swagger.core.v3:swagger-core:${property("swaggerCoreVersion")}")
