@@ -4,6 +4,13 @@ import {DataCy} from '../data-cy';
 export default class TthUtils {
   public static TTH_CH_PLANNED_PATH = '/timetable-hearing/ch/';
 
+  public static ACTIVE_YEAR_MAX_COUNT = 1;
+  public static status = Object.freeze({
+    ACTIVE: 'ACTIVE',
+    PLANNED: 'PLANNED',
+    ARCHIVED: 'ARCHIVED'
+  });
+
   static archiveHearingIfAlreadyActive() {
     TthUtils.changeTabToTTH('ACTIVE');
     cy.window().then((win) => {
@@ -54,5 +61,20 @@ export default class TthUtils {
     cy.wait('@getRequest').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
     });
+  }
+
+  static postStatement(url: string, body: object) {
+    const statement = new FormData();
+    statement.append("statement", new Blob([JSON.stringify(body)], { type: "application/json" }), "statement");
+
+    return cy.request({
+      method: "POST",
+      url: Cypress.env('API_URL') + url,
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`,
+        "Content-Type": "multipart/form-data",
+      },
+      body: statement,
+    })
   }
 }

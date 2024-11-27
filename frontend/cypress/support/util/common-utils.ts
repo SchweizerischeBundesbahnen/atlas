@@ -337,4 +337,36 @@ export default class CommonUtils {
     cy.get(DataCy.CANCEL).click();
     cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
   }
+
+  static get (url: string) {
+    return cy.request({
+      method: 'GET',
+      url: Cypress.env('API_URL') + url,
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
+      }
+    });
+  }
+
+  static post (url: string, body: object = {}) {
+    return cy.request({
+      method: 'POST',
+      url: Cypress.env('API_URL') + url,
+      body: body,
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
+      }
+    });
+  }
+
+  static put (url: string, body: object) {
+    return cy.request({
+      method: 'PUT',
+      url: Cypress.env('API_URL') + url,
+      body: body,
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
+      }
+    });
+  }
 }
