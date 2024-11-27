@@ -533,7 +533,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
-            .sublineType(SublineType.TECHNICAL)
+            .sublineType(SublineType.TEMPORARY)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
     ReadSublineVersionModelV2 sublineVersionSaved = sublineController.createSublineVersion(sublineVersionModel);
