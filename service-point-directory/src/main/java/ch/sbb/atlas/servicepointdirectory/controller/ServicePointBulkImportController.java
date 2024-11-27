@@ -28,9 +28,11 @@ public class ServicePointBulkImportController extends BaseBulkImportController i
   }
 
   @Override
+  @PreAuthorize("""
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportCreate(List<BulkImportUpdateContainer<ServicePointCreateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,
-            servicePointBulkImportService::updateServicePointByUserName,
-            servicePointBulkImportService::create);
+            servicePointBulkImportService::createServicePointByUserName,
+            servicePointBulkImportService::createServicePoint);
   }
 }
