@@ -26,7 +26,8 @@
               </mat-label>
               <div class="mat-label-form-field-space-between"></div>
               <ng-template #labelOptionTemplates let-item>
-                {{ item | mainlineSelectOption }}
+                <b>{{item.number}}</b>
+                {{ item | mainlineDescription }}
               </ng-template>
             </form-search-select>
           </div>

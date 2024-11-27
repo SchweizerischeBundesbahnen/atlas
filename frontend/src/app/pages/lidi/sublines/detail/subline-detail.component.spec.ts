@@ -8,7 +8,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {AppTestingModule} from '../../../../app.testing.module';
 import {InfoIconComponent} from '../../../../core/form-components/info-icon/info-icon.component';
 import {adminPermissionServiceMock, MockAppDetailWrapperComponent, MockBoSelectComponent,} from '../../../../app.testing.mocks';
-import {MainlineSelectOptionPipe} from './mainline-select-option.pipe';
+import {MainlineDescriptionPipe} from './mainline-description.pipe';
 import {TranslatePipe} from '@ngx-translate/core';
 import {LinkIconComponent} from '../../../../core/form-components/link-icon/link-icon.component';
 import {AtlasLabelFieldComponent} from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
@@ -191,7 +191,7 @@ function setupTestBed(
       InfoIconComponent,
       LinkIconComponent,
       SearchSelectComponent,
-      MainlineSelectOptionPipe,
+      MainlineDescriptionPipe,
       AtlasLabelFieldComponent,
       AtlasFieldErrorComponent,
       TextFieldComponent,
