@@ -107,7 +107,17 @@
           "enabled": true
         },
         "failOnQualityGateFailure": true
-      }
+      },
+      "tasks": [
+        {
+          "name": "change-gradle-permissions",
+          "taskRef": "esta-custom-exec",
+          "params": {
+            "SCRIPT": "chmod +x gradlew"
+          },
+          "runAfter": "git-clone"
+        }
+      ]
     },
     {
       "name": "manualRelease",
@@ -115,6 +125,14 @@
         "master"
       ],
       "tasks": [
+        {
+          "name": "change-gradle-permissions",
+          "taskRef": "esta-custom-exec",
+          "params": {
+            "SCRIPT": "chmod +x gradlew"
+          },
+          "runAfter": "git-clone"
+        },
         {
           "name": "atlas-start-deploy-dev-pipeline",
           "taskRef": "atlas-start-pipeline",
@@ -179,6 +197,14 @@
         "GITEVENT"
       ],
       "tasks": [
+        {
+          "name": "change-gradle-permissions",
+          "taskRef": "esta-custom-exec",
+          "params": {
+            "SCRIPT": "chmod +x gradlew"
+          },
+          "runAfter": "git-clone"
+        },
         {
           "name": "atlas-start-deploy-dev-pipeline",
           "taskRef": "atlas-start-pipeline",
