@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { Coverage } from '../model/models';
 import { ErrorResponse } from '../model/models';
+import { ReadSublineVersionV2 } from '../model/models';
 import { SublineVersion } from '../model/models';
 import { SublineVersionV2 } from '../model/models';
 
@@ -88,16 +89,16 @@ export class SublinesService {
     }
 
     /**
-     * @param sublineVersion 
+     * @param sublineVersionV2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createSublineVersion(sublineVersion: SublineVersion, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<SublineVersion>;
-    public createSublineVersion(sublineVersion: SublineVersion, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<SublineVersion>>;
-    public createSublineVersion(sublineVersion: SublineVersion, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<SublineVersion>>;
-    public createSublineVersion(sublineVersion: SublineVersion, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (sublineVersion === null || sublineVersion === undefined) {
-            throw new Error('Required parameter sublineVersion was null or undefined when calling createSublineVersion.');
+    public createSublineVersion(sublineVersionV2: SublineVersionV2, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ReadSublineVersionV2>;
+    public createSublineVersion(sublineVersionV2: SublineVersionV2, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ReadSublineVersionV2>>;
+    public createSublineVersion(sublineVersionV2: SublineVersionV2, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ReadSublineVersionV2>>;
+    public createSublineVersion(sublineVersionV2: SublineVersionV2, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (sublineVersionV2 === null || sublineVersionV2 === undefined) {
+            throw new Error('Required parameter sublineVersionV2 was null or undefined when calling createSublineVersion.');
         }
 
         let headers = this.defaultHeaders;
@@ -129,8 +130,8 @@ export class SublinesService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<SublineVersion>(`${this.configuration.basePath}/line-directory/v1/sublines/versions`,
-            sublineVersion,
+        return this.httpClient.post<ReadSublineVersionV2>(`${this.configuration.basePath}/line-directory/v1/sublines/versions`,
+            sublineVersionV2,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -407,9 +408,9 @@ export class SublinesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSublineVersionV2(slnid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<SublineVersionV2>>;
-    public getSublineVersionV2(slnid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<SublineVersionV2>>>;
-    public getSublineVersionV2(slnid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<SublineVersionV2>>>;
+    public getSublineVersionV2(slnid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<ReadSublineVersionV2>>;
+    public getSublineVersionV2(slnid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<ReadSublineVersionV2>>>;
+    public getSublineVersionV2(slnid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<ReadSublineVersionV2>>>;
     public getSublineVersionV2(slnid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (slnid === null || slnid === undefined) {
             throw new Error('Required parameter slnid was null or undefined when calling getSublineVersionV2.');
@@ -435,7 +436,7 @@ export class SublinesService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<Array<SublineVersionV2>>(`${this.configuration.basePath}/line-directory/v2/sublines/versions/${encodeURIComponent(String(slnid))}`,
+        return this.httpClient.get<Array<ReadSublineVersionV2>>(`${this.configuration.basePath}/line-directory/v2/sublines/versions/${encodeURIComponent(String(slnid))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -493,19 +494,19 @@ export class SublinesService {
 
     /**
      * @param id 
-     * @param sublineVersion 
+     * @param sublineVersionV2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateSublineVersion(id: number, sublineVersion: SublineVersion, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<SublineVersion>>;
-    public updateSublineVersion(id: number, sublineVersion: SublineVersion, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<SublineVersion>>>;
-    public updateSublineVersion(id: number, sublineVersion: SublineVersion, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<SublineVersion>>>;
-    public updateSublineVersion(id: number, sublineVersion: SublineVersion, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public updateSublineVersion(id: number, sublineVersionV2: SublineVersionV2, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<ReadSublineVersionV2>>;
+    public updateSublineVersion(id: number, sublineVersionV2: SublineVersionV2, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<ReadSublineVersionV2>>>;
+    public updateSublineVersion(id: number, sublineVersionV2: SublineVersionV2, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<ReadSublineVersionV2>>>;
+    public updateSublineVersion(id: number, sublineVersionV2: SublineVersionV2, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateSublineVersion.');
         }
-        if (sublineVersion === null || sublineVersion === undefined) {
-            throw new Error('Required parameter sublineVersion was null or undefined when calling updateSublineVersion.');
+        if (sublineVersionV2 === null || sublineVersionV2 === undefined) {
+            throw new Error('Required parameter sublineVersionV2 was null or undefined when calling updateSublineVersion.');
         }
 
         let headers = this.defaultHeaders;
@@ -537,8 +538,8 @@ export class SublinesService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<Array<SublineVersion>>(`${this.configuration.basePath}/line-directory/v1/sublines/versions/${encodeURIComponent(String(id))}`,
-            sublineVersion,
+        return this.httpClient.post<Array<ReadSublineVersionV2>>(`${this.configuration.basePath}/line-directory/v1/sublines/versions/${encodeURIComponent(String(id))}`,
+            sublineVersionV2,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
