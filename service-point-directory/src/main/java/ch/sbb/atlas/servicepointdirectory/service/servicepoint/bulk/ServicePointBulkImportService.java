@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk;
 
+import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
@@ -43,14 +44,16 @@ public class ServicePointBulkImportService {
     servicePointApiClient.updateServicePoint(currentVersion.getId(), updateModel);
   }
 
+  @RunAsUser
+  public void createServicePointByUserName(@RunAsUserParameter String userName, BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
+    log.info("Update versions in name of the user: {}", userName);
+    createServicePoint(bulkImportContainer);
+  }
+
   public void createServicePoint(BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
-    ServicePointCreateCsvModel servicePointUpdate = bulkImportContainer.getObject();
+    CreateServicePointVersionModel createModel = ServicePointBulkImportCreate.apply(bulkImportContainer);
+    servicePointApiClient.createServicePoint(createModel);
 
-    //TODO create ServicePointCreateModel
-    //TODO create mapper
-    //TODO create servicePointbulkimportcreate
-
-    //servicePointApiClient.createServicePoint();
   }
 
   private List<ServicePointVersion> getCurrentVersions(ServicePointUpdateCsvModel servicePointUpdate) {
