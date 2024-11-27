@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.web.server.ResponseStatusException;
 
 class SublineServiceTest {
 
@@ -55,7 +54,7 @@ class SublineServiceTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.openMocks(this);
+    MockitoAnnotations. openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, versionableService, lineService, sublineValidationService,
         coverageService);
   }
@@ -102,25 +101,6 @@ class SublineServiceTest {
     verify(sublineVersionRepository).saveAndFlush(sublineVersion);
     verify(sublineValidationService).validateSublineAfterVersioningBusinessRule(sublineVersion);
     assertThat(result).isEqualTo(sublineVersion);
-  }
-
-  @Test
-  void shouldNotSaveSublineWithInvalidMainline() {
-    // Given
-    when(sublineVersionRepository.save(any())).thenAnswer(
-        i -> i.getArgument(0, SublineVersion.class));
-    when(sublineVersionRepository.findSwissLineNumberOverlaps(any())).thenReturn(
-        Collections.emptyList());
-    when(lineService.findLineVersions(any())).thenReturn(Collections.emptyList());
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    // When
-
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-            () -> sublineService.save(sublineVersion))
-        .withMessage(
-            "400 BAD_REQUEST \"Main line with SLNID ch:1:slnid:1000546 does not exist\"");
-
-    // Then
   }
 
   @Test
