@@ -11,8 +11,8 @@ management:
 info:
   app:
     name: location
-    version: @version@
-    buildtime: @timestamp@
+    version: ${version}
+    buildtime: ${time}
 
 spring:
   datasource:
