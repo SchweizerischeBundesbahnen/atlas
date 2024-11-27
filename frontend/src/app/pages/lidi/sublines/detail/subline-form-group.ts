@@ -15,7 +15,6 @@ export interface SublineFormGroup extends BaseDetailFormGroup {
   sublineType: FormControl<SublineType | null| undefined>;
   sublineConcessionType: FormControl<SublineConcessionType | null| undefined>;
   businessOrganisation: FormControl<string | null | undefined>;
-  number: FormControl<string | null | undefined>;
   longName: FormControl<string | null | undefined>;
   description: FormControl<string | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
@@ -37,11 +36,6 @@ export class SublineFormGroupBuilder {
         sublineConcessionType: new FormControl(version?.sublineConcessionType),
         businessOrganisation: new FormControl(version?.businessOrganisation, [
           Validators.required,
-          AtlasFieldLengthValidator.length_50,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        number: new FormControl(version?.mainSwissLineNumber, [
           AtlasFieldLengthValidator.length_50,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
