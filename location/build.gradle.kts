@@ -5,10 +5,6 @@ plugins {
     id("buildlogic.java-conventions")
 }
 
-extra["swaggerCoreVersion"] = "2.2.25"
-extra["openapiStarterCommonVersion"] = "2.6.0"
-extra["hibernateVersion"] = "6.5.3.Final" //get from spring dependencies!!
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -20,14 +16,14 @@ dependencies {
 
     //to remove?
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.security:spring-security-oauth2-client:6.4.1")
-    implementation("org.springframework.security:spring-security-oauth2-authorization-server:1.4.0")
+    implementation("org.springframework.security:spring-security-oauth2-client")
+    implementation("org.springframework.security:spring-security-oauth2-authorization-server")
 
     runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(project(":auto-rest-doc"))
-    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc:3.0.2")
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.testcontainers:postgresql")
     testImplementation(project(":base-atlas", "test"))
 
