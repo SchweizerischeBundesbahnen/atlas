@@ -45,6 +45,7 @@ public class LineSearchRestrictions extends SearchRestrictions<Line> {
         .and(specificationBuilder().validOnSpecification(Optional.ofNullable(lineRequestParams.getValidOn())))
         .and(specificationBuilder().enumSpecification(getStatusRestrictions(), getStatus()))
         .and(specificationBuilder().enumSpecification(lineRequestParams.getTypeRestrictions(), Line_.lidiElementType))
+        .and(specificationBuilder().enumSpecification(lineRequestParams.getElementRestrictions(), Line_.elementType))
         .and(specificationBuilder().singleStringSpecification(Optional.ofNullable(lineRequestParams.getSwissLineNumber())))
         .and(specificationBuilder().singleStringSpecification(Optional.ofNullable(lineRequestParams.getBusinessOrganisation())))
         .and(new ValidOrEditionTimerangeSpecification<>(
