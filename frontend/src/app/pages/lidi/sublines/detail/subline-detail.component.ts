@@ -145,7 +145,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
 
   createSubline(sublineVersion: SublineVersionV2): void {
     this.sublinesService
-      .createSublineVersion(sublineVersion)
+      .createSublineVersionV2(sublineVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((version) => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS');
@@ -157,7 +157,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
 
   updateSubline(id: number, sublineVersion: SublineVersionV2): void {
     this.sublinesService
-      .updateSublineVersion(id, sublineVersion)
+      .updateSublineVersionV2(id, sublineVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
