@@ -71,7 +71,7 @@
                   }}
                 </mat-label>
                 <div class="mat-label-form-field-space-between"></div>
-                <ng-template let-item>
+                <ng-template #labelOptionTemplates let-item>
                   <b>{{ item.number }}</b>
                   {{ item | mainlineDescription }}
                 </ng-template>
