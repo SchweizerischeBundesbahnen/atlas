@@ -70,7 +70,6 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
     private StopPointType stopPointType;
 
     @DefaultMapping
-    @Nulling
     private boolean freightServicePoint;
 
     @DefaultMapping
