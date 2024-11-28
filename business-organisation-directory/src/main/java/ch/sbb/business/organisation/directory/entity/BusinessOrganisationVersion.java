@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.model.entity.BusinessIdGeneration;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
@@ -35,10 +36,11 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "business_organisation_version")
 @AtlasVersionable
+@Redacted
 public class BusinessOrganisationVersion extends BaseVersion implements Versionable {
 
   private static final String BUSINESS_ORGANISATION_VERSION_SEQ = "business_organisation_version_seq";
@@ -100,6 +102,7 @@ public class BusinessOrganisationVersion extends BaseVersion implements Versiona
 
   @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Redacted
   private String contactEnterpriseEmail;
 
   @AtlasVersionableProperty
