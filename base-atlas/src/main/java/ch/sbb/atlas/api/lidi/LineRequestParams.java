@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.lidi;
 
+import ch.sbb.atlas.api.lidi.enumaration.ElementType;
 import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.model.Status;
@@ -36,6 +37,10 @@ public class LineRequestParams extends VersionedObjectDateRequestParams {
   @Parameter(description = "Filter on the ElementType.")
   @Singular(ignoreNullCollections = true)
   private List<LidiElementType> typeRestrictions = new ArrayList<>();
+
+  @Parameter(description = "Filter on the Element.")
+  @Singular(ignoreNullCollections = true)
+  private List<ElementType> elementRestrictions = new ArrayList<>();
 
   @Parameter(description = "Filter for a business organisation.")
   private String businessOrganisation;

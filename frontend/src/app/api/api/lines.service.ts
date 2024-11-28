@@ -21,6 +21,7 @@ import { ContainerLine } from '../model/models';
 import { ContainerLineVersionSnapshot } from '../model/models';
 import { Coverage } from '../model/models';
 import { CreateLineVersionV2 } from '../model/models';
+import { ElementType } from '../model/models';
 import { ErrorResponse } from '../model/models';
 import { LidiElementType } from '../model/models';
 import { Line } from '../model/models';
@@ -763,6 +764,7 @@ export class LinesService {
      * @param searchCriteria Search for a string in Line attributes.
      * @param statusRestrictions Filter on the Status of a Line.
      * @param typeRestrictions Filter on the ElementType.
+     * @param elementRestrictions Filter on the Element.
      * @param businessOrganisation Filter for a business organisation.
      * @param validOn ValidOn. Date format: yyyy-MM-dd
      * @param fromDate [fromDate] &lt;&#x3D; validFrom. Filters for all versions where validFrom is bigger or equal than fromDate. Date format: yyyy-MM-dd
@@ -776,10 +778,10 @@ export class LinesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLines(swissLineNumber?: string, searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<LidiElementType>, businessOrganisation?: string, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerLine>;
-    public getLines(swissLineNumber?: string, searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<LidiElementType>, businessOrganisation?: string, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerLine>>;
-    public getLines(swissLineNumber?: string, searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<LidiElementType>, businessOrganisation?: string, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerLine>>;
-    public getLines(swissLineNumber?: string, searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<LidiElementType>, businessOrganisation?: string, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getLines(swissLineNumber?: string, searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<LidiElementType>, elementRestrictions?: Array<ElementType>, businessOrganisation?: string, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerLine>;
+    public getLines(swissLineNumber?: string, searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<LidiElementType>, elementRestrictions?: Array<ElementType>, businessOrganisation?: string, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerLine>>;
+    public getLines(swissLineNumber?: string, searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<LidiElementType>, elementRestrictions?: Array<ElementType>, businessOrganisation?: string, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerLine>>;
+    public getLines(swissLineNumber?: string, searchCriteria?: Array<string>, statusRestrictions?: Array<Status>, typeRestrictions?: Array<LidiElementType>, elementRestrictions?: Array<ElementType>, businessOrganisation?: string, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (swissLineNumber !== undefined && swissLineNumber !== null) {
@@ -802,6 +804,12 @@ export class LinesService {
             typeRestrictions.forEach((element) => {
                 queryParameters = this.addToHttpParams(queryParameters,
                   <any>element, 'typeRestrictions');
+            })
+        }
+        if (elementRestrictions) {
+            elementRestrictions.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'elementRestrictions');
             })
         }
         if (businessOrganisation !== undefined && businessOrganisation !== null) {
