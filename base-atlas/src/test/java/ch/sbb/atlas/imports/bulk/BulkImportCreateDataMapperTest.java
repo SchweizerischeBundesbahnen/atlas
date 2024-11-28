@@ -66,20 +66,20 @@ class BulkImportCreateDataMapperTest {
 
   @Test
   void shouldApplyNullingAndThrowExceptionOnUnallowedProperty() {
-    BulkImportUpdateContainer<ServicePointUpdateCsvModel> container =
-        BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
-            .object(ServicePointUpdateCsvModel.builder()
-                .sloid("sloid")
-                .validFrom(LocalDate.of(2014, 12, 14))
-                .validTo(LocalDate.of(2021, 3, 31))
-                .meansOfTransport(Set.of(MeanOfTransport.BUS))
-                .build())
+    BulkImportUpdateContainer<ServicePointCreateCsvModel> container =
+        BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
+            .object(ServicePointCreateCsvModel.builder()
+                    .numberShort(6000)
+                    .businessOrganisation("ch:1:sboid:100001")
+                    .validFrom(LocalDate.of(2014, 12, 14))
+                    .validTo(LocalDate.of(2021, 3, 31))
+                    .designationOfficial("BulkImportCreate")
+                    .meansOfTransport(Set.of(MeanOfTransport.BUS))
+                    .build())
             .attributesToNull(List.of(Fields.businessOrganisation))
             .build();
-    UpdateServicePointVersionModel currentEntity = UpdateServicePointVersionModel.builder().build();
 
-    assertThatExceptionOfType(AttributeNullingNotSupportedException.class).isThrownBy(() -> mapper.applyUpdate(container,
-        currentEntity, new UpdateServicePointVersionModel()));
+    assertThatExceptionOfType(AttributeNullingNotSupportedException.class).isThrownBy(() -> mapper.applyCreate(container, new CreateServicePointVersionModel()));
   }
 
   private static class DummyBulkImportCreateDataMapper extends BulkImportCreateDataMapper<ServicePointCreateCsvModel,
