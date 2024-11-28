@@ -5,7 +5,7 @@ import {
   ElementType,
   LidiElementType,
   Line,
-  LinesService,
+  LinesService, ReadSublineVersionV2,
   SublineConcessionType,
   SublinesService,
   SublineType,
@@ -49,8 +49,8 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
 
   maxValidity!: DateRange;
 
-  versions!: SublineVersionV2[];
-  selectedVersion!: SublineVersionV2;
+  versions!: ReadSublineVersionV2[];
+  selectedVersion!: ReadSublineVersionV2;
 
   boSboidRestriction: string[] = [];
 
@@ -82,6 +82,8 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
       this.mainlines$ = this.linesService
         .getLine(this.selectedVersion.mainlineSlnid)
         .pipe(map((value) => [value]));
+
+      this.TYPE_OPTIONS=[this.form.controls.sublineType.value!]
     }
     this.initBoSboidRestriction();
   }
@@ -114,6 +116,9 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
       this.isSwitchVersionDisabled = true;
       this.validityService.initValidity(this.form);
       this.form.enable({emitEvent: false});
+
+      this.form.controls.mainlineSlnid.disable();
+      this.form.controls.sublineType.disable();
     }
   }
 
@@ -126,7 +131,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const sublineVersion = this.form.value as unknown as SublineVersionV2;
+      const sublineVersion = this.form.getRawValue() as unknown as SublineVersionV2;
       this.form.disable();
       if (this.isNew) {
         this.createSubline(sublineVersion);
