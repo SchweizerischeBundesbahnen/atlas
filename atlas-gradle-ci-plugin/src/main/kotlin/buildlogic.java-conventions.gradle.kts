@@ -7,10 +7,18 @@ plugins {
     jacoco
     `java-library`
     `maven-publish`
+    id("org.sonarqube")
 }
 
 group = "ch.sbb.atlas"
 version = "2.350.0"
+
+extra["awsS3Version"] = "2.29.1"
+extra["swaggerCoreVersion"] = "2.2.25"
+extra["openapiStarterCommonVersion"] = "2.6.0"
+//Geo Data Libs
+extra["proj4jVersion"] = "1.3.0"
+extra["jtsVersion"] = "1.20.0"
 
 java {
     toolchain {
@@ -23,6 +31,11 @@ configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = uri("https://repo.spring.io/milestone") }
 }
 
 dependencies {
