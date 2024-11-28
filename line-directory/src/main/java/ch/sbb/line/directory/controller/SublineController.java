@@ -1,17 +1,13 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.api.lidi.CoverageModel;
-import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.SublineApiV1;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
-import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.mapper.CoverageMapper;
-import ch.sbb.line.directory.mapper.SublineMapper;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
 import ch.sbb.line.directory.service.export.SublineVersionExportService;
@@ -55,24 +51,20 @@ public class SublineController implements SublineApiV1 {
   }
 
   @Override
-  public ReadSublineVersionModelV2 createSublineVersion(SublineVersionModelV2 newSublineVersion) {
-    SublineVersion sublineVersion = SublineMapper.toEntity(newSublineVersion);
+  public SublineVersionModel createSublineVersion(SublineVersionModel newSublineVersion) {
+    SublineVersion sublineVersion = toEntity(newSublineVersion);
     sublineVersion.setStatus(Status.VALIDATED);
     SublineVersion createdVersion = sublineService.create(sublineVersion);
-
-    LineVersion lineVersion = sublineService.getMainLineVersion(sublineVersion.getMainlineSlnid());
-    return SublineMapper.toModel(createdVersion, lineVersion);
+    return toModel(createdVersion);
   }
 
   @Override
-  public List<ReadSublineVersionModelV2> updateSublineVersion(Long id, SublineVersionModelV2 newVersion) {
+  public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
     SublineVersion versionToUpdate = sublineService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
-    sublineService.update(versionToUpdate, SublineMapper.toEntity(newVersion),
-        sublineService.findSubline(versionToUpdate.getSlnid()));
-
-    LineVersion lineVersion = sublineService.getMainLineVersion(versionToUpdate.getMainlineSlnid());
-    return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(i -> SublineMapper.toModel(i, lineVersion))
+    sublineService.update(versionToUpdate, toEntity(newVersion), sublineService.findSubline(
+        versionToUpdate.getSlnid()));
+    return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .toList();
   }
 
@@ -125,4 +117,25 @@ public class SublineController implements SublineApiV1 {
         .build();
   }
 
+  private SublineVersion toEntity(SublineVersionModel sublineVersionModel) {
+    return SublineVersion.builder()
+        .id(sublineVersionModel.getId())
+        .swissSublineNumber(sublineVersionModel.getSwissSublineNumber())
+        .mainlineSlnid(sublineVersionModel.getMainlineSlnid())
+        .sublineType(sublineVersionModel.getSublineType())
+        .slnid(sublineVersionModel.getSlnid())
+        .description(sublineVersionModel.getDescription())
+        .number(sublineVersionModel.getNumber())
+        .longName(sublineVersionModel.getLongName())
+        .paymentType(sublineVersionModel.getPaymentType())
+        .validFrom(sublineVersionModel.getValidFrom())
+        .validTo(sublineVersionModel.getValidTo())
+        .businessOrganisation(sublineVersionModel.getBusinessOrganisation())
+        .creationDate(sublineVersionModel.getCreationDate())
+        .creator(sublineVersionModel.getCreator())
+        .editionDate(sublineVersionModel.getEditionDate())
+        .editor(sublineVersionModel.getEditor())
+        .version(sublineVersionModel.getEtagVersion())
+        .build();
+  }
 }
