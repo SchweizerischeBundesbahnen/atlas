@@ -11,9 +11,6 @@
  */
 
 
-/**
- * Line or Subline Type
- */
 export type ElementType = 'LINE' | 'SUBLINE';
 
 export const ElementType = {
