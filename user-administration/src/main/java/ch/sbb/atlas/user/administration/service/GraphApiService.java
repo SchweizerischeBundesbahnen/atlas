@@ -3,6 +3,7 @@ package ch.sbb.atlas.user.administration.service;
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
 import ch.sbb.atlas.model.AtlasListUtil;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.atlas.user.administration.mapper.GraphApiUserMapper;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.models.UserCollectionResponse;
@@ -42,6 +43,7 @@ public class GraphApiService {
     });
   }
 
+  @Redacted
   public List<UserModel> resolveUsers(List<String> userIds) {
     List<UserModel> result = new ArrayList<>();
     AtlasListUtil.getPartitionedSublists(userIds, RESOLVE_CHUNK_SIZE)

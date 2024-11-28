@@ -5,10 +5,12 @@ import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 
 import ch.sbb.atlas.configuration.BaseSecurityConfig;
 import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.redact.RedactConfig;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -29,6 +31,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @Configuration
+@Import(RedactConfig.class)
 public class SecurityConfig {
 
   @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
@@ -58,13 +61,13 @@ public class SecurityConfig {
                 // Security Expressions</a>
                 // In order to use these annotations, you have to enable global-method-security using
                 // <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
-                .requestMatchers(HttpMethod.GET, "/v1/users/current").authenticated()
-                .requestMatchers(HttpMethod.GET, "/v1/users/*/displayname").authenticated()
-                .requestMatchers(HttpMethod.GET, "/v1/users/display-info").authenticated()
-                .requestMatchers(HttpMethod.GET, "/v1/search-in-atlas").authenticated()
-                .requestMatchers("/**").hasAnyRole(Role.ATLAS_ADMIN)
                 .requestMatchers(HttpMethod.GET, "/static/**").permitAll()
-                .anyRequest().authenticated()
+                // Allowed for atlas-internal
+                .requestMatchers(HttpMethod.GET, "/v1/users/current", "/v1/users/*/displayname",
+                    "/v1/users/display-info", "/v1/search-in-atlas").hasAnyRole(Role.ATLAS_INTERNAL)
+                // Others only for atlas-admin
+                .requestMatchers("/**").hasRole(Role.ATLAS_ADMIN)
+                .anyRequest().hasRole(Role.ATLAS_ADMIN)
         )
 
         // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth
