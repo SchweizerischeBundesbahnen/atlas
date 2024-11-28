@@ -17,5 +17,5 @@ If you ever have to deploy a hotfix to atlas follow this easy guide:
 10. You can now deploy 2.344.1 to the stages you want
 
 ## Merge changes to master
-11. Don't forget: Delete the tekton version upgrade from the branch via `git rebase` and make sure to merge it to the master 
+11. Don't forget: Revert the tekton version upgrade from the branch via `git revert` and make sure to merge it to the master 
     branch!

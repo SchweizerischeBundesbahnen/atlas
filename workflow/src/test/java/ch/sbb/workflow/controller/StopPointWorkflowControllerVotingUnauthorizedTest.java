@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.model.controller.TestcontainersConfiguration;
 import ch.sbb.atlas.model.controller.WithUnauthorizedMockJwtAuthentication;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Decision;
@@ -26,6 +27,7 @@ import ch.sbb.workflow.service.sepodi.SePoDiClientService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +37,7 @@ import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @WithUnauthorizedMockJwtAuthentication
 @ActiveProfiles("integration-test")
+@Import(TestcontainersConfiguration.class)
 @EmbeddedKafka
 @Transactional
 class StopPointWorkflowControllerVotingUnauthorizedTest {
@@ -156,6 +160,10 @@ class StopPointWorkflowControllerVotingUnauthorizedTest {
     // Workflow is approved
     ReadStopPointWorkflowModel stopPointWorkflow = controller.getStopPointWorkflow(workflowInHearing.getId());
     assertThat(stopPointWorkflow.getStatus()).isEqualTo(WorkflowStatus.APPROVED);
+
+    // Mails are redacted for unauthorized user
+    List<String> examinantMails = stopPointWorkflow.getExaminants().stream().map(StopPointClientPersonModel::getMail).toList();
+    assertThat(examinantMails).containsExactlyInAnyOrder("m*****", "j*****");
   }
 
 }

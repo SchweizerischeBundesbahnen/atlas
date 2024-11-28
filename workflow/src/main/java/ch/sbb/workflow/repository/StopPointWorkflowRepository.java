@@ -32,6 +32,13 @@ public interface StopPointWorkflowRepository extends JpaRepository<StopPointWork
 
   @Query(value = """
       select spw.* from stop_point_workflow spw
+      join person on spw.id = person.stop_point_workflow_id
+      where person.id = :personId
+      """, nativeQuery = true)
+  Optional<StopPointWorkflow> findByPersonId(Long personId);
+
+  @Query(value = """
+      select spw.* from stop_point_workflow spw
       where spw.status =:#{#status.toString()}
       """, nativeQuery = true)
   List<StopPointWorkflow> findWorkflowsByStatus(@Param("status") WorkflowStatus status);
