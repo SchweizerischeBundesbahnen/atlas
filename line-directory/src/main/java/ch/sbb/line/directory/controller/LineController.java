@@ -50,7 +50,7 @@ public class LineController implements LineApiV1 {
 
   @Override
   public Container<LineModel> getLines(Pageable pageable, LineRequestParams lineRequestParams) {
-    log.info("Load Versions using pageable={}", pageable);
+    log.info("Load Versions using pageable={}, params={}", pageable, lineRequestParams);
     Page<Line> lines = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(pageable)
         .lineRequestParams(lineRequestParams)
