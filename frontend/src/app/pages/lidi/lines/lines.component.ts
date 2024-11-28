@@ -99,6 +99,7 @@ export class LinesComponent implements OnInit, OnDestroy {
         undefined,
         undefined,
         undefined,
+        undefined,
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'slnid,asc')

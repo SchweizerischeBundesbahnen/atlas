@@ -40,10 +40,10 @@
           </div>
         </div>
 
-        <div class="form-title-section">
+        <div class="form-title-section my-5">
           <h2 class="font-bold-2xl color-gray-900">
             {{ 'LIDI.SUBLINE.DETAIL_SUBLINE_INFORMATION' | translate }} - {{ 'COMMON.VERSION' | translate }}
-            {{ selectedVersionIndex }}
+            {{ selectedVersionIndex + 1 }}
           </h2>
           <div>
             <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
@@ -64,6 +64,7 @@
                 [controlName]="mainlineSlnidFormControlName"
                 [formGroup]="form"
                 [items$]="mainlines$"
+                (changeTrigger)="mainLineChanged($event)"
                 data-cy="mainline"
               >
                 <mat-label class="font-bold-lg required-indicator">{{
@@ -87,6 +88,7 @@
 
         <div class="d-flex flex-column col-3 pe-3">
           <atlas-select
+            *ngIf="TYPE_OPTIONS.length>0"
             [formGroup]="form"
             controlName="sublineType"
             dataCy="type"
@@ -100,6 +102,7 @@
 
         <div class="d-flex flex-column col-3">
           <atlas-select
+            *ngIf="form.controls.sublineType.value === 'CONCESSION'"
             [formGroup]="form"
             controlName="sublineConcessionType"
             dataCy="sublineConcessionType"
@@ -188,6 +191,13 @@
             data-cy="businessOrganisation"
           ></bo-select>
         </div>
+      </div>
+
+      <div class="mt-5">
+        <app-user-detail-info
+          *ngIf="!isNew"
+          [record]="selectedVersion"
+        ></app-user-detail-info>
       </div>
     </div>
   </atlas-detail-page-content>
