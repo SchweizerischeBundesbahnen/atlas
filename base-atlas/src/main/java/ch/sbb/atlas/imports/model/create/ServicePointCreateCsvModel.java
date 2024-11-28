@@ -39,17 +39,10 @@ import java.util.Set;
 @FieldNameConstants
 @EqualsAndHashCode
 @JsonPropertyOrder({Fields.numberShort, Fields.uicCountryCode, Fields.validFrom, Fields.validTo, Fields.designationOfficial,
-        Fields.designationLong, Fields.stopPointType, Fields.freightServicePoint, Fields.borderPoint, Fields.operatingPointType,
+        Fields.designationLong, Fields.stopPointType, Fields.freightServicePoint, Fields.operatingPointType,
         Fields.operatingPointTechnicalTimetableType, Fields.meansOfTransport, Fields.categories,
-        Fields.operatingPointTrafficPointType, Fields.sortCodeOfDestinationStation, Fields.businessOrganisation, Fields.fotComment,
+        Fields.operatingPointTrafficPointType, Fields.sortCodeOfDestinationStation, Fields.businessOrganisation,
         Fields.east, Fields.north, Fields.spatialReference, Fields.height})
-@CopyFromCurrentVersion({
-        @Mapping(target = "id", current = "id"),
-        @Mapping(target = "etagVersion", current = "version"),
-        @Mapping(target = "abbreviation", current = "abbreviation"),
-        @Mapping(target = "operatingPointRouteNetwork", current = "operatingPointRouteNetwork"),
-        @Mapping(target = "operatingPointKilometerMasterNumber", current = "operatingPointKilometerMaster.value")
-})
 public class ServicePointCreateCsvModel implements Validatable<ServicePointCreateCsvModel>, UpdateGeolocationModel {
 
     @DefaultMapping
@@ -68,41 +61,44 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
     @DefaultMapping
     private String designationOfficial;
 
+    @DefaultMapping
     @Nulling
     private String designationLong;
 
+    @DefaultMapping
     @Nulling
     private StopPointType stopPointType;
 
+    @DefaultMapping
     @Nulling
-    private Boolean freightServicePoint;
+    private boolean freightServicePoint;
 
-    @Nulling
-    private Boolean borderPoint;
-
+    @DefaultMapping
     @Nulling
     private OperatingPointType operatingPointType;
 
+    @DefaultMapping
     @Nulling
     private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
+    @DefaultMapping
     @Nulling
     private Set<MeanOfTransport> meansOfTransport;
 
+    @DefaultMapping
     @Nulling
     private Set<Category> categories;
 
+    @DefaultMapping
     @Nulling
     private OperatingPointTrafficPointType operatingPointTrafficPointType;
 
+    @DefaultMapping
     @Nulling
     private String sortCodeOfDestinationStation;
 
     @DefaultMapping
     private String businessOrganisation;
-
-    @Nulling
-    private String fotComment;
 
     @Nulling(property = "servicePointGeolocation")
     private Double east;
