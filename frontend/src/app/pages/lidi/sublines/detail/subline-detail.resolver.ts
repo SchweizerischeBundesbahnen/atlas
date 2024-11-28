@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import { SublinesService, SublineVersion } from '../../../../api';
+import {ReadSublineVersionV2, SublinesService, SublineVersion} from '../../../../api';
 import { Pages } from '../../../pages';
 
 @Injectable({ providedIn: 'root' })
@@ -11,11 +11,11 @@ export class SublineDetailResolver {
     private readonly router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<Array<SublineVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadSublineVersionV2>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
-      : this.sublinesService.getSublineVersion(idParameter).pipe(
+      : this.sublinesService.getSublineVersionV2(idParameter).pipe(
           catchError(() =>
             this.router
               .navigate([Pages.LIDI.path, Pages.SUBLINES.path], {
