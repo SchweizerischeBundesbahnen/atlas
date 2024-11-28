@@ -5,6 +5,7 @@ import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 
 import ch.sbb.atlas.configuration.BaseSecurityConfig;
 import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.redact.RedactConfig;
 import ch.sbb.atlas.user.administration.security.UserAdministrationConfig;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +30,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Import(UserAdministrationConfig.class)
+@Import({UserAdministrationConfig.class, RedactConfig.class})
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
