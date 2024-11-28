@@ -1,7 +1,9 @@
 package ch.sbb.workflow.service.sepodi;
 
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.workflow.aop.Redacted;
+import ch.sbb.atlas.redact.RedactBySboid;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
@@ -68,8 +70,8 @@ public class DecisionService {
     });
   }
 
-  @Redacted(redactedClassType = Decision.class)
-  public Decision getDecisionByExaminantId(Long personId) {
+  @Redacted
+  public Decision getDecisionByExaminantId(Long personId, @RedactBySboid(application = ApplicationType.SEPODI) String sboid) {
     Decision decision = decisionRepository.findDecisionByExaminantId(personId);
     if (decision == null) {
       throw new IdNotFoundException(personId);

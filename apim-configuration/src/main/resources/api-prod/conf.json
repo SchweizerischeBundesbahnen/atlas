@@ -3,7 +3,7 @@
   "system_name": "atlas",
   "name": "atlas API",
   "mega_id": "ADB3AE9A60E510ED",
-  "scm_url": "https://code.sbb.ch/scm/ki_atlas/atlas-apim-configuration.git",
+  "scm_url": "https://code.sbb.ch/scm/ki_atlas/atlas.git",
   "developer_resources_url": "https://code.sbb.ch/projects/KI_ATLAS",
   "icon": "timetable",
   "teaser": "This is the API for all your needs SKI core data",
