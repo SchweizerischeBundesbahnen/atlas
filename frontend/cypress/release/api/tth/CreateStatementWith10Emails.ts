@@ -1,5 +1,5 @@
-import TthUtils from "../../../../support/util/tth-utils";
-import CommonUtils from "../../../../support/util/common-utils";
+import TthUtils from "../../../support/util/tth-utils";
+import CommonUtils from "../../../support/util/common-utils";
 
 describe('TTH: Create a statement with several email-addresses', {testIsolation: false}, () => {
 
