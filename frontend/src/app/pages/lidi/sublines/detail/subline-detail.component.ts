@@ -1,21 +1,22 @@
 import {Component, OnInit} from '@angular/core';
 import {
   ApplicationRole,
-  ApplicationType, ElementType, LidiElementType,
+  ApplicationType,
+  ElementType,
+  LidiElementType,
   Line,
-  LinesService, LineType,
+  LinesService,
   SublineConcessionType,
   SublinesService,
   SublineType,
   SublineVersionV2,
 } from '../../../../api';
 import {catchError, EMPTY, Observable, of} from 'rxjs';
-import {DialogService} from '../../../../core/components/dialog/dialog.service';
 import {NotificationService} from '../../../../core/notification/notification.service';
 import {FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Pages} from '../../../pages';
-import {filter, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {ValidationService} from '../../../../core/validation/validation.service';
 import {SublineFormGroup, SublineFormGroupBuilder} from './subline-form-group';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
@@ -57,9 +58,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
     private router: Router,
     private sublinesService: SublinesService,
     private notificationService: NotificationService,
-    private validationService: ValidationService,
     private linesService: LinesService,
-    private dialogService: DialogService,
     private permissionService: PermissionService,
     private activatedRoute: ActivatedRoute,
     private validityService: ValidityService,
