@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 class DecisionServiceTest {
 
   private static final String DANIEL = "Daniel";
+  private static final String SBOID = "ch:1:sboid:666";
 
   @Autowired
   private StopPointWorkflowRepository workflowRepository;
@@ -62,7 +63,7 @@ class DecisionServiceTest {
         .mail("bro@gym.cc").build();
     StopPointWorkflow workflow = StopPointWorkflow.builder()
         .sloid("ch:1:sloid:1234")
-        .sboid("ch:1:sboid:666")
+        .sboid(SBOID)
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .localityName("Biel/Bienne")
         .workflowComment("WF comment")
@@ -90,13 +91,13 @@ class DecisionServiceTest {
         .build();
     decisionRepository.saveAndFlush(decision);
 
-    decision = decisionService.getDecisionByExaminantId(daniel.getId());
+    decision = decisionService.getDecisionByExaminantId(daniel.getId(), SBOID);
     assertThat(decision).isNotNull();
   }
 
   @Test
   void shouldThrowNotFoundException() {
-    assertThatExceptionOfType(IdNotFoundException.class).isThrownBy(() -> decisionService.getDecisionByExaminantId(1L));
+    assertThatExceptionOfType(IdNotFoundException.class).isThrownBy(() -> decisionService.getDecisionByExaminantId(1L, SBOID));
   }
 
   @Test
