@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {
   ApplicationRole,
-  ApplicationType,
+  ApplicationType, ElementType, LidiElementType,
   Line,
-  LinesService,
+  LinesService, LineType,
   SublineConcessionType,
   SublinesService,
   SublineType,
@@ -15,7 +15,7 @@ import {NotificationService} from '../../../../core/notification/notification.se
 import {FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Pages} from '../../../pages';
-import {map} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 import {ValidationService} from '../../../../core/validation/validation.service';
 import {SublineFormGroup, SublineFormGroupBuilder} from './subline-form-group';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
@@ -33,7 +33,7 @@ import {DetailHelperService, DetailWithCancelEdit} from "../../../../core/detail
 export class SublineDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   protected readonly Pages = Pages;
 
-  TYPE_OPTIONS = Object.values(SublineType);
+  TYPE_OPTIONS: SublineType[] = [];
   CONCESSION_TYPE_OPTIONS = Object.values(SublineConcessionType);
 
   mainlines$: Observable<Line[]> = of([]);
@@ -193,7 +193,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
 
   searchMainlines(searchString: string) {
     this.mainlines$ = this.linesService
-      .getLines(undefined, [searchString], undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+      .getLines(undefined, [searchString], undefined, undefined, [ElementType.Line], undefined, undefined, undefined, undefined, undefined, undefined,
         undefined, undefined, undefined, ['swissLineNumber,ASC'])
       .pipe(map((value) => value.objects ?? []));
   }
@@ -211,4 +211,33 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
     };
   }
 
+  mainLineChanged(line: Line) {
+    if (line) {
+      const lineType = line.lidiElementType;
+      switch (lineType) {
+        case LidiElementType.Orderly:
+          this.TYPE_OPTIONS = [SublineType.Concession, SublineType.Technical];
+          break;
+        case LidiElementType.Disposition:
+          this.TYPE_OPTIONS = [SublineType.Disposition];
+          this.form.controls.sublineType.setValue(SublineType.Disposition);
+          break;
+        case LidiElementType.Temporary:
+          this.TYPE_OPTIONS = [SublineType.Temporary];
+          this.form.controls.sublineType.setValue(SublineType.Temporary);
+          break;
+        case LidiElementType.Operational:
+          this.TYPE_OPTIONS = [SublineType.Operational];
+          this.form.controls.sublineType.setValue(SublineType.Operational);
+          break;
+        default:
+          console.error(line);
+          throw new Error("LineType not expected: " + lineType);
+      }
+    } else {
+      this.TYPE_OPTIONS = [];
+      this.form.controls.sublineType.setValue(undefined);
+      this.form.controls.sublineConcessionType.setValue(undefined);
+    }
+  }
 }
