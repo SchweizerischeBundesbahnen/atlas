@@ -1,28 +1,28 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { PaymentType, Status, SublinesService, SublineType, SublineVersion } from '../../../../api';
+import {PaymentType, ReadSublineVersionV2, Status, SublinesService, SublineType, SublineVersion} from '../../../../api';
 import { SublineDetailResolver } from './subline-detail.resolver';
 import { AppTestingModule } from '../../../../app.testing.module';
 
-const version: SublineVersion = {
+const version: ReadSublineVersionV2 = {
   id: 1234,
   slnid: 'slnid',
-  number: 'name',
   description: 'asdf',
   status: 'VALIDATED',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
-  paymentType: PaymentType.None,
   swissSublineNumber: 'L1:2',
   sublineType: SublineType.Technical,
   mainlineSlnid: 'ch:1:slnid:1000',
+  mainLineNumber:'mainLineNumber',
+  mainSwissLineNumber:'mainSwissLineNumber',
 };
 
 describe('SublineDetailResolver', () => {
-  const sublinesServiceSpy = jasmine.createSpyObj('sublinesService', ['getSublineVersion']);
-  sublinesServiceSpy.getSublineVersion.and.returnValue(of([version]));
+  const sublinesServiceSpy = jasmine.createSpyObj('sublinesService', ['getSublineVersionV2']);
+  sublinesServiceSpy.getSublineVersionV2.and.returnValue(of([version]));
 
   let resolver: SublineDetailResolver;
 
