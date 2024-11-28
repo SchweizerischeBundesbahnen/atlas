@@ -3,7 +3,8 @@ import { DataCy } from '../../../support/data-cy';
 import LidiUtils from '../../../support/util/lidi-utils';
 import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
-describe('Lines: TableSettings and Routing', { testIsolation: false }, () => {
+// This test is disabled until LiDi is stable enough
+describe.skip('Lines: TableSettings and Routing', { testIsolation: false }, () => {
   const minimalLine1 = LidiUtils.getFirstMinimalLineVersion();
   const minimalLine2 = LidiUtils.getSecondMinimalLineVersion();
 

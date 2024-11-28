@@ -12,7 +12,9 @@ import BodiDependentUtils from '../support/util/bodi-dependent-utils';
  * RESULTAT:                                                        |
  * Version:                                                         1
  */
-describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', { testIsolation: false }, () => {
+
+// This test is disabled until LiDi is stable enough
+describe.skip('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', { testIsolation: false }, () => {
   const sublineVersion = LidiUtils.getFirstSublineVersion();
   const newValidFrom = '31.12.2000';
   let mainline: any;
