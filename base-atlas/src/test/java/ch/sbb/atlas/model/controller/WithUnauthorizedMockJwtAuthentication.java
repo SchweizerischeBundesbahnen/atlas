@@ -36,17 +36,21 @@ public @interface WithUnauthorizedMockJwtAuthentication {
     public static SecurityContext createSecurityContext(String sbbuid) {
       SecurityContext context = SecurityContextHolder.createEmptyContext();
       Authentication authentication = new JwtAuthenticationToken(createJwt(sbbuid),
-          AuthorityUtils.createAuthorityList(Role.ROLE_PREFIX + Role.ATLAS_ROLES_UNAUTHORIZED_KEY));
+          AuthorityUtils.createAuthorityList(Role.AUTHORITY_UNAUTHORIZED, Role.AUTHORITY_INTERNAL));
       authentication.setAuthenticated(true);
       context.setAuthentication(authentication);
       return context;
     }
 
-    private static Jwt createJwt(String sbbuid) {
+    public static Jwt createJwt(String sbbuid) {
+      return createJwt(sbbuid, List.of(Role.ATLAS_ROLES_UNAUTHORIZED_KEY, Role.ATLAS_INTERNAL));
+    }
+
+    public static Jwt createJwt(String sbbuid, List<String> roles) {
       return Jwt.withTokenValue("token")
           .header("header", "value")
           .claim("sbbuid", sbbuid)
-          .claim("roles", List.of(Role.ATLAS_ROLES_UNAUTHORIZED_KEY))
+          .claim("roles", roles)
           .audience(Collections.singletonList("87e6e634-6ba1-4e7a-869d-3348b4c3eafc"))
           .issuer(
               "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0")

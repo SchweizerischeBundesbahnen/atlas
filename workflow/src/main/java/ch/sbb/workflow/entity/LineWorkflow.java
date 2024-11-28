@@ -1,6 +1,7 @@
 package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
 import jakarta.persistence.CascadeType;
@@ -33,9 +34,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "line_workflow")
+@Redacted
 public class LineWorkflow {
 
   private static final String VERSION_SEQ = "line_workflow_seq";
@@ -69,10 +71,12 @@ public class LineWorkflow {
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String checkComment;
 
+  @Redacted
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "client_id", referencedColumnName = "id")
   private Person client;
 
+  @Redacted
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "examinant_id", referencedColumnName = "id")
   private Person examinant;
