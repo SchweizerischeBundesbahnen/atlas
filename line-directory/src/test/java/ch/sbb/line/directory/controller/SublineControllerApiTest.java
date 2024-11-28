@@ -10,8 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
-import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
-import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
+import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.ModelType;
@@ -22,6 +21,7 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -78,18 +78,19 @@ import org.springframework.test.web.servlet.MvcResult;
             .alternativeName("alternative")
             .combinationName("combination")
             .longName("long name")
-            .lineType(LineType.ORDERLY)
+            .lineType(LineType.TEMPORARY)
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC2-libne")
             .build();
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModelV2 sublineVersionModel =
-        SublineVersionModelV2.builder()
+    SublineVersionModel sublineVersionModel =
+        SublineVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
-            .sublineType(SublineType.TECHNICAL)
+            .sublineType(SublineType.TEMPORARY)
+            .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
     //when
@@ -116,16 +117,17 @@ import org.springframework.test.web.servlet.MvcResult;
             .swissLineNumber("b0.IC2-libne")
             .build();
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModelV2 sublineVersionModel =
-        SublineVersionModelV2.builder()
+    SublineVersionModel sublineVersionModel =
+        SublineVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
             .sublineType(SublineType.TEMPORARY)
+            .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
-    ReadSublineVersionModelV2 sublineVersionSaved = sublineController.createSublineVersion(
+    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
         sublineVersionModel);
     //when
     mvc.perform(get("/v1/sublines/subline-coverage/" + sublineVersionSaved.getSlnid())
@@ -155,16 +157,18 @@ import org.springframework.test.web.servlet.MvcResult;
             .swissLineNumber("b0.IC2-libne")
             .build();
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModelV2 sublineVersionModel =
-        SublineVersionModelV2.builder()
+    SublineVersionModel sublineVersionModel =
+        SublineVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
             .sublineType(SublineType.TEMPORARY)
+            .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
-    ReadSublineVersionModelV2 sublineVersionSaved = sublineController.createSublineVersion(sublineVersionModel);
+    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+        sublineVersionModel);
 
     //when
     mvc.perform(post("/v1/sublines/versions")
@@ -221,16 +225,17 @@ import org.springframework.test.web.servlet.MvcResult;
             .build();
     LineVersionModel changedlineVersionSaved = lineController.createLineVersion(
         changedLineVersionModel);
-    SublineVersionModelV2 sublineVersionModel =
-        SublineVersionModelV2.builder()
+    SublineVersionModel sublineVersionModel =
+        SublineVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
             .sublineType(SublineType.TEMPORARY)
+            .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
-    ReadSublineVersionModelV2 sublineVersionSaved = sublineController.createSublineVersion(sublineVersionModel);
+    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(sublineVersionModel);
 
     //when
     sublineVersionSaved.setSwissSublineNumber("another");
@@ -268,13 +273,14 @@ import org.springframework.test.web.servlet.MvcResult;
             .swissLineNumber("b0.IC2-libne")
             .build();
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModelV2 sublineVersionModel =
-        SublineVersionModelV2.builder()
+    SublineVersionModel sublineVersionModel =
+        SublineVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2001, 1, 1))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
             .sublineType(SublineType.TEMPORARY)
+            .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
 
@@ -301,13 +307,14 @@ import org.springframework.test.web.servlet.MvcResult;
             .swissLineNumber("b0.IC2-libne")
             .build();
     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModelV2 sublineVersionModel =
-        SublineVersionModelV2.builder()
+    SublineVersionModel sublineVersionModel =
+        SublineVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
             .sublineType(SublineType.TEMPORARY)
+            .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionModel.getSlnid())
             .build();
     sublineVersionModel = sublineController.createSublineVersion(sublineVersionModel);
@@ -352,24 +359,26 @@ import org.springframework.test.web.servlet.MvcResult;
             .swissLineNumber("b0.IC2-libne")
             .build();
     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModelV2 firstSublineVersionModel =
-        SublineVersionModelV2.builder()
+    SublineVersionModel firstSublineVersionModel =
+        SublineVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .swissSublineNumber("b0.Ic2-sibline")
             .sublineType(SublineType.TECHNICAL)
+            .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionModel.getSlnid())
             .build();
     firstSublineVersionModel = sublineController.createSublineVersion(firstSublineVersionModel);
 
-    SublineVersionModelV2 secondSublineVersionModel =
-        SublineVersionModelV2.builder()
+    SublineVersionModel secondSublineVersionModel =
+        SublineVersionModel.builder()
             .validFrom(LocalDate.of(2001, 1, 1))
             .validTo(LocalDate.of(2001, 12, 31))
             .businessOrganisation("bls")
             .swissSublineNumber("b0.Ic2-sibline")
             .sublineType(SublineType.TECHNICAL)
+            .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionModel.getSlnid())
             .build();
     sublineController.createSublineVersion(secondSublineVersionModel);
@@ -412,14 +421,8 @@ import org.springframework.test.web.servlet.MvcResult;
     //given
     LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModelV2 sublineVersionModel =
-        SublineVersionModelV2.builder()
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 12, 31))
-            .businessOrganisation("sbb")
-            .swissSublineNumber("b0.Ic2-sibline")
-            .description("description")
-            .sublineType(SublineType.TECHNICAL)
+    SublineVersionModel sublineVersionModel =
+        SublineTestData.sublineVersionModelBuilder()
             .mainlineSlnid(lineVersionModel.getSlnid())
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
@@ -443,128 +446,102 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(status().isPreconditionFailed());
   }
 
-   @Test
-   void shouldExportFullSublineVersionsCsv() throws Exception {
-     //given
-     LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
-     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-     SublineVersionModelV2 sublineVersionModel1 = SublineVersionModelV2.builder()
-         .validFrom(LocalDate.of(2000, 1, 1))
-         .validTo(LocalDate.of(2000, 12, 31))
-         .businessOrganisation("sbb")
-         .swissSublineNumber("b0.Ic2-sibline")
-         .description("description")
-         .sublineType(SublineType.TECHNICAL)
-         .mainlineSlnid(lineVersionModel.getSlnid())
-         .build();
-     SublineVersionModelV2 sublineVersionModel2 = SublineVersionModelV2.builder()
-         .validFrom(LocalDate.of(2000, 1, 1))
-         .validTo(LocalDate.of(2000, 12, 31))
-         .businessOrganisation("sbb")
-         .swissSublineNumber("b0.Ic2-sibline")
-         .description("description")
-         .sublineType(SublineType.TECHNICAL)
-         .mainlineSlnid(lineVersionModel.getSlnid())
-         .validFrom(LocalDate.of(2022, 1, 1))
-         .validTo(LocalDate.of(2022, 12, 31))
-         .description("desc2")
-         .build();
-     sublineController.createSublineVersion(sublineVersionModel1);
-     sublineController.createSublineVersion(sublineVersionModel2);
+  @Test
+  void shouldExportFullSublineVersionsCsv() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    lineVersionModel = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
+        .mainlineSlnid(
+            lineVersionModel.getSlnid())
+        .build();
+    SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
+        .mainlineSlnid(
+            lineVersionModel.getSlnid())
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .description("desc2")
+        .build();
+    sublineController.createSublineVersion(sublineVersionModel1);
+    sublineController.createSublineVersion(sublineVersionModel2);
 
-     //when
-     mvc.perform(post("/v1/sublines/export-csv/full"))
-         .andExpect(status().isOk()).andReturn();
-   }
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/full"))
+        .andExpect(status().isOk()).andReturn();
+  }
 
-   @Test
-   void shouldExportActualSublineVersionsCsv() throws Exception {
-     //given
-     LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
-     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-     SublineVersionModelV2 sublineVersionModel1 = SublineVersionModelV2.builder()
-         .validFrom(LocalDate.of(2000, 1, 1))
-         .validTo(LocalDate.of(2000, 12, 31))
-         .businessOrganisation("sbb")
-         .swissSublineNumber("b0.Ic2-sibline")
-         .description("description")
-         .sublineType(SublineType.TECHNICAL)
-         .mainlineSlnid(lineVersionModel.getSlnid())
-         .build();
-     SublineVersionModelV2 sublineVersionModel2 = SublineVersionModelV2.builder()
-         .validFrom(LocalDate.of(2000, 1, 1))
-         .validTo(LocalDate.of(2000, 12, 31))
-         .businessOrganisation("sbb")
-         .swissSublineNumber("b0.Ic2-sibline")
-         .description("description")
-         .sublineType(SublineType.TECHNICAL)
-         .mainlineSlnid(lineVersionModel.getSlnid())
-         .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-         .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-         .description("desc2")
-         .build();
-     sublineController.createSublineVersion(sublineVersionModel1);
-     sublineController.createSublineVersion(sublineVersionModel2);
+  @Test
+  void shouldExportActualSublineVersionsCsv() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    lineVersionModel = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
+        .mainlineSlnid(
+            lineVersionModel.getSlnid())
+        .build();
+    SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
+        .mainlineSlnid(
+            lineVersionModel.getSlnid())
+        .validFrom(LocalDate.now()
+            .withMonth(1)
+            .withDayOfMonth(
+                1))
+        .validTo(LocalDate.now()
+            .withMonth(12)
+            .withDayOfMonth(31))
+        .description("desc2")
+        .build();
+    sublineController.createSublineVersion(sublineVersionModel1);
+    sublineController.createSublineVersion(sublineVersionModel2);
 
-     //when
-     mvc.perform(post("/v1/sublines/export-csv/actual"))
-         .andExpect(status().isOk()).andReturn();
-   }
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/actual"))
+        .andExpect(status().isOk()).andReturn();
+  }
 
-   @Test
-   void shouldExportFutureTimetableLineVersionsCsv() throws Exception {
-     //given
-     LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
-     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-     SublineVersionModelV2 sublineVersionModel1 = SublineVersionModelV2.builder()
-         .validFrom(LocalDate.of(2000, 1, 1))
-         .validTo(LocalDate.of(2000, 12, 31))
-         .businessOrganisation("sbb")
-         .swissSublineNumber("b0.Ic2-sibline")
-         .description("description")
-         .sublineType(SublineType.TECHNICAL)
-         .mainlineSlnid(
-             lineVersionModel.getSlnid())
-         .build();
-     SublineVersionModelV2 sublineVersionModel2 = SublineVersionModelV2.builder()
-         .validFrom(LocalDate.of(2000, 1, 1))
-         .validTo(LocalDate.of(2000, 12, 31))
-         .businessOrganisation("sbb")
-         .swissSublineNumber("b0.Ic2-sibline")
-         .description("description")
-         .sublineType(SublineType.TECHNICAL)
-         .mainlineSlnid(lineVersionModel.getSlnid())
-         .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-         .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-         .description("desc2")
-         .build();
-     sublineController.createSublineVersion(sublineVersionModel1);
-     sublineController.createSublineVersion(sublineVersionModel2);
+  @Test
+  void shouldExportFutureTimetableLineVersionsCsv() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    lineVersionModel = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
+        .mainlineSlnid(
+            lineVersionModel.getSlnid())
+        .build();
+    SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
+        .mainlineSlnid(
+            lineVersionModel.getSlnid())
+        .validFrom(LocalDate.now()
+            .withMonth(1)
+            .withDayOfMonth(
+                1))
+        .validTo(LocalDate.now()
+            .withMonth(12)
+            .withDayOfMonth(31))
+        .description("desc2")
+        .build();
+    sublineController.createSublineVersion(sublineVersionModel1);
+    sublineController.createSublineVersion(sublineVersionModel2);
 
-     //when
-     mvc.perform(post("/v1/sublines/export-csv/timetable-year-change"))
-         .andExpect(status().isOk()).andReturn();
-   }
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/timetable-year-change"))
+        .andExpect(status().isOk()).andReturn();
+  }
 
-   @Test
-   void shouldRevokeSubline() throws Exception {
-     //given
-     LineVersionModel lineVersionModel = lineController.createLineVersion(
-         LineTestData.lineVersionModelBuilder().build());
-     SublineVersionModelV2 sublineVersionSaved = sublineController.createSublineVersion(
-         SublineVersionModelV2.builder()
-             .validFrom(LocalDate.of(2000, 1, 1))
-             .validTo(LocalDate.of(2000, 12, 31))
-             .businessOrganisation("sbb")
-             .swissSublineNumber("b0.Ic2-sibline")
-             .description("description")
-             .sublineType(SublineType.TECHNICAL)
-             .mainlineSlnid(lineVersionModel.getSlnid())
-             .build());
+  @Test
+  void shouldRevokeSubline() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = lineController.createLineVersion(
+        LineTestData.lineVersionModelBuilder().build());
+    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+        SublineTestData.sublineVersionModelBuilder()
+            .mainlineSlnid(
+                lineVersionModel.getSlnid())
+            .build());
 
-     //when
-     mvc.perform(post("/v1/sublines/" + sublineVersionSaved.getSlnid() + "/revoke")
-         ).andExpect(status().isOk())
-         .andExpect(jsonPath("$[0]." + BaseVersionModel.Fields.status, is("REVOKED")));
-   }
+    //when
+    mvc.perform(post("/v1/sublines/" + sublineVersionSaved.getSlnid() + "/revoke")
+        ).andExpect(status().isOk())
+        .andExpect(jsonPath("$[0]." + BaseVersionModel.Fields.status, is("REVOKED")));
+  }
 }
