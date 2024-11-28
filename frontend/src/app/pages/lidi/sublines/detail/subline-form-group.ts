@@ -12,8 +12,8 @@ export interface SublineFormGroup extends BaseDetailFormGroup {
   mainlineSlnid: FormControl<string | null | undefined>;
   slnid: FormControl<string | null | undefined>;
   status: FormControl<string | null | undefined>;
-  sublineType: FormControl<SublineType | null| undefined>;
-  sublineConcessionType: FormControl<SublineConcessionType | null| undefined>;
+  sublineType: FormControl<SublineType | null | undefined>;
+  sublineConcessionType: FormControl<SublineConcessionType | null | undefined>;
   businessOrganisation: FormControl<string | null | undefined>;
   longName: FormControl<string | null | undefined>;
   description: FormControl<string | null | undefined>;
@@ -22,7 +22,7 @@ export interface SublineFormGroup extends BaseDetailFormGroup {
 
 export class SublineFormGroupBuilder {
   static buildFormGroup(version?: SublineVersionV2): FormGroup {
-    return new FormGroup<SublineFormGroup>(
+    const formGroup = new FormGroup<SublineFormGroup>(
       {
         swissSublineNumber: new FormControl(version?.swissSublineNumber, [
           Validators.required,
@@ -64,5 +64,20 @@ export class SublineFormGroupBuilder {
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
+    this.initConcessionTypeConditionalValidation(formGroup)
+    return formGroup;
+  }
+
+  static initConcessionTypeConditionalValidation(formGroup: FormGroup<SublineFormGroup>) {
+    formGroup.controls.sublineType.valueChanges.subscribe(newType => {
+      if (newType === SublineType.Concession) {
+        formGroup.controls.sublineConcessionType.setValidators([Validators.required]);
+      } else {
+        formGroup.controls.sublineConcessionType.clearValidators();
+        formGroup.controls.sublineConcessionType.setValue(undefined);
+      }
+      formGroup.controls.sublineConcessionType.updateValueAndValidity();
+      formGroup.updateValueAndValidity();
+    })
   }
 }
