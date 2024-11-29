@@ -7,7 +7,6 @@ plugins {
     jacoco
     `java-library`
     `maven-publish`
-    id("org.sonarqube")
 }
 
 group = "ch.sbb.atlas"
