@@ -52,9 +52,9 @@ public class SublineService {
   public SublineVersion save(SublineVersion sublineVersion) {
     sublineVersion.setStatus(Status.VALIDATED);
     sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion);
-    sublineVersionRepository.saveAndFlush(sublineVersion);
+    SublineVersion savedVersion = sublineVersionRepository.saveAndFlush(sublineVersion);
     sublineValidationService.validateSublineAfterVersioningBusinessRule(sublineVersion);
-    return sublineVersion;
+    return savedVersion;
   }
 
   public List<SublineVersion> revokeSubline(String slnid) {
@@ -64,9 +64,7 @@ public class SublineService {
   }
 
   public void deleteById(Long id) {
-    SublineVersion sublineVersion = sublineVersionRepository.findById(id)
-        .orElseThrow(
-            () -> new IdNotFoundException(id));
+    SublineVersion sublineVersion = sublineVersionRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
     coverageService.deleteCoverageSubline(sublineVersion.getSlnid());
     sublineVersionRepository.deleteById(id);
   }

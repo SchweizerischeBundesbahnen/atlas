@@ -25,8 +25,7 @@ public class SublineTestData {
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .businessOrganisation("businessOrganisation")
-        .mainlineSlnid(MAINLINE_SLNID)
-        .swissSublineNumber("swissSublineNumber");
+        .mainlineSlnid(MAINLINE_SLNID);
   }
 
   public static SublineVersionBuilder<?, ?> sublineVersionV2Builder() {
@@ -42,7 +41,6 @@ public class SublineTestData {
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .businessOrganisation("sbb")
-        .swissSublineNumber("b0.Ic2-sibline")
         .number("number")
         .description("description")
         .sublineType(SublineType.TECHNICAL)
