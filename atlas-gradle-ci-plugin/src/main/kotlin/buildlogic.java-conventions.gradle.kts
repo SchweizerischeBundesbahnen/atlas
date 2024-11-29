@@ -64,6 +64,7 @@ publishing {
 }
 
 tasks.withType<Test> {
+    failFast = true
     useJUnitPlatform()
 }
 
