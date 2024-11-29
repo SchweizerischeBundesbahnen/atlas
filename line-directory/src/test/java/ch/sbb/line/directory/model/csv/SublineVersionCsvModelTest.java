@@ -13,9 +13,4 @@ class SublineVersionCsvModelTest {
     assertThat(sublineVersionCsvModel.getMainlineSlnid()).isNotNull().isEqualTo("ch:1:slnid:1000546");
   }
 
-  @Test
-  void shouldExportSwissSublineNumber() {
-    SublineVersionCsvModel sublineVersionCsvModel = SublineVersionCsvModel.toCsvModel(SublineTestData.sublineVersion());
-    assertThat(sublineVersionCsvModel.getSwissSublineNumber()).isNotNull().isEqualTo("swissSublineNumber");
-  }
 }

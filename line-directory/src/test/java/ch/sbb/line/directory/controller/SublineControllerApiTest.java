@@ -88,7 +88,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
-            .swissSublineNumber("b0.Ic2-sibline")
+            .description("b0.Ic2-sibline")
             .sublineType(SublineType.TEMPORARY)
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
@@ -122,7 +122,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
-            .swissSublineNumber("b0.Ic2-sibline")
+            .description("b0.Ic2-sibline")
             .sublineType(SublineType.TEMPORARY)
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
@@ -139,122 +139,6 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(jsonPath("$.validFrom", is("2000-01-01")))
         .andExpect(jsonPath("$.validTo", is("2000-12-31")))
         .andExpect(jsonPath("$.validationErrorType", is(nullValue())));
-  }
-
-  @Test
-  void shouldReturnConflictErrorResponse() throws Exception {
-    //given
-    LineVersionModel lineVersionModel =
-        LineTestData.lineVersionModelBuilder()
-            .validTo(LocalDate.of(2000, 12, 31))
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .businessOrganisation("sbb")
-            .alternativeName("alternative")
-            .combinationName("combination")
-            .longName("long name")
-            .lineType(LineType.TEMPORARY)
-            .paymentType(PaymentType.LOCAL)
-            .swissLineNumber("b0.IC2-libne")
-            .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 12, 31))
-            .businessOrganisation("sbb")
-            .swissSublineNumber("b0.Ic2-sibline")
-            .sublineType(SublineType.TEMPORARY)
-            .paymentType(PaymentType.LOCAL)
-            .mainlineSlnid(lineVersionSaved.getSlnid())
-            .build();
-    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
-        sublineVersionModel);
-
-    //when
-    mvc.perform(post("/v1/sublines/versions")
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(sublineVersionModel)))
-        .andExpect(status().isConflict())
-        .andExpect(jsonPath("$.status", is(409)))
-        .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule")))
-        .andExpect(jsonPath("$.error", is("Subline conflict")))
-        .andExpect(jsonPath("$.details[0].message",
-            is("SwissSublineNumber b0.Ic2-sibline already taken from 01.01.2000 to 31.12.2000 by "
-                + sublineVersionSaved.getSlnid())))
-        .andExpect(jsonPath("$.details[0].field", is("swissSublineNumber")))
-        .andExpect(
-            jsonPath("$.details[0].displayInfo.code", is("LIDI.SUBLINE.CONFLICT.SWISS_NUMBER")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("swissSublineNumber")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("b0.Ic2-sibline")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("validFrom")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("01.01.2000")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key", is("validTo")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].value", is("31.12.2000")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("slnid")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value",
-            is(sublineVersionSaved.getSlnid())));
-  }
-
-  @Test
-  void shouldReturnSubLineAssignToLineConflictErrorResponse() throws Exception {
-    //given
-    LineVersionModel lineVersionModel =
-        LineTestData.lineVersionModelBuilder()
-            .validTo(LocalDate.of(2000, 12, 31))
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .businessOrganisation("sbb")
-            .alternativeName("alternative")
-            .combinationName("combination")
-            .longName("long name")
-            .lineType(LineType.TEMPORARY)
-            .paymentType(PaymentType.LOCAL)
-            .swissLineNumber("b0.IC2-libne")
-            .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    LineVersionModel changedLineVersionModel =
-        LineTestData.lineVersionModelBuilder()
-            .validTo(LocalDate.of(2000, 12, 31))
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .businessOrganisation("sbb")
-            .alternativeName("alternative")
-            .combinationName("combination")
-            .longName("long name")
-            .lineType(LineType.TEMPORARY)
-            .paymentType(PaymentType.LOCAL)
-            .swissLineNumber("b0.IC2-libne-changed")
-            .build();
-    LineVersionModel changedlineVersionSaved = lineController.createLineVersion(
-        changedLineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 12, 31))
-            .businessOrganisation("sbb")
-            .swissSublineNumber("b0.Ic2-sibline")
-            .sublineType(SublineType.TEMPORARY)
-            .paymentType(PaymentType.LOCAL)
-            .mainlineSlnid(lineVersionSaved.getSlnid())
-            .build();
-    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(sublineVersionModel);
-
-    //when
-    sublineVersionSaved.setSwissSublineNumber("another");
-    sublineVersionSaved.setMainlineSlnid(changedlineVersionSaved.getSlnid());
-    mvc.perform(post("/v1/sublines/versions/" + sublineVersionSaved.getId())
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(sublineVersionSaved)))
-        .andExpect(status().isConflict())
-        .andExpect(jsonPath("$.status", is(409)))
-        .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule")))
-        .andExpect(jsonPath("$.error", is("Subline conflict")))
-        .andExpect(jsonPath("$.details[0].message",
-            is("The mainline " + sublineVersionModel.getMainlineSlnid() + " cannot be changed")))
-        .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code",
-            is("LIDI.SUBLINE.CONFLICT.ASSIGN_DIFFERENT_LINE_CONFLICT")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("mainlineSlnid")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value",
-            is(sublineVersionModel.getMainlineSlnid())));
   }
 
   @Test
@@ -278,7 +162,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2001, 1, 1))
             .businessOrganisation("sbb")
-            .swissSublineNumber("b0.Ic2-sibline")
+            .description("b0.Ic2-sibline")
             .sublineType(SublineType.TEMPORARY)
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
@@ -312,7 +196,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
-            .swissSublineNumber("b0.Ic2-sibline")
+            .description("b0.Ic2-sibline")
             .sublineType(SublineType.TEMPORARY)
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionModel.getSlnid())
@@ -364,7 +248,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
-            .swissSublineNumber("b0.Ic2-sibline")
+            .description("b0.Ic2-sibline")
             .sublineType(SublineType.TECHNICAL)
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionModel.getSlnid())
@@ -376,7 +260,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validFrom(LocalDate.of(2001, 1, 1))
             .validTo(LocalDate.of(2001, 12, 31))
             .businessOrganisation("bls")
-            .swissSublineNumber("b0.Ic2-sibline")
+            .description("b0.Ic2-sibline")
             .sublineType(SublineType.TECHNICAL)
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionModel.getSlnid())
@@ -476,19 +360,12 @@ import org.springframework.test.web.servlet.MvcResult;
     LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
     lineVersionModel = lineController.createLineVersion(lineVersionModel);
     SublineVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
-        .mainlineSlnid(
-            lineVersionModel.getSlnid())
+        .mainlineSlnid(lineVersionModel.getSlnid())
         .build();
     SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
-        .mainlineSlnid(
-            lineVersionModel.getSlnid())
-        .validFrom(LocalDate.now()
-            .withMonth(1)
-            .withDayOfMonth(
-                1))
-        .validTo(LocalDate.now()
-            .withMonth(12)
-            .withDayOfMonth(31))
+        .mainlineSlnid(lineVersionModel.getSlnid())
+        .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
+        .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
         .description("desc2")
         .build();
     sublineController.createSublineVersion(sublineVersionModel1);
