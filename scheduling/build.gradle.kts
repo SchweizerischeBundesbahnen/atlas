@@ -37,10 +37,6 @@ dependencies {
 
 }
 
-tasks.bootJar {
-    enabled = false
-}
-
 springBoot {
     buildInfo {
         properties {
