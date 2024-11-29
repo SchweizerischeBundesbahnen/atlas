@@ -57,6 +57,7 @@ class SublineServiceTest {
     MockitoAnnotations. openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, versionableService, lineService, sublineValidationService,
         coverageService);
+    when(sublineVersionRepository.saveAndFlush(any())).then(i -> i.getArgument(0));
   }
 
   @Test
