@@ -3,7 +3,6 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 sonar {
   properties {
-    property("sonar.exclusions", "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js")
     property("sonar.language", "ts")
     property("sonar.profile", "TsLint")
     property("sonar.sources", "./")
