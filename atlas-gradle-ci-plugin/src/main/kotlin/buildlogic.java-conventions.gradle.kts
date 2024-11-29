@@ -76,7 +76,6 @@ tasks.withType<Javadoc> {
 }
 
 tasks.test {
-    ignoreFailures = false // If you want to ignore test failures and do not break the build, set this property to true - used for enabling forceUnstableBuild
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
 tasks.jacocoTestReport {
