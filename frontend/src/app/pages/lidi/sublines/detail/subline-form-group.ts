@@ -25,7 +25,6 @@ export class SublineFormGroupBuilder {
     const formGroup = new FormGroup<SublineFormGroup>(
       {
         swissSublineNumber: new FormControl(version?.swissSublineNumber, [
-          Validators.required,
           AtlasFieldLengthValidator.length_50,
           AtlasCharsetsValidator.sid4pt,
         ]),
@@ -46,6 +45,7 @@ export class SublineFormGroupBuilder {
           AtlasCharsetsValidator.iso88591,
         ]),
         description: new FormControl(version?.description, [
+          Validators.required,
           AtlasFieldLengthValidator.length_255,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
@@ -72,11 +72,16 @@ export class SublineFormGroupBuilder {
     formGroup.controls.sublineType.valueChanges.subscribe(newType => {
       if (newType === SublineType.Concession) {
         formGroup.controls.sublineConcessionType.setValidators([Validators.required]);
+        formGroup.controls.swissSublineNumber.addValidators([Validators.required]);
       } else {
         formGroup.controls.sublineConcessionType.clearValidators();
         formGroup.controls.sublineConcessionType.setValue(undefined);
+
+        formGroup.controls.swissSublineNumber.removeValidators([Validators.required]);
+        formGroup.controls.swissSublineNumber.setValue(undefined);
       }
       formGroup.controls.sublineConcessionType.updateValueAndValidity();
+      formGroup.controls.swissSublineNumber.updateValueAndValidity();
       formGroup.updateValueAndValidity();
     })
   }
