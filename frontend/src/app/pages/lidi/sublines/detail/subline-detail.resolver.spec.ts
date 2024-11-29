@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
-import { of } from 'rxjs';
-import {PaymentType, ReadSublineVersionV2, Status, SublinesService, SublineType, SublineVersion} from '../../../../api';
-import { SublineDetailResolver } from './subline-detail.resolver';
-import { AppTestingModule } from '../../../../app.testing.module';
+import {TestBed} from '@angular/core/testing';
+import {ActivatedRouteSnapshot, convertToParamMap} from '@angular/router';
+import {of} from 'rxjs';
+import {ReadSublineVersionV2, Status, SublinesService, SublineType} from '../../../../api';
+import {SublineDetailResolver} from './subline-detail.resolver';
+import {AppTestingModule} from '../../../../app.testing.module';
 
 const version: ReadSublineVersionV2 = {
   id: 1234,
