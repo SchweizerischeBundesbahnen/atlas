@@ -11,7 +11,7 @@
         </h2>
       } @else {
         <div class="font-bold-4xl detail-title mb-3">
-          {{ selectedVersion.mainLineNumber }}
+          {{ selectedVersion.mainLineNumber }} - {{ selectedVersion.description }}
         </div>
         <div class="font-bold-xl mb-2">
           <span data-cy="detail-subheading-id">{{ selectedVersion.slnid }}</span>
@@ -85,6 +85,28 @@
           </div>
         </div>
 
+        @if (currentMainlineSelection) {
+          <div class="d-flex flex-row align-self-end">
+            <div class="d-flex flex-column" data-cy="selected-line-number">
+              <div class="font-bold-base">{{ 'LIDI.LINE.NUMBER' | translate }}</div>
+              <div>{{ currentMainlineSelection.number }}</div>
+            </div>
+            <div class="d-flex flex-column ms-5" data-cy="selected-line-short-number">
+              <div class="font-bold-base">{{ 'LIDI.SHORT_NUMBER' | translate }}</div>
+              <div>{{ currentMainlineSelection.shortNumber }}</div>
+            </div>
+            <div class="d-flex flex-column ms-5" data-cy="selected-line-offer-category">
+              <div class="font-bold-base">
+                {{ 'LIDI.OFFER_CATEGORY.TYPE' | translate }}
+              </div>
+              <div>{{ currentMainlineSelection.offerCategory }}</div>
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <div class="col-12 d-flex mb-3">
         <div class="d-flex flex-column col-3 pe-3">
           <atlas-select
             *ngIf="TYPE_OPTIONS.length>0"
@@ -95,11 +117,12 @@
             optionTranslateLabelPrefix="LIDI.SUBLINE.TYPES."
             [options]="TYPE_OPTIONS"
             [required]="true"
+            [additionalLabelspace]="24"
           >
           </atlas-select>
         </div>
 
-        <div class="d-flex flex-column col-3">
+        <div class="d-flex flex-column col-3 pe-3">
           <atlas-select
             *ngIf="form.controls.sublineType.value === 'CONCESSION'"
             [formGroup]="form"
@@ -110,13 +133,31 @@
             [options]="CONCESSION_TYPE_OPTIONS"
             [required]="true"
             [isOptional]="true"
+            [additionalLabelspace]="24"
           >
           </atlas-select>
+        </div>
+
+        <div class="d-flex flex-column col-3">
+          <atlas-text-field
+            *ngIf="form.controls.sublineType.value === 'CONCESSION'"
+            [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: 'r.31.001:a', translate: false },
+            { label: ' |', translate: false },
+            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+          ]"
+            [formGroup]="form"
+            [required]="true"
+            controlName="swissSublineNumber"
+            fieldLabel="LIDI.SWISS_SUBLINE_NUMBER"
+          >
+          </atlas-text-field>
         </div>
       </div>
 
       <div class="col-12 d-flex">
-        <div class="d-flex flex-column col-12">
+        <div class="d-flex flex-column col-4 pe-3">
           <atlas-text-field
             [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
@@ -131,24 +172,7 @@
             [formGroup]="form"
             controlName="description"
             fieldLabel="LIDI.SUBLINE.DESCRIPTION"
-          >
-          </atlas-text-field>
-        </div>
-      </div>
-
-      <div class="col-12 d-flex">
-        <div class="d-flex flex-column col-4 pe-3">
-          <atlas-text-field
-            [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'r.31.001:a', translate: false },
-            { label: ' |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
-          ]"
-            [formGroup]="form"
             [required]="true"
-            controlName="swissSublineNumber"
-            fieldLabel="LIDI.SWISS_SUBLINE_NUMBER"
           >
           </atlas-text-field>
         </div>

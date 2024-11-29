@@ -9,6 +9,7 @@ import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
 import ch.sbb.line.directory.exception.SublineConcessionException;
+import ch.sbb.line.directory.exception.SublineConcessionSwissSublineNumberException;
 import ch.sbb.line.directory.exception.SublineConflictException;
 import ch.sbb.line.directory.exception.SublineTypeMissmatchException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -65,6 +67,9 @@ public class SublineValidationService {
     if (sublineVersion.getSublineType() == SublineType.CONCESSION ^ sublineVersion.getConcessionType() != null) {
       throw new SublineConcessionException();
     }
+    if (sublineVersion.getSublineType() == SublineType.CONCESSION ^ sublineVersion.getSwissSublineNumber() != null) {
+      throw new SublineConcessionSwissSublineNumberException();
+    }
   }
 
   public void validateSublineAfterVersioningBusinessRule(SublineVersion sublineVersion) {
@@ -78,10 +83,12 @@ public class SublineValidationService {
   }
 
   void validateSublineConflict(SublineVersion sublineVersion) {
-    List<SublineVersion> swissLineNumberOverlaps = sublineVersionRepository.findSwissLineNumberOverlaps(
-        sublineVersion);
-    if (!swissLineNumberOverlaps.isEmpty()) {
-      throw new SublineConflictException(sublineVersion, swissLineNumberOverlaps);
+    if (StringUtils.isNotBlank(sublineVersion.getSwissSublineNumber())) {
+      List<SublineVersion> swissLineNumberOverlaps = sublineVersionRepository.findSwissLineNumberOverlaps(
+          sublineVersion);
+      if (!swissLineNumberOverlaps.isEmpty()) {
+        throw new SublineConflictException(sublineVersion, swissLineNumberOverlaps);
+      }
     }
   }
 
