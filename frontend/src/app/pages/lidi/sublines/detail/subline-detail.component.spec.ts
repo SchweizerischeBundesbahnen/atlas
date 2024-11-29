@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of, throwError} from 'rxjs';
-import {SublinesService, SublineType, SublineVersionV2} from '../../../../api';
+import {LinesService, SublinesService, SublineType, SublineVersionV2} from '../../../../api';
 import {SublineDetailComponent} from './subline-detail.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AppTestingModule} from '../../../../app.testing.module';
@@ -98,6 +98,10 @@ const validityService = jasmine.createSpyObj<ValidityService>([
   'initValidity', 'updateValidity', 'validate'
 ]);
 validityService.validate.and.returnValue(of(true));
+
+const lineService=jasmine.createSpyObj('LineService', ['getLineVersionsV2', 'getLines', 'getLine']);
+lineService.getLineVersionsV2.and.returnValue(of([]));
+lineService.getLine.and.returnValue(of());
 
 describe('SublineDetailComponent for existing sublineVersion', () => {
   const sublinesService = jasmine.createSpyObj('sublinesService', [
@@ -250,6 +254,7 @@ function setupTestBed(
     providers: [
       {provide: FormBuilder},
       {provide: SublinesService, useValue: sublinesService},
+      {provide: LinesService, useValue: lineService},
       {provide: PermissionService, useValue: adminPermissionServiceMock},
       {provide: ActivatedRoute, useValue: {snapshot: {data: data}}},
       TranslatePipe,

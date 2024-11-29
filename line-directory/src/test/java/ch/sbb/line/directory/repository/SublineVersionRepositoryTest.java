@@ -2,6 +2,8 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.controller.WithAdminMockJwtAuthentication;
@@ -29,7 +31,11 @@ import org.springframework.transaction.annotation.Transactional;
 
   @BeforeEach
   void setUp() {
-    defaultSublineVersion = SublineTestData.sublineVersion();
+    defaultSublineVersion = SublineTestData.sublineVersionBuilder()
+        .sublineType(SublineType.CONCESSION)
+        .concessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE)
+        .swissSublineNumber("swissSublineNumber")
+        .build();
   }
 
   @AfterEach
@@ -43,7 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
     sublineVersionRepository.save(defaultSublineVersion);
 
     //when
-    SublineVersion result = sublineVersionRepository.findAll().get(0);
+    SublineVersion result = sublineVersionRepository.findAll().getFirst();
 
     //then
     assertThat(result).usingRecursiveComparison().ignoringActualNullFields().isEqualTo(
@@ -107,13 +113,21 @@ import org.springframework.transaction.annotation.Transactional;
   void shouldAllowSwissNumberOnDifferentSwissIds() {
     // Given
     sublineVersionRepository.save(
-        SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2019, 1, 1))
-                       .validTo(LocalDate.of(2019, 12, 31))
-                       .build());
+        SublineTestData.sublineVersionBuilder()
+            .sublineType(SublineType.CONCESSION)
+            .concessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE)
+            .swissSublineNumber("swissSublineNumber")
+            .validFrom(LocalDate.of(2019, 1, 1))
+            .validTo(LocalDate.of(2019, 12, 31))
+            .build());
     sublineVersionRepository.save(
-        SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2021, 1, 1))
-                       .validTo(LocalDate.of(2021, 12, 31))
-                       .build());
+        SublineTestData.sublineVersionBuilder()
+            .sublineType(SublineType.CONCESSION)
+            .concessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE)
+            .swissSublineNumber("swissSublineNumber")
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 12, 31))
+            .build());
     // When
     assertThat(
         sublineVersionRepository.findSwissLineNumberOverlaps(defaultSublineVersion)).isEmpty();
@@ -129,10 +143,12 @@ import org.springframework.transaction.annotation.Transactional;
   void shouldNotAllowSwissNumberOnOverlapBetween() {
     // Given
     sublineVersionRepository.save(SublineTestData.sublineVersionBuilder()
-                                                 .validFrom(LocalDate.of(2019, 1, 1))
-                                                 .validTo(LocalDate.of(2099, 12, 31))
-                                                 .swissSublineNumber("SWISSSublineNUMBER")
-                                                 .build());
+        .sublineType(SublineType.CONCESSION)
+        .concessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE)
+        .validFrom(LocalDate.of(2019, 1, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .swissSublineNumber("SWISSSublineNUMBER")
+        .build());
     // When
     assertThat(
         sublineVersionRepository.findSwissLineNumberOverlaps(defaultSublineVersion)).isNotEmpty();
@@ -148,9 +164,13 @@ import org.springframework.transaction.annotation.Transactional;
   void shouldNotAllowSwissNumberOnOverlapBeginning() {
     // Given
     sublineVersionRepository.save(
-        SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2020, 10, 1))
-                       .validTo(LocalDate.of(2099, 12, 31))
-                       .build());
+        SublineTestData.sublineVersionBuilder()
+            .sublineType(SublineType.CONCESSION)
+            .concessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE)
+            .swissSublineNumber("swissSublineNumber")
+            .validFrom(LocalDate.of(2020, 10, 1))
+            .validTo(LocalDate.of(2099, 12, 31))
+            .build());
     // When
     assertThat(
         sublineVersionRepository.findSwissLineNumberOverlaps(defaultSublineVersion)).isNotEmpty();
@@ -166,7 +186,11 @@ import org.springframework.transaction.annotation.Transactional;
   void shouldNotAllowSwissNumberOnOverlapEnd() {
     // Given
     sublineVersionRepository.save(
-        SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2000, 1, 1))
+        SublineTestData.sublineVersionBuilder()
+            .sublineType(SublineType.CONCESSION)
+            .concessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE)
+            .swissSublineNumber("swissSublineNumber")
+            .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2020, 10, 31))
             .build());
 
@@ -189,6 +213,8 @@ import org.springframework.transaction.annotation.Transactional;
   @Test
   void shouldAllowRevokedSwissNumberOnOverlapBetween() {
     sublineVersionRepository.save(SublineTestData.sublineVersionBuilder()
+        .sublineType(SublineType.CONCESSION)
+        .concessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE)
         .validFrom(LocalDate.of(2019, 1, 1))
         .validTo(LocalDate.of(2099, 12, 31))
         .swissSublineNumber("SWISSSublineNUMBER")
@@ -213,9 +239,13 @@ import org.springframework.transaction.annotation.Transactional;
   @Test
   void shouldGetActualLineVersions() {
     //given
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setValidFrom(LocalDate.of(2021, 1, 1));
-    sublineVersion.setValidTo(LocalDate.of(2099, 1, 1));
+    SublineVersion sublineVersion = SublineTestData.sublineVersionBuilder()
+        .sublineType(SublineType.CONCESSION)
+        .concessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE)
+        .swissSublineNumber("swissSublineNumber")
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2099, 1, 1))
+        .build();
     sublineVersionRepository.save(sublineVersion);
 
     //when

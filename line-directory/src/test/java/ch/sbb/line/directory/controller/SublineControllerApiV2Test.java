@@ -73,7 +73,7 @@ class SublineControllerApiV2Test extends BaseControllerApiTest {
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
-            .swissSublineNumber("b0.Ic2-sibline")
+            .description("b0.Ic2-sibline")
             .sublineType(SublineType.TECHNICAL)
             .mainlineSlnid(mainLineVersion.getSlnid())
             .build();
@@ -92,7 +92,7 @@ class SublineControllerApiV2Test extends BaseControllerApiTest {
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
-            .swissSublineNumber("b0.Ic2-sibline")
+            .description("b0.Ic2-sibline")
             .sublineType(SublineType.TECHNICAL)
             .mainlineSlnid(mainLineVersion.getSlnid())
             .build();

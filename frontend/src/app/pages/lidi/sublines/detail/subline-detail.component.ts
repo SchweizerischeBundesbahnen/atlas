@@ -5,7 +5,7 @@ import {
   ElementType,
   LidiElementType,
   Line,
-  LinesService, ReadSublineVersionV2,
+  LinesService, LineVersionV2, ReadSublineVersionV2,
   SublineConcessionType,
   SublinesService,
   SublineType,
@@ -38,6 +38,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
   CONCESSION_TYPE_OPTIONS = Object.values(SublineConcessionType);
 
   mainlines$: Observable<Line[]> = of([]);
+  currentMainlineSelection?:LineVersionV2;
 
   readonly mainlineSlnidFormControlName = 'mainlineSlnid';
 
@@ -83,7 +84,11 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
         .getLine(this.selectedVersion.mainlineSlnid)
         .pipe(map((value) => [value]));
 
-      this.TYPE_OPTIONS=[this.form.controls.sublineType.value!]
+      this.linesService.getLineVersionsV2(this.selectedVersion.mainlineSlnid).subscribe(mainline => {
+        this.currentMainlineSelection = VersionsHandlingService.determineDefaultVersionByValidity(mainline);
+      });
+
+      this.TYPE_OPTIONS = [this.form.controls.sublineType.value!]
     }
     this.initBoSboidRestriction();
   }
@@ -217,31 +222,42 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
 
   mainLineChanged(line: Line) {
     if (line) {
-      const lineType = line.lidiElementType;
-      switch (lineType) {
-        case LidiElementType.Orderly:
-          this.TYPE_OPTIONS = [SublineType.Concession, SublineType.Technical];
-          break;
-        case LidiElementType.Disposition:
-          this.TYPE_OPTIONS = [SublineType.Disposition];
-          this.form.controls.sublineType.setValue(SublineType.Disposition);
-          break;
-        case LidiElementType.Temporary:
-          this.TYPE_OPTIONS = [SublineType.Temporary];
-          this.form.controls.sublineType.setValue(SublineType.Temporary);
-          break;
-        case LidiElementType.Operational:
-          this.TYPE_OPTIONS = [SublineType.Operational];
-          this.form.controls.sublineType.setValue(SublineType.Operational);
-          break;
-        default:
-          console.error(line);
-          throw new Error("LineType not expected: " + lineType);
-      }
+      this.handleSublineType(line);
+
+      this.linesService.getLineVersionsV2(line.slnid!).subscribe(mainline => {
+        this.currentMainlineSelection = VersionsHandlingService.determineDefaultVersionByValidity(mainline);
+      });
     } else {
       this.TYPE_OPTIONS = [];
       this.form.controls.sublineType.setValue(undefined);
       this.form.controls.sublineConcessionType.setValue(undefined);
+
+      this.currentMainlineSelection = undefined;
+    }
+
+  }
+
+  private handleSublineType(line: Line) {
+    const lineType = line.lidiElementType;
+    switch (lineType) {
+      case LidiElementType.Orderly:
+        this.TYPE_OPTIONS = [SublineType.Concession, SublineType.Technical];
+        break;
+      case LidiElementType.Disposition:
+        this.TYPE_OPTIONS = [SublineType.Disposition];
+        this.form.controls.sublineType.setValue(SublineType.Disposition);
+        break;
+      case LidiElementType.Temporary:
+        this.TYPE_OPTIONS = [SublineType.Temporary];
+        this.form.controls.sublineType.setValue(SublineType.Temporary);
+        break;
+      case LidiElementType.Operational:
+        this.TYPE_OPTIONS = [SublineType.Operational];
+        this.form.controls.sublineType.setValue(SublineType.Operational);
+        break;
+      default:
+        console.error(line);
+        throw new Error("LineType not expected: " + lineType);
     }
   }
 }
