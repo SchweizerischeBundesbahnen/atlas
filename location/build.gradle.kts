@@ -30,10 +30,6 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.bootJar {
-    enabled = false
-}
-
 springBoot {
     buildInfo {
         properties {
