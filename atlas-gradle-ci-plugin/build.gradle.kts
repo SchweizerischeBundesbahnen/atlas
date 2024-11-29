@@ -9,10 +9,6 @@ plugins {
     `kotlin-dsl`
 }
 
-dependencies {
-    implementation("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:5.0.0.4638")
-}
-
 repositories {
     // Use the plugin portal to apply community plugins in convention plugins.
     gradlePluginPortal()

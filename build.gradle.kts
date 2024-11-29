@@ -1,9 +1,19 @@
 plugins {
     id("io.spring.dependency-management") version "1.1.6"
     id("org.springframework.boot") version "3.3.4"
+    id("org.sonarqube") version "6.0.1.5171"
+}
+
+sonar {
+    properties {
+        property("sonar.projectName", "ATLAS - SKI Business Application")
+        property("sonar.projectKey", "ch.sbb.atlas:atlas")
+        property("sonar.exclusions", "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*")
+    }
 }
 
 subprojects {
+    apply(plugin = "org.sonarqube")
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
 
