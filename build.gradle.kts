@@ -8,6 +8,8 @@ sonar {
     properties {
         property("sonar.projectName", "ATLAS - SKI Business Application")
         property("sonar.projectKey", "ch.sbb.atlas:atlas")
+        property("sonar.dynamicAnalysis", "reuseReports")
+        property("sonar.java.coveragePlugin", "jacoco")
         property("sonar.exclusions", "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*")
     }
 }
