@@ -1,5 +1,21 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
+
+sonar {
+  properties {
+    property("sonar.exclusions", "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js")
+    property("sonar.language", "ts")
+    property("sonar.profile", "TsLint")
+    property("sonar.sources", "./")
+    property("sonar.verbose", "true")
+    property("sonar.test.inclusion", "**/*.spec.ts")
+    property("sonar.ts.tslint.configPath", "tslint.json")
+    property("sonar.ts.coverage.lcovReportPath", "coverage/atlas-frontend/lcov.info")
+    property("sonar.typescript.lcov.reportPaths", "${project.projectDir}/coverage/atlas-frontend/lcov.info")
+    property("sonar.coverage.exclusions", "**/*.spec.ts,**/src/app/api/**,**/cypress/**,/**/*.module.ts")
+  }
+}
+
 task<Exec>("execNpmCi") {
   doFirst {
     println("[Angular] Run atlas npm ci")
