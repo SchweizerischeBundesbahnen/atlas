@@ -36,8 +36,7 @@ class SublineVersionModelTest {
         .validFrom(VALID_FROM)
         .validTo(VALID_TO)
         .businessOrganisation("businessOrganisation")
-        .mainlineSlnid("mainlineSlnid")
-        .swissSublineNumber("swissSublineNumber");
+        .mainlineSlnid("mainlineSlnid");
   }
 
   @Test
@@ -53,17 +52,15 @@ class SublineVersionModelTest {
   }
 
   @Test
-  void shouldHaveSwissSublineNumber() {
+  void shouldHaveDescription() {
     // Given
-    SublineVersionModel sublineVersion = sublineVersionModel().swissSublineNumber("").build();
+    SublineVersionModel sublineVersion = sublineVersionModel().description("").build();
     // When
-    Set<ConstraintViolation<SublineVersionModel>> constraintViolations = validator.validate(
-        sublineVersion);
+    Set<ConstraintViolation<SublineVersionModel>> constraintViolations = validator.validate(sublineVersion);
 
     // Then
-    assertThat(constraintViolations).hasSize(2);
-    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(
-        "swissSublineNumber");
+    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("description");
   }
 
   @Test
