@@ -4,8 +4,6 @@ plugins {
     id("org.sonarqube") version "6.0.1.5171"
 }
 
-
-
 subprojects {
     apply(plugin = "org.sonarqube")
     apply(plugin = "org.springframework.boot")
@@ -21,19 +19,35 @@ subprojects {
     }
 }
 
-allprojects {
-    sonar {
-        properties {
-            property("sonar.projectName", "ATLAS - SKI Business Application")
-            property("sonar.projectKey", "ch.sbb.atlas:atlas")
-            property("sonar.sources", "src/main/java, src/app")
-            property("sonar.dynamicAnalysis", "reuseReports")
-            property("sonar.java.coveragePlugin", "jacoco")
-            property("sonar.exclusions", "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*")
-            property("sonar.test.inclusion", "**/*.spec.ts")
-            property("sonar.ts.tslint.configPath", "tslint.json")
-            property("sonar.ts.coverage.lcovReportPath", "coverage/atlas-frontend/lcov.info")
-            property("sonar.typescript.lcov.reportPaths", "${project.projectDir}/coverage/atlas-frontend/lcov.info")
+subprojects {
+    if (project.name != "frontend") {
+        sonar {
+            properties {
+                property("sonar.projectName", "ATLAS - SKI Business Application")//remove me
+                property("sonar.projectKey", "ch.sbb.atlas:atlas")//remove me
+                property("sonar.dynamicAnalysis", "reuseReports")
+                property("sonar.java.coveragePlugin", "jacoco")
+                property(
+                    "sonar.exclusions",
+                    "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*"
+                )
+            }
         }
     }
+
+    if (project.name == "frontend") {
+        sonar {
+            properties {
+                property("sonar.language", "ts")
+                property("sonar.profile", "TsLint")
+                property("sonar.verbose", "true")
+                property("sonar.test.inclusion", "**/*.spec.ts")
+                property("sonar.ts.tslint.configPath", "tslint.json")
+                property("sonar.ts.coverage.lcovReportPath", "coverage/atlas-frontend/lcov.info")
+                property("sonar.typescript.lcov.reportPaths", "${project.projectDir}/coverage/atlas-frontend/lcov.info")
+                property("sonar.coverage.exclusions", "**/*.spec.ts,**/src/app/api/**,**/cypress/**,/**/*.module.ts")
+            }
+        }
+    }
+
 }
