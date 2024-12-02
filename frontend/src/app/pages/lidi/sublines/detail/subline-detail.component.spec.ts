@@ -33,6 +33,7 @@ import {DateRangeTextComponent} from "../../../../core/versioning/date-range-tex
 import {DateIconComponent} from "../../../../core/form-components/date-icon/date-icon.component";
 import {DisplayDatePipe} from "../../../../core/pipe/display-date.pipe";
 import moment from "moment";
+import {DialogService} from "../../../../core/components/dialog/dialog.service";
 
 @Component({
   selector: 'app-coverage',
@@ -103,10 +104,13 @@ const lineService=jasmine.createSpyObj('LineService', ['getLineVersionsV2', 'get
 lineService.getLineVersionsV2.and.returnValue(of([]));
 lineService.getLine.and.returnValue(of());
 
+const dialogService = jasmine.createSpyObj<DialogService>('DialogService', {confirm: of(true)});
+
 describe('SublineDetailComponent for existing sublineVersion', () => {
   const sublinesService = jasmine.createSpyObj('sublinesService', [
     'updateSublineVersionV2',
     'deleteSublines',
+    'revokeSubline',
   ]);
   const mockData = {
     sublineDetail: [sublineVersion],
@@ -165,6 +169,21 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
       fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
+    expect(snackBarContainer.classList).toContain('success');
+    expect(router.navigate).toHaveBeenCalled();
+  });
+
+  it('should revoke SublineVersion successfully', () => {
+    sublinesService.revokeSubline.and.returnValue(of({}));
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+
+    component.revoke();
+    fixture.detectChanges();
+
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.REVOKE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
@@ -304,6 +323,7 @@ function setupTestBed(
       {provide: FormBuilder},
       {provide: SublinesService, useValue: sublinesService},
       {provide: LinesService, useValue: lineService},
+      {provide: DialogService, useValue: dialogService},
       {provide: PermissionService, useValue: adminPermissionServiceMock},
       {provide: ActivatedRoute, useValue: {snapshot: {data: data}}},
       TranslatePipe,
