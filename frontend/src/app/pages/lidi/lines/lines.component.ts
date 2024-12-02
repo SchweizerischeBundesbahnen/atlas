@@ -53,9 +53,9 @@ export class LinesComponent implements OnInit, OnDestroy {
   linesTableColumns: TableColumn<Line>[] = [
     {headerTitle: 'LIDI.LINE.NUMBER', value: 'number'},
     {headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description'},
-    {headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber'},
     {headerTitle: 'LIDI.TYPE', value: 'lidiElementType', translate: {withPrefix: 'LIDI.LINE.TYPES.'}},
     {headerTitle: 'LIDI.SLNID', value: 'slnid'},
+    {headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber'},
     {
       headerTitle: 'COMMON.STATUS',
       value: 'status',
