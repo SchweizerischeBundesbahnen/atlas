@@ -220,7 +220,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
     };
   }
 
-  mainLineChanged(line: Line) {
+  mainLineChanged(line?: Line) {
     if (line) {
       this.handleSublineType(line);
 
