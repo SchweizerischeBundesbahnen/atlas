@@ -10,13 +10,16 @@ import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.exception.RevokedException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
 import ch.sbb.line.directory.exception.SublineConcessionException;
+import ch.sbb.line.directory.exception.SublineConcessionSwissSublineNumberException;
 import ch.sbb.line.directory.exception.SublineTypeMissmatchException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -205,6 +208,37 @@ import org.mockito.MockitoAnnotations;
 
      //when
      assertThatExceptionOfType(SublineConcessionException.class).isThrownBy(
+         () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
+   }
+
+   @Test
+   void shouldThrowExceptionIfMainlineRevoked() {
+     //given
+     LineVersion mainLineVersion = LineTestData.lineVersion();
+     mainLineVersion.setStatus(Status.REVOKED);
+     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
+
+     SublineVersion sublineVersion = SublineTestData.sublineVersion();
+
+     //when
+     assertThatExceptionOfType(RevokedException.class).isThrownBy(
+         () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
+   }
+
+   @Test
+   void shouldThrowExceptionIfConcessionTypeIsMissingSwissSublineNumber() {
+     //given
+     LineVersion mainLineVersion = LineTestData.lineVersion();
+     mainLineVersion.setLineType(LineType.ORDERLY);
+     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
+
+     SublineVersion sublineVersion = SublineTestData.sublineVersion();
+     sublineVersion.setSublineType(SublineType.CONCESSION);
+     sublineVersion.setConcessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE);
+     sublineVersion.setSwissSublineNumber(null);
+
+     //when
+     assertThatExceptionOfType(SublineConcessionSwissSublineNumberException.class).isThrownBy(
          () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
    }
 

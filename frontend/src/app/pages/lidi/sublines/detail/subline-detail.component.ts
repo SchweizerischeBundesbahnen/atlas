@@ -5,7 +5,7 @@ import {
   ElementType,
   LidiElementType,
   Line,
-  LinesService, LineVersionV2, ReadSublineVersionV2,
+  LinesService, LineVersionV2, ReadSublineVersionV2, Status,
   SublineConcessionType,
   SublinesService,
   SublineType,
@@ -202,7 +202,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
 
   searchMainlines(searchString: string) {
     this.mainlines$ = this.linesService
-      .getLines(undefined, [searchString], undefined, undefined, [ElementType.Line], undefined, undefined, undefined, undefined, undefined, undefined,
+      .getLines(undefined, [searchString], [Status.Validated, Status.InReview, Status.Draft, Status.Withdrawn], undefined, [ElementType.Line], undefined, undefined, undefined, undefined, undefined, undefined,
         undefined, undefined, undefined, ['swissLineNumber,ASC'])
       .pipe(map((value) => value.objects ?? []));
   }
