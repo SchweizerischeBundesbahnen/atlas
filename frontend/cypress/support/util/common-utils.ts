@@ -96,7 +96,7 @@ export default class CommonUtils {
   }
 
   static saveSubline() {
-    this.saveVersionWithWait('line-directory/v1/sublines/versions/*');
+    this.saveVersionWithWait('line-directory/v2/sublines/versions/*');
   }
 
   static saveSublineConfirmValidity() {

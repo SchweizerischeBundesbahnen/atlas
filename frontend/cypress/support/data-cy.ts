@@ -32,6 +32,7 @@ export class DataCy {
   static BUSINESS_ORGANISATION = '[data-cy=businessOrganisation]';
   static TYPE = '[data-cy=type]';
   static LINE_TYPE_READ_ONLY = '[data-cy=lineTypeReadOnly]';
+  static SUBLINE_CONCESSION_TYPE = '[data-cy=sublineConcessionType]';
   //deprecated
   static PAYMENT_TYPE = '[data-cy=paymentType]';
   static LINE_CONCESSION_TYPE = '[data-cy=lineConcessionType]';

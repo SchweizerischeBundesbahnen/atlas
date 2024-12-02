@@ -8,6 +8,7 @@ export default class LidiUtils {
   private static LIDI_SUBLINES_PATH = '/line-directory/sublines';
 
   private static MAINLINE_SWISS_LINE_NUMBER = 'b0.IC2-E2E';
+  private static MAINLINE_DESCRIPTION = 'Mainline for sublines';
 
   static navigateToLines() {
     CommonUtils.navigateToHomeViaHomeLogo();
@@ -299,9 +300,9 @@ export default class LidiUtils {
 
     CommonUtils.assertTableHeader(0, 0, 'Liniennummer');
     CommonUtils.assertTableHeader(0, 1, 'Linienbezeichnung');
-    CommonUtils.assertTableHeader(0, 2, 'CH-Liniennummer (CHLNR)');
-    CommonUtils.assertTableHeader(0, 3, 'Linientyp');
-    CommonUtils.assertTableHeader(0, 4, 'SLNID');
+    CommonUtils.assertTableHeader(0, 2, 'Linientyp');
+    CommonUtils.assertTableHeader(0, 3, 'SLNID');
+    CommonUtils.assertTableHeader(0, 4, 'CH-Liniennummer (CHLNR)');
     CommonUtils.assertTableHeader(0, 5, 'Status');
     CommonUtils.assertTableHeader(0, 6, 'Gültig von');
     CommonUtils.assertTableHeader(0, 7, 'Gültig bis');
@@ -315,19 +316,14 @@ export default class LidiUtils {
       validTo: '31.12.2002',
       swissLineNumber: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
-      type: 'Betrieblich',
-      paymentType: 'International',
-      colorFontRgb: '#FFFFFF',
-      colorBackRgb: '#FFFFFF',
-      colorFontCmyk: '10,10,0,100',
-      colorBackCmyk: '10,10,0,100',
-      description: 'Mainline for sublines',
+      type: 'Ordentlich',
+      lineConcessionType: 'Eidg. konzessionierte oder bewilligte Linie (EK)',
+      description: LidiUtils.MAINLINE_DESCRIPTION,
       number: 'IC2',
+      shortNumber: '2',
+      offerCategory: 'IC',
       alternativeName: 'IC2 alt',
-      combinationName: 'IC2 comb',
-      longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
-      icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
+      longName: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       comment: 'Kommentar',
     };
   }
@@ -442,25 +438,25 @@ export default class LidiUtils {
     };
   }
 
-  static fillSublineVersionForm(version: any, skipMainline = false) {
-    // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
-    CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
-    CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
-    cy.get(DataCy.SWISS_SUBLINE_NUMBER).clear().type(version.swissSublineNumber, { force: true });
-    if (!skipMainline) {
+  static fillSublineVersionForm(version: any, updateMode = false) {
+    if (!updateMode) {
       CommonUtils.typeAndSelectItemFromDropDown(DataCy.MAINLINE + ' ' + 'input', version.mainline);
+      CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     }
 
+    CommonUtils.selectItemFromDropDown(DataCy.SUBLINE_CONCESSION_TYPE, version.sublineConcessionType);
+    cy.get(DataCy.SWISS_SUBLINE_NUMBER).clear().type(version.swissSublineNumber, { force: true });
+
+    cy.get(DataCy.DESCRIPTION).clear().type(version.description, { force: true });
+    cy.get(DataCy.LONG_NAME).clear().type(version.longName);
+
+    CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
+    CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
     CommonUtils.typeAndSelectItemFromDropDown(
       DataCy.BUSINESS_ORGANISATION + ' ' + 'input',
       version.businessOrganisation,
     );
 
-    CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
-    CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
-    cy.get(DataCy.DESCRIPTION).clear().type(version.description, { force: true });
-    cy.get(DataCy.NUMBER).clear().type(version.number);
-    cy.get(DataCy.LONG_NAME).clear().type(version.longName);
     cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
   }
 
@@ -487,22 +483,24 @@ export default class LidiUtils {
   }
 
   static assertContainsSublineVersion(version: any) {
-    CommonUtils.assertItemValue(DataCy.VALID_FROM, version.validFrom);
-    CommonUtils.assertItemValue(DataCy.VALID_TO, version.validTo);
-    CommonUtils.assertItemValue(DataCy.SWISS_SUBLINE_NUMBER, version.swissSublineNumber);
-    cy.get(DataCy.MAINLINE).should('contain.text', version.mainline);
-    cy.get(DataCy.BUSINESS_ORGANISATION).should('contain.text', version.businessOrganisation);
+    cy.get(DataCy.MAINLINE).should('contain.text', LidiUtils.MAINLINE_DESCRIPTION);
+
     CommonUtils.assertItemText(
       DataCy.TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
       version.type,
     );
     CommonUtils.assertItemText(
-      DataCy.PAYMENT_TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
-      version.paymentType,
+      DataCy.SUBLINE_CONCESSION_TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
+      version.sublineConcessionType,
     );
+    CommonUtils.assertItemValue(DataCy.SWISS_SUBLINE_NUMBER, version.swissSublineNumber);
+
     CommonUtils.assertItemValue(DataCy.DESCRIPTION, version.description);
-    CommonUtils.assertItemValue(DataCy.NUMBER, version.number);
     CommonUtils.assertItemValue(DataCy.LONG_NAME, version.longName);
+
+    CommonUtils.assertItemValue(DataCy.VALID_FROM, version.validFrom);
+    CommonUtils.assertItemValue(DataCy.VALID_TO, version.validTo);
+    cy.get(DataCy.BUSINESS_ORGANISATION).should('contain.text', version.businessOrganisation);
 
     cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
   }
@@ -512,15 +510,14 @@ export default class LidiUtils {
       slnid: '',
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
+      sublineType: 'Konzession',
+      sublineConcessionType: 'Eidg. konzessionierte oder bewilligte Linie (EK)',
       swissSublineNumber: 'b0.IC233-E2E',
       mainline: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
-      type: 'Technisch',
-      paymentType: 'International',
-      description: 'Lorem Ipus Linie',
-      number: 'IC2',
-      longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+      type: 'Konzession',
+      description: 'Chur - Grenze',
+      longName: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
     };
   }
 
@@ -528,15 +525,14 @@ export default class LidiUtils {
     return {
       validFrom: '01.01.2002',
       validTo: '31.12.2002',
+      sublineType: 'Konzession',
+      sublineConcessionType: 'Eidg. konzessionierte oder bewilligte Linie (EK)',
       swissSublineNumber: 'b0.IC233-E2E',
       mainline: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
-      type: 'Anordnung',
-      paymentType: 'International',
-      description: 'Lorem Ipus Linie',
-      number: 'IC2-update',
-      longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+      type: 'Konzession',
+      description: 'Chur - Grenze - update',
+      longName: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
     };
   }
 
@@ -544,7 +540,6 @@ export default class LidiUtils {
     return {
       validFrom: '01.01.2000',
       validTo: '01.06.2002',
-      number: 'IC2-Edit',
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z - Edit',
     };
