@@ -1,7 +1,6 @@
 /*
  * This project uses @Incubating APIs which are subject to change.
  */
-
 plugins {
     java
     jacoco
@@ -18,6 +17,7 @@ extra["openapiStarterCommonVersion"] = "2.6.0"
 //Geo Data Libs
 extra["proj4jVersion"] = "1.3.0"
 extra["jtsVersion"] = "1.20.0"
+extra["springOpenapiUiVersion"] = "2.6.0"
 
 java {
     toolchain {
