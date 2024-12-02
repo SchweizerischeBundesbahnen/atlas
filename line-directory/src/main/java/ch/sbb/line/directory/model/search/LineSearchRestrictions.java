@@ -1,31 +1,28 @@
 package ch.sbb.line.directory.model.search;
 
-import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
+import ch.sbb.atlas.api.lidi.LineRequestParams;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.searching.BusinessOrganisationDependentSearchRestriction;
+import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
+import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.Line_;
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.util.List;
 import java.util.Optional;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Singular;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 @Getter
 @ToString
 @SuperBuilder
-public class LineSearchRestrictions extends BusinessOrganisationDependentSearchRestriction<Line> {
+public class LineSearchRestrictions extends SearchRestrictions<Line> {
 
-  @Builder.Default
-  private Optional<String> swissLineNumber = Optional.empty();
-
-  @Singular(ignoreNullCollections = true)
-  private List<LidiElementType> typeRestrictions;
+  private final Pageable pageable;
+  private final LineRequestParams lineRequestParams;
 
   @Override
   protected SingularAttribute<Line, Status> getStatus() {
@@ -33,11 +30,30 @@ public class LineSearchRestrictions extends BusinessOrganisationDependentSearchR
   }
 
   @Override
+  public List<String> getSearchCriterias() {
+    return lineRequestParams.getSearchCriteria();
+  }
+
+  @Override
+  public List<Status> getStatusRestrictions() {
+    return lineRequestParams.getStatusRestrictions();
+  }
+
+  @Override
   public Specification<Line> getSpecification() {
-    return getBaseSpecification().and(
-            specificationBuilder().enumSpecification(typeRestrictions, Line_.lidiElementType))
-        .and(specificationBuilder().singleStringSpecification(
-            swissLineNumber));
+    return specificationBuilder().searchCriteriaSpecification(lineRequestParams.getSearchCriteria())
+        .and(specificationBuilder().validOnSpecification(Optional.ofNullable(lineRequestParams.getValidOn())))
+        .and(specificationBuilder().enumSpecification(getStatusRestrictions(), getStatus()))
+        .and(specificationBuilder().enumSpecification(lineRequestParams.getTypeRestrictions(), Line_.lidiElementType))
+        .and(specificationBuilder().enumSpecification(lineRequestParams.getElementRestrictions(), Line_.elementType))
+        .and(specificationBuilder().singleStringSpecification(Optional.ofNullable(lineRequestParams.getSwissLineNumber())))
+        .and(specificationBuilder().singleStringSpecification(Optional.ofNullable(lineRequestParams.getBusinessOrganisation())))
+        .and(new ValidOrEditionTimerangeSpecification<>(
+            lineRequestParams.getFromDate(),
+            lineRequestParams.getToDate(),
+            lineRequestParams.getValidToFromDate(),
+            lineRequestParams.getCreatedAfter(),
+            lineRequestParams.getModifiedAfter()));
   }
 
   @Override

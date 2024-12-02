@@ -60,7 +60,6 @@ describe('LiDi: Versioning Teillinie Scenario 4', {testIsolation: false}, () => 
     CommonUtils.clickOnEdit();
     cy.get(DataCy.VALID_FROM).clear().type(editedFirstSublineVersion.validFrom);
     cy.get(DataCy.VALID_TO).clear().type(editedFirstSublineVersion.validTo);
-    cy.get(DataCy.NUMBER).clear().type(editedFirstSublineVersion.number);
     cy.get(DataCy.LONG_NAME).clear().type(editedFirstSublineVersion.longName);
     CommonUtils.saveSubline();
   });
@@ -80,7 +79,6 @@ describe('LiDi: Versioning Teillinie Scenario 4', {testIsolation: false}, () => 
 
     secondSublineVersion.validFrom = '01.01.2002';
     secondSublineVersion.validTo = '01.06.2002';
-    secondSublineVersion.number = editedFirstSublineVersion.number;
     secondSublineVersion.longName = editedFirstSublineVersion.longName;
     LidiUtils.assertContainsSublineVersion(secondSublineVersion);
   });
@@ -91,7 +89,6 @@ describe('LiDi: Versioning Teillinie Scenario 4', {testIsolation: false}, () => 
 
     firstSublineVersion.validFrom = '01.01.2000';
     firstSublineVersion.validTo = '31.12.2001';
-    firstSublineVersion.number = editedFirstSublineVersion.number;
     firstSublineVersion.longName = editedFirstSublineVersion.longName;
     LidiUtils.assertContainsSublineVersion(firstSublineVersion);
   });
@@ -105,7 +102,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', {testIsolation: false}, () => 
 
   it('Step-11: Check the added is present on the table result and navigate to it ', () => {
     LidiUtils.navigateToSubline(firstSublineVersion);
-    cy.contains(mainline.swissLineNumber);
+    cy.contains(mainline.number);
     cy.get(DataCy.SWISS_SUBLINE_NUMBER)
     .invoke('val')
     .should('eq', firstSublineVersion.swissSublineNumber);

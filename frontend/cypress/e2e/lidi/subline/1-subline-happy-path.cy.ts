@@ -54,12 +54,6 @@ describe('Teillinie', { testIsolation: false }, () => {
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
-      sublineVersion.swissSublineNumber
-    );
-
-    CommonUtils.typeSearchInput(
-      pathToIntercept,
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       sublineVersion.slnid
     );
 
