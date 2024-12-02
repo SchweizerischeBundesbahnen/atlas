@@ -3,9 +3,11 @@ package ch.sbb.line.directory.validation;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.exception.RevokedException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
 import ch.sbb.line.directory.exception.SublineConcessionException;
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Service;
 public class SublineValidationService {
 
   private static final Map<LineType, Set<SublineType>> ALLOWED_SUBLINE_TYPES = new HashMap<>();
+
   static {
     ALLOWED_SUBLINE_TYPES.put(LineType.ORDERLY, Set.of(SublineType.CONCESSION, SublineType.TECHNICAL));
     ALLOWED_SUBLINE_TYPES.put(LineType.DISPOSITION, Set.of(SublineType.DISPOSITION));
@@ -53,8 +56,15 @@ public class SublineValidationService {
       throw new SlnidNotFoundException(sublineVersion.getMainlineSlnid());
     }
     LineVersion mainline = OverviewService.getDisplayModel(lineVersions);
+    validateNotRevoked(mainline);
     validateSublineType(sublineVersion, mainline);
     validateConcessionType(sublineVersion);
+  }
+
+  private void validateNotRevoked(LineVersion mainline) {
+    if (mainline.getStatus() == Status.REVOKED) {
+      throw new RevokedException(mainline.getSlnid());
+    }
   }
 
   private void validateSublineType(SublineVersion sublineVersion, LineVersion mainline) {
@@ -74,11 +84,11 @@ public class SublineValidationService {
 
   public void validateSublineAfterVersioningBusinessRule(SublineVersion sublineVersion) {
     LineVersion lineVersion = lineVersionRepository.findAllBySlnidOrderByValidFrom(
-                                                       sublineVersion.getMainlineSlnid())
-                                                   .stream()
-                                                   .findFirst()
-                                                   .orElseThrow(() -> new IllegalStateException(
-                                                       "No Line found for the given subline!"));
+            sublineVersion.getMainlineSlnid())
+        .stream()
+        .findFirst()
+        .orElseThrow(() -> new IllegalStateException(
+            "No Line found for the given subline!"));
     coverageValidationService.validateLineSublineCoverage(lineVersion);
   }
 
@@ -96,7 +106,7 @@ public class SublineValidationService {
     if (sublineVersion.getId() != null) {
       SublineVersion sublineVersionActual =
           sublineVersionRepository.findById(sublineVersion.getId())
-                                  .orElse(null);
+              .orElse(null);
       if (sublineVersionActual != null &&
           !sublineVersionActual.getMainlineSlnid().equals(sublineVersion.getMainlineSlnid())) {
         throw new SubLineAssignToLineConflictException(sublineVersionActual);
