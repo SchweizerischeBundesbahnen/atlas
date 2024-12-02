@@ -2,15 +2,14 @@ package ch.sbb.atlas.imports.model.create;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
-import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion;
-import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion.Mapping;
 import ch.sbb.atlas.imports.annotation.DefaultMapping;
 import ch.sbb.atlas.imports.annotation.Nulling;
+import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
 import ch.sbb.atlas.imports.bulk.Validatable;
+import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel.Fields;
-import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -28,6 +27,7 @@ import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -113,11 +113,34 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
 
     @Override
     public List<BulkImportError> validate() {
-        return List.of();
+        List<BulkImportError> errors = new ArrayList<>();
+        if (numberShort == null && isNumberShortRequired(uicCountryCode)) {
+            errors.add(BulkImportErrors.notNull(Fields.numberShort));
+        }
+        if (uicCountryCode == null) {
+            errors.add(BulkImportErrors.notNull(Fields.uicCountryCode));
+        }
+        if (designationOfficial == null) {
+            errors.add(BulkImportErrors.notNull(Fields.designationOfficial));
+        }
+        if (businessOrganisation == null) {
+            errors.add(BulkImportErrors.notNull(Fields.businessOrganisation));
+        }
+        if (validFrom == null) {
+            errors.add(BulkImportErrors.notNull(ServicePointUpdateCsvModel.Fields.validFrom));
+        }
+        if (validTo == null) {
+            errors.add(BulkImportErrors.notNull(ServicePointUpdateCsvModel.Fields.validTo));
+        }
+        return errors;
     }
 
     @Override
     public List<UniqueField<ServicePointCreateCsvModel>> uniqueFields() {
-        return List.of();
+        return List.of(new UniqueField<>(Fields.numberShort, ServicePointCreateCsvModel::getNumberShort));
+    }
+
+    private boolean isNumberShortRequired(Integer uicCountryCode) {
+        return uicCountryCode == null || (uicCountryCode != 85 && (uicCountryCode < 11 || uicCountryCode > 14));
     }
 }
