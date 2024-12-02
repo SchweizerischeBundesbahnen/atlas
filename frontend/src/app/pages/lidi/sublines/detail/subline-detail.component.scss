@@ -16,7 +16,12 @@
   }
 
   a {
-    margin-left: auto;
-    padding-top: 65px;
+    margin-left: 10px;
+    padding-top: 60px;
   }
+}
+
+.detail-wrapper {
+  width: 80%;
+  transform: translateX(12.5%);
 }

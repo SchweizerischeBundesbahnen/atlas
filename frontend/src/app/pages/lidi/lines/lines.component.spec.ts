@@ -100,6 +100,12 @@ describe('LinesComponent', () => {
       [],
       undefined,
       undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
       0,
       10,
       ['slnid,asc']
