@@ -89,7 +89,7 @@ sourceSets {
         }
         proto {
             // In addition to the default 'src/main/proto'
-            srcDir("/src/main/resources/protobuf")
+            srcDir("${projectDir}/src/main/resources/protobuf")
         }
     }
 }
