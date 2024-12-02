@@ -5,9 +5,9 @@ import static java.util.stream.Collectors.toSet;
 import ch.sbb.atlas.api.lidi.CoverageModel;
 import ch.sbb.atlas.api.lidi.LineApiV1;
 import ch.sbb.atlas.api.lidi.LineModel;
+import ch.sbb.atlas.api.lidi.LineRequestParams;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
-import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -49,21 +49,11 @@ public class LineController implements LineApiV1 {
   private final LineVersionSnapshotService lineVersionSnapshotService;
 
   @Override
-  public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber,
-      List<String> searchCriteria, List<Status> statusRestrictions, List<LidiElementType> typeRestrictions,
-      Optional<String> businessOrganisation,
-      Optional<LocalDate> validOn) {
-    log.info("Load Versions using pageable={}", pageable);
+  public Container<LineModel> getLines(Pageable pageable, LineRequestParams lineRequestParams) {
+    log.info("Load Versions using pageable={}, params={}", pageable, lineRequestParams);
     Page<Line> lines = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(pageable)
-        .searchCriterias(searchCriteria)
-        .statusRestrictions(
-            statusRestrictions)
-        .validOn(validOn)
-        .typeRestrictions(typeRestrictions)
-        .swissLineNumber(swissLineNumber)
-        .businessOrganisation(
-            businessOrganisation)
+        .lineRequestParams(lineRequestParams)
         .build());
     List<LineModel> lineModels = lines.stream().map(this::toModel).toList();
     return Container.<LineModel>builder()

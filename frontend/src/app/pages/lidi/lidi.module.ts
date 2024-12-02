@@ -6,7 +6,7 @@ import {LidiOverviewComponent} from './overview/lidi-overview.component';
 import {LineDetailComponent} from './lines/detail/line-detail.component';
 import {SublineDetailComponent} from './sublines/detail/subline-detail.component';
 import {FormModule} from '../../core/module/form.module';
-import {MainlineSelectOptionPipe} from './sublines/detail/mainline-select-option.pipe';
+import {MainlineDescriptionPipe} from './sublines/detail/mainline-description.pipe';
 import {LidiWorkflowOverviewComponent} from './workflow/overview/lidi-workflow-overview.component';
 import {LineVersionSnapshotDetailComponent} from './workflow/detail/line-version-snapshot-detail.component';
 import {LineDetailFormComponent} from './lines/detail/line-detail-form/line-detail-form.component';
@@ -20,7 +20,7 @@ import {LineDetailFormComponent} from './lines/detail/line-detail-form/line-deta
     LinesComponent,
     LineDetailComponent,
     SublineDetailComponent,
-    MainlineSelectOptionPipe,
+    MainlineDescriptionPipe,
   ],
   imports: [CoreModule, LidiRoutingModule, FormModule],
 })

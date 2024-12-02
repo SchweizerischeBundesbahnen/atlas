@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.lidi.LineModel;
+import ch.sbb.atlas.api.lidi.LineRequestParams;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
@@ -109,8 +110,7 @@ class LineControllerTest {
 
     // When
     Container<LineModel> lineContainer = lineController.getLines(
-        Pageable.unpaged(), Optional.empty(), Collections.emptyList(), Collections.emptyList(),
-        Collections.emptyList(), Optional.empty(), Optional.empty());
+        Pageable.unpaged(), LineRequestParams.builder().build());
 
     // Then
     assertThat(lineContainer).isNotNull();
