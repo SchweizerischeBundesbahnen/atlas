@@ -93,13 +93,13 @@
             </div>
             <div class="d-flex flex-column ms-5" data-cy="selected-line-short-number">
               <div class="font-bold-base">{{ 'LIDI.SHORT_NUMBER' | translate }}</div>
-              <div>{{ currentMainlineSelection.shortNumber }}</div>
+              <div>{{ currentMainlineSelection.shortNumber ?? '-' }}</div>
             </div>
             <div class="d-flex flex-column ms-5" data-cy="selected-line-offer-category">
               <div class="font-bold-base">
                 {{ 'LIDI.OFFER_CATEGORY.TYPE' | translate }}
               </div>
-              <div>{{ currentMainlineSelection.offerCategory }}</div>
+              <div>{{ currentMainlineSelection.offerCategory ?? '-' }}</div>
             </div>
           </div>
         }
