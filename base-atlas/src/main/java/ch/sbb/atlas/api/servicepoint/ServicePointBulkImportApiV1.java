@@ -17,8 +17,6 @@ public interface ServicePointBulkImportApiV1 {
   @PostMapping(value = BASEPATH + "/update")
   List<BulkImportItemExecutionResult> bulkImportUpdate(@RequestBody List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> bulkImportContainers);
 
-  //TODO: create
-
   @PostMapping(value = BASEPATH + "/create")
   List<BulkImportItemExecutionResult> bulkImportCreate(@RequestBody List<BulkImportUpdateContainer<ServicePointCreateCsvModel>> bulkImportContainers);
 
