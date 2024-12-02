@@ -79,7 +79,6 @@ describe('LiDi: Versioning Teillinie Scenario 4', {testIsolation: false}, () => 
 
     secondSublineVersion.validFrom = '01.01.2002';
     secondSublineVersion.validTo = '01.06.2002';
-    secondSublineVersion.number = editedFirstSublineVersion.number;
     secondSublineVersion.longName = editedFirstSublineVersion.longName;
     LidiUtils.assertContainsSublineVersion(secondSublineVersion);
   });
