@@ -1,5 +1,5 @@
 plugins {
-    id("org.openapi.generator") version "7.10.0"
+    id("org.openapi.generator") version "7.5.0"
     id("buildlogic.java-conventions")
 }
 
@@ -37,6 +37,8 @@ dependencies {
 
     implementation("org.springframework.kafka:spring-kafka")//get this dependency from :kafka use as api does not work
     implementation(project(":kafka"))
+
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.3.Final")
 
     testImplementation(project(":auto-rest-doc"))
     testImplementation("org.springframework.kafka:spring-kafka-test")//get this dependency from :kafka use as api does not work
