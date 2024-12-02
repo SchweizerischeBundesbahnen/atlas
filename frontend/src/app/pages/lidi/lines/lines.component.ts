@@ -72,7 +72,6 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   constructor(
     private linesService: LinesService,
-    private route: ActivatedRoute,
     private router: Router,
     private tableService: TableService
   ) {
@@ -92,9 +91,9 @@ export class LinesComponent implements OnInit, OnDestroy {
         this.tableService.filter.chipSearch.getActiveSearch(),
         this.tableService.filter.multiSelectStatus.getActiveSearch(),
         this.tableService.filter.multiSelectLineType.getActiveSearch(),
+        undefined,
         this.tableService.filter.searchSelect.getActiveSearch()?.sboid,
         this.tableService.filter.dateSelect.getActiveSearch(),
-        undefined,
         undefined,
         undefined,
         undefined,

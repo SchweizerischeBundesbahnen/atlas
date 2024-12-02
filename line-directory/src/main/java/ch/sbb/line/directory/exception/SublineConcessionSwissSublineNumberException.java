@@ -15,13 +15,14 @@ import org.springframework.http.HttpStatus;
 public class SublineConcessionSwissSublineNumberException extends AtlasException {
 
   private static final String CODE = "LIDI.SUBLINE.ERROR.SWISS_SUBLINE_NUMBER";
+  private static final String MESSAGE = "SwissSublineNumber only allowed on SublineType CONCESSION, but then mandatory";
 
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.BAD_REQUEST.value())
-        .message("SwissSublineNumber only allowed on SublineType CONCESSION, but then mandatory")
-        .error("SwissSublineNumber only allowed on SublineType CONCESSION, but then mandatory")
+        .message(MESSAGE)
+        .error(MESSAGE)
         .details(new TreeSet<>(getErrorDetails()))
         .build();
   }
@@ -29,7 +30,7 @@ public class SublineConcessionSwissSublineNumberException extends AtlasException
   private Set<Detail> getErrorDetails() {
     return Set.of(Detail.builder()
         .field(Fields.swissSublineNumber)
-        .message("SwissSublineNumber only allowed on SublineType CONCESSION, but then mandatory")
+        .message(MESSAGE)
         .displayInfo(builder()
             .code(CODE)
             .build()).build());
