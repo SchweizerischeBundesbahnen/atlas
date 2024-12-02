@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TableColumn} from '../../../core/components/table/table-column';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {BusinessOrganisation, ElementType, LidiElementType, Line, LinesService, Status} from '../../../api';
 import {TableService} from '../../../core/components/table/table.service';
@@ -53,9 +53,9 @@ export class LinesComponent implements OnInit, OnDestroy {
   linesTableColumns: TableColumn<Line>[] = [
     {headerTitle: 'LIDI.LINE.NUMBER', value: 'number'},
     {headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description'},
-    {headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber'},
     {headerTitle: 'LIDI.TYPE', value: 'lidiElementType', translate: {withPrefix: 'LIDI.LINE.TYPES.'}},
     {headerTitle: 'LIDI.SLNID', value: 'slnid'},
+    {headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber'},
     {
       headerTitle: 'COMMON.STATUS',
       value: 'status',
@@ -72,7 +72,6 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   constructor(
     private linesService: LinesService,
-    private route: ActivatedRoute,
     private router: Router,
     private tableService: TableService
   ) {
@@ -92,8 +91,14 @@ export class LinesComponent implements OnInit, OnDestroy {
         this.tableService.filter.chipSearch.getActiveSearch(),
         this.tableService.filter.multiSelectStatus.getActiveSearch(),
         this.tableService.filter.multiSelectLineType.getActiveSearch(),
+        undefined,
         this.tableService.filter.searchSelect.getActiveSearch()?.sboid,
         this.tableService.filter.dateSelect.getActiveSearch(),
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'slnid,asc')
