@@ -2,13 +2,13 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of, throwError} from 'rxjs';
-import {PaymentType, SublinesService, SublineType, SublineVersion} from '../../../../api';
+import {LidiElementType, Line, LinesService, SublinesService, SublineType, SublineVersionV2} from '../../../../api';
 import {SublineDetailComponent} from './subline-detail.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AppTestingModule} from '../../../../app.testing.module';
 import {InfoIconComponent} from '../../../../core/form-components/info-icon/info-icon.component';
 import {adminPermissionServiceMock, MockAppDetailWrapperComponent, MockBoSelectComponent,} from '../../../../app.testing.mocks';
-import {MainlineSelectOptionPipe} from './mainline-select-option.pipe';
+import {MainlineDescriptionPipe} from './mainline-description.pipe';
 import {TranslatePipe} from '@ngx-translate/core';
 import {LinkIconComponent} from '../../../../core/form-components/link-icon/link-icon.component';
 import {AtlasLabelFieldComponent} from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
@@ -21,17 +21,37 @@ import {DetailPageContainerComponent} from '../../../../core/components/detail-p
 import {DetailFooterComponent} from '../../../../core/components/detail-footer/detail-footer.component';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
+import {AtlasButtonComponent} from "../../../../core/components/button/atlas-button.component";
+import {UserDetailInfoComponent} from "../../../../core/components/base-detail/user-edit-info/user-detail-info.component";
+import {SwitchVersionComponent} from "../../../../core/components/switch-version/switch-version.component";
+import {Component, Input} from "@angular/core";
+import {Record} from "../../../../core/components/base-detail/record";
+import {Page} from "../../../../core/model/page";
+import {DateRangeComponent} from "../../../../core/form-components/date-range/date-range.component";
+import {DateRangeTextComponent} from "../../../../core/versioning/date-range-text/date-range-text.component";
+import {DateIconComponent} from "../../../../core/form-components/date-icon/date-icon.component";
+import {DisplayDatePipe} from "../../../../core/pipe/display-date.pipe";
+import moment from "moment";
+import {DialogService} from "../../../../core/components/dialog/dialog.service";
 
-const sublineVersion: SublineVersion = {
+@Component({
+  selector: 'app-coverage',
+  template: '<p>Mock Product Editor Component</p>',
+})
+class MockAppCoverageComponent {
+  @Input() pageType!: Record;
+  @Input() currentRecord!: Page;
+}
+
+const sublineVersion: SublineVersionV2 = {
   id: 1234,
   slnid: 'slnid',
-  number: 'name',
   description: 'asdf',
   status: 'VALIDATED',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
-  paymentType: PaymentType.None,
   swissSublineNumber: 'L1:2',
   sublineType: SublineType.Technical,
   mainlineSlnid: 'ch:1:slnid:1000',
@@ -74,20 +94,30 @@ const error = new HttpErrorResponse({
 let component: SublineDetailComponent;
 let fixture: ComponentFixture<SublineDetailComponent>;
 let router: Router;
+
 const validityService = jasmine.createSpyObj<ValidityService>([
-  'initValidity', 'updateValidity'
+  'initValidity', 'updateValidity', 'validate'
 ]);
+validityService.validate.and.returnValue(of(true));
+
+const lineService=jasmine.createSpyObj('LineService', ['getLineVersionsV2', 'getLines', 'getLine']);
+lineService.getLineVersionsV2.and.returnValue(of([]));
+lineService.getLine.and.returnValue(of());
+
+const dialogService = jasmine.createSpyObj<DialogService>('DialogService', {confirm: of(true)});
+
 describe('SublineDetailComponent for existing sublineVersion', () => {
-  const mockSublinesService = jasmine.createSpyObj('sublinesService', [
-    'updateSublineVersion',
+  const sublinesService = jasmine.createSpyObj('sublinesService', [
+    'updateSublineVersionV2',
     'deleteSublines',
+    'revokeSubline',
   ]);
   const mockData = {
-    sublineDetail: sublineVersion,
+    sublineDetail: [sublineVersion],
   };
 
   beforeEach(() => {
-    setupTestBed(mockSublinesService, mockData);
+    setupTestBed(sublinesService, mockData);
     fixture = TestBed.createComponent(SublineDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -99,10 +129,15 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should update SublineVersion successfully', () => {
-    mockSublinesService.updateSublineVersion.and.returnValue(of(sublineVersion));
+    sublinesService.updateSublineVersionV2.and.returnValue(of(sublineVersion));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-    fixture.componentInstance.updateRecord();
+
+    component.toggleEdit();
+    component.form.controls.description.setValue("NewDescription");
+    component.save();
     fixture.detectChanges();
+
+    expect(sublinesService.updateSublineVersionV2).toHaveBeenCalled();
 
     const snackBarContainer =
       fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
@@ -113,17 +148,21 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should not update Version', () => {
-    mockSublinesService.updateSublineVersion.and.returnValue(throwError(() => error));
-    fixture.componentInstance.updateRecord();
+    sublinesService.updateSublineVersionV2.and.returnValue(throwError(() => error));
+    component.toggleEdit();
+    component.form.controls.description.setValue("NewDescription");
+    component.save();
+    fixture.detectChanges();
     fixture.detectChanges();
 
     expect(component.form.enabled).toBeTrue();
   });
 
   it('should delete SublineVersion successfully', () => {
-    mockSublinesService.deleteSublines.and.returnValue(of({}));
+    sublinesService.deleteSublines.and.returnValue(of({}));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-    fixture.componentInstance.deleteRecord();
+
+    component.delete();
     fixture.detectChanges();
 
     const snackBarContainer =
@@ -133,16 +172,31 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
+
+  it('should revoke SublineVersion successfully', () => {
+    sublinesService.revokeSubline.and.returnValue(of({}));
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+
+    component.revoke();
+    fixture.detectChanges();
+
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.REVOKE_SUCCESS');
+    expect(snackBarContainer.classList).toContain('success');
+    expect(router.navigate).toHaveBeenCalled();
+  });
 });
 
 describe('SublineDetailComponent for new sublineVersion', () => {
-  const mockSublinesService = jasmine.createSpyObj('sublinesService', ['createSublineVersion']);
+  const sublinesService = jasmine.createSpyObj('sublinesService', ['createSublineVersionV2']);
   const mockData = {
-    sublineDetail: 'add',
+    sublineDetail: [],
   };
 
   beforeEach(() => {
-    setupTestBed(mockSublinesService, mockData);
+    setupTestBed(sublinesService, mockData);
 
     fixture = TestBed.createComponent(SublineDetailComponent);
     component = fixture.componentInstance;
@@ -157,9 +211,22 @@ describe('SublineDetailComponent for new sublineVersion', () => {
   describe('create new Version', () => {
     it('successfully', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-      mockSublinesService.createSublineVersion.and.returnValue(of(sublineVersion));
-      fixture.componentInstance.createRecord();
+      sublinesService.createSublineVersionV2.and.returnValue(of(sublineVersion));
+
+      component.form.patchValue({
+        mainlineSlnid:'mainlineSlnid',
+        sublineType: SublineType.Technical,
+        description: 'description',
+        businessOrganisation:'sboid',
+        validFrom: moment(),
+        validTo: moment(),
+        swissSublineNumber:'slnr'
+      });
+
+      component.save();
       fixture.detectChanges();
+
+      expect(sublinesService.createSublineVersionV2).toHaveBeenCalled();
 
       const snackBarContainer =
         fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
@@ -169,19 +236,61 @@ describe('SublineDetailComponent for new sublineVersion', () => {
       expect(router.navigate).toHaveBeenCalled();
     });
 
-    it('displaying error', () => {
-      mockSublinesService.createSublineVersion.and.returnValue(throwError(() => error));
-      fixture.componentInstance.createRecord();
-      fixture.detectChanges();
+  });
 
-      expect(component.form.enabled).toBeTrue();
-    });
+  it('should handle mainLine selection of type orderly', () => {
+    const mainLine: Line = {
+      slnid: 'mainlineSlnid',
+      lidiElementType: LidiElementType.Orderly
+    } as Line;
+    component.mainLineChanged(mainLine);
+
+    expect(component.TYPE_OPTIONS).toEqual([SublineType.Concession, SublineType.Technical]);
+    expect(component.form.controls.sublineType.value).toBeNull();
+
+    // Remove mainline selection
+    component.mainLineChanged(undefined);
+    expect(component.TYPE_OPTIONS).toEqual([]);
+    expect(component.currentMainlineSelection).toBeUndefined();
+  });
+
+  it('should handle mainLine selection of type disposition', () => {
+    const mainLine: Line = {
+      slnid: 'mainlineSlnid',
+      lidiElementType: LidiElementType.Disposition
+    } as Line;
+    component.mainLineChanged(mainLine);
+
+    expect(component.TYPE_OPTIONS).toEqual([SublineType.Disposition]);
+    expect(component.form.controls.sublineType.value).toBe(SublineType.Disposition);
+  });
+
+  it('should handle mainLine selection of type temporary', () => {
+    const mainLine: Line = {
+      slnid: 'mainlineSlnid',
+      lidiElementType: LidiElementType.Temporary
+    } as Line;
+    component.mainLineChanged(mainLine);
+
+    expect(component.TYPE_OPTIONS).toEqual([SublineType.Temporary]);
+    expect(component.form.controls.sublineType.value).toBe(SublineType.Temporary);
+  });
+
+  it('should handle mainLine selection of type operational', () => {
+    const mainLine: Line = {
+      slnid: 'mainlineSlnid',
+      lidiElementType: LidiElementType.Operational
+    } as Line;
+    component.mainLineChanged(mainLine);
+
+    expect(component.TYPE_OPTIONS).toEqual([SublineType.Operational]);
+    expect(component.form.controls.sublineType.value).toBe(SublineType.Operational);
   });
 });
 
 function setupTestBed(
   sublinesService: SublinesService,
-  data: { sublineDetail: string | SublineVersion }
+  data: { sublineDetail: string | SublineVersionV2[] }
 ) {
   TestBed.configureTestingModule({
     declarations: [
@@ -191,25 +300,42 @@ function setupTestBed(
       InfoIconComponent,
       LinkIconComponent,
       SearchSelectComponent,
-      MainlineSelectOptionPipe,
+      MainlineDescriptionPipe,
       AtlasLabelFieldComponent,
       AtlasFieldErrorComponent,
       TextFieldComponent,
       SelectComponent,
       AtlasSpacerComponent,
       DetailPageContainerComponent,
+      DetailPageContentComponent,
       DetailFooterComponent,
+      AtlasButtonComponent,
+      UserDetailInfoComponent,
+      SwitchVersionComponent,
+      MockAppCoverageComponent,
+      DateRangeComponent,
+      DateRangeTextComponent,
+      DateIconComponent,
+      DisplayDatePipe,
     ],
     imports: [AppTestingModule],
     providers: [
-      { provide: FormBuilder },
-      { provide: SublinesService, useValue: sublinesService },
-      { provide: PermissionService, useValue: adminPermissionServiceMock },
-      { provide: ValidityService, useValue: validityService },
-      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
+      {provide: FormBuilder},
+      {provide: SublinesService, useValue: sublinesService},
+      {provide: LinesService, useValue: lineService},
+      {provide: DialogService, useValue: dialogService},
+      {provide: PermissionService, useValue: adminPermissionServiceMock},
+      {provide: ActivatedRoute, useValue: {snapshot: {data: data}}},
       TranslatePipe,
     ],
   })
+    .overrideComponent(SublineDetailComponent, {
+      set: {
+        providers: [
+          {provide: ValidityService, useValue: validityService}
+        ]
+      }
+    })
     .compileComponents()
     .then();
 }

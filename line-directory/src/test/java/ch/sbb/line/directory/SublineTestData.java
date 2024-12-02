@@ -18,25 +18,18 @@ public class SublineTestData {
     return SublineVersion.builder()
         .status(Status.VALIDATED)
         .sublineType(SublineType.TECHNICAL)
-        .paymentType(
-            PaymentType.INTERNATIONAL)
+        .paymentType(PaymentType.INTERNATIONAL)
         .number("number")
         .longName("longName")
         .description("description")
-        .validFrom(
-            LocalDate.of(2020, 1, 1))
-        .validTo(
-            LocalDate.of(2020, 12, 31))
-        .businessOrganisation(
-            "businessOrganisation")
-        .mainlineSlnid(MAINLINE_SLNID)
-        .swissSublineNumber(
-            "swissSublineNumber");
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .businessOrganisation("businessOrganisation")
+        .mainlineSlnid(MAINLINE_SLNID);
   }
 
   public static SublineVersionBuilder<?, ?> sublineVersionV2Builder() {
-    return sublineVersionBuilder()
-        .concessionType(SublineConcessionType.LINE_ABROAD);
+    return sublineVersionBuilder().concessionType(SublineConcessionType.LINE_ABROAD);
   }
 
   public static SublineVersion sublineVersion() {
@@ -48,7 +41,6 @@ public class SublineTestData {
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .businessOrganisation("sbb")
-        .swissSublineNumber("b0.Ic2-sibline")
         .number("number")
         .description("description")
         .sublineType(SublineType.TECHNICAL)

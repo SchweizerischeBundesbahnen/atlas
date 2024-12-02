@@ -14,11 +14,9 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
 @Service
@@ -53,17 +51,10 @@ public class SublineService {
 
   public SublineVersion save(SublineVersion sublineVersion) {
     sublineVersion.setStatus(Status.VALIDATED);
-    List<LineVersion> lineVersions = lineService.findLineVersions(
-        sublineVersion.getMainlineSlnid());
-    if (lineVersions.isEmpty()) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-          "Main line with SLNID " + sublineVersion.getMainlineSlnid() + " does not exist");
-    }
-
     sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion);
-    sublineVersionRepository.saveAndFlush(sublineVersion);
+    SublineVersion savedVersion = sublineVersionRepository.saveAndFlush(sublineVersion);
     sublineValidationService.validateSublineAfterVersioningBusinessRule(sublineVersion);
-    return sublineVersion;
+    return savedVersion;
   }
 
   public List<SublineVersion> revokeSubline(String slnid) {
@@ -73,9 +64,7 @@ public class SublineService {
   }
 
   public void deleteById(Long id) {
-    SublineVersion sublineVersion = sublineVersionRepository.findById(id)
-        .orElseThrow(
-            () -> new IdNotFoundException(id));
+    SublineVersion sublineVersion = sublineVersionRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
     coverageService.deleteCoverageSubline(sublineVersion.getSlnid());
     sublineVersionRepository.deleteById(id);
   }
