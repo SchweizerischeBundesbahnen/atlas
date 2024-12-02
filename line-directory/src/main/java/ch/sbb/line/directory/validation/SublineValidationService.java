@@ -17,7 +17,7 @@ import ch.sbb.line.directory.exception.SublineTypeMissmatchException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,8 +29,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SublineValidationService {
 
-  private static final Map<LineType, Set<SublineType>> ALLOWED_SUBLINE_TYPES = new HashMap<>();
-
+  private static final Map<LineType, Set<SublineType>> ALLOWED_SUBLINE_TYPES = new EnumMap<>(LineType.class);
   static {
     ALLOWED_SUBLINE_TYPES.put(LineType.ORDERLY, Set.of(SublineType.CONCESSION, SublineType.TECHNICAL));
     ALLOWED_SUBLINE_TYPES.put(LineType.DISPOSITION, Set.of(SublineType.DISPOSITION));
