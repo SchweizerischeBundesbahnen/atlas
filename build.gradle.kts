@@ -23,13 +23,16 @@ subprojects {
     if (project.name != "frontend") {
         sonar {
             properties {
-                property("sonar.projectName", "ATLAS - SKI Business Application")//remove me
-                property("sonar.projectKey", "ch.sbb.atlas:atlas")//remove me
+                property("sonar.sources", "src/main/java")
+                property("sonar.tests", "src/test/java")
+                property("sonar.projectName", "ATLAS - SKI Business Application")
+                property("sonar.projectKey", "ch.sbb.atlas:atlas")
                 property("sonar.dynamicAnalysis", "reuseReports")
                 property("sonar.java.coveragePlugin", "jacoco")
                 property(
                     "sonar.exclusions",
-                    "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*"
+                    "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js," +
+                            "**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*"
                 )
             }
         }
@@ -38,6 +41,11 @@ subprojects {
     if (project.name == "frontend") {
         sonar {
             properties {
+                property(
+                    "sonar.exclusions",
+                    "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/*.kts"
+                )
+                property("sonar.sources", "./")
                 property("sonar.language", "ts")
                 property("sonar.profile", "TsLint")
                 property("sonar.verbose", "true")
