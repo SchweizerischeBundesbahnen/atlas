@@ -3,10 +3,10 @@ import { Line } from '../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Pipe({
-  name: 'mainlineSelectOption',
+  name: 'mainlineDescription',
   pure: true,
 })
-export class MainlineSelectOptionPipe implements PipeTransform {
+export class MainlineDescriptionPipe implements PipeTransform {
   constructor(private readonly translatePipe: TranslatePipe) {}
 
   transform(value: Line): string {
@@ -14,6 +14,6 @@ export class MainlineSelectOptionPipe implements PipeTransform {
     if (!desc) {
       desc = `(${this.translatePipe.transform('LIDI.SUBLINE.NO_LINE_DESIGNATION_AVAILABLE')})`;
     }
-    return `${value.swissLineNumber} ${desc}`;
+    return `${desc}`;
   }
 }

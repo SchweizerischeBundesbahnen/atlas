@@ -1,9 +1,14 @@
 package ch.sbb.line.directory.controller;
 
+import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.SublineApiV2;
 import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.mapper.SublineMapper;
 import ch.sbb.line.directory.service.SublineService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,38 +23,37 @@ public class SublineControllerV2 implements SublineApiV2 {
   private final SublineService sublineService;
 
   @Override
-  public List<SublineVersionModelV2> getSublineVersionV2(String slnid) {
+  public List<ReadSublineVersionModelV2> getSublineVersionV2(String slnid) {
     List<SublineVersion> versions = sublineService.findSubline(slnid);
+    if (versions.isEmpty()) {
+      throw new SlnidNotFoundException(slnid);
+    }
     String lineSlnid = versions.getFirst().getMainlineSlnid();
     LineVersion lineVersion = sublineService.getMainLineVersion(lineSlnid);
-    return versions.stream().map(sublineVersion -> toModel(sublineVersion, lineVersion)).toList();
-
+    return versions.stream().map(sublineVersion -> SublineMapper.toModel(sublineVersion, lineVersion)).toList();
   }
 
-  private SublineVersionModelV2 toModel(SublineVersion sublineVersion, LineVersion lineVersion) {
-    return SublineVersionModelV2.builder()
-        .id(sublineVersion.getId())
-        .swissSublineNumber(sublineVersion.getSwissSublineNumber())
-        .mainlineSlnid(sublineVersion.getMainlineSlnid())
-        .sublineConcessionType(sublineVersion.getConcessionType())
-        .lineConcessionType(lineVersion.getConcessionType())
-        .mainSwissLineNumber(lineVersion.getSwissLineNumber())
-        .mainShortNumber(lineVersion.getShortNumber())
-        .offerCategory(lineVersion.getOfferCategory())
-        .status(sublineVersion.getStatus())
-        .sublineType(sublineVersion.getSublineType())
-        .slnid(sublineVersion.getSlnid())
-        .description(sublineVersion.getDescription())
-        .longName(sublineVersion.getLongName())
-        .validFrom(sublineVersion.getValidFrom())
-        .validTo(sublineVersion.getValidTo())
-        .businessOrganisation(sublineVersion.getBusinessOrganisation())
-        .etagVersion(sublineVersion.getVersion())
-        .creator(sublineVersion.getCreator())
-        .creationDate(sublineVersion.getCreationDate())
-        .editor(sublineVersion.getEditor())
-        .editionDate(sublineVersion.getEditionDate())
-        .build();
+  @Override
+  public ReadSublineVersionModelV2 createSublineVersionV2(SublineVersionModelV2 newSublineVersion) {
+    SublineVersion sublineVersion = SublineMapper.toEntity(newSublineVersion);
+    sublineVersion.setStatus(Status.VALIDATED);
+    SublineVersion createdVersion = sublineService.create(sublineVersion);
+
+    LineVersion lineVersion = sublineService.getMainLineVersion(sublineVersion.getMainlineSlnid());
+    return SublineMapper.toModel(createdVersion, lineVersion);
   }
+
+  @Override
+  public List<ReadSublineVersionModelV2> updateSublineVersionV2(Long id, SublineVersionModelV2 newVersion) {
+    SublineVersion versionToUpdate = sublineService.findById(id)
+        .orElseThrow(() -> new IdNotFoundException(id));
+    sublineService.update(versionToUpdate, SublineMapper.toEntity(newVersion),
+        sublineService.findSubline(versionToUpdate.getSlnid()));
+
+    LineVersion lineVersion = sublineService.getMainLineVersion(versionToUpdate.getMainlineSlnid());
+    return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(i -> SublineMapper.toModel(i, lineVersion))
+        .toList();
+  }
+
 
 }
