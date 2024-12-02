@@ -5,10 +5,8 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFI
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +20,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -44,12 +43,7 @@ public interface LineApiV1 {
   @GetMapping
   @PageableAsQueryParam
   Container<LineModel> getLines(@Parameter(hidden = true) Pageable pageable,
-      @RequestParam(required = false) Optional<String> swissLineNumber,
-      @RequestParam(required = false) List<String> searchCriteria,
-      @RequestParam(required = false) List<Status> statusRestrictions,
-      @RequestParam(required = false) List<LidiElementType> typeRestrictions,
-      @RequestParam(required = false) Optional<String> businessOrganisation,
-      @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
+      @Valid @ParameterObject LineRequestParams lineRequestParams);
 
   @GetMapping("{slnid}")
   LineModel getLine(@PathVariable String slnid);
