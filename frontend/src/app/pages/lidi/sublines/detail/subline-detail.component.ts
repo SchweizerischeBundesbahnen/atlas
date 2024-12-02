@@ -25,6 +25,7 @@ import {DetailFormComponent} from "../../../../core/leave-guard/leave-dirty-form
 import {VersionsHandlingService} from "../../../../core/versioning/versions-handling.service";
 import {DateRange} from "../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../core/detail/detail-helper.service";
+import {DialogService} from "../../../../core/components/dialog/dialog.service";
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -64,6 +65,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
     private activatedRoute: ActivatedRoute,
     private validityService: ValidityService,
     private detailHelperService: DetailHelperService,
+    private dialogService: DialogService,
   ) {
   }
 
@@ -177,23 +179,45 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
   }
 
   revoke(): void {
-    if (this.selectedVersion.slnid) {
-      this.sublinesService.revokeSubline(this.selectedVersion.slnid).subscribe(() => {
-        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.REVOKE_SUCCESS');
-        this.router
-          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, this.selectedVersion.slnid])
-          .then(() => this.ngOnInit());
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.REVOKE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_REVOKE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          if (this.selectedVersion.slnid) {
+            this.sublinesService.revokeSubline(this.selectedVersion.slnid).subscribe(() => {
+              this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.REVOKE_SUCCESS');
+              this.router
+                .navigate([Pages.LIDI.path, Pages.SUBLINES.path, this.selectedVersion.slnid])
+                .then(() => this.ngOnInit());
+            });
+          }
+        }
       });
-    }
   }
 
   delete(): void {
-    if (this.selectedVersion.slnid) {
-      this.sublinesService.deleteSublines(this.selectedVersion.slnid).subscribe(() => {
-        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
-        this.back();
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.DELETE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_DELETE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          if (this.selectedVersion.slnid) {
+            this.sublinesService.deleteSublines(this.selectedVersion.slnid).subscribe(() => {
+              this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
+              this.back();
+            });
+          }
+        }
       });
-    }
   }
 
   back() {

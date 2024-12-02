@@ -15,13 +15,14 @@ import org.springframework.http.HttpStatus;
 public class SublineConcessionException extends AtlasException {
 
   private static final String CODE = "LIDI.SUBLINE.ERROR.CONCESSION";
+  private static final String MESSAGE = "ConcessionType only allowed on SublineType CONCESSION";
 
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.BAD_REQUEST.value())
-        .message("ConcessionType only allowed on SublineType CONCESSION")
-        .error("ConcessionType only allowed on SublineType CONCESSION")
+        .message(MESSAGE)
+        .error(MESSAGE)
         .details(new TreeSet<>(getErrorDetails()))
         .build();
   }
@@ -29,7 +30,7 @@ public class SublineConcessionException extends AtlasException {
   private Set<Detail> getErrorDetails() {
     return Set.of(Detail.builder()
         .field(Fields.concessionType)
-        .message("ConcessionType only allowed on SublineType CONCESSION")
+        .message(MESSAGE)
         .displayInfo(builder()
             .code(CODE)
             .build()).build());
