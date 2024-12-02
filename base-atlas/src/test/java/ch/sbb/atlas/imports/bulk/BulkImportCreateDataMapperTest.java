@@ -1,17 +1,12 @@
 package ch.sbb.atlas.imports.bulk;
 
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
-import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
-import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
