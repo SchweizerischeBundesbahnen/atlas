@@ -49,7 +49,6 @@ public class SublineVersion extends BaseVersion implements Versionable,
   @SequenceGenerator(name = SUBLINE_VERSION_SEQ, sequenceName = SUBLINE_VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String swissSublineNumber;
@@ -69,6 +68,7 @@ public class SublineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private SublineType sublineType;
 
+  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String description;

@@ -36,7 +36,6 @@ public class BaseSublineVersionModel extends BaseVersionModel implements DatesVa
   private Long id;
 
   @Schema(description = "SwissSublineNumber", example = "b1.L1.X")
-  @NotBlank
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   private String swissSublineNumber;
@@ -53,6 +52,7 @@ public class BaseSublineVersionModel extends BaseVersionModel implements DatesVa
   @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001235")
   private String slnid;
 
+  @NotBlank
   @Schema(description = "Description", example = "Meiringen - Innertkirchen")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)

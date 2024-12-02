@@ -1,97 +1,163 @@
 import {Component, OnInit} from '@angular/core';
-import {ApplicationType, Line, LinesService, PaymentType, SublinesService, SublineType, SublineVersion,} from '../../../../api';
-import {BaseDetailController} from '../../../../core/components/base-detail/base-detail-controller';
-import {catchError, Observable, of} from 'rxjs';
-import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {
+  ApplicationRole,
+  ApplicationType,
+  ElementType,
+  LidiElementType,
+  Line,
+  LinesService, LineVersionV2, ReadSublineVersionV2, Status,
+  SublineConcessionType,
+  SublinesService,
+  SublineType,
+  SublineVersionV2,
+} from '../../../../api';
+import {catchError, EMPTY, Observable, of} from 'rxjs';
 import {NotificationService} from '../../../../core/notification/notification.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Page} from '../../../../core/model/page';
 import {Pages} from '../../../pages';
-import moment from 'moment';
-import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
 import {map} from 'rxjs/operators';
-import {AtlasCharsetsValidator} from '../../../../core/validation/charsets/atlas-charsets-validator';
 import {ValidationService} from '../../../../core/validation/validation.service';
-import {WhitespaceValidator} from '../../../../core/validation/whitespace/whitespace-validator';
-import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import {SublineDetailFormGroup} from './subline-detail-form-group';
+import {SublineFormGroup, SublineFormGroupBuilder} from './subline-form-group';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import {DetailFormComponent} from "../../../../core/leave-guard/leave-dirty-form-guard.service";
+import {VersionsHandlingService} from "../../../../core/versioning/versions-handling.service";
+import {DateRange} from "../../../../core/versioning/date-range";
+import {DetailHelperService, DetailWithCancelEdit} from "../../../../core/detail/detail-helper.service";
+import {DialogService} from "../../../../core/components/dialog/dialog.service";
 
 @Component({
   templateUrl: './subline-detail.component.html',
   styleUrls: ['./subline-detail.component.scss'],
   providers: [ValidityService],
 })
-export class SublineDetailComponent extends BaseDetailController<SublineVersion> implements OnInit {
-  TYPE_OPTIONS = Object.values(SublineType);
-  PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
+export class SublineDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
+  protected readonly Pages = Pages;
+
+  TYPE_OPTIONS: SublineType[] = [];
+  CONCESSION_TYPE_OPTIONS = Object.values(SublineConcessionType);
 
   mainlines$: Observable<Line[]> = of([]);
+  currentMainlineSelection?:LineVersionV2;
 
   readonly mainlineSlnidFormControlName = 'mainlineSlnid';
 
+  form!: FormGroup<SublineFormGroup>;
+  isNew = false;
+  showVersionSwitch = false;
+  isSwitchVersionDisabled = false;
+  selectedVersionIndex!: number;
+
+  maxValidity!: DateRange;
+
+  versions!: ReadSublineVersionV2[];
+  selectedVersion!: ReadSublineVersionV2;
+
+  boSboidRestriction: string[] = [];
+
   constructor(
-    protected router: Router,
+    private router: Router,
     private sublinesService: SublinesService,
-    protected notificationService: NotificationService,
-    private validationService: ValidationService,
+    private notificationService: NotificationService,
     private linesService: LinesService,
-    protected dialogService: DialogService,
-    protected permissionService: PermissionService,
-    protected activatedRoute: ActivatedRoute,
-    protected validityService: ValidityService,
+    private permissionService: PermissionService,
+    private activatedRoute: ActivatedRoute,
+    private validityService: ValidityService,
+    private detailHelperService: DetailHelperService,
+    private dialogService: DialogService,
   ) {
-    super(router, dialogService, notificationService, permissionService, activatedRoute, validityService);
   }
 
   ngOnInit() {
-    super.ngOnInit();
-    if (this.isExistingRecord()) {
+    this.versions = this.activatedRoute.snapshot.data.sublineDetail;
+    if (this.versions.length == 0) {
+      this.isNew = true;
+      this.form = SublineFormGroupBuilder.buildFormGroup();
+    } else {
+      this.isNew = false;
+      VersionsHandlingService.addVersionNumbers(this.versions);
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.versions);
+      this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
+
+      this.initSelectedVersion();
       this.mainlines$ = this.linesService
-        .getLine(this.record.mainlineSlnid)
+        .getLine(this.selectedVersion.mainlineSlnid)
         .pipe(map((value) => [value]));
+
+      this.linesService.getLineVersionsV2(this.selectedVersion.mainlineSlnid).subscribe(mainline => {
+        this.currentMainlineSelection = VersionsHandlingService.determineDefaultVersionByValidity(mainline);
+      });
+
+      this.TYPE_OPTIONS = [this.form.controls.sublineType.value!]
+    }
+    this.initBoSboidRestriction();
+  }
+
+  private initSelectedVersion() {
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
+    this.form = SublineFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    if (!this.isNew) {
+      this.form.disable();
     }
   }
 
-  getPageType(): Page {
-    return Pages.SUBLINES;
+  initBoSboidRestriction() {
+    if (!this.isNew || this.permissionService.isAdmin) {
+      this.boSboidRestriction = [];
+    } else {
+      const permission = this.permissionService.getApplicationUserPermission(ApplicationType.Lidi);
+      if (permission.role === ApplicationRole.Writer) {
+        this.boSboidRestriction = PermissionService.getSboidRestrictions(permission);
+      } else {
+        this.boSboidRestriction = [];
+      }
+    }
   }
 
-  getApplicationType(): ApplicationType {
-    return ApplicationType.Lidi;
+  toggleEdit() {
+    if (this.form.enabled) {
+      this.detailHelperService.showCancelEditDialog(this);
+    } else {
+      this.isSwitchVersionDisabled = true;
+      this.validityService.initValidity(this.form);
+      this.form.enable({emitEvent: false});
+
+      this.form.controls.mainlineSlnid.disable();
+      this.form.controls.sublineType.disable();
+    }
   }
 
-  readRecord(): SublineVersion {
-    return this.activatedRoute.snapshot.data.sublineDetail;
+  switchVersion(newIndex: number) {
+    this.selectedVersionIndex = newIndex;
+    this.selectedVersion = this.versions[newIndex];
+    this.initSelectedVersion();
   }
 
-  getDetailHeading(record: SublineVersion): string {
-    return `${record.number ?? ''} - ${record.description ?? ''}`;
+  save() {
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      const sublineVersion = this.form.getRawValue() as unknown as SublineVersionV2;
+      this.form.disable();
+      if (this.isNew) {
+        this.createSubline(sublineVersion);
+      } else {
+        this.validityService.updateValidity(this.form);
+        this.validityService.validate().subscribe(confirmed => {
+          if (confirmed) {
+            this.form.disable();
+            this.updateSubline(this.selectedVersion.id!, sublineVersion);
+          }
+        });
+      }
+    }
   }
 
-  getDetailSubheading(record: SublineVersion): string {
-    return record.slnid!;
-  }
-
-  updateRecord(): void {
-    this.form.disable();
+  createSubline(sublineVersion: SublineVersionV2): void {
     this.sublinesService
-      .updateSublineVersion(this.getId(), this.form.value)
-      .pipe(catchError(this.handleError))
-      .subscribe(() => {
-        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
-        this.router
-          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, this.record.slnid])
-          .then(() => this.ngOnInit());
-      });
-  }
-
-  createRecord(): void {
-    this.sublinesService
-      .createSublineVersion(this.form.value)
-      .pipe(catchError(this.handleError))
+      .createSublineVersionV2(sublineVersion)
+      .pipe(catchError(this.handleError()))
       .subscribe((version) => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -100,94 +166,68 @@ export class SublineDetailComponent extends BaseDetailController<SublineVersion>
       });
   }
 
-  revokeRecord(): void {
-    const selectedRecord = this.getSelectedRecord();
-    if (selectedRecord.slnid) {
-      this.sublinesService.revokeSubline(selectedRecord.slnid).subscribe(() => {
-        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.REVOKE_SUCCESS');
+  updateSubline(id: number, sublineVersion: SublineVersionV2): void {
+    this.sublinesService
+      .updateSublineVersionV2(id, sublineVersion)
+      .pipe(catchError(this.handleError()))
+      .subscribe(() => {
+        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
-          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, selectedRecord.slnid])
+          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, sublineVersion.slnid])
           .then(() => this.ngOnInit());
       });
-    }
   }
 
-  deleteRecord(): void {
-    const selectedSublineVersion = this.getSelectedRecord();
-    if (selectedSublineVersion.slnid != null) {
-      this.sublinesService.deleteSublines(selectedSublineVersion.slnid).subscribe(() => {
-        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
-        this.backToOverview();
+  revoke(): void {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.REVOKE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_REVOKE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          if (this.selectedVersion.slnid) {
+            this.sublinesService.revokeSubline(this.selectedVersion.slnid).subscribe(() => {
+              this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.REVOKE_SUCCESS');
+              this.router
+                .navigate([Pages.LIDI.path, Pages.SUBLINES.path, this.selectedVersion.slnid])
+                .then(() => this.ngOnInit());
+            });
+          }
+        }
       });
-    }
   }
 
-  getFormGroup(version: SublineVersion): FormGroup {
-    return new FormGroup<SublineDetailFormGroup>(
-      {
-        swissSublineNumber: new FormControl(version.swissSublineNumber, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_50,
-          AtlasCharsetsValidator.sid4pt,
-        ]),
-        [this.mainlineSlnidFormControlName]: new FormControl(version.mainlineSlnid, [
-          Validators.required,
-        ]),
-        slnid: new FormControl(version.slnid),
-        status: new FormControl(version.status),
-        sublineType: new FormControl(version.sublineType, [Validators.required]),
-        paymentType: new FormControl(version.paymentType),
-        businessOrganisation: new FormControl(version.businessOrganisation, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_50,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        number: new FormControl(version.number, [
-          AtlasFieldLengthValidator.length_50,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        longName: new FormControl(version.longName, [
-          AtlasFieldLengthValidator.length_255,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        description: new FormControl(version.description, [
-          AtlasFieldLengthValidator.length_255,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        validFrom: new FormControl(
-          version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
-        ),
-        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
-          Validators.required,
-        ]),
-        etagVersion: new FormControl(version.etagVersion),
-        creationDate: new FormControl(version.creationDate),
-        editionDate: new FormControl(version.editionDate),
-        editor: new FormControl(version.editor),
-        creator: new FormControl(version.creator),
-      },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
-    );
+  delete(): void {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.DELETE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_DELETE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          if (this.selectedVersion.slnid) {
+            this.sublinesService.deleteSublines(this.selectedVersion.slnid).subscribe(() => {
+              this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
+              this.back();
+            });
+          }
+        }
+      });
   }
 
-  getValidation(inputForm: string) {
-    return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
-  }
-
-  getFormControlsToDisable(): string[] {
-    return [this.mainlineSlnidFormControlName];
+  back() {
+    this.router.navigate(['..'], {relativeTo: this.activatedRoute}).then();
   }
 
   searchMainlines(searchString: string) {
     this.mainlines$ = this.linesService
-      .getLines(searchString, [], [], [], undefined, undefined, undefined, undefined, [
-        'swissLineNumber,ASC',
-      ])
+      .getLines(undefined, [searchString], [Status.Validated, Status.InReview, Status.Draft, Status.Withdrawn], undefined, [ElementType.Line], undefined, undefined, undefined, undefined, undefined, undefined,
+        undefined, undefined, undefined, ['swissLineNumber,ASC'])
       .pipe(map((value) => value.objects ?? []));
   }
 
@@ -195,5 +235,53 @@ export class SublineDetailComponent extends BaseDetailController<SublineVersion>
     return `${location.origin}/${Pages.LIDI.path}/${Pages.LINES.path}/${this.form.get(
       this.mainlineSlnidFormControlName,
     )?.value}`;
+  }
+
+  private handleError() {
+    return () => {
+      this.form.enable();
+      return EMPTY;
+    };
+  }
+
+  mainLineChanged(line?: Line) {
+    if (line) {
+      this.handleSublineType(line);
+
+      this.linesService.getLineVersionsV2(line.slnid!).subscribe(mainline => {
+        this.currentMainlineSelection = VersionsHandlingService.determineDefaultVersionByValidity(mainline);
+      });
+    } else {
+      this.TYPE_OPTIONS = [];
+      this.form.controls.sublineType.setValue(undefined);
+      this.form.controls.sublineConcessionType.setValue(undefined);
+
+      this.currentMainlineSelection = undefined;
+    }
+
+  }
+
+  private handleSublineType(line: Line) {
+    const lineType = line.lidiElementType;
+    switch (lineType) {
+      case LidiElementType.Orderly:
+        this.TYPE_OPTIONS = [SublineType.Concession, SublineType.Technical];
+        break;
+      case LidiElementType.Disposition:
+        this.TYPE_OPTIONS = [SublineType.Disposition];
+        this.form.controls.sublineType.setValue(SublineType.Disposition);
+        break;
+      case LidiElementType.Temporary:
+        this.TYPE_OPTIONS = [SublineType.Temporary];
+        this.form.controls.sublineType.setValue(SublineType.Temporary);
+        break;
+      case LidiElementType.Operational:
+        this.TYPE_OPTIONS = [SublineType.Operational];
+        this.form.controls.sublineType.setValue(SublineType.Operational);
+        break;
+      default:
+        console.error(line);
+        throw new Error("LineType not expected: " + lineType);
+    }
   }
 }
