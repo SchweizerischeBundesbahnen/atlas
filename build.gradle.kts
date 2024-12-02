@@ -21,41 +21,47 @@ subprojects {
 
 subprojects {
     if (project.name != "frontend") {
-        sonar {
-            properties {
-                property("sonar.sources", "src/main/java")
-                property("sonar.tests", "src/test/java")
-                property("sonar.projectName", "ATLAS - SKI Business Application")
-                property("sonar.projectKey", "ch.sbb.atlas:atlas")
-                property("sonar.dynamicAnalysis", "reuseReports")
-                property("sonar.java.coveragePlugin", "jacoco")
-                property(
-                    "sonar.exclusions",
-                    "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js," +
-                            "**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*"
-                )
-            }
-        }
+        javaSonarConfig()
     }
 
     if (project.name == "frontend") {
-        sonar {
-            properties {
-                property(
-                    "sonar.exclusions",
-                    "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/*.kts"
-                )
-                property("sonar.sources", "./")
-                property("sonar.language", "ts")
-                property("sonar.profile", "TsLint")
-                property("sonar.verbose", "true")
-                property("sonar.test.inclusion", "**/*.spec.ts")
-                property("sonar.ts.tslint.configPath", "tslint.json")
-                property("sonar.ts.coverage.lcovReportPath", "coverage/atlas-frontend/lcov.info")
-                property("sonar.typescript.lcov.reportPaths", "${project.projectDir}/coverage/atlas-frontend/lcov.info")
-                property("sonar.coverage.exclusions", "**/*.spec.ts,**/src/app/api/**,**/cypress/**,/**/*.module.ts")
-            }
-        }
+        frontendSonarConfig()
     }
 
+}
+
+private fun frontendSonarConfig() {
+    sonar {
+        properties {
+            property(
+                "sonar.exclusions",
+                "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/*.kts"
+            )
+            property("sonar.sources", "./")
+            property("sonar.language", "ts")
+            property("sonar.profile", "TsLint")
+            property("sonar.verbose", "true")
+            property("sonar.test.inclusion", "**/*.spec.ts")
+            property("sonar.ts.tslint.configPath", "tslint.json")
+            property("sonar.ts.coverage.lcovReportPath", "coverage/atlas-frontend/lcov.info")
+            property("sonar.typescript.lcov.reportPaths", "${project.projectDir}/coverage/atlas-frontend/lcov.info")
+            property("sonar.coverage.exclusions", "**/*.spec.ts,**/src/app/api/**,**/cypress/**,/**/*.module.ts")
+        }
+    }
+}
+
+private fun javaSonarConfig() {
+    sonar {
+        properties {
+            property("sonar.projectName", "ATLAS - SKI Business Application")
+            property("sonar.projectKey", "ch.sbb.atlas:atlas")
+            property("sonar.dynamicAnalysis", "reuseReports")
+            property("sonar.java.coveragePlugin", "jacoco")
+            property(
+                "sonar.exclusions",
+                "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js," +
+                        "**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*"
+            )
+        }
+    }
 }
