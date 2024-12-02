@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of, throwError} from 'rxjs';
-import {LinesService, SublinesService, SublineType, SublineVersionV2} from '../../../../api';
+import {LidiElementType, Line, LinesService, SublinesService, SublineType, SublineVersionV2} from '../../../../api';
 import {SublineDetailComponent} from './subline-detail.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AppTestingModule} from '../../../../app.testing.module';
@@ -217,6 +217,55 @@ describe('SublineDetailComponent for new sublineVersion', () => {
       expect(router.navigate).toHaveBeenCalled();
     });
 
+  });
+
+  it('should handle mainLine selection of type orderly', () => {
+    const mainLine: Line = {
+      slnid: 'mainlineSlnid',
+      lidiElementType: LidiElementType.Orderly
+    } as Line;
+    component.mainLineChanged(mainLine);
+
+    expect(component.TYPE_OPTIONS).toEqual([SublineType.Concession, SublineType.Technical]);
+    expect(component.form.controls.sublineType.value).toBeNull();
+
+    // Remove mainline selection
+    component.mainLineChanged(undefined);
+    expect(component.TYPE_OPTIONS).toEqual([]);
+    expect(component.currentMainlineSelection).toBeUndefined();
+  });
+
+  it('should handle mainLine selection of type disposition', () => {
+    const mainLine: Line = {
+      slnid: 'mainlineSlnid',
+      lidiElementType: LidiElementType.Disposition
+    } as Line;
+    component.mainLineChanged(mainLine);
+
+    expect(component.TYPE_OPTIONS).toEqual([SublineType.Disposition]);
+    expect(component.form.controls.sublineType.value).toBe(SublineType.Disposition);
+  });
+
+  it('should handle mainLine selection of type temporary', () => {
+    const mainLine: Line = {
+      slnid: 'mainlineSlnid',
+      lidiElementType: LidiElementType.Temporary
+    } as Line;
+    component.mainLineChanged(mainLine);
+
+    expect(component.TYPE_OPTIONS).toEqual([SublineType.Temporary]);
+    expect(component.form.controls.sublineType.value).toBe(SublineType.Temporary);
+  });
+
+  it('should handle mainLine selection of type operational', () => {
+    const mainLine: Line = {
+      slnid: 'mainlineSlnid',
+      lidiElementType: LidiElementType.Operational
+    } as Line;
+    component.mainLineChanged(mainLine);
+
+    expect(component.TYPE_OPTIONS).toEqual([SublineType.Operational]);
+    expect(component.form.controls.sublineType.value).toBe(SublineType.Operational);
   });
 });
 
