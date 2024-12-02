@@ -66,6 +66,12 @@ class SublineControllerApiV2Test extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldReturnNotFound() throws Exception {
+    mvc.perform(get("/v2/sublines/versions/ch:1:slnid:123"))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
   void shouldCreateSublineV2() throws Exception {
     //given
     SublineVersionModelV2 sublineVersionModel =
@@ -78,7 +84,7 @@ class SublineControllerApiV2Test extends BaseControllerApiTest {
             .mainlineSlnid(mainLineVersion.getSlnid())
             .build();
     //when
-    mvc.perform(post("/v1/sublines/versions")
+    mvc.perform(post("/v2/sublines/versions")
             .contentType(contentType)
             .content(mapper.writeValueAsString(sublineVersionModel)))
         .andExpect(status().isCreated());
@@ -100,14 +106,14 @@ class SublineControllerApiV2Test extends BaseControllerApiTest {
 
     // When first update it is ok
     sublineVersionModel.setDescription("Kinky subline, ready to roll");
-    mvc.perform(post("/v1/sublines/versions/" + sublineVersionModel.getId())
+    mvc.perform(post("/v2/sublines/versions/" + sublineVersionModel.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(sublineVersionModel)))
         .andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
     sublineVersionModel.setDescription("Kinky subline, ready to rock");
-    mvc.perform(post("/v1/sublines/versions/" + sublineVersionModel.getId())
+    mvc.perform(post("/v2/sublines/versions/" + sublineVersionModel.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(sublineVersionModel)))
         .andExpect(status().isPreconditionFailed()).andReturn();
