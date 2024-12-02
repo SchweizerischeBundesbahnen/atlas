@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TableColumn} from '../../../core/components/table/table-column';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {BusinessOrganisation, ElementType, LidiElementType, Line, LinesService, Status} from '../../../api';
 import {TableService} from '../../../core/components/table/table.service';
