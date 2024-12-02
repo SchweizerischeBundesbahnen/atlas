@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 public class RevokedException extends AtlasException {
 
   private static final String CODE = "LIDI.ERROR.REVOKED";
+  private static final String MESSAGE = "Object with slnid is REVOKED. Operation not allowed.";
 
   private final String slnid;
 
@@ -22,8 +23,8 @@ public class RevokedException extends AtlasException {
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.FORBIDDEN.value())
-        .message("Object with slnid is REVOKED. Operation not allowed.")
-        .error("Object with slnid is REVOKED. Operation not allowed.")
+        .message(MESSAGE)
+        .error(MESSAGE)
         .details(new TreeSet<>(getErrorDetails()))
         .build();
   }
@@ -31,7 +32,7 @@ public class RevokedException extends AtlasException {
   private Set<Detail> getErrorDetails() {
     return Set.of(Detail.builder()
         .field(Fields.sublineType)
-        .message("Object with slnid is REVOKED. Operation not allowed.")
+        .message(MESSAGE)
         .displayInfo(builder()
             .code(CODE)
             .with(Fields.slnid, slnid)
