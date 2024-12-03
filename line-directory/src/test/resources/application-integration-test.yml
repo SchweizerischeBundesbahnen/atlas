@@ -37,7 +37,7 @@ logging:
 info:
   app:
     name: line-directory
-    version: @version@
+    version: 1.0.0
 amazon:
   region: "eu-central-1"
   bucketConfigs:
