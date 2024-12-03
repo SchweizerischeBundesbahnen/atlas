@@ -18,27 +18,38 @@ task<JavaExec>("generateApiSpec") {
     classpath = sourceSets["main"].runtimeClasspath
     args(listOf(project.version))
     mustRunAfter(tasks.getByName("processResources"))
+    dependsOn(":mail:build")
+    dependsOn(":scheduling:build")
+    dependsOn(":line-directory:build")
+//    dependsOn("::business-organisation-directory:build")
+    dependsOn(":service-point-directory:build")
+    dependsOn(":prm-directory:build")
+    dependsOn(":export-service-point:build")
+    dependsOn(":import-service-point:build")
+    dependsOn(":user-administration:build")
+    dependsOn(":workflow:build")
+    dependsOn(":location:build")
 }
 
-task<Zip>("createZipApimProd"){
+task<Zip>("createZipApimProd") {
     from("src/main/resources/api-prod/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
 }
 
-task<Zip>("createZipApimDev"){
-    archiveAppendix="dev"
+task<Zip>("createZipApimDev") {
+    archiveAppendix = "dev"
     from("src/main/resources/api-dev/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
 }
 
-task<Zip>("createZipApimTest"){
-    archiveAppendix="test"
+task<Zip>("createZipApimTest") {
+    archiveAppendix = "test"
     from("src/main/resources/api-test/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
 }
 
-task<Zip>("createZipApimInt"){
-    archiveAppendix="int"
+task<Zip>("createZipApimInt") {
+    archiveAppendix = "int"
     from("src/main/resources/api-int/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
 }
