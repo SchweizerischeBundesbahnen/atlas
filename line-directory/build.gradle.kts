@@ -11,19 +11,19 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.kafka:spring-kafka")
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
-    implementation("org.hibernate.orm:hibernate-jpamodelgen")
+    implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
+    implementation("org.apache.tika:tika-core:3.0.0")
 
+    implementation("org.hibernate.orm:hibernate-jpamodelgen")
     annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.3.Final")
+
+    implementation(project(":base-atlas"))
+    implementation(project(":user-administration-security"))
+    implementation(project(":kafka"))
 
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
-    implementation(project(":base-atlas"))
-    implementation(project(":kafka"))
-
-    implementation(project(":user-administration-security"))
 
     runtimeOnly("org.postgresql:postgresql")
 
@@ -41,9 +41,11 @@ dependencies {
 springBoot {
     buildInfo {
         properties {
-            additional.set(mapOf(
+            additional.set(
+                mapOf(
                     "time" to "${Date()}"
-            ))
+                )
+            )
         }
     }
 }
