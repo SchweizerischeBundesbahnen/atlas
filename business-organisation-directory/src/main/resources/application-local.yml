@@ -81,8 +81,9 @@ management:
 info:
   app:
     name: business-organisation-directory
-    version: @version@
-    buildtime: @timestamp@
+    version: 1.0.0
+    buildtime: ${time}
+
 logging:
   level:
     root: INFO
