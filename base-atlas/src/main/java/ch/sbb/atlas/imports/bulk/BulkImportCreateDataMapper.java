@@ -1,10 +1,6 @@
 package ch.sbb.atlas.imports.bulk;
 
 import ch.sbb.atlas.imports.annotation.DefaultMapping;
-import ch.sbb.atlas.imports.annotation.Nulling;
-import io.micrometer.common.util.StringUtils;
-import org.springframework.beans.ConfigurablePropertyAccessor;
-import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -19,28 +15,11 @@ public abstract class BulkImportCreateDataMapper<T, V> {
     applyDefaultMapping(container.getObject(), targetModel);
     applySpecificCreate(container.getObject(), targetModel);
 
-    applyNulling(container, targetModel);
     return targetModel;
   }
 
   protected void applySpecificCreate(T update, V targetModel) {
     // Override if needed
-  }
-
-  private void applyNulling(BulkImportUpdateContainer<T> container, V targetModel) {
-    List<String> attributesToNull = container.getAttributesToNull();
-    for (String attributeToNull : attributesToNull) {
-      Field fieldToNull = ReflectionUtils.findField(container.getObject().getClass(), attributeToNull);
-      if (fieldToNull == null || !fieldToNull.isAnnotationPresent(Nulling.class)) {
-        throw new AttributeNullingNotSupportedException(attributeToNull);
-      }
-
-      String propertyToNull = fieldToNull.getAnnotation(Nulling.class).property();
-      String pathToNull = StringUtils.isBlank(propertyToNull) ? fieldToNull.getName() : propertyToNull;
-      ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(targetModel);
-      propertyAccessor.setAutoGrowNestedPaths(true);
-      propertyAccessor.setPropertyValue(pathToNull, null);
-    }
   }
 
   private void applyDefaultMapping(T update, V targetModel) {
