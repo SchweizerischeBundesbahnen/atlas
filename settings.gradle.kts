@@ -27,6 +27,7 @@ include(":user-administration")
 include(":workflow")
 include(":location")
 
+include(":apim-configuration")
 include(":api-auth-gateway")
 include(":gateway")
 include(":frontend")
