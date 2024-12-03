@@ -47,7 +47,7 @@ public class ServicePointBulkImportService {
 
   @RunAsUser
   public ReadServicePointVersionModel createServicePointByUserName(@RunAsUserParameter String userName, BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
-    log.info("Update versions in name of the user: {}", userName);
+    log.info("Create versions in name of the user: {}", userName);
     return createServicePoint(bulkImportContainer);
   }
 
