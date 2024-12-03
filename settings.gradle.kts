@@ -18,7 +18,7 @@ include(":user-administration-security")
 include(":mail")
 include(":scheduling")
 include(":line-directory")
-
+//include(":business-organisation-directory")
 include(":service-point-directory")
 include(":prm-directory")
 include(":export-service-point")
