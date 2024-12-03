@@ -1,6 +1,6 @@
 plugins {
     id("buildlogic.java-conventions")
-    id("com.github.bjornvester.wsdl2java") version "1.2"
+    id("com.github.bjornvester.wsdl2java") version "2.0.2"
 }
 
 dependencies {
@@ -16,16 +16,16 @@ dependencies {
     implementation("com.sun.xml.messaging.saaj:saaj-impl")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
 
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
     annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.3.Final")
 
-    implementation("com.sun.xml.ws:jaxws-ri:4.0.1")
+    runtimeOnly("org.postgresql:postgresql")
 
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
-    implementation("software.amazon.awssdk:s3:2.29.1")
+    implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
 
     implementation("org.springframework.kafka:spring-kafka")
 
@@ -37,14 +37,13 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.kafka:spring-kafka-test")
+    testImplementation("org.testcontainers:postgresql")
 
     testImplementation(project(":base-atlas", "test"))
     testImplementation(project(":auto-rest-doc"))
 }
 
 wsdl2java {
-    includes.add("${projectDir}/src/main/resources/crd/crd.wsdl")
-    generatedSourceDir.set(layout.buildDirectory.dir("generated-sources/wsdl/src/main/java"))
     packageName.set("ch.sbb.business.organisation.directory.service.crd")
 }
 
