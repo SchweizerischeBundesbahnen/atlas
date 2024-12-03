@@ -62,53 +62,41 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
     private String designationOfficial;
 
     @DefaultMapping
-    @Nulling
     private String designationLong;
 
     @DefaultMapping
-    @Nulling
     private StopPointType stopPointType;
 
     @DefaultMapping
     private boolean freightServicePoint;
 
     @DefaultMapping
-    @Nulling
     private OperatingPointType operatingPointType;
 
     @DefaultMapping
-    @Nulling
     private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
     @DefaultMapping
-    @Nulling
     private Set<MeanOfTransport> meansOfTransport;
 
     @DefaultMapping
-    @Nulling
     private Set<Category> categories;
 
     @DefaultMapping
-    @Nulling
     private OperatingPointTrafficPointType operatingPointTrafficPointType;
 
     @DefaultMapping
-    @Nulling
     private String sortCodeOfDestinationStation;
 
     @DefaultMapping
     private String businessOrganisation;
 
-    @Nulling(property = "servicePointGeolocation")
     private Double east;
 
-    @Nulling(property = "servicePointGeolocation")
     private Double north;
 
-    @Nulling(property = "servicePointGeolocation")
     private SpatialReference spatialReference;
 
-    @Nulling(property = "servicePointGeolocation.height")
     private Double height;
 
     @Override
