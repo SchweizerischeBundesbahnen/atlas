@@ -110,14 +110,6 @@
       },
       "tasks": [
         {
-          "name": "change-gradle-permissions",
-          "taskRef": "esta-custom-exec",
-          "params": {
-            "SCRIPT": "chmod +x gradlew"
-          },
-          "runAfter": "git-clone"
-        },
-        {
           "name": "generate-apim-config",
           "taskRef": "esta-gradle-build-extra-large",
           "params": {
@@ -141,14 +133,6 @@
         "master"
       ],
       "tasks": [
-        {
-          "name": "change-gradle-permissions",
-          "taskRef": "esta-custom-exec",
-          "params": {
-            "SCRIPT": "chmod +x gradlew"
-          },
-          "runAfter": "git-clone"
-        },
         {
           "name": "atlas-start-deploy-dev-pipeline",
           "taskRef": "atlas-start-pipeline",
@@ -212,14 +196,6 @@
         "GITEVENT"
       ],
       "tasks": [
-        {
-          "name": "change-gradle-permissions",
-          "taskRef": "esta-custom-exec",
-          "params": {
-            "SCRIPT": "chmod +x gradlew"
-          },
-          "runAfter": "git-clone"
-        },
         {
           "name": "atlas-start-deploy-dev-pipeline",
           "taskRef": "atlas-start-pipeline",
