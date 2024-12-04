@@ -77,8 +77,10 @@ export abstract class PrmTabDetailBaseComponent<T>
   }
 
   private routeToParent(routeParam: string = '') {
+    const navigation = Array<string>(this.nbrOfBackPaths).fill('../').join('') + routeParam;
+    const navigationWithoutTrailingSlash = navigation.replace(/\/$/, "");
     return this.router.navigate(
-      [Array<string>(this.nbrOfBackPaths).fill('../').join(''), routeParam],
+      [navigationWithoutTrailingSlash],
       {
         relativeTo: this.route,
       },
