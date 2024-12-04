@@ -58,6 +58,7 @@ publishing {
             artifactId = rootProject.name
             groupId = project.group.toString()
             version = project.version.toString()
+            artifact("jar")
         }
     }
 }
