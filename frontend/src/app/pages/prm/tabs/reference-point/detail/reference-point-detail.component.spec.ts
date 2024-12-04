@@ -17,7 +17,7 @@ import {SwitchVersionComponent} from '../../../../../core/components/switch-vers
 import {DateRangeComponent} from '../../../../../core/form-components/date-range/date-range.component';
 import {DateIconComponent} from '../../../../../core/form-components/date-icon/date-icon.component';
 import {AppTestingModule} from '../../../../../app.testing.module';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../../../../../core/notification/notification.service';
 import {PersonWithReducedMobilityService, ReadReferencePointVersion, ReferencePointAttributeType,} from '../../../../../api';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -159,6 +159,7 @@ describe('ReferencePointDetailComponent', () => {
   });
 
   describe('edit reference point', () => {
+    let router: Router;
     beforeEach(() => {
       TestBed.overrideProvider(ActivatedRoute, {
         useValue: {
@@ -173,6 +174,7 @@ describe('ReferencePointDetailComponent', () => {
       fixture = TestBed.createComponent(ReferencePointDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
+      router = TestBed.inject(Router);
     });
 
     it('should init', () => {
@@ -186,6 +188,13 @@ describe('ReferencePointDetailComponent', () => {
 
       component.switchVersion(0);
       expect(component.selectedVersionIndex).toBe(0);
+    });
+
+    it('should go back to reference-points', () => {
+      spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+
+      component.back();
+      expect(router.navigate).toHaveBeenCalledOnceWith(['..'], jasmine.any(Object));
     });
 
     it('should toggle form', () => {
