@@ -4,7 +4,7 @@ MAINTAINER techsupport-atlas@sbb.ch
 
 RUN mkdir /deploy
 
-COPY ./api-auth-gateway/target/api-auth-gateway-*.jar deploy/app.jar
+COPY ./api-auth-gateway/build/libs/api-auth-gateway-*.jar deploy/app.jar
 
 RUN chmod 777 /deploy/app.jar
 

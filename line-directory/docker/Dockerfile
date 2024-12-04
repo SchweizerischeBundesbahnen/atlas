@@ -3,7 +3,7 @@ MAINTAINER techsupport-atlas@sbb.ch
 
 RUN mkdir /deploy
 
-COPY ./line-directory/target/line-directory-*.jar deploy/app.jar
+COPY ./line-directory/build/libs/line-directory-*.jar deploy/app.jar
 
 RUN chmod 777 /deploy/app.jar
 

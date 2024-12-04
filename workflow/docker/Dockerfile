@@ -4,7 +4,7 @@ MAINTAINER techsupport-atlas@sbb.ch
 
 RUN mkdir /deploy
 
-COPY ./workflow/target/workflow-*.jar deploy/app.jar
+COPY ./workflow/build/libs/workflow-*.jar deploy/app.jar
 
 RUN chmod 777 /deploy/app.jar
 

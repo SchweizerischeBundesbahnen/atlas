@@ -23,7 +23,6 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
-    withSourcesJar()
 }
 
 configurations {
@@ -84,4 +83,8 @@ tasks.jacocoTestReport {
     reports {
         xml.required = true
     }
+}
+tasks.withType<Jar> {
+    enabled = true
+    archiveClassifier.set("")
 }
