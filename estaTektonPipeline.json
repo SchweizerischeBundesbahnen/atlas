@@ -120,9 +120,16 @@
           "name": "generate-apim-config",
           "taskRef": "esta-gradle-build-extra-large",
           "params": {
-            "ADDITIONAL_PARAMS": "./gradlew :apim-configuration:generateApiSpec"
+            "ADDITIONAL_PARAMS": "./gradlew :apim-configuration:generateApiSpec",
+            "ARTIFACTORY_SECRET": "esta-tekton-basicauth-docker",
+            "BUILDER_JAVA_VERSION": "21",
+            "BUILDER_KOTLIN_VERSION": "1.7",
+            "BUILDER_NODE_VERSION": "20",
+            "JDK_BUILDERIMAGE": "esta.docker.bin.sbb.ch/esta/esta-tekton-pipeline-java-builderimage:2.9.1",
+            "SONAR_HOST_URL": "https://codequality.sbb.ch",
+            "SONAR_LOGIN_SECRET": "esta-tekton-sonar-api-key"
           },
-          "runAfter": "git-clone"
+          "runAfter": "gradle-build"
         }
       ]
     },
