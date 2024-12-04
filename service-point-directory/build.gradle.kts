@@ -95,7 +95,7 @@ sourceSets {
 }
 
 tasks.compileJava.get().dependsOn(tasks.openApiGenerate)
-tasks.openApiGenerate.get().dependsOn(tasks.sourcesJar)
+//tasks.openApiGenerate.get().dependsOn(tasks.jar)
 
 springBoot {
     buildInfo {
