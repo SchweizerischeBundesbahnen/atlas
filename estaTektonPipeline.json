@@ -115,6 +115,14 @@
             "SCRIPT": "chmod +x gradlew"
           },
           "runAfter": "git-clone"
+        },
+        {
+          "name": "generate-apim-config",
+          "taskRef": "esta-gradle-build-extra-large",
+          "params": {
+            "ADDITIONAL_PARAMS": "./gradlew :apim-configuration:generateApiSpec"
+          },
+          "runAfter": "git-clone"
         }
       ]
     },

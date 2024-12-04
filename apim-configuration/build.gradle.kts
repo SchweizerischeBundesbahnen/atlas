@@ -18,17 +18,6 @@ task<JavaExec>("generateApiSpec") {
     classpath = sourceSets["main"].runtimeClasspath
     args(listOf(project.version))
     mustRunAfter(tasks.getByName("processResources"))
-    dependsOn(":mail:build")
-    dependsOn(":scheduling:build")
-    dependsOn(":line-directory:build")
-//    dependsOn("::business-organisation-directory:build")
-    dependsOn(":service-point-directory:build")
-    dependsOn(":prm-directory:build")
-    dependsOn(":export-service-point:build")
-    dependsOn(":import-service-point:build")
-    dependsOn(":user-administration:build")
-    dependsOn(":workflow:build")
-    dependsOn(":location:build")
 }
 
 task<Zip>("createZipApimProd") {
