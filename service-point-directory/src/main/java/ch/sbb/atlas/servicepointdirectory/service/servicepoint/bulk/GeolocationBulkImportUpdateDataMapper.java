@@ -45,7 +45,7 @@ public abstract class GeolocationBulkImportUpdateDataMapper<T, U, V> extends Bul
     return geolocationModel;
   }
 
-  private static Double roundToSpatialReferencePrecision(Double value, SpatialReference spatialReference) {
+  public static Double roundToSpatialReferencePrecision(Double value, SpatialReference spatialReference) {
     if (value == null) {
       return null;
     }
