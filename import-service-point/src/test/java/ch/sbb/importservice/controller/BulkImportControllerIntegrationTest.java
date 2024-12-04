@@ -226,6 +226,11 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
             .thenAnswer(i -> URI.create("https://atlas-bulk-import-dev-dev.s3.eu-central-1.amazonaws.com/" +
                     todaysDirectory + "/" + i.getArgument(1, File.class).getName()).toURL());
 
+    when(servicePointBulkImportClient.bulkImportCreate(any())).thenReturn(
+            List.of(BulkImportItemExecutionResult.builder()
+                    .lineNumber(1)
+                    .build()));
+
     bulkImportController.startServicePointImportBatch(bulkImportRequest, multipartFile);
 
     List<BulkImport> bulkImports = bulkImportRepository.findAll();
@@ -234,5 +239,8 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
     BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
     assertThat(bulkImport.getId()).isNotNull();
     assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/create-service-point-2.xlsx.csv");
+
+    verify(servicePointBulkImportClient, atLeastOnce()).bulkImportCreate(any());
+
   }
 }
