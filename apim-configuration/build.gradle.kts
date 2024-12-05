@@ -7,7 +7,6 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-
 }
 
 task<JavaExec>("generateApiSpec") {
