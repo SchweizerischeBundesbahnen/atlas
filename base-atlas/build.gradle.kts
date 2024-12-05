@@ -58,10 +58,12 @@ dependencies {
 }
 
 tasks.getByName("assemble").dependsOn("testJar")
+
 tasks.register<Jar>("testJar") {
     archiveFileName.set("base-atlas-$version-tests.jar")//use submodule name
     from(project.the<SourceSetContainer>()["test"].output)
 }
+
 artifacts {
     add("test", tasks["testJar"])
 }

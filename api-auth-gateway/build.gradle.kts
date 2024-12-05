@@ -5,6 +5,7 @@ plugins {
 }
 
 dependencies {
+    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}"))
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
     implementation("org.springframework.security:spring-security-oauth2-client")
@@ -20,9 +21,11 @@ dependencies {
 springBoot {
     buildInfo {
         properties {
-            additional.set(mapOf(
+            additional.set(
+                mapOf(
                     "time" to "${Date()}"
-            ))
+                )
+            )
         }
     }
 }
