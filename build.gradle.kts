@@ -5,22 +5,19 @@ plugins {
 }
 
 subprojects {
-    apply(plugin = "org.sonarqube")
-    apply(plugin = "org.springframework.boot")
-    apply(plugin = "io.spring.dependency-management")
-
-    extra["springCloudVersion"] = "2023.0.3"
-
-    dependencyManagement {
-        imports {
-            mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
-            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-        }
-    }
-}
-
-subprojects {
     if (project.name != "frontend") {
+        apply(plugin = "org.sonarqube")
+        apply(plugin = "org.springframework.boot")
+        apply(plugin = "io.spring.dependency-management")
+
+        extra["springCloudVersion"] = "2023.0.3"
+
+        dependencyManagement {
+            imports {
+                mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+                mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+            }
+        }
         sonar {
             properties {
                 property("sonar.dynamicAnalysis", "reuseReports")
