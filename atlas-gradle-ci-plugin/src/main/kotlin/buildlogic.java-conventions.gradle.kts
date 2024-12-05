@@ -1,6 +1,3 @@
-/*
- * This project uses @Incubating APIs which are subject to change.
- */
 plugins {
     java
     jacoco
@@ -45,10 +42,26 @@ dependencies {
 
 publishing {
     repositories {
+        // ARTIFACTORY REPO can be esta.mvn and so on
         maven("https://bin.sbb.ch/artifactory/" + System.getenv("ARTIFACTORY_REPO")) {
-            credentials {
-                username = System.getenv("ARTIFACTORY_USER")
-                password = System.getenv("ARTIFACTORY_PASS")
+            val usr = System.getenv("ARTIFACTORY_USER")
+            val pwd = System.getenv("ARTIFACTORY_PASS")
+            val apiKey = System.getenv("ARTIFACTORY_API_KEY")
+            if (usr != null && pwd != null) {
+                credentials {
+                    username = usr
+                    password = pwd
+                }
+            } else if (apiKey != null) {
+                credentials(HttpHeaderCredentials::class) {
+                    name = "Authorization"
+                    value = "Bearer " + apiKey
+                }
+                authentication {
+                    create<HttpHeaderAuthentication>("header")
+                }
+            } else {
+                logger.warn("Cannot publish!! No credentials found for Artifactory! Either provide ARTIFACTORY_USER and ARTIFACTORY_PASS or ARTIFACTORY_API_KEY as environment variables.")
             }
         }
     }
@@ -58,7 +71,6 @@ publishing {
             artifactId = rootProject.name
             groupId = project.group.toString()
             version = project.version.toString()
-            artifact("jar")
         }
     }
 }
@@ -84,8 +96,4 @@ tasks.jacocoTestReport {
     reports {
         xml.required = true
     }
-}
-tasks.withType<Jar> {
-    enabled = true
-    archiveClassifier.set("")
 }
