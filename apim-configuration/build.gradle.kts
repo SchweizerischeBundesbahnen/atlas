@@ -9,6 +9,42 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
 }
 
+configurations {
+    create("uploadZipDev")
+    create("uploadZipTest")
+    create("uploadZipInt")
+    create("uploadZipProd")
+}
+
+val zipDirectoryDev = layout.buildDirectory.dir("libs/apim-configuration-dev-${project.version}.zip")
+val zipArtifactDev = artifacts.add("uploadZipDev", zipDirectoryDev.get().asFile) {
+    type = "zip"
+    builtBy("createZipApimDev")
+    name = "apim-configuration-dev-${project.version}.zip"
+}
+
+val zipDirectoryTest = layout.buildDirectory.dir("libs/apim-configuration-test-${project.version}.zip")
+val zipArtifactTest = artifacts.add("uploadZipTest", zipDirectoryTest.get().asFile) {
+    type = "zip"
+    builtBy("createZipApimTest")
+    name = "apim-configuration-test-${project.version}.zip"
+}
+
+val zipDirectoryInt = layout.buildDirectory.dir("libs/apim-configuration-int-${project.version}.zip")
+val zipArtifactInt = artifacts.add("uploadZipInt", zipDirectoryInt.get().asFile) {
+    type = "zip"
+    builtBy("createZipApimInt")
+    name = "apim-configuration-int-${project.version}.zip"
+}
+
+val zipDirectoryProd = layout.buildDirectory.dir("libs/apim-configuration-${project.version}.zip")
+val zipArtifactProd = artifacts.add("uploadZipProd", zipDirectoryProd.get().asFile) {
+    type = "zip"
+    builtBy("createZipApimProd")
+    name = "apim-configuration-${project.version}.zip"
+}
+
+
 task<JavaExec>("generateApiSpec") {
     doFirst {
         println("Run ApimConfigurationGeneratorApplication")
@@ -48,4 +84,33 @@ tasks.register("generateSpec") {
         .dependsOn(tasks.getByName("createZipApimInt"))
         .dependsOn(tasks.getByName("createZipApimTest"))
         .dependsOn(tasks.getByName("createZipApimDev"))
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("apimDev") {
+            artifact(zipArtifactDev) {
+                extension = "zip"
+                classifier = "dev"
+            }
+        }
+        create<MavenPublication>("apimTest") {
+            artifact(zipArtifactTest) {
+                extension = "zip"
+                classifier = "test"
+            }
+        }
+        create<MavenPublication>("apimInt") {
+            artifact(zipArtifactInt) {
+                extension = "zip"
+                classifier = "int"
+            }
+        }
+        create<MavenPublication>("apimProd") {
+            artifact(zipArtifactProd) {
+                extension = "zip"
+                classifier = ""
+            }
+        }
+    }
 }
