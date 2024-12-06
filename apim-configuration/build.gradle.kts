@@ -42,9 +42,10 @@ task<Zip>("createZipApimInt") {
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
 }
 
-//tasks.check.get()
-//    .dependsOn(tasks.getByName("generateApiSpec"))
-//    .dependsOn(tasks.getByName("createZipApimProd"))
-//    .dependsOn(tasks.getByName("createZipApimInt"))
-//    .dependsOn(tasks.getByName("createZipApimTest"))
-//    .dependsOn(tasks.getByName("createZipApimDev"))
+tasks.register("generateSpec") {
+    dependsOn(tasks.getByName("generateApiSpec"))
+        .dependsOn(tasks.getByName("createZipApimProd"))
+        .dependsOn(tasks.getByName("createZipApimInt"))
+        .dependsOn(tasks.getByName("createZipApimTest"))
+        .dependsOn(tasks.getByName("createZipApimDev"))
+}
