@@ -46,9 +46,6 @@ val zipArtifactProd = artifacts.add("uploadZipProd", zipDirectoryProd.get().asFi
 
 
 task<JavaExec>("generateApiSpec") {
-    doFirst {
-        println("Run ApimConfigurationGeneratorApplication")
-    }
     mainClass = "ch.sbb.atlas.apim.configuration.ApimConfigurationGeneratorApplication"
     classpath = sourceSets["main"].runtimeClasspath
     args(listOf(project.version))
@@ -58,24 +55,28 @@ task<JavaExec>("generateApiSpec") {
 task<Zip>("createZipApimProd") {
     from("src/main/resources/api-prod/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
+    mustRunAfter(tasks.getByName("generateApiSpec"))
 }
 
 task<Zip>("createZipApimDev") {
     archiveAppendix = "dev"
     from("src/main/resources/api-dev/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
+    mustRunAfter(tasks.getByName("generateApiSpec"))
 }
 
 task<Zip>("createZipApimTest") {
     archiveAppendix = "test"
     from("src/main/resources/api-test/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
+    mustRunAfter(tasks.getByName("generateApiSpec"))
 }
 
 task<Zip>("createZipApimInt") {
     archiveAppendix = "int"
     from("src/main/resources/api-int/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
+    mustRunAfter(tasks.getByName("generateApiSpec"))
 }
 
 tasks.register("generateSpec") {
@@ -88,25 +89,19 @@ tasks.register("generateSpec") {
 
 publishing {
     publications {
-        create<MavenPublication>("apimDev") {
+        create<MavenPublication>("publishApimZips") {
             artifact(zipArtifactDev) {
                 extension = "zip"
                 classifier = "dev"
             }
-        }
-        create<MavenPublication>("apimTest") {
             artifact(zipArtifactTest) {
                 extension = "zip"
                 classifier = "test"
             }
-        }
-        create<MavenPublication>("apimInt") {
             artifact(zipArtifactInt) {
                 extension = "zip"
                 classifier = "int"
             }
-        }
-        create<MavenPublication>("apimProd") {
             artifact(zipArtifactProd) {
                 extension = "zip"
                 classifier = ""
