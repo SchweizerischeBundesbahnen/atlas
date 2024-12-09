@@ -2,6 +2,7 @@ import java.util.*
 
 plugins {
     id("buildlogic.java-conventions")
+    id("buildlogic.java-restdoc")
 }
 
 description = "Atlas Import Service Point"
