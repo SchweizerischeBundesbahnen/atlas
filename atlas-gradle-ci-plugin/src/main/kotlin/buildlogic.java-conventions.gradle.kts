@@ -1,5 +1,6 @@
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
 import java.util.*
+import java.text.SimpleDateFormat
 
 plugins {
     java
@@ -120,7 +121,7 @@ tasks.named<AsciidoctorTask>("asciidoctor") {
 
     attributes(
         mapOf(
-            "buildTime" to "${Date()}",
+            "buildTime" to SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date()),
             "name" to project.name,
             "version" to project.version,
             "snippets" to "${layout.buildDirectory.get()}/generated-snippets"
@@ -132,13 +133,6 @@ tasks.named<AsciidoctorTask>("asciidoctor") {
 
     // For .adoc files to be able to use relative includes we need to set the baseDir to the sourceFile
     baseDirFollowsSourceFile()
-
-    // include release-notes/resources for style and images
-    resources(delegateClosureOf<CopySpec> {
-        from("${project.rootProject}/auto-rest-doc/src/main") {
-            include("resources/**")
-        }
-    })
 }
 
 task<Copy>("copyRestDocs") {
@@ -147,6 +141,7 @@ task<Copy>("copyRestDocs") {
     mustRunAfter(tasks.getByName("resolveMainClassName"))
 
     from("${tasks.asciidoctor.get().outputDir}")
+    from("${project.rootProject.projectDir}/auto-rest-doc/src/main/resources/layout/images/logo-atlas.svg")
     into("${layout.buildDirectory.get()}/resources/main/static")
 }
 
