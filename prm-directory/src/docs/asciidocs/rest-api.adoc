@@ -1,4 +1,4 @@
-include::../../../../auto-rest-doc/src/test/resources/layout/common/ATLAS-HEAD.adoc[]
+include::../../../../auto-rest-doc/src/main/resources/layout/common/ATLAS-HEAD.adoc[]
 
 = PRM Person with Reduced Mobility
 
