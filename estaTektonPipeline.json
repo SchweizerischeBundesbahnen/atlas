@@ -102,7 +102,6 @@
           "enabled": true
         },
         "buildDockerImage": false,
-        "deployArtifacts": true,
         "sonarScan": {
           "enabled": true
         },

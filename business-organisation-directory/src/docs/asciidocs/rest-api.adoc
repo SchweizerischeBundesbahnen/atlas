@@ -1,8 +1,8 @@
-include::../../../../auto-rest-doc/src/test/resources/layout/common/ATLAS-HEAD.adoc[]
+include::../../../../auto-rest-doc/src/main/resources/layout/common/ATLAS-HEAD.adoc[]
 
 == Release Notes
 
-include::../release-notes.html[]
+include::../release-notes.adoc[]
 
 == Business Organisation REST API Documentation
 
