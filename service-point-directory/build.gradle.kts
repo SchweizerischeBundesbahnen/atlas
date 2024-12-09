@@ -2,6 +2,7 @@ import java.util.*
 
 plugins {
     id("buildlogic.java-conventions")
+    id("buildlogic.java-restdoc")
     id("org.openapi.generator") version "7.5.0"//do not update until https://github.com/OpenAPITools/openapi-generator/issues/18753 is fixed
     id("com.google.protobuf") version "0.9.4"
 }
@@ -54,7 +55,6 @@ dependencies {
 
 protobuf {
     protoc {
-        // Download from repositories
         artifact = "com.google.protobuf:protoc:4.29.0"
     }
     generateProtoTasks {
@@ -95,7 +95,6 @@ sourceSets {
 }
 
 tasks.compileJava.get().dependsOn(tasks.openApiGenerate)
-//tasks.openApiGenerate.get().dependsOn(tasks.jar)
 
 springBoot {
     buildInfo {
