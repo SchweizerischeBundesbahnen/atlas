@@ -1,4 +1,4 @@
-include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+include::../../../../auto-rest-doc/src/main/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
 
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Line Export API Guide

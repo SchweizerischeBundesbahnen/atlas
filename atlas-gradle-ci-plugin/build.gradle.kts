@@ -13,3 +13,7 @@ repositories {
     // Use the plugin portal to apply community plugins in convention plugins.
     gradlePluginPortal()
 }
+
+dependencies {
+    implementation("org.asciidoctor:asciidoctor-gradle-jvm:4.0.3")
+}
