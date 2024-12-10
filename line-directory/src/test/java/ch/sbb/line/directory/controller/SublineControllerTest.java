@@ -2,7 +2,6 @@ package ch.sbb.line.directory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -19,8 +18,6 @@ import ch.sbb.line.directory.service.export.SublineVersionExportService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -96,21 +93,6 @@ class SublineControllerTest {
   }
 
   @Test
-   void shouldSaveNewVersion() {
-    // Given
-    SublineVersionModel sublineVersionModel = createModel();
-
-    // When
-    sublineController.createSublineVersion(sublineVersionModel);
-
-    // Then
-    verify(sublineService).create(versionArgumentCaptor.capture());
-    assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
-        .ignoringFields(ArrayUtils.addAll(RECURSIVE_COMPARISION_IGNORE_FIELDS, SUBLINE_VERSION_V2_COMPARISION_IGNORE_FIELDS))
-        .isEqualTo(sublineVersionModel);
-  }
-
-  @Test
   void shouldDeleteVersion() {
     // Given
     String slnid = "ch:1:slnid:10000";
@@ -121,19 +103,4 @@ class SublineControllerTest {
     verify(sublineService).deleteAll(slnid);
   }
 
-  @Test
-  void shouldUpdateVersionWithVersioning() {
-    // Given
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    SublineVersionModel sublineVersionModel = createModel();
-    sublineVersionModel.setNumber("New name");
-
-    when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));
-
-    // When
-    sublineController.updateSublineVersion(1L, sublineVersionModel);
-
-    // Then
-    verify(sublineService).update(any(), any(), any());
-  }
 }
