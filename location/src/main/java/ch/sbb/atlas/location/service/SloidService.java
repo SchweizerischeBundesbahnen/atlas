@@ -71,12 +71,4 @@ public class SloidService {
     private String createFormattedSloid(String sloidPrefix, Integer nextSeqValue) {
         return sloidPrefix + ":" + nextSeqValue;
     }
-
-    private synchronized String generateAndSaveAvailableSloid(Country country) {
-        String nextAvailableSloid = sloidRepository.getNextAvailableSloid(country);
-        sloidRepository.insertSloid(nextAvailableSloid, SloidType.SERVICE_POINT);
-        sloidRepository.setAvailableSloidToClaimed(nextAvailableSloid);
-        return nextAvailableSloid;
-    }
-
 }
