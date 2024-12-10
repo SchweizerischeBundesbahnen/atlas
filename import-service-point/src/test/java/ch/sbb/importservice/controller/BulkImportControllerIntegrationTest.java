@@ -1,6 +1,7 @@
 package ch.sbb.importservice.controller;
 
 import static ch.sbb.importservice.service.bulk.BulkImportFileValidationService.CSV_CONTENT_TYPE;
+import static ch.sbb.importservice.service.bulk.BulkImportFileValidationService.XLSX_CONTENT_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -30,6 +31,7 @@ import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.time.LocalDate;
@@ -49,6 +51,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
+
+  @Autowired
+  private BulkImportController bulkImportController;
 
   @Autowired
   private BulkImportRepository bulkImportRepository;
@@ -204,4 +209,38 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
     );
   }
 
+  @Test
+  void shouldImportServicePointCreate() throws IOException {
+    File file = ImportFiles.getFileByPath("import-files/valid/create-service-point-2.xlsx");
+
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "create-service-point-2.xlsx", XLSX_CONTENT_TYPE, Files.readAllBytes(file.toPath()));
+
+    BulkImportRequest bulkImportRequest = BulkImportRequest.builder()
+            .applicationType(ApplicationType.SEPODI)
+            .objectType(BusinessObjectType.SERVICE_POINT)
+            .importType(ImportType.CREATE)
+            .emails(List.of("test-cc@atlas.ch"))
+            .build();
+
+    when(amazonService.putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), anyString()))
+            .thenAnswer(i -> URI.create("https://atlas-bulk-import-dev-dev.s3.eu-central-1.amazonaws.com/" +
+                    todaysDirectory + "/" + i.getArgument(1, File.class).getName()).toURL());
+
+    when(servicePointBulkImportClient.bulkImportCreate(any())).thenReturn(
+            List.of(BulkImportItemExecutionResult.builder()
+                    .lineNumber(1)
+                    .build()));
+
+    bulkImportController.startServicePointImportBatch(bulkImportRequest, multipartFile);
+
+    List<BulkImport> bulkImports = bulkImportRepository.findAll();
+    assertThat(bulkImports).hasSize(1);
+
+    BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
+    assertThat(bulkImport.getId()).isNotNull();
+    assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/create-service-point-2.xlsx.csv");
+
+    verify(servicePointBulkImportClient, atLeastOnce()).bulkImportCreate(any());
+
+  }
 }

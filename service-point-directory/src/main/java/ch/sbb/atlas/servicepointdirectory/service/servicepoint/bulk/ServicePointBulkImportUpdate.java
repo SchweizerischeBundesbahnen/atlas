@@ -6,7 +6,7 @@ import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 
 public class ServicePointBulkImportUpdate extends
-    GeolocationBulkImportDataMapper<ServicePointUpdateCsvModel, ServicePointVersion, UpdateServicePointVersionModel> {
+        GeolocationBulkImportUpdateDataMapper<ServicePointUpdateCsvModel, ServicePointVersion, UpdateServicePointVersionModel> {
 
   public static UpdateServicePointVersionModel apply(BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer,
       ServicePointVersion currentVersion) {
