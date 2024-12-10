@@ -6,17 +6,17 @@ import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
 import ch.sbb.atlas.servicepoint.Country;
 
 public class ServicePointBulkImportCreate extends
-        GeolocationBulkImportCreateDataMapper<ServicePointCreateCsvModel, CreateServicePointVersionModel> {
+    GeolocationBulkImportCreateDataMapper<ServicePointCreateCsvModel, CreateServicePointVersionModel> {
 
-    public static CreateServicePointVersionModel apply(BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
-        return new ServicePointBulkImportCreate().applyCreate(bulkImportContainer,
-                new CreateServicePointVersionModel());
-    }
+  public static CreateServicePointVersionModel apply(BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
+    return new ServicePointBulkImportCreate().applyCreate(bulkImportContainer,
+        new CreateServicePointVersionModel());
+  }
 
-    @Override
-    protected void applySpecificCreate(ServicePointCreateCsvModel create,
-                                       CreateServicePointVersionModel createModel) {
-        createModel.setServicePointGeolocation(applyGeolocationUpdate(create));
-        createModel.setCountry(Country.from(create.getUicCountryCode()));
-    }
+  @Override
+  protected void applySpecificCreate(ServicePointCreateCsvModel create,
+      CreateServicePointVersionModel createModel) {
+    createModel.setServicePointGeolocation(applyGeolocationUpdate(create));
+    createModel.setCountry(Country.from(create.getUicCountryCode()));
+  }
 }
