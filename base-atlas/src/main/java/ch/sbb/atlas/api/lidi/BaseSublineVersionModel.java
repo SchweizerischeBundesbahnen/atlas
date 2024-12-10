@@ -2,7 +2,6 @@ package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,10 +43,6 @@ public class BaseSublineVersionModel extends BaseVersionModel implements DatesVa
   @Size(max = AtlasFieldLengths.LENGTH_500)
   @NotBlank
   private String mainlineSlnid;
-
-  @Schema(description = "Subline Type")
-  @NotNull
-  private SublineType sublineType;
 
   @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001235")
   private String slnid;

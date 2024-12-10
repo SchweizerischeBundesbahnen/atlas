@@ -83,6 +83,11 @@ public class SublineService {
     if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(SublineVersion.class.getSimpleName(), "version");
     }
+
+    editedVersion.setSlnid(currentVersion.getSlnid());
+    editedVersion.setSublineType(currentVersion.getSublineType());
+    editedVersion.setMainlineSlnid(currentVersion.getMainlineSlnid());
+
     List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
         currentVersion.getSlnid());
 
