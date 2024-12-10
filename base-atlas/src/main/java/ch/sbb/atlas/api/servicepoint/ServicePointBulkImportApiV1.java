@@ -15,9 +15,11 @@ public interface ServicePointBulkImportApiV1 {
   String BASEPATH = "v1/service-points/bulk-import";
 
   @PostMapping(value = BASEPATH + "/update")
-  List<BulkImportItemExecutionResult> bulkImportUpdate(@RequestBody List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> bulkImportContainers);
+  List<BulkImportItemExecutionResult> bulkImportUpdate(
+      @RequestBody List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> bulkImportContainers);
 
   @PostMapping(value = BASEPATH + "/create")
-  List<BulkImportItemExecutionResult> bulkImportCreate(@RequestBody List<BulkImportUpdateContainer<ServicePointCreateCsvModel>> bulkImportContainers);
+  List<BulkImportItemExecutionResult> bulkImportCreate(
+      @RequestBody List<BulkImportUpdateContainer<ServicePointCreateCsvModel>> bulkImportContainers);
 
 }
