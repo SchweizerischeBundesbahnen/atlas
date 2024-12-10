@@ -9,8 +9,6 @@ import ch.sbb.atlas.api.lidi.LineRequestParams;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
@@ -98,24 +96,6 @@ public class LineController implements LineApiV1 {
       throw new SlnidNotFoundException(slnid);
     }
     return lineVersionModels;
-  }
-
-  @Override
-  public LineVersionModel createLineVersion(LineVersionModel newVersion) {
-    LineVersion newLineVersion = toEntity(newVersion);
-    newLineVersion.setStatus(Status.VALIDATED);
-    LineVersion createdVersion = lineService.create(newLineVersion);
-    return toModel(createdVersion);
-  }
-
-  @Override
-  public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
-    LineVersion versionToUpdate = lineService.findById(id)
-        .orElseThrow(() -> new IdNotFoundException(id));
-    lineService.update(versionToUpdate, toEntity(newVersion), lineService.findLineVersions(
-        versionToUpdate.getSlnid()));
-    return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
-        .toList();
   }
 
   @Override
