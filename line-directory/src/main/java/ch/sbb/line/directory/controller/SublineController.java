@@ -3,8 +3,6 @@ package ch.sbb.line.directory.controller;
 import ch.sbb.atlas.api.lidi.CoverageModel;
 import ch.sbb.atlas.api.lidi.SublineApiV1;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.mapper.CoverageMapper;
@@ -48,24 +46,6 @@ public class SublineController implements SublineApiV1 {
       throw new SlnidNotFoundException(slnid);
     }
     return sublineVersionModels;
-  }
-
-  @Override
-  public SublineVersionModel createSublineVersion(SublineVersionModel newSublineVersion) {
-    SublineVersion sublineVersion = toEntity(newSublineVersion);
-    sublineVersion.setStatus(Status.VALIDATED);
-    SublineVersion createdVersion = sublineService.create(sublineVersion);
-    return toModel(createdVersion);
-  }
-
-  @Override
-  public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
-    SublineVersion versionToUpdate = sublineService.findById(id)
-        .orElseThrow(() -> new IdNotFoundException(id));
-    sublineService.update(versionToUpdate, toEntity(newVersion), sublineService.findSubline(
-        versionToUpdate.getSlnid()));
-    return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
-        .toList();
   }
 
   @Override
