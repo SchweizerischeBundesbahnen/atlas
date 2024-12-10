@@ -55,6 +55,7 @@ export * from './coverageType';
 export * from './createLineVersionV2';
 export * from './createLoadingPointVersion';
 export * from './createServicePointVersion';
+export * from './createSublineVersionV2';
 export * from './createTrafficPointElementVersion';
 export * from './decision';
 export * from './decisionType';
