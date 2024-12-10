@@ -28,7 +28,8 @@ public class ServicePointBulkImportService {
   private final ServicePointApiClient servicePointApiClient;
 
   @RunAsUser
-  public void updateServicePointByUserName(@RunAsUserParameter String userName, BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
+  public void updateServicePointByUserName(@RunAsUserParameter String userName,
+      BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
     log.info("Update versions in name of the user: {}", userName);
     updateServicePoint(bulkImportContainer);
   }
@@ -46,12 +47,14 @@ public class ServicePointBulkImportService {
   }
 
   @RunAsUser
-  public ReadServicePointVersionModel createServicePointByUserName(@RunAsUserParameter String userName, BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
+  public ReadServicePointVersionModel createServicePointByUserName(@RunAsUserParameter String userName,
+      BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
     log.info("Create versions in name of the user: {}", userName);
     return createServicePoint(bulkImportContainer);
   }
 
-  public ReadServicePointVersionModel createServicePoint(BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
+  public ReadServicePointVersionModel createServicePoint(
+      BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
     CreateServicePointVersionModel createModel = ServicePointBulkImportCreate.apply(bulkImportContainer);
     return servicePointApiClient.createServicePoint(createModel);
   }

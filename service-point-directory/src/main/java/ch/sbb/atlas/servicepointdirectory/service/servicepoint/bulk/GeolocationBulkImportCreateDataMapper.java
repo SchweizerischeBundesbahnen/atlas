@@ -1,11 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk;
 
+import static ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.GeolocationBulkImportUpdateDataMapper.roundToSpatialReferencePrecision;
+
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.bulk.BulkImportCreateDataMapper;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
-
-import static ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.GeolocationBulkImportUpdateDataMapper.roundToSpatialReferencePrecision;
 
 public abstract class GeolocationBulkImportCreateDataMapper<T, V> extends BulkImportCreateDataMapper<T, V> {
 
