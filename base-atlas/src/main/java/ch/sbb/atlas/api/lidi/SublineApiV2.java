@@ -34,7 +34,7 @@ public interface SublineApiV2 {
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  ReadSublineVersionModelV2 createSublineVersionV2(@RequestBody @Valid SublineVersionModelV2 newSublineVersion);
+  ReadSublineVersionModelV2 createSublineVersionV2(@RequestBody @Valid CreateSublineVersionModelV2 newSublineVersion);
 
   @PostMapping({"versions/{id}"})
   @ApiResponses(value = {
