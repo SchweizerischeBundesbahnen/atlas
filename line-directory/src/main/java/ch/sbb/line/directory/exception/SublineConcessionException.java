@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 public class SublineConcessionException extends AtlasException {
 
   private static final String CODE = "LIDI.SUBLINE.ERROR.CONCESSION";
-  private static final String MESSAGE = "ConcessionType only allowed on SublineType CONCESSION";
+  private static final String MESSAGE = "When SublineType is CONCESSION sublineConcessionType must not be null";
 
   @Override
   public ErrorResponse getErrorResponse() {
