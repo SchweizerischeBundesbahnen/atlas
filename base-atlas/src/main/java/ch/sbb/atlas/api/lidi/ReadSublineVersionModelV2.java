@@ -23,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "ReadSublineVersionV2")
-public class ReadSublineVersionModelV2 extends SublineVersionModelV2 implements DatesValidator {
+public class ReadSublineVersionModelV2 extends CreateSublineVersionModelV2 implements DatesValidator {
 
   @Schema(description = "MainSwissLineNumber", example = "IC61", accessMode = AccessMode.READ_ONLY)
   @NotBlank
