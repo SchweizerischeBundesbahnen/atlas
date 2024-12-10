@@ -6,7 +6,6 @@ import ch.sbb.atlas.servicepoint.Country;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,16 +34,13 @@ public class SloidService {
   }
 
   public String getNextAvailableServicePointSloid(Country country) {
+    String sloid;
     do {
-      try {
-        final String nextAvailableSloid = sloidRepository.getNextAvailableSloid(country);
-        sloidRepository.insertSloid(nextAvailableSloid, SloidType.SERVICE_POINT);
-        sloidRepository.setAvailableSloidToClaimed(nextAvailableSloid);
-        return nextAvailableSloid;
-      } catch (DuplicateKeyException e) {
-        //continue
-      }
-    } while (true);
+      final String nextAvailableSloid = sloidRepository.getNextAvailableSloid(country);
+      sloid = sloidRepository.insertSloid(nextAvailableSloid, SloidType.SERVICE_POINT);
+      sloidRepository.setAvailableSloidToClaimed(nextAvailableSloid);
+    } while (sloid == null);
+    return sloid;
   }
 
   @Transactional
