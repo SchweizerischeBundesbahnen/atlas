@@ -1,16 +1,25 @@
 package ch.sbb.atlas.location.controller;
 
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.location.BaseLocationIntegrationTest;
 import ch.sbb.atlas.location.LocationSchemaCreation;
 import ch.sbb.atlas.location.repository.SloidRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @LocationSchemaCreation
 class SloidControllerIntegrationTest extends BaseLocationIntegrationTest {
@@ -47,11 +56,12 @@ class SloidControllerIntegrationTest extends BaseLocationIntegrationTest {
     mvc.perform(post("/v1/sloid/generate").contentType(MediaType.APPLICATION_JSON).content("""
             {"sloidType": "SERVICE_POINT", "country": "SWITZERLAND"}"""))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", is("ch:1:sloid:1")));
+        .andExpect(jsonPath("$", startsWith("ch:1:sloid:")));
   }
 
   @Test
   void generateSloid_shouldThrowWhenUnknownTypeProvided() throws Exception {
+
     mvc.perform(post("/v1/sloid/generate").contentType(MediaType.APPLICATION_JSON).content("""
             {"sloidType": "Test", "sloidPrefix": "ch:1:sloid:1"}"""))
         .andExpect(status().isBadRequest());
@@ -155,6 +165,38 @@ class SloidControllerIntegrationTest extends BaseLocationIntegrationTest {
         .andExpect(status().isBadRequest())
         .andExpect(
             jsonPath("$.message", is("The SLOID ch:1:sloid:7000:1 is not valid due to: did not have 5 colons as expected")));
+  }
+
+  @Test
+  void generateTwoDifferentSloidsOnConcurrentRequests() throws Exception {
+    CopyOnWriteArrayList<Integer> statusResults = new CopyOnWriteArrayList<>();
+    CopyOnWriteArrayList<String> resultSloids  = new CopyOnWriteArrayList<>();
+
+    int numberOfThreads = 4;
+    CountDownLatch latch = new CountDownLatch(numberOfThreads);
+
+    try (ExecutorService service = Executors.newFixedThreadPool(numberOfThreads)) {
+      for (int i = 0; i < numberOfThreads; i++) {
+        service.submit(() -> {
+          try {
+            MockHttpServletResponse response = mvc.perform(post("/v1/sloid/generate")
+                            .contentType(MediaType.APPLICATION_JSON).content("""
+                        {"sloidType": "SERVICE_POINT", "country": "SWITZERLAND"}"""))
+                    .andReturn().getResponse();
+
+            statusResults.add(response.getStatus());
+            resultSloids.add(response.getContentAsString());
+            latch.countDown();
+          } catch (Exception e) {
+            fail("Exception occurred", e);
+          }
+        });
+      }
+    }
+
+    latch.await();
+    assertThat(statusResults).containsOnly(200);
+    assertThat(resultSloids).hasSize(numberOfThreads).doesNotHaveDuplicates();
   }
 
 }
