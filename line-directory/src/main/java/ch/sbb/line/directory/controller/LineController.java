@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.lidi.LineRequestParams;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
@@ -96,6 +97,13 @@ public class LineController implements LineApiV1 {
       throw new SlnidNotFoundException(slnid);
     }
     return lineVersionModels;
+  }
+
+  public LineVersionModel createLineVersion(LineVersionModel newVersion) {
+    LineVersion newLineVersion = toEntity(newVersion);
+    newLineVersion.setStatus(Status.VALIDATED);
+    LineVersion createdVersion = lineService.create(newLineVersion);
+    return toModel(createdVersion);
   }
 
   @Override
