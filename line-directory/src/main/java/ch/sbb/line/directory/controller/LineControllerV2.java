@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.mapper.LineVersionWorkflowMapper;
 import ch.sbb.line.directory.service.LineService;
 import java.util.List;
@@ -25,7 +26,11 @@ public class LineControllerV2 implements LineApiV2 {
 
   @Override
   public List<LineVersionModelV2> getLineVersionsV2(String slnid) {
-    return lineService.findLineVersions(slnid).stream().map(this::toModel).toList();
+    List<LineVersion> versions = lineService.findLineVersions(slnid);
+    if (versions.isEmpty()) {
+      throw new SlnidNotFoundException(slnid);
+    }
+    return versions.stream().map(this::toModel).toList();
   }
 
   @Override
