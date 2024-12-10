@@ -2,8 +2,8 @@ package ch.sbb.line.directory.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
-import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
@@ -74,7 +74,7 @@ class SublineVersionMapperTest {
 
   @Test
   void shouldMapToEntityForCreate() {
-    SublineVersionModelV2 model = SublineVersionModelV2.builder()
+    CreateSublineVersionModelV2 model = CreateSublineVersionModelV2.builder()
         .id(1L)
         .status(Status.VALIDATED)
         .mainlineSlnid("ch:1:mainlineslnid")

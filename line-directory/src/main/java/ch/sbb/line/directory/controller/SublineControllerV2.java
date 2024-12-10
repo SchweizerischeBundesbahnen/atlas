@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.controller;
 
+import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.SublineApiV2;
 import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
@@ -34,7 +35,7 @@ public class SublineControllerV2 implements SublineApiV2 {
   }
 
   @Override
-  public ReadSublineVersionModelV2 createSublineVersionV2(SublineVersionModelV2 newSublineVersion) {
+  public ReadSublineVersionModelV2 createSublineVersionV2(CreateSublineVersionModelV2 newSublineVersion) {
     SublineVersion sublineVersion = SublineMapper.toEntity(newSublineVersion);
     sublineVersion.setStatus(Status.VALIDATED);
     SublineVersion createdVersion = sublineService.create(sublineVersion);
