@@ -4,14 +4,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -42,6 +48,9 @@ class ServicePointBulkImportServiceTest {
   @MockBean
   private GeoReferenceService geoReferenceService;
 
+  @MockBean
+  private LocationService locationService;
+
   @Autowired
   private ServicePointVersionRepository servicePointVersionRepository;
 
@@ -53,6 +62,8 @@ class ServicePointBulkImportServiceTest {
   @BeforeEach
   void setUp() {
     doReturn(true).when(administrationService).hasUserPermissionsToUpdateCountryBased(any(), any(), any());
+    doReturn(true).when(administrationService).hasUserPermissionsToCreate(any(), any());
+
     bernWyleregg = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
   }
 
@@ -266,5 +277,49 @@ class ServicePointBulkImportServiceTest {
 
     ServicePointVersion bulkUpdateResult = servicePointVersionRepository.findById(servicePointVersion.getId()).orElseThrow();
     assertThat(bulkUpdateResult.hasGeolocation()).isTrue();
+  }
+
+  @Test
+  void shouldCreateServicePointBulk() {
+    when(locationService.generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND)).thenReturn("ch:1:sloid:11901");
+
+    ReadServicePointVersionModel bulkUpdateResult = servicePointBulkImportService.createServicePoint(
+        BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
+            .object(ServicePointCreateCsvModel.builder()
+                .numberShort(6000)
+                .uicCountryCode(85)
+                .validFrom(bernWyleregg.getValidFrom())
+                .validTo(bernWyleregg.getValidTo())
+                .designationOfficial("createBulkImport")
+                .businessOrganisation("ch:1:sboid:100001")
+                .east(2600037.945)
+                .north(1199749.812)
+                .height(540.1)
+                .spatialReference(SpatialReference.LV95)
+                .build())
+            .build());
+
+    assertThat(bulkUpdateResult.getDesignationOfficial()).isEqualTo("createBulkImport");
+  }
+
+  @Test
+  void shouldCreateServicePointBulkInNameOf() {
+    //given
+    when(locationService.generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND)).thenReturn("ch:1:sloid:11902");
+
+    //when
+    ReadServicePointVersionModel bulkUpdateResult = servicePointBulkImportService.createServicePointByUserName("e123456",
+        BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
+            .object(ServicePointCreateCsvModel.builder()
+                .numberShort(6001)
+                .uicCountryCode(85)
+                .validFrom(bernWyleregg.getValidFrom())
+                .validTo(bernWyleregg.getValidTo())
+                .designationOfficial("createBulkImport2")
+                .businessOrganisation("ch:1:sboid:100001")
+                .build())
+            .build());
+    //then
+    assertThat(bulkUpdateResult.getDesignationOfficial()).isEqualTo("createBulkImport2");
   }
 }
