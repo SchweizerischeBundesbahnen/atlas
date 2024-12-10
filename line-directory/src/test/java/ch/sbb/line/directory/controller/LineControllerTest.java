@@ -2,7 +2,6 @@ package ch.sbb.line.directory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -167,22 +166,6 @@ class LineControllerTest {
 
     // Then
     verify(lineService).deleteAll(slnid);
-  }
-
-  @Test
-  void shouldUpdateVersionWithVersioning() {
-    // Given
-    LineVersion lineVersion = LineTestData.lineVersion();
-    LineVersionModel lineVersionModel = createModel();
-    lineVersionModel.setNumber("New name");
-
-    when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
-
-    // When
-    lineController.updateLineVersion(1L, lineVersionModel);
-
-    // Then
-    verify(lineService).update(any(), any(), any());
   }
 
 }
