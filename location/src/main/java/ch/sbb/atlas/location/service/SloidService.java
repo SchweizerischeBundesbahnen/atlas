@@ -36,7 +36,6 @@ public class SloidService {
     public String getNextAvailableServicePointSloid(Country country) {
         do {
             try {
-                //was wenn es beim sql script "setToClaimed" fehler gibt aber insert korrekt ging
                 final String nextAvailableSloid = sloidRepository.getNextAvailableSloid(country);
                 sloidRepository.insertSloid(nextAvailableSloid, SloidType.SERVICE_POINT);
                 sloidRepository.setAvailableSloidToClaimed(nextAvailableSloid);
