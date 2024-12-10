@@ -283,19 +283,20 @@ class ServicePointBulkImportServiceTest {
   void shouldCreateServicePointBulk() {
     when(locationService.generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND)).thenReturn("ch:1:sloid:11901");
 
-    ReadServicePointVersionModel bulkUpdateResult = servicePointBulkImportService.createServicePoint(BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
+    ReadServicePointVersionModel bulkUpdateResult = servicePointBulkImportService.createServicePoint(
+        BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
             .object(ServicePointCreateCsvModel.builder()
-                    .numberShort(6000)
-                    .uicCountryCode(85)
-                    .validFrom(bernWyleregg.getValidFrom())
-                    .validTo(bernWyleregg.getValidTo())
-                    .designationOfficial("createBulkImport")
-                    .businessOrganisation("ch:1:sboid:100001")
-                    .east(2600037.945)
-                    .north(1199749.812)
-                    .height(540.1)
-                    .spatialReference(SpatialReference.LV95)
-                    .build())
+                .numberShort(6000)
+                .uicCountryCode(85)
+                .validFrom(bernWyleregg.getValidFrom())
+                .validTo(bernWyleregg.getValidTo())
+                .designationOfficial("createBulkImport")
+                .businessOrganisation("ch:1:sboid:100001")
+                .east(2600037.945)
+                .north(1199749.812)
+                .height(540.1)
+                .spatialReference(SpatialReference.LV95)
+                .build())
             .build());
 
     assertThat(bulkUpdateResult.getDesignationOfficial()).isEqualTo("createBulkImport");
@@ -308,16 +309,16 @@ class ServicePointBulkImportServiceTest {
 
     //when
     ReadServicePointVersionModel bulkUpdateResult = servicePointBulkImportService.createServicePointByUserName("e123456",
-            BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
-                    .object(ServicePointCreateCsvModel.builder()
-                            .numberShort(6001)
-                            .uicCountryCode(85)
-                            .validFrom(bernWyleregg.getValidFrom())
-                            .validTo(bernWyleregg.getValidTo())
-                            .designationOfficial("createBulkImport2")
-                            .businessOrganisation("ch:1:sboid:100001")
-                            .build())
-                    .build());
+        BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
+            .object(ServicePointCreateCsvModel.builder()
+                .numberShort(6001)
+                .uicCountryCode(85)
+                .validFrom(bernWyleregg.getValidFrom())
+                .validTo(bernWyleregg.getValidTo())
+                .designationOfficial("createBulkImport2")
+                .businessOrganisation("ch:1:sboid:100001")
+                .build())
+            .build());
     //then
     assertThat(bulkUpdateResult.getDesignationOfficial()).isEqualTo("createBulkImport2");
   }
