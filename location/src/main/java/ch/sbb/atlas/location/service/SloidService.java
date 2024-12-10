@@ -18,7 +18,8 @@ public class SloidService {
 
   public String generateNewSloid(String sloidPrefix, @NotNull SloidType sloidType) {
     if (SloidType.SERVICE_POINT == sloidType) {
-      throw new IllegalArgumentException("This method is not allowed to generate sloid for ServicePoint.");
+      throw new IllegalArgumentException(
+          "This method is not allowed to generate sloid for ServicePoint.");
     }
     String sloidToInsert = null;
     do {
@@ -32,12 +33,14 @@ public class SloidService {
     return sloidToInsert;
   }
 
-  @Transactional
   public String getNextAvailableServicePointSloid(Country country) {
-    final String nextAvailableSloid = sloidRepository.getNextAvailableSloid(country);
-    sloidRepository.insertSloid(nextAvailableSloid, SloidType.SERVICE_POINT);
-    sloidRepository.setAvailableSloidToClaimed(nextAvailableSloid);
-    return nextAvailableSloid;
+    String sloid;
+    do {
+      final String nextAvailableSloid = sloidRepository.getNextAvailableSloid(country);
+      sloid = sloidRepository.insertSloid(nextAvailableSloid, SloidType.SERVICE_POINT);
+      sloidRepository.setAvailableSloidToClaimed(nextAvailableSloid);
+    } while (sloid == null);
+    return sloid;
   }
 
   @Transactional
@@ -65,5 +68,4 @@ public class SloidService {
   private String createFormattedSloid(String sloidPrefix, Integer nextSeqValue) {
     return sloidPrefix + ":" + nextSeqValue;
   }
-
 }
