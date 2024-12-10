@@ -4,11 +4,11 @@ import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.GeolocationBulkImportDataMapper;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.GeolocationBulkImportUpdateDataMapper;
 
 public class TrafficPointElementBulkImportUpdate extends
-    GeolocationBulkImportDataMapper<TrafficPointUpdateCsvModel, TrafficPointElementVersion,
-        CreateTrafficPointElementVersionModel> {
+        GeolocationBulkImportUpdateDataMapper<TrafficPointUpdateCsvModel, TrafficPointElementVersion,
+                CreateTrafficPointElementVersionModel> {
 
   public static CreateTrafficPointElementVersionModel apply(
       BulkImportUpdateContainer<TrafficPointUpdateCsvModel> bulkImportContainer,

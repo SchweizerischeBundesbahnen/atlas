@@ -1,8 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk;
 
+import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -25,7 +28,8 @@ public class ServicePointBulkImportService {
   private final ServicePointApiClient servicePointApiClient;
 
   @RunAsUser
-  public void updateServicePointByUserName(@RunAsUserParameter String userName, BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
+  public void updateServicePointByUserName(@RunAsUserParameter String userName,
+      BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
     log.info("Update versions in name of the user: {}", userName);
     updateServicePoint(bulkImportContainer);
   }
@@ -40,6 +44,19 @@ public class ServicePointBulkImportService {
     UpdateServicePointVersionModel updateModel = ServicePointBulkImportUpdate.apply(bulkImportContainer, currentVersion);
 
     servicePointApiClient.updateServicePoint(currentVersion.getId(), updateModel);
+  }
+
+  @RunAsUser
+  public ReadServicePointVersionModel createServicePointByUserName(@RunAsUserParameter String userName,
+      BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
+    log.info("Create versions in name of the user: {}", userName);
+    return createServicePoint(bulkImportContainer);
+  }
+
+  public ReadServicePointVersionModel createServicePoint(
+      BulkImportUpdateContainer<ServicePointCreateCsvModel> bulkImportContainer) {
+    CreateServicePointVersionModel createModel = ServicePointBulkImportCreate.apply(bulkImportContainer);
+    return servicePointApiClient.createServicePoint(createModel);
   }
 
   private List<ServicePointVersion> getCurrentVersions(ServicePointUpdateCsvModel servicePointUpdate) {
