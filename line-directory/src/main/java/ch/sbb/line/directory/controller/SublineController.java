@@ -3,6 +3,7 @@ package ch.sbb.line.directory.controller;
 import ch.sbb.atlas.api.lidi.CoverageModel;
 import ch.sbb.atlas.api.lidi.SublineApiV1;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.mapper.CoverageMapper;
@@ -46,6 +47,13 @@ public class SublineController implements SublineApiV1 {
       throw new SlnidNotFoundException(slnid);
     }
     return sublineVersionModels;
+  }
+
+  public SublineVersionModel createSublineVersion(SublineVersionModel newSublineVersion) {
+    SublineVersion sublineVersion = toEntity(newSublineVersion);
+    sublineVersion.setStatus(Status.VALIDATED);
+    SublineVersion createdVersion = sublineService.create(sublineVersion);
+    return toModel(createdVersion);
   }
 
   @Override
