@@ -37,8 +37,8 @@ public class SloidService {
         do {
             try {
                 final String nextAvailableSloid = sloidRepository.getNextAvailableSloid(country);
-                sloidRepository.insertSloid(nextAvailableSloid, SloidType.SERVICE_POINT);
                 sloidRepository.setAvailableSloidToClaimed(nextAvailableSloid);
+                sloidRepository.insertSloid(nextAvailableSloid, SloidType.SERVICE_POINT);
                 return nextAvailableSloid;
             } catch (DuplicateKeyException e) {
                 //continue
