@@ -12,6 +12,7 @@ import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -50,12 +51,17 @@ public class SloidRepository {
         (rs, row) -> rs.getInt(1));
   }
 
-  public void insertSloid(String sloid, SloidType sloidType) {
+  public String insertSloid(String sloid, SloidType sloidType) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloid", sloid);
     mapSqlParameterSource.addValue("sloidType", sloidType.name());
     String sqlQuery = "insert into allocated_sloid (sloid, sloidtype) values (:sloid, :sloidType);";
-    locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
+    try {
+      locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
+    } catch (DuplicateKeyException e) {
+      return null;
+    }
+    return sloid;
   }
 
   public String getNextAvailableSloid(Country country) {
