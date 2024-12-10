@@ -9,22 +9,70 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
+import { SublineType } from './sublineType';
+import { SublineConcessionType } from './sublineConcessionType';
 
 
-/**
- * ConcessionType
- */
-export type LineConcessionType = 'FEDERALLY_LICENSED_OR_APPROVED_LINE' | 'VARIANT_OF_A_FRANCHISED_LINE' | 'FEDERAL_TERRITORIAL_CONCESSION' | 'LINE_OF_A_TERRITORIAL_CONCESSION' | 'CANTONALLY_APPROVED_LINE' | 'RACK_FREE_TRIPS' | 'RACK_FREE_UNPUBLISHED_LINE' | 'COLLECTION_LINE' | 'LINE_ABROAD';
-
-export const LineConcessionType = {
-    FederallyLicensedOrApprovedLine: 'FEDERALLY_LICENSED_OR_APPROVED_LINE' as LineConcessionType,
-    VariantOfAFranchisedLine: 'VARIANT_OF_A_FRANCHISED_LINE' as LineConcessionType,
-    FederalTerritorialConcession: 'FEDERAL_TERRITORIAL_CONCESSION' as LineConcessionType,
-    LineOfATerritorialConcession: 'LINE_OF_A_TERRITORIAL_CONCESSION' as LineConcessionType,
-    CantonallyApprovedLine: 'CANTONALLY_APPROVED_LINE' as LineConcessionType,
-    RackFreeTrips: 'RACK_FREE_TRIPS' as LineConcessionType,
-    RackFreeUnpublishedLine: 'RACK_FREE_UNPUBLISHED_LINE' as LineConcessionType,
-    CollectionLine: 'COLLECTION_LINE' as LineConcessionType,
-    LineAbroad: 'LINE_ABROAD' as LineConcessionType
-};
+export interface CreateSublineVersionV2 { 
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * User creator
+     */
+    readonly creator?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    status?: Status;
+    /**
+     * This ID helps identify versions of a subline in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a subline. To do this, use the slnid in combination with the data range (valid from/valid until). 
+     */
+    readonly id?: number;
+    /**
+     * SwissSublineNumber
+     */
+    swissSublineNumber?: string;
+    /**
+     * SLNID of main line
+     */
+    mainlineSlnid: string;
+    /**
+     * SLNID
+     */
+    readonly slnid?: string;
+    /**
+     * Description
+     */
+    description: string;
+    /**
+     * LongName
+     */
+    longName?: string;
+    /**
+     * BusinessOrganisation SBOID
+     */
+    readonly businessOrganisation: string;
+    /**
+     * Valid from
+     */
+    validFrom: Date;
+    /**
+     * Valid to
+     */
+    validTo: Date;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    etagVersion?: number;
+    sublineConcessionType?: SublineConcessionType;
+    sublineType: SublineType;
+}
 
