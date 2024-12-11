@@ -416,7 +416,8 @@
       "LINES": "Linien",
       "CONFLICT": {
         "SWISS_NUMBER": "Die CH-Liniennummer (CHLNR) {{swissLineNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{slnid}} vergeben.",
-        "DELETE": "Linie mit {{slnid}} kann nicht gelöscht werden, da sie noch von Teillinie {{SublineVersion.slnid}} referenziert wird"
+        "DELETE": "Linie mit {{slnid}} kann nicht gelöscht werden, da sie noch von Teillinie {{SublineVersion.slnid}} referenziert wird",
+        "SUBLINE_VALIDITY": "Das angegebene Datum ist ungültig und liegt ausserhalb der Gültigkeit der übergeordneten Linie. Die übergeordneten Linie ist gültig von: {{validFrom}} bis: {{validTo}}"
       },
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Gültigkeit der Teillinie {{sublinie.swissSublineNumber}}. Diese ist {{sublinie.validFrom}}-{{sublinie.validTo}}."
