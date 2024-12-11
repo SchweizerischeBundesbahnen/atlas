@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
+import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
@@ -74,8 +76,8 @@ class SublineControllerApiV2Test extends BaseControllerApiTest {
   @Test
   void shouldCreateSublineV2() throws Exception {
     //given
-    SublineVersionModelV2 sublineVersionModel =
-        SublineVersionModelV2.builder()
+    CreateSublineVersionModelV2 sublineVersionModel =
+        CreateSublineVersionModelV2.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
@@ -93,8 +95,8 @@ class SublineControllerApiV2Test extends BaseControllerApiTest {
   @Test
   void shouldUpdateSubline() throws Exception {
     //given
-    SublineVersionModelV2 sublineVersionModel =
-        SublineVersionModelV2.builder()
+    CreateSublineVersionModelV2 sublineVersionModel =
+        CreateSublineVersionModelV2.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
@@ -102,20 +104,28 @@ class SublineControllerApiV2Test extends BaseControllerApiTest {
             .sublineType(SublineType.TECHNICAL)
             .mainlineSlnid(mainLineVersion.getSlnid())
             .build();
-    sublineVersionModel = sublineController.createSublineVersionV2(sublineVersionModel);
+    ReadSublineVersionModelV2 result = sublineController.createSublineVersionV2(sublineVersionModel);
 
     // When first update it is ok
-    sublineVersionModel.setDescription("Kinky subline, ready to roll");
-    mvc.perform(post("/v2/sublines/versions/" + sublineVersionModel.getId())
+    SublineVersionModelV2 updateModel = SublineVersionModelV2.builder()
+        .id(result.getId())
+        .validFrom(result.getValidFrom())
+        .validTo(result.getValidTo())
+        .businessOrganisation(result.getBusinessOrganisation())
+        .mainlineSlnid(result.getMainlineSlnid())
+        .etagVersion(result.getEtagVersion())
+        .build();
+    updateModel.setDescription("Kinky subline, ready to roll");
+    mvc.perform(post("/v2/sublines/versions/" + updateModel.getId())
             .contentType(contentType)
-            .content(mapper.writeValueAsString(sublineVersionModel)))
+            .content(mapper.writeValueAsString(updateModel)))
         .andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
-    sublineVersionModel.setDescription("Kinky subline, ready to rock");
-    mvc.perform(post("/v2/sublines/versions/" + sublineVersionModel.getId())
+    updateModel.setDescription("Kinky subline, ready to rock");
+    mvc.perform(post("/v2/sublines/versions/" + updateModel.getId())
             .contentType(contentType)
-            .content(mapper.writeValueAsString(sublineVersionModel)))
+            .content(mapper.writeValueAsString(updateModel)))
         .andExpect(status().isPreconditionFailed()).andReturn();
 
   }
