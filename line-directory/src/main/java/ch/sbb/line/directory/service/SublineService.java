@@ -108,8 +108,7 @@ public class SublineService {
     return OverviewDisplayBuilder.getPrioritizedVersion(lineVersions);
   }
 
-  //TODO add test
-  private void validateSublineValidity(SublineVersion sublineVersion) {
+  public void validateSublineValidity(SublineVersion sublineVersion) {
     LineVersion lineVersion = getMainLineVersion(sublineVersion.getMainlineSlnid());
     DateRange dateRangeMainline = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
     DateRange dateRangeSubline = new DateRange(sublineVersion.getValidFrom(), sublineVersion.getValidTo());
