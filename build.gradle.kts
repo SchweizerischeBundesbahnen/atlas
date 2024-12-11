@@ -1,7 +1,18 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id("io.spring.dependency-management") version "1.1.6"
     id("org.springframework.boot") version "3.3.4"
     id("org.sonarqube") version "6.0.1.5171"
+}
+
+buildscript {
+    val executionSystem = System.getenv("UE_EXECUTION_SYSTEM")
+    if (executionSystem == "tekton") {
+        project.properties.plus(Pair("org.gradle.parallel", "true"))
+        println("Execute gradle build WITH PARALLEL mode!")
+    }
+    println("Execute gradle build WITHOUT PARALLEL mode!")
 }
 
 subprojects {
@@ -14,7 +25,7 @@ subprojects {
 
         dependencyManagement {
             imports {
-                mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+                mavenBom(SpringBootPlugin.BOM_COORDINATES)
                 mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
             }
         }

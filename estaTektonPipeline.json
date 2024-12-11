@@ -5,7 +5,10 @@
     "buildWorkspaceSize": "25Gi",
     "buildCacheSize": "10Gi",
     "taggingWorkspaceSize": "2Gi",
-    "pipelineTimeout": "1h30m0s"
+    "pipelineTimeout": "1h30m0s",
+    "env": {
+      "EXECUTION_SYSTEM" : "tekton"
+    }
   },
   "builder": {
     "java": "21",
