@@ -54,6 +54,12 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetLineVersionsNotFound() throws Exception {
+    mvc.perform(get("/v2/lines/versions/123"))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
   void shouldCreateLineVersion() throws Exception {
     //given
     CreateLineVersionModelV2 lineVersionModel =

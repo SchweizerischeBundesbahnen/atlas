@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.mapper;
 
+import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -36,6 +37,27 @@ public class SublineMapper {
   }
 
   public static SublineVersion toEntity(SublineVersionModelV2 model) {
+    return SublineVersion.builder()
+        .id(model.getId())
+        .swissSublineNumber(model.getSwissSublineNumber())
+        .mainlineSlnid(model.getMainlineSlnid())
+        .concessionType(model.getSublineConcessionType())
+        .status(model.getStatus())
+        .slnid(model.getSlnid())
+        .description(model.getDescription())
+        .longName(model.getLongName())
+        .validFrom(model.getValidFrom())
+        .validTo(model.getValidTo())
+        .businessOrganisation(model.getBusinessOrganisation())
+        .version(model.getEtagVersion())
+        .creator(model.getCreator())
+        .creationDate(model.getCreationDate())
+        .editor(model.getEditor())
+        .editionDate(model.getEditionDate())
+        .build();
+  }
+
+  public static SublineVersion toEntity(CreateSublineVersionModelV2 model) {
     return SublineVersion.builder()
         .id(model.getId())
         .swissSublineNumber(model.getSwissSublineNumber())
