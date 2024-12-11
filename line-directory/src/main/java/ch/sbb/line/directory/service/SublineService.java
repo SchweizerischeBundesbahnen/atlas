@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.service;
 
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
@@ -7,6 +8,7 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.exception.DateRangeConflictException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
@@ -53,6 +55,7 @@ public class SublineService {
   SublineVersion save(SublineVersion sublineVersion) {
     sublineVersion.setStatus(Status.VALIDATED);
     sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion);
+    validateSublineValidity(sublineVersion);
     SublineVersion savedVersion = sublineVersionRepository.saveAndFlush(sublineVersion);
     sublineValidationService.validateSublineAfterVersioningBusinessRule(sublineVersion);
     return savedVersion;
@@ -105,4 +108,14 @@ public class SublineService {
     return OverviewDisplayBuilder.getPrioritizedVersion(lineVersions);
   }
 
+  //TODO add test
+  private void validateSublineValidity(SublineVersion sublineVersion) {
+    LineVersion lineVersion = getMainLineVersion(sublineVersion.getMainlineSlnid());
+    DateRange dateRangeMainline = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
+    DateRange dateRangeSubline = new DateRange(sublineVersion.getValidFrom(), sublineVersion.getValidTo());
+
+    if(!dateRangeSubline.isDateRangeContainedIn(dateRangeMainline)) {
+      throw new DateRangeConflictException(dateRangeMainline);
+    }
+  }
 }
