@@ -1,6 +1,9 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
 task<Exec>("execNpmCi") {
+  onlyIf("Exec npm ci only on Tekton"){
+    System.getenv("UE_EXECUTION_SYSTEM") == "tekton"
+  }
   doFirst {
     println("[Angular] Run atlas npm ci")
   }
@@ -56,7 +59,15 @@ gradle.projectsEvaluated {
   }
 }
 
-task<Exec>("clean"){
+task<Exec>("clean") {
+  doFirst {
+    println("[Angular] clean build dir")
+  }
+  commandLine("rm", "-rf", "dist")
+}
+
+task<Exec>("asd") {
+
   doFirst {
     println("[Angular] clean build dir")
   }
