@@ -45,6 +45,11 @@ public class DateRange {
     return !from.isAfter(otherDateRange.getFrom()) && !to.isBefore(otherDateRange.getTo());
   }
 
+  public boolean isDateRangeContainedIn(DateRange givenDateRange) {
+    return (from.equals(givenDateRange.getFrom()) || from.isAfter(givenDateRange.getFrom()))
+        && (to.equals(givenDateRange.getTo()) || to.isBefore(givenDateRange.getTo()));
+  }
+
   public static DateRange fromVersionable(Versionable versionable) {
     return DateRange.builder().from(versionable.getValidFrom()).to(versionable.getValidTo()).build();
   }
