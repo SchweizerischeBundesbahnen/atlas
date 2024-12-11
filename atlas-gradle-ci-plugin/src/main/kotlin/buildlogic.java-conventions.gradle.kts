@@ -1,7 +1,3 @@
-import org.asciidoctor.gradle.jvm.AsciidoctorTask
-import java.util.*
-import java.text.SimpleDateFormat
-
 plugins {
     java
     jacoco
