@@ -1,6 +1,6 @@
 import {BaseDetailFormGroup} from '../../../../core/components/base-detail/base-detail-form-group';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {SublineConcessionType, SublineType, SublineVersionV2} from '../../../../api';
+import {ReadSublineVersionV2, SublineConcessionType, SublineType} from '../../../../api';
 import {AtlasFieldLengthValidator} from "../../../../core/validation/field-lengths/atlas-field-length-validator";
 import {WhitespaceValidator} from "../../../../core/validation/whitespace/whitespace-validator";
 import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
@@ -21,7 +21,7 @@ export interface SublineFormGroup extends BaseDetailFormGroup {
 }
 
 export class SublineFormGroupBuilder {
-  static buildFormGroup(version?: SublineVersionV2): FormGroup {
+  static buildFormGroup(version?: ReadSublineVersionV2): FormGroup {
     const formGroup = new FormGroup<SublineFormGroup>(
       {
         swissSublineNumber: new FormControl(version?.swissSublineNumber, [

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {
   ApplicationRole,
-  ApplicationType,
+  ApplicationType, CreateSublineVersionV2,
   ElementType,
   LidiElementType,
   Line,
@@ -138,7 +138,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const sublineVersion = this.form.getRawValue() as unknown as SublineVersionV2;
+      const sublineVersion = this.form.getRawValue() as unknown as CreateSublineVersionV2;
       this.form.disable();
       if (this.isNew) {
         this.createSubline(sublineVersion);
@@ -154,7 +154,7 @@ export class SublineDetailComponent implements OnInit, DetailFormComponent, Deta
     }
   }
 
-  createSubline(sublineVersion: SublineVersionV2): void {
+  createSubline(sublineVersion: CreateSublineVersionV2): void {
     this.sublinesService
       .createSublineVersionV2(sublineVersion)
       .pipe(catchError(this.handleError()))

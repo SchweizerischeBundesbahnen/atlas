@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -17,7 +16,6 @@ import ch.sbb.atlas.api.lidi.enumaration.ModelType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.api.model.BaseVersionModel;
-import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.line.directory.LineTestData;
@@ -31,7 +29,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
  class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
@@ -65,40 +62,6 @@ import org.springframework.test.web.servlet.MvcResult;
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
     coverageRepository.deleteAll();
-  }
-
-  @Test
-  void shouldCreateSubline() throws Exception {
-    //given
-    LineVersionModel lineVersionModel =
-        LineTestData.lineVersionModelBuilder()
-            .validTo(LocalDate.of(2000, 12, 31))
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .businessOrganisation("sbb")
-            .alternativeName("alternative")
-            .combinationName("combination")
-            .longName("long name")
-            .lineType(LineType.TEMPORARY)
-            .paymentType(PaymentType.LOCAL)
-            .swissLineNumber("b0.IC2-libne")
-            .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 12, 31))
-            .businessOrganisation("sbb")
-            .description("b0.Ic2-sibline")
-            .sublineType(SublineType.TEMPORARY)
-            .paymentType(PaymentType.LOCAL)
-            .mainlineSlnid(lineVersionSaved.getSlnid())
-            .build();
-    //when
-    lineVersionModel.setValidFrom(LocalDate.of(2000, 1, 2));
-    mvc.perform(post("/v1/sublines/versions")
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(sublineVersionModel)))
-        .andExpect(status().isCreated());
   }
 
   @Test
@@ -142,147 +105,6 @@ import org.springframework.test.web.servlet.MvcResult;
   }
 
   @Test
-  void shouldReturnSublineOutsideOfLineRange() throws Exception {
-    //given
-    LineVersionModel lineVersionModel =
-        LineTestData.lineVersionModelBuilder()
-            .validTo(LocalDate.of(2000, 12, 31))
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .businessOrganisation("sbb")
-            .alternativeName("alternative")
-            .combinationName("combination")
-            .longName("long name")
-            .lineType(LineType.TEMPORARY)
-            .paymentType(PaymentType.LOCAL)
-            .swissLineNumber("b0.IC2-libne")
-            .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2001, 1, 1))
-            .businessOrganisation("sbb")
-            .description("b0.Ic2-sibline")
-            .sublineType(SublineType.TEMPORARY)
-            .paymentType(PaymentType.LOCAL)
-            .mainlineSlnid(lineVersionSaved.getSlnid())
-            .build();
-
-    //when
-    mvc.perform(post("/v1/sublines/versions")
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(sublineVersionModel)))
-        .andExpect(status().isCreated());
-  }
-
-  @Test
-  void shouldReturnOptimisticLockingErrorResponse() throws Exception {
-    //given
-    LineVersionModel lineVersionModel =
-        LineTestData.lineVersionModelBuilder()
-            .validTo(LocalDate.of(2000, 12, 31))
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .businessOrganisation("sbb")
-            .alternativeName("alternative")
-            .combinationName("combination")
-            .longName("long name")
-            .lineType(LineType.TEMPORARY)
-            .paymentType(PaymentType.LOCAL)
-            .swissLineNumber("b0.IC2-libne")
-            .build();
-    lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 12, 31))
-            .businessOrganisation("sbb")
-            .description("b0.Ic2-sibline")
-            .sublineType(SublineType.TEMPORARY)
-            .paymentType(PaymentType.LOCAL)
-            .mainlineSlnid(lineVersionModel.getSlnid())
-            .build();
-    sublineVersionModel = sublineController.createSublineVersion(sublineVersionModel);
-
-    // When first update it is ok
-    sublineVersionModel.setDescription("Kinky subline, ready to roll");
-    mvc.perform(post("/v1/sublines/versions/" + sublineVersionModel.getId())
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(sublineVersionModel)))
-        .andExpect(status().isOk());
-
-    // Then on a second update it has to return error for optimistic lock
-    sublineVersionModel.setDescription("Kinky subline, ready to rock");
-    MvcResult mvcResult = mvc.perform(post("/v1/sublines/versions/" + sublineVersionModel.getId())
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(sublineVersionModel)))
-        .andExpect(status().isPreconditionFailed()).andReturn();
-
-    ErrorResponse errorResponse = mapper.readValue(
-        mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
-
-    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
-    assertThat(errorResponse.getDetails()).size().isEqualTo(1);
-    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo(
-        "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
-    assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
-  }
-
-  @Test
-  void shouldReturnValidationNoChangesErrorResponse() throws Exception {
-    //given
-    LineVersionModel lineVersionModel =
-        LineTestData.lineVersionModelBuilder()
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2001, 12, 31))
-            .businessOrganisation("sbb")
-            .alternativeName("alternative")
-            .combinationName("combination")
-            .longName("long name")
-            .lineType(LineType.ORDERLY)
-            .paymentType(PaymentType.LOCAL)
-            .swissLineNumber("b0.IC2-libne")
-            .build();
-    lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel firstSublineVersionModel =
-        SublineVersionModel.builder()
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 12, 31))
-            .businessOrganisation("sbb")
-            .description("b0.Ic2-sibline")
-            .sublineType(SublineType.TECHNICAL)
-            .paymentType(PaymentType.LOCAL)
-            .mainlineSlnid(lineVersionModel.getSlnid())
-            .build();
-    firstSublineVersionModel = sublineController.createSublineVersion(firstSublineVersionModel);
-
-    SublineVersionModel secondSublineVersionModel =
-        SublineVersionModel.builder()
-            .validFrom(LocalDate.of(2001, 1, 1))
-            .validTo(LocalDate.of(2001, 12, 31))
-            .businessOrganisation("bls")
-            .description("b0.Ic2-sibline")
-            .sublineType(SublineType.TECHNICAL)
-            .paymentType(PaymentType.LOCAL)
-            .mainlineSlnid(lineVersionModel.getSlnid())
-            .build();
-    sublineController.createSublineVersion(secondSublineVersionModel);
-
-    //when & then
-    mvc.perform(post("/v1/sublines/versions/" + firstSublineVersionModel.getId())
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(firstSublineVersionModel)))
-        .andExpect(jsonPath("$.status", is(520)))
-        .andExpect(
-            jsonPath("$.message", is("No entities were modified after versioning execution.")))
-        .andExpect(jsonPath("$.error", is("No changes after versioning")))
-        .andExpect(jsonPath("$.details[0].message",
-            is("No entities were modified after versioning execution.")))
-        .andExpect(jsonPath("$.details[0].field", is(nullValue())))
-        .andExpect(
-            jsonPath("$.details[0].displayInfo.code", is("ERROR.WARNING.VERSIONING_NO_CHANGES")));
-  }
-
-  @Test
   void shouldReturnNotFoundErrorResponseWhenNoFoundLines() throws Exception {
     //when
     mvc.perform(get("/v1/sublines/versions/123")
@@ -298,36 +120,6 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("slnid")))
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
-  }
-
-  @Test
-  void shouldReturnOptimisticLockingOnBusinessObjectChanges() throws Exception {
-    //given
-    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
-    lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineTestData.sublineVersionModelBuilder()
-            .mainlineSlnid(lineVersionModel.getSlnid())
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 12, 31))
-            .build();
-    sublineVersionModel = sublineController.createSublineVersion(sublineVersionModel);
-
-    // When first update it is ok
-    sublineVersionModel.setValidFrom(LocalDate.of(2010, 1, 1));
-    sublineVersionModel.setValidTo(LocalDate.of(2010, 12, 31));
-    mvc.perform(post("/v1/sublines/versions/" + sublineVersionModel.getId())
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(sublineVersionModel)))
-        .andExpect(status().isOk());
-
-    // Then on a second update it has to return error for optimistic lock
-    sublineVersionModel.setValidFrom(LocalDate.of(2000, 1, 1));
-    sublineVersionModel.setValidTo(LocalDate.of(2011, 12, 31));
-    mvc.perform(post("/v1/sublines/versions/" + sublineVersionModel.getId())
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(sublineVersionModel)))
-        .andExpect(status().isPreconditionFailed());
   }
 
   @Test
