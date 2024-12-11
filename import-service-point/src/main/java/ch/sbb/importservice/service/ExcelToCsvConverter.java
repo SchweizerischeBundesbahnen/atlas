@@ -16,6 +16,7 @@ import java.util.function.DoublePredicate;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -70,7 +71,7 @@ public class ExcelToCsvConverter {
     return csv.toString();
   }
 
-  private static String getCellValue(Cell cell) {
+  static String getCellValue(Cell cell) {
     switch (cell.getCellType()) {
       case NUMERIC -> {
         if (IS_DATE_VALUE.test(cell)) {
@@ -84,7 +85,7 @@ public class ExcelToCsvConverter {
         return String.valueOf(numericCellValue);
       }
       case STRING -> {
-        return cell.getStringCellValue();
+        return StringUtils.trimToNull(cell.getStringCellValue());
       }
       case BLANK -> {
         return "";
