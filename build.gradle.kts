@@ -11,8 +11,9 @@ buildscript {
     if (executionSystem == "tekton") {
         project.properties.plus(Pair("org.gradle.parallel", "true"))
         println("Execute gradle build WITH PARALLEL mode!")
+    }else{
+        println("Execute gradle build WITHOUT PARALLEL mode!")
     }
-    println("Execute gradle build WITHOUT PARALLEL mode!")
 }
 
 subprojects {
