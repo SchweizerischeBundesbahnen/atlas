@@ -6,16 +6,6 @@ plugins {
     id("org.sonarqube") version "6.0.1.5171"
 }
 
-buildscript {
-    val executionSystem = System.getenv("UE_EXECUTION_SYSTEM")
-    if (executionSystem == "tekton") {
-        project.properties.plus(Pair("org.gradle.parallel", "true"))
-        println("Execute gradle build WITH PARALLEL mode!")
-    }else{
-        println("Execute gradle build WITHOUT PARALLEL mode!")
-    }
-}
-
 subprojects {
     if (project.name != "frontend") {
         apply(plugin = "org.sonarqube")
