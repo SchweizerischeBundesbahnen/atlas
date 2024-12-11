@@ -81,4 +81,20 @@ class DateRangeTest {
 
     assertThat(dateRange.containsToday()).isTrue();
   }
+
+  @Test
+  void shouldReturnTrueWhenDateRangeIsContainedInGivenDateRange() {
+    DateRange givenDateRange = DateRange.builder().from(LocalDate.of(2020, 1, 1)).to(LocalDate.of(2025, 12, 31)).build();
+    DateRange dateRange = DateRange.builder().from(LocalDate.of(2021, 1, 1)).to(LocalDate.of(2022, 12, 30)).build();
+
+    assertThat(dateRange.isDateRangeContainedIn(givenDateRange)).isTrue();
+  }
+
+  @Test
+  void shouldReturnFalseWhenDateRangeIsContainedInGivenDateRange() {
+    DateRange givenDateRange = DateRange.builder().from(LocalDate.of(2020, 1, 1)).to(LocalDate.of(2020, 12, 31)).build();
+    DateRange dateRange = DateRange.builder().from(LocalDate.of(2019, 1, 2)).to(LocalDate.of(2025, 12, 30)).build();
+
+    assertThat(dateRange.isDateRangeContainedIn(givenDateRange)).isFalse();
+  }
 }
