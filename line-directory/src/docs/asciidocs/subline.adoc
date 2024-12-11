@@ -5,40 +5,28 @@ image::logo-atlas.svg[50,50,align=left,role=left]
 
 link:rest-api.html[*< Back to main*]
 
-== Create Subline - Successfully
-
-include::{snippets}/subline-controller-api-test/should-create-subline/atlas-doc.adoc[]
-
-== Create Subline with conflict error
-
-include::{snippets}/subline-controller-api-test/should-return-conflict-error-response/atlas-doc.adoc[]
-
 == Get Subline with not found error
 
 include::{snippets}/subline-controller-api-test/should-return-not-found-error-response-when-no-found-lines/atlas-doc.adoc[]
-
-== Update Subline with optimistic locking error
-
-include::{snippets}/subline-controller-api-test/should-return-optimistic-locking-error-response/atlas-doc.adoc[]
-
-== Update Subline with no changes after versioning error
-
-include::{snippets}/subline-controller-api-test/should-return-validation-no-changes-error-response/atlas-doc.adoc[]
-
-== Update Subline with conflict error
-
-include::{snippets}/subline-controller-api-test/should-return-sub-line-assign-to-line-conflict-error-response/atlas-doc.adoc[]
-
-== Create Subline with line range error
-
-include::{snippets}/subline-controller-api-test/should-return-subline-outside-of-line-range/atlas-doc.adoc[]
 
 == Get Subline Coverage
 
 include::{snippets}/subline-controller-api-test/should-get-subline-coverage/atlas-doc.adoc[]
 
-== Get Subline Version V2
+== Get Subline Version Get Subline V2
 
 include::{snippets}/subline-controller-api-v2-test/should-get-subline-version/atlas-doc.adoc[]
+
+== Get Subline Version Get Subline V2 Not Found
+
+include::{snippets}/subline-controller-api-v2-test/should-return-not-found/atlas-doc.adoc[]
+
+== Create Subline Version V2
+
+include::{snippets}/subline-controller-api-v2-test/should-create-subline-v2/atlas-doc.adoc[]
+
+== Update Subline Version V2
+
+include::{snippets}/subline-controller-api-v2-test/should-update-subline/atlas-doc.adoc[]
 
 link:rest-api.html[*< Back to main*]

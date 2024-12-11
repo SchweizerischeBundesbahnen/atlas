@@ -9,10 +9,6 @@ link:rest-api.html[*< Back to main*]
 
 include::{snippets}/line-controller-api-test/should-get-line-overview/atlas-doc.adoc[]
 
-== Create Line - Successfully
-
-include::{snippets}/line-controller-api-test/should-create-line-version/atlas-doc.adoc[]
-
 == Covered Line - Successfully
 
 include::{snippets}/line-controller-api-test/should-get-covered-lines/atlas-doc.adoc[]
@@ -21,25 +17,9 @@ include::{snippets}/line-controller-api-test/should-get-covered-lines/atlas-doc.
 
 include::{snippets}/line-controller-api-test/should-get-covered-line-versions/atlas-doc.adoc[]
 
-== Update Line - Successfully
-
-include::{snippets}/line-controller-api-test/should-update-line-version/atlas-doc.adoc[]
-
 == Skip Workflow on LineVersion - Successfully
 
 include::{snippets}/line-controller-api-test/should-skip-workflow-on-line-version/atlas-doc.adoc[]
-
-== Update Line with conflict error
-
-include::{snippets}/line-controller-api-test/should-return-conflict-error-response/atlas-doc.adoc[]
-
-== Update Line with not found error
-
-include::{snippets}/line-controller-api-test/should-return-not-found-error-response/atlas-doc.adoc[]
-
-== Update Line with no changes after versioning error
-
-include::{snippets}/line-controller-api-test/should-return-validation-no-changes-error-response/atlas-doc.adoc[]
 
 == Delete Line with related subline
 
@@ -53,8 +33,20 @@ include::{snippets}/line-controller-api-test/should-return-not-found-error-respo
 
 include::{snippets}/line-controller-api-test/should-get-subline-coverage/atlas-doc.adoc[]
 
-== Get LineVersion V2
+== Get LineVersion Get Line V2
 
 include::{snippets}/line-controller-api-v2-test/should-get-line-version/atlas-doc.adoc[]
+
+== Get LineVersion V2 Get Line Not Found
+
+include::{snippets}/line-controller-api-v2-test/should-get-line-versions-not-found/atlas-doc.adoc[]
+
+== Create LineVersion V2
+
+include::{snippets}/line-controller-api-v2-test/should-create-line-version/atlas-doc.adoc[]
+
+== Update LineVersion V2
+
+include::{snippets}/line-controller-api-v2-test/should-update-line-version/atlas-doc.adoc[]
 
 link:rest-api.html[*< Back to main*]
