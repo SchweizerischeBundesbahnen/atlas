@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class SublineService {
 
   private final SublineVersionRepository sublineVersionRepository;
@@ -29,12 +28,14 @@ public class SublineService {
   private final SublineValidationService sublineValidationService;
   private final CoverageService coverageService;
 
+  @Transactional
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).LIDI)")
   public SublineVersion create(SublineVersion businessObject) {
     return save(businessObject);
   }
 
+  @Transactional
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka"
       + ".model.user.admin.ApplicationType).LIDI)")
   public void update(SublineVersion currentVersion, SublineVersion editedVersion, List<SublineVersion> currentVersions) {
@@ -49,7 +50,7 @@ public class SublineService {
     return sublineVersionRepository.findById(id);
   }
 
-  public SublineVersion save(SublineVersion sublineVersion) {
+  SublineVersion save(SublineVersion sublineVersion) {
     sublineVersion.setStatus(Status.VALIDATED);
     sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion);
     SublineVersion savedVersion = sublineVersionRepository.saveAndFlush(sublineVersion);
@@ -57,12 +58,14 @@ public class SublineService {
     return savedVersion;
   }
 
+  @Transactional
   public List<SublineVersion> revokeSubline(String slnid) {
     List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
     sublineVersions.forEach(sublineVersion -> sublineVersion.setStatus(Status.REVOKED));
     return sublineVersions;
   }
 
+  @Transactional
   public void deleteById(Long id) {
     SublineVersion sublineVersion = sublineVersionRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
     coverageService.deleteCoverageSubline(sublineVersion.getSlnid());
@@ -78,7 +81,7 @@ public class SublineService {
     sublineVersionRepository.deleteAll(sublineVersions);
   }
 
-  public void updateVersion(SublineVersion currentVersion, SublineVersion editedVersion) {
+  void updateVersion(SublineVersion currentVersion, SublineVersion editedVersion) {
     sublineVersionRepository.incrementVersion(currentVersion.getSlnid());
     if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(SublineVersion.class.getSimpleName(), "version");
