@@ -416,7 +416,8 @@
       "LINES": "Linee",
       "CONFLICT": {
         "SWISS_NUMBER": "Il numero di linea CH (CHLNR) {{swissLineNumber}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
-        "DELETE": "La linea {{slnid}} non può essere eliminata perché è ancora referenziata alla linea parziale {{SublineVersion.slnid}}"
+        "DELETE": "La linea {{slnid}} non può essere eliminata perché è ancora referenziata alla linea parziale {{SublineVersion.slnid}}",
+        "SUBLINE_VALIDITY": "La data specificata non è valida e non rientra nella validità della riga di livello superiore. La linea madre è valida da: {{validFrom}} a: {{validTo}}"
       },
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "La validità della linea {{validFrom}}-{{validTo}} non rientra nel campo di validità della linea parziale {{sublinie.swissSublineNumber}}. Quest’ultimo è {{sublinie.validFrom}}-{{sublinie.validTo}}."
