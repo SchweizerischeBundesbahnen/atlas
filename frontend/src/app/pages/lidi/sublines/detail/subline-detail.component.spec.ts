@@ -53,7 +53,6 @@ const sublineVersion: SublineVersionV2 = {
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
   swissSublineNumber: 'L1:2',
-  sublineType: SublineType.Technical,
   mainlineSlnid: 'ch:1:slnid:1000',
 };
 
