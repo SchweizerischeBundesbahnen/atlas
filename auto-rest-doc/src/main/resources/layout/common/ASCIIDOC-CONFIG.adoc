@@ -1,0 +1,16 @@
+:doctype: book
+:compat-mode:
+:page-layout!:
+:toc: left
+:toclevels: 1
+:toc-title: Contents
+:stylesheet: ../../../../auto-rest-doc/src/main/resources/layout/style/asciidoctor.css
+:sectanchors:
+:sectlinks:
+:linkattrs:
+:icons: font
+:table-caption!:
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+:hide-uri-scheme:
+:revnumber: {version}
