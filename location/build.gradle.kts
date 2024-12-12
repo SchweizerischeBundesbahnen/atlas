@@ -5,6 +5,9 @@ plugins {
     id("buildlogic.java-restdoc")
 }
 
+group = "ch.sbb.atlas"
+version = "2.372.0"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
