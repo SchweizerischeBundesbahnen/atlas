@@ -22,7 +22,7 @@ auth:
 info:
   app:
     name: business-organisation-directory
-    version: @version@
+    version: 1.0.0
 external:
   bav:
     url: https://www.output.tu-verzeichnisse.bav.admin.ch
