@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.versioning.convert.ReflectionHelper;
@@ -30,6 +31,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class LineService {
+
+  public enum AdjustmentDateStatus {
+    VALID_FROM_CHANGED,
+    VALID_TO_CHANGED,
+    BOTH_CHANGED,
+    NO_CHANGE
+  }
 
   private final LineVersionRepository lineVersionRepository;
   private final SublineVersionRepository sublineVersionRepository;
@@ -149,6 +157,13 @@ public class LineService {
     lineVersionRepository.incrementVersion(currentVersion.getSlnid());
     editedVersion.setSlnid(currentVersion.getSlnid());
 
+    //TODO has changes on validity? if yes check validity of sublines
+    AdjustmentDateStatus dateStatus = identifyAdjustedDate(currentVersion, editedVersion);
+
+    if(dateStatus != AdjustmentDateStatus.NO_CHANGE) {
+      checkSublineValidity(editedVersion.getSlnid(), dateStatus);
+    }
+
     List<LineVersion> currentVersions = findLineVersions(currentVersion.getSlnid());
     lineUpdateValidationService.validateLineForUpdate(currentVersion, editedVersion, currentVersions);
 
@@ -175,4 +190,84 @@ public class LineService {
         this::deleteById);
   }
 
+  private LineVersion copyLineVersion(LineVersion lineVersion) {
+    return LineVersion.builder()
+        .id(lineVersion.getId())
+        .status(lineVersion.getStatus())
+        .lineType(lineVersion.getLineType())
+        .slnid(lineVersion.getSlnid())
+        .paymentType(lineVersion.getPaymentType())
+        .number(lineVersion.getNumber())
+        .alternativeName(lineVersion.getAlternativeName())
+        .combinationName(lineVersion.getCombinationName())
+        .longName(lineVersion.getLongName())
+        .colorFontRgb(lineVersion.getColorFontRgb())
+        .colorBackRgb(lineVersion.getColorBackRgb())
+        .colorFontCmyk(lineVersion.getColorFontCmyk())
+        .colorBackCmyk(lineVersion.getColorBackCmyk())
+        .description(lineVersion.getDescription())
+        .icon(lineVersion.getIcon())
+        .validFrom(lineVersion.getValidFrom())
+        .validTo(lineVersion.getValidTo())
+        .businessOrganisation(lineVersion.getBusinessOrganisation())
+        .comment(lineVersion.getComment())
+        .swissLineNumber(lineVersion.getSwissLineNumber())
+        .version(lineVersion.getVersion())
+        .creator(lineVersion.getCreator())
+        .creationDate(lineVersion.getCreationDate())
+        .editor(lineVersion.getEditor())
+        .editionDate(lineVersion.getEditionDate())
+        .build();
+  }
+
+  private void checkSublineValidity(String mainlineSlnid, AdjustmentDateStatus dateStatus) {
+    List<SublineVersion> sublineVersions = getAllSublinesByMainlineSlnid(mainlineSlnid);
+
+    if (hasMainlineSublines(sublineVersions)) {
+      terminateSubline(sublineVersions);
+    }
+
+
+    //TODO check if sublines exists (one or more)
+    //TODO check if sublines validity can be managed automatically
+    //TODO if not return list with unmanagable sublines
+
+  }
+
+  private void terminateSubline(List<SublineVersion> sublineVersions) {
+    for (SublineVersion sublineVersion : sublineVersions) {
+
+    }
+  }
+
+  private List<SublineVersion> getAllSublinesByMainlineSlnid(String mainlineSlnid) {
+    return sublineVersionRepository.getSublineVersionByMainlineSlnid(mainlineSlnid);
+  }
+
+  private boolean hasMainlineSublines(List<SublineVersion> sublineVersions) {
+    return !sublineVersions.isEmpty();
+  }
+
+  private boolean isSublineValidityAffectedByUpdatedMainline(LineVersion updatedLineVersion, SublineVersion sublineVersion) {
+    DateRange dateRangeSubline = new DateRange(sublineVersion.getValidFrom(), sublineVersion.getValidTo());
+    DateRange dateRangeMainline = new DateRange(updatedLineVersion.getValidFrom(), updatedLineVersion.getValidTo());
+
+    return dateRangeSubline.isDateRangeContainedIn(dateRangeMainline);
+  }
+
+  private AdjustmentDateStatus identifyAdjustedDate(LineVersion current, LineVersion updatedLineVersion) {
+    if (!current.getValidFrom().isEqual(updatedLineVersion.getValidFrom())) {
+      return AdjustmentDateStatus.VALID_FROM_CHANGED;
+    }
+
+    if(current.getValidTo().isEqual(updatedLineVersion.getValidTo())) {
+      return AdjustmentDateStatus.VALID_TO_CHANGED;
+    }
+
+    if (!current.getValidFrom().isEqual(updatedLineVersion.getValidFrom()) && !current.getValidTo().isEqual(updatedLineVersion.getValidTo())) {
+      return AdjustmentDateStatus.BOTH_CHANGED;
+    }
+
+    return AdjustmentDateStatus.NO_CHANGE;
+  }
 }
