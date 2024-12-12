@@ -85,7 +85,7 @@ public class ExcelToCsvConverter {
         return String.valueOf(numericCellValue);
       }
       case STRING -> {
-        return StringUtils.trimToNull(cell.getStringCellValue());
+        return StringUtils.trim(cell.getStringCellValue());
       }
       case BLANK -> {
         return "";
