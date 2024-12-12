@@ -5,10 +5,7 @@
     "buildWorkspaceSize": "25Gi",
     "buildCacheSize": "10Gi",
     "taggingWorkspaceSize": "2Gi",
-    "pipelineTimeout": "1h30m0s",
-    "env": {
-      "EXECUTION_SYSTEM" : "tekton"
-    }
+    "pipelineTimeout": "1h30m0s"
   },
   "builder": {
     "java": "21",
@@ -108,6 +105,7 @@
         "sonarScan": {
           "enabled": true
         },
+        "additionalBuildParams": "--parallel",
         "failOnQualityGateFailure": true
       },
       "tasks": [
@@ -235,6 +233,7 @@
         },
         "deployArtifacts": true,
         "buildDockerImage": true,
+        "additionalBuildParams": "--parallel",
         "sonarScan": {
           "releaseBranchName": "master",
           "enabled": true
