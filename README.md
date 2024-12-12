@@ -106,6 +106,10 @@ To apply the CI/CD we use the following additional repository:
 * [atlas-argocd](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse): contains the Charts used to deploy atlas Apps,
   Jobs, Atlas ArgoCD, etc... See the [documentation](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse/README.md)
 
+### Gradle build automation
+
+atlas is built with **Gradle**, for more information see [atlas Gradle](documentation/gradle.md).
+
 ### Continuous Deployment Pipeline
 
 The atlas **Continuous Deployment** process is divided in multiple pipeline:
