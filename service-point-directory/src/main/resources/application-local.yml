@@ -103,8 +103,8 @@ auth:
 info:
   app:
     name: service-point-directory
-    version: @version@
-    buildtime: @timestamp@
+    version: 1.0.0
+    buildtime: ${time}
 
 logging:
   pattern:

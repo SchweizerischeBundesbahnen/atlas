@@ -3,7 +3,7 @@ MAINTAINER techsupport-atlas@sbb.ch
 
 RUN mkdir /deploy
 
-COPY ./prm-directory/target/prm-directory-*.jar deploy/app.jar
+COPY ./prm-directory/build/libs/prm-directory-*.jar deploy/app.jar
 
 RUN chmod 777 /deploy/app.jar
 

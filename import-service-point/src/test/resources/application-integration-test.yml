@@ -66,7 +66,7 @@ logging:
 info:
   app:
     name: import-service-point
-    version: '@version@'
+    version: 1.0.0
 
 kafka:
   enabled: false

@@ -3,7 +3,7 @@ MAINTAINER techsupport-atlas@sbb.ch
 
 RUN mkdir /deploy
 
-COPY ./service-point-directory/target/service-point-directory-*.jar deploy/app.jar
+COPY ./service-point-directory/build/libs/service-point-directory-*.jar deploy/app.jar
 
 RUN chmod 777 /deploy/app.jar
 

@@ -31,8 +31,8 @@ management:
 info:
   app:
     name: gateway
-    version: @version@
-    buildtime: @timestamp@
+    version: 1.0.0
+    buildtime: ${time}
 logging:
   level:
     root: INFO
