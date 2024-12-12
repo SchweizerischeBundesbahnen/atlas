@@ -3,6 +3,9 @@ plugins {
     id("buildlogic.java-conventions")
 }
 
+group = "ch.sbb.atlas"
+version = "2.372.0"
+
 configurations {
     create("test")
 }
