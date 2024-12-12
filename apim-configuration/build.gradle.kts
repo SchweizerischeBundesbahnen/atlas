@@ -1,6 +1,10 @@
 plugins {
     id("buildlogic.java-conventions")
 }
+
+group = "ch.sbb.atlas"
+version = "2.372.0"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springdoc:springdoc-openapi-starter-common:${property("openapiStarterCommonVersion")}")

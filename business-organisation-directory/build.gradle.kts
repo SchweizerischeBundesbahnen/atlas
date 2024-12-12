@@ -4,6 +4,9 @@ plugins {
     id("com.github.bjornvester.wsdl2java") version "2.0.2"
 }
 
+group = "ch.sbb.atlas"
+version = "2.372.0"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
