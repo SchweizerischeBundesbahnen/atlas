@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.371.0"
+version = "2.372.0"
 
 subprojects {
     if (project.name != "frontend") {
