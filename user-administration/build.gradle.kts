@@ -5,6 +5,9 @@ plugins {
     id("buildlogic.java-restdoc")
 }
 
+group = "ch.sbb.atlas"
+version = "2.372.0"
+
 description = "Atlas User Administration"
 extra["microsoftGraphSdkVersion"] = "6.19.0"
 extra["azureIdentityVersion"] = "1.14.0"
