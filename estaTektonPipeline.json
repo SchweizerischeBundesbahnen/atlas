@@ -134,6 +134,22 @@
       ],
       "tasks": [
         {
+          "name": "generate-apim-config",
+          "taskRef": "esta-gradle-build-extra-large",
+          "params": {
+            "TASKS": ":apim-configuration:generateSpec",
+            "ARTIFACTORY_SECRET": "esta-tekton-basicauth-docker",
+            "BUILDER_JAVA_VERSION": "21",
+            "BUILDER_KOTLIN_VERSION": "1.7",
+            "BUILDER_NODE_VERSION": "20",
+            "JDK_BUILDERIMAGE": "esta.docker.bin.sbb.ch/esta/esta-tekton-pipeline-java-builderimage:2.9.1",
+            "SONAR_HOST_URL": "https://codequality.sbb.ch",
+            "SONAR_LOGIN_SECRET": "esta-tekton-sonar-api-key"
+          },
+          "runAfter": "gradle-build",
+          "runBefore": "gradle-sonarscan"
+        },
+        {
           "name": "atlas-start-deploy-dev-pipeline",
           "taskRef": "atlas-start-pipeline",
           "params": {
@@ -143,7 +159,7 @@
             "PIPELINE_CONFIG_NAME": "continuous",
             "PIPELINE_PARAMETERS_JSON": "{\"VERSION_TO_DEPLOY\":\"${VERSION_TAG}\"}"
           },
-          "runAfter": "maven-deploy"
+          "runAfter": "gradle-deploy"
         },
         {
           "name": "atlas-start-deploy-test-pipeline",
@@ -155,7 +171,7 @@
             "PIPELINE_CONFIG_NAME": "continuous",
             "PIPELINE_PARAMETERS_JSON": "{\"VERSION_TO_DEPLOY\":\"${VERSION_TAG}\"}"
           },
-          "runAfter": "maven-deploy"
+          "runAfter": "gradle-deploy"
         }
       ],
       "triggerType": [
@@ -197,6 +213,22 @@
       ],
       "tasks": [
         {
+          "name": "generate-apim-config",
+          "taskRef": "esta-gradle-build-extra-large",
+          "params": {
+            "TASKS": ":apim-configuration:generateSpec",
+            "ARTIFACTORY_SECRET": "esta-tekton-basicauth-docker",
+            "BUILDER_JAVA_VERSION": "21",
+            "BUILDER_KOTLIN_VERSION": "1.7",
+            "BUILDER_NODE_VERSION": "20",
+            "JDK_BUILDERIMAGE": "esta.docker.bin.sbb.ch/esta/esta-tekton-pipeline-java-builderimage:2.9.1",
+            "SONAR_HOST_URL": "https://codequality.sbb.ch",
+            "SONAR_LOGIN_SECRET": "esta-tekton-sonar-api-key"
+          },
+          "runAfter": "gradle-build",
+          "runBefore": "gradle-sonarscan"
+        },
+        {
           "name": "atlas-start-deploy-dev-pipeline",
           "taskRef": "atlas-start-pipeline",
           "params": {
@@ -206,7 +238,7 @@
             "PIPELINE_CONFIG_NAME": "continuous",
             "PIPELINE_PARAMETERS_JSON": "{\"VERSION_TO_DEPLOY\":\"${VERSION_TAG}\"}"
           },
-          "runAfter": "maven-deploy"
+          "runAfter": "gradle-deploy"
         },
         {
           "name": "atlas-start-deploy-test-pipeline",
@@ -218,7 +250,7 @@
             "PIPELINE_CONFIG_NAME": "continuous",
             "PIPELINE_PARAMETERS_JSON": "{\"VERSION_TO_DEPLOY\":\"${VERSION_TAG}\"}"
           },
-          "runAfter": "maven-deploy"
+          "runAfter": "gradle-deploy"
         }
       ],
       "tagging": {
