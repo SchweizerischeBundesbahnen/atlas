@@ -52,9 +52,11 @@ For more information see [Sharing build logic with convention plugin](https://do
 With gradle is possible to build a project
 with [parallel execution](https://docs.gradle.org/current/userguide/performance.html#parallel_execution) mode.
 
-_atlas_ is built by gradle in **parallel execution mode**.   
+_atlas_ is built by gradle in **parallel execution mode** with the additional parameter ```--parallel```.   
 
-The **parallel execution mode** is a heavy process that can overload your machine. In this case to run the build **NOT IN** 
-**parallel execution mode** locally add the property```org.gradle.parallel=false``` to  [gradle.properties](../gradle.properties).
+The **parallel execution mode** is a heavy process that can overload your machine and is not enabled locally.
+If your machine is fit just run gradle task with ```--parallel```, e.g:
 
-:warning: **Please make sure to not commit this change!!!** :warning:
+```shell
+./gradlew build --parallel
+```
