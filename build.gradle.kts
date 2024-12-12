@@ -6,6 +6,9 @@ plugins {
     id("org.sonarqube") version "6.0.1.5171"
 }
 
+group = "ch.sbb.atlas"
+version = "2.361.0"
+
 subprojects {
     if (project.name != "frontend") {
         apply(plugin = "org.sonarqube")
