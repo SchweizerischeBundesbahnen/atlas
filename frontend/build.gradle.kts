@@ -1,9 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
 task<Exec>("execNpmCi") {
-  onlyIf("Exec npm ci only on Tekton"){
-    System.getenv("UE_EXECUTION_SYSTEM") == "tekton"
-  }
   doFirst {
     println("[Angular] Run atlas npm ci")
   }
