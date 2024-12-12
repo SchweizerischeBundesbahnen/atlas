@@ -7,6 +7,9 @@ plugins {
     id("com.google.protobuf") version "0.9.4"
 }
 
+group = "ch.sbb.atlas"
+version = "2.372.0"
+
 description = "ServicePointDirectory"
 extra["shedlockVersion"] = "5.16.0"
 

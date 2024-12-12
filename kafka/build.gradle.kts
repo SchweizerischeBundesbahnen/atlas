@@ -2,6 +2,9 @@ plugins {
     id("buildlogic.java-conventions")
 }
 
+group = "ch.sbb.atlas"
+version = "2.372.0"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.kafka:spring-kafka")

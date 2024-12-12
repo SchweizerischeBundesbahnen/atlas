@@ -5,6 +5,9 @@ plugins {
     id("buildlogic.java-restdoc")
 }
 
+group = "ch.sbb.atlas"
+version = "2.372.0"
+
 description = "Atlas Export Service Point"
 
 dependencies {
