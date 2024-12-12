@@ -121,9 +121,17 @@ frontend/.npmrc
 .idea/sonarlint/
 .idea/sqldialects.xml
 .idea/kubernetes-settings.xml
+.idea/gradle.xml
+.idea/kotlinc.xml
 
 /line-directory/export/
 /.export/
 /frontend/cypress/test-results/
 /frontend/cypress-mochawesome-reporter.log
 *.bkp
+/.gradle/
+/build-logic/.gradle/
+/build-logic/.kotlin/
+/atlas-gradle-ci-plugin/.gradle/
+/atlas-gradle-ci-plugin/.kotlin/
+/.idea/kotlinScripting.xml

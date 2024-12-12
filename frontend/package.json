@@ -12,6 +12,7 @@
     "prepare": "cd .. && husky install frontend/.husky",
     "format": "prettier --write src/**/*.ts",
     "build:ngssc": "ng run atlas-frontend:ngsscbuild:production",
+    "build-prod": "ng run atlas-frontend:ngsscbuild:production",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
@@ -24,7 +25,7 @@
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas.git"
   },
-  "version": "2.350.0",
+  "version": "2.361.0",
   "files": [
     "dist/*"
   ],
