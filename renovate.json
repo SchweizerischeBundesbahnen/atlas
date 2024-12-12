@@ -7,14 +7,15 @@
   "dependencyDashboard": false,
   "enabledManagers": [
     "npm",
-    "maven",
-    "dockerfile"
+    "dockerfile",
+    "gradle",
+    "gradle-wrapper"
   ],
   "packageRules": [
     {
-      "groupName": "MAVEN Dependencies",
+      "groupName": "GRADLE Dependencies",
       "matchManagers": [
-        "maven"
+        "gradle"
       ],
       "matchUpdateTypes": [
         "patch",
