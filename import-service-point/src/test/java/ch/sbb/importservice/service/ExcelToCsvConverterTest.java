@@ -9,7 +9,6 @@ import ch.sbb.importservice.ImportFiles;
 import java.io.File;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,10 +40,20 @@ class ExcelToCsvConverterTest {
   void shouldIgnoreTabsAndSpacesInCellValues() {
     Cell cell = mock(Cell.class);
     when(cell.getCellType()).thenReturn(CellType.STRING);
-    when(cell.getStringCellValue()).thenReturn("\tch:1:sloid:77234:0:01 ");
 
+    when(cell.getStringCellValue()).thenReturn("\tch:1:sloid:77234:0:01 ");
     String cellValue = ExcelToCsvConverter.getCellValue(cell);
     assertThat(cellValue).isEqualTo("ch:1:sloid:77234:0:01");
+  }
+
+  @Test
+  void shouldTrimToEmptyStringToHaveValidCSV() {
+    Cell cell = mock(Cell.class);
+    when(cell.getCellType()).thenReturn(CellType.STRING);
+
+    when(cell.getStringCellValue()).thenReturn(" ");
+    String cellValue = ExcelToCsvConverter.getCellValue(cell);
+    assertThat(cellValue).isNotNull().isEmpty();
   }
 
 }
