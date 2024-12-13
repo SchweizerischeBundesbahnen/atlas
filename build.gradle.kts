@@ -15,7 +15,7 @@ subprojects {
         apply(plugin = "org.springframework.boot")
         apply(plugin = "io.spring.dependency-management")
 
-        extra["springCloudVersion"] = "2023.0.4"
+        extra["springCloudVersion"] = "2024.0.0"
 
         dependencyManagement {
             imports {
