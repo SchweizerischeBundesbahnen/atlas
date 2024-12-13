@@ -7,6 +7,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Objects;
+import org.hibernate.query.criteria.JpaExpression;
 import org.springframework.data.jpa.domain.Specification;
 
 public class SearchCriteriaSpecification<T> implements Specification<T> {
@@ -27,7 +28,8 @@ public class SearchCriteriaSpecification<T> implements Specification<T> {
       CriteriaBuilder criteriaBuilder) {
     return criteriaBuilder.and(searchCriteria.stream().map(searchString -> criteriaBuilder.or(
         searchPaths.stream()
-            .map(path -> StringPredicates.likeIgnoreCase(criteriaBuilder, NestedPath.get(root, path).as(String.class),
+            .map(path -> StringPredicates.likeIgnoreCase(criteriaBuilder,
+                ((JpaExpression) NestedPath.get(root, path)).cast(String.class),
                 searchString))
             .toArray(Predicate[]::new))
     ).toArray(Predicate[]::new));
