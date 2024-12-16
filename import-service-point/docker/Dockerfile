@@ -1,4 +1,4 @@
-FROM docker.bin.sbb.ch/cloud/sbb-base-rhel-java:21-LATEST
+FROM esta.docker.bin.sbb.ch/esta/ubi9/java-21:latest
 
 LABEL mantainer="techsupport-atlas@sbb.ch"
 
