@@ -88,29 +88,9 @@ describe('TTH: Create a statement with several email-addresses', {testIsolation:
   });
 
   it('Step-6: Create dependent Business Organisation', () => {
-    const generateRandomString = (length) => {
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-      return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
-    };
-
-    CommonUtils.post("/business-organisation-directory/v1/business-organisations/versions", {
-      descriptionDe: generateRandomString(10),
-      descriptionFr: generateRandomString(10),
-      descriptionIt: generateRandomString(10),
-      descriptionEn: generateRandomString(10),
-      abbreviationDe: generateRandomString(3),
-      abbreviationFr: generateRandomString(3),
-      abbreviationIt: generateRandomString(3),
-      abbreviationEn: generateRandomString(3),
-      organisationNumber: Cypress._.random(10000, 99999).toString(),
-      validFrom: today.toISOString().split('T')[0],
-      validTo: tomorrow.toISOString().split('T')[0]
-    }).then((response) => {
-      expect(response).property('status').to.equal(201);
-
-      expect(response).property('body').property('sboid').to.exist.and.be.a('string');
-      sboid = response.body.sboid;
-    })
+    CommonUtils.createDependentBusinessOrganisation(today, tomorrow).then((sboidOfBO:string) => {
+      sboid = sboidOfBO
+    });
   });
 
   it('Step-7: Create dependent Time Table Field Number', () => {

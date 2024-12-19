@@ -376,4 +376,32 @@ export default class CommonUtils {
       }
     });
   }
+
+  private static generateRandomString (length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    return Array.from({length}, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
+  };
+  static createDependentBusinessOrganisation(validFrom: Date, validTo: Date) {
+    return new Cypress.Promise((resolve) => {
+      CommonUtils.post("/business-organisation-directory/v1/business-organisations/versions", {
+        descriptionDe: CommonUtils.generateRandomString(10),
+        descriptionFr: CommonUtils.generateRandomString(10),
+        descriptionIt: CommonUtils.generateRandomString(10),
+        descriptionEn: CommonUtils.generateRandomString(10),
+        abbreviationDe: CommonUtils.generateRandomString(3),
+        abbreviationFr: CommonUtils.generateRandomString(3),
+        abbreviationIt: CommonUtils.generateRandomString(3),
+        abbreviationEn: CommonUtils.generateRandomString(3),
+        organisationNumber: Cypress._.random(10000, 99999).toString(),
+        validFrom: validFrom.toISOString().split('T')[0],
+        validTo: validTo.toISOString().split('T')[0]
+      }).then((response) => {
+        expect(response).property('status').to.equal(201);
+        expect(response).property('body').property('sboid').to.exist.and.be.a('string');
+        const sboid = response.body.sboid;
+        resolve(sboid);
+      });
+    });
+  }
+
 }
