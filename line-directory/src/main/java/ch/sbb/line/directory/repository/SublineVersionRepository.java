@@ -9,8 +9,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional(readOnly = true)
 public interface SublineVersionRepository extends JpaRepository<SublineVersion, Long> {
 
   default List<SublineVersion> findSwissLineNumberOverlaps(SublineVersion sublineVersion) {
@@ -29,7 +31,8 @@ public interface SublineVersionRepository extends JpaRepository<SublineVersion, 
 
   List<SublineVersion> getSublineVersionByMainlineSlnid(String mainlineSlnid);
 
-  @Modifying(clearAutomatically = true)
+  @Modifying(clearAutomatically = true, flushAutomatically = true)
+  @Transactional
   @Query("update subline_version v set v.version = (v.version + 1) where v.slnid = :slnid")
   void incrementVersion(@Param("slnid") String slnid);
 
@@ -41,6 +44,5 @@ public interface SublineVersionRepository extends JpaRepository<SublineVersion, 
       + " WHERE  :actualDate >= v.validFrom AND :actualDate <= v.validTo"
       + " ORDER BY v.slnid, v.validFrom ASC")
   List<SublineVersion> getActualSublineVersions(@Param("actualDate") LocalDate actualDate);
-
 
 }
