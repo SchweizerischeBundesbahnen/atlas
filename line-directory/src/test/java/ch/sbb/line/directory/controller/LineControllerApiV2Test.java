@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -105,7 +106,7 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
             .build();
 
     //when
-    mvc.perform(post("/v2/lines/versions/" + lineVersionSaved.getId().toString())
+    mvc.perform(put("/v2/lines/versions/" + lineVersionSaved.getId().toString())
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateLineVersionModelV2))
         ).andExpect(status().isOk())

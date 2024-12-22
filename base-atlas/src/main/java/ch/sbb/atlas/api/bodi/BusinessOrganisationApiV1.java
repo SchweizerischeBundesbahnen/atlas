@@ -80,7 +80,6 @@ public interface BusinessOrganisationApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
-
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).BODI)")
   List<BusinessOrganisationVersionModel> updateBusinessOrganisationVersion(
