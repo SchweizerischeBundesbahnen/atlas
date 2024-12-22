@@ -130,5 +130,4 @@ class SublineControllerApiV2Test extends BaseControllerApiTest {
         .andExpect(status().isPreconditionFailed()).andReturn();
 
   }
- // todo: update frontend
 }
