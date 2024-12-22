@@ -9,15 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ServicePointCreateCsvModel } from './servicePointCreateCsvModel';
+import { BulkImportLogEntry } from './bulkImportLogEntry';
 
 
-/**
- * WorkflowProcessingStatus
- */
-export type WorkflowProcessingStatus = 'EVALUATED' | 'IN_PROGRESS';
-
-export const WorkflowProcessingStatus = {
-    Evaluated: 'EVALUATED' as WorkflowProcessingStatus,
-    InProgress: 'IN_PROGRESS' as WorkflowProcessingStatus
-};
+export interface BulkImportUpdateContainerServicePointCreateCsvModel { 
+    lineNumber?: number;
+    object?: ServicePointCreateCsvModel;
+    attributesToNull?: Array<string>;
+    inNameOf?: string;
+    bulkImportLogEntry?: BulkImportLogEntry;
+}
 
