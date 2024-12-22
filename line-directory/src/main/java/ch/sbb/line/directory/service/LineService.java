@@ -23,11 +23,9 @@ import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class LineService {
 
   private final LineVersionRepository lineVersionRepository;

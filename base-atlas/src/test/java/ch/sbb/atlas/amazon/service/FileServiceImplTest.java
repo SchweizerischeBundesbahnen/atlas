@@ -23,20 +23,32 @@ class FileServiceImplTest {
   @Test
   void shouldCreateZipFile() throws IOException {
     //given
-    File dir = new File("./export");
+    final File dir = new File("./export");
     if (!dir.exists()) {
-      dir.mkdirs();
+      assertThat(dir.mkdirs()).isTrue();
     }
-    dir.deleteOnExit();
-    Path tempFile = Files.createFile(Paths.get("./export/tmp.csv"));
-    tempFile.toFile().deleteOnExit();
+
+    final Path tmpPath = Paths.get("./export/tmp.csv");
+    File tmp = tmpPath.toFile();
+    if (tmp.exists()) {
+      assertThat(tmp.delete()).isTrue();
+    }
+    final Path tempFile = Files.createFile(tmpPath);
 
     //when
-    File zipFile = fileService.zipFile(tempFile.toFile());
-    zipFile.deleteOnExit();
+    tmp = Paths.get("./export/tmp.csv.zip").toFile();
+    if (tmp.exists()) {
+      assertThat(tmp.delete()).isTrue();
+    }
+    final File zipFile = fileService.zipFile(tempFile.toFile());
 
     //then
     assertThat(zipFile).isNotNull().hasName("tmp.csv.zip");
+
+    // teardown
+    assertThat(zipFile.delete()).isTrue();
+    assertThat(tempFile.toFile().delete()).isTrue();
+    assertThat(dir.delete()).isTrue();
   }
 
   @Test
@@ -44,7 +56,7 @@ class FileServiceImplTest {
     //given
     fileService.setActiveProfile("dev");
     //when
-    String result = fileService.getDir();
+    final String result = fileService.getDir();
     //then
     assertThat(result).isEqualTo("/usr/local/atlas/tmp/");
   }
@@ -54,7 +66,7 @@ class FileServiceImplTest {
     //given
     fileService.setActiveProfile(null);
     //when
-    String result = fileService.getDir();
+    final String result = fileService.getDir();
     //then
     assertThat(result).isEqualTo("." + SEPARATOR + "export" + SEPARATOR);
   }
@@ -64,7 +76,7 @@ class FileServiceImplTest {
     //given
     fileService.setActiveProfile("local");
     //when
-    String result = fileService.getDir();
+    final String result = fileService.getDir();
     //then
     assertThat(result).isEqualTo("." + SEPARATOR + "export" + SEPARATOR);
   }
@@ -72,56 +84,63 @@ class FileServiceImplTest {
   @Test
   void shouldStreamFileToResponse() throws IOException {
     //given
-    File file = new File("testfile");
-    Files.writeString(file.toPath(), "Test Data");
-    file.deleteOnExit();
+    final File testFile = Files.createTempFile("testfile", ".txt").toFile();
+    Files.writeString(testFile.toPath(), "Test Data");
 
     //when
-    StreamingResponseBody response = fileService.toStreamingResponse(file, new FileInputStream(file));
+    final StreamingResponseBody response = fileService.toStreamingResponse(testFile, new FileInputStream(testFile));
 
     //then
     assertThat(response).isNotNull();
 
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     response.writeTo(outputStream);
-    String output = outputStream.toString();
-    assertThat(output).isEqualTo("Test Data");
+    assertThat(outputStream.toString()).isEqualTo("Test Data");
+
+    // teardown
+    if (testFile.exists()) {
+      assertThat(testFile.delete()).isTrue();
+    }
   }
 
   @Test
   void shouldCompressAndDecompressFile() throws IOException {
     //given
-    File file = new File("testfile");
-    Files.writeString(file.toPath(), "Test Data");
-    file.deleteOnExit();
+    final File testFile = Files.createTempFile("testfile", ".txt").toFile();
+    Files.writeString(testFile.toPath(), "Test Data");
 
     //when
     byte[] compressedBytes;
-    try (FileInputStream fileInputStream = new FileInputStream(file)) {
+    try (final FileInputStream fileInputStream = new FileInputStream(testFile)) {
       compressedBytes = fileService.gzipCompress(fileInputStream.readAllBytes());
     }
 
-    File compressed = new File("compressed");
-    compressed.deleteOnExit();
+    final File compressed = Files.createTempFile("compressed", ".txt").toFile();
     Files.write(compressed.toPath(), compressedBytes);
-    byte[] decompressedBytes = fileService.gzipDecompress(compressed);
+    final byte[] decompressedBytes = fileService.gzipDecompress(compressed);
 
     //then
-
     assertThat(new String(decompressedBytes)).isEqualTo("Test Data");
+
+    // teardown
+    if (testFile.exists()){
+      assertThat(testFile.delete()).isTrue();
+    }
+    if (compressed.exists()){
+      assertThat(compressed.delete()).isTrue();
+    }
   }
 
   @Test
   void shouldCompressAndDecompressS3ObjectInputStream() throws IOException {
     //given
-    try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
+    try (final InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
 
       //when
-      byte[] bytes = fileService.gzipDecompress(inputStream);
+      final byte[] bytes = fileService.gzipDecompress(inputStream);
 
       //then
-      String result = new String(bytes, StandardCharsets.UTF_8);
-      assertThat(result).isNotNull();
+      assertThat(new String(bytes, StandardCharsets.UTF_8)).isNotNull();
     }
 
   }
