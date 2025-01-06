@@ -287,6 +287,7 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
   void shouldTerminateTrafficPointSettingLastVersionOnOneDayDuration() throws Exception {
     repository.deleteAll();
     LocalDate localDate = LocalDate.of(2025, 1, 1);
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
     trafficPointElementVersion.setValidFrom(localDate);
     trafficPointElementVersion.setValidTo(LocalDate.of(2030, 12, 31));
     TrafficPointElementVersion trafficPointElementVersion1 = TrafficPointTestData.getTrafficPoint();
@@ -307,6 +308,7 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldThrowExceptionWhenTerminatingTrafficPoint() throws Exception {
     repository.deleteAll();
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
     trafficPointElementVersion.setValidFrom(LocalDate.of(2025, 1, 1));
     trafficPointElementVersion.setValidTo(LocalDate.of(2030, 12, 31));
     TrafficPointElementVersion trafficPointElementVersion1 = TrafficPointTestData.getTrafficPoint();
@@ -334,7 +336,7 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
 
     SortedSet<Detail> errorResponseDetails = errorResponse.getDetails();
     assertThat(errorResponseDetails).hasSize(1);
-    Detail detail = errorResponseDetails.stream().toList().get(0);
+    Detail detail = errorResponseDetails.stream().toList().getFirst();
     assertThat(detail.getMessage()).isEqualTo("Termination not allowed for non latest version.");
     assertThat(detail.getField()).isEqualTo("termination");
   }
