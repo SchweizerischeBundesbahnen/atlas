@@ -1,5 +1,3 @@
-import gradle.kotlin.dsl.accessors._c1806cc907ecfb7efe2798b82e9fccd3.jacocoTestReport
-import gradle.kotlin.dsl.accessors._c1806cc907ecfb7efe2798b82e9fccd3.test
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
 import java.util.*
 import java.text.SimpleDateFormat
