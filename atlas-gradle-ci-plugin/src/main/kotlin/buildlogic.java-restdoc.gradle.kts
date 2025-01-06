@@ -1,3 +1,5 @@
+import gradle.kotlin.dsl.accessors._c1806cc907ecfb7efe2798b82e9fccd3.jacocoTestReport
+import gradle.kotlin.dsl.accessors._c1806cc907ecfb7efe2798b82e9fccd3.test
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
 import java.util.*
 import java.text.SimpleDateFormat
@@ -30,25 +32,24 @@ tasks.named<AsciidoctorTask>("asciidoctor") {
 
     // For .adoc files to be able to use relative includes we need to set the baseDir to the sourceFile
     baseDirFollowsSourceFile()
-}
-
-task<Copy>("copyRestDocs") {
-    dependsOn("asciidoctor")
-    mustRunAfter(tasks.getByName("jacocoTestReport"))
-    mustRunAfter(tasks.getByName("resolveMainClassName"))
-
-    from("${tasks.asciidoctor.get().outputDir}")
-    from("${project.rootProject.projectDir}/auto-rest-doc/src/main/resources/layout/images/logo-atlas.svg")
-    into("${layout.buildDirectory.get()}/resources/main/static")
-}
-
-tasks.getByName("jar") {
-    mustRunAfter("copyRestDocs")
+    doLast {
+        copy {
+            println("Coping RestDoc atlas layout...")
+            from("${tasks.asciidoctor.get().outputDir}")
+            from("${project.rootProject.projectDir}/auto-rest-doc/src/main/resources/layout/images/logo-atlas.svg")
+            into("${layout.buildDirectory.get()}/resources/main/static")
+            println("RestDoc atlas layout copied...")
+        }
+    }
 }
 
 tasks.named<Jar>("jar") {
     enabled = false
 }
+tasks.named("bootJar") {
+    finalizedBy("asciidoctor")
+}
 
-tasks.getByName("bootJar").dependsOn("copyRestDocs")
-tasks.getByName("bootRun").dependsOn("copyRestDocs")
+tasks.named("bootRun") {
+    finalizedBy("asciidoctor")
+}
