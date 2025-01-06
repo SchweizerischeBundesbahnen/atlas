@@ -28,16 +28,10 @@ import org.springframework.data.domain.Pageable;
 class TimetableHearingStatementAlternationServiceTest {
 
   private static final long YEAR = 2023L;
-  private static final TimetableHearingYear TIMETABLE_HEARING_YEAR = TimetableHearingYear.builder()
-      .timetableYear(YEAR)
-      .hearingFrom(LocalDate.of(2022, 1, 1))
-      .hearingTo(LocalDate.of(2022, 2, 1))
-      .build();
-
   private static final TimetableHearingStatementRequestParams STATEMENT_REQUEST_PARAMS =
       TimetableHearingStatementRequestParams.builder()
           .canton(SwissCanton.BERN)
-          .timetableHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+          .timetableHearingYear(YEAR)
           .build();
   private static final Pageable PAGEABLE = Pageable.ofSize(1);
 
@@ -66,9 +60,14 @@ class TimetableHearingStatementAlternationServiceTest {
 
   @BeforeEach
   void setUp() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingYear timetableHearingYear = TimetableHearingYear.builder()
+        .timetableYear(YEAR)
+        .hearingFrom(LocalDate.of(2022, 1, 1))
+        .hearingTo(LocalDate.of(2022, 2, 1))
+        .build();
+    timetableHearingYearService.createTimetableHearing(timetableHearingYear);
     TimetableHearingStatementModelV2 model1 = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statement("Statement 1")
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
