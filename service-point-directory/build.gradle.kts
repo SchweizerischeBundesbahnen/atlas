@@ -3,7 +3,7 @@ import java.util.*
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.java-restdoc")
-    id("org.openapi.generator") version "7.10.0"//do not update until https://github.com/OpenAPITools/openapi-generator/issues/18753 is fixed
+    id("org.openapi.generator") version "7.10.0"
     id("com.google.protobuf") version "0.9.4"
 }
 
