@@ -74,6 +74,13 @@ publishing {
 tasks.withType<Test> {
     failFast = true
     useJUnitPlatform()
+    testLogging{
+        events("passed", "skipped", "failed","standardOut", "standardError")
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        showCauses = true
+        showExceptions = true
+        showStackTraces = true
+    }
 }
 
 tasks.withType<JavaCompile>().configureEach {
