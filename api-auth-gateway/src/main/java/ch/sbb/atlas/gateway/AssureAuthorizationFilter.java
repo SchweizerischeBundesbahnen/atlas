@@ -5,17 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 /**
  * Required dependencies:
  * <dependency>
- *  <groupId>org.springframework.security</groupId>
- *  <artifactId>spring-security-oauth2-client</artifactId>
+ * <groupId>org.springframework.security</groupId>
+ * <artifactId>spring-security-oauth2-client</artifactId>
  * </dependency>
  * <dependency>
- *  <groupId>org.springframework.boot</groupId>
- *  <artifactId>spring-boot-starter-security</artifactId>
+ * <groupId>org.springframework.boot</groupId>
+ * <artifactId>spring-boot-starter-security</artifactId>
  * </dependency>
  */
 @RequiredArgsConstructor
@@ -36,10 +37,9 @@ public class AssureAuthorizationFilter extends AbstractGatewayFilterFactory<Obje
   private GatewayFilter addAccessTokenIfNotPresent() {
     return (exchange, chain) -> tokenService.getClientCredentialAccessToken().map(accessToken -> {
       if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-        exchange.getRequest()
-                .mutate()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
-                .build();
+        ServerHttpRequest newRequest = exchange.getRequest().mutate()
+            .headers(headers -> headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)).build();
+        return exchange.mutate().request(newRequest).build();
       }
       return exchange;
     }).defaultIfEmpty(exchange).flatMap(chain::filter);

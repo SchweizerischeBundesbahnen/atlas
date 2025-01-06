@@ -10,12 +10,11 @@ import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import java.time.LocalDate;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
-@Transactional
  class LineVersionRepositoryTest {
 
   private static final LineVersion LINE_VERSION = LineTestData.lineVersion();
@@ -27,18 +26,23 @@ import org.springframework.transaction.annotation.Transactional;
     this.lineVersionRepository = lineVersionRepository;
   }
 
+  @AfterEach
+  void tearDown() {
+    lineVersionRepository.deleteAll();
+  }
+
   @Test
   void shouldGetSimpleVersion() {
     //given
-    lineVersionRepository.save(LINE_VERSION);
+    LineVersion savedLine = lineVersionRepository.save(LineTestData.lineVersion());
 
     //when
-    LineVersion result = lineVersionRepository.findAll().get(0);
+    LineVersion result = lineVersionRepository.findAll().getFirst();
 
     //then
     assertThat(result).usingRecursiveComparison()
                       .ignoringActualNullFields()
-                      .isEqualTo(LINE_VERSION);
+                      .isEqualTo(savedLine);
     assertThat(result.getSlnid()).startsWith("ch:1:slnid:");
 
     assertThat(result.getCreationDate()).isNotNull();
@@ -51,7 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
   @Test
   void shouldUpdateSimpleLineVersion() {
     //given
-    LineVersion result = lineVersionRepository.save(LINE_VERSION);
+    LineVersion result = lineVersionRepository.save(LineTestData.lineVersion());
 
     //when
     result.setNumber("other number");
@@ -64,7 +68,7 @@ import org.springframework.transaction.annotation.Transactional;
   @Test
   void shouldGetCountVersions() {
     //given
-    lineVersionRepository.save(LINE_VERSION);
+    lineVersionRepository.save(LineTestData.lineVersion());
 
     //when
     long result = lineVersionRepository.count();
@@ -76,7 +80,7 @@ import org.springframework.transaction.annotation.Transactional;
   @Test
   void shouldDeleteVersion() {
     //given
-    LineVersion lineVersion = lineVersionRepository.save(LINE_VERSION);
+    LineVersion lineVersion = lineVersionRepository.save(LineTestData.lineVersion());
     lineVersionRepository.delete(lineVersion);
 
     //when
@@ -163,7 +167,7 @@ import org.springframework.transaction.annotation.Transactional;
   @Test
   void shouldAllowUpdateOnSameLineVersion() {
     // Given
-    LineVersion entity = lineVersionRepository.save(LINE_VERSION);
+    LineVersion entity = lineVersionRepository.save(LineTestData.lineVersion());
     // When
     assertThat(lineVersionRepository.findSwissLineNumberOverlaps(entity).isEmpty()).isTrue();
 
@@ -186,7 +190,7 @@ import org.springframework.transaction.annotation.Transactional;
   @Test
   void shouldGetFullLineVersions() {
     //given
-    lineVersionRepository.save(LINE_VERSION);
+    lineVersionRepository.save(LineTestData.lineVersion());
     LineVersion lineVersion2 = LineTestData.lineVersionBuilder()
                                            .description("desc2")
                                            .lineType(LineType.OPERATIONAL)
@@ -233,8 +237,8 @@ import org.springframework.transaction.annotation.Transactional;
         LocalDate.of(2022, 1, 1));
 
     //then
-    assertThat(result).hasSize(1).contains(lineVersion1);
-
+    assertThat(result).hasSize(1);
+    assertThat(result.getFirst().getDescription()).isEqualTo("desc1");
   }
 
 }
