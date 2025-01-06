@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.373.0"
+version = "2.374.0"
 
 configurations {
     create("test")
