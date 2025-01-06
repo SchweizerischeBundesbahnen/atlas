@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @LocationSchemaCreation
 class SloidControllerIntegrationTest extends BaseLocationIntegrationTest {
@@ -179,32 +180,42 @@ class SloidControllerIntegrationTest extends BaseLocationIntegrationTest {
 
   @Test
   void generateTwoDifferentSloidsOnConcurrentRequests() throws Exception {
-    CopyOnWriteArrayList<Integer> statusResults = new CopyOnWriteArrayList<>();
-    CopyOnWriteArrayList<String> resultSloids = new CopyOnWriteArrayList<>();
+    final CopyOnWriteArrayList<Integer> statusResults = new CopyOnWriteArrayList<>();
+    final CopyOnWriteArrayList<String> resultSloids = new CopyOnWriteArrayList<>();
+    final CopyOnWriteArrayList<Throwable> exceptions = new CopyOnWriteArrayList<>();
 
-    int numberOfThreads = 4;
-    CountDownLatch latch = new CountDownLatch(numberOfThreads);
+    final int numberOfThreads = 4;
+    final CountDownLatch latch = new CountDownLatch(numberOfThreads);
 
     try (ExecutorService service = Executors.newFixedThreadPool(numberOfThreads)) {
       for (int i = 0; i < numberOfThreads; i++) {
         service.submit(() -> {
+          MockHttpServletResponse response;
           try {
-            MockHttpServletResponse response = mvc.perform(post("/v1/sloid/generate")
-                                                      .contentType(MediaType.APPLICATION_JSON).content("""
-                                                          {"sloidType": "SERVICE_POINT", "country": "SWITZERLAND"}"""))
-                                                  .andReturn().getResponse();
-
-            statusResults.add(response.getStatus());
+            response = MockMvcBuilders.webAppContextSetup(context).build()
+                .perform(post("/v1/sloid/generate")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("""
+                        {"sloidType": "SERVICE_POINT", "country": "SWITZERLAND"}"""))
+                .andReturn().getResponse();
             resultSloids.add(response.getContentAsString());
-            latch.countDown();
+            statusResults.add(response.getStatus());
           } catch (Exception e) {
-            fail("Exception occurred", e);
+            exceptions.add(e);
+          } finally {
+            latch.countDown();
           }
         });
       }
+      latch.await();
+
+      if (!exceptions.isEmpty()) {
+        throw new RuntimeException("One or more tasks failed!");
+      }
+    } catch (Exception e) {
+      fail("Exception occurred!", e);
     }
 
-    latch.await();
     assertThat(statusResults).containsOnly(200);
     assertThat(resultSloids).hasSize(numberOfThreads).doesNotHaveDuplicates();
   }
