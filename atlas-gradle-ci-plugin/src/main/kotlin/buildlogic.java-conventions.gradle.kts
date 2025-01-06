@@ -6,11 +6,11 @@ plugins {
 }
 extra["awsS3Version"] = "2.29.1"
 extra["swaggerCoreVersion"] = "2.2.25"
-extra["openapiStarterCommonVersion"] = "2.6.0"
+extra["openapiStarterCommonVersion"] = "2.7.0"
 //Geo Data Libs
 extra["proj4jVersion"] = "1.3.0"
 extra["jtsVersion"] = "1.20.0"
-extra["springOpenapiUiVersion"] = "2.6.0"
+extra["springOpenapiUiVersion"] = "2.7.0"
 
 java {
     toolchain {
