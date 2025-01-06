@@ -1,30 +1,17 @@
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
-
 plugins {
-    id("io.spring.dependency-management") version "1.1.7"
-    id("org.springframework.boot") version "3.4.1"
     id("org.sonarqube") version "6.0.1.5171"
 }
 
 group = "ch.sbb.atlas"
-version = "2.380.0"
+version = "2.377.0"
 
 subprojects {
     if (project.name != "frontend") {
         apply(plugin = "org.sonarqube")
-        apply(plugin = "org.springframework.boot")
-        apply(plugin = "io.spring.dependency-management")
 
-        extra["springCloudVersion"] = "2024.0.0"
-
-        dependencyManagement {
-            imports {
-                mavenBom(SpringBootPlugin.BOM_COORDINATES)
-                mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-            }
-        }
         sonar {
             properties {
+                property("sonar.project", "atlas")
                 property("sonar.dynamicAnalysis", "reuseReports")
                 property("sonar.java.coveragePlugin", "jacoco")
                 property(
@@ -39,6 +26,7 @@ subprojects {
     if (project.name == "frontend") {
         sonar {
             properties {
+                property("sonar.project", "atlas")
                 property(
                     "sonar.exclusions",
                     "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/*.kts"
@@ -56,4 +44,3 @@ subprojects {
         }
     }
 }
-
