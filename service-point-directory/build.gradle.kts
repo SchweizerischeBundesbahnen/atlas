@@ -3,7 +3,7 @@ import java.util.*
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.java-restdoc")
-    id("org.openapi.generator") version "7.5.0"//do not update until https://github.com/OpenAPITools/openapi-generator/issues/18753 is fixed
+    id("org.openapi.generator") version "7.10.0"
     id("com.google.protobuf") version "0.9.4"
 }
 
@@ -29,8 +29,8 @@ dependencies {
     implementation("org.locationtech.proj4j:proj4j:${property("proj4jVersion")}") //optional
     implementation("org.locationtech.proj4j:proj4j-epsg:${property("proj4jVersion")}") //optional
     implementation("org.locationtech.jts:jts-core:${property("jtsVersion")}") //optional
-    implementation("com.google.protobuf:protoc:4.28.2")
-    implementation("com.google.protobuf:protobuf-java:4.28.2")
+    implementation("com.google.protobuf:protoc:4.29.1")
+    implementation("com.google.protobuf:protobuf-java:4.29.1")
     implementation("org.springdoc:springdoc-openapi-starter-common:${property("openapiStarterCommonVersion")}")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
     implementation("org.springframework.security:spring-security-oauth2-client")
@@ -39,7 +39,7 @@ dependencies {
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.flywaydb:flyway-core")
 
-    implementation("com.google.protobuf:protobuf-java:4.29.0")
+    implementation("com.google.protobuf:protobuf-java:4.29.1")
     annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.3.Final")
 
     runtimeOnly("org.postgresql:postgresql")
@@ -58,7 +58,7 @@ dependencies {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.29.0"
+        artifact = "com.google.protobuf:protoc:4.29.1"
     }
     generateProtoTasks {
         ofSourceSet("main")
