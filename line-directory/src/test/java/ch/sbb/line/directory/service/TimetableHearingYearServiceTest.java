@@ -31,11 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  class TimetableHearingYearServiceTest {
 
   private static final long YEAR = 2023L;
-  private static final TimetableHearingYear TIMETABLE_HEARING_YEAR = TimetableHearingYear.builder()
-      .timetableYear(YEAR)
-      .hearingFrom(LocalDate.of(2022, 1, 1))
-      .hearingTo(LocalDate.of(2022, 2, 1))
-      .build();
 
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingYearService timetableHearingYearService;
@@ -53,10 +48,18 @@ import org.springframework.beans.factory.annotation.Autowired;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
     this.timetableHearingStatementMapperV2 = timetableHearingStatementMapperV2;
   }
+  
+  private static TimetableHearingYear getTimetableHearingYear() {
+    return TimetableHearingYear.builder()
+        .timetableYear(YEAR)
+        .hearingFrom(LocalDate.of(2022, 1, 1))
+        .hearingTo(LocalDate.of(2022, 2, 1))
+        .build();
+  }
 
   private static TimetableHearingStatementModelV2 buildTimetableHearingStatementModel() {
     return TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -72,7 +75,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
   @Test
   void shouldCreateHearingYear() {
-    TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
 
     assertThat(timetableHearing.getHearingStatus()).isEqualTo(HearingStatus.PLANNED);
     assertThat(timetableHearing.isStatementCreatableExternal()).isTrue();
@@ -82,7 +85,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
   @Test
   void shouldGetHearingYear() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
 
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(YEAR);
     assertThat(hearingYear).isNotNull();
@@ -97,7 +100,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
   @Test
   void shouldGetHearingYearByStaus() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
 
     List<TimetableHearingYear> hearingYears =
         timetableHearingYearService.getHearingYears(TimetableHearingYearSearchRestrictions.builder()
@@ -114,7 +117,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
   @Test
   void shouldStartHearingYear() {
-    TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
 
     TimetableHearingYear startedYear = timetableHearingYearService.startTimetableHearing(timetableHearing);
     assertThat(startedYear.getHearingStatus()).isEqualTo(HearingStatus.ACTIVE);
@@ -128,7 +131,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         .hearingFrom(LocalDate.of(2021, 1, 1))
         .hearingTo(LocalDate.of(2021, 2, 1))
         .build());
-    TimetableHearingYear timetableHearing2023 = timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingYear timetableHearing2023 = timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
 
     TimetableHearingYear startedYear = timetableHearingYearService.startTimetableHearing(timetableHearing2023);
     assertThat(startedYear.getHearingStatus()).isEqualTo(HearingStatus.ACTIVE);
@@ -139,7 +142,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
   @Test
   void shouldUpdateHearingStatus() {
-    TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     timetableHearing.setStatementCreatableExternal(false);
 
     TimetableHearingYear updatedHearing = timetableHearingYearService.updateTimetableHearingSettings(
@@ -150,7 +153,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
   @Test
   void shouldCloseHearingStatus() {
-    TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
 
     assertThatThrownBy(() -> timetableHearingYearService.closeTimetableHearing(timetableHearing)).isInstanceOf(
         IllegalStateException.class);
@@ -164,7 +167,7 @@ import org.springframework.beans.factory.annotation.Autowired;
   @Test
   void shouldCloseTimetableHearingWithCorrectStatementAndYearUpdates() {
     // given
-    TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingYear startedTimetableHearing = timetableHearingYearService.startTimetableHearing(timetableHearing);
 
     TimetableHearingStatementModelV2 statementModel;
