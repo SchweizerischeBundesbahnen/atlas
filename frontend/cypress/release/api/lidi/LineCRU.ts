@@ -20,7 +20,6 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
   });
 
   it('Step-3: Create a new line version', () => {
-    // Erstelle die neue Linienversion mit CommonUtils.post()
     CommonUtils.post('/line-directory/v2/lines/versions', {
       swissLineNumber: today,
       lineType: "ORDERLY",
