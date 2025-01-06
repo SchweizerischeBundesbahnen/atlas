@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id("io.spring.dependency-management") version "1.1.6"
-    id("org.springframework.boot") version "3.4.0"
+    id("org.springframework.boot") version "3.4.1"
     id("org.sonarqube") version "6.0.1.5171"
 }
 
