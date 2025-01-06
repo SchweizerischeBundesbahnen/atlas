@@ -22,7 +22,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
     implementation(project(":base-atlas"))
-    implementation(project(":kafka"))
     implementation("org.springframework.kafka:spring-kafka")//get this dependency from :kafka use as api does not work
     implementation(project(":kafka"))
     implementation(project(":user-administration-security"))
