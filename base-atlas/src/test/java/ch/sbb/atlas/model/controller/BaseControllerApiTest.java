@@ -34,7 +34,7 @@ public abstract class BaseControllerApiTest {
   protected ObjectMapper mapper;
 
   @Autowired
-  private WebApplicationContext context;
+  protected WebApplicationContext context;
 
   protected final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
       MediaType.APPLICATION_JSON.getSubtype(),
