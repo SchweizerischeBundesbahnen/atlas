@@ -1,9 +1,17 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     java
     jacoco
     `java-library`
     `maven-publish`
+    id("io.spring.dependency-management")
+    id("org.springframework.boot")
 }
+
+apply(plugin = "io.spring.dependency-management")
+apply(plugin = "org.springframework.boot")
+
 extra["awsS3Version"] = "2.29.1"
 extra["swaggerCoreVersion"] = "2.2.25"
 extra["openapiStarterCommonVersion"] = "2.7.0"
@@ -11,10 +19,18 @@ extra["openapiStarterCommonVersion"] = "2.7.0"
 extra["proj4jVersion"] = "1.3.0"
 extra["jtsVersion"] = "1.20.0"
 extra["springOpenapiUiVersion"] = "2.7.0"
+extra["springCloudVersion"] = "2024.0.0"
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom(SpringBootPlugin.BOM_COORDINATES)
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
     }
 }
 
@@ -42,22 +58,22 @@ publishing {
         maven("https://bin.sbb.ch/artifactory/" + System.getenv("ARTIFACTORY_REPO")) {
             val usr = System.getenv("ARTIFACTORY_USER")
             val pwd = System.getenv("ARTIFACTORY_PASS")
-            val apiAccessToken = System.getenv("ARTIFACTORY_ACCESS_TOKEN")
+            val apiKey = System.getenv("ARTIFACTORY_API_KEY")
             if (usr != null && pwd != null) {
                 credentials {
                     username = usr
                     password = pwd
                 }
-            } else if (apiAccessToken != null) {
+            } else if (apiKey != null) {
                 credentials(HttpHeaderCredentials::class) {
                     name = "Authorization"
-                    value = "Bearer $apiAccessToken"
+                    value = "Bearer " + apiKey
                 }
                 authentication {
                     create<HttpHeaderAuthentication>("header")
                 }
             } else {
-                logger.warn("Cannot publish!! No credentials found for Artifactory! Either provide ARTIFACTORY_USER and ARTIFACTORY_PASS or ARTIFACTORY_ACCESS_TOKEN as environment variables.")
+                logger.warn("Cannot publish!! No credentials found for Artifactory! Either provide ARTIFACTORY_USER and ARTIFACTORY_PASS or ARTIFACTORY_API_KEY as environment variables.")
             }
         }
     }
@@ -76,10 +92,7 @@ tasks.withType<Test> {
     useJUnitPlatform()
     testLogging{
         events("passed", "skipped", "failed","standardOut", "standardError")
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         showCauses = true
-        showExceptions = true
-        showStackTraces = true
     }
 }
 
@@ -96,6 +109,7 @@ tasks.withType<Javadoc> {
 }
 
 tasks.test {
+    jvmArgs = listOf("-Xshare:off")
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
 
