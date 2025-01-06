@@ -40,11 +40,6 @@ import static org.junit.jupiter.api.Assertions.*;
  class TimetableHearingStatementServiceTest {
 
   private static final long YEAR = 2023L;
-  private static final TimetableHearingYear TIMETABLE_HEARING_YEAR = TimetableHearingYear.builder()
-      .timetableYear(YEAR)
-      .hearingFrom(LocalDate.of(2022, 1, 1))
-      .hearingTo(LocalDate.of(2022, 2, 1))
-      .build();
 
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingYearService timetableHearingYearService;
@@ -71,9 +66,17 @@ import static org.junit.jupiter.api.Assertions.*;
       this.timetableFieldNumberVersionRepository = timetableFieldNumberVersionRepository;
   }
 
+  private static TimetableHearingYear getTimetableHearingYear() {
+    return TimetableHearingYear.builder()
+        .timetableYear(YEAR)
+        .hearingFrom(LocalDate.of(2022, 1, 1))
+        .hearingTo(LocalDate.of(2022, 2, 1))
+        .build();
+  }
+
   private static TimetableHearingStatementModelV1 buildTimetableHearingStatementModelV1() {
     return TimetableHearingStatementModelV1.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModelV1.builder()
             .email("fabienne.mueller@sbb.ch")
@@ -84,7 +87,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
   private static TimetableHearingStatementModelV2 buildTimetableHearingStatementModelV2() {
     return TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
@@ -101,7 +104,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldGetHearingStatement() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
 
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
     TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
@@ -117,7 +120,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldGetHearingStatementCreatedWithV1() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
 
     TimetableHearingStatementModelV1 timetableHearingStatementModel = buildTimetableHearingStatementModelV1();
     TimetableHearingStatementModelV1 createdStatement = timetableHearingStatementService.createHearingStatementV1(
@@ -133,7 +136,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldNotGetHearingStatementIfIdIsNotValid() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
 
     TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
@@ -146,7 +149,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldGetDocumentFromHearingStatement() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
 
     List<MultipartFile> documents = new ArrayList<>();
@@ -159,12 +162,12 @@ import static org.junit.jupiter.api.Assertions.*;
     String originalFilename = PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename();
     File statementDocument = timetableHearingStatementService.getStatementDocument(createdStatement.getId(), originalFilename);
     assertTrue(statementDocument.getName().contains("dummy.pdf"));
-    assertEquals(PdfFiles.MULTIPART_FILES.get(0).getSize(), statementDocument.length());
+    assertEquals(PdfFiles.MULTIPART_FILES.getFirst().getSize(), statementDocument.length());
   }
 
   @Test
   void shouldDeleteDocumentFromHearingStatement() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
 
     TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
@@ -172,24 +175,24 @@ import static org.junit.jupiter.api.Assertions.*;
     TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapperV2.toEntity(createdStatement);
 
     timetableHearingStatementService.deleteStatementDocument(createdStatementEntity,
-        PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename());
+        PdfFiles.MULTIPART_FILES.getFirst().getOriginalFilename());
     assertThatThrownBy(() -> timetableHearingStatementService.getStatementDocument(createdStatement.getId(),
-        PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename())).isInstanceOf(
+        PdfFiles.MULTIPART_FILES.getFirst().getOriginalFilename())).isInstanceOf(
         FileNotFoundException.class);
   }
 
   @Test
   void shouldThrowIllegalArgumentExceptionWhenDeletingDocument() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
 
     assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(new TimetableHearingStatement(),
-        PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename())).isInstanceOf(
+        PdfFiles.MULTIPART_FILES.getFirst().getOriginalFilename())).isInstanceOf(
         IllegalArgumentException.class);
   }
 
   @Test
   void shouldThrowIllegalArgumentExceptionWhenDeletingEmptyStringDocumentName() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
 
     List<MultipartFile> documents = new ArrayList<>();
@@ -206,7 +209,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldNotDoAnythingIfDeleteUnknownDocument() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
 
     TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
@@ -214,12 +217,12 @@ import static org.junit.jupiter.api.Assertions.*;
     TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapperV2.toEntity(createdStatement);
 
     assertDoesNotThrow(() -> timetableHearingStatementService.deleteStatementDocument(createdStatementEntity,
-        PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename()));
+        PdfFiles.MULTIPART_FILES.getFirst().getOriginalFilename()));
   }
 
   @Test
   void shouldNotGetHearingStatementIfIdIsNotValissd() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
 
     TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
@@ -232,7 +235,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldCreateHearingStatement() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
 
     TimetableHearingStatementModelV2 hearingStatement = timetableHearingStatementService.createHearingStatementV2(
@@ -253,7 +256,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     void shouldNotCreateHearingStatementIfTtfnidNotExists() {
-        timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+        timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
         TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
         timetableHearingStatementModel.setTtfnid("ABC");
         List<MultipartFile> emptyList = Collections.emptyList();
@@ -264,7 +267,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldUpdateHearingStatement() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     List<MultipartFile> docs = Collections.emptyList();
 
     TimetableHearingStatementSenderModelV2 timetableHearingStatementSenderModelV2 = new TimetableHearingStatementSenderModelV2();
@@ -294,7 +297,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldNotUpdateHearingStatementIfYearIsUnknown() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
     TimetableHearingStatement timetableHearingStatement=
         timetableHearingStatementMapperV2.toEntity(timetableHearingStatementModel);
@@ -309,7 +312,7 @@ import static org.junit.jupiter.api.Assertions.*;
   }
   @Test
   void shouldNotUpdateHearingStatementIfTtfnidNotExists() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
 
       TimetableHearingStatement timetableHearingStatement=
@@ -328,7 +331,7 @@ import static org.junit.jupiter.api.Assertions.*;
   @Test
   void shouldMoveClosedStatementsToNextYearWithStatusUpdateFromMovedToReceived() {
     // given
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
 
     TimetableHearingStatementModelV2 statement;
     // Statement 1
@@ -387,9 +390,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldFindStatementBySearchCriteria() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .firstName("Luca")
@@ -405,7 +408,7 @@ import static org.junit.jupiter.api.Assertions.*;
         .statementRequestParams(TimetableHearingStatementRequestParams.builder()
             .searchCriterias(List.of("gerne", "Luca", created.getId().toString()))
             .canton(SwissCanton.BERN)
-            .timetableHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableHearingYear(YEAR)
             .build())
         .pageable(Pageable.unpaged())
         .build();
@@ -417,9 +420,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldNotFindStatementBySearchCriteria() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .firstName("Luca")
@@ -437,7 +440,7 @@ import static org.junit.jupiter.api.Assertions.*;
         .statementRequestParams(TimetableHearingStatementRequestParams.builder()
             .searchCriterias(List.of("gerne", "Luca", Long.toString(fakeId)))
             .canton(SwissCanton.BERN)
-            .timetableHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .timetableHearingYear(YEAR)
             .build())
         .pageable(Pageable.unpaged())
         .build();
@@ -449,7 +452,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldFindStatementByTtfnid() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
       TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
               .ttfnid("ch:1:ttfnid:2341234")
               .swissTimetableFieldNumber("1234")
@@ -464,7 +467,7 @@ import static org.junit.jupiter.api.Assertions.*;
       timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
 
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:2341234")
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
@@ -500,7 +503,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
   @Test
   void shouldFindStatementByStatus() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
       TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
               .ttfnid("ch:1:ttfnid:2341234")
               .swissTimetableFieldNumber("1234")
@@ -515,7 +518,7 @@ import static org.junit.jupiter.api.Assertions.*;
       timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
 
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:2341234")
         .statementSender(TimetableHearingStatementSenderModelV2.builder()
@@ -559,9 +562,9 @@ import static org.junit.jupiter.api.Assertions.*;
         .id(5L)
         .abbreviation("BLS")
         .businessRegisterName("Basel Land Stationen ? :D").build());
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    timetableHearingYearService.createTimetableHearing(getTimetableHearingYear());
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .responsibleTransportCompanies(List.of(TimetableHearingStatementResponsibleTransportCompanyModel.builder()
                 .id(4L)
