@@ -2,7 +2,6 @@ import java.util.*
 
 plugins {
     id("buildlogic.java-conventions")
-    id("buildlogic.java-restdoc")
 }
 
 group = "ch.sbb.atlas"
@@ -19,6 +18,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+tasks.named<Jar>("jar") {
+    enabled = false
 }
 
 springBoot {
