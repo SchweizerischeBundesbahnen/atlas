@@ -9,8 +9,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional(readOnly = true)
 public interface LineVersionRepository extends JpaRepository<LineVersion, Long> {
 
   default List<LineVersion> findSwissLineNumberOverlaps(LineVersion lineVersion) {
@@ -35,7 +37,8 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
       + " ORDER BY lv.slnid, lv.validFrom ASC")
   List<LineVersion> getAllCoveredLineVersions();
 
-  @Modifying(clearAutomatically = true)
+  @Modifying(clearAutomatically = true, flushAutomatically = true)
+  @Transactional
   @Query("update line_version v set v.version = (v.version + 1) where v.slnid = :slnid")
   void incrementVersion(@Param("slnid") String slnid);
 

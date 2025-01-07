@@ -45,6 +45,7 @@ model/bulkImportPermissionRestrictionModel.ts
 model/bulkImportRequest.ts
 model/bulkImportResult.ts
 model/bulkImportUpdateContainerPlatformReducedUpdateCsvModel.ts
+model/bulkImportUpdateContainerServicePointCreateCsvModel.ts
 model/bulkImportUpdateContainerServicePointUpdateCsvModel.ts
 model/bulkImportUpdateContainerTrafficPointUpdateCsvModel.ts
 model/businessObjectType.ts
@@ -169,6 +170,7 @@ model/relationVersion.ts
 model/sboidPermissionRestrictionModel.ts
 model/sePoDiBatchExportFileName.ts
 model/sePoDiExportType.ts
+model/servicePointCreateCsvModel.ts
 model/servicePointFotComment.ts
 model/servicePointGeolocation.ts
 model/servicePointNumber.ts

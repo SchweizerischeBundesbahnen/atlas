@@ -42,22 +42,22 @@ publishing {
         maven("https://bin.sbb.ch/artifactory/" + System.getenv("ARTIFACTORY_REPO")) {
             val usr = System.getenv("ARTIFACTORY_USER")
             val pwd = System.getenv("ARTIFACTORY_PASS")
-            val apiKey = System.getenv("ARTIFACTORY_API_KEY")
+            val apiAccessToken = System.getenv("ARTIFACTORY_ACCESS_TOKEN")
             if (usr != null && pwd != null) {
                 credentials {
                     username = usr
                     password = pwd
                 }
-            } else if (apiKey != null) {
+            } else if (apiAccessToken != null) {
                 credentials(HttpHeaderCredentials::class) {
                     name = "Authorization"
-                    value = "Bearer " + apiKey
+                    value = "Bearer $apiAccessToken"
                 }
                 authentication {
                     create<HttpHeaderAuthentication>("header")
                 }
             } else {
-                logger.warn("Cannot publish!! No credentials found for Artifactory! Either provide ARTIFACTORY_USER and ARTIFACTORY_PASS or ARTIFACTORY_API_KEY as environment variables.")
+                logger.warn("Cannot publish!! No credentials found for Artifactory! Either provide ARTIFACTORY_USER and ARTIFACTORY_PASS or ARTIFACTORY_ACCESS_TOKEN as environment variables.")
             }
         }
     }
@@ -98,5 +98,3 @@ tasks.jacocoTestReport {
         xml.required = true
     }
 }
-
-
