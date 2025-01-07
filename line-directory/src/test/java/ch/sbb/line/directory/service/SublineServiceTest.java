@@ -54,7 +54,7 @@ class SublineServiceTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations. openMocks(this);
+    MockitoAnnotations.openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, versionableService, lineService, sublineValidationService,
         coverageService);
     when(sublineVersionRepository.saveAndFlush(any())).then(i -> i.getArgument(0));
@@ -162,8 +162,8 @@ class SublineServiceTest {
 
     Executable executable = () -> sublineService.updateVersion(version.version(1).build(),
         version.version(0).build());
-    assertThrows(StaleObjectStateException.class, executable);
     //then
+    assertThrows(StaleObjectStateException.class, executable);
     verify(sublineVersionRepository).incrementVersion("slnid");
   }
 
@@ -178,7 +178,6 @@ class SublineServiceTest {
     LineVersion result = sublineService.getMainLineVersion(mainSlnid);
     //then
     assertThat(result).isNotNull();
-
   }
 
   @Test
@@ -197,7 +196,6 @@ class SublineServiceTest {
     LineVersion result = sublineService.getMainLineVersion(mainSlnid);
     //then
     assertThat(result).isNotNull().isEqualTo(lineVersion);
-
   }
 
   @Test
@@ -216,7 +214,6 @@ class SublineServiceTest {
     LineVersion result = sublineService.getMainLineVersion(mainSlnid);
     //then
     assertThat(result).isNotNull().isEqualTo(lineVersion1);
-
   }
 
   @Test
@@ -235,7 +232,6 @@ class SublineServiceTest {
     LineVersion result = sublineService.getMainLineVersion(mainSlnid);
     //then
     assertThat(result).isNotNull().isEqualTo(lineVersion1);
-
   }
 
   @Test
@@ -244,7 +240,6 @@ class SublineServiceTest {
     when(lineService.findLineVersions(any())).thenReturn(new ArrayList<>());
     //when && then
     assertThrows(NoSuchElementException.class, () -> sublineService.getMainLineVersion(any()));
-
   }
 
 }
