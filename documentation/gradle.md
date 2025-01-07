@@ -5,6 +5,10 @@
 - [atlas Gradle multi module project](#atlas-gradle-multi-module-project)
   * [Sharing build logic with convention plugin](#sharing-build-logic-with-convention-plugin)
 - [How to](#how-to)
+- [How to increase your Gradle Build Speed](#how-to-increase-your-gradle-build-speed)
+  * [Enable Gradle Offline Mode](#enable-gradle-offline-mode)
+  * [Add GRADLE_OPTS env](#add-gradle_opts-env)
+  * [Configuration Cache](#configuration-cache)
 - [Troubleshooting](#troubleshooting)
   * [Parallel Execution](#parallel-execution)
 
@@ -23,12 +27,13 @@ atlas uses [Gradle](https://gradle.org/) as a **Build Automation Tool**.
 ### Sharing build logic with convention plugin
 
 The project [atlas-gradle-ci-plugin](../atlas-gradle-ci-plugin) defines two plugins:
-1. [buildlogic.java-conventions](../atlas-gradle-ci-plugin/src/main/kotlin/buildlogic.java-conventions.gradle.kts): util to 
-   share some java, dependencies and publication logic.  
-2. [buildlogic.java-restdoc](../atlas-gradle-ci-plugin/src/main/kotlin/buildlogic.java-restdoc.gradle.kts): add the RestDoc 
+
+1. [buildlogic.java-conventions](../atlas-gradle-ci-plugin/src/main/kotlin/buildlogic.java-conventions.gradle.kts): util to
+   share some java, dependencies and publication logic.
+2. [buildlogic.java-restdoc](../atlas-gradle-ci-plugin/src/main/kotlin/buildlogic.java-restdoc.gradle.kts): add the RestDoc
    configuration logic when applied to a project.
 
-These are normal gradle plugins that can be applied to subprojects: 
+These are normal gradle plugins that can be applied to subprojects:
 
 ```kotlin
 plugins {
@@ -36,14 +41,50 @@ plugins {
     id("buildlogic.java-restdoc")
 }
 ```
-For more information see [Sharing build logic with convention plugin](https://docs.gradle.org/current/samples/sample_convention_plugins.html): 
+
+For more information
+see [Sharing build logic with convention plugin](https://docs.gradle.org/current/samples/sample_convention_plugins.html):
 
 ## How to
+
 1. Build atlas: ```./gradlew build```
 2. Clean atlas ( delete build directories): ```./gradlew clean```
 3. Run subproject build, e.g. : ```./gradlew :apim-configuration:build```
-4. Lists all project tasks: ```./gradlew tasks```. Each listed task can be executed ```./gradlew ${myTask}``` or for 
+4. Lists all project tasks: ```./gradlew tasks```. Each listed task can be executed ```./gradlew ${myTask}``` or for
    subproject ```./gradlew :${mySubProject}:${myTask}```
+
+## How to increase your Gradle Build Speed
+
+### Enable Gradle Offline Mode
+
+Enable gradle Offline Work from **Preferences-> Build, Execution, Deployment-> Build Tools-> Gradle**. This will not allow the gradle
+to access the network during build and force it to resolve the dependencies from the cache itself. _**Note**: This only works if all
+the dependencies are downloaded and stored in the cache once. If you need to modify or add a new dependency you’ll have to disable
+this option else the build would fail._
+
+### Add GRADLE_OPTS env
+
+Add **GRADLE_OPTS=-Xmx2048m** to your environment variables.
+
+### Configuration Cache
+
+"_The configuration cache is a feature that significantly improves build performance by caching the result of the 
+configuration phase and reusing this for subsequent builds. Using the configuration cache, Gradle can skip the configuration 
+phase entirely when nothing that affects the build configuration, such as build scripts, has changed. Gradle also applies 
+performance improvements to task execution as well._" See 
+[Official Gradle Configuration cache documentation](https://docs.gradle.org/current/userguide/configuration_cache.html).
+
+To activate the **Configuration Cache** feature there are two ways:
+1. add ```org.gradle.configuration-cache=true``` to [gradle.properties](../gradle.properties)
+2. add to gradle command ```--configuration-cache```, e.g.: ```./gradlew :line-directory:check --configuration-cache```
+
+:warning: Unfortunately at the moment this feature cannot be used with the command execution ```./gradlew build 
+--configuration-cache``` due to incompatibility with the asciidoctor plugin.
+
+The good news is that you can use the option ```--configuration-cache``` until ```./gradlew build```. This means you can speed 
+up your local work like:
+
+1. Execute Tests: ```./gradlew check --configuration-cache```
 
 ## Troubleshooting
 
@@ -52,7 +93,7 @@ For more information see [Sharing build logic with convention plugin](https://do
 With gradle is possible to build a project
 with [parallel execution](https://docs.gradle.org/current/userguide/performance.html#parallel_execution) mode.
 
-_atlas_ is built by gradle in **parallel execution mode** with the additional parameter ```--parallel```.   
+_atlas_ is built by gradle in **parallel execution mode** with the additional parameter ```--parallel```.
 
 The **parallel execution mode** is a heavy process that can overload your machine and is not enabled locally.
 If your machine is fit just run gradle task with ```--parallel```, e.g:
