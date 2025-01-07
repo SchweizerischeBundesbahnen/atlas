@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -36,7 +37,7 @@ public interface SublineApiV2 {
   })
   ReadSublineVersionModelV2 createSublineVersionV2(@RequestBody @Valid CreateSublineVersionModelV2 newSublineVersion);
 
-  @PostMapping({"versions/{id}"})
+  @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema =
