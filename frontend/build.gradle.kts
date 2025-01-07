@@ -1,7 +1,7 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
-  id("org.sonarqube") version "6.0.1.5171"
+  id("org.sonarqube")
 }
 
 sonar {
@@ -79,6 +79,7 @@ gradle.projectsEvaluated {
   }
 }
 
+//todo: make me cacheble
 task<Exec>("clean") {
   doFirst {
     println("[Angular] clean build dir")
