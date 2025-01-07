@@ -42,16 +42,16 @@ publishing {
         maven("https://bin.sbb.ch/artifactory/" + System.getenv("ARTIFACTORY_REPO")) {
             val usr = System.getenv("ARTIFACTORY_USER")
             val pwd = System.getenv("ARTIFACTORY_PASS")
-            val apiKey = System.getenv("ARTIFACTORY_ACCESS_TOKEN")
+            val apiAccessToken = System.getenv("ARTIFACTORY_ACCESS_TOKEN")
             if (usr != null && pwd != null) {
                 credentials {
                     username = usr
                     password = pwd
                 }
-            } else if (apiKey != null) {
+            } else if (apiAccessToken != null) {
                 credentials(HttpHeaderCredentials::class) {
                     name = "Authorization"
-                    value = "Bearer $apiKey"
+                    value = "Bearer $apiAccessToken"
                 }
                 authentication {
                     create<HttpHeaderAuthentication>("header")
