@@ -15,5 +15,5 @@ repositories {
 }
 
 dependencies {
-    implementation("org.asciidoctor:asciidoctor-gradle-jvm:4.0.3")
+    implementation("org.asciidoctor:asciidoctor-gradle-jvm:4.0.4")
 }
