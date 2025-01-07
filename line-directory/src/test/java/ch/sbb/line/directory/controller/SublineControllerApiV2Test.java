@@ -3,6 +3,7 @@ package ch.sbb.line.directory.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -116,18 +117,17 @@ class SublineControllerApiV2Test extends BaseControllerApiTest {
         .etagVersion(result.getEtagVersion())
         .build();
     updateModel.setDescription("Kinky subline, ready to roll");
-    mvc.perform(post("/v2/sublines/versions/" + updateModel.getId())
+    mvc.perform(put("/v2/sublines/versions/" + updateModel.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateModel)))
         .andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
     updateModel.setDescription("Kinky subline, ready to rock");
-    mvc.perform(post("/v2/sublines/versions/" + updateModel.getId())
+    mvc.perform(put("/v2/sublines/versions/" + updateModel.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateModel)))
         .andExpect(status().isPreconditionFailed()).andReturn();
 
   }
-
 }
