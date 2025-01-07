@@ -351,7 +351,7 @@ export default class CommonUtils {
   static getUnauthorized (url: string) {
     return cy.request({
       method: 'GET',
-      url: 'https://atlas-api-gateway.test.app.sbb.ch' + url
+      url: Cypress.env('API_URL_UNAUTHORIZED') + url
     });
   }
 
