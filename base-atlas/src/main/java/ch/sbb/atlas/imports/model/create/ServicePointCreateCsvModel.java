@@ -3,13 +3,13 @@ package ch.sbb.atlas.imports.model.create;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.annotation.DefaultMapping;
-import ch.sbb.atlas.imports.annotation.Nulling;
 import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
 import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel.Fields;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -102,11 +102,18 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
     @Override
     public List<BulkImportError> validate() {
         List<BulkImportError> errors = new ArrayList<>();
-        if (numberShort == null && isNumberShortRequired(uicCountryCode)) {
-            errors.add(BulkImportErrors.notNull(Fields.numberShort));
+        if (isNumberShortRequired(uicCountryCode)) {
+            if (numberShort == null) {
+                errors.add(BulkImportErrors.notNull(Fields.numberShort));
+            } else if (numberShort < 1 || numberShort > 9999) {
+                errors.add(BulkImportErrors.invalidNumberShort(Fields.numberShort));
+            }
         }
         if (uicCountryCode == null) {
             errors.add(BulkImportErrors.notNull(Fields.uicCountryCode));
+        }
+        else if(Country.from(uicCountryCode) == null) {
+            errors.add(BulkImportErrors.isUicCountryCodeValid(Fields.uicCountryCode));
         }
         if (designationOfficial == null) {
             errors.add(BulkImportErrors.notNull(Fields.designationOfficial));
@@ -119,6 +126,9 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
         }
         if (validTo == null) {
             errors.add(BulkImportErrors.notNull(ServicePointUpdateCsvModel.Fields.validTo));
+        }
+        if(height != null && height > 100000) {
+            errors.add(BulkImportErrors.invalidHeight(Fields.height));
         }
         return errors;
     }
