@@ -9,15 +9,34 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { OperatingPointTrafficPointType } from './operatingPointTrafficPointType';
+import { StopPointType } from './stopPointType';
+import { Category } from './category';
+import { MeanOfTransport } from './meanOfTransport';
+import { OperatingPointType } from './operatingPointType';
+import { SpatialReference } from './spatialReference';
+import { OperatingPointTechnicalTimetableType } from './operatingPointTechnicalTimetableType';
 
 
-/**
- * WorkflowProcessingStatus
- */
-export type WorkflowProcessingStatus = 'EVALUATED' | 'IN_PROGRESS';
-
-export const WorkflowProcessingStatus = {
-    Evaluated: 'EVALUATED' as WorkflowProcessingStatus,
-    InProgress: 'IN_PROGRESS' as WorkflowProcessingStatus
-};
+export interface ServicePointCreateCsvModel { 
+    numberShort?: number;
+    uicCountryCode?: number;
+    validFrom?: Date;
+    validTo?: Date;
+    designationOfficial?: string;
+    designationLong?: string;
+    stopPointType?: StopPointType;
+    freightServicePoint?: boolean;
+    operatingPointType?: OperatingPointType;
+    operatingPointTechnicalTimetableType?: OperatingPointTechnicalTimetableType;
+    meansOfTransport?: Set<MeanOfTransport>;
+    categories?: Set<Category>;
+    operatingPointTrafficPointType?: OperatingPointTrafficPointType;
+    sortCodeOfDestinationStation?: string;
+    businessOrganisation?: string;
+    east?: number;
+    north?: number;
+    spatialReference?: SpatialReference;
+    height?: number;
+}
 
