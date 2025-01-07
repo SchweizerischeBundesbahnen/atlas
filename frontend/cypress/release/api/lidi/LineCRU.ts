@@ -52,6 +52,7 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
 
     // Check the values of the first element in the array
     expect(lineVersionsFirst).to.have.property('slnid').that.equals(slnid);
+    expect(lineVersionsFirst).to.have.property('id').that.is.a('number').and.equals(lineVersionId);
     return lineVersionsFirst;
   }
 
@@ -61,7 +62,6 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
       const lineVersionsFirst = makeCommonChecks(response);
 
       expect(lineVersionsFirst).to.have.property('swissLineNumber').that.is.a('string');
-      expect(lineVersionsFirst).to.have.property('id').that.is.a('number');
 
       // Store the ETag version in a variable
       etagVersion = lineVersionsFirst.etagVersion;
@@ -82,7 +82,6 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
     }).then((response) => {
       const lineVersionsFirst = makeCommonChecks(response);
       expect(lineVersionsFirst).to.have.property('swissLineNumber').that.equals(todayInIso);
-      expect(lineVersionsFirst).to.have.property('id').that.is.a('number');
     });
   });
 });

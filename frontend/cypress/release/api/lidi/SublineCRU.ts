@@ -45,7 +45,7 @@ describe('LiDi: Scenario Subline-CRUD: New Line', { testIsolation: false }, () =
     CommonUtils.post('/line-directory/v2/sublines/versions', {
       mainlineSlnid: mainSlnid,
       sublineType: "TECHNICAL",
-      paymentType: "REGIONALWITHOUT",
+      paymentType: "REGIONALWITHOUT", // Should be ignored by atlas
       businessOrganisation: sboid,
       validFrom: today.toISOString().split('T')[0],
       validTo: tomorrow.toISOString().split('T')[0],
@@ -60,18 +60,24 @@ describe('LiDi: Scenario Subline-CRUD: New Line', { testIsolation: false }, () =
     });
   });
 
+  function makeCommonChecks(response: Cypress.Response<any>) {
+    expect(response.status).to.equal(200); // Verify successful retrieval
+
+    const sublineVersions = response.body;
+    expect(Array.isArray(sublineVersions)).to.be.true; // Ensure response is an array
+    expect(sublineVersions.length).to.equal(1); // Check for exactly one version
+
+    const sublineVersionsFirst = sublineVersions[0];
+
+    // Validate retrieved values against expected identifiers
+    expect(sublineVersionsFirst.slnid).to.equal(sublineSlnid);
+    expect(sublineVersionsFirst.id).to.equal(sublineVersionId);
+    return sublineVersionsFirst;
+  }
+
   it('Step-4: Read the subline version', () => {
     CommonUtils.get(`/line-directory/v2/sublines/versions/${sublineSlnid}`).then((response) => {
-      expect(response.status).to.equal(200); // Verify successful retrieval
-
-      const sublineVersions = response.body;
-      expect(Array.isArray(sublineVersions)).to.be.true; // Ensure response is an array
-      expect(sublineVersions.length).to.equal(1); // Check for exactly one version
-
-      const sublineVersionsFirst = sublineVersions[0];
-
-      // Validate retrieved values against expected identifiers
-      expect(sublineVersionsFirst.slnid).to.equal(sublineSlnid);
+      const sublineVersionsFirst = makeCommonChecks(response);
       etagVersion = sublineVersionsFirst.etagVersion; // Update etagVersion for future updates
     });
   });
@@ -89,14 +95,7 @@ describe('LiDi: Scenario Subline-CRUD: New Line', { testIsolation: false }, () =
       description: "This field is now also mandatory.",
       etagVersion: etagVersion // Include the ETag version for update
     }).then((response) => {
-      expect(response.status).to.equal(200); // Verify successful update
-
-      const sublineVersions = response.body;
-      expect(Array.isArray(sublineVersions)).to.be.true;
-      expect(sublineVersions.length).to.equal(1); // Check for exactly one version
-
-      const sublineVersionsFirst = sublineVersions[0];
-      expect(sublineVersionsFirst.slnid).to.equal(sublineSlnid); // Validate identifiers
+      makeCommonChecks(response);
     });
   });
 });
