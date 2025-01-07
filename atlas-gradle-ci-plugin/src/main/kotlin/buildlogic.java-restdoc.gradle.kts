@@ -47,7 +47,8 @@ tasks.named<Jar>("jar") {
 tasks.named("bootJar") {
     finalizedBy("asciidoctor")
 }
-
+// to run application with --configuration-cache you need to comment the following snippet
+// (e.g. ./gradlew :line-directory:bootRun --args='--spring.profiles.active=local' --configuration-cache )
 tasks.named("bootRun") {
     finalizedBy("asciidoctor")
 }
