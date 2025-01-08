@@ -39,7 +39,7 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
     });
   });
 
-  function makeCommonChecks(response: Cypress.Response<any>) {
+  const makeCommonChecks = (response: Cypress.Response<any>) => {
     // Check the status code
     expect(response.status).to.equal(200);
 

@@ -10,7 +10,7 @@ describe('TTFN: TableSettings and Routing', { testIsolation: false }, () => {
   const firstJune2000 = '01.06.2000';
   const statusValidiert = 'Validiert';
 
-  function assertAllTableFiltersAreFilled() {
+  const assertAllTableFiltersAreFilled = () => {
     cy.get(DataCy.TABLE_FILTER_CHIP_DIV).contains(ttfnBernThun.swissTimetableFieldNumber);
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_FILTER_MULTI_SELECT(1, 1), [
       statusValidiert,

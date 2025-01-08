@@ -60,7 +60,7 @@ describe('LiDi: Scenario Subline-CRUD: New Line', { testIsolation: false }, () =
     });
   });
 
-  function makeCommonChecks(response: Cypress.Response<any>) {
+  const makeCommonChecks = (response: Cypress.Response<any>) => {
     expect(response.status).to.equal(200); // Verify successful retrieval
 
     const sublineVersions = response.body;
