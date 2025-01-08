@@ -71,7 +71,7 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
 
   it('Step-5: Update the line version', () => {
     const todayInIso = today.toISOString();
-    CommonUtils.post(`/line-directory/v2/lines/versions/${lineVersionId}`, {
+    CommonUtils.put(`/line-directory/v2/lines/versions/${lineVersionId}`, {
       swissLineNumber: todayInIso,
       lineType: "ORDERLY",
       businessOrganisation: sboid,

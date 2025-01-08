@@ -83,7 +83,7 @@ describe('LiDi: Scenario Subline-CRUD: New Line', { testIsolation: false }, () =
   });
 
   it('Step-5: Update the subline version', () => {
-    CommonUtils.post(`/line-directory/v2/sublines/versions/${sublineVersionId}`, {
+    CommonUtils.put(`/line-directory/v2/sublines/versions/${sublineVersionId}`, {
       mainlineSlnid: mainSlnid,
       slnid: sublineSlnid,
       status: "VALIDATED",
