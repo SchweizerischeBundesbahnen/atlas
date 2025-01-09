@@ -1,5 +1,6 @@
 package ch.sbb.atlas.imports.model.create;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.annotation.DefaultMapping;
@@ -102,10 +103,12 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
     @Override
     public List<BulkImportError> validate() {
         List<BulkImportError> errors = new ArrayList<>();
+        //TODO in Methoden extrahieren
+        //TODO falls zu viele Methoden eigene klasse erstellen.
         if (isNumberShortRequired(uicCountryCode)) {
             if (numberShort == null) {
                 errors.add(BulkImportErrors.notNull(Fields.numberShort));
-            } else if (numberShort < 1 || numberShort > 9999) {
+            } else if (numberShort < AtlasFieldLengths.MIN_NUMBER || numberShort > AtlasFieldLengths.MAX_FIVE_DIGITS_NUMBER) {
                 errors.add(BulkImportErrors.invalidNumberShort(Fields.numberShort));
             }
         }
@@ -127,8 +130,11 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
         if (validTo == null) {
             errors.add(BulkImportErrors.notNull(ServicePointUpdateCsvModel.Fields.validTo));
         }
-        if(height != null && height > 100000) {
+        if(height != null && height > AtlasFieldLengths.MAX_HEIGHT) {
             errors.add(BulkImportErrors.invalidHeight(Fields.height));
+        }
+        if (!isGeographyValid()) {
+            errors.add(BulkImportErrors.invalidGeography(Fields.height));
         }
         return errors;
     }
@@ -140,5 +146,13 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
 
     private boolean isNumberShortRequired(Integer uicCountryCode) {
         return uicCountryCode == null || (uicCountryCode != 85 && (uicCountryCode < 11 || uicCountryCode > 14));
+    }
+
+    private boolean isGeographyValid() {
+        if (north == null && east == null && spatialReference == null) {
+            return true;
+        }
+        else
+          return north != null && east != null && spatialReference != null;
     }
 }
