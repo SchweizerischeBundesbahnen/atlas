@@ -14,14 +14,14 @@ describe.skip('Lines: TableSettings and Routing', { testIsolation: false }, () =
   const lineDirectoryUrlPath = '/line-directory/lines';
   const lineDirectoryUrlPathToIntercept = '/line-directory/v1/lines?**';
 
-  function deleteFirstFoundLineInTable() {
+   const deleteFirstFoundLineInTable = () => {
     CommonUtils.clickFirstRowInTable(DataCy.LIDI_LINES);
 
     CommonUtils.deleteItem();
     cy.url().should('eq', Cypress.config().baseUrl + lineDirectoryUrlPath);
   }
 
-  function assertAllTableFiltersAreFilled() {
+  const assertAllTableFiltersAreFilled = () => {
     cy.get(DataCy.TABLE_FILTER_CHIP_DIV).contains(minimalLine1.swissLineNumber);
 
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_FILTER_MULTI_SELECT(1, 2), [
