@@ -51,6 +51,15 @@ public class BulkImportErrors {
             .build()).build();
   }
 
+  public static BulkImportError invalidGeography(String field) {
+    return BulkImportError.builder()
+        .errorMessage("Invalid Geography")
+        .displayInfo(DisplayInfo.builder()
+            .code("BULK_IMPORT.VALIDATION.INVALID_GEOGRAPHY")
+            .with("field", field)
+            .build()).build();
+  }
+
   public static BulkImportError invalidServicePointNumber() {
     return BulkImportError.builder()
         .errorMessage("Invalid Service Point Number")
