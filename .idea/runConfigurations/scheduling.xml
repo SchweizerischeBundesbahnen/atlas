@@ -11,7 +11,7 @@
       <option name="taskNames">
         <list>
           <option value="scheduling:bootRun" />
-          <option value="--args='--spring.profiles.active=local'" />
+          <option value="--args='--spring.profiles.active=local'--configure-on-demand" />
         </list>
       </option>
       <option name="vmOptions" />
