@@ -1,6 +1,7 @@
 import CommonUtils from '../../../support/util/common-utils';
 import ReleaseApiUtils from "../../../support/util/release-api-utils";
 
+const VALID_FROM = "2024-08-01";
 describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
   let slnid = "";
   let sboid = "";
@@ -22,7 +23,7 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
       swissLineNumber: ReleaseApiUtils.today(),
       lineType: "ORDERLY",
       businessOrganisation: sboid,
-      validFrom: "2024-08-01",
+      validFrom: VALID_FROM,
       validTo: "2024-08-02",
       lineConcessionType: "RACK_FREE_TRIPS",
       offerCategory: "SL"
@@ -51,12 +52,12 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
   });
 
   it('Step-5: Update the line version', () => {
-    const todayInIso = ReleaseApiUtils.todayAsAtlasString();
+    const todayInIso = ReleaseApiUtils.today().toISOString();
     CommonUtils.put(`/line-directory/v2/lines/versions/${lineVersionId}`, {
-      swissLineNumber: todayInIso,
+      swissLineNumber: todayInIso, // Changed, see above
       lineType: "ORDERLY",
       businessOrganisation: sboid,
-      validFrom: ReleaseApiUtils.todayAsAtlasString(), // Changed, see above
+      validFrom: VALID_FROM,
       validTo: ReleaseApiUtils.tomorrowAsAtlasString(), // Changed, see above
       etagVersion: etagVersion,
       offerCategory: "SL"

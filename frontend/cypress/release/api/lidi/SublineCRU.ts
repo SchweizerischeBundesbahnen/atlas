@@ -68,7 +68,7 @@ describe('LiDi: Scenario Subline-CRUD: New Line', { testIsolation: false }, () =
       slnid: sublineSlnid,
       status: "VALIDATED",
       sublineType: "TECHNICAL",
-      paymentType: "REGIONALWITHOUT", // Should be ignored by atlas
+      paymentType: "REGIONALWITHOUT", // Should be ignored by atlas in v2
       businessOrganisation: sboid,
       validFrom: ReleaseApiUtils.todayAsAtlasString(),
       validTo: ReleaseApiUtils.date(7), // Changed from tomorrow
