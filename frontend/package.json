@@ -30,7 +30,8 @@
   ],
   "prettier": {
     "singleQuote": true,
-    "printWidth": 100
+    "trailingComma": "es5",
+    "endOfLine": "crlf"
   },
   "lint-staged": {
     "frontend/src/**/*": "frontend/node_modules/prettier/bin/prettier.cjs --write --ignore-unknown"
