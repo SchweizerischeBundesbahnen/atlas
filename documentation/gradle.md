@@ -3,14 +3,14 @@
 <!-- toc -->
 
 - [atlas Gradle multi module project](#atlas-gradle-multi-module-project)
-  * [Sharing build logic with convention plugin](#sharing-build-logic-with-convention-plugin)
+    * [Sharing build logic with convention plugin](#sharing-build-logic-with-convention-plugin)
 - [How to](#how-to)
 - [How to increase your Gradle Build Speed](#how-to-increase-your-gradle-build-speed)
-  * [Enable Gradle Offline Mode](#enable-gradle-offline-mode)
-  * [Add GRADLE_OPTS env](#add-gradle_opts-env)
-  * [Configuration Cache](#configuration-cache)
+    * [Enable Gradle Offline Mode](#enable-gradle-offline-mode)
+    * [Add GRADLE_OPTS env](#add-gradle_opts-env)
+    * [Configuration Cache](#configuration-cache)
 - [Troubleshooting](#troubleshooting)
-  * [Parallel Execution](#parallel-execution)
+    * [Parallel Execution](#parallel-execution)
 
 <!-- tocstop -->
 
@@ -57,8 +57,8 @@ see [Sharing build logic with convention plugin](https://docs.gradle.org/current
 
 ### IntelliJ runner
 
-To start a SpringBoot App and to get full benefit of gradle we need to use the Gradle Runner instead of the SpringBoot Runner. 
-the atlas gradle runners are stored in **.idea/runConfigurations**. 
+To start a SpringBoot App and to get full benefit of gradle we need to use the Gradle Runner instead of the SpringBoot Runner.
+the atlas gradle runners are stored in **.idea/runConfigurations**.
 
 ### Enable Gradle Offline Mode
 
@@ -73,7 +73,19 @@ this option else the build would fail._
 
 Add **GRADLE_OPTS=-Xmx2048m** to your environment variables.
 
-### Configuration Cache
+### Gradle Cache
+
+To improve the performance Gradle offers multiple cache features:
+
+1. [Build Cache](https://docs.gradle.org/current/userguide/build_cache.html): caches the output result on certain tasks execution
+2. [Configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html): caches the project configuration
+3. [Parallel configuration caching](https://docs.gradle.org/current/userguide/configuration_cache.html#config_cache:usage:parallel):
+   the configuration cache is parallel generated
+4. [Configuration On Demand](https://docs.gradle.org/current/userguide/multi_project_configuration_and_execution.html):
+   attempts to configure only the relevant projects for the requested tasks, i.e., it only evaluates the
+   build script file of projects participating in the build
+
+#### Configuration Cache
 
 "_The configuration cache is a feature that significantly improves build performance by caching the result of the
 configuration phase and reusing this for subsequent builds. Using the configuration cache, Gradle can skip the configuration
