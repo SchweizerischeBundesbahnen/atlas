@@ -26,11 +26,11 @@ atlas uses [Gradle](https://gradle.org/) as a **Build Automation Tool**.
 
 ### Sharing build logic with convention plugin
 
-The project [atlas-gradle-ci-plugin](../atlas-gradle-ci-plugin) defines two plugins:
+The project [buildSrc](../buildSrc) defines two plugins:
 
-1. [buildlogic.java-conventions](../atlas-gradle-ci-plugin/src/main/kotlin/buildlogic.java-conventions.gradle.kts): util to
+1. [buildlogic.java-conventions](../buildSrc/src/main/kotlin/buildlogic.java-conventions.gradle.kts): util to
    share some java, dependencies and publication logic.
-2. [buildlogic.java-restdoc](../atlas-gradle-ci-plugin/src/main/kotlin/buildlogic.java-restdoc.gradle.kts): add the RestDoc
+2. [buildlogic.java-restdoc](../buildSrc/src/main/kotlin/buildlogic.java-restdoc.gradle.kts): add the RestDoc
    configuration logic when applied to a project.
 
 These are normal gradle plugins that can be applied to subprojects:
@@ -57,8 +57,10 @@ see [Sharing build logic with convention plugin](https://docs.gradle.org/current
 
 ### Enable Gradle Offline Mode
 
-Enable gradle Offline Work from **Preferences-> Build, Execution, Deployment-> Build Tools-> Gradle**. This will not allow the gradle
-to access the network during build and force it to resolve the dependencies from the cache itself. _**Note**: This only works if all
+Enable gradle Offline Work from **Preferences-> Build, Execution, Deployment-> Build Tools-> Gradle**. This will not allow the
+gradle
+to access the network during build and force it to resolve the dependencies from the cache itself. _**Note**: This only works if
+all
 the dependencies are downloaded and stored in the cache once. If you need to modify or add a new dependency you’ll have to disable
 this option else the build would fail._
 
@@ -68,23 +70,24 @@ Add **GRADLE_OPTS=-Xmx2048m** to your environment variables.
 
 ### Configuration Cache
 
-"_The configuration cache is a feature that significantly improves build performance by caching the result of the 
-configuration phase and reusing this for subsequent builds. Using the configuration cache, Gradle can skip the configuration 
-phase entirely when nothing that affects the build configuration, such as build scripts, has changed. Gradle also applies 
-performance improvements to task execution as well._" See 
+"_The configuration cache is a feature that significantly improves build performance by caching the result of the
+configuration phase and reusing this for subsequent builds. Using the configuration cache, Gradle can skip the configuration
+phase entirely when nothing that affects the build configuration, such as build scripts, has changed. Gradle also applies
+performance improvements to task execution as well._" See
 [Official Gradle Configuration cache documentation](https://docs.gradle.org/current/userguide/configuration_cache.html).
 
-To activate the **Configuration Cache** feature there are two ways:
-1. add ```org.gradle.configuration-cache=true``` to [gradle.properties](../gradle.properties)
-2. add to gradle command ```--configuration-cache```, e.g.: ```./gradlew :line-directory:check --configuration-cache```
-
 :warning: Unfortunately at the moment this feature cannot be used with the command execution ```./gradlew build 
---configuration-cache``` due to incompatibility with the asciidoctor plugin.
+--configuration-cache``` due to incompatibility with the asciidoctor plugin
+(see [github issue](https://github.com/asciidoctor/asciidoctor-gradle-plugin/pull/730)).
 
-The good news is that you can use the option ```--configuration-cache``` until ```./gradlew build```. This means you can speed 
-up your local work like:
+To get the benefit of the gradle configuration cache feature we built a small workaround until the Asciidoctor plugin resolve
+the issue:
 
-1. Execute Tests: ```./gradlew check --configuration-cache```
+1. As default the **configuration cache is enabled** and the **Asciidoctor generation is disabled**, by executing ```.
+/gradlew build``` no RestDoc will be generated.
+2. If you want to generate on your local machine the RestDoc you have to execute the following command: ```./gradlew build --no-configuration-cache 
+   -PgenerateAsciidoc=true```.
+3. On Tekton the RestDoc generation ist only enabled on the release Job
 
 ## Troubleshooting
 

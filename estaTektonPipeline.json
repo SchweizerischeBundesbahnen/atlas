@@ -265,7 +265,7 @@
         },
         "deployArtifacts": true,
         "buildDockerImage": true,
-        "additionalBuildParams": "--parallel",
+        "additionalBuildParams": "--parallel --no-configuration-cache -PgenerateAsciidoc=true",
         "sonarScan": {
           "releaseBranchName": "master",
           "enabled": true
