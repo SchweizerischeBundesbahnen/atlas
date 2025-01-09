@@ -1513,7 +1513,8 @@
       "NUMBER_SHORT_NOT_VALID": "Das Attribut numberShort ist ungültig. Die Zahl muss zwischen 1 und 99999 liegen.",
       "MAX_VALUE_FIELD": "Falscher Wert im Attribut {{field}}. Der Wert darf maximal 5 Zeichen lang sein.",
       "VALUE_BETWEEN_FIELD": "Falscher Wert im Attribut {{field}}. Der Wert muss zwischen {{number1}} und {{number2}} Zeichen lang sein",
-      "HEIGHT_TO_HIGH": "Ein Attribut mit einer Präzision von 10 und einer Skalierung von 5 muss auf einen absoluten Wert kleiner als 10^5  gerundet werden."
+      "HEIGHT_TO_HIGH": "Ein Attribut mit einer Präzision von 10 und einer Skalierung von 5 muss auf einen absoluten Wert kleiner als 10^5  gerundet werden.",
+      "INVALID_GEOGRAPHY": "Die eingegebene Geografie ist ungültig. Entweder bleiben 'north', 'east' und 'spatialReference' leer, oder alle drei Felder müssen ausgefüllt sein."
     },
     "STATUS": {
       "INFO": "Information",
