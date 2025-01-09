@@ -1,5 +1,6 @@
 import TthUtils from "../../../support/util/tth-utils";
 import CommonUtils from "../../../support/util/common-utils";
+import ReleaseApiUtils from "../../../support/util/release-api-utils";
 
 describe('TTH: Create a statement with several email-addresses', {testIsolation: false}, () => {
 
@@ -10,11 +11,7 @@ describe('TTH: Create a statement with several email-addresses', {testIsolation:
   let ttfnId = "";
   let statementId = -1;
 
-  const today = new Date();
-  const tomorrow = new Date();
-  tomorrow.setDate(today.getDate() + 1);
-  const currentYear = today.getFullYear();
-
+  const currentYear = ReleaseApiUtils.today().getFullYear();
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
@@ -88,7 +85,7 @@ describe('TTH: Create a statement with several email-addresses', {testIsolation:
   });
 
   it('Step-6: Create dependent Business Organisation', () => {
-    CommonUtils.createDependentBusinessOrganisation(today, tomorrow).then((sboidOfBO:string) => {
+    CommonUtils.createDependentBusinessOrganisation(ReleaseApiUtils.today(), ReleaseApiUtils.tomorrow()).then((sboidOfBO:string) => {
       sboid = sboidOfBO
     });
   });
@@ -96,8 +93,8 @@ describe('TTH: Create a statement with several email-addresses', {testIsolation:
   it('Step-7: Create dependent Time Table Field Number', () => {
     CommonUtils.post("/line-directory/v1/field-numbers/versions", {
       swissTimetableFieldNumber: Cypress._.random(10000, 99999).toString(),
-      validFrom: today.toISOString().split('T')[0],
-      validTo: tomorrow.toISOString().split('T')[0],
+      validFrom: ReleaseApiUtils.todayAsAtlasString(),
+      validTo: ReleaseApiUtils.tomorrowAsAtlasString(),
       businessOrganisation: sboid,
       number: Cypress._.random(10000, 99999).toString(),
     }).then((response) => {

@@ -1,36 +1,31 @@
 import CommonUtils from '../../../support/util/common-utils';
+import ReleaseApiUtils from "../../../support/util/release-api-utils";
 
 describe('LiDi: Scenario Subline-CRUD: New Line', { testIsolation: false }, () => {
   let mainSlnid = "";
   let sublineSlnid = "";
   let sboid = "";
-  let sublineVersionId = "";
-  let etagVersion = "";
+  let sublineVersionId = -1;
+  let etagVersion = -1;
 
-
-  const today = new Date();
-  const tomorrow = new Date();
-  const updatedValidTo = new Date();
-  tomorrow.setDate(today.getDate() + 1);
-  updatedValidTo.setDate(tomorrow.getDate() + 1);
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
   });
 
   it('Step-2: Create dependent Business Organisation', () => {
-    CommonUtils.createDependentBusinessOrganisation(today, today).then((sboidOfBO:string) => {
+    CommonUtils.createDependentBusinessOrganisation(ReleaseApiUtils.today(), ReleaseApiUtils.today()).then((sboidOfBO:string) => {
       sboid = sboidOfBO
     });
   });
 
   it('Step-3: Create dependent line version', () => {
     CommonUtils.post('/line-directory/v2/lines/versions', {
-      swissLineNumber: today,
+      swissLineNumber: ReleaseApiUtils.today(),
       lineType: "ORDERLY",
       businessOrganisation: sboid,
-      validFrom: today.toISOString().split('T')[0],
-      validTo: tomorrow.toISOString().split('T')[0],
+      validFrom: ReleaseApiUtils.todayAsAtlasString(),
+      validTo: ReleaseApiUtils.tomorrowAsAtlasString(),
       lineConcessionType: "LINE_ABROAD",
       offerCategory: "SL"
     }).then((response) => {
@@ -47,8 +42,8 @@ describe('LiDi: Scenario Subline-CRUD: New Line', { testIsolation: false }, () =
       sublineType: "TECHNICAL",
       paymentType: "REGIONALWITHOUT", // Should be ignored by atlas
       businessOrganisation: sboid,
-      validFrom: today.toISOString().split('T')[0],
-      validTo: tomorrow.toISOString().split('T')[0],
+      validFrom: ReleaseApiUtils.todayAsAtlasString(),
+      validTo: ReleaseApiUtils.tomorrowAsAtlasString(),
       description: "This field is now also mandatory."
     }).then((response) => {
       expect(response.status).to.equal(201); // Verify successful creation
@@ -60,24 +55,9 @@ describe('LiDi: Scenario Subline-CRUD: New Line', { testIsolation: false }, () =
     });
   });
 
-  const makeCommonChecks = (response: Cypress.Response<any>) => {
-    expect(response.status).to.equal(200); // Verify successful retrieval
-
-    const sublineVersions = response.body;
-    expect(Array.isArray(sublineVersions)).to.be.true; // Ensure response is an array
-    expect(sublineVersions.length).to.equal(1); // Check for exactly one version
-
-    const sublineVersionsFirst = sublineVersions[0];
-
-    // Validate retrieved values against expected identifiers
-    expect(sublineVersionsFirst.slnid).to.equal(sublineSlnid);
-    expect(sublineVersionsFirst.id).to.equal(sublineVersionId);
-    return sublineVersionsFirst;
-  }
-
   it('Step-4: Read the subline version', () => {
     CommonUtils.get(`/line-directory/v2/sublines/versions/${sublineSlnid}`).then((response) => {
-      const sublineVersionsFirst = makeCommonChecks(response);
+      const sublineVersionsFirst = ReleaseApiUtils.makeCommonChecks(response, sublineSlnid, sublineVersionId);
       etagVersion = sublineVersionsFirst.etagVersion; // Update etagVersion for future updates
     });
   });
@@ -90,12 +70,12 @@ describe('LiDi: Scenario Subline-CRUD: New Line', { testIsolation: false }, () =
       sublineType: "TECHNICAL",
       paymentType: "REGIONALWITHOUT", // Should be ignored by atlas
       businessOrganisation: sboid,
-      validFrom: today.toISOString().split('T')[0],
-      validTo: updatedValidTo, // Use the new validTo date
+      validFrom: ReleaseApiUtils.todayAsAtlasString(),
+      validTo: ReleaseApiUtils.date(7), // Changed from tomorrow
       description: "This field is now also mandatory.",
       etagVersion: etagVersion // Include the ETag version for update
     }).then((response) => {
-      makeCommonChecks(response);
+      ReleaseApiUtils.makeCommonChecks(response, sublineSlnid, sublineVersionId);
     });
   });
 });

@@ -1,4 +1,5 @@
 import CommonUtils from '../../../support/util/common-utils';
+import ReleaseApiUtils from "../../../support/util/release-api-utils";
 
 describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
   let slnid = "";
@@ -6,22 +7,19 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
   let lineVersionId = -1;
   let etagVersion = -1;
 
-  const updatedValidTo = "2024-08-03"; // New validTo date
-  const today = new Date();
-
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
   });
 
   it('Step-2: Create dependent Business Organisation', () => {
-    CommonUtils.createDependentBusinessOrganisation(today, today).then((sboidOfBO:string) => {
+    CommonUtils.createDependentBusinessOrganisation(ReleaseApiUtils.today(), ReleaseApiUtils.today()).then((sboidOfBO:string) => {
       sboid = sboidOfBO
     });
   });
 
   it('Step-3: Create a new line version', () => {
     CommonUtils.post('/line-directory/v2/lines/versions', {
-      swissLineNumber: today,
+      swissLineNumber: ReleaseApiUtils.today(),
       lineType: "ORDERLY",
       businessOrganisation: sboid,
       validFrom: "2024-08-01",
@@ -39,27 +37,10 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
     });
   });
 
-  const makeCommonChecks = (response: Cypress.Response<any>) => {
-    // Check the status code
-    expect(response.status).to.equal(200);
-
-    // Check if the response is an array
-    const lineVersions = response.body;
-    expect(Array.isArray(lineVersions)).to.be.true; // Verify that it is an array
-    expect(lineVersions.length).to.equal(1); // Verify the length of the array
-
-    const lineVersionsFirst = lineVersions[0];
-
-    // Check the values of the first element in the array
-    expect(lineVersionsFirst).to.have.property('slnid').that.equals(slnid);
-    expect(lineVersionsFirst).to.have.property('id').that.is.a('number').and.equals(lineVersionId);
-    return lineVersionsFirst;
-  }
-
   it('Step-4: Read the line version', () => {
     // It is expected that slnid has already been set from a previous step
     CommonUtils.get(`/line-directory/v2/lines/versions/${slnid}`).then((response) => {
-      const lineVersionsFirst = makeCommonChecks(response);
+      const lineVersionsFirst = ReleaseApiUtils.makeCommonChecks(response, slnid, lineVersionId);
 
       expect(lineVersionsFirst).to.have.property('swissLineNumber').that.is.a('string');
 
@@ -70,17 +51,17 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
   });
 
   it('Step-5: Update the line version', () => {
-    const todayInIso = today.toISOString();
+    const todayInIso = ReleaseApiUtils.todayAsAtlasString();
     CommonUtils.put(`/line-directory/v2/lines/versions/${lineVersionId}`, {
       swissLineNumber: todayInIso,
       lineType: "ORDERLY",
       businessOrganisation: sboid,
-      validFrom: "2024-08-01",
-      validTo: updatedValidTo, // Use the updated validTo date
+      validFrom: ReleaseApiUtils.todayAsAtlasString(), // Changed, see above
+      validTo: ReleaseApiUtils.tomorrowAsAtlasString(), // Changed, see above
       etagVersion: etagVersion,
       offerCategory: "SL"
     }).then((response) => {
-      const lineVersionsFirst = makeCommonChecks(response);
+      const lineVersionsFirst = ReleaseApiUtils.makeCommonChecks(response, slnid, lineVersionId);
       expect(lineVersionsFirst).to.have.property('swissLineNumber').that.equals(todayInIso);
     });
   });
