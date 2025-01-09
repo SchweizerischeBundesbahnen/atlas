@@ -55,6 +55,11 @@ see [Sharing build logic with convention plugin](https://docs.gradle.org/current
 
 ## How to increase your Gradle Build Speed
 
+### IntelliJ runner
+
+To start a SpringBoot App and to get full benefit of gradle we need to use the Gradle Runner instead of the SpringBoot Runner. 
+the atlas gradle runners are stored in **.idea/runConfigurations**. 
+
 ### Enable Gradle Offline Mode
 
 Enable gradle Offline Work from **Preferences-> Build, Execution, Deployment-> Build Tools-> Gradle**. This will not allow the
