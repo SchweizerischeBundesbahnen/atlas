@@ -1,5 +1,6 @@
 plugins {
     id("org.sonarqube") version "6.0.1.5171"
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.9"
 }
 
 group = "ch.sbb.atlas"
@@ -8,6 +9,7 @@ version = "2.377.0"
 subprojects {
     if (project.name != "frontend") {
         apply(plugin = "org.sonarqube")
+        apply(plugin = "org.jetbrains.gradle.plugin.idea-ext")
 
         sonar {
             properties {
