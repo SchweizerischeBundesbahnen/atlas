@@ -10,12 +10,16 @@
   * [Enable Gradle Offline Mode](#enable-gradle-offline-mode)
   * [Add GRADLE_OPTS env](#add-gradle_opts-env)
   * [Configuration Cache](#configuration-cache)
-- [Troubleshooting](#troubleshooting)
-  * [Parallel Execution](#parallel-execution)
 - [Gradle Concepts in a Nutshell](#gradle-concepts-in-a-nutshell)
   * [Build Lifecycle](#build-lifecycle)
   * [Gradle Cache](#gradle-cache)
   * [Incremental Build](#incremental-build)
+  * [Gradle Daemon](#gradle-daemon)
+  * [Cacheable Custom Tasks](#cacheable-custom-tasks)
+  * [Build Scan](#build-scan)
+  * [Gradle wrapper](#gradle-wrapper)
+- [Troubleshooting](#troubleshooting)
+  * [Parallel Execution](#parallel-execution)
 
 <!-- tocstop -->
 
@@ -86,9 +90,8 @@ phase entirely when nothing that affects the build configuration, such as build 
 performance improvements to task execution as well._" See
 [Official Gradle Configuration cache documentation](https://docs.gradle.org/current/userguide/configuration_cache.html).
 
-:warning: Unfortunately at the moment this feature cannot be used with the command execution ```./gradlew build 
---configuration-cache``` due to incompatibility with the asciidoctor plugin
-(see [GitHub issue](https://github.com/asciidoctor/asciidoctor-gradle-plugin/pull/730)).
+:warning: Unfortunately at the moment this feature cannot be used with the RestDoc generation task due to incompatibility with 
+the asciidoctor plugin (see [GitHub issue](https://github.com/asciidoctor/asciidoctor-gradle-plugin/pull/730)).
 
 To get the benefit of the gradle configuration cache feature we built a small workaround until the Asciidoctor plugin resolve
 the issue:
@@ -99,39 +102,25 @@ the issue:
    -PgenerateAsciidoc=true```.
 3. On Tekton the RestDoc generation ist only enabled on the release Job
 
-## Troubleshooting
-
-### Parallel Execution
-
-With gradle is possible to build a project
-with [parallel execution](https://docs.gradle.org/current/userguide/performance.html#parallel_execution) mode.
-
-_atlas_ is built by gradle in **parallel execution mode** with the additional parameter ```--parallel```.
-
-The **parallel execution mode** is a heavy process that can overload your machine and is not enabled locally.
-If your machine is fit just run gradle task with ```--parallel```, e.g:
-
-```shell
-./gradlew build --parallel
-```
-
 ## Gradle Concepts in a Nutshell
 
 ### Build Lifecycle
 
 Gradle has 3 major phases, see [Build Lifecycle](https://docs.gradle.org/current/userguide/build_lifecycle.html) for more details:
+
 1. Initialization: Builds a graphical representation of tasks (chunks of work) for each project.
-   1. Detects the settings.gradle(.kts) file.
-   2. Creates a Settings instance.
-   3. Evaluates the settings file to determine which projects (and included builds) make up the build.
-   4. Creates a Project instance for every project.
-2. Configuration: Downloads dependencies, applies plugins, and creates model representations of each modules’ task set. This produces a graph of tasks for phase 3 to consume.
-   1. Evaluates the build scripts, build.gradle(.kts), of every project participating in the build.
-   2. Creates a task graph for requested tasks.
+    1. Detects the settings.gradle(.kts) file.
+    2. Creates a Settings instance.
+    3. Evaluates the settings file to determine which projects (and included builds) make up the build.
+    4. Creates a Project instance for every project.
+2. Configuration: Downloads dependencies, applies plugins, and creates model representations of each modules’ task set. This
+   produces a graph of tasks for phase 3 to consume.
+    1. Evaluates the build scripts, build.gradle(.kts), of every project participating in the build.
+    2. Creates a task graph for requested tasks.
 3. Execution: Runs the subset of tasks based on the input from the graph built in phase 2.
-   1. Schedules and executes the selected tasks.
-   2. Dependencies between tasks determine execution order.
-   3. Execution of tasks can occur in parallel.
+    1. Schedules and executes the selected tasks.
+    2. Dependencies between tasks determine execution order.
+    3. Execution of tasks can occur in parallel.
 
 ### Gradle Cache
 
@@ -149,8 +138,57 @@ When you run a task and the task is marked with **FROM-CACHE** in the console ou
 
 ### Incremental Build
 
-The incremental build is a build that avoids running tasks whose inputs did not change since the previous build, making the 
-execution of such tasks unnecessary. 
+The incremental build is a build that avoids running tasks whose inputs did not change since the previous build, making the
+execution of such tasks unnecessary.
 
 When you run a task and the task is marked with **UP-TO-DATE** in the console output, this means incremental build is at work.
 
+### Gradle Daemon
+
+The Gradle Daemon is a long-lived background process that reduces the time it takes to run a build, see
+[Gradle Daemon Official Documentation](https://docs.gradle.org/current/userguide/gradle_daemon.html):
+
+1. Caching project information across builds
+2. Running in the background so every Gradle build doesn’t have to wait for JVM startup
+3. Benefiting from continuous runtime optimization in the JVM
+4. Watching the file system to calculate exactly what needs to be rebuilt before you run a build
+
+:warning: The Daemon enables faster builds, which is particularly important when a human is sitting in front of the build. For CI
+builds, stability and predictability is of utmost importance. Using a fresh runtime (i.e. process) for each build is more reliable
+as the runtime is completely isolated from previous builds.
+
+### Cacheable Custom Tasks
+
+Even custom tasks can be cacheable,
+see [Cacheable tasks](https://docs.gradle.org/current/userguide/build_cache.html#sec:task_output_caching_details)
+
+### Build Scan
+
+Build scans are a persistent, shareable record of what happened when running a build. Build scans provide insights into your build
+that you can use to identify and fix performance bottleneck. The command ````./gradlew build scan```` run a build scan.
+For more information see [Build Scans official documentation](https://docs.gradle.org/current/userguide/build_scans.html)
+
+### Gradle wrapper
+
+The Gradle wrapper is a script you add to your Gradle project and use to execute your build. The advantages are:
+
+1. no needs to have Gradle installed on your machine to build the project
+2. the wrapper guarantees you’ll be using the version of Gradle required by the project 
+3. you can easily update the project to a newer version of Gradle, and push those changes to version control so other team 
+   members use the newer version
+
+## Troubleshooting
+
+### Parallel Execution
+
+With gradle is possible to build a project
+with [parallel execution](https://docs.gradle.org/current/userguide/performance.html#parallel_execution) mode.
+
+_atlas_ is built by gradle in **parallel execution mode** with the additional parameter ```--parallel```.
+
+The **parallel execution mode** is a heavy process that can overload your machine and is not enabled locally.
+If your machine is fit just run gradle task with ```--parallel```, e.g:
+
+```shell
+./gradlew build --parallel
+```
