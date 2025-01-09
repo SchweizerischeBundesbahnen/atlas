@@ -132,7 +132,7 @@ To improve the performance Gradle offers multiple cache features:
    the configuration cache is parallel generated
 4. [Configuration On Demand](https://docs.gradle.org/current/userguide/multi_project_configuration_and_execution.html):
    attempts to configure only the relevant projects for the requested tasks, i.e., it only evaluates the
-   build script file of projects participating in the build
+   build script file of projects participating in the build. **Note** usefully only local.
 
 When you run a task and the task is marked with **FROM-CACHE** in the console output, this means build cache is at work.
 
