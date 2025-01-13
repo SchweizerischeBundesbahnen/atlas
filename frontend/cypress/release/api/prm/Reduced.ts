@@ -69,11 +69,32 @@ describe('Create new ServicePoint and TrafficPoint for reduced StopPoint', { tes
     });
   });
 
-  describe('PRM: New reduced Stop Point', { testIsolation: false }, () => {
+  describe('PRM: New reduced Stop Point based on Service and Traffic Point', { testIsolation: false }, () => {
 
     const validFrom = ReleaseApiUtils.todayAsAtlasString();
     const validTo = ReleaseApiUtils.todayAsAtlasString();
     const freeText = "freeText";
+
+    const commonStopPointChecks = (stopPoint, expectedMeansOfTransport: string[], expectedValidTo: string) => {
+      expect(stopPoint).to.have.property('id').that.is.a('number');
+
+      expect(stopPoint).to.have.property('reduced').which.is.true;
+
+      expect(stopPoint).to.have.property('meansOfTransport').that.is.an('array');
+      expect(stopPoint.meansOfTransport.length).to.equal(expectedMeansOfTransport.length);
+      expectedMeansOfTransport.forEach(mot => {
+        expect(stopPoint.meansOfTransport).to.include(mot);
+      })
+
+      expect(stopPoint).to.have.property('sloid').that.is.a('string').and.to.equal(parentServicePointSloid);
+      expect(stopPoint).to.have.property('validFrom').that.is.a('string').and.to.equal(validFrom);
+      expect(stopPoint).to.have.property('validTo').that.is.a('string').and.to.equal(expectedValidTo);
+      expect(stopPoint).to.have.property('freeText').that.is.a('string').and.to.equal(freeText);
+      expect(stopPoint).to.have.property('number').to.have.property('number').that.is.a('number').and.to.equal(numberWithoutCheckDigit);
+      expect(stopPoint).to.have.property('status').that.is.a('string').and.to.equal(statusForAllPRMObjects);
+
+      expect(stopPoint).to.have.property('etagVersion').that.is.an('number').and.greaterThan(-1);
+    }
 
     it('Step-1: New reduced Stop Point', () => {
       // Docu: https://confluence.sbb.ch/display/ATLAS/Data-Fact-Matrix#DataFactMatrix-StopPlaces(Haltestellen)
@@ -89,25 +110,11 @@ describe('Create new ServicePoint and TrafficPoint for reduced StopPoint', { tes
       }).then((response) => {
         expect(response.status).to.equal(201);
 
-        expect(response.body).to.have.property('id').that.is.a('number');
-        prmId = response.body.id;
-
-        expect(response.body).to.have.property('reduced').which.is.true;
-
-        expect(response.body).to.have.property('meansOfTransport').that.is.an('array');
-        expect(response.body.meansOfTransport.length).to.equal(1);
-        expect(response.body.meansOfTransport[0]).to.equal(BUS);
-
-        expect(response.body).to.have.property('sloid').that.is.a('string').and.to.equal(parentServicePointSloid);
-        expect(response.body).to.have.property('validFrom').that.is.a('string').and.to.equal(validFrom);
-        expect(response.body).to.have.property('validTo').that.is.a('string').and.to.equal(validTo);
-        expect(response.body).to.have.property('freeText').that.is.a('string').and.to.equal(freeText);
-        expect(response.body).to.have.property('number').to.have.property('number').that.is.a('number').and.to.equal(numberWithoutCheckDigit);
-        expect(response.body).to.have.property('status').that.is.a('string').and.to.equal(statusForAllPRMObjects);
+        const stopPoint = response.body;
+        commonStopPointChecks(stopPoint, [BUS], validTo);
+        prmId = stopPoint.id;
       });
     });
-
-    // TODO: Checked with http-Files until here.
 
     it('Step-2: Check reduced Stop Point', () => {
       CommonUtils.get(`/prm-directory/v1/stop-points?sloids=${parentServicePointSloid}&fromDate=${validFrom}&toDate=${validTo}`).then((response) => {
@@ -115,35 +122,33 @@ describe('Create new ServicePoint and TrafficPoint for reduced StopPoint', { tes
         expect(response.status).to.equal(200);
         expect(response.body.totalCount).to.be.greaterThan(0);
 
-        expect(response.body).to.have.property('objects').that.is.an('array');
-        const objects = response.body.objects;
-        expect(objects.length).to.be.greaterThan(0);
-
-        const prmObject = objects.find(obj => obj.id === prmId);
-        expect(prmObject.sloid).to.equal(parentServicePointSloid);
-
-        expect(prmObject).to.have.property('etagVersion').that.is.an('number').and.greaterThan(-1);
-        etagVersion = prmObject.etagVersion;
-        expect(prmObject.reduced).to.be.true;
+        const stopPoint = ReleaseApiUtils.getPrmObjectById(response.body, prmId, false);
+        commonStopPointChecks(stopPoint, [BUS], validTo);
+        etagVersion = stopPoint.etagVersion;
       });
     });
 
-    it.skip('Step-3: Update reduced Stop Point', () => {
+    it('Step-3: Update reduced Stop Point', () => {
+      const updatedValidTo = ReleaseApiUtils.tomorrowAsAtlasString();
+      const meansOfTransport = [BUS, ELEVATOR];
       CommonUtils.put(`/prm-directory/v1/stop-points/${prmId}`, {
         sloid: parentServicePointSloid,
-        validFrom: ReleaseApiUtils.today(),
-        validTo: ReleaseApiUtils.tomorrow(),
+        validFrom: validFrom,
+        validTo: updatedValidTo,
         etagVersion: etagVersion,
-        meansOfTransport: [BUS, ELEVATOR],
+        meansOfTransport: meansOfTransport,
         freeText: freeText,
         numberWithoutCheckDigit: numberWithoutCheckDigit
       }).then((response) => {
         expect(response.status).to.equal(200);
-        const prmObject = response.body;
-        expect(Array.isArray(prmObject)).to.be.true;
-        expect(prmObject.length).to.equal(1);
+
+        const stopPoint = ReleaseApiUtils.getPrmObjectById(response.body, prmId, true);
+        commonStopPointChecks(stopPoint, meansOfTransport, updatedValidTo);
+        etagVersion = stopPoint.etagVersion;
       });
     });
-  });
 
+    // TODO: Checked with http-Files until here.
+
+  });
 });
