@@ -1,4 +1,4 @@
-export default class Constants {
+export default class PrmConstants {
   static basicValues() {
     return ["YES", "TO_BE_COMPLETED", "NO"];
   }
