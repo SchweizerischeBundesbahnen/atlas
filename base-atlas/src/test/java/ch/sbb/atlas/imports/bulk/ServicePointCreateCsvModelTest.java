@@ -123,7 +123,7 @@ class ServicePointCreateCsvModelTest {
                 .spatialReference(null)
                 .north(1207167.52455)
                 .east(2601352.9171)
-                .height(100000000.0)
+                .height(500.0)
                 .build();
 
         assertThat(bern.validate()).hasSize(1);
