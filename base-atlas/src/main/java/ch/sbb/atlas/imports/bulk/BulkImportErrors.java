@@ -60,6 +60,15 @@ public class BulkImportErrors {
             .build()).build();
   }
 
+  public static BulkImportError isMeansOfTransportMissing(String field) {
+    return BulkImportError.builder()
+        .errorMessage("Means of transport is missing or stopPointType is missing.")
+        .displayInfo(DisplayInfo.builder()
+            .code("BULK_IMPORT.VALIDATION.MEANS_OF_TRANSPORT_IS_MISSING")
+            .with("field", field)
+            .build()).build();
+  }
+
   public static BulkImportError invalidServicePointNumber() {
     return BulkImportError.builder()
         .errorMessage("Invalid Service Point Number")
