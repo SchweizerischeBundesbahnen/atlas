@@ -1511,7 +1511,7 @@
       "DUPLICATE_FIELD": "L'attribut {{field}} avec la valeur {{value}} apparaît plusieurs fois.",
       "COUNTRY_CODE_NOT_VALID": "L'attribut uicCountryCode n'est pas valide.",
       "NUMBER_SHORT_NOT_VALID": "L'attribut numberShort n'est pas valide. Le nombre doit être compris entre 1 et 99999.",
-      "HEIGHT_TO_HIGH": "Un attribut avec une précision de 10 et une échelle de 5 doit être arrondi à une valeur absolue inférieure à 10^5.",
+      "HEIGHT_TO_HIGH": "La hauteur doit être inférieure à 100'000.",
       "INVALID_GEOGRAPHY": "La géographie saisie n'est pas valide. Soit 'north', 'east' et 'spatialReference' restent vides, soit les trois champs doivent être remplis.",
       "MEANS_OF_TRANSPORT_IS_MISSING": "L'attribut MeansOfTransport ne doit pas être vide si l'attribut stopPointType a été renseigné et inversement."
     },
