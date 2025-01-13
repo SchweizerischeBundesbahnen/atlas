@@ -1512,7 +1512,8 @@
       "COUNTRY_CODE_NOT_VALID": "L'attributo uicCountryCode non è valido.",
       "NUMBER_SHORT_NOT_VALID": "L'attributo numberShort non è valido. Il numero deve essere compreso tra 1 e 99999.",
       "HEIGHT_TO_HIGH": "Un attributo con una precisione di 10 e una scala di 5 deve essere arrotondato a un valore assoluto minore di 10^5.",
-      "INVALID_GEOGRAPHY": "La geografia inserita non è valida. O “north”, “east” e “spatialReference” rimangono vuoti, oppure tutti e tre i campi devono essere compilati."
+      "INVALID_GEOGRAPHY": "La geografia inserita non è valida. O “north”, “east” e “spatialReference” rimangono vuoti, oppure tutti e tre i campi devono essere compilati.",
+      "MEANS_OF_TRANSPORT_IS_MISSING": "L'attributo MeansOfTransport non deve essere vuoto se l'attributo stopPointType è stato riempito e viceversa."
     },
     "STATUS": {
       "INFO": "informazione",
