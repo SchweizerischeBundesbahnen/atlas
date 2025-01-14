@@ -35,6 +35,15 @@ public class BulkImportTemplateGenerator {
     templateLookup.put(
         BulkImportConfig.builder()
             .application(ApplicationType.SEPODI)
+            .objectType(BusinessObjectType.SERVICE_POINT)
+            .importType(ImportType.CREATE)
+            .build(),
+        ServicePointTemplateGenerator::getServicePointUpdateCsvModelExample
+    );
+
+    templateLookup.put(
+        BulkImportConfig.builder()
+            .application(ApplicationType.SEPODI)
             .objectType(BusinessObjectType.TRAFFIC_POINT)
             .importType(ImportType.UPDATE)
             .build(),

@@ -1,14 +1,14 @@
-import {Component, Inject} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import {Subject} from 'rxjs';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {NotificationService} from '../../../../core/notification/notification.service';
-import {TthChangeCantonFormGroup} from './model/tth-change-canton-form-group';
-import {ChangeCantonData} from './model/change-canton-data';
-import {takeUntil} from 'rxjs/operators';
-import {ValidationService} from 'src/app/core/validation/validation.service';
-import {TimetableHearingStatementsService} from '../../../../api';
+import { Component, Inject } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { Subject } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { TthChangeCantonFormGroup } from './model/tth-change-canton-form-group';
+import { ChangeCantonData } from './model/change-canton-data';
+import { takeUntil } from 'rxjs/operators';
+import { ValidationService } from 'src/app/core/validation/validation.service';
+import { TimetableHearingStatementsService } from '../../../../api';
 
 @Component({
   selector: 'app-tth-change-canton-dialog',
