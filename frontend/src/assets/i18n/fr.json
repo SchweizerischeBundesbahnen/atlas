@@ -1507,8 +1507,13 @@
       "DATA_MAPPING_ERROR": "Pour l'attribut {{field}}, le type {{expectedType}} était attendu, mais la valeur indiquée était {{errorValue}}.",
       "SLOID_XOR_NUMBER": "Il faut indiquer soit le sloid, soit le number (pas les deux).",
       "INVALID_SERVICE_POINT_NUMBER": "Le numéro de service n'est pas valide.",
-      "FIELD_MANDATORY": "L'attribut {{field}} ne doit pas être supprimé.",
-      "DUPLICATE_FIELD": "L'attribut {{field}} avec la valeur {{value}} apparaît plusieurs fois."
+      "FIELD_MANDATORY": "L'attribut {{field}} ne doit pas être vide.",
+      "DUPLICATE_FIELD": "L'attribut {{field}} avec la valeur {{value}} apparaît plusieurs fois.",
+      "COUNTRY_CODE_NOT_VALID": "L'attribut uicCountryCode n'est pas valide.",
+      "NUMBER_SHORT_NOT_VALID": "L'attribut numberShort n'est pas valide. Le nombre doit être compris entre 1 et 99999.",
+      "HEIGHT_TO_HIGH": "La hauteur doit être inférieure à 100'000.",
+      "INVALID_GEOGRAPHY": "La géographie saisie n'est pas valide. Soit 'north', 'east' et 'spatialReference' restent vides, soit les trois champs doivent être remplis.",
+      "MEANS_OF_TRANSPORT_IS_MISSING": "L'attribut MeansOfTransport ne doit pas être vide si l'attribut stopPointType a été renseigné et inversement."
     },
     "STATUS": {
       "INFO": "Renseignements",

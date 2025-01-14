@@ -1507,8 +1507,13 @@
       "DATA_MAPPING_ERROR": "Beim Attribut {{field}} wurde der Typ {{expectedType}} erwartet, der angegebene Wert war allerdings {{errorValue}}.",
       "SLOID_XOR_NUMBER": "Es muss entweder die sloid oder die number (nicht beides) angegeben werden.",
       "INVALID_SERVICE_POINT_NUMBER": "Die Dienststellennummer ist ungültig.",
-      "FIELD_MANDATORY": "Das Attribut {{field}} darf nicht gelöscht werden.",
-      "DUPLICATE_FIELD": "Das Attribut {{field}} mit dem Wert {{value}} kommt mehrmals vor."
+      "FIELD_MANDATORY": "Das Attribut {{field}} darf nicht leer sein.",
+      "DUPLICATE_FIELD": "Das Attribut {{field}} mit dem Wert {{value}} kommt mehrmals vor.",
+      "COUNTRY_CODE_NOT_VALID": "Das Attribut uicCountryCode ist ungültig.",
+      "NUMBER_SHORT_NOT_VALID": "Das Attribut numberShort ist ungültig. Die Zahl muss zwischen 1 und 99999 liegen.",
+      "HEIGHT_TO_HIGH": "Die Höhe muss kleiner als 100'000 sein.",
+      "INVALID_GEOGRAPHY": "Die eingegebene Geografie ist ungültig. Entweder bleiben 'north', 'east' und 'spatialReference' leer, oder alle drei Felder müssen ausgefüllt sein.",
+      "MEANS_OF_TRANSPORT_IS_MISSING": "Das Attribut MeansOfTransport darf nicht leer sein, wenn das Attribut stopPointType befüllt wurde und umgekehrt."
     },
     "STATUS": {
       "INFO": "Information",
