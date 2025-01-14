@@ -65,4 +65,8 @@ export default class ReleaseApiUtils {
     expect(objects.length).to.be.greaterThan(0);
     return objects.find(obj => obj.id === prmId);
   }
+
+  static extractOneRandomValue = (values) => {
+    return values[Math.floor(Math.random() * values.length)];
+  }
 }
