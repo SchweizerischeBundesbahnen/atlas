@@ -7,7 +7,7 @@ group = "ch.sbb.atlas"
 version = "2.380.0"
 
 configurations {
-    create("test")
+    create("test") //used to create the base-atlas-test jar
 }
 
 dependencies {
@@ -56,16 +56,18 @@ dependencies {
 
     testRuntimeOnly("org.postgresql:postgresql")
 
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+//used to create the base-atlas-test jar
 tasks.getByName("assemble").dependsOn("testJar")
 
+//used to create the base-atlas-test jar
 tasks.register<Jar>("testJar") {
     archiveFileName.set("base-atlas-$version-tests.jar")//use submodule name
     from(project.the<SourceSetContainer>()["test"].output)
 }
 
+//used to create the base-atlas-test jar
 artifacts {
     add("test", tasks["testJar"])
 }
