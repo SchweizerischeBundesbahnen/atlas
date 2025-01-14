@@ -9,33 +9,34 @@ This is the repository for business relevant services for ATLAS.
 - [Big Picture](#big-picture)
 - [Links](#links)
 - [ATLAS CI/CD with Tekton](#atlas-cicd-with-tekton)
-  * [Continuous Deployment Pipeline](#continuous-deployment-pipeline)
-  * [E2E Videos Results](#e2e-videos-results)
+    * [Continuous Deployment Pipeline](#continuous-deployment-pipeline)
+    * [E2E Videos Results](#e2e-videos-results)
 - [Stages and their purpose](#stages-and-their-purpose)
 - [Monitoring and Logging](#monitoring-and-logging)
 - [Hotfix Build and Deployment](#hotfix-build-and-deployment)
-  * [Correlation-Id](#correlation-id)
+    * [Correlation-Id](#correlation-id)
 - [Timeouts](#timeouts)
 - [Development](#development)
-  * [Run locally](#run-locally)
-  * [Monorepo](#monorepo)
+    * [Run locally](#run-locally)
+    * [Monorepo](#monorepo)
+    * [Code-Formatting](#code-formatting)
 - [Structure](#structure)
-  * [APIM-configuration](#apim-configuration)
-  * [Charts](#charts)
-  * [Api Auth Gateway](#api-auth-gateway)
-  * [Gateway](#gateway)
-  * [Kafka](#kafka)
-  * [Line-directory](#line-directory)
-  * [Business-organisation-directory](#business-organisation-directory)
-  * [Mail Service](#mail-service)
-  * [Workflow](#workflow)
-  * [User Administration](#user-administration)
-  * [Service-Point-Directory](#service-point-directory)
-  * [Prm-Directory](#prm-directory)
-  * [Import Service-Point](#import-service-point)
-  * [Location Service](#location-service)
-  * [Base Service lib](#base-service-lib)
-  * [Frontend](#frontend)
+    * [APIM-configuration](#apim-configuration)
+    * [Charts](#charts)
+    * [Api Auth Gateway](#api-auth-gateway)
+    * [Gateway](#gateway)
+    * [Kafka](#kafka)
+    * [Line-directory](#line-directory)
+    * [Business-organisation-directory](#business-organisation-directory)
+    * [Mail Service](#mail-service)
+    * [Workflow](#workflow)
+    * [User Administration](#user-administration)
+    * [Service-Point-Directory](#service-point-directory)
+    * [Prm-Directory](#prm-directory)
+    * [Import Service-Point](#import-service-point)
+    * [Location Service](#location-service)
+    * [Base Service lib](#base-service-lib)
+    * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
 
 <!-- tocstop -->
@@ -49,6 +50,7 @@ This is the repository for business relevant services for ATLAS.
 | **Tekton CD -> TEST**    | [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas-deploy-test/build)](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas-deploy-test/build) |
 
 ## SonarQube Static Code Analysis
+
 * [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
 * [![Maintainability Rating](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=sqale_rating&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
 * [![Vulnerabilities](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=vulnerabilities&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
@@ -192,6 +194,28 @@ master a Jenkins pipiline is executed. The modules are versionied and deployed w
 number.
 
 ![ATLAS Monorepo](documentation/image/ATLAS-Mono-Repo.svg)
+
+### Code-Formatting
+
+Configuration for the Frontend using IntelliJ:
+
+1. Install the "Prettier" plugin
+2. File > Settings > Languages & Frameworks > JavaScript > Prettier
+    1. Select "Automatic Prettier configuration"
+    2. Set "Run for files" to `{frontend/**}.{ts,html,scss}`
+    3. Select "Run on save"
+
+Configuration for Java using Intellij:
+
+1. File > Settings > Editor > Code Style
+    1. Select "Project" scheme
+2. File > Settings > Tools > Actions on Save
+    1. Activate "Reformat code" with (Files: Java, Whole File) options
+
+General configuration:
+
+1. File > Settings > Tools > Actions on Save
+    1. Activate "Optimize imports" with (Files: Java, TypeScript) options
 
 ## Structure
 
