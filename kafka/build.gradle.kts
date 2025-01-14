@@ -15,7 +15,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.mockito:mockito-core")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
