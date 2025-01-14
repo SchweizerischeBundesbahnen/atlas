@@ -21,6 +21,8 @@ extra["jtsVersion"] = "1.20.0"
 extra["springOpenapiUiVersion"] = "2.7.0"
 extra["springCloudVersion"] = "2024.0.0"
 
+val mockitoAgent: Configuration = configurations.create("mockitoAgent")
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
@@ -50,6 +52,9 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testCompileOnly("org.projectlombok:lombok")
     testAnnotationProcessor("org.projectlombok:lombok")
+    mockitoAgent("org.mockito:mockito-core") {
+        isTransitive = false
+    }
 }
 
 publishing {
@@ -109,7 +114,7 @@ tasks.withType<Javadoc> {
 }
 
 tasks.test {
-    jvmArgs = listOf("-Xshare:off")
+    jvmArgs = listOf("-javaagent:${mockitoAgent.asPath}","-Xshare:off")
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
 
