@@ -51,10 +51,13 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testCompileOnly("org.projectlombok:lombok")
+
     testAnnotationProcessor("org.projectlombok:lombok")
     mockitoAgent("org.mockito:mockito-core") {
         isTransitive = false
     }
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
 }
 
 publishing {
@@ -99,6 +102,8 @@ tasks.withType<Test> {
         events("passed", "skipped", "failed","standardOut", "standardError")
         showCauses = true
     }
+    jvmArgs = listOf("-javaagent:${mockitoAgent.asPath}","-Xshare:off")
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -111,11 +116,6 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<Javadoc> {
     options.encoding = "UTF-8"
-}
-
-tasks.test {
-    jvmArgs = listOf("-javaagent:${mockitoAgent.asPath}","-Xshare:off")
-    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
 
 tasks.jacocoTestReport {
