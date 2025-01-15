@@ -11,7 +11,7 @@ subprojects {
 
         sonar {
             properties {
-                property("sonar.project", "atlas")
+                property("sonar.project", "ch.sbb.atlas:atlas")
                 property("sonar.dynamicAnalysis", "reuseReports")
                 property("sonar.java.coveragePlugin", "jacoco")
                 property(
@@ -26,7 +26,7 @@ subprojects {
     if (project.name == "frontend") {
         sonar {
             properties {
-                property("sonar.project", "atlas")
+                property("sonar.project", "ch.sbb.atlas:atlas")
                 property(
                     "sonar.exclusions",
                     "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/*.kts"
