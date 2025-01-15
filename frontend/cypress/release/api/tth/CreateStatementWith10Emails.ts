@@ -17,7 +17,15 @@ describe('TTH: Create a statement with several email-addresses', {testIsolation:
     cy.atlasLogin();
   });
 
-  it('Step-2: Close active year, if available', () => {
+  // This method is done that early, so that the Business Organisation will surely be available for the Time Table Field Number,
+  // because in atlas the info is propagated asynchron.
+  it('Step-2: Create dependent Business Organisation', () => {
+    CommonUtils.createDependentBusinessOrganisation(ReleaseApiUtils.today(), ReleaseApiUtils.tomorrow()).then((sboidOfBO:string) => {
+      sboid = sboidOfBO
+    });
+  });
+
+  it('Step-3: Close active year, if available', () => {
     CommonUtils.get('/line-directory/v1/timetable-hearing/years?statusChoices=' + TthUtils.status.ACTIVE)
       .then((response) => {
       expect(response.status).to.eq(200);
@@ -36,7 +44,7 @@ describe('TTH: Create a statement with several email-addresses', {testIsolation:
     });
   });
 
-  it('Step-3: Determine the next free timetable hearing year', () => {
+  it('Step-4: Determine the next free timetable hearing year', () => {
     // Given: There is no active timetable hearing year
     CommonUtils.get('/line-directory/v1/timetable-hearing/years?statusChoices=' + allStatusChoices)
       .then((response) => {
@@ -61,7 +69,23 @@ describe('TTH: Create a statement with several email-addresses', {testIsolation:
     });
   });
 
-  it('Step-4: Create a timetable hearing year', () => {
+  // This method is done that early, so that the Time Table Field Number will surely be available for the Time Table Hearing Statement,
+  // because in atlas the info is propagated asynchron.
+  it('Step-5: Create dependent Time Table Field Number', () => {
+    CommonUtils.post("/line-directory/v1/field-numbers/versions", {
+      swissTimetableFieldNumber: Cypress._.random(10000, 99999).toString(),
+      validFrom: ReleaseApiUtils.todayAsAtlasString(),
+      validTo: ReleaseApiUtils.tomorrowAsAtlasString(),
+      businessOrganisation: sboid,
+      number: Cypress._.random(10000, 99999).toString(),
+    }).then((response) => {
+      expect(response).property('status').to.equal(201);
+      expect(response).property('body').property('ttfnid').to.exist.and.be.a('string');
+      ttfnId = response.body.ttfnid;
+    })
+  });
+
+  it('Step-6: Create a timetable hearing year', () => {
       const hearingYear = timetableYear - 1;
       CommonUtils.post('/line-directory/v1/timetable-hearing/years', {
         timetableYear: timetableYear,
@@ -76,32 +100,11 @@ describe('TTH: Create a statement with several email-addresses', {testIsolation:
       });
   });
 
-
-  it('Step-5: Start the timetable hearing year', () => {
+  it('Step-7: Start the timetable hearing year', () => {
     CommonUtils.post(`/line-directory/v1/timetable-hearing/years/${timetableYear}/start`).then((response) => {
       expect(response).property('status').to.equal(200);
       expect(response).property('body').property('hearingStatus').to.eq(TthUtils.status.ACTIVE);
     });
-  });
-
-  it('Step-6: Create dependent Business Organisation', () => {
-    CommonUtils.createDependentBusinessOrganisation(ReleaseApiUtils.today(), ReleaseApiUtils.tomorrow()).then((sboidOfBO:string) => {
-      sboid = sboidOfBO
-    });
-  });
-
-  it('Step-7: Create dependent Time Table Field Number', () => {
-    CommonUtils.post("/line-directory/v1/field-numbers/versions", {
-      swissTimetableFieldNumber: Cypress._.random(10000, 99999).toString(),
-      validFrom: ReleaseApiUtils.todayAsAtlasString(),
-      validTo: ReleaseApiUtils.tomorrowAsAtlasString(),
-      businessOrganisation: sboid,
-      number: Cypress._.random(10000, 99999).toString(),
-    }).then((response) => {
-      expect(response).property('status').to.equal(201);
-      expect(response).property('body').property('ttfnid').to.exist.and.be.a('string');
-      ttfnId = response.body.ttfnid;
-    })
   });
 
   it('Step-8: Create statement with 10 email-addresses in active timetable hearing year', () => {
