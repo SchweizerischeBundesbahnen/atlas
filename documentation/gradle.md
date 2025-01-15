@@ -3,30 +3,35 @@
 <!-- toc -->
 
 - [atlas Gradle multi module project](#atlas-gradle-multi-module-project)
-    * [Sharing build logic with convention plugin](#sharing-build-logic-with-convention-plugin)
-- [How to](#how-to)
-- [How to increase your Gradle Build Speed](#how-to-increase-your-gradle-build-speed)
-    * [IntelliJ runner](#intellij-runner)
-    * [Enable Gradle Offline Mode](#enable-gradle-offline-mode)
-    * [Add GRADLE_OPTS env](#add-gradle_opts-env)
-    * [Configuration Cache](#configuration-cache)
+  * [Sharing build logic with convention plugin](#sharing-build-logic-with-convention-plugin)
+- [Useful gradle commands](#useful-gradle-commands)
 - [Gradle Concepts in a Nutshell](#gradle-concepts-in-a-nutshell)
-    * [Build Lifecycle](#build-lifecycle)
-    * [Gradle Cache](#gradle-cache)
-    * [Incremental Build](#incremental-build)
-    * [Gradle Daemon](#gradle-daemon)
-    * [Cacheable Custom Tasks](#cacheable-custom-tasks)
-    * [Build Scan](#build-scan)
-    * [Gradle wrapper](#gradle-wrapper)
+  * [Build Lifecycle](#build-lifecycle)
+  * [Gradle Cache](#gradle-cache)
+  * [Incremental Build](#incremental-build)
+  * [Gradle Daemon](#gradle-daemon)
+  * [Gradle Cache](#gradle-cache-1)
+  * [Build Scan](#build-scan)
+  * [Gradle wrapper](#gradle-wrapper)
+  * [Dependency Management](#dependency-management)
+    + [Implementation vs api](#implementation-vs-api)
+    + [Best Practices for Gradle Dependency Management](#best-practices-for-gradle-dependency-management)
+- [How to increase your Gradle Build Speed](#how-to-increase-your-gradle-build-speed)
+  * [IntelliJ runner](#intellij-runner)
+  * [Enable Gradle Offline Mode](#enable-gradle-offline-mode)
+  * [Add GRADLE_OPTS env](#add-gradle_opts-env)
+  * [Configuration Cache](#configuration-cache)
 - [Troubleshooting](#troubleshooting)
-    * [Parallel Execution](#parallel-execution)
-- [Useful gradle commands summary](#useful-gradle-commands-summary)
+  * [Parallel Execution](#parallel-execution)
+- [Useful links](#useful-links)
 
 <!-- tocstop -->
 
 atlas uses [Gradle](https://gradle.org/) as a **Build Automation Tool**.
 
 ## atlas Gradle multi module project
+
+![gradle-multi-project-structure.png](image/gradle-multi-project-structure.png)
 
 1. [settings.gradle.kts](../settings.gradle.kts)
    see [Gradle Settings script](https://docs.gradle.org/current/userguide/settings_file_basics.html#sec:settings_file_script)
@@ -94,6 +99,8 @@ Gradle has 3 major phases, see [Build Lifecycle](https://docs.gradle.org/current
     2. Dependencies between tasks determine execution order.
     3. Execution of tasks can occur in parallel.
 
+![img.png](image/gradle-build-lifecycle.png)
+
 ### Gradle Cache
 
 To improve the performance, Gradle offers multiple cache features:
@@ -129,10 +136,17 @@ The Gradle Daemon is a long-lived background process that reduces the time it ta
 builds, stability and predictability is of utmost importance. Using a fresh runtime (i.e. process) for each build is more reliable
 as the runtime is completely isolated from previous builds.
 
-### Cacheable Custom Tasks
+### Gradle Cache
 
-Even custom tasks can be cacheable,
-see [Cacheable tasks](https://docs.gradle.org/current/userguide/build_cache.html#sec:task_output_caching_details)
+To improve its performance, Gradle offers multiple caching features:
+
+1. Build cache: caches the output result on certain tasks execution
+2. Configuration cache: caches the project configuration
+3. Parallel configuration caching: the configuration cache is parallel generated
+4. Configuration On Demand: attempts to configure only the relevant projects for the requested tasks, i.e., it only evaluates the
+   build script file of projects participating in the build. Note usefully only local.
+5. Cacheable Custom Tasks: Custom tasks can also be cacheable
+   see [Cacheable tasks](https://docs.gradle.org/current/userguide/build_cache.html#sec:task_output_caching_details)
 
 ### Build Scan
 
@@ -148,6 +162,38 @@ The Gradle wrapper is a script you add to your Gradle project and use to execute
 2. the wrapper guarantees you’ll be using the version of Gradle required by the project
 3. you can easily update the project to a newer version of Gradle, and push those changes to version control so other team
    members use the newer version
+
+### Dependency Management
+
+Gradle documentation:
+1. [Dependency Management](https://docs.gradle.org/current/userguide/getting_started_dep_man.html#dependency-management-in-gradle)
+2. [Dependency Management Basics](https://docs.gradle.org/current/userguide/dependency_management_basics.html)
+
+#### Implementation vs api
+
+**The main difference between implementation and api in Gradle is that implementation doesn’t transitively export the dependency
+to other modules that depend on this module. In contrast, api transitively exports the dependency to other modules.**
+
+:warning: **We should use the api configuration with caution because it increases the build time significantly over the
+implementation configuration.** As an example, if an api dependency changes its external API, Gradle recompiles all modules that
+have access to that dependency, even at compile time. In contrast, if an implementation dependency changes its external API,
+Gradle doesn’t recompile all modules even when the software in the modules is not running because the dependent modules don’t
+have access to that dependency at compile time.
+
+#### Best Practices for Gradle Dependency Management
+
+To ensure effective dependency management in Gradle, we should consider a few best practices:
+
+1. Use the **implementation** configuration by default
+2. Use the **compileOnly** configuration when you don’t want to package the dependency in the build output. An example use case is a
+   software library that only includes compile-time annotations, which are typically used to generate code but are not needed at
+   runtime
+3. Avoid using the **api** configuration, as it can lead to longer build times and increased memory usage
+4. Use specific versions of dependencies instead of dynamic versioning to ensure consistent behavior across builds
+5. Keep the dependency graph as small as possible to reduce complexity and improve build times
+6. Regularly check for updates to dependencies and update them as necessary to ensure that the project uses the latest and most
+   secure versions
+7. Use dependency locking to ensure that builds are reproducible and consistent across different machines and environments
 
 ## How to increase your Gradle Build Speed
 
@@ -205,3 +251,9 @@ If your machine is fit just run a gradle task with ```--parallel```, e.g:
 ```shell
 ./gradlew build --parallel
 ```
+
+## Useful links
+
+1. [Run Custom Gradle Task After “build](https://handstandsam.com/2021/06/07/run-custom-gradle-task-after-build/)
+2. [Gradle Cache: Your build’s best friend](https://proandroiddev.com/gradle-cache-your-builds-best-friend-4970ad32420e)
+3. [Improve the Performance of Gradle Builds](https://docs.gradle.org/current/userguide/performance.html)
