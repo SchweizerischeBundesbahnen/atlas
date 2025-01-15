@@ -186,7 +186,7 @@ To ensure effective dependency management in Gradle, we should consider a few be
 
 ### IntelliJ runner
 
-To start a SpringBoot App and to get full benefit of Gradle, we need to use the Gradle Runner instead of the SpringBoot Runner.
+To start a SpringBoot App and to get the full benefit of Gradle, we need to use the Gradle Runner instead of the SpringBoot Runner.
 The atlas Gradle runners are stored in **.idea/runConfigurations**.
 
 ### Enable Gradle Offline Mode
