@@ -8,7 +8,6 @@ group = "ch.sbb.atlas"
 version = "2.380.0"
 
 dependencies {
-    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}"))
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
     implementation("org.springframework.security:spring-security-oauth2-client")
