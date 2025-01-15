@@ -53,7 +53,7 @@ export default class ReleaseApiUtils {
     return lineVersionsFirst;
   }
 
-  static getPrmObjectById = (body, prmId: number, arePrmObjectsInBody: boolean) => {
+  static getPrmObjectById = (body, prmId: number, arePrmObjectsInBody: boolean, expectedNumberOfObjects: number) => {
     let objects;
     if (arePrmObjectsInBody) {
       expect(body).is.an('array');
@@ -62,7 +62,7 @@ export default class ReleaseApiUtils {
       expect(body).to.have.property('objects').that.is.an('array');
       objects = body.objects;
     }
-    expect(objects.length).to.be.greaterThan(0);
+    expect(objects.length).to.equal(expectedNumberOfObjects);
     return objects.find(obj => obj.id === prmId);
   }
 
