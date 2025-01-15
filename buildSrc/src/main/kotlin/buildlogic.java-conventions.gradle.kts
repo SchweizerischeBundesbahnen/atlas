@@ -108,13 +108,6 @@ tasks.withType<Test> {
 
 tasks.withType<JavaCompile>().configureEach {
     options.isIncremental = true
-}
-
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-}
-
-tasks.withType<Javadoc> {
     options.encoding = "UTF-8"
 }
 
