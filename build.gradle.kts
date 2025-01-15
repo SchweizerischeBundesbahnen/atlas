@@ -11,6 +11,7 @@ subprojects {
         sonar {
             properties {
                 property("sonar.projectKey", "ch.sbb.atlas:atlas")
+                property("sonar.projectVersion", project.version)
                 property("sonar.dynamicAnalysis", "reuseReports")
                 property("sonar.java.coveragePlugin", "jacoco")
                 property(
@@ -25,6 +26,7 @@ subprojects {
         sonar {
             properties {
                 property("sonar.projectKey", "ch.sbb.atlas:atlas")
+                property("sonar.projectVersion", project.version)
                 property(
                     "sonar.exclusions",
                     "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/*.kts"
