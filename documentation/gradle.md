@@ -10,7 +10,6 @@
   * [Gradle Cache](#gradle-cache)
   * [Incremental Build](#incremental-build)
   * [Gradle Daemon](#gradle-daemon)
-  * [Gradle Cache](#gradle-cache-1)
   * [Build Scan](#build-scan)
   * [Gradle wrapper](#gradle-wrapper)
   * [Dependency Management](#dependency-management)
@@ -135,18 +134,6 @@ The Gradle Daemon is a long-lived background process that reduces the time it ta
 :warning: The Daemon enables faster builds, which is particularly important when a human is sitting in front of the build. For CI
 builds, stability and predictability is of utmost importance. Using a fresh runtime (i.e. process) for each build is more reliable
 as the runtime is completely isolated from previous builds.
-
-### Gradle Cache
-
-To improve its performance, Gradle offers multiple caching features:
-
-1. Build cache: caches the output result on certain tasks execution
-2. Configuration cache: caches the project configuration
-3. Parallel configuration caching: the configuration cache is parallel generated
-4. Configuration On Demand: attempts to configure only the relevant projects for the requested tasks, i.e., it only evaluates the
-   build script file of projects participating in the build. Note usefully only local.
-5. Cacheable Custom Tasks: Custom tasks can also be cacheable
-   see [Cacheable tasks](https://docs.gradle.org/current/userguide/build_cache.html#sec:task_output_caching_details)
 
 ### Build Scan
 
