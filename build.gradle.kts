@@ -6,12 +6,11 @@ group = "ch.sbb.atlas"
 version = "2.377.0"
 
 subprojects {
+    apply(plugin = "org.sonarqube")
     if (project.name != "frontend") {
-        apply(plugin = "org.sonarqube")
-
         sonar {
             properties {
-                property("sonar.project", "ch.sbb.atlas:atlas")
+                property("sonar.projectKey", "ch.sbb.atlas:atlas")
                 property("sonar.dynamicAnalysis", "reuseReports")
                 property("sonar.java.coveragePlugin", "jacoco")
                 property(
@@ -22,11 +21,10 @@ subprojects {
             }
         }
     }
-
     if (project.name == "frontend") {
         sonar {
             properties {
-                property("sonar.project", "ch.sbb.atlas:atlas")
+                property("sonar.projectKey", "ch.sbb.atlas:atlas")
                 property(
                     "sonar.exclusions",
                     "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/*.kts"
