@@ -216,7 +216,7 @@
           "name": "generate-apim-config",
           "taskRef": "esta-gradle-build-extra-large",
           "params": {
-            "TASKS": ":apim-configuration:generateSpec",
+            "TASKS": ":apim-configuration:generateSpec --configure-on-demand",
             "ARTIFACTORY_SECRET": "esta-tekton-basicauth-docker",
             "BUILDER_JAVA_VERSION": "21",
             "BUILDER_KOTLIN_VERSION": "1.7",
