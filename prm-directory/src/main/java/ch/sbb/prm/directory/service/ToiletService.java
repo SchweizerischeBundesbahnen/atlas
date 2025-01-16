@@ -5,7 +5,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletOverviewModel;
-import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -66,6 +66,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
     versionableService.applyVersioning(ToiletVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(toiletRepository));
   }
+
   public Page<ToiletVersion> findAll(ToiletSearchRestrictions searchRestrictions) {
     return toiletRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
@@ -90,7 +91,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
   }
 
   public List<ToiletOverviewModel> buildOverview(List<ToiletVersion> toiletVersions) {
-    List<ToiletVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(toiletVersions,
+    List<ToiletVersion> mergedVersions = OverviewDisplayBuilder.mergeVersionsForDisplay(toiletVersions,
         ToiletVersion::getSloid);
     return mergedVersions.stream()
         .map(toilet -> ToiletVersionMapper.toOverviewModel(toilet, getRecordingStatusIncludingRelation(toilet.getSloid(),
