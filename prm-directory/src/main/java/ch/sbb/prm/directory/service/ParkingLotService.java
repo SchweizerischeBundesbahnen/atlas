@@ -5,7 +5,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
-import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -91,7 +91,7 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
   }
 
   public List<ParkingLotOverviewModel> buildOverview(List<ParkingLotVersion> parkingLotVersions) {
-    List<ParkingLotVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(parkingLotVersions,
+    List<ParkingLotVersion> mergedVersions = OverviewDisplayBuilder.mergeVersionsForDisplay(parkingLotVersions,
         ParkingLotVersion::getSloid);
     return mergedVersions.stream()
         .map(parkingLot -> ParkingLotVersionMapper.toOverviewModel(parkingLot,

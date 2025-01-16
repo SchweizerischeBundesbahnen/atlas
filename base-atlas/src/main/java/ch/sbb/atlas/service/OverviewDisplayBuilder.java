@@ -2,6 +2,7 @@ package ch.sbb.atlas.service;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.DateRange;
+import ch.sbb.atlas.versioning.convert.ReflectionHelper;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.data.domain.Pageable;
 
 @UtilityClass
-public class OverviewService {
+public class OverviewDisplayBuilder {
 
   public static <T> Container<T> toPagedContainer(List<T> elements, Pageable pageable) {
     return Container.<T>builder()
@@ -47,7 +48,7 @@ public class OverviewService {
   public static <T extends Versionable> T getDisplayModel(List<T> versions) {
     List<T> sortedVersions = versions.stream().sorted(Comparator.comparing(T::getValidFrom)).toList();
 
-    T versionToShow = getPrioritizedVersion(sortedVersions);
+    T versionToShow = ReflectionHelper.copyObjectViaBuilder(getPrioritizedVersion(sortedVersions));
     versionToShow.setValidFrom(sortedVersions.getFirst().getValidFrom());
     versionToShow.setValidTo(sortedVersions.getLast().getValidTo());
     return versionToShow;
