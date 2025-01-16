@@ -49,7 +49,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "stop_point_version")
 @AtlasVersionable
@@ -126,12 +126,12 @@ public class StopPointVersion extends BaseEntity implements PrmVersionable, Vari
   @AtlasVersionableProperty
   private String assistanceCondition;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceService;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType audioTicketMachine;
@@ -141,12 +141,12 @@ public class StopPointVersion extends BaseEntity implements PrmVersionable, Vari
   @AtlasVersionableProperty
   private String additionalInformation;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType dynamicAudioSystem;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType dynamicOpticSystem;
@@ -164,17 +164,17 @@ public class StopPointVersion extends BaseEntity implements PrmVersionable, Vari
   @AtlasVersionableProperty
   private String url;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType visualInfo;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType wheelchairTicketMachine;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BooleanOptionalAttributeType assistanceRequestFulfilled;
@@ -185,7 +185,7 @@ public class StopPointVersion extends BaseEntity implements PrmVersionable, Vari
   private BooleanOptionalAttributeType ticketMachine;
 
   @Enumerated(EnumType.STRING)
-  @PrmStatusSubSet(anyOf = {Status.VALIDATED,Status.REVOKED})
+  @PrmStatusSubSet(anyOf = {Status.VALIDATED, Status.REVOKED})
   private Status status;
 
   public Set<MeanOfTransport> getMeansOfTransport() {
@@ -194,8 +194,9 @@ public class StopPointVersion extends BaseEntity implements PrmVersionable, Vari
     }
     return meansOfTransport;
   }
+
   @Transient
-  public boolean isReduced(){
+  public boolean isReduced() {
     return PrmMeansOfTransportHelper.isReduced(meansOfTransport);
   }
 
