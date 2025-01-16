@@ -7,7 +7,7 @@ group = "ch.sbb.atlas"
 version = "2.383.0"
 
 configurations {
-    create("test")
+    create("test") //used to create the base-atlas-test jar
 }
 
 dependencies {
@@ -50,23 +50,24 @@ dependencies {
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.mockito:mockito-core")
 
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:postgresql")
 
     testRuntimeOnly("org.postgresql:postgresql")
 
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+//used to create the base-atlas-test jar
 tasks.getByName("assemble").dependsOn("testJar")
 
+//used to create the base-atlas-test jar
 tasks.register<Jar>("testJar") {
     archiveFileName.set("base-atlas-$version-tests.jar")//use submodule name
     from(project.the<SourceSetContainer>()["test"].output)
 }
 
+//used to create the base-atlas-test jar
 artifacts {
     add("test", tasks["testJar"])
 }

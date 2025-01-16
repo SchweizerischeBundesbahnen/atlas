@@ -48,7 +48,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:postgresql")
 
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 springBoot {
