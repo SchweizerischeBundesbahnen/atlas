@@ -3,7 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.location.LocationService;
-import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -128,9 +128,10 @@ public class TrafficPointElementService {
     List<ReadTrafficPointElementVersionModel> trafficPointElements = trafficPointElementVersions.stream()
         .map(TrafficPointElementVersionMapper::toModel).toList();
 
-    List<ReadTrafficPointElementVersionModel> displayableVersions = OverviewService.mergeVersionsForDisplay(trafficPointElements,
+    List<ReadTrafficPointElementVersionModel> displayableVersions = OverviewDisplayBuilder.mergeVersionsForDisplay(
+        trafficPointElements,
         ReadTrafficPointElementVersionModel::getSloid);
-    return OverviewService.toPagedContainer(displayableVersions, pageable);
+    return OverviewDisplayBuilder.toPagedContainer(displayableVersions, pageable);
   }
 
   public List<TrafficPointElementVersion> getTrafficPointElementsByServicePointNumber(Integer servicePointNumber,

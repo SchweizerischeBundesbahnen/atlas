@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.user.administration.ClientCredentialAdministrationApiV1;
 import ch.sbb.atlas.api.user.administration.ClientCredentialModel;
 import ch.sbb.atlas.api.user.administration.ClientCredentialPermissionCreateModel;
-import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.mapper.ClientCredentialMapper;
 import ch.sbb.atlas.user.administration.mapper.KafkaModelMapper;
@@ -24,9 +24,10 @@ public class ClientCredentialAdministrationController implements ClientCredentia
 
   @Override
   public Container<ClientCredentialModel> getClientCredentials(Pageable pageable) {
-    List<ClientCredentialPermission> clientCredentialPermissions =  clientCredentialAdministrationService.getClientCredentialPermissions();
+    List<ClientCredentialPermission> clientCredentialPermissions =
+        clientCredentialAdministrationService.getClientCredentialPermissions();
     List<ClientCredentialModel> clientCredentials = ClientCredentialMapper.toModel(clientCredentialPermissions);
-    return OverviewService.toPagedContainer(clientCredentials, pageable);
+    return OverviewDisplayBuilder.toPagedContainer(clientCredentials, pageable);
   }
 
   @Override
