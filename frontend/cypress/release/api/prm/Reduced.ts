@@ -8,8 +8,6 @@ let trafficPointSloid = "";
 let etagVersion = -1;
 let sboid = "";
 
-let validFrom = ReleaseApiUtils.todayAsAtlasString();
-let validTo = ReleaseApiUtils.todayAsAtlasString();
 const freeText = "freeText";
 
 const statusForAllPRMObjects = "VALIDATED";
@@ -19,7 +17,7 @@ const BUS = "BUS";
 const ELEVATOR = "ELEVATOR";
 const meansOfTransport = [BUS];
 
-const validatePrmObject = (object) => {
+const validatePrmObject = (object, validFrom: string, validTo: string) => {
   expect(object).to.have.property('id').that.is.a('number');
 
   expect(object).to.have.property('validFrom').that.is.a('string').and.to.equal(validFrom);
@@ -29,6 +27,8 @@ const validatePrmObject = (object) => {
 
   expect(object).to.have.property('etagVersion').that.is.an('number').and.greaterThan(-1);
 };
+
+// TODO: Is it helpful to add versioning (incl. increasing only the validTo-date) to the PRM-Objects?
 
 describe('Create new ServicePoint and TrafficPoint for reduced StopPoint', { testIsolation: false }, () => {
 
@@ -89,8 +89,10 @@ describe('Create new ServicePoint and TrafficPoint for reduced StopPoint', { tes
 describe('PRM: New reduced Stop Point based on Service and Traffic Point', { testIsolation: false }, () => {
   let stopPointId = -1;
 
+  const validFrom = ReleaseApiUtils.todayAsAtlasString();
+  let validTo = ReleaseApiUtils.todayAsAtlasString();
   const validateStopPoint = (stopPoint: any, expectedMeansOfTransport: string[]) => {
-    validatePrmObject(stopPoint)
+    validatePrmObject(stopPoint, validFrom, validTo)
     expect(stopPoint).to.have.property('reduced').to.be.true;
     expect(stopPoint).to.have.property('sloid').that.is.a('string').and.to.equal(parentServicePointSloid);
     expect(stopPoint).to.have.property('freeText').that.is.a('string').and.to.equal(freeText);
@@ -159,11 +161,14 @@ describe('PRM: New reduced Toilet based on Service, Traffic and Stop Point', { t
   let toiletId = -1;
   let toiletSloid = "";
 
+  const validFrom = ReleaseApiUtils.todayAsAtlasString();
+  const validTo = ReleaseApiUtils.todayAsAtlasString();
+
   const wheelchairToilet = ReleaseApiUtils.extractOneRandomValue(PrmConstants.basicValuesAndNotApplicableAndPartially());
   const designation = "öffentliches WC im Bf Basel Bad Bf";
 
   const validateCommonToiletAttributes = (toilet, designation: string, additionalInformation: string) => {
-    validatePrmObject(toilet)
+    validatePrmObject(toilet, validFrom, validTo)
     expect(toilet).to.have.property('designation').that.is.a('string').and.to.equal(designation);
     expect(toilet).to.have.property('wheelchairToilet').that.is.a('string').and.to.equal(wheelchairToilet);
     expect(toilet).to.have.property('additionalInformation').and.to.equal(additionalInformation);
@@ -221,7 +226,6 @@ describe('PRM: New reduced Toilet based on Service, Traffic and Stop Point', { t
 
       const toilet = ReleaseApiUtils.getPrmObjectById(response.body, toiletId, true, 1);
       validateCommonToiletAttributes(toilet, updatedDesignation, updatedAdditionalInformation);
-      etagVersion = toilet.etagVersion;
     });
   });
 });
@@ -238,17 +242,21 @@ describe('PRM: New reduced Ticket Counter', { testIsolation: false }, () => {
   const inductionLoop = ReleaseApiUtils.extractOneRandomValue(PrmConstants.basicValuesAndNotApplicableAndPartially());
   const wheelchairAccess = ReleaseApiUtils.extractOneRandomValue(PrmConstants.basicValuesAndNotApplicableAndPartially());
 
-  validFrom = ReleaseApiUtils.todayAsAtlasString();
-  validTo = ReleaseApiUtils.todayAsAtlasString();
+  const validFrom = ReleaseApiUtils.todayAsAtlasString();
+  const validTo = ReleaseApiUtils.todayAsAtlasString();
 
   const validateCommonTicketCounterAttributes = (ticketCounter, designation: string, additionalInformation: string) => {
-    validatePrmObject(ticketCounter)
+    validatePrmObject(ticketCounter, validFrom, validTo)
     expect(ticketCounter).to.have.property('designation').that.is.a('string').and.to.equal(designation);
     expect(ticketCounter).to.have.property('wheelchairAccess').that.is.a('string').and.to.equal(wheelchairAccess);
     expect(ticketCounter).to.have.property('additionalInformation').and.to.equal(additionalInformation);
 
     expect(ticketCounter).to.have.property('sloid').that.is.a('string').and.to.equal(ticketCounterSloid);
     expect(ticketCounter).to.have.property('parentServicePointSloid').that.is.a('string').and.to.equal(parentServicePointSloid);
+
+    expect(ticketCounter).to.have.property('inductionLoop').and.to.equal(inductionLoop);
+    expect(ticketCounter).to.have.property('openingHours').and.to.equal(openingHours);
+    expect(ticketCounter).to.have.property('type').and.to.equal(referencePointElementType);
   };
 
   it('Step-1: New reduced Ticket Counter', () => {
@@ -265,49 +273,29 @@ describe('PRM: New reduced Ticket Counter', { testIsolation: false }, () => {
       wheelchairAccess: wheelchairAccess,
       type: referencePointElementType
     }).then((response) => {
-      expect(response.status).to.equal(201);
 
+      expect(response.status).to.equal(201);
       const ticketCounter = response.body;
       validateCommonTicketCounterAttributes(ticketCounter, designation, null);
-      expect(response.body).to.have.property('sloid').and.to.equal(`${parentServicePointSloid}:${referencePointElementType}1`);
-      expect(response.body).to.have.property('validFrom').and.to.equal(validFrom);
-      expect(response.body).to.have.property('validTo').and.to.equal(validTo);
-      expect(response.body).to.have.property('parentServicePointSloid').and.to.equal(parentServicePointSloid);
-      expect(response.body).to.have.property('designation').and.to.equal(designation);
-      expect(response.body).to.have.property('additionalInformation').and.to.equal(additionalInformation);
-      expect(response.body).to.have.property('inductionLoop').and.to.equal(inductionLoop);
-      expect(response.body).to.have.property('openingHours').and.to.equal(openingHours);
-      expect(response.body).to.have.property('type').and.to.equal(referencePointElementType);
       ticketCounterId = ticketCounter.id;
     });
   });
 
-  it.skip('Step-2: Get reduced Ticket Counter', () => {
-    CommonUtils.get(`/prm-directory/v1/contact-points?sloids=${parentServicePointSloid}`).then((response) => {
+  it('Step-2: Get reduced Ticket Counter', () => {
+    CommonUtils.get(`/prm-directory/v1/contact-points?parentServicePointSloids=${parentServicePointSloid}`).then((response) => {
       expect(response.status).to.equal(200);
-      const objects = response.body.objects;
-
-      expect(Array.isArray(objects)).to.be.true;
-      expect(objects.length).to.equal(1);
-
-      const prmObject = objects.find(obj => String(obj.id) === prmId);
-      expect(prmObject).to.have.property('sloid').and.to.equal(`${parentServicePointSloid}:${referencePointElementType}1`);
-      expect(prmObject).to.have.property('validFrom').and.to.equal(validFrom);
-      expect(prmObject).to.have.property('validTo').and.to.equal(validTo);
-      expect(prmObject).to.have.property('designation').and.to.equal(designation);
-      expect(prmObject).to.have.property('additionalInformation').and.to.equal(additionalInformation);
-      expect(prmObject).to.have.property('inductionLoop').and.to.equal(inductionLoop);
-      expect(prmObject).to.have.property('openingHours').and.to.equal(openingHours);
-      expect(prmObject).to.have.property('type').and.to.equal(referencePointElementType);
+      const ticketCounter = ReleaseApiUtils.getPrmObjectById(response.body, ticketCounterId, false, 1)
+      validateCommonTicketCounterAttributes(ticketCounter, designation, null);
+      etagVersion = ticketCounter.etagVersion;
     });
   });
 
-  it.skip('Step-3: Change reduced Ticket Counter', () => {
+  it('Step-3: Change reduced Ticket Counter', () => {
     const updatedDesignation = "Ticket Counter 2";
     const updatedAdditionalInformation = "Additional Information 2";
 
-    CommonUtils.put(`/prm-directory/v1/contact-points/${prmId}`, {
-      sloid: `${parentServicePointSloid}:${referencePointElementType}1`,
+    CommonUtils.put(`/prm-directory/v1/contact-points/${ticketCounterId}`, {
+      sloid: ticketCounterSloid,
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersion,
@@ -320,14 +308,117 @@ describe('PRM: New reduced Ticket Counter', { testIsolation: false }, () => {
       type: referencePointElementType
     }).then((response) => {
       expect(response.status).to.equal(200);
-      const objects = response.body;
 
-      expect(Array.isArray(objects)).to.be.true;
-      expect(objects.length).to.equal(1);
-
-      const version1 = objects[0];
-      expect(version1).to.have.property('designation').and.to.equal(updatedDesignation);
-      expect(version1).to.have.property('additionalInformation').and.to.equal(updatedAdditionalInformation);
+      const ticketCounter = ReleaseApiUtils.getPrmObjectById(response.body, ticketCounterId, true, 1);
+      validateCommonTicketCounterAttributes(ticketCounter, updatedDesignation, updatedAdditionalInformation);
     });
   });
 });
+
+describe('PRM: New reduced Platform', {testIsolation: false}, () => {
+  const referencePointElementType = "PLATFORM";
+  let platformId = -1;
+
+  const validFrom = ReleaseApiUtils.todayAsAtlasString();
+  const validTo = ReleaseApiUtils.todayAsAtlasString();
+
+  let height = null;
+  let inclinationLongitudinal = null;
+  let additionalInformation = null;
+  let wheelchairAreaLength = null;
+  let wheelchairAreaWidth = null;
+  let inductionLoop = null;
+  let partialElevation = null;
+  let tactileSystem = null;
+  let vehicleAccess = null;
+  let infoOpportunities = [];
+
+  const validateCommonPlatformAttributes = (platform) => {
+    validatePrmObject(platform, validFrom, validTo)
+
+    expect(platform).to.have.property('sloid').and.to.equal(trafficPointSloid);
+    expect(platform).to.have.property('parentServicePointSloid').and.to.equal(parentServicePointSloid);
+    expect(platform).to.have.property('additionalInformation').and.to.equal(additionalInformation);
+    expect(platform).to.have.property('height').and.to.be.equal(height);
+    expect(platform).to.have.property('inclinationLongitudinal').and.to.be.equal(inclinationLongitudinal);
+    expect(platform).to.have.property('infoOpportunities').and.to.be.an('array').and.to.deep.equal(infoOpportunities);
+    expect(platform).to.have.property('partialElevation').and.to.be.equal(partialElevation);
+    expect(platform).to.have.property('tactileSystem').and.to.be.equal(tactileSystem);
+    expect(platform).to.have.property('vehicleAccess').and.to.be.equal(vehicleAccess);
+    expect(platform).to.have.property('wheelchairAreaLength').and.to.be.equal(wheelchairAreaLength);
+    expect(platform).to.have.property('wheelchairAreaWidth').and.to.be.equal(wheelchairAreaWidth);
+  };
+
+  it('Step-1: New reduced Platform', () => {
+    // Docu: https://confluence.sbb.ch/display/ATLAS/Data-Fact-Matrix
+    CommonUtils.post('/prm-directory/v1/platforms', {
+      sloid: trafficPointSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      parentServicePointSloid: parentServicePointSloid,
+      numberWithoutCheckDigit: numberWithoutCheckDigit, // From ServicePoint
+      additionalInformation: additionalInformation,
+      height: height,
+      inclinationLongitudinal: inclinationLongitudinal,
+      infoOpportunities: infoOpportunities,
+      partialElevation: partialElevation,
+      tactileSystem: tactileSystem,
+      vehicleAccess: vehicleAccess,
+      wheelchairAreaLength: wheelchairAreaLength,
+      wheelchairAreaWidth: wheelchairAreaWidth
+    }).then((response) => {
+      expect(response.status).to.equal(201);
+
+      const platform = response.body;
+      validateCommonPlatformAttributes(platform);
+      platformId = platform.id;
+    });
+  });
+
+  it('Step-2: Check reduced Platform', () => {
+    CommonUtils.get(`/prm-directory/v1/platforms?sloids=${trafficPointSloid}`).then((response) => {
+      expect(response.status).to.equal(200);
+
+      const platform = ReleaseApiUtils.getPrmObjectById(response.body, platformId, false, 1)
+      validateCommonPlatformAttributes(platform);
+      etagVersion = platform.etagVersion;
+    });
+  });
+
+  it('Step-3: Update reduced Platform', () => {
+    height = ReleaseApiUtils.getRoundedRandomFloat(0, 100, 3);
+    inclinationLongitudinal = ReleaseApiUtils.getRoundedRandomFloat(0, 100, 3);
+    additionalInformation = "additionalInformation2";
+    wheelchairAreaLength = ReleaseApiUtils.getRoundedRandomFloat(0, 100, 3);
+    wheelchairAreaWidth = ReleaseApiUtils.getRoundedRandomFloat(0, 100, 3);
+    inductionLoop = ReleaseApiUtils.extractOneRandomValue(PrmConstants.basicValuesAndNotApplicableAndPartially());
+    partialElevation = ReleaseApiUtils.extractOneRandomValue(PrmConstants.booleanValues());
+    tactileSystem = ReleaseApiUtils.extractOneRandomValue(PrmConstants.basicValues());
+    vehicleAccess = ReleaseApiUtils.extractOneRandomValue(PrmConstants.vehicleAccessValues());
+
+    CommonUtils.put(`/prm-directory/v1/platforms/${platformId}`, {
+      sloid: trafficPointSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersion,
+      parentServicePointSloid: parentServicePointSloid,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      additionalInformation: additionalInformation,
+      height: height,
+      inclinationLongitudinal: inclinationLongitudinal,
+      infoOpportunities: infoOpportunities,
+      partialElevation: partialElevation,
+      tactileSystem: tactileSystem,
+      vehicleAccess: vehicleAccess,
+      wheelchairAreaLength: wheelchairAreaLength,
+      wheelchairAreaWidth: wheelchairAreaWidth
+    }).then((response) => {
+      expect(response.status).to.equal(200);
+
+      const platform = ReleaseApiUtils.getPrmObjectById(response.body, platformId, true, 1);
+      validateCommonPlatformAttributes(platform);
+    });
+  });
+});
+
+

@@ -69,4 +69,9 @@ export default class ReleaseApiUtils {
   static extractOneRandomValue = (values) => {
     return values[Math.floor(Math.random() * values.length)];
   }
+
+  static getRoundedRandomFloat(min, max, fractionDigits) {
+    const float = Math.random() * (max - min) + min;
+    return parseFloat(float.toFixed(fractionDigits));
+  }
 }
