@@ -30,7 +30,6 @@ dependencies {
     testImplementation("org.testcontainers:postgresql")
     testImplementation(project(":base-atlas", "test"))
 
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 springBoot {

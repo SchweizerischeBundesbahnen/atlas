@@ -2,14 +2,12 @@ import java.util.*
 
 plugins {
     id("buildlogic.java-conventions")
-    id("buildlogic.java-restdoc")
 }
 
 group = "ch.sbb.atlas"
 version = "2.383.0"
 
 dependencies {
-    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}"))
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-tracing")
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
@@ -18,7 +16,9 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+tasks.named<Jar>("jar") {
+    enabled = false
 }
 
 springBoot {
