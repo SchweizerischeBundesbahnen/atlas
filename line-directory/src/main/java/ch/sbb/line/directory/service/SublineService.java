@@ -2,7 +2,7 @@ package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -28,14 +28,16 @@ public class SublineService {
   private final SublineValidationService sublineValidationService;
   private final CoverageService coverageService;
 
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).LIDI)")
+  @Transactional
+  @PreAuthorize("""
+      @businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
   public SublineVersion create(SublineVersion businessObject) {
     return save(businessObject);
   }
 
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka"
-      + ".model.user.admin.ApplicationType).LIDI)")
+  @Transactional
+  @PreAuthorize("""
+      @businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
   public void update(SublineVersion currentVersion, SublineVersion editedVersion, List<SublineVersion> currentVersions) {
     updateVersion(currentVersion, editedVersion);
   }
@@ -56,10 +58,10 @@ public class SublineService {
     return savedVersion;
   }
 
-  @Transactional
   public List<SublineVersion> revokeSubline(String slnid) {
     List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
     sublineVersions.forEach(sublineVersion -> sublineVersion.setStatus(Status.REVOKED));
+    sublineVersionRepository.saveAll(sublineVersions);
     return sublineVersions;
   }
 
@@ -101,7 +103,7 @@ public class SublineService {
 
   public LineVersion getMainLineVersion(String mainSlnid) {
     List<LineVersion> lineVersions = lineService.findLineVersions(mainSlnid);
-    return OverviewService.getDisplayModel(lineVersions);
+    return OverviewDisplayBuilder.getDisplayModel(lineVersions);
   }
 
 }
