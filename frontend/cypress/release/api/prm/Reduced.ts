@@ -157,7 +157,7 @@ describe('PRM: New reduced Stop Point based on Service and Traffic Point', { tes
 
 describe('PRM: New reduced Toilet based on Service, Traffic and Stop Point', { testIsolation: false }, () => {
   let toiletId = -1;
-  const toiletSloid = `${parentServicePointSloid}:TOILET1`;
+  let toiletSloid = "";
 
   const wheelchairToilet = ReleaseApiUtils.extractOneRandomValue(PrmConstants.basicValuesAndNotApplicableAndPartially());
   const designation = "öffentliches WC im Bf Basel Bad Bf";
@@ -173,6 +173,7 @@ describe('PRM: New reduced Toilet based on Service, Traffic and Stop Point', { t
   };
 
   it('Step-1: New reduced Toilet', () => {
+    toiletSloid = `${parentServicePointSloid}:TOILET1` // Has to be initialized here, because before parentServicePointSloid is not known
     // Docu: https://confluence.sbb.ch/display/ATLAS/Data-Fact-Matrix#DataFactMatrix-StopPlaces(Haltestellen)
     CommonUtils.post('/prm-directory/v1/toilets', {
       parentServicePointSloid: parentServicePointSloid,
@@ -228,7 +229,7 @@ describe('PRM: New reduced Toilet based on Service, Traffic and Stop Point', { t
 
 describe('PRM: New reduced Ticket Counter', { testIsolation: false }, () => {
   const referencePointElementType = "TICKET_COUNTER";
-  const ticketCounterSloid = `${parentServicePointSloid}:${referencePointElementType}1`;
+  let ticketCounterSloid = "";
   let ticketCounterId = -1;
   const designation = referencePointElementType;
 
@@ -251,6 +252,7 @@ describe('PRM: New reduced Ticket Counter', { testIsolation: false }, () => {
   };
 
   it('Step-1: New reduced Ticket Counter', () => {
+    ticketCounterSloid = `${parentServicePointSloid}:${referencePointElementType}1`; // Has to be initialized here, because before the input-variables are not known
     CommonUtils.post('/prm-directory/v1/contact-points', {
       sloid: ticketCounterSloid,
       validFrom: validFrom,
