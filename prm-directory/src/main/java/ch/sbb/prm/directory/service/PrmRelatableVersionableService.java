@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.service;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -72,7 +72,7 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
     }
 
     boolean relationsIncomplete =
-        OverviewService.getPrioritizedVersion(relations).getRecordingStatus() == RecordingStatus.INCOMPLETE;
+        OverviewDisplayBuilder.getPrioritizedVersion(relations).getRecordingStatus() == RecordingStatus.INCOMPLETE;
 
     if (relationsIncomplete) {
       return RecordingStatus.INCOMPLETE;
