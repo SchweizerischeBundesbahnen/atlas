@@ -132,6 +132,7 @@ frontend/.npmrc
 /.gradle/
 /build-logic/.gradle/
 /build-logic/.kotlin/
-/atlas-gradle-ci-plugin/.gradle/
-/atlas-gradle-ci-plugin/.kotlin/
 /.idea/kotlinScripting.xml
+/buildSrc/.gradle/
+/buildSrc/.kotlin/
+/buildSrc/.build/

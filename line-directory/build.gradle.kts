@@ -39,7 +39,6 @@ dependencies {
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.testcontainers:postgresql")
 
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 springBoot {
