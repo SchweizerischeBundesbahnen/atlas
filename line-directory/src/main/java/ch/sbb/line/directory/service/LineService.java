@@ -54,14 +54,18 @@ public class LineService {
     return lineVersionRepository.findById(id);
   }
 
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).LIDI)")
+  @PreAuthorize(
+      "@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka"
+          + ".model.user.admin"
+          + ".ApplicationType).LIDI)")
   public LineVersion create(LineVersion businessObject) {
     return save(businessObject);
   }
 
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka"
-      + ".model.user.admin.ApplicationType).LIDI)")
+  @PreAuthorize(
+      "@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch"
+          + ".sbb.atlas.kafka"
+          + ".model.user.admin.ApplicationType).LIDI)")
   public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
     updateVersion(currentVersion, editedVersion);
   }
@@ -69,6 +73,7 @@ public class LineService {
   public List<LineVersion> revokeLine(String slnid) {
     List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
     lineVersions.forEach(lineVersion -> lineVersion.setStatus(Status.REVOKED));
+    lineVersionRepository.saveAll(lineVersions);
     return lineVersions;
   }
 
@@ -76,6 +81,7 @@ public class LineService {
     LineVersion lineVersion = findById(lineVersionId).orElseThrow(() -> new IdNotFoundException(lineVersionId));
     if (lineVersion.getStatus() == Status.DRAFT) {
       lineVersion.setStatus(Status.VALIDATED);
+      lineVersionRepository.save(lineVersion);
     }
   }
 
@@ -112,6 +118,7 @@ public class LineService {
   LineVersion save(LineVersion lineVersion) {
     return save(lineVersion, Optional.empty(), Collections.emptyList());
   }
+
   LineVersion save(LineVersion lineVersion, Optional<LineVersion> currentLineVersion, List<LineVersion> currentLineVersions) {
     lineVersion.setStatus(lineStatusDecider.getStatusForLine(lineVersion, currentLineVersion, currentLineVersions));
     lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
@@ -140,7 +147,8 @@ public class LineService {
     lineUpdateValidationService.validateVersioningNotAffectingReview(currentVersions, versionedObjects);
 
     List<LineVersion> preSaveVersions = currentVersions.stream().map(this::copyLineVersion).toList();
-    versionableService.applyVersioning(LineVersion.class, versionedObjects, version -> save(version, Optional.of(currentVersion), preSaveVersions),
+    versionableService.applyVersioning(LineVersion.class, versionedObjects,
+        version -> save(version, Optional.of(currentVersion), preSaveVersions),
         this::deleteById);
   }
 
