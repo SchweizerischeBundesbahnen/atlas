@@ -3,11 +3,9 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.377.0"
+version = "2.380.0"
 
 subprojects {
-    apply(plugin = "org.sonarqube")
-    if (project.name != "frontend") {
         sonar {
             properties {
                 property("sonar.projectKey", "ch.sbb.atlas:atlas")
@@ -21,7 +19,6 @@ subprojects {
                 )
             }
         }
-    }
     if (project.name == "frontend") {
         sonar {
             properties {
