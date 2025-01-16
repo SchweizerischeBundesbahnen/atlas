@@ -189,7 +189,8 @@
         "owaspDependencyCheck": {
           "enabled": true,
           "additionalParams": "--disableNodeAudit --nodePackageSkipDevDependencies"
-        }
+        },
+        "additionalDeployParams": "--parallel --no-configuration-cache"
       }
     },
     {
@@ -274,6 +275,7 @@
           "enabled": true,
           "additionalParams": "--disableNodeAudit --nodePackageSkipDevDependencies"
         },
+        "additionalDeployParams": "--parallel --no-configuration-cache",
         "failOnQualityGateFailure": true
       }
     }
