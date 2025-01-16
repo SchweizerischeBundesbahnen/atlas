@@ -68,14 +68,11 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public List<LineVersionModel> revokeLine(String slnid) {
-    List<LineVersionModel> lineVersionModels = lineService.revokeLine(slnid).stream()
-        .map(this::toModel)
-        .toList();
-    if (lineVersionModels.isEmpty()) {
+  public void revokeLine(String slnid) {
+    List<LineVersion> lineVersions = lineService.revokeLine(slnid);
+    if (lineVersions.isEmpty()) {
       throw new SlnidNotFoundException(slnid);
     }
-    return lineVersionModels;
   }
 
   @Override
