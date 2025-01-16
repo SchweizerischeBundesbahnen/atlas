@@ -18,9 +18,12 @@ import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.LineUpdateValidationService;
 import ch.sbb.line.directory.validation.LineValidationService;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
@@ -157,12 +160,7 @@ public class LineService {
     lineVersionRepository.incrementVersion(currentVersion.getSlnid());
     editedVersion.setSlnid(currentVersion.getSlnid());
 
-    //TODO has changes on validity? if yes check validity of sublines
-    AdjustmentDateStatus dateStatus = identifyAdjustedDate(currentVersion, editedVersion);
-
-    if(dateStatus != AdjustmentDateStatus.NO_CHANGE) {
-      checkSublineValidity(editedVersion.getSlnid(), dateStatus);
-    }
+    checkAffectedSublines(editedVersion);
 
     List<LineVersion> currentVersions = findLineVersions(currentVersion.getSlnid());
     lineUpdateValidationService.validateLineForUpdate(currentVersion, editedVersion, currentVersions);
@@ -220,54 +218,36 @@ public class LineService {
         .build();
   }
 
-  private void checkSublineValidity(String mainlineSlnid, AdjustmentDateStatus dateStatus) {
-    List<SublineVersion> sublineVersions = getAllSublinesByMainlineSlnid(mainlineSlnid);
-
-    if (hasMainlineSublines(sublineVersions)) {
-      terminateSubline(sublineVersions);
-    }
-
-
-    //TODO check if sublines exists (one or more)
-    //TODO check if sublines validity can be managed automatically
-    //TODO if not return list with unmanagable sublines
-
-  }
-
-  private void terminateSubline(List<SublineVersion> sublineVersions) {
+  //TODO on call API updateLine and check if validity is affected
+  private List<SublineVersion> checkAffectedSublines(LineVersion lineVersion) {
+    List<SublineVersion> affectedSublineVersions = new ArrayList<>();
+    List<SublineVersion> sublineVersions = getAllSublinesByMainlineSlnid(lineVersion.getSlnid());
     for (SublineVersion sublineVersion : sublineVersions) {
-
+      if (isSublineValidityAffectedByUpdatedMainline(lineVersion, sublineVersion)) {
+        affectedSublineVersions.add(sublineVersion);
+      }
     }
+    return affectedSublineVersions;
   }
 
   private List<SublineVersion> getAllSublinesByMainlineSlnid(String mainlineSlnid) {
-    return sublineVersionRepository.getSublineVersionByMainlineSlnid(mainlineSlnid);
+    List<SublineVersion> sublineVersions = sublineVersionRepository.getSublineVersionByMainlineSlnid(mainlineSlnid);
+    return sublineVersions.stream()
+        .collect(Collectors.groupingBy(SublineVersion::getSlnid)).values().stream().map(list ->
+            list.stream().max(Comparator.comparing(SublineVersion::getValidTo)).orElseThrow())
+        .collect(Collectors.toList());
   }
 
   private boolean hasMainlineSublines(List<SublineVersion> sublineVersions) {
     return !sublineVersions.isEmpty();
   }
 
+  //TODO wrong logic
   private boolean isSublineValidityAffectedByUpdatedMainline(LineVersion updatedLineVersion, SublineVersion sublineVersion) {
     DateRange dateRangeSubline = new DateRange(sublineVersion.getValidFrom(), sublineVersion.getValidTo());
     DateRange dateRangeMainline = new DateRange(updatedLineVersion.getValidFrom(), updatedLineVersion.getValidTo());
 
-    return dateRangeSubline.isDateRangeContainedIn(dateRangeMainline);
+    return !dateRangeSubline.isDateRangeContainedIn(dateRangeMainline);
   }
 
-  private AdjustmentDateStatus identifyAdjustedDate(LineVersion current, LineVersion updatedLineVersion) {
-    if (!current.getValidFrom().isEqual(updatedLineVersion.getValidFrom())) {
-      return AdjustmentDateStatus.VALID_FROM_CHANGED;
-    }
-
-    if(current.getValidTo().isEqual(updatedLineVersion.getValidTo())) {
-      return AdjustmentDateStatus.VALID_TO_CHANGED;
-    }
-
-    if (!current.getValidFrom().isEqual(updatedLineVersion.getValidFrom()) && !current.getValidTo().isEqual(updatedLineVersion.getValidTo())) {
-      return AdjustmentDateStatus.BOTH_CHANGED;
-    }
-
-    return AdjustmentDateStatus.NO_CHANGE;
-  }
 }
