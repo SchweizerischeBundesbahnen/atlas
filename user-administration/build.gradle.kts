@@ -43,7 +43,6 @@ dependencies {
     testImplementation("org.testcontainers:postgresql")
 
     testRuntimeOnly("org.postgresql:postgresql")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.mockito:mockito-inline:5.2.0")
 }
 
