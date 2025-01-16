@@ -5,9 +5,9 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
+import ch.sbb.prm.directory.service.Relatable;
 import ch.sbb.prm.directory.validation.annotation.PrmVariant;
 import ch.sbb.prm.directory.validation.annotation.RecordingVariant;
-import ch.sbb.prm.directory.service.Relatable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -29,7 +29,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "reference_point_version")
 @AtlasVersionable
@@ -60,6 +60,5 @@ public class ReferencePointVersion extends BasePrmEntityVersion implements PrmVe
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private ReferencePointAttributeType referencePointType;
-
 
 }
