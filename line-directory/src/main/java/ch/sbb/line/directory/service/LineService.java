@@ -23,6 +23,7 @@ import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -54,18 +55,16 @@ public class LineService {
     return lineVersionRepository.findById(id);
   }
 
-  @PreAuthorize(
-      "@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka"
-          + ".model.user.admin"
-          + ".ApplicationType).LIDI)")
+  @Transactional
+  @PreAuthorize("""
+      @businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
   public LineVersion create(LineVersion businessObject) {
     return save(businessObject);
   }
 
-  @PreAuthorize(
-      "@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch"
-          + ".sbb.atlas.kafka"
-          + ".model.user.admin.ApplicationType).LIDI)")
+  @Transactional
+  @PreAuthorize("""
+      @businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
   public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
     updateVersion(currentVersion, editedVersion);
   }
@@ -85,6 +84,7 @@ public class LineService {
     }
   }
 
+  @Transactional
   public void deleteById(Long id) {
     LineVersion lineVersion = lineVersionRepository.findById(id).orElseThrow(
         () -> new IdNotFoundException(id));

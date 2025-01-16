@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
-import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -83,7 +83,8 @@ public class LoadingPointService {
 
     List<LoadingPointVersion> currentVersions = findLoadingPoint(currentVersion.getServicePointNumber(),
         currentVersion.getNumber());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion, editedVersion, currentVersions);
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
+        editedVersion, currentVersions);
 
     versionableService.applyVersioning(LoadingPointVersion.class, versionedObjects, this::save,
         loadingPointVersionRepository::deleteById);
@@ -98,9 +99,9 @@ public class LoadingPointService {
             loadingPointSearchRestrictions.getSpecification(), pageable.getSort()).stream().map(LoadingPointVersionMapper::fromEntity)
         .toList();
 
-    List<ReadLoadingPointVersionModel> displayableVersions = OverviewService.mergeVersionsForDisplay(loadingPointVersions,
+    List<ReadLoadingPointVersionModel> displayableVersions = OverviewDisplayBuilder.mergeVersionsForDisplay(loadingPointVersions,
         version -> String.valueOf(version.getNumber()));
 
-    return OverviewService.toPagedContainer(displayableVersions, pageable);
+    return OverviewDisplayBuilder.toPagedContainer(displayableVersions, pageable);
   }
 }
