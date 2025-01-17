@@ -113,7 +113,7 @@
           "name": "generate-apim-config",
           "taskRef": "esta-gradle-build-extra-large",
           "params": {
-            "TASKS": ":apim-configuration:generateSpec --configure-on-demand",
+            "TASKS": ":apim-configuration:generateSpec",
             "ARTIFACTORY_SECRET": "esta-tekton-basicauth-docker",
             "BUILDER_JAVA_VERSION": "21",
             "BUILDER_KOTLIN_VERSION": "1.7",
@@ -137,7 +137,7 @@
           "name": "generate-apim-config",
           "taskRef": "esta-gradle-build-extra-large",
           "params": {
-            "TASKS": ":apim-configuration:generateSpec --configure-on-demand",
+            "TASKS": ":apim-configuration:generateSpec",
             "ARTIFACTORY_SECRET": "esta-tekton-basicauth-docker",
             "BUILDER_JAVA_VERSION": "21",
             "BUILDER_KOTLIN_VERSION": "1.7",
@@ -217,7 +217,7 @@
           "name": "generate-apim-config",
           "taskRef": "esta-gradle-build-extra-large",
           "params": {
-            "TASKS": ":apim-configuration:generateSpec --configure-on-demand",
+            "TASKS": ":apim-configuration:generateSpec",
             "ARTIFACTORY_SECRET": "esta-tekton-basicauth-docker",
             "BUILDER_JAVA_VERSION": "21",
             "BUILDER_KOTLIN_VERSION": "1.7",
