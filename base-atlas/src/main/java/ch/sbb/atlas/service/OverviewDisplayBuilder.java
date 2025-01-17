@@ -2,7 +2,6 @@ package ch.sbb.atlas.service;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.DateRange;
-import ch.sbb.atlas.versioning.convert.ReflectionHelper;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class OverviewDisplayBuilder {
   public static <T extends Versionable> T getDisplayModel(List<T> versions) {
     List<T> sortedVersions = versions.stream().sorted(Comparator.comparing(T::getValidFrom)).toList();
 
-    T versionToShow = ReflectionHelper.copyObjectViaBuilder(getPrioritizedVersion(sortedVersions));
+    T versionToShow = getPrioritizedVersion(sortedVersions);
     versionToShow.setValidFrom(sortedVersions.getFirst().getValidFrom());
     versionToShow.setValidTo(sortedVersions.getLast().getValidTo());
     return versionToShow;
