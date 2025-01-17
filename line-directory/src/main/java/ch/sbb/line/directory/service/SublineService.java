@@ -103,7 +103,7 @@ public class SublineService {
 
   public LineVersion getMainLineVersion(String mainSlnid) {
     List<LineVersion> lineVersions = lineService.findLineVersions(mainSlnid);
-    return OverviewDisplayBuilder.getDisplayModel(lineVersions);
+    return OverviewDisplayBuilder.getPrioritizedVersion(lineVersions);
   }
 
 }
