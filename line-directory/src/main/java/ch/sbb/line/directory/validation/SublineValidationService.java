@@ -55,7 +55,7 @@ public class SublineValidationService {
     if (lineVersions.isEmpty()) {
       throw new SlnidNotFoundException(sublineVersion.getMainlineSlnid());
     }
-    LineVersion mainline = OverviewDisplayBuilder.getDisplayModel(lineVersions);
+    LineVersion mainline = OverviewDisplayBuilder.getPrioritizedVersion(lineVersions);
     validateNotRevoked(mainline);
     validateSublineType(sublineVersion, mainline);
     validateConcessionType(sublineVersion);
