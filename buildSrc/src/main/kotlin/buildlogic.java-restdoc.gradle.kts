@@ -46,18 +46,20 @@ tasks.named<Jar>("jar") {
 }
 
 if(hasProperty("generateAsciidoc")) {
-    println("Generate Asciidoc enabled....")
+    println("Generate Asciidoc on bootJar enabled....")
     tasks.named("bootJar") {
-        finalizedBy("asciidoctor")
+        println("Generating Asciidoc....")
+        dependsOn("asciidoctor")
     }
 }
 
 // to run application with --configuration-cache you need to comment the following snippet
 // (e.g. ./gradlew :line-directory:bootRun --args='--spring.profiles.active=local' --configuration-cache )
 if(hasProperty("generateAsciidoc")) {
-    println("Generate Asciidoc enabled....")
+    println("Generate Asciidoc on bootRun enabled....")
     tasks.named("bootRun") {
-        finalizedBy("asciidoctor")
+        println("Generating Asciidoc....")
+        dependsOn("asciidoctor")
     }
 }
 
