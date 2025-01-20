@@ -35,11 +35,6 @@ public abstract class BaseLineVersionModel extends BaseVersionModel implements D
       accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
-  @Schema(description = "SwissLineNumber", example = "b1.L1")
-  @NotBlank
-  @Size(min = 1, max = 50)
-  @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
-  private String swissLineNumber;
 
   @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001234")
   private String slnid;
