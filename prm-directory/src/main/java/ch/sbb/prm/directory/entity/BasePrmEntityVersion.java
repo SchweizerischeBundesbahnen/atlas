@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @MappedSuperclass
 @FieldNameConstants
 @AtlasVersionable
@@ -58,7 +58,7 @@ public abstract class BasePrmEntityVersion extends BaseEntity implements PrmShar
   private LocalDate validTo;
 
   @Enumerated(EnumType.STRING)
-  @PrmStatusSubSet(anyOf = {Status.VALIDATED,Status.REVOKED})
+  @PrmStatusSubSet(anyOf = {Status.VALIDATED, Status.REVOKED})
   private Status status;
 
   @Override
