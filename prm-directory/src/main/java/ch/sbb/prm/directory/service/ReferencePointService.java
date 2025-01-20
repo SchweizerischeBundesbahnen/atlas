@@ -9,7 +9,7 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -138,7 +138,8 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   }
 
   private void searchAndUpdateToiletRelation(ReferencePointVersion referencePointVersion) {
-    List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(referencePointVersion.getParentServicePointSloid());
+    List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(
+        referencePointVersion.getParentServicePointSloid());
     searchAndUpdateVersion(toiletVersions, referencePointVersion, TOILET);
   }
 
@@ -158,7 +159,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   }
 
   public List<ReadReferencePointVersionModel> buildOverview(List<ReferencePointVersion> referencePointVersions) {
-    List<ReferencePointVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(referencePointVersions,
+    List<ReferencePointVersion> mergedVersions = OverviewDisplayBuilder.mergeVersionsForDisplay(referencePointVersions,
         ReferencePointVersion::getSloid);
     return mergedVersions.stream().map(ReferencePointVersionMapper::toModel).toList();
   }
@@ -168,6 +169,5 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
       throw new ElementTypeDoesNotExistException(sloid, type);
     }
   }
-
 
 }

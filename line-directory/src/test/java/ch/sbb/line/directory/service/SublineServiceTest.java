@@ -188,14 +188,15 @@ class SublineServiceTest {
     LineVersion lineVersion =
         LineVersion.builder().slnid(mainSlnid).validFrom(today).validTo(today).id(1L).build();
     LineVersion lineVersion1 =
-        LineVersion.builder().slnid(mainSlnid).validFrom(today.plusDays(30)).validTo(today.plusDays(30)).id(1L).build();
+        LineVersion.builder().slnid(mainSlnid).validFrom(today.plusDays(30)).validTo(today.plusDays(30)).id(2L).build();
     List<LineVersion> versions = new java.util.ArrayList<>(List.of(lineVersion, lineVersion1));
     versions.sort(Comparator.comparing(LineVersion::getValidFrom));
     when(lineService.findLineVersions(mainSlnid)).thenReturn(versions);
     //when
     LineVersion result = sublineService.getMainLineVersion(mainSlnid);
     //then
-    assertThat(result).isNotNull().isEqualTo(lineVersion);
+    assertThat(result).isNotNull();
+    assertThat(result.getId()).isEqualTo(lineVersion.getId());
   }
 
   @Test
@@ -206,14 +207,15 @@ class SublineServiceTest {
     LineVersion lineVersion =
         LineVersion.builder().slnid(mainSlnid).validFrom(today.plusDays(100)).validTo(today.plusDays(100)).id(1L).build();
     LineVersion lineVersion1 =
-        LineVersion.builder().slnid(mainSlnid).validFrom(today.plusDays(30)).validTo(today.plusDays(30)).id(1L).build();
+        LineVersion.builder().slnid(mainSlnid).validFrom(today.plusDays(30)).validTo(today.plusDays(30)).id(2L).build();
     List<LineVersion> versions = new java.util.ArrayList<>(List.of(lineVersion, lineVersion1));
     versions.sort(Comparator.comparing(LineVersion::getValidFrom));
     when(lineService.findLineVersions(mainSlnid)).thenReturn(versions);
     //when
     LineVersion result = sublineService.getMainLineVersion(mainSlnid);
     //then
-    assertThat(result).isNotNull().isEqualTo(lineVersion1);
+    assertThat(result).isNotNull();
+    assertThat(result.getId()).isEqualTo(lineVersion1.getId());
   }
 
   @Test
@@ -231,7 +233,8 @@ class SublineServiceTest {
     //when
     LineVersion result = sublineService.getMainLineVersion(mainSlnid);
     //then
-    assertThat(result).isNotNull().isEqualTo(lineVersion1);
+    assertThat(result).isNotNull();
+    assertThat(result.getId()).isEqualTo(lineVersion1.getId());
   }
 
   @Test

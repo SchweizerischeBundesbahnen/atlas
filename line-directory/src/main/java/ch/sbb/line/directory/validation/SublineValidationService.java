@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.RevokedException;
@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 public class SublineValidationService {
 
   private static final Map<LineType, Set<SublineType>> ALLOWED_SUBLINE_TYPES = new EnumMap<>(LineType.class);
+
   static {
     ALLOWED_SUBLINE_TYPES.put(LineType.ORDERLY, Set.of(SublineType.CONCESSION, SublineType.TECHNICAL));
     ALLOWED_SUBLINE_TYPES.put(LineType.DISPOSITION, Set.of(SublineType.DISPOSITION));
@@ -54,7 +55,7 @@ public class SublineValidationService {
     if (lineVersions.isEmpty()) {
       throw new SlnidNotFoundException(sublineVersion.getMainlineSlnid());
     }
-    LineVersion mainline = OverviewService.getDisplayModel(lineVersions);
+    LineVersion mainline = OverviewDisplayBuilder.getPrioritizedVersion(lineVersions);
     validateNotRevoked(mainline);
     validateSublineType(sublineVersion, mainline);
     validateConcessionType(sublineVersion);
