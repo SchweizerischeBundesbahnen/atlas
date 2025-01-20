@@ -3,7 +3,7 @@ package ch.sbb.line.directory.controller;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.longName;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.slnid;
-import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.swissLineNumber;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.swissLineNumber;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.alternativeName;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.combinationName;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.paymentType;

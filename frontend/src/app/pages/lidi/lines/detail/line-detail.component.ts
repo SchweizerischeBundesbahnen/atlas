@@ -143,10 +143,14 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
       this.isLineConcessionTypeRequired = false;
       this.form.controls.lineConcessionType.clearValidators();
       this.form.controls.lineConcessionType.updateValueAndValidity();
+      this.form.controls.swissLineNumber.clearValidators();
+      this.form.controls.swissLineNumber.updateValueAndValidity();
     } else {
       this.isLineConcessionTypeRequired = true;
       this.form.controls.lineConcessionType.setValidators([Validators.required]);
       this.form.controls.lineConcessionType.updateValueAndValidity();
+      this.form.controls.swissLineNumber.setValidators([Validators.required]);
+      this.form.controls.swissLineNumber.updateValueAndValidity();
     }
     this.form.updateValueAndValidity();
   }
