@@ -127,7 +127,7 @@ public class LineService {
     return lineVersion;
   }
 
-  void updateVersion(LineVersion currentVersion, LineVersion editedVersion) {
+  public void updateVersion(LineVersion currentVersion, LineVersion editedVersion) {
     lineVersionRepository.incrementVersion(currentVersion.getSlnid());
     editedVersion.setSlnid(currentVersion.getSlnid());
 
