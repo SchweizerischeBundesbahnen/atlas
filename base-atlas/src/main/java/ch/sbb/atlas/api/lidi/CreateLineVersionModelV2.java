@@ -27,6 +27,11 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "CreateLineVersionV2")
 public class CreateLineVersionModelV2 extends BaseLineVersionModel  {
 
+  @Schema(description = "SwissLineNumber", example = "b1.L1")
+  @Size(min = 1, max = 50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
+  private String swissLineNumber;
+
   @Schema(description = "LineType")
   @NotNull
   private LineType lineType;
@@ -45,12 +50,12 @@ public class CreateLineVersionModelV2 extends BaseLineVersionModel  {
 
   @Schema(hidden = true)
   @JsonIgnore
-  @AssertTrue(message = "When LineType is Orderly LineConcessionType must not be null")
+  @AssertTrue(message = "When LineType is Orderly, SwissLineNumber and LineConcessionType must not be null")
   boolean isLineConcessionTypeMandatory() {
-    if (lineType != LineType.ORDERLY) {
+    if (lineType != LineType.ORDERLY && swissLineNumber == null && lineConcessionType == null) {
       return true;
     }
-    return lineConcessionType != null;
+    return lineConcessionType != null && swissLineNumber != null;
   }
 
 }
