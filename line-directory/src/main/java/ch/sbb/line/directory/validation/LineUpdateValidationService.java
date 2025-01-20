@@ -1,5 +1,7 @@
 package ch.sbb.line.directory.validation;
 
+import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2.Fields;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.user.administration.security.service.UpdateAffectedVersionLocator;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -8,6 +10,7 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.exception.ForbiddenDueToInReviewException;
+import ch.sbb.line.directory.exception.LineFieldNotUpdatableException;
 import ch.sbb.line.directory.exception.LineInReviewValidationException;
 import ch.sbb.line.directory.exception.MergeOrSplitInReviewVersionException;
 import java.util.List;
@@ -23,18 +26,34 @@ public class LineUpdateValidationService {
   private final BusinessOrganisationBasedUserAdministrationService businessOrganisationBasedUserAdministrationService;
 
   public void validateLineForUpdate(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
+    validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
     onlySupervisorMayEditVersionInReview(editedVersion, currentVersions);
     if (currentVersion.getStatus() == Status.IN_REVIEW) {
       typeAndTimeperiodOfLineInReviewMayNotChange(currentVersion, editedVersion);
     }
   }
 
+  void validateFieldsNotUpdatableForLineTypeOrderly(LineVersion currentVersion, LineVersion editedVersion) {
+    if (currentVersion.getLineType() != LineType.ORDERLY) {
+      if (editedVersion.getSwissLineNumber() != null) {
+        throw new LineFieldNotUpdatableException(editedVersion.getSwissLineNumber(), Fields.swissLineNumber,
+            currentVersion.getLineType());
+      }
+      if (editedVersion.getConcessionType() != null) {
+        throw new LineFieldNotUpdatableException(editedVersion.getConcessionType().name(), Fields.lineConcessionType,
+            currentVersion.getLineType());
+      }
+    }
+  }
+
   private void onlySupervisorMayEditVersionInReview(LineVersion editedVersion, List<LineVersion> currentVersions) {
-    List<LineVersion> updateAffectedCurrentVersions = UpdateAffectedVersionLocator.findUpdateAffectedCurrentVersions(editedVersion,
+    List<LineVersion> updateAffectedCurrentVersions = UpdateAffectedVersionLocator.findUpdateAffectedCurrentVersions(
+        editedVersion,
         currentVersions);
     boolean inReviewVersionAffected = updateAffectedCurrentVersions.stream()
         .anyMatch(lineVersion -> lineVersion.getStatus() == Status.IN_REVIEW);
-    if (inReviewVersionAffected && !businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)) {
+    if (inReviewVersionAffected && !businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(
+        ApplicationType.LIDI)) {
       throw new ForbiddenDueToInReviewException();
     }
   }
