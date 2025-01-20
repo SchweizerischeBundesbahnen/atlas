@@ -41,7 +41,7 @@ public interface LineApiV1 {
   @PostMapping("{slnid}/revoke")
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).LIDI)")
-  List<LineVersionModel> revokeLine(@PathVariable String slnid);
+  void revokeLine(@PathVariable String slnid);
 
   @GetMapping("/covered")
   List<LineModel> getCoveredLines();

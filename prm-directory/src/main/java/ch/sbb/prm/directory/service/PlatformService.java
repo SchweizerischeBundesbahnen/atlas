@@ -5,7 +5,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFOR
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
-import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -126,7 +126,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     groupedPlatforms.forEach((sloid, versions) -> {
       versions.sort(Comparator.comparing(PlatformVersion::getValidFrom));
 
-      PlatformVersion platformVersion = OverviewService.mergeVersionsForDisplay(versions,
+      PlatformVersion platformVersion = OverviewDisplayBuilder.mergeVersionsForDisplay(versions,
           PlatformVersion::getSloid).getFirst();
 
       overviewModels.add(PlatformOverviewModel.builder()

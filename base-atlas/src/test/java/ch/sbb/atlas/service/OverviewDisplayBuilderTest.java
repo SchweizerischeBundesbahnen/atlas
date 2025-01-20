@@ -13,7 +13,7 @@ import lombok.Setter;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 
-class OverviewServiceTest {
+class OverviewDisplayBuilderTest {
 
   @Test
   void shouldMergeVersions() {
@@ -30,7 +30,7 @@ class OverviewServiceTest {
         .validTo(LocalDate.of(2021, 12, 31))
         .build();
 
-    List<DummyVersionable> mergedVersions = OverviewService.mergeVersionsForDisplay(List.of(version1, version2),
+    List<DummyVersionable> mergedVersions = OverviewDisplayBuilder.mergeVersionsForDisplay(List.of(version1, version2),
         DummyVersionable::getSloid);
     assertThat(mergedVersions).hasSize(1);
     DummyVersionable firstVerison = mergedVersions.getFirst();
@@ -54,12 +54,12 @@ class OverviewServiceTest {
         .validTo(LocalDate.now().plusDays(20))
         .build();
 
-    List<DummyVersionable> mergedVersions = OverviewService.mergeVersionsForDisplay(List.of(version1, version2),
+    List<DummyVersionable> mergedVersions = OverviewDisplayBuilder.mergeVersionsForDisplay(List.of(version1, version2),
         DummyVersionable::getSloid);
     assertThat(mergedVersions).hasSize(1);
     assertThat(mergedVersions.getFirst().getId()).isEqualTo(1);
 
-    Container<DummyVersionable> pagedContainer = OverviewService.toPagedContainer(mergedVersions, Pageable.ofSize(1));
+    Container<DummyVersionable> pagedContainer = OverviewDisplayBuilder.toPagedContainer(mergedVersions, Pageable.ofSize(1));
     assertThat(pagedContainer.getTotalCount()).isEqualTo(1);
   }
 
@@ -84,7 +84,7 @@ class OverviewServiceTest {
         .validTo(LocalDate.now().plusDays(20))
         .build();
 
-    List<DummyVersionable> mergedVersions = OverviewService.mergeVersionsForDisplay(List.of(version1, other, version2),
+    List<DummyVersionable> mergedVersions = OverviewDisplayBuilder.mergeVersionsForDisplay(List.of(version1, other, version2),
         DummyVersionable::getSloid);
     assertThat(mergedVersions).hasSize(2);
   }
@@ -110,7 +110,7 @@ class OverviewServiceTest {
         .validTo(LocalDate.now().plusDays(20))
         .build();
 
-    List<DummyVersionable> mergedVersions = OverviewService.mergeVersionsForDisplay(List.of(version1, other, version2),
+    List<DummyVersionable> mergedVersions = OverviewDisplayBuilder.mergeVersionsForDisplay(List.of(version1, other, version2),
         DummyVersionable::getSloid);
     assertThat(mergedVersions).hasSize(2);
     assertThat(mergedVersions.getFirst().getSloid()).isEqualTo("ch:1:sloid:7001");
