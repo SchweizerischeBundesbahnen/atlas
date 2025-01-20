@@ -4,10 +4,10 @@ import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion;
 import ch.sbb.atlas.imports.annotation.CopyFromCurrentVersion.Mapping;
-import ch.sbb.atlas.imports.bulk.BulkImportErrors;
-import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.annotation.DefaultMapping;
 import ch.sbb.atlas.imports.annotation.Nulling;
+import ch.sbb.atlas.imports.bulk.BulkImportErrors;
+import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
 import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
@@ -117,7 +117,7 @@ public class ServicePointUpdateCsvModel implements Validatable<ServicePointUpdat
   @Nulling(property = "servicePointGeolocation")
   private SpatialReference spatialReference;
 
-  @Nulling(property = "servicePointGeolocation.height")
+  @Nulling(property = "servicePointGeolocation")
   private Double height;
 
   @Override
