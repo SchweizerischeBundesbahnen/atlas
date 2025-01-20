@@ -30,15 +30,15 @@ public class LineWorkflowProcessingService extends
       LineVersionWorkflowRepository lineVersionWorkflowRepository,
       JpaRepository<LineVersionSnapshot, Long> objectVerionSnapshotRepositroy) {
     super(objectRepository, lineVersionWorkflowRepository, objectVerionSnapshotRepositroy);
-    this.lineVersionWorkflowRepository=lineVersionWorkflowRepository;
+    this.lineVersionWorkflowRepository = lineVersionWorkflowRepository;
   }
 
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#lineVersion, T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).LIDI)")
+  @PreAuthorize("""
+      @businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#lineVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
   public WorkflowStatus processLineWorkflow(WorkflowEvent lineWorkflowEvent, LineVersion lineVersion) {
     log.info("Started Workflow processing: {}", lineWorkflowEvent);
     LineVersionSnapshot lineVersionSnapshot = buildLineVersionSnapshot(lineWorkflowEvent, lineVersion);
-    WorkflowStatus workflowStatus =  processWorkflow(lineWorkflowEvent, lineVersion, lineVersionSnapshot);
+    WorkflowStatus workflowStatus = processWorkflow(lineWorkflowEvent, lineVersion, lineVersionSnapshot);
     log.info("Ended Workflow processing: {}", lineWorkflowEvent);
     return workflowStatus;
   }
@@ -51,6 +51,7 @@ public class LineWorkflowProcessingService extends
     checkThatOnlyOneWorkflowIsInProgress(object, workflowProcessingStatus);
 
     if (existingLineRelation.isPresent()) {
+      existingLineRelation.get().setLineVersion(object);
       existingLineRelation.get().setWorkflowProcessingStatus(workflowProcessingStatus);
       return existingLineRelation.get();
     }
