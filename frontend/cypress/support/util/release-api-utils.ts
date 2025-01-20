@@ -52,4 +52,26 @@ export default class ReleaseApiUtils {
     expect(lineVersionsFirst).to.have.property('id').that.is.a('number').and.equals(lineVersionId);
     return lineVersionsFirst;
   }
+
+  static getPrmObjectById = (body, prmId: number, arePrmObjectsInBody: boolean, expectedNumberOfObjects: number) => {
+    let objects;
+    if (arePrmObjectsInBody) {
+      expect(body).is.an('array');
+      objects = body;
+    } else {
+      expect(body).to.have.property('objects').that.is.an('array');
+      objects = body.objects;
+    }
+    expect(objects.length).to.equal(expectedNumberOfObjects);
+    return objects.find(obj => obj.id === prmId);
+  }
+
+  static extractOneRandomValue = (values) => {
+    return values[Math.floor(Math.random() * values.length)];
+  }
+
+  static getRoundedRandomFloat(min, max, fractionDigits) {
+    const float = Math.random() * (max - min) + min;
+    return parseFloat(float.toFixed(fractionDigits));
+  }
 }
