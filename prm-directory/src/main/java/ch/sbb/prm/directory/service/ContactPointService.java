@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.service;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
-import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -20,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 @Service
 @Slf4j
@@ -100,7 +99,7 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
   }
 
   public List<ContactPointOverviewModel> buildOverview(List<ContactPointVersion> parkingLotVersions) {
-    List<ContactPointVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(parkingLotVersions,
+    List<ContactPointVersion> mergedVersions = OverviewDisplayBuilder.mergeVersionsForDisplay(parkingLotVersions,
         ContactPointVersion::getSloid);
     return mergedVersions.stream()
         .map(contactPoint -> ContactPointVersionMapper.toOverviewModel(contactPoint,

@@ -33,14 +33,14 @@ public final class ReflectionHelper {
     return fields;
   }
 
-  public static Object copyObjectViaBuilder(Object object) {
+  public static <T> T copyObjectViaBuilder(T object) {
     try {
       Method toBuilder = object.getClass().getDeclaredMethod("toBuilder");
       ReflectionUtils.makeAccessible(toBuilder);
       Object builder = toBuilder.invoke(object);
       Method build = builder.getClass().getMethod("build");
       ReflectionUtils.makeAccessible(build);
-      return build.invoke(builder);
+      return (T) build.invoke(builder);
     } catch (Exception e) {
       throw new IllegalStateException(
           "Could not invoke .toBuilder().build() for Object copy on " + object.getClass().getSimpleName(), e);

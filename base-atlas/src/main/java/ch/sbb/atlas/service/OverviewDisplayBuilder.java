@@ -17,7 +17,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.data.domain.Pageable;
 
 @UtilityClass
-public class OverviewService {
+public class OverviewDisplayBuilder {
 
   public static <T> Container<T> toPagedContainer(List<T> elements, Pageable pageable) {
     return Container.<T>builder()
