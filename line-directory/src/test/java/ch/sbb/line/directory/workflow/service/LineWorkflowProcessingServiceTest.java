@@ -26,7 +26,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
- class LineWorkflowProcessingServiceTest {
+class LineWorkflowProcessingServiceTest {
 
   @Mock
   private LineVersionRepository lineVersionRepository;
@@ -43,14 +43,14 @@ import org.mockito.MockitoAnnotations;
   private LineWorkflowProcessingService workflowProcessingService;
 
   @BeforeEach
-   void init() {
+  void init() {
     MockitoAnnotations.openMocks(this);
     workflowProcessingService = new LineWorkflowProcessingService(lineVersionRepository, lineWorkflowRepository,
         lineVersionSnapshotRepository);
   }
 
   @Test
-   void shouldExecuteProcessLineWorkflow() {
+  void shouldExecuteProcessLineWorkflow() {
     //given
     WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(1000L)
@@ -70,7 +70,7 @@ import org.mockito.MockitoAnnotations;
   }
 
   @Test
-   void shouldApproveLineWorkflow() {
+  void shouldApproveLineWorkflow() {
     //given
     WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(1000L)
@@ -94,26 +94,59 @@ import org.mockito.MockitoAnnotations;
 
   @Test
   void shouldNotAddSecondLineWorkflowInProgress() {
-   //given
-   WorkflowEvent workflowEvent = WorkflowEvent.builder()
-       .workflowId(1000L)
-       .businessObjectId(1000L)
-       .workflowStatus(ADDED)
-       .build();
-   LineVersion lineVersion = LineVersion.builder().id(1000L).build();
-   when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));
-   when(lineWorkflowRepository.findAllByLineVersion(lineVersion)).thenReturn(List.of(LineVersionWorkflow.builder()
-       .workflowId(56L)
-       .lineVersion(lineVersion)
-       .workflowProcessingStatus(WorkflowProcessingStatus.IN_PROGRESS)
-       .build()));
+    //given
+    WorkflowEvent workflowEvent = WorkflowEvent.builder()
+        .workflowId(1000L)
+        .businessObjectId(1000L)
+        .workflowStatus(ADDED)
+        .build();
+    LineVersion lineVersion = LineVersion.builder().id(1000L).build();
+    when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));
+    when(lineWorkflowRepository.findAllByLineVersion(lineVersion)).thenReturn(List.of(LineVersionWorkflow.builder()
+        .workflowId(56L)
+        .lineVersion(lineVersion)
+        .workflowProcessingStatus(WorkflowProcessingStatus.IN_PROGRESS)
+        .build()));
 
-   //when
-   assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
-       () -> workflowProcessingService.processLineWorkflow(workflowEvent, lineVersion));
+    //when
+    assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
+        () -> workflowProcessingService.processLineWorkflow(workflowEvent, lineVersion));
 
-   //then
-   verify(lineWorkflowRepository, times(0)).save(any(LineVersionWorkflow.class));
+    //then
+    verify(lineWorkflowRepository, times(0)).save(any(LineVersionWorkflow.class));
+  }
+
+  @Test
+  void shouldUpdateExistingLineWorkflowRelation() {
+    //given
+    long businessObjectId = 1005L;
+    long workflowId = 1000L;
+    WorkflowEvent workflowEvent = WorkflowEvent.builder()
+        .workflowId(workflowId)
+        .businessObjectId(businessObjectId)
+        .workflowStatus(ADDED)
+        .build();
+    LineVersion lineVersion = LineVersion.builder().id(businessObjectId).build();
+    when(lineVersionRepository.findById(businessObjectId)).thenReturn(Optional.of(lineVersion));
+    when(lineWorkflowRepository.findByWorkflowId(workflowId)).thenReturn(Optional.of(LineVersionWorkflow.builder()
+        .workflowId(workflowId)
+        .lineVersion(lineVersion)
+        .workflowProcessingStatus(WorkflowProcessingStatus.EVALUATED)
+        .build()));
+
+    //when
+    workflowProcessingService.processLineWorkflow(workflowEvent, lineVersion);
+
+    //then
+    verify(lineVersionRepository).save(lineVersion);
+    verify(lineVersionSnapshotRepository).save(any(LineVersionSnapshot.class));
+
+    verify(lineWorkflowRepository).save(lineVersionWorkflowArgumentCaptor.capture());
+    assertThat(lineVersionWorkflowArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(LineVersionWorkflow.builder()
+        .workflowId(workflowId)
+        .lineVersion(lineVersion)
+        .workflowProcessingStatus(WorkflowProcessingStatus.IN_PROGRESS)
+        .build());
   }
 
 }
