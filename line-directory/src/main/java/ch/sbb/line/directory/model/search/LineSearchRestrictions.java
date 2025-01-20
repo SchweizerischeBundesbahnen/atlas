@@ -4,8 +4,10 @@ import ch.sbb.atlas.api.lidi.LineRequestParams;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
+import ch.sbb.atlas.searching.specification.SingleStringSpecification;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.line.directory.entity.Line;
+import ch.sbb.line.directory.entity.Line.Fields;
 import ch.sbb.line.directory.entity.Line_;
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.util.List;
@@ -46,8 +48,9 @@ public class LineSearchRestrictions extends SearchRestrictions<Line> {
         .and(specificationBuilder().enumSpecification(getStatusRestrictions(), getStatus()))
         .and(specificationBuilder().enumSpecification(lineRequestParams.getTypeRestrictions(), Line_.lidiElementType))
         .and(specificationBuilder().enumSpecification(lineRequestParams.getElementRestrictions(), Line_.elementType))
-        .and(specificationBuilder().singleStringSpecification(Optional.ofNullable(lineRequestParams.getSwissLineNumber())))
-        .and(specificationBuilder().singleStringSpecification(Optional.ofNullable(lineRequestParams.getBusinessOrganisation())))
+        .and(new SingleStringSpecification<>(Optional.ofNullable(lineRequestParams.getSwissLineNumber()), Fields.swissLineNumber))
+        .and(new SingleStringSpecification<>(Optional.ofNullable(lineRequestParams.getBusinessOrganisation()),
+            Fields.businessOrganisation))
         .and(new ValidOrEditionTimerangeSpecification<>(
             lineRequestParams.getFromDate(),
             lineRequestParams.getToDate(),
