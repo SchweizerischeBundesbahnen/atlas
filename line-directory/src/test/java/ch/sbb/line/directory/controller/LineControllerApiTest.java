@@ -30,7 +30,6 @@ import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
@@ -170,8 +169,10 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
     //when
     mvc.perform(post("/v1/lines/" + lineVersionSaved.getSlnid() + "/revoke")
-        ).andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]." + BaseVersionModel.Fields.status, is("REVOKED")));
+    ).andExpect(status().isOk());
+
+    List<LineVersionModel> lineVersions = lineController.getLineVersions(lineVersionSaved.getSlnid());
+    assertThat(lineVersions).hasSize(1).first().extracting("status").isEqualTo(Status.REVOKED);
   }
 
   @Test
