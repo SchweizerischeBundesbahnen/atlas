@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
- class LineServiceSearchTest {
+class LineServiceSearchTest {
 
   private final LineVersionRepository lineVersionRepository;
   private final LineService lineService;
@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
   private LineVersion version3;
 
   @Autowired
-   LineServiceSearchTest(LineVersionRepository lineVersionRepository,
+  LineServiceSearchTest(LineVersionRepository lineVersionRepository,
       LineService lineService) {
     this.lineVersionRepository = lineVersionRepository;
     this.lineService = lineService;
@@ -372,14 +372,44 @@ import org.springframework.transaction.annotation.Transactional;
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-            .lineRequestParams(LineRequestParams.builder()
-                .typeRestrictions(
-                    List.of(LidiElementType.ORDERLY,
-                        LidiElementType.TEMPORARY))
-                .build())
+        .lineRequestParams(LineRequestParams.builder()
+            .typeRestrictions(
+                List.of(LidiElementType.ORDERLY,
+                    LidiElementType.TEMPORARY))
+            .build())
         .build());
 
     // Then
     assertThat(result.getContent()).hasSize(2);
+  }
+
+  @Test
+  void shouldFindVersionWithBusinessOrganisation() {
+    version1 = lineVersionRepository.saveAndFlush(version1);
+    String sboid = version1.getBusinessOrganisation();
+
+    Page<Line> result = lineService.findAll(
+        LineSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .lineRequestParams(LineRequestParams.builder().businessOrganisation(sboid).build())
+            .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldNotFindVersionWithBusinessOrganisation() {
+    version1 = lineVersionRepository.saveAndFlush(version1);
+    String sboid = "unknownSboid";
+
+    Page<Line> result = lineService.findAll(
+        LineSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .lineRequestParams(LineRequestParams.builder().businessOrganisation(sboid).build())
+            .build());
+
+    // Then
+    assertThat(result.getContent()).isEmpty();
   }
 }
