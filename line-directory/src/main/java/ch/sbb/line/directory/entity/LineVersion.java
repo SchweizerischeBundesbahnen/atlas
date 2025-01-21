@@ -61,7 +61,6 @@ public class LineVersion extends BaseVersion implements Versionable,
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String swissLineNumber;
