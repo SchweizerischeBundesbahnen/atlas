@@ -1,7 +1,7 @@
-import {AuthConfig} from 'angular-oauth2-oidc';
+import { AuthConfig } from 'angular-oauth2-oidc';
 import 'angular-server-side-configuration/process';
 
-import {Environment} from './environment.model';
+import { Environment } from './environment.model';
 
 /**
  * How to use angular-server-side-configuration:
@@ -21,7 +21,8 @@ import {Environment} from './environment.model';
 // See https://confluence.sbb.ch/display/CLEW/Azure+AD
 const authConfig: AuthConfig = {
   // This is the issuer URL for the SBB Azure AD organization
-  issuer: 'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0',
+  issuer:
+    'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0',
   // This is required, since Azure AD uses different domains in their issuer configuration
   strictDiscoveryDocumentValidation: false,
   clientId: process.env.API_CLIENT_ID!,
@@ -33,12 +34,15 @@ const authConfig: AuthConfig = {
 
 export const environment: Environment = {
   production: process.env.PRODUCTION !== 'false',
-  sepodiWorkflowBavActionEnabled: process.env.SEPODI_WORKFLOW_BAV_ACTION_ENABLED !== 'false',
+  sepodiWorkflowBavActionEnabled:
+    process.env.SEPODI_WORKFLOW_BAV_ACTION_ENABLED !== 'false',
   bulkImportEnabled: process.env.BULK_IMPORT_ENABLED !== 'false',
   label: process.env.ENVIRONMENT_LABEL!,
   appVersion: process.env.APP_VERSION!,
   atlasApiUrl: process.env.ATLAS_API_URL!,
   atlasUnauthApiUrl: process.env.ATLAS_UNAUTH_API_URL!,
-  atlasReleaseNotes: 'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
+  atlasReleaseNotes:
+    'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
   authConfig,
+  journeyMapsApiKey: process.env.JOURNEY_MAPS_API_KEY!,
 };
