@@ -424,6 +424,8 @@
       "NUMBER_INFO": "Information (chiffres, lettres ou combinaison des deux) dans le cadre de laquelle la ligne est communiquée aux voyageurs. L’information est communiquée dans sa globalité et non pas sous la forme de différentes informations.",
       "DESCRIPTION": "Désignation de la ligne",
       "DESCRIPTION_INFO": "En règle générale, il s'agit des arrêts de départ et d'arrivée ainsi que des principaux arrêts desservis de la ligne.",
+      "LONG_NAME_INFO": "Désignation de la ligne avec désignation supplémentaire selon le modèle de ligne",
+      "SWISS_LINE_NUMBER_INFO": "Attribution selon la directive 582, n'est éventuellement pas encore définitive lors de la première saisie.",
       "FONT_RGB": "Couleur de la police RVB",
       "BACKGROUND_RGB": "Couleur de fond de la police RVB",
       "FONT_CMYK": "Couleur de la police CMJN",
