@@ -117,7 +117,7 @@ public class ServicePointUpdateCsvModel implements Validatable<ServicePointUpdat
   @Nulling(property = "servicePointGeolocation")
   private SpatialReference spatialReference;
 
-  @Nulling(property = "servicePointGeolocation")
+  @Nulling(property = "servicePointGeolocation.height")
   private Double height;
 
   @Override
