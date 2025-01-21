@@ -1,28 +1,38 @@
-import {Component, OnInit} from '@angular/core';
-import {ApplicationType, LinesService, LineType, LineVersionV2, LineVersionWorkflow, Status,} from '../../../../api';
-import {ActivatedRoute, Router} from '@angular/router';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import { Component, OnInit } from '@angular/core';
+import {
+  ApplicationType,
+  LinesService,
+  LineType,
+  LineVersionV2,
+  LineVersionWorkflow,
+  Status,
+} from '../../../../api';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import moment from 'moment';
-import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
-import {Pages} from '../../../pages';
-import {Page} from 'src/app/core/model/page';
-import {AtlasCharsetsValidator} from '../../../../core/validation/charsets/atlas-charsets-validator';
-import {WhitespaceValidator} from '../../../../core/validation/whitespace/whitespace-validator';
-import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import {LineDetailFormGroup} from './line-detail-form-group';
-import {ValidityService} from "../../../sepodi/validity/validity.service";
-import {PermissionService} from "../../../../core/auth/permission/permission.service";
-import {BaseDetailController} from "../../../../core/components/base-detail/base-detail-controller";
-import {catchError} from "rxjs";
-import {NotificationService} from "../../../../core/notification/notification.service";
+import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
+import { Pages } from '../../../pages';
+import { Page } from 'src/app/core/model/page';
+import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
+import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
+import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { LineDetailFormGroup } from './line-detail-form-group';
+import { ValidityService } from '../../../sepodi/validity/validity.service';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
+import { catchError } from 'rxjs';
+import { NotificationService } from '../../../../core/notification/notification.service';
 
 @Component({
   templateUrl: './line-detail.component.html',
   styleUrls: ['./line-detail.component.scss'],
   providers: [ValidityService],
 })
-export class LineDetailComponent extends BaseDetailController<LineVersionV2> implements OnInit {
+export class LineDetailComponent
+  extends BaseDetailController<LineVersionV2>
+  implements OnInit
+{
   isShowLineSnapshotHistory = false;
 
   _lineType!: LineType;
@@ -50,16 +60,26 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
     protected dialogService: DialogService,
     protected permissionService: PermissionService,
     protected activatedRoute: ActivatedRoute,
-    protected validityService: ValidityService,
+    protected validityService: ValidityService
   ) {
-    super(router, dialogService, notificationService, permissionService, activatedRoute, validityService);
+    super(
+      router,
+      dialogService,
+      notificationService,
+      permissionService,
+      activatedRoute,
+      validityService
+    );
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.isShowLineSnapshotHistory = this.showSnapshotHistoryLink();
     if (!this.isNewRecord()) {
-      this.lineType = this.form.value.lineType
+      this.lineType = this.form.value.lineType;
+      if (this.form.controls.lineType.value !== LineType.Orderly) {
+        this.isLineConcessionTypeRequired = false;
+      }
     }
   }
 
@@ -104,7 +124,10 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
 
   isWorkflowable(): boolean {
     if (this.getPageType() === Pages.LINES) {
-      if (this.record.status === Status.Draft || this.record.status === Status.InReview) {
+      if (
+        this.record.status === Status.Draft ||
+        this.record.status === Status.InReview
+      ) {
         if (this.record.lineType === LineType.Orderly) return true;
       }
     }
@@ -113,10 +136,13 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
 
   showSnapshotHistoryLink(): boolean {
     const lineVersionWorkflows: LineVersionWorkflow[] = [];
-    this.record.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
+    this.record.lineVersionWorkflows?.forEach((lvw) =>
+      lineVersionWorkflows.push(lvw)
+    );
     return (
       lineVersionWorkflows.length > 0 ||
-      (this.record.lineType === LineType.Orderly && this.record.status === Status.Validated)
+      (this.record.lineType === LineType.Orderly &&
+        this.record.status === Status.Validated)
     );
   }
 
@@ -147,7 +173,9 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
       this.form.controls.swissLineNumber.updateValueAndValidity();
     } else {
       this.isLineConcessionTypeRequired = true;
-      this.form.controls.lineConcessionType.setValidators([Validators.required]);
+      this.form.controls.lineConcessionType.setValidators([
+        Validators.required,
+      ]);
       this.form.controls.lineConcessionType.updateValueAndValidity();
       this.form.controls.swissLineNumber.setValidators([Validators.required]);
       this.form.controls.swissLineNumber.updateValueAndValidity();
@@ -157,7 +185,7 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
 
   subscribeToConditionalValidation() {
     this.form.controls.lineType.valueChanges.subscribe(() => {
-      this.conditionalValidation()
+      this.conditionalValidation();
     });
   }
 
@@ -179,7 +207,9 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
     const selectedLineVersion: LineVersionV2 = this.getSelectedRecord();
     if (selectedLineVersion.slnid) {
       this.linesService.revokeLine(selectedLineVersion.slnid).subscribe(() => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.REVOKE_SUCCESS');
+        this.notificationService.success(
+          'LIDI.LINE.NOTIFICATION.REVOKE_SUCCESS'
+        );
         this.router
           .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
           .then(() => this.ngOnInit());
@@ -191,7 +221,9 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
     const selectedLineVersion: LineVersionV2 = this.getSelectedRecord();
     if (selectedLineVersion.slnid != null) {
       this.linesService.deleteLines(selectedLineVersion.slnid).subscribe(() => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
+        this.notificationService.success(
+          'LIDI.LINE.NOTIFICATION.DELETE_SUCCESS'
+        );
         this.backToOverview();
       });
     }
@@ -206,7 +238,9 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
           AtlasCharsetsValidator.sid4pt,
         ]),
         lineType: new FormControl(version.lineType, [Validators.required]),
-        offerCategory: new FormControl(version.offerCategory, [Validators.required]),
+        offerCategory: new FormControl(version.offerCategory, [
+          Validators.required,
+        ]),
         businessOrganisation: new FormControl(version.businessOrganisation, [
           Validators.required,
           AtlasFieldLengthValidator.length_50,
@@ -222,7 +256,9 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        lineConcessionType: new FormControl(version.lineConcessionType, [Validators.required]),
+        lineConcessionType: new FormControl(version.lineConcessionType, [
+          Validators.required,
+        ]),
         // lineConcessionType: new FormControl(version.lineConcessionType, version.lineType == "ORDERLY" ? [Validators.required] : []),
         longName: new FormControl(version.longName, [
           AtlasFieldLengthValidator.length_255,
@@ -236,11 +272,12 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
+          [Validators.required]
         ),
-        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
-          Validators.required,
-        ]),
+        validTo: new FormControl(
+          version.validTo ? moment(version.validTo) : version.validTo,
+          [Validators.required]
+        ),
         comment: new FormControl(version.comment, [
           AtlasFieldLengthValidator.comments,
           AtlasCharsetsValidator.iso88591,
@@ -251,11 +288,13 @@ export class LineDetailComponent extends BaseDetailController<LineVersionV2> imp
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
   getFormControlsToDisable(): string[] {
-    return this.record.status === Status.InReview ? ['validFrom', 'validTo', 'lineType'] : [];
+    return this.record.status === Status.InReview
+      ? ['validFrom', 'validTo', 'lineType']
+      : [];
   }
 }
