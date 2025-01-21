@@ -1,23 +1,24 @@
-package ch.sbb.atlas.imports.bulk;
+package ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
+import ch.sbb.atlas.imports.bulk.AttributeNullingNotSupportedException;
+import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-class BulkImportUpdateDataMapperTest {
-
-  private final DummyBulkImportUpdateDataMapper mapper = new DummyBulkImportUpdateDataMapper();
+class ServicePointBulkImportUpdateTest {
 
   @Test
   void shouldApplyDefaultMapping() {
@@ -31,11 +32,12 @@ class BulkImportUpdateDataMapperTest {
                 .meansOfTransport(Set.of(MeanOfTransport.BUS))
                 .build())
             .build();
-    UpdateServicePointVersionModel currentEntity = new UpdateServicePointVersionModel();
-    currentEntity.setCategories(Collections.emptyList());
-    currentEntity.setDesignationOfficial("Bern, Wyleregg");
+    ServicePointVersion currentEntity = ServicePointVersion.builder()
+        .categories(Collections.emptySet())
+        .designationOfficial("Bern, Wyleregg")
+        .build();
 
-    UpdateServicePointVersionModel result = mapper.applyUpdate(container, currentEntity, new UpdateServicePointVersionModel());
+    UpdateServicePointVersionModel result = ServicePointBulkImportUpdate.apply(container, currentEntity);
     assertThat(result.getDesignationLong()).isEqualTo("Bern, am Wyleregg");
     assertThat(result.getMeansOfTransport()).containsExactly(MeanOfTransport.BUS);
     assertThat(result.getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
@@ -53,10 +55,9 @@ class BulkImportUpdateDataMapperTest {
                 .meansOfTransport(Set.of(MeanOfTransport.BUS))
                 .build())
             .build();
-    UpdateServicePointVersionModel currentEntity = new UpdateServicePointVersionModel();
-    currentEntity.setId(4L);
+    ServicePointVersion currentEntity = ServicePointVersion.builder().id(4L).build();
 
-    UpdateServicePointVersionModel result = mapper.applyUpdate(container, currentEntity, new UpdateServicePointVersionModel());
+    UpdateServicePointVersionModel result = ServicePointBulkImportUpdate.apply(container, currentEntity);
     assertThat(result.getId()).isEqualTo(4L);
   }
 
@@ -72,18 +73,18 @@ class BulkImportUpdateDataMapperTest {
                 .build())
             .attributesToNull(List.of(Fields.height, Fields.categories, Fields.designationLong))
             .build();
-    UpdateServicePointVersionModel currentEntity =
-        UpdateServicePointVersionModel.builder()
-            .categories(List.of(Category.HOSTNAME))
+    ServicePointVersion currentEntity =
+        ServicePointVersion.builder()
+            .categories(Set.of(Category.HOSTNAME))
             .designationLong("Bern, am Wyleregg")
-            .servicePointGeolocation(GeolocationBaseCreateModel.builder()
+            .servicePointGeolocation(ServicePointGeolocation.builder()
                 .height(15.0)
                 .build())
             .build();
 
-    UpdateServicePointVersionModel result = mapper.applyUpdate(container, currentEntity, new UpdateServicePointVersionModel());
-    assertThat(result.getMeansOfTransport()).containsExactly(MeanOfTransport.BUS);
+    UpdateServicePointVersionModel result = ServicePointBulkImportUpdate.apply(container, currentEntity);
 
+    assertThat(result.getMeansOfTransport()).containsExactly(MeanOfTransport.BUS);
     assertThat(result.getServicePointGeolocation().getHeight()).isNull();
     assertThat(result.getCategories()).isEmpty();
     assertThat(result.getDesignationLong()).isNull();
@@ -101,15 +102,10 @@ class BulkImportUpdateDataMapperTest {
                 .build())
             .attributesToNull(List.of(Fields.businessOrganisation))
             .build();
-    UpdateServicePointVersionModel currentEntity = UpdateServicePointVersionModel.builder().build();
+    ServicePointVersion currentEntity = ServicePointVersion.builder().build();
 
-    assertThatExceptionOfType(AttributeNullingNotSupportedException.class).isThrownBy(() -> mapper.applyUpdate(container,
-        currentEntity, new UpdateServicePointVersionModel()));
-  }
-
-  private static class DummyBulkImportUpdateDataMapper extends BulkImportUpdateDataMapper<ServicePointUpdateCsvModel,
-        UpdateServicePointVersionModel, UpdateServicePointVersionModel> {
-
+    assertThatExceptionOfType(AttributeNullingNotSupportedException.class).isThrownBy(
+        () -> ServicePointBulkImportUpdate.apply(container, currentEntity));
   }
 
 }
