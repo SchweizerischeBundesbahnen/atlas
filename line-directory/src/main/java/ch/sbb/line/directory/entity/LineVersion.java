@@ -119,6 +119,7 @@ public class LineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private String icon;
 
+  @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String description;
