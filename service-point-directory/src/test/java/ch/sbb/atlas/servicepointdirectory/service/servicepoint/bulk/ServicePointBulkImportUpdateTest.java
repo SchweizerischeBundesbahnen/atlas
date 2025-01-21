@@ -71,7 +71,7 @@ class ServicePointBulkImportUpdateTest {
                 .validTo(LocalDate.of(2021, 3, 31))
                 .meansOfTransport(Set.of(MeanOfTransport.BUS))
                 .build())
-            .attributesToNull(List.of(Fields.height, Fields.categories, Fields.designationLong))
+            .attributesToNull(List.of(Fields.north, Fields.height, Fields.categories, Fields.designationLong))
             .build();
     ServicePointVersion currentEntity =
         ServicePointVersion.builder()
@@ -85,7 +85,7 @@ class ServicePointBulkImportUpdateTest {
     UpdateServicePointVersionModel result = ServicePointBulkImportUpdate.apply(container, currentEntity);
 
     assertThat(result.getMeansOfTransport()).containsExactly(MeanOfTransport.BUS);
-    assertThat(result.getServicePointGeolocation().getHeight()).isNull();
+    assertThat(result.getServicePointGeolocation()).isNull();
     assertThat(result.getCategories()).isEmpty();
     assertThat(result.getDesignationLong()).isNull();
   }
