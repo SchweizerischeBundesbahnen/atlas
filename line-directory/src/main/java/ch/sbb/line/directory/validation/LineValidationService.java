@@ -39,10 +39,12 @@ public class LineValidationService {
   }
 
   void validateLineConflict(LineVersion lineVersion) {
-    List<LineVersion> swissLineNumberOverlaps = lineVersionRepository.findSwissLineNumberOverlaps(
-        lineVersion);
-    if (!swissLineNumberOverlaps.isEmpty()) {
-      throw new LineConflictException(lineVersion, swissLineNumberOverlaps);
+    if(lineVersion.getLineType() == LineType.ORDERLY) {
+      List<LineVersion> swissLineNumberOverlaps = lineVersionRepository.findSwissLineNumberOverlaps(
+          lineVersion);
+      if (!swissLineNumberOverlaps.isEmpty()) {
+        throw new LineConflictException(lineVersion, swissLineNumberOverlaps);
+      }
     }
   }
 
