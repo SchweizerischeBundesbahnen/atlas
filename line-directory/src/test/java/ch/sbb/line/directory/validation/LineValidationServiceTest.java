@@ -1,8 +1,10 @@
 package ch.sbb.line.directory.validation;
 
+import static org.assertj.core.api.Assertions.assertThatException;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -21,10 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
- class LineValidationServiceTest {
+class LineValidationServiceTest {
 
   @Mock
   private SublineVersionRepository sublineVersionRepository;
@@ -41,14 +45,14 @@ import org.mockito.MockitoAnnotations;
   private LineValidationService lineValidationService;
 
   @BeforeEach()
-   void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     lineValidationService = new LineValidationService(lineVersionRepository,
         coverageValidationService, sharedBusinessOrganisationService);
   }
 
   @Test
-   void shouldThrowLineConflictExceptionWhenFoundSwissLineNumberOverlaps() {
+  void shouldThrowLineConflictExceptionWhenFoundSwissLineNumberOverlaps() {
     //given
     LineVersion lineVersion = LineTestData.lineVersion();
     when(lineVersionRepository.findSwissLineNumberOverlaps(lineVersion)).thenReturn(
@@ -63,10 +67,10 @@ import org.mockito.MockitoAnnotations;
   void shouldNotSaveTemporaryLineWithValidityGreaterThan12Months() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .lineType(LineType.TEMPORARY)
-                                          .validFrom(LocalDate.of(2021, 10, 15))
-                                          .validTo(LocalDate.of(2022, 10, 16))
-                                          .build();
+        .lineType(LineType.TEMPORARY)
+        .validFrom(LocalDate.of(2021, 10, 15))
+        .validTo(LocalDate.of(2022, 10, 16))
+        .build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         List.of());
     // When
@@ -78,10 +82,10 @@ import org.mockito.MockitoAnnotations;
   void shouldSaveTemporaryLine() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .lineType(LineType.TEMPORARY)
-                                          .validFrom(LocalDate.of(2021, 10, 1))
-                                          .validTo(LocalDate.of(2022, 10, 1))
-                                          .build();
+        .lineType(LineType.TEMPORARY)
+        .validFrom(LocalDate.of(2021, 10, 1))
+        .validTo(LocalDate.of(2022, 10, 1))
+        .build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         List.of());
     // When & Then
@@ -94,16 +98,16 @@ import org.mockito.MockitoAnnotations;
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder().lineType(LineType.TEMPORARY).id(1L)
-                    .validFrom(LocalDate.of(2021, 1, 1))
-                    .validTo(LocalDate.of(2021, 3, 31)).build(),
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 3, 31)).build(),
         LineTestData.lineVersionBuilder().lineType(LineType.TEMPORARY).id(2L)
-                    .validFrom(LocalDate.of(2021, 9, 1))
-                    .validTo(LocalDate.of(2022, 2, 1)).build());
+            .validFrom(LocalDate.of(2021, 9, 1))
+            .validTo(LocalDate.of(2022, 2, 1)).build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .lineType(LineType.TEMPORARY)
-                                          .validFrom(LocalDate.of(2021, 4, 1))
-                                          .validTo(LocalDate.of(2021, 8, 31))
-                                          .build();
+        .lineType(LineType.TEMPORARY)
+        .validFrom(LocalDate.of(2021, 4, 1))
+        .validTo(LocalDate.of(2021, 8, 31))
+        .build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         versions);
     // When
@@ -116,16 +120,16 @@ import org.mockito.MockitoAnnotations;
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder()
-                    .id(1L)
-                    .lineType(LineType.TEMPORARY)
-                    .validFrom(LocalDate.of(2021, 1, 1))
-                    .validTo(LocalDate.of(2021, 3, 31))
-                    .build());
+            .id(1L)
+            .lineType(LineType.TEMPORARY)
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 3, 31))
+            .build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .lineType(LineType.TEMPORARY)
-                                          .validFrom(LocalDate.of(2021, 4, 1))
-                                          .validTo(LocalDate.of(2021, 7, 31))
-                                          .build();
+        .lineType(LineType.TEMPORARY)
+        .validFrom(LocalDate.of(2021, 4, 1))
+        .validTo(LocalDate.of(2021, 7, 31))
+        .build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         versions);
     // When & Then
@@ -138,24 +142,24 @@ import org.mockito.MockitoAnnotations;
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder()
-                    .lineType(LineType.TEMPORARY)
-                    .id(1L)
-                    .validFrom(LocalDate.of(2021, 1, 1))
-                    .validTo(LocalDate.of(2021, 3, 31))
-                    .build(),
+            .lineType(LineType.TEMPORARY)
+            .id(1L)
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 3, 31))
+            .build(),
         LineTestData.lineVersionBuilder()
-                    .lineType(LineType.TEMPORARY)
-                    .id(2L)
-                    .validFrom(LocalDate.of(2021, 4, 1))
-                    .validTo(LocalDate.of(2021, 8, 31))
-                    .build(),
+            .lineType(LineType.TEMPORARY)
+            .id(2L)
+            .validFrom(LocalDate.of(2021, 4, 1))
+            .validTo(LocalDate.of(2021, 8, 31))
+            .build(),
         LineTestData.lineVersionBuilder().id(3L).validFrom(LocalDate.of(2022, 3, 1))
-                    .validTo(LocalDate.of(2022, 3, 31)).build());
+            .validTo(LocalDate.of(2022, 3, 31)).build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .lineType(LineType.TEMPORARY)
-                                          .validFrom(LocalDate.of(2021, 9, 1))
-                                          .validTo(LocalDate.of(2022, 2, 28))
-                                          .build();
+        .lineType(LineType.TEMPORARY)
+        .validFrom(LocalDate.of(2021, 9, 1))
+        .validTo(LocalDate.of(2022, 2, 28))
+        .build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         versions);
     // When
@@ -168,24 +172,24 @@ import org.mockito.MockitoAnnotations;
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder()
-                    .id(1L)
-                    .lineType(LineType.TEMPORARY)
-                    .validFrom(LocalDate.of(2021, 1, 1))
-                    .validTo(LocalDate.of(2021, 3, 31))
-                    .build(),
+            .id(1L)
+            .lineType(LineType.TEMPORARY)
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 3, 31))
+            .build(),
         LineTestData.lineVersionBuilder()
-                    .id(2L)
-                    .lineType(LineType.TEMPORARY)
-                    .validFrom(LocalDate.of(2021, 4, 1))
-                    .validTo(LocalDate.of(2021, 8, 31))
-                    .build(),
+            .id(2L)
+            .lineType(LineType.TEMPORARY)
+            .validFrom(LocalDate.of(2021, 4, 1))
+            .validTo(LocalDate.of(2021, 8, 31))
+            .build(),
         LineTestData.lineVersionBuilder().id(3L).validFrom(LocalDate.of(2021, 10, 1))
-                    .validTo(LocalDate.of(2022, 3, 31)).build());
+            .validTo(LocalDate.of(2022, 3, 31)).build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .lineType(LineType.TEMPORARY)
-                                          .validFrom(LocalDate.of(2021, 9, 1))
-                                          .validTo(LocalDate.of(2021, 9, 30))
-                                          .build();
+        .lineType(LineType.TEMPORARY)
+        .validFrom(LocalDate.of(2021, 9, 1))
+        .validTo(LocalDate.of(2021, 9, 30))
+        .build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         versions);
     // When & Then
@@ -198,16 +202,16 @@ import org.mockito.MockitoAnnotations;
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder()
-                    .id(1L)
-                    .lineType(LineType.TEMPORARY)
-                    .validFrom(LocalDate.of(2021, 1, 1))
-                    .validTo(LocalDate.of(2021, 3, 31))
-                    .build());
+            .id(1L)
+            .lineType(LineType.TEMPORARY)
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 3, 31))
+            .build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .lineType(LineType.TEMPORARY)
-                                          .validFrom(LocalDate.of(2021, 4, 2))
-                                          .validTo(LocalDate.of(2021, 8, 31))
-                                          .build();
+        .lineType(LineType.TEMPORARY)
+        .validFrom(LocalDate.of(2021, 4, 2))
+        .validTo(LocalDate.of(2021, 8, 31))
+        .build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         versions);
     // When & Then
@@ -220,11 +224,11 @@ import org.mockito.MockitoAnnotations;
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder().id(1L).lineType(LineType.TEMPORARY)
-                    .validFrom(LocalDate.of(2021, 1, 1))
-                    .validTo(LocalDate.of(2021, 3, 31)).build(),
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 3, 31)).build(),
         LineTestData.lineVersionBuilder().id(2L).lineType(LineType.TEMPORARY)
-                    .validFrom(LocalDate.of(2021, 8, 1))
-                    .validTo(LocalDate.of(2021, 8, 31)).build());
+            .validFrom(LocalDate.of(2021, 8, 1))
+            .validTo(LocalDate.of(2021, 8, 31)).build());
     LineVersion lineVersion = versions.get(1);
     lineVersion.setValidFrom(LocalDate.of(2021, 4, 1));
     lineVersion.setValidTo(LocalDate.of(2022, 2, 1));
@@ -240,17 +244,17 @@ import org.mockito.MockitoAnnotations;
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder().id(1L).lineType(LineType.TEMPORARY)
-                    .validFrom(LocalDate.of(2021, 1, 1))
-                    .validTo(LocalDate.of(2021, 4, 1)).build(),
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 4, 1)).build(),
         LineTestData.lineVersionBuilder().id(2L).lineType(LineType.TEMPORARY)
-                    .validFrom(LocalDate.of(2021, 4, 2))
-                    .validTo(LocalDate.of(2021, 9, 2)).build(),
+            .validFrom(LocalDate.of(2021, 4, 2))
+            .validTo(LocalDate.of(2021, 9, 2)).build(),
         LineTestData.lineVersionBuilder().id(3L).lineType(LineType.TEMPORARY)
-                    .validFrom(LocalDate.of(2021, 10, 2))
-                    .validTo(LocalDate.of(2022, 2, 2)).build());
+            .validFrom(LocalDate.of(2021, 10, 2))
+            .validTo(LocalDate.of(2022, 2, 2)).build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(LineType.TEMPORARY)
-                                          .validFrom(LocalDate.of(2022, 2, 3))
-                                          .validTo(LocalDate.of(2022, 11, 3)).build();
+        .validFrom(LocalDate.of(2022, 2, 3))
+        .validTo(LocalDate.of(2022, 11, 3)).build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         versions);
     // When
@@ -312,6 +316,62 @@ import org.mockito.MockitoAnnotations;
 
     //then
     verify(coverageValidationService).validateLineSublineCoverage(lineVersion);
+  }
+
+  @Test
+  void shouldNotValidateLineConflictWhenLineTypeIsOrderly() {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(LineType.ORDERLY).build();
+    // When
+    LineVersion lineVersionDb = LineTestData.lineVersionBuilder().swissLineNumber("IC2").lineType(LineType.ORDERLY).build();
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersionDb);
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersionDb.getSlnid())).thenReturn(
+        lineVersions);
+    // Then
+    assertThatNoException().isThrownBy(
+        () -> lineValidationService.validateLineConflict(lineVersion));
+
+    verify(lineVersionRepository).findSwissLineNumberOverlaps(lineVersion);
+  }
+
+  @Test
+  void shouldValidateLineConflictWhenLineTypeIsOrderly() {
+    //given
+    LineVersion lineVersion =
+        LineTestData.lineVersionBuilder().validFrom(LocalDate.of(1900, 1, 1)).validTo(LocalDate.of(1900, 1, 1))
+            .lineType(LineType.ORDERLY).build();
+    // When
+    LineVersion lineVersionDb = LineTestData.lineVersionBuilder().swissLineNumber("IC2").lineType(LineType.ORDERLY).build();
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersionDb);
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersionDb.getSlnid())).thenReturn(
+        lineVersions);
+    // Then
+    assertThatNoException().isThrownBy(
+        () -> lineValidationService.validateLineConflict(lineVersion));
+
+    verify(lineVersionRepository).findSwissLineNumberOverlaps(lineVersion);
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = LineType.class, names = {"DISPOSITION", "TEMPORARY", "OPERATIONAL"})
+  void shouldValidateLineConflictWhenLineTypeIsNotOrderly(LineType lineType) {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(lineType).build();
+    // When
+    LineVersion lineVersionDb = LineTestData.lineVersionBuilder().lineType(lineType).build();
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersionDb);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersionDb.getSlnid())).thenReturn(
+        lineVersions);
+    // Then
+    assertThatNoException().isThrownBy(
+        () -> lineValidationService.validateLineConflict(lineVersion));
+    verify(lineVersionRepository, never()).findSwissLineNumberOverlaps(lineVersion);
+
   }
 
 }

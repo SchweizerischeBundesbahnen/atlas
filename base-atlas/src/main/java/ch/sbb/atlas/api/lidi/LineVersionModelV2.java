@@ -25,6 +25,11 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "LineVersionV2")
 public class LineVersionModelV2 extends BaseLineVersionModel {
 
+  @Schema(description = "SwissLineNumber", example = "b1.L1")
+  @Size(min = 1, max = 50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
+  private String swissLineNumber;
+
   @Schema(description = "LineType")
   @NotNull
   private LineType lineType;

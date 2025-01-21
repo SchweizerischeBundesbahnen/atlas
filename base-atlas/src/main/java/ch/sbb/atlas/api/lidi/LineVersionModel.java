@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -31,6 +32,12 @@ public class LineVersionModel extends BaseLineVersionModel {
 
   private static final String HEX_COLOR_PATTERN = "^#([a-fA-F0-9]{6})$";
   private static final String CMYK_COLOR_PATTERN = "^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$";
+
+  @Schema(description = "SwissLineNumber", example = "b1.L1")
+  @NotBlank
+  @Size(min = 1, max = 50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
+  private String swissLineNumber;
 
   @Schema(description = "LineType")
   @NotNull
