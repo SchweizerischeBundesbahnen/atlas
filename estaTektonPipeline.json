@@ -190,7 +190,7 @@
           "enabled": true,
           "additionalParams": "--disableNodeAudit --nodePackageSkipDevDependencies"
         },
-        "additionalDeployParams": "--parallel --no-configration-cache u-x :api-auth-gateway:publish -x :gateway:publish"
+        "additionalDeployParams": "--parallel --no-configuration-cache -x :api-auth-gateway:publish -x :gateway:publish"
       }
     },
     {

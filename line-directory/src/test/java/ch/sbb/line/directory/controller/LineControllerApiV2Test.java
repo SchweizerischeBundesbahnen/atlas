@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.controller;
 
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
-import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.swissLineNumber;
+import static ch.sbb.atlas.api.lidi.CreateLineVersionModelV2.Fields.swissLineNumber;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -14,6 +14,7 @@ import ch.sbb.atlas.api.lidi.CreateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2.Fields;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -86,8 +87,9 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
         LineTestData.createLineVersionModelBuilder()
             .businessOrganisation("sbb")
             .longName("long name")
-            .lineType(LineType.TEMPORARY)
+            .lineType(LineType.ORDERLY)
             .swissLineNumber("b0.IC6")
+            .lineConcessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
             .build();
 
     LineVersionModelV2 lineVersionSaved = lineControllerV2.createLineVersionV2(createLineVersionModelV2);
@@ -111,7 +113,7 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(updateLineVersionModelV2))
         ).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC2")))
-        .andExpect(jsonPath("$[0]." + Fields.lineType, is(LineType.TEMPORARY.toString())))
+        .andExpect(jsonPath("$[0]." + Fields.lineType, is(LineType.ORDERLY.toString())))
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
   }
 }
