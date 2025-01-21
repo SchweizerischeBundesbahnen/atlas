@@ -22,7 +22,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "UpdateLineVersionV2")
-public class UpdateLineVersionModelV2 extends BaseLineVersionModel  {
+public class UpdateLineVersionModelV2 extends BaseLineVersionModel {
+
+  @Schema(description = "SwissLineNumber", example = "b1.L1")
+  @Size(min = 1, max = 50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
+  private String swissLineNumber;
 
   @Schema(description = "ConcessionType")
   private LineConcessionType lineConcessionType;
