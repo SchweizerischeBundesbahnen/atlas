@@ -7,7 +7,9 @@ import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.PlatformReducedUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
 import java.util.List;
+import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 
 class BulkImportValidationServiceTest {
@@ -46,6 +48,51 @@ class BulkImportValidationServiceTest {
     List<String> errorMessages = container1.getBulkImportLogEntry().getErrors().stream().map(BulkImportError::getErrorMessage)
         .toList();
     assertThat(errorMessages).containsExactlyInAnyOrder("sloid with value sloid:1 occurred more than once");
+  }
+
+  @Test
+  void shouldValidateAndStoreBulkImportLogEntryForNumberUniqueInSPCreate() {
+    BulkImportUpdateContainer<ServicePointCreateCsvModel> container1 =
+        BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
+            .lineNumber(1)
+            .object(ServicePointCreateCsvModel.builder()
+                .numberShort(100)
+                .uicCountryCode(85)
+                .build())
+            .build();
+
+    BulkImportUpdateContainer<ServicePointCreateCsvModel> container2 =
+        BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
+            .lineNumber(2)
+            .object(ServicePointCreateCsvModel.builder()
+                .numberShort(100)
+                .uicCountryCode(86)
+                .build())
+            .build();
+
+    BulkImportUpdateContainer<ServicePointCreateCsvModel> container3 =
+        BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
+            .lineNumber(3)
+            .object(ServicePointCreateCsvModel.builder()
+                .numberShort(100)
+                .uicCountryCode(85)
+                .build())
+            .build();
+
+    BulkImportValidationService.validateUniqueness(List.of(container1, container2, container3));
+
+    assertThat(container1.getBulkImportLogEntry().getErrors()).hasSize(1);
+    assertThat(container2.getBulkImportLogEntry()).isNull();
+    assertThat(container3.getBulkImportLogEntry().getErrors()).hasSize(1);
+
+    Function<BulkImportUpdateContainer<ServicePointCreateCsvModel>, List<String>> extractErrorMessage =
+        container -> container.getBulkImportLogEntry()
+            .getErrors().stream().map(BulkImportError::getErrorMessage).toList();
+
+    assertThat(extractErrorMessage.apply(container1)).containsExactlyInAnyOrder(
+        "number with value 8500100 occurred more than once");
+    assertThat(extractErrorMessage.apply(container3)).containsExactlyInAnyOrder(
+        "number with value 8500100 occurred more than once");
   }
 
   @Test
