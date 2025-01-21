@@ -2,8 +2,8 @@
   <h2 *ngIf="newRecord" class="font-bold-2xl mb-4">
     {{ 'LIDI.NEW_LINE_INFORMATION' | translate }}
   </h2>
-  <div class="col-12 d-flex" *ngIf="newRecord">
-    <div class="d-flex flex-column col-4 pe-3 pb-3">
+  <div class="col-12 d-flex">
+    <div class="d-flex flex-column col-4 pe-3 pb-3" *ngIf="newRecord">
       <atlas-select
         [formGroup]="form"
         controlName="lineType"
