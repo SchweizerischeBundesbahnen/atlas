@@ -259,7 +259,6 @@ export class LineDetailComponent
         lineConcessionType: new FormControl(version.lineConcessionType, [
           Validators.required,
         ]),
-        // lineConcessionType: new FormControl(version.lineConcessionType, version.lineType == "ORDERLY" ? [Validators.required] : []),
         longName: new FormControl(version.longName, [
           AtlasFieldLengthValidator.length_255,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
