@@ -47,7 +47,7 @@ public abstract class BulkImportUpdateDataMapper<T, U, V> extends BulkImportData
       try {
         propertyAccessor.setPropertyValue(pathToNull, null);
       } catch (NullValueInNestedPathException e) {
-        log.debug("Skipped nulling property ({}) because nested value is not accessible.", pathToNull);
+        log.debug("Skipped nulling property ({}) because nested value is not accessible.", pathToNull, e);
       }
     }
   }
