@@ -247,12 +247,12 @@ export class LineDetailComponent
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
         ]),
         number: new FormControl(version.number, [
-          AtlasFieldLengthValidator.length_50,
+          Validators.maxLength(8),
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
         shortNumber: new FormControl(version.shortNumber, [
-          AtlasFieldLengthValidator.length_10,
+          Validators.maxLength(8),
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
@@ -268,6 +268,7 @@ export class LineDetailComponent
           AtlasFieldLengthValidator.length_255,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
+          Validators.required,
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,

@@ -39,6 +39,16 @@ public class LineVersionModel extends BaseLineVersionModel {
   @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   private String swissLineNumber;
 
+  @Schema(description = "Description", example = "Meiringen - Innertkirchen")
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String description;
+
+  @Schema(description = "Number", example = "L1")
+  @Size(max = AtlasFieldLengths.LENGTH_50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String number;
+
   @Schema(description = "LineType")
   @NotNull
   private LineType lineType;
