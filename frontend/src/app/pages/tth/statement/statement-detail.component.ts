@@ -20,10 +20,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
-import {
-  StatementDetailFormGroup,
-  StatementSenderFormGroup,
-} from './statement-detail-form-group';
+import { StatementDetailFormGroup, StatementSenderFormGroup } from './statement-detail-form-group';
 import { Canton } from '../../../core/cantons/Canton';
 import { map, takeUntil } from 'rxjs/operators';
 import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
@@ -68,10 +65,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     return '';
   }
 
-  readonly emailValidator = [
-    AtlasCharsetsValidator.email,
-    AtlasFieldLengthValidator.length_100,
-  ];
+  readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -87,7 +81,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     private readonly statementDialogService: StatementDialogService,
     private readonly openStatementInMailService: OpenStatementInMailService,
     private readonly statementShareService: StatementShareService,
-    private readonly tableService: TableService
+    private readonly tableService: TableService,
   ) {}
 
   get isHearingStatusArchived() {
@@ -127,7 +121,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
               return foundTimetableHearingYears[0].statementEditable;
             }
             return false;
-          })
+          }),
         );
     }
 
@@ -153,10 +147,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   save() {
-    if (
-      !this.isNew &&
-      this.initialValueForCanton != this.form.value.swissCanton
-    ) {
+    if (!this.isNew && this.initialValueForCanton != this.form.value.swissCanton) {
       this.cantonSelectionChanged();
     } else {
       ValidationService.validateForm(this.form);
@@ -176,8 +167,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else if (!this.isHearingStatusArchived) {
-      // No event emit to have tu select component show actual data
-      this.form.enable({ emitEvent: false });
+      this.form.enable();
     }
   }
 
@@ -193,7 +183,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
           queryParams: {
             year: this.statement?.timetableYear,
           },
-        }
+        },
       )
       .then();
   }
@@ -201,20 +191,14 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   getFormGroup(statement: TimetableHearingStatementV2 | undefined): FormGroup {
     return new FormGroup<StatementDetailFormGroup>({
       id: new FormControl(statement?.id),
-      timetableYear: new FormControl(statement?.timetableYear, [
-        Validators.required,
-      ]),
-      statementStatus: new FormControl(statement?.statementStatus, [
-        Validators.required,
-      ]),
+      timetableYear: new FormControl(statement?.timetableYear, [Validators.required]),
+      statementStatus: new FormControl(statement?.statementStatus, [Validators.required]),
       ttfnid: new FormControl(statement?.ttfnid),
       responsibleTransportCompanies: new FormControl(
-        statement?.responsibleTransportCompanies ?? []
+        statement?.responsibleTransportCompanies ?? [],
       ),
       oldSwissCanton: new FormControl(statement?.oldSwissCanton),
-      swissCanton: new FormControl(statement?.swissCanton, [
-        Validators.required,
-      ]),
+      swissCanton: new FormControl(statement?.swissCanton, [Validators.required]),
       stopPlace: new FormControl(statement?.stopPlace, [
         AtlasFieldLengthValidator.length_255,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
@@ -226,10 +210,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         lastName: new FormControl(statement?.statementSender?.lastName, [
           AtlasFieldLengthValidator.length_100,
         ]),
-        organisation: new FormControl(
-          statement?.statementSender?.organisation,
-          [AtlasFieldLengthValidator.length_100]
-        ),
+        organisation: new FormControl(statement?.statementSender?.organisation, [
+          AtlasFieldLengthValidator.length_100,
+        ]),
         zip: new FormControl(statement?.statementSender?.zip, [
           AtlasCharsetsValidator.numeric,
           Validators.min(1000),
@@ -241,10 +224,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         street: new FormControl(statement?.statementSender?.street, [
           AtlasFieldLengthValidator.length_100,
         ]),
-        emails: new FormControl(
-          Array.from(statement?.statementSender?.emails ?? []),
-          [Validators.required]
-        ),
+        emails: new FormControl(Array.from(statement?.statementSender?.emails ?? []), [
+          Validators.required,
+        ]),
       }),
       statement: new FormControl(statement?.statement, [
         Validators.required,
@@ -253,11 +235,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       justification: new FormControl(statement?.justification, [
         AtlasFieldLengthValidator.statement,
       ]),
-      comment: new FormControl(statement?.comment, [
-        AtlasFieldLengthValidator.length_280,
-      ]),
+      comment: new FormControl(statement?.comment, [AtlasFieldLengthValidator.length_280]),
       documents: new FormArray(
-        statement?.documents?.map((document) => new FormControl(document)) ?? []
+        statement?.documents?.map((document) => new FormControl(document)) ?? [],
       ),
       etagVersion: new FormControl(statement?.etagVersion),
       editor: new FormControl(statement?.editor),
@@ -266,9 +246,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   removeDocument(fileName: string) {
     const documents = this.form.value.documents as { fileName: string }[];
-    const indexOfFile = documents.findIndex(
-      (document) => document.fileName === fileName
-    );
+    const indexOfFile = documents.findIndex((document) => document.fileName === fileName);
     this.form.controls.documents.removeAt(indexOfFile);
     this.form.markAsDirty();
   }
@@ -276,21 +254,16 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   downloadFile(fileName: string) {
     this.timetableHearingStatementsService
       .getStatementDocument(this.statement!.id!, fileName)
-      .subscribe((response) =>
-        FileDownloadService.downloadFile(fileName, response)
-      );
+      .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
   }
 
   openAsMail() {
-    this.openStatementInMailService.openAsMail(
-      this.statement!,
-      this.ttfnValidOn
-    );
+    this.openStatementInMailService.openAsMail(this.statement!, this.ttfnValidOn);
   }
 
   private downloadLocalFile(
     id: number,
-    documents: Array<TimetableHearingStatementDocument> | undefined
+    documents: Array<TimetableHearingStatementDocument> | undefined,
   ) {
     if (documents!.length > 0) {
       this.isLoading = true;
@@ -299,9 +272,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
           .getStatementDocument(id, documents![i].fileName)
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe((response) => {
-            this.uploadedFiles.push(
-              new File([response], documents![i].fileName)
-            );
+            this.uploadedFiles.push(new File([response], documents![i].fileName));
             if (i === documents!.length! - 1) {
               this.isLoading = false;
             }
@@ -331,30 +302,20 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   private initCantonOptions() {
     if (this.isNew) {
-      const tthPermissions =
-        this.permissionService.getApplicationUserPermission(
-          ApplicationType.TimetableHearing
-        );
-      if (
-        tthPermissions.role === ApplicationRole.Supervisor ||
-        this.permissionService.isAdmin
-      ) {
+      const tthPermissions = this.permissionService.getApplicationUserPermission(
+        ApplicationType.TimetableHearing,
+      );
+      if (tthPermissions.role === ApplicationRole.Supervisor || this.permissionService.isAdmin) {
         this.CANTON_OPTIONS = Cantons.cantons;
       } else if (tthPermissions.role === ApplicationRole.Writer) {
         this.CANTON_OPTIONS = tthPermissions.permissionRestrictions
-          .map((restriction) =>
-            Cantons.fromSwissCanton(restriction.valueAsString as SwissCanton)
-          )
+          .map((restriction) => Cantons.fromSwissCanton(restriction.valueAsString as SwissCanton))
           .filter((element) => element !== undefined)
           .map((e) => e!)
           .sort((n1, n2) => (n1.enumCanton! > n2.enumCanton! ? 1 : -1));
       }
-      const defaultCanton = Cantons.getSwissCantonEnum(
-        this.route.snapshot.params.canton
-      );
-      if (
-        this.CANTON_OPTIONS.includes(Cantons.fromSwissCanton(defaultCanton)!)
-      ) {
+      const defaultCanton = Cantons.getSwissCantonEnum(this.route.snapshot.params.canton);
+      if (this.CANTON_OPTIONS.includes(Cantons.fromSwissCanton(defaultCanton)!)) {
         this.form.controls.swissCanton.setValue(defaultCanton);
       }
     } else {
@@ -381,10 +342,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       this.isDuplicating = true;
       const localCopyStatement = this.statementShareService.statement;
       this.statement = this.statementShareService.getCloneStatement();
-      this.downloadLocalFile(
-        localCopyStatement.id!,
-        localCopyStatement.documents
-      );
+      this.downloadLocalFile(localCopyStatement.id!, localCopyStatement.documents);
       this.statementShareService.clearCachedStatement();
     }
   }
@@ -400,11 +358,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   private initTtfnValidOnHandler() {
     this.form.controls.timetableYear.valueChanges.subscribe((year) => {
       if (year) {
-        this.timetableYearChangeService
-          .getTimetableYearChange(year - 1)
-          .subscribe((result) => {
-            this.ttfnValidOn = result;
-          });
+        this.timetableYearChangeService.getTimetableYearChange(year - 1).subscribe((result) => {
+          this.ttfnValidOn = result;
+        });
       }
     });
   }
@@ -413,10 +369,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     this.form.controls.ttfnid.valueChanges.subscribe((ttfnid) => {
       if (ttfnid) {
         this.timetableHearingStatementsService
-          .getResponsibleTransportCompanies(
-            ttfnid,
-            this.form.value.timetableYear! - 1
-          )
+          .getResponsibleTransportCompanies(ttfnid, this.form.value.timetableYear! - 1)
           .subscribe((result) => {
             this.form.controls.responsibleTransportCompanies.setValue(result);
           });
@@ -432,9 +385,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       .subscribe((statement) => {
         this.isLoading = false;
         this.isDuplicating = false;
-        this.notificationService.success(
-          'TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS'
-        );
+        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
         this.navigateToStatementDetail(statement);
       });
   }
@@ -446,21 +397,17 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
         this.isLoading = false;
-        this.notificationService.success(
-          'TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS'
-        );
+        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
         this.navigateToStatementDetail(statement);
       });
   }
 
   private navigateToStatementDetail(statement: TimetableHearingStatementV2) {
-    this.router
-      .navigate(['..', statement.id], { relativeTo: this.route })
-      .then(() => {
-        this.isInitializingComponent = false;
-        this.statement = statement;
-        this.ngOnInit();
-      });
+    this.router.navigate(['..', statement.id], { relativeTo: this.route }).then(() => {
+      this.isInitializingComponent = false;
+      this.statement = statement;
+      this.ngOnInit();
+    });
   }
 
   private handleError() {
@@ -524,32 +471,26 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     number | undefined,
     Array<string> | undefined,
   ] {
-    const cantonFilter = Cantons.getSwissCantonFromShort(
-      this.route.snapshot.params.canton
-    );
+    const cantonFilter = Cantons.getSwissCantonFromShort(this.route.snapshot.params.canton);
     return [
       this.statement!.id!,
       this.statement!.timetableYear,
       cantonFilter,
       this.tableService.filterConfig?.filters.chipSearch.getActiveSearch(),
       this.tableService.filterConfig?.filters.multiSelectStatementStatus.getActiveSearch(),
-      this.tableService.filterConfig?.filters.searchSelectTTFN.getActiveSearch()
-        ?.ttfnid,
+      this.tableService.filterConfig?.filters.searchSelectTTFN.getActiveSearch()?.ttfnid,
       (
         this.tableService.filterConfig?.filters.searchSelectTU.getActiveSearch() as TransportCompany[]
       )
         ?.map((tu) => tu.id)
-        .filter(
-          (numberOrUndefined): numberOrUndefined is number =>
-            !!numberOrUndefined
-        ),
+        .filter((numberOrUndefined): numberOrUndefined is number => !!numberOrUndefined),
       this.tableService.pageIndex,
       this.tableService.pageSize,
       addElementsToArrayWhenNotUndefined(
         this.tableService.sortString,
         'statementStatus,asc',
         'ttfnid,asc',
-        'id,ASC'
+        'id,ASC',
       ),
     ];
   }
