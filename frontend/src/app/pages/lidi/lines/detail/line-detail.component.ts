@@ -1,38 +1,53 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  ApplicationRole,
   ApplicationType,
+  CreateLineVersionV2,
   LinesService,
   LineType,
   LineVersionV2,
   LineVersionWorkflow,
   Status,
+  UpdateLineVersionV2,
 } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import moment from 'moment';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { Pages } from '../../../pages';
-import { Page } from 'src/app/core/model/page';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { LineDetailFormGroup } from './line-detail-form-group';
+import {
+  LineDetailFormGroup,
+  LineFormGroupBuilder,
+} from './line-detail-form-group';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
-import { catchError } from 'rxjs';
+import { catchError, EMPTY } from 'rxjs';
 import { NotificationService } from '../../../../core/notification/notification.service';
+import { DateRange } from '../../../../core/versioning/date-range';
+import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
+import { ValidationService } from '../../../../core/validation/validation.service';
+import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
 
 @Component({
   templateUrl: './line-detail.component.html',
   styleUrls: ['./line-detail.component.scss'],
   providers: [ValidityService],
 })
-export class LineDetailComponent
-  extends BaseDetailController<LineVersionV2>
-  implements OnInit
-{
+export class LineDetailComponent implements OnInit {
+  selectedVersionIndex!: number;
+  selectedVersion!: LineVersionV2;
+  versions!: Array<LineVersionV2>;
+
+  form!: FormGroup<LineDetailFormGroup>;
+
+  isNew = false;
+
+  showVersionSwitch = false;
+  isSwitchVersionDisabled = false;
+  showWorkflow = false;
+
+  maxValidity!: DateRange;
+  boSboidRestriction: string[] = [];
+
   isShowLineSnapshotHistory = false;
 
   _lineType!: LineType;
@@ -44,7 +59,7 @@ export class LineDetailComponent
     this._lineType = lineType;
   }
 
-  _isLineConcessionTypeRequired = true;
+  _isLineConcessionTypeRequired = false;
   get isLineConcessionTypeRequired(): boolean {
     return this._isLineConcessionTypeRequired;
   }
@@ -54,124 +69,119 @@ export class LineDetailComponent
   }
 
   constructor(
-    protected router: Router,
+    private router: Router,
     private linesService: LinesService,
-    protected notificationService: NotificationService,
-    protected dialogService: DialogService,
-    protected permissionService: PermissionService,
-    protected activatedRoute: ActivatedRoute,
-    protected validityService: ValidityService
-  ) {
-    super(
-      router,
-      dialogService,
-      notificationService,
-      permissionService,
-      activatedRoute,
-      validityService
-    );
-  }
+    private notificationService: NotificationService,
+    private dialogService: DialogService,
+    private permissionService: PermissionService,
+    private activatedRoute: ActivatedRoute,
+    private validityService: ValidityService,
+    private detailHelperService: DetailHelperService
+  ) {}
 
   ngOnInit() {
-    super.ngOnInit();
-    this.isShowLineSnapshotHistory = this.showSnapshotHistoryLink();
-    if (!this.isNewRecord()) {
-      this.lineType = this.form.value.lineType;
+    this.versions = this.activatedRoute.snapshot.data.lineDetail;
+    if (this.versions.length == 0) {
+      this.isNew = true;
+      this.form = LineFormGroupBuilder.buildFormGroup();
+      this.subscribeToConditionalValidation();
+    } else {
+      this.isNew = false;
+      VersionsHandlingService.addVersionNumbers(this.versions);
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
+      this.selectedVersion =
+        VersionsHandlingService.determineDefaultVersionByValidity(
+          this.versions
+        );
+      this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
+
+      this.initSelectedVersion();
+    }
+
+    if (!this.isNew) {
+      this.isShowLineSnapshotHistory = this.showSnapshotHistoryLink();
+
+      this.lineType = this.form.value.lineType!;
       if (this.form.controls.lineType.value !== LineType.Orderly) {
         this.isLineConcessionTypeRequired = false;
       }
     }
+    this.initBoSboidRestriction();
   }
 
-  getPageType(): Page {
-    return Pages.LINES;
+  private initSelectedVersion() {
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
+      this.versions
+    );
+    this.form = LineFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    if (!this.isNew) {
+      this.form.disable();
+
+      this.showWorkflow =
+        this.selectedVersion.lineType === LineType.Orderly &&
+        (this.selectedVersion.status === Status.Draft ||
+          this.selectedVersion.status === Status.InReview);
+    }
   }
 
-  getApplicationType(): ApplicationType {
-    return ApplicationType.Lidi;
-  }
-
-  readRecord(): LineVersionV2 {
-    return this.activatedRoute.snapshot.data.lineDetail;
-  }
-
-  getDetailHeading(record: LineVersionV2): string {
-    return `${record.number ?? ''} - ${record.description ?? ''}`;
-  }
-
-  getDetailSubheading(record: LineVersionV2): string {
-    return record.slnid!;
-  }
-
-  getDescriptionForWorkflow(): string {
-    if (this.record) {
-      if (this.record.description) {
-        return this.record.description;
+  initBoSboidRestriction() {
+    if (!this.isNew || this.permissionService.isAdmin) {
+      this.boSboidRestriction = [];
+    } else {
+      const permission = this.permissionService.getApplicationUserPermission(
+        ApplicationType.Lidi
+      );
+      if (permission.role === ApplicationRole.Writer) {
+        this.boSboidRestriction =
+          PermissionService.getSboidRestrictions(permission);
+      } else {
+        this.boSboidRestriction = [];
       }
     }
-    return '';
   }
 
   navigateToSnapshot() {
     this.router
       .navigate([Pages.LIDI.path, Pages.WORKFLOWS.path], {
         queryParams: {
-          slnid: this.record.slnid,
+          slnid: this.selectedVersion.slnid,
         },
       })
       .then();
   }
 
-  isWorkflowable(): boolean {
-    if (this.getPageType() === Pages.LINES) {
-      if (
-        this.record.status === Status.Draft ||
-        this.record.status === Status.InReview
-      ) {
-        if (this.record.lineType === LineType.Orderly) return true;
-      }
-    }
-    return false;
-  }
-
   showSnapshotHistoryLink(): boolean {
     const lineVersionWorkflows: LineVersionWorkflow[] = [];
-    this.record.lineVersionWorkflows?.forEach((lvw) =>
+    this.selectedVersion.lineVersionWorkflows?.forEach((lvw) =>
       lineVersionWorkflows.push(lvw)
     );
     return (
       lineVersionWorkflows.length > 0 ||
-      (this.record.lineType === LineType.Orderly &&
-        this.record.status === Status.Validated)
+      (this.selectedVersion.lineType === LineType.Orderly &&
+        this.selectedVersion.status === Status.Validated)
     );
-  }
-
-  updateRecord(): void {
-    this.linesService
-      .updateLineVersion(this.getId(), this.form.value)
-      .pipe(catchError(this.handleError))
-      .subscribe(() => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
-        this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
-          .then(() => this.ngOnInit());
-      });
   }
 
   reloadRecord() {
     this.router
-      .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
+      .navigate([Pages.LIDI.path, Pages.LINES.path, this.selectedVersion.slnid])
       .then(() => this.ngOnInit());
   }
 
   isEditButtonVisible() {
     return (
-      this.record.status !== 'IN_REVIEW' ||
+      this.selectedVersion.status !== 'IN_REVIEW' ||
       this.permissionService.isAtLeastSupervisor(ApplicationType.Lidi)
     );
   }
 
-  conditionalValidation() {
+  private subscribeToConditionalValidation() {
+    this.form.controls.lineType.valueChanges.subscribe(() => {
+      this.conditionalValidation();
+    });
+  }
+
+  private conditionalValidation() {
     if (this.form.controls.lineType.value !== LineType.Orderly) {
       this.isLineConcessionTypeRequired = false;
       this.form.controls.lineConcessionType.clearValidators();
@@ -190,18 +200,33 @@ export class LineDetailComponent
     this.form.updateValueAndValidity();
   }
 
-  subscribeToConditionalValidation() {
-    this.form.controls.lineType.valueChanges.subscribe(() => {
-      this.conditionalValidation();
-    });
+  save() {
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      if (this.isNew) {
+        this.form.disable();
+        const lineVersion =
+          this.form.getRawValue() as unknown as CreateLineVersionV2;
+        this.createLine(lineVersion);
+      } else {
+        this.validityService.updateValidity(this.form);
+        this.validityService.validate().subscribe((confirmed) => {
+          if (confirmed) {
+            this.form.disable();
+            const lineVersion =
+              this.form.getRawValue() as unknown as UpdateLineVersionV2;
+            this.updateLine(this.selectedVersion.id!, lineVersion);
+          }
+        });
+      }
+    }
   }
 
-  createRecord(): void {
-    const lineForm = this.form.value; //pass to create
+  createLine(lineVersion: CreateLineVersionV2): void {
     this.form.disable();
     this.linesService
-      .createLineVersionV2(lineForm)
-      .pipe(catchError(this.handleError))
+      .createLineVersionV2(lineVersion)
+      .pipe(catchError(this.handleError()))
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -210,98 +235,110 @@ export class LineDetailComponent
       });
   }
 
-  revokeRecord(): void {
-    const selectedLineVersion: LineVersionV2 = this.getSelectedRecord();
-    if (selectedLineVersion.slnid) {
-      this.linesService.revokeLine(selectedLineVersion.slnid).subscribe(() => {
-        this.notificationService.success(
-          'LIDI.LINE.NOTIFICATION.REVOKE_SUCCESS'
-        );
+  updateLine(id: number, lineVersion: UpdateLineVersionV2): void {
+    this.linesService
+      .updateLineVersion(id, lineVersion)
+      .pipe(catchError(this.handleError()))
+      .subscribe(() => {
+        this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
+          .navigate([
+            Pages.LIDI.path,
+            Pages.LINES.path,
+            this.selectedVersion.slnid,
+          ])
           .then(() => this.ngOnInit());
       });
-    }
   }
 
-  deleteRecord(): void {
-    const selectedLineVersion: LineVersionV2 = this.getSelectedRecord();
-    if (selectedLineVersion.slnid != null) {
-      this.linesService.deleteLines(selectedLineVersion.slnid).subscribe(() => {
-        this.notificationService.success(
-          'LIDI.LINE.NOTIFICATION.DELETE_SUCCESS'
-        );
-        this.backToOverview();
+  revoke(): void {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.REVOKE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_REVOKE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          if (this.selectedVersion.slnid) {
+            this.linesService
+              .revokeLine(this.selectedVersion.slnid)
+              .subscribe(() => {
+                this.notificationService.success(
+                  'LIDI.LINE.NOTIFICATION.REVOKE_SUCCESS'
+                );
+                this.router
+                  .navigate([
+                    Pages.LIDI.path,
+                    Pages.LINES.path,
+                    this.selectedVersion.slnid,
+                  ])
+                  .then(() => this.ngOnInit());
+              });
+          }
+        }
       });
+  }
+
+  delete(): void {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.DELETE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_DELETE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          if (this.selectedVersion.slnid) {
+            this.linesService
+              .deleteLines(this.selectedVersion.slnid)
+              .subscribe(() => {
+                this.notificationService.success(
+                  'LIDI.LINE.NOTIFICATION.DELETE_SUCCESS'
+                );
+                this.back();
+              });
+          }
+        }
+      });
+  }
+
+  back() {
+    this.router.navigate(['..'], { relativeTo: this.activatedRoute }).then();
+  }
+
+  toggleEdit() {
+    if (this.form.enabled) {
+      this.detailHelperService.showCancelEditDialog(this);
+    } else {
+      this.isSwitchVersionDisabled = true;
+      this.validityService.initValidity(this.form);
+      this.form.enable({ emitEvent: false });
+
+      if (this.selectedVersion.status === Status.InReview) {
+        this.form.controls.validFrom.disable();
+        this.form.controls.validTo.disable();
+        this.form.controls.lineType.disable();
+      }
     }
   }
 
-  getFormGroup(version: LineVersionV2): FormGroup {
-    return new FormGroup<LineDetailFormGroup>(
-      {
-        swissLineNumber: new FormControl(version.swissLineNumber, [
-          Validators.required,
-          Validators.maxLength(50),
-          AtlasCharsetsValidator.sid4pt,
-        ]),
-        lineType: new FormControl(version.lineType, [Validators.required]),
-        offerCategory: new FormControl(version.offerCategory, [
-          Validators.required,
-        ]),
-        businessOrganisation: new FormControl(version.businessOrganisation, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_50,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-        ]),
-        number: new FormControl(version.number, [
-          Validators.maxLength(8),
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        shortNumber: new FormControl(version.shortNumber, [
-          Validators.maxLength(8),
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        lineConcessionType: new FormControl(version.lineConcessionType, [
-          Validators.required,
-        ]),
-        longName: new FormControl(version.longName, [
-          AtlasFieldLengthValidator.length_255,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        description: new FormControl(version.description, [
-          AtlasFieldLengthValidator.length_255,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          AtlasCharsetsValidator.iso88591,
-          Validators.required,
-        ]),
-        validFrom: new FormControl(
-          version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required]
-        ),
-        validTo: new FormControl(
-          version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required]
-        ),
-        comment: new FormControl(version.comment, [
-          AtlasFieldLengthValidator.comments,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        etagVersion: new FormControl(version.etagVersion),
-        creationDate: new FormControl(version.creationDate),
-        editionDate: new FormControl(version.editionDate),
-        editor: new FormControl(version.editor),
-        creator: new FormControl(version.creator),
-      },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
-    );
+  switchVersion(newIndex: number) {
+    this.selectedVersionIndex = newIndex;
+    this.selectedVersion = this.versions[newIndex];
+    this.initSelectedVersion();
   }
 
-  getFormControlsToDisable(): string[] {
-    return this.record.status === Status.InReview
-      ? ['validFrom', 'validTo', 'lineType']
-      : [];
+  private handleError() {
+    return () => {
+      this.form.enable();
+      return EMPTY;
+    };
+  }
+
+  getPageType() {
+    return Pages.LINES;
   }
 }
