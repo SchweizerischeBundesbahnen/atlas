@@ -111,7 +111,16 @@ describe('StatementDetailComponent for existing statement', () => {
   });
 
   it('should load existing Statement form successfully', () => {
-    expect(component.form.controls.statement.value).toBe(existingStatement.statement);
+    expect(component.form.controls.statement.value).toBe(
+      existingStatement.statement
+    );
+  });
+
+  it('should switch to edit mode successfully', () => {
+    expect(component.form.enabled).toBeFalse();
+
+    component.toggleEdit();
+    expect(component.form.enabled).toBeTrue();
   });
 
   it('should not enable form when hearingStatus is Archived', () => {
