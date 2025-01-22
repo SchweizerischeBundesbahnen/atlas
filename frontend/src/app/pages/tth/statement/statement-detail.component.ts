@@ -167,7 +167,8 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else if (!this.isHearingStatusArchived) {
-      this.form.enable();
+      // No event emit to have tu select component show actual data
+      this.form.enable({ emitEvent: false });
     }
   }
 
