@@ -69,7 +69,7 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String stopPlace;
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "timetable_hearing_statement_responsible_transport_companies",
       joinColumns = {@JoinColumn(name = "timetable_hearing_statement_id")},
       inverseJoinColumns = {@JoinColumn(name = "transport_company_id")})
@@ -98,7 +98,8 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   private String comment;
 
   public void removeDocument(String documentFilename) {
-    Optional<StatementDocument> optionalStatementDocument = documents.stream().filter(doc -> Objects.equals(documentFilename, doc.getFileName())).findFirst();
+    Optional<StatementDocument> optionalStatementDocument = documents.stream()
+        .filter(doc -> Objects.equals(documentFilename, doc.getFileName())).findFirst();
     optionalStatementDocument.ifPresent(documents::remove);
   }
 
