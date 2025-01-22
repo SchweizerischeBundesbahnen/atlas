@@ -34,7 +34,6 @@ import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,218 +52,217 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 class TimetableHearingStatementControllerV1ApiTest extends BaseControllerApiTest {
 
- private static final long YEAR = 2022L;
- private static final TimetableHearingYearModel TIMETABLE_HEARING_YEAR = TimetableHearingYearModel.builder()
-     .timetableYear(YEAR)
-     .hearingFrom(LocalDate.of(2021, 1, 1))
-     .hearingTo(LocalDate.of(2021, 2, 1))
-     .build();
- private static final String TTFNID = "ch:1:ttfnid:123123123";
- private static final String SBOID = "ch:1:sboid:123451";
+  private static final long YEAR = 2022L;
+  private static final TimetableHearingYearModel TIMETABLE_HEARING_YEAR = TimetableHearingYearModel.builder()
+      .timetableYear(YEAR)
+      .hearingFrom(LocalDate.of(2021, 1, 1))
+      .hearingTo(LocalDate.of(2021, 2, 1))
+      .build();
+  private static final String TTFNID = "ch:1:ttfnid:123123123";
+  private static final String SBOID = "ch:1:sboid:123451";
 
- @Autowired
- private TimetableHearingYearRepository timetableHearingYearRepository;
+  @Autowired
+  private TimetableHearingYearRepository timetableHearingYearRepository;
 
- @Autowired
- private TimetableHearingYearController timetableHearingYearController;
+  @Autowired
+  private TimetableHearingYearController timetableHearingYearController;
 
- @Autowired
- private TimetableHearingStatementRepository timetableHearingStatementRepository;
+  @Autowired
+  private TimetableHearingStatementRepository timetableHearingStatementRepository;
 
- @Autowired
- private TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository;
+  @Autowired
+  private TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository;
 
- @MockBean
- private TimetableFieldNumberService timetableFieldNumberService;
+  @MockBean
+  private TimetableFieldNumberService timetableFieldNumberService;
 
- @MockBean
- private TransportCompanyClient transportCompanyClient;
+  @MockBean
+  private TransportCompanyClient transportCompanyClient;
 
- @MockBean
- private SharedTransportCompanyRepository sharedTransportCompanyRepository;
+  @Autowired
+  private SharedTransportCompanyRepository sharedTransportCompanyRepository;
 
- @BeforeEach
- void setUp() {
-   timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
+  @BeforeEach
+  void setUp() {
+    timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
 
-   TimetableFieldNumber returnedTimetableFieldNumber = TimetableFieldNumber.builder()
-       .number("1.1")
-       .ttfnid(TTFNID)
-       .businessOrganisation(SBOID)
-       .validFrom(LocalDate.of(2000, 1, 1))
-       .validTo(LocalDate.of(9999, 12, 31))
-       .build();
-   when(timetableFieldNumberService.getVersionsSearched(any())).thenReturn(new PageImpl<>(List.of(returnedTimetableFieldNumber),
-       Pageable.unpaged(), 1L));
+    TimetableFieldNumber returnedTimetableFieldNumber = TimetableFieldNumber.builder()
+        .number("1.1")
+        .ttfnid(TTFNID)
+        .businessOrganisation(SBOID)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(9999, 12, 31))
+        .build();
+    when(timetableFieldNumberService.getVersionsSearched(any())).thenReturn(new PageImpl<>(List.of(returnedTimetableFieldNumber),
+        Pageable.unpaged(), 1L));
 
-   TimetableFieldNumberVersion returnedTimetableFieldNumberVersion = TimetableFieldNumberVersion.builder()
-       .number("1.1")
-       .ttfnid(TTFNID)
-       .businessOrganisation(SBOID)
-       .validFrom(LocalDate.of(2000, 1, 1))
-       .validTo(LocalDate.of(9999, 12, 31))
-       .build();
-   when(timetableFieldNumberService.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(returnedTimetableFieldNumberVersion));
+    TimetableFieldNumberVersion returnedTimetableFieldNumberVersion = TimetableFieldNumberVersion.builder()
+        .number("1.1")
+        .ttfnid(TTFNID)
+        .businessOrganisation(SBOID)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(9999, 12, 31))
+        .build();
+    when(timetableFieldNumberService.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(returnedTimetableFieldNumberVersion));
 
-   TransportCompanyModel transportCompanyModel = TransportCompanyModel.builder()
-       .id(1L)
-       .number("#0001")
-       .abbreviation("SBB")
-       .businessRegisterName("Schweizerische Bundesbahnen SBB")
-       .build();
-   when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompanyModel));
+    TransportCompanyModel transportCompanyModel = TransportCompanyModel.builder()
+        .id(1L)
+        .number("#0001")
+        .abbreviation("SBB")
+        .businessRegisterName("Schweizerische Bundesbahnen SBB")
+        .build();
+    when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompanyModel));
 
-   when(sharedTransportCompanyRepository.findById(1L)).thenReturn(Optional.of(SharedTransportCompany.builder()
-       .id(1L)
-       .number("#0001")
-       .abbreviation("SBB")
-       .businessRegisterName("Schweizerische Bundesbahnen SBB")
-       .build()));
-   when(sharedTransportCompanyRepository.findById(2L)).thenReturn(Optional.of(SharedTransportCompany.builder()
-       .id(2L)
-       .number("#0001")
-       .abbreviation("BLS")
-       .businessRegisterName("Berner Land Seilbahnen")
-       .build()));
+    sharedTransportCompanyRepository.save(SharedTransportCompany.builder()
+        .id(1L)
+        .number("#0001")
+        .abbreviation("SBB")
+        .businessRegisterName("Schweizerische Bundesbahnen SBB")
+        .build());
+    sharedTransportCompanyRepository.save(SharedTransportCompany.builder()
+        .id(2L)
+        .number("#0001")
+        .abbreviation("BLS")
+        .businessRegisterName("Berner Land Seilbahnen")
+        .build());
 
+    TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
+        .ttfnid(TTFNID)
+        .swissTimetableFieldNumber("1234")
+        .number("5678")
+        .description("Description")
+        .status(Status.VALIDATED)
+        .businessOrganisation("Business Organisation")
+        .validFrom(LocalDate.now())
+        .validTo(LocalDate.now().plusYears(1))
+        .build();
 
-     TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
-             .ttfnid(TTFNID)
-             .swissTimetableFieldNumber("1234")
-             .number("5678")
-             .description("Description")
-             .status(Status.VALIDATED)
-             .businessOrganisation("Business Organisation")
-             .validFrom(LocalDate.now())
-             .validTo(LocalDate.now().plusYears(1))
-             .build();
+    timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
+  }
 
-     timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
- }
+  @AfterEach
+  void tearDown() {
+    timetableHearingYearRepository.deleteAll();
+    timetableHearingStatementRepository.deleteAll();
+    timetableFieldNumberVersionRepository.deleteAll();
+    sharedTransportCompanyRepository.deleteAll();
+  }
 
- @AfterEach
- void tearDown() {
-   timetableHearingYearRepository.deleteAll();
-   timetableHearingStatementRepository.deleteAll();
-   timetableFieldNumberVersionRepository.deleteAll();
+  @Test
+  void shouldThrowExceptionWhenNotClientCredentialsAuthUsedForExternalEndpoint() throws Exception {
+    String statement = """
+         {
+           "statement": "I need some more busses please.",
+           "statementSender": {
+             "email": "maurer@post.ch",
+             "firstName": "Fabienne",
+             "lastName": "Maurer",
+             "organisation": "Post AG",
+             "street": "Bahnhofstrasse 12",
+             "zip": 3000,
+             "city": "Bern"
+           },
+           "timetableFieldNumber": "1.1",
+           "swissCanton": "BERN",
+           "stopPlace": "Bern, Wyleregg"
+         }
+        """;
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, statement);
 
- }
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
+            .file(statementJson))
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof NoClientCredentialAuthUsedException))
+        .andExpect(result -> assertEquals("Bad authentication used",
+            ((NoClientCredentialAuthUsedException) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
+                .getMessage()));
+  }
 
- @Test
- void shouldThrowExceptionWhenNotClientCredentialsAuthUsedForExternalEndpoint() throws Exception {
-   String statement = """
-        {
-          "statement": "I need some more busses please.",
-          "statementSender": {
-            "email": "maurer@post.ch",
-            "firstName": "Fabienne",
-            "lastName": "Maurer",
-            "organisation": "Post AG",
-            "street": "Bahnhofstrasse 12",
-            "zip": 3000,
-            "city": "Bern"
-          },
-          "timetableFieldNumber": "1.1",
-          "swissCanton": "BERN",
-          "stopPlace": "Bern, Wyleregg"
-        }
-       """;
-   MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-       MediaType.APPLICATION_JSON_VALUE, statement);
+  @Test
+  void shouldThrowForbiddenExceptionWhenStatementCreatableExternalIsFalse() throws Exception {
+    // For Client-Credential Auth
+    SecurityContext context = SecurityContextHolder.getContext();
+    Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
+        AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
+    authentication.setAuthenticated(true);
+    context.setAuthentication(authentication);
 
-   mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
-           .file(statementJson))
-       .andExpect(status().isBadRequest())
-       .andExpect(result -> assertTrue(result.getResolvedException() instanceof NoClientCredentialAuthUsedException))
-       .andExpect(result -> assertEquals("Bad authentication used",
-           ((NoClientCredentialAuthUsedException) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
-               .getMessage()));
- }
+    TimetableHearingYearModel hearingYearModel = timetableHearingYearController.startHearingYear(YEAR);
+    hearingYearModel.setStatementCreatableExternal(false);
+    timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYearModel);
 
- @Test
- void shouldThrowForbiddenExceptionWhenStatementCreatableExternalIsFalse() throws Exception {
-   // For Client-Credential Auth
-   SecurityContext context = SecurityContextHolder.getContext();
-   Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
-       AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
-   authentication.setAuthenticated(true);
-   context.setAuthentication(authentication);
+    String statement = """
+         {
+           "statement": "I need some more busses please.",
+           "statementSender": {
+             "email": "maurer@post.ch",
+             "firstName": "Fabienne",
+             "lastName": "Maurer",
+             "organisation": "Post AG",
+             "street": "Bahnhofstrasse 12",
+             "zip": 3000,
+             "city": "Bern"
+           },
+           "timetableFieldNumber": "1.1",
+           "swissCanton": "BERN",
+           "stopPlace": "Bern, Wyleregg"
+         }
+        """;
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, statement);
 
-   TimetableHearingYearModel hearingYearModel = timetableHearingYearController.startHearingYear(YEAR);
-   hearingYearModel.setStatementCreatableExternal(false);
-   timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYearModel);
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
+            .file(statementJson))
+        .andExpect(status().isForbidden())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettingsException))
+        .andExpect(result -> assertEquals("Operation not allowed",
+            ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
+                result.getResolvedException())).getErrorResponse()
+                .getMessage()));
+  }
 
-   String statement = """
-        {
-          "statement": "I need some more busses please.",
-          "statementSender": {
-            "email": "maurer@post.ch",
-            "firstName": "Fabienne",
-            "lastName": "Maurer",
-            "organisation": "Post AG",
-            "street": "Bahnhofstrasse 12",
-            "zip": 3000,
-            "city": "Bern"
-          },
-          "timetableFieldNumber": "1.1",
-          "swissCanton": "BERN",
-          "stopPlace": "Bern, Wyleregg"
-        }
-       """;
-   MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-       MediaType.APPLICATION_JSON_VALUE, statement);
+  @Test
+  void shouldCreateStatementExternalFromSkiWeb() throws Exception {
+    // For Client-Credential Auth
+    SecurityContext context = SecurityContextHolder.getContext();
+    Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
+        AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
+    authentication.setAuthenticated(true);
+    context.setAuthentication(authentication);
 
-   mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
-           .file(statementJson))
-       .andExpect(status().isForbidden())
-       .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettingsException))
-       .andExpect(result -> assertEquals("Operation not allowed",
-           ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
-               result.getResolvedException())).getErrorResponse()
-               .getMessage()));
- }
+    timetableHearingYearController.startHearingYear(YEAR);
+    String statement = """
+         {
+           "statement": "I need some more busses please.",
+           "statementSender": {
+             "email": "maurer@post.ch",
+             "firstName": "Fabienne",
+             "lastName": "Maurer",
+             "organisation": "Post AG",
+             "street": "Bahnhofstrasse 12",
+             "zip": 3000,
+             "city": "Bern"
+           },
+           "timetableFieldNumber": "1.1",
+           "swissCanton": "BERN",
+           "stopPlace": "Bern, Wyleregg"
+         }
+        """;
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, statement);
 
- @Test
- void shouldCreateStatementExternalFromSkiWeb() throws Exception {
-   // For Client-Credential Auth
-   SecurityContext context = SecurityContextHolder.getContext();
-   Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
-       AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
-   authentication.setAuthenticated(true);
-   context.setAuthentication(authentication);
-
-   timetableHearingYearController.startHearingYear(YEAR);
-   String statement = """
-        {
-          "statement": "I need some more busses please.",
-          "statementSender": {
-            "email": "maurer@post.ch",
-            "firstName": "Fabienne",
-            "lastName": "Maurer",
-            "organisation": "Post AG",
-            "street": "Bahnhofstrasse 12",
-            "zip": 3000,
-            "city": "Bern"
-          },
-          "timetableFieldNumber": "1.1",
-          "swissCanton": "BERN",
-          "stopPlace": "Bern, Wyleregg"
-        }
-       """;
-   MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-       MediaType.APPLICATION_JSON_VALUE, statement);
-
-   mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
-           .file(statementJson)
-           .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
-               MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
-           .file(
-               new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(),
-                   MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
-       .andExpect(status().isCreated())
-       .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-       .andExpect(jsonPath("$." + Fields.documents, hasSize(2)))
-       .andExpect(jsonPath("$." + Fields.documents + "[0].id", notNullValue()));
- }
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
+            .file(statementJson)
+            .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
+                MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
+            .file(
+                new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(),
+                    MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+        .andExpect(jsonPath("$." + Fields.documents, hasSize(2)))
+        .andExpect(jsonPath("$." + Fields.documents + "[0].id", notNullValue()));
+  }
 
 }
