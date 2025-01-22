@@ -20,14 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionSystemException;
 
 @IntegrationTest
- class TimetableHearingStatementRepositoryTest {
-
-  private final TimetableHearingStatementRepository timetableHearingStatementRepository;
+class TimetableHearingStatementRepositoryTest {
 
   @Autowired
-   TimetableHearingStatementRepositoryTest(TimetableHearingStatementRepository timetableHearingStatementRepository) {
-    this.timetableHearingStatementRepository = timetableHearingStatementRepository;
-  }
+  private TimetableHearingStatementRepository timetableHearingStatementRepository;
+
+  @Autowired
+  private SharedTransportCompanyRepository sharedTransportCompanyRepository;
 
   private static TimetableHearingStatement getMinimalTimetableHearingStatement() {
     return TimetableHearingStatement.builder()
@@ -44,10 +43,18 @@ import org.springframework.transaction.TransactionSystemException;
   @AfterEach
   void tearDown() {
     timetableHearingStatementRepository.deleteAll();
+    sharedTransportCompanyRepository.deleteAll();
   }
 
   @Test
   void shouldCreateNewHearingStatement() {
+    sharedTransportCompanyRepository.save(SharedTransportCompany.builder()
+        .id(1L)
+        .number("#0001")
+        .abbreviation("SBB")
+        .businessRegisterName("Schweizerische Bundesbahnen SBB")
+        .build());
+
     TimetableHearingStatement statement = TimetableHearingStatement.builder()
         .timetableYear(2023L)
         .statementStatus(StatementStatus.RECEIVED)
