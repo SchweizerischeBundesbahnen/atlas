@@ -1,13 +1,14 @@
 package ch.sbb.line.directory.validation;
 
-import static org.assertj.core.api.Assertions.assertThatException;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.line.directory.LineTestData;
@@ -15,6 +16,7 @@ import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.LineConflictException;
+import ch.sbb.line.directory.exception.LineTypeOrderlyException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -372,6 +374,92 @@ class LineValidationServiceTest {
         () -> lineValidationService.validateLineConflict(lineVersion));
     verify(lineVersionRepository, never()).findSwissLineNumberOverlaps(lineVersion);
 
+  }
+
+  @Test
+  void shouldNotThrowLineTypeOrderlyExceptionWhenLineTypeIsOrderlyAndSwissLineNumberAndConcessionTypeAreNotNull() {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(LineType.ORDERLY).swissLineNumber("IC")
+        .concessionType(LineConcessionType.LINE_ABROAD).build();
+
+    //when and then
+    assertThatNoException().isThrownBy(() -> lineValidationService.dynamicBeanValidation(lineVersion));
+  }
+
+  @Test
+  void shouldThrowLineTypeOrderlyExceptionWhenLineTypeIsOrderlyAndSwissLineNumberAndConcessionTypeAreNull() {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(LineType.ORDERLY).swissLineNumber(null)
+        .concessionType(null).build();
+
+    //when and then
+    assertThrows(LineTypeOrderlyException.class, () -> lineValidationService.dynamicBeanValidation(lineVersion));
+  }
+
+  @Test
+  void shouldThrowLineTypeOrderlyExceptionWhenLineTypeIsOrderlyAndConcessionTypeIsNull() {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(LineType.ORDERLY).swissLineNumber("ICe")
+        .concessionType(null).build();
+
+    //when and then
+    assertThrows(LineTypeOrderlyException.class, () -> lineValidationService.dynamicBeanValidation(lineVersion));
+  }
+
+  @Test
+  void shouldThrowLineTypeOrderlyExceptionWhenLineTypeIsOrderlyAndSwissLineNumberIsNull() {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(LineType.ORDERLY).swissLineNumber(null)
+        .concessionType(LineConcessionType.LINE_ABROAD).build();
+
+    //when and then
+    assertThrows(LineTypeOrderlyException.class, () -> lineValidationService.dynamicBeanValidation(lineVersion));
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = LineType.class, names = {"DISPOSITION", "OPERATIONAL", "TEMPORARY"})
+  void shouldNotThrowLineTypeOrderlyExceptionWhenLineTypeIsNotOrderlyAndSwissLineNumberAndConcessionTypeAreNull(
+      LineType lineType) {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(lineType).swissLineNumber(null)
+        .concessionType(null).build();
+
+    //when and then
+    assertThatNoException().isThrownBy(() -> lineValidationService.dynamicBeanValidation(lineVersion));
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = LineType.class, names = {"DISPOSITION", "OPERATIONAL", "TEMPORARY"})
+  void shouldThrowLineTypeOrderlyExceptionWhenLineTypeIsNotOrderlyAndSwissLineNumberAndConcessionTypeAreNotNull(
+      LineType lineType) {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(lineType).swissLineNumber("IC")
+        .concessionType(LineConcessionType.CANTONALLY_APPROVED_LINE).build();
+
+    //when and then
+    assertThrows(LineTypeOrderlyException.class, () -> lineValidationService.dynamicBeanValidation(lineVersion));
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = LineType.class, names = {"DISPOSITION", "OPERATIONAL", "TEMPORARY"})
+  void shouldThrowLineTypeOrderlyExceptionWhenLineTypeIsNotOrderlyAndConcessionTypeIsNotNull(LineType lineType) {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(lineType).swissLineNumber(null)
+        .concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION).build();
+
+    //when and then
+    assertThrows(LineTypeOrderlyException.class, () -> lineValidationService.dynamicBeanValidation(lineVersion));
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = LineType.class, names = {"DISPOSITION", "OPERATIONAL", "TEMPORARY"})
+  void shouldThrowLineTypeOrderlyExceptionWhenLineTypeIsNotOrderlyAndSwissLineNumberIsNotNull(LineType lineType) {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(lineType).swissLineNumber("IC")
+        .concessionType(null).build();
+
+    //when and then
+    assertThrows(LineTypeOrderlyException.class, () -> lineValidationService.dynamicBeanValidation(lineVersion));
   }
 
 }
