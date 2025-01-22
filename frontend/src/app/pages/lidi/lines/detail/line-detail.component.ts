@@ -164,6 +164,13 @@ export class LineDetailComponent
       .then(() => this.ngOnInit());
   }
 
+  isEditButtonVisible() {
+    return (
+      this.record.status !== 'IN_REVIEW' ||
+      this.permissionService.isAtLeastSupervisor(ApplicationType.Lidi)
+    );
+  }
+
   conditionalValidation() {
     if (this.form.controls.lineType.value !== LineType.Orderly) {
       this.isLineConcessionTypeRequired = false;
