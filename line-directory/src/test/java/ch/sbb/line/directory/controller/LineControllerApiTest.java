@@ -3,10 +3,10 @@ package ch.sbb.line.directory.controller;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.longName;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.slnid;
-import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.swissLineNumber;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.alternativeName;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.combinationName;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.paymentType;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.swissLineNumber;
 import static ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -217,7 +217,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .longName("long name")
             .lineType(LineType.TEMPORARY)
             .paymentType(PaymentType.LOCAL)
-            .swissLineNumber("b0.IC5")
+            .swissLineNumber(null)
             .build();
     LineVersionModel lineVersion = lineController.createLineVersion(lineVersionModel);
 
@@ -279,7 +279,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .longName("long name")
             .lineType(LineType.TEMPORARY)
             .paymentType(PaymentType.LOCAL)
-            .swissLineNumber("b0.IC2-libne")
+            .swissLineNumber(null)
             .build();
 
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
@@ -400,7 +400,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .longName("long name")
             .lineType(LineType.TEMPORARY)
             .paymentType(PaymentType.LOCAL)
-            .swissLineNumber("b0.IC2")
+            .swissLineNumber(null)
             .build();
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
 

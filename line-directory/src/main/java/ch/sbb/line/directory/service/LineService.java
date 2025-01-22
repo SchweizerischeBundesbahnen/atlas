@@ -56,17 +56,23 @@ public class LineService {
   }
 
   @Transactional
-  @PreAuthorize(
-      """
-          @businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas"
+      + ".kafka.model.user.admin.ApplicationType).LIDI)")
   public LineVersion create(LineVersion businessObject) {
     return save(businessObject);
   }
 
   @Transactional
-  @PreAuthorize(
-      """
-          @businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas"
+      + ".kafka.model.user.admin.ApplicationType).LIDI)")
+  public LineVersion createV2(LineVersion businessObject) {
+    lineValidationService.dynamicBeanValidation(businessObject);
+    return save(businessObject);
+  }
+
+  @Transactional
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, "
+      + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
   public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
     updateVersion(currentVersion, editedVersion);
   }
