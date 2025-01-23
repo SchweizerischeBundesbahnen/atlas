@@ -54,4 +54,6 @@ export class SublineTableComponent implements OnInit {
         this.totalCount = sublines.totalCount!;
       });
   }
+
+
 }
