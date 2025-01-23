@@ -9,7 +9,7 @@
       {{ 'PRM.PLATFORMS.NEW' | translate }}
     </div>
     <div class="col-12 d-flex flex-row mt-3 mb-5 justify-content-between" *ngIf="showVersionSwitch">
-      <div class="d-flex flex-column pe-3">
+      <div class="d-flex flex-column col-8 pe-3">
         <app-switch-version
           (switchVersion)="switchVersion($event)"
           [currentRecord]="selectedVersion"
