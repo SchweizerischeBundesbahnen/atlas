@@ -453,6 +453,7 @@
       "DETAIL_SUBLINE_INFORMATION": "Informazioni sulla linea parziale",
       "NEW_SUBLINE_INFORMATION": "Informazioni sulla nuova linea parziale",
       "SUBLINE": "Linea parziale",
+      "SUBLINES": "Linee parziali",
       "CONFLICT": {
         "SWISS_NUMBER": "Il numero di linea parziale CH {{swissSublineNumber}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
         "ASSIGN_DIFFERENT_LINE_CONFLICT": "La linea principale non può essere modificata."
