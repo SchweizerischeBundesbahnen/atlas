@@ -1,9 +1,10 @@
 package ch.sbb.line.directory.validation;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
+import ch.sbb.line.directory.exception.LineTypeOrderlyException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
@@ -39,7 +40,7 @@ public class LineValidationService {
   }
 
   void validateLineConflict(LineVersion lineVersion) {
-    if(lineVersion.getLineType() == LineType.ORDERLY) {
+    if (lineVersion.getLineType() == LineType.ORDERLY) {
       List<LineVersion> swissLineNumberOverlaps = lineVersionRepository.findSwissLineNumberOverlaps(
           lineVersion);
       if (!swissLineNumberOverlaps.isEmpty()) {
@@ -65,9 +66,9 @@ public class LineValidationService {
       return;
     }
     allVersions = allVersions.stream()
-                             .filter(version -> LineType.TEMPORARY.equals(version.getLineType())
-                                 && !Objects.equals(lineVersion.getId(), version.getId()))
-                             .collect(Collectors.toList());
+        .filter(version -> LineType.TEMPORARY.equals(version.getLineType())
+            && !Objects.equals(lineVersion.getId(), version.getId()))
+        .collect(Collectors.toList());
 
     SortedSet<LineVersion> relatedVersions = new TreeSet<>(
         Comparator.comparing(LineVersion::getValidFrom));
@@ -86,14 +87,27 @@ public class LineValidationService {
     }
   }
 
+  public void dynamicBeanValidation(LineVersion lineVersion) {
+    if (lineVersion.getLineType() != LineType.ORDERLY) {
+      if (lineVersion.getConcessionType() != null || lineVersion.getSwissLineNumber() != null) {
+        throw new LineTypeOrderlyException(lineVersion.getLineType());
+      }
+    }
+    if (lineVersion.getLineType() == LineType.ORDERLY) {
+      if ((lineVersion.getConcessionType() == null || lineVersion.getSwissLineNumber() == null)) {
+        throw new LineTypeOrderlyException(lineVersion.getLineType());
+      }
+    }
+  }
+
   private List<LineVersion> getRelatedVersions(SortedSet<LineVersion> relatedVersions,
       List<LineVersion> allTemporaryVersions) {
     return allTemporaryVersions.stream()
-                               .filter(version -> areDatesRelated(version.getValidTo(),
-                                   relatedVersions.first().getValidFrom())
-                                   || areDatesRelated(version.getValidFrom(),
-                                   relatedVersions.last().getValidTo()))
-                               .collect(Collectors.toList());
+        .filter(version -> areDatesRelated(version.getValidTo(),
+            relatedVersions.first().getValidFrom())
+            || areDatesRelated(version.getValidFrom(),
+            relatedVersions.last().getValidTo()))
+        .collect(Collectors.toList());
   }
 
   private long getDaysBetween(LocalDate date1, LocalDate date2) {
