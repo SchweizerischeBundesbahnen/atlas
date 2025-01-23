@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("v1/import/bulk")
 public interface BulkImportApiV1 {
 
+  // ATLAS-2634: File-Upload with specific firewall rule. Be aware when changing the path!
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   @ResponseStatus(HttpStatus.ACCEPTED)
   @ApiResponses(value = {
