@@ -102,6 +102,7 @@ export class MockTableComponent<DATATYPE> {
   @Input() sortingDisabled = false;
   @Input() showTableFilter = true;
   @Input() checkBoxModeEnabled = false;
+  @Input() showPaginator = true;
 
   @Input() checkBoxSelection = new SelectionModel<TimetableHearingStatement>(true, []);
   @Output() editElementEvent = new EventEmitter<DATATYPE>();

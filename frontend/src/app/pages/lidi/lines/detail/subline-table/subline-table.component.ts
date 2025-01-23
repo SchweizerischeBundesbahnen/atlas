@@ -24,7 +24,6 @@ export class SublineTableComponent {
   ];
   tableFilterConfig!: TableFilter<unknown>[][];
   sublines: Array<Line> = [];
-  totalCount = 0;
 
   constructor(
     private linesService: LinesService,
@@ -63,7 +62,6 @@ export class SublineTableComponent {
       )
       .subscribe((sublines) => {
         this.sublines = sublines.objects!;
-        this.totalCount = sublines.totalCount!;
       });
   }
 }
