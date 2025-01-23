@@ -19,7 +19,7 @@
   </div>
   <atlas-spacer height="30px"></atlas-spacer>
   <ng-container *ngIf="relations$ | async as relations">
-    <div *ngIf="relations && currentRelation" class="mt-3 mb-3">
+    <div *ngIf="relations && currentRelation" class="col-8 mt-3 mb-3">
       <app-switch-version
         [records]="relations"
         [currentRecord]="currentRelation"
