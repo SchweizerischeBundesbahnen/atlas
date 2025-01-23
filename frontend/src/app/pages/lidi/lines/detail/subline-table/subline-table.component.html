@@ -4,10 +4,12 @@
   [totalCount]="totalCount"
   [tableColumns]="tableColumns"
   [canEdit]="true"
-  [tableFilterConfig]="tableFilterConfig"
   (editElementEvent)="rowClicked($event)"
-  (tableChanged)="getOverview($event)"
-  (tableInitialized)="getOverview($event)"
+  (tableChanged)="getOverview()"
+  (tableInitialized)="getOverview()"
+  [sortingDisabled]="true"
+  [showTableFilter]="false"
+  [showPaginator]="false"
   data-cy="subline-table"
 >
 </app-table>
