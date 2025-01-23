@@ -1,36 +1,48 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {TableColumn} from "../../../../../core/components/table/table-column";
-import {ElementType, Line, LinesService} from "../../../../../api";
-import {TablePagination} from "../../../../../core/components/table/table-pagination";
-import {TableFilter} from "../../../../../core/components/table-filter/config/table-filter";
+import { Component, Input } from '@angular/core';
+import { TableColumn } from '../../../../../core/components/table/table-column';
+import { ElementType, Line, LinesService } from '../../../../../api';
+import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';
+import { Pages } from '../../../../pages';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-subline-table',
   templateUrl: './subline-table.component.html',
 })
-export class SublineTableComponent implements OnInit {
+export class SublineTableComponent {
   @Input() mainLineSlnid!: string;
 
   tableColumns: TableColumn<Line>[] = [
-    { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
-    { headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description' },
-    { headerTitle: 'LIDI.LINE.SLNID', value: 'slnid' },
+    { headerTitle: 'LIDI.SUBLINE.DESCRIPTION', value: 'description' },
+    { headerTitle: 'LIDI.SLNID', value: 'slnid' },
+    {
+      headerTitle: 'COMMON.VALID_FROM',
+      value: 'validFrom',
+      formatAsDate: true,
+    },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
   tableFilterConfig!: TableFilter<unknown>[][];
   sublines: Array<Line> = [];
   totalCount = 0;
 
-  constructor(private linesService: LinesService) {}
+  constructor(
+    private linesService: LinesService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
-
+  rowClicked(subline: Line) {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree([
+        Pages.LIDI.path,
+        Pages.SUBLINES.path,
+        subline.slnid,
+      ])
+    );
+    window.open(url, '_blank');
   }
 
-  rowClicked($event: Line) {
-
-  }
-
-  getOverview($event: TablePagination) {
+  getOverview() {
     this.linesService
       .getLines(
         undefined,
@@ -54,6 +66,4 @@ export class SublineTableComponent implements OnInit {
         this.totalCount = sublines.totalCount!;
       });
   }
-
-
 }
