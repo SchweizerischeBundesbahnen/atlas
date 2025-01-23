@@ -1,8 +1,13 @@
-import {Component, Input} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {LineConcessionType, LineType, MeanOfTransport, OfferCategory} from '../../../../../api';
-import {SelectOptionGroup} from "../../../../../core/form-components/select/select.component";
-
+import { Component, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import {
+  LineConcessionType,
+  LineType,
+  MeanOfTransport,
+  OfferCategory,
+} from '../../../../../api';
+import { SelectOptionGroup } from '../../../../../core/form-components/select/select.component';
+import { ColumnDropDownEvent } from '../../../../../core/components/table/column-drop-down-event';
 
 interface Category {
   value: OfferCategory;
@@ -29,47 +34,79 @@ export class LineDetailFormComponent {
   OFFER_CATEGORY_GROUP: OfferCategoryGroup[] = [
     {
       name: MeanOfTransport.Train,
-      category: [{value: 'IC'}, {value: 'EC'}, {value: 'EN'}, {value: 'IR'}, {value: 'RE'},
-        {value: 'R'}, {value: 'S'}, {value: 'SN'}, {value: 'PE'}, {value: 'EXT'}, {value: 'ATZ'},
-        {value: 'ICE'}, {value: 'TGV'}, {value: 'RJ'}, {value: 'TE2'}, {value: 'TER'}, {value: 'RB'}, {value: 'IRE'}]
+      category: [
+        { value: 'IC' },
+        { value: 'EC' },
+        { value: 'EN' },
+        { value: 'IR' },
+        { value: 'RE' },
+        { value: 'R' },
+        { value: 'S' },
+        { value: 'SN' },
+        { value: 'PE' },
+        { value: 'EXT' },
+        { value: 'ATZ' },
+        { value: 'ICE' },
+        { value: 'TGV' },
+        { value: 'RJ' },
+        { value: 'TE2' },
+        { value: 'TER' },
+        { value: 'RB' },
+        { value: 'IRE' },
+      ],
     },
     {
       name: MeanOfTransport.Tram,
-      category: [{value: 'T'}, {value: 'TN'}]
+      category: [{ value: 'T' }, { value: 'TN' }],
     },
     {
       name: MeanOfTransport.Metro,
-      category: [{value: 'M'}]
+      category: [{ value: 'M' }],
     },
     {
       name: MeanOfTransport.Bus,
-      category: [{value: 'CAX'}, {value: 'CAR'}, {value: 'EXB'}, {value: 'B'}, {value: 'BN'}, {value: 'RUB'}, {value: 'BP'}]
+      category: [
+        { value: 'CAX' },
+        { value: 'CAR' },
+        { value: 'EXB' },
+        { value: 'B' },
+        { value: 'BN' },
+        { value: 'RUB' },
+        { value: 'BP' },
+      ],
     },
     {
       name: MeanOfTransport.CableRailway,
-      category: [{value: 'FUN'}]
+      category: [{ value: 'FUN' }],
     },
     {
       name: MeanOfTransport.CableCar,
-      category: [{value: 'PB'}, {value: 'GB'}]
+      category: [{ value: 'PB' }, { value: 'GB' }],
     },
     {
       name: MeanOfTransport.Chairlift,
-      category: [{value: 'SL'}]
+      category: [{ value: 'SL' }],
     },
     {
       name: MeanOfTransport.Elevator,
-      category: [{value: 'ASC'}]
+      category: [{ value: 'ASC' }],
     },
     {
       name: MeanOfTransport.Boat,
-      category: [{value: 'BAT'}, {value: 'FAE'}]
-    }
+      category: [{ value: 'BAT' }, { value: 'FAE' }],
+    },
   ];
 
   offerCategoryOptionGroup: SelectOptionGroup = {
     options: this.OFFER_CATEGORY_GROUP,
     groupValueExtractorProperty: 'category',
     valueExtractor: (category: Category) => category.value,
+  };
+
+  updateMandatoryFields($event: ColumnDropDownEvent) {
+    if ($event.value !== LineType.Orderly) {
+      this.form.controls.lineConcessionType.reset();
+      this.form.controls.swissLineNumber.reset();
+    }
   }
 }
