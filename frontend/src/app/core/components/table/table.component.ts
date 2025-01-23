@@ -23,6 +23,7 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input() sortingDisabled = false;
   @Input() showTableFilter = true;
+  @Input() showPaginator = true;
   @Input() checkBoxModeEnabled = false;
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
   @Output() tableChanged = new EventEmitter<TablePagination>();
