@@ -140,14 +140,16 @@
     </tr>
   </table>
 
-  <mat-paginator
-    (page)="pageChanged($event)"
-    [disabled]="checkBoxModeEnabled"
-    [length]="totalCount"
-    [pageIndex]="pageIndex"
-    [pageSizeOptions]="pageSizeOptions"
-    [pageSize]="pageSize"
-    class="font-regular-base"
-  >
-  </mat-paginator>
+  @if (showPaginator) {
+    <mat-paginator
+      (page)="pageChanged($event)"
+      [disabled]="checkBoxModeEnabled"
+      [length]="totalCount"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="pageSizeOptions"
+      [pageSize]="pageSize"
+      class="font-regular-base"
+    >
+    </mat-paginator>
+  }
 </div>
