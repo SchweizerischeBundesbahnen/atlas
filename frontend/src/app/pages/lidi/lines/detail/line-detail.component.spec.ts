@@ -55,6 +55,14 @@ class MockAppCoverageComponent {
   @Input() currentRecord!: Page;
 }
 
+@Component({
+  selector: 'app-subline-table',
+  template: '<p>Mock subline table Component</p>',
+})
+export class MockSublineTableComponent {
+  @Input() mainLineSlnid!: string;
+}
+
 const lineVersion: LineVersionV2 = {
   lineConcessionType: 'CANTONALLY_APPROVED_LINE',
   offerCategory: 'ASC',
@@ -378,6 +386,7 @@ function setupTestBed(
       DateIconComponent,
       DisplayDatePipe,
       WorkflowComponent,
+      MockSublineTableComponent,
     ],
     imports: [AppTestingModule, FormModule],
     providers: [

@@ -1,7 +1,6 @@
 <h3 class="font-bold-lg">{{ 'LIDI.SUBLINE.SUBLINES' | translate }}</h3>
 <app-table
   [tableData]="sublines"
-  [totalCount]="totalCount"
   [tableColumns]="tableColumns"
   [canEdit]="true"
   (editElementEvent)="rowClicked($event)"
