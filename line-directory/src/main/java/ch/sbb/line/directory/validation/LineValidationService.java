@@ -88,15 +88,13 @@ public class LineValidationService {
   }
 
   public void dynamicBeanValidation(LineVersion lineVersion) {
-    if (lineVersion.getLineType() != LineType.ORDERLY) {
-      if (lineVersion.getConcessionType() != null || lineVersion.getSwissLineNumber() != null) {
-        throw new LineTypeOrderlyException(lineVersion.getLineType());
-      }
+    if (lineVersion.getLineType() != LineType.ORDERLY && (lineVersion.getConcessionType() != null
+        || lineVersion.getSwissLineNumber() != null)) {
+      throw new LineTypeOrderlyException(lineVersion.getLineType());
     }
-    if (lineVersion.getLineType() == LineType.ORDERLY) {
-      if ((lineVersion.getConcessionType() == null || lineVersion.getSwissLineNumber() == null)) {
-        throw new LineTypeOrderlyException(lineVersion.getLineType());
-      }
+    if (lineVersion.getLineType() == LineType.ORDERLY && (lineVersion.getConcessionType() == null
+        || lineVersion.getSwissLineNumber() == null)) {
+      throw new LineTypeOrderlyException(lineVersion.getLineType());
     }
   }
 
