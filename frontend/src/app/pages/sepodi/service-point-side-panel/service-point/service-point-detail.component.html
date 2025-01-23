@@ -1,13 +1,15 @@
 <atlas-detail-page-container>
   <div class="col-12 d-flex mt-3 flex-row ">
     <div class="d-flex pe-3 col-12 justify-content-between">
-      <app-switch-version
-        *ngIf="showVersionSwitch && selectedVersion"
-        (switchVersion)="switchVersion($event)"
-        [currentRecord]="selectedVersion"
-        [records]="servicePointVersions"
-        [switchDisabled]="isSwitchVersionDisabled"
-      ></app-switch-version>
+      <div class="col-9">
+        <app-switch-version
+          *ngIf="showVersionSwitch && selectedVersion"
+          (switchVersion)="switchVersion($event)"
+          [currentRecord]="selectedVersion"
+          [records]="servicePointVersions"
+          [switchDisabled]="isSwitchVersionDisabled"
+        ></app-switch-version>
+      </div>
       <app-navigation-sepodi-prm [number]="selectedVersion?.number!.number" [sloid]="selectedVersion?.sloid" targetPage="stop-point"></app-navigation-sepodi-prm>
     </div>
   </div>
