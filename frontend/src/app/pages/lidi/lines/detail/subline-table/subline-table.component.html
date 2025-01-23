@@ -1,0 +1,13 @@
+<h3 class="font-bold-lg">{{ 'LIDI.SUBLINE.SUBLINES' | translate }}</h3>
+<app-table
+  [tableData]="sublines"
+  [totalCount]="totalCount"
+  [tableColumns]="tableColumns"
+  [canEdit]="true"
+  [tableFilterConfig]="tableFilterConfig"
+  (editElementEvent)="rowClicked($event)"
+  (tableChanged)="getOverview($event)"
+  (tableInitialized)="getOverview($event)"
+  data-cy="subline-table"
+>
+</app-table>
