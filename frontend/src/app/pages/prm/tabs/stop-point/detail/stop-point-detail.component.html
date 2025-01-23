@@ -8,14 +8,16 @@
   <ng-container *ngIf="!isNew">
     <div class="col-12 d-flex mt-3 flex-row">
       <div class="d-flex flex-row pe-3 col-12 justify-content-between">
-        <app-switch-version
-          (switchVersion)="switchVersion($event)"
-          *ngIf="showVersionSwitch"
-          [currentRecord]="selectedVersion"
-          [records]="stopPointVersions"
-          [switchDisabled]="isSwitchVersionDisabled"
-          [showStatus]="false"
-        ></app-switch-version>
+        <div class="col-8">
+          <app-switch-version
+            (switchVersion)="switchVersion($event)"
+            *ngIf="showVersionSwitch"
+            [currentRecord]="selectedVersion"
+            [records]="stopPointVersions"
+            [switchDisabled]="isSwitchVersionDisabled"
+            [showStatus]="false"
+          ></app-switch-version>
+        </div>
         <app-navigation-sepodi-prm
           [number]="selectedVersion.number.number"
           targetPage="service-point"
