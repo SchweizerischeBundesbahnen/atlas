@@ -144,6 +144,10 @@ describe('LineDetailComponent for existing lineVersion', () => {
     lineVersion.status = Status.InReview;
     fixture.detectChanges();
 
+    expect(component.form.enabled).toBeFalse();
+    component.toggleEdit();
+    expect(component.form.enabled).toBeTrue();
+
     expect(component.form.controls.validFrom.enabled).toBeFalse();
     expect(component.form.controls.validTo.enabled).toBeFalse();
     expect(component.form.controls.lineType.enabled).toBeFalse();
@@ -153,6 +157,8 @@ describe('LineDetailComponent for existing lineVersion', () => {
     lineVersion.status = Status.Draft;
     fixture.detectChanges();
 
+    component.toggleEdit();
+
     expect(component.form.controls.validFrom.enabled).toBeTrue();
     expect(component.form.controls.validTo.enabled).toBeTrue();
     expect(component.form.controls.lineType.enabled).toBeTrue();
@@ -161,6 +167,10 @@ describe('LineDetailComponent for existing lineVersion', () => {
   it('should update LineVersion successfully', () => {
     mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+
+    component.toggleEdit();
+    component.form.controls.description.setValue("UpdatedDescription");
+
     component.save();
     fixture.detectChanges();
 
@@ -177,6 +187,10 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   it('should not update Version', () => {
     mockLinesService.updateLineVersion.and.returnValue(throwError(() => error));
+
+    component.toggleEdit();
+    component.form.controls.description.setValue("UpdatedDescription");
+
     component.save();
     fixture.detectChanges();
 
