@@ -263,7 +263,7 @@ class LineServiceTest {
   }
 
   @Test
-   void shouldThrowStaleExceptionOnDifferentVersion() {
+  void shouldThrowStaleExceptionOnDifferentVersion() {
     //given
     LineVersionBuilder<?, ?> version = LineVersion.builder().slnid("slnid");
 

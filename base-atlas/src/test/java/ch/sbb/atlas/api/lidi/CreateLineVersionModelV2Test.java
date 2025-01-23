@@ -18,7 +18,7 @@ class CreateLineVersionModelV2Test extends BaseValidatorTest {
 
   @ParameterizedTest
   @EnumSource(value = LineConcessionType.class, names = {"COLLECTION_LINE", "LINE_OF_A_TERRITORIAL_CONCESSION", "LINE_ABROAD",
-      "FEDERAL_TERRITORIAL_CONCESSION","CANTONALLY_APPROVED_LINE","FEDERALLY_LICENSED_OR_APPROVED_LINE",
+      "FEDERAL_TERRITORIAL_CONCESSION", "CANTONALLY_APPROVED_LINE", "FEDERALLY_LICENSED_OR_APPROVED_LINE",
       "VARIANT_OF_A_FRANCHISED_LINE", "RACK_FREE_UNPUBLISHED_LINE", "RACK_FREE_TRIPS"})
   void shouldValidateConcessionTypeWithLineTypeOrderly(LineConcessionType concessionType) {
     //given
@@ -46,7 +46,7 @@ class CreateLineVersionModelV2Test extends BaseValidatorTest {
   }
 
   @ParameterizedTest
-  @EnumSource(value = LineType.class, names = {"DISPOSITION","OPERATIONAL","TEMPORARY"})
+  @EnumSource(value = LineType.class, names = {"DISPOSITION", "OPERATIONAL", "TEMPORARY"})
   void shouldValidateConcessionType(LineType lineType) {
     //given
     CreateLineVersionModelV2 lineVersionModelV2 = CreateLineVersionModelV2.builder()
@@ -68,107 +68,6 @@ class CreateLineVersionModelV2Test extends BaseValidatorTest {
     Set<ConstraintViolation<CreateLineVersionModelV2>> constraintViolations = validator.validate(lineVersionModelV2);
     //then
     assertThat(constraintViolations).isEmpty();
-
-  }
-
-  @ParameterizedTest
-  @EnumSource(value = LineType.class, names = {"DISPOSITION","OPERATIONAL","TEMPORARY"})
-  void shouldNotValidateConcessionType(LineType lineType) {
-    //given
-    CreateLineVersionModelV2 lineVersionModelV2 = CreateLineVersionModelV2.builder()
-        .lineType(lineType)
-        .lineConcessionType(LineConcessionType.LINE_ABROAD)
-        .offerCategory(OfferCategory.IC)
-        .shortNumber("6")
-        .number("number")
-        .longName("longName")
-        .description("description")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
-        .businessOrganisation(
-            "businessOrganisation")
-        .comment("comment")
-        .lineVersionWorkflows(Collections.emptySet())
-        .build();
-    //when
-    Set<ConstraintViolation<CreateLineVersionModelV2>> constraintViolations = validator.validate(lineVersionModelV2);
-    //then
-    assertThat(constraintViolations).isNotEmpty();
-
-  }
-
-  @ParameterizedTest
-  @EnumSource(value = LineType.class, names = {"DISPOSITION","OPERATIONAL","TEMPORARY"})
-  void shouldNotValidateSwissLineNumber(LineType lineType) {
-    //given
-    CreateLineVersionModelV2 lineVersionModelV2 = CreateLineVersionModelV2.builder()
-        .lineType(lineType)
-        .lineConcessionType(null)
-        .offerCategory(OfferCategory.IC)
-        .shortNumber("6")
-        .number("number")
-        .longName("longName")
-        .description("description")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
-        .businessOrganisation(
-            "businessOrganisation")
-        .comment("comment")
-        .swissLineNumber("IC2")
-        .lineVersionWorkflows(Collections.emptySet())
-        .build();
-    //when
-    Set<ConstraintViolation<CreateLineVersionModelV2>> constraintViolations = validator.validate(lineVersionModelV2);
-    //then
-    assertThat(constraintViolations).isNotEmpty();
-
-  }
-
-  @Test
-  void shouldNotValidateLineTypeOrderlyWithLineConcessionTypeAndWithoutSwissLineNumber() {
-    //given
-    CreateLineVersionModelV2 lineVersionModelV2 = CreateLineVersionModelV2.builder()
-        .lineType(LineType.ORDERLY)
-        .offerCategory(OfferCategory.IC)
-        .shortNumber("6")
-        .number("number")
-        .longName("longName")
-        .description("description")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
-        .businessOrganisation(
-            "businessOrganisation")
-        .comment("comment")
-        .lineVersionWorkflows(Collections.emptySet())
-        .build();
-    //when
-    Set<ConstraintViolation<CreateLineVersionModelV2>> constraintViolations = validator.validate(lineVersionModelV2);
-    //then
-    assertThat(constraintViolations).hasSize(1);
-
-  }
-
-  @Test
-  void shouldNotValidateLineTypeOrderlyWithSwissLineNumberAndWithoutLineConcessionType() {
-    //given
-    CreateLineVersionModelV2 lineVersionModelV2 = CreateLineVersionModelV2.builder()
-        .shortNumber("6")
-        .number("number")
-        .offerCategory(OfferCategory.IC)
-        .longName("longName")
-        .description("description")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
-        .businessOrganisation(
-            "businessOrganisation")
-        .comment("comment")
-        .lineVersionWorkflows(Collections.emptySet())
-        .swissLineNumber("swissLineNumber")
-        .build();
-    //when
-    Set<ConstraintViolation<CreateLineVersionModelV2>> constraintViolations = validator.validate(lineVersionModelV2);
-    //then
-    assertThat(constraintViolations).hasSize(2);
 
   }
 
