@@ -31,18 +31,21 @@
             ></app-switch-version>
           </div>
           <div class="d-flex flex-column col-9">
-            <app-coverage
-              [currentRecord]="selectedVersion!"
-              [pageType]="getPageType()"
-            ></app-coverage>
+            <app-subline-table [mainLineSlnid]="selectedVersion.slnid!"></app-subline-table>
           </div>
+        </div>
+        <div class="d-flex flex-column col-9">
+          <app-coverage
+            [currentRecord]="selectedVersion!"
+            [pageType]="getPageType()"
+          ></app-coverage>
         </div>
 
         <div class="form-title-section my-5">
           <h2 class="font-bold-2xl color-gray-900">
             {{ 'LIDI.DETAIL_LINE_INFORMATION' | translate }} -
             {{ 'COMMON.VERSION' | translate }}
-            {{ selectedVersionIndex }}
+            {{ selectedVersionIndex + 1 }}
           </h2>
           <div>
             <span class="font-bold-lg color-gray-900">{{
