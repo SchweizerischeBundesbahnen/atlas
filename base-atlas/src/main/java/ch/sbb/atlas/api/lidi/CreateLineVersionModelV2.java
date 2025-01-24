@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -25,13 +26,13 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "CreateLineVersionV2")
 public class CreateLineVersionModelV2 extends BaseLineVersionModel {
 
-  @NotNull
+  @NotBlank
   @Schema(description = "Description", example = "Meiringen - Innertkirchen")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String description;
 
-  @NotNull
+  @NotBlank
   @Schema(description = "Number", example = "L1")
   @Size(max = AtlasFieldLengths.LENGTH_8)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
