@@ -17,5 +17,5 @@ repositories {
 dependencies {
     implementation("org.asciidoctor:asciidoctor-gradle-jvm:4.0.4")
     implementation("io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:1.1.7")
-    implementation("org.springframework.boot:org.springframework.boot.gradle.plugin:3.4.1")
+    implementation("org.springframework.boot:org.springframework.boot.gradle.plugin:3.4.2")
 }
