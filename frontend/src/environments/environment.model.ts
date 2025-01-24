@@ -1,4 +1,4 @@
-import {AuthConfig} from 'angular-oauth2-oidc';
+import { AuthConfig } from 'angular-oauth2-oidc';
 
 export interface Environment {
   production: boolean;
@@ -10,4 +10,5 @@ export interface Environment {
   atlasUnauthApiUrl: string;
   authConfig: AuthConfig;
   atlasReleaseNotes: string;
+  journeyMapsApiKey: string;
 }
