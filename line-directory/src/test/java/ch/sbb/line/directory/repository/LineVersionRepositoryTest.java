@@ -58,11 +58,11 @@ import org.springframework.beans.factory.annotation.Autowired;
     LineVersion result = lineVersionRepository.save(LineTestData.lineVersion());
 
     //when
-    result.setNumber("other number");
+    result.setNumber("other");
     result = lineVersionRepository.save(result);
 
     //then
-    assertThat(result.getNumber()).isEqualTo("other number");
+    assertThat(result.getNumber()).isEqualTo("other");
   }
 
   @Test
