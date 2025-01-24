@@ -382,6 +382,7 @@
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
     "OVERVIEW_BUSINESS_ORGANISATION": "Geschäfts-\norganisation",
     "SLNID": "SLNID",
+    "NO_SUBLINES": "Es existieren keine Teillinien zu dieser Linie.",
     "PAYMENT": {
       "TYPE": "Bezahlungsart",
       "INTERNATIONAL": "International",

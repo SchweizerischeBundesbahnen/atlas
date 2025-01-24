@@ -31,42 +31,54 @@
             ></app-switch-version>
           </div>
           <div class="d-flex flex-column col-6 ps-3">
-            <app-subline-table [mainLineSlnid]="selectedVersion.slnid!"></app-subline-table>
+            <app-subline-table
+              [mainLineSlnid]="selectedVersion.slnid!"
+            ></app-subline-table>
           </div>
-        </div>
-        <div class="d-flex flex-column col-9">
-          <app-coverage
-            [currentRecord]="selectedVersion!"
-            [pageType]="getPageType()"
-          ></app-coverage>
         </div>
 
-        <div class="form-title-section my-5">
-          <h2 class="font-bold-2xl color-gray-900">
-            {{ 'LIDI.DETAIL_LINE_INFORMATION' | translate }} -
-            {{ 'COMMON.VERSION' | translate }}
-            {{ selectedVersionIndex + 1 }}
-          </h2>
-          <div>
-            <span class="font-bold-lg color-gray-900 pe-1">{{ 'COMMON.STATUS' | translate }}</span>
-            <span class="color-gray-900">{{ 'COMMON.STATUS_TYPES.' + selectedVersion.status | translate }}</span>
-            <span class="ps-3 font-bold-lg color-gray-900 pe-1">{{ 'LIDI.TYPE' | translate }}</span>
-            <span class="color-gray-900" data-cy="lineTypeReadOnly">{{ 'LIDI.LINE.TYPES.' + lineType | translate }}</span>
+        <div class="d-flex col-12 my-5">
+          <div class="d-flex col-6 flex-column">
+            <h2 class="font-bold-2xl color-gray-900">
+              {{ 'LIDI.DETAIL_LINE_INFORMATION' | translate }} -
+              {{ 'COMMON.VERSION' | translate }}
+              {{ selectedVersionIndex + 1 }}
+            </h2>
+            <div class="mb-3">
+              <span class="font-bold-lg color-gray-900 pe-1">{{
+                'COMMON.STATUS' | translate
+              }}</span>
+              <span class="color-gray-900">{{
+                'COMMON.STATUS_TYPES.' + selectedVersion.status | translate
+              }}</span>
+              <span class="ps-3 font-bold-lg color-gray-900 pe-1">{{
+                'LIDI.TYPE' | translate
+              }}</span>
+              <span class="color-gray-900" data-cy="lineTypeReadOnly">{{
+                'LIDI.LINE.TYPES.' + lineType | translate
+              }}</span>
+            </div>
+            @if(form.disabled && showWorkflow){
+              <app-workflow
+                [descriptionForWorkflow]="selectedVersion.description ?? '-'"
+                [lineRecord]="selectedVersion"
+                (workflowEvent)="reloadRecord()"
+              ></app-workflow>
+            }
+            <div class="d-flex mt-3" *ngIf="isShowLineSnapshotHistory">
+              <atlas-link
+                label="LIDI.LINE_VERSION_SNAPSHOT.NAVIGATE_TO_SNAPHOT"
+                (linkClicked)="navigateToSnapshot()"
+              ></atlas-link>
+            </div>
           </div>
-          <div *ngIf="form.disabled">
-            <app-workflow
-              *ngIf="showWorkflow"
-              [descriptionForWorkflow]="selectedVersion.description ?? '-'"
-              [lineRecord]="selectedVersion"
-              (workflowEvent)="reloadRecord()"
-            ></app-workflow>
+
+          <div class="d-flex flex-column col-6 ps-3">
+            <app-coverage
+              [currentRecord]="selectedVersion!"
+              [pageType]="getPageType()"
+            ></app-coverage>
           </div>
-        </div>
-        <div class="workflow-link mb-3" *ngIf="isShowLineSnapshotHistory">
-          <atlas-link
-            label="LIDI.LINE_VERSION_SNAPSHOT.NAVIGATE_TO_SNAPHOT"
-            (linkClicked)="navigateToSnapshot()"
-          ></atlas-link>
         </div>
       }
 
