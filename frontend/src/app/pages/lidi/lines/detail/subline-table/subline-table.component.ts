@@ -58,7 +58,6 @@ export class SublineTableComponent {
         undefined,
         0,
         50,
-        undefined
       )
       .subscribe((sublines) => {
         this.sublines = sublines.objects!;
