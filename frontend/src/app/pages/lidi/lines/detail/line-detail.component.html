@@ -48,18 +48,10 @@
             {{ selectedVersionIndex + 1 }}
           </h2>
           <div>
-            <span class="font-bold-lg color-gray-900">{{
-              'COMMON.STATUS' | translate
-            }}</span>
-            <span class="color-gray-900">{{
-              'COMMON.STATUS_TYPES.' + selectedVersion.status | translate
-            }}</span>
-            <span class="ps-3 font-bold-lg color-gray-900"
-              >{{ 'LIDI.TYPE' | translate }}
-            </span>
-            <span class="color-gray-900" data-cy="lineTypeReadOnly">{{
-              'LIDI.LINE.TYPES.' + lineType | translate
-            }}</span>
+            <span class="font-bold-lg color-gray-900 pe-1">{{ 'COMMON.STATUS' | translate }}</span>
+            <span class="color-gray-900">{{ 'COMMON.STATUS_TYPES.' + selectedVersion.status | translate }}</span>
+            <span class="ps-3 font-bold-lg color-gray-900 pe-1">{{ 'LIDI.TYPE' | translate }}</span>
+            <span class="color-gray-900" data-cy="lineTypeReadOnly">{{ 'LIDI.LINE.TYPES.' + lineType | translate }}</span>
           </div>
           <div *ngIf="form.disabled">
             <app-workflow
