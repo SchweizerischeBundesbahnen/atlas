@@ -382,6 +382,7 @@
     "BUSINESS_ORGANISATION": "Organisation commerciale",
     "OVERVIEW_BUSINESS_ORGANISATION": "Organisation\ncommerciale",
     "SLNID": "SLNID",
+    "NO_SUBLINES": "Il n'existe pas de lignes partielles pour cette ligne.",
     "PAYMENT": {
       "TYPE": "Mode de paiement",
       "INTERNATIONAL": "International",
