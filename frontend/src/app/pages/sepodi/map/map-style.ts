@@ -1,5 +1,5 @@
-import {StyleSpecification} from 'maplibre-gl';
-import {environment} from '../../../../environments/environment';
+import { StyleSpecification } from 'maplibre-gl';
+import { environment } from '../../../../environments/environment';
 
 export const SERVICE_POINT_MIN_ZOOM = 12;
 export const MAP_SOURCE_NAME = 'geodata';
@@ -29,7 +29,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
     osm: {
       type: 'raster',
       tiles: [
-        'https://journey-maps-tiles.geocdn.sbb.ch/styles/osm_streets_v2/{z}/{x}/{y}.webp?api_key=74c0170da613da0d825339a7f0dd0546',
+        `https://journey-maps-tiles.api.sbb.ch/styles/osm_streets_v2/{z}/{x}/{y}.webp?api_key=${environment.journeyMapsApiKey}`,
       ],
       tileSize: 256,
       attribution:
@@ -38,7 +38,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
     satellite: {
       type: 'raster',
       tiles: [
-        'https://journey-maps-tiles.geocdn.sbb.ch/styles/aerial/{z}/{x}/{y}.webp?api_key=74c0170da613da0d825339a7f0dd0546',
+        `https://journey-maps-tiles.api.sbb.ch/styles/aerial/{z}/{x}/{y}.webp?api_key=${environment.journeyMapsApiKey}`,
       ],
       tileSize: 256,
       attribution:
@@ -69,7 +69,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
           type: 'Point',
           coordinates: [0, 0],
         },
-        properties: null
+        properties: null,
       },
     },
     traffic_points: {
@@ -80,7 +80,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
           type: 'Point',
           coordinates: [0, 0],
         },
-        properties: null
+        properties: null,
       },
     },
     current_traffic_point: {
@@ -91,7 +91,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
           type: 'Point',
           coordinates: [0, 0],
         },
-        properties: null
+        properties: null,
       },
     },
   },
@@ -182,7 +182,21 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       type: 'circle',
       source: 'current_coordinates',
       paint: {
-        'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 2, 10, 4, 12, 5, 14, 7, 16, 8],
+        'circle-radius': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          9,
+          2,
+          10,
+          4,
+          12,
+          5,
+          14,
+          7,
+          16,
+          8,
+        ],
         'circle-color': 'transparent',
         'circle-opacity': 1,
         'circle-stroke-color': 'hotpink',
