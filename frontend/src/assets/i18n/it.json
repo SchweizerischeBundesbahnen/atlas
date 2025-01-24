@@ -382,6 +382,7 @@
     "BUSINESS_ORGANISATION": "Organizzazione aziendale",
     "OVERVIEW_BUSINESS_ORGANISATION": "Organizzazione\naziendale",
     "SLNID": "SLNID",
+    "NO_SUBLINES": "Non ci sono linee parziali per questa linea.",
     "PAYMENT": {
       "TYPE": "Metodo di pagamento",
       "INTERNATIONAL": "Internazionale",
