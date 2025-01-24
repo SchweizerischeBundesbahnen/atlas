@@ -9,7 +9,8 @@ import packageJson from '../../package.json';
 // See https://confluence.sbb.ch/display/CLEW/Azure+AD
 const authConfig: AuthConfig = {
   // This is the issuer URL for the SBB Azure AD organization
-  issuer: 'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0',
+  issuer:
+    'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0',
   // This is required, since Azure AD uses different domains in their issuer configuration
   strictDiscoveryDocumentValidation: false,
   clientId: '18746f30-7978-48b5-b19b-0f871fb12e67',
@@ -27,6 +28,8 @@ export const environment: Environment = {
   appVersion: packageJson.version,
   atlasApiUrl: 'http://localhost:8888',
   atlasUnauthApiUrl: 'http://localhost:6969',
-  atlasReleaseNotes: 'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
+  atlasReleaseNotes:
+    'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
   authConfig,
+  journeyMapsApiKey: '6e28a0f7559988d0acf14d450ca29cf9',
 };
