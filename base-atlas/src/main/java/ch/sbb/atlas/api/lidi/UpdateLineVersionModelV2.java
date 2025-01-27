@@ -38,7 +38,7 @@ public class UpdateLineVersionModelV2 extends BaseLineVersionModel {
   private String number;
 
   @Schema(description = "SwissLineNumber", example = "b1.L1")
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   private String swissLineNumber;
 
