@@ -5,6 +5,7 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFI
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -50,4 +51,13 @@ public interface LineApiV2 {
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   List<LineVersionModelV2> updateLineVersion(@PathVariable Long id, @RequestBody @Valid UpdateLineVersionModelV2 newVersion);
+
+  @GetMapping("/affectedSublines/{id}")
+  @Operation(description = "Returns checked Sublines to short")
+  AffectedSublines checkAffectedSublines(@PathVariable Long id, @RequestBody @Valid UpdateLineVersionModelV2 newVersion);
+
+  @PostMapping("/shortSublines/{id}")
+  @Operation(description = "Short Automatically all Sublines from Mainline")
+  void shortSublines(@PathVariable Long id, @RequestBody @Valid ShortenSubline shortenSubline);
+
 }
