@@ -35,7 +35,7 @@ public interface LineApiV2 {
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  LineVersionModelV2 createLineVersionV2(@RequestBody @Valid CreateLineVersionModelV2 newVersion);
+  LineVersionModelV2 createLineVersionV2(@RequestBody @Valid LineVersionModelV2 newVersion);
 
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
