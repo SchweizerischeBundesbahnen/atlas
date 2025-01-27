@@ -2,7 +2,6 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toSet;
 
-import ch.sbb.atlas.api.lidi.CreateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
@@ -34,7 +33,7 @@ public class LineControllerV2 implements LineApiV2 {
   }
 
   @Override
-  public LineVersionModelV2 createLineVersionV2(CreateLineVersionModelV2 newVersion) {
+  public LineVersionModelV2 createLineVersionV2(LineVersionModelV2 newVersion) {
     LineVersion newLineVersion = toEntity(newVersion);
     newLineVersion.setStatus(Status.VALIDATED);
     LineVersion createdVersion = lineService.createV2(newLineVersion);
@@ -80,7 +79,7 @@ public class LineControllerV2 implements LineApiV2 {
         .build();
   }
 
-  private LineVersion toEntity(CreateLineVersionModelV2 lineVersionModel) {
+  private LineVersion toEntity(LineVersionModelV2 lineVersionModel) {
     return LineVersion.builder()
         .id(lineVersionModel.getId())
         .lineType(lineVersionModel.getLineType())
