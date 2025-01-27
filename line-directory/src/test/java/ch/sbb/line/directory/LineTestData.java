@@ -1,9 +1,9 @@
 package ch.sbb.line.directory;
 
-import ch.sbb.atlas.api.lidi.CreateLineVersionModelV2;
-import ch.sbb.atlas.api.lidi.CreateLineVersionModelV2.CreateLineVersionModelV2Builder;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionModel.LineVersionModelBuilder;
+import ch.sbb.atlas.api.lidi.LineVersionModelV2;
+import ch.sbb.atlas.api.lidi.LineVersionModelV2.LineVersionModelV2Builder;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2.UpdateLineVersionModelV2Builder;
 import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
@@ -86,8 +86,8 @@ public class LineTestData {
         .swissLineNumber("swissLineNumber");
   }
 
-  public static CreateLineVersionModelV2Builder<?, ?> createLineVersionModelBuilder() {
-    return CreateLineVersionModelV2.builder()
+  public static LineVersionModelV2Builder<?, ?> createLineVersionModelBuilder() {
+    return LineVersionModelV2.builder()
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
         .lineConcessionType(LineConcessionType.COLLECTION_LINE)
