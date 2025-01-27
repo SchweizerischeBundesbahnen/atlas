@@ -42,12 +42,12 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
   @Query("update line_version v set v.version = (v.version + 1) where v.slnid = :slnid")
   void incrementVersion(@Param("slnid") String slnid);
 
-  @Query("SELECT lv FROM line_version as lv"
+  @Query("SELECT lv FROM line_version as lv where lv.swissLineNumber is not null"
       + " ORDER BY lv.slnid, lv.validFrom ASC")
   List<LineVersion> getFullLineVersions();
 
-  @Query("SELECT lv FROM line_version as lv"
-      + " WHERE  :actualDate >= lv.validFrom AND :actualDate <= lv.validTo"
+  @Query("SELECT lv FROM line_version as lv where lv.swissLineNumber is not null"
+      + " AND  :actualDate >= lv.validFrom AND :actualDate <= lv.validTo"
       + " ORDER BY lv.slnid, lv.validFrom ASC")
   List<LineVersion> getActualLineVersions(@Param("actualDate") LocalDate actualDate);
 

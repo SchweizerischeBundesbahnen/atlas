@@ -398,9 +398,9 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .alternativeName("alternative")
             .combinationName("combination")
             .longName("long name")
-            .lineType(LineType.TEMPORARY)
+            .lineType(LineType.ORDERLY)
+            .swissLineNumber("sln")
             .paymentType(PaymentType.LOCAL)
-            .swissLineNumber(null)
             .build();
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
 
