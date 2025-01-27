@@ -293,4 +293,45 @@ class LineServiceTest {
     //then
     verify(lineVersionRepository).incrementVersion("slnid");
   }
+
+  @Test
+  void isShorteningAllowed() {
+
+    LineVersion lineVersion = LineTestData.lineVersion();
+    lineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
+    lineVersion.setValidTo(LocalDate.of(2006, 1, 1));
+
+    SublineVersion sublineVersion = SublineVersion.builder()
+        .validFrom(LocalDate.of(2007, 1, 1))
+        .validTo(LocalDate.of(2008, 12, 31))
+        .description("version 1")
+        .build();
+
+    SublineVersion sublineVersion2 = SublineVersion.builder()
+        .validFrom(LocalDate.of(2002, 1, 1))
+        .validTo(LocalDate.of(2006, 12, 31))
+        .description("version 2")
+        .build();
+
+    //assertThat(lineService.isShorteningAllowed(lineVersion, sublineVersion2, sublineVersion)).isTrue();
+  }
+
+  @Test
+  void shouldShortSublines() {
+    LineVersion lineVersion = LineTestData.lineVersion();
+    lineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
+    lineVersion.setValidTo(LocalDate.of(2006, 1, 1));
+
+    SublineVersion sublineVersion = SublineVersion.builder()
+        .validFrom(LocalDate.of(2007, 1, 1))
+        .validTo(LocalDate.of(2008, 12, 31))
+        .description("version 1")
+        .build();
+
+    SublineVersion sublineVersion2 = SublineVersion.builder()
+        .validFrom(LocalDate.of(2002, 1, 1))
+        .validTo(LocalDate.of(2006, 12, 31))
+        .description("version 2")
+        .build();
+  }
 }
