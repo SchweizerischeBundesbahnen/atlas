@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { TableColumn } from '../../../../../core/components/table/table-column';
 import { ElementType, Line, LinesService } from '../../../../../api';
 import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   selector: 'app-subline-table',
   templateUrl: './subline-table.component.html',
 })
-export class SublineTableComponent {
+export class SublineTableComponent implements OnInit {
   @Input() mainLineSlnid!: string;
 
   tableColumns: TableColumn<Line>[] = [
@@ -29,6 +29,10 @@ export class SublineTableComponent {
     private linesService: LinesService,
     private router: Router
   ) {}
+
+  ngOnInit() {
+    this.getOverview();
+  }
 
   rowClicked(subline: Line) {
     const url = this.router.serializeUrl(
@@ -57,7 +61,7 @@ export class SublineTableComponent {
         undefined,
         undefined,
         0,
-        50,
+        50
       )
       .subscribe((sublines) => {
         this.sublines = sublines.objects!;

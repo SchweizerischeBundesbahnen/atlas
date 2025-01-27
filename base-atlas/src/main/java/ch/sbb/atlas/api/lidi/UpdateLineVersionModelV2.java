@@ -27,7 +27,7 @@ public class UpdateLineVersionModelV2 extends BaseLineVersionModel {
 
   @NotBlank
   @Schema(description = "Description", example = "Meiringen - Innertkirchen")
-  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Size(min = 2, max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String description;
 
