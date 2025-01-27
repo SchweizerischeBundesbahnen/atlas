@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
-  CreateLineVersionV2,
   LinesService,
   LineType,
   LineVersionV2,
@@ -206,7 +205,7 @@ export class LineDetailComponent implements OnInit {
       if (this.isNew) {
         this.form.disable();
         const lineVersion =
-          this.form.getRawValue() as unknown as CreateLineVersionV2;
+          this.form.getRawValue() as unknown as LineVersionV2;
         this.createLine(lineVersion);
       } else {
         this.validityService.updateValidity(this.form);
@@ -222,7 +221,7 @@ export class LineDetailComponent implements OnInit {
     }
   }
 
-  createLine(lineVersion: CreateLineVersionV2): void {
+  createLine(lineVersion: LineVersionV2): void {
     this.form.disable();
     this.linesService
       .createLineVersionV2(lineVersion)
