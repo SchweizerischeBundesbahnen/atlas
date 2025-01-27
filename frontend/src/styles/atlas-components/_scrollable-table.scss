@@ -1,0 +1,36 @@
+@use 'src/styles/variables' as variables;
+
+table {
+  &.scrollable-table {
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: variables.$white;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: variables.$gray-400;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: variables.$gray-500;
+    }
+
+    tbody {
+      display: block;
+      max-height: 13.75rem;
+      overflow: auto;
+      width: 100%;
+    }
+
+    thead, tbody {
+      tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+      }
+    }
+  }
+}
