@@ -41,13 +41,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class LineService {
 
-  public enum AdjustmentDateStatus {
-    VALID_FROM_CHANGED,
-    VALID_TO_CHANGED,
-    BOTH_CHANGED,
-    NO_CHANGE
-  }
-
   private final LineVersionRepository lineVersionRepository;
   private final SublineVersionRepository sublineVersionRepository;
   private final LineRepository lineRepository;
