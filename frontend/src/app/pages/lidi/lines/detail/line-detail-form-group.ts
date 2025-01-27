@@ -65,6 +65,7 @@ export class LineFormGroupBuilder {
         ]),
         description: new FormControl(version?.description, [
           AtlasFieldLengthValidator.length_255,
+          Validators.minLength(2),
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
           Validators.required,
