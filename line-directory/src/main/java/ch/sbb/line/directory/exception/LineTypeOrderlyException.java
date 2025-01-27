@@ -2,7 +2,7 @@ package ch.sbb.line.directory.exception;
 
 import static ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo.builder;
 
-import ch.sbb.atlas.api.lidi.CreateLineVersionModelV2.Fields;
+import ch.sbb.atlas.api.lidi.LineVersionModelV2.Fields;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
