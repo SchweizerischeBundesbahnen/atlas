@@ -2,8 +2,10 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toSet;
 
+import ch.sbb.atlas.api.lidi.AffectedSublines;
 import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
+import ch.sbb.atlas.api.lidi.ShortenSubline;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
@@ -49,6 +51,16 @@ public class LineControllerV2 implements LineApiV2 {
         versionToUpdate.getSlnid()));
     return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .toList();
+  }
+
+  @Override
+  public AffectedSublines checkAffectedSublines(Long id, UpdateLineVersionModelV2 newVersion) {
+    return lineService.checkAffectedSublines(id, newVersion);
+  }
+
+  @Override
+  public void shortSublines(Long id, ShortenSubline shortenSubline) {
+    lineService.shortSublines(id, shortenSubline);
   }
 
   private LineVersionModelV2 toModel(LineVersion lineVersion) {
