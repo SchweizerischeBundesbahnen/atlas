@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.controller;
 
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
-import static ch.sbb.atlas.api.lidi.CreateLineVersionModelV2.Fields.swissLineNumber;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -11,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.lidi.CreateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2.Fields;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
@@ -65,7 +63,7 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
   @Test
   void shouldCreateLineVersion() throws Exception {
     //given
-    CreateLineVersionModelV2 lineVersionModel =
+    LineVersionModelV2 lineVersionModel =
         LineTestData.createLineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -83,7 +81,7 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
   @Test
   void shouldUpdateLineVersion() throws Exception {
     //given
-    CreateLineVersionModelV2 createLineVersionModelV2 =
+    LineVersionModelV2 createLineVersionModelV2 =
         LineTestData.createLineVersionModelBuilder()
             .businessOrganisation("sbb")
             .longName("long name")
@@ -112,7 +110,7 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateLineVersionModelV2))
         ).andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC2")))
+        .andExpect(jsonPath("$[0]." + UpdateLineVersionModelV2.Fields.swissLineNumber, is("b0.IC2")))
         .andExpect(jsonPath("$[0]." + Fields.lineType, is(LineType.ORDERLY.toString())))
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
   }
