@@ -35,24 +35,13 @@ public abstract class BaseLineVersionModel extends BaseVersionModel implements D
       accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
-
   @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001234")
   private String slnid;
-
-  @Schema(description = "Number", example = "L1")
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  private String number;
 
   @Schema(description = "LongName", example = "Spiseggfräser; Talstation - Bergstation; Ersatzbus")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String longName;
-
-  @Schema(description = "Description", example = "Meiringen - Innertkirchen")
-  @Size(max = AtlasFieldLengths.LENGTH_255)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  private String description;
 
   @Schema(description = "Valid from")
   @NotNull
