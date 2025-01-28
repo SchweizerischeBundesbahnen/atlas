@@ -11,6 +11,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.lidi.AffectedSublines;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -292,6 +294,184 @@ class LineServiceTest {
     assertThrows(StaleObjectStateException.class, executable);
     //then
     verify(lineVersionRepository).incrementVersion("slnid");
+  }
+
+  @Test
+  void shouldReturnAllowedSublinesOnly() {
+    LineVersion lineVersion = LineVersion.builder()
+        .id(1000L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2004, 1, 1))
+        .validTo(LocalDate.of(2015, 12, 31))
+        .description("desc")
+        .build();
+
+    SublineVersion sublineVersion = SublineVersion.builder()
+        .slnid("12345")
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2008, 12, 31))
+        .description("oldestVersion")
+        .build();
+
+    SublineVersion sublineVersion2 = SublineVersion.builder()
+        .slnid("12345")
+        .validFrom(LocalDate.of(2009, 1, 1))
+        .validTo(LocalDate.of(2016, 12, 31))
+        .description("latestVersion")
+        .build();
+
+    SublineVersion sublineVersionNew = SublineVersion.builder()
+        .slnid("4321")
+        .validFrom(LocalDate.of(2002, 1, 1))
+        .validTo(LocalDate.of(2008, 12, 31))
+        .description("oldestVersion")
+        .build();
+
+    SublineVersion sublineVersionNew2 = SublineVersion.builder()
+        .slnid("4321")
+        .validFrom(LocalDate.of(2009, 1, 1))
+        .validTo(LocalDate.of(2019, 12, 31))
+        .description("latestVersion")
+        .build();
+
+    when(lineVersionRepository.findById(anyLong())).thenReturn(Optional.ofNullable(lineVersion));
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
+        List.of(sublineVersion, sublineVersion2, sublineVersionNew, sublineVersionNew2));
+
+    DateRange dateRange = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
+
+    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), dateRange);
+    assertThat(affectedSublines.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
+        List.of(sublineVersionNew2.getSlnid(), sublineVersion2.getSlnid()));
+  }
+
+  @Test
+  void shouldReturnAllowedSublinesAndNotAllowedSublines() {
+    LineVersion lineVersion = LineVersion.builder()
+        .id(1000L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2004, 1, 1))
+        .validTo(LocalDate.of(2015, 12, 31))
+        .description("desc")
+        .build();
+
+    SublineVersion allowedSublineVersion = SublineVersion.builder()
+        .slnid("12345")
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2008, 12, 31))
+        .description("oldestVersion")
+        .build();
+
+    SublineVersion allowedSublineVersion2 = SublineVersion.builder()
+        .slnid("12345")
+        .validFrom(LocalDate.of(2009, 1, 1))
+        .validTo(LocalDate.of(2016, 12, 31))
+        .description("latestVersion")
+        .build();
+
+    SublineVersion notAllowedSublineVersion = SublineVersion.builder()
+        .slnid("4321")
+        .validFrom(LocalDate.of(2002, 1, 1))
+        .validTo(LocalDate.of(2003, 12, 31))
+        .description("oldestVersion")
+        .build();
+
+    SublineVersion notAllowedSublineVersion2 = SublineVersion.builder()
+        .slnid("4321")
+        .validFrom(LocalDate.of(2016, 1, 1))
+        .validTo(LocalDate.of(2019, 12, 31))
+        .description("latestVersion")
+        .build();
+
+    when(lineVersionRepository.findById(anyLong())).thenReturn(Optional.ofNullable(lineVersion));
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
+        List.of(allowedSublineVersion, allowedSublineVersion2, notAllowedSublineVersion, notAllowedSublineVersion2));
+
+    DateRange dateRange = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
+
+    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), dateRange);
+    assertThat(affectedSublines.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
+        List.of(allowedSublineVersion.getSlnid()));
+    assertThat(affectedSublines.getNotAllowedSublines()).containsExactlyInAnyOrderElementsOf(
+        List.of(notAllowedSublineVersion.getSlnid()));
+  }
+
+  @Test
+  void shouldReturnNotAllowedSublines() {
+    LineVersion lineVersion = LineVersion.builder()
+        .id(1000L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2004, 1, 1))
+        .validTo(LocalDate.of(2015, 12, 31))
+        .description("desc")
+        .build();
+
+    SublineVersion notAllowedSublineVersion = SublineVersion.builder()
+        .slnid("12345")
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2003, 12, 31))
+        .description("oldestVersion")
+        .build();
+
+    SublineVersion notAllowedSublineVersion2 = SublineVersion.builder()
+        .slnid("12345")
+        .validFrom(LocalDate.of(2013, 1, 1))
+        .validTo(LocalDate.of(2016, 12, 31))
+        .description("latestVersion")
+        .build();
+
+    SublineVersion notAllowedSublineVersion3 = SublineVersion.builder()
+        .slnid("4321")
+        .validFrom(LocalDate.of(2002, 1, 1))
+        .validTo(LocalDate.of(2003, 12, 31))
+        .description("oldestVersion")
+        .build();
+
+    SublineVersion notAllowedSublineVersion4 = SublineVersion.builder()
+        .slnid("4321")
+        .validFrom(LocalDate.of(2016, 1, 1))
+        .validTo(LocalDate.of(2019, 12, 31))
+        .description("latestVersion")
+        .build();
+
+    when(lineVersionRepository.findById(anyLong())).thenReturn(Optional.ofNullable(lineVersion));
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
+        List.of(notAllowedSublineVersion, notAllowedSublineVersion2, notAllowedSublineVersion3, notAllowedSublineVersion4));
+
+    DateRange dateRange = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
+
+    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), dateRange);
+    assertThat(affectedSublines.getNotAllowedSublines()).containsExactlyInAnyOrderElementsOf(
+        List.of(notAllowedSublineVersion.getSlnid(),
+            notAllowedSublineVersion4.getSlnid()));
+  }
+
+  @Test
+  void shouldReturnNotAllowedSublinesIfCompletlyOutOfRange() {
+    LineVersion lineVersion = LineVersion.builder()
+        .id(1000L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2004, 1, 1))
+        .validTo(LocalDate.of(2015, 12, 31))
+        .description("desc")
+        .build();
+
+    SublineVersion notAllowedSublineVersion3 = SublineVersion.builder()
+        .slnid("4321")
+        .validFrom(LocalDate.of(2025, 1, 1))
+        .validTo(LocalDate.of(2025, 12, 31))
+        .description("oldestVersion")
+        .build();
+
+    when(lineVersionRepository.findById(anyLong())).thenReturn(Optional.ofNullable(lineVersion));
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
+        List.of(notAllowedSublineVersion3));
+
+    DateRange dateRange = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
+
+    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), dateRange);
+    assertThat(affectedSublines.getNotAllowedSublines()).containsExactlyInAnyOrderElementsOf(
+        List.of(notAllowedSublineVersion3.getSlnid()));
   }
 
   @Test
