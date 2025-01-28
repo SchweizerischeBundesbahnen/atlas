@@ -184,7 +184,7 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
   }
 
   public String getNumber() {
-    if (Country.from(uicCountryCode) == null || uicCountryCode == null) {
+    if (Country.from(uicCountryCode) == null || numberShort == null) {
       return null;
     }
     return ServicePointNumber.of(Country.from(uicCountryCode), numberShort).asString();
