@@ -49,7 +49,7 @@
           [required]="true"
           controlName="swissLineNumber"
           fieldLabel="LIDI.SWISS_LINE_NUMBER"
-          infoIconLink="LIDI.SWISS_LINE_NUMBER_INFO_LINK"
+          infoIconTitle="LIDI.LINE.SWISS_LINE_NUMBER_INFO"
         ></atlas-text-field>
       </div>
     }
@@ -68,6 +68,7 @@
           },
         ]"
         [formGroup]="form"
+        [required]="true"
         controlName="description"
         fieldLabel="LIDI.LINE.DESCRIPTION"
         infoIconTitle="LIDI.LINE.DESCRIPTION_INFO"
@@ -89,6 +90,7 @@
         [formGroup]="form"
         controlName="longName"
         fieldLabel="LIDI.LONG_NAME"
+        infoIconTitle="LIDI.LINE.LONG_NAME_INFO"
       >
       </atlas-text-field>
     </div>
@@ -103,9 +105,10 @@
           {
             label: 'FORM.MAX_CHARS',
             translate: true,
-            arg: { key: 'numberOfChars', value: '50' },
+            arg: { key: 'numberOfChars', value: '8' },
           },
         ]"
+        [required]="true"
         [formGroup]="form"
         controlName="number"
         fieldLabel="LIDI.LINE.NUMBER"
@@ -122,7 +125,7 @@
           {
             label: 'FORM.MAX_CHARS',
             translate: true,
-            arg: { key: 'numberOfChars', value: '10' },
+            arg: { key: 'numberOfChars', value: '8' },
           },
         ]"
         [formGroup]="form"

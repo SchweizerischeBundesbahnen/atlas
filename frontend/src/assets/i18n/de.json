@@ -382,6 +382,7 @@
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
     "OVERVIEW_BUSINESS_ORGANISATION": "Geschäfts-\norganisation",
     "SLNID": "SLNID",
+    "NO_SUBLINES": "Es existieren keine Teillinien zu dieser Linie.",
     "PAYMENT": {
       "TYPE": "Bezahlungsart",
       "INTERNATIONAL": "International",
@@ -424,6 +425,8 @@
       "NUMBER_INFO": "Hierbei handelt es sich um die Information (Zahlen, Buchstaben oder die Kombination aus Zahl und Buchstabe) unter der die Linie dem Fahrgast kommuniziert wird. Die Information wird als Ganzes kommuniziert und nicht aus verschiedenen Informationen zusammengesetzt.",
       "DESCRIPTION": "Linienbezeichnung",
       "DESCRIPTION_INFO": "In der Regel handelt es sich um die Start- und Endhaltestellen sowie wichtigsten bedienten Haltestellen der Linie.",
+      "LONG_NAME_INFO": "Linienbezeichnung mit Zusatzbezeichnung gemäss Linienmodell",
+      "SWISS_LINE_NUMBER_INFO": "Vergabe gemäss Richtlinie 582, ist eventuell bei der Ersterfassung noch nicht definitiv.",
       "FONT_RGB": "Schriftfarbe RGB",
       "BACKGROUND_RGB": "Schrifthintergrundfarbe RGB",
       "FONT_CMYK": "Schriftfarbe CMYK",
@@ -451,6 +454,7 @@
       "DETAIL_SUBLINE_INFORMATION": "Angaben zur Teillinie",
       "NEW_SUBLINE_INFORMATION": "Angaben zur neuen Teillinie",
       "SUBLINE": "Teillinie",
+      "SUBLINES": "Teillinien",
       "CONFLICT": {
         "SWISS_NUMBER": "Die CH-Teilliniennummer {{swissSublineNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{slnid}} vergeben.",
         "ASSIGN_DIFFERENT_LINE_CONFLICT": "Die Hauptline darf nicht geändert werden."
