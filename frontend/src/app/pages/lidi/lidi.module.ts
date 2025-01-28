@@ -10,6 +10,7 @@ import {MainlineDescriptionPipe} from './sublines/detail/mainline-description.pi
 import {LidiWorkflowOverviewComponent} from './workflow/overview/lidi-workflow-overview.component';
 import {LineVersionSnapshotDetailComponent} from './workflow/detail/line-version-snapshot-detail.component';
 import {LineDetailFormComponent} from './lines/detail/line-detail-form/line-detail-form.component';
+import {SublineTableComponent} from "./lines/detail/subline-table/subline-table.component";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {LineDetailFormComponent} from './lines/detail/line-detail-form/line-deta
     LineDetailComponent,
     SublineDetailComponent,
     MainlineDescriptionPipe,
+    SublineTableComponent,
   ],
   imports: [CoreModule, LidiRoutingModule, FormModule],
 })
