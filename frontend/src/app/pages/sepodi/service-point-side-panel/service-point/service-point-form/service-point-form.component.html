@@ -131,7 +131,7 @@
           { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '5' } }
         ]"
         [formGroup]="form"
-        [required]="true"
+        [required]="form.value.country === 'SWITZERLAND'"
         controlName="sortCodeOfDestinationStation"
         fieldLabel="SEPODI.SERVICE_POINTS.SORT_CODE_OF_DESTINATION_STATION"
       >

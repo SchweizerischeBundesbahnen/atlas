@@ -2,12 +2,14 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.abbreviationsallowlist.ServicePointAbbreviationAllowList;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.AbbreviationUpdateNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.exception.ForbiddenDueToChosenServicePointVersionValidationPeriodException;
 import ch.sbb.atlas.servicepointdirectory.exception.InvalidAbbreviationException;
+import ch.sbb.atlas.servicepointdirectory.exception.InvalidFreightServicePointException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusRevokedChangeNotAllowedException;
@@ -37,6 +39,7 @@ public class ServicePointValidationService {
     }
     validateDesignationOfficialUniqueness(servicePointVersion);
     validateDesignationLongUniqueness(servicePointVersion);
+    validateSortCodeOfDestinationStationOnFreightServicePoint(servicePointVersion);
     sharedBusinessOrganisationService.validateSboidExists(servicePointVersion.getBusinessOrganisation());
   }
 
@@ -67,6 +70,18 @@ public class ServicePointValidationService {
       if (!designationLongOverlaps.isEmpty()) {
         throw new ServicePointDesignationLongConflictException(servicePointVersion, designationLongOverlaps);
       }
+    }
+  }
+
+  void validateSortCodeOfDestinationStationOnFreightServicePoint(ServicePointVersion servicePointVersion) {
+    boolean freightServicePointInSwitzerland =
+        servicePointVersion.getCountry() == Country.SWITZERLAND && servicePointVersion.isFreightServicePoint();
+    boolean validFromTodayOrLater = !servicePointVersion.getValidFrom().isBefore(LocalDate.now());
+
+    boolean validFreightServicePoint = !(freightServicePointInSwitzerland && validFromTodayOrLater)
+        || StringUtils.isNotBlank(servicePointVersion.getSortCodeOfDestinationStation());
+    if (!validFreightServicePoint) {
+      throw new InvalidFreightServicePointException();
     }
   }
 
