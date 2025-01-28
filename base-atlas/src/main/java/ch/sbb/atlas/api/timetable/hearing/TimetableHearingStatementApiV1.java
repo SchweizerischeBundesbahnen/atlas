@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("v1/timetable-hearing/statements")
 public interface TimetableHearingStatementApiV1 {
 
+  // ATLAS-2634: File-Upload with specific firewall rule. Be aware when changing the path!
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(path = "external", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   @RequestBody(content = @Content(encoding = @Encoding(name = "statement", contentType = MediaType.APPLICATION_JSON_VALUE)))

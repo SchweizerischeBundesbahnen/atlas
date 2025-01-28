@@ -382,6 +382,7 @@
     "BUSINESS_ORGANISATION": "Organizzazione aziendale",
     "OVERVIEW_BUSINESS_ORGANISATION": "Organizzazione\naziendale",
     "SLNID": "SLNID",
+    "NO_SUBLINES": "Non ci sono linee parziali per questa linea.",
     "PAYMENT": {
       "TYPE": "Metodo di pagamento",
       "INTERNATIONAL": "Internazionale",
@@ -424,6 +425,8 @@
       "NUMBER_INFO": "Si tratta dell’informazione (cifre, lettere o combinazione di cifre e lettere) con cui la linea viene comunicata al viaggiatore. L’informazione viene comunicata nella sua interezza e non comprende informazioni diverse.",
       "DESCRIPTION": "Denominazione linea",
       "DESCRIPTION_INFO": "Di norma, si tratta delle fermate iniziali e finali, nonché delle fermate più importanti servite dalla linea.",
+      "LONG_NAME_INFO": "Designazione della linea con designazione aggiuntiva in base al modello di linea",
+      "SWISS_LINE_NUMBER_INFO": "L' attribuzione viene effettuata in conformità alla Direttiva 582 e può non essere finalizzata al momento dell'iscrizione iniziale.",
       "FONT_RGB": "Colore dei caratteri RGB",
       "BACKGROUND_RGB": "Colore dello sfondo dei caratteri RGB",
       "FONT_CMYK": "Colore dei caratteri CMYK",
@@ -451,6 +454,7 @@
       "DETAIL_SUBLINE_INFORMATION": "Informazioni sulla linea parziale",
       "NEW_SUBLINE_INFORMATION": "Informazioni sulla nuova linea parziale",
       "SUBLINE": "Linea parziale",
+      "SUBLINES": "Linee parziali",
       "CONFLICT": {
         "SWISS_NUMBER": "Il numero di linea parziale CH {{swissSublineNumber}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
         "ASSIGN_DIFFERENT_LINE_CONFLICT": "La linea principale non può essere modificata."

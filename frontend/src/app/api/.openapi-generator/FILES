@@ -88,7 +88,6 @@ model/country.ts
 model/countryPermissionRestrictionModel.ts
 model/coverage.ts
 model/coverageType.ts
-model/createLineVersionV2.ts
 model/createLoadingPointVersion.ts
 model/createServicePointVersion.ts
 model/createSublineVersionV2.ts

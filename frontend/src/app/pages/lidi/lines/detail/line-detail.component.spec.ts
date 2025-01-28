@@ -1,24 +1,71 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormBuilder} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {of, throwError} from 'rxjs';
-import {LinesService, LineType, LineVersionV2, LineVersionWorkflow, Status, WorkflowProcessingStatus,} from '../../../../api';
-import {LineDetailComponent} from './line-detail.component';
-import {HttpErrorResponse} from '@angular/common/http';
-import {AppTestingModule} from '../../../../app.testing.module';
-import {ErrorNotificationComponent} from '../../../../core/notification/error/error-notification.component';
-import {InfoIconComponent} from '../../../../core/form-components/info-icon/info-icon.component';
-import {adminPermissionServiceMock, MockAppDetailWrapperComponent, MockSelectComponent} from '../../../../app.testing.mocks';
-import {LineDetailFormComponent} from './line-detail-form/line-detail-form.component';
-import {CommentComponent} from '../../../../core/form-components/comment/comment.component';
-import {LinkIconComponent} from '../../../../core/form-components/link-icon/link-icon.component';
-import {FormModule} from '../../../../core/module/form.module';
-import {TranslatePipe} from '@ngx-translate/core';
-import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of, throwError } from 'rxjs';
+import {
+  LinesService,
+  LineType,
+  LineVersionV2,
+  LineVersionWorkflow,
+  Status,
+  WorkflowProcessingStatus,
+} from '../../../../api';
+import { LineDetailComponent } from './line-detail.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
+import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
+import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
+import { LineDetailFormComponent } from './line-detail-form/line-detail-form.component';
+import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
+import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
+import { FormModule } from '../../../../core/module/form.module';
+import { TranslatePipe } from '@ngx-translate/core';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { SublineDetailComponent } from '../../sublines/detail/subline-detail.component';
+import { ValidityService } from '../../../sepodi/validity/validity.service';
+import moment from 'moment';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
+import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
+import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
+import { DateIconComponent } from '../../../../core/form-components/date-icon/date-icon.component';
+import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
+import { Component, Input } from '@angular/core';
+import { Record } from '../../../../core/components/base-detail/record';
+import { Page } from '../../../../core/model/page';
+import {DialogService} from "../../../../core/components/dialog/dialog.service";
+import {WorkflowComponent} from "../../../../core/workflow/workflow.component";
+
+@Component({
+  selector: 'app-coverage',
+  template: '<p>Mock Product Editor Component</p>',
+})
+class MockAppCoverageComponent {
+  @Input() pageType!: Record;
+  @Input() currentRecord!: Page;
+}
+
+@Component({
+  selector: 'app-subline-table',
+  template: '<p>Mock subline table Component</p>',
+})
+export class MockSublineTableComponent {
+  @Input() mainLineSlnid!: string;
+}
 
 const lineVersion: LineVersionV2 = {
-  lineConcessionType: "CANTONALLY_APPROVED_LINE",
-  offerCategory: "ASC",
+  lineConcessionType: 'CANTONALLY_APPROVED_LINE',
+  offerCategory: 'ASC',
   id: 1234,
   slnid: 'slnid',
   number: 'name',
@@ -29,7 +76,7 @@ const lineVersion: LineVersionV2 = {
   businessOrganisation: 'SBB',
   swissLineNumber: 'L1',
   lineType: LineType.Orderly,
-  lineVersionWorkflows: new Set<LineVersionWorkflow>()
+  lineVersionWorkflows: new Set<LineVersionWorkflow>(),
 };
 
 const error = new HttpErrorResponse({
@@ -38,7 +85,8 @@ const error = new HttpErrorResponse({
     message: 'Not found',
     details: [
       {
-        message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+        message:
+          'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
         field: 'number',
         displayInfo: {
           code: 'TTFN.CONFLICT.NUMBER',
@@ -70,13 +118,22 @@ let component: LineDetailComponent;
 let fixture: ComponentFixture<LineDetailComponent>;
 let router: Router;
 
+const validityService = jasmine.createSpyObj<ValidityService>([
+  'initValidity',
+  'updateValidity',
+  'validate',
+]);
+validityService.validate.and.returnValue(of(true));
+
+const dialogService = jasmine.createSpyObj<DialogService>('DialogService', {confirm: of(true)});
+
 describe('LineDetailComponent for existing lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
     'updateLineVersion',
     'deleteLines',
   ]);
   const mockData = {
-    lineDetail: lineVersion,
+    lineDetail: [lineVersion],
   };
 
   beforeEach(() => {
@@ -95,37 +152,54 @@ describe('LineDetailComponent for existing lineVersion', () => {
     lineVersion.status = Status.InReview;
     fixture.detectChanges();
 
-    const formControlsToDisable = component.getFormControlsToDisable();
-    expect(formControlsToDisable).toContain('validFrom');
-    expect(formControlsToDisable).toContain('validTo');
-    expect(formControlsToDisable).toContain('lineType');
+    expect(component.form.enabled).toBeFalse();
+    component.toggleEdit();
+    expect(component.form.enabled).toBeTrue();
+
+    expect(component.form.controls.validFrom.enabled).toBeFalse();
+    expect(component.form.controls.validTo.enabled).toBeFalse();
+    expect(component.form.controls.lineType.enabled).toBeFalse();
   });
 
   it('should not disable form parts when in draft/validated', () => {
     lineVersion.status = Status.Draft;
     fixture.detectChanges();
 
-    const formControlsToDisable = component.getFormControlsToDisable();
-    expect(formControlsToDisable).toEqual([]);
+    component.toggleEdit();
+
+    expect(component.form.controls.validFrom.enabled).toBeTrue();
+    expect(component.form.controls.validTo.enabled).toBeTrue();
+    expect(component.form.controls.lineType.enabled).toBeTrue();
   });
 
   it('should update LineVersion successfully', () => {
     mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-    fixture.componentInstance.updateRecord();
+
+    component.toggleEdit();
+    component.form.controls.description.setValue("UpdatedDescription");
+
+    component.save();
     fixture.detectChanges();
 
-    const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
+    const snackBarContainer = fixture.nativeElement.offsetParent.querySelector(
+      'mat-snack-bar-container'
+    );
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent.trim()).toBe('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
+    expect(snackBarContainer.textContent.trim()).toBe(
+      'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS'
+    );
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
 
   it('should not update Version', () => {
     mockLinesService.updateLineVersion.and.returnValue(throwError(() => error));
-    fixture.componentInstance.updateRecord();
+
+    component.toggleEdit();
+    component.form.controls.description.setValue("UpdatedDescription");
+
+    component.save();
     fixture.detectChanges();
 
     expect(component.form.enabled).toBeTrue();
@@ -134,22 +208,28 @@ describe('LineDetailComponent for existing lineVersion', () => {
   it('should delete LineVersion successfully', () => {
     mockLinesService.deleteLines.and.returnValue(of({}));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-    fixture.componentInstance.deleteRecord();
+
+    component.delete();
     fixture.detectChanges();
 
-    const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
+    const snackBarContainer = fixture.nativeElement.offsetParent.querySelector(
+      'mat-snack-bar-container'
+    );
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent.trim()).toBe('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
+    expect(snackBarContainer.textContent.trim()).toBe(
+      'LIDI.LINE.NOTIFICATION.DELETE_SUCCESS'
+    );
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
 });
 
 describe('LineDetailComponent for new lineVersion', () => {
-  const mockLinesService = jasmine.createSpyObj('linesService', ['createLineVersionV2']);
+  const mockLinesService = jasmine.createSpyObj('linesService', [
+    'createLineVersionV2',
+  ]);
   const mockData = {
-    lineDetail: 'add',
+    lineDetail: [],
   };
 
   beforeEach(() => {
@@ -169,20 +249,39 @@ describe('LineDetailComponent for new lineVersion', () => {
     it('successfully', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
       mockLinesService.createLineVersionV2.and.returnValue(of(lineVersion));
-      fixture.componentInstance.createRecord();
+
+      component.form.patchValue({
+        lineConcessionType: 'CANTONALLY_APPROVED_LINE',
+        offerCategory: 'ASC',
+        number: 'name',
+        description: 'asdf',
+        validFrom: moment(),
+        validTo: moment(),
+        businessOrganisation: 'SBB',
+        swissLineNumber: 'L1',
+        lineType: LineType.Orderly,
+      });
+
+      component.save();
       fixture.detectChanges();
 
       const snackBarContainer =
-        fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
+        fixture.nativeElement.offsetParent.querySelector(
+          'mat-snack-bar-container'
+        );
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent.trim()).toBe('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
+      expect(snackBarContainer.textContent.trim()).toBe(
+        'LIDI.LINE.NOTIFICATION.ADD_SUCCESS'
+      );
       expect(snackBarContainer.classList).toContain('success');
       expect(router.navigate).toHaveBeenCalled();
     });
 
     it('displaying error', () => {
-      mockLinesService.createLineVersionV2.and.returnValue(throwError(() => error));
-      fixture.componentInstance.createRecord();
+      mockLinesService.createLineVersionV2.and.returnValue(
+        throwError(() => error)
+      );
+      component.save();
       fixture.detectChanges();
 
       expect(component.form.enabled).toBeTrue();
@@ -195,7 +294,7 @@ describe('LineDetailComponent for new lineVersion', () => {
       lineVersion.status = Status.Validated;
       lineVersion.lineType = LineType.Orderly;
       lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.record = lineVersion;
+      fixture.componentInstance.selectedVersion = lineVersion;
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
       //then
@@ -207,7 +306,7 @@ describe('LineDetailComponent for new lineVersion', () => {
       lineVersion.status = Status.Validated;
       lineVersion.lineType = LineType.Temporary;
       lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.record = lineVersion;
+      fixture.componentInstance.selectedVersion = lineVersion;
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
       //then
@@ -219,7 +318,7 @@ describe('LineDetailComponent for new lineVersion', () => {
       lineVersion.status = Status.Validated;
       lineVersion.lineType = LineType.Operational;
       lineVersion.lineVersionWorkflows?.clear();
-      fixture.componentInstance.record = lineVersion;
+      fixture.componentInstance.selectedVersion = lineVersion;
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
       //then
@@ -233,7 +332,7 @@ describe('LineDetailComponent for new lineVersion', () => {
         workflowProcessingStatus: WorkflowProcessingStatus.Evaluated,
       };
       lineVersion.lineVersionWorkflows?.add(lineWorkflow);
-      fixture.componentInstance.record = lineVersion;
+      fixture.componentInstance.selectedVersion = lineVersion;
 
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
@@ -248,7 +347,7 @@ describe('LineDetailComponent for new lineVersion', () => {
         workflowProcessingStatus: WorkflowProcessingStatus.InProgress,
       };
       lineVersion.lineVersionWorkflows?.add(lineWorkflow);
-      fixture.componentInstance.record = lineVersion;
+      fixture.componentInstance.selectedVersion = lineVersion;
 
       //when
       const result = fixture.componentInstance.showSnapshotHistoryLink();
@@ -258,28 +357,52 @@ describe('LineDetailComponent for new lineVersion', () => {
   });
 });
 
-function setupTestBed(linesService: LinesService, data: { lineDetail: string | LineVersionV2 }) {
+function setupTestBed(
+  linesService: LinesService,
+  data: { lineDetail: string | LineVersionV2[] }
+) {
   TestBed.configureTestingModule({
     declarations: [
       LineDetailComponent,
       LineDetailFormComponent,
-      MockSelectComponent,
-      MockAppDetailWrapperComponent,
       ErrorNotificationComponent,
       InfoIconComponent,
       CommentComponent,
-      LinkIconComponent
+      LinkIconComponent,
+      AtlasLabelFieldComponent,
+      AtlasFieldErrorComponent,
+      TextFieldComponent,
+      SelectComponent,
+      AtlasSpacerComponent,
+      DetailPageContainerComponent,
+      DetailPageContentComponent,
+      DetailFooterComponent,
+      AtlasButtonComponent,
+      UserDetailInfoComponent,
+      SwitchVersionComponent,
+      MockAppCoverageComponent,
+      DateRangeComponent,
+      DateRangeTextComponent,
+      DateIconComponent,
+      DisplayDatePipe,
+      WorkflowComponent,
+      MockSublineTableComponent,
     ],
     imports: [AppTestingModule, FormModule],
     providers: [
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
+      { provide: DialogService, useValue: dialogService },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
     ],
   })
+    .overrideComponent(SublineDetailComponent, {
+      set: {
+        providers: [{ provide: ValidityService, useValue: validityService }],
+      },
+    })
     .compileComponents()
     .then();
-
 }
