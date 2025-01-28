@@ -87,7 +87,7 @@ public class LineController implements LineApiV1 {
 
   @Override
   public List<LineVersionModel> getLineVersions(String slnid) {
-    List<LineVersionModel> lineVersionModels = lineService.findLineVersions(slnid).stream()
+    List<LineVersionModel> lineVersionModels = lineService.findLineVersionsForV1(slnid).stream()
         .map(this::toModel)
         .toList();
     if (lineVersionModels.isEmpty()) {

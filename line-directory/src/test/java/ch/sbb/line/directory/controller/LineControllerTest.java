@@ -142,7 +142,7 @@ class LineControllerTest {
   void shouldGetLineVersions() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
-    when(lineService.findLineVersions(any())).thenReturn(Collections.singletonList(lineVersion));
+    when(lineService.findLineVersionsForV1(any())).thenReturn(Collections.singletonList(lineVersion));
 
     // When
     List<LineVersionModel> line = lineController.getLineVersions("slnid");
