@@ -32,6 +32,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/addExaminants.ts
+model/affectedSublines.ts
 model/applicationRole.ts
 model/applicationType.ts
 model/basicAttributeType.ts
@@ -173,6 +174,7 @@ model/servicePointSearchRequest.ts
 model/servicePointSearchResult.ts
 model/servicePointSwissWithGeoLocation.ts
 model/servicePointUpdateCsvModel.ts
+model/shortenSubline.ts
 model/sortObject.ts
 model/spatialReference.ts
 model/standardAttributeType.ts
