@@ -105,7 +105,7 @@
         "sonarScan": {
           "enabled": true
         },
-        "additionalBuildParams": "--parallel -x :apim-configuration:build",
+        "additionalBuildParams": "--parallel",
         "failOnQualityGateFailure": true
       }
     },
