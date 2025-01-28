@@ -200,6 +200,7 @@ export class LineDetailComponent implements OnInit {
   }
 
   save() {
+    this.conditionalValidation();
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       if (this.isNew) {
@@ -315,6 +316,8 @@ export class LineDetailComponent implements OnInit {
       this.isSwitchVersionDisabled = true;
       this.validityService.initValidity(this.form);
       this.form.enable({ emitEvent: false });
+
+      this.conditionalValidation();
 
       if (this.selectedVersion.status === Status.InReview) {
         this.form.controls.validFrom.disable();
