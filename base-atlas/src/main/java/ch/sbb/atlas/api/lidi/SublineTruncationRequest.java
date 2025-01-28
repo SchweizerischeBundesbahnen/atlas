@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.lidi;
 
+import ch.sbb.atlas.model.DateRange;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -14,9 +15,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "")
-public class ShortenSubline {
+public class SublineTruncationRequest {
 
-  UpdateLineVersionModelV2 updateLineVersionModelV2;
-  List<String> allowedSublines;
+  DateRange dateRange;
+  List<String> sublinesToShort;
 
 }
