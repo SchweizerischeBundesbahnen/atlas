@@ -107,4 +107,23 @@ class BulkImportUpdateDataMapperTest {
         () -> new MockMapper().applyUpdate(container, currentEntity, new UpdateServicePointVersionModel()));
   }
 
+  @Test
+  void shouldApplyNullingWithProperNestedPathHandling() {
+    BulkImportUpdateContainer<ServicePointUpdateCsvModel> container =
+        BulkImportUpdateContainer.<ServicePointUpdateCsvModel>builder()
+            .object(ServicePointUpdateCsvModel.builder()
+                .sloid("sloid")
+                .validFrom(LocalDate.of(2014, 12, 14))
+                .validTo(LocalDate.of(2021, 3, 31))
+                .meansOfTransport(Set.of(MeanOfTransport.BUS))
+                .build())
+            .attributesToNull(List.of(Fields.north, Fields.height))
+            .build();
+    MockEntity currentEntity = MockEntity.builder().build();
+
+    UpdateServicePointVersionModel result = new MockMapper().applyUpdate(container, currentEntity,
+        new UpdateServicePointVersionModel());
+
+    assertThat(result.getServicePointGeolocation()).isNull();
+  }
 }
