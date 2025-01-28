@@ -53,7 +53,6 @@ export * from './country';
 export * from './countryPermissionRestrictionModel';
 export * from './coverage';
 export * from './coverageType';
-export * from './createLineVersionV2';
 export * from './createLoadingPointVersion';
 export * from './createServicePointVersion';
 export * from './createSublineVersionV2';
