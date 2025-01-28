@@ -1,4 +1,5 @@
 export * from './addExaminants';
+export * from './affectedSublines';
 export * from './applicationRole';
 export * from './applicationType';
 export * from './basicAttributeType';
@@ -139,6 +140,7 @@ export * from './servicePointSearchRequest';
 export * from './servicePointSearchResult';
 export * from './servicePointSwissWithGeoLocation';
 export * from './servicePointUpdateCsvModel';
+export * from './shortenSubline';
 export * from './sortObject';
 export * from './spatialReference';
 export * from './standardAttributeType';
