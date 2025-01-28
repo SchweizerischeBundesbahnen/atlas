@@ -1089,7 +1089,8 @@
         "DESIGNATION_LONG": "Le désignation longue {{designationLong}} est déjà attribué de {{validFrom}} à {{validTo}} par {{number}}."
       },
       "ERROR": {
-        "STATUS_CHANGE_NOT_POSSIBLE": "Le statut du service ne peut pas être modifié pour le statut REVOKED et ne peut être mis à jour que de DRAFT à VALIDATED!"
+        "STATUS_CHANGE_NOT_POSSIBLE": "Le statut du service ne peut pas être modifié pour le statut REVOKED et ne peut être mis à jour que de DRAFT à VALIDATED!",
+        "INVALID_FREIGHT_SERVICE_POINT": "L'indication d'un code de point de référence est obligatoire pour les points de chargement en Suisse."
       },
       "TERMINATION_FORBIDDEN": "Vous n'êtes pas autorisé à planifier l'arrêt. Pour ce faire, veuillez utiliser le formulaire disponible sur https://www.tp-info.ch/fr/suppression-dun-arret.",
       "TERMINATION_NOT_ALLOWED_WITH_VERSION_IN_REVIEW": "Il n'est pas possible de fixer une date, car une version est en cours d'audition.",

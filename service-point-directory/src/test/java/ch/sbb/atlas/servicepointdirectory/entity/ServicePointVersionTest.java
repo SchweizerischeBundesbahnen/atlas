@@ -72,54 +72,6 @@ class ServicePointVersionTest {
   }
 
   @Test
-  void shouldAcceptFreightServicePointWithSortCodeOfDestinationStation() {
-    // Given
-    ServicePointVersion servicePoint = ServicePointVersion.builder()
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1007000))
-        .numberShort(7000)
-        .country(Country.FINLAND)
-        .freightServicePoint(true)
-        .designationLong("long designation")
-        .designationOfficial("official designation")
-        .abbreviation("BE")
-        .businessOrganisation("somesboid")
-        .status(Status.VALIDATED)
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
-        .version(1)
-        .build();
-    //when
-    Set<ConstraintViolation<ServicePointVersion>> constraintViolations = validator.validate(servicePoint);
-
-    //then
-    assertThat(constraintViolations).isEmpty();
-  }
-
-  @Test
-  void shouldNotAcceptFreightServicePointWithoutSortCodeOfDestinationStationInSwitzerland() {
-    // Given
-    ServicePointVersion servicePoint = ServicePointVersion.builder()
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
-        .numberShort(7000)
-        .country(Country.SWITZERLAND)
-        .freightServicePoint(true)
-        .designationLong("long designation")
-        .designationOfficial("official designation")
-        .abbreviation("BE")
-        .businessOrganisation("somesboid")
-        .status(Status.VALIDATED)
-        .validFrom(LocalDate.now())
-        .validTo(LocalDate.now())
-        .version(1)
-        .build();
-    //when
-    Set<ConstraintViolation<ServicePointVersion>> constraintViolations = validator.validate(servicePoint);
-
-    //then
-    assertThat(constraintViolations).isNotEmpty();
-  }
-
-  @Test
   void shouldNotAcceptSpeedChangeAndTariffPoint() {
     // Given
     ServicePointVersion servicePoint = ServicePointVersion.builder()
