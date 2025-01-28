@@ -26,14 +26,13 @@ public class LineUpdateValidationService {
   private final BusinessOrganisationBasedUserAdministrationService businessOrganisationBasedUserAdministrationService;
 
   public void validateLineForUpdate(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
-    validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
     onlySupervisorMayEditVersionInReview(editedVersion, currentVersions);
     if (currentVersion.getStatus() == Status.IN_REVIEW) {
       typeAndTimeperiodOfLineInReviewMayNotChange(currentVersion, editedVersion);
     }
   }
 
-  void validateFieldsNotUpdatableForLineTypeOrderly(LineVersion currentVersion, LineVersion editedVersion) {
+  public void validateFieldsNotUpdatableForLineTypeOrderly(LineVersion currentVersion, LineVersion editedVersion) {
     if (currentVersion.getLineType() != LineType.ORDERLY) {
       if (editedVersion.getSwissLineNumber() != null) {
         throw new LineFieldNotUpdatableException(editedVersion.getSwissLineNumber(), Fields.swissLineNumber,

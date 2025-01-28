@@ -23,8 +23,6 @@ app-switch-version table {
     overflow: auto;
 
     tr {
-      width: 42.5rem;
-
       &.mat-mdc-row {
         height: auto;
       }
@@ -52,7 +50,6 @@ app-switch-version table {
 
   thead {
     display: block;
-    width: 42.5rem;
     margin: 0 auto 0 3px;
 
     tr {

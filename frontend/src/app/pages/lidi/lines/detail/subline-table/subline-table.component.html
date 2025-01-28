@@ -1,0 +1,19 @@
+<h3 class="font-bold-lg">{{ 'LIDI.SUBLINE.SUBLINES' | translate }}</h3>
+@if (sublines.length > 0) {
+  <app-table
+    [tableData]="sublines"
+    [tableColumns]="tableColumns"
+    [canEdit]="true"
+    (editElementEvent)="rowClicked($event)"
+    (tableChanged)="getOverview()"
+    (tableInitialized)="getOverview()"
+    [sortingDisabled]="true"
+    [showTableFilter]="false"
+    [showPaginator]="false"
+    data-cy="subline-table"
+    additionalTableStyleClass="scrollable-table"
+  >
+  </app-table>
+} @else {
+  {{ 'LIDI.NO_SUBLINES' | translate }}
+}

@@ -112,6 +112,26 @@ class LineServiceTest {
     verify(lineVersionRepository).findAllBySlnidOrderByValidFrom(slnid);
   }
 
+
+  @Test
+  void shouldFindLineVersionsForV1() {
+    // Given
+    String slnid = "slnid";
+    LineVersion lineVersion = LineTestData.lineVersion();
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(List.of(lineVersion));
+
+    // When SwissLineNumber Given Then it should return
+    List<LineVersion> result = lineService.findLineVersionsForV1(slnid);
+    assertThat(result).hasSize(1);
+
+    // When SwissLineNumber Not given Then it should return empty
+    lineVersion.setSwissLineNumber(null);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(List.of(lineVersion));
+
+    result = lineService.findLineVersionsForV1(slnid);
+    assertThat(result).isEmpty();
+  }
+
   @Test
   void shouldGetLine() {
     // Given

@@ -2,10 +2,10 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toSet;
 
-import ch.sbb.atlas.api.lidi.CreateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -34,7 +34,7 @@ public class LineControllerV2 implements LineApiV2 {
   }
 
   @Override
-  public LineVersionModelV2 createLineVersionV2(CreateLineVersionModelV2 newVersion) {
+  public LineVersionModelV2 createLineVersionV2(LineVersionModelV2 newVersion) {
     LineVersion newLineVersion = toEntity(newVersion);
     newLineVersion.setStatus(Status.VALIDATED);
     LineVersion createdVersion = lineService.createV2(newLineVersion);
@@ -52,14 +52,13 @@ public class LineControllerV2 implements LineApiV2 {
   }
 
   private LineVersionModelV2 toModel(LineVersion lineVersion) {
-    return LineVersionModelV2.builder()
+    LineVersionModelV2 lineVersionModelV2 = LineVersionModelV2.builder()
         .id(lineVersion.getId())
         .status(lineVersion.getStatus())
         .lineType(lineVersion.getLineType())
         .slnid(lineVersion.getSlnid())
         .number(lineVersion.getNumber())
         .longName(lineVersion.getLongName())
-        .lineConcessionType(lineVersion.getConcessionType())
         .shortNumber(lineVersion.getShortNumber())
         .offerCategory(lineVersion.getOfferCategory())
         .description(lineVersion.getDescription())
@@ -67,7 +66,6 @@ public class LineControllerV2 implements LineApiV2 {
         .validTo(lineVersion.getValidTo())
         .businessOrganisation(lineVersion.getBusinessOrganisation())
         .comment(lineVersion.getComment())
-        .swissLineNumber(lineVersion.getSwissLineNumber())
         .etagVersion(lineVersion.getVersion())
         .lineVersionWorkflows(
             lineVersion.getLineVersionWorkflows()
@@ -78,9 +76,14 @@ public class LineControllerV2 implements LineApiV2 {
         .editor(lineVersion.getEditor())
         .editionDate(lineVersion.getEditionDate())
         .build();
+    if (lineVersion.getLineType() == LineType.ORDERLY) {
+      lineVersionModelV2.setSwissLineNumber(lineVersion.getSwissLineNumber());
+      lineVersionModelV2.setLineConcessionType(lineVersion.getConcessionType());
+    }
+    return lineVersionModelV2;
   }
 
-  private LineVersion toEntity(CreateLineVersionModelV2 lineVersionModel) {
+  private LineVersion toEntity(LineVersionModelV2 lineVersionModel) {
     return LineVersion.builder()
         .id(lineVersionModel.getId())
         .lineType(lineVersionModel.getLineType())

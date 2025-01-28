@@ -80,7 +80,8 @@ public class LineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private PaymentType paymentType;
 
-  @Size(max = AtlasFieldLengths.LENGTH_50)
+  @NotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_8)
   @AtlasVersionableProperty
   private String number;
 
@@ -119,6 +120,7 @@ public class LineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private String icon;
 
+  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String description;
@@ -152,7 +154,7 @@ public class LineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private OfferCategory offerCategory;
 
-  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @Size(max = AtlasFieldLengths.LENGTH_8)
   @AtlasVersionableProperty
   private String shortNumber;
 

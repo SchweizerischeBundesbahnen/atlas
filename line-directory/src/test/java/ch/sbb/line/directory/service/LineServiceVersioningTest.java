@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -279,4 +280,25 @@ import org.springframework.transaction.annotation.Transactional;
     assertThat(fifthTemporalVersion.getSwissLineNumber()).isEqualTo("3");
 
   }
+
+ @Test
+ void shouldKeepSwissLineNumberOnV1LineWhenUpdating() {
+  //given
+  version1.setSwissLineNumber("1");
+  version1.setLineType(LineType.DISPOSITION);
+  version1 = lineVersionRepository.save(version1);
+
+  LineVersion editedVersion = version1Builder().build();
+  editedVersion.setDescription("Description <changed>");
+  editedVersion.setComment("Scenario 2");
+  editedVersion.setVersion(version1.getVersion());
+
+  //when
+  lineService.updateVersion(version1, editedVersion);
+  List<LineVersion> result = lineVersionRepository.findAllBySlnidOrderByValidFrom(version1.getSlnid());
+
+  //then
+  assertThat(result).hasSize(1);
+  assertThat(result.getFirst().getSwissLineNumber()).isEqualTo("1");
+ }
 }

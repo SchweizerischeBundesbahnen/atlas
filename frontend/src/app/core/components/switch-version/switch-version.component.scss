@@ -13,14 +13,13 @@ hr {
 }
 
 table {
-  width: 43.5rem;
+  width: 100%;
   border-spacing: 0 0 !important;
 }
 
 .selected-row {
   border: 3px solid variables.$primary-300;
   border-radius: 5px;
-  width: calc(42.5rem + 6px);
   margin-left: 0;
   td {
     padding-top: 7px !important;
