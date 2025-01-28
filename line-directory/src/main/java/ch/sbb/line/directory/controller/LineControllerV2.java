@@ -5,9 +5,10 @@ import static java.util.stream.Collectors.toSet;
 import ch.sbb.atlas.api.lidi.AffectedSublines;
 import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
-import ch.sbb.atlas.api.lidi.ShortenSubline;
+import ch.sbb.atlas.api.lidi.SublineTruncationRequest;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -54,13 +55,13 @@ public class LineControllerV2 implements LineApiV2 {
   }
 
   @Override
-  public AffectedSublines checkAffectedSublines(Long id, UpdateLineVersionModelV2 newVersion) {
-    return lineService.checkAffectedSublines(id, newVersion);
+  public AffectedSublines checkAffectedSublines(Long id, DateRange dateRange) {
+    return lineService.checkAffectedSublines(id, dateRange);
   }
 
   @Override
-  public void shortSublines(Long id, ShortenSubline shortenSubline) {
-    lineService.shortSublines(id, shortenSubline);
+  public void shortSublines(Long id, SublineTruncationRequest sublineTruncationRequest) {
+    lineService.shortSublines(id, sublineTruncationRequest);
   }
 
   private LineVersionModelV2 toModel(LineVersion lineVersion) {
