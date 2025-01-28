@@ -2,8 +2,7 @@ package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.AffectedSublines;
-import ch.sbb.atlas.api.lidi.ShortenSubline;
-import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
+import ch.sbb.atlas.api.lidi.SublineTruncationRequest;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -15,6 +14,8 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.exception.SublineTruncationNotAllowedException;
+import ch.sbb.line.directory.exception.SublinesNotAffectedException;
 import ch.sbb.line.directory.model.SublineVersionRange;
 import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
@@ -217,18 +218,29 @@ public class LineService {
         .build();
   }
 
-  public AffectedSublines checkAffectedSublines(Long id, UpdateLineVersionModelV2 updateLineVersionModelV2) {
-    List<String> notAllowedSublines = new ArrayList<>();
-    List<String> allowedSublines = new ArrayList<>();
+  public AffectedSublines checkAffectedSublines(Long id, DateRange dateRange) {
+    LineVersion lineVersion = findById(id)
+        .orElseThrow(() -> new IdNotFoundException(id));
 
-    LineVersion lineVersion = findById(id).orElseThrow(() -> new IdNotFoundException(id));
+    if (dateRange.getFrom().isBefore(lineVersion.getValidFrom())
+        || dateRange.getTo().isAfter(lineVersion.getValidTo())) {
+      throw new SublinesNotAffectedException(dateRange);
+    }
 
     Map<String, List<SublineVersion>> sublineVersions = getAllSublinesByMainlineSlnid(lineVersion.getSlnid());
 
-    for (List<SublineVersion> list : sublineVersions.values()) {
-      SublineVersionRange sublineVersionRange = getOldestAndLatest(list);
-      if (isShorteningAllowed(lineVersion, sublineVersionRange.getOldestVersion(), sublineVersionRange.getLatestVersion())
-          || list.size() == 1) {
+    List<String> allowedSublines = new ArrayList<>();
+    List<String> notAllowedSublines = new ArrayList<>();
+
+    for (List<SublineVersion> versions : sublineVersions.values()) {
+      SublineVersionRange sublineVersionRange = getOldestAndLatest(versions);
+
+      boolean shorteningAllowed = isShorteningAllowed(dateRange, sublineVersionRange);
+
+      boolean isSingleSublineInRange = (versions.size() == 1)
+          && !isDateRangeCompletelyOutsideRange(dateRange, sublineVersionRange);
+
+      if (shorteningAllowed || isSingleSublineInRange) {
         allowedSublines.add(sublineVersionRange.getLatestVersion().getSlnid());
       } else {
         notAllowedSublines.add(sublineVersionRange.getLatestVersion().getSlnid());
@@ -238,27 +250,42 @@ public class LineService {
     return new AffectedSublines(allowedSublines, notAllowedSublines);
   }
 
-  public void shortSublines(Long id, ShortenSubline shortenSubline) {
-    LineVersion lineVersion = findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  public void shortSublines(Long id, SublineTruncationRequest sublineTruncationRequest) {
+    LineVersion lineVersion = findById(id)
+        .orElseThrow(() -> new IdNotFoundException(id));
 
-    for (String slndid : shortenSubline.getAllowedSublines()) {
-      boolean changed = false;
+    DateRange sublineDateRange = new DateRange(
+        sublineTruncationRequest.getDateRange().getFrom(),
+        sublineTruncationRequest.getDateRange().getTo()
+    );
 
-      List<SublineVersion> list = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slndid);
-      SublineVersionRange sublineVersionRange = getOldestAndLatest(list);
+    for (String slnid : sublineTruncationRequest.getSublinesToShort()) {
+      List<SublineVersion> versions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
+      SublineVersionRange sublineVersionRange = getOldestAndLatest(versions);
 
-      if (isSublineValidityAffectedByUpdatedMainline(shortenSubline.getUpdateLineVersionModelV2(), sublineVersionRange)) {
-        if (!shortenSubline.getUpdateLineVersionModelV2().getValidFrom().equals(lineVersion.getValidFrom())) {
-          sublineVersionRange.getOldestVersion().setValidFrom(shortenSubline.getUpdateLineVersionModelV2().getValidFrom());
+      if (!isShorteningAllowed(sublineDateRange, sublineVersionRange)) {
+        throw new SublineTruncationNotAllowedException(sublineDateRange);
+      }
+
+      if (isSublineValidityAffectedByUpdatedMainline(sublineDateRange,
+          sublineVersionRange)) {
+        boolean changed = false;
+
+        if (!sublineDateRange.getFrom().equals(lineVersion.getValidFrom())) {
+          sublineVersionRange.getOldestVersion().setValidFrom(sublineDateRange.getFrom());
           changed = true;
         }
-        if (!shortenSubline.getUpdateLineVersionModelV2().getValidTo().equals(lineVersion.getValidTo())) {
-          sublineVersionRange.getLatestVersion().setValidTo(shortenSubline.getUpdateLineVersionModelV2().getValidTo());
+
+        if (!sublineDateRange.getTo().equals(lineVersion.getValidTo())) {
+          sublineVersionRange.getLatestVersion().setValidTo(sublineDateRange.getTo());
           changed = true;
         }
+
         if (changed) {
           sublineVersionRepository.saveAll(
-              List.of(sublineVersionRange.getOldestVersion(), sublineVersionRange.getLatestVersion()));
+              List.of(sublineVersionRange.getOldestVersion(),
+                  sublineVersionRange.getLatestVersion())
+          );
         }
       }
     }
@@ -270,26 +297,29 @@ public class LineService {
         .collect(Collectors.groupingBy(SublineVersion::getSlnid));
   }
 
-  private boolean hasMainlineSublines(List<SublineVersion> sublineVersions) {
-    return !sublineVersions.isEmpty();
-  }
-
-  private boolean isSublineValidityAffectedByUpdatedMainline(UpdateLineVersionModelV2 updatedLineVersion,
+  private boolean isSublineValidityAffectedByUpdatedMainline(DateRange dateRange,
       SublineVersionRange sublineVersionRange) {
     DateRange dateRangeSubline =
         new DateRange(sublineVersionRange.getOldestVersion().getValidFrom(), sublineVersionRange.getLatestVersion().getValidTo());
-    DateRange dateRangeMainline = new DateRange(updatedLineVersion.getValidFrom(), updatedLineVersion.getValidTo());
+    DateRange dateRangeMainline = new DateRange(dateRange.getFrom(), dateRange.getTo());
 
     return !dateRangeSubline.isDateRangeContainedIn(dateRangeMainline);
   }
 
-  //TODO check wenn subline vollständig ausserhalb der mainline liegt
-  public boolean isShorteningAllowed(LineVersion lineVersion, SublineVersion oldestSublineVersion,
-      SublineVersion latestSublineVersion) {
-    return (lineVersion.getValidFrom().isBefore(oldestSublineVersion.getValidTo()) ||
-        lineVersion.getValidFrom().isEqual(oldestSublineVersion.getValidTo()))
-        && (lineVersion.getValidTo().isAfter(latestSublineVersion.getValidFrom()) ||
-        lineVersion.getValidTo().isEqual(latestSublineVersion.getValidFrom()));
+  private boolean isDateRangeCompletelyOutsideRange(DateRange dateRange,
+      SublineVersionRange sublineVersionRange) {
+    DateRange dateRangeSubline =
+        new DateRange(sublineVersionRange.getOldestVersion().getValidFrom(), sublineVersionRange.getLatestVersion().getValidTo());
+    DateRange dateRangeMainline = new DateRange(dateRange.getFrom(), dateRange.getTo());
+
+    return !dateRangeSubline.isDateRangeCompletelyOutsideRange(dateRangeMainline);
+  }
+
+  public boolean isShorteningAllowed(DateRange dateRange, SublineVersionRange sublineVersionRange) {
+    return (dateRange.getFrom().isBefore(sublineVersionRange.getOldestVersion().getValidTo()) ||
+        dateRange.getFrom().isEqual(sublineVersionRange.getOldestVersion().getValidTo()))
+        && (dateRange.getTo().isAfter(sublineVersionRange.getLatestVersion().getValidFrom()) ||
+        dateRange.getTo().isEqual(sublineVersionRange.getLatestVersion().getValidFrom()));
 
   }
 
