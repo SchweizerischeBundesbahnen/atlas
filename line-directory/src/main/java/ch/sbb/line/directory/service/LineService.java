@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.service;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -51,6 +52,12 @@ public class LineService {
     return lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
   }
 
+  public List<LineVersion> findLineVersionsForV1(String slnid) {
+    return lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid).stream()
+        .filter(i -> i.getSwissLineNumber() != null)
+        .toList();
+  }
+
   public Optional<LineVersion> findById(Long id) {
     return lineVersionRepository.findById(id);
   }
@@ -74,6 +81,7 @@ public class LineService {
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, "
       + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
   public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
+    lineUpdateValidationService.validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
     updateVersion(currentVersion, editedVersion);
   }
 
@@ -141,6 +149,11 @@ public class LineService {
 
     List<LineVersion> currentVersions = findLineVersions(currentVersion.getSlnid());
     lineUpdateValidationService.validateLineForUpdate(currentVersion, editedVersion, currentVersions);
+
+    if (editedVersion.getLineType() != LineType.ORDERLY) {
+      editedVersion.setSwissLineNumber(currentVersion.getSwissLineNumber());
+      editedVersion.setConcessionType(currentVersion.getConcessionType());
+    }
     updateVersion(currentVersion, editedVersion, currentVersions);
   }
 

@@ -113,6 +113,7 @@ public interface TimetableHearingStatementApiV2 {
   @DeleteMapping(path = "{id}/documents/{filename}")
   void deleteStatementDocument(@PathVariable Long id, @PathVariable String filename);
 
+  // ATLAS-2634: File-Upload with specific firewall rule. Be aware when changing the path!
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @PreAuthorize("@cantonBasedUserAdministrationService"
@@ -121,6 +122,7 @@ public interface TimetableHearingStatementApiV2 {
       @RequestPart @Valid TimetableHearingStatementModelV2 statement,
       @RequestPart(required = false) List<MultipartFile> documents);
 
+  // ATLAS-2634: File-Upload with specific firewall rule. Be aware when changing the path!
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(path = "external", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   @RequestBody(content = @Content(encoding = @Encoding(name = "statement", contentType = MediaType.APPLICATION_JSON_VALUE)))
@@ -130,6 +132,7 @@ public interface TimetableHearingStatementApiV2 {
       @RequestPart @Valid TimetableHearingStatementModelV2 statement,
       @RequestPart(required = false) List<MultipartFile> documents);
 
+  // ATLAS-2634: File-Upload with specific firewall rule. Be aware when changing the path!
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ApiResponses(value = {
