@@ -15,7 +15,7 @@ management:
 
 spring:
   application:
-    name: export-service-point
+    name: export-service
   servlet:
     multipart:
       max-file-size: 300MB
@@ -98,7 +98,7 @@ atlas:
 
 mail:
   receiver:
-    export-service-point: TechSupport-ATLAS@sbb.ch
+    export-service: TechSupport-ATLAS@sbb.ch
 
 amazon:
   region: "eu-central-1"

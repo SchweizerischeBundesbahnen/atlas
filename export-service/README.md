@@ -1,4 +1,4 @@
-# Export Service Point
+# Export Service
 
 <!-- toc -->
 
@@ -29,7 +29,7 @@
 
 <!-- tocstop -->
 
-The main goal of the Atlas Export Service Point is to export Service Point Directory Data as CSV and JSON file and
+The main goal of the Atlas Export Service is to export Data as CSV and JSON file and
 upload them to the Amazon S3 Bucket.
 
 See [ADR-0017](https://confluence.sbb.ch/display/ATLAS/ADR-0017%3A++Service+Point+Directory+CSV+Export)
@@ -49,29 +49,29 @@ This project uses [Semantic Versioning](https://semver.org/).
 ### Localhost
 
 * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
-* Project deploy: https://export-service-point-int.dev.sbb-cloud.net
+* Project deploy: https://export-service-int.dev.sbb-cloud.net
 
 ### Development
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=export-service-point-dev
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=export-service-dev
 * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
-* Project deploy: https://export-service-point-int.dev.sbb-cloud.net
+* Project deploy: https://export-service-int.dev.sbb-cloud.net
 
 ### Test
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=export-service-point-test
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=export-service-test
 * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
-* Project deploy: https://export-service-point-int.test.sbb-cloud.net
+* Project deploy: https://export-service-int.test.sbb-cloud.net
 
 ### Integration
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=export-service-point-int
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=export-service-int
 * Openshift Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
-* Project deploy: https://export-service-point-int.int.sbb-cloud.net
+* Project deploy: https://export-service-int.int.sbb-cloud.net
 
 ### Production
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=export-service-point-prod
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=export-service-prod
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
 
@@ -87,7 +87,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ## Big Picture Architecture
 
-![Architecture](documentation/AtlasServicePointExportArch.svg)
+![Architecture](documentation/AtlasServiceExportArch.svg)
 
 ## Development
 

@@ -42,8 +42,8 @@
       "artifactoryDockerRepo": "atlas.docker"
     },
     {
-      "dockerFile": "export-service-point/docker/Dockerfile",
-      "imageName": "export-service-point",
+      "dockerFile": "export-service/docker/Dockerfile",
+      "imageName": "export-service",
       "artifactoryDockerRepo": "atlas.docker"
     },
     {
