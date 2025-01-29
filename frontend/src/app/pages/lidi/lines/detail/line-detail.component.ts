@@ -58,7 +58,7 @@ export class LineDetailComponent implements OnInit {
     this._lineType = lineType;
   }
 
-  _isLineConcessionTypeRequired = true;
+  _isLineConcessionTypeRequired = false;
   get isLineConcessionTypeRequired(): boolean {
     return this._isLineConcessionTypeRequired;
   }
