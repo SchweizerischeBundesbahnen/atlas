@@ -219,12 +219,6 @@ public class ServicePointVersion extends BaseEntity implements Versionable,
     return isStopPoint() || stopPointType == null;
   }
 
-  @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
-  public boolean isValidFreightServicePoint() {
-    return !(country == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
-        || StringUtils.isNotBlank(sortCodeOfDestinationStation);
-  }
-
   @AssertTrue(message = "Country needs to be the same as in ServicePointNumber")
   public boolean isValidCountry() {
     return getCountry() == getNumber().getCountry();
