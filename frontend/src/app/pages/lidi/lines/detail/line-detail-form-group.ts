@@ -49,6 +49,7 @@ export class LineFormGroupBuilder {
           Validators.maxLength(8),
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
+          Validators.required,
         ]),
         shortNumber: new FormControl(version?.shortNumber, [
           Validators.maxLength(8),
