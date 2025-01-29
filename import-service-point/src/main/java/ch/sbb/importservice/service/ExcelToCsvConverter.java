@@ -10,15 +10,12 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.DoublePredicate;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -48,25 +45,19 @@ public class ExcelToCsvConverter {
   }
 
   private String getSheetAsCsv(Sheet sheet) {
-    StringBuilder csv = new StringBuilder();
+    final StringBuilder csv = new StringBuilder();
 
-    for (int i = 0; i < sheet.getLastRowNum() + 1; i++) {
-      Row row = sheet.getRow(i);
+    sheet.forEach(row -> {
+      final short lastCellNum = row.getLastCellNum();
 
-      List<String> rowContent = new ArrayList<>();
-
-      for (int j = 0; j < row.getLastCellNum(); j++) {
-        Cell cell = row.getCell(j);
-        if (cell == null) {
-          rowContent.add("");
-        } else {
-          rowContent.add(getCellValue(cell));
-        }
+      for (short i = 0; i < lastCellNum; i++) {
+        final Cell cell = row.getCell(i);
+        csv.append(cell == null ? "" : getCellValue(cell));
+        csv.append(AtlasCsvReader.CSV_COLUMN_SEPARATOR);
       }
 
-      csv.append(String.join(String.valueOf(AtlasCsvReader.CSV_COLUMN_SEPARATOR), rowContent));
-      csv.append(System.lineSeparator());
-    }
+      csv.replace(csv.length() - 1, csv.length(), System.lineSeparator());
+    });
 
     return csv.toString();
   }
