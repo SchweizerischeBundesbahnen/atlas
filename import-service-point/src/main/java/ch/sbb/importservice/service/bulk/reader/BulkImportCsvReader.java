@@ -32,12 +32,14 @@ public class BulkImportCsvReader {
     String header = "";
 
     try (Scanner scanner = new Scanner(file)) {
-      for (int lineNumber = 1; scanner.hasNext(); lineNumber++) {
+      for (int lineNumber = 0; scanner.hasNextLine(); lineNumber++) {
         String line = readHeaderLineIgnoringBom(scanner.nextLine());
-        if (lineNumber == 1) {
-          header = line + "\n";
-        } else {
-          mappedObjects.add(readObject(clazz, header, line, lineNumber));
+        if (!line.isEmpty()) {
+          if (header.isEmpty()) { // todo: check not always
+            header = line + "\n";
+          } else {
+            mappedObjects.add(readObject(clazz, header, line, lineNumber));
+          }
         }
       }
     } catch (IOException ex) {
