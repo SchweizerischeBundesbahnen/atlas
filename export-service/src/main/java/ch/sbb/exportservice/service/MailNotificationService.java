@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MailNotificationService {
 
-  @Value("${mail.receiver.export-service-point}")
+  @Value("${mail.receiver.export-service}")
   private List<String> notificationAddresses;
 
   public MailNotification buildMailErrorNotification(String jobName, StepExecution stepExecution) {

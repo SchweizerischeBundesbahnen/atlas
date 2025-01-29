@@ -1,6 +1,6 @@
 /**
  * Atlas API
- * This is the API for all your needs with SKI core data.<br/><br/>Atlas serves the following applications:<br/><ul><li>line-directory<br/>RestDoc: <a href=\'https://line-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://line-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>service-point-directory<br/>RestDoc: <a href=\'https://service-point-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://service-point-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>business-organisation-directory<br/>RestDoc: <a href=\'https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>workflow<br/>RestDoc: <a href=\'https://workflow.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://workflow.local.app.sbb.ch/static/rest-api.html</a></li><li>export-service-point<br/>RestDoc: <a href=\'https://export-service-point.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://export-service-point.local.app.sbb.ch/static/rest-api.html</a></li><li>user-administration<br/>RestDoc: <a href=\'https://user-administration.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://user-administration.local.app.sbb.ch/static/rest-api.html</a></li><li>import-service-point<br/>RestDoc: <a href=\'https://import-service-point.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://import-service-point.local.app.sbb.ch/static/rest-api.html</a></li><li>prm-directory<br/>RestDoc: <a href=\'https://prm-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://prm-directory.local.app.sbb.ch/static/rest-api.html</a></li></ul><br/>Atlas gets updated with the following features: <a href=\'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html\' target=\'_blank\'>Atlas Release Notes</a>
+ * This is the API for all your needs with SKI core data.<br/><br/>Atlas serves the following applications:<br/><ul><li>line-directory<br/>RestDoc: <a href=\'https://line-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://line-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>service-point-directory<br/>RestDoc: <a href=\'https://service-point-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://service-point-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>business-organisation-directory<br/>RestDoc: <a href=\'https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>workflow<br/>RestDoc: <a href=\'https://workflow.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://workflow.local.app.sbb.ch/static/rest-api.html</a></li><li>export-service<br/>RestDoc: <a href=\'https://export-service.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://export-service.local.app.sbb.ch/static/rest-api.html</a></li><li>user-administration<br/>RestDoc: <a href=\'https://user-administration.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://user-administration.local.app.sbb.ch/static/rest-api.html</a></li><li>import-service-point<br/>RestDoc: <a href=\'https://import-service-point.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://import-service-point.local.app.sbb.ch/static/rest-api.html</a></li><li>prm-directory<br/>RestDoc: <a href=\'https://prm-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://prm-directory.local.app.sbb.ch/static/rest-api.html</a></li></ul><br/>Atlas gets updated with the following features: <a href=\'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html\' target=\'_blank\'>Atlas Release Notes</a>
  *
  * The version of the OpenAPI document: 2.414.0
  * Contact: TechSupport-ATLAS@sbb.ch
@@ -98,7 +98,7 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param stopPointAddWorkflow 
+     * @param stopPointAddWorkflow
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -152,8 +152,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param stopPointRejectWorkflow 
+     * @param id
+     * @param stopPointRejectWorkflow
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -210,8 +210,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param editStopPointWorkflow 
+     * @param id
+     * @param editStopPointWorkflow
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -310,7 +310,7 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param personId 
+     * @param personId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -355,7 +355,7 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param servicePointVersionId 
+     * @param servicePointVersionId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -399,7 +399,7 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -565,8 +565,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param otpRequest 
+     * @param id
+     * @param otpRequest
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -623,9 +623,9 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param personId 
-     * @param overrideDecision 
+     * @param id
+     * @param personId
+     * @param overrideDecision
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -685,8 +685,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param stopPointRejectWorkflow 
+     * @param id
+     * @param stopPointRejectWorkflow
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -743,8 +743,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param stopPointRestartWorkflow 
+     * @param id
+     * @param stopPointRestartWorkflow
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -801,7 +801,7 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -846,8 +846,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param otpVerification 
+     * @param id
+     * @param otpVerification
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -904,9 +904,9 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param personId 
-     * @param decision 
+     * @param id
+     * @param personId
+     * @param decision
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
