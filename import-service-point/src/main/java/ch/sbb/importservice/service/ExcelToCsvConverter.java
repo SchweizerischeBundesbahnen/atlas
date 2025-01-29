@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.DoublePredicate;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -45,20 +46,24 @@ public class ExcelToCsvConverter {
   }
 
   private String getSheetAsCsv(Sheet sheet) {
-    final StringBuilder csv = new StringBuilder();
+    final StringBuilder csv = new StringBuilder().append(AtlasCsvReader.CSV_COLUMN_SEPARATOR);
 
+    final AtomicInteger rowNum = new AtomicInteger(-1);
     sheet.forEach(row -> {
-      final short lastCellNum = row.getLastCellNum();
 
+      csv.replace(csv.length() - 1, csv.length(), System.lineSeparator().repeat(row.getRowNum() - rowNum.get()));
+      rowNum.set(row.getRowNum());
+
+      final short lastCellNum = row.getLastCellNum();
       for (short i = 0; i < lastCellNum; i++) {
         final Cell cell = row.getCell(i);
         csv.append(cell == null ? "" : getCellValue(cell));
         csv.append(AtlasCsvReader.CSV_COLUMN_SEPARATOR);
       }
 
-      csv.replace(csv.length() - 1, csv.length(), System.lineSeparator());
     });
 
+    csv.deleteCharAt(csv.length() - 1);
     return csv.toString();
   }
 

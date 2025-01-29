@@ -74,8 +74,11 @@ public class BulkImportFileValidationService {
 
   private static String getFileHeader(File file) {
     try (Scanner scanner = new Scanner(file)) {
-      if (scanner.hasNext()) {
-        return BulkImportCsvReader.readHeaderLineIgnoringBom(scanner.nextLine());
+      while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        if (!line.isEmpty()) {
+          return BulkImportCsvReader.readHeaderLineIgnoringBom(line);
+        }
       }
       return null;
     } catch (IOException ex) {
