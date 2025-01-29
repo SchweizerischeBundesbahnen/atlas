@@ -2,7 +2,7 @@
   "ERROR": {
     "CONSTRAINT_VIOLATION": {
       "DEFAULT": "Une condition pour le champ {{propertyPath}} n'a pas été remplie avec la valeur {{value}}.",
-      "SIZE": "La condition relative à la longueur de la valeur pour le champ {{propertyPath}} n'a pas été remplie avec la valeur {{value}}.",
+      "SIZE": "Valeur non valide pour le champ \"{{propertyPath}}\". La valeur doit avoir une longueur comprise entre {{min}} et {{max}} caractères.",
       "PATTERN": "La condition pour la structure de la valeur pour le champ {{propertyPath}} n'a pas été remplie avec la valeur {{value}}.",
       "NOT_BLANK": "La condition \"ne doit pas être vide\" pour le champ {{propertyPath}} n'a pas été remplie avec la valeur {{value}}.",
       "NOT_NULL": "La condition \"doit être définie\" pour le champ {{propertyPath}} n'a pas été remplie avec la valeur {{value}}."

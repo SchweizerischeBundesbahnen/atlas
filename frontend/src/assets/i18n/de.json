@@ -2,7 +2,7 @@
   "ERROR": {
     "CONSTRAINT_VIOLATION": {
       "DEFAULT": "Eine Bedingung für das Feld {{propertyPath}} wurde mit dem Wert {{value}} nicht erfüllt.",
-      "SIZE": "Die Bedingung für die Länge des Wertes für das Feld {{propertyPath}} wurde mit dem Wert {{value}} nicht erfüllt.",
+      "SIZE": "Ungültiger Wert für das Feld \"{{propertyPath}}\". Der Wert muss zwischen {{min}} und {{max}} Zeichen lang sein.",
       "PATTERN": "Die Bedingung für die Struktur des Wertes für das Feld {{propertyPath}} wurde mit dem Wert {{value}} nicht erfüllt.",
       "NOT_BLANK": "Die Bedingung \"darf nicht leer sein\" für das Feld {{propertyPath}} wurde mit dem Wert {{value}} nicht erfüllt.",
       "NOT_NULL": "Die Bedingung \"muss definiert sein\" für das Feld {{propertyPath}} wurde mit dem Wert {{value}} nicht erfüllt."
