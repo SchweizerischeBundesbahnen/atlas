@@ -1,6 +1,6 @@
 /**
  * Atlas API
- * This is the API for all your needs with SKI core data.<br/><br/>Atlas serves the following applications:<br/><ul><li>line-directory<br/>RestDoc: <a href=\'https://line-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://line-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>service-point-directory<br/>RestDoc: <a href=\'https://service-point-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://service-point-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>business-organisation-directory<br/>RestDoc: <a href=\'https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>workflow<br/>RestDoc: <a href=\'https://workflow.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://workflow.local.app.sbb.ch/static/rest-api.html</a></li><li>export-service-point<br/>RestDoc: <a href=\'https://export-service-point.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://export-service-point.local.app.sbb.ch/static/rest-api.html</a></li><li>user-administration<br/>RestDoc: <a href=\'https://user-administration.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://user-administration.local.app.sbb.ch/static/rest-api.html</a></li><li>import-service-point<br/>RestDoc: <a href=\'https://import-service-point.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://import-service-point.local.app.sbb.ch/static/rest-api.html</a></li><li>prm-directory<br/>RestDoc: <a href=\'https://prm-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://prm-directory.local.app.sbb.ch/static/rest-api.html</a></li></ul><br/>Atlas gets updated with the following features: <a href=\'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html\' target=\'_blank\'>Atlas Release Notes</a>
+ * This is the API for all your needs with SKI core data.<br/><br/>Atlas serves the following applications:<br/><ul><li>line-directory<br/>RestDoc: <a href=\'https://line-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://line-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>service-point-directory<br/>RestDoc: <a href=\'https://service-point-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://service-point-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>business-organisation-directory<br/>RestDoc: <a href=\'https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>workflow<br/>RestDoc: <a href=\'https://workflow.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://workflow.local.app.sbb.ch/static/rest-api.html</a></li><li>export-service<br/>RestDoc: <a href=\'https://export-service.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://export-service.local.app.sbb.ch/static/rest-api.html</a></li><li>user-administration<br/>RestDoc: <a href=\'https://user-administration.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://user-administration.local.app.sbb.ch/static/rest-api.html</a></li><li>import-service-point<br/>RestDoc: <a href=\'https://import-service-point.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://import-service-point.local.app.sbb.ch/static/rest-api.html</a></li><li>prm-directory<br/>RestDoc: <a href=\'https://prm-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://prm-directory.local.app.sbb.ch/static/rest-api.html</a></li></ul><br/>Atlas gets updated with the following features: <a href=\'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html\' target=\'_blank\'>Atlas Release Notes</a>
  *
  * The version of the OpenAPI document: 2.414.0
  * Contact: TechSupport-ATLAS@sbb.ch
@@ -115,7 +115,7 @@ export class PersonWithReducedMobilityExportService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service-point/v1/export/prm/contact-point-batch`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service/v1/export/prm/contact-point-batch`,
             null,
             {
                 responseType: <any>responseType_,
@@ -156,7 +156,7 @@ export class PersonWithReducedMobilityExportService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service-point/v1/export/prm/parking-lot-batch`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service/v1/export/prm/parking-lot-batch`,
             null,
             {
                 responseType: <any>responseType_,
@@ -197,7 +197,7 @@ export class PersonWithReducedMobilityExportService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service-point/v1/export/prm/platform-batch`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service/v1/export/prm/platform-batch`,
             null,
             {
                 responseType: <any>responseType_,
@@ -238,7 +238,7 @@ export class PersonWithReducedMobilityExportService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service-point/v1/export/prm/reference-point-batch`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service/v1/export/prm/reference-point-batch`,
             null,
             {
                 responseType: <any>responseType_,
@@ -279,7 +279,7 @@ export class PersonWithReducedMobilityExportService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service-point/v1/export/prm/relation-batch`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service/v1/export/prm/relation-batch`,
             null,
             {
                 responseType: <any>responseType_,
@@ -320,7 +320,7 @@ export class PersonWithReducedMobilityExportService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service-point/v1/export/prm/stop-point-batch`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service/v1/export/prm/stop-point-batch`,
             null,
             {
                 responseType: <any>responseType_,
@@ -361,7 +361,7 @@ export class PersonWithReducedMobilityExportService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service-point/v1/export/prm/toilet-batch`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/export-service/v1/export/prm/toilet-batch`,
             null,
             {
                 responseType: <any>responseType_,
@@ -374,8 +374,8 @@ export class PersonWithReducedMobilityExportService {
     }
 
     /**
-     * @param exportFileName 
-     * @param prmExportType 
+     * @param exportFileName
+     * @param prmExportType
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -405,7 +405,7 @@ export class PersonWithReducedMobilityExportService {
         }
 
 
-        return this.httpClient.get(`${this.configuration.basePath}/export-service-point/v1/export/prm/download-gzip-json/${encodeURIComponent(String(exportFileName))}/${encodeURIComponent(String(prmExportType))}`,
+        return this.httpClient.get(`${this.configuration.basePath}/export-service/v1/export/prm/download-gzip-json/${encodeURIComponent(String(exportFileName))}/${encodeURIComponent(String(prmExportType))}`,
             {
                 responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
@@ -417,8 +417,8 @@ export class PersonWithReducedMobilityExportService {
     }
 
     /**
-     * @param exportFileName 
-     * @param prmExportType 
+     * @param exportFileName
+     * @param prmExportType
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -449,7 +449,7 @@ export class PersonWithReducedMobilityExportService {
         }
 
 
-        return this.httpClient.get(`${this.configuration.basePath}/export-service-point/v1/export/prm/json/${encodeURIComponent(String(exportFileName))}/${encodeURIComponent(String(prmExportType))}`,
+        return this.httpClient.get(`${this.configuration.basePath}/export-service/v1/export/prm/json/${encodeURIComponent(String(exportFileName))}/${encodeURIComponent(String(prmExportType))}`,
             {
                 responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
@@ -461,8 +461,8 @@ export class PersonWithReducedMobilityExportService {
     }
 
     /**
-     * @param exportFileName 
-     * @param prmExportType 
+     * @param exportFileName
+     * @param prmExportType
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -492,7 +492,7 @@ export class PersonWithReducedMobilityExportService {
         }
 
 
-        return this.httpClient.get(`${this.configuration.basePath}/export-service-point/v1/export/prm/download-gzip-json/latest/${encodeURIComponent(String(exportFileName))}/${encodeURIComponent(String(prmExportType))}`,
+        return this.httpClient.get(`${this.configuration.basePath}/export-service/v1/export/prm/download-gzip-json/latest/${encodeURIComponent(String(exportFileName))}/${encodeURIComponent(String(prmExportType))}`,
             {
                 responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
@@ -504,8 +504,8 @@ export class PersonWithReducedMobilityExportService {
     }
 
     /**
-     * @param exportFileName 
-     * @param prmExportType 
+     * @param exportFileName
+     * @param prmExportType
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -536,7 +536,7 @@ export class PersonWithReducedMobilityExportService {
         }
 
 
-        return this.httpClient.get(`${this.configuration.basePath}/export-service-point/v1/export/prm/json/latest/${encodeURIComponent(String(exportFileName))}/${encodeURIComponent(String(prmExportType))}`,
+        return this.httpClient.get(`${this.configuration.basePath}/export-service/v1/export/prm/json/latest/${encodeURIComponent(String(exportFileName))}/${encodeURIComponent(String(prmExportType))}`,
             {
                 responseType: "blob",
                 withCredentials: this.configuration.withCredentials,

@@ -16,7 +16,7 @@ public class FileNotFoundOnS3Exception extends AtlasException {
         .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
         .message("""
             File not found on S3. The export might not have run yet.
-            Please consult the docs at: https://export-service-point.prod.app.sbb.ch/static/rest-api.html for data availability.
+            Please consult the docs at: https://export-service.prod.app.sbb.ch/static/rest-api.html for data availability.
             """)
         .error("File " + filePath + " not found on atlas amazon s3 bucket.")
         .details(new TreeSet<>())

@@ -1,6 +1,6 @@
 /**
  * Atlas API
- * This is the API for all your needs with SKI core data.<br/><br/>Atlas serves the following applications:<br/><ul><li>line-directory<br/>RestDoc: <a href=\'https://line-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://line-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>service-point-directory<br/>RestDoc: <a href=\'https://service-point-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://service-point-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>business-organisation-directory<br/>RestDoc: <a href=\'https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>workflow<br/>RestDoc: <a href=\'https://workflow.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://workflow.local.app.sbb.ch/static/rest-api.html</a></li><li>export-service-point<br/>RestDoc: <a href=\'https://export-service-point.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://export-service-point.local.app.sbb.ch/static/rest-api.html</a></li><li>user-administration<br/>RestDoc: <a href=\'https://user-administration.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://user-administration.local.app.sbb.ch/static/rest-api.html</a></li><li>import-service-point<br/>RestDoc: <a href=\'https://import-service-point.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://import-service-point.local.app.sbb.ch/static/rest-api.html</a></li><li>prm-directory<br/>RestDoc: <a href=\'https://prm-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://prm-directory.local.app.sbb.ch/static/rest-api.html</a></li></ul><br/>Atlas gets updated with the following features: <a href=\'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html\' target=\'_blank\'>Atlas Release Notes</a>
+ * This is the API for all your needs with SKI core data.<br/><br/>Atlas serves the following applications:<br/><ul><li>line-directory<br/>RestDoc: <a href=\'https://line-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://line-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>service-point-directory<br/>RestDoc: <a href=\'https://service-point-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://service-point-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>business-organisation-directory<br/>RestDoc: <a href=\'https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://business-organisation-directory.local.app.sbb.ch/static/rest-api.html</a></li><li>workflow<br/>RestDoc: <a href=\'https://workflow.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://workflow.local.app.sbb.ch/static/rest-api.html</a></li><li>export-service<br/>RestDoc: <a href=\'https://export-service.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://export-service.local.app.sbb.ch/static/rest-api.html</a></li><li>user-administration<br/>RestDoc: <a href=\'https://user-administration.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://user-administration.local.app.sbb.ch/static/rest-api.html</a></li><li>import-service-point<br/>RestDoc: <a href=\'https://import-service-point.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://import-service-point.local.app.sbb.ch/static/rest-api.html</a></li><li>prm-directory<br/>RestDoc: <a href=\'https://prm-directory.local.app.sbb.ch/static/rest-api.html\' target=\'_blank\'>https://prm-directory.local.app.sbb.ch/static/rest-api.html</a></li></ul><br/>Atlas gets updated with the following features: <a href=\'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html\' target=\'_blank\'>Atlas Release Notes</a>
  *
  * The version of the OpenAPI document: 2.414.0
  * Contact: TechSupport-ATLAS@sbb.ch
@@ -89,7 +89,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param businessOrganisationVersion 
+     * @param businessOrganisationVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -143,7 +143,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param sboid 
+     * @param sboid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -316,10 +316,10 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param searchCriteria 
-     * @param inSboids 
-     * @param validOn 
-     * @param statusChoices 
+     * @param searchCriteria
+     * @param inSboids
+     * @param validOn
+     * @param statusChoices
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -513,7 +513,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param sboid 
+     * @param sboid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -557,7 +557,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param sboid 
+     * @param sboid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -602,7 +602,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param exportType 
+     * @param exportType
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -641,7 +641,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param exportType 
+     * @param exportType
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -722,8 +722,8 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param id 
-     * @param businessOrganisationVersion 
+     * @param id
+     * @param businessOrganisationVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
