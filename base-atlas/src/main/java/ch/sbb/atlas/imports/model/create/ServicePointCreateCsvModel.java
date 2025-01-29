@@ -11,6 +11,7 @@ import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel.Fields;
 import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -179,6 +180,13 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
 
   @Override
   public List<UniqueField<ServicePointCreateCsvModel>> uniqueFields() {
-    return List.of(new UniqueField<>(Fields.numberShort, ServicePointCreateCsvModel::getNumberShort));
+    return List.of(new UniqueField<>("number", ServicePointCreateCsvModel::getNumber));
+  }
+
+  public String getNumber() {
+    if (Country.from(uicCountryCode) == null || numberShort == null) {
+      return null;
+    }
+    return ServicePointNumber.of(Country.from(uicCountryCode), numberShort).asString();
   }
 }
