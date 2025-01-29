@@ -11,8 +11,8 @@
  */
 
 
-export interface AffectedSublines { 
-    allowedSublines?: Array<string>;
-    notAllowedSublines?: Array<string>;
+export interface DateRange { 
+    from?: Date;
+    to?: Date;
 }
 
