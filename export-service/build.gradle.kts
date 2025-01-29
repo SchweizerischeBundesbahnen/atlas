@@ -8,7 +8,7 @@ plugins {
 group = "ch.sbb.atlas"
 version = "2.423.0"
 
-description = "Atlas Export Service Point"
+description = "Atlas Export Service"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
