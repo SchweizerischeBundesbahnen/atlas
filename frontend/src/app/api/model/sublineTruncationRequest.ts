@@ -9,10 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DateRange } from './dateRange';
 
 
-export interface AffectedSublines { 
-    allowedSublines?: Array<string>;
-    notAllowedSublines?: Array<string>;
+export interface SublineTruncationRequest { 
+    dateRange?: DateRange;
+    sublinesToShort?: Array<string>;
 }
 
