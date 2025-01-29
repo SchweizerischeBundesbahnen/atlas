@@ -8,6 +8,7 @@ import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationServ
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.InvalidFreightServicePointException;
 import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.time.LocalDate;
@@ -215,6 +216,29 @@ class ServicePointValidationServiceTest {
         UpdateAffectsInReviewVersionException.class,
         () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
     assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
+  }
+
+  @Test
+  void shouldNotAllowSwissFreightServicePointWithoutSortCodeOfDestinationCode() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setValidFrom(LocalDate.now());
+    bern.setValidTo(LocalDate.now());
+    bern.setFreightServicePoint(true);
+    bern.setSortCodeOfDestinationStation(null);
+
+    assertThrows(InvalidFreightServicePointException.class,
+        () -> servicePointValidationService.validateSortCodeOfDestinationStationOnFreightServicePoint(bern));
+  }
+
+  @Test
+  void shouldAllowSwissFreightServicePointWithSortCodeOfDestinationCode() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setValidFrom(LocalDate.now());
+    bern.setValidTo(LocalDate.now());
+    bern.setFreightServicePoint(true);
+    bern.setSortCodeOfDestinationStation("code");
+
+    assertDoesNotThrow(() -> servicePointValidationService.validateSortCodeOfDestinationStationOnFreightServicePoint(bern));
   }
 
 }
