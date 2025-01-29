@@ -9,33 +9,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(name = "exportServicePointBatch", url = "${atlas.client.gateway.url}", configuration = OAuthFeignConfig.class)
 public interface ExportServicePointBatchClient {
 
-  @PostMapping(value = "/export-service-point/v1/export/service-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/export-service/v1/export/service-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportServicePointBatch();
 
-  @PostMapping(value = "/export-service-point/v1/export/traffic-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/export-service/v1/export/traffic-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportTrafficPointBatch();
 
-  @PostMapping(value = "/export-service-point/v1/export/loading-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/export-service/v1/export/loading-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportLoadingPointBatch();
 
-  @PostMapping(value = "/export-service-point/v1/export/prm/stop-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/export-service/v1/export/prm/stop-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportStopPointBatch();
 
-  @PostMapping(value = "/export-service-point/v1/export/prm/platform-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/export-service/v1/export/prm/platform-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportPlatformBatch();
 
-  @PostMapping(value = "/export-service-point/v1/export/prm/reference-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/export-service/v1/export/prm/reference-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportReferencePointBatch();
 
-  @PostMapping(value = "/export-service-point/v1/export/prm/contact-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/export-service/v1/export/prm/contact-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportContactPointBatch();
 
-  @PostMapping(value = "/export-service-point/v1/export/prm/toilet-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/export-service/v1/export/prm/toilet-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportToiletBatch();
 
-  @PostMapping(value = "/export-service-point/v1/export/prm/parking-lot-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/export-service/v1/export/prm/parking-lot-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportParkingLotBatch();
 
-  @PostMapping(value = "/export-service-point/v1/export/prm/relation-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/export-service/v1/export/prm/relation-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportRelationBatch();
 }
