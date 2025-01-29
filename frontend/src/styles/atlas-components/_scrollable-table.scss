@@ -18,6 +18,8 @@ table {
       background: variables.$gray-500;
     }
 
+    -webkit-border-vertical-spacing: 5px !important;
+
     tbody {
       display: block;
       max-height: 13.75rem;
