@@ -17,6 +17,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
 import ch.sbb.line.directory.exception.DateRangeConflictException;
+import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
 import java.time.LocalDate;
@@ -52,12 +53,16 @@ class SublineServiceTest {
   @Mock
   private CoverageService coverageService;
 
+  @Mock
+  private LineVersionRepository lineVersionRepository;
+
   private SublineService sublineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sublineService = new SublineService(sublineVersionRepository, versionableService, lineService, sublineValidationService,
+    sublineService = new SublineService(sublineVersionRepository, lineVersionRepository, versionableService,
+        sublineValidationService,
         coverageService);
     when(sublineVersionRepository.saveAndFlush(any())).then(i -> i.getArgument(0));
   }
@@ -248,7 +253,7 @@ class SublineServiceTest {
   }
 
   @Test
-  void shouldThrowExceptionWhenSublineValidityIsNotContainedInMainlineValidity(){
+  void shouldThrowExceptionWhenSublineValidityIsNotContainedInMainlineValidity() {
     String mainSlnid = "ch:1:slnid:8000";
     LocalDate today = LocalDate.now();
 
@@ -264,16 +269,18 @@ class SublineServiceTest {
   }
 
   @Test
-  void shouldNotThrowExceptionWhenSublineValidityIsNotContainedInMainlineValidity(){
+  void shouldNotThrowExceptionWhenSublineValidityIsNotContainedInMainlineValidity() {
     String mainSlnid = "ch:1:slnid:8000";
 
     LineVersion lineVersion =
-        LineVersion.builder().slnid(mainSlnid).validFrom(LocalDate.of(2020, 1, 1)).validTo(LocalDate.of(2024, 1, 1)).id(1L).build();
+        LineVersion.builder().slnid(mainSlnid).validFrom(LocalDate.of(2020, 1, 1)).validTo(LocalDate.of(2024, 1, 1)).id(1L)
+            .build();
 
     when(lineService.findLineVersions(mainSlnid)).thenReturn(List.of(lineVersion));
 
     SublineVersion sublineVersion =
-        SublineVersion.builder().mainlineSlnid(mainSlnid).validFrom(LocalDate.of(2022, 1, 1)).validTo(LocalDate.of(2023, 1, 1)).build();
+        SublineVersion.builder().mainlineSlnid(mainSlnid).validFrom(LocalDate.of(2022, 1, 1)).validTo(LocalDate.of(2023, 1, 1))
+            .build();
 
     assertDoesNotThrow(() -> sublineService.validateSublineValidity(sublineVersion));
   }
