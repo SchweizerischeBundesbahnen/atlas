@@ -10,6 +10,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.DateRangeConflictException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
 import java.util.List;
@@ -25,8 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class SublineService {
 
   private final SublineVersionRepository sublineVersionRepository;
+  private final LineVersionRepository lineVersionRepository;
   private final VersionableService versionableService;
-  private final LineService lineService;
   private final SublineValidationService sublineValidationService;
   private final CoverageService coverageService;
 
@@ -104,7 +105,8 @@ public class SublineService {
   }
 
   public LineVersion getMainLineVersion(String mainSlnid) {
-    List<LineVersion> lineVersions = lineService.findLineVersions(mainSlnid);
+    List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(mainSlnid);
+
     return OverviewDisplayBuilder.getPrioritizedVersion(lineVersions);
   }
 
@@ -113,7 +115,7 @@ public class SublineService {
     DateRange dateRangeMainline = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
     DateRange dateRangeSubline = new DateRange(sublineVersion.getValidFrom(), sublineVersion.getValidTo());
 
-    if(!dateRangeSubline.isDateRangeContainedIn(dateRangeMainline)) {
+    if (!dateRangeSubline.isDateRangeContainedIn(dateRangeMainline)) {
       throw new DateRangeConflictException(dateRangeMainline);
     }
   }

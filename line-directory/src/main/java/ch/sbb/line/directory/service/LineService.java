@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.service;
 
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.AffectedSublines;
 import ch.sbb.atlas.api.lidi.SublineTruncationRequest;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -50,6 +50,7 @@ public class LineService {
   private final LineUpdateValidationService lineUpdateValidationService;
   private final CoverageService coverageService;
   private final LineStatusDecider lineStatusDecider;
+  private final SublineService sublineService;
 
   public Page<Line> findAll(LineSearchRestrictions searchRestrictions) {
     return lineRepository.findAll(searchRestrictions.getSpecification(),
@@ -95,7 +96,34 @@ public class LineService {
   public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
     lineValidationService.validateNotRevoked(currentVersion);
     lineUpdateValidationService.validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
+    boolean onlyValidityChanged = isOnlyValidityChanged(currentVersion, editedVersion);
+
+    if (onlyValidityChanged) {
+      DateRange range = new DateRange(editedVersion.getValidFrom(), editedVersion.getValidTo());
+      AffectedSublines affectedSublines = checkAffectedSublines(editedVersion.getId(), range);
+      SublineTruncationRequest sublineTruncationRequest = new SublineTruncationRequest(range,
+          affectedSublines.getAllowedSublines());
+
+      if (affectedSublines.getNotAllowedSublines().isEmpty()) {
+        shortSublines(editedVersion.getId(), sublineTruncationRequest);
+      }
+    }
     updateVersion(currentVersion, editedVersion);
+  }
+
+  private static boolean isOnlyValidityChanged(LineVersion currentVersion, LineVersion editedVersion) {
+    return (!editedVersion.getValidTo().equals(currentVersion.getValidTo())
+        || !editedVersion.getValidFrom().equals(currentVersion.getValidFrom()))
+        && editedVersion.getSwissLineNumber().equals(currentVersion.getSwissLineNumber())
+        && editedVersion.getSlnid().equals(currentVersion.getSlnid())
+        && editedVersion.getBusinessOrganisation().equals(currentVersion.getBusinessOrganisation())
+        && editedVersion.getComment().equals(currentVersion.getComment())
+        && editedVersion.getConcessionType().equals(currentVersion.getConcessionType())
+        && editedVersion.getOfferCategory().equals(currentVersion.getOfferCategory())
+        && editedVersion.getShortNumber().equals(currentVersion.getShortNumber())
+        && editedVersion.getDescription().equals(currentVersion.getDescription())
+        && editedVersion.getLongName().equals(currentVersion.getLongName())
+        && editedVersion.getNumber().equals(currentVersion.getNumber());
   }
 
   public List<LineVersion> revokeLine(String slnid) {
@@ -160,8 +188,6 @@ public class LineService {
     lineVersionRepository.incrementVersion(currentVersion.getSlnid());
     editedVersion.setSlnid(currentVersion.getSlnid());
 
-    //checkAffectedSublines(editedVersion);
-
     List<LineVersion> currentVersions = findLineVersions(currentVersion.getSlnid());
     lineUpdateValidationService.validateLineForUpdate(currentVersion, editedVersion, currentVersions);
 
@@ -186,6 +212,7 @@ public class LineService {
     versionableService.applyVersioning(LineVersion.class, versionedObjects,
         version -> save(version, Optional.of(currentVersion), preSaveVersions),
         this::deleteById);
+
   }
 
   private LineVersion copyLineVersion(LineVersion lineVersion) {
@@ -223,7 +250,7 @@ public class LineService {
         .orElseThrow(() -> new IdNotFoundException(id));
 
     if (dateRange.getFrom().isBefore(lineVersion.getValidFrom())
-        || dateRange.getTo().isAfter(lineVersion.getValidTo())) {
+        && dateRange.getTo().isAfter(lineVersion.getValidTo())) {
       throw new SublinesNotAffectedException(dateRange);
     }
 
@@ -263,29 +290,26 @@ public class LineService {
       List<SublineVersion> versions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
       SublineVersionRange sublineVersionRange = getOldestAndLatest(versions);
 
+      //TODO: check if isSingleSublineInRange
       if (!isShorteningAllowed(sublineDateRange, sublineVersionRange)) {
         throw new SublineTruncationNotAllowedException(sublineDateRange);
       }
 
       if (isSublineValidityAffectedByUpdatedMainline(sublineDateRange,
           sublineVersionRange)) {
-        boolean changed = false;
 
+        //TODO check if better method is possible
+        //TODO what if excpetion occurs in update? How to inform user?
         if (!sublineDateRange.getFrom().equals(lineVersion.getValidFrom())) {
+          SublineVersion oldVersion = sublineVersionRange.getOldestVersion();
           sublineVersionRange.getOldestVersion().setValidFrom(sublineDateRange.getFrom());
-          changed = true;
+          sublineService.updateVersion(oldVersion, sublineVersionRange.getOldestVersion());
         }
 
         if (!sublineDateRange.getTo().equals(lineVersion.getValidTo())) {
+          SublineVersion latestVersion = sublineVersionRange.getLatestVersion();
           sublineVersionRange.getLatestVersion().setValidTo(sublineDateRange.getTo());
-          changed = true;
-        }
-
-        if (changed) {
-          sublineVersionRepository.saveAll(
-              List.of(sublineVersionRange.getOldestVersion(),
-                  sublineVersionRange.getLatestVersion())
-          );
+          sublineService.updateVersion(latestVersion, sublineVersionRange.getLatestVersion());
         }
       }
     }
