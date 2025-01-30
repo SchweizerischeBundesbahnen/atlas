@@ -101,9 +101,7 @@ export class LineDetailComponent implements OnInit {
       this.isShowLineSnapshotHistory = this.showSnapshotHistoryLink();
 
       this.lineType = this.form.value.lineType!;
-      if (this.form.controls.lineType.value !== LineType.Orderly) {
-        this.isLineConcessionTypeRequired = false;
-      }
+      this.conditionalValidation();
     }
     this.initBoSboidRestriction();
   }
