@@ -7,7 +7,7 @@ import { FormatPipe } from './format.pipe';
   pure: false,
 })
 export class ShowTitlePipe implements PipeTransform {
-  private readonly SHOW_TOOLTIP_LENGTH = 20;
+  private readonly SHOW_TOOLTIP_LENGTH = 15;
 
   constructor(private readonly formatPipe: FormatPipe) {}
 
