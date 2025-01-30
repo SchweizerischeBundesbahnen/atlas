@@ -35,7 +35,7 @@ public enum MailTemplateConfig {
   UPDATE_GEOLOCATION_ERROR_NOTIFICATION_TEMPLATE("update-geolocation-error-notification", null, null, false, false, true),
   UPDATE_GEOLOCATION_SUCCESS_NOTIFICATION_TEMPLATE("update-geolocation-success-notification", null, null, false, false,
       true),
-  EXPORT_SERVCICE_POINT_ERROR_NOTIFICATION_TEMPLATE("export-service-error-notification", null, null, false, false,
+  EXPORT_SERVCICE_POINT_ERROR_NOTIFICATION_TEMPLATE("export-service-point-error-notification", null, null, false, false,
       true),
   WORKFLOW_NOTIFICATION_TEMPLATE("workflow_notification", null, null, true, false, true),
   START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION_TEMPLATE("start_stop_point_workflow_examinant_notification", null, null, true,
