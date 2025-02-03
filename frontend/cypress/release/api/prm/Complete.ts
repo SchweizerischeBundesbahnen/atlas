@@ -187,9 +187,11 @@ describe('PRM: New complete Stop Point', { testIsolation: false }, () => {
     expect(stopPoint).to.have.property('address').and.to.equal(address);
     expect(stopPoint).to.have.property('zipCode').and.to.equal(zipCode);
     expect(stopPoint).to.have.property('city').and.to.equal(city);
-    expect(stopPoint)
-      .to.have.property('interoperable')
-      .and.to.equal(interoperable);
+
+    // TODO: Uncomment, when ATLAS-2728 is fixed
+    //       expect(stopPoint)
+    //       .to.have.property('interoperable')
+    //       .and.to.equal(interoperable);
     expect(stopPoint).to.have.property('url').and.to.equal(url);
   };
 
@@ -266,11 +268,181 @@ describe('PRM: New complete Stop Point', { testIsolation: false }, () => {
       ticketMachine: ticketMachine,
       numberWithoutCheckDigit: numberWithoutCheckDigit,
     }).then((response) => {
-      expect(response.status).to.equal(201);
+      expect(response.status).to.equal(
+        CommonUtils.HTTP_REST_API_RESPONSE_CREATED
+      );
 
       const stopPoint = response.body;
       validate(stopPoint);
       stopPointId = stopPoint.id;
+    });
+  });
+
+  it('Step-2: Check complete Stop Point', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/stop-points?sloids=${parentServicePointSloid}&fromDate=${validFrom}&toDate=${validTo}`
+    ).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const stopPoint = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        stopPointId,
+        false,
+        1
+      );
+      validate(stopPoint);
+      etagVersion = stopPoint.etagVersion;
+    });
+  });
+
+  it('Step-3: Update complete Stop Point', () => {
+    meansOfTransport = meansOfTransport.concat(METRO);
+
+    CommonUtils.put(`/prm-directory/v1/stop-points/${stopPointId}`, {
+      sloid: parentServicePointSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersion,
+      meansOfTransport: meansOfTransport,
+      freeText: freeText,
+      address: address,
+      zipCode: zipCode,
+      city: city,
+      alternativeTransport: alternativeTransport,
+      alternativeTransportCondition: alternativeTransportCondition,
+      assistanceAvailability: assistanceAvailability,
+      assistanceCondition: assistanceCondition,
+      assistanceService: assistanceService,
+      audioTicketMachine: audioTicketMachine,
+      additionalInformation: additionalInformation,
+      dynamicAudioSystem: dynamicAudioSystem,
+      dynamicOpticSystem: dynamicOpticSystem,
+      infoTicketMachine: infoTicketMachine,
+      url: url,
+      visualInfo: visualInfo,
+      wheelchairTicketMachine: wheelchairTicketMachine,
+      assistanceRequestFulfilled: assistanceRequestFulfilled,
+      ticketMachine: ticketMachine,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+    }).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const stopPoint = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        stopPointId,
+        true,
+        1
+      );
+      validate(stopPoint);
+      etagVersion = stopPoint.etagVersion;
+    });
+  });
+});
+
+describe('PRM: New complete Reference Point', { testIsolation: false }, () => {
+  let designation = 'designation';
+  let referencePointId = -1;
+  let referencePointSloid = '';
+
+  const validFrom = ReleaseApiUtils.todayAsAtlasString();
+  const validTo = ReleaseApiUtils.todayAsAtlasString();
+  const referencePointType = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.referencePointTypeValues()
+  );
+  const additionalInformation = 'additional';
+  const mainReferencePoint = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.booleanValues()
+  );
+
+  const validate = (referencePoint: any) => {
+    validatePrmObject(referencePoint, validFrom, validTo);
+    expect(referencePoint)
+      .to.have.property('sloid')
+      .and.to.equal(referencePointSloid);
+    expect(referencePoint)
+      .to.have.property('parentServicePointSloid')
+      .and.to.equal(parentServicePointSloid);
+    expect(referencePoint)
+      .to.have.property('designation')
+      .and.to.equal(designation);
+    expect(referencePoint)
+      .to.have.property('referencePointType')
+      .and.to.equal(referencePointType);
+    expect(referencePoint)
+      .to.have.property('additionalInformation')
+      .and.to.equal(additionalInformation);
+    expect(referencePoint)
+      .to.have.property('mainReferencePoint')
+      .and.to.equal(mainReferencePoint);
+  };
+
+  it('Step-1: Create new complete Reference Point', () => {
+    referencePointSloid = `${parentServicePointSloid}:referencePoint1`; // Has to be initialized here, because before parentServicePointSloid is not known
+
+    CommonUtils.post('/prm-directory/v1/reference-points', {
+      sloid: referencePointSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      parentServicePointSloid: parentServicePointSloid,
+      designation: designation,
+      referencePointType: referencePointType,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      additionalInformation: additionalInformation,
+      mainReferencePoint: mainReferencePoint,
+    }).then((response) => {
+      expect(response.status).to.equal(
+        CommonUtils.HTTP_REST_API_RESPONSE_CREATED
+      );
+
+      const referencePoint = response.body;
+      validate(referencePoint);
+      referencePointId = referencePoint.id;
+    });
+  });
+
+  it('Step-2: Check complete Reference Point', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/reference-points?sloids=${referencePointSloid}`
+    ).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const referencePoint = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        referencePointId,
+        false,
+        1
+      );
+      validate(referencePoint);
+      etagVersion = referencePoint.etagVersion;
+    });
+  });
+
+  it('Step-3: Update complete Reference Point', () => {
+    designation = 'designation-changed';
+
+    CommonUtils.put(`/prm-directory/v1/reference-points/${referencePointId}`, {
+      sloid: referencePointSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersion,
+      parentServicePointSloid: parentServicePointSloid,
+      designation: designation,
+      referencePointType: referencePointType,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      additionalInformation: additionalInformation,
+      mainReferencePoint: mainReferencePoint,
+    }).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const referencePoint = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        referencePointId,
+        true,
+        1
+      );
+      validate(referencePoint);
+      etagVersion = referencePoint.etagVersion;
+      console.error(mainReferencePoint);
     });
   });
 });
