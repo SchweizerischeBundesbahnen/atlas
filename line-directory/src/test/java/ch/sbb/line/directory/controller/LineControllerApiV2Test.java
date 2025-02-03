@@ -113,4 +113,36 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + Fields.lineType, is(LineType.ORDERLY.toString())))
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
   }
+
+  @Test
+  void shouldShortSublinesAndUpdateLineVersion() throws Exception {
+    LineVersionModelV2 createLineVersionModelV2 =
+        LineTestData.createLineVersionModelBuilder()
+            .businessOrganisation("sbb")
+            .longName("long name")
+            .lineType(LineType.ORDERLY)
+            .swissLineNumber("b0.IC6")
+            .lineConcessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
+            .validFrom(LocalDate.of(2000, 12, 31))
+            .validTo(LocalDate.of(2020, 1, 1))
+            .build();
+
+    LineVersionModelV2 lineVersionSaved = lineControllerV2.createLineVersionV2(createLineVersionModelV2);
+
+    UpdateLineVersionModelV2 updateLineVersionModelV2 =
+        LineTestData.updateLineVersionModelBuilder()
+            .businessOrganisation("sbb")
+            .longName("long name")
+            .swissLineNumber("b0.IC6")
+            .id(lineVersionSaved.getId())
+            .etagVersion(lineVersionSaved.getEtagVersion())
+            .editor(lineVersionSaved.getEditor())
+            .editionDate(lineVersionSaved.getEditionDate())
+            .creator(lineVersionSaved.getCreator())
+            .creationDate(lineVersionSaved.getCreationDate())
+            .validFrom(LocalDate.of(2001, 12, 31))
+            .validTo(LocalDate.of(2010, 12, 31))
+            .build();
+  }
+
 }
