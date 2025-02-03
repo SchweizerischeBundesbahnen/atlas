@@ -12,7 +12,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.lidi.AffectedSublines;
-import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -341,9 +340,8 @@ class LineServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
         List.of(sublineVersion, sublineVersion2, sublineVersionNew, sublineVersionNew2));
 
-    DateRange dateRange = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
-
-    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), dateRange);
+    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), lineVersion.getValidFrom(),
+        lineVersion.getValidTo());
     assertThat(affectedSublines.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(sublineVersionNew2.getSlnid(), sublineVersion2.getSlnid()));
   }
@@ -390,9 +388,8 @@ class LineServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
         List.of(allowedSublineVersion, allowedSublineVersion2, notAllowedSublineVersion, notAllowedSublineVersion2));
 
-    DateRange dateRange = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
-
-    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), dateRange);
+    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), lineVersion.getValidFrom(),
+        lineVersion.getValidTo());
     assertThat(affectedSublines.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(allowedSublineVersion.getSlnid()));
     assertThat(affectedSublines.getNotAllowedSublines()).containsExactlyInAnyOrderElementsOf(
@@ -441,9 +438,8 @@ class LineServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
         List.of(notAllowedSublineVersion, notAllowedSublineVersion2, notAllowedSublineVersion3, notAllowedSublineVersion4));
 
-    DateRange dateRange = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
-
-    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), dateRange);
+    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), lineVersion.getValidFrom(),
+        lineVersion.getValidTo());
     assertThat(affectedSublines.getNotAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(notAllowedSublineVersion.getSlnid(),
             notAllowedSublineVersion4.getSlnid()));
@@ -470,9 +466,8 @@ class LineServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
         List.of(notAllowedSublineVersion3));
 
-    DateRange dateRange = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
-
-    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), dateRange);
+    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), lineVersion.getValidFrom(),
+        lineVersion.getValidTo());
     assertThat(affectedSublines.getNotAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(notAllowedSublineVersion3.getSlnid()));
   }
