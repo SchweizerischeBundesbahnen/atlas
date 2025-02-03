@@ -5,6 +5,7 @@ import PrmConstants from './PrmConstants';
 // Documentation: PRM-Data-Fact-Matrix: https://confluence.sbb.ch/x/vgdpl
 
 let parentServicePointSloid = '';
+let referencePointSloid = '';
 let numberWithoutCheckDigit = -1;
 let trafficPointSloid = '';
 let etagVersion = -1;
@@ -342,7 +343,6 @@ describe('PRM: New complete Stop Point', { testIsolation: false }, () => {
 describe('PRM: New complete Reference Point', { testIsolation: false }, () => {
   let designation = 'designation';
   let referencePointId = -1;
-  let referencePointSloid = '';
 
   const validFrom = ReleaseApiUtils.todayAsAtlasString();
   const validTo = ReleaseApiUtils.todayAsAtlasString();
@@ -442,7 +442,72 @@ describe('PRM: New complete Reference Point', { testIsolation: false }, () => {
       );
       validate(referencePoint);
       etagVersion = referencePoint.etagVersion;
-      console.error(mainReferencePoint);
+    });
+  });
+});
+
+describe('PRM: Check relations for sloid', { testIsolation: false }, () => {
+  const NO_RELATIONSHIP_YET = 0;
+
+  const checkResponse = (response) => {
+    expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+    expect(response.body.totalCount).to.equal(NO_RELATIONSHIP_YET);
+    expect(response.body)
+      .to.have.property('objects')
+      .that.is.an('array')
+      .to.have.property('length')
+      .to.equal(NO_RELATIONSHIP_YET);
+  };
+
+  it('Step-1: No relation for sloid', () => {
+    CommonUtils.get(`/prm-directory/v1/relations/${referencePointSloid}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+        expect(response.body)
+          .to.be.an('array')
+          .to.have.property('length')
+          .to.equal(NO_RELATIONSHIP_YET);
+      }
+    );
+  });
+
+  it('Step-2: No TOILET-relation for sloid', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/relations?sloids=${referencePointSloid}&referencePointElementTypes=TOILET`
+    ).then((response) => {
+      checkResponse(response);
+    });
+  });
+
+  it('Step-3: No TICKET_COUNTER-relation for sloid', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/relations?sloids=${referencePointSloid}&referencePointElementTypes=CONTACT_POINT`
+    ).then((response) => {
+      checkResponse(response);
+    });
+  });
+
+  it('Step-4: No PLATFORM-relation for sloid', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/relations?sloids=${referencePointSloid}&referencePointElementTypes=PLATFORM`
+    ).then((response) => {
+      checkResponse(response);
+    });
+  });
+
+  it('Step-5: No PARKING_LOT-relation for sloid', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/relations?sloids=${referencePointSloid}&referencePointElementTypes=PARKING_LOT`
+    ).then((response) => {
+      checkResponse(response);
+    });
+  });
+
+  it('Step-6: No relation for parent-sloid', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/relations?parentServicePointSloids=${parentServicePointSloid}`
+    ).then((response) => {
+      checkResponse(response);
     });
   });
 });
