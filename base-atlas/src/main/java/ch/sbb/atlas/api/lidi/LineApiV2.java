@@ -57,8 +57,4 @@ public interface LineApiV2 {
   @Operation(description = "Returns checked Sublines to short")
   AffectedSublines checkAffectedSublines(@PathVariable Long id, @RequestBody @Valid DateRange dateRange);
 
-  @PostMapping("/shortSublines/{id}")
-  @Operation(description = "Short Automatically all Sublines from Mainline")
-  void shortSublines(@PathVariable Long id, @RequestBody @Valid SublineTruncationRequest sublineTruncationRequest);
-
 }

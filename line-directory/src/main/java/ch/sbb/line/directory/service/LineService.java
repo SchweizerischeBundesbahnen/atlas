@@ -14,8 +14,6 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
-import ch.sbb.line.directory.exception.SublineTruncationNotAllowedException;
-import ch.sbb.line.directory.exception.SublinesNotAffectedException;
 import ch.sbb.line.directory.model.SublineVersionRange;
 import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
@@ -29,6 +27,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -97,33 +96,37 @@ public class LineService {
     lineValidationService.validateNotRevoked(currentVersion);
     lineUpdateValidationService.validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
     boolean onlyValidityChanged = isOnlyValidityChanged(currentVersion, editedVersion);
+    boolean isTruncation = (editedVersion.getValidFrom().isAfter(currentVersion.getValidFrom()) || editedVersion.getValidTo()
+        .isBefore(currentVersion.getValidTo()));
 
-    if (onlyValidityChanged) {
-      DateRange range = new DateRange(editedVersion.getValidFrom(), editedVersion.getValidTo());
-      AffectedSublines affectedSublines = checkAffectedSublines(editedVersion.getId(), range);
-      SublineTruncationRequest sublineTruncationRequest = new SublineTruncationRequest(range,
+    if (onlyValidityChanged && isTruncation) {
+
+      DateRange newMainlineValidity = new DateRange(editedVersion.getValidFrom(), editedVersion.getValidTo());
+      AffectedSublines affectedSublines = checkAffectedSublines(currentVersion.getId(), newMainlineValidity);
+
+      SublineTruncationRequest sublineTruncationRequest = new SublineTruncationRequest(
+          newMainlineValidity,
           affectedSublines.getAllowedSublines());
 
-      if (affectedSublines.getNotAllowedSublines().isEmpty()) {
-        shortSublines(editedVersion.getId(), sublineTruncationRequest);
+      if (affectedSublines.getNotAllowedSublines().isEmpty() && !affectedSublines.getAllowedSublines().isEmpty()) {
+        shortSublines(currentVersion.getId(), sublineTruncationRequest);
       }
     }
     updateVersion(currentVersion, editedVersion);
   }
 
   private static boolean isOnlyValidityChanged(LineVersion currentVersion, LineVersion editedVersion) {
-    return (!editedVersion.getValidTo().equals(currentVersion.getValidTo())
-        || !editedVersion.getValidFrom().equals(currentVersion.getValidFrom()))
-        && editedVersion.getSwissLineNumber().equals(currentVersion.getSwissLineNumber())
-        && editedVersion.getSlnid().equals(currentVersion.getSlnid())
-        && editedVersion.getBusinessOrganisation().equals(currentVersion.getBusinessOrganisation())
-        && editedVersion.getComment().equals(currentVersion.getComment())
-        && editedVersion.getConcessionType().equals(currentVersion.getConcessionType())
-        && editedVersion.getOfferCategory().equals(currentVersion.getOfferCategory())
-        && editedVersion.getShortNumber().equals(currentVersion.getShortNumber())
-        && editedVersion.getDescription().equals(currentVersion.getDescription())
-        && editedVersion.getLongName().equals(currentVersion.getLongName())
-        && editedVersion.getNumber().equals(currentVersion.getNumber());
+    return (!Objects.equals(editedVersion.getValidTo(), currentVersion.getValidTo())
+        || !Objects.equals(editedVersion.getValidFrom(), currentVersion.getValidFrom()))
+        && Objects.equals(editedVersion.getSwissLineNumber(), currentVersion.getSwissLineNumber())
+        && Objects.equals(editedVersion.getBusinessOrganisation(), currentVersion.getBusinessOrganisation())
+        && Objects.equals(editedVersion.getComment(), currentVersion.getComment())
+        && Objects.equals(editedVersion.getConcessionType(), currentVersion.getConcessionType())
+        && Objects.equals(editedVersion.getOfferCategory(), currentVersion.getOfferCategory())
+        && Objects.equals(editedVersion.getShortNumber(), currentVersion.getShortNumber())
+        && Objects.equals(editedVersion.getDescription(), currentVersion.getDescription())
+        && Objects.equals(editedVersion.getLongName(), currentVersion.getLongName())
+        && Objects.equals(editedVersion.getNumber(), currentVersion.getNumber());
   }
 
   public List<LineVersion> revokeLine(String slnid) {
@@ -245,32 +248,33 @@ public class LineService {
         .build();
   }
 
-  public AffectedSublines checkAffectedSublines(Long id, DateRange dateRange) {
+  public AffectedSublines checkAffectedSublines(Long id, DateRange newMainlineValidity) {
     LineVersion lineVersion = findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
-
-    if (dateRange.getFrom().isBefore(lineVersion.getValidFrom())
-        && dateRange.getTo().isAfter(lineVersion.getValidTo())) {
-      throw new SublinesNotAffectedException(dateRange);
-    }
 
     Map<String, List<SublineVersion>> sublineVersions = getAllSublinesByMainlineSlnid(lineVersion.getSlnid());
 
     List<String> allowedSublines = new ArrayList<>();
     List<String> notAllowedSublines = new ArrayList<>();
 
-    for (List<SublineVersion> versions : sublineVersions.values()) {
-      SublineVersionRange sublineVersionRange = getOldestAndLatest(versions);
+    boolean isTruncation = (newMainlineValidity.getFrom().isAfter(lineVersion.getValidFrom()) || newMainlineValidity.getTo()
+        .isBefore(lineVersion.getValidTo()));
 
-      boolean shorteningAllowed = isShorteningAllowed(dateRange, sublineVersionRange);
+    if (!sublineVersions.isEmpty() && isTruncation) {
+      for (List<SublineVersion> versions : sublineVersions.values()) {
+        SublineVersionRange sublineVersionValidityRange = getOldestAndLatest(versions);
 
-      boolean isSingleSublineInRange = (versions.size() == 1)
-          && !isDateRangeCompletelyOutsideRange(dateRange, sublineVersionRange);
+        boolean shorteningAllowed = isShorteningAllowed(newMainlineValidity, sublineVersionValidityRange);
+        boolean isValidityAffected = isSublineValidityAffectedByUpdatedMainline(newMainlineValidity, sublineVersionValidityRange);
 
-      if (shorteningAllowed || isSingleSublineInRange) {
-        allowedSublines.add(sublineVersionRange.getLatestVersion().getSlnid());
-      } else {
-        notAllowedSublines.add(sublineVersionRange.getLatestVersion().getSlnid());
+        if (isValidityAffected) {
+          if (shorteningAllowed) {
+            allowedSublines.add(sublineVersionValidityRange.getLatestVersion().getSlnid());
+          } else {
+            notAllowedSublines.add(sublineVersionValidityRange.getLatestVersion().getSlnid());
+          }
+        }
+
       }
     }
 
@@ -281,7 +285,7 @@ public class LineService {
     LineVersion lineVersion = findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
-    DateRange sublineDateRange = new DateRange(
+    DateRange mainlineDateRange = new DateRange(
         sublineTruncationRequest.getDateRange().getFrom(),
         sublineTruncationRequest.getDateRange().getTo()
     );
@@ -290,29 +294,42 @@ public class LineService {
       List<SublineVersion> versions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
       SublineVersionRange sublineVersionRange = getOldestAndLatest(versions);
 
-      //TODO: check if isSingleSublineInRange
-      if (!isShorteningAllowed(sublineDateRange, sublineVersionRange)) {
-        throw new SublineTruncationNotAllowedException(sublineDateRange);
+      if (!mainlineDateRange.getFrom().equals(lineVersion.getValidFrom())) {
+        SublineVersion oldVersion = cloneSublineVersion(sublineVersionRange.getOldestVersion());
+        SublineVersion editedVersion = cloneSublineVersion(sublineVersionRange.getOldestVersion());
+        editedVersion.setValidFrom(mainlineDateRange.getFrom());
+        sublineService.updateVersion(oldVersion, editedVersion);
       }
 
-      if (isSublineValidityAffectedByUpdatedMainline(sublineDateRange,
-          sublineVersionRange)) {
-
-        //TODO check if better method is possible
-        //TODO what if excpetion occurs in update? How to inform user?
-        if (!sublineDateRange.getFrom().equals(lineVersion.getValidFrom())) {
-          SublineVersion oldVersion = sublineVersionRange.getOldestVersion();
-          sublineVersionRange.getOldestVersion().setValidFrom(sublineDateRange.getFrom());
-          sublineService.updateVersion(oldVersion, sublineVersionRange.getOldestVersion());
-        }
-
-        if (!sublineDateRange.getTo().equals(lineVersion.getValidTo())) {
-          SublineVersion latestVersion = sublineVersionRange.getLatestVersion();
-          sublineVersionRange.getLatestVersion().setValidTo(sublineDateRange.getTo());
-          sublineService.updateVersion(latestVersion, sublineVersionRange.getLatestVersion());
-        }
+      if (!mainlineDateRange.getTo().equals(lineVersion.getValidTo())) {
+        SublineVersion latestVersion = cloneSublineVersion(sublineVersionRange.getLatestVersion());
+        SublineVersion editedVersion = cloneSublineVersion(sublineVersionRange.getLatestVersion());
+        editedVersion.setValidTo(mainlineDateRange.getTo());
+        sublineService.updateVersion(latestVersion, editedVersion);
       }
     }
+  }
+
+  private static SublineVersion cloneSublineVersion(SublineVersion sublineVersion) {
+    return SublineVersion.builder()
+        .slnid(sublineVersion.getSlnid())
+        .mainlineSlnid(sublineVersion.getMainlineSlnid())
+        .id(sublineVersion.getId())
+        .businessOrganisation(sublineVersion.getBusinessOrganisation())
+        .longName(sublineVersion.getLongName())
+        .sublineType(sublineVersion.getSublineType())
+        .concessionType(sublineVersion.getConcessionType())
+        .description(sublineVersion.getDescription())
+        .swissSublineNumber(sublineVersion.getSwissSublineNumber())
+        .validFrom(sublineVersion.getValidFrom())
+        .validTo(sublineVersion.getValidTo())
+        .creationDate(sublineVersion.getCreationDate())
+        .creator(sublineVersion.getCreator())
+        .editionDate(sublineVersion.getEditionDate())
+        .editor(sublineVersion.getEditor())
+        .status(sublineVersion.getStatus())
+        .version(sublineVersion.getVersion())
+        .build();
   }
 
   private Map<String, List<SublineVersion>> getAllSublinesByMainlineSlnid(String mainlineSlnid) {
@@ -328,15 +345,6 @@ public class LineService {
     DateRange dateRangeMainline = new DateRange(dateRange.getFrom(), dateRange.getTo());
 
     return !dateRangeSubline.isDateRangeContainedIn(dateRangeMainline);
-  }
-
-  private boolean isDateRangeCompletelyOutsideRange(DateRange dateRange,
-      SublineVersionRange sublineVersionRange) {
-    DateRange dateRangeSubline =
-        new DateRange(sublineVersionRange.getOldestVersion().getValidFrom(), sublineVersionRange.getLatestVersion().getValidTo());
-    DateRange dateRangeMainline = new DateRange(dateRange.getFrom(), dateRange.getTo());
-
-    return !dateRangeSubline.isDateRangeCompletelyOutsideRange(dateRangeMainline);
   }
 
   public boolean isShorteningAllowed(DateRange dateRange, SublineVersionRange sublineVersionRange) {
