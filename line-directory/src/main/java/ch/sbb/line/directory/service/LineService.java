@@ -21,6 +21,7 @@ import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.LineUpdateValidationService;
 import ch.sbb.line.directory.validation.LineValidationService;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -102,7 +103,8 @@ public class LineService {
     if (onlyValidityChanged && isTruncation) {
 
       DateRange newMainlineValidity = new DateRange(editedVersion.getValidFrom(), editedVersion.getValidTo());
-      AffectedSublines affectedSublines = checkAffectedSublines(currentVersion.getId(), newMainlineValidity);
+      AffectedSublines affectedSublines = checkAffectedSublines(currentVersion.getId(), editedVersion.getValidFrom(),
+          editedVersion.getValidTo());
 
       SublineTruncationRequest sublineTruncationRequest = new SublineTruncationRequest(
           newMainlineValidity,
@@ -248,7 +250,7 @@ public class LineService {
         .build();
   }
 
-  public AffectedSublines checkAffectedSublines(Long id, DateRange newMainlineValidity) {
+  public AffectedSublines checkAffectedSublines(Long id, LocalDate validFrom, LocalDate validTo) {
     LineVersion lineVersion = findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
@@ -257,15 +259,14 @@ public class LineService {
     List<String> allowedSublines = new ArrayList<>();
     List<String> notAllowedSublines = new ArrayList<>();
 
-    boolean isTruncation = (newMainlineValidity.getFrom().isAfter(lineVersion.getValidFrom()) || newMainlineValidity.getTo()
-        .isBefore(lineVersion.getValidTo()));
+    boolean isTruncation = (validFrom.isAfter(lineVersion.getValidFrom()) || validTo.isBefore(lineVersion.getValidTo()));
 
     if (!sublineVersions.isEmpty() && isTruncation) {
       for (List<SublineVersion> versions : sublineVersions.values()) {
         SublineVersionRange sublineVersionValidityRange = getOldestAndLatest(versions);
 
-        boolean shorteningAllowed = isShorteningAllowed(newMainlineValidity, sublineVersionValidityRange);
-        boolean isValidityAffected = isSublineValidityAffectedByUpdatedMainline(newMainlineValidity, sublineVersionValidityRange);
+        boolean shorteningAllowed = isShorteningAllowed(validFrom, validTo, sublineVersionValidityRange);
+        boolean isValidityAffected = isSublineValidityAffectedByUpdatedMainline(validFrom, validTo, sublineVersionValidityRange);
 
         if (isValidityAffected) {
           if (shorteningAllowed) {
@@ -338,20 +339,20 @@ public class LineService {
         .collect(Collectors.groupingBy(SublineVersion::getSlnid));
   }
 
-  private boolean isSublineValidityAffectedByUpdatedMainline(DateRange dateRange,
+  private boolean isSublineValidityAffectedByUpdatedMainline(LocalDate validFrom, LocalDate validTo,
       SublineVersionRange sublineVersionRange) {
     DateRange dateRangeSubline =
         new DateRange(sublineVersionRange.getOldestVersion().getValidFrom(), sublineVersionRange.getLatestVersion().getValidTo());
-    DateRange dateRangeMainline = new DateRange(dateRange.getFrom(), dateRange.getTo());
+    DateRange dateRangeMainline = new DateRange(validFrom, validTo);
 
     return !dateRangeSubline.isDateRangeContainedIn(dateRangeMainline);
   }
 
-  public boolean isShorteningAllowed(DateRange dateRange, SublineVersionRange sublineVersionRange) {
-    return (dateRange.getFrom().isBefore(sublineVersionRange.getOldestVersion().getValidTo()) ||
-        dateRange.getFrom().isEqual(sublineVersionRange.getOldestVersion().getValidTo()))
-        && (dateRange.getTo().isAfter(sublineVersionRange.getLatestVersion().getValidFrom()) ||
-        dateRange.getTo().isEqual(sublineVersionRange.getLatestVersion().getValidFrom()));
+  public boolean isShorteningAllowed(LocalDate validFrom, LocalDate validTo, SublineVersionRange sublineVersionRange) {
+    return (validFrom.isBefore(sublineVersionRange.getOldestVersion().getValidTo()) ||
+        validFrom.isEqual(sublineVersionRange.getOldestVersion().getValidTo()))
+        && (validTo.isAfter(sublineVersionRange.getLatestVersion().getValidFrom()) ||
+        validTo.isEqual(sublineVersionRange.getLatestVersion().getValidFrom()));
 
   }
 
