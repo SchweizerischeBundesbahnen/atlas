@@ -93,7 +93,6 @@ model/createLoadingPointVersion.ts
 model/createServicePointVersion.ts
 model/createSublineVersionV2.ts
 model/createTrafficPointElementVersion.ts
-model/dateRange.ts
 model/decision.ts
 model/decisionType.ts
 model/detail.ts
@@ -188,7 +187,6 @@ model/stopPointRestartWorkflow.ts
 model/stopPointType.ts
 model/stopPointVersion.ts
 model/sublineConcessionType.ts
-model/sublineTruncationRequest.ts
 model/sublineType.ts
 model/sublineVersion.ts
 model/sublineVersionV2.ts
