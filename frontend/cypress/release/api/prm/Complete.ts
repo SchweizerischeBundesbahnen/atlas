@@ -511,3 +511,78 @@ describe('PRM: Check relations for sloid', { testIsolation: false }, () => {
     });
   });
 });
+
+describe('PRM: New complete Toilet', { testIsolation: false }, () => {
+  let toiletId = -1;
+  let toiletSloid = '';
+
+  const validFrom = ReleaseApiUtils.todayAsAtlasString();
+  const validTo = ReleaseApiUtils.todayAsAtlasString();
+  const wheelchairToilet = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValuesAndNotApplicableAndPartially()
+  );
+  const designation = 'öffentliches WC im Bf Basel Bad Bf';
+  const additionalInformation = 'additionalInformation';
+
+  const validate = (toilet) => {
+    validatePrmObject(toilet, validFrom, validTo);
+    expect(toilet)
+      .to.have.property('sloid')
+      .that.is.a('string')
+      .and.to.equal(toiletSloid);
+    expect(toilet)
+      .to.have.property('parentServicePointSloid')
+      .that.is.a('string')
+      .and.to.equal(parentServicePointSloid);
+    expect(toilet)
+      .to.have.property('designation')
+      .that.is.a('string')
+      .and.to.equal(designation);
+    expect(toilet)
+      .to.have.property('wheelchairToilet')
+      .that.is.a('string')
+      .and.to.equal(wheelchairToilet);
+    expect(toilet)
+      .to.have.property('additionalInformation')
+      .and.to.equal(additionalInformation);
+  };
+
+  it('Step-1: New complete Toilet', () => {
+    toiletSloid = `${parentServicePointSloid}:TOILET1`; // Initialisierung des sloid
+
+    CommonUtils.post('/prm-directory/v1/toilets', {
+      sloid: toiletSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      parentServicePointSloid: parentServicePointSloid,
+      designation: designation,
+      additionalInformation: additionalInformation,
+      wheelchairToilet: wheelchairToilet,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+    }).then((response) => {
+      expect(response.status).to.equal(
+        CommonUtils.HTTP_REST_API_RESPONSE_CREATED
+      );
+      const toilet = response.body;
+      validate(toilet);
+      toiletId = toilet.id;
+    });
+  });
+
+  it('Step-2: Get complete Toilet', () => {
+    CommonUtils.get(`/prm-directory/v1/toilets?sloids=${toiletSloid}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+        const toilet = ReleaseApiUtils.getPrmObjectById(
+          response.body,
+          toiletId,
+          false,
+          1
+        );
+        validate(toilet);
+        etagVersion = toilet.etagVersion;
+      }
+    );
+  });
+});
