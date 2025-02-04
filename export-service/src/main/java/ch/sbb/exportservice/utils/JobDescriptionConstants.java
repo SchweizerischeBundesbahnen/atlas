@@ -37,4 +37,7 @@ public class JobDescriptionConstants {
   public static final String EXECUTION_TYPE_PARAMETER = "EXECUTION";
   public static final String EXECUTION_BATCH_PARAMETER = "BATCH";
 
+  public static final String EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME = "exportTransportCompanyCsvJob";
+  public static final String EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME = "exportTransportCompanyJsonJob";
+
 }
