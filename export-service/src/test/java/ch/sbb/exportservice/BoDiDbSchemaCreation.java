@@ -17,7 +17,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
 @Inherited
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 @SqlGroup({
-    @Sql(scripts = {"/bodi-schema.sql"}, executionPhase =
+    @Sql(scripts = {"/bodi-schema.sql", "/bodi-data.sql"}, executionPhase =
         ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(dataSource =
         "businessOrganisationDirectoryDataSource",
         transactionManager =
