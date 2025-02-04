@@ -8,7 +8,7 @@ import ch.sbb.exportservice.entity.bodi.TransportCompany;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.BoDiBatchExportFileName;
-import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.model.BoDiExportType;
 import ch.sbb.exportservice.model.TransportCompanyCsvModel;
 import ch.sbb.exportservice.processor.TransportCompanyCsvProcessor;
 import ch.sbb.exportservice.processor.TransportCompanyJsonProcessor;
@@ -88,7 +88,7 @@ public class TransportCompanyExportBatchConfig {
   @StepScope
   public FlatFileItemWriter<TransportCompanyCsvModel> transportCompanyCsvWriter(
   ) {
-    return csvTransportCompanyWriter.csvWriter(PrmExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
+    return csvTransportCompanyWriter.csvWriter(BoDiExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
   }
 
   @Bean
@@ -116,7 +116,7 @@ public class TransportCompanyExportBatchConfig {
   @StepScope
   public UploadCsvFileTasklet uploadTransportCompanyCsvFileTasklet(
   ) {
-    return new UploadCsvFileTasklet(PrmExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
+    return new UploadCsvFileTasklet(BoDiExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
   }
 
   @Bean
@@ -131,7 +131,7 @@ public class TransportCompanyExportBatchConfig {
   @StepScope
   public FileCsvDeletingTasklet transportCompanyCsvFileDeletingTasklet(
   ) {
-    return new FileCsvDeletingTasklet(PrmExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
+    return new FileCsvDeletingTasklet(BoDiExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
   }
 
   @Bean
@@ -158,7 +158,7 @@ public class TransportCompanyExportBatchConfig {
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadTransportCompanyJsonFileTasklet() {
-    return new UploadJsonFileTasklet(PrmExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
+    return new UploadJsonFileTasklet(BoDiExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
   }
 
   @Bean
@@ -172,7 +172,7 @@ public class TransportCompanyExportBatchConfig {
   @Bean
   @StepScope
   public FileJsonDeletingTasklet fileTransportCompanyJsonDeletingTasklet() {
-    return new FileJsonDeletingTasklet(PrmExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
+    return new FileJsonDeletingTasklet(BoDiExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
   }
 
   @Bean
@@ -198,7 +198,7 @@ public class TransportCompanyExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<TransportCompanyModel> transportCompanyJsonFileItemWriter() {
-    return jsonTransportCompanyWriter.getWriter(PrmExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
+    return jsonTransportCompanyWriter.getWriter(BoDiExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
   }
 
 }
