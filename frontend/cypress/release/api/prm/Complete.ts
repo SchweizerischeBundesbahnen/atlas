@@ -125,7 +125,7 @@ describe('PRM: New complete Stop Point', { testIsolation: false }, () => {
 
   const validate = (stopPoint: any) => {
     validatePrmObject(stopPoint, validFrom, validTo);
-    expect(stopPoint).to.have.property('reduced').to.be.false;
+    expect(stopPoint).to.have.property('reduced').to.equal(false);
     expect(stopPoint)
       .to.have.property('sloid')
       .that.is.a('string')
