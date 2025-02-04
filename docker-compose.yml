@@ -113,7 +113,7 @@ services:
       - "-c"
       - "datestyle=iso, ymd"
 
-  export-service-point-db:
+  export-service-db:
     image: postgres:17.1
     restart: always
     ports:
