@@ -9,12 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
 
 @SpringBootApplication
-public class ExportServicePointApplication {
+public class ExportServiceApplication {
 
   public static void main(String[] args) {
     TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of(ZURICH_ZONE_ID)));
     KafkaTruststorePreparation.setupTruststore();
-    SpringApplication.run(ExportServicePointApplication.class, args);
+    SpringApplication.run(ExportServiceApplication.class, args);
   }
 
 }

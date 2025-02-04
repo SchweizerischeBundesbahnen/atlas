@@ -44,7 +44,7 @@ logging:
         web: error
 info:
   app:
-    name: export-service-point
+    name: export-service
     version: '@version@'
 
 kafka:
@@ -65,7 +65,7 @@ atlas:
 
 mail:
   receiver:
-    export-service-point: TechSupport-ATLAS@sbb.ch
+    export-service: TechSupport-ATLAS@sbb.ch
 
 amazon:
   region: "eu-central-1"
