@@ -5,10 +5,10 @@ import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFile
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
-import ch.sbb.exportservice.model.PrmBatchExportFileName;
-import ch.sbb.exportservice.model.PrmExportType;
-import ch.sbb.exportservice.service.FileExportService;
+import ch.sbb.exportservice.model.BoDiBatchExportFileName;
+import ch.sbb.exportservice.model.BoDiExportType;
 import ch.sbb.exportservice.model.ExportFilePath;
+import ch.sbb.exportservice.service.FileExportService;
 import io.micrometer.tracing.annotation.NewSpan;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,32 +29,32 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Person with Reduced Mobility - Export")
-@RequestMapping("v1/export/prm")
+@Tag(name = "Business Organisations - Export")
+@RequestMapping("v1/export/bodi")
 @RestController
 @AllArgsConstructor
 @Slf4j
-public class PrmBatchControllerApiV1 {
+public class BoDiFileStreamingControllerApiV1 {
 
   private final FileExportService fileExportService;
 
-  @GetMapping(value = "json/{exportFileName}/{prmExportType}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "json/{exportFileName}/{exportType}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "404", description = "Object with filename myFile not found", content = @Content(schema =
+      @ApiResponse(responseCode = "200", description = "Returns the today generated file as Stream"),
+      @ApiResponse(responseCode = "404", description = "No file found for today date", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
   @NewSpan
   @Async
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportJsonFile(
-      @PathVariable PrmBatchExportFileName exportFileName,
-      @PathVariable PrmExportType prmExportType) {
-    InputStreamResource body = fileExportService.streamJsonFile(prmExportType, exportFileName);
+      @PathVariable BoDiBatchExportFileName exportFileName,
+      @PathVariable BoDiExportType exportType) {
+    InputStreamResource body = fileExportService.streamJsonFile(exportType, exportFileName);
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
 
-  @GetMapping(value = "json/latest/{exportFileName}/{prmExportType}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "json/latest/{exportFileName}/{exportType}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Returns the today generated file as Stream"),
       @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
@@ -63,42 +63,46 @@ public class PrmBatchControllerApiV1 {
   @NewSpan
   @Async
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportJsonFile(
-      @PathVariable PrmBatchExportFileName exportFileName,
-      @PathVariable PrmExportType prmExportType) {
-    InputStreamResource body = fileExportService.streamLatestJsonFile(prmExportType, exportFileName);
+      @PathVariable BoDiBatchExportFileName exportFileName,
+      @PathVariable BoDiExportType exportType) {
+    InputStreamResource body = fileExportService.streamLatestJsonFile(exportType, exportFileName);
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
 
-  @GetMapping(value = "download-gzip-json/{exportFileName}/{prmExportType}")
+  @GetMapping(value = "download-gzip-json/{exportFileName}/{exportType}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Returns the today generated file"),
-      @ApiResponse(responseCode = "404", description = "No filed found for today date", content = @Content(schema =
+      @ApiResponse(responseCode = "404", description = "No file found for today date", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
   @NewSpan
   @Async
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportGzFile(
-      @PathVariable PrmBatchExportFileName exportFileName,
-      @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
-    ExportFilePath exportFilePath = new ExportFilePath(prmExportType, exportFileName);
+      @PathVariable BoDiBatchExportFileName exportFileName,
+      @PathVariable BoDiExportType exportType) throws NotAllowedExportFileException {
+    ExportFilePath exportFilePath = new ExportFilePath(exportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.actualDateFileName());
     InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
-  @GetMapping(value = "download-gzip-json/latest/{exportFileName}/{prmExportType}")
+  @GetMapping(value = "download-gzip-json/latest/{exportFileName}/{exportType}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Returns the latest generated file"),
       @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
+  @NewSpan
+  @Async
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportGzFile(
-      @PathVariable PrmBatchExportFileName exportFileName,
-      @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
-    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(prmExportType, exportFileName);
+      @PathVariable BoDiBatchExportFileName exportFileName,
+      @PathVariable BoDiExportType exportType) throws NotAllowedExportFileException {
+    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(exportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
     InputStreamResource body = fileExportService.streamGzipFile(latestUploadedFileName);
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
+
+
 }
