@@ -10,7 +10,7 @@ import {
   UpdateLineVersionV2,
 } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { Pages } from '../../../pages';
 import {
@@ -25,6 +25,7 @@ import { DateRange } from '../../../../core/versioning/date-range';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
+import moment from 'moment';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -37,6 +38,7 @@ export class LineDetailComponent implements OnInit {
   versions!: Array<LineVersionV2>;
 
   form!: FormGroup<LineDetailFormGroup>;
+  initForm!: FormGroup<LineDetailFormGroup>;
 
   isNew = false;
 
@@ -203,14 +205,12 @@ export class LineDetailComponent implements OnInit {
     if (this.form.valid) {
       if (this.isNew) {
         this.form.disable();
-        const lineVersion =
-          this.form.getRawValue() as unknown as LineVersionV2;
+        const lineVersion = this.form.getRawValue() as unknown as LineVersionV2;
         this.createLine(lineVersion);
       } else {
         this.validityService.updateValidity(this.form);
         this.validityService.validate().subscribe((confirmed) => {
           if (confirmed) {
-            this.form.disable();
             const lineVersion =
               this.form.getRawValue() as unknown as UpdateLineVersionV2;
             this.updateLine(this.selectedVersion.id!, lineVersion);
@@ -234,6 +234,54 @@ export class LineDetailComponent implements OnInit {
   }
 
   updateLine(id: number, lineVersion: UpdateLineVersionV2): void {
+    const validFromDate = moment(lineVersion.validFrom).toDate();
+    const validToDate = moment(lineVersion.validTo).toDate();
+    if (this.isOnlyValidityChangedToTruncation()) {
+      this.linesService
+        .checkAffectedSublines(id, validFromDate, validToDate)
+        .subscribe((affectedSublines) => {
+          const isZeroAffectedSublines =
+            affectedSublines.allowedSublines?.length == 0 &&
+            affectedSublines.notAllowedSublines?.length == 0;
+
+          const isAllowedToUpdateAutomatically =
+            affectedSublines.allowedSublines!.length > 0 &&
+            affectedSublines.notAllowedSublines!.length === 0;
+
+          if (isZeroAffectedSublines) {
+            this.updateLineVersion(id, lineVersion);
+          } else {
+            this.dialogService
+              .confirm(
+                this.buildConfirmDialog(
+                  isAllowedToUpdateAutomatically,
+                  affectedSublines.notAllowedSublines
+                )
+              )
+              .subscribe((confirmed) => {
+                if (confirmed) {
+                  this.updateLineVersion(id, lineVersion);
+                }
+              });
+          }
+        });
+    } else {
+      this.updateLineVersion(id, lineVersion);
+    }
+  }
+
+  buildConfirmDialog(canAutomatically: boolean, toBeShortened?: string[]) {
+    return {
+      title: canAutomatically ? 'Kürze alles' : 'Kürze manuel',
+      message: canAutomatically
+        ? 'Es kann alles gekürzt werden'
+        : 'Es kann NICHT gekürzt werden',
+      cancelText: 'Abbrechen',
+      confirmText: canAutomatically ? 'Fortfahren' : 'ignorieren',
+    };
+  }
+
+  updateLineVersion(id: number, lineVersion: UpdateLineVersionV2) {
     this.linesService
       .updateLineVersion(id, lineVersion)
       .pipe(catchError(this.handleError()))
@@ -315,6 +363,7 @@ export class LineDetailComponent implements OnInit {
       this.validityService.initValidity(this.form);
       this.form.enable({ emitEvent: false });
 
+      this.initializeForm(this.form);
       this.conditionalValidation();
 
       if (this.selectedVersion.status === Status.InReview) {
@@ -323,6 +372,66 @@ export class LineDetailComponent implements OnInit {
         this.form.controls.lineType.disable();
       }
     }
+  }
+
+  initializeForm(form: FormGroup<LineDetailFormGroup>) {
+    this.initForm = new FormGroup<LineDetailFormGroup>({
+      swissLineNumber: new FormControl(form.value.swissLineNumber),
+      lineType: new FormControl(form.value.lineType),
+      offerCategory: new FormControl(form.value.offerCategory),
+      businessOrganisation: new FormControl(form.value.businessOrganisation),
+      number: new FormControl(form.value.number),
+      shortNumber: new FormControl(form.value.shortNumber),
+      lineConcessionType: new FormControl(form.value.lineConcessionType),
+      longName: new FormControl(form.value.longName),
+      description: new FormControl(form.value.description),
+      comment: new FormControl(form.value.comment),
+      validFrom: new FormControl(form.value.validFrom!),
+      validTo: new FormControl(form.value.validTo!),
+      etagVersion: new FormControl(form.value.etagVersion),
+      creationDate: new FormControl(form.value.creationDate),
+      editionDate: new FormControl(form.value.editionDate),
+      creator: new FormControl(form.value.creator),
+      editor: new FormControl(form.value.editor),
+    });
+  }
+
+  isOnlyValidityChangedToTruncation() {
+    const initForm = { ...this.initForm.value };
+    const updatedForm = { ...this.form.value };
+
+    const ignoreFields = ['validFrom', 'validTo'];
+
+    const keysInit = Object.keys(initForm)
+      .filter((key) => !ignoreFields.includes(key))
+      .sort();
+    const keysUpdated = Object.keys(updatedForm)
+      .filter((key) => !ignoreFields.includes(key))
+      .sort();
+
+    let formsEqual = false;
+
+    keysInit.forEach((key) => {
+      if (keysUpdated.includes(key)) {
+        formsEqual = true;
+      } else {
+        if (
+          initForm[key as keyof typeof initForm] ===
+          updatedForm[key as keyof typeof updatedForm]
+        ) {
+          formsEqual = true;
+        }
+      }
+    });
+
+    const validFromShortened = this.form.value.validFrom?.isAfter(
+      this.initForm.value.validFrom
+    );
+    const validToShortened = this.form.value.validTo?.isBefore(
+      this.initForm.value.validTo
+    );
+
+    return formsEqual && (validFromShortened || validToShortened);
   }
 
   switchVersion(newIndex: number) {
