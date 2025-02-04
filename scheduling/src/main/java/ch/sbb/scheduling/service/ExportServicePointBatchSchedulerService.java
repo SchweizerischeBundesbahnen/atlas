@@ -121,4 +121,14 @@ public class ExportServicePointBatchSchedulerService extends BaseSchedulerServic
         "Trigger Export Relation Batch");
   }
 
+  @SpanTracing
+  @Retryable(label = "triggerExportTransportCompanyBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
+  @Scheduled(cron = "${scheduler.export-service.transport-company-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerExportTransportCompanyBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  public Response postTriggerExportTransportCompanyBatch() {
+    return executeRequest(exportServicePointBatchClient::postTriggerExportTransportCompanyBatch,
+        "Trigger Export TransportCompany Batch");
+  }
+
 }
