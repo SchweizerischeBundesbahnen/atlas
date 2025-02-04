@@ -15,9 +15,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "")
-public class SublineTruncationRequest {
+public class SublineShorteningRequest {
 
-  DateRange dateRange;
+  DateRange mainlineValidity;
   List<String> sublinesToShort;
 
 }
