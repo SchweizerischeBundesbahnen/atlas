@@ -1,5 +1,8 @@
 package ch.sbb.exportservice.model;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class Constants {
 
   public static final String FULL_DIR_NAME = "full";
