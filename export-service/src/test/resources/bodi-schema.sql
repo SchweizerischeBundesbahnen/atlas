@@ -1,7 +1,6 @@
 create table transport_company
 (
-    id                            bigint    not null
-        primary key,
+    id                            bigint    not null primary key,
     number                        varchar(50),
     abbreviation                  varchar(50),
     description                   varchar(200),
