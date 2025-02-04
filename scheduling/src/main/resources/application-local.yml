@@ -117,7 +117,7 @@ scheduler:
     geo-location-update-trigger-batch:
       chron: "0 0 23 * * SUN" #At 23:00 on Sunday.
 
-  export-service-point:
+  export-service:
     service-point-trigger-batch:
       chron: "0 1 0 * * ?" #At 00:01:00am every day
     traffic-point-trigger-batch:

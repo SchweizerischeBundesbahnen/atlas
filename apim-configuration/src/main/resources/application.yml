@@ -8,7 +8,7 @@ publishing:
         - import-service-point
         - line-directory
         - service-point-directory
-        - export-service-point
+        - export-service
         - user-administration
         - workflow
         - prm-directory
@@ -18,7 +18,7 @@ publishing:
         - line-directory
         - business-organisation-directory
         - service-point-directory
-        - export-service-point
+        - export-service
         - prm-directory
     test:
       exportDirectory: api-test
@@ -26,7 +26,7 @@ publishing:
         - line-directory
         - business-organisation-directory
         - service-point-directory
-        - export-service-point
+        - export-service
         - prm-directory
     int:
       exportDirectory: api-int
@@ -34,7 +34,7 @@ publishing:
         - line-directory
         - business-organisation-directory
         - service-point-directory
-        - export-service-point
+        - export-service
         - prm-directory
       excludePatterns:
         - export/batch
@@ -44,7 +44,7 @@ publishing:
         - line-directory
         - business-organisation-directory
         - service-point-directory
-        - export-service-point
+        - export-service
         - prm-directory
       excludePatterns:
         - timetable-hearing
