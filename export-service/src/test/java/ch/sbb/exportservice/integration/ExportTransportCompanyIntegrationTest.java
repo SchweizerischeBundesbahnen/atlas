@@ -17,8 +17,6 @@ import java.io.File;
 import java.net.URI;
 import java.nio.file.Files;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -49,15 +47,12 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
 
   @MockitoBean
   @Qualifier("transportCompanyCsvFileDeletingTasklet")
-  protected FileCsvDeletingTasklet fileCsvDeletingTasklet;
-
-  @Captor
-  protected ArgumentCaptor<File> fileArgumentCaptor;
+  private FileCsvDeletingTasklet transportCompanyCsvFileDeletingTasklet;
 
   @Test
   void shouldExecuteExportTransportCompanyCsvJob() throws Exception {
     when(amazonService.putZipFile(any(), fileArgumentCaptor.capture(), any())).thenReturn(URI.create("https://sbb.ch").toURL());
-    when(fileCsvDeletingTasklet.execute(any(), any())).thenReturn(null);
+    when(transportCompanyCsvFileDeletingTasklet.execute(any(), any())).thenReturn(null);
 
     // given
     JobParameters jobParameters = new JobParametersBuilder()
