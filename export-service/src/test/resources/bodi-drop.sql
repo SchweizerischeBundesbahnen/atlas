@@ -1,0 +1,1 @@
+drop table transport_company;
