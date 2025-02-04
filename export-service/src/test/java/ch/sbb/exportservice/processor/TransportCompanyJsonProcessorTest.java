@@ -8,10 +8,10 @@ import ch.sbb.exportservice.entity.bodi.TransportCompany;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
-public class TransportCompanyJsonProcessorTest {
+class TransportCompanyJsonProcessorTest {
 
   @Test
-  public void shouldMapToReadModel() {
+  void shouldMapToReadModel() {
     TransportCompany entity = TransportCompany.builder()
         .id(1L)
         .number("12345")
