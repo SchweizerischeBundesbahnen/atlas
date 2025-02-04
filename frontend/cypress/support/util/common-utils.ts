@@ -3,6 +3,7 @@ import { DataCy } from '../data-cy';
 export default class CommonUtils {
   static HTTP_REST_API_RESPONSE_OK = 200;
   static HTTP_REST_API_RESPONSE_CREATED = 201;
+  static TO_BE_COMPLETED = 'TO_BE_COMPLETED';
 
   static fromDetailBackToTtfnOverview() {
     this.fromDetailBackToOverview('timetable-field-number');
@@ -425,6 +426,7 @@ export default class CommonUtils {
       characters.charAt(Math.floor(Math.random() * characters.length))
     ).join('');
   }
+
   static createDependentBusinessOrganisation(validFrom: Date, validTo: Date) {
     return new Cypress.Promise((resolve) => {
       CommonUtils.post(

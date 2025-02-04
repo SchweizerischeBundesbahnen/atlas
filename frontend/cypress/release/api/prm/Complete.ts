@@ -514,6 +514,7 @@ describe('PRM: Check relations for sloid', { testIsolation: false }, () => {
 
 describe('PRM: New complete Toilet', { testIsolation: false }, () => {
   let toiletId = -1;
+  let relationId = -1;
   let toiletSloid = '';
 
   const validFrom = ReleaseApiUtils.todayAsAtlasString();
@@ -523,6 +524,7 @@ describe('PRM: New complete Toilet', { testIsolation: false }, () => {
   );
   const designation = 'öffentliches WC im Bf Basel Bad Bf';
   const additionalInformation = 'additionalInformation';
+  const referencePointElementType = `TOILET`;
 
   const validate = (toilet) => {
     validatePrmObject(toilet, validFrom, validTo);
@@ -547,8 +549,40 @@ describe('PRM: New complete Toilet', { testIsolation: false }, () => {
       .and.to.equal(additionalInformation);
   };
 
+  const validateRelation = (relation) => {
+    validatePrmObject(relation, validFrom, validTo);
+    expect(relation)
+      .to.have.property('referencePointSloid')
+      .that.is.a('string')
+      .and.to.equal(referencePointSloid);
+    expect(relation)
+      .to.have.property('elementSloid')
+      .that.is.a('string')
+      .and.to.equal(toiletSloid);
+    expect(relation)
+      .to.have.property('parentServicePointSloid')
+      .that.is.a('string')
+      .and.to.equal(parentServicePointSloid);
+    expect(relation)
+      .to.have.property('referencePointElementType')
+      .that.is.a('string')
+      .and.to.equal(referencePointElementType);
+    expect(relation)
+      .to.have.property('tactileVisualMarks')
+      .that.is.a('string')
+      .and.to.equal(CommonUtils.TO_BE_COMPLETED);
+    expect(relation)
+      .to.have.property('contrastingAreas')
+      .that.is.a('string')
+      .and.to.equal(CommonUtils.TO_BE_COMPLETED);
+    expect(relation)
+      .to.have.property('stepFreeAccess')
+      .that.is.a('string')
+      .and.to.equal(CommonUtils.TO_BE_COMPLETED);
+  };
+
   it('Step-1: New complete Toilet', () => {
-    toiletSloid = `${parentServicePointSloid}:TOILET1`; // Initialisierung des sloid
+    toiletSloid = `${parentServicePointSloid}:${referencePointElementType}1`; // Initialisierung des sloid
 
     CommonUtils.post('/prm-directory/v1/toilets', {
       sloid: toiletSloid,
@@ -584,5 +618,22 @@ describe('PRM: New complete Toilet', { testIsolation: false }, () => {
         etagVersion = toilet.etagVersion;
       }
     );
+  });
+
+  it('Step-3: Get relations for sloid', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/relations?sloids=${toiletSloid}&referencePointSloids=${referencePointSloid}`
+    ).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      expect(response.body)
+        .to.have.property('objects')
+        .that.is.an('array')
+        .and.to.have.property('length')
+        .which.equals(1);
+      const toiletRelation = response.body.objects[0];
+      validateRelation(toiletRelation);
+      relationId = toiletRelation.id;
+    });
   });
 });
