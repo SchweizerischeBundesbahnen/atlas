@@ -13,6 +13,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.mapper.LineVersionWorkflowMapper;
 import ch.sbb.line.directory.service.LineService;
+import ch.sbb.line.directory.service.SublineShorteningService;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LineControllerV2 implements LineApiV2 {
 
   private final LineService lineService;
+  private final SublineShorteningService sublineShorteningService;
 
   @Override
   public List<LineVersionModelV2> getLineVersionsV2(String slnid) {
@@ -55,7 +57,7 @@ public class LineControllerV2 implements LineApiV2 {
 
   @Override
   public AffectedSublines checkAffectedSublines(Long id, LocalDate validFrom, LocalDate validTo) {
-    return lineService.checkAffectedSublines(id, validFrom, validTo);
+    return sublineShorteningService.checkAffectedSublines(id, validFrom, validTo);
   }
 
   private LineVersionModelV2 toModel(LineVersion lineVersion) {
