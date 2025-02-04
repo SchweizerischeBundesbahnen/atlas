@@ -9,6 +9,7 @@ let referencePointSloid = '';
 let numberWithoutCheckDigit = -1;
 let trafficPointSloid = '';
 let etagVersion = -1;
+let etagVersionRelation = -1;
 
 const statusForAllPRMObjects = 'VALIDATED';
 
@@ -516,26 +517,38 @@ describe('PRM: New complete Toilet', { testIsolation: false }, () => {
   let toiletId = -1;
   let relationId = -1;
   let toiletSloid = '';
+  let etagVersionToilet = -1;
+
+  let tactileVisualMarks = CommonUtils.TO_BE_COMPLETED;
+  let contrastingAreas = CommonUtils.TO_BE_COMPLETED;
+  let stepFreeAccess = CommonUtils.TO_BE_COMPLETED;
+
+  let designation = 'öffentliches WC im Bf Basel Bad Bf';
+  let additionalInformation = 'additionalInformation';
+  let wheelchairToilet = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValuesAndNotApplicableAndPartially()
+  );
 
   const validFrom = ReleaseApiUtils.todayAsAtlasString();
   const validTo = ReleaseApiUtils.todayAsAtlasString();
-  const wheelchairToilet = ReleaseApiUtils.extractOneRandomValue(
-    PrmConstants.basicValuesAndNotApplicableAndPartially()
-  );
-  const designation = 'öffentliches WC im Bf Basel Bad Bf';
-  const additionalInformation = 'additionalInformation';
   const referencePointElementType = `TOILET`;
+  const numberOfExpectedToilets = 1;
+
+  const validateCommonCompleteToiletAttributes = (prmObject) => {
+    validatePrmObject(prmObject, validFrom, validTo);
+
+    expect(prmObject)
+      .to.have.property('parentServicePointSloid')
+      .that.is.a('string')
+      .and.to.equal(parentServicePointSloid);
+  };
 
   const validate = (toilet) => {
-    validatePrmObject(toilet, validFrom, validTo);
+    validateCommonCompleteToiletAttributes(toilet);
     expect(toilet)
       .to.have.property('sloid')
       .that.is.a('string')
       .and.to.equal(toiletSloid);
-    expect(toilet)
-      .to.have.property('parentServicePointSloid')
-      .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
     expect(toilet)
       .to.have.property('designation')
       .that.is.a('string')
@@ -550,7 +563,7 @@ describe('PRM: New complete Toilet', { testIsolation: false }, () => {
   };
 
   const validateRelation = (relation) => {
-    validatePrmObject(relation, validFrom, validTo);
+    validateCommonCompleteToiletAttributes(relation);
     expect(relation)
       .to.have.property('referencePointSloid')
       .that.is.a('string')
@@ -570,15 +583,15 @@ describe('PRM: New complete Toilet', { testIsolation: false }, () => {
     expect(relation)
       .to.have.property('tactileVisualMarks')
       .that.is.a('string')
-      .and.to.equal(CommonUtils.TO_BE_COMPLETED);
+      .and.to.equal(tactileVisualMarks);
     expect(relation)
       .to.have.property('contrastingAreas')
       .that.is.a('string')
-      .and.to.equal(CommonUtils.TO_BE_COMPLETED);
+      .and.to.equal(contrastingAreas);
     expect(relation)
       .to.have.property('stepFreeAccess')
       .that.is.a('string')
-      .and.to.equal(CommonUtils.TO_BE_COMPLETED);
+      .and.to.equal(stepFreeAccess);
   };
 
   it('Step-1: New complete Toilet', () => {
@@ -615,25 +628,131 @@ describe('PRM: New complete Toilet', { testIsolation: false }, () => {
           1
         );
         validate(toilet);
-        etagVersion = toilet.etagVersion;
+        etagVersionToilet = toilet.etagVersion;
       }
     );
   });
 
-  it('Step-3: Get relations for sloid', () => {
-    CommonUtils.get(
-      `/prm-directory/v1/relations?sloids=${toiletSloid}&referencePointSloids=${referencePointSloid}`
-    ).then((response) => {
+  const checkRelation = (queryParameters: string) => {
+    CommonUtils.get(`/prm-directory/v1/relations?${queryParameters}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+        expect(response.body)
+          .to.have.property('objects')
+          .that.is.an('array')
+          .and.to.have.property('length')
+          .which.equals(numberOfExpectedToilets);
+        const toiletRelation =
+          response.body.objects[numberOfExpectedToilets - 1];
+        validateRelation(toiletRelation);
+        relationId = toiletRelation.id;
+        etagVersionRelation = toiletRelation.etagVersion;
+      }
+    );
+  };
+
+  const checkRelations = () => {
+    checkRelation(
+      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementType=${referencePointElementType}`
+    );
+    checkRelation(
+      `referencePointSloids=${referencePointSloid}&referencePointElementType=${referencePointElementType}`
+    );
+    checkRelation(`sloids=${toiletSloid}`);
+
+    CommonUtils.get(`/prm-directory/v1/relations/${toiletSloid}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+        const toiletRelation = ReleaseApiUtils.getPrmObjectById(
+          response.body,
+          relationId,
+          true,
+          1
+        );
+        validateRelation(toiletRelation);
+      }
+    );
+  };
+
+  it('Step-3: Check relations after create', () => {
+    checkRelations();
+  });
+
+  it('Step-4: Update complete toilet relation', () => {
+    tactileVisualMarks = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndWithRemoteControl()
+    );
+    contrastingAreas = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndPartially()
+    );
+    stepFreeAccess = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.stepFreeAccessValues()
+    );
+
+    CommonUtils.put(`/prm-directory/v1/relations/${relationId}`, {
+      sloid: toiletSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersionRelation,
+      parentServicePointSloid: parentServicePointSloid,
+      tactileVisualMarks: tactileVisualMarks,
+      contrastingAreas: contrastingAreas,
+      stepFreeAccess: stepFreeAccess,
+      referencePointElementType: referencePointElementType,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      referencePointSloid: referencePointSloid,
+    }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
-      expect(response.body)
-        .to.have.property('objects')
-        .that.is.an('array')
-        .and.to.have.property('length')
-        .which.equals(1);
-      const toiletRelation = response.body.objects[0];
+      const toiletRelation = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        relationId,
+        true,
+        1
+      );
       validateRelation(toiletRelation);
+      etagVersionRelation = toiletRelation.etagVersion;
       relationId = toiletRelation.id;
     });
+  });
+
+  it('Step-5: Check relations after update', () => {
+    checkRelations();
+  });
+
+  it('Step-6: Update complete Toilet', () => {
+    designation = 'designation2';
+    additionalInformation = 'additionalInformation2';
+    wheelchairToilet = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndPartially()
+    );
+
+    CommonUtils.put(`/prm-directory/v1/toilets/${toiletId}`, {
+      sloid: toiletSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersionToilet,
+      parentServicePointSloid: parentServicePointSloid,
+      designation: designation,
+      additionalInformation: additionalInformation,
+      wheelchairToilet: wheelchairToilet,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+    }).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const toilet = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        toiletId,
+        true,
+        1
+      );
+      validate(toilet);
+      etagVersionToilet = toilet.etagVersion;
+    });
+  });
+
+  it('Step-7: Re-Check relations after toilet update', () => {
+    checkRelations();
   });
 });
