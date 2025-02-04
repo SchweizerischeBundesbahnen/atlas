@@ -77,14 +77,14 @@ class LineServiceTest {
   private LineService lineService;
 
   @Mock
-  private SublineService sublineService;
+  private SublineShorteningService sublineShorteningService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
         versionableService, lineValidationService, lineUpdateValidationService, coverageService, lineStatusDecider,
-        sublineService);
+        sublineShorteningService);
   }
 
   @Test
@@ -340,7 +340,8 @@ class LineServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
         List.of(sublineVersion, sublineVersion2, sublineVersionNew, sublineVersionNew2));
 
-    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), lineVersion.getValidFrom(),
+    AffectedSublines affectedSublines = sublineShorteningService.checkAffectedSublines(lineVersion.getId(),
+        lineVersion.getValidFrom(),
         lineVersion.getValidTo());
     assertThat(affectedSublines.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(sublineVersionNew2.getSlnid(), sublineVersion2.getSlnid()));
@@ -388,7 +389,8 @@ class LineServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
         List.of(allowedSublineVersion, allowedSublineVersion2, notAllowedSublineVersion, notAllowedSublineVersion2));
 
-    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), lineVersion.getValidFrom(),
+    AffectedSublines affectedSublines = sublineShorteningService.checkAffectedSublines(lineVersion.getId(),
+        lineVersion.getValidFrom(),
         lineVersion.getValidTo());
     assertThat(affectedSublines.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(allowedSublineVersion.getSlnid()));
@@ -438,7 +440,8 @@ class LineServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
         List.of(notAllowedSublineVersion, notAllowedSublineVersion2, notAllowedSublineVersion3, notAllowedSublineVersion4));
 
-    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), lineVersion.getValidFrom(),
+    AffectedSublines affectedSublines = sublineShorteningService.checkAffectedSublines(lineVersion.getId(),
+        lineVersion.getValidFrom(),
         lineVersion.getValidTo());
     assertThat(affectedSublines.getNotAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(notAllowedSublineVersion.getSlnid(),
@@ -466,7 +469,8 @@ class LineServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
         List.of(notAllowedSublineVersion3));
 
-    AffectedSublines affectedSublines = lineService.checkAffectedSublines(lineVersion.getId(), lineVersion.getValidFrom(),
+    AffectedSublines affectedSublines = sublineShorteningService.checkAffectedSublines(lineVersion.getId(),
+        lineVersion.getValidFrom(),
         lineVersion.getValidTo());
     assertThat(affectedSublines.getNotAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(notAllowedSublineVersion3.getSlnid()));
