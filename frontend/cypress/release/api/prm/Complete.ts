@@ -49,7 +49,7 @@ const validatePrmObject = (object, validFrom: string, validTo: string) => {
 };
 
 describe(
-  'Create new ServicePoint and TrafficPoint for complete StopPoint',
+  'Create ServicePoint and TrafficPoint for complete StopPoint',
   { testIsolation: false },
   () => {
     let sboid = '';
@@ -120,7 +120,7 @@ describe(
   }
 );
 
-describe('PRM: New complete Stop Point', { testIsolation: false }, () => {
+describe('PRM: Complete Stop Point', { testIsolation: false }, () => {
   let stopPointId = -1;
 
   const validate = (stopPoint: any) => {
@@ -341,7 +341,7 @@ describe('PRM: New complete Stop Point', { testIsolation: false }, () => {
   });
 });
 
-describe('PRM: New complete Reference Point', { testIsolation: false }, () => {
+describe('PRM: Complete Reference Point', { testIsolation: false }, () => {
   let designation = 'designation';
   let referencePointId = -1;
 
@@ -513,7 +513,7 @@ describe('PRM: Check relations for sloid', { testIsolation: false }, () => {
   });
 });
 
-describe('PRM: New complete Toilet', { testIsolation: false }, () => {
+describe('PRM: Complete Toilet', { testIsolation: false }, () => {
   let toiletId = -1;
   let relationId = -1;
   let toiletSloid = '';
@@ -643,9 +643,11 @@ describe('PRM: New complete Toilet', { testIsolation: false }, () => {
           .that.is.an('array')
           .and.to.have.property('length')
           .which.equals(numberOfExpectedToilets);
+
         const toiletRelation =
           response.body.objects[numberOfExpectedToilets - 1];
         validateRelation(toiletRelation);
+
         relationId = toiletRelation.id;
         etagVersionRelation = toiletRelation.etagVersion;
       }
@@ -654,23 +656,23 @@ describe('PRM: New complete Toilet', { testIsolation: false }, () => {
 
   const checkRelations = () => {
     checkRelation(
-      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementType=${referencePointElementType}`
+      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
     );
     checkRelation(
-      `referencePointSloids=${referencePointSloid}&referencePointElementType=${referencePointElementType}`
+      `referencePointSloids=${referencePointSloid}&referencePointElementTypes=${referencePointElementType}`
     );
     checkRelation(`sloids=${toiletSloid}`);
 
     CommonUtils.get(`/prm-directory/v1/relations/${toiletSloid}`).then(
       (response) => {
         expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
-        const toiletRelation = ReleaseApiUtils.getPrmObjectById(
+        const relation = ReleaseApiUtils.getPrmObjectById(
           response.body,
           relationId,
           true,
           1
         );
-        validateRelation(toiletRelation);
+        validateRelation(relation);
       }
     );
   };
@@ -705,15 +707,15 @@ describe('PRM: New complete Toilet', { testIsolation: false }, () => {
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
-      const toiletRelation = ReleaseApiUtils.getPrmObjectById(
+      const relation = ReleaseApiUtils.getPrmObjectById(
         response.body,
         relationId,
         true,
         1
       );
-      validateRelation(toiletRelation);
-      etagVersionRelation = toiletRelation.etagVersion;
-      relationId = toiletRelation.id;
+      validateRelation(relation);
+      etagVersionRelation = relation.etagVersion;
+      relationId = relation.id;
     });
   });
 
@@ -753,6 +755,271 @@ describe('PRM: New complete Toilet', { testIsolation: false }, () => {
   });
 
   it('Step-7: Re-Check relations after toilet update', () => {
+    checkRelations();
+  });
+});
+
+describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
+  let ticketCounterId = -1;
+  let ticketCounterSloid = '';
+  let relationId = -1;
+  let etagVersionTicketCounter = -1;
+
+  let tactileVisualMarks = CommonUtils.TO_BE_COMPLETED;
+  let contrastingAreas = CommonUtils.TO_BE_COMPLETED;
+  let stepFreeAccess = CommonUtils.TO_BE_COMPLETED;
+
+  let designation = 'öffentliches Ticket-Counter im Bf Basel Bad Bf';
+  let additionalInformation = 'additionalInformation';
+  let wheelchairAccess = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValuesAndNotApplicableAndPartially()
+  );
+
+  const validFrom = ReleaseApiUtils.todayAsAtlasString();
+  const validTo = ReleaseApiUtils.todayAsAtlasString();
+  const contactPointType = 'TICKET_COUNTER';
+  const referencePointElementType = 'CONTACT_POINT';
+  const openingHours = 'Öffnungszeiten: 08:00 - 20:00';
+  const numberOfExpectedTicketCounters = 1;
+  const inductionLoop = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValuesAndNotApplicableAndPartially()
+  );
+
+  const validateCommonCompleteTicketCounterAttributes = (prmObject) => {
+    validatePrmObject(prmObject, validFrom, validTo);
+    expect(prmObject)
+      .to.have.property('parentServicePointSloid')
+      .that.is.a('string')
+      .and.to.equal(parentServicePointSloid);
+  };
+
+  const validate = (ticketCounter) => {
+    validateCommonCompleteTicketCounterAttributes(ticketCounter);
+    expect(ticketCounter)
+      .to.have.property('sloid')
+      .that.is.a('string')
+      .and.to.equal(ticketCounterSloid);
+    expect(ticketCounter)
+      .to.have.property('designation')
+      .that.is.a('string')
+      .and.to.equal(designation);
+    expect(ticketCounter)
+      .to.have.property('additionalInformation')
+      .and.to.equal(additionalInformation);
+    expect(ticketCounter)
+      .to.have.property('inductionLoop')
+      .and.to.equal(inductionLoop);
+    expect(ticketCounter)
+      .to.have.property('wheelchairAccess')
+      .and.to.equal(wheelchairAccess);
+    expect(ticketCounter)
+      .to.have.property('openingHours')
+      .and.to.equal(openingHours);
+    expect(ticketCounter)
+      .to.have.property('type')
+      .that.is.a('string')
+      .and.to.equal(contactPointType);
+  };
+
+  const validateRelation = (relation) => {
+    validateCommonCompleteTicketCounterAttributes(relation);
+    expect(relation)
+      .to.have.property('referencePointSloid')
+      .that.is.a('string')
+      .and.to.equal(referencePointSloid);
+    expect(relation)
+      .to.have.property('elementSloid')
+      .that.is.a('string')
+      .and.to.equal(ticketCounterSloid);
+    expect(relation)
+      .to.have.property('parentServicePointSloid')
+      .that.is.a('string')
+      .and.to.equal(parentServicePointSloid);
+    expect(relation)
+      .to.have.property('referencePointElementType')
+      .that.is.a('string')
+      .and.to.equal(referencePointElementType);
+    expect(relation)
+      .to.have.property('tactileVisualMarks')
+      .that.is.a('string')
+      .and.to.equal(tactileVisualMarks);
+    expect(relation)
+      .to.have.property('contrastingAreas')
+      .that.is.a('string')
+      .and.to.equal(contrastingAreas);
+    expect(relation)
+      .to.have.property('stepFreeAccess')
+      .that.is.a('string')
+      .and.to.equal(stepFreeAccess);
+  };
+
+  it('Step-1: New complete Ticket Counter', () => {
+    ticketCounterSloid = `${parentServicePointSloid}:${contactPointType}1`;
+
+    CommonUtils.post('/prm-directory/v1/contact-points', {
+      type: contactPointType,
+      sloid: ticketCounterSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      parentServicePointSloid: parentServicePointSloid,
+      designation: designation,
+      additionalInformation: additionalInformation,
+      inductionLoop: inductionLoop,
+      openingHours: openingHours,
+      wheelchairAccess: wheelchairAccess,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+    }).then((response) => {
+      expect(response.status).to.equal(
+        CommonUtils.HTTP_REST_API_RESPONSE_CREATED
+      );
+      const ticketCounter = response.body;
+      validate(ticketCounter);
+      ticketCounterId = ticketCounter.id;
+    });
+  });
+
+  it('Step-2: Get complete Ticket Counter', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/contact-points?sloids=${ticketCounterSloid}`
+    ).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const ticketCounter = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        ticketCounterId,
+        false,
+        1
+      );
+      validate(ticketCounter);
+      etagVersionTicketCounter = ticketCounter.etagVersion;
+    });
+  });
+
+  const checkRelation = (queryParameters) => {
+    CommonUtils.get(`/prm-directory/v1/relations?${queryParameters}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+        expect(response.body)
+          .to.have.property('objects')
+          .that.is.an('array')
+          .and.to.have.property('length')
+          .which.equals(numberOfExpectedTicketCounters);
+
+        const ticketCounterRelation =
+          response.body.objects[numberOfExpectedTicketCounters - 1];
+        validateRelation(ticketCounterRelation);
+
+        relationId = ticketCounterRelation.id;
+        etagVersionRelation = ticketCounterRelation.etagVersion;
+      }
+    );
+  };
+
+  const checkRelations = () => {
+    checkRelation(
+      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
+    );
+    checkRelation(
+      `referencePointSloids=${referencePointSloid}&referencePointElementTypes=${referencePointElementType}`
+    );
+    checkRelation(`sloids=${ticketCounterSloid}`);
+
+    CommonUtils.get(`/prm-directory/v1/relations/${ticketCounterSloid}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+        const relation = ReleaseApiUtils.getPrmObjectById(
+          response.body,
+          relationId,
+          true,
+          1
+        );
+        validateRelation(relation);
+      }
+    );
+  };
+
+  it('Step-3: Check relations after create', () => {
+    checkRelations();
+  });
+
+  it('Step-4: Update complete ticket counter relation', () => {
+    tactileVisualMarks = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndWithRemoteControl()
+    );
+    contrastingAreas = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndPartially()
+    );
+    stepFreeAccess = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.stepFreeAccessValues()
+    );
+
+    CommonUtils.put(`/prm-directory/v1/relations/${relationId}`, {
+      sloid: ticketCounterSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersionRelation,
+      parentServicePointSloid: parentServicePointSloid,
+      tactileVisualMarks: tactileVisualMarks,
+      contrastingAreas: contrastingAreas,
+      stepFreeAccess: stepFreeAccess,
+      referencePointElementType: referencePointElementType,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      referencePointSloid: referencePointSloid,
+    }).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const relation = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        relationId,
+        true,
+        1
+      );
+      validateRelation(relation);
+      etagVersionRelation = relation.etagVersion;
+      relationId = relation.id;
+    });
+  });
+
+  it('Step-5: Check relations after update', () => {
+    checkRelations();
+  });
+
+  it('Step-6: Update complete ticket counter', () => {
+    designation = 'designation2';
+    additionalInformation = 'additionalInformation2';
+    wheelchairAccess = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndPartially()
+    );
+
+    CommonUtils.put(`/prm-directory/v1/contact-points/${ticketCounterId}`, {
+      type: contactPointType,
+      sloid: ticketCounterSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersionTicketCounter,
+      parentServicePointSloid: parentServicePointSloid,
+      designation: designation,
+      additionalInformation: additionalInformation,
+      inductionLoop: inductionLoop,
+      openingHours: openingHours,
+      wheelchairAccess: wheelchairAccess,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+    }).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const toilet = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        ticketCounterId,
+        true,
+        1
+      );
+      validate(toilet);
+      etagVersionTicketCounter = toilet.etagVersion;
+    });
+  });
+
+  it('Step-7: Re-Check relations after ticket counter update', () => {
     checkRelations();
   });
 });
