@@ -16,6 +16,15 @@ public class TransportCompanyJsonProcessor extends BaseServicePointProcessor imp
     return TransportCompanyModel.builder()
         .id(transportCompany.getId())
         .number(transportCompany.getNumber())
+        .abbreviation(transportCompany.getAbbreviation())
+        .description(transportCompany.getDescription())
+        .businessRegisterName(transportCompany.getBusinessRegisterName())
+        .transportCompanyStatus(transportCompany.getTransportCompanyStatus())
+        .businessRegisterNumber(transportCompany.getBusinessRegisterNumber())
+        .enterpriseId(transportCompany.getEnterpriseId())
+        .ricsCode(transportCompany.getRicsCode())
+        .businessOrganisationNumbers(transportCompany.getBusinessOrganisationNumbers())
+        .comment(transportCompany.getComment())
         .build();
   }
 
