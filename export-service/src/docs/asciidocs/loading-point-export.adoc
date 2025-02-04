@@ -40,6 +40,6 @@ include::{snippets}/service-point-batch-controller-api-v1-integration-test/shoul
 
 == Trigger export Loading Point Versions
 
-include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-loading-point-export-batch-successfully/atlas-doc.adoc[]
+include::{snippets}/export-service-batch-controller-api-v1-integration-test/should-post-loading-point-export-batch-successfully/atlas-doc.adoc[]
 
 link:rest-api.html[*< Back to main*]
