@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  AffectedSublines,
   ApplicationRole,
   ApplicationType,
   LinesService,
@@ -19,13 +20,16 @@ import {
 } from './line-detail-form-group';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { catchError, EMPTY } from 'rxjs';
+import { catchError, EMPTY, Observable } from 'rxjs';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DateRange } from '../../../../core/versioning/date-range';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
 import moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { SublineShorteningDialogComponent } from '../../dialog/subline-shortening-dialog/subline-shortening-dialog.component';
+import { map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -77,7 +81,8 @@ export class LineDetailComponent implements OnInit {
     private permissionService: PermissionService,
     private activatedRoute: ActivatedRoute,
     private validityService: ValidityService,
-    private detailHelperService: DetailHelperService
+    private detailHelperService: DetailHelperService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -251,18 +256,14 @@ export class LineDetailComponent implements OnInit {
           if (isZeroAffectedSublines) {
             this.updateLineVersion(id, lineVersion);
           } else {
-            this.dialogService
-              .confirm(
-                this.buildConfirmDialog(
-                  isAllowedToUpdateAutomatically,
-                  affectedSublines.notAllowedSublines
-                )
-              )
-              .subscribe((confirmed) => {
-                if (confirmed) {
-                  this.updateLineVersion(id, lineVersion);
-                }
-              });
+            this.openSublineShorteningDialog(
+              isAllowedToUpdateAutomatically,
+              affectedSublines
+            ).subscribe((confirmed) => {
+              if (confirmed) {
+                this.updateLineVersion(id, lineVersion);
+              }
+            });
           }
         });
     } else {
@@ -270,15 +271,19 @@ export class LineDetailComponent implements OnInit {
     }
   }
 
-  buildConfirmDialog(canAutomatically: boolean, toBeShortened?: string[]) {
-    return {
-      title: canAutomatically ? 'Kürze alles' : 'Kürze manuel',
-      message: canAutomatically
-        ? 'Es kann alles gekürzt werden'
-        : 'Es kann NICHT gekürzt werden',
-      cancelText: 'Abbrechen',
-      confirmText: canAutomatically ? 'Fortfahren' : 'ignorieren',
-    };
+  openSublineShorteningDialog(
+    isAllowedToUpdateAutomatically: boolean,
+    affectedSublines: AffectedSublines
+  ): Observable<boolean> {
+    return this.dialog
+      .open(SublineShorteningDialogComponent, {
+        data: {
+          isAllowed: isAllowedToUpdateAutomatically,
+          affectedSublines: affectedSublines,
+        },
+      })
+      .afterClosed()
+      .pipe(map((value) => (value ? value : false)));
   }
 
   updateLineVersion(id: number, lineVersion: UpdateLineVersionV2) {
