@@ -139,6 +139,7 @@
   },
   "DIALOG": {
     "OK": "Suivant",
+    "IGNORE": "Ignorer",
     "RELOAD": "Recharger",
     "CANCEL": "Annuler",
     "BACK": "Retour au formulaire de saisie",
@@ -504,6 +505,18 @@
         "DESCRIPTION": "Désignation de la ligne",
         "STATUS": "Statut d'audition",
         "SLNID": "SLNID"
+      }
+    },
+    "SUBLINE_SHORTENING": {
+      "ALLOWED": {
+        "TITLE": "Remarque",
+        "MESSAGE": "Toutes les lignes partielles peuvent être raccourcies.",
+        "SHORT_AUTOMATICALLY": "Les lignes partielles suivantes peuvent être raccourcies automatiquement:"
+      },
+      "NOT_ALLOWED": {
+        "TITLE": "Remarque",
+        "MESSAGE": "Il n'est pas possible de raccourcir automatiquement toutes les sous-lignes.",
+        "SHORT_MANUAL": "Raccourcis toi-même les lignes partielles suivantes:"
       }
     }
   },

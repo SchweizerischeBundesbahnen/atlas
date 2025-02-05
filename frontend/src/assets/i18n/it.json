@@ -139,6 +139,7 @@
   },
   "DIALOG": {
     "OK": "Avanti",
+    "IGNORE": "Ignorare",
     "RELOAD": "Ricarica",
     "CANCEL": "Annulla",
     "BACK": "Tornare al modulo di immissione dati",
@@ -504,6 +505,18 @@
         "DESCRIPTION": "Denominazione linea",
         "STATUS": "Stato dell'audizione",
         "SLNID": "SLNID"
+      }
+    },
+    "SUBLINE_SHORTENING": {
+      "ALLOWED": {
+        "TITLE": "Nota",
+        "MESSAGE": "Tutte le linee parziali possono essere accorciate.",
+        "SHORT_AUTOMATICALLY": "Le seguenti righe parziali possono essere accorciate automaticamente:"
+      },
+      "NOT_ALLOWED": {
+        "TITLE": "Nota",
+        "MESSAGE": "Non tutte le righe parziali possono essere accorciate automaticamente.",
+        "SHORT_MANUAL": "Accorciate voi stessi le seguenti righe parziali:"
       }
     }
   },
