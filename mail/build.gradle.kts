@@ -28,7 +28,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")//get this dependency from :kafka use as api does not work
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("com.icegreen:greenmail-junit5:2.1.2")
+    testImplementation("com.icegreen:greenmail-junit5:2.1.3")
 
 }
 
