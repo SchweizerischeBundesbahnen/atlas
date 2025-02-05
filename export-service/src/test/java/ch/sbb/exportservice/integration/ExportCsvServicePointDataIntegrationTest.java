@@ -22,7 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
- class ExportCsvServicePointDataIntegrationTest extends BaseExportCsvDataIntegrationTest{
+ class ExportCsvServicePointDataIntegrationTest extends BaseExportCsvDataIntegrationTest {
 
   @Test
    void shouldExportServicePointToCsvWithCorrectData() throws Exception {

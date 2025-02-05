@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient(name = "exportServicePointBatch", url = "${atlas.client.gateway.url}", configuration = OAuthFeignConfig.class)
-public interface ExportServicePointBatchClient {
+public interface ExportServiceBatchClient {
 
   @PostMapping(value = "/export-service/v1/export/service-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportServicePointBatch();
@@ -38,4 +38,7 @@ public interface ExportServicePointBatchClient {
 
   @PostMapping(value = "/export-service/v1/export/prm/relation-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportRelationBatch();
+
+  @PostMapping(value = "/export-service/v1/export/bodi/transport-company-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response postTriggerExportTransportCompanyBatch();
 }
