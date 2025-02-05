@@ -13,10 +13,11 @@ class ExportServicePointTestcontainers implements BeanFactoryPostProcessor {
 
   static PostgreSQLContainer<?> servicePointDbContainer = PostgreSQLTestContainer.create();
   static PostgreSQLContainer<?> prmDbContainer = PostgreSQLTestContainer.create();
+  static PostgreSQLContainer<?> bodiDbContainer = PostgreSQLTestContainer.create();
   static PostgreSQLContainer<?> exportDbContainer = PostgreSQLTestContainer.create();
 
   static {
-    Startables.deepStart(servicePointDbContainer, prmDbContainer, exportDbContainer).join();
+    Startables.deepStart(servicePointDbContainer, prmDbContainer, bodiDbContainer, exportDbContainer).join();
   }
 
   @Override
@@ -24,5 +25,6 @@ class ExportServicePointTestcontainers implements BeanFactoryPostProcessor {
     PostgreSQLTestContainer.setSystemPropertiesForDatasource("spring.batch.datasource", exportDbContainer);
     PostgreSQLTestContainer.setSystemPropertiesForDatasource("spring.datasource.service-point", servicePointDbContainer);
     PostgreSQLTestContainer.setSystemPropertiesForDatasource("spring.datasource.prm", prmDbContainer);
+    PostgreSQLTestContainer.setSystemPropertiesForDatasource("spring.datasource.bodi", bodiDbContainer);
   }
 }
