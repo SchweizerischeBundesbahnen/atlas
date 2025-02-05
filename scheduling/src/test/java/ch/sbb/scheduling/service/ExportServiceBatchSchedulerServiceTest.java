@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.scheduling.client.ExportServicePointBatchClient;
+import ch.sbb.scheduling.client.ExportServiceBatchClient;
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Request;
 import feign.Request.HttpMethod;
@@ -17,17 +17,17 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
- class ExportServicePointBatchSchedulerServiceTest {
+ class ExportServiceBatchSchedulerServiceTest {
 
-  private ExportServicePointBatchSchedulerService exportServicePointBatchSchedulerService;
+  private ExportServiceBatchSchedulerService exportServiceBatchSchedulerService;
 
   @Mock
-  private ExportServicePointBatchClient client;
+  private ExportServiceBatchClient client;
 
   @BeforeEach
    void setUp() {
     MockitoAnnotations.openMocks(this);
-    exportServicePointBatchSchedulerService = new ExportServicePointBatchSchedulerService(client);
+    exportServiceBatchSchedulerService = new ExportServiceBatchSchedulerService(client);
   }
 
   @Test
@@ -43,7 +43,7 @@ import org.springframework.http.HttpStatus;
     when(client.postTriggerExportServicePointBatch()).thenReturn(response);
 
     //when
-    Response result = exportServicePointBatchSchedulerService.postTriggerExportServicePointBatch();
+    Response result = exportServiceBatchSchedulerService.postTriggerExportServicePointBatch();
 
     //then
     assertThat(result).isNotNull();
@@ -63,7 +63,7 @@ import org.springframework.http.HttpStatus;
     when(client.postTriggerExportTrafficPointBatch()).thenReturn(response);
 
     //when
-    Response result = exportServicePointBatchSchedulerService.postTriggerExportTrafficPointBatch();
+    Response result = exportServiceBatchSchedulerService.postTriggerExportTrafficPointBatch();
 
     //then
     assertThat(result).isNotNull();
@@ -83,7 +83,7 @@ import org.springframework.http.HttpStatus;
     when(client.postTriggerExportLoadingPointBatch()).thenReturn(response);
 
     //when
-    Response result = exportServicePointBatchSchedulerService.postTriggerExportLoadingPointBatch();
+    Response result = exportServiceBatchSchedulerService.postTriggerExportLoadingPointBatch();
 
     //then
     assertThat(result).isNotNull();
@@ -103,7 +103,7 @@ import org.springframework.http.HttpStatus;
     when(client.postTriggerExportStopPointBatch()).thenReturn(response);
 
     //when
-    Response result = exportServicePointBatchSchedulerService.postTriggerExportStopPointBatch();
+    Response result = exportServiceBatchSchedulerService.postTriggerExportStopPointBatch();
 
     //then
     assertThat(result).isNotNull();
@@ -123,7 +123,7 @@ import org.springframework.http.HttpStatus;
     when(client.postTriggerExportPlatformBatch()).thenReturn(response);
 
     //when
-    Response result = exportServicePointBatchSchedulerService.postTriggerExportPlatformBatch();
+    Response result = exportServiceBatchSchedulerService.postTriggerExportPlatformBatch();
 
     //then
     assertThat(result).isNotNull();
@@ -143,7 +143,7 @@ import org.springframework.http.HttpStatus;
    when(client.postTriggerExportReferencePointBatch()).thenReturn(response);
 
    //when
-   Response result = exportServicePointBatchSchedulerService.postTriggerExportReferencePointBatch();
+   Response result = exportServiceBatchSchedulerService.postTriggerExportReferencePointBatch();
 
    //then
    assertThat(result).isNotNull();
@@ -163,7 +163,7 @@ import org.springframework.http.HttpStatus;
    when(client.postTriggerExportContactPointBatch()).thenReturn(response);
 
    //when
-   Response result = exportServicePointBatchSchedulerService.postTriggerExportContactPointBatch();
+   Response result = exportServiceBatchSchedulerService.postTriggerExportContactPointBatch();
 
    //then
    assertThat(result).isNotNull();
@@ -183,7 +183,7 @@ import org.springframework.http.HttpStatus;
    when(client.postTriggerExportToiletBatch()).thenReturn(response);
 
    //when
-   Response result = exportServicePointBatchSchedulerService.postTriggerExportToiletBatch();
+   Response result = exportServiceBatchSchedulerService.postTriggerExportToiletBatch();
 
    //then
    assertThat(result).isNotNull();
@@ -204,7 +204,7 @@ import org.springframework.http.HttpStatus;
 
     //when
     assertThrows(SchedulingExecutionException.class, () -> {
-      exportServicePointBatchSchedulerService.postTriggerExportServicePointBatch();
+      exportServiceBatchSchedulerService.postTriggerExportServicePointBatch();
     });
   }
 
@@ -221,7 +221,7 @@ import org.springframework.http.HttpStatus;
    when(client.postTriggerExportParkingLotBatch()).thenReturn(response);
 
    //when
-   Response result = exportServicePointBatchSchedulerService.postTriggerExportParkingLotBatch();
+   Response result = exportServiceBatchSchedulerService.postTriggerExportParkingLotBatch();
 
    //then
    assertThat(result).isNotNull();
@@ -241,7 +241,27 @@ import org.springframework.http.HttpStatus;
    when(client.postTriggerExportRelationBatch()).thenReturn(response);
 
    //when
-   Response result = exportServicePointBatchSchedulerService.postTriggerExportRelationBatch();
+   Response result = exportServiceBatchSchedulerService.postTriggerExportRelationBatch();
+
+   //then
+   assertThat(result).isNotNull();
+   assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  void shouldTriggerExportTransportCompanyBatchSuccessfully() {
+   //given
+   Response response = Response.builder()
+       .status(200)
+       .reason("OK")
+       .request(
+           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+               null, Util.UTF_8, null))
+       .build();
+   when(client.postTriggerExportTransportCompanyBatch()).thenReturn(response);
+
+   //when
+   Response result = exportServiceBatchSchedulerService.postTriggerExportTransportCompanyBatch();
 
    //then
    assertThat(result).isNotNull();
