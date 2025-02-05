@@ -2,6 +2,9 @@ package ch.sbb.importservice.service.bulk.template;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
+import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
+import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
+import ch.sbb.importservice.service.sepodi.traffic.point.create.TrafficPointCreate;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
@@ -36,6 +39,26 @@ public class TrafficPointTemplateGenerator {
         .spatialReference(SpatialReference.LV95)
         .height(DEFAULT_HEIGHT)
         .parentSloid(DEFAULT_PARENT_SLOID)
+        .build();
+  }
+
+  public static TrafficPointCreateCsvModel getTrafficPointCreateCsvModelExample() {
+    return TrafficPointCreateCsvModel.builder()
+        .sloid(DEFAULT_SLOID)
+        .validFrom(DEFAULT_VALID_FROM)
+        .validTo(DEFAULT_VALID_TO)
+        .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+        .parentSloid(DEFAULT_PARENT_SLOID)
+        .stopPointSloid("ch:1:sloid:7000")
+        .designation(DEFAULT_DESIGNATION)
+        .designationOperational(DEFAULT_DESIGNATION_OPEATIONAL)
+        .length(DEFAULT_LENGTH)
+        .boardingAreaHeight(DEFAULT_BOARDING_AREA_HEIGHT)
+        .compassDirection(DEFAULT_COMPASS_DIRECTION)
+        .east(DEFAULT_EAST)
+        .north(DEFAULT_NORTH)
+        .spatialReference(SpatialReference.LV95)
+        .height(DEFAULT_HEIGHT)
         .build();
   }
 
