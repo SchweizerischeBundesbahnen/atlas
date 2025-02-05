@@ -31,6 +31,7 @@ const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = 
   [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update],
   [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Create],
   [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Update],
+  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Create],
   [ApplicationType.Prm, BusinessObjectType.PlatformReduced, ImportType.Update],
 ];
 
