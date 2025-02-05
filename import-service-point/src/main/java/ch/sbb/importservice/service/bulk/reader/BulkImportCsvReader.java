@@ -58,7 +58,7 @@ public class BulkImportCsvReader {
 
       for (int lineNumber = fileHeader.size() + 1; scanner.hasNextLine(); lineNumber++) {
         final String line = readHeaderLineIgnoringBom(scanner.nextLine());
-        if (!line.isEmpty()) {
+        if (!line.matches(";*")) {
           mappedObjects.add(readObject(clazz, header, line, lineNumber));
         }
       }
