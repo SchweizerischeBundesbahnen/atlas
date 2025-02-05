@@ -856,6 +856,7 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
   it('Step-1: New complete Ticket Counter', () => {
     ticketCounterSloid = `${parentServicePointSloid}:${contactPointType}1`;
 
+    // TODO: Export POST/PUT-bodies?
     CommonUtils.post('/prm-directory/v1/contact-points', {
       type: contactPointType,
       sloid: ticketCounterSloid,
@@ -906,12 +907,12 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
           .and.to.have.property('length')
           .which.equals(numberOfExpectedTicketCounters);
 
-        const ticketCounterRelation =
+        const relation =
           response.body.objects[numberOfExpectedTicketCounters - 1];
-        validateRelation(ticketCounterRelation);
+        validateRelation(relation);
 
-        relationId = ticketCounterRelation.id;
-        etagVersionRelation = ticketCounterRelation.etagVersion;
+        relationId = relation.id;
+        etagVersionRelation = relation.etagVersion;
       }
     );
   };
@@ -1020,6 +1021,293 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
   });
 
   it('Step-7: Re-Check relations after ticket counter update', () => {
+    checkRelations();
+  });
+});
+
+describe('PRM: Complete Platform', { testIsolation: false }, () => {
+  let platformId = -1;
+  let relationId = -1;
+  let etagVersionPlatform = -1;
+  let additionalInformation = 'additionalInformation';
+  let boardingDevice = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.boardingDeviceValues()
+  );
+
+  let tactileVisualMarks = CommonUtils.TO_BE_COMPLETED;
+  let contrastingAreas = CommonUtils.TO_BE_COMPLETED;
+  let stepFreeAccess = CommonUtils.TO_BE_COMPLETED;
+
+  const referencePointElementType = 'PLATFORM';
+  const validFrom = ReleaseApiUtils.todayAsAtlasString();
+  const validTo = ReleaseApiUtils.todayAsAtlasString();
+
+  const adviceAccessInfo = 'adviceAccessInfo';
+
+  const inclination = ReleaseApiUtils.getRoundedRandomFloat(0, 100, 3);
+  const inclinationWidth = ReleaseApiUtils.getRoundedRandomFloat(0, 100, 3);
+  const superelevation = ReleaseApiUtils.getRoundedRandomFloat(0, 10000, 3);
+
+  const levelAccessWheelchair = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValuesAndNotApplicable()
+  );
+  const contrastingAreasPlatform = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValues()
+  );
+  const dynamicAudio = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValuesAndNotApplicable()
+  );
+  const dynamicVisual = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValuesAndNotApplicable()
+  );
+
+  const validateCommonCompletePlatformAttributes = (prmObject) => {
+    // TODO: Extract this method to the global scale, as it is for all complete PRM objects the same
+    validatePrmObject(prmObject, validFrom, validTo);
+    expect(prmObject)
+      .to.have.property('parentServicePointSloid')
+      .that.is.a('string')
+      .and.to.equal(parentServicePointSloid);
+  };
+
+  const validate = (platform) => {
+    validateCommonCompletePlatformAttributes(platform);
+    expect(platform)
+      .to.have.property('sloid')
+      .that.is.a('string')
+      .and.to.equal(trafficPointSloid);
+    expect(platform)
+      .to.have.property('additionalInformation')
+      .and.to.equal(additionalInformation);
+    expect(platform)
+      .to.have.property('boardingDevice')
+      .and.to.equal(boardingDevice);
+    expect(platform)
+      .to.have.property('adviceAccessInfo')
+      .and.to.equal(adviceAccessInfo);
+    expect(platform)
+      .to.have.property('contrastingAreas')
+      .and.to.equal(contrastingAreasPlatform);
+    expect(platform)
+      .to.have.property('dynamicAudio')
+      .and.to.equal(dynamicAudio);
+    expect(platform)
+      .to.have.property('dynamicVisual')
+      .and.to.equal(dynamicVisual);
+    expect(platform).to.have.property('inclination').and.to.equal(inclination);
+    expect(platform)
+      .to.have.property('inclinationWidth')
+      .and.to.equal(inclinationWidth);
+    expect(platform)
+      .to.have.property('levelAccessWheelchair')
+      .and.to.equal(levelAccessWheelchair);
+    expect(platform)
+      .to.have.property('superelevation')
+      .and.to.equal(superelevation);
+  };
+
+  const validateRelation = (relation) => {
+    validateCommonCompletePlatformAttributes(relation);
+    // TODO: Extract this method to the global scale, as it is for all complete PRM objects the same
+    // Except the sloid/elementSloid
+    expect(relation)
+      .to.have.property('referencePointSloid')
+      .that.is.a('string')
+      .and.to.equal(referencePointSloid);
+    expect(relation)
+      .to.have.property('elementSloid')
+      .that.is.a('string')
+      .and.to.equal(trafficPointSloid);
+    expect(relation)
+      .to.have.property('parentServicePointSloid')
+      .that.is.a('string')
+      .and.to.equal(parentServicePointSloid);
+    expect(relation)
+      .to.have.property('referencePointElementType')
+      .that.is.a('string')
+      .and.to.equal(referencePointElementType);
+    expect(relation)
+      .to.have.property('tactileVisualMarks')
+      .that.is.a('string')
+      .and.to.equal(tactileVisualMarks);
+    expect(relation)
+      .to.have.property('contrastingAreas')
+      .that.is.a('string')
+      .and.to.equal(contrastingAreas);
+    expect(relation)
+      .to.have.property('stepFreeAccess')
+      .that.is.a('string')
+      .and.to.equal(stepFreeAccess);
+  };
+
+  it('Step-1: New complete Platform', () => {
+    CommonUtils.post('/prm-directory/v1/platforms', {
+      sloid: trafficPointSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      parentServicePointSloid: parentServicePointSloid,
+      boardingDevice: boardingDevice,
+      adviceAccessInfo: adviceAccessInfo,
+      additionalInformation: additionalInformation,
+      contrastingAreas: contrastingAreasPlatform,
+      dynamicAudio: dynamicAudio,
+      dynamicVisual: dynamicVisual,
+      inclination: inclination,
+      inclinationWidth: inclinationWidth,
+      levelAccessWheelchair: levelAccessWheelchair,
+      superelevation: superelevation,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+    }).then((response) => {
+      expect(response.status).to.equal(
+        CommonUtils.HTTP_REST_API_RESPONSE_CREATED
+      );
+      const platform = response.body;
+      validate(platform);
+      platformId = platform.id;
+      etagVersionPlatform = platform.etagVersion;
+    });
+  });
+
+  it('Step-2: Get complete Platform', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/platforms?sloids=${trafficPointSloid}`
+    ).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const platform = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        platformId,
+        false,
+        1
+      );
+      validate(platform);
+      etagVersionPlatform = platform.etagVersion;
+    });
+  });
+
+  const checkRelation = (queryParameters) => {
+    CommonUtils.get(`/prm-directory/v1/relations?${queryParameters}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+        expect(response.body)
+          .to.have.property('objects')
+          .that.is.an('array')
+          .and.to.have.property('length')
+          .which.equals(1);
+        const relation = response.body.objects[0];
+        validateRelation(relation);
+        relationId = relation.id;
+        etagVersionRelation = relation.etagVersion;
+      }
+    );
+  };
+
+  const checkRelations = () => {
+    checkRelation(
+      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
+    );
+    checkRelation(
+      `referencePointSloids=${referencePointSloid}&referencePointElementTypes=${referencePointElementType}`
+    );
+    checkRelation(`sloids=${trafficPointSloid}`);
+
+    CommonUtils.get(`/prm-directory/v1/relations/${trafficPointSloid}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+        const relation = ReleaseApiUtils.getPrmObjectById(
+          response.body,
+          relationId,
+          true,
+          1
+        );
+        validateRelation(relation);
+      }
+    );
+  };
+
+  it('Step-3: Check relations after create', () => {
+    checkRelations();
+  });
+
+  it('Step-4: Update complete platform relation', () => {
+    tactileVisualMarks = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndWithRemoteControl()
+    );
+    contrastingAreas = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndPartially()
+    );
+    stepFreeAccess = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.stepFreeAccessValues()
+    );
+
+    CommonUtils.put(`/prm-directory/v1/relations/${relationId}`, {
+      sloid: trafficPointSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersionRelation,
+      parentServicePointSloid: parentServicePointSloid,
+      tactileVisualMarks: tactileVisualMarks,
+      contrastingAreas: contrastingAreas,
+      stepFreeAccess: stepFreeAccess,
+      referencePointElementType: referencePointElementType,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      referencePointSloid: referencePointSloid,
+    }).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const relation = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        relationId,
+        true,
+        1
+      );
+      validateRelation(relation);
+      etagVersionRelation = relation.etagVersion;
+      relationId = relation.id;
+    });
+  });
+
+  it('Step-5: Check relations after update', () => {
+    checkRelations();
+  });
+
+  it('Step-6: Update complete Platform', () => {
+    additionalInformation = 'additionalInformation2';
+    boardingDevice = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.boardingDeviceValues()
+    );
+
+    CommonUtils.put(`/prm-directory/v1/platforms/${platformId}`, {
+      sloid: trafficPointSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      parentServicePointSloid: parentServicePointSloid,
+      boardingDevice: boardingDevice,
+      adviceAccessInfo: adviceAccessInfo,
+      additionalInformation: additionalInformation,
+      contrastingAreas: contrastingAreasPlatform,
+      dynamicAudio: dynamicAudio,
+      dynamicVisual: dynamicVisual,
+      inclination: inclination,
+      inclinationWidth: inclinationWidth,
+      levelAccessWheelchair: levelAccessWheelchair,
+      superelevation: superelevation,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      etagVersion: etagVersionPlatform,
+    }).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+      const platform = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        platformId,
+        true,
+        1
+      );
+      validate(platform);
+      etagVersionPlatform = platform.etagVersion;
+    });
+  });
+
+  it('Step-7: Re-Check relations after Platform update', () => {
     checkRelations();
   });
 });
