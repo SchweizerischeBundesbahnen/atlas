@@ -88,9 +88,6 @@ public class TrafficPointCreateCsvModel implements Validatable<TrafficPointCreat
     if (trafficPointElementType == null) {
       errors.add(BulkImportErrors.notNull(TrafficPointCreateCsvModel.Fields.trafficPointElementType));
     }
-    if (number == null) {
-      errors.add(BulkImportErrors.notNull(TrafficPointCreateCsvModel.Fields.number));
-    }
     if (validFrom == null) {
       errors.add(BulkImportErrors.notNull(TrafficPointCreateCsvModel.Fields.validFrom));
     }
