@@ -139,6 +139,7 @@
   },
   "DIALOG": {
     "OK": "Weiter",
+    "IGNORE": "Ignorieren",
     "RELOAD": "Neu laden",
     "CANCEL": "Abbrechen",
     "BACK": "Zurück zur Eingabemaske",
@@ -504,6 +505,18 @@
         "DESCRIPTION": "Linienbezeichnung",
         "STATUS": "Anhörungsstatus",
         "SLNID": "SLNID"
+      }
+    },
+    "SUBLINE_SHORTENING": {
+      "ALLOWED": {
+        "TITLE": "Hinweis",
+        "MESSAGE": "Es können alle Teillinien gekürzt werden.",
+        "SHORT_AUTOMATICALLY": "Folgende Teillinien können automatisch gekürzt werden:"
+      },
+      "NOT_ALLOWED": {
+        "TITLE": "Hinweis",
+        "MESSAGE": "Es können nicht alle Teillinien automatisch gekürzt werden.",
+        "SHORT_MANUAL": "Kürze folgende Teillinien selbst ein:"
       }
     }
   },
