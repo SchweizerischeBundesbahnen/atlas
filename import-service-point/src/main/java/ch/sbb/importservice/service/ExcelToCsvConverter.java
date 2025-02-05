@@ -48,7 +48,7 @@ public class ExcelToCsvConverter {
   private String getSheetAsCsv(Sheet sheet) {
     final StringBuilder csv = new StringBuilder().append(AtlasCsvReader.CSV_COLUMN_SEPARATOR);
 
-    final AtomicInteger rowNum = new AtomicInteger(-1);
+    final AtomicInteger rowNum = new AtomicInteger(0);
     sheet.forEach(row -> {
 
       csv.replace(csv.length() - 1, csv.length(), System.lineSeparator().repeat(row.getRowNum() - rowNum.get()));
