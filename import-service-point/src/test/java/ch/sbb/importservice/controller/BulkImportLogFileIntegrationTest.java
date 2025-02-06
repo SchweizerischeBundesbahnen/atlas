@@ -52,9 +52,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @Slf4j
 @IntegrationTest
@@ -69,19 +69,19 @@ class BulkImportLogFileIntegrationTest {
   @Autowired
   private ObjectMapper objectMapper;
 
-  @MockBean
+  @MockitoBean
   private ServicePointBulkImportClient servicePointBulkImportClient;
 
-  @MockBean
+  @MockitoBean
   private AmazonService amazonService;
 
-  @MockBean
+  @MockitoBean
   private UserAdministrationClient userAdministrationClient;
 
-  @MockBean
+  @MockitoBean
   private MailProducerService mailProducerService;
 
-  @SpyBean
+  @MockitoSpyBean
   private BulkImportLogService bulkImportLogService;
 
   @Captor
@@ -134,7 +134,7 @@ class BulkImportLogFileIntegrationTest {
     // Then
     List<BulkImport> bulkImports = bulkImportRepository.findAll();
     assertThat(bulkImports).hasSize(1);
-    BulkImport bulkImport = bulkImports.get(0);
+    BulkImport bulkImport = bulkImports.getFirst();
     verify(bulkImportLogService).writeLogToFile(logFileCaptor.capture(), any(BulkImport.class));
 
     LogFile writtenLogFile = logFileCaptor.getValue();
