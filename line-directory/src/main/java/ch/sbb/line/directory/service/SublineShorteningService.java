@@ -111,7 +111,7 @@ public class SublineShorteningService {
     return !dateRangeSubline.isDateRangeContainedIn(dateRangeMainline);
   }
 
-  public boolean isShorteningAllowed(LocalDate validFrom, LocalDate validTo, SublineVersionRange sublineVersionRange) {
+  private boolean isShorteningAllowed(LocalDate validFrom, LocalDate validTo, SublineVersionRange sublineVersionRange) {
     return (validFrom.isBefore(sublineVersionRange.getOldestVersion().getValidTo()) ||
         validFrom.isEqual(sublineVersionRange.getOldestVersion().getValidTo()))
         && (validTo.isAfter(sublineVersionRange.getLatestVersion().getValidFrom()) ||
