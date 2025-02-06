@@ -407,17 +407,17 @@ export class LineDetailComponent implements OnInit {
 
     const ignoreFields = ['validFrom', 'validTo'];
 
-    const keysInit = Object.keys(initForm)
+    const keysInitForm = Object.keys(initForm)
       .filter((key) => !ignoreFields.includes(key))
       .sort();
-    const keysUpdated = Object.keys(updatedForm)
+    const keysUpdatedForm = Object.keys(updatedForm)
       .filter((key) => !ignoreFields.includes(key))
       .sort();
 
     let formsEqual = false;
 
-    keysInit.forEach((key) => {
-      if (keysUpdated.includes(key)) {
+    keysInitForm.forEach((key) => {
+      if (keysUpdatedForm.includes(key)) {
         formsEqual = true;
       } else {
         if (
