@@ -239,6 +239,8 @@ describe('LineDetailComponent for existing lineVersion', () => {
       of(affectedSublines)
     );
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    spyOn(component, 'updateLineVersion').and.callThrough();
+
     //spyOn(component.dialog, 'open').and.returnValue({afterClosed: () => of(true)})
     component.toggleEdit();
     component.form.controls.validTo.setValue(moment('2028-06-01'));
