@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import {
+  AffectedSublines,
   LinesService,
   LineType,
   LineVersionV2,
@@ -134,6 +135,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
     'updateLineVersion',
     'deleteLines',
+    'checkAffectedSublines',
   ]);
   const mockData = {
     lineDetail: [lineVersion],
@@ -224,6 +226,23 @@ describe('LineDetailComponent for existing lineVersion', () => {
     );
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
+  });
+
+  fit('should update LineVersion with shortening', () => {
+    const affectedSublines: AffectedSublines = {
+      allowedSublines: ['1234'],
+      notAllowedSublines: [],
+    };
+
+    mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
+    mockLinesService.checkAffectedSublines.and.returnValue(
+      of(affectedSublines)
+    );
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    //spyOn(component.dialog, 'open').and.returnValue({afterClosed: () => of(true)})
+    component.toggleEdit();
+    component.form.controls.validTo.setValue(moment('2028-06-01'));
+    expect(component.updateLineVersion).toHaveBeenCalled();
   });
 });
 
