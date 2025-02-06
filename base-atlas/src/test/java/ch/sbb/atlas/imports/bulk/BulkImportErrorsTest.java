@@ -39,4 +39,11 @@ class BulkImportErrorsTest {
     assertThat(bulkImportError.getDisplayInfo().getCode()).isEqualTo("BULK_IMPORT.VALIDATION.DUPLICATE_FIELD");
   }
 
+  @Test
+  void shouldBuildBulkImportErrorForStopPointSloidXorNumber() {
+    BulkImportError bulkImportError = BulkImportErrors.stopPointSloidXorNumber();
+    assertThat(bulkImportError.getErrorMessage()).isEqualTo("stopPointSloid xor number must be given");
+    assertThat(bulkImportError.getDisplayInfo().getCode()).isEqualTo("BULK_IMPORT.VALIDATION.STOPPOINTSLOID_XOR_NUMBER");
+  }
+
 }
