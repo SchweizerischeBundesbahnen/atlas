@@ -1311,3 +1311,249 @@ describe('PRM: Complete Platform', { testIsolation: false }, () => {
     checkRelations();
   });
 });
+
+describe('PRM: Complete Parking Lot', { testIsolation: false }, () => {
+  let parkingLotId = -1;
+  let parkingLotSloid = '';
+  let relationId = -1;
+  let etagVersionParkingLot = -1;
+
+  let tactileVisualMarks = CommonUtils.TO_BE_COMPLETED;
+  let contrastingAreas = CommonUtils.TO_BE_COMPLETED;
+  let stepFreeAccess = CommonUtils.TO_BE_COMPLETED;
+  let designation = 'öffentliches Parkplatz im Bf Basel Bad Bf';
+  let additionalInformation = 'additionalInformation';
+
+  let placesAvailable = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValues()
+  );
+  let prmPlacesAvailable = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValues()
+  );
+
+  const validFrom = ReleaseApiUtils.todayAsAtlasString();
+  const validTo = ReleaseApiUtils.todayAsAtlasString();
+  const referencePointElementType = 'PARKING_LOT';
+  const openingHours = 'Öffnungszeiten: 08:00 - 20:00';
+
+  const validateCommonCompleteParkingLotAttributes = (prmObject) => {
+    validatePrmObject(prmObject, validFrom, validTo);
+    expect(prmObject)
+      .to.have.property('parentServicePointSloid')
+      .that.is.a('string')
+      .and.to.equal(parentServicePointSloid);
+  };
+
+  const validate = (parkingLot) => {
+    validateCommonCompleteParkingLotAttributes(parkingLot);
+    expect(parkingLot)
+      .to.have.property('sloid')
+      .that.is.a('string')
+      .and.to.equal(parkingLotSloid);
+    expect(parkingLot)
+      .to.have.property('designation')
+      .that.is.a('string')
+      .and.to.equal(designation);
+    expect(parkingLot)
+      .to.have.property('additionalInformation')
+      .and.to.equal(additionalInformation);
+    expect(parkingLot)
+      .to.have.property('placesAvailable')
+      .and.to.equal(placesAvailable);
+    expect(parkingLot)
+      .to.have.property('prmPlacesAvailable')
+      .and.to.equal(prmPlacesAvailable);
+  };
+
+  const validateRelation = (relation) => {
+    validateCommonCompleteParkingLotAttributes(relation);
+    expect(relation)
+      .to.have.property('referencePointSloid')
+      .that.is.a('string')
+      .and.to.equal(referencePointSloid);
+    expect(relation)
+      .to.have.property('elementSloid')
+      .that.is.a('string')
+      .and.to.equal(parkingLotSloid);
+    expect(relation)
+      .to.have.property('parentServicePointSloid')
+      .that.is.a('string')
+      .and.to.equal(parentServicePointSloid);
+    expect(relation)
+      .to.have.property('tactileVisualMarks')
+      .that.is.a('string')
+      .and.to.equal(tactileVisualMarks);
+    expect(relation)
+      .to.have.property('contrastingAreas')
+      .that.is.a('string')
+      .and.to.equal(contrastingAreas);
+    expect(relation)
+      .to.have.property('stepFreeAccess')
+      .that.is.a('string')
+      .and.to.equal(stepFreeAccess);
+  };
+
+  const checkRelation = (queryParameters) => {
+    CommonUtils.get(`/prm-directory/v1/relations?${queryParameters}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+        expect(response.body)
+          .to.have.property('objects')
+          .that.is.an('array')
+          .and.to.have.property('length')
+          .which.equals(1);
+        const relation = response.body.objects[0];
+        validateRelation(relation);
+        relationId = relation.id;
+        etagVersionRelation = relation.etagVersion;
+      }
+    );
+  };
+
+  const checkRelations = () => {
+    checkRelation(
+      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
+    );
+    checkRelation(
+      `referencePointSloids=${referencePointSloid}&referencePointElementTypes=${referencePointElementType}`
+    );
+    checkRelation(`sloids=${parkingLotSloid}`);
+
+    CommonUtils.get(`/prm-directory/v1/relations/${parkingLotSloid}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+        const relation = ReleaseApiUtils.getPrmObjectById(
+          response.body,
+          relationId,
+          true,
+          1
+        );
+        validateRelation(relation);
+      }
+    );
+  };
+
+  it('Step-1: New complete Parking Lot', () => {
+    parkingLotSloid = `${parentServicePointSloid}:${referencePointElementType}1`;
+
+    CommonUtils.post('/prm-directory/v1/parking-lots', {
+      sloid: parkingLotSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: 0,
+      parentServicePointSloid: parentServicePointSloid,
+      designation: designation,
+      additionalInformation: additionalInformation,
+      placesAvailable: placesAvailable,
+      prmPlacesAvailable: prmPlacesAvailable,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+    }).then((response) => {
+      expect(response.status).to.equal(
+        CommonUtils.HTTP_REST_API_RESPONSE_CREATED
+      );
+      const parkingLot = response.body;
+      validate(parkingLot);
+      parkingLotId = parkingLot.id;
+    });
+  });
+
+  it('Step-2: Get complete Parking Lot', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/parking-lots?sloids=${parkingLotSloid}`
+    ).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const parkingLot = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        parkingLotId,
+        false,
+        1
+      );
+      validate(parkingLot);
+      etagVersionParkingLot = parkingLot.etagVersion;
+    });
+  });
+
+  it('Step-3: Check relations after create', () => {
+    checkRelations();
+  });
+
+  it('Step-4: Update complete Parking Lot', () => {
+    designation = 'designation2';
+    additionalInformation = 'additionalInformation2';
+    placesAvailable = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValues()
+    );
+    prmPlacesAvailable = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValues()
+    );
+
+    CommonUtils.put(`/prm-directory/v1/parking-lots/${parkingLotId}`, {
+      sloid: parkingLotSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersionParkingLot,
+      parentServicePointSloid: parentServicePointSloid,
+      designation: designation,
+      additionalInformation: additionalInformation,
+      placesAvailable: placesAvailable,
+      prmPlacesAvailable: prmPlacesAvailable,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+    }).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+      const parkingLot = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        parkingLotId,
+        true,
+        1
+      );
+      validate(parkingLot);
+      etagVersionParkingLot = parkingLot.etagVersion;
+    });
+  });
+
+  it('Step-5: Check relations after parking lot update', () => {
+    checkRelations();
+  });
+
+  it('Step-6: Update complete Parking Lot relation', () => {
+    tactileVisualMarks = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndWithRemoteControl()
+    );
+    contrastingAreas = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndPartially()
+    );
+    stepFreeAccess = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.stepFreeAccessValues()
+    );
+
+    CommonUtils.put(`/prm-directory/v1/relations/${relationId}`, {
+      sloid: parkingLotSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersionRelation,
+      parentServicePointSloid: parentServicePointSloid,
+      tactileVisualMarks: tactileVisualMarks,
+      contrastingAreas: contrastingAreas,
+      stepFreeAccess: stepFreeAccess,
+      referencePointElementType: referencePointElementType,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      referencePointSloid: referencePointSloid,
+    }).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+      const relation = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        relationId,
+        true,
+        1
+      );
+      validateRelation(relation);
+      etagVersionRelation = relation.etagVersion;
+      relationId = relation.id;
+    });
+  });
+
+  it('Step-7: Re-Check relations after relation update', () => {
+    checkRelations();
+  });
+});
