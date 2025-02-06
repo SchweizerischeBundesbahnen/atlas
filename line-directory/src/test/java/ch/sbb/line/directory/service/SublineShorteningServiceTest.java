@@ -136,12 +136,12 @@ class SublineShorteningServiceTest {
         .build();
 
     when(lineVersionRepository.findById(anyLong())).thenReturn(Optional.ofNullable(lineVersion));
-    when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
         List.of(allowedSublineVersion, allowedSublineVersion2, notAllowedSublineVersion, notAllowedSublineVersion2));
 
     AffectedSublines affectedSublines = sublineShorteningService.checkAffectedSublines(lineVersion.getId(),
-        lineVersion.getValidFrom(),
-        lineVersion.getValidTo());
+        LocalDate.of(2004, 1, 31),
+        LocalDate.of(2016, 1, 1));
     assertThat(affectedSublines.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(allowedSublineVersion.getSlnid()));
     assertThat(affectedSublines.getNotAllowedSublines()).containsExactlyInAnyOrderElementsOf(
