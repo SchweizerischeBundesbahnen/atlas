@@ -15,6 +15,14 @@ public class BulkImportErrors {
                         .build()).build();
     }
 
+    public static BulkImportError stopPointSloidXorNumber() {
+        return BulkImportError.builder()
+            .errorMessage("stopPointSloid xor number must be given")
+            .displayInfo(DisplayInfo.builder()
+                .code("BULK_IMPORT.VALIDATION.STOPPOINTSLOID_XOR_NUMBER")
+                .build()).build();
+    }
+
     public static BulkImportError notNull(String field) {
         return BulkImportError.builder()
                 .errorMessage("Field " + field + " must not be null")
