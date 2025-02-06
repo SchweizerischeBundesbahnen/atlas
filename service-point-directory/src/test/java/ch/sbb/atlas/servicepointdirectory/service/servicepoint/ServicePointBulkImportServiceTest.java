@@ -34,21 +34,21 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
 class ServicePointBulkImportServiceTest {
 
-  @MockBean
+  @MockitoBean
   private CountryAndBusinessOrganisationBasedUserAdministrationService administrationService;
 
-  @MockBean
+  @MockitoBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
-  @MockBean
+  @MockitoBean
   private GeoReferenceService geoReferenceService;
 
-  @MockBean
+  @MockitoBean
   private LocationService locationService;
 
   @Autowired
@@ -151,6 +151,7 @@ class ServicePointBulkImportServiceTest {
             .sloid(bernWyleregg.getSloid())
             .validFrom(bernWyleregg.getValidFrom())
             .validTo(bernWyleregg.getValidTo())
+            .freightServicePoint(true)
             .build())
         .attributesToNull(List.of(Fields.meansOfTransport))
         .build());
@@ -286,7 +287,6 @@ class ServicePointBulkImportServiceTest {
     ReadServicePointVersionModel bulkUpdateResult = servicePointBulkImportService.createServicePoint(
         BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
             .object(ServicePointCreateCsvModel.builder()
-                .numberShort(6000)
                 .uicCountryCode(85)
                 .validFrom(bernWyleregg.getValidFrom())
                 .validTo(bernWyleregg.getValidTo())
@@ -311,7 +311,6 @@ class ServicePointBulkImportServiceTest {
     ReadServicePointVersionModel bulkUpdateResult = servicePointBulkImportService.createServicePointByUserName("e123456",
         BulkImportUpdateContainer.<ServicePointCreateCsvModel>builder()
             .object(ServicePointCreateCsvModel.builder()
-                .numberShort(6001)
                 .uicCountryCode(85)
                 .validFrom(bernWyleregg.getValidFrom())
                 .validTo(bernWyleregg.getValidTo())
@@ -322,4 +321,5 @@ class ServicePointBulkImportServiceTest {
     //then
     assertThat(bulkUpdateResult.getDesignationOfficial()).isEqualTo("createBulkImport2");
   }
+
 }
