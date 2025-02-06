@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
-import ch.sbb.importservice.service.sepodi.traffic.point.create.TrafficPointCreate;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
