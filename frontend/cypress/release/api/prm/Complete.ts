@@ -876,6 +876,7 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
       const ticketCounter = response.body;
       validate(ticketCounter);
       ticketCounterId = ticketCounter.id;
+      etagVersionTicketCounter = ticketCounter.etagVersion;
     });
   });
 
@@ -1009,14 +1010,14 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
-      const toilet = ReleaseApiUtils.getPrmObjectById(
+      const ticketCounter = ReleaseApiUtils.getPrmObjectById(
         response.body,
         ticketCounterId,
         true,
         1
       );
-      validate(toilet);
-      etagVersionTicketCounter = toilet.etagVersion;
+      validate(ticketCounter);
+      etagVersionTicketCounter = ticketCounter.etagVersion;
     });
   });
 
@@ -1554,6 +1555,292 @@ describe('PRM: Complete Parking Lot', { testIsolation: false }, () => {
   });
 
   it('Step-7: Re-Check relations after relation update', () => {
+    checkRelations();
+  });
+});
+
+describe('PRM: Complete Information Desk', { testIsolation: false }, () => {
+  let informationDeskId = -1;
+  let informationDeskSloid = '';
+  let relationId = -1;
+  let etagVersionInformationDesk = -1;
+
+  let tactileVisualMarks = CommonUtils.TO_BE_COMPLETED;
+  let contrastingAreas = CommonUtils.TO_BE_COMPLETED;
+  let stepFreeAccess = CommonUtils.TO_BE_COMPLETED;
+
+  let designation = 'öffentlicher Information-Desk im Bf Basel Bad Bf';
+  let additionalInformation = 'additionalInformation';
+  let wheelchairAccess = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValuesAndNotApplicableAndPartially()
+  );
+
+  const validFrom = ReleaseApiUtils.todayAsAtlasString();
+  const validTo = ReleaseApiUtils.todayAsAtlasString();
+  const contactPointType = 'INFORMATION_DESK';
+  const referencePointElementType = 'CONTACT_POINT';
+  const openingHours = 'Öffnungszeiten: 08:00 - 20:00';
+  const numberOfExpectedContactPoints = 2;
+  const numberOfExpectedInformationDesks = 1;
+  const inductionLoop = ReleaseApiUtils.extractOneRandomValue(
+    PrmConstants.basicValuesAndNotApplicableAndPartially()
+  );
+
+  const validateCommonCompleteTicketCounterAttributes = (prmObject) => {
+    validatePrmObject(prmObject, validFrom, validTo);
+    expect(prmObject)
+      .to.have.property('parentServicePointSloid')
+      .that.is.a('string')
+      .and.to.equal(parentServicePointSloid);
+  };
+
+  const validate = (informationDesk) => {
+    validateCommonCompleteTicketCounterAttributes(informationDesk);
+    expect(informationDesk)
+      .to.have.property('sloid')
+      .that.is.a('string')
+      .and.to.equal(informationDeskSloid);
+    expect(informationDesk)
+      .to.have.property('designation')
+      .that.is.a('string')
+      .and.to.equal(designation);
+    expect(informationDesk)
+      .to.have.property('additionalInformation')
+      .and.to.equal(additionalInformation);
+    expect(informationDesk)
+      .to.have.property('inductionLoop')
+      .and.to.equal(inductionLoop);
+    expect(informationDesk)
+      .to.have.property('wheelchairAccess')
+      .and.to.equal(wheelchairAccess);
+    expect(informationDesk)
+      .to.have.property('openingHours')
+      .and.to.equal(openingHours);
+    expect(informationDesk)
+      .to.have.property('type')
+      .that.is.a('string')
+      .and.to.equal(contactPointType);
+  };
+
+  const validateRelation = (relation) => {
+    validateCommonCompleteTicketCounterAttributes(relation);
+    expect(relation)
+      .to.have.property('referencePointSloid')
+      .that.is.a('string')
+      .and.to.equal(referencePointSloid);
+    expect(relation)
+      .to.have.property('elementSloid')
+      .that.is.a('string')
+      .and.to.equal(informationDeskSloid);
+    expect(relation)
+      .to.have.property('parentServicePointSloid')
+      .that.is.a('string')
+      .and.to.equal(parentServicePointSloid);
+    expect(relation)
+      .to.have.property('referencePointElementType')
+      .that.is.a('string')
+      .and.to.equal(referencePointElementType);
+    expect(relation)
+      .to.have.property('tactileVisualMarks')
+      .that.is.a('string')
+      .and.to.equal(tactileVisualMarks);
+    expect(relation)
+      .to.have.property('contrastingAreas')
+      .that.is.a('string')
+      .and.to.equal(contrastingAreas);
+    expect(relation)
+      .to.have.property('stepFreeAccess')
+      .that.is.a('string')
+      .and.to.equal(stepFreeAccess);
+  };
+
+  it('Step-1: New complete Information Desk', () => {
+    informationDeskSloid = `${parentServicePointSloid}:${contactPointType}1`;
+
+    // TODO: Export POST/PUT-bodies?
+    CommonUtils.post('/prm-directory/v1/contact-points', {
+      type: contactPointType,
+      sloid: informationDeskSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      parentServicePointSloid: parentServicePointSloid,
+      designation: designation,
+      additionalInformation: additionalInformation,
+      inductionLoop: inductionLoop,
+      openingHours: openingHours,
+      wheelchairAccess: wheelchairAccess,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+    }).then((response) => {
+      expect(response.status).to.equal(
+        CommonUtils.HTTP_REST_API_RESPONSE_CREATED
+      );
+      const informationDesk = response.body;
+      validate(informationDesk);
+      informationDeskId = informationDesk.id;
+    });
+  });
+
+  it('Step-2: Get complete Information Desk', () => {
+    CommonUtils.get(
+      `/prm-directory/v1/contact-points?sloids=${informationDeskSloid}`
+    ).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const informationDesk = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        informationDeskId,
+        false,
+        1
+      );
+      validate(informationDesk);
+      etagVersionInformationDesk = informationDesk.etagVersion;
+    });
+  });
+
+  const checkRelation = (
+    queryParameters,
+    numberOfExpectedObjects: number,
+    numberOfExpectedInformationDesks: number
+  ) => {
+    CommonUtils.get(`/prm-directory/v1/relations?${queryParameters}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+        expect(response.body)
+          .to.have.property('objects')
+          .that.is.an('array')
+          .and.to.have.property('length')
+          .which.equals(numberOfExpectedObjects);
+
+        const relation = ReleaseApiUtils.getPrmObjectById(
+          response.body,
+          relationId,
+          false,
+          numberOfExpectedInformationDesks
+        );
+
+        validateRelation(relation);
+
+        relationId = relation.id;
+        etagVersionRelation = relation.etagVersion;
+      }
+    );
+  };
+
+  const checkRelations = () => {
+    CommonUtils.get(`/prm-directory/v1/relations/${informationDeskSloid}`).then(
+      (response) => {
+        expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+        expect(response.body)
+          .to.be.an('array')
+          .and.to.have.property('length')
+          .which.equals(numberOfExpectedInformationDesks);
+
+        const relation = response.body[0];
+        validateRelation(relation);
+        relationId = relation.id;
+      }
+    );
+
+    checkRelation(
+      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`,
+      numberOfExpectedContactPoints,
+      numberOfExpectedContactPoints
+    );
+    checkRelation(
+      `referencePointSloids=${referencePointSloid}&referencePointElementTypes=${referencePointElementType}`,
+      numberOfExpectedContactPoints,
+      numberOfExpectedContactPoints
+    );
+    checkRelation(
+      `sloids=${informationDeskSloid}`,
+      numberOfExpectedInformationDesks,
+      numberOfExpectedInformationDesks
+    );
+  };
+
+  it('Step-3: Check relations after create', () => {
+    checkRelations();
+  });
+
+  it('Step-4: Update complete Information Desk relation', () => {
+    tactileVisualMarks = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndWithRemoteControl()
+    );
+    contrastingAreas = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndPartially()
+    );
+    stepFreeAccess = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.stepFreeAccessValues()
+    );
+
+    CommonUtils.put(`/prm-directory/v1/relations/${relationId}`, {
+      sloid: informationDeskSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersionRelation,
+      parentServicePointSloid: parentServicePointSloid,
+      tactileVisualMarks: tactileVisualMarks,
+      contrastingAreas: contrastingAreas,
+      stepFreeAccess: stepFreeAccess,
+      referencePointElementType: referencePointElementType,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      referencePointSloid: referencePointSloid,
+    }).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const relation = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        relationId,
+        true,
+        1
+      );
+      validateRelation(relation);
+      etagVersionRelation = relation.etagVersion;
+      relationId = relation.id;
+    });
+  });
+
+  it('Step-5: Check relations after update', () => {
+    checkRelations();
+  });
+
+  it('Step-6: Update complete information desk', () => {
+    designation = 'designation2';
+    additionalInformation = 'additionalInformation2';
+    wheelchairAccess = ReleaseApiUtils.extractOneRandomValue(
+      PrmConstants.basicValuesAndNotApplicableAndPartially()
+    );
+
+    CommonUtils.put(`/prm-directory/v1/contact-points/${informationDeskId}`, {
+      type: contactPointType,
+      sloid: informationDeskSloid,
+      validFrom: validFrom,
+      validTo: validTo,
+      etagVersion: etagVersionInformationDesk,
+      parentServicePointSloid: parentServicePointSloid,
+      designation: designation,
+      additionalInformation: additionalInformation,
+      inductionLoop: inductionLoop,
+      openingHours: openingHours,
+      wheelchairAccess: wheelchairAccess,
+      numberWithoutCheckDigit: numberWithoutCheckDigit,
+    }).then((response) => {
+      expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      const informationDesk = ReleaseApiUtils.getPrmObjectById(
+        response.body,
+        informationDeskId,
+        true,
+        1
+      );
+      validate(informationDesk);
+      etagVersionInformationDesk = informationDesk.etagVersion;
+    });
+  });
+
+  it('Step-7: Re-Check relations after information desk update', () => {
     checkRelations();
   });
 });
