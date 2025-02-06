@@ -254,6 +254,7 @@ export class LineDetailComponent implements OnInit {
             affectedSublines.notAllowedSublines!.length === 0;
 
           if (isZeroAffectedSublines) {
+            //Paramter mit success texten
             this.updateLineVersion(id, lineVersion);
           } else {
             this.openSublineShorteningDialog(
