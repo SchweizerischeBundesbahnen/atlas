@@ -11,12 +11,12 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.DoublePredicate;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -28,8 +28,6 @@ import org.springframework.stereotype.Service;
 public class ExcelToCsvConverter {
 
   private static final Predicate<Cell> IS_DATE_VALUE = cell -> cell.getCellStyle().getDataFormatString().equals("m/d/yy");
-  private static final DoublePredicate IS_INT = doubleValue -> Double.isFinite(doubleValue)
-      && Double.compare(doubleValue, StrictMath.rint(doubleValue)) == 0;
 
   private final FileService fileService;
 
@@ -74,11 +72,7 @@ public class ExcelToCsvConverter {
           LocalDate cellAsDate = cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
           return cellAsDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH));
         }
-        double numericCellValue = cell.getNumericCellValue();
-        if (IS_INT.test(numericCellValue)) {
-          return String.valueOf((int) numericCellValue);
-        }
-        return String.valueOf(numericCellValue);
+        return new DataFormatter().formatCellValue(cell);
       }
       case STRING -> {
         return StringUtils.trim(cell.getStringCellValue());
