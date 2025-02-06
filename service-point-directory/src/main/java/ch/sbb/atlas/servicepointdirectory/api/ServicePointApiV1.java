@@ -31,6 +31,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,13 +42,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Service Points")
 @RequestMapping("v1/service-points")
+@Validated
 public interface ServicePointApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
   Container<ReadServicePointVersionModel> getServicePoints(@Parameter(hidden = true) @PageableDefault(sort =
-      {ServicePointVersion.Fields.number,
-          ServicePointVersion.Fields.validFrom}) Pageable pageable,
+          {ServicePointVersion.Fields.number,
+              ServicePointVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject ServicePointRequestParams servicePointRequestParams);
 
   @GetMapping("{servicePointNumber}")
@@ -60,7 +62,7 @@ public interface ServicePointApiV1 {
   ReadServicePointVersionModel getServicePointVersion(@PathVariable Long id);
 
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
-          + ".ApplicationType).SEPODI)")
+      + ".ApplicationType).SEPODI)")
   @PostMapping("{servicePointNumber}/revoke")
   List<ReadServicePointVersionModel> revokeServicePoint(@PathVariable Integer servicePointNumber);
 
@@ -69,7 +71,7 @@ public interface ServicePointApiV1 {
   ReadServicePointVersionModel createServicePoint(@RequestBody @Valid CreateServicePointVersionModel servicePointVersionModel);
 
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
-          + ".ApplicationType).SEPODI)")
+      + ".ApplicationType).SEPODI)")
   @ResponseStatus(HttpStatus.OK)
   @PostMapping({"versions/{id}/skip-workflow"})
   ReadServicePointVersionModel validateServicePoint(@PathVariable Long id);

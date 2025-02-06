@@ -127,7 +127,7 @@ class UpdateServicePointVersionModelTest {
         .build();
 
     Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
-    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations).hasSize(3);
   }
 
   @Test
@@ -207,49 +207,49 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldPassAssertionIsOperatingPointRouteNetworkTrueAndKilometerMasterNumberNullWhenRouteNetworkFalse() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(null, false);
+        getCreateServicePointVersionModel(null, false);
     assertThat(createServicePointVersionModel.isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull()).isTrue();
   }
 
   @Test
   void shouldNotPassAssertionIsOperatingPointRouteNetworkTrueAndKilometerMasterNumberNullWhenRouteNetworkTrueAndKilometerMasterNotNull() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(8034510, true);
+        getCreateServicePointVersionModel(8034510, true);
     assertThat(createServicePointVersionModel.isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull()).isFalse();
   }
 
   @Test
   void shouldPassAssertionIsOperatingPointRouteNetworkTrueAndKilometerMasterNumberNullWhenRouteNetworkTrueAndKilometerMasterNull() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(null, true);
+        getCreateServicePointVersionModel(null, true);
     assertThat(createServicePointVersionModel.isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull()).isTrue();
   }
 
   @Test
   void shouldPassAssertionIsOperatingPointRouteNetworkTrueAndKilometerMasterNumberNullWhenRouteNetworkFalseAndKilometerMasterNull() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(null, false);
+        getCreateServicePointVersionModel(null, false);
     assertThat(createServicePointVersionModel.isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull()).isTrue();
   }
 
   @Test
   void shouldPassAssertionIsOperatingPointRouteNetworkTrueAndKilometerMasterNumberNullWhenRouteNetworkFalseAndKilometerMasterNotNull() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(8034510, false);
+        getCreateServicePointVersionModel(8034510, false);
     assertThat(createServicePointVersionModel.isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull()).isTrue();
   }
 
   @Test
   void shouldPassAssertionIsRouteNetworkOrKilometerMasterNumberAllowed() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(null, true);
+        getCreateServicePointVersionModel(null, true);
     assertThat(createServicePointVersionModel.isRouteNetworkOrKilometerMasterNumberAllowed()).isFalse();
   }
 
   @Test
   void shouldPassAssertionIsRouteNetworkOrKilometerMasterNumberAllowedWhenIsFreightServicePoint() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(null, true);
+        getCreateServicePointVersionModel(null, true);
     createServicePointVersionModel.setFreightServicePoint(true);
     assertThat(createServicePointVersionModel.isRouteNetworkOrKilometerMasterNumberAllowed()).isTrue();
   }
@@ -257,7 +257,7 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldPassAssertionIsRouteNetworkOrKilometerMasterNumberAllowedWhenOperatingPoint() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(null, true);
+        getCreateServicePointVersionModel(null, true);
     createServicePointVersionModel.setOperatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.BRANCH);
     assertThat(createServicePointVersionModel.isRouteNetworkOrKilometerMasterNumberAllowed()).isTrue();
   }
@@ -265,7 +265,7 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldPassAssertionIsRouteNetworkOrKilometerMasterNumberAllowedWhenStopPointAndRouteNetworkTrue() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(null, true);
+        getCreateServicePointVersionModel(null, true);
     createServicePointVersionModel.setMeansOfTransport(List.of(MeanOfTransport.BUS));
     assertThat(createServicePointVersionModel.isRouteNetworkOrKilometerMasterNumberAllowed()).isTrue();
   }
@@ -273,7 +273,7 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldPassAssertionIsRouteNetworkOrKilometerMasterNumberAllowedWhenStopPoint() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(null, false);
+        getCreateServicePointVersionModel(null, false);
     createServicePointVersionModel.setMeansOfTransport(List.of(MeanOfTransport.BUS));
     assertThat(createServicePointVersionModel.isRouteNetworkOrKilometerMasterNumberAllowed()).isTrue();
   }
@@ -281,7 +281,7 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldNotPassAssertionIsRouteNetworkOrKilometerMasterNumberAllowedWhenTariffPoint() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(null, true);
+        getCreateServicePointVersionModel(null, true);
     createServicePointVersionModel.setOperatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT);
     assertThat(createServicePointVersionModel.isRouteNetworkOrKilometerMasterNumberAllowed()).isFalse();
   }
@@ -289,12 +289,13 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldPassAssertionIsRouteNetworkOrKilometerMasterNumberAllowedWhenTariffPoint() {
     CreateServicePointVersionModel createServicePointVersionModel =
-            getCreateServicePointVersionModel(null, false);
+        getCreateServicePointVersionModel(null, false);
     createServicePointVersionModel.setOperatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT);
     assertThat(createServicePointVersionModel.isRouteNetworkOrKilometerMasterNumberAllowed()).isTrue();
   }
 
-  private CreateServicePointVersionModel getCreateServicePointVersionModel(Integer operatingPointKilometerMasterNumber, boolean isOperationPointRouteNetworkTrue) {
+  private CreateServicePointVersionModel getCreateServicePointVersionModel(Integer operatingPointKilometerMasterNumber,
+      boolean isOperationPointRouteNetworkTrue) {
     return CreateServicePointVersionModel.builder()
         .numberShort(34510)
         .operatingPointRouteNetwork(isOperationPointRouteNetworkTrue)
