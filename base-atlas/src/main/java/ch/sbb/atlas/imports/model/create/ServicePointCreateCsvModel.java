@@ -115,12 +115,11 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
   }
 
   private void validateNumberShort(List<BulkImportError> errors) {
-    if (isNumberShortRequired(uicCountryCode)) {
-      if (numberShort == null) {
-        errors.add(BulkImportErrors.notNull(Fields.numberShort));
-      } else if (numberShort < AtlasFieldLengths.MIN_NUMBER || numberShort > AtlasFieldLengths.MAX_FIVE_DIGITS_NUMBER) {
-        errors.add(BulkImportErrors.invalidNumberShort(Fields.numberShort));
-      }
+    if (isNumberShortRequired(uicCountryCode) && numberShort == null) {
+      errors.add(BulkImportErrors.notNull(Fields.numberShort));
+    } else if (numberShort != null && (numberShort < AtlasFieldLengths.MIN_NUMBER
+        || numberShort > AtlasFieldLengths.MAX_FIVE_DIGITS_NUMBER)) {
+      errors.add(BulkImportErrors.invalidNumberShort(Fields.numberShort));
     }
   }
 
@@ -184,7 +183,8 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
   }
 
   public String getNumber() {
-    if (Country.from(uicCountryCode) == null || numberShort == null) {
+    if (Country.from(uicCountryCode) == null || numberShort == null || numberShort < AtlasFieldLengths.MIN_NUMBER
+        || numberShort > AtlasFieldLengths.MAX_FIVE_DIGITS_NUMBER) {
       return null;
     }
     return ServicePointNumber.of(Country.from(uicCountryCode), numberShort).asString();
