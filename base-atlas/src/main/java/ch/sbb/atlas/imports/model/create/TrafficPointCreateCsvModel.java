@@ -83,7 +83,7 @@ public class TrafficPointCreateCsvModel implements Validatable<TrafficPointCreat
   public List<BulkImportError> validate() {
     List<BulkImportError> errors = new ArrayList<>();
     if ((stopPointSloid == null) == (number == null)) {
-      errors.add(BulkImportErrors.sloidXorNumber());
+      errors.add(BulkImportErrors.stopPointSloidXorNumber());
     }
     if (trafficPointElementType == null) {
       errors.add(BulkImportErrors.notNull(TrafficPointCreateCsvModel.Fields.trafficPointElementType));
