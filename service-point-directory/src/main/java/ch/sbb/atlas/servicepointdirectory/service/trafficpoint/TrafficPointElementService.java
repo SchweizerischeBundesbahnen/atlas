@@ -62,8 +62,8 @@ public class TrafficPointElementService {
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public TrafficPointElementVersion create(TrafficPointElementVersion trafficPointElementVersion,
       List<ServicePointVersion> servicePointVersions) {
-    trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
     if (trafficPointElementVersion.getSloid() != null) {
+      trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
       locationService.claimSloid(LocationService.getSloidType(trafficPointElementVersion.getTrafficPointElementType()),
           trafficPointElementVersion.getSloid());
     } else {
