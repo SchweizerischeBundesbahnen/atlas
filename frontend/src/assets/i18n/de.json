@@ -5,7 +5,10 @@
       "SIZE": "Ungültiger Wert für das Feld \"{{propertyPath}}\". Der Wert muss zwischen {{min}} und {{max}} Zeichen lang sein.",
       "PATTERN": "Die Bedingung für die Struktur des Wertes für das Feld {{propertyPath}} wurde mit dem Wert {{value}} nicht erfüllt.",
       "NOT_BLANK": "Die Bedingung \"darf nicht leer sein\" für das Feld {{propertyPath}} wurde mit dem Wert {{value}} nicht erfüllt.",
-      "NOT_NULL": "Die Bedingung \"muss definiert sein\" für das Feld {{propertyPath}} wurde mit dem Wert {{value}} nicht erfüllt."
+      "NOT_NULL": "Die Bedingung \"muss definiert sein\" für das Feld {{propertyPath}} wurde mit dem Wert {{value}} nicht erfüllt.",
+      "DIGITS": "Ungültiger Wert für das Feld \"{{propertyPath}}\". Die maximale Anzahl an Vor- und Nachkommastellen für den Wert beträgt {{integer}} und {{fraction}}.",
+      "VALID_SPATIAL_REFERENCE_FRACTION": "Maximale Dezimalstellen überschritten. LV03 und LV95 max. 5. WGS84 und WGS84WEB max. 11.",
+      "VALID_SERVICE_POINT_NUMBER": "\"numberShort\" muss nur vorhanden sein, wenn das Land nicht in (85,11,12,13,14) liegt."
     },
     "CLIENT": {
       "GENERIC": "Ein Fehler auf der Webseite ist aufgetreten, bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle atlas."
