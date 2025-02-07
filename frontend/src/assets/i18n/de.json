@@ -1227,6 +1227,7 @@
     "ZOOM_IN_HINT": "Zum Anzeigen von Dienststellen, zoomen Sie näher heran.",
     "AUTOMATIC_SLOID": "wird automatisch vergeben",
     "SLOID_ALREADY_USED": "{{sloid}} ist bereits vergeben.",
+    "SLOID_INVALID": "{{sloid}} entspricht nicht dem erwarteten Format.",
     "NUMBER_ALREADY_USED": "Der DiDok-Code {{number}} ist bereits vergeben."
   },
   "PRM": {
@@ -1514,6 +1515,7 @@
     "VALIDATION": {
       "DATA_MAPPING_ERROR": "Beim Attribut {{field}} wurde der Typ {{expectedType}} erwartet, der angegebene Wert war allerdings {{errorValue}}.",
       "SLOID_XOR_NUMBER": "Es muss entweder die sloid oder die number (nicht beides) angegeben werden.",
+      "STOPPOINTSLOID_XOR_NUMBER": "Es muss entweder die stopPointSloid oder die number (nicht beides) angegeben werden.",
       "INVALID_SERVICE_POINT_NUMBER": "Die Dienststellennummer ist ungültig.",
       "FIELD_MANDATORY": "Das Attribut {{field}} darf nicht leer sein.",
       "DUPLICATE_FIELD": "Das Attribut {{field}} mit dem Wert {{value}} kommt mehrmals vor.",

@@ -1227,6 +1227,7 @@
     "ZOOM_IN_HINT": "Pour afficher les services, zoomez plus près.",
     "AUTOMATIC_SLOID": "Elle est indiquée automatiquement.",
     "SLOID_ALREADY_USED": "{{sloid}} est déjà pris.",
+    "SLOID_INVALID": "{{sloid}} ne correspond pas au format attendu.",
     "NUMBER_ALREADY_USED": "Le code DiDok {{number}} est déjà pris."
   },
   "PRM": {
@@ -1514,6 +1515,7 @@
     "VALIDATION": {
       "DATA_MAPPING_ERROR": "Pour l'attribut {{field}}, le type {{expectedType}} était attendu, mais la valeur indiquée était {{errorValue}}.",
       "SLOID_XOR_NUMBER": "Il faut indiquer soit le sloid, soit le number (pas les deux).",
+      "STOPPOINTSLOID_XOR_NUMBER": "Il faut indiquer soit le stopPointSloid, soit le number (pas les deux).",
       "INVALID_SERVICE_POINT_NUMBER": "Le numéro de service n'est pas valide.",
       "FIELD_MANDATORY": "L'attribut {{field}} ne doit pas être vide.",
       "DUPLICATE_FIELD": "L'attribut {{field}} avec la valeur {{value}} apparaît plusieurs fois.",

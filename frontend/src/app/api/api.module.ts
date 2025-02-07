@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { BulkImportService } from './api/bulkImport.service';
 import { BusinessOrganisationsService } from './api/businessOrganisations.service';
+import { BusinessOrganisationsExportService } from './api/businessOrganisationsExport.service';
 import { ClientCredentialAdministrationService } from './api/clientCredentialAdministration.service';
 import { CompaniesService } from './api/companies.service';
 import { ExportServicePointBatchService } from './api/exportServicePointBatch.service';
