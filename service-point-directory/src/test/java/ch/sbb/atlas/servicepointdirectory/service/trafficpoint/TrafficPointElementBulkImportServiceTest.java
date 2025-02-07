@@ -318,17 +318,18 @@ class TrafficPointElementBulkImportServiceTest {
     when(locationService.generateTrafficPointSloid(eq(TrafficPointElementType.BOARDING_PLATFORM),
         any(ServicePointNumber.class))).thenReturn(generatedSloid);
 
-    trafficPointElementBulkImportService.createTrafficPointByUserName("e123456",
+    BulkImportUpdateContainer<TrafficPointCreateCsvModel> container =
         BulkImportUpdateContainer.<TrafficPointCreateCsvModel>builder()
-            .object(TrafficPointCreateCsvModel.builder()
-                .sloid(null)
-                .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
-                .validFrom(bernWylereggPlatform.getValidFrom())
-                .validTo(bernWylereggPlatform.getValidTo())
-                .number(WYLEREGG_NUMBER)
-                .designation("WylereggLade")
-                .build())
-            .build());
+        .object(TrafficPointCreateCsvModel.builder()
+            .sloid(null)
+            .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+            .validFrom(bernWylereggPlatform.getValidFrom())
+            .validTo(bernWylereggPlatform.getValidTo())
+            .number(WYLEREGG_NUMBER)
+            .designation("WylereggLade")
+            .build())
+        .build();
+    trafficPointElementBulkImportService.createTrafficPointByUserName("e123456", container);
 
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
         generatedSloid).getFirst();
