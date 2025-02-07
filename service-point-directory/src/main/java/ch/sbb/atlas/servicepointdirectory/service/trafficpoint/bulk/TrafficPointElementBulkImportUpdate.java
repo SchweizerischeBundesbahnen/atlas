@@ -22,6 +22,7 @@ public class TrafficPointElementBulkImportUpdate extends
       CreateTrafficPointElementVersionModel updateModel) {
     updateModel.setTrafficPointElementGeolocation(
         applyGeolocationUpdate(currentVersion.getTrafficPointElementGeolocation(), update));
+    updateModel.setTrafficPointElementType(currentVersion.getTrafficPointElementType());
   }
 
 }
