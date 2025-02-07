@@ -10,10 +10,10 @@ import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.service.bulk.BulkImportFileValidationService;
 import ch.sbb.importservice.service.bulk.BulkImportService;
-import ch.sbb.importservice.service.bulk.template.BulkImportTemplateGenerator;
-import jakarta.validation.constraints.NotNull;
 import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
 import ch.sbb.importservice.service.bulk.log.LogFile;
+import ch.sbb.importservice.service.bulk.template.BulkImportTemplateGenerator;
+import jakarta.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -45,11 +45,12 @@ public class BulkImportController implements BulkImportApiV1 {
   @Override
   public void startServicePointImportBatch(BulkImportRequest bulkImportRequest, MultipartFile file) {
     log.info("Starting bulk import:");
-    log.info("Application={}, BusinessObject={}, ImportType={}", bulkImportRequest.getApplicationType(), bulkImportRequest.getObjectType(), bulkImportRequest.getImportType());
+    log.info("Application={}, BusinessObject={}, ImportType={}", bulkImportRequest.getApplicationType(),
+        bulkImportRequest.getObjectType(), bulkImportRequest.getImportType());
     log.info("Uploaded file has size={}, uploadFileName={}, contentType={}",
         FileUtils.byteCountToDisplaySize(file.getSize()),
-            file.getOriginalFilename(),
-            file.getContentType());
+        file.getOriginalFilename(),
+        file.getContentType());
 
     BulkImport bulkImport = BulkImport.builder()
         .application(bulkImportRequest.getApplicationType())
