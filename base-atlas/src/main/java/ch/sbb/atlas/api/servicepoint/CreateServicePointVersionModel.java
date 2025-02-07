@@ -41,7 +41,7 @@ public class CreateServicePointVersionModel extends UpdateServicePointVersionMod
 
   @JsonIgnore
   @AssertTrue(message = "{atlas.constraint.validServicePointNumber}")
-  // NumberShort should not be given if it is generated but has to be given on foreign countries.
+  // NumberShort should not be given if it is generated but has to be given on foreign countries
   public boolean isValidServicePointNumber() {
     if (getCountry() == null) {
       return true;
