@@ -31,6 +31,7 @@ const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = 
   [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update],
   [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Create],
   [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Update],
+  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Create],
   [ApplicationType.Prm, BusinessObjectType.PlatformReduced, ImportType.Update],
 ];
 
@@ -115,7 +116,7 @@ export class BulkImportOverviewComponent implements OnInit {
     const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
 
     this.bulkImportService
-      .startServicePointImportBatch(bulkImportRequest, this.uploadedFiles[0])
+      .startBulkImport(bulkImportRequest, this.uploadedFiles[0])
       .pipe(
         tap(() => {
           this.notificationService.success('PAGES.BULK_IMPORT.SUCCESS');

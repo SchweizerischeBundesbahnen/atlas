@@ -36,7 +36,7 @@ public interface BulkImportApiV1 {
       @ApiResponse(responseCode = "202"),
   })
   @PreAuthorize("@bulkImportUserAdministrationService.hasPermissionsForBulkImport(#bulkImportRequest.applicationType)")
-  void startServicePointImportBatch(
+  void startBulkImport(
       @Parameter(description = "Bulk Import Request")
       @RequestPart("bulkImportRequest") @Valid BulkImportRequest bulkImportRequest,
       @Parameter(description = "File to upload") @RequestPart(value = "file")

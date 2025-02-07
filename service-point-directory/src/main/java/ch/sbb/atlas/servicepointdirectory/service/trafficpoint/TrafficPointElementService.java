@@ -63,6 +63,7 @@ public class TrafficPointElementService {
   public TrafficPointElementVersion create(TrafficPointElementVersion trafficPointElementVersion,
       List<ServicePointVersion> servicePointVersions) {
     if (trafficPointElementVersion.getSloid() != null) {
+      trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
       locationService.claimSloid(LocationService.getSloidType(trafficPointElementVersion.getTrafficPointElementType()),
           trafficPointElementVersion.getSloid());
     } else {
@@ -74,13 +75,7 @@ public class TrafficPointElementService {
     return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
 
-  public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
-    trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
-
-    return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
-  }
-
-  public TrafficPointElementVersion saveForImport(TrafficPointElementVersion trafficPointElementVersion) {
+  TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
     trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
     return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
