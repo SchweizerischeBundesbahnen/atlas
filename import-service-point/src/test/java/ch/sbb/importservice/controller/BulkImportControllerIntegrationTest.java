@@ -240,8 +240,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
         List.of(BulkImportItemExecutionResult.builder()
             .lineNumber(2)
             .build()));
-
-    bulkImportController.startServicePointImportBatch(bulkImportRequest, multipartFile);
+    bulkImportController.startBulkImport(bulkImportRequest, multipartFile);
 
     List<BulkImport> bulkImports = bulkImportRepository.findAll();
     assertThat(bulkImports).hasSize(1);

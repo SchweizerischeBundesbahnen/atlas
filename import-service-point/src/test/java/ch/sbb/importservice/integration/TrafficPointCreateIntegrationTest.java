@@ -115,7 +115,7 @@ class TrafficPointCreateIntegrationTest {
         .importType(ImportType.CREATE)
         .emails(List.of("test-cc@atlas.ch"))
         .build();
-    bulkImportController.startServicePointImportBatch(importRequest, multipartFile);
+    bulkImportController.startBulkImport(importRequest, multipartFile);
 
     // Then
     verify(trafficPointBulkImportClient, times(1)).bulkImportCreate(any());
