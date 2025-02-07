@@ -5,7 +5,10 @@
       "SIZE": "Valeur non valide pour le champ \"{{propertyPath}}\". La valeur doit avoir une longueur comprise entre {{min}} et {{max}} caractères.",
       "PATTERN": "La condition pour la structure de la valeur pour le champ {{propertyPath}} n'a pas été remplie avec la valeur {{value}}.",
       "NOT_BLANK": "La condition \"ne doit pas être vide\" pour le champ {{propertyPath}} n'a pas été remplie avec la valeur {{value}}.",
-      "NOT_NULL": "La condition \"doit être définie\" pour le champ {{propertyPath}} n'a pas été remplie avec la valeur {{value}}."
+      "NOT_NULL": "La condition \"doit être définie\" pour le champ {{propertyPath}} n'a pas été remplie avec la valeur {{value}}.",
+      "DIGITS": "Valeur non valide pour le champ \"{{propertyPath}}\". Le nombre maximum de chiffres avant et après la virgule pour la valeur est de {{integer}} et {{fraction}}.",
+      "VALID_SPATIAL_REFERENCE_FRACTION": "Nombre maximal de décimales dépassé. LV03 et LV95 max. 5. WGS84 et WGS84WEB max. 11.",
+      "VALID_SERVICE_POINT_NUMBER": "\"numberShort\" ne doit être présent que si le pays n'est pas dans (85,11,12,13,14)."
     },
     "CLIENT": {
       "GENERIC": "Une erreur s’est produite sur le site Web, veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé atlas."
