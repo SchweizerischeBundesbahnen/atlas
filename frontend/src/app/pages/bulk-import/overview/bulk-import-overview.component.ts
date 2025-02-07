@@ -116,7 +116,7 @@ export class BulkImportOverviewComponent implements OnInit {
     const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
 
     this.bulkImportService
-      .startServicePointImportBatch(bulkImportRequest, this.uploadedFiles[0])
+      .startBulkImport(bulkImportRequest, this.uploadedFiles[0])
       .pipe(
         tap(() => {
           this.notificationService.success('PAGES.BULK_IMPORT.SUCCESS');
