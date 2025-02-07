@@ -8,6 +8,7 @@ import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportStatus;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.File;
 import java.io.IOException;
@@ -79,6 +80,7 @@ public class BulkImportCsvReader {
     CsvExceptionHandler csvExceptionHandler = new CsvExceptionHandler();
     try (MappingIterator<T> mappingIterator = AtlasCsvReader.CSV_MAPPER
         .registerModule(PipedSetDeserializer.module())
+        .enable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS)
         .addHandler(csvExceptionHandler)
         .readerFor(clazz)
         .with(AtlasCsvReader.CSV_SCHEMA)
