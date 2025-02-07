@@ -4,9 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.ImportFiles;
+import ch.sbb.importservice.service.bulk.reader.BulkImportCsvReader;
 import java.io.File;
+import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.junit.jupiter.api.Test;
@@ -34,6 +38,20 @@ class ExcelToCsvConverterTest {
     File csvFile = excelToCsvConverter.convertToCsv(file);
 
     ImportFiles.assertThatFileContainsExpectedServicePointUpdate(csvFile);
+  }
+
+  @Test
+  void shouldReadServicePointUpdateXlsxWithEmptyLinesCorrectly() {
+    File file = ImportFiles.getFileByPath("import-files/valid/service-point-update-with-empty-lines.xlsx");
+
+    File csvFile = excelToCsvConverter.convertToCsv(file);
+
+    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> servicePointUpdates =
+        BulkImportCsvReader.readLinesFromFileWithNullingValue(csvFile, ServicePointUpdateCsvModel.class);
+
+    assertThat(servicePointUpdates).hasSize(2);
+    assertThat(servicePointUpdates.get(0).getLineNumber()).isEqualTo(7);
+    assertThat(servicePointUpdates.get(1).getLineNumber()).isEqualTo(11);
   }
 
   @Test
