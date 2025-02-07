@@ -1227,6 +1227,7 @@
     "ZOOM_IN_HINT": "Ingrandire l'immagine per visualizzare i posti di servizi.",
     "AUTOMATIC_SLOID": "viene assegnato automaticamente.",
     "SLOID_ALREADY_USED": "{{sloid}} è già stato preso.",
+    "SLOID_INVALID": "{{sloid}} ne correspond pas au format attendu.",
     "NUMBER_ALREADY_USED": "Il codice DiDok {{number}} è già stato preso."
   },
   "PRM": {
@@ -1514,6 +1515,7 @@
     "VALIDATION": {
       "DATA_MAPPING_ERROR": "Per l'attributo {{field}} era previsto il tipo {{expectedType}}, ma il valore specificato era {{errorValue}}.",
       "SLOID_XOR_NUMBER": "Deve essere specificato o lo sloide o il numero (non entrambi).",
+      "STOPPOINTSLOID_XOR_NUMBER": "Deve essere specificato o lo stopPointSloid o il numero (non entrambi).",
       "INVALID_SERVICE_POINT_NUMBER": "Il numero del centro di assistenza non è valido.",
       "FIELD_MANDATORY": "L'attributo {{field}} non deve essere vuoto.",
       "DUPLICATE_FIELD": "L'attributo {{field}} con il valore {{value}} ricorre più volte.",

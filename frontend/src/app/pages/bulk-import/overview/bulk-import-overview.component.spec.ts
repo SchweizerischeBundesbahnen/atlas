@@ -35,7 +35,7 @@ describe('BulkImportOverviewComponent', () => {
 
   beforeEach(() => {
     bulkImportServiceSpy = jasmine.createSpyObj('BulkImportService', [
-      'startServicePointImportBatch',
+      'startBulkImport',
       'downloadTemplate',
     ]);
     notificationServiceSpy = jasmine.createSpyObj(['success']);
@@ -118,11 +118,11 @@ describe('BulkImportOverviewComponent', () => {
 
     component.uploadedFiles = [mockFile];
 
-    bulkImportServiceSpy.startServicePointImportBatch.and.returnValue(of({}));
+    bulkImportServiceSpy.startBulkImport.and.returnValue(of({}));
 
     component.startBulkImport();
 
-    expect(bulkImportServiceSpy.startServicePointImportBatch).toHaveBeenCalledWith(
+    expect(bulkImportServiceSpy.startBulkImport).toHaveBeenCalledWith(
       mockBulkImportRequest,
       mockFile,
     );
@@ -163,7 +163,7 @@ describe('BulkImportOverviewComponent', () => {
     const errorResponse = new Error('Test error');
     component.form = BulkImportFormGroupBuilder.initFormGroup();
 
-    bulkImportServiceSpy.startServicePointImportBatch.and.returnValue(
+    bulkImportServiceSpy.startBulkImport.and.returnValue(
       throwError(() => errorResponse),
     );
     spyOn(component, 'resetConfiguration');
