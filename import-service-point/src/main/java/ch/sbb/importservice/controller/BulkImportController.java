@@ -43,7 +43,7 @@ public class BulkImportController implements BulkImportApiV1 {
   private final BulkImportTemplateGenerator bulkImportTemplateGenerator;
 
   @Override
-  public void startServicePointImportBatch(BulkImportRequest bulkImportRequest, MultipartFile file) {
+  public void startBulkImport(BulkImportRequest bulkImportRequest, MultipartFile file) {
     log.info("Starting bulk import:");
     log.info("Application={}, BusinessObject={}, ImportType={}", bulkImportRequest.getApplicationType(),
         bulkImportRequest.getObjectType(), bulkImportRequest.getImportType());

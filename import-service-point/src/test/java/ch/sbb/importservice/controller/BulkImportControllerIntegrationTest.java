@@ -201,7 +201,6 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
   static Stream<Arguments> getArgumentsForNotImplementedTemplates() {
     return Stream.of(
         Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.TERMINATE)),
-        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.CREATE)),
         Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.TERMINATE)),
         Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.CREATE)),
         Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.UPDATE)),
@@ -211,7 +210,9 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   static Stream<Arguments> getArgumentsImplementedTemplates() {
     return Stream.of(
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.CREATE)),
         Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.UPDATE)),
+        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.CREATE)),
         Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.UPDATE)),
         Arguments.of(new BulkImportConfig(ApplicationType.PRM, BusinessObjectType.PLATFORM_REDUCED, ImportType.UPDATE))
     );
@@ -239,8 +240,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
         List.of(BulkImportItemExecutionResult.builder()
             .lineNumber(2)
             .build()));
-
-    bulkImportController.startServicePointImportBatch(bulkImportRequest, multipartFile);
+    bulkImportController.startBulkImport(bulkImportRequest, multipartFile);
 
     List<BulkImport> bulkImports = bulkImportRepository.findAll();
     assertThat(bulkImports).hasSize(1);

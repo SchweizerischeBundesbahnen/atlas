@@ -156,4 +156,21 @@ class BulkImportCsvReaderTest {
     );
   }
 
+  @Test
+  void shouldReportIntegerInvalidForEnum() throws IOException {
+    String csvLine = """
+        ch:1:sloid:7000;;01.04.2021;31.12.2099;Bern;;1;true;;;0|BUS;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;<null>
+        """;
+    BulkImportUpdateContainer<ServicePointUpdateCsvModel> result = BulkImportCsvReader.readObject(
+        ServicePointUpdateCsvModel.class, SERVICE_POINT_UPDATE_HEADER, csvLine, 1);
+
+    assertThat(result.hasDataValidationErrors()).isTrue();
+    assertThat(result.getBulkImportLogEntry().getErrors()).hasSize(2);
+    List<String> errorMessages = result.getBulkImportLogEntry().getErrors().stream()
+        .map(BulkImportError::getErrorMessage)
+        .toList();
+    assertThat(errorMessages).containsExactlyInAnyOrder("Expected ENUM but got 1 in column stopPointType",
+        "Expected ENUM but got 0 in column meansOfTransport");
+  }
+
 }
