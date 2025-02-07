@@ -4,6 +4,7 @@ api.module.ts
 api/api.ts
 api/bulkImport.service.ts
 api/businessOrganisations.service.ts
+api/businessOrganisationsExport.service.ts
 api/clientCredentialAdministration.service.ts
 api/companies.service.ts
 api/exportServicePointBatch.service.ts
@@ -36,6 +37,8 @@ index.ts
 model/applicationRole.ts
 model/applicationType.ts
 model/basicAttributeType.ts
+model/boDiBatchExportFileName.ts
+model/boDiExportType.ts
 model/boardingDeviceAttributeType.ts
 model/booleanOptionalAttributeType.ts
 model/bulkImportError.ts
@@ -47,6 +50,7 @@ model/bulkImportResult.ts
 model/bulkImportUpdateContainerPlatformReducedUpdateCsvModel.ts
 model/bulkImportUpdateContainerServicePointCreateCsvModel.ts
 model/bulkImportUpdateContainerServicePointUpdateCsvModel.ts
+model/bulkImportUpdateContainerTrafficPointCreateCsvModel.ts
 model/bulkImportUpdateContainerTrafficPointUpdateCsvModel.ts
 model/businessObjectType.ts
 model/businessOrganisation.ts
@@ -208,6 +212,7 @@ model/timetableHearingStatementV2.ts
 model/timetableHearingYear.ts
 model/toiletOverview.ts
 model/toiletVersion.ts
+model/trafficPointCreateCsvModel.ts
 model/trafficPointElementType.ts
 model/trafficPointUpdateCsvModel.ts
 model/transportCompany.ts
