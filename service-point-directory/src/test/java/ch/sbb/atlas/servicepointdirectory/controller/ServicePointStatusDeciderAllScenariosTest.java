@@ -40,15 +40,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
 
-  @MockBean
+  @MockitoBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
-  @MockBean
+
+  @MockitoBean
   private GeoReferenceService geoReferenceService;
-  @MockBean
+
+  @MockitoBean
   private LocationService locationService;
 
   private final ServicePointVersionRepository repository;
@@ -111,6 +113,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     CreateServicePointVersionModel servicePoint = ServicePointTestData.getAargauServicePointVersionModel();
     servicePoint.setMeansOfTransport(new ArrayList<>());
     servicePoint.setStopPointType(null);
+    servicePoint.setOperatingPointRouteNetwork(false);
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         servicePoint);
     Long id = servicePointVersionModel.getId();
@@ -162,6 +165,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     servicePoint1.setValidTo(LocalDate.of(2011, 12, 31));
     servicePoint1.setDesignationLong("ABC1");
     servicePoint1.setCategories(List.of(Category.DISTRIBUTION_POINT));
+    servicePoint1.setOperatingPointRouteNetwork(false);
     ReadServicePointVersionModel servicePointVersionModel1 = servicePointController.createServicePoint(
         servicePoint1);
     UpdateServicePointVersionModel servicePoint2 = ServicePointTestData.getAargauServicePointVersionModel();
@@ -172,6 +176,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     servicePoint2.setDesignationLong("ABC2");
     servicePoint2.setCategories(List.of(Category.MIGRATION_CENTRAL_SERVICE));
     servicePoint2.setEtagVersion(0);
+    servicePoint2.setOperatingPointRouteNetwork(false);
     servicePointController.updateServicePoint(servicePointVersionModel1.getId(),
         servicePoint2);
     UpdateServicePointVersionModel servicePoint3 = ServicePointTestData.getAargauServicePointVersionModel();
@@ -182,6 +187,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     servicePoint3.setDesignationLong("ABC3");
     servicePoint3.setCategories(List.of(Category.BORDER_POINT));
     servicePoint3.setEtagVersion(1);
+    servicePoint3.setOperatingPointRouteNetwork(false);
     List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(
         servicePointVersionModel1.getId(),
         servicePoint3);
