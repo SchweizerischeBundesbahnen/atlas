@@ -43,8 +43,9 @@ import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
 import { Component, Input } from '@angular/core';
 import { Record } from '../../../../core/components/base-detail/record';
 import { Page } from '../../../../core/model/page';
-import {DialogService} from "../../../../core/components/dialog/dialog.service";
-import {WorkflowComponent} from "../../../../core/workflow/workflow.component";
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { WorkflowComponent } from '../../../../core/workflow/workflow.component';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-coverage',
@@ -125,7 +126,9 @@ const validityService = jasmine.createSpyObj<ValidityService>([
 ]);
 validityService.validate.and.returnValue(of(true));
 
-const dialogService = jasmine.createSpyObj<DialogService>('DialogService', {confirm: of(true)});
+const dialogService = jasmine.createSpyObj<DialogService>('DialogService', {
+  confirm: of(true),
+});
 
 describe('LineDetailComponent for existing lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
@@ -177,7 +180,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
 
     component.toggleEdit();
-    component.form.controls.description.setValue("UpdatedDescription");
+    component.form.controls.description.setValue('UpdatedDescription');
 
     component.save();
     fixture.detectChanges();
@@ -197,7 +200,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     mockLinesService.updateLineVersion.and.returnValue(throwError(() => error));
 
     component.toggleEdit();
-    component.form.controls.description.setValue("UpdatedDescription");
+    component.form.controls.description.setValue('UpdatedDescription');
 
     component.save();
     fixture.detectChanges();
@@ -388,7 +391,7 @@ function setupTestBed(
       WorkflowComponent,
       MockSublineTableComponent,
     ],
-    imports: [AppTestingModule, FormModule],
+    imports: [AppTestingModule, FormModule, NgOptimizedImage],
     providers: [
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
