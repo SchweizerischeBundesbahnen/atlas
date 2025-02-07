@@ -11,6 +11,10 @@ public class TrafficPointElementApiClient {
 
   private final TrafficPointElementApiV1 trafficPointElementApiV1;
 
+  public void createServicePoint(CreateTrafficPointElementVersionModel createTrafficPointElementVersionModel) {
+    trafficPointElementApiV1.createTrafficPoint(createTrafficPointElementVersionModel);
+  }
+
   public void updateServicePoint(Long currentVersionId, CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
     trafficPointElementApiV1.updateTrafficPoint(currentVersionId, trafficPointElementVersionModel);
   }

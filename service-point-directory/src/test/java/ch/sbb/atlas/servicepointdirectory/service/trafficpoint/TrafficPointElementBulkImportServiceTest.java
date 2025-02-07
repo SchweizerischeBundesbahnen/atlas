@@ -1,16 +1,28 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import static ch.sbb.atlas.servicepointdirectory.ServicePointTestData.WYLEREGG_NUMBER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatException;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.SloidNotValidException;
+import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -27,16 +39,19 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
 class TrafficPointElementBulkImportServiceTest {
 
-  @MockBean
+  @MockitoBean
   private CountryAndBusinessOrganisationBasedUserAdministrationService administrationService;
 
-  @MockBean
+  @MockitoBean
   private GeoReferenceService geoReferenceService;
+
+  @MockitoBean
+  private LocationService locationService;
 
   @Autowired
   private TrafficPointElementVersionRepository trafficPointElementVersionRepository;
@@ -233,6 +248,92 @@ class TrafficPointElementBulkImportServiceTest {
     TrafficPointElementVersion bulkUpdateResult =
         trafficPointElementVersionRepository.findById(trafficPointElementVersion.getId()).orElseThrow();
     assertThat(bulkUpdateResult.hasGeolocation()).isTrue();
+  }
+
+  @Test
+  void shouldCreateTrafficPointElementGeneratingSloid() {
+    String generatedSloid = "ch:1:sloid:89008:0:123";
+    when(locationService.generateTrafficPointSloid(eq(TrafficPointElementType.BOARDING_PLATFORM),
+        any(ServicePointNumber.class))).thenReturn(generatedSloid);
+
+    trafficPointElementBulkImportService.createTrafficPoint(BulkImportUpdateContainer.<TrafficPointCreateCsvModel>builder()
+        .object(TrafficPointCreateCsvModel.builder()
+            .sloid(null)
+            .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+            .validFrom(bernWylereggPlatform.getValidFrom())
+            .validTo(bernWylereggPlatform.getValidTo())
+            .number(WYLEREGG_NUMBER)
+            .designation("WylereggLade")
+            .build())
+        .build());
+
+    TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
+        generatedSloid).getFirst();
+    assertThat(trafficPointElementVersion.getSloid()).isNotNull().isEqualTo(generatedSloid);
+  }
+
+  @Test
+  void shouldCreateTrafficPointElementClaimingSloid() {
+    String chosenSloid = "ch:1:sloid:89008:65:123456";
+
+    trafficPointElementBulkImportService.createTrafficPoint(BulkImportUpdateContainer.<TrafficPointCreateCsvModel>builder()
+        .object(TrafficPointCreateCsvModel.builder()
+            .sloid(chosenSloid)
+            .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+            .validFrom(bernWylereggPlatform.getValidFrom())
+            .validTo(bernWylereggPlatform.getValidTo())
+            .number(WYLEREGG_NUMBER)
+            .designation("WylereggLade")
+            .build())
+        .build());
+
+    verify(locationService).claimSloid(SloidType.PLATFORM, chosenSloid);
+
+    TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
+        chosenSloid).getFirst();
+    assertThat(trafficPointElementVersion.getSloid()).isNotNull().isEqualTo(chosenSloid);
+  }
+
+  @Test
+  void shouldFailValidationOnSloidWithWrongPrefixAndNotClaimSloid() {
+    assertThatExceptionOfType(SloidNotValidException.class).isThrownBy(
+        () -> trafficPointElementBulkImportService.createTrafficPoint(
+            BulkImportUpdateContainer.<TrafficPointCreateCsvModel>builder()
+                .object(TrafficPointCreateCsvModel.builder()
+                    .sloid("ch:1:sloid:7000:0:123456")
+                    .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+                    .validFrom(bernWylereggPlatform.getValidFrom())
+                    .validTo(bernWylereggPlatform.getValidTo())
+                    .number(WYLEREGG_NUMBER)
+                    .designation("WylereggLade")
+                    .build())
+                .build())).withMessage("The SLOID ch:1:sloid:7000:0:123456 is not valid due to: did not start with ch:1:sloid:89008");
+
+    verifyNoInteractions(locationService);
+  }
+
+  @Test
+  void shouldCreateTrafficPointElementByUsername() {
+    String generatedSloid = "ch:1:sloid:89008:0:123";
+    when(locationService.generateTrafficPointSloid(eq(TrafficPointElementType.BOARDING_PLATFORM),
+        any(ServicePointNumber.class))).thenReturn(generatedSloid);
+
+    BulkImportUpdateContainer<TrafficPointCreateCsvModel> container =
+        BulkImportUpdateContainer.<TrafficPointCreateCsvModel>builder()
+        .object(TrafficPointCreateCsvModel.builder()
+            .sloid(null)
+            .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+            .validFrom(bernWylereggPlatform.getValidFrom())
+            .validTo(bernWylereggPlatform.getValidTo())
+            .number(WYLEREGG_NUMBER)
+            .designation("WylereggLade")
+            .build())
+        .build();
+    trafficPointElementBulkImportService.createTrafficPointByUserName("e123456", container);
+
+    TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
+        generatedSloid).getFirst();
+    assertThat(trafficPointElementVersion.getSloid()).isNotNull().isEqualTo(generatedSloid);
   }
 
 }
