@@ -13,8 +13,6 @@ import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
-import lombok.experimental.UtilityClass;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,6 +20,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointTestData {
@@ -59,6 +58,7 @@ public class ServicePointTestData {
     geolocation.setServicePointVersion(servicePoint);
     return servicePoint;
   }
+
   public static ServicePointVersion createStopPointServicePointWithUnknownMeanOfTransportVersion() {
     ServicePointGeolocation geolocation = getServicePointGeolocationBernMittelland();
 
@@ -265,21 +265,21 @@ public class ServicePointTestData {
 
   public static ServicePointGeolocation getZurichServicePointGeolocation() {
     ServicePointGeolocation geolocation = ServicePointGeolocation
-            .builder()
-            .spatialReference(SpatialReference.LV95)
-            .east(2571984.26107)
-            .north(1585245.92913)
-            .country(Country.SWITZERLAND)
-            .swissCanton(SwissCanton.ZURICH)
-            .swissDistrictName("ZurichZentrum")
-            .swissDistrictNumber(1500)
-            .swissMunicipalityName("Zurich")
-            .swissLocalityName("Zurich")
-            .creationDate(LocalDateTime.of(LocalDate.of(2000, 3, 22), LocalTime.of(9, 26, 29)))
-            .creator("fs45117")
-            .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
-            .editor("fs45117")
-            .build();
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2571984.26107)
+        .north(1585245.92913)
+        .country(Country.SWITZERLAND)
+        .swissCanton(SwissCanton.ZURICH)
+        .swissDistrictName("ZurichZentrum")
+        .swissDistrictNumber(1500)
+        .swissMunicipalityName("Zurich")
+        .swissLocalityName("Zurich")
+        .creationDate(LocalDateTime.of(LocalDate.of(2000, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+        .editor("fs45117")
+        .build();
     return geolocation;
   }
 
