@@ -129,7 +129,7 @@ class BulkImportLogFileIntegrationTest {
         .importType(ImportType.UPDATE)
         .emails(List.of("test-cc@atlas.ch"))
         .build();
-    bulkImportController.startServicePointImportBatch(importRequest, multipartFile);
+    bulkImportController.startBulkImport(importRequest, multipartFile);
 
     // Then
     List<BulkImport> bulkImports = bulkImportRepository.findAll();
