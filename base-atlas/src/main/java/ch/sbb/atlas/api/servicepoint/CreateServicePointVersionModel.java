@@ -40,19 +40,14 @@ public class CreateServicePointVersionModel extends UpdateServicePointVersionMod
   }
 
   @JsonIgnore
-  @AssertTrue(message = "ServicePointNumber must be present only if country not in (85,11,12,13,14)")
+  @AssertTrue(message = "{atlas.constraint.validServicePointNumber}")
+  // NumberShort should not be given if it is generated but has to be given on foreign countries
   public boolean isValidServicePointNumber() {
     if (getCountry() == null) {
       return true;
     }
 
-    if (getNumberShort() == null) {
-      // NumberShort should not be given if it is generated
-      return shouldGenerateServicePointNumber();
-    } else {
-      // NumberShort has to be given on foreign countries
-      return !shouldGenerateServicePointNumber();
-    }
+    return (getNumberShort() == null) == shouldGenerateServicePointNumber();
   }
 
 }

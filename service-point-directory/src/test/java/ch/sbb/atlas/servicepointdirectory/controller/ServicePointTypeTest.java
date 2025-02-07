@@ -20,14 +20,14 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 class ServicePointTypeTest extends BaseControllerApiTest {
 
-  @MockBean
+  @MockitoBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
-  @MockBean
+  @MockitoBean
   private LocationService locationService;
 
   private final ServicePointVersionRepository repository;
@@ -47,14 +47,13 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreatePlainServicePoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberShort(7000)
         .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
     assertThat(result.getId()).isNotNull();
@@ -65,7 +64,6 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateOperatingPointServicePointAsInventoryPoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberShort(7000)
         .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -73,7 +71,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
@@ -85,7 +83,6 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateOperatingPointServicePointAsOperatingPointBus() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberShort(7000)
         .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -93,7 +90,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
@@ -105,7 +102,6 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateStopPointServicePointAsStopPoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberShort(7000)
         .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -113,7 +109,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
@@ -126,14 +122,13 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   void shouldCreateServicePointAsFreightServicePoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
         .country(Country.SWITZERLAND)
-        .numberShort(18771)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .freightServicePoint(true)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
     assertThat(result.getId()).isNotNull();
@@ -144,7 +139,6 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateServicePointAsTariffPoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberShort(7000)
         .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -152,7 +146,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
     assertThat(result.getId()).isNotNull();
