@@ -1046,7 +1046,8 @@
         "RACK_RAILWAY": "Zahnradbahn",
         "METRO": "Metro",
         "ELEVATOR": "Aufzug",
-        "UNKNOWN": "Unbekannt"
+        "UNKNOWN": "Unbekannt",
+        "ALL": "Alle Verkehrsmittel"
       },
       "FREIGHT_SERVICE_POINT": "Bedienpunkt",
       "SORT_CODE_OF_DESTINATION_STATION": "Richtpunktcode",
