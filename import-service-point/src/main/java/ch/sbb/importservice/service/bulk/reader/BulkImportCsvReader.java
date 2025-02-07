@@ -1,5 +1,7 @@
 package ch.sbb.importservice.service.bulk.reader;
 
+import static ch.sbb.atlas.export.utils.StringUtils.NEW_LINE;
+
 import ch.sbb.atlas.exception.CsvException;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
@@ -26,17 +28,37 @@ public class BulkImportCsvReader {
     return rawLine.replaceAll(String.valueOf(CsvExportWriter.UTF_8_BYTE_ORDER_MARK), "");
   }
 
+  public static String getFileHeader(File file) {
+    try (Scanner scanner = new Scanner(file)) {
+      return getFileHeader(scanner).getLast();
+    } catch (IOException e) {
+      return null;
+    }
+  }
+
+  public static List<String> getFileHeader(Scanner scanner) {
+    List<String> lines = new ArrayList<>();
+    while (scanner.hasNextLine()) {
+      final String line = scanner.nextLine();
+      lines.add(readHeaderLineIgnoringBom(line));
+      if (!line.isEmpty()) {
+        return lines;
+      }
+    }
+    lines.add(null);
+    return lines;
+  }
+
   public <T> List<BulkImportUpdateContainer<T>> readLinesFromFileWithNullingValue(File file, Class<T> clazz) {
     List<BulkImportUpdateContainer<T>> mappedObjects = new ArrayList<>();
 
-    String header = "";
-
     try (Scanner scanner = new Scanner(file)) {
-      for (int lineNumber = 1; scanner.hasNext(); lineNumber++) {
-        String line = readHeaderLineIgnoringBom(scanner.nextLine());
-        if (lineNumber == 1) {
-          header = line + "\n";
-        } else {
+      final List<String> fileHeader = getFileHeader(scanner);
+      final String header = fileHeader.getLast() + NEW_LINE;
+
+      for (int lineNumber = fileHeader.size() + 1; scanner.hasNextLine(); lineNumber++) {
+        final String line = readHeaderLineIgnoringBom(scanner.nextLine());
+        if (!line.matches(";*")) {
           mappedObjects.add(readObject(clazz, header, line, lineNumber));
         }
       }

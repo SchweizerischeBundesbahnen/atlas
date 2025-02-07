@@ -1,19 +1,18 @@
 package ch.sbb.importservice.service.bulk;
 
+import static ch.sbb.importservice.service.bulk.reader.BulkImportCsvReader.getFileHeader;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.importservice.exception.ContentTypeFileValidationException;
 import ch.sbb.importservice.exception.FileHeaderValidationException;
 import ch.sbb.importservice.model.BulkImportConfig;
 import ch.sbb.importservice.service.ExcelToCsvConverter;
-import ch.sbb.importservice.service.bulk.reader.BulkImportCsvReader;
 import ch.sbb.importservice.service.bulk.reader.BulkImportReaders;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -70,17 +69,6 @@ public class BulkImportFileValidationService {
     Class<?> csvModelClass = bulkImportReaders.getReaderFunction(bulkImportConfig).getCsvModelClass();
     JsonPropertyOrder jsonPropertyOrder = csvModelClass.getAnnotation(JsonPropertyOrder.class);
     return String.join(String.valueOf(AtlasCsvReader.CSV_COLUMN_SEPARATOR), jsonPropertyOrder.value());
-  }
-
-  private static String getFileHeader(File file) {
-    try (Scanner scanner = new Scanner(file)) {
-      if (scanner.hasNext()) {
-        return BulkImportCsvReader.readHeaderLineIgnoringBom(scanner.nextLine());
-      }
-      return null;
-    } catch (IOException ex) {
-      return null;
-    }
   }
 
 }
