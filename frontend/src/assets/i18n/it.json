@@ -1555,7 +1555,8 @@
     "ERROR": {
       "EXCEL_CONVERSION": "Non è stato possibile leggere correttamente il file Excel utilizzato. Assicuratevi di utilizzare il file secondo il modello.\nFonte dell'errore in riga:{{rowIndex}}, colonna:{{columnIndex}}",
       "FILE_HEADER": "Il file utilizzato non ha la riga di intestazione prevista. Assicuratevi di utilizzare il file secondo il modello.",
-      "ATTRIBUTE_NULLING_NOT_SUPPORTED": "L'attributo {{field}} non deve essere cancellato."
+      "ATTRIBUTE_NULLING_NOT_SUPPORTED": "L'attributo {{field}} non deve essere cancellato.",
+      "LOGFILE_NOT_FOUND": "Non è stato possibile trovare il log desiderato per l'importazione."
     }
   }
 }
