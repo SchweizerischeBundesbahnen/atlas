@@ -1556,7 +1556,8 @@
     "ERROR": {
       "EXCEL_CONVERSION": "Die verwendete Excel-Datei konnte nicht richtig gelesen werden. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen.\nFehlerquelle in Zeile:{{rowIndex}}, Spalte:{{columnIndex}}",
       "FILE_HEADER": "Die verwendete Datei hat nicht die erwartete Kopfzeile. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen.",
-      "ATTRIBUTE_NULLING_NOT_SUPPORTED": "Das Attribut {{field}} darf nicht gelöscht werden."
+      "ATTRIBUTE_NULLING_NOT_SUPPORTED": "Das Attribut {{field}} darf nicht gelöscht werden.",
+      "LOGFILE_NOT_FOUND": "Das gewünschte Log zum Import konnte nicht gefunden werden."
     }
   }
 }

@@ -1,9 +1,12 @@
 package ch.sbb.importservice.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
 import ch.sbb.importservice.entity.BulkImport;
+import ch.sbb.importservice.exception.LogFileNotFoundException;
 import ch.sbb.importservice.model.BulkImportResult;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
@@ -37,7 +40,7 @@ class BulkImportControllerTest {
 
   @Test
   void getBulkImportResults() {
-    Mockito.when(service.getBulkImport(5L)).thenReturn(
+    when(service.getBulkImport(5L)).thenReturn(
         BulkImport.builder()
             .objectType(BusinessObjectType.SERVICE_POINT)
             .creationDate(LocalDateTime.of(2024, 1, 1, 15, 15))
@@ -47,7 +50,7 @@ class BulkImportControllerTest {
             .logFileUrl("/test.log")
             .build()
     );
-    Mockito.when(bulkImportLogService.getLogFileFromS3("/test.log")).thenReturn(LogFile.builder()
+    when(bulkImportLogService.getLogFileFromS3("/test.log")).thenReturn(LogFile.builder()
         .logEntries(List.of(
             BulkImportLogEntry.builder().build(),
             BulkImportLogEntry.builder().build()
@@ -68,5 +71,20 @@ class BulkImportControllerTest {
     assertThat(bulkImportResult.getNbOfSuccess()).isEqualTo(5);
     assertThat(bulkImportResult.getNbOfInfo()).isEqualTo(15);
     assertThat(bulkImportResult.getNbOfError()).isEqualTo(10);
+  }
+
+  @Test
+  void shouldThrowExceptionWhenLogFileIsNull() {
+    when(service.getBulkImport(5L)).thenReturn(
+        BulkImport.builder()
+            .objectType(BusinessObjectType.SERVICE_POINT)
+            .creationDate(LocalDateTime.of(2024, 1, 1, 15, 15))
+            .creator("test")
+            .inNameOf("test chef")
+            .importType(ImportType.UPDATE)
+            .logFileUrl(null)
+            .build());
+
+    assertThatExceptionOfType(LogFileNotFoundException.class).isThrownBy(() -> controller.getBulkImportResults(5L));
   }
 }
