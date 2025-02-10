@@ -139,7 +139,6 @@
   },
   "DIALOG": {
     "OK": "Avanti",
-    "IGNORE": "Ignorare",
     "RELOAD": "Ricarica",
     "CANCEL": "Annulla",
     "BACK": "Tornare al modulo di immissione dati",
