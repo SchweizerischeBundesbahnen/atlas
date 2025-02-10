@@ -139,7 +139,6 @@
   },
   "DIALOG": {
     "OK": "Weiter",
-    "IGNORE": "Ignorieren",
     "RELOAD": "Neu laden",
     "CANCEL": "Abbrechen",
     "BACK": "Zurück zur Eingabemaske",
