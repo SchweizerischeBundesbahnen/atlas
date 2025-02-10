@@ -508,15 +508,24 @@
       }
     },
     "SUBLINE_SHORTENING": {
+      "TITLE": "Nota",
       "ALLOWED": {
-        "TITLE": "Nota",
-        "MESSAGE": "Tutte le linee parziali possono essere accorciate.",
-        "SHORT_AUTOMATICALLY": "Le seguenti righe parziali possono essere accorciate automaticamente:"
+        "MESSAGE": "Le linee parziali possono essere valide solo nel periodo di validità della linea principale. Se possibile, atlas accorcia le linee parziali collegate all'ultimo giorno di validità della linea principale.",
+        "SHORT_AUTOMATICALLY_NOTICE": "Tutte le linee parziali possono essere accorciate automaticamente.",
+        "SUCCESS": "La riga è stata salvata con successo e le righe parziali sono state regolate nella validità."
       },
       "NOT_ALLOWED": {
-        "TITLE": "Nota",
-        "MESSAGE": "Non tutte le righe parziali possono essere accorciate automaticamente.",
-        "SHORT_MANUAL": "Accorciate voi stessi le seguenti righe parziali:"
+        "MESSAGE": "Le linee parziali possono essere valide solo nel periodo di validità della linea principale. Se possibile, atlas accorcia le linee parziali collegate all'ultimo giorno di validità della linea principale.",
+        "SHORT_MANUAL_NOTICE": "Nessuna linea parziale può essere accorciata automaticamente. Si prega di accorciare le linee seguenti da soli o tramite il servizio specializzato atlas:"
+      },
+      "ALLOWED_AND_NOT_ALLOWED": {
+        "MESSAGE": "Le linee parziali possono essere valide solo nel periodo di validità della linea principale. Se possibile, atlas accorcia le linee parziali collegate all'ultimo giorno di validità della linea principale. Se ciò non è possibile, le linee parziali devono essere modificate da soli o tramite il Servizio specializzato atlas.",
+        "SHORT_AUTOMATICALLY": "Le seguenti linee parziali possono essere accorciate automaticamente:",
+        "SHORT_MANUAL": "Le seguenti linee parziali devono essere accorciate personalmente:",
+        "CLICK_NOTICE_PREFIX": "Fare clic su",
+        "CLICK_NOTICE_ACTION": "Avanti",
+        "CLICK_NOTICE_SUFFIX": "per accorciare automaticamente tutte le linee parziali possibili.",
+        "SUCCESS": "La riga è stata salvata con successo e, dove possibile, la validità delle righe parziali è stata adattata."
       }
     }
   },
