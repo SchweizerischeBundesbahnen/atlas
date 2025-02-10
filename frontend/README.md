@@ -111,7 +111,7 @@ In case of a failure on Tekton the directory [cypress/test-results](cypress/test
 
 ### Set SBB Artifactory as npm registry
 
-See [set SBB Artifactory as npm registry](https://confluence.sbb.ch/display/CLEW/Configuration+Artifactory+7.x+as+NPM+Registry)
+See [set SBB Artifactory as npm registry](https://confluence.sbb.ch/display/CLEW/Configuration+Artifactory+as+NPM+Registry)
 
 ### Azure AD App Registration
 
