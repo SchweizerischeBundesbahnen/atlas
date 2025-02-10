@@ -92,12 +92,12 @@ public class SublineShorteningService {
     DateRange newMainlineValidity = new DateRange(editedVersion.getValidFrom(), editedVersion.getValidTo());
     AffectedSublines affectedSublines = checkAffectedSublines(currentVersion.getId(), editedVersion.getValidFrom(),
         editedVersion.getValidTo());
+    
+    if (!affectedSublines.getAllowedSublines().isEmpty()) {
+      SublineShorteningRequest sublineShorteningRequest = new SublineShorteningRequest(
+          newMainlineValidity,
+          affectedSublines.getAllowedSublines());
 
-    SublineShorteningRequest sublineShorteningRequest = new SublineShorteningRequest(
-        newMainlineValidity,
-        affectedSublines.getAllowedSublines());
-
-    if (affectedSublines.getNotAllowedSublines().isEmpty() && !affectedSublines.getAllowedSublines().isEmpty()) {
       shortSublines(currentVersion.getId(), sublineShorteningRequest);
     }
   }
