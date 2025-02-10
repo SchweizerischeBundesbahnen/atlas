@@ -228,11 +228,13 @@ describe('LineDetailComponent for existing lineVersion', () => {
     expect(router.navigate).toHaveBeenCalled();
   });
 
-  fit('should update LineVersion with shortening', () => {
+  it('should update LineVersion with only shortening', () => {
     const affectedSublines: AffectedSublines = {
       allowedSublines: ['1234'],
       notAllowedSublines: [],
     };
+    spyOn(component, 'isOnlyValidityChangedToTruncation').and.returnValue(true);
+    spyOn(component, 'openSublineShorteningDialog').and.returnValue(of(true));
 
     mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
     mockLinesService.checkAffectedSublines.and.returnValue(
@@ -241,10 +243,67 @@ describe('LineDetailComponent for existing lineVersion', () => {
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     spyOn(component, 'updateLineVersion').and.callThrough();
 
-    //spyOn(component.dialog, 'open').and.returnValue({afterClosed: () => of(true)})
     component.toggleEdit();
     component.form.controls.validTo.setValue(moment('2028-06-01'));
-    expect(component.updateLineVersion).toHaveBeenCalled();
+    component.updateLine(1, lineVersion);
+
+    expect(component.updateLineVersion).toHaveBeenCalledWith(
+      1,
+      lineVersion,
+      'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS'
+    );
+  });
+
+  it('should update LineVersion with mixed sublines', () => {
+    const affectedSublines: AffectedSublines = {
+      allowedSublines: ['1234'],
+      notAllowedSublines: ['4321'],
+    };
+    spyOn(component, 'isOnlyValidityChangedToTruncation').and.returnValue(true);
+    spyOn(component, 'openSublineShorteningDialog').and.returnValue(of(true));
+
+    mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
+    mockLinesService.checkAffectedSublines.and.returnValue(
+      of(affectedSublines)
+    );
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    spyOn(component, 'updateLineVersion').and.callThrough();
+
+    component.toggleEdit();
+    component.form.controls.validTo.setValue(moment('2028-06-01'));
+    component.updateLine(1, lineVersion);
+
+    expect(component.updateLineVersion).toHaveBeenCalledWith(
+      1,
+      lineVersion,
+      'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.SUCCESS'
+    );
+  });
+
+  it('should update LineVersion with not allowed sublines', () => {
+    const affectedSublines: AffectedSublines = {
+      allowedSublines: [],
+      notAllowedSublines: ['4321'],
+    };
+    spyOn(component, 'isOnlyValidityChangedToTruncation').and.returnValue(true);
+    spyOn(component, 'openSublineShorteningDialog').and.returnValue(of(true));
+
+    mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
+    mockLinesService.checkAffectedSublines.and.returnValue(
+      of(affectedSublines)
+    );
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    spyOn(component, 'updateLineVersion').and.callThrough();
+
+    component.toggleEdit();
+    component.form.controls.validTo.setValue(moment('2028-06-01'));
+    component.updateLine(1, lineVersion);
+
+    expect(component.updateLineVersion).toHaveBeenCalledWith(
+      1,
+      lineVersion,
+      'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS'
+    );
   });
 });
 
