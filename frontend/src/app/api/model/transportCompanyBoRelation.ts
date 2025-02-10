@@ -12,7 +12,7 @@
 import { BusinessOrganisation } from './businessOrganisation';
 
 
-export interface TransportCompanyBoRelation { 
+export interface TransportCompanyBoRelation {
     /**
      * Transport Company Relation Id
      */

@@ -12,7 +12,7 @@
 import { ReadReferencePointVersion } from './readReferencePointVersion';
 
 
-export interface ContainerReadReferencePointVersion { 
+export interface ContainerReadReferencePointVersion {
     objects?: Array<ReadReferencePointVersion>;
     totalCount?: number;
 }

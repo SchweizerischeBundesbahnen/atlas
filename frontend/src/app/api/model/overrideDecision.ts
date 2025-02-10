@@ -12,7 +12,7 @@
 import { JudgementType } from './judgementType';
 
 
-export interface OverrideDecision { 
+export interface OverrideDecision {
     /**
      * Firstname
      */

@@ -15,7 +15,7 @@ import { StandardAttributeType } from './standardAttributeType';
 import { ContactPointType } from './contactPointType';
 
 
-export interface ReadContactPointVersion { 
+export interface ReadContactPointVersion {
     /**
      * Object creation date
      */
@@ -34,7 +34,7 @@ export interface ReadContactPointVersion {
     readonly editor?: string;
     status?: Status;
     /**
-     * This ID helps identify versions of a prm object in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a prm object. To do this, use the sloid or parentServicePointSloid in combination with the data range (valid from/valid until). 
+     * This ID helps identify versions of a prm object in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a prm object. To do this, use the sloid or parentServicePointSloid in combination with the data range (valid from/valid until).
      */
     readonly id?: number;
     /**

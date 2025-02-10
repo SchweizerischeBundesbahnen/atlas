@@ -12,7 +12,7 @@
 import { TimetableHearingStatementV2 } from './timetableHearingStatementV2';
 
 
-export interface ContainerTimetableHearingStatementV2 { 
+export interface ContainerTimetableHearingStatementV2 {
     objects?: Array<TimetableHearingStatementV2>;
     totalCount?: number;
 }

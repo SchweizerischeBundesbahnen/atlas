@@ -114,7 +114,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param contactPointVersion 
+     * @param contactPointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -168,7 +168,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param parkingLotVersion 
+     * @param parkingLotVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -222,7 +222,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param platformVersion 
+     * @param platformVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -276,7 +276,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param referencePointVersion 
+     * @param referencePointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -330,7 +330,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param stopPointVersion 
+     * @param stopPointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -384,7 +384,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param toiletVersion 
+     * @param toiletVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -438,7 +438,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param parentServicePointSloid 
+     * @param parentServicePointSloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -482,7 +482,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -651,7 +651,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -813,7 +813,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param parentServicePointSloid 
+     * @param parentServicePointSloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -857,7 +857,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param parentSloid 
+     * @param parentSloid
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -921,7 +921,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1083,7 +1083,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1252,7 +1252,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param parentServicePointSloid 
+     * @param parentServicePointSloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1428,7 +1428,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1472,7 +1472,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1627,7 +1627,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param parentServicePointSloid 
+     * @param parentServicePointSloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1671,7 +1671,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1833,8 +1833,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param contactPointVersion 
+     * @param id
+     * @param contactPointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1891,8 +1891,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param parkingLotVersion 
+     * @param id
+     * @param parkingLotVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1949,8 +1949,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param platformVersion 
+     * @param id
+     * @param platformVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -2007,8 +2007,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param referencePointVersion 
+     * @param id
+     * @param referencePointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -2065,8 +2065,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param relationVersion 
+     * @param id
+     * @param relationVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -2123,8 +2123,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param stopPointVersion 
+     * @param id
+     * @param stopPointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -2181,8 +2181,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param toiletVersion 
+     * @param id
+     * @param toiletVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

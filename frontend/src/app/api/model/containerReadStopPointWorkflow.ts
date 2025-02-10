@@ -12,7 +12,7 @@
 import { ReadStopPointWorkflow } from './readStopPointWorkflow';
 
 
-export interface ContainerReadStopPointWorkflow { 
+export interface ContainerReadStopPointWorkflow {
     objects?: Array<ReadStopPointWorkflow>;
     totalCount?: number;
 }

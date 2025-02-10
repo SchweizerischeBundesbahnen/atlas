@@ -13,7 +13,7 @@ import { BulkImportLogEntry } from './bulkImportLogEntry';
 import { TrafficPointCreateCsvModel } from './trafficPointCreateCsvModel';
 
 
-export interface BulkImportUpdateContainerTrafficPointCreateCsvModel { 
+export interface BulkImportUpdateContainerTrafficPointCreateCsvModel {
     lineNumber?: number;
     object?: TrafficPointCreateCsvModel;
     attributesToNull?: Array<string>;

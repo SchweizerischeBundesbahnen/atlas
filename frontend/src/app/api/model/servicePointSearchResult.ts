@@ -11,7 +11,7 @@
  */
 
 
-export interface ServicePointSearchResult { 
+export interface ServicePointSearchResult {
     /**
      * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.
      */

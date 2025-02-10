@@ -14,7 +14,7 @@ import { GeolocationCreate } from './geolocationCreate';
 import { TrafficPointElementType } from './trafficPointElementType';
 
 
-export interface CreateTrafficPointElementVersion { 
+export interface CreateTrafficPointElementVersion {
     /**
      * Object creation date
      */
@@ -33,7 +33,7 @@ export interface CreateTrafficPointElementVersion {
     readonly editor?: string;
     status?: Status;
     /**
-     * This ID helps identify versions of a traffic point element in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a traffic point element. To do this, use the sloid in combination with the data range (valid from/valid until). 
+     * This ID helps identify versions of a traffic point element in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a traffic point element. To do this, use the sloid in combination with the data range (valid from/valid until).
      */
     readonly id?: number;
     /**

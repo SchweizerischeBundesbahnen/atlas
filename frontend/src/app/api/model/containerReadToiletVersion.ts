@@ -12,7 +12,7 @@
 import { ReadToiletVersion } from './readToiletVersion';
 
 
-export interface ContainerReadToiletVersion { 
+export interface ContainerReadToiletVersion {
     objects?: Array<ReadToiletVersion>;
     totalCount?: number;
 }

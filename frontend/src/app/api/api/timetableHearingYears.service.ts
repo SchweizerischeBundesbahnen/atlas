@@ -87,7 +87,7 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param year 
+     * @param year
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -132,7 +132,7 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param timetableHearingYear 
+     * @param timetableHearingYear
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -186,7 +186,7 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param year 
+     * @param year
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -230,7 +230,7 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param statusChoices 
+     * @param statusChoices
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -280,7 +280,7 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param year 
+     * @param year
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -325,8 +325,8 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param year 
-     * @param timetableHearingYear 
+     * @param year
+     * @param timetableHearingYear
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

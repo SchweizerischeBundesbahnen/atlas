@@ -11,7 +11,7 @@
  */
 
 
-export interface Company { 
+export interface Company {
     /**
      * Company UIC Code
      */

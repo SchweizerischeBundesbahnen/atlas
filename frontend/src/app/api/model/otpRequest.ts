@@ -11,7 +11,7 @@
  */
 
 
-export interface OtpRequest { 
+export interface OtpRequest {
     examinantMail: string;
 }
 

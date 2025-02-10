@@ -12,7 +12,7 @@
 import { TimetableFieldNumber } from './timetableFieldNumber';
 
 
-export interface ContainerTimetableFieldNumber { 
+export interface ContainerTimetableFieldNumber {
     objects?: Array<TimetableFieldNumber>;
     totalCount?: number;
 }

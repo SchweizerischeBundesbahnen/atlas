@@ -12,7 +12,7 @@
 import { SpatialReference } from './spatialReference';
 
 
-export interface CoordinatePair { 
+export interface CoordinatePair {
     /**
      * North longitude
      */
