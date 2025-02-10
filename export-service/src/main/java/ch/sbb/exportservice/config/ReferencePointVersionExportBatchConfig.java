@@ -14,8 +14,8 @@ import ch.sbb.exportservice.processor.ReferencePointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ReferencePointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.ReferencePointVersionRowMapper;
 import ch.sbb.exportservice.reader.ReferencePointVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
-import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
+import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
@@ -133,10 +133,10 @@ public class ReferencePointVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileCsvDeletingTasklet referencePointCsvFileDeletingTasklet(
+  public DeleteCsvFileTasklet referencePointCsvFileDeletingTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType
   ) {
-    return new FileCsvDeletingTasklet(exportType, REFERENCE_POINT_VERSION);
+    return new DeleteCsvFileTasklet(exportType, REFERENCE_POINT_VERSION);
   }
 
   @Bean
@@ -177,9 +177,9 @@ public class ReferencePointVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileJsonDeletingTasklet fileReferencePointJsonDeletingTasklet(
+  public DeleteJsonFileTasklet fileReferencePointJsonDeletingTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new FileJsonDeletingTasklet(exportType, REFERENCE_POINT_VERSION);
+    return new DeleteJsonFileTasklet(exportType, REFERENCE_POINT_VERSION);
   }
 
   @Bean

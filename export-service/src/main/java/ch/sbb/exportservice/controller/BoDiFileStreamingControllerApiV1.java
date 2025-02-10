@@ -104,5 +104,4 @@ public class BoDiFileStreamingControllerApiV1 {
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
-
 }
