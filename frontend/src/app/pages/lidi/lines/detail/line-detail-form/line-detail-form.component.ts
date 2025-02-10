@@ -14,7 +14,7 @@ interface Category {
 }
 
 interface OfferCategoryGroup {
-  name: MeanOfTransport;
+  name: MeanOfTransport | 'ALL';
   category: Category[];
 }
 
@@ -94,6 +94,10 @@ export class LineDetailFormComponent {
     {
       name: MeanOfTransport.Boat,
       category: [{ value: 'BAT' }, { value: 'FAE' }],
+    },
+    {
+      name: 'ALL',
+      category: [{ value: 'EV' }],
     },
   ];
 

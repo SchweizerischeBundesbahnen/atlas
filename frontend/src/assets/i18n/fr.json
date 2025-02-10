@@ -1046,7 +1046,8 @@
         "RACK_RAILWAY": "Chemin de fer à crémaillère",
         "METRO": "Métro",
         "ELEVATOR": "Ascenseur",
-        "UNKNOWN": "Inconnu"
+        "UNKNOWN": "Inconnu",
+        "ALL": "Tous les moyens de transport"
       },
       "FREIGHT_SERVICE_POINT": "Point de chargement ",
       "SORT_CODE_OF_DESTINATION_STATION": "Code du point de référence",
