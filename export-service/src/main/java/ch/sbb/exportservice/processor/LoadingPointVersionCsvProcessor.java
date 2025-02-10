@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.processor;
 
-import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
+import ch.sbb.exportservice.entity.bodi.BusinessOrganisationRelation;
 import ch.sbb.exportservice.entity.prm.LoadingPointVersion;
 import ch.sbb.exportservice.model.LoadingPointVersionCsvModel;
 import org.springframework.batch.item.ItemProcessor;
@@ -10,7 +10,8 @@ public class LoadingPointVersionCsvProcessor implements ItemProcessor<LoadingPoi
 
   @Override
   public LoadingPointVersionCsvModel process(LoadingPointVersion version) {
-    final BusinessOrganisation servicePointBusinessOrganisation = version.getServicePointBusinessOrganisation();
+    final BusinessOrganisationRelation servicePointBusinessOrganisationRelation =
+        version.getServicePointBusinessOrganisationRelation();
     return LoadingPointVersionCsvModel.builder()
         .number(version.getNumber())
         .designation(version.getDesignation())
@@ -23,16 +24,24 @@ public class LoadingPointVersionCsvProcessor implements ItemProcessor<LoadingPoi
         .parentSloidServicePoint(version.getParentSloidServicePoint())
         .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
         .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
-        .servicePointBusinessOrganisation(servicePointBusinessOrganisation.getBusinessOrganisation())
-        .servicePointBusinessOrganisationNumber(servicePointBusinessOrganisation.getBusinessOrganisationNumber())
-        .servicePointBusinessOrganisationAbbreviationDe(servicePointBusinessOrganisation.getBusinessOrganisationAbbreviationDe())
-        .servicePointBusinessOrganisationAbbreviationFr(servicePointBusinessOrganisation.getBusinessOrganisationAbbreviationFr())
-        .servicePointBusinessOrganisationAbbreviationIt(servicePointBusinessOrganisation.getBusinessOrganisationAbbreviationIt())
-        .servicePointBusinessOrganisationAbbreviationEn(servicePointBusinessOrganisation.getBusinessOrganisationAbbreviationEn())
-        .servicePointBusinessOrganisationDescriptionDe(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionDe())
-        .servicePointBusinessOrganisationDescriptionFr(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionFr())
-        .servicePointBusinessOrganisationDescriptionIt(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionIt())
-        .servicePointBusinessOrganisationDescriptionEn(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionEn())
+        .servicePointBusinessOrganisation(servicePointBusinessOrganisationRelation.getBusinessOrganisation())
+        .servicePointBusinessOrganisationNumber(servicePointBusinessOrganisationRelation.getBusinessOrganisationNumber())
+        .servicePointBusinessOrganisationAbbreviationDe(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationDe())
+        .servicePointBusinessOrganisationAbbreviationFr(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationFr())
+        .servicePointBusinessOrganisationAbbreviationIt(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationIt())
+        .servicePointBusinessOrganisationAbbreviationEn(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationEn())
+        .servicePointBusinessOrganisationDescriptionDe(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionDe())
+        .servicePointBusinessOrganisationDescriptionFr(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionFr())
+        .servicePointBusinessOrganisationDescriptionIt(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionIt())
+        .servicePointBusinessOrganisationDescriptionEn(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionEn())
         .build();
   }
 

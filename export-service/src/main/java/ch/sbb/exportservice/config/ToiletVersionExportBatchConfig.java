@@ -14,8 +14,8 @@ import ch.sbb.exportservice.processor.ToiletVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ToiletVersionJsonProcessor;
 import ch.sbb.exportservice.reader.ToiletVersionRowMapper;
 import ch.sbb.exportservice.reader.ToiletVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
-import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
+import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
@@ -133,10 +133,10 @@ public class ToiletVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileCsvDeletingTasklet toiletCsvFileDeletingTasklet(
+  public DeleteCsvFileTasklet toiletCsvFileDeletingTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType
   ) {
-    return new FileCsvDeletingTasklet(exportType, TOILET_VERSION);
+    return new DeleteCsvFileTasklet(exportType, TOILET_VERSION);
   }
 
   @Bean
@@ -177,9 +177,9 @@ public class ToiletVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileJsonDeletingTasklet fileToiletJsonDeletingTasklet(
+  public DeleteJsonFileTasklet fileToiletJsonDeletingTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new FileJsonDeletingTasklet(exportType, TOILET_VERSION);
+    return new DeleteJsonFileTasklet(exportType, TOILET_VERSION);
   }
 
   @Bean

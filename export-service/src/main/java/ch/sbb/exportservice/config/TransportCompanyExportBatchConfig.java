@@ -14,8 +14,8 @@ import ch.sbb.exportservice.processor.TransportCompanyCsvProcessor;
 import ch.sbb.exportservice.processor.TransportCompanyJsonProcessor;
 import ch.sbb.exportservice.reader.TransportCompanyRowMapper;
 import ch.sbb.exportservice.reader.TransportCompanySqlQueryUtil;
-import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
-import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
+import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
@@ -129,9 +129,9 @@ public class TransportCompanyExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileCsvDeletingTasklet transportCompanyCsvFileDeletingTasklet(
+  public DeleteCsvFileTasklet transportCompanyCsvFileDeletingTasklet(
   ) {
-    return new FileCsvDeletingTasklet(BoDiExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
+    return new DeleteCsvFileTasklet(BoDiExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
   }
 
   @Bean
@@ -171,8 +171,8 @@ public class TransportCompanyExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileJsonDeletingTasklet fileTransportCompanyJsonDeletingTasklet() {
-    return new FileJsonDeletingTasklet(BoDiExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
+  public DeleteJsonFileTasklet fileTransportCompanyJsonDeletingTasklet() {
+    return new DeleteJsonFileTasklet(BoDiExportType.FULL, BoDiBatchExportFileName.TRANSPORT_COMPANY);
   }
 
   @Bean

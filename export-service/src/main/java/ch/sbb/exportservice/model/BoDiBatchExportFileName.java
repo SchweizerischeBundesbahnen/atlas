@@ -11,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 public enum BoDiBatchExportFileName implements ExportFileName {
 
   TRANSPORT_COMPANY("transport_company", "transport_company"),
-
-  ;
+  BUSINESS_ORGANISATION_VERSION("business_organisation", "business_organisation_versions");
 
   private final String baseDir;
   private final String fileName;
