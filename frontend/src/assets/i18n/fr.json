@@ -1556,7 +1556,8 @@
     "ERROR": {
       "EXCEL_CONVERSION": "Le fichier Excel utilisé n'a pas pu être lu correctement. Veuillez vous assurer que vous utilisez le fichier conformément au modèle.\nSource d'erreur dans la ligne:{{rowIndex}}, la colonne:{{columnIndex}}",
       "FILE_HEADER": "Le fichier utilisé n'a pas l'en-tête attendu. Veuillez vous assurer que vous utilisez le fichier conformément au modèle.",
-      "ATTRIBUTE_NULLING_NOT_SUPPORTED": "L'attribut {{field}} ne doit pas être supprimé."
+      "ATTRIBUTE_NULLING_NOT_SUPPORTED": "L'attribut {{field}} ne doit pas être supprimé.",
+      "LOGFILE_NOT_FOUND": "Le log souhaité pour l'importation n'a pas pu être trouvé."
     }
   }
 }
