@@ -3,6 +3,7 @@ package ch.sbb.line.directory.controller;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -19,6 +20,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.service.SublineShorteningService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,9 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
+
+  @MockBean
+  private SublineShorteningService sublineShorteningService;
 
   @AfterEach
   void tearDown() {
@@ -112,5 +117,18 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + UpdateLineVersionModelV2.Fields.swissLineNumber, is("b0.IC2")))
         .andExpect(jsonPath("$[0]." + Fields.lineType, is(LineType.ORDERLY.toString())))
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
+  }
+
+  @Test
+  void shouldCheckAffectedSublines() {
+    // Given
+    Long id = 1L;
+    LocalDate validFrom = LocalDate.of(2000, 12, 31);
+    LocalDate validTo = LocalDate.of(2000, 12, 31);
+    // When
+    lineControllerV2.checkAffectedSublines(id, validFrom, validTo);
+
+    // Then
+    verify(sublineShorteningService).checkAffectedSublines(id, validFrom, validTo);
   }
 }
