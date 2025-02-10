@@ -12,7 +12,7 @@
 import { TimetableHearingStatementV2 } from './timetableHearingStatementV2';
 
 
-export interface InlineObject2 { 
+export interface InlineObject2 {
     statement: TimetableHearingStatementV2;
     documents?: Array<Blob>;
 }

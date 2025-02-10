@@ -88,7 +88,7 @@ export class TransportCompanyRelationsService {
     }
 
     /**
-     * @param transportCompanyRelation 
+     * @param transportCompanyRelation
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -142,7 +142,7 @@ export class TransportCompanyRelationsService {
     }
 
     /**
-     * @param relationId 
+     * @param relationId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -186,7 +186,7 @@ export class TransportCompanyRelationsService {
     }
 
     /**
-     * @param transportCompanyId 
+     * @param transportCompanyId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -230,7 +230,7 @@ export class TransportCompanyRelationsService {
     }
 
     /**
-     * @param updateTransportCompanyRelation 
+     * @param updateTransportCompanyRelation
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

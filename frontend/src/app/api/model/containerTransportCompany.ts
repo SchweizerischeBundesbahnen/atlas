@@ -12,7 +12,7 @@
 import { TransportCompany } from './transportCompany';
 
 
-export interface ContainerTransportCompany { 
+export interface ContainerTransportCompany {
     objects?: Array<TransportCompany>;
     totalCount?: number;
 }

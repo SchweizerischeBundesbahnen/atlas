@@ -14,7 +14,7 @@ import { StopPointPerson } from './stopPointPerson';
 import { DecisionType } from './decisionType';
 
 
-export interface ReadDecision { 
+export interface ReadDecision {
     judgement?: JudgementType;
     /**
      * Motivation

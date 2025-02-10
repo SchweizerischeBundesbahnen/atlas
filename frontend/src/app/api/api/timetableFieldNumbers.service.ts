@@ -88,7 +88,7 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param timetableFieldNumberVersion 
+     * @param timetableFieldNumberVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -142,7 +142,7 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param ttfnid 
+     * @param ttfnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -315,7 +315,7 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param ttfnId 
+     * @param ttfnId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -359,11 +359,11 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param searchCriteria 
-     * @param number 
-     * @param businessOrganisation 
-     * @param validOn 
-     * @param statusChoices 
+     * @param searchCriteria
+     * @param number
+     * @param businessOrganisation
+     * @param validOn
+     * @param statusChoices
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -448,7 +448,7 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param ttfnId 
+     * @param ttfnId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -493,8 +493,8 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param id 
-     * @param timetableFieldNumberVersion 
+     * @param id
+     * @param timetableFieldNumberVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

@@ -12,7 +12,7 @@
 import { LineVersionSnapshot } from './lineVersionSnapshot';
 
 
-export interface ContainerLineVersionSnapshot { 
+export interface ContainerLineVersionSnapshot {
     objects?: Array<LineVersionSnapshot>;
     totalCount?: number;
 }

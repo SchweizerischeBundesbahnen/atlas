@@ -12,7 +12,7 @@
 import { ReadLoadingPointVersion } from './readLoadingPointVersion';
 
 
-export interface ContainerReadLoadingPointVersion { 
+export interface ContainerReadLoadingPointVersion {
     objects?: Array<ReadLoadingPointVersion>;
     totalCount?: number;
 }

@@ -13,7 +13,7 @@ import { CoordinatePair } from './coordinatePair';
 import { SpatialReference } from './spatialReference';
 
 
-export interface Geolocation { 
+export interface Geolocation {
     spatialReference: SpatialReference;
     lv95: CoordinatePair;
     wgs84: CoordinatePair;

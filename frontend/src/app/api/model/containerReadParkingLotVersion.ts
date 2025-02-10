@@ -12,7 +12,7 @@
 import { ReadParkingLotVersion } from './readParkingLotVersion';
 
 
-export interface ContainerReadParkingLotVersion { 
+export interface ContainerReadParkingLotVersion {
     objects?: Array<ReadParkingLotVersion>;
     totalCount?: number;
 }

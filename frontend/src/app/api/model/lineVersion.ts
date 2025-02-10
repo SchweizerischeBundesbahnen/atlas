@@ -18,7 +18,7 @@ import { LineType } from './lineType';
 /**
  * Deprecated in favor of LineVersionV2
  */
-export interface LineVersion { 
+export interface LineVersion {
     /**
      * Object creation date
      */
@@ -37,7 +37,7 @@ export interface LineVersion {
     readonly editor?: string;
     status?: Status;
     /**
-     * This ID helps identify versions of a line in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a line. To do this, use the slnid in combination with the data range (valid from/valid until). 
+     * This ID helps identify versions of a line in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a line. To do this, use the slnid in combination with the data range (valid from/valid until).
      */
     readonly id?: number;
     /**

@@ -17,7 +17,7 @@ import { BusinessObjectType } from './businessObjectType';
 /**
  * Bulk Import Request
  */
-export interface BulkImportRequest { 
+export interface BulkImportRequest {
     applicationType: ApplicationType;
     objectType: BusinessObjectType;
     importType: ImportType;

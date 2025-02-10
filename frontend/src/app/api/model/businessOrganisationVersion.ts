@@ -13,7 +13,7 @@ import { Status } from './status';
 import { BusinessType } from './businessType';
 
 
-export interface BusinessOrganisationVersion { 
+export interface BusinessOrganisationVersion {
     /**
      * Object creation date
      */
@@ -32,7 +32,7 @@ export interface BusinessOrganisationVersion {
     readonly editor?: string;
     status?: Status;
     /**
-     * This ID helps identify versions of a business organisation in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a business organisation. To do this, use the sboid or number in combination with the data range (valid from/valid until). 
+     * This ID helps identify versions of a business organisation in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a business organisation. To do this, use the sboid or number in combination with the data range (valid from/valid until).
      */
     readonly id?: number;
     /**

@@ -14,7 +14,7 @@
 /**
  * Parameters for messages
  */
-export interface Parameter { 
+export interface Parameter {
     key?: string;
     value?: string;
 }

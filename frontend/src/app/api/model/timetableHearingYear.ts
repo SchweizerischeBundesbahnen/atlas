@@ -13,7 +13,7 @@ import { Status } from './status';
 import { HearingStatus } from './hearingStatus';
 
 
-export interface TimetableHearingYear { 
+export interface TimetableHearingYear {
     /**
      * Object creation date
      */
