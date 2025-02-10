@@ -12,7 +12,7 @@
 import { User } from './user';
 
 
-export interface ContainerUser { 
+export interface ContainerUser {
     objects?: Array<User>;
     totalCount?: number;
 }

@@ -14,7 +14,7 @@ import { SublineType } from './sublineType';
 import { SublineConcessionType } from './sublineConcessionType';
 
 
-export interface CreateSublineVersionV2 { 
+export interface CreateSublineVersionV2 {
     /**
      * Object creation date
      */
@@ -33,7 +33,7 @@ export interface CreateSublineVersionV2 {
     readonly editor?: string;
     status?: Status;
     /**
-     * This ID helps identify versions of a subline in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a subline. To do this, use the slnid in combination with the data range (valid from/valid until). 
+     * This ID helps identify versions of a subline in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a subline. To do this, use the slnid in combination with the data range (valid from/valid until).
      */
     readonly id?: number;
     /**

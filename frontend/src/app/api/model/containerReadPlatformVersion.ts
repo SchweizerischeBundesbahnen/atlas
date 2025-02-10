@@ -12,7 +12,7 @@
 import { ReadPlatformVersion } from './readPlatformVersion';
 
 
-export interface ContainerReadPlatformVersion { 
+export interface ContainerReadPlatformVersion {
     objects?: Array<ReadPlatformVersion>;
     totalCount?: number;
 }

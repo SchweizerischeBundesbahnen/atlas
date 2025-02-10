@@ -14,7 +14,7 @@ import { ElementType } from './elementType';
 import { LidiElementType } from './lidiElementType';
 
 
-export interface Line { 
+export interface Line {
     /**
      * SwissLineNumber
      */

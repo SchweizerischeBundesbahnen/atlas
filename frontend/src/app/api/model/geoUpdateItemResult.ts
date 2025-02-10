@@ -12,7 +12,7 @@
 import { ItemProcessResponseStatus } from './itemProcessResponseStatus';
 
 
-export interface GeoUpdateItemResult { 
+export interface GeoUpdateItemResult {
     sloid?: string;
     id?: number;
     message?: string;

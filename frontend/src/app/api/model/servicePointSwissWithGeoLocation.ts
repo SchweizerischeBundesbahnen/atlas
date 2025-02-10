@@ -12,7 +12,7 @@
 import { Detail } from './detail';
 
 
-export interface ServicePointSwissWithGeoLocation { 
+export interface ServicePointSwissWithGeoLocation {
     sloid: string;
     details: Array<Detail>;
 }

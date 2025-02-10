@@ -11,7 +11,7 @@
  */
 
 
-export interface District { 
+export interface District {
     /**
      * SwissDistrictNumber the location is in, based on FSO
      */

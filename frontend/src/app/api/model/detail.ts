@@ -11,7 +11,7 @@
  */
 
 
-export interface Detail { 
+export interface Detail {
     id: number;
     validFrom: Date;
 }

@@ -13,6 +13,6 @@ import { PermissionRestrictionObject } from './permissionRestrictionObject';
 import { PermissionRestrictionType } from './permissionRestrictionType';
 
 
-export interface SboidPermissionRestrictionModel extends PermissionRestrictionObject { 
+export interface SboidPermissionRestrictionModel extends PermissionRestrictionObject {
 }
 

@@ -12,7 +12,7 @@
 import { ErrorResponse } from './errorResponse';
 
 
-export interface BulkImportItemExecutionResult { 
+export interface BulkImportItemExecutionResult {
     lineNumber?: number;
     errorResponse?: ErrorResponse;
 }

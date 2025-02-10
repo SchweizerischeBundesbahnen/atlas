@@ -89,7 +89,7 @@ export class ClientCredentialAdministrationService {
 
     /**
      * Register a client with given permissions
-     * @param clientCredentialPermissionCreate 
+     * @param clientCredentialPermissionCreate
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -144,7 +144,7 @@ export class ClientCredentialAdministrationService {
 
     /**
      * Retrieve Information for a given clientId
-     * @param clientId 
+     * @param clientId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -250,7 +250,7 @@ export class ClientCredentialAdministrationService {
 
     /**
      * Update the user permissions of a user
-     * @param clientCredentialPermissionCreate 
+     * @param clientCredentialPermissionCreate
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

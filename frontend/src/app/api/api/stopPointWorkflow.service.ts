@@ -99,8 +99,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param addExaminants 
+     * @param id
+     * @param addExaminants
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -157,7 +157,7 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param stopPointAddWorkflow 
+     * @param stopPointAddWorkflow
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -211,8 +211,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param stopPointRejectWorkflow 
+     * @param id
+     * @param stopPointRejectWorkflow
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -269,8 +269,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param editStopPointWorkflow 
+     * @param id
+     * @param editStopPointWorkflow
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -369,7 +369,7 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param personId 
+     * @param personId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -414,7 +414,7 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param servicePointVersionId 
+     * @param servicePointVersionId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -458,7 +458,7 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -624,8 +624,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param otpRequest 
+     * @param id
+     * @param otpRequest
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -682,9 +682,9 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param personId 
-     * @param overrideDecision 
+     * @param id
+     * @param personId
+     * @param overrideDecision
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -744,8 +744,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param stopPointRejectWorkflow 
+     * @param id
+     * @param stopPointRejectWorkflow
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -802,8 +802,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param stopPointRestartWorkflow 
+     * @param id
+     * @param stopPointRestartWorkflow
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -860,7 +860,7 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -905,8 +905,8 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param otpVerification 
+     * @param id
+     * @param otpVerification
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -963,9 +963,9 @@ export class StopPointWorkflowService {
     }
 
     /**
-     * @param id 
-     * @param personId 
-     * @param decision 
+     * @param id
+     * @param personId
+     * @param decision
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

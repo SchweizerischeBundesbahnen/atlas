@@ -13,7 +13,7 @@ import { PageableObject } from './pageableObject';
 import { TimetableHearingStatementV2 } from './timetableHearingStatementV2';
 
 
-export interface TimetableHearingStatementAlternating { 
+export interface TimetableHearingStatementAlternating {
     timetableHearingStatement: TimetableHearingStatementV2;
     pageable: PageableObject;
 }

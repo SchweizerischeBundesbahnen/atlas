@@ -12,7 +12,7 @@
 import { Person } from './person';
 
 
-export interface ExaminantWorkflowCheck { 
+export interface ExaminantWorkflowCheck {
     /**
      * Workflow was acceptable to the BAV
      */

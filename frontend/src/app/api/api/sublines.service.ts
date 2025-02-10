@@ -90,7 +90,7 @@ export class SublinesService {
     }
 
     /**
-     * @param createSublineVersionV2 
+     * @param createSublineVersionV2
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -144,7 +144,7 @@ export class SublinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -317,7 +317,7 @@ export class SublinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -361,7 +361,7 @@ export class SublinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -405,7 +405,7 @@ export class SublinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -449,7 +449,7 @@ export class SublinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -494,8 +494,8 @@ export class SublinesService {
     }
 
     /**
-     * @param id 
-     * @param sublineVersionV2 
+     * @param id
+     * @param sublineVersionV2
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
