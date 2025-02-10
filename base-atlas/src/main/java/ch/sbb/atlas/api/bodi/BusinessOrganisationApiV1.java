@@ -89,6 +89,7 @@ public interface BusinessOrganisationApiV1 {
   @DeleteMapping("{sboid}")
   void deleteBusinessOrganisation(@PathVariable String sboid);
 
+  // verschieben
   @Operation(description = "Export all Business Organisations versions as csv, zip and gz file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullBusinessOrganisationVersions();
@@ -102,6 +103,7 @@ public interface BusinessOrganisationApiV1 {
       + "file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFutureTimetableBusinessOrganisationVersions();
+  // ---
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("/sync-business-organisations")

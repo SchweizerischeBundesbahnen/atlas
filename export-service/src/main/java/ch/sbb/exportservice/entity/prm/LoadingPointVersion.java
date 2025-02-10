@@ -2,7 +2,7 @@ package ch.sbb.exportservice.entity.prm;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.BaseEntity;
-import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
+import ch.sbb.exportservice.entity.bodi.BusinessOrganisationRelation;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class LoadingPointVersion extends BaseEntity {
 
   private ServicePointNumber servicePointNumber;
 
-  private BusinessOrganisation servicePointBusinessOrganisation;
+  private BusinessOrganisationRelation servicePointBusinessOrganisationRelation;
 
   private String parentSloidServicePoint;
 

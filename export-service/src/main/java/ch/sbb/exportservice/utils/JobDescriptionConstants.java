@@ -40,4 +40,7 @@ public class JobDescriptionConstants {
   public static final String EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME = "exportTransportCompanyCsvJob";
   public static final String EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME = "exportTransportCompanyJsonJob";
 
+  public static final String EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME = "exportBusinessOrganisationCsvJob";
+  public static final String EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME = "exportBusinessOrganisationJsonJob";
+
 }
