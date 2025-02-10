@@ -1,7 +1,6 @@
 export default class ReleaseApiUtils {
-
-  static FIRST_ATLAS_DATE = "1700-01-01";
-  static LAST_ATLAS_DATE = "9999-12-31";
+  static FIRST_ATLAS_DATE = '1700-01-01';
+  static LAST_ATLAS_DATE = '9999-12-31';
 
   /**
    * Give back a day in the format 'DD-MM-YYYY'
@@ -11,7 +10,6 @@ export default class ReleaseApiUtils {
    */
   static atlasDay(dayIncrement: number = 0) {
     return ReleaseApiUtils.date(dayIncrement).toISOString().split('T')[0]; // TODO: Use new Date().toLocaleDateString('en-CA'); ?
-
   }
 
   static date(dayIncrement: number = 0) {
@@ -33,10 +31,14 @@ export default class ReleaseApiUtils {
   }
 
   static tomorrowAsAtlasString() {
-    return ReleaseApiUtils.atlasDay(1)
+    return ReleaseApiUtils.atlasDay(1);
   }
 
-  static makeCommonChecks = (response: Cypress.Response<any>, slnid: string, lineVersionId: number) => {
+  static makeCommonChecks = (
+    response: Cypress.Response<any>,
+    slnid: string,
+    lineVersionId: number
+  ) => {
     // Check the status code
     expect(response.status).to.equal(200);
 
@@ -49,13 +51,21 @@ export default class ReleaseApiUtils {
 
     // Check the values of the first element in the array
     expect(lineVersionsFirst).to.have.property('slnid').that.equals(slnid);
-    expect(lineVersionsFirst).to.have.property('id').that.is.a('number').and.equals(lineVersionId);
+    expect(lineVersionsFirst)
+      .to.have.property('id')
+      .that.is.a('number')
+      .and.equals(lineVersionId);
     return lineVersionsFirst;
-  }
+  };
 
-  static getPrmObjectById = (body, prmId: number, arePrmObjectsInBody: boolean, expectedNumberOfObjects: number) => {
+  static getPrmObjectById = (
+    body,
+    prmId: number,
+    arePrmObjectsInBodyDirectly: boolean,
+    expectedNumberOfObjects: number
+  ) => {
     let objects;
-    if (arePrmObjectsInBody) {
+    if (arePrmObjectsInBodyDirectly) {
       expect(body).is.an('array');
       objects = body;
     } else {
@@ -63,12 +73,12 @@ export default class ReleaseApiUtils {
       objects = body.objects;
     }
     expect(objects.length).to.equal(expectedNumberOfObjects);
-    return objects.find(obj => obj.id === prmId);
-  }
+    return objects.find((obj) => obj.id === prmId);
+  };
 
   static extractOneRandomValue = (values) => {
     return values[Math.floor(Math.random() * values.length)];
-  }
+  };
 
   static getRoundedRandomFloat(min, max, fractionDigits) {
     const float = Math.random() * (max - min) + min;

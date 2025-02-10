@@ -1,6 +1,10 @@
-import {DataCy} from '../data-cy';
+import { DataCy } from '../data-cy';
 
 export default class CommonUtils {
+  static HTTP_REST_API_RESPONSE_OK = 200;
+  static HTTP_REST_API_RESPONSE_CREATED = 201;
+  static TO_BE_COMPLETED = 'TO_BE_COMPLETED';
+
   static fromDetailBackToTtfnOverview() {
     this.fromDetailBackToOverview('timetable-field-number');
   }
@@ -42,7 +46,10 @@ export default class CommonUtils {
 
   static assertNoItemsInTable(selector: string) {
     cy.get(selector + ' table tbody tr').should('have.length', 1);
-    cy.get(selector + ' table tbody tr').should('have.text', 'Es wurden keine Daten gefunden.');
+    cy.get(selector + ' table tbody tr').should(
+      'have.text',
+      'Es wurden keine Daten gefunden.'
+    );
   }
 
   static navigateToHomeViaHomeLogo() {
@@ -84,7 +91,9 @@ export default class CommonUtils {
   }
 
   static saveTtfnConfirmValidity() {
-    this.saveVersionWithWaitConfirmValidity('/line-directory/v1/field-numbers/versions/*');
+    this.saveVersionWithWaitConfirmValidity(
+      '/line-directory/v1/field-numbers/versions/*'
+    );
   }
 
   static saveLine() {
@@ -92,7 +101,9 @@ export default class CommonUtils {
   }
 
   static saveLineConfirmValidity() {
-    this.saveVersionWithWaitConfirmValidity('line-directory/v1/lines/versions/*');
+    this.saveVersionWithWaitConfirmValidity(
+      'line-directory/v1/lines/versions/*'
+    );
   }
 
   static saveSubline() {
@@ -100,7 +111,9 @@ export default class CommonUtils {
   }
 
   static saveSublineConfirmValidity() {
-    this.saveVersionWithWaitConfirmValidity('line-directory/v1/sublines/versions/*');
+    this.saveVersionWithWaitConfirmValidity(
+      'line-directory/v1/sublines/versions/*'
+    );
   }
 
   static getTotalRange() {
@@ -145,25 +158,36 @@ export default class CommonUtils {
     this.assertSelectedVersion(versionNumber);
   }
 
-  static assertVersionRange(versionNumber: number, validFrom: string, validTo: string) {
-    const versionDataSelector = this.getVersionRowSelector(versionNumber) + ' > .cdk-column-';
+  static assertVersionRange(
+    versionNumber: number,
+    validFrom: string,
+    validTo: string
+  ) {
+    const versionDataSelector =
+      this.getVersionRowSelector(versionNumber) + ' > .cdk-column-';
     cy.get(versionDataSelector + 'validFrom').should('contain.text', validFrom);
     cy.get(versionDataSelector + 'validTo').should('contain.text', validTo);
   }
 
   static assertVersionStatus(versionNumber: number, status: string) {
-    const versionDataSelector = this.getVersionRowSelector(versionNumber) + ' > .cdk-column-';
+    const versionDataSelector =
+      this.getVersionRowSelector(versionNumber) + ' > .cdk-column-';
     cy.get(versionDataSelector + 'status').should('contain.text', status);
   }
 
   static getVersionRowSelector(versionNumber: number) {
-    return DataCy.VERSION_SWITCH + ' > tbody > :nth-child(' + (versionNumber * 2 - 1) + ')';
+    return (
+      DataCy.VERSION_SWITCH +
+      ' > tbody > :nth-child(' +
+      (versionNumber * 2 - 1) +
+      ')'
+    );
   }
 
   static assertTableHeader(
     tableNumber: number,
     columnHeaderNumber: number,
-    columnHeaderContent: string,
+    columnHeaderContent: string
   ) {
     cy.get('table')
       .eq(tableNumber)
@@ -176,7 +200,7 @@ export default class CommonUtils {
   static assertTableSearch(
     tableNumber: number,
     fieldNumber: number,
-    fieldLabelExpectation: string,
+    fieldLabelExpectation: string
   ) {
     cy.get('app-table')
       .eq(tableNumber)
@@ -218,7 +242,9 @@ export default class CommonUtils {
   }
 
   static clearSearchChip() {
-    cy.get(DataCy.REMOVE_CHIP_SEARCH).should("be.visible").click({multiple: true, force: true})
+    cy.get(DataCy.REMOVE_CHIP_SEARCH)
+      .should('be.visible')
+      .click({ multiple: true, force: true });
   }
 
   static chooseOneValueFromMultiselect(selector: string, value: string) {
@@ -255,25 +281,42 @@ export default class CommonUtils {
       });
   }
 
-  static typeSearchInput(pathToIntercept: string, searchSelector: string, value: string) {
+  static typeSearchInput(
+    pathToIntercept: string,
+    searchSelector: string,
+    value: string
+  ) {
     cy.intercept(pathToIntercept).as('searchItemUrlIntercept');
-    cy.get(searchSelector).clear().type(value).type('{enter}').wait('@searchItemUrlIntercept');
+    cy.get(searchSelector)
+      .clear()
+      .type(value)
+      .type('{enter}')
+      .wait('@searchItemUrlIntercept');
   }
 
-  static selectItemFromDropdownSearchItem(searchStatusSelector: string, value: string) {
+  static selectItemFromDropdownSearchItem(
+    searchStatusSelector: string,
+    value: string
+  ) {
     //Select status to search
     CommonUtils.selectItemFromDropDown(searchStatusSelector, value);
     cy.get('body').type('{esc}');
   }
 
   static assertSelectedVersion(number: number) {
-    cy.get('.selected-row > .cdk-column-versionNumber').should('contain.text', 'Version ' + number);
+    cy.get('.selected-row > .cdk-column-versionNumber').should(
+      'contain.text',
+      'Version ' + number
+    );
   }
 
   /**
    * It is also checked if all options that are not given have the state unchecked.
    */
-  static assertItemsFromDropdownAreChecked(selector: string, checkedOptionNames: string[]) {
+  static assertItemsFromDropdownAreChecked(
+    selector: string,
+    checkedOptionNames: string[]
+  ) {
     const dropDownElements = cy
       .get(selector)
       .click() // open dropdown menu
@@ -338,70 +381,78 @@ export default class CommonUtils {
     cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
   }
 
-  static get (url: string) {
+  static get(url: string) {
     return cy.request({
       method: 'GET',
       url: Cypress.env('API_URL') + url,
       headers: {
-        Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
-      }
+        Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`,
+      },
     });
   }
 
-  static getUnauthorized (url: string) {
+  static getUnauthorized(url: string) {
     return cy.request({
       method: 'GET',
-      url: Cypress.env('API_URL_UNAUTHORIZED') + url
+      url: Cypress.env('API_URL_UNAUTHORIZED') + url,
     });
   }
 
-  static post (url: string, body: object = {}) {
+  static post(url: string, body: object = {}) {
     return cy.request({
       method: 'POST',
       url: Cypress.env('API_URL') + url,
       body: body,
       headers: {
-        Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
-      }
+        Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`,
+      },
     });
   }
 
-  static put (url: string, body: object) {
+  static put(url: string, body: object) {
     return cy.request({
       method: 'PUT',
       url: Cypress.env('API_URL') + url,
       body: body,
       headers: {
-        Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
-      }
+        Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`,
+      },
     });
   }
 
-  private static generateRandomString (length) {
+  private static generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    return Array.from({length}, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
-  };
+    return Array.from({ length }, () =>
+      characters.charAt(Math.floor(Math.random() * characters.length))
+    ).join('');
+  }
+
   static createDependentBusinessOrganisation(validFrom: Date, validTo: Date) {
     return new Cypress.Promise((resolve) => {
-      CommonUtils.post("/business-organisation-directory/v1/business-organisations/versions", {
-        descriptionDe: CommonUtils.generateRandomString(10),
-        descriptionFr: CommonUtils.generateRandomString(10),
-        descriptionIt: CommonUtils.generateRandomString(10),
-        descriptionEn: CommonUtils.generateRandomString(10),
-        abbreviationDe: CommonUtils.generateRandomString(10),
-        abbreviationFr: CommonUtils.generateRandomString(10),
-        abbreviationIt: CommonUtils.generateRandomString(10),
-        abbreviationEn: CommonUtils.generateRandomString(10),
-        organisationNumber: Cypress._.random(10000, 99999).toString(),
-        validFrom: validFrom.toISOString().split('T')[0],
-        validTo: validTo.toISOString().split('T')[0]
-      }).then((response) => {
+      CommonUtils.post(
+        '/business-organisation-directory/v1/business-organisations/versions',
+        {
+          descriptionDe: CommonUtils.generateRandomString(10),
+          descriptionFr: CommonUtils.generateRandomString(10),
+          descriptionIt: CommonUtils.generateRandomString(10),
+          descriptionEn: CommonUtils.generateRandomString(10),
+          abbreviationDe: CommonUtils.generateRandomString(10),
+          abbreviationFr: CommonUtils.generateRandomString(10),
+          abbreviationIt: CommonUtils.generateRandomString(10),
+          abbreviationEn: CommonUtils.generateRandomString(10),
+          organisationNumber: Cypress._.random(10000, 99999).toString(),
+          validFrom: validFrom.toISOString().split('T')[0],
+          validTo: validTo.toISOString().split('T')[0],
+        }
+      ).then((response) => {
         expect(response).property('status').to.equal(201);
-        expect(response).property('body').property('sboid').to.exist.and.be.a('string');
+        expect(response)
+          .property('body')
+          .property('sboid')
+          .to.exist.and.be.a('string');
         const sboid = response.body.sboid;
         resolve(sboid);
       });
     });
   }
-
 }
