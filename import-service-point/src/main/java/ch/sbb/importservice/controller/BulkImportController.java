@@ -3,6 +3,7 @@ package ch.sbb.importservice.controller;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.importservice.entity.BulkImport;
+import ch.sbb.importservice.exception.LogFileNotFoundException;
 import ch.sbb.importservice.model.BulkImportConfig;
 import ch.sbb.importservice.model.BulkImportRequest;
 import ch.sbb.importservice.model.BulkImportResult;
@@ -91,7 +92,11 @@ public class BulkImportController implements BulkImportApiV1 {
   @Override
   public BulkImportResult getBulkImportResults(Long id) {
     BulkImport bulkImport = bulkImportService.getBulkImport(id);
-    LogFile logFile = bulkImportLogService.getLogFileFromS3(bulkImport.getLogFileUrl());
+    String logFileUrl = bulkImport.getLogFileUrl();
+    if (logFileUrl == null) {
+      throw new LogFileNotFoundException(bulkImport);
+    }
+    LogFile logFile = bulkImportLogService.getLogFileFromS3(logFileUrl);
 
     return BulkImportResult.builder()
         .businessObjectType(bulkImport.getObjectType())
