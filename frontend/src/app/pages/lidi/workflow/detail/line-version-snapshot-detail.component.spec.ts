@@ -1,35 +1,42 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormBuilder} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {LinesService, LineType, LineVersion, LineVersionSnapshot, PaymentType,} from '../../../../api';
-import {LineVersionSnapshotDetailComponent} from './line-version-snapshot-detail.component';
-import {AppTestingModule} from '../../../../app.testing.module';
-import {ErrorNotificationComponent} from '../../../../core/notification/error/error-notification.component';
-import {InfoIconComponent} from '../../../../core/form-components/info-icon/info-icon.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import {
+  LinesService,
+  LineType,
+  LineVersion,
+  LineVersionSnapshot,
+  PaymentType,
+} from '../../../../api';
+import { LineVersionSnapshotDetailComponent } from './line-version-snapshot-detail.component';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
+import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 import {
   adminPermissionServiceMock,
   MockAppDetailWrapperComponent,
   MockAtlasButtonComponent,
   MockBoSelectComponent,
 } from '../../../../app.testing.mocks';
-import {LineDetailFormComponent} from '../../lines/detail/line-detail-form/line-detail-form.component';
-import {LinkIconComponent} from '../../../../core/form-components/link-icon/link-icon.component';
-import {of} from 'rxjs';
-import {CommentComponent} from '../../../../core/form-components/comment/comment.component';
-import {UserDetailInfoComponent} from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
-import {AtlasLabelFieldComponent} from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import {AtlasFieldErrorComponent} from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import {TranslatePipe} from '@ngx-translate/core';
-import {TextFieldComponent} from '../../../../core/form-components/text-field/text-field.component';
-import {InfoLinkDirective} from '../../../../core/form-components/info-icon/info-link.directive';
-import {SelectComponent} from '../../../../core/form-components/select/select.component';
-import {AtlasSpacerComponent} from '../../../../core/components/spacer/atlas-spacer.component';
-import {DetailFooterComponent} from '../../../../core/components/detail-footer/detail-footer.component';
-import {DetailPageContainerComponent} from '../../../../core/components/detail-page-container/detail-page-container.component';
-import {DateRangeTextComponent} from '../../../../core/versioning/date-range-text/date-range-text.component';
-import {DisplayDatePipe} from '../../../../core/pipe/display-date.pipe';
-import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
-import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import { LineDetailFormComponent } from '../../lines/detail/line-detail-form/line-detail-form.component';
+import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
+import { of } from 'rxjs';
+import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { InfoLinkDirective } from '../../../../core/form-components/info-icon/info-link.directive';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
+import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { NgOptimizedImage } from '@angular/common';
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -47,7 +54,7 @@ const lineVersionSnapsot: LineVersionSnapshot = {
   workflowStatus: 'ADDED',
   shortNumber: 'short',
   lineConcessionType: 'LINE_OF_A_TERRITORIAL_CONCESSION',
-  offerCategory: 'ASC'
+  offerCategory: 'ASC',
 };
 
 const lineVersion: LineVersion = {
@@ -101,7 +108,7 @@ describe('LineVersionSnapshotDetailComponent', () => {
 
 function setupTestBed(
   linesService: LinesService,
-  data: { lineVersionSnapshot: string | LineVersionSnapshot },
+  data: { lineVersionSnapshot: string | LineVersionSnapshot }
 ) {
   TestBed.configureTestingModule({
     declarations: [
@@ -127,7 +134,7 @@ function setupTestBed(
       DateRangeTextComponent,
       DisplayDatePipe,
     ],
-    imports: [AppTestingModule],
+    imports: [AppTestingModule, NgOptimizedImage],
     providers: [
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
