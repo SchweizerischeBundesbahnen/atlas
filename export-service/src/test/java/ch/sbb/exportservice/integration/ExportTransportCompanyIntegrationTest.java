@@ -11,7 +11,7 @@ import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BoDiDbSchemaCreation;
 import ch.sbb.exportservice.model.BoDiExportType;
-import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
+import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.io.File;
 import java.net.URI;
@@ -47,7 +47,7 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
 
   @MockitoBean
   @Qualifier("transportCompanyCsvFileDeletingTasklet")
-  private FileCsvDeletingTasklet transportCompanyCsvFileDeletingTasklet;
+  private DeleteCsvFileTasklet transportCompanyCsvFileDeletingTasklet;
 
   @Test
   void shouldExecuteExportTransportCompanyCsvJob() throws Exception {

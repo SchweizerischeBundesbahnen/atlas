@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
- class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
+class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
 
   @Test
-   void shouldReturnWorldFullWithServicePointAndBusinessOrganisation() throws SQLException {
+  void shouldReturnWorldFullWithServicePointAndBusinessOrganisation() throws SQLException {
     //given
     final int servicePointNumber = 1205887;
     insertServicePoint(servicePointNumber, LocalDate.of(2020, 1, 1), LocalDate.of(2099, 12, 31), Country.SWITZERLAND);
@@ -39,12 +39,12 @@ import org.junit.jupiter.api.Test;
     final TrafficPointElementVersion trafficPointElementVersion = result.stream().filter(t -> "ch:1:sloid:2".equals(t.getSloid()))
         .findFirst().orElseThrow();
     assertThat(trafficPointElementVersion).isNotNull();
-    assertThat(trafficPointElementVersion.getServicePointBusinessOrganisation().getBusinessOrganisation()).isEqualTo(
+    assertThat(trafficPointElementVersion.getServicePointBusinessOrganisationRelation().getBusinessOrganisation()).isEqualTo(
         "ch:1:sboid:101999");
   }
 
   @Test
-   void shouldReturnTimetableFuture() throws SQLException {
+  void shouldReturnTimetableFuture() throws SQLException {
     //given
     final LocalDate futureDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     final int servicePointNumber = 1205887;
@@ -63,13 +63,13 @@ import org.junit.jupiter.api.Test;
     final TrafficPointElementVersion trafficPointElementVersion = result.stream().filter(t -> t.getSloid().equals(sloid))
         .findFirst().orElseThrow();
     assertThat(trafficPointElementVersion).isNotNull();
-    assertThat(trafficPointElementVersion.getServicePointBusinessOrganisation().getBusinessOrganisation()).isEqualTo(
+    assertThat(trafficPointElementVersion.getServicePointBusinessOrganisationRelation().getBusinessOrganisation()).isEqualTo(
         "ch:1:sboid:101999");
     result.forEach(t -> assertThat(isDateInRange(futureDate, t.getValidFrom(), t.getValidTo())).isTrue());
   }
 
   @Test
-   void shouldReturnWorldActual() throws SQLException {
+  void shouldReturnWorldActual() throws SQLException {
     //given
     final int servicePointNumber = 1205887;
     final LocalDate now = LocalDate.now();
@@ -88,7 +88,7 @@ import org.junit.jupiter.api.Test;
     final TrafficPointElementVersion trafficPointElementVersion = result.stream().filter(t -> t.getSloid().equals(sloid))
         .findFirst().orElseThrow();
     assertThat(trafficPointElementVersion).isNotNull();
-    assertThat(trafficPointElementVersion.getServicePointBusinessOrganisation().getBusinessOrganisation()).isEqualTo(
+    assertThat(trafficPointElementVersion.getServicePointBusinessOrganisationRelation().getBusinessOrganisation()).isEqualTo(
         "ch:1:sboid:101999");
     result.forEach(t -> assertThat(isDateInRange(now, t.getValidFrom(), t.getValidTo())).isTrue());
   }
