@@ -18,7 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
- class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
+class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
 
   @Test
   void shouldReturnFullWorld() throws SQLException {
@@ -41,11 +41,11 @@ import org.junit.jupiter.api.Test;
     assertThat(result).hasSize(3);
     result.sort(Comparator.comparing(LoadingPointVersion::getNumber));
     assertThat(result.get(0).getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
-    assertThat(result.get(0).getServicePointBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
+    assertThat(result.get(0).getServicePointBusinessOrganisationRelation().getBusinessOrganisationNumber()).isEqualTo(3065);
     assertThat(result.get(1).getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
-    assertThat(result.get(1).getServicePointBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
+    assertThat(result.get(1).getServicePointBusinessOrganisationRelation().getBusinessOrganisationNumber()).isEqualTo(3065);
     assertThat(result.get(2).getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
-    assertThat(result.get(2).getServicePointBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
+    assertThat(result.get(2).getServicePointBusinessOrganisationRelation().getBusinessOrganisationNumber()).isEqualTo(3065);
   }
 
   @Test
@@ -68,7 +68,7 @@ import org.junit.jupiter.api.Test;
     assertThat(result).hasSize(1);
     assertThat(isDateInRange(now, result.get(0).getValidFrom(), result.get(0).getValidTo())).isTrue();
     assertThat(result.get(0).getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
-    assertThat(result.get(0).getServicePointBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
+    assertThat(result.get(0).getServicePointBusinessOrganisationRelation().getBusinessOrganisationNumber()).isEqualTo(3065);
   }
 
   @Test
@@ -91,7 +91,7 @@ import org.junit.jupiter.api.Test;
     assertThat(result).hasSize(1);
     assertThat(isDateInRange(futureDate, result.get(0).getValidFrom(), result.get(0).getValidTo())).isTrue();
     assertThat(result.get(0).getParentSloidServicePoint()).isEqualTo("ch:1:sloid:1");
-    assertThat(result.get(0).getServicePointBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(3065);
+    assertThat(result.get(0).getServicePointBusinessOrganisationRelation().getBusinessOrganisationNumber()).isEqualTo(3065);
   }
 
   @Test
@@ -114,7 +114,7 @@ import org.junit.jupiter.api.Test;
     assertThat(result).hasSize(1);
     assertThat(isDateInRange(futureDate, result.get(0).getValidFrom(), result.get(0).getValidTo())).isTrue();
     assertThat(result.get(0).getParentSloidServicePoint()).isEqualTo(null);
-    assertThat(result.get(0).getServicePointBusinessOrganisation().getBusinessOrganisationNumber()).isEqualTo(null);
+    assertThat(result.get(0).getServicePointBusinessOrganisationRelation().getBusinessOrganisationNumber()).isEqualTo(null);
   }
 
   @Test

@@ -22,13 +22,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
- class ExportCsvDataIntegrationTest extends BaseExportCsvDataIntegrationTest{
-
+class ExportCsvDataIntegrationTest extends BaseExportCsvDataIntegrationTest {
 
   @Test
-   void shouldExportDataWithoutSemiColonContent() throws Exception {
+  void shouldExportDataWithoutSemiColonContent() throws Exception {
     when(amazonService.putZipFile(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
-    when(fileCsvDeletingTasklet.execute(any(), any())).thenReturn(null);
+    when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
@@ -43,15 +42,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
     List<ServicePointVersionCsvModel> exportedCsv = parseCsv(exportedCsvFile);
     Files.delete(exportedCsvFile.toPath());
 
-    ServicePointVersionCsvModel servicePointVersionCsvModel = exportedCsv.stream().filter(i -> i.getNumber().equals(8572241)).findFirst()
+    ServicePointVersionCsvModel servicePointVersionCsvModel = exportedCsv.stream().filter(i -> i.getNumber().equals(8572241))
+        .findFirst()
         .orElseThrow();
     assertThat(servicePointVersionCsvModel.getFotComment()).isEqualTo("(Bus): ohne: Fahrplandaten 2016/2018");
   }
 
   @Test
-   void shouldExportDataWithoutNewLine() throws Exception {
+  void shouldExportDataWithoutNewLine() throws Exception {
     when(amazonService.putZipFile(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
-    when(fileCsvDeletingTasklet.execute(any(), any())).thenReturn(null);
+    when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
@@ -66,10 +66,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
     List<ServicePointVersionCsvModel> exportedCsv = parseCsv(exportedCsvFile);
     Files.delete(exportedCsvFile.toPath());
 
-    ServicePointVersionCsvModel servicePointVersionCsvModel = exportedCsv.stream().filter(i -> i.getNumber().equals(9411114)).findFirst()
+    ServicePointVersionCsvModel servicePointVersionCsvModel = exportedCsv.stream().filter(i -> i.getNumber().equals(9411114))
+        .findFirst()
         .orElseThrow();
     assertThat(servicePointVersionCsvModel.getFotComment()).isEqualTo("bern sbb ch");
   }
-
 
 }

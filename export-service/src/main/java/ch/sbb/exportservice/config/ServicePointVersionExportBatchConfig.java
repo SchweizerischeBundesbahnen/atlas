@@ -14,8 +14,8 @@ import ch.sbb.exportservice.processor.ServicePointVersionCsvServicePointProcesso
 import ch.sbb.exportservice.processor.ServicePointVersionJsonServicePointProcessor;
 import ch.sbb.exportservice.reader.ServicePointVersionRowMapper;
 import ch.sbb.exportservice.reader.ServicePointVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
-import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
+import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
@@ -163,16 +163,16 @@ public class ServicePointVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileJsonDeletingTasklet fileJsonDeletingTasklet(
+  public DeleteJsonFileTasklet fileJsonDeletingTasklet(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return new FileJsonDeletingTasklet(sePoDiExportType, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
+    return new DeleteJsonFileTasklet(sePoDiExportType, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
   }
 
   @Bean
   @StepScope
   @Qualifier("fileCsvDeletingTasklet")
-  public FileCsvDeletingTasklet fileCsvDeletingTasklet(@Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return new FileCsvDeletingTasklet(sePoDiExportType, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
+  public DeleteCsvFileTasklet fileCsvDeletingTasklet(@Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
+    return new DeleteCsvFileTasklet(sePoDiExportType, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
   }
 
   @Bean

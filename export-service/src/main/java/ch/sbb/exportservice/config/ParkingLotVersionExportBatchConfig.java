@@ -14,8 +14,8 @@ import ch.sbb.exportservice.processor.ParkingLotVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ParkingLotVersionJsonProcessor;
 import ch.sbb.exportservice.reader.ParkingLotVersionRowMapper;
 import ch.sbb.exportservice.reader.ParkingLotVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
-import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
+import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
@@ -133,10 +133,10 @@ public class ParkingLotVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileCsvDeletingTasklet parkingLotCsvFileDeletingTasklet(
+  public DeleteCsvFileTasklet parkingLotCsvFileDeletingTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType
   ) {
-    return new FileCsvDeletingTasklet(exportType, PARKING_LOT_VERSION);
+    return new DeleteCsvFileTasklet(exportType, PARKING_LOT_VERSION);
   }
 
   @Bean
@@ -177,9 +177,9 @@ public class ParkingLotVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileJsonDeletingTasklet fileParkingLotJsonDeletingTasklet(
+  public DeleteJsonFileTasklet fileParkingLotJsonDeletingTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new FileJsonDeletingTasklet(exportType, PARKING_LOT_VERSION);
+    return new DeleteJsonFileTasklet(exportType, PARKING_LOT_VERSION);
   }
 
   @Bean

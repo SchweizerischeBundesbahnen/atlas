@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum BoDiExportType implements ExportTypeBase {
 
-  FULL(Constants.FULL_DIR_NAME, ""),
-
-  ;
+  FULL(Constants.FULL_DIR_NAME, "");
 
   private final String dir;
   private final String fileTypePrefix;
