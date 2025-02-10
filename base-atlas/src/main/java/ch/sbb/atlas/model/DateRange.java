@@ -50,10 +50,6 @@ public class DateRange {
         && (to.equals(givenDateRange.getTo()) || to.isBefore(givenDateRange.getTo()));
   }
 
-  public boolean isDateRangeCompletelyOutsideRange(DateRange givenDateRange) {
-    return (from.isBefore(givenDateRange.getFrom()) && to.isAfter(givenDateRange.getTo()));
-  }
-
   public static DateRange fromVersionable(Versionable versionable) {
     return DateRange.builder().from(versionable.getValidFrom()).to(versionable.getValidTo()).build();
   }
