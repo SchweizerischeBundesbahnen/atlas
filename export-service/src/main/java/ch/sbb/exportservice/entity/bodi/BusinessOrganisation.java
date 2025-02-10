@@ -1,31 +1,57 @@
 package ch.sbb.exportservice.entity.bodi;
 
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.exportservice.entity.BaseEntity;
+import java.time.LocalDate;
+import java.util.Set;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Immutable;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@Builder
+@SuperBuilder
 @FieldNameConstants
-public class BusinessOrganisation {
+@Immutable
+public class BusinessOrganisation extends BaseEntity {
 
-  private String businessOrganisation;
-  private Integer businessOrganisationNumber;
-  private String businessOrganisationAbbreviationDe;
-  private String businessOrganisationAbbreviationFr;
-  private String businessOrganisationAbbreviationIt;
-  private String businessOrganisationAbbreviationEn;
-  private String businessOrganisationDescriptionDe;
-  private String businessOrganisationDescriptionFr;
-  private String businessOrganisationDescriptionIt;
-  private String businessOrganisationDescriptionEn;
+  private Long id;
+  private String sboid;
+
+  private Status status;
+
+  private String abbreviationDe;
+  private String abbreviationFr;
+  private String abbreviationIt;
+  private String abbreviationEn;
+
+  private String descriptionDe;
+  private String descriptionFr;
+  private String descriptionIt;
+  private String descriptionEn;
+
+  private Integer organisationNumber;
+  private String contactEnterpriseEmail;
+
+  /*@CollectionTable(name = "business_organisation_version_business_types", joinColumns = {
+      @JoinColumn(name = "business_organisation_version_id")})
+  @Convert(converter = BusinessTypeConverter.class)*/
+  private Set<BusinessType> businessTypes;
+
+  private LocalDate validFrom;
+  private LocalDate validTo;
+
+  private String number;
+  private String abbreviation;
+  private String businessRegisterName;
 
 }

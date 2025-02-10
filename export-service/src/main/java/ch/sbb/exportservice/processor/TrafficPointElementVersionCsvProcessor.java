@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
-import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
+import ch.sbb.exportservice.entity.bodi.BusinessOrganisationRelation;
 import ch.sbb.exportservice.entity.sepodi.TrafficPointElementVersion;
 import ch.sbb.exportservice.entity.sepodi.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.exportservice.model.TrafficPointVersionCsvModel;
@@ -15,7 +15,7 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
 
   @Override
   public TrafficPointVersionCsvModel process(TrafficPointElementVersion version) {
-    BusinessOrganisation servicePointBusinessOrganisation = version.getServicePointBusinessOrganisation();
+    BusinessOrganisationRelation servicePointBusinessOrganisationRelation = version.getServicePointBusinessOrganisationRelation();
     TrafficPointVersionCsvModelBuilder builder = TrafficPointVersionCsvModel.builder()
         .sloid(version.getSloid())
         .numberShort(version.getServicePointNumber().getNumberShort())
@@ -35,16 +35,24 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
         .creationDate(LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
         .editionDate(LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
         .parentSloidServicePoint(version.getParentSloidServicePoint())
-        .servicePointBusinessOrganisation(servicePointBusinessOrganisation.getBusinessOrganisation())
-        .servicePointBusinessOrganisationNumber(servicePointBusinessOrganisation.getBusinessOrganisationNumber())
-        .servicePointBusinessOrganisationAbbreviationDe(servicePointBusinessOrganisation.getBusinessOrganisationAbbreviationDe())
-        .servicePointBusinessOrganisationAbbreviationFr(servicePointBusinessOrganisation.getBusinessOrganisationAbbreviationFr())
-        .servicePointBusinessOrganisationAbbreviationIt(servicePointBusinessOrganisation.getBusinessOrganisationAbbreviationIt())
-        .servicePointBusinessOrganisationAbbreviationEn(servicePointBusinessOrganisation.getBusinessOrganisationAbbreviationEn())
-        .servicePointBusinessOrganisationDescriptionDe(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionDe())
-        .servicePointBusinessOrganisationDescriptionFr(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionFr())
-        .servicePointBusinessOrganisationDescriptionIt(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionIt())
-        .servicePointBusinessOrganisationDescriptionEn(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionEn());
+        .servicePointBusinessOrganisation(servicePointBusinessOrganisationRelation.getBusinessOrganisation())
+        .servicePointBusinessOrganisationNumber(servicePointBusinessOrganisationRelation.getBusinessOrganisationNumber())
+        .servicePointBusinessOrganisationAbbreviationDe(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationDe())
+        .servicePointBusinessOrganisationAbbreviationFr(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationFr())
+        .servicePointBusinessOrganisationAbbreviationIt(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationIt())
+        .servicePointBusinessOrganisationAbbreviationEn(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationEn())
+        .servicePointBusinessOrganisationDescriptionDe(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionDe())
+        .servicePointBusinessOrganisationDescriptionFr(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionFr())
+        .servicePointBusinessOrganisationDescriptionIt(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionIt())
+        .servicePointBusinessOrganisationDescriptionEn(
+            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionEn());
 
     if (version.getTrafficPointElementGeolocation() != null) {
       buildGeolocation(version.getTrafficPointElementGeolocation(), builder);

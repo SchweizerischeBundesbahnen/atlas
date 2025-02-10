@@ -1,13 +1,13 @@
 package ch.sbb.exportservice.reader;
 
-import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
+import ch.sbb.exportservice.entity.bodi.BusinessOrganisationRelation;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class BaseRowMapper {
 
-  protected BusinessOrganisation getBusinessOrganisation(ResultSet rs) throws SQLException {
-    return BusinessOrganisation.builder()
+  protected BusinessOrganisationRelation getBusinessOrganisation(ResultSet rs) throws SQLException {
+    return BusinessOrganisationRelation.builder()
         .businessOrganisation(rs.getString("business_organisation"))
         .businessOrganisationNumber(RowMapperUtil.getInteger(rs, "organisation_number"))
         .businessOrganisationAbbreviationDe(rs.getString("abbreviation_de"))

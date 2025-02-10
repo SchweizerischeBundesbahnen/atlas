@@ -6,8 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
 @Slf4j
-public class ServicePointVersionJsonServicePointProcessor extends BaseServicePointProcessor implements ItemProcessor<ServicePointVersion,
-    ReadServicePointVersionModel> {
+public class ServicePointVersionJsonServicePointProcessor extends BaseServicePointProcessor implements
+    ItemProcessor<ServicePointVersion,
+        ReadServicePointVersionModel> {
 
   @Override
   public ReadServicePointVersionModel process(ServicePointVersion servicePointVersion) {
@@ -23,7 +24,7 @@ public class ServicePointVersionJsonServicePointProcessor extends BaseServicePoi
         .operatingPointWithTimetable(servicePointVersion.isOperatingPointWithTimetable())
         .freightServicePoint(servicePointVersion.isFreightServicePoint())
         .sortCodeOfDestinationStation(servicePointVersion.getSortCodeOfDestinationStation())
-        .businessOrganisation(servicePointVersion.getBusinessOrganisation().getBusinessOrganisation())
+        .businessOrganisation(servicePointVersion.getBusinessOrganisationRelation().getBusinessOrganisation())
         .categories(getCategoriesSorted(servicePointVersion))
         .operatingPointType(servicePointVersion.getOperatingPointType())
         .operatingPointTechnicalTimetableType(servicePointVersion.getOperatingPointTechnicalTimetableType())

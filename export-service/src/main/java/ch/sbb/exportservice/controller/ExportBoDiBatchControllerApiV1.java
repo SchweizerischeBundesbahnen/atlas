@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.controller;
 
+import ch.sbb.exportservice.service.ExportBusinessOrganisationJobService;
 import ch.sbb.exportservice.service.ExportTransportCompanyJobService;
 import io.micrometer.tracing.annotation.NewSpan;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExportBoDiBatchControllerApiV1 {
 
   private final ExportTransportCompanyJobService exportTransportCompanyJobService;
-
+  private final ExportBusinessOrganisationJobService exportBusinessOrganisationJobService;
 
   @PostMapping("transport-company-batch")
   @ResponseStatus(HttpStatus.OK)
@@ -31,8 +32,19 @@ public class ExportBoDiBatchControllerApiV1 {
   })
   @NewSpan
   @Async
-  public void startExportStopPointBatch() {
+  public void startExportTransportCompanyBatch() {
     exportTransportCompanyJobService.startExportJobs();
+  }
+
+  @PostMapping("business-organisation-batch")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  @NewSpan
+  @Async
+  public void startExportBusinessOrganisationBatch() {
+    exportBusinessOrganisationJobService.startExportJobs();
   }
 
 }

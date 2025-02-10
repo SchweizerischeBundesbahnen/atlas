@@ -10,7 +10,7 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.exportservice.entity.BaseEntity;
-import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
+import ch.sbb.exportservice.entity.bodi.BusinessOrganisationRelation;
 import ch.sbb.exportservice.entity.sepodi.geolocation.ServicePointGeolocation;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -52,7 +52,7 @@ public class ServicePointVersion extends BaseEntity {
 
   private String sortCodeOfDestinationStation;
 
-  private BusinessOrganisation businessOrganisation;
+  private BusinessOrganisationRelation businessOrganisationRelation;
 
   private Set<Category> categories;
   private String categoriesPipeList;

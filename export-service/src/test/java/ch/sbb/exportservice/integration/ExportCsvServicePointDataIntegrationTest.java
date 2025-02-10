@@ -22,12 +22,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
- class ExportCsvServicePointDataIntegrationTest extends BaseExportCsvDataIntegrationTest {
+class ExportCsvServicePointDataIntegrationTest extends BaseExportCsvDataIntegrationTest {
 
   @Test
-   void shouldExportServicePointToCsvWithCorrectData() throws Exception {
+  void shouldExportServicePointToCsvWithCorrectData() throws Exception {
     when(amazonService.putZipFile(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
-    when(fileCsvDeletingTasklet.execute(any(), any())).thenReturn(null);
+    when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)

@@ -14,8 +14,8 @@ import ch.sbb.exportservice.processor.LoadingPointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.LoadingPointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.LoadingPointVersionRowMapper;
 import ch.sbb.exportservice.reader.LoadingPointVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
-import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
+import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
@@ -133,10 +133,10 @@ public class LoadingPointVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileCsvDeletingTasklet loadingPointCsvFileDeletingTasklet(
+  public DeleteCsvFileTasklet loadingPointCsvFileDeletingTasklet(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType
   ) {
-    return new FileCsvDeletingTasklet(sePoDiExportType, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
+    return new DeleteCsvFileTasklet(sePoDiExportType, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
   }
 
   @Bean
@@ -177,9 +177,9 @@ public class LoadingPointVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileJsonDeletingTasklet fileLoadingPointJsonDeletingTasklet(
+  public DeleteJsonFileTasklet fileLoadingPointJsonDeletingTasklet(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return new FileJsonDeletingTasklet(sePoDiExportType, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
+    return new DeleteJsonFileTasklet(sePoDiExportType, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
   }
 
   @Bean
