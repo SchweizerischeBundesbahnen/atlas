@@ -139,7 +139,6 @@
   },
   "DIALOG": {
     "OK": "Suivant",
-    "IGNORE": "Ignorer",
     "RELOAD": "Recharger",
     "CANCEL": "Annuler",
     "BACK": "Retour au formulaire de saisie",
