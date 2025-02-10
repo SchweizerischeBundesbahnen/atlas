@@ -3,18 +3,12 @@ package ch.sbb.atlas.api.lidi;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
-@Builder
+@Data
 public class AffectedSublines {
 
   List<String> allowedSublines = new ArrayList<>();
