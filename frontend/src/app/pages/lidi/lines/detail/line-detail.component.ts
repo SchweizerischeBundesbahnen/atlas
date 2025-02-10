@@ -29,7 +29,7 @@ import { DetailHelperService } from '../../../../core/detail/detail-helper.servi
 import moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { SublineShorteningDialogComponent } from '../../dialog/subline-shortening-dialog/subline-shortening-dialog.component';
-import { map } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -241,10 +241,17 @@ export class LineDetailComponent implements OnInit {
   updateLine(id: number, lineVersion: UpdateLineVersionV2): void {
     const validFromDate = moment(lineVersion.validFrom).toDate();
     const validToDate = moment(lineVersion.validTo).toDate();
-    if (this.isOnlyValidityChangedToTruncation()) {
-      this.linesService
-        .checkAffectedSublines(id, validFromDate, validToDate)
-        .subscribe((affectedSublines) => {
+    let success = 'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS';
+
+    if (!this.isOnlyValidityChangedToTruncation()) {
+      this.updateLineVersion(id, lineVersion, success);
+      return;
+    }
+
+    this.linesService
+      .checkAffectedSublines(id, validFromDate, validToDate)
+      .pipe(
+        switchMap((affectedSublines) => {
           const isZeroAffectedSublines =
             affectedSublines.allowedSublines?.length == 0 &&
             affectedSublines.notAllowedSublines?.length == 0;
@@ -253,23 +260,58 @@ export class LineDetailComponent implements OnInit {
             affectedSublines.allowedSublines!.length > 0 &&
             affectedSublines.notAllowedSublines!.length === 0;
 
+          const isAllowedToUpdateAutomaticallyMixed =
+            affectedSublines.allowedSublines!.length > 0 &&
+            affectedSublines.notAllowedSublines!.length > 0;
+
           if (isZeroAffectedSublines) {
-            //Paramter mit success texten
-            this.updateLineVersion(id, lineVersion);
+            this.updateLineVersion(id, lineVersion, success);
+            return EMPTY;
           } else {
-            this.openSublineShorteningDialog(
+            return this.openSublineShorteningDialog(
               isAllowedToUpdateAutomatically,
               affectedSublines
-            ).subscribe((confirmed) => {
-              if (confirmed) {
-                this.updateLineVersion(id, lineVersion);
-              }
-            });
+            ).pipe(
+              map((confirmed) => {
+                if (confirmed) {
+                  success = isAllowedToUpdateAutomatically
+                    ? 'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS'
+                    : isAllowedToUpdateAutomaticallyMixed
+                      ? 'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.SUCCESS'
+                      : success;
+                }
+                return { confirmed, success };
+              })
+            );
           }
-        });
-    } else {
-      this.updateLineVersion(id, lineVersion);
-    }
+        }),
+        filter(({ confirmed }) => confirmed),
+        switchMap(({ success }) => {
+          this.updateLineVersion(id, lineVersion, success);
+          return EMPTY;
+        })
+      )
+      .subscribe();
+  }
+
+  updateLineVersion(
+    id: number,
+    lineVersion: UpdateLineVersionV2,
+    success: string
+  ) {
+    this.linesService
+      .updateLineVersion(id, lineVersion)
+      .pipe(catchError(this.handleError()))
+      .subscribe(() => {
+        this.notificationService.success(success);
+        this.router
+          .navigate([
+            Pages.LIDI.path,
+            Pages.LINES.path,
+            this.selectedVersion.slnid,
+          ])
+          .then(() => this.ngOnInit());
+      });
   }
 
   openSublineShorteningDialog(
@@ -285,22 +327,6 @@ export class LineDetailComponent implements OnInit {
       })
       .afterClosed()
       .pipe(map((value) => (value ? value : false)));
-  }
-
-  updateLineVersion(id: number, lineVersion: UpdateLineVersionV2) {
-    this.linesService
-      .updateLineVersion(id, lineVersion)
-      .pipe(catchError(this.handleError()))
-      .subscribe(() => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
-        this.router
-          .navigate([
-            Pages.LIDI.path,
-            Pages.LINES.path,
-            this.selectedVersion.slnid,
-          ])
-          .then(() => this.ngOnInit());
-      });
   }
 
   revoke(): void {
