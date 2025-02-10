@@ -12,7 +12,7 @@
 import { BulkImportError } from './bulkImportError';
 
 
-export interface BulkImportLogEntry { 
+export interface BulkImportLogEntry {
     lineNumber?: number;
     status?: BulkImportLogEntry.StatusEnum;
     errors?: Array<BulkImportError>;

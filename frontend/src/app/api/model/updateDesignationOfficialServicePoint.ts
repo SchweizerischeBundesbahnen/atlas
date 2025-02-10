@@ -11,7 +11,7 @@
  */
 
 
-export interface UpdateDesignationOfficialServicePoint { 
+export interface UpdateDesignationOfficialServicePoint {
     /**
      * Official designation of a location that must be used by all recipients
      */

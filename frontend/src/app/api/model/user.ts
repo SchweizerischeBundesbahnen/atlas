@@ -13,7 +13,7 @@ import { UserAccountStatus } from './userAccountStatus';
 import { Permission } from './permission';
 
 
-export interface User { 
+export interface User {
     /**
      * SBB User Id
      */

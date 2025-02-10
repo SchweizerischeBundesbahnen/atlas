@@ -12,7 +12,7 @@
 import { ReadServicePointVersion } from './readServicePointVersion';
 
 
-export interface ContainerReadServicePointVersion { 
+export interface ContainerReadServicePointVersion {
     objects?: Array<ReadServicePointVersion>;
     totalCount?: number;
 }

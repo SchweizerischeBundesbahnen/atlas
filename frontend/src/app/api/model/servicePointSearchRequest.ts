@@ -11,7 +11,7 @@
  */
 
 
-export interface ServicePointSearchRequest { 
+export interface ServicePointSearchRequest {
     /**
      * Search over: - ServicePointNumber/DiDok-Number formerly known as UIC-Code - Official designation of a location - Location abbreviation - Long designation of a location
      */

@@ -20,7 +20,7 @@ import { TimetableHearingStatementResponsibleTransportCompany } from './timetabl
 /**
  * Deprecated in favor of TimetableHearingStatementV2
  */
-export interface TimetableHearingStatement { 
+export interface TimetableHearingStatement {
     /**
      * Object creation date
      */

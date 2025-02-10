@@ -12,7 +12,7 @@
 import { ReadContactPointVersion } from './readContactPointVersion';
 
 
-export interface ContainerReadContactPointVersion { 
+export interface ContainerReadContactPointVersion {
     objects?: Array<ReadContactPointVersion>;
     totalCount?: number;
 }

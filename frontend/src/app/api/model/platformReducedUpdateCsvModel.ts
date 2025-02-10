@@ -14,7 +14,7 @@ import { VehicleAccessAttributeType } from './vehicleAccessAttributeType';
 import { InfoOpportunityAttributeType } from './infoOpportunityAttributeType';
 
 
-export interface PlatformReducedUpdateCsvModel { 
+export interface PlatformReducedUpdateCsvModel {
     sloid?: string;
     validFrom?: Date;
     validTo?: Date;
