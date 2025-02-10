@@ -5,9 +5,9 @@ import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 
-public class FileJsonDeletingTasklet extends FileDeletingTasklet implements Tasklet {
+public class DeleteJsonFileTasklet extends FileDeletingTasklet implements Tasklet {
 
-  public FileJsonDeletingTasklet(ExportTypeBase exportType, ExportFileName exportFileName) {
+  public DeleteJsonFileTasklet(ExportTypeBase exportType, ExportFileName exportFileName) {
     super(exportType, exportFileName);
   }
 

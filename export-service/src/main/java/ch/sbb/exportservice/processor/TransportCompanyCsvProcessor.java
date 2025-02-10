@@ -26,7 +26,6 @@ public class TransportCompanyCsvProcessor extends BaseServicePointProcessor impl
         .creationDate(LOCAL_DATE_FORMATTER.format(transportCompany.getCreationDate()))
         .editionDate(LOCAL_DATE_FORMATTER.format(transportCompany.getEditionDate()))
         .build();
-
   }
 
 }
