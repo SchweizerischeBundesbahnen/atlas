@@ -14,7 +14,7 @@
 /**
  * List of uploaded documents
  */
-export interface TimetableHearingStatementDocument { 
+export interface TimetableHearingStatementDocument {
     /**
      * Technical identifier
      */

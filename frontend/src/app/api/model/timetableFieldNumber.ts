@@ -12,7 +12,7 @@
 import { Status } from './status';
 
 
-export interface TimetableFieldNumber { 
+export interface TimetableFieldNumber {
     /**
      * Timetable field number
      */

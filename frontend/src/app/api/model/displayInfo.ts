@@ -15,7 +15,7 @@ import { Parameter } from './parameter';
 /**
  * DisplayInfo for messages
  */
-export interface DisplayInfo { 
+export interface DisplayInfo {
     /**
      * Errorcode for UI
      */

@@ -11,7 +11,7 @@
  */
 
 
-export interface TransportCompanyRelation { 
+export interface TransportCompanyRelation {
     /**
      * Transport Company Id
      */

@@ -11,7 +11,7 @@
  */
 
 
-export interface StopPointRejectWorkflow { 
+export interface StopPointRejectWorkflow {
     /**
      * Firstname
      */

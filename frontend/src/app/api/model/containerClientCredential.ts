@@ -12,7 +12,7 @@
 import { ClientCredential } from './clientCredential';
 
 
-export interface ContainerClientCredential { 
+export interface ContainerClientCredential {
     objects?: Array<ClientCredential>;
     totalCount?: number;
 }

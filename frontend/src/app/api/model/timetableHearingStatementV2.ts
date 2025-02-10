@@ -17,7 +17,7 @@ import { StatementStatus } from './statementStatus';
 import { TimetableHearingStatementResponsibleTransportCompany } from './timetableHearingStatementResponsibleTransportCompany';
 
 
-export interface TimetableHearingStatementV2 { 
+export interface TimetableHearingStatementV2 {
     /**
      * Object creation date
      */

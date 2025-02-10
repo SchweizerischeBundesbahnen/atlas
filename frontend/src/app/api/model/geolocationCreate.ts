@@ -12,7 +12,7 @@
 import { SpatialReference } from './spatialReference';
 
 
-export interface GeolocationCreate { 
+export interface GeolocationCreate {
     spatialReference: SpatialReference;
     /**
      * North longitude

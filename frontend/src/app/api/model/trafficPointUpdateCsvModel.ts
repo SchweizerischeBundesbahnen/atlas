@@ -12,7 +12,7 @@
 import { SpatialReference } from './spatialReference';
 
 
-export interface TrafficPointUpdateCsvModel { 
+export interface TrafficPointUpdateCsvModel {
     sloid?: string;
     validFrom?: Date;
     validTo?: Date;

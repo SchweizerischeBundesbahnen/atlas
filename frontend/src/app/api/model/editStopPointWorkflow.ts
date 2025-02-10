@@ -12,7 +12,7 @@
 import { StopPointPerson } from './stopPointPerson';
 
 
-export interface EditStopPointWorkflow { 
+export interface EditStopPointWorkflow {
     /**
      * Official designation of a location that must be used by all recipients
      */

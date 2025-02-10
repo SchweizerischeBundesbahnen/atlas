@@ -88,7 +88,7 @@ export class LoadingPointsService {
     }
 
     /**
-     * @param createLoadingPointVersion 
+     * @param createLoadingPointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -142,8 +142,8 @@ export class LoadingPointsService {
     }
 
     /**
-     * @param servicePointNumber 
-     * @param loadingPointNumber 
+     * @param servicePointNumber
+     * @param loadingPointNumber
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -190,7 +190,7 @@ export class LoadingPointsService {
     }
 
     /**
-     * @param servicePointNumber 
+     * @param servicePointNumber
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -254,7 +254,7 @@ export class LoadingPointsService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -430,8 +430,8 @@ export class LoadingPointsService {
     }
 
     /**
-     * @param id 
-     * @param createLoadingPointVersion 
+     * @param id
+     * @param createLoadingPointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

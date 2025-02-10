@@ -14,7 +14,7 @@ import { Person } from './person';
 import { WorkflowStatus } from './workflowStatus';
 
 
-export interface Workflow { 
+export interface Workflow {
     /**
      * Workflow ID
      */

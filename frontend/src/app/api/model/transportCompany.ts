@@ -12,7 +12,7 @@
 import { TransportCompanyStatus } from './transportCompanyStatus';
 
 
-export interface TransportCompany { 
+export interface TransportCompany {
     /**
      * Identifier
      */

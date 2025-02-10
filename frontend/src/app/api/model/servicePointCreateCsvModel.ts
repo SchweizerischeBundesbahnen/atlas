@@ -18,7 +18,7 @@ import { SpatialReference } from './spatialReference';
 import { OperatingPointTechnicalTimetableType } from './operatingPointTechnicalTimetableType';
 
 
-export interface ServicePointCreateCsvModel { 
+export interface ServicePointCreateCsvModel {
     numberShort?: number;
     uicCountryCode?: number;
     validFrom?: Date;
