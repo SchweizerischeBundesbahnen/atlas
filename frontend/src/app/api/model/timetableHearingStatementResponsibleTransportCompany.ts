@@ -11,7 +11,7 @@
  */
 
 
-export interface TimetableHearingStatementResponsibleTransportCompany { 
+export interface TimetableHearingStatementResponsibleTransportCompany {
     /**
      * Technical identifier
      */

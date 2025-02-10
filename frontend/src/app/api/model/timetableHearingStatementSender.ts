@@ -14,7 +14,7 @@
 /**
  * Deprecated in favor of TimetableHearingStatementSenderV2
  */
-export interface TimetableHearingStatementSender { 
+export interface TimetableHearingStatementSender {
     /**
      * First Name
      */

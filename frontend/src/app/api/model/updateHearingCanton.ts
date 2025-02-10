@@ -12,7 +12,7 @@
 import { SwissCanton } from './swissCanton';
 
 
-export interface UpdateHearingCanton { 
+export interface UpdateHearingCanton {
     /**
      * List of Statements id
      */

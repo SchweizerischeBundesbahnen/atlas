@@ -16,7 +16,7 @@ import { BusinessType } from './businessType';
 /**
  * Business Organisation
  */
-export interface BusinessOrganisation { 
+export interface BusinessOrganisation {
     /**
      * Swiss Business Organisation ID (SBOID)
      */

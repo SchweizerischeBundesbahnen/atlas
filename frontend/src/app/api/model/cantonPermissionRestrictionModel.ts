@@ -13,6 +13,6 @@ import { PermissionRestrictionObject } from './permissionRestrictionObject';
 import { PermissionRestrictionType } from './permissionRestrictionType';
 
 
-export interface CantonPermissionRestrictionModel extends PermissionRestrictionObject { 
+export interface CantonPermissionRestrictionModel extends PermissionRestrictionObject {
 }
 

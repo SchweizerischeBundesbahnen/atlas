@@ -13,7 +13,7 @@ import { StopPointPerson } from './stopPointPerson';
 import { WorkflowStatus } from './workflowStatus';
 
 
-export interface ReadStopPointWorkflow { 
+export interface ReadStopPointWorkflow {
     /**
      * Workflow id
      */

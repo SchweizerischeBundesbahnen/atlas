@@ -11,7 +11,7 @@
  */
 
 
-export interface StopPointRestartWorkflow { 
+export interface StopPointRestartWorkflow {
     /**
      * Firstname
      */

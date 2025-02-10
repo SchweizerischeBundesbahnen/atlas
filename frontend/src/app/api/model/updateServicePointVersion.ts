@@ -19,7 +19,7 @@ import { OperatingPointType } from './operatingPointType';
 import { OperatingPointTechnicalTimetableType } from './operatingPointTechnicalTimetableType';
 
 
-export interface UpdateServicePointVersion { 
+export interface UpdateServicePointVersion {
     /**
      * Object creation date
      */
@@ -38,7 +38,7 @@ export interface UpdateServicePointVersion {
     readonly editor?: string;
     status?: Status;
     /**
-     * This ID helps identify versions of a service point in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a service point. To do this, use the sloid or number in combination with the data range (valid from/valid until). 
+     * This ID helps identify versions of a service point in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a service point. To do this, use the sloid or number in combination with the data range (valid from/valid until).
      */
     readonly id?: number;
     /**

@@ -12,7 +12,7 @@
 import { ReadRelationVersion } from './readRelationVersion';
 
 
-export interface ContainerReadRelationVersion { 
+export interface ContainerReadRelationVersion {
     objects?: Array<ReadRelationVersion>;
     totalCount?: number;
 }

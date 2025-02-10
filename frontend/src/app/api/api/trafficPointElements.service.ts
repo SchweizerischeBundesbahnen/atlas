@@ -89,7 +89,7 @@ export class TrafficPointElementsService {
     }
 
     /**
-     * @param createTrafficPointElementVersion 
+     * @param createTrafficPointElementVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -143,7 +143,7 @@ export class TrafficPointElementsService {
     }
 
     /**
-     * @param servicePointNumber 
+     * @param servicePointNumber
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -207,7 +207,7 @@ export class TrafficPointElementsService {
     }
 
     /**
-     * @param servicePointNumber 
+     * @param servicePointNumber
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -271,7 +271,7 @@ export class TrafficPointElementsService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -315,7 +315,7 @@ export class TrafficPointElementsService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -504,7 +504,7 @@ export class TrafficPointElementsService {
     }
 
     /**
-     * @param servicePointNumber 
+     * @param servicePointNumber
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -599,8 +599,8 @@ export class TrafficPointElementsService {
     }
 
     /**
-     * @param id 
-     * @param createTrafficPointElementVersion 
+     * @param id
+     * @param createTrafficPointElementVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

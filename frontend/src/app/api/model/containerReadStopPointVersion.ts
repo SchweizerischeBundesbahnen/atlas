@@ -12,7 +12,7 @@
 import { ReadStopPointVersion } from './readStopPointVersion';
 
 
-export interface ContainerReadStopPointVersion { 
+export interface ContainerReadStopPointVersion {
     objects?: Array<ReadStopPointVersion>;
     totalCount?: number;
 }

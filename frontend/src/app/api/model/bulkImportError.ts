@@ -12,7 +12,7 @@
 import { DisplayInfo } from './displayInfo';
 
 
-export interface BulkImportError { 
+export interface BulkImportError {
     errorMessage?: string;
     displayInfo?: DisplayInfo;
 }

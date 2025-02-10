@@ -17,7 +17,7 @@ import { SwissLocation } from './swissLocation';
 /**
  * Service point geolocation
  */
-export interface ServicePointGeolocation { 
+export interface ServicePointGeolocation {
     spatialReference: SpatialReference;
     lv95: CoordinatePair;
     wgs84: CoordinatePair;

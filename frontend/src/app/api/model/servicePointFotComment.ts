@@ -12,7 +12,7 @@
 import { Status } from './status';
 
 
-export interface ServicePointFotComment { 
+export interface ServicePointFotComment {
     /**
      * Object creation date
      */

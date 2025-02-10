@@ -12,7 +12,7 @@
 import { BusinessOrganisation } from './businessOrganisation';
 
 
-export interface ContainerBusinessOrganisation { 
+export interface ContainerBusinessOrganisation {
     objects?: Array<BusinessOrganisation>;
     totalCount?: number;
 }

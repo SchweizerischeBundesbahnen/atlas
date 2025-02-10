@@ -13,7 +13,7 @@ import { Client } from './client';
 import { WorkflowStatus } from './workflowStatus';
 
 
-export interface WorkflowStart { 
+export interface WorkflowStart {
     /**
      * Business Object Id: the generated DB id
      */

@@ -11,7 +11,7 @@
  */
 
 
-export interface Canton { 
+export interface Canton {
     /**
      * Canton number, offical Number of FSO
      */

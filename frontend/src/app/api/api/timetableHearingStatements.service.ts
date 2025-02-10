@@ -107,8 +107,8 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param statement 
-     * @param documents 
+     * @param statement
+     * @param documents
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -184,8 +184,8 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param statement 
-     * @param documents 
+     * @param statement
+     * @param documents
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -262,8 +262,8 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param statement 
-     * @param documents 
+     * @param statement
+     * @param documents
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -340,8 +340,8 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param id 
-     * @param filename 
+     * @param id
+     * @param filename
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -388,13 +388,13 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param id 
-     * @param timetableHearingYear 
-     * @param canton 
-     * @param searchCriterias 
-     * @param statusRestrictions 
-     * @param ttfnid 
-     * @param transportCompanies 
+     * @param id
+     * @param timetableHearingYear
+     * @param canton
+     * @param searchCriterias
+     * @param statusRestrictions
+     * @param ttfnid
+     * @param transportCompanies
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -488,13 +488,13 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param id 
-     * @param timetableHearingYear 
-     * @param canton 
-     * @param searchCriterias 
-     * @param statusRestrictions 
-     * @param ttfnid 
-     * @param transportCompanies 
+     * @param id
+     * @param timetableHearingYear
+     * @param canton
+     * @param searchCriterias
+     * @param statusRestrictions
+     * @param ttfnid
+     * @param transportCompanies
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -588,8 +588,8 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param ttfnid 
-     * @param year 
+     * @param ttfnid
+     * @param year
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -636,7 +636,7 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -680,8 +680,8 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param id 
-     * @param filename 
+     * @param id
+     * @param filename
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -724,12 +724,12 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param timetableHearingYear 
-     * @param canton 
-     * @param searchCriterias 
-     * @param statusRestrictions 
-     * @param ttfnid 
-     * @param transportCompanies 
+     * @param timetableHearingYear
+     * @param canton
+     * @param searchCriterias
+     * @param statusRestrictions
+     * @param ttfnid
+     * @param transportCompanies
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -820,13 +820,13 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param language 
-     * @param timetableHearingYear 
-     * @param canton 
-     * @param searchCriterias 
-     * @param statusRestrictions 
-     * @param ttfnid 
-     * @param transportCompanies 
+     * @param language
+     * @param timetableHearingYear
+     * @param canton
+     * @param searchCriterias
+     * @param statusRestrictions
+     * @param ttfnid
+     * @param transportCompanies
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -899,7 +899,7 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param updateHearingCanton 
+     * @param updateHearingCanton
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -953,9 +953,9 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param id 
-     * @param statement 
-     * @param documents 
+     * @param id
+     * @param statement
+     * @param documents
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1034,7 +1034,7 @@ export class TimetableHearingStatementsService {
     }
 
     /**
-     * @param updateHearingStatementStatus 
+     * @param updateHearingStatementStatus
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

@@ -15,7 +15,7 @@ import { WorkflowProcessingStatus } from './workflowProcessingStatus';
 /**
  * Workflows related to the line version
  */
-export interface LineVersionWorkflow { 
+export interface LineVersionWorkflow {
     /**
      * Workflow Id
      */
