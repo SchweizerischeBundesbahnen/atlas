@@ -145,17 +145,21 @@
         [additionalLabelspace]="22"
       >
         <ng-template #matOptionGroupPrefix let-group="option">
-          <img
-            class="pe-2"
-            src="../../../../assets/images/means-of-transport/{{
-              group.name
-            }}.svg"
-            [attr.data-cy]="group.name"
-            [alt]="
-              'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + group.name
-                | translate
-            "
-          />
+          @if (group.name !== 'ALL') {
+            <img
+              class="me-2"
+              ngSrc="../../../../assets/images/means-of-transport/{{
+                group.name
+              }}.svg"
+              attr.data-cy="{{ group.name }}"
+              [alt]="
+                'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + group.name
+                  | translate
+              "
+              width="24"
+              height="24"
+            />
+          }
           {{
             'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + group.name | translate
           }}

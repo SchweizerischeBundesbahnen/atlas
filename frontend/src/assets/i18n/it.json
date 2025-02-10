@@ -1046,7 +1046,8 @@
         "RACK_RAILWAY": "Ferrovia a cremagliera",
         "METRO": "Metro",
         "ELEVATOR": "Ascensore",
-        "UNKNOWN": "Sconosciute"
+        "UNKNOWN": "Sconosciute",
+        "ALL": "Tutti i mezzi di trasporto"
       },
       "FREIGHT_SERVICE_POINT": "Punto di servizio",
       "SORT_CODE_OF_DESTINATION_STATION": "Codice punto di riferimento",
