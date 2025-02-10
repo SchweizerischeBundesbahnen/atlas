@@ -13,7 +13,7 @@ import { SwissCanton } from './swissCanton';
 import { Country } from './country';
 
 
-export interface GeoReference { 
+export interface GeoReference {
     country?: Country;
     swissCanton?: SwissCanton;
     /**

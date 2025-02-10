@@ -86,7 +86,7 @@ export class TimetableYearChangeService {
 
     /**
      * Returns a list of the next Timetable years change
-     * @param count 
+     * @param count
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -131,7 +131,7 @@ export class TimetableYearChangeService {
 
     /**
      * Returns the Timetable year change for the given year
-     * @param year 
+     * @param year
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

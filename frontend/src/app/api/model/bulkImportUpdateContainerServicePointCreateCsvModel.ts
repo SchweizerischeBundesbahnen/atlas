@@ -13,7 +13,7 @@ import { ServicePointCreateCsvModel } from './servicePointCreateCsvModel';
 import { BulkImportLogEntry } from './bulkImportLogEntry';
 
 
-export interface BulkImportUpdateContainerServicePointCreateCsvModel { 
+export interface BulkImportUpdateContainerServicePointCreateCsvModel {
     lineNumber?: number;
     object?: ServicePointCreateCsvModel;
     attributesToNull?: Array<string>;

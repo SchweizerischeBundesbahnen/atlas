@@ -13,7 +13,7 @@ import { Status } from './status';
 import { ServicePointNumber } from './servicePointNumber';
 
 
-export interface ReadLoadingPointVersion { 
+export interface ReadLoadingPointVersion {
     /**
      * Object creation date
      */
@@ -32,7 +32,7 @@ export interface ReadLoadingPointVersion {
     readonly editor?: string;
     status?: Status;
     /**
-     * This ID helps identify versions of a loading point in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a loading point. To do this, use the sloid in combination with the data range (valid from/valid until). 
+     * This ID helps identify versions of a loading point in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a loading point. To do this, use the sloid in combination with the data range (valid from/valid until).
      */
     readonly id?: number;
     /**

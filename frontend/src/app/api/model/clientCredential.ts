@@ -12,7 +12,7 @@
 import { Permission } from './permission';
 
 
-export interface ClientCredential { 
+export interface ClientCredential {
     /**
      * Client Id
      */

@@ -88,7 +88,7 @@ export class UserInformationService {
 
     /**
      * Look up Users in SBB Azure AD via Graph API
-     * @param searchQuery 
+     * @param searchQuery
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -140,8 +140,8 @@ export class UserInformationService {
 
     /**
      * Look up Users in SBB Atlas
-     * @param searchQuery 
-     * @param applicationType 
+     * @param searchQuery
+     * @param applicationType
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

@@ -15,7 +15,7 @@ import { PermissionRestrictionType } from './permissionRestrictionType';
 /**
  * Permission Restrictions
  */
-export interface PermissionRestrictionObject { 
+export interface PermissionRestrictionObject {
     type?: PermissionRestrictionType;
     valueAsString?: string;
 }

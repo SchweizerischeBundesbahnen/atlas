@@ -101,7 +101,7 @@ export class ServicePointsService {
     }
 
     /**
-     * @param createServicePointVersion 
+     * @param createServicePointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -195,7 +195,7 @@ export class ServicePointsService {
     }
 
     /**
-     * @param servicePointNumber 
+     * @param servicePointNumber
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -239,7 +239,7 @@ export class ServicePointsService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -283,7 +283,7 @@ export class ServicePointsService {
     }
 
     /**
-     * @param servicePointNumber 
+     * @param servicePointNumber
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -327,7 +327,7 @@ export class ServicePointsService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -569,7 +569,7 @@ export class ServicePointsService {
     }
 
     /**
-     * @param servicePointNumber 
+     * @param servicePointNumber
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -614,8 +614,8 @@ export class ServicePointsService {
     }
 
     /**
-     * @param servicePointNumber 
-     * @param servicePointFotComment 
+     * @param servicePointNumber
+     * @param servicePointFotComment
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -672,7 +672,7 @@ export class ServicePointsService {
     }
 
     /**
-     * @param servicePointSearchRequest 
+     * @param servicePointSearchRequest
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -726,7 +726,7 @@ export class ServicePointsService {
     }
 
     /**
-     * @param servicePointSearchRequest 
+     * @param servicePointSearchRequest
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -780,7 +780,7 @@ export class ServicePointsService {
     }
 
     /**
-     * @param servicePointSearchRequest 
+     * @param servicePointSearchRequest
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -876,8 +876,8 @@ export class ServicePointsService {
     }
 
     /**
-     * @param id 
-     * @param updateDesignationOfficialServicePoint 
+     * @param id
+     * @param updateDesignationOfficialServicePoint
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -934,8 +934,8 @@ export class ServicePointsService {
     }
 
     /**
-     * @param id 
-     * @param updateServicePointVersion 
+     * @param id
+     * @param updateServicePointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -992,9 +992,9 @@ export class ServicePointsService {
     }
 
     /**
-     * @param sloid 
-     * @param id 
-     * @param body 
+     * @param sloid
+     * @param id
+     * @param body
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1054,7 +1054,7 @@ export class ServicePointsService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

@@ -21,7 +21,7 @@ import { SboidPermissionRestrictionModel } from './sboidPermissionRestrictionMod
 /**
  * User permissions
  */
-export interface Permission { 
+export interface Permission {
     /**
      * Object creation date
      */

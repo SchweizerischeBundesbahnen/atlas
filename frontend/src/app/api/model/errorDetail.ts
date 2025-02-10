@@ -15,7 +15,7 @@ import { DisplayInfo } from './displayInfo';
 /**
  * List of error details
  */
-export interface ErrorDetail { 
+export interface ErrorDetail {
     /**
      * Errormessage in english for API purposes
      */

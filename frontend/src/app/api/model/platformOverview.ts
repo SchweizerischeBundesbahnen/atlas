@@ -12,7 +12,7 @@
 import { RecordingStatus } from './recordingStatus';
 
 
-export interface PlatformOverview { 
+export interface PlatformOverview {
     sloid: string;
     validFrom: Date;
     validTo: Date;

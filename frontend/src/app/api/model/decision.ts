@@ -12,7 +12,7 @@
 import { JudgementType } from './judgementType';
 
 
-export interface Decision { 
+export interface Decision {
     examinantMail: string;
     pinCode: string;
     judgement: JudgementType;

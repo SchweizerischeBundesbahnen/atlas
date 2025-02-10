@@ -12,7 +12,7 @@
 import { CoverageType } from './coverageType';
 
 
-export interface Coverage { 
+export interface Coverage {
     /**
      * SLNID
      */
