@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   AffectedSublines,
   ApplicationRole,
@@ -20,7 +26,7 @@ import {
 } from './line-detail-form-group';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { catchError, EMPTY, Observable } from 'rxjs';
+import { catchError, EMPTY, Observable, Subject } from 'rxjs';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DateRange } from '../../../../core/versioning/date-range';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
@@ -29,14 +35,20 @@ import { DetailHelperService } from '../../../../core/detail/detail-helper.servi
 import moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { SublineShorteningDialogComponent } from '../../dialog/subline-shortening-dialog/subline-shortening-dialog.component';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { SublineTableComponent } from './subline-table/subline-table.component';
 
 @Component({
   templateUrl: './line-detail.component.html',
   styleUrls: ['./line-detail.component.scss'],
   providers: [ValidityService],
 })
-export class LineDetailComponent implements OnInit {
+export class LineDetailComponent implements OnInit, OnDestroy {
+  @ViewChild(SublineTableComponent)
+  sublineTableComponent!: SublineTableComponent;
+
+  private onDestroy$ = new Subject<boolean>();
+
   selectedVersionIndex!: number;
   selectedVersion!: LineVersionV2;
   versions!: Array<LineVersionV2>;
@@ -82,7 +94,8 @@ export class LineDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private validityService: ValidityService,
     private detailHelperService: DetailHelperService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -111,6 +124,11 @@ export class LineDetailComponent implements OnInit {
       this.conditionalValidation();
     }
     this.initBoSboidRestriction();
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(true);
+    this.onDestroy$.complete();
   }
 
   private initSelectedVersion() {
@@ -229,7 +247,7 @@ export class LineDetailComponent implements OnInit {
     this.form.disable();
     this.linesService
       .createLineVersionV2(lineVersion)
-      .pipe(catchError(this.handleError()))
+      .pipe(takeUntil(this.onDestroy$), catchError(this.handleError()))
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -289,8 +307,10 @@ export class LineDetailComponent implements OnInit {
         switchMap(({ success }) => {
           this.updateLineVersion(id, lineVersion, success);
           return EMPTY;
-        })
+        }),
+        takeUntil(this.onDestroy$)
       )
+
       .subscribe();
   }
 
@@ -301,7 +321,7 @@ export class LineDetailComponent implements OnInit {
   ) {
     this.linesService
       .updateLineVersion(id, lineVersion)
-      .pipe(catchError(this.handleError()))
+      .pipe(takeUntil(this.onDestroy$), catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success(success);
         this.router
@@ -310,7 +330,10 @@ export class LineDetailComponent implements OnInit {
             Pages.LINES.path,
             this.selectedVersion.slnid,
           ])
-          .then(() => this.ngOnInit());
+          .then(() => {
+            this.ngOnInit();
+            this.sublineTableComponent.getOverview();
+          });
       });
   }
 
@@ -326,7 +349,10 @@ export class LineDetailComponent implements OnInit {
         },
       })
       .afterClosed()
-      .pipe(map((value) => (value ? value : false)));
+      .pipe(
+        takeUntil(this.onDestroy$),
+        map((value) => (value ? value : false))
+      );
   }
 
   revoke(): void {
@@ -337,6 +363,7 @@ export class LineDetailComponent implements OnInit {
         cancelText: 'DIALOG.BACK',
         confirmText: 'DIALOG.CONFIRM_REVOKE',
       })
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe((confirmed) => {
         if (confirmed) {
           if (this.selectedVersion.slnid) {
@@ -367,6 +394,7 @@ export class LineDetailComponent implements OnInit {
         cancelText: 'DIALOG.BACK',
         confirmText: 'DIALOG.CONFIRM_DELETE',
       })
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe((confirmed) => {
         if (confirmed) {
           if (this.selectedVersion.slnid) {
