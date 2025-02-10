@@ -14,8 +14,8 @@ import ch.sbb.exportservice.processor.StopPointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.StopPointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.StopPointVersionRowMapper;
 import ch.sbb.exportservice.reader.StopPointVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
-import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
+import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
@@ -133,10 +133,10 @@ public class StopPointVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileCsvDeletingTasklet stopPointCsvFileDeletingTasklet(
+  public DeleteCsvFileTasklet stopPointCsvFileDeletingTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType
   ) {
-    return new FileCsvDeletingTasklet(exportType, STOP_POINT_VERSION);
+    return new DeleteCsvFileTasklet(exportType, STOP_POINT_VERSION);
   }
 
   @Bean
@@ -177,9 +177,9 @@ public class StopPointVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileJsonDeletingTasklet fileStopPointJsonDeletingTasklet(
+  public DeleteJsonFileTasklet fileStopPointJsonDeletingTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new FileJsonDeletingTasklet(exportType, STOP_POINT_VERSION);
+    return new DeleteJsonFileTasklet(exportType, STOP_POINT_VERSION);
   }
 
   @Bean

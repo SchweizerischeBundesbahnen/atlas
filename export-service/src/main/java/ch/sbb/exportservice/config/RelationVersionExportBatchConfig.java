@@ -14,8 +14,8 @@ import ch.sbb.exportservice.processor.RelationVersionCsvProcessor;
 import ch.sbb.exportservice.processor.RelationVersionJsonProcessor;
 import ch.sbb.exportservice.reader.RelationVersionRowMapper;
 import ch.sbb.exportservice.reader.RelationVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
-import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
+import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
@@ -133,10 +133,10 @@ public class RelationVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileCsvDeletingTasklet relationCsvFileDeletingTasklet(
+  public DeleteCsvFileTasklet relationCsvFileDeletingTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType
   ) {
-    return new FileCsvDeletingTasklet(exportType, RELATION_VERSION);
+    return new DeleteCsvFileTasklet(exportType, RELATION_VERSION);
   }
 
   @Bean
@@ -177,9 +177,9 @@ public class RelationVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public FileJsonDeletingTasklet fileRelationJsonDeletingTasklet(
+  public DeleteJsonFileTasklet fileRelationJsonDeletingTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new FileJsonDeletingTasklet(exportType, RELATION_VERSION);
+    return new DeleteJsonFileTasklet(exportType, RELATION_VERSION);
   }
 
   @Bean
