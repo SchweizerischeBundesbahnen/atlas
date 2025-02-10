@@ -1,16 +1,19 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../../core/components/table/table-column';
 import { ElementType, Line, LinesService } from '../../../../../api';
 import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../../../pages';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-subline-table',
   templateUrl: './subline-table.component.html',
 })
-export class SublineTableComponent implements OnInit {
+export class SublineTableComponent implements OnInit, OnDestroy {
   @Input() mainLineSlnid!: string;
+  private onDestroy$ = new Subject<boolean>();
 
   tableColumns: TableColumn<Line>[] = [
     { headerTitle: 'LIDI.SUBLINE.DESCRIPTION', value: 'description' },
@@ -63,8 +66,14 @@ export class SublineTableComponent implements OnInit {
         0,
         50
       )
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe((sublines) => {
         this.sublines = sublines.objects!;
       });
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(true);
+    this.onDestroy$.complete();
   }
 }
