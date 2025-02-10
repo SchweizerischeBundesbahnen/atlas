@@ -14,7 +14,7 @@ import { BulkImportLogEntry } from './bulkImportLogEntry';
 import { BusinessObjectType } from './businessObjectType';
 
 
-export interface BulkImportResult { 
+export interface BulkImportResult {
     importType?: ImportType;
     businessObjectType?: BusinessObjectType;
     creator?: string;

@@ -11,7 +11,7 @@
  */
 
 
-export interface LocalityMunicipality { 
+export interface LocalityMunicipality {
     /**
      * SwissMunicipalityNumber the location is in, based on FSO
      */

@@ -12,7 +12,7 @@
 import { StatementStatus } from './statementStatus';
 
 
-export interface UpdateHearingStatementStatus { 
+export interface UpdateHearingStatementStatus {
     /**
      * List of Statements id
      */

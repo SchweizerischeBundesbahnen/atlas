@@ -12,7 +12,7 @@
 import { ReadTrafficPointElementVersion } from './readTrafficPointElementVersion';
 
 
-export interface ContainerReadTrafficPointElementVersion { 
+export interface ContainerReadTrafficPointElementVersion {
     objects?: Array<ReadTrafficPointElementVersion>;
     totalCount?: number;
 }

@@ -92,7 +92,7 @@ export class UserAdministrationService {
 
     /**
      * Register a user with given permissions
-     * @param userPermissionCreate 
+     * @param userPermissionCreate
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -187,7 +187,7 @@ export class UserAdministrationService {
 
     /**
      * Retrieve User Information for a given user
-     * @param userId 
+     * @param userId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -232,7 +232,7 @@ export class UserAdministrationService {
 
     /**
      * Retrieve Users DisplayName for a given user
-     * @param userId 
+     * @param userId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -277,7 +277,7 @@ export class UserAdministrationService {
 
     /**
      * Retrieve Users DisplayName for a list of users
-     * @param userIds 
+     * @param userIds
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -328,9 +328,9 @@ export class UserAdministrationService {
 
     /**
      * Retrieve Overview for all the managed Users
-     * @param permissionRestrictions 
-     * @param type 
-     * @param applicationTypes 
+     * @param permissionRestrictions
+     * @param type
+     * @param applicationTypes
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -450,7 +450,7 @@ export class UserAdministrationService {
 
     /**
      * Update the user permissions of a user
-     * @param userPermissionCreate 
+     * @param userPermissionCreate
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

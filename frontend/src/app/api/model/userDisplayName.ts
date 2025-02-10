@@ -11,7 +11,7 @@
  */
 
 
-export interface UserDisplayName { 
+export interface UserDisplayName {
     /**
      * SBB User Id
      */

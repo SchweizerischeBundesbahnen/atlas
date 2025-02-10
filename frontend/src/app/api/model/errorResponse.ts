@@ -12,7 +12,7 @@
 import { ErrorDetail } from './errorDetail';
 
 
-export interface ErrorResponse { 
+export interface ErrorResponse {
     /**
      * HTTP Status Code
      */
