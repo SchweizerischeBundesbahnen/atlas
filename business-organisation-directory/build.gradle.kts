@@ -23,7 +23,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
 
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.6.Final")
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.7.Final")
 
     runtimeOnly("org.postgresql:postgresql")
 
