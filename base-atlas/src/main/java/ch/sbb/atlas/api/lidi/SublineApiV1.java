@@ -19,7 +19,7 @@ public interface SublineApiV1 {
   @PostMapping("{slnid}/revoke")
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).LIDI)")
-  List<SublineVersionModel> revokeSubline(@PathVariable String slnid);
+  void revokeSubline(@PathVariable String slnid);
 
   @DeleteMapping("{slnid}")
   void deleteSublines(@PathVariable String slnid);
