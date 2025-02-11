@@ -41,7 +41,7 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka")//get this dependency from :kafka use as api does not work
     implementation(project(":kafka"))
 
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.6.Final")
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.7.Final")
 
     testImplementation(project(":auto-rest-doc"))
     testImplementation("org.springframework.kafka:spring-kafka-test")//get this dependency from :kafka use as api does not work
