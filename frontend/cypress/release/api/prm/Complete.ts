@@ -1,6 +1,6 @@
 import CommonUtils from '../../../support/util/common-utils';
 import ReleaseApiUtils from '../../../support/util/release-api-utils';
-import PrmConstants from './PrmConstants';
+import PrmConstants from '../../../support/util/prm-constants';
 
 // Documentation: PRM-Data-Fact-Matrix: https://confluence.sbb.ch/x/vgdpl
 
