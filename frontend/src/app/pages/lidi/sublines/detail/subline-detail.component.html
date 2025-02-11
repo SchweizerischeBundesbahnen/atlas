@@ -77,11 +77,13 @@
                 </ng-template>
               </form-search-select>
             </div>
-            <div class="mainline-link d-flex flex-column">
-              <a [attr.href]="mainlineUrl()" target="_blank" rel="noopener">
-                <link-icon></link-icon>
-              </a>
-            </div>
+            @if (!isNew) {
+              <div class="mainline-link d-flex flex-column">
+                <a [attr.href]="mainlineUrl()" target="_blank" rel="noopener">
+                  <link-icon></link-icon>
+                </a>
+              </div>
+            }
           </div>
         </div>
 
