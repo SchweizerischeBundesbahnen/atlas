@@ -108,6 +108,7 @@ class MockTtfnSelectComponent {
   @Output() ttfnSelectionChanged = new EventEmitter<TimetableFieldNumber>();
 
   @Input() formModus = true;
+  @Input() required = true;
   @Input() formGroup!: FormGroup;
   @Input() disabled!: boolean;
 }
