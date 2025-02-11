@@ -39,14 +39,8 @@ public class SublineController implements SublineApiV1 {
   }
 
   @Override
-  public List<SublineVersionModel> revokeSubline(String slnid) {
-    List<SublineVersionModel> sublineVersionModels = sublineService.revokeSubline(slnid).stream()
-        .map(this::toModel)
-        .toList();
-    if (sublineVersionModels.isEmpty()) {
-      throw new SlnidNotFoundException(slnid);
-    }
-    return sublineVersionModels;
+  public void revokeSubline(String slnid) {
+    sublineService.revokeSubline(slnid);
   }
 
   public SublineVersionModel createSublineVersion(SublineVersionModel newSublineVersion) {

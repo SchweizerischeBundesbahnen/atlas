@@ -44,7 +44,7 @@ public class BaseSublineVersionModel extends BaseVersionModel implements DatesVa
   @NotBlank
   private String mainlineSlnid;
 
-  @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001235")
+  @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001235:1")
   private String slnid;
 
   @NotBlank
