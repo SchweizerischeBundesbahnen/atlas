@@ -4,7 +4,7 @@ import {
   ApplicationType,
   HearingStatus,
   StatementStatus,
-  SwissCanton,
+  SwissCanton, TimetableFieldNumber,
   TimetableHearingStatement,
   TimetableHearingStatementDocument,
   TimetableHearingStatementsService,
@@ -130,7 +130,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     this.initTtfnValidOnHandler();
     this.initCantonOptions();
     this.initStatusOptions();
-    this.initResponsibleTransportCompanyPrefill();
   }
 
   cantonSelectionChanged() {
@@ -366,18 +365,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     });
   }
 
-  private initResponsibleTransportCompanyPrefill() {
-    this.form.controls.ttfnid.valueChanges.subscribe((ttfnid) => {
-      if (ttfnid) {
-        this.timetableHearingStatementsService
-          .getResponsibleTransportCompanies(ttfnid, this.form.value.timetableYear! - 1)
-          .subscribe((result) => {
-            this.form.controls.responsibleTransportCompanies.setValue(result);
-          });
-      }
-    });
-  }
-
   private createStatement(statement: TimetableHearingStatementV2) {
     this.isLoading = true;
     this.timetableHearingStatementsService
@@ -491,8 +478,19 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         this.tableService.sortString,
         'statementStatus,asc',
         'ttfnid,asc',
-        'id,ASC',
+        'id,ASC'
       ),
     ];
   }
+
+  ttfnSelectionChanged(newTtfn?: TimetableFieldNumber) {
+    if (newTtfn) {
+      this.timetableHearingStatementsService
+        .getResponsibleTransportCompanies(newTtfn.ttfnid!, this.form.value.timetableYear! - 1)
+        .subscribe((result) => {
+          this.form.controls.responsibleTransportCompanies.setValue(result);
+        });
+    }
+  }
+
 }
