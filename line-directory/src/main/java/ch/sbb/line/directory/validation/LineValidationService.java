@@ -2,9 +2,11 @@ package ch.sbb.line.directory.validation;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineTypeOrderlyException;
+import ch.sbb.line.directory.exception.RevokedException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
@@ -30,6 +32,7 @@ public class LineValidationService {
   private final SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   public void validateLinePreconditionBusinessRule(LineVersion lineVersion) {
+    validateNotRevoked(lineVersion);
     validateLineConflict(lineVersion);
     sharedBusinessOrganisationService.validateSboidExists(lineVersion.getBusinessOrganisation());
   }
@@ -37,6 +40,12 @@ public class LineValidationService {
   public void validateLineAfterVersioningBusinessRule(LineVersion lineVersion) {
     validateTemporaryLinesDuration(lineVersion);
     coverageValidationService.validateLineSublineCoverage(lineVersion);
+  }
+
+  private void validateNotRevoked(LineVersion lineVersion) {
+    if (lineVersion.getStatus() == Status.REVOKED) {
+      throw new RevokedException(lineVersion.getSlnid());
+    }
   }
 
   void validateLineConflict(LineVersion lineVersion) {

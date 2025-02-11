@@ -11,12 +11,14 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineTypeOrderlyException;
+import ch.sbb.line.directory.exception.RevokedException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -460,6 +462,35 @@ class LineValidationServiceTest {
 
     //when and then
     assertThrows(LineTypeOrderlyException.class, () -> lineValidationService.dynamicBeanValidation(lineVersion));
+  }
+
+  @Test
+  void shouldThrowRevokedException() {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder()
+        .lineType(LineType.ORDERLY)
+        .swissLineNumber("IC")
+        .concessionType(LineConcessionType.LINE_ABROAD)
+        .status(Status.REVOKED)
+        .build();
+
+    //when and then
+    assertThrows(RevokedException.class, () -> lineValidationService.validateLinePreconditionBusinessRule(lineVersion));
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = Status.class, names = {"DRAFT", "VALIDATED", "IN_REVIEW"})
+  void shouldNotThrowRevokedException(Status status) {
+    //given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder()
+        .lineType(LineType.ORDERLY)
+        .swissLineNumber("IC")
+        .concessionType(LineConcessionType.LINE_ABROAD)
+        .status(status)
+        .build();
+
+    //when and then
+    assertThatNoException().isThrownBy(() -> lineValidationService.validateLinePreconditionBusinessRule(lineVersion));
   }
 
 }
