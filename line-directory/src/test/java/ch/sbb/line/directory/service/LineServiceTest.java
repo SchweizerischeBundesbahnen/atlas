@@ -78,12 +78,15 @@ class LineServiceTest {
   @Mock
   private SublineShorteningService sublineShorteningService;
 
+  @Mock
+  private SublineService sublineService;
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
         versionableService, lineValidationService, lineUpdateValidationService, coverageService, lineStatusDecider,
-        sublineShorteningService);
+        sublineShorteningService, sublineService);
   }
 
   @Test
