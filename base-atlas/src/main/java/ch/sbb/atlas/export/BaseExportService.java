@@ -37,12 +37,12 @@ public abstract class BaseExportService<T extends BaseVersion> {
     return urls;
   }
 
-  /*public List<URL> exportFullVersionsAllFormats() {
+  public List<URL> exportFullVersionsAllFormats() {
     List<URL> urls = exportFullVersions();
     File fullVersionsJson = getFullVersionsJson();
     urls.add(putGzFile(fullVersionsJson));
     return urls;
-  }*/
+  }
 
   public List<URL> exportActualVersions() {
     List<URL> urls = new ArrayList<>();
