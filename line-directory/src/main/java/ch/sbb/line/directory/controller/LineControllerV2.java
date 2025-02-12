@@ -2,7 +2,7 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toSet;
 
-import ch.sbb.atlas.api.lidi.AffectedSublines;
+import ch.sbb.atlas.api.lidi.AffectedSublinesModel;
 import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
@@ -56,7 +56,7 @@ public class LineControllerV2 implements LineApiV2 {
   }
 
   @Override
-  public AffectedSublines checkAffectedSublines(Long id, LocalDate validFrom, LocalDate validTo) {
+  public AffectedSublinesModel checkAffectedSublines(Long id, LocalDate validFrom, LocalDate validTo) {
     return sublineShorteningService.checkAffectedSublines(id, validFrom, validTo);
   }
 
