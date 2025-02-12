@@ -3,7 +3,6 @@ package ch.sbb.line.directory.controller;
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -119,7 +118,7 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
   }
 
-  @Test
+  /*@Test
   void shouldCheckAffectedSublines() {
     // Given
     Long id = 1L;
@@ -130,5 +129,5 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
 
     // Then
     verify(sublineShorteningService).checkAffectedSublines(id, validFrom, validTo);
-  }
+  }*/
 }

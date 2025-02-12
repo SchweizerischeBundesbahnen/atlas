@@ -87,7 +87,7 @@ class DateRangeTest {
     DateRange givenDateRange = DateRange.builder().from(LocalDate.of(2020, 1, 1)).to(LocalDate.of(2025, 12, 31)).build();
     DateRange dateRange = DateRange.builder().from(LocalDate.of(2021, 1, 1)).to(LocalDate.of(2022, 12, 30)).build();
 
-    assertThat(dateRange.overlapsWith(givenDateRange)).isTrue();
+    assertThat(dateRange.isDateRangeContainedIn(givenDateRange)).isTrue();
   }
 
   @Test
