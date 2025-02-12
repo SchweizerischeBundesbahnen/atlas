@@ -8,6 +8,7 @@ import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowDecisionMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
+import ch.sbb.workflow.model.sepodi.AddExaminantsModel;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
@@ -101,6 +102,13 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   @Override
   public ReadStopPointWorkflowModel editStopPointWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(service.editWorkflow(id, workflowModel));
+  }
+
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  @Override
+  public void addExaminantsToStopPointWorkflow(Long id, AddExaminantsModel addExaminantsModel) {
+    service.addExaminants(id, addExaminantsModel);
   }
 
   @Override
