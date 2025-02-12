@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AffectedSublines {
+public class AffectedSublinesModel {
 
-  List<String> allowedSublines = new ArrayList<>();
-  List<String> notAllowedSublines = new ArrayList<>();
+  private List<String> allowedSublines = new ArrayList<>();
+  private List<String> notAllowedSublines = new ArrayList<>();
 
 }
