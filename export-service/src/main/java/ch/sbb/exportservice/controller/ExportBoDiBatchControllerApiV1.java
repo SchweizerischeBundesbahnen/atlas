@@ -44,7 +44,7 @@ public class ExportBoDiBatchControllerApiV1 {
   @NewSpan
   @Async
   public void startExportBusinessOrganisationBatch() {
-    exportBusinessOrganisationJobService.startExportJobs();
+    //    exportBusinessOrganisationJobService.startExportJobs(); // todo
   }
 
 }
