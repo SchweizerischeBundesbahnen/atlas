@@ -67,4 +67,5 @@ public abstract class BaseLineVersionModel extends BaseVersionModel implements D
 
   @Schema(description = "Workflows related to the line version", accessMode = AccessMode.READ_ONLY)
   private Set<LineVersionWorkflowModel> lineVersionWorkflows;
+
 }
