@@ -6,43 +6,52 @@
 <div class="dialog" data-cy="dialog">
   <h1 class="font-bold-4xl">{{'LIDI.SUBLINE_SHORTENING.TITLE' | translate  }}</h1>
 
-  @if(data.affectedSublines.notAllowedSublines?.length! === 0 && data.affectedSublines.allowedSublines?.length! > 0) {
+  @if(isAllowedOnly) {
     <p class="font-lg">{{'LIDI.SUBLINE_SHORTENING.ALLOWED.SHORT_AUTOMATICALLY_NOTICE' | translate  }}</p>
   }
 
 
-    @if(data.affectedSublines.notAllowedSublines?.length! > 0 && data.affectedSublines.allowedSublines?.length! > 0) {
+    @if(isAllowedAndNotAllowed) {
       <div class="mb-4">
         <p class="font-lg">{{'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.MESSAGE' | translate  }}</p>
         <p class="font-bold-lg">{{'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.SHORT_AUTOMATICALLY' | translate  }}</p>
 
         <div class="" *ngFor="let slnid of data.affectedSublines.allowedSublines">
-          <a href="{{ SUBLINES_URL + slnid }}" target="_blank" rel="noopener">{{ slnid }}</a>
+          <atlas-link
+            label="{{ slnid }}"
+            (linkClicked)="openNewTabOfSubline(slnid)"
+          ></atlas-link>
         </div>
       </div>
       <div class="mb-3">
         <p class="font-bold-lg">{{'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.SHORT_MANUAL' | translate  }}</p>
         <div *ngFor="let slnid of data.affectedSublines.notAllowedSublines">
-          <a href="{{ SUBLINES_URL + slnid }}" target="_blank" rel="noopener">{{ slnid }}</a>
+          <atlas-link
+            label="{{ slnid }}"
+            (linkClicked)="openNewTabOfSubline(slnid)"
+          ></atlas-link>
         </div>
       </div>
 
       <p class="font-lg">
         {{ 'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.CLICK_NOTICE_PREFIX' | translate }}
-        <strong>
+        <span class="font-bold-base">
           {{ 'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.CLICK_NOTICE_ACTION' | translate }}
-        </strong>
+        </span>
         {{ 'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.CLICK_NOTICE_SUFFIX' | translate }}
       </p>
+
   }
 
-  @if(data.affectedSublines.notAllowedSublines?.length! > 0 &&  data.affectedSublines.allowedSublines?.length! === 0) {
+  @if(isNotAllowedOnly) {
     <div class="mb-">
       <p class="font-lg">{{'LIDI.SUBLINE_SHORTENING.NOT_ALLOWED.MESSAGE' | translate  }}</p>
       <p class="font-bold-lg">{{'LIDI.SUBLINE_SHORTENING.NOT_ALLOWED.SHORT_MANUAL_NOTICE' | translate  }}</p>
       <div *ngFor="let slnid of data.affectedSublines.notAllowedSublines">
-        <a href="{{ SUBLINES_URL + slnid }}" target="_blank" rel="noopener">{{ slnid }}</a>
-      </div>
+        <atlas-link
+          label="{{ slnid }}"
+          (linkClicked)="openNewTabOfSubline(slnid)"
+        ></atlas-link>      </div>
     </div>
   }
   <mat-dialog-actions class="justify-content-end">
