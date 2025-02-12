@@ -46,10 +46,26 @@ public class SublineShorteningService {
             notAllowedSublines.add(sublineVersionValidityRange.getLatestVersion().getSlnid());
           }
         }
-
       }
     }
-    return new AffectedSublinesModel(allowedSublines, notAllowedSublines);
+
+    boolean isZeroAffectedSublines = isZeroAffectedSublines(allowedSublines, notAllowedSublines);
+    boolean isAllowedToShort = isAllowedToShort(allowedSublines);
+
+    return AffectedSublinesModel.builder()
+        .allowedSublines(allowedSublines)
+        .notAllowedSublines(notAllowedSublines)
+        .isZeroAffectedSublines(isZeroAffectedSublines)
+        .isAllowedToShort(isAllowedToShort)
+        .build();
+  }
+
+  private boolean isZeroAffectedSublines(List<String> allowedSublines, List<String> notAllowedSublines) {
+    return allowedSublines.isEmpty() && notAllowedSublines.isEmpty();
+  }
+
+  private boolean isAllowedToShort(List<String> allowedSublines) {
+    return !allowedSublines.isEmpty();
   }
 
   private List<SublineVersionRange> prepareSublinesToShort(LineVersion lineVersion,
