@@ -511,7 +511,7 @@
       "ALLOWED": {
         "MESSAGE": "Les lignes partielles ne peuvent être valables que pendant la durée de validité de la ligne principale. Si possible, atlas raccourcit les lignes partielles reliées au dernier jour de validité de la ligne principale.",
         "SHORT_AUTOMATICALLY_NOTICE": "Toutes les lignes partielles peuvent être raccourcies automatiquement.",
-        "SUCCESS": "La ligne a été enregistrée avec succès et les lignes partielles adaptées dans la validité."
+        "SUCCESS": "La ligne a été enregistrée avec succès et, si possible, les lignes partielles ont été adaptées en termes de validité."
       },
       "NOT_ALLOWED": {
         "MESSAGE": "Les lignes partielles ne peuvent être valables que pendant la durée de validité de la ligne principale. Si possible, atlas raccourcit les lignes partielles reliées au dernier jour de validité de la ligne principale.",
@@ -523,8 +523,7 @@
         "SHORT_MANUAL": "Les lignes partielles suivantes doivent être raccourcies elles-mêmes:",
         "CLICK_NOTICE_PREFIX": "En cliquant sur",
         "CLICK_NOTICE_ACTION": "Suivant",
-        "CLICK_NOTICE_SUFFIX": "toutes les lignes partielles possibles sont automatiquement raccourcies.",
-        "SUCCESS": "La ligne a été enregistrée avec succès et, si possible, les lignes partielles ont été adaptées en termes de validité."
+        "CLICK_NOTICE_SUFFIX": "toutes les lignes partielles possibles sont automatiquement raccourcies."
       }
     }
   },
