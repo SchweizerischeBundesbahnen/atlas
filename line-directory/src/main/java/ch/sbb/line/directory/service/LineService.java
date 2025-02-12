@@ -11,6 +11,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.model.SublineVersionRange;
 import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -19,7 +20,6 @@ import ch.sbb.line.directory.validation.LineUpdateValidationService;
 import ch.sbb.line.directory.validation.LineValidationService;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
@@ -41,6 +41,7 @@ public class LineService {
   private final CoverageService coverageService;
   private final LineStatusDecider lineStatusDecider;
   private final SublineShorteningService sublineShorteningService;
+  private final SublineService sublineService;
 
   public Page<Line> findAll(LineSearchRestrictions searchRestrictions) {
     return lineRepository.findAll(searchRestrictions.getSpecification(),
@@ -65,6 +66,10 @@ public class LineService {
     return lineVersionRepository.findById(id);
   }
 
+  public LineVersion getLineVersionById(Long id) {
+    return findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  }
+
   @Transactional
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas"
       + ".kafka.model.user.admin.ApplicationType).LIDI)")
@@ -86,28 +91,16 @@ public class LineService {
   public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
     lineValidationService.validateNotRevoked(currentVersion);
     lineUpdateValidationService.validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
-    boolean onlyValidityChanged = isOnlyValidityChanged(currentVersion, editedVersion);
-    boolean isShortening = (editedVersion.getValidFrom().isAfter(currentVersion.getValidFrom()) || editedVersion.getValidTo()
-        .isBefore(currentVersion.getValidTo()));
 
-    if (onlyValidityChanged && isShortening) {
-      sublineShorteningService.checkAndShortSublines(currentVersion, editedVersion);
+    List<SublineVersionRange> sublinesToShort = sublineShorteningService.checkAndPrepareToShortSublines(currentVersion,
+        editedVersion);
+
+    if (!sublinesToShort.isEmpty()) {
+      for (SublineVersionRange sublineToShort : sublinesToShort) {
+        sublineService.updateVersion(sublineToShort.getOldestVersion(), sublineToShort.getLatestVersion());
+      }
     }
     updateVersion(currentVersion, editedVersion);
-  }
-
-  private static boolean isOnlyValidityChanged(LineVersion currentVersion, LineVersion editedVersion) {
-    return (!Objects.equals(editedVersion.getValidTo(), currentVersion.getValidTo())
-        || !Objects.equals(editedVersion.getValidFrom(), currentVersion.getValidFrom()))
-        && Objects.equals(editedVersion.getSwissLineNumber(), currentVersion.getSwissLineNumber())
-        && Objects.equals(editedVersion.getBusinessOrganisation(), currentVersion.getBusinessOrganisation())
-        && Objects.equals(editedVersion.getComment(), currentVersion.getComment())
-        && Objects.equals(editedVersion.getConcessionType(), currentVersion.getConcessionType())
-        && Objects.equals(editedVersion.getOfferCategory(), currentVersion.getOfferCategory())
-        && Objects.equals(editedVersion.getShortNumber(), currentVersion.getShortNumber())
-        && Objects.equals(editedVersion.getDescription(), currentVersion.getDescription())
-        && Objects.equals(editedVersion.getLongName(), currentVersion.getLongName())
-        && Objects.equals(editedVersion.getNumber(), currentVersion.getNumber());
   }
 
   public List<LineVersion> revokeLine(String slnid) {
@@ -118,7 +111,7 @@ public class LineService {
   }
 
   public void skipWorkflow(Long lineVersionId) {
-    LineVersion lineVersion = findById(lineVersionId).orElseThrow(() -> new IdNotFoundException(lineVersionId));
+    LineVersion lineVersion = getLineVersionById(lineVersionId);
     if (lineVersion.getStatus() == Status.DRAFT) {
       lineVersion.setStatus(Status.VALIDATED);
       lineVersionRepository.save(lineVersion);
@@ -127,8 +120,7 @@ public class LineService {
 
   @Transactional
   public void deleteById(Long id) {
-    LineVersion lineVersion = lineVersionRepository.findById(id).orElseThrow(
-        () -> new IdNotFoundException(id));
+    LineVersion lineVersion = getLineVersionById(id);
     coverageService.deleteCoverageLine(lineVersion.getSlnid());
     lineVersionRepository.deleteById(id);
   }
