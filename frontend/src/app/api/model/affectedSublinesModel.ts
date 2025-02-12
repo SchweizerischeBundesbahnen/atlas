@@ -11,8 +11,10 @@
  */
 
 
-export interface AffectedSublines { 
+export interface AffectedSublinesModel { 
     allowedSublines?: Array<string>;
     notAllowedSublines?: Array<string>;
+    zeroAffectedSublines?: boolean;
+    allowedToShort?: boolean;
 }
 

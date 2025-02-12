@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AffectedSublines } from '../../../../api';
+import { AffectedSublinesModel } from '../../../../api';
 import { Router } from '@angular/router';
 import { Pages } from '../../../pages';
 
@@ -9,12 +9,11 @@ import { Pages } from '../../../pages';
   templateUrl: './subline-shortening-dialog.component.html',
 })
 export class SublineShorteningDialogComponent {
-  public readonly SUBLINES_URL = '/line-directory/sublines/';
-
+  //TODO check if logic can be used from affectesSublines "isAllowed" & "zeroAffectedSublines"
   public get isAllowedOnly() {
     return (
       this.data.affectedSublines.notAllowedSublines?.length! === 0 &&
-      this.data.affectedSublines.allowedSublines?.length! > 0
+      this.data.isAllowed
     );
   }
 
@@ -28,13 +27,16 @@ export class SublineShorteningDialogComponent {
   public get isNotAllowedOnly() {
     return (
       this.data.affectedSublines.notAllowedSublines?.length! > 0 &&
-      this.data.affectedSublines.allowedSublines?.length! === 0
+      !this.data.isAllowed
     );
   }
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: { isAllowed: boolean; affectedSublines: AffectedSublines },
+    public data: {
+      isAllowed: boolean;
+      affectedSublines: AffectedSublinesModel;
+    },
     private router: Router
   ) {}
 
