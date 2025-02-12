@@ -42,19 +42,23 @@ public final class ExportFilePath {
     this.actualDate = actualDate;
   }
 
-  public String actualDateFileName() {
+  public String fileName() {
+    return dir + FILENAME_DELIMITER + prefixPathPart() + fileName + FILENAME_DELIMITER + actualDateString();
+  }
+
+  private String prefixPathPart() {
     if (prefix == null || prefix.isEmpty()) {
-      return dir + FILENAME_DELIMITER + fileName + FILENAME_DELIMITER + actualDateString();
+      return "";
     }
-    return dir + FILENAME_DELIMITER + prefix + FILENAME_DELIMITER + fileName + FILENAME_DELIMITER + actualDateString();
+    return prefix + FILENAME_DELIMITER;
   }
 
   public String fileToStream() {
-    return baseDir + PATH_DELIMITER + dir + PATH_DELIMITER + actualDateFileName() + ".json.gz";
+    return s3BucketDirPath() + PATH_DELIMITER + fileName() + ".json.gz";
   }
 
   public String actualDateFilePath() {
-    return systemDir + actualDateFileName() + extension;
+    return systemDir + fileName() + extension;
   }
 
   public String s3BucketDirPath() {
@@ -64,4 +68,5 @@ public final class ExportFilePath {
   private String actualDateString() {
     return actualDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
   }
+
 }

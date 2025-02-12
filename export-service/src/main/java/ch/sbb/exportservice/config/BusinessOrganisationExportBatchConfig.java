@@ -4,11 +4,11 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME;
 
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
+import ch.sbb.atlas.export.enumeration.BoDiBatchExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.BoDiBatchExportFileName;
 import ch.sbb.exportservice.model.BusinessOrganisationCsvModel;
 import ch.sbb.exportservice.processor.BusinessOrganisationCsvProcessor;
 import ch.sbb.exportservice.processor.BusinessOrganisationJsonProcessor;
@@ -209,6 +209,7 @@ public class BusinessOrganisationExportBatchConfig {
     return jsonWriter.getWriter(exportType, BoDiBatchExportFileName.BUSINESS_ORGANISATION_VERSION);
   }
 
-  // todo: check that upload is same as before
+  // todo: make generic 4 endpoints for file streaming with 2 simple enums and check that exportfilepaths works for current and
+  //  V2 structure
 
 }

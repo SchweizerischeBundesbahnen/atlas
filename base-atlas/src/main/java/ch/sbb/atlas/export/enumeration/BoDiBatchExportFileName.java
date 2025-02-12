@@ -1,6 +1,5 @@
-package ch.sbb.exportservice.model;
+package ch.sbb.atlas.export.enumeration;
 
-import ch.sbb.atlas.export.enumeration.ExportFileName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
