@@ -13,8 +13,10 @@ import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
 import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
 import ch.sbb.workflow.exception.StopPointWorkflowNotInHearingException;
 import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
+import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeHearingException;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
+import ch.sbb.workflow.model.sepodi.AddExaminantsModel;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.Examinants;
@@ -201,6 +203,28 @@ public class StopPointWorkflowService {
     examinant.setLastName(decisionModel.getLastName());
     examinant.setOrganisation(decisionModel.getOrganisation());
     examinant.setFunction(decisionModel.getPersonFunction());
+  }
+
+  public StopPointWorkflow addExaminants(Long id, AddExaminantsModel addExaminantsModel) {
+    if (!addExaminantsModel.getExaminants().isEmpty()) {
+      checkIfAllExaminantEmailsAreUnique(addExaminantsModel.getExaminants(), false);
+    }
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+
+    if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
+      throw new StopPointWorkflowStatusMustBeHearingException();
+    }
+
+    addExaminantsModel.getExaminants()
+        .stream()
+        .map(StopPointClientPersonMapper::toEntity)
+        .forEach(examinant -> {
+          examinant.setStopPointWorkflow(stopPointWorkflow);
+          stopPointWorkflow.getExaminants().add(examinant);
+        });
+
+    stopPointWorkflow.getCcEmails().addAll(addExaminantsModel.getCcEmails());
+    return save(stopPointWorkflow);
   }
 
 }
