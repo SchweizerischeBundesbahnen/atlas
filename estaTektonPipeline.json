@@ -117,7 +117,7 @@
       "tasks": [
         {
           "name": "generate-apim-config",
-          "taskRef": "esta-gradle-build-extra-large",
+          "taskRef": "esta-gradle-build",
           "params": {
             "TASKS": ":apim-configuration:generateSpec",
             "ARTIFACTORY_SECRET": "esta-tekton-basicauth-docker",
@@ -197,7 +197,7 @@
       "tasks": [
         {
           "name": "generate-apim-config",
-          "taskRef": "esta-gradle-build-extra-large",
+          "taskRef": "esta-gradle-build",
           "params": {
             "TASKS": ":apim-configuration:generateSpec",
             "ARTIFACTORY_SECRET": "esta-tekton-basicauth-docker",
