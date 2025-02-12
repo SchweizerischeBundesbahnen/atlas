@@ -155,7 +155,7 @@ public class StopPointVersion extends BaseEntity implements PrmVersionable, Vari
   @AtlasVersionableProperty
   private String infoTicketMachine;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @AtlasVersionableProperty
   private Boolean interoperable;
 
