@@ -7,7 +7,6 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMEN
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -60,8 +59,8 @@ public interface LineApiV2 {
   @GetMapping("/affectedSublines/{id}")
   @Operation(description = "Returns checked Sublines to short")
   AffectedSublinesModel checkAffectedSublines(@PathVariable Long id,
-      @Parameter @RequestParam @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate validFrom,
-      @Parameter @RequestParam @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate validTo
+      @RequestParam @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate validFrom,
+      @RequestParam @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate validTo
   );
 
 }
