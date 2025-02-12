@@ -511,7 +511,7 @@
       "ALLOWED": {
         "MESSAGE": "Teillinien dürfen nur innerhalb der Gültigkeit der Hauptlinie gültig sein. Wenn möglich kürzt atlas die verbundenen Teillinien auf den letzten Gültigkeitstag der Hauptlinie.",
         "SHORT_AUTOMATICALLY_NOTICE": "Es können alle Teillinien automatisch eingekürzt werden.",
-        "SUCCESS": "Die Linie wurde erfolgreich gespeichert und die Teillininien angepasst in der Gültigkeit"
+        "SUCCESS": "Die Linie wurde erfolgreich gespeichert und wo möglich wurden die Teillinien angepasst in der Gültigkeit."
       },
       "NOT_ALLOWED": {
         "MESSAGE": "Teillinien dürfen nur innerhalb der Gültigkeit der Hauptlinie gültig sein. Wenn möglich kürzt atlas die verbundenen Teillinien auf den letzten Gültigkeitstag der Hauptlinie.",
@@ -523,8 +523,7 @@
         "SHORT_MANUAL": "Kürze folgende Teillinien selbst ein:",
         "CLICK_NOTICE_PREFIX": "Mit Klick auf",
         "CLICK_NOTICE_ACTION": "Weiter",
-        "CLICK_NOTICE_SUFFIX": "werden alle möglichen Teillinien automatisch gekürzt.",
-        "SUCCESS": "Die Linie wurde erfolgreich gespeichert und wo möglich wurden die Teillinien angepasst in der Gültigkeit."
+        "CLICK_NOTICE_SUFFIX": "werden alle möglichen Teillinien automatisch gekürzt."
       }
     }
   },
