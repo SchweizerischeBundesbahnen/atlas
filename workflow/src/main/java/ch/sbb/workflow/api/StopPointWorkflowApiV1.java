@@ -3,6 +3,7 @@ package ch.sbb.workflow.api;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.model.sepodi.AddExaminantsModel;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
@@ -64,6 +65,9 @@ public interface StopPointWorkflowApiV1 {
   @PostMapping(path = "/edit/{id}")
   ReadStopPointWorkflowModel editStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid EditStopPointWorkflowModel workflowModel);
+
+  @PostMapping(path = "/add-examinants/{id}")
+  void addExaminantsToStopPointWorkflow(@PathVariable Long id, @RequestBody @Valid AddExaminantsModel addExaminantsModel);
 
   @PostMapping(path = "/reject/{id}")
   ReadStopPointWorkflowModel rejectStopPointWorkflow(@PathVariable Long id,
