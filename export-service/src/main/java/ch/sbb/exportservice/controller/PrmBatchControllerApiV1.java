@@ -5,10 +5,10 @@ import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFile
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
+import ch.sbb.exportservice.model.ExportFilePath;
 import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.service.FileExportService;
-import ch.sbb.exportservice.model.ExportFilePath;
 import io.micrometer.tracing.annotation.NewSpan;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -82,7 +82,7 @@ public class PrmBatchControllerApiV1 {
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
     ExportFilePath exportFilePath = new ExportFilePath(prmExportType, exportFileName);
-    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.actualDateFileName());
+    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.fileName());
     InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }

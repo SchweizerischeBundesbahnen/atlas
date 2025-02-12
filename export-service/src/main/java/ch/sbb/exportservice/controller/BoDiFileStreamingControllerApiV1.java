@@ -4,8 +4,8 @@ import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFile
 
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.export.enumeration.BoDiBatchExportFileName;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
-import ch.sbb.exportservice.model.BoDiBatchExportFileName;
 import ch.sbb.exportservice.model.BoDiExportType;
 import ch.sbb.exportservice.model.ExportFilePath;
 import ch.sbb.exportservice.service.FileExportService;
@@ -82,7 +82,7 @@ public class BoDiFileStreamingControllerApiV1 {
       @PathVariable BoDiBatchExportFileName exportFileName,
       @PathVariable BoDiExportType exportType) throws NotAllowedExportFileException {
     ExportFilePath exportFilePath = new ExportFilePath(exportType, exportFileName);
-    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.actualDateFileName());
+    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.fileName());
     InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }

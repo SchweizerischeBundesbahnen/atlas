@@ -86,7 +86,7 @@ public class FileStreamingControllerApiV1 {
       @PathVariable SePoDiExportType sePoDiExportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName, sePoDiExportType);
     ExportFilePath exportFilePath = new ExportFilePath(sePoDiExportType, exportFileName);
-    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.actualDateFileName());
+    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.fileName());
     InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
