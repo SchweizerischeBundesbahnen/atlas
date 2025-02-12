@@ -43,4 +43,13 @@ public class JobDescriptionConstants {
   public static final String EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME = "exportBusinessOrganisationCsvJob";
   public static final String EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME = "exportBusinessOrganisationJsonJob";
 
+  public static final String EXPORT_LINE_CSV_JOB_NAME = "exportLineCsvJob";
+  public static final String EXPORT_LINE_JSON_JOB_NAME = "exportLineJsonJob";
+
+  public static final String EXPORT_SUBLINE_CSV_JOB_NAME = "exportSublineCsvJob";
+  public static final String EXPORT_SUBLINE_JSON_JOB_NAME = "exportSublineJsonJob";
+
+  public static final String EXPORT_TTFN_CSV_JOB_NAME = "exportTtfnCsvJob";
+  public static final String EXPORT_TTFN_JSON_JOB_NAME = "exportTtfnJsonJob";
+
 }
