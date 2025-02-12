@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
-  AffectedSublines,
+  AffectedSublinesModel,
   ApplicationRole,
   ApplicationType,
   LinesService,
@@ -263,32 +263,15 @@ export class LineDetailComponent implements OnInit, OnDestroy {
       .checkAffectedSublines(id, validFromDate, validToDate)
       .pipe(
         switchMap((affectedSublines) => {
-          const isZeroAffectedSublines =
-            affectedSublines.allowedSublines?.length == 0 &&
-            affectedSublines.notAllowedSublines?.length == 0;
-
-          const isAllowedToUpdateAutomatically =
-            affectedSublines.allowedSublines!.length > 0 &&
-            affectedSublines.notAllowedSublines!.length === 0;
-
-          const isAllowedToUpdateAutomaticallyMixed =
-            affectedSublines.allowedSublines!.length > 0 &&
-            affectedSublines.notAllowedSublines!.length > 0;
-
-          if (isZeroAffectedSublines) {
+          if (affectedSublines.zeroAffectedSublines) {
             this.updateLineVersion(id, lineVersion, success);
             return EMPTY;
           } else {
             return this.openSublineShorteningDialog(
-              isAllowedToUpdateAutomatically,
+              affectedSublines.allowedToShort!,
               affectedSublines
             ).pipe(
               map((confirmed) => {
-                if (confirmed) {
-                  success = isAllowedToUpdateAutomatically
-                    ? 'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS'
-                    : success;
-                }
                 return { confirmed, success };
               })
             );
@@ -296,12 +279,12 @@ export class LineDetailComponent implements OnInit, OnDestroy {
         }),
         filter(({ confirmed }) => confirmed),
         switchMap(({ success }) => {
+          success = 'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS';
           this.updateLineVersion(id, lineVersion, success);
           return EMPTY;
         }),
         takeUntil(this.onDestroy$)
       )
-
       .subscribe();
   }
 
@@ -329,13 +312,13 @@ export class LineDetailComponent implements OnInit, OnDestroy {
   }
 
   openSublineShorteningDialog(
-    isAllowedToUpdateAutomatically: boolean,
-    affectedSublines: AffectedSublines
+    isAllowedToShort: boolean,
+    affectedSublines: AffectedSublinesModel
   ): Observable<boolean> {
     return this.dialog
       .open(SublineShorteningDialogComponent, {
         data: {
-          isAllowed: isAllowedToUpdateAutomatically,
+          isAllowed: isAllowedToShort,
           affectedSublines: affectedSublines,
         },
       })
