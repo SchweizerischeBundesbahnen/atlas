@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class SublineShorteningRequest {
 
-  DateRange mainlineValidity;
-  List<String> sublinesToShort;
+  private DateRange mainlineValidity;
+  private List<String> sublinesToShort;
 
 }

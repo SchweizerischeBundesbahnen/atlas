@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.service;
 
-import ch.sbb.atlas.api.lidi.AffectedSublines;
+import ch.sbb.atlas.api.lidi.AffectedSublinesModel;
 import ch.sbb.atlas.api.lidi.SublineShorteningRequest;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -28,7 +28,7 @@ public class SublineShorteningService {
   private final SublineVersionRepository sublineVersionRepository;
   private final LineVersionRepository lineVersionRepository;
 
-  public AffectedSublines checkAffectedSublines(Long id, LocalDate validFrom, LocalDate validTo) {
+  public AffectedSublinesModel checkAffectedSublines(Long id, LocalDate validFrom, LocalDate validTo) {
     LineVersion lineVersion = findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
@@ -56,7 +56,7 @@ public class SublineShorteningService {
 
       }
     }
-    return new AffectedSublines(allowedSublines, notAllowedSublines);
+    return new AffectedSublinesModel(allowedSublines, notAllowedSublines);
   }
 
   public void shortSublines(Long id, SublineShorteningRequest sublineShorteningRequest) {
@@ -90,13 +90,13 @@ public class SublineShorteningService {
 
   public void checkAndShortSublines(LineVersion currentVersion, LineVersion editedVersion) {
     DateRange newMainlineValidity = new DateRange(editedVersion.getValidFrom(), editedVersion.getValidTo());
-    AffectedSublines affectedSublines = checkAffectedSublines(currentVersion.getId(), editedVersion.getValidFrom(),
+    AffectedSublinesModel affectedSublinesModel = checkAffectedSublines(currentVersion.getId(), editedVersion.getValidFrom(),
         editedVersion.getValidTo());
-    
-    if (!affectedSublines.getAllowedSublines().isEmpty()) {
+
+    if (!affectedSublinesModel.getAllowedSublines().isEmpty()) {
       SublineShorteningRequest sublineShorteningRequest = new SublineShorteningRequest(
           newMainlineValidity,
-          affectedSublines.getAllowedSublines());
+          affectedSublinesModel.getAllowedSublines());
 
       shortSublines(currentVersion.getId(), sublineShorteningRequest);
     }
