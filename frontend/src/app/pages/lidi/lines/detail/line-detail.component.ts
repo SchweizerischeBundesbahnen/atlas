@@ -287,9 +287,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
                 if (confirmed) {
                   success = isAllowedToUpdateAutomatically
                     ? 'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS'
-                    : isAllowedToUpdateAutomaticallyMixed
-                      ? 'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.SUCCESS'
-                      : success;
+                    : success;
                 }
                 return { confirmed, success };
               })
