@@ -1,10 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   AffectedSublines,
   ApplicationRole,
@@ -94,8 +88,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private validityService: ValidityService,
     private detailHelperService: DetailHelperService,
-    private dialog: MatDialog,
-    private cd: ChangeDetectorRef
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
