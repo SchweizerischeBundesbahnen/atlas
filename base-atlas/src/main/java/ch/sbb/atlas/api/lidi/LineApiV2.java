@@ -59,7 +59,7 @@ public interface LineApiV2 {
 
   @GetMapping("/affectedSublines/{id}")
   @Operation(description = "Returns checked Sublines to short")
-  AffectedSublines checkAffectedSublines(@PathVariable Long id,
+  AffectedSublinesModel checkAffectedSublines(@PathVariable Long id,
       @Parameter @RequestParam @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate validFrom,
       @Parameter @RequestParam @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate validTo
   );
