@@ -4,10 +4,10 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPOR
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
+import ch.sbb.atlas.export.enumeration.BoDiBatchExportFileName;
 import ch.sbb.exportservice.entity.bodi.TransportCompany;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.BoDiBatchExportFileName;
 import ch.sbb.exportservice.model.BoDiExportType;
 import ch.sbb.exportservice.model.TransportCompanyCsvModel;
 import ch.sbb.exportservice.processor.TransportCompanyCsvProcessor;
