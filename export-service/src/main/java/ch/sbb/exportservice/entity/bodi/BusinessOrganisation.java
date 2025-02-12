@@ -42,9 +42,7 @@ public class BusinessOrganisation extends BaseEntity {
   private Integer organisationNumber;
   private String contactEnterpriseEmail;
 
-  /*@CollectionTable(name = "business_organisation_version_business_types", joinColumns = {
-      @JoinColumn(name = "business_organisation_version_id")})
-  @Convert(converter = BusinessTypeConverter.class)*/
+  // todo: check: @Convert(converter = BusinessTypeConverter.class)
   private Set<BusinessType> businessTypes;
 
   private LocalDate validFrom;
