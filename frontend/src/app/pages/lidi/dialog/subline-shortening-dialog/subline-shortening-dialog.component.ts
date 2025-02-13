@@ -11,22 +11,22 @@ import { Pages } from '../../../pages';
 export class SublineShorteningDialogComponent {
   public get hasAllowedOnly() {
     return (
-      !this.data.affectedSublines.notAllowedToShort &&
-      this.data.affectedSublines.allowedToShort
+      !this.data.affectedSublines.hasNotAllowedSublinesToShortOnly &&
+      this.data.affectedSublines.hasAllowedSublinesToShortOnly
     );
   }
 
   public get hasAllowedAndNotAllowed() {
     return (
-      !this.data.affectedSublines.notAllowedToShort &&
-      !this.data.affectedSublines.allowedToShort
+      this.data.affectedSublines.hasAllowedSublinesToShortOnly &&
+      this.data.affectedSublines.hasNotAllowedSublinesToShortOnly
     );
   }
 
   public get hasNotAllowedOnly() {
     return (
-      this.data.affectedSublines.notAllowedToShort &&
-      !this.data.affectedSublines.allowedToShort
+      this.data.affectedSublines.hasNotAllowedSublinesToShortOnly &&
+      !this.data.affectedSublines.hasAllowedSublinesToShortOnly
     );
   }
 
