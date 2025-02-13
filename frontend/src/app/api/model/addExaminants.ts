@@ -9,15 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ServicePointUpdateCsvModel } from './servicePointUpdateCsvModel';
-import { BulkImportLogEntry } from './bulkImportLogEntry';
+import { StopPointPerson } from './stopPointPerson';
 
 
-export interface BulkImportUpdateContainerServicePointUpdateCsvModel { 
-    lineNumber?: number;
-    object?: ServicePointUpdateCsvModel;
-    attributesToNull?: Array<string>;
-    inNameOf?: string;
-    bulkImportLogEntry?: BulkImportLogEntry;
+export interface AddExaminants { 
+    /**
+     * Additional examinants
+     */
+    examinants: Array<StopPointPerson>;
+    /**
+     * Additional mails to cc
+     */
+    ccEmails: Array<string>;
 }
 
