@@ -1,5 +1,9 @@
 package ch.sbb.atlas.api.lidi;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
@@ -29,8 +33,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import static ch.sbb.atlas.model.ResponseCodeDescription.*;
 
 @Tag(name = "Timetable Field Numbers")
 @RequestMapping("v1/field-numbers")
@@ -83,14 +85,17 @@ public interface TimetableFieldNumberApiV1 {
   @DeleteMapping("/{ttfnid}")
   void deleteVersions(@PathVariable String ttfnid);
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all Timetable Field Number versions as csv and zip file to the ATLAS Amazon S3 Bucket")
   @PostMapping(path = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullTimetableFieldNumberVersions();
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all actual Timetable Field Number versions as csv and zip file to the ATLAS Amazon S3 Bucket")
   @PostMapping(path = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualTimetableFieldNumberVersions();
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all Timetable Field Number versions for the current timetable year change as csv and zip "
       + "file to the ATLAS Amazon S3 Bucket")
   @PostMapping(path = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)

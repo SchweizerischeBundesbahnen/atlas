@@ -209,7 +209,4 @@ public class BusinessOrganisationExportBatchConfig {
     return jsonWriter.getWriter(exportType, BoDiBatchExportFileName.BUSINESS_ORGANISATION_VERSION);
   }
 
-  // todo: make generic 4 endpoints for file streaming with 2 simple enums and check that exportfilepaths works for current and
-  //  V2 structure
-
 }
