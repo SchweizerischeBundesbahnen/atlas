@@ -14,8 +14,8 @@
 export interface AffectedSublinesModel { 
     allowedSublines?: Array<string>;
     notAllowedSublines?: Array<string>;
-    hasAffectedSublines?: boolean;
-    hasAllowedSublinesToShortOnly?: boolean;
-    hasNotAllowedSublinesToShortOnly?: boolean;
+    hasAllowedSublinesOnly?: boolean;
+    hasNotAllowedSublinesOnly?: boolean;
+    affectedSublinesEmpty?: boolean;
 }
 
