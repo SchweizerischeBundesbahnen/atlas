@@ -22,6 +22,7 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
   @Input() valueExtraction = 'ttfnid';
   @Input() controlName!: string;
   @Input() formModus = true;
+  @Input() required = true;
   @Input() formGroup!: FormGroup;
   @Input() validOn: Date | undefined = undefined;
   @Input() disabled!: boolean;
