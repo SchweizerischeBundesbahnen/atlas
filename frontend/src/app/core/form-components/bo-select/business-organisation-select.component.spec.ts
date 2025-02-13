@@ -13,6 +13,11 @@ import { SearchSelectComponent } from '../search-select/search-select.component'
 import { MaterialModule } from '../../module/material.module';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import {BusinessOrganisationsService} from "../../../api";
+import {of} from "rxjs";
+
+const businessOrganisationsService = jasmine.createSpyObj('businessOrganisationsService', ['getAllBusinessOrganisations']);
+businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(of([]));
 
 describe('BusinessOrganisationSelectComponent', () => {
   let component: BusinessOrganisationSelectComponent;
@@ -34,7 +39,13 @@ describe('BusinessOrganisationSelectComponent', () => {
         MaterialModule,
         HttpClientTestingModule,
       ],
-      providers: [TranslatePipe],
+      providers: [
+        TranslatePipe,
+        {
+          provide: BusinessOrganisationsService,
+          useValue: businessOrganisationsService,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BusinessOrganisationSelectComponent);
@@ -48,5 +59,21 @@ describe('BusinessOrganisationSelectComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  // To be able to find ch:1:sboid:1 we should sort by sboid instead of organisation number
+  it('should search by businessOrganisation sorted by sboid', () => {
+    component.searchBusinessOrganisation('ch:1:sboid:1');
+    expect(
+      businessOrganisationsService.getAllBusinessOrganisations
+    ).toHaveBeenCalledWith(
+      ['ch:1:sboid:1'],
+      [],
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ['sboid,ASC']
+    );
   });
 });
