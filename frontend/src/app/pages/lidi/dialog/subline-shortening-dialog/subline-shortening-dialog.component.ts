@@ -9,32 +9,28 @@ import { Pages } from '../../../pages';
   templateUrl: './subline-shortening-dialog.component.html',
 })
 export class SublineShorteningDialogComponent {
-  //TODO check if logic can be used from affectesSublines "isAllowed" & "zeroAffectedSublines"
   public get isAllowedOnly() {
     return (
       this.data.affectedSublines.notAllowedSublines?.length! === 0 &&
-      this.data.isAllowed
+      this.data.affectedSublines.allowedToShort
     );
   }
 
   public get isAllowedAndNotAllowed() {
-    return (
-      this.data.affectedSublines.notAllowedSublines?.length! > 0 &&
-      this.data.affectedSublines.allowedSublines?.length! > 0
-    );
+    return !this.data.affectedSublines.zeroAffectedSublines;
   }
 
   public get isNotAllowedOnly() {
     return (
       this.data.affectedSublines.notAllowedSublines?.length! > 0 &&
-      !this.data.isAllowed
+      !this.data.affectedSublines.allowedToShort
     );
   }
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      isAllowed: boolean;
+      isAllowedToShort: boolean;
       affectedSublines: AffectedSublinesModel;
     },
     private router: Router
