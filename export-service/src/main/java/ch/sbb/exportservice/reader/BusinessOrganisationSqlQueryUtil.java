@@ -12,16 +12,17 @@ import lombok.extern.slf4j.Slf4j;
 public class BusinessOrganisationSqlQueryUtil extends SqlQueryUtil {
 
   private static final String SELECT_STATEMENT = """
-      SELECT DISTINCT bov.*, tc.number, tc.abbreviation, tc.business_register_name, tc.id as transport_company_id
-        FROM business_organisation_version as bov
-            left join transport_company_relation tcr on bov.sboid = tcr.sboid and
-              ('%s' between tcr.valid_from and tcr.valid_to)
-            left join transport_company tc on tcr.transport_company_id = tc.id
+            SELECT DISTINCT bov.*, tc.number, tc.abbreviation, tc.business_register_name, tc.id as transport_company_id,
+              string_agg(bovbt.business_types, '|') as list_of_business_types
+            FROM business_organisation_version as bov
+                left join transport_company_relation tcr on bov.sboid = tcr.sboid and ('%s' between tcr.valid_from and tcr.valid_to)
+                left join transport_company tc on tcr.transport_company_id = tc.id
+                left join business_organisation_version_business_types bovbt on bov.id = bovbt.business_organisation_version_id
       """;
 
   private static final String WHERE_CLAUSE = "WHERE '%s' between bov.valid_from and bov.valid_to";
-
   private static final String ORDER_BY = "ORDER BY bov.sboid, bov.valid_from ASC";
+  private static final String GROUP_BY = "group by bov.id, tc.id";
 
   public String getSqlQuery(ExportType exportType) {
     final LocalDate date =
@@ -32,6 +33,7 @@ public class BusinessOrganisationSqlQueryUtil extends SqlQueryUtil {
     final String sqlQuery = buildSqlQuery(
         SELECT_STATEMENT.formatted(dateAsSqlString),
         exportType == ExportType.FULL ? "" : WHERE_CLAUSE.formatted(dateAsSqlString),
+        GROUP_BY,
         ORDER_BY
     );
 

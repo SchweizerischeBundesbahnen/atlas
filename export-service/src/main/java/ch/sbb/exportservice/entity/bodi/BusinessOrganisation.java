@@ -42,7 +42,6 @@ public class BusinessOrganisation extends BaseEntity {
   private Integer organisationNumber;
   private String contactEnterpriseEmail;
 
-  // todo: check: @Convert(converter = BusinessTypeConverter.class)
   private Set<BusinessType> businessTypes;
 
   private LocalDate validFrom;
