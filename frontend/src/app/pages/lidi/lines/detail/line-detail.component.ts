@@ -264,7 +264,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
       .checkAffectedSublines(id, validFromDate, validToDate)
       .pipe(
         switchMap((affectedSublines) => {
-          if (affectedSublines.hasAffectedSublines) {
+          if (affectedSublines.affectedSublinesEmpty) {
             this.updateLineVersion(id, lineVersion, success);
             return EMPTY;
           } else {
@@ -311,8 +311,8 @@ export class LineDetailComponent implements OnInit, OnDestroy {
 
   buildSuccessMessage(affectedSublines: AffectedSublinesModel) {
     if (
-      affectedSublines.hasNotAllowedSublinesToShortOnly &&
-      !affectedSublines.hasAllowedSublinesToShortOnly
+      affectedSublines.hasNotAllowedSublinesOnly &&
+      !affectedSublines.hasAllowedSublinesOnly
     ) {
       return 'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS';
     }
