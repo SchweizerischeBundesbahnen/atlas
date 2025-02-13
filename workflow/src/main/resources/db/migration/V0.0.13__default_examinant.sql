@@ -1,0 +1,1 @@
+ALTER TABLE person add column default_examinant boolean not null default false;
