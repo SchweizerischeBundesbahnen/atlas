@@ -25,6 +25,7 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -211,7 +212,11 @@ public class StopPointWorkflowService {
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new StopPointWorkflowStatusMustBeHearingException();
     }
-    checkIfAllMailsAreUnique(addExaminantsModel, stopPointWorkflow);
+
+    List<StopPointClientPersonModel> persons = new ArrayList<>(stopPointWorkflow.getExaminants().stream()
+        .map(StopPointClientPersonMapper::toModel).toList());
+    persons.addAll(addExaminantsModel.getExaminants());
+    checkIfAllExaminantEmailsAreUnique(persons, false);
 
     addExaminantsModel.getExaminants()
         .stream()
@@ -225,15 +230,6 @@ public class StopPointWorkflowService {
         .filter(i -> stopPointWorkflow.getCcEmails().stream().noneMatch(i::equalsIgnoreCase))
         .forEach(stopPointWorkflow.getCcEmails()::add);
     return save(stopPointWorkflow);
-  }
-
-  private static void checkIfAllMailsAreUnique(AddExaminantsModel addExaminantsModel, StopPointWorkflow stopPointWorkflow) {
-    Set<String> mails = new HashSet<>(stopPointWorkflow.getExaminants().stream().map(i -> i.getMail().toLowerCase()).toList());
-    addExaminantsModel.getExaminants().forEach(examinant -> {
-      if (!mails.add(examinant.getMail().toLowerCase())) {
-        throw new StopPointWorkflowExaminantEmailNotUniqueException();
-      }
-    });
   }
 
 }
