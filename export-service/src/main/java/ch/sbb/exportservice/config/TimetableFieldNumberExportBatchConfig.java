@@ -16,6 +16,7 @@ import ch.sbb.exportservice.model.TimetableFieldNumberCsvModel;
 import ch.sbb.exportservice.processor.TimetableFieldNumberCsvProcessor;
 import ch.sbb.exportservice.processor.TimetableFieldNumberJsonProcessor;
 import ch.sbb.exportservice.reader.TimetableFieldNumberRowMapper;
+import ch.sbb.exportservice.reader.TimetableFieldNumberSqlQueryUtil;
 import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
@@ -62,7 +63,7 @@ public class TimetableFieldNumberExportBatchConfig {
   ) {
     JdbcCursorItemReader<TimetableFieldNumber> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(); // todo
+    itemReader.setSql(TimetableFieldNumberSqlQueryUtil.getSqlQuery(exportType));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new TimetableFieldNumberRowMapper());
     return itemReader;
