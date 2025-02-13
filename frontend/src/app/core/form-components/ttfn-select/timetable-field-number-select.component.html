@@ -8,7 +8,7 @@
   [items$]="timetableFieldNumbers"
 >
   <div class="d-flex flex-column">
-    <app-atlas-label-field fieldLabel="TTFN.TTFN" [required]="formModus"></app-atlas-label-field>
+    <app-atlas-label-field fieldLabel="TTFN.TTFN" [required]="required"></app-atlas-label-field>
     <div *ngIf="formModus" class="font-regular-sm">
       {{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }} - {{ 'TTFN.NUMBER' | translate }} -
       {{ 'TTFN.DESCRIPTION' | translate }}

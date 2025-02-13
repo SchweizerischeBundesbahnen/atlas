@@ -1,11 +1,11 @@
 import {
   HearingStatus,
-  SwissCanton,
+  SwissCanton, TimetableFieldNumber,
   TimetableHearingStatementAlternating,
   TimetableHearingStatementsService,
   TimetableHearingStatementV2,
   TimetableHearingYear,
-  TimetableHearingYearsService,
+  TimetableHearingYearsService, TransportCompany,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
@@ -65,7 +65,7 @@ const mockTimetableHearingYearsService = jasmine.createSpyObj('timetableHearingY
 
 const mockTimetableHearingStatementsService = jasmine.createSpyObj(
   'timetableHearingStatementsService',
-  ['createStatement', 'getNextStatement', 'getPreviousStatement'],
+  ['createStatement', 'getNextStatement', 'getPreviousStatement', 'getResponsibleTransportCompanies'],
 );
 const alternation: TimetableHearingStatementAlternating = {
   timetableHearingStatement: existingStatement,
@@ -73,8 +73,13 @@ const alternation: TimetableHearingStatementAlternating = {
     pageNumber: 1,
   },
 };
+const transportCompany: TransportCompany = {
+  number: '#0001',
+  businessRegisterName: 'Schweizerische Bundesbahnen SBB',
+};
 mockTimetableHearingStatementsService.getNextStatement.and.returnValue(of(alternation));
 mockTimetableHearingStatementsService.getPreviousStatement.and.returnValue(of(alternation));
+mockTimetableHearingStatementsService.getResponsibleTransportCompanies.and.returnValue(of([transportCompany]));
 
 @Component({
   selector: 'app-user-detail-info',
@@ -254,6 +259,11 @@ describe('StatementDetailComponent for new statement', () => {
       expect(snackBarContainer.classList).toContain('success');
       expect(router.navigate).toHaveBeenCalled();
     });
+  });
+
+  it('should fill responsible transport companies on ttfn change', () => {
+    component.ttfnSelectionChanged({ttfnid: 'ch:1:ttfnid:123'} as TimetableFieldNumber);
+    expect(mockTimetableHearingStatementsService.getResponsibleTransportCompanies).toHaveBeenCalled();
   });
 });
 
