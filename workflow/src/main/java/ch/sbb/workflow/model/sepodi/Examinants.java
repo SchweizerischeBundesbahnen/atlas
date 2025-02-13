@@ -48,6 +48,7 @@ public class Examinants {
         .lastName(examinantByCanton.getLastname())
         .mail(PROD_PROFILE.equals(activeProfile) ? examinantByCanton.getEmail() : NON_PROD_EMAIL_CANTON)
         .organisation(examinantByCanton.getOrganisation())
+        .defaultExaminant(true)
         .build();
   }
 
@@ -58,6 +59,7 @@ public class Examinants {
         .lastName(specialistOffice.getLastname())
         .organisation(specialistOffice.getOrganisation())
         .mail(PROD_PROFILE.equals(activeProfile) ? specialistOffice.getEmail() : NON_PROD_EMAIL_ATLAS)
+        .defaultExaminant(true)
         .build();
   }
 
