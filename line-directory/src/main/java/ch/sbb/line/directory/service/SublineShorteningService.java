@@ -49,29 +49,29 @@ public class SublineShorteningService {
       }
     }
 
-    boolean hasZeroAffectedSublines = hasZeroAffectedSublines(allowedSublines, notAllowedSublines);
-    boolean isAllowedToShortOnly = isAllowedToShortOnly(allowedSublines, notAllowedSublines);
-    boolean isNotAllowedToShortOnly = isNotAllowedToShortOnly(allowedSublines, notAllowedSublines);
+    boolean isAffectedSublinesEmpty = isAffectedSublinesEmpty(allowedSublines, notAllowedSublines);
+    boolean hasAllowedSublinesOnly = hasAllowedSublinesOnly(allowedSublines);
+    boolean hasNotAllowedSublinesOnly = hasNotAllowedSublinesOnly(notAllowedSublines);
 
     return AffectedSublinesModel.builder()
         .allowedSublines(allowedSublines)
         .notAllowedSublines(notAllowedSublines)
-        .hasAffectedSublines(hasZeroAffectedSublines)
-        .hasAllowedSublinesToShortOnly(isAllowedToShortOnly)
-        .hasNotAllowedSublinesToShortOnly(isNotAllowedToShortOnly)
+        .isAffectedSublinesEmpty(isAffectedSublinesEmpty)
+        .hasAllowedSublinesOnly(hasAllowedSublinesOnly)
+        .hasNotAllowedSublinesOnly(hasNotAllowedSublinesOnly)
         .build();
   }
 
-  private boolean hasZeroAffectedSublines(List<String> allowedSublines, List<String> notAllowedSublines) {
+  private boolean isAffectedSublinesEmpty(List<String> allowedSublines, List<String> notAllowedSublines) {
     return allowedSublines.isEmpty() && notAllowedSublines.isEmpty();
   }
 
-  private boolean isAllowedToShortOnly(List<String> allowedSublines, List<String> notAllowedSublines) {
-    return !allowedSublines.isEmpty() && notAllowedSublines.isEmpty();
+  private boolean hasAllowedSublinesOnly(List<String> allowedSublines) {
+    return !allowedSublines.isEmpty();
   }
 
-  private boolean isNotAllowedToShortOnly(List<String> allowedSublines, List<String> notAllowedSublines) {
-    return allowedSublines.isEmpty() && !notAllowedSublines.isEmpty();
+  private boolean hasNotAllowedSublinesOnly(List<String> notAllowedSublines) {
+    return !notAllowedSublines.isEmpty();
   }
 
   private List<SublineVersionRange> prepareSublinesToShort(LineVersion lineVersion,
