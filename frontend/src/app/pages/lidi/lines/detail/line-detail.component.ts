@@ -71,6 +71,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
   }
 
   _isLineConcessionTypeRequired = false;
+
   get isLineConcessionTypeRequired(): boolean {
     return this._isLineConcessionTypeRequired;
   }
@@ -267,6 +268,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
             this.updateLineVersion(id, lineVersion, success);
             return EMPTY;
           } else {
+            success = this.buildSuccessMessage(affectedSublines);
             return this.openSublineShorteningDialog(affectedSublines).pipe(
               map((confirmed) => {
                 return { confirmed, success };
@@ -276,7 +278,6 @@ export class LineDetailComponent implements OnInit, OnDestroy {
         }),
         filter(({ confirmed }) => confirmed),
         switchMap(({ success }) => {
-          success = 'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS';
           this.updateLineVersion(id, lineVersion, success);
           return EMPTY;
         }),
@@ -306,6 +307,16 @@ export class LineDetailComponent implements OnInit, OnDestroy {
             this.sublineTableComponent.getOverview();
           });
       });
+  }
+
+  buildSuccessMessage(affectedSublines: AffectedSublinesModel) {
+    if (
+      affectedSublines.notAllowedToShort &&
+      !affectedSublines.allowedToShort
+    ) {
+      return 'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS';
+    }
+    return 'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS';
   }
 
   openSublineShorteningDialog(
