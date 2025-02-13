@@ -67,7 +67,7 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
           undefined,
           undefined,
           undefined,
-          ['organisationNumber,ASC']
+          ['sboid,ASC']
         )
         .pipe(map((value) => value.objects ?? []));
     }
