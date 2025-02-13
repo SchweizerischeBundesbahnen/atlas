@@ -9,20 +9,23 @@ import { Pages } from '../../../pages';
   templateUrl: './subline-shortening-dialog.component.html',
 })
 export class SublineShorteningDialogComponent {
-  public get isAllowedOnly() {
+  public get hasAllowedOnly() {
     return (
-      this.data.affectedSublines.notAllowedSublines?.length! === 0 &&
+      !this.data.affectedSublines.notAllowedToShort &&
       this.data.affectedSublines.allowedToShort
     );
   }
 
-  public get isAllowedAndNotAllowed() {
-    return !this.data.affectedSublines.zeroAffectedSublines;
+  public get hasAllowedAndNotAllowed() {
+    return (
+      !this.data.affectedSublines.notAllowedToShort &&
+      !this.data.affectedSublines.allowedToShort
+    );
   }
 
-  public get isNotAllowedOnly() {
+  public get hasNotAllowedOnly() {
     return (
-      this.data.affectedSublines.notAllowedSublines?.length! > 0 &&
+      this.data.affectedSublines.notAllowedToShort &&
       !this.data.affectedSublines.allowedToShort
     );
   }
