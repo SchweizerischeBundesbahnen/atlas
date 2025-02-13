@@ -18,5 +18,6 @@ public class AffectedSublinesModel {
 
   private boolean isZeroAffectedSublines;
   private boolean isAllowedToShort;
+  private boolean isNotAllowedToShort;
 
 }

@@ -267,10 +267,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
             this.updateLineVersion(id, lineVersion, success);
             return EMPTY;
           } else {
-            return this.openSublineShorteningDialog(
-              affectedSublines.allowedToShort!,
-              affectedSublines
-            ).pipe(
+            return this.openSublineShorteningDialog(affectedSublines).pipe(
               map((confirmed) => {
                 return { confirmed, success };
               })
@@ -312,13 +309,11 @@ export class LineDetailComponent implements OnInit, OnDestroy {
   }
 
   openSublineShorteningDialog(
-    isAllowedToShort: boolean,
     affectedSublines: AffectedSublinesModel
   ): Observable<boolean> {
     return this.dialog
       .open(SublineShorteningDialogComponent, {
         data: {
-          isAllowed: isAllowedToShort,
           affectedSublines: affectedSublines,
         },
       })
