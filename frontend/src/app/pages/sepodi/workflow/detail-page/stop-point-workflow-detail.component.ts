@@ -164,6 +164,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
 
   private enableForm(): void {
     this.form?.enable({ emitEvent: false });
+    StopPointWorkflowDetailFormGroupBuilder.disableDefaultExaminantsInArray(this.form.controls.examinants)
     this.isFormEnabled$.next(true);
   }
 
