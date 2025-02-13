@@ -14,6 +14,7 @@ public class StopPointClientPersonMapper {
         .lastName(person.getLastName())
         .personFunction(person.getFunction())
         .mail(person.getMail())
+        .defaultExaminant(person.isDefaultExaminant())
         .organisation(person.getOrganisation())
         .creationDate(person.getCreationDate())
         .editionDate(person.getEditionDate())
@@ -28,6 +29,7 @@ public class StopPointClientPersonMapper {
         .function(model.getPersonFunction())
         .organisation(model.getOrganisation())
         .mail(model.getMail())
+        .defaultExaminant(model.isDefaultExaminant())
         .build();
   }
 
