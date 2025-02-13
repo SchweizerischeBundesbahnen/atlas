@@ -16,8 +16,8 @@ public class AffectedSublinesModel {
   private List<String> allowedSublines = new ArrayList<>();
   private List<String> notAllowedSublines = new ArrayList<>();
 
-  private boolean hasAffectedSublines;
-  private boolean hasAllowedSublinesToShortOnly;
-  private boolean hasNotAllowedSublinesToShortOnly;
+  private boolean isAffectedSublinesEmpty;
+  private boolean hasAllowedSublinesOnly;
+  private boolean hasNotAllowedSublinesOnly;
 
 }
