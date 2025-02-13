@@ -49,28 +49,28 @@ public class SublineShorteningService {
       }
     }
 
-    boolean isZeroAffectedSublines = isZeroAffectedSublines(allowedSublines, notAllowedSublines);
-    boolean isAllowedToShort = isAllowedToShortAll(allowedSublines, notAllowedSublines);
-    boolean isNotAllowedToShort = isNotAllowedToShort(allowedSublines, notAllowedSublines);
+    boolean hasZeroAffectedSublines = hasZeroAffectedSublines(allowedSublines, notAllowedSublines);
+    boolean isAllowedToShortOnly = isAllowedToShortOnly(allowedSublines, notAllowedSublines);
+    boolean isNotAllowedToShortOnly = isNotAllowedToShortOnly(allowedSublines, notAllowedSublines);
 
     return AffectedSublinesModel.builder()
         .allowedSublines(allowedSublines)
         .notAllowedSublines(notAllowedSublines)
-        .isZeroAffectedSublines(isZeroAffectedSublines)
-        .isAllowedToShort(isAllowedToShort)
-        .isNotAllowedToShort(isNotAllowedToShort)
+        .hasAffectedSublines(hasZeroAffectedSublines)
+        .hasAllowedSublinesToShortOnly(isAllowedToShortOnly)
+        .hasNotAllowedSublinesToShortOnly(isNotAllowedToShortOnly)
         .build();
   }
 
-  private boolean isZeroAffectedSublines(List<String> allowedSublines, List<String> notAllowedSublines) {
+  private boolean hasZeroAffectedSublines(List<String> allowedSublines, List<String> notAllowedSublines) {
     return allowedSublines.isEmpty() && notAllowedSublines.isEmpty();
   }
 
-  private boolean isAllowedToShortAll(List<String> allowedSublines, List<String> notAllowedSublines) {
+  private boolean isAllowedToShortOnly(List<String> allowedSublines, List<String> notAllowedSublines) {
     return !allowedSublines.isEmpty() && notAllowedSublines.isEmpty();
   }
 
-  private boolean isNotAllowedToShort(List<String> allowedSublines, List<String> notAllowedSublines) {
+  private boolean isNotAllowedToShortOnly(List<String> allowedSublines, List<String> notAllowedSublines) {
     return allowedSublines.isEmpty() && !notAllowedSublines.isEmpty();
   }
 
