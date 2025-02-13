@@ -22,13 +22,14 @@ export interface ExaminantFormGroup {
   judgement: FormControl<JudgementType | null | undefined>;
   id: FormControl<number | null | undefined>;
   decisionType: FormControl<DecisionType | null | undefined>;
+  defaultExaminant: FormControl<boolean | null | undefined>;
 }
 
 export const SPECIAL_DECISION_TYPES = [DecisionType.Canceled, DecisionType.Rejected, DecisionType.Restarted];
 
 export class StopPointWorkflowDetailFormGroupBuilder {
   static buildFormGroup(
-    workflow?: ReadStopPointWorkflow,
+    workflow?: ReadStopPointWorkflow
   ): FormGroup<StopPointWorkflowDetailFormGroup> {
     return new FormGroup<StopPointWorkflowDetailFormGroup>({
       ccEmails: new FormControl(workflow?.ccEmails ?? []),
@@ -39,19 +40,23 @@ export class StopPointWorkflowDetailFormGroupBuilder {
       ]),
       designationOfficial: new FormControl(workflow?.designationOfficial),
       examinants: new FormArray<FormGroup<ExaminantFormGroup>>(
-        workflow?.examinants?.
-        filter(examinant => !SPECIAL_DECISION_TYPES.includes(examinant.decisionType!)).
-        map((examinant) => this.buildExaminantFormGroup(examinant)) ?? [
-          this.buildExaminantFormGroup(),
-        ], {
-          validators: UniqueEmailsValidator.uniqueEmails()
+        workflow?.examinants
+          ?.filter(
+            (examinant) =>
+              !SPECIAL_DECISION_TYPES.includes(examinant.decisionType!)
+          )
+          .map((examinant) => this.buildExaminantFormGroup(examinant)) ?? [],
+        {
+          validators: UniqueEmailsValidator.uniqueEmails(),
         }
       ),
     });
   }
 
-  static buildExaminantFormGroup(examinant?: StopPointPerson): FormGroup<ExaminantFormGroup> {
-    return new FormGroup<ExaminantFormGroup>({
+  static buildExaminantFormGroup(
+    examinant?: StopPointPerson
+  ): FormGroup<ExaminantFormGroup> {
+    let formGroup = new FormGroup<ExaminantFormGroup>({
       id: new FormControl(examinant?.id),
       firstName: new FormControl(examinant?.firstName),
       lastName: new FormControl(examinant?.lastName),
@@ -60,11 +65,31 @@ export class StopPointWorkflowDetailFormGroupBuilder {
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
       personFunction: new FormControl(examinant?.personFunction),
-      mail: new FormControl(examinant?.mail, [Validators.required, AtlasCharsetsValidator.email]),
-      judgementIcon: new FormControl(this.buildJudgementIcon(examinant?.judgement)),
+      mail: new FormControl(examinant?.mail, [
+        Validators.required,
+        AtlasCharsetsValidator.email,
+      ]),
+      judgementIcon: new FormControl(
+        this.buildJudgementIcon(examinant?.judgement)
+      ),
       judgement: new FormControl(examinant?.judgement),
       decisionType: new FormControl(examinant?.decisionType),
+      defaultExaminant: new FormControl(examinant?.defaultExaminant),
     });
+    this.disableDefaultExaminants(formGroup);
+    return formGroup;
+  }
+
+  static disableDefaultExaminants(form: FormGroup<ExaminantFormGroup>): void {
+    if (form.controls.defaultExaminant.value) {
+      form.disable();
+    }
+  }
+
+  static disableDefaultExaminantsInArray(formArray: FormArray<FormGroup<ExaminantFormGroup>>): void {
+    for (let i = 0; i < formArray.length; i++) {
+      this.disableDefaultExaminants(formArray.at(i));
+    }
   }
 
   static buildJudgementIcon(judgement?: JudgementType): string {
