@@ -17,6 +17,7 @@ import ch.sbb.exportservice.processor.SublineCsvProcessor;
 import ch.sbb.exportservice.processor.SublineJsonProcessor;
 import ch.sbb.exportservice.reader.BusinessOrganisationSqlQueryUtil;
 import ch.sbb.exportservice.reader.SublineRowMapper;
+import ch.sbb.exportservice.reader.SublineSqlQueryUtil;
 import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
@@ -63,7 +64,7 @@ public class SublineExportBatchConfig {
   ) {
     JdbcCursorItemReader<Subline> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(); // todo
+    itemReader.setSql(SublineSqlQueryUtil.getSqlQuery(exportType));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new SublineRowMapper());
     return itemReader;

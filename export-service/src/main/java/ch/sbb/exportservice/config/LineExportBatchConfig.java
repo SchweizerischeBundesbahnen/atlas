@@ -14,6 +14,7 @@ import ch.sbb.exportservice.model.LineCsvModel;
 import ch.sbb.exportservice.processor.LineCsvProcessor;
 import ch.sbb.exportservice.processor.LineJsonProcessor;
 import ch.sbb.exportservice.reader.LineRowMapper;
+import ch.sbb.exportservice.reader.LineSqlQueryUtil;
 import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
@@ -61,7 +62,7 @@ public class LineExportBatchConfig {
   ) {
     JdbcCursorItemReader<Line> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(); // todo
+    itemReader.setSql(LineSqlQueryUtil.getSqlQuery(exportType));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new LineRowMapper());
     return itemReader;
