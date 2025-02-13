@@ -206,14 +206,12 @@ public class StopPointWorkflowService {
   }
 
   public StopPointWorkflow addExaminants(Long id, AddExaminantsModel addExaminantsModel) {
-    if (!addExaminantsModel.getExaminants().isEmpty()) {
-      checkIfAllExaminantEmailsAreUnique(addExaminantsModel.getExaminants(), false);
-    }
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
 
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new StopPointWorkflowStatusMustBeHearingException();
     }
+    checkIfAllMailsAreUnique(addExaminantsModel, stopPointWorkflow);
 
     addExaminantsModel.getExaminants()
         .stream()
@@ -223,8 +221,19 @@ public class StopPointWorkflowService {
           stopPointWorkflow.getExaminants().add(examinant);
         });
 
-    stopPointWorkflow.getCcEmails().addAll(addExaminantsModel.getCcEmails());
+    addExaminantsModel.getCcEmails().stream()
+        .filter(i -> stopPointWorkflow.getCcEmails().stream().noneMatch(i::equalsIgnoreCase))
+        .forEach(stopPointWorkflow.getCcEmails()::add);
     return save(stopPointWorkflow);
+  }
+
+  private static void checkIfAllMailsAreUnique(AddExaminantsModel addExaminantsModel, StopPointWorkflow stopPointWorkflow) {
+    Set<String> mails = new HashSet<>(stopPointWorkflow.getExaminants().stream().map(i -> i.getMail().toLowerCase()).toList());
+    addExaminantsModel.getExaminants().forEach(examinant -> {
+      if (!mails.add(examinant.getMail().toLowerCase())) {
+        throw new StopPointWorkflowExaminantEmailNotUniqueException();
+      }
+    });
   }
 
 }
