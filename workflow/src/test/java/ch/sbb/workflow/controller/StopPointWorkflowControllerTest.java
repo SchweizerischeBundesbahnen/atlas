@@ -39,6 +39,7 @@ import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
@@ -57,6 +58,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MvcResult;
 
 class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
@@ -489,7 +491,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldAddWorkflow() throws Exception {
-    //when
+    //given
     StopPointClientPersonModel person = StopPointClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
@@ -509,11 +511,17 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
-    //given
-    mvc.perform(post("/v1/stop-point/workflows")
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/stop-point/workflows")
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
-    ).andExpect(status().isCreated());
+    ).andExpect(status().isCreated()).andReturn();
+    ReadStopPointWorkflowModel workflow = mapper.readValue(mvcResult.getResponse().getContentAsString(),
+        ReadStopPointWorkflowModel.class);
+
+    // then
+    assertThat(workflow.getExaminants()).hasSize(3);
+    assertThat(workflow.getExaminants().stream().filter(StopPointClientPersonModel::isDefaultExaminant).toList()).hasSize(2);
   }
 
   @Test

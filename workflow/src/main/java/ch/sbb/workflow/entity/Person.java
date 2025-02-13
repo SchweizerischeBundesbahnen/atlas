@@ -60,4 +60,6 @@ public class Person extends BaseWorkflowEntity {
   @JoinColumn(name = "stop_point_workflow_id")
   private StopPointWorkflow stopPointWorkflow;
 
+  private boolean defaultExaminant;
+
 }
