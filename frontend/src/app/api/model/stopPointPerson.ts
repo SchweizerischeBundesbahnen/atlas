@@ -51,5 +51,6 @@ export interface StopPointPerson {
      * mail
      */
     mail: string;
+    defaultExaminant?: boolean;
 }
 

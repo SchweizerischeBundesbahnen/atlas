@@ -20,12 +20,10 @@ import {AtlasFieldLengthValidator} from 'src/app/core/validation/field-lengths/a
 import {DecisionDetailDialogService} from '../decision/decision-detail/decision-detail-dialog.service';
 import {Pages} from 'src/app/pages/pages';
 import {SloidHelper} from "../../../../../core/util/sloidHelper";
-import {ValidationService} from "../../../../../core/validation/validation.service";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
   templateUrl: './stop-point-workflow-detail-form.component.html',
-  styleUrls: ['./stop-point-workflow-detail-form.component.scss'],
   viewProviders: [{provide: ControlContainer, useExisting: NgForm}],
 })
 export class StopPointWorkflowDetailFormComponent implements OnInit {
@@ -36,7 +34,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   @Input() oldDesignation?: string;
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
   @Input() currentWorkflow?: ReadStopPointWorkflow;
-  isDeleteButtonInvisible: boolean = false;
 
   specialDecision?: StopPointPerson;
 
@@ -68,21 +65,11 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
 
     if (!this.currentWorkflow) {
       this.stopPointWorkflowService.getExaminants(this.stopPoint.id!).subscribe({
-        next: (listOfExaminants: StopPointPerson[]) => {
-          const emptyExaminant: StopPointPerson = {
-            firstName: '',
-            lastName: '',
-            organisation: '',
-            mail: ''
-          };
-          listOfExaminants.push(emptyExaminant);
-          const examinantsFormArray = this.form.get('examinants') as FormArray;
-          examinantsFormArray.clear();
-          listOfExaminants.forEach(examinant => {
-            examinantsFormArray.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(examinant));
+        next: (defaultExaminants: StopPointPerson[]) => {
+          defaultExaminants.forEach(examinant => {
+            this.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(examinant));
           });
-
-          this.disableFirstTwoExaminantsAndSetDeleteInvisible(examinantsFormArray);
+          this.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
         },
         error: (error) => {
           console.error("Error occurred while fetching examinants:", error);
@@ -94,35 +81,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     if(this.currentWorkflow){
       this.specialDecision = this.currentWorkflow!.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
     }
-  }
-
-  public disableFirstTwoExaminantsAndSetDeleteInvisible(examinantsFormArray: FormArray): void {
-    this.isDeleteButtonInvisible = true;
-    examinantsFormArray.at(0)?.disable();
-    examinantsFormArray.at(1)?.disable();
-  }
-
-  addExaminant() {
-    const examinantsControl = this.form.controls.examinants;
-    ValidationService.validateForm(examinantsControl);
-    if (examinantsControl.disabled || examinantsControl.valid) {
-      examinantsControl.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
-    }
-  }
-
-  removeExaminant(index: number) {
-    const examinantsControl = this.form.controls.examinants;
-    examinantsControl.removeAt(index);
-    if (!this.currentWorkflow) {
-      examinantsControl.controls.forEach(control => {
-        if (control.disabled) {
-          control.enable({ emitEvent: false });
-        }
-      });
-      examinantsControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-      this.disableFirstTwoExaminantsAndSetDeleteInvisible(examinantsControl);
-    }
-    this.form.markAsDirty();
   }
 
   goToSwissTopo() {
