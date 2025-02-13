@@ -37,12 +37,7 @@ export class StopPointWorkflowDetailFormGroupBuilder {
         Validators.minLength(2),
         AtlasFieldLengthValidator.comments,
       ]),
-      designationOfficial: new FormControl(workflow?.designationOfficial, [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(30),
-        AtlasCharsetsValidator.iso88591,
-      ]),
+      designationOfficial: new FormControl(workflow?.designationOfficial),
       examinants: new FormArray<FormGroup<ExaminantFormGroup>>(
         workflow?.examinants?.
         filter(examinant => !SPECIAL_DECISION_TYPES.includes(examinant.decisionType!)).

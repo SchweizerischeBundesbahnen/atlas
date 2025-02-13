@@ -82,6 +82,8 @@
                 [validOn]="ttfnValidOn"
                 controlName="ttfnid"
                 data-cy="ttfnid"
+                (ttfnSelectionChanged)="ttfnSelectionChanged($event)"
+                [required]="false"
               ></ttfn-select>
             </div>
           </div>
