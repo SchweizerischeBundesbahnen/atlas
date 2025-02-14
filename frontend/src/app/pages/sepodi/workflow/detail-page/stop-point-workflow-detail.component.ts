@@ -185,7 +185,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         ccEmails: this.form.controls.ccEmails.value ?? undefined,
         designationOfficial: this.form.controls.designationOfficial.value!,
         workflowComment: this.form.controls.workflowComment.value!,
-        examinants: this.form.controls.examinants.value.map(
+        examinants: this.form.getRawValue().examinants!.map(
           (examinant) => examinant as StopPointPerson,
         ),
       };
