@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,6 +36,7 @@ import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueExcepti
 import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
+import ch.sbb.workflow.model.sepodi.AddExaminantsModel;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
@@ -1130,6 +1132,52 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionByExaminantId.getJudgement()).isEqualTo(decision.getJudgement());
     assertThat(decisionByExaminantId.getFotMotivation()).isEqualTo(overrideDecisionModel.getFotMotivation());
     assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(overrideDecisionModel.getFotJudgement());
+  }
+
+  @Test
+  void shouldAddExaminantsToWorkflowInHearing() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .localityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.HEARING)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    person.setStopPointWorkflow(stopPointWorkflow);
+    workflowRepository.save(stopPointWorkflow);
+
+    AddExaminantsModel addExaminantsModel = AddExaminantsModel.builder()
+        .examinants(List.of(StopPointClientPersonModel.builder().organisation("Sample").mail("someguy@sbb.ch").build()))
+        .ccEmails(List.of("additionalDude@bern.be"))
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/add-examinants/" + stopPointWorkflow.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(addExaminantsModel)))
+        .andExpect(status().isOk());
+
+    StopPointWorkflow workflow =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList().getFirst();
+    assertThat(workflow.getExaminants()).hasSize(2);
+    assertThat(workflow.getCcEmails()).hasSize(2);
+
+    verify(notificationService).sendStartToAddedExaminant(any(StopPointWorkflow.class), eq(List.of("someguy@sbb.ch")));
   }
 
   private static ReadServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
