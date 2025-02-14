@@ -1,6 +1,6 @@
 <div [formGroup]="form">
   <div class="examinant-table">
-    @if (form.controls.examinants.controls.length > 0) {
+    @if (examinants.controls.length > 0) {
       <div class="examinant-header row font-bold-lg mt-3">
         <div class="col pe-2">
           {{ 'WORKFLOW.PERSON.FIRSTNAME' | translate }}
@@ -14,7 +14,7 @@
           {{ 'WORKFLOW.PERSON.MAIL' | translate }}
         </div>
         @if (
-          currentWorkflow?.status !== WorkflowStatus.Added && form.disabled
+          currentWorkflowStatus !== WorkflowStatus.Added && form.disabled
         ) {
           <div class="decision-icon-col pe-2">
             {{ 'WORKFLOW.PERSON.JUDGEMENT' | translate }}
@@ -28,7 +28,7 @@
 
     <div
       formArrayName="examinants"
-      *ngFor="let examinant of form.controls.examinants.controls; let i = index"
+      *ngFor="let examinant of examinants.controls; let i = index"
     >
       <ng-container [formGroupName]="i">
         <div class="examinant row">
@@ -75,7 +75,7 @@
             ></atlas-text-field>
           </div>
           @if (
-            currentWorkflow?.status !== WorkflowStatus.Added && form.disabled
+            currentWorkflowStatus !== WorkflowStatus.Added && form.disabled
           ) {
             <div class="decision-icon-col pe-2">
               <atlas-button
