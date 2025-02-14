@@ -12,6 +12,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {BERN_WYLEREGG} from "../../../../../../test/data/service-point";
 import {StopPointWorkflowDetailFormGroupBuilder} from "./stop-point-workflow-detail-form-group";
 import {FormModule} from "../../../../../core/module/form.module";
+import {StopPointWorkflowExaminantsTableComponent} from "../examinant-table/stop-point-workflow-examinants-table.component";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -29,6 +30,7 @@ describe('StopPointWorkflowDetailFormComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         StopPointWorkflowDetailFormComponent,
+        StopPointWorkflowExaminantsTableComponent,
         StringListComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
@@ -53,10 +55,6 @@ describe('StopPointWorkflowDetailFormComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should have one examinant per default', () => {
-    expect(component.form.controls.examinants.length).toBe(1);
   });
 
   it('should go to swisstopo', () => {
