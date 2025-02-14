@@ -672,6 +672,9 @@
       },
       "EDIT": {
         "SUCCESS": "Die Anhörung wurde erfolgreich gespeichert."
+      },
+      "ADD_EXAMINANT": {
+        "SUCCESS": "Die Empfänger wurden erfolgreich hinzugefügt."
       }
     },
     "ERROR": {
@@ -701,7 +704,8 @@
       "DECLINE": "Nein, ich lehne ab. Die Eingabe der Begründung ist notwendig.",
       "OVERRIDE_ACCEPT": "Dieser Entscheid wird als \"ja\" gewertet.",
       "OVERRIDE_DECLINE": "Dieser Entscheid wird als \"nein\" gewertet."
-    }
+    },
+    "ADD_EXAMINANT": "Zusätzliche Empfänger erfassen"
   },
   "TTH": {
     "NOTIFICATION": {

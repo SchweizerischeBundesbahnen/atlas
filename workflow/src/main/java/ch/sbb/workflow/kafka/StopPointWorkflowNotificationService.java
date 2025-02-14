@@ -3,6 +3,7 @@ package ch.sbb.workflow.kafka;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,12 @@ public class StopPointWorkflowNotificationService {
         MailNotification buildWorkflowStartedCCMailNotification =
             builderNotificationService.buildWorkflowStartedCCMail(stopPointWorkflow);
         mailProducerService.produceMailNotification(buildWorkflowStartedCCMailNotification);
+    }
+
+    public void sendStartToAddedExaminant(StopPointWorkflow stopPointWorkflow, List<String> examinantMails) {
+        MailNotification startedExaminantMailNotification =
+            builderNotificationService.buildWorkflowStartedExaminantMail(stopPointWorkflow, examinantMails);
+        mailProducerService.produceMailNotification(startedExaminantMailNotification);
     }
 
     public void sendRejectStopPointWorkflowMail(StopPointWorkflow workflow, String rejectComment) {
