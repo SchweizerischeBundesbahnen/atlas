@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ControlContainer, FormArray, FormGroup, NgForm} from '@angular/forms';
 import { WorkflowStatus } from 'src/app/api';
 import {ExaminantFormGroup, StopPointWorkflowDetailFormGroupBuilder} from '../detail-form/stop-point-workflow-detail-form-group';
