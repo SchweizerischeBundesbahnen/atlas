@@ -6,7 +6,6 @@ import {NotificationService} from "../../../../../core/notification/notification
 import {Router} from "@angular/router";
 import {FormGroup} from "@angular/forms";
 import {
-  StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder
 } from "../detail-form/stop-point-workflow-detail-form-group";
 import {ValidationService} from "../../../../../core/validation/validation.service";
