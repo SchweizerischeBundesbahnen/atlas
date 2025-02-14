@@ -41,6 +41,9 @@ import {
 } from "../detail-page/detail-form/stop-point-workflow-detail-form-group";
 import {FormArray, FormControl, FormGroup} from "@angular/forms";
 import {Component, Input} from "@angular/core";
+import {
+  StopPointWorkflowExaminantsTableComponent
+} from "../detail-page/examinant-table/stop-point-workflow-examinants-table.component";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -86,6 +89,7 @@ describe('AddStopPointWorkflowComponent', () => {
         AddStopPointWorkflowComponent,
         WorkflowFormComponent,
         WorkflowCheckFormComponent,
+        StopPointWorkflowExaminantsTableComponent,
         CommentComponent,
         ErrorNotificationComponent,
         MockAtlasButtonComponent,
@@ -168,6 +172,7 @@ describe('AddStopPointWorkflowComponent', () => {
       judgementIcon: new FormControl<string | null>(null),
       judgement: new FormControl<JudgementType | null>(null),
       decisionType: new FormControl<DecisionType | null>(null),
+      defaultExaminant: new FormControl(false)
     });
 
     const formArray = new FormArray<FormGroup<ExaminantFormGroup>>([examinantFormGroup]);
