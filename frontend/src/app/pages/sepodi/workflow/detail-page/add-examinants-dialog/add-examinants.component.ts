@@ -14,6 +14,7 @@ import {AddExaminantsDialogData} from "./add-examinants-dialog-data";
 import {AtlasCharsetsValidator} from "../../../../../core/validation/charsets/atlas-charsets-validator";
 import {AtlasFieldLengthValidator} from "../../../../../core/validation/field-lengths/atlas-field-length-validator";
 import {AddExaminantsFormGroup, AddExaminantsFormGroupBuilder} from "./add-examinants-form-group";
+import {catchError, of} from "rxjs";
 
 @Component({
   selector: 'app-add-examinants',
@@ -62,20 +63,27 @@ export class AddExaminantsComponent implements OnInit {
   }
 
   private saveAdditionalExaminants(addExaminants: AddExaminants){
-    this.form.disable();
     this.stopPointWorkflowService
       .addExaminantsToStopPointWorkflow(this.data.workflowId, addExaminants)
-      .subscribe(() => {
-        this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
-        this.dialogRef.close();
-        this.router
-          .navigate([
-            Pages.SEPODI.path,
-            Pages.WORKFLOWS.path,
-            this.data.workflowId,
-          ])
-          .then();
-      });
+      .pipe(
+        catchError(() => {
+          this.dialogRef.close(false);
+          return of();
+        }),
+      )
+      .subscribe(
+        () => {
+          this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
+          this.dialogRef.close(true);
+          this.router
+            .navigate([
+              Pages.SEPODI.path,
+              Pages.WORKFLOWS.path,
+              this.data.workflowId,
+            ])
+            .then();
+        }
+      );
   }
 
   cancel() {
@@ -83,7 +91,7 @@ export class AddExaminantsComponent implements OnInit {
       .confirmLeaveDirtyForm(this.form)
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.dialogRef.close(true);
+          this.dialogRef.close(false);
         }
       });
   }
