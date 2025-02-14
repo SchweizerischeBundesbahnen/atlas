@@ -37,6 +37,17 @@
       >
       </atlas-button>
     }
+    @if (isAtLeastSupervisor && workflow.status === WorkflowStatus.Hearing){
+      <atlas-button
+        [footerEdit]="form.disabled"
+        (buttonClicked)="addExaminants()"
+        buttonDataCy="add-examinants"
+        buttonText="COMMON.EDIT"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="me-3"
+      >
+      </atlas-button>
+    }
     <atlas-button
       [footerEdit]="(isFormEnabled$ | async) ?? false"
       (buttonClicked)="toggleEdit()"
