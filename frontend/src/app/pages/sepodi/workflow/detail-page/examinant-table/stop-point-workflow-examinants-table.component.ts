@@ -20,16 +20,17 @@ export class StopPointWorkflowExaminantsTableComponent {
   @Input() currentWorkflow?: ReadStopPointWorkflow;
   @Input() isDeleteButtonInvisible = false;
 
-  @Output() onOpenDecision = new EventEmitter<number>();
-  @Output() onRemoveExaminant = new EventEmitter<number>();
+  @Output() openDecision = new EventEmitter<number>();
 
 
-  openDecision(index: number) {
-    this.onOpenDecision.emit(index);
+  onOpenDecision(index: number) {
+    this.openDecision.emit(index);
   }
 
   removeExaminant(index: number) {
-    this.onRemoveExaminant.emit(index);
+    const examinantsControl = this.form.controls.examinants;
+    examinantsControl.removeAt(index);
+    this.form.markAsDirty();
   }
 
   addExaminant() {

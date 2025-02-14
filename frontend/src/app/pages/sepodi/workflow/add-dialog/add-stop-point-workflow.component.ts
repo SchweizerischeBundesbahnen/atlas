@@ -35,6 +35,7 @@ export class AddStopPointWorkflowComponent implements OnInit {
 
   ngOnInit() {
     this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup();
+    this.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     this.form.controls.designationOfficial.setValue(this.data.stopPoint.designationOfficial)
   }
 

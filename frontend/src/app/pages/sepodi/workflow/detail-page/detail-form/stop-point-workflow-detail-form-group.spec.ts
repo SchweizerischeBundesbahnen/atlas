@@ -3,7 +3,7 @@ import {JudgementType, ReadStopPointWorkflow} from "../../../../../api";
 
 describe('StopPointWorkflowDetailFormGroupBuilder', () => {
 
-  it('should create formgroup without examinants but default one', () => {
+  it('should create formgroup without examinants', () => {
     const workflow: ReadStopPointWorkflow = {
       versionId: 1,
       sloid: 'ch:1:sloid:8000',
@@ -11,7 +11,7 @@ describe('StopPointWorkflowDetailFormGroupBuilder', () => {
     };
 
     const formGroup = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
-    expect(formGroup.controls.examinants.length).toBe(1);
+    expect(formGroup.controls.examinants.length).toBe(0);
   });
 
   it('should create formgroup with examinants without judgement', () => {
