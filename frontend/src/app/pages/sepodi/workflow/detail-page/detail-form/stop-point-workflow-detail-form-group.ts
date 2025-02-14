@@ -53,10 +53,8 @@ export class StopPointWorkflowDetailFormGroupBuilder {
     });
   }
 
-  static buildExaminantFormGroup(
-    examinant?: StopPointPerson
-  ): FormGroup<ExaminantFormGroup> {
-    let formGroup = new FormGroup<ExaminantFormGroup>({
+  static buildExaminantFormGroup(examinant?: StopPointPerson): FormGroup<ExaminantFormGroup> {
+    const formGroup = new FormGroup<ExaminantFormGroup>({
       id: new FormControl(examinant?.id),
       firstName: new FormControl(examinant?.firstName),
       lastName: new FormControl(examinant?.lastName),
