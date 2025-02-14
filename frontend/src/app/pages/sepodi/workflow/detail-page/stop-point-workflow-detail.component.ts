@@ -214,6 +214,10 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   };
 
   addExaminants() {
-    this.addExaminantsDialogService.openDialog(this.workflow.id!);
+    this.addExaminantsDialogService.openDialog(this.workflow.id!).subscribe(saved => {
+      if(saved) {
+        this._reloadDetail('WORKFLOW.NOTIFICATION.ADD_EXAMINANT.SUCCESS');
+      }
+    });
   }
 }

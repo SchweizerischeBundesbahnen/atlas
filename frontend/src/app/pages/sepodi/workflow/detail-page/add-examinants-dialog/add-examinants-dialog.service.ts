@@ -14,7 +14,7 @@ export class AddExaminantsDialogService {
   openDialog(workflowId: number): Observable<boolean> {
     const dialogData: AddExaminantsDialogData = {
       workflowId: workflowId,
-      title: 'WORKFLOW.BUTTON.ADD',
+      title: 'WORKFLOW.ADD_EXAMINANT',
       message: '',
       cancelText: 'DIALOG.CANCEL',
       confirmText: 'WORKFLOW.BUTTON.SEND',
