@@ -1,11 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
-import { ReadStopPointWorkflow, WorkflowStatus } from 'src/app/api';
-import {
-  StopPointWorkflowDetailFormGroup,
-  StopPointWorkflowDetailFormGroupBuilder
-} from '../detail-form/stop-point-workflow-detail-form-group';
-import {ValidationService} from "../../../../../core/validation/validation.service";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ControlContainer, FormArray, FormGroup, NgForm} from '@angular/forms';
+import { WorkflowStatus } from 'src/app/api';
+import {ExaminantFormGroup, StopPointWorkflowDetailFormGroupBuilder} from '../detail-form/stop-point-workflow-detail-form-group';
+import { ValidationService } from '../../../../../core/validation/validation.service';
 
 @Component({
   selector: 'stop-point-workflow-examinants-table',
@@ -16,29 +13,30 @@ import {ValidationService} from "../../../../../core/validation/validation.servi
 export class StopPointWorkflowExaminantsTableComponent {
   readonly WorkflowStatus = WorkflowStatus;
 
-  @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
-  @Input() currentWorkflow?: ReadStopPointWorkflow;
-  @Input() isDeleteButtonInvisible = false;
+  @Input() form!: FormGroup;
+  @Input() currentWorkflowStatus?: WorkflowStatus;
 
   @Output() openDecision = new EventEmitter<number>();
-
 
   onOpenDecision(index: number) {
     this.openDecision.emit(index);
   }
 
   removeExaminant(index: number) {
-    const examinantsControl = this.form.controls.examinants;
-    examinantsControl.removeAt(index);
+    this.examinants.removeAt(index);
     this.form.markAsDirty();
   }
 
   addExaminant() {
-    const examinantsControl = this.form.controls.examinants;
-    ValidationService.validateForm(examinantsControl);
-    if (examinantsControl.disabled || examinantsControl.valid) {
-      examinantsControl.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
+    ValidationService.validateForm(this.examinants);
+    if (this.examinants.disabled || this.examinants.valid) {
+      this.examinants.push(
+        StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup()
+      );
     }
   }
 
+  get examinants() {
+    return this.form.controls.examinants as FormArray<FormGroup<ExaminantFormGroup>>;
+  }
 }

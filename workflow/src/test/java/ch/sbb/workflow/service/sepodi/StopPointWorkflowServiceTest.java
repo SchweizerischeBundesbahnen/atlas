@@ -425,7 +425,7 @@ class StopPointWorkflowServiceTest {
         .build();
 
     // When & then
-    assertThrows(StopPointWorkflowExaminantEmailNotUniqueException.class,
-        () -> workflowService.addExaminants(saved.getId(), addExaminantsModel));
+    Long savedId = saved.getId();
+    assertThrows(StopPointWorkflowExaminantEmailNotUniqueException.class, () -> workflowService.addExaminants(savedId, addExaminantsModel));
   }
 }
