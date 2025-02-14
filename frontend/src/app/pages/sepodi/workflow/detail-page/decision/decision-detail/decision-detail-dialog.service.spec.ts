@@ -35,6 +35,7 @@ describe('DecisionDetailDialogService', () => {
           judgement: new FormControl('YES'),
           id: new FormControl(1),
           decisionType: new FormControl(DecisionType.Voted),
+          defaultExaminant: new FormControl(false)
         }),
       )
       .subscribe((result) => {
