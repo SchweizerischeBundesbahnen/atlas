@@ -14,6 +14,7 @@ import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueExcepti
 import ch.sbb.workflow.exception.StopPointWorkflowNotInHearingException;
 import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
 import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeHearingException;
+import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.AddExaminantsModel;
@@ -30,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,7 @@ public class StopPointWorkflowService {
   private final DecisionRepository decisionRepository;
   private final SePoDiClientService sePoDiClientService;
   private final Examinants examinants;
+  private final StopPointWorkflowNotificationService notificationService;
 
   @Redacted
   public StopPointWorkflow getWorkflow(Long id) {
@@ -229,6 +232,9 @@ public class StopPointWorkflowService {
     addExaminantsModel.getCcEmails().stream()
         .filter(i -> stopPointWorkflow.getCcEmails().stream().noneMatch(i::equalsIgnoreCase))
         .forEach(stopPointWorkflow.getCcEmails()::add);
+
+    List<String> addedExaminantMails = addExaminantsModel.getExaminants().stream().map(StopPointClientPersonModel::getMail).toList();
+    notificationService.sendStartToAddedExaminant(stopPointWorkflow, addedExaminantMails);
     return save(stopPointWorkflow);
   }
 
