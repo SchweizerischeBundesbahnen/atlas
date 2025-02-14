@@ -30,6 +30,7 @@ import { StopPointRestartWorkflowDialogComponent } from "./workflow/stop-point-r
 import {
   StopPointWorkflowExaminantsTableComponent
 } from "./workflow/detail-page/examinant-table/stop-point-workflow-examinants-table.component";
+import {AddExaminantsComponent} from "./workflow/detail-page/add-examinants-dialog/add-examinants.component";
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import {
     DecisionDetailDialogComponent,
     StopPointRestartWorkflowDialogComponent,
     StopPointWorkflowExaminantsTableComponent,
+    AddExaminantsComponent,
   ],
   imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })
