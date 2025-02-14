@@ -37,7 +37,7 @@ import {DialogCloseComponent} from "../../../../core/components/dialog/close/dia
 import {ValidationService} from "../../../../core/validation/validation.service";
 import {
   ExaminantFormGroup,
-  StopPointWorkflowDetailFormGroup
+  StopPointWorkflowDetailFormGroup, StopPointWorkflowDetailFormGroupBuilder
 } from "../detail-page/detail-form/stop-point-workflow-detail-form-group";
 import {FormArray, FormControl, FormGroup} from "@angular/forms";
 import {Component, Input} from "@angular/core";
@@ -143,6 +143,7 @@ describe('AddStopPointWorkflowComponent', () => {
   it('should add workflow via service', () => {
     spyOn(ValidationService, 'validateForm').and.callThrough();
 
+    component.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     const firstExaminant = component.form.controls.examinants.at(0);
     firstExaminant.controls.firstName.setValue('');
     firstExaminant.controls.lastName.setValue('');
