@@ -672,6 +672,9 @@
       },
       "EDIT": {
         "SUCCESS": "L'audition a été enregistrée avec succès."
+      },
+      "ADD_EXAMINANT": {
+        "SUCCESS": "Les destinataires ont été ajoutés avec succès."
       }
     },
     "ERROR": {
@@ -701,7 +704,8 @@
       "DECLINE": "Non, je refuse. La saisie de la justification est nécessaire.",
       "OVERRIDE_ACCEPT": "Cette décision est approuvée par un \"oui\".",
       "OVERRIDE_DECLINE": "Cette décision est considérée comme un \"non\"."
-    }
+    },
+    "ADD_EXAMINANT": "Saisir des destinataires supplémentaires"
   },
   "TTH": {
     "NOTIFICATION": {
