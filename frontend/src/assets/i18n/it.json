@@ -672,6 +672,9 @@
       },
       "EDIT": {
         "SUCCESS": "L'udienza è stata salvata con successo."
+      },
+      "ADD_EXAMINANT": {
+        "SUCCESS": "I destinatari sono stati aggiunti con successo."
       }
     },
     "ERROR": {
@@ -701,7 +704,8 @@
       "DECLINE": "No, mi rifiuto. È necessario inserire le motivazioni.",
       "OVERRIDE_ACCEPT": "Questa decisione è considerata con \"sì\".",
       "OVERRIDE_DECLINE": "Questa decisione è considerata con \"no\"."
-    }
+    },
+    "ADD_EXAMINANT": "Inserire altri destinatari"
   },
   "TTH": {
     "NOTIFICATION": {
