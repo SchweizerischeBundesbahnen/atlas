@@ -40,7 +40,7 @@ describe('StopPointWorkflowExaminantsTableComponent', () => {
 
     component.form =
       StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
-    component.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
+    component.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     fixture.detectChanges();
   });
 
@@ -49,7 +49,7 @@ describe('StopPointWorkflowExaminantsTableComponent', () => {
   });
 
   it('should add second examinant', () => {
-    const firstExaminant = component.form.controls.examinants.at(0);
+    const firstExaminant = component.examinants.at(0);
     firstExaminant.controls.firstName.setValue('firstName');
     firstExaminant.controls.lastName.setValue('lastName');
     firstExaminant.controls.personFunction.setValue('personFunction');
@@ -57,11 +57,11 @@ describe('StopPointWorkflowExaminantsTableComponent', () => {
     firstExaminant.controls.mail.setValue('mail@sbb.ch');
 
     component.addExaminant();
-    expect(component.form.controls.examinants.length).toBe(2);
+    expect(component.examinants.length).toBe(2);
   });
 
   it('should remove examinant', () => {
-    const firstExaminant = component.form.controls.examinants.at(0);
+    const firstExaminant = component.examinants.at(0);
     firstExaminant.controls.firstName.setValue('firstName');
     firstExaminant.controls.lastName.setValue('lastName');
     firstExaminant.controls.personFunction.setValue('personFunction');
@@ -69,13 +69,13 @@ describe('StopPointWorkflowExaminantsTableComponent', () => {
     firstExaminant.controls.mail.setValue('mail@sbb.ch');
 
     component.addExaminant();
-    expect(component.form.controls.examinants.length).toBe(2);
+    expect(component.examinants.length).toBe(2);
 
-    component.form.controls.examinants.at(0).disable();
-    component.form.controls.examinants.at(1).disable();
+    component.examinants.at(0).disable();
+    component.examinants.at(1).disable();
     component.removeExaminant(0);
-    expect(component.form.controls.examinants.length).toBe(1);
+    expect(component.examinants.length).toBe(1);
     component.removeExaminant(0);
-    expect(component.form.controls.examinants.length).toBe(0);
+    expect(component.examinants.length).toBe(0);
   });
 });
