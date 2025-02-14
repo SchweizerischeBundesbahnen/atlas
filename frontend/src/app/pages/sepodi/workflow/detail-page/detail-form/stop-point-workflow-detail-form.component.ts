@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ControlContainer, FormArray, FormGroup, NgForm} from '@angular/forms';
+import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
 import {
   SPECIAL_DECISION_TYPES,
   StopPointWorkflowDetailFormGroup,

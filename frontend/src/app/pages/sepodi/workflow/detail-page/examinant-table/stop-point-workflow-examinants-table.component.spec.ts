@@ -1,13 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  BusinessOrganisationsService,
-  ReadStopPointWorkflow,
-} from '../../../../../api';
+import { ReadStopPointWorkflow } from '../../../../../api';
 import { StopPointWorkflowExaminantsTableComponent } from './stop-point-workflow-examinants-table.component';
-import { StringListComponent } from '../../../../../core/form-components/string-list/string-list.component';
 import { MockAtlasButtonComponent } from '../../../../../app.testing.mocks';
 import { DisplayDatePipe } from '../../../../../core/pipe/display-date.pipe';
-import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -28,17 +23,12 @@ describe('StopPointWorkflowExaminantsTableComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         StopPointWorkflowExaminantsTableComponent,
-        StringListComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
-        SplitServicePointNumberPipe,
         AtlasSpacerComponent,
       ],
       imports: [AppTestingModule, FormModule],
-      providers: [
-        { provide: TranslatePipe },
-        { provide: BusinessOrganisationsService },
-      ],
+      providers: [{ provide: TranslatePipe }],
     })
       .compileComponents()
       .then();
@@ -50,15 +40,12 @@ describe('StopPointWorkflowExaminantsTableComponent', () => {
 
     component.form =
       StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
+    component.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should have one examinant per default', () => {
-    expect(component.form.controls.examinants.length).toBe(1);
   });
 
   it('should add second examinant', () => {
