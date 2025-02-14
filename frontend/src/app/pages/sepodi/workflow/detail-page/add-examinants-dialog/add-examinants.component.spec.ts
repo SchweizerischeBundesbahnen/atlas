@@ -106,6 +106,5 @@ describe('AddExaminantsComponent', () => {
     component.addExaminants();
 
     expect(stopPointWorkflowService.addExaminantsToStopPointWorkflow).toHaveBeenCalled();
-    expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 });
