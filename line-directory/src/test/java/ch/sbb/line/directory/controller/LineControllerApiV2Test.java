@@ -19,10 +19,12 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.service.SublineShorteningService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -39,6 +41,9 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
 
   @MockBean
   private SublineShorteningService sublineShorteningService;
+
+  @Mock
+  private SublineVersionRepository sublineVersionRepository;
 
   @AfterEach
   void tearDown() {
@@ -118,16 +123,31 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
   }
 
+  //TODO nachfragen
   /*@Test
-  void shouldCheckAffectedSublines() {
-    // Given
-    Long id = 1L;
-    LocalDate validFrom = LocalDate.of(2000, 12, 31);
-    LocalDate validTo = LocalDate.of(2000, 12, 31);
-    // When
-    lineControllerV2.checkAffectedSublines(id, validFrom, validTo);
+  void shouldCheckAffectedSublines() throws Exception {
+    LineVersion lineVersion = LineTestData.lineVersionV2Builder().build();
+    lineVersion.setSlnid("abc");
+    LineVersion saved = lineVersionRepository.saveAndFlush(lineVersion);
 
-    // Then
-    verify(sublineShorteningService).checkAffectedSublines(id, validFrom, validTo);
+    String validFrom = "2023-01-01";
+    String validTo = "2023-12-31";
+
+    SublineVersion subline = new SublineVersion();
+    subline.setSlnid("sub-123");
+    subline.setMainlineSlnid(saved.getSlnid());
+    sublineVersionRepository.saveAndFlush(subline);
+
+    mvc.perform(get("/v2/lines/affectedSublines/" + saved.getId())
+            .param("validFrom", validFrom)
+            .param("validTo", validTo))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.allowedSublines").isArray())
+        .andExpect(jsonPath("$.notAllowedSublines").isArray())
+        .andExpect(jsonPath("$.isAffectedSublinesEmpty").exists())
+        .andExpect(jsonPath("$.hasAllowedSublinesOnly").exists())
+        .andExpect(jsonPath("$.hasNotAllowedSublinesOnly").exists());
+
   }*/
 }
