@@ -150,7 +150,7 @@ public class SublineShorteningService {
 
   }
 
-  private Map<String, List<SublineVersion>> getAllSublinesByMainlineSlnid(String mainlineSlnid) {
+  public Map<String, List<SublineVersion>> getAllSublinesByMainlineSlnid(String mainlineSlnid) {
     List<SublineVersion> sublineVersions = sublineVersionRepository.getSublineVersionByMainlineSlnid(mainlineSlnid);
     return sublineVersions.stream()
         .collect(Collectors.groupingBy(SublineVersion::getSlnid));

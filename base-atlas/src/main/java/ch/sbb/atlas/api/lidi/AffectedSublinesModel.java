@@ -1,6 +1,5 @@
 package ch.sbb.atlas.api.lidi;
 
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AffectedSublinesModel {
 
-  private List<String> allowedSublines = new ArrayList<>();
-  private List<String> notAllowedSublines = new ArrayList<>();
+  private List<String> allowedSublines;
+  private List<String> notAllowedSublines;
 
   private boolean isAffectedSublinesEmpty;
   private boolean hasAllowedSublinesOnly;
