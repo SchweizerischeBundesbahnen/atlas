@@ -6,11 +6,13 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.lidi.AffectedSublinesModel;
+import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +39,7 @@ class SublineShorteningServiceTest {
     sublineShorteningService = new SublineShorteningService(sublineVersionRepository);
   }
 
-  /*@Test
+  @Test
   void shouldReturnAllowedSublinesOnly() {
     LineVersion lineVersion = LineVersion.builder()
         .id(1000L)
@@ -79,12 +81,12 @@ class SublineShorteningServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid("mainline")).thenReturn(
         List.of(sublineVersion, sublineVersion2, sublineVersionNew, sublineVersionNew2));
 
-    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion.getId(),
+    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion,
         LocalDate.of(2000, 1, 1),
         LocalDate.of(2015, 12, 31));
     assertThat(affectedSublinesModel.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(sublineVersionNew2.getSlnid(), sublineVersion2.getSlnid()));
-  }*/
+  }
 
   @Test
   void shouldReturnAllowedSublinesAndNotAllowedSublines() {
@@ -215,50 +217,45 @@ class SublineShorteningServiceTest {
         List.of(notAllowedSublineVersion3.getSlnid()));
   }
 
-  /*@Test
-  void shouldShortSublines() {
+  @Test
+  void shouldReturnSublinesToShort() {
     LineVersion lineVersion = LineTestData.lineVersion();
     lineVersion.setId(1000L);
     lineVersion.setSlnid("mainline");
     lineVersion.setValidFrom(LocalDate.of(1999, 1, 1));
-    lineVersion.setValidTo(LocalDate.of(2007, 1, 1));
+    lineVersion.setValidTo(LocalDate.of(2017, 1, 1));
 
     LineVersion editedVersion = LineTestData.lineVersion();
     editedVersion.setSlnid("mainline");
     editedVersion.setValidFrom(LocalDate.of(1999, 1, 1));
-    editedVersion.setValidTo(LocalDate.of(2006, 1, 1));
-
-    DateRange mainlineDateRange = new DateRange(
-        editedVersion.getValidFrom(),
-        editedVersion.getValidTo()
-    );
+    editedVersion.setValidTo(LocalDate.of(2015, 1, 1));
 
     SublineVersion sublineVersion = SublineVersion.builder()
         .slnid("1234")
         .validFrom(LocalDate.of(1999, 1, 1))
         .validTo(LocalDate.of(2008, 1, 1))
         .description("version 1")
+        .mainlineSlnid("mainline")
         .build();
 
-    SublineVersion editedSubline = SublineVersion.builder()
+    SublineVersion sublineVersion2 = SublineVersion.builder()
         .slnid("1234")
-        .validFrom(LocalDate.of(1999, 1, 1))
-        .validTo(LocalDate.of(2006, 1, 1))
-        .description("version 1")
+        .validFrom(LocalDate.of(2008, 1, 2))
+        .validTo(LocalDate.of(2016, 1, 1))
+        .description("version 2")
+        .mainlineSlnid("mainline")
         .build();
 
     List<String> slnid = new ArrayList<>();
     slnid.add(sublineVersion.getSlnid());
-    SublineShorteningRequest sublineShorteningRequest = new SublineShorteningRequest(mainlineDateRange, slnid);
 
-    when(sublineShorteningService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
-    when(sublineVersionRepository.findAllBySlnidOrderByValidFrom(anyString())).thenReturn(
-        List.of(sublineVersion));
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
+        List.of(sublineVersion, sublineVersion2));
 
-    sublineShorteningService.shortSublines(lineVersion.getId(), sublineShorteningRequest);
-    verify(sublineService, times(1)).updateVersion(refEq(sublineVersion), refEq(editedSubline));
+    sublineShorteningService.checkAndPrepareToShortSublines(lineVersion, editedVersion);
+    //verify(sublineService, times(1)).updateVersion(refEq(sublineVersion), refEq(editedSubline));
 
-  }*/
+  }
 
   /*@Test
   void testCheckAndShortSublines_callsShortSublines_whenConditionsMet() {
