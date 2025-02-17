@@ -1,4 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+} from '@angular/core';
 import { TableColumn } from '../../../../../core/components/table/table-column';
 import { ElementType, Line, LinesService } from '../../../../../api';
 import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';
@@ -11,8 +17,10 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'app-subline-table',
   templateUrl: './subline-table.component.html',
 })
-export class SublineTableComponent implements OnInit, OnDestroy {
+export class SublineTableComponent implements OnChanges, OnDestroy {
   @Input() mainLineSlnid!: string;
+  @Input() refreshSublineTable!: boolean;
+
   private onDestroy$ = new Subject<boolean>();
 
   tableColumns: TableColumn<Line>[] = [
@@ -33,7 +41,8 @@ export class SublineTableComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
     this.getOverview();
   }
 

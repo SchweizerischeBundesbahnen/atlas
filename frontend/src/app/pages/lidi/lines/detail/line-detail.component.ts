@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AffectedSublinesModel,
   ApplicationRole,
@@ -30,7 +30,6 @@ import moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { SublineShorteningDialogComponent } from '../../dialog/subline-shortening-dialog/subline-shortening-dialog.component';
 import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
-import { SublineTableComponent } from './subline-table/subline-table.component';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -38,9 +37,6 @@ import { SublineTableComponent } from './subline-table/subline-table.component';
   providers: [ValidityService],
 })
 export class LineDetailComponent implements OnInit, OnDestroy {
-  @ViewChild(SublineTableComponent)
-  sublineTableComponent!: SublineTableComponent;
-
   private onDestroy$ = new Subject<boolean>();
 
   selectedVersionIndex!: number;
@@ -51,6 +47,8 @@ export class LineDetailComponent implements OnInit, OnDestroy {
   initForm!: FormGroup<LineDetailFormGroup>;
 
   isNew = false;
+
+  refreshSublineTable = false;
 
   showVersionSwitch = false;
   isSwitchVersionDisabled = false;
@@ -253,10 +251,11 @@ export class LineDetailComponent implements OnInit, OnDestroy {
   updateLine(id: number, lineVersion: UpdateLineVersionV2): void {
     const validFromDate = moment(lineVersion.validFrom).toDate();
     const validToDate = moment(lineVersion.validTo).toDate();
-    let success = 'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS';
+    const defaultSuccessMessage = 'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS';
+    this.refreshSublineTable = false;
 
     if (!this.isOnlyValidityChangedToTruncation()) {
-      this.updateLineVersion(id, lineVersion, success);
+      this.updateLineVersion(id, lineVersion, defaultSuccessMessage);
       return;
     }
 
@@ -265,25 +264,36 @@ export class LineDetailComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap((affectedSublines) => {
           if (affectedSublines.affectedSublinesEmpty) {
-            this.updateLineVersion(id, lineVersion, success);
+            this.updateLineVersion(id, lineVersion, defaultSuccessMessage);
             return EMPTY;
           } else {
-            success = this.buildSuccessMessage(affectedSublines);
+            const successMessage =
+              this.buildSuccessMessageForShortening(affectedSublines);
             return this.openSublineShorteningDialog(affectedSublines).pipe(
               map((confirmed) => {
-                return { confirmed, success };
+                return { confirmed, successMessage };
               })
             );
           }
         }),
         filter(({ confirmed }) => confirmed),
-        switchMap(({ success }) => {
-          this.updateLineVersion(id, lineVersion, success);
+        switchMap(({ successMessage }) => {
+          this.updateLineVersion(id, lineVersion, successMessage);
           return EMPTY;
         }),
         takeUntil(this.onDestroy$)
       )
       .subscribe();
+  }
+
+  buildSuccessMessageForShortening(affectedSublines: AffectedSublinesModel) {
+    if (
+      affectedSublines.hasNotAllowedSublinesOnly &&
+      !affectedSublines.hasAllowedSublinesOnly
+    ) {
+      return 'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS';
+    }
+    return 'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS';
   }
 
   updateLineVersion(
@@ -304,19 +314,9 @@ export class LineDetailComponent implements OnInit, OnDestroy {
           ])
           .then(() => {
             this.ngOnInit();
-            this.sublineTableComponent.getOverview();
+            this.refreshSublineTable = true;
           });
       });
-  }
-
-  buildSuccessMessage(affectedSublines: AffectedSublinesModel) {
-    if (
-      affectedSublines.hasNotAllowedSublinesOnly &&
-      !affectedSublines.hasAllowedSublinesOnly
-    ) {
-      return 'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS';
-    }
-    return 'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS';
   }
 
   openSublineShorteningDialog(
