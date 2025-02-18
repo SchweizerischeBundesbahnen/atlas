@@ -289,7 +289,8 @@
     "INTEGER_WITH_FRACTION": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Ziffern und mit maximal {{maxFractionDigits}} Nachkommastellen ein.",
     "COLON_SEPERATED_SID4PT": "Verwenden Sie den SID4PT Zeichensatz (-._0-9a-zA-Z) mit genau {{numbersWithColons}} trennenden Doppelpunkten.",
     "DECISION_COMMENT_REQUIRED": "Begründung ist notwendig",
-    "NOTUNIQUEEMAIL": "E-Mail bereits vorhanden. Bitte prüfen Sie ob der Empfänger bereits erfasst ist oder ändern Sie die E-Mail Adresse."
+    "NOTUNIQUEEMAIL": "E-Mail bereits vorhanden. Bitte prüfen Sie ob der Empfänger bereits erfasst ist oder ändern Sie die E-Mail Adresse.",
+    "EXAMINANT_OR_CC_MAIL": "Bitte mindestens einen Empfänger oder eine zusätzliche cc-Mail erfassen."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
