@@ -35,10 +35,8 @@ public class Subline extends BaseEntity {
   private SublineConcessionType concessionType;
   private String swissSublineNumber;
 
-  @Deprecated(forRemoval = true, since = "2.328.0")
-  private String number; // todo: is this still needed?
-
-  // from parent
+  // derived from parent
+  private String number;
   private String shortNumber;
   private OfferCategory offerCategory;
 
