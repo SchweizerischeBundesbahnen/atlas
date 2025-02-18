@@ -24,20 +24,23 @@ public class SublineShorteningService {
 
   private final SublineVersionRepository sublineVersionRepository;
 
-  public AffectedSublinesModel checkAffectedSublines(LineVersion lineVersion, LocalDate validFrom, LocalDate validTo) {
+  public AffectedSublinesModel checkAffectedSublines(LineVersion lineVersion, LineVersion editedVersion) {
     Map<String, List<SublineVersion>> sublineVersions = getAllSublinesByMainlineSlnid(lineVersion.getSlnid());
-
     List<String> allowedSublines = new ArrayList<>();
     List<String> notAllowedSublines = new ArrayList<>();
 
-    boolean isShortening = isShortening(lineVersion, validFrom, validTo);
+    boolean isOnlyValidityChanged = isOnlyValidityChanged(lineVersion, editedVersion);
 
-    if (!sublineVersions.isEmpty() && isShortening) {
+    boolean isShortening = isShortening(lineVersion, editedVersion.getValidFrom(), editedVersion.getValidTo());
+
+    if (!sublineVersions.isEmpty() && isShortening && isOnlyValidityChanged) {
       for (List<SublineVersion> versions : sublineVersions.values()) {
         SublineVersionRange sublineVersionValidityRange = getOldestAndLatest(versions);
 
-        boolean isValidityAffected = isSublineValidityAffectedByUpdatedMainline(validFrom, validTo, sublineVersionValidityRange);
-        boolean isShorteningAllowed = isShorteningAllowed(validFrom, validTo, sublineVersionValidityRange);
+        boolean isValidityAffected = isSublineValidityAffectedByUpdatedMainline(editedVersion.getValidFrom(),
+            editedVersion.getValidTo(), sublineVersionValidityRange);
+        boolean isShorteningAllowed = isShorteningAllowed(editedVersion.getValidFrom(), editedVersion.getValidTo(),
+            sublineVersionValidityRange);
 
         if (isValidityAffected) {
           if (isShorteningAllowed) {
@@ -114,8 +117,7 @@ public class SublineShorteningService {
 
     if (isOnlyValidityChanged && isShortening) {
       DateRange newMainlineValidity = new DateRange(editedVersion.getValidFrom(), editedVersion.getValidTo());
-      AffectedSublinesModel affectedSublinesModel = checkAffectedSublines(currentVersion, editedVersion.getValidFrom(),
-          editedVersion.getValidTo());
+      AffectedSublinesModel affectedSublinesModel = checkAffectedSublines(currentVersion, editedVersion);
 
       if (!affectedSublinesModel.getAllowedSublines().isEmpty()) {
         SublineShorteningRequest sublineShorteningRequest = new SublineShorteningRequest(

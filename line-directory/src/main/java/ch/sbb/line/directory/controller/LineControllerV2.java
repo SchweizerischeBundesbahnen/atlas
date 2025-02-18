@@ -13,7 +13,6 @@ import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.mapper.LineVersionWorkflowMapper;
 import ch.sbb.line.directory.service.LineService;
 import ch.sbb.line.directory.service.SublineShorteningService;
-import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,9 +53,10 @@ public class LineControllerV2 implements LineApiV2 {
   }
 
   @Override
-  public AffectedSublinesModel checkAffectedSublines(Long id, LocalDate validFrom, LocalDate validTo) {
+  public AffectedSublinesModel checkAffectedSublines(Long id, UpdateLineVersionModelV2 newVersion) {
     LineVersion lineVersion = lineService.getLineVersionById(id);
-    return sublineShorteningService.checkAffectedSublines(lineVersion, validFrom, validTo);
+    LineVersion editedVersion = toEntityFromUpdate(newVersion, lineVersion);
+    return sublineShorteningService.checkAffectedSublines(lineVersion, editedVersion);
   }
 
   private LineVersionModelV2 toModel(LineVersion lineVersion) {
