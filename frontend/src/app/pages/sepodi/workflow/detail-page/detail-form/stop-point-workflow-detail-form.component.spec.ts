@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Router} from "@angular/router";
-import {BusinessOrganisationsService, ReadStopPointWorkflow} from "../../../../../api";
+import {ReadStopPointWorkflow, StopPointPerson, StopPointWorkflowService} from "../../../../../api";
 import {StopPointWorkflowDetailFormComponent} from "./stop-point-workflow-detail-form.component";
 import {StringListComponent} from "../../../../../core/form-components/string-list/string-list.component";
 import {MockAtlasButtonComponent} from "../../../../../app.testing.mocks";
@@ -13,6 +13,7 @@ import {BERN_WYLEREGG} from "../../../../../../test/data/service-point";
 import {StopPointWorkflowDetailFormGroupBuilder} from "./stop-point-workflow-detail-form-group";
 import {FormModule} from "../../../../../core/module/form.module";
 import {StopPointWorkflowExaminantsTableComponent} from "../examinant-table/stop-point-workflow-examinants-table.component";
+import {of} from "rxjs";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -21,6 +22,19 @@ const workflow: ReadStopPointWorkflow = {
 };
 
 let router: Router;
+
+const defaultExaminants: StopPointPerson[]=[
+  {
+    organisation: "SKI",
+    personFunction: "Fachstelle atlas",
+    mail: "atlas@sbb.ch",
+    defaultExaminant: true
+  }
+]
+
+const stopPointWorkflowService = jasmine.createSpyObj('stopPointWorkflowService', {
+  getExaminants: of(defaultExaminants)
+})
 
 describe('StopPointWorkflowDetailFormComponent', () => {
   let component: StopPointWorkflowDetailFormComponent;
@@ -40,7 +54,7 @@ describe('StopPointWorkflowDetailFormComponent', () => {
       imports: [AppTestingModule, FormModule],
       providers: [
         {provide: TranslatePipe},
-        {provide: BusinessOrganisationsService},
+        {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
       ],
     }).compileComponents().then();
 
@@ -53,8 +67,20 @@ describe('StopPointWorkflowDetailFormComponent', () => {
     router = TestBed.inject(Router);
   });
 
-  it('should create', () => {
+  it('should create without currentWorkflow', () => {
     expect(component).toBeTruthy();
+    expect(component.currentWorkflow).toBeUndefined();
+
+    expect(stopPointWorkflowService.getExaminants).toHaveBeenCalled();
+
+    // Default examinant disabled state
+    expect(component.form.controls.examinants.length).toBe(2);
+    expect(component.form.controls.examinants.at(0).controls.mail.value).toBe("atlas@sbb.ch");
+    expect(component.form.controls.examinants.at(0).enabled).toBe(false);
+
+    // Default empty row enabled
+    expect(component.form.controls.examinants.at(1).controls.mail.value).toBeFalsy();
+    expect(component.form.controls.examinants.at(1).enabled).toBe(true);
   });
 
   it('should go to swisstopo', () => {
