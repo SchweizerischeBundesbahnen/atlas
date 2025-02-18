@@ -3,6 +3,7 @@ package ch.sbb.exportservice.entity.lidi;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.entity.BaseEntity;
 import java.time.LocalDate;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +32,6 @@ public class TimetableFieldNumber extends BaseEntity {
   private String businessOrganisation;
   private String description;
   private String comment;
-
-  // todo
-  // private Set<TimetableFieldLineRelation> lineRelations;
+  private Set<String> lineRelations;
 
 }
