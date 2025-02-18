@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.lidi.AffectedSublinesModel;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.model.SublineVersionRange;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
@@ -218,7 +219,7 @@ class SublineShorteningServiceTest {
   }
 
   @Test
-  void shouldReturnSublinesToShort() {
+  void checkAndPrepareToShortSublines() {
     LineVersion lineVersion = LineTestData.lineVersion();
     lineVersion.setId(1000L);
     lineVersion.setSlnid("mainline");
@@ -252,62 +253,12 @@ class SublineShorteningServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
         List.of(sublineVersion, sublineVersion2));
 
-    sublineShorteningService.checkAndPrepareToShortSublines(lineVersion, editedVersion);
-    //verify(sublineService, times(1)).updateVersion(refEq(sublineVersion), refEq(editedSubline));
+    when(sublineVersionRepository.findAllBySlnidOrderByValidFrom(anyString())).thenReturn(
+        List.of(sublineVersion, sublineVersion2));
 
+    List<SublineVersionRange> sublinesToShort = sublineShorteningService.checkAndPrepareToShortSublines(lineVersion,
+        editedVersion);
+
+    assertThat(sublinesToShort).hasSize(1);
   }
-
-  /*@Test
-  void testCheckAndShortSublines_callsShortSublines_whenConditionsMet() {
-    SublineShorteningService serviceSpy = spy(
-        new SublineShorteningService(sublineService, sublineVersionRepository, lineVersionRepository)
-    );
-
-    LineVersion lineVersion = LineVersion.builder()
-        .id(1000L)
-        .slnid("mainline")
-        .validFrom(LocalDate.of(2004, 1, 1))
-        .validTo(LocalDate.of(2015, 12, 31))
-        .description("desc")
-        .build();
-
-    LineVersion editedVersion = new LineVersion();
-    editedVersion.setSlnid("mainline");
-    editedVersion.setValidFrom(LocalDate.of(2006, 1, 1));
-    editedVersion.setValidTo(LocalDate.of(2014, 11, 30));
-
-    List<String> allowedSublines = List.of("1234");
-    List<String> notAllowedSublines = Collections.emptyList();
-
-    SublineVersion sublineVersion = SublineVersion.builder()
-        .slnid("1234")
-        .validFrom(LocalDate.of(1999, 1, 1))
-        .validTo(LocalDate.of(2015, 1, 1))
-        .description("version 1")
-        .build();
-
-    AffectedSublinesModel affectedSublinesModel = new AffectedSublinesModel(allowedSublines, notAllowedSublines);
-
-    doReturn(Optional.of(lineVersion))
-        .when(serviceSpy)
-        .findById(anyLong());
-
-    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString()))
-        .thenReturn(List.of(sublineVersion));
-
-    when(sublineVersionRepository.findAllBySlnidOrderByValidFrom(anyString()))
-        .thenReturn(List.of(sublineVersion));
-
-    doReturn(affectedSublinesModel)
-        .when(serviceSpy)
-        .checkAffectedSublines(lineVersion, eq(editedVersion.getValidFrom()), eq(editedVersion.getValidTo()));
-
-    serviceSpy.checkAndShortSublines(lineVersion, editedVersion);
-
-    DateRange expectedDateRange = new DateRange(editedVersion.getValidFrom(), editedVersion.getValidTo());
-    SublineShorteningRequest expectedRequest = new SublineShorteningRequest(expectedDateRange, allowedSublines);
-
-    verify(serviceSpy, times(1))
-        .shortSublines(eq(lineVersion), refEq(expectedRequest));
-  }*/
 }
