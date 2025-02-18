@@ -22,12 +22,16 @@ public class RowMapperUtil {
     return resultSet.wasNull() ? null : doubleValue;
   }
 
-  public static  <T> Set<T> stringToSet(String values, Function<String, T> enumType) {
+  public static <T> Set<T> stringToSet(String values, Function<String, T> enumType) {
     return Arrays.stream(values.split("\\|")).map(enumType).collect(Collectors.toSet());
   }
 
-  public static String toPipedString(Collection<? extends Enum<?>> collection) {
+  public static <T extends Enum<T>> String enumsToPipedString(Collection<T> collection) {
     return collection.stream().map(Enum::name).sorted().collect(Collectors.joining("|"));
+  }
+
+  public static String stringsToPipedString(Collection<String> collection) {
+    return String.join("|", collection);
   }
 
 }

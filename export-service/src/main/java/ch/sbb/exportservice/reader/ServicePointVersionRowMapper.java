@@ -118,7 +118,7 @@ public class ServicePointVersionRowMapper extends BaseRowMapper implements RowMa
       Set<Category> categories = RowMapperUtil.stringToSet(listOfCategories, Category::valueOf);
 
       servicePointVersionBuilder.categories(categories);
-      servicePointVersionBuilder.categoriesPipeList(RowMapperUtil.toPipedString(categories));
+      servicePointVersionBuilder.categoriesPipeList(RowMapperUtil.enumsToPipedString(categories));
     }
   }
 
@@ -127,7 +127,7 @@ public class ServicePointVersionRowMapper extends BaseRowMapper implements RowMa
       Set<MeanOfTransport> meansOfTransport = RowMapperUtil.stringToSet(listOfMeansOfTransport, MeanOfTransport::valueOf);
 
       servicePointVersionBuilder.meansOfTransport(meansOfTransport);
-      servicePointVersionBuilder.meansOfTransportPipeList(RowMapperUtil.toPipedString(meansOfTransport));
+      servicePointVersionBuilder.meansOfTransportPipeList(RowMapperUtil.enumsToPipedString(meansOfTransport));
     }
   }
 
