@@ -20,10 +20,17 @@ export class AtlasFieldErrorComponent {
     if (this.control) {
       return this.validationService.getValidation(this.control.errors || null);
     } else {
-      const formField = this.form.get(this.controlName);
-      const validationErrors = this.getValidationErrors();
-      if (validationErrors) {
-        if ((validationErrors['required'] && formField?.touched) || !validationErrors['required']) {
+      if (this.controlName) {
+        const formField = this.form.get(this.controlName);
+        const validationErrors = this.getValidationErrors();
+        if (validationErrors) {
+          if ((validationErrors['required'] && formField?.touched) || !validationErrors['required']) {
+            return this.validationService.getValidation(validationErrors);
+          }
+        }
+      } else {
+        const validationErrors = this.form.errors;
+        if (validationErrors) {
           return this.validationService.getValidation(validationErrors);
         }
       }
