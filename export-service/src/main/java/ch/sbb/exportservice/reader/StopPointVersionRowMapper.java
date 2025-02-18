@@ -52,7 +52,7 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
     builder.interoperable(mapBooleanObject(rs));
     builder.url(rs.getString("url"));
     builder.visualInfo(rs.getObject("visual_info") != null ?
-            StandardAttributeType.valueOf(rs.getString("visual_info")) : null);
+        StandardAttributeType.valueOf(rs.getString("visual_info")) : null);
     builder.wheelchairTicketMachine(
         rs.getObject("wheelchair_ticket_machine") != null ?
             StandardAttributeType.valueOf(rs.getString("wheelchair_ticket_machine")) : null);
@@ -61,7 +61,7 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
             BooleanOptionalAttributeType.valueOf(rs.getString("assistance_request_fulfilled")) : null);
     builder.ticketMachine(
         rs.getObject("ticket_machine") != null ?
-                BooleanOptionalAttributeType.valueOf(rs.getString("ticket_machine")) : null);
+            BooleanOptionalAttributeType.valueOf(rs.getString("ticket_machine")) : null);
     setMeansOfTransport(builder, rs.getString("list_of_transports"));
     builder.validFrom(rs.getObject("valid_from", LocalDate.class));
     builder.validTo(rs.getObject("valid_to", LocalDate.class));
@@ -78,7 +78,7 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
     if (listOfMeansOfTransport != null) {
       Set<MeanOfTransport> meansOfTransport = RowMapperUtil.stringToSet(listOfMeansOfTransport, MeanOfTransport::valueOf);
       stopPointVersionBuilder.meansOfTransport(meansOfTransport);
-      stopPointVersionBuilder.meansOfTransportPipeList(RowMapperUtil.toPipedString(meansOfTransport));
+      stopPointVersionBuilder.meansOfTransportPipeList(RowMapperUtil.enumsToPipedString(meansOfTransport));
     }
   }
 

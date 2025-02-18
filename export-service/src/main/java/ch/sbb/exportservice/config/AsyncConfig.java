@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.config;
 
-import ch.sbb.exportservice.controller.ExportServicePointBatchControllerApiV1;
 import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @Slf4j
 @Configuration
 @EnableAsync
-public class AsyncConfig implements AsyncConfigurer , DisposableBean {
+public class AsyncConfig implements AsyncConfigurer, DisposableBean {
 
   private static final int CORE_POOL_SIZE = 100;
   private static final int MAX_POOL_SIZE = 200;
@@ -41,7 +40,7 @@ public class AsyncConfig implements AsyncConfigurer , DisposableBean {
 
   /**
    * When using {@link StreamingResponseBody}
-   * {@link ExportServicePointBatchControllerApiV1#streamExportJsonFile(SePoDiBatchExportFileName,
+   * {@link ch.sbb.exportservice.controller.FileStreamingControllerApiV1#streamExportJsonFile(SePoDiBatchExportFileName,
    * SePoDiExportType)},
    * it is highly recommended to configure TaskExecutor used in Spring MVC for executing asynchronous requests.
    *
@@ -100,7 +99,7 @@ public class AsyncConfig implements AsyncConfigurer , DisposableBean {
   }
 
   @Override
-  public void destroy(){
+  public void destroy() {
     log.info("Shutdown executor...");
     executor.shutdown();
   }
