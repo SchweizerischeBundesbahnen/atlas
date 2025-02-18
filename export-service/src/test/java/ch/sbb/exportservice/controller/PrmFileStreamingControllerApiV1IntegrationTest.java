@@ -24,7 +24,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.test.web.servlet.MvcResult;
 
-class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
+class PrmFileStreamingControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
   @MockBean
   private AmazonFileStreamingService amazonFileStreamingService;

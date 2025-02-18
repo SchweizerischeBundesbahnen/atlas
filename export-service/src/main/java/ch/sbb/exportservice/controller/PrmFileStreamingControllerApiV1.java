@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @Slf4j
-public class PrmBatchControllerApiV1 {
+public class PrmFileStreamingControllerApiV1 {
 
   private final FileExportService fileExportService;
 
