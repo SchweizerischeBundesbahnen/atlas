@@ -1,3 +1,11 @@
+import CommonUtils from './common-utils';
+import Chainable = Cypress.Chainable;
+
+export type SePoDependentInfo = {
+  parentServicePointSloid: string;
+  numberWithoutCheckDigit: number;
+};
+
 export default class ReleaseApiUtils {
   static FIRST_ATLAS_DATE = '1700-01-01';
   static LAST_ATLAS_DATE = '9999-12-31';
@@ -83,5 +91,65 @@ export default class ReleaseApiUtils {
   static getRoundedRandomFloat(min, max, fractionDigits) {
     const float = Math.random() * (max - min) + min;
     return parseFloat(float.toFixed(fractionDigits));
+  }
+
+  static createDependentServicePoint(
+    sboid: string,
+    // The service-point needs to have a meansOfTransport, so that a PRM-stopPoint can be created.
+    // The meansOfTransport BUS leads to the reduced and TRAIN to the complete variant
+    // Code: https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/base-atlas/src/main/java/ch/sbb/atlas/servicepoint/enumeration/MeanOfTransport.java
+    meansOfTransport: string[]
+  ): Chainable<SePoDependentInfo> {
+    return CommonUtils.post('/service-point-directory/v1/service-points', {
+      country: 'SWITZERLAND',
+      designationOfficial: ReleaseApiUtils.today(),
+      businessOrganisation: sboid,
+      meansOfTransport: meansOfTransport,
+      validFrom: ReleaseApiUtils.LAST_ATLAS_DATE,
+      validTo: ReleaseApiUtils.LAST_ATLAS_DATE,
+    }).then((response) => {
+      expect(response.status).to.equal(
+        CommonUtils.HTTP_REST_API_RESPONSE_CREATED
+      );
+      expect(response.body).to.have.property('sloid').that.is.a('string');
+      expect(response.body)
+        .property('number')
+        .property('number')
+        .that.is.a('number');
+
+      return {
+        parentServicePointSloid: response.body.sloid,
+        numberWithoutCheckDigit: response.body.number.number,
+      };
+    });
+  }
+
+  static createDependentTrafficPoint(
+    trafficPointSloid: string,
+    info: SePoDependentInfo
+  ) {
+    CommonUtils.post('/service-point-directory/v1/traffic-point-elements', {
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
+      sloid: trafficPointSloid,
+      parentSloid: info.parentServicePointSloid,
+      validFrom: ReleaseApiUtils.FIRST_ATLAS_DATE,
+      validTo: ReleaseApiUtils.FIRST_ATLAS_DATE,
+      trafficPointElementType: 'BOARDING_PLATFORM',
+    }).then((response) => {
+      expect(response.status).to.equal(
+        CommonUtils.HTTP_REST_API_RESPONSE_CREATED
+      );
+      expect(response.body.parentSloid).to.equal(info.parentServicePointSloid);
+      expect(response.body)
+        .to.have.property('sloid')
+        .that.is.a('string')
+        .and.to.equal(trafficPointSloid);
+
+      expect(response.body)
+        .property('servicePointNumber')
+        .property('number')
+        .that.is.a('number')
+        .and.equals(info.numberWithoutCheckDigit);
+    });
   }
 }
