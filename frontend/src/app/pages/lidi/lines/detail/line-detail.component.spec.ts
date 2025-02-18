@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import {
-  AffectedSublines,
+  AffectedSublinesModel,
   LinesService,
   LineType,
   LineVersionV2,
@@ -229,7 +229,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
   });
 
   it('should update LineVersion with only shortening', () => {
-    const affectedSublines: AffectedSublines = {
+    const affectedSublines: AffectedSublinesModel = {
       allowedSublines: ['1234'],
       notAllowedSublines: [],
     };
@@ -255,9 +255,12 @@ describe('LineDetailComponent for existing lineVersion', () => {
   });
 
   it('should update LineVersion with mixed sublines', () => {
-    const affectedSublines: AffectedSublines = {
+    const affectedSublines: AffectedSublinesModel = {
       allowedSublines: ['1234'],
       notAllowedSublines: ['4321'],
+      affectedSublinesEmpty: false,
+      hasNotAllowedSublinesOnly: true,
+      hasAllowedSublinesOnly: true,
     };
     spyOn(component, 'isOnlyValidityChangedToTruncation').and.returnValue(true);
     spyOn(component, 'openSublineShorteningDialog').and.returnValue(of(true));
@@ -276,14 +279,17 @@ describe('LineDetailComponent for existing lineVersion', () => {
     expect(component.updateLineVersion).toHaveBeenCalledWith(
       1,
       lineVersion,
-      'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.SUCCESS'
+      'LIDI.SUBLINE_SHORTENING.ALLOWED.SUCCESS'
     );
   });
 
   it('should update LineVersion with not allowed sublines', () => {
-    const affectedSublines: AffectedSublines = {
+    const affectedSublines: AffectedSublinesModel = {
       allowedSublines: [],
       notAllowedSublines: ['4321'],
+      affectedSublinesEmpty: false,
+      hasAllowedSublinesOnly: false,
+      hasNotAllowedSublinesOnly: true,
     };
     spyOn(component, 'isOnlyValidityChangedToTruncation').and.returnValue(true);
     spyOn(component, 'openSublineShorteningDialog').and.returnValue(of(true));
