@@ -107,4 +107,20 @@ describe('AddExaminantsComponent', () => {
 
     expect(stopPointWorkflowService.addExaminantsToStopPointWorkflow).toHaveBeenCalled();
   });
+
+  it('should have combined validation', () => {
+    component.form.controls.examinants.patchValue([{
+      organisation: "Organisation",
+      mail: "bestmail@sbb.ch"
+    }]);
+    expect(component.form.controls.examinants.length).toBe(1);
+    expect(component.form.controls.ccEmails.value?.length ?? 0).toBe(0);
+    expect(component.form.valid).toBeTrue();
+
+    component.form.controls.examinants.removeAt(0);
+    expect(component.form.valid).toBeFalse();
+
+    component.form.controls.ccEmails.setValue(["winnetou@apache.usa"]);
+    expect(component.form.valid).toBeTrue();
+  });
 });
