@@ -17,14 +17,14 @@ import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import ch.sbb.line.directory.service.SublineShorteningService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -39,15 +39,13 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
-  @MockBean
-  private SublineShorteningService sublineShorteningService;
-
-  @Mock
+  @Autowired
   private SublineVersionRepository sublineVersionRepository;
 
   @AfterEach
   void tearDown() {
     lineVersionRepository.deleteAll();
+    sublineVersionRepository.deleteAll();
   }
 
   @Test
@@ -123,31 +121,33 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
   }
 
-  //TODO nachfragen
-  /*@Test
+  @Test
   void shouldCheckAffectedSublines() throws Exception {
     LineVersion lineVersion = LineTestData.lineVersionV2Builder().build();
-    lineVersion.setSlnid("abc");
+    lineVersion.setValidFrom(LocalDate.of(1999, 1, 1));
+    lineVersion.setValidTo(LocalDate.of(2020, 12, 31));
+    lineVersion.setBusinessOrganisation("ch:1:sboid:1100000");
+    lineVersion.setSlnid("ch:1:slnid:1000000");
     LineVersion saved = lineVersionRepository.saveAndFlush(lineVersion);
 
-    String validFrom = "2023-01-01";
-    String validTo = "2023-12-31";
+    String validFrom = "1999-01-01";
+    String validTo = "2019-12-31";
 
-    SublineVersion subline = new SublineVersion();
-    subline.setSlnid("sub-123");
-    subline.setMainlineSlnid(saved.getSlnid());
+    SublineVersion subline = SublineTestData.sublineVersionV2Builder().build();
+    subline.setValidFrom(LocalDate.of(1999, 1, 1));
+    subline.setValidTo(LocalDate.of(2020, 12, 31));
+    subline.setSlnid("ch:1:slnid:1000000:1");
+    subline.setBusinessOrganisation("ch:1:sboid:1100000");
     sublineVersionRepository.saveAndFlush(subline);
 
     mvc.perform(get("/v2/lines/affectedSublines/" + saved.getId())
             .param("validFrom", validFrom)
             .param("validTo", validTo))
-        .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.allowedSublines").isArray())
         .andExpect(jsonPath("$.notAllowedSublines").isArray())
-        .andExpect(jsonPath("$.isAffectedSublinesEmpty").exists())
+        .andExpect(jsonPath("$.affectedSublinesEmpty").exists())
         .andExpect(jsonPath("$.hasAllowedSublinesOnly").exists())
         .andExpect(jsonPath("$.hasNotAllowedSublinesOnly").exists());
-
-  }*/
+  }
 }
