@@ -190,10 +190,9 @@ describe('PRM: Complete Stop Point', { testIsolation: false }, () => {
     expect(stopPoint).to.have.property('zipCode').and.to.equal(zipCode);
     expect(stopPoint).to.have.property('city').and.to.equal(city);
 
-    // TODO: Uncomment, when ATLAS-2728 is fixed
-    //       expect(stopPoint)
-    //       .to.have.property('interoperable')
-    //       .and.to.equal(interoperable);
+    expect(stopPoint)
+      .to.have.property('interoperable')
+      .and.to.equal(interoperable);
     expect(stopPoint).to.have.property('url').and.to.equal(url);
   };
 
@@ -320,6 +319,7 @@ describe('PRM: Complete Stop Point', { testIsolation: false }, () => {
       dynamicAudioSystem: dynamicAudioSystem,
       dynamicOpticSystem: dynamicOpticSystem,
       infoTicketMachine: infoTicketMachine,
+      interoperable: interoperable,
       url: url,
       visualInfo: visualInfo,
       wheelchairTicketMachine: wheelchairTicketMachine,
