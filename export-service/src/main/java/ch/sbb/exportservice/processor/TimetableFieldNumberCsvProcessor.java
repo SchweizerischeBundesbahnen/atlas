@@ -5,6 +5,7 @@ import static ch.sbb.exportservice.processor.BaseServicePointProcessor.LOCAL_DAT
 
 import ch.sbb.exportservice.entity.lidi.TimetableFieldNumber;
 import ch.sbb.exportservice.model.TimetableFieldNumberCsvModel;
+import ch.sbb.exportservice.reader.RowMapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -23,7 +24,7 @@ public class TimetableFieldNumberCsvProcessor implements ItemProcessor<Timetable
         .businessOrganisation(timetableFieldNumber.getBusinessOrganisation())
         .description(timetableFieldNumber.getDescription())
         .comment(timetableFieldNumber.getComment())
-        .lineRelations("") // todo
+        .lineRelations(RowMapperUtil.stringsToPipedString(timetableFieldNumber.getLineRelations()))
         .creationTime(LOCAL_DATE_FORMATTER.format(timetableFieldNumber.getCreationDate()))
         .editionTime(LOCAL_DATE_FORMATTER.format(timetableFieldNumber.getEditionDate()))
         .build();

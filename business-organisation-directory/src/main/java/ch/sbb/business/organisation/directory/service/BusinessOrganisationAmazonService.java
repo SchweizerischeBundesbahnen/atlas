@@ -31,7 +31,7 @@ public class BusinessOrganisationAmazonService {
 
   private String getFileToStream(ExportType exportType) {
     return BoDiBatchExportFileName.BUSINESS_ORGANISATION_VERSION.getBaseDir() + "/" +
-        getFileName(exportType) + ".json.gz";
+        getFileName(exportType) + ".json.gz"; // todo
   }
 
   public String getFileName(ExportType exportType) {
