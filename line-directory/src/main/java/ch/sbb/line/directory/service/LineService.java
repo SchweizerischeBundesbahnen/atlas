@@ -92,6 +92,7 @@ public class LineService {
     lineValidationService.validateNotRevoked(currentVersion);
     lineUpdateValidationService.validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
 
+    //Muss aufgerufen werden wenn Kürzung. Valid From v1 und validTo letzte V
     List<SublineVersionRange> sublinesToShort = sublineShorteningService.checkAndPrepareToShortSublines(currentVersion,
         editedVersion);
 
