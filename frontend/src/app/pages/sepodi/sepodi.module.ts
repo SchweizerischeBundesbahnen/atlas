@@ -27,6 +27,10 @@ import { DecisionStepperComponent } from './workflow/detail-page/decision/decisi
 import { DecisionDetailDialogComponent } from './workflow/detail-page/decision/decision-detail/decision-detail-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { StopPointRestartWorkflowDialogComponent } from "./workflow/stop-point-restart-workflow-dialog/stop-point-restart-workflow-dialog.component";
+import {
+  StopPointWorkflowExaminantsTableComponent
+} from "./workflow/detail-page/examinant-table/stop-point-workflow-examinants-table.component";
+import {AddExaminantsComponent} from "./workflow/detail-page/add-examinants-dialog/add-examinants.component";
 
 @NgModule({
   declarations: [
@@ -53,6 +57,8 @@ import { StopPointRestartWorkflowDialogComponent } from "./workflow/stop-point-r
     DecisionStepperComponent,
     DecisionDetailDialogComponent,
     StopPointRestartWorkflowDialogComponent,
+    StopPointWorkflowExaminantsTableComponent,
+    AddExaminantsComponent,
   ],
   imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })
