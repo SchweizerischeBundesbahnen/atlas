@@ -11,7 +11,7 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
-import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
+import ch.sbb.workflow.exception.StopPointWorkflowStatusException;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.AddExaminantsModel;
@@ -124,7 +124,7 @@ class StopPointWorkflowServiceTest {
             .designationOfficial("Heimsiswil Zentrum")
             .build();
 
-    assertThrows(StopPointWorkflowStatusMustBeAddedException.class, () -> {
+    assertThrows(StopPointWorkflowStatusException.class, () -> {
       workflowService.editWorkflow(id, workflowModel);
     });
   }
