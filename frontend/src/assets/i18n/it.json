@@ -290,7 +290,7 @@
     "COLON_SEPERATED_SID4PT": "Utilizzare i caratteri SID4PT (-._0-9a-zA-Z) con esattamente {{numbersWithColons}} due punti.",
     "DECISION_COMMENT_REQUIRED": "La giustificazione è necessaria",
     "NOTUNIQUEEMAIL": "L'e-mail esiste già. Verificare se il destinatario è già stato inserito o modificare l'indirizzo e-mail.",
-    "EXAMINANT_OR_CC_MAIL": "Veuillez saisir au moins un destinataire ou un cc-mail supplémentaire."
+    "EXAMINANT_OR_CC_MAIL": "Inserire almeno un destinatario o un indirizzo e-mail aggiuntivo."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
