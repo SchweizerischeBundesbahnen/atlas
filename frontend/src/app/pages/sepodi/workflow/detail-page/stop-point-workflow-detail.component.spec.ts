@@ -33,6 +33,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { DecisionStepperComponent } from './decision/decision-stepper/decision-stepper.component';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import {StopPointWorkflowExaminantsTableComponent} from "./examinant-table/stop-point-workflow-examinants-table.component";
+import {StopPointWorkflowDetailFormGroupBuilder} from "./detail-form/stop-point-workflow-detail-form-group";
+import {AddExaminantsDialogService} from "./add-examinants-dialog/add-examinants-dialog.service";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1000,
@@ -77,6 +80,10 @@ function getStopPointRejectWorkflowDialogServiceSpy() {
   return jasmine.createSpyObj(['openDialog']);
 }
 
+const addExaminantsDialogService = jasmine.createSpyObj('addExaminantsDialogService', {
+  openDialog: of(true)
+});
+
 describe('StopPointWorkflowDetailComponent', () => {
   let component: StopPointWorkflowDetailComponent;
   let fixture: ComponentFixture<StopPointWorkflowDetailComponent>;
@@ -98,6 +105,7 @@ describe('StopPointWorkflowDetailComponent', () => {
       declarations: [
         StopPointWorkflowDetailComponent,
         StopPointWorkflowDetailFormComponent,
+        StopPointWorkflowExaminantsTableComponent,
         StringListComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
@@ -116,6 +124,7 @@ describe('StopPointWorkflowDetailComponent', () => {
         { provide: StopPointWorkflowService, useValue: spWfServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: ValidationService, useClass: ValidationService },
+        { provide: AddExaminantsDialogService, useValue: addExaminantsDialogService },
         {
           provide: StopPointRejectWorkflowDialogService,
           useValue: stopPointRejectWorkflowDialogServiceSpy,
@@ -231,7 +240,7 @@ describe('StopPointWorkflowDetailComponent', () => {
     component.toggleEdit();
     component.form.controls['designationOfficial'].setValue('Official Designation');
     component.form.controls['workflowComment'].setValue('Some comment');
-    component.form.controls['examinants'].setValue([
+    component.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(
       {
         firstName: 'DIDOK',
         lastName: 'MASTER',
@@ -239,11 +248,11 @@ describe('StopPointWorkflowDetailComponent', () => {
         mail: 'didok@chef.com',
         organisation: 'SBB',
         id: 1,
-        judgementIcon: '',
         judgement: JudgementType.Yes,
         decisionType: DecisionType.Voted,
-      },
-    ]);
+        defaultExaminant: false
+      }
+    ));
     component.form.controls['ccEmails'].setValue(['test@atlas.ch']);
 
     spWfServiceSpy.editStopPointWorkflow.and.returnValue(of({ id: 1 }));
@@ -262,9 +271,10 @@ describe('StopPointWorkflowDetailComponent', () => {
           mail: 'didok@chef.com',
           organisation: 'SBB',
           id: 1,
-          judgementIcon: '',
+          judgementIcon: 'bi-check-lg',
           judgement: JudgementType.Yes,
           decisionType: DecisionType.Voted,
+          defaultExaminant: false
         },
       ],
     });
@@ -286,6 +296,12 @@ describe('StopPointWorkflowDetailComponent', () => {
     component.rejectWorkflow();
 
     expect(stopPointRejectWorkflowDialogServiceSpy.openDialog).toHaveBeenCalledTimes(1);
+  });
+
+  it('should open add examinants dialog for workflow in hearing', () => {
+    component.addExaminants();
+
+    expect(addExaminantsDialogService.openDialog).toHaveBeenCalledTimes(1);
   });
 
   it('should cancel workflow', () => {

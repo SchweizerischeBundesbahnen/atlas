@@ -37,10 +37,13 @@ import {DialogCloseComponent} from "../../../../core/components/dialog/close/dia
 import {ValidationService} from "../../../../core/validation/validation.service";
 import {
   ExaminantFormGroup,
-  StopPointWorkflowDetailFormGroup
+  StopPointWorkflowDetailFormGroup, StopPointWorkflowDetailFormGroupBuilder
 } from "../detail-page/detail-form/stop-point-workflow-detail-form-group";
 import {FormArray, FormControl, FormGroup} from "@angular/forms";
 import {Component, Input} from "@angular/core";
+import {
+  StopPointWorkflowExaminantsTableComponent
+} from "../detail-page/examinant-table/stop-point-workflow-examinants-table.component";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -86,6 +89,7 @@ describe('AddStopPointWorkflowComponent', () => {
         AddStopPointWorkflowComponent,
         WorkflowFormComponent,
         WorkflowCheckFormComponent,
+        StopPointWorkflowExaminantsTableComponent,
         CommentComponent,
         ErrorNotificationComponent,
         MockAtlasButtonComponent,
@@ -139,6 +143,7 @@ describe('AddStopPointWorkflowComponent', () => {
   it('should add workflow via service', () => {
     spyOn(ValidationService, 'validateForm').and.callThrough();
 
+    component.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     const firstExaminant = component.form.controls.examinants.at(0);
     firstExaminant.controls.firstName.setValue('');
     firstExaminant.controls.lastName.setValue('');
@@ -168,6 +173,7 @@ describe('AddStopPointWorkflowComponent', () => {
       judgementIcon: new FormControl<string | null>(null),
       judgement: new FormControl<JudgementType | null>(null),
       decisionType: new FormControl<DecisionType | null>(null),
+      defaultExaminant: new FormControl(false)
     });
 
     const formArray = new FormArray<FormGroup<ExaminantFormGroup>>([examinantFormGroup]);
