@@ -1,0 +1,41 @@
+<atlas-dialog-close (clicked)="cancel()"></atlas-dialog-close>
+
+<atlas-dialog-content>
+  <div class="mb-2">
+    <span class="font-bold-4xl">{{ data.title | translate }}</span>
+  </div>
+
+  <stop-point-workflow-examinants-table currentWorkflowStatus="HEARING"
+                                        [form]="form"></stop-point-workflow-examinants-table>
+
+  <div class="d-flex mt-5 mb-3">
+    <atlas-text-list
+      [formGroup]="form"
+      [formGroupEnabled]="form.enabled"
+      [itemValidator]="emailValidator"
+      fieldLabel="SEPODI.SERVICE_POINTS.WORKFLOW.ADDITIONAL_MAIL_RECIPIENTS"
+      infoIconTitle="SEPODI.SERVICE_POINTS.WORKFLOW.ADDITIONAL_MAIL_RECIPIENTS_INFO"
+      [required]="false"
+      placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
+      [fieldExamples]="[
+      { label: 'FORM.MAX_ITEMS', translate: true, arg: { key: 'numberOfItems', value: '10' } },
+    ]"
+      controlName="ccEmails"
+    >
+    </atlas-text-list>
+  </div>
+  <div class="d-flex">
+    <app-atlas-field-error
+      [form]="form"
+    ></app-atlas-field-error>
+  </div>
+</atlas-dialog-content>
+
+<atlas-dialog-footer>
+  <button (click)="cancel()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
+    {{ 'DIALOG.CANCEL' | translate }}
+  </button>
+  <button (click)="addExaminants()" class="atlas-primary-btn" data-cy="dialog-add-workflow-button">
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
+</atlas-dialog-footer>
