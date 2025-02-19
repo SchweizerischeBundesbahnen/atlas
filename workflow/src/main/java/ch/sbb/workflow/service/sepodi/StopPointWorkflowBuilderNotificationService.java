@@ -33,6 +33,10 @@ public class StopPointWorkflowBuilderNotificationService {
 
   public MailNotification buildWorkflowStartedExaminantMail(StopPointWorkflow stopPointWorkflow) {
     List<String> examinantMails = stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList();
+    return buildWorkflowStartedExaminantMail(stopPointWorkflow, examinantMails);
+  }
+
+  public MailNotification buildWorkflowStartedExaminantMail(StopPointWorkflow stopPointWorkflow, List<String> examinantMails) {
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION)

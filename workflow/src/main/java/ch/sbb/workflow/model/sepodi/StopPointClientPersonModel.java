@@ -50,4 +50,6 @@ public class StopPointClientPersonModel extends BasePersonModel {
   @NotBlank
   private String mail;
 
+  private boolean defaultExaminant;
+
 }

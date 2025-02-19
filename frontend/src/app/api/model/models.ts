@@ -1,3 +1,4 @@
+export * from './addExaminants';
 export * from './applicationRole';
 export * from './applicationType';
 export * from './basicAttributeType';
