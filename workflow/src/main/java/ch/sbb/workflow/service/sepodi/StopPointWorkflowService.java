@@ -12,8 +12,7 @@ import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
 import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
 import ch.sbb.workflow.exception.StopPointWorkflowNotInHearingException;
-import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
-import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeHearingException;
+import ch.sbb.workflow.exception.StopPointWorkflowStatusException;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
@@ -31,7 +30,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -69,7 +67,7 @@ public class StopPointWorkflowService {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
 
     if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
-      throw new StopPointWorkflowStatusMustBeAddedException();
+      throw new StopPointWorkflowStatusException(WorkflowStatus.ADDED);
     }
 
     if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())) {
@@ -213,7 +211,7 @@ public class StopPointWorkflowService {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
 
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
-      throw new StopPointWorkflowStatusMustBeHearingException();
+      throw new StopPointWorkflowStatusException(WorkflowStatus.HEARING);
     }
 
     List<StopPointClientPersonModel> persons = new ArrayList<>(stopPointWorkflow.getExaminants().stream()
