@@ -98,11 +98,8 @@
                 (buttonClicked)="removeExaminant(i)"
                 [disabled]="form.disabled"
                 buttonType="icon"
-                [ngStyle]="{
-                  visibility:
-                   examinant.value.defaultExaminant
-                      ? 'hidden'
-                      : 'visible',
+                [ngClass]="{
+                  'invisible': examinant.value.defaultExaminant
                 }"
               >
                 <ng-template #rightIcon>
