@@ -12,9 +12,11 @@ import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
 import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
 import ch.sbb.workflow.exception.StopPointWorkflowNotInHearingException;
-import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
+import ch.sbb.workflow.exception.StopPointWorkflowStatusException;
+import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
+import ch.sbb.workflow.model.sepodi.AddExaminantsModel;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.Examinants;
@@ -23,6 +25,7 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +44,7 @@ public class StopPointWorkflowService {
   private final DecisionRepository decisionRepository;
   private final SePoDiClientService sePoDiClientService;
   private final Examinants examinants;
+  private final StopPointWorkflowNotificationService notificationService;
 
   @Redacted
   public StopPointWorkflow getWorkflow(Long id) {
@@ -63,7 +67,7 @@ public class StopPointWorkflowService {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
 
     if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
-      throw new StopPointWorkflowStatusMustBeAddedException();
+      throw new StopPointWorkflowStatusException(WorkflowStatus.ADDED);
     }
 
     if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())) {
@@ -201,6 +205,35 @@ public class StopPointWorkflowService {
     examinant.setLastName(decisionModel.getLastName());
     examinant.setOrganisation(decisionModel.getOrganisation());
     examinant.setFunction(decisionModel.getPersonFunction());
+  }
+
+  public StopPointWorkflow addExaminants(Long id, AddExaminantsModel addExaminantsModel) {
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+
+    if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
+      throw new StopPointWorkflowStatusException(WorkflowStatus.HEARING);
+    }
+
+    List<StopPointClientPersonModel> persons = new ArrayList<>(stopPointWorkflow.getExaminants().stream()
+        .map(StopPointClientPersonMapper::toModel).toList());
+    persons.addAll(addExaminantsModel.getExaminants());
+    checkIfAllExaminantEmailsAreUnique(persons, false);
+
+    addExaminantsModel.getExaminants()
+        .stream()
+        .map(StopPointClientPersonMapper::toEntity)
+        .forEach(examinant -> {
+          examinant.setStopPointWorkflow(stopPointWorkflow);
+          stopPointWorkflow.getExaminants().add(examinant);
+        });
+
+    addExaminantsModel.getCcEmails().stream()
+        .filter(i -> stopPointWorkflow.getCcEmails().stream().noneMatch(i::equalsIgnoreCase))
+        .forEach(stopPointWorkflow.getCcEmails()::add);
+
+    List<String> addedExaminantMails = addExaminantsModel.getExaminants().stream().map(StopPointClientPersonModel::getMail).toList();
+    notificationService.sendStartToAddedExaminant(stopPointWorkflow, addedExaminantMails);
+    return save(stopPointWorkflow);
   }
 
 }

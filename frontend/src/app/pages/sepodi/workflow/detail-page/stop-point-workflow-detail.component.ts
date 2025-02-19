@@ -30,6 +30,7 @@ import {PermissionService} from "../../../../core/auth/permission/permission.ser
 import {
   StopPointRestartWorkflowDialogService
 } from "../stop-point-restart-workflow-dialog/stop-point-restart-workflow-dialog.service";
+import {AddExaminantsDialogService} from "./add-examinants-dialog/add-examinants-dialog.service";
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -47,6 +48,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     private readonly notificationService: NotificationService,
     private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService,
     private readonly stopPointRestartWorkflowDialogService: StopPointRestartWorkflowDialogService,
+    private readonly addExaminantsDialogService: AddExaminantsDialogService,
     private dialogService: DialogService,
     private permissionService: PermissionService,
   ) {}
@@ -164,6 +166,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
 
   private enableForm(): void {
     this.form?.enable({ emitEvent: false });
+    StopPointWorkflowDetailFormGroupBuilder.disableDefaultExaminantsInArray(this.form.controls.examinants)
     this.isFormEnabled$.next(true);
   }
 
@@ -184,7 +187,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         ccEmails: this.form.controls.ccEmails.value ?? undefined,
         designationOfficial: this.form.controls.designationOfficial.value!,
         workflowComment: this.form.controls.workflowComment.value!,
-        examinants: this.form.controls.examinants.value.map(
+        examinants: this.form.getRawValue().examinants.map(
           (examinant) => examinant as StopPointPerson,
         ),
       };
@@ -209,4 +212,12 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     this.enableForm();
     return EMPTY;
   };
+
+  addExaminants() {
+    this.addExaminantsDialogService.openDialog(this.workflow.id!).subscribe(saved => {
+      if(saved) {
+        this._reloadDetail('WORKFLOW.NOTIFICATION.ADD_EXAMINANT.SUCCESS');
+      }
+    });
+  }
 }
