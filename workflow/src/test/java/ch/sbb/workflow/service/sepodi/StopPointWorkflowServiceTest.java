@@ -11,9 +11,10 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
-import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
+import ch.sbb.workflow.exception.StopPointWorkflowStatusException;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
+import ch.sbb.workflow.model.sepodi.AddExaminantsModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
@@ -98,7 +99,7 @@ class StopPointWorkflowServiceTest {
 
     workflowService.editWorkflow(id, workflowModel);
 
-    StopPointWorkflow foundWorkflow = workflowRepository.findById(id).get();
+    StopPointWorkflow foundWorkflow = workflowRepository.findById(id).orElseThrow();
 
     assertEquals("Heimsiswil Zentrum", foundWorkflow.getDesignationOfficial());
     assertEquals("New Comment", foundWorkflow.getWorkflowComment());
@@ -123,7 +124,7 @@ class StopPointWorkflowServiceTest {
             .designationOfficial("Heimsiswil Zentrum")
             .build();
 
-    assertThrows(StopPointWorkflowStatusMustBeAddedException.class, () -> {
+    assertThrows(StopPointWorkflowStatusException.class, () -> {
       workflowService.editWorkflow(id, workflowModel);
     });
   }
@@ -149,7 +150,7 @@ class StopPointWorkflowServiceTest {
     StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
 
     Long id = saved.getId();
-    Long examinantId = saved.getExaminants().stream().findFirst().get().getId();
+    Long examinantId = saved.getExaminants().stream().findFirst().orElseThrow().getId();
 
     Person personEdited = Person.builder()
             .id(examinantId)
@@ -161,17 +162,17 @@ class StopPointWorkflowServiceTest {
     EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
             .workflowComment("New Comment")
             .designationOfficial("Heimsiswil Zentrum")
-            .examinants(List.of(personEdited).stream().map(StopPointClientPersonMapper::toModel).toList())
+            .examinants(List.of(StopPointClientPersonMapper.toModel(personEdited)))
             .build();
 
     workflowService.editWorkflow(id, workflowModel);
 
-    StopPointWorkflow stopPointWorkflowInDb = workflowRepository.findById(id).get();
+    StopPointWorkflow stopPointWorkflowInDb = workflowRepository.findById(id).orElseThrow();
 
 
     assertFalse(stopPointWorkflowInDb.getExaminants().isEmpty());
     assertThat(stopPointWorkflowInDb.getExaminants()).hasSize(1);
-    assertThat(stopPointWorkflowInDb.getExaminants()).extracting(examinant -> examinant.getId()).contains(examinantId);
+    assertThat(stopPointWorkflowInDb.getExaminants()).extracting(Person::getId).contains(examinantId);
   }
 
   @Test
@@ -206,7 +207,7 @@ class StopPointWorkflowServiceTest {
         .build();
 
     workflowService.editWorkflow(id, workflowModel);
-    StopPointWorkflow stopPointWorkflow1 = workflowRepository.findById(id).get();
+    StopPointWorkflow stopPointWorkflow1 = workflowRepository.findById(id).orElseThrow();
     assertFalse(stopPointWorkflow1.getExaminants().isEmpty());
     assertThat(stopPointWorkflow1.getExaminants()).extracting("mail").contains("neueMail@mail.neu");
   }
@@ -334,4 +335,97 @@ class StopPointWorkflowServiceTest {
     assertDoesNotThrow(() -> workflowService.checkIfAllExaminantEmailsAreUnique(stopPointClientPersonModels, false));
   }
 
+  @Test
+  void shouldAddExaminantAndCcMail() {
+    // Given current workflow
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail("test@test.com").build();
+
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:8000")
+        .sboid("ch:1:sboid:10")
+        .status(WorkflowStatus.HEARING)
+        .designationOfficial("Heimsiswil Zentrum")
+        .versionId(1L)
+        .localityName("Heimiswil")
+        .examinants(Set.of(person))
+        .ccEmails(List.of("mcgyver@bav.ch"))
+        .build();
+    person.setStopPointWorkflow(stopPointWorkflow);
+
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+    assertThat(saved.getExaminants()).hasSize(1);
+    assertThat(saved.getCcEmails()).hasSize(1);
+
+    // Given update
+    StopPointClientPersonModel person1 = StopPointClientPersonModel.builder()
+        .firstName("Marcel")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .organisation("BAV")
+        .mail("marcel@hamsik.com").build();
+
+    StopPointClientPersonModel person2 = StopPointClientPersonModel.builder()
+        .firstName("Hans")
+        .lastName("Müller")
+        .personFunction("Centrocampista")
+        .organisation("BAV")
+        .mail("hans@mueller.com").build();
+
+    AddExaminantsModel addExaminantsModel = AddExaminantsModel.builder()
+        .examinants(List.of(person1, person2))
+        .ccEmails(List.of("hetti@bav.ch", "giopizza@bav.ch"))
+        .build();
+
+    // When
+    StopPointWorkflow workflow = workflowService.addExaminants(saved.getId(), addExaminantsModel);
+
+    // Then
+    assertThat(workflow.getExaminants()).hasSize(3);
+    assertThat(workflow.getCcEmails()).hasSize(3);
+  }
+
+  @Test
+  void shouldNotAddExaminantWithDuplicateMail() {
+    // Given current workflow
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail("test@test.com").build();
+
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:8000")
+        .sboid("ch:1:sboid:10")
+        .status(WorkflowStatus.HEARING)
+        .designationOfficial("Heimsiswil Zentrum")
+        .versionId(1L)
+        .localityName("Heimiswil")
+        .examinants(Set.of(person))
+        .ccEmails(List.of("mcgyver@bav.ch"))
+        .build();
+    person.setStopPointWorkflow(stopPointWorkflow);
+
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+    assertThat(saved.getExaminants()).hasSize(1);
+
+    // Given update
+    StopPointClientPersonModel person1 = StopPointClientPersonModel.builder()
+        .firstName("Marcel")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .organisation("BAV")
+        .mail("test@test.com").build();
+
+    AddExaminantsModel addExaminantsModel = AddExaminantsModel.builder()
+        .examinants(List.of(person1))
+        .build();
+
+    // When & then
+    Long savedId = saved.getId();
+    assertThrows(StopPointWorkflowExaminantEmailNotUniqueException.class, () -> workflowService.addExaminants(savedId, addExaminantsModel));
+  }
 }
