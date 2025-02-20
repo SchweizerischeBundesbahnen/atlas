@@ -92,7 +92,6 @@ public class LineService {
     lineValidationService.validateNotRevoked(currentVersion);
     lineUpdateValidationService.validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
 
-    //Muss aufgerufen werden wenn Kürzung. Valid From v1 und validTo letzte V
     List<SublineVersionRange> sublinesToShort = sublineShorteningService.checkAndPrepareToShortSublines(currentVersion,
         editedVersion);
 
@@ -190,36 +189,6 @@ public class LineService {
         version -> save(version, Optional.of(currentVersion), preSaveVersions),
         this::deleteById);
 
-  }
-
-  private LineVersion copyLineVersion(LineVersion lineVersion) {
-    return LineVersion.builder()
-        .id(lineVersion.getId())
-        .status(lineVersion.getStatus())
-        .lineType(lineVersion.getLineType())
-        .slnid(lineVersion.getSlnid())
-        .paymentType(lineVersion.getPaymentType())
-        .number(lineVersion.getNumber())
-        .alternativeName(lineVersion.getAlternativeName())
-        .combinationName(lineVersion.getCombinationName())
-        .longName(lineVersion.getLongName())
-        .colorFontRgb(lineVersion.getColorFontRgb())
-        .colorBackRgb(lineVersion.getColorBackRgb())
-        .colorFontCmyk(lineVersion.getColorFontCmyk())
-        .colorBackCmyk(lineVersion.getColorBackCmyk())
-        .description(lineVersion.getDescription())
-        .icon(lineVersion.getIcon())
-        .validFrom(lineVersion.getValidFrom())
-        .validTo(lineVersion.getValidTo())
-        .businessOrganisation(lineVersion.getBusinessOrganisation())
-        .comment(lineVersion.getComment())
-        .swissLineNumber(lineVersion.getSwissLineNumber())
-        .version(lineVersion.getVersion())
-        .creator(lineVersion.getCreator())
-        .creationDate(lineVersion.getCreationDate())
-        .editor(lineVersion.getEditor())
-        .editionDate(lineVersion.getEditionDate())
-        .build();
   }
 
 }

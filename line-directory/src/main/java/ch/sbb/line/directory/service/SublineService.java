@@ -10,10 +10,13 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.DateRangeConflictException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.model.LineVersionRange;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
+import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
@@ -111,12 +114,25 @@ public class SublineService {
   }
 
   public void validateSublineValidity(SublineVersion sublineVersion) {
-    LineVersion lineVersion = getMainLineVersion(sublineVersion.getMainlineSlnid());
-    DateRange dateRangeMainline = new DateRange(lineVersion.getValidFrom(), lineVersion.getValidTo());
+    List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(sublineVersion.getMainlineSlnid());
+    LineVersionRange lineVersionRange = getOldestAndLatestLine(lineVersions);
+
+    DateRange dateRangeMainline =
+        new DateRange(lineVersionRange.getOldestVersion().getValidFrom(), lineVersionRange.getLatestVersion().getValidTo());
     DateRange dateRangeSubline = new DateRange(sublineVersion.getValidFrom(), sublineVersion.getValidTo());
 
     if (!dateRangeSubline.isDateRangeContainedIn(dateRangeMainline)) {
       throw new DateRangeConflictException(dateRangeMainline);
     }
+  }
+
+  private LineVersionRange getOldestAndLatestLine(List<LineVersion> lines) {
+    LineVersion oldest = lines.stream()
+        .min(Comparator.comparing(LineVersion::getValidFrom))
+        .orElseThrow(() -> new NoSuchElementException("No line found"));
+    LineVersion latest = lines.stream()
+        .max(Comparator.comparing(LineVersion::getValidTo))
+        .orElseThrow(() -> new NoSuchElementException("No line found"));
+    return new LineVersionRange(oldest, latest);
   }
 }
