@@ -1162,6 +1162,7 @@
       }
     },
     "BOARDING_AREAS": {
+      "BOARDING_AREA": "Bereich",
       "BOARDING_AREAS": "Bereiche",
       "NEW": "Neuen Haltebereich erfassen",
       "NOTIFICATION": {
