@@ -1233,7 +1233,7 @@
     "ZOOM_IN_HINT": "Zum Anzeigen von Dienststellen, zoomen Sie näher heran.",
     "AUTOMATIC_SLOID": "wird automatisch vergeben",
     "SLOID_ALREADY_USED": "{{sloid}} ist bereits vergeben.",
-    "SLOID_INVALID": "{{sloid}} entspricht nicht dem erwarteten Format.",
+    "SLOID_INVALID": "SLOID {{sloid}} entspricht nicht dem erwarteten Format.",
     "NUMBER_ALREADY_USED": "Der DiDok-Code {{number}} ist bereits vergeben."
   },
   "PRM": {
