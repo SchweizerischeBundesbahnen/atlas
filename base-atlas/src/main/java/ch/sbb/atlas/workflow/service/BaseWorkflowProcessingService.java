@@ -3,6 +3,7 @@ package ch.sbb.atlas.workflow.service;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.workflow.exception.WorkflowObjectStatusException;
 import ch.sbb.atlas.workflow.model.AtlasVersionSnapshotable;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.model.WorkflowEvent;
@@ -36,7 +37,12 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
 
     if (preUpdateStatus != Status.REVOKED) {
       switch (lineWorkflowEvent.getWorkflowStatus()) {
-        case ADDED -> objectVersion.setStatus(Status.IN_REVIEW);
+        case ADDED -> {
+          if (preUpdateStatus != Status.DRAFT) {
+            throw new WorkflowObjectStatusException(Status.DRAFT);
+          }
+          objectVersion.setStatus(Status.IN_REVIEW);
+        }
         case APPROVED -> objectVersion.setStatus(Status.VALIDATED);
         case REJECTED -> objectVersion.setStatus(Status.DRAFT);
         default -> throw new IllegalStateException("Use case not yet implemented!!");

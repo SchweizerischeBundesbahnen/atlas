@@ -1,6 +1,7 @@
 package ch.sbb.atlas.workflow.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -8,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.entity.BaseVersion;
+import ch.sbb.atlas.workflow.exception.WorkflowObjectStatusException;
 import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
@@ -55,6 +57,7 @@ public class BaseWorkflowProcessingServiceTest {
     ObjectVersion objectVersion = ObjectVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 2, 1))
+        .status(Status.DRAFT)
         .build();
     when(objectVersionRepository.findById(1000L)).thenReturn(Optional.of(objectVersion));
 
@@ -76,6 +79,31 @@ public class BaseWorkflowProcessingServiceTest {
     verify(objectVersionRepository).save(objectVersion);
     verify(objectVersionSnapshotRepository).save(any(ObjectVersionSnapshot.class));
 
+  }
+
+  @Test
+  void shouldThrowExceptionThatObjectMustBeInDraftForWorkflowAdd() {
+    //given
+    WorkflowEvent workflowEvent = BaseWorkflowProcessingServiceTest.WorkflowEvent.builder()
+        .workflowId(1000L)
+        .businessObjectId(1000L)
+        .workflowStatus(WorkflowStatus.ADDED)
+        .build();
+    ObjectVersion objectVersion = ObjectVersion.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 2, 1))
+        .status(Status.VALIDATED)
+        .build();
+    when(objectVersionRepository.findById(1000L)).thenReturn(Optional.of(objectVersion));
+
+    ObjectVersionSnapshot objectVersionSnapshot = ObjectVersionSnapshot.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 2, 1))
+        .build();
+
+    //when
+    assertThatExceptionOfType(WorkflowObjectStatusException.class).isThrownBy(() ->
+        workflowProcessingService.processWorkflow(workflowEvent, objectVersion, objectVersionSnapshot));
   }
 
   @Test
