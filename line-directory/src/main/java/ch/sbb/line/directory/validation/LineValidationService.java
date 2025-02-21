@@ -32,7 +32,6 @@ public class LineValidationService {
   private final SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   public void validateLinePreconditionBusinessRule(LineVersion lineVersion) {
-    validateNotRevoked(lineVersion);
     validateLineConflict(lineVersion);
     sharedBusinessOrganisationService.validateSboidExists(lineVersion.getBusinessOrganisation());
   }
@@ -42,7 +41,7 @@ public class LineValidationService {
     coverageValidationService.validateLineSublineCoverage(lineVersion);
   }
 
-  private void validateNotRevoked(LineVersion lineVersion) {
+  public void validateNotRevoked(LineVersion lineVersion) {
     if (lineVersion.getStatus() == Status.REVOKED) {
       throw new RevokedException(lineVersion.getSlnid());
     }
