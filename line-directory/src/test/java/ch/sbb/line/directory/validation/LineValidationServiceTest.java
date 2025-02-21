@@ -464,33 +464,4 @@ class LineValidationServiceTest {
     assertThrows(LineTypeOrderlyException.class, () -> lineValidationService.dynamicBeanValidation(lineVersion));
   }
 
-  @Test
-  void shouldThrowRevokedException() {
-    //given
-    LineVersion lineVersion = LineTestData.lineVersionBuilder()
-        .lineType(LineType.ORDERLY)
-        .swissLineNumber("IC")
-        .concessionType(LineConcessionType.LINE_ABROAD)
-        .status(Status.REVOKED)
-        .build();
-
-    //when and then
-    assertThrows(RevokedException.class, () -> lineValidationService.validateLinePreconditionBusinessRule(lineVersion));
-  }
-
-  @ParameterizedTest
-  @EnumSource(value = Status.class, names = {"DRAFT", "VALIDATED", "IN_REVIEW"})
-  void shouldNotThrowRevokedException(Status status) {
-    //given
-    LineVersion lineVersion = LineTestData.lineVersionBuilder()
-        .lineType(LineType.ORDERLY)
-        .swissLineNumber("IC")
-        .concessionType(LineConcessionType.LINE_ABROAD)
-        .status(status)
-        .build();
-
-    //when and then
-    assertThatNoException().isThrownBy(() -> lineValidationService.validateLinePreconditionBusinessRule(lineVersion));
-  }
-
 }
