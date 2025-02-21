@@ -1,6 +1,6 @@
 import {ApplicationRole, ApplicationType, Permission, PermissionRestrictionObject, PermissionRestrictionType} from "../../../api";
 
-export const BULK_IMPORT_APPLICATIONS = [ApplicationType.Sepodi, ApplicationType.Prm];
+export const BULK_IMPORT_APPLICATIONS = [ApplicationType.Sepodi, ApplicationType.Prm, ApplicationType.Lidi, ApplicationType.Ttfn];
 
 export class BulkImportPermission {
 
