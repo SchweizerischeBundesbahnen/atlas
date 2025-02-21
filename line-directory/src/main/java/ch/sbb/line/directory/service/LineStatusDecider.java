@@ -68,12 +68,12 @@ public class LineStatusDecider {
     private final List<Function<LineVersion, Object>> worflowRelevantAttributes = new ArrayList<>();
 
     LineRelevantAttributeChange() {
-      worflowRelevantAttributes.add(LineVersion::getSwissLineNumber);
       worflowRelevantAttributes.add(LineVersion::getNumber);
+      worflowRelevantAttributes.add(LineVersion::getSwissLineNumber);
       worflowRelevantAttributes.add(LineVersion::getDescription);
-      worflowRelevantAttributes.add(LineVersion::getLongName);
-      worflowRelevantAttributes.add(LineVersion::getAlternativeName);
-      worflowRelevantAttributes.add(LineVersion::getCombinationName);
+      worflowRelevantAttributes.add(LineVersion::getShortNumber);
+      worflowRelevantAttributes.add(LineVersion::getOfferCategory);
+      worflowRelevantAttributes.add(LineVersion::getConcessionType);
     }
 
     @Override
