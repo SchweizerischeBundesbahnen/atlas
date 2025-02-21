@@ -27,20 +27,24 @@ public class DateOrderException extends AtlasException {
     public ErrorResponse getErrorResponse() {
         return ErrorResponse.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
-                .message(message)
-                .error(message)
+                .message(this.getDetailMessage())
+                .error(this.getDetailMessage())
                 .details(new TreeSet<>(getErrorDetails()))
                 .build();
     }
 
     private List<Detail> getErrorDetails() {
         return List.of(Detail.builder()
-                .message(message)
+                .message(this.getDetailMessage())
                 .displayInfo(builder()
                         .code("VALIDATION.DATE_ORDER_ERROR")
                         .with("validFrom", validFrom)
                         .with("validTo", validTo)
                         .build())
                 .build());
+    }
+
+    private String getDetailMessage(){
+        return message+ "; validFrom: " + validFrom + " validTo: " + validTo;
     }
 }
