@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.workflow.model.WorkflowEvent;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -57,7 +58,7 @@ class LineWorkflowProcessingServiceTest {
         .businessObjectId(1000L)
         .workflowStatus(ADDED)
         .build();
-    LineVersion lineVersion = LineVersion.builder().id(1000L).build();
+    LineVersion lineVersion = LineVersion.builder().id(1000L).status(Status.DRAFT).build();
     when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));
 
     //when
@@ -100,7 +101,7 @@ class LineWorkflowProcessingServiceTest {
         .businessObjectId(1000L)
         .workflowStatus(ADDED)
         .build();
-    LineVersion lineVersion = LineVersion.builder().id(1000L).build();
+    LineVersion lineVersion = LineVersion.builder().id(1000L).status(Status.DRAFT).build();
     when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));
     when(lineWorkflowRepository.findAllByLineVersion(lineVersion)).thenReturn(List.of(LineVersionWorkflow.builder()
         .workflowId(56L)
@@ -126,7 +127,7 @@ class LineWorkflowProcessingServiceTest {
         .businessObjectId(businessObjectId)
         .workflowStatus(ADDED)
         .build();
-    LineVersion lineVersion = LineVersion.builder().id(businessObjectId).build();
+    LineVersion lineVersion = LineVersion.builder().id(businessObjectId).status(Status.DRAFT).build();
     when(lineVersionRepository.findById(businessObjectId)).thenReturn(Optional.of(lineVersion));
     when(lineWorkflowRepository.findByWorkflowId(workflowId)).thenReturn(Optional.of(LineVersionWorkflow.builder()
         .workflowId(workflowId)
