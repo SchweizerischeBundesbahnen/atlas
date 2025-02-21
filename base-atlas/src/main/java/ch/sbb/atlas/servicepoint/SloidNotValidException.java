@@ -34,6 +34,7 @@ public class SloidNotValidException extends AtlasException {
         .message("The SLOID " + sloid + " is not valid due to: " + reason)
         .displayInfo(DisplayInfo.builder()
             .code("SEPODI.SLOID_INVALID")
+            .with("sloid", sloid)
             .build())
         .build());
     return errorDetails;
