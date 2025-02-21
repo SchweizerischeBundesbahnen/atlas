@@ -1,6 +1,8 @@
 package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
@@ -9,22 +11,26 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersion.LineVersionBuilder;
+import ch.sbb.line.directory.exception.RevokedException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
  class LineServiceVersioningTest {
 
-  @MockBean
+  @MockitoBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   private static final String DESCRIPTION = LineTestData.lineVersion().getDescription();
@@ -300,5 +306,34 @@ import org.springframework.transaction.annotation.Transactional;
   //then
   assertThat(result).hasSize(1);
   assertThat(result.getFirst().getSwissLineNumber()).isEqualTo("1");
+ }
+
+ @Test
+ void shouldThrowRevokedException() {
+  //given
+  version1.setStatus(Status.REVOKED);
+  version1 = lineVersionRepository.save(version1);
+
+  LineVersion editedVersion = version1Builder().build();
+  editedVersion.setDescription("Description <changed>");
+  editedVersion.setVersion(version1.getVersion());
+
+  //when and then
+  assertThrows(RevokedException.class, () -> lineService.update(version1, editedVersion, Collections.emptyList()));
+ }
+
+ @ParameterizedTest
+ @EnumSource(value = Status.class, names = {"DRAFT", "VALIDATED", "IN_REVIEW"})
+ void shouldNotThrowRevokedException(Status status) {
+  //given
+  version1.setStatus(status);
+  version1 = lineVersionRepository.save(version1);
+
+  LineVersion editedVersion = version1Builder().build();
+  editedVersion.setDescription("Description <changed>");
+  editedVersion.setVersion(version1.getVersion());
+
+  //when and then
+  assertThatNoException().isThrownBy(() -> lineService.update(version1, editedVersion, Collections.emptyList()));
  }
 }
