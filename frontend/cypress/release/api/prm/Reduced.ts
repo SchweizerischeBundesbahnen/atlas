@@ -1,11 +1,12 @@
 import CommonUtils from '../../../support/util/common-utils';
-import ReleaseApiUtils from '../../../support/util/release-api-utils';
+import ReleaseApiUtils, {
+  SePoDependentInfo,
+} from '../../../support/util/release-api-utils';
 import PrmConstants from '../../../support/util/prm-constants';
 
 // Documentation: PRM-Data-Fact-Matrix: https://confluence.sbb.ch/x/vgdpl
 
-let parentServicePointSloid = '';
-let numberWithoutCheckDigit = -1;
+let info: SePoDependentInfo;
 let trafficPointSloid = '';
 let etagVersion = -1;
 
@@ -31,7 +32,7 @@ const validatePrmObject = (object, validFrom: string, validTo: string) => {
     .to.have.property('number')
     .to.have.property('number')
     .that.is.a('number')
-    .and.to.equal(numberWithoutCheckDigit);
+    .and.to.equal(info.numberWithoutCheckDigit);
   expect(object)
     .to.have.property('status')
     .that.is.a('string')
@@ -47,7 +48,7 @@ describe(
   'Create new ServicePoint and TrafficPoint for reduced StopPoint',
   { testIsolation: false },
   () => {
-    let sboid = '';
+    let sboid: string;
 
     it('Step-1: Login on ATLAS', () => {
       cy.atlasLogin();
@@ -63,57 +64,14 @@ describe(
     });
 
     it('Step-3: New ServicePoint', () => {
-      CommonUtils.post('/service-point-directory/v1/service-points', {
-        country: 'SWITZERLAND',
-        designationOfficial: ReleaseApiUtils.today(),
-        businessOrganisation: sboid,
-        // The service-point needs to have a meansOfTransport, so that a PRM-stopPoint can be created.
-        // The meansOfTransport BUS leads to the reduced recording variant
-        // Code: https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/base-atlas/src/main/java/ch/sbb/atlas/servicepoint/enumeration/MeanOfTransport.java
-        meansOfTransport: meansOfTransport,
-        validFrom: ReleaseApiUtils.LAST_ATLAS_DATE,
-        validTo: ReleaseApiUtils.LAST_ATLAS_DATE,
-      }).then((response) => {
-        expect(response.status).to.equal(
-          CommonUtils.HTTP_REST_API_RESPONSE_CREATED
-        );
-
-        expect(response.body).to.have.property('sloid').that.is.a('string');
-        parentServicePointSloid = response.body.sloid;
-
-        expect(response.body)
-          .property('number')
-          .property('number')
-          .that.is.a('number');
-        numberWithoutCheckDigit = response.body.number.number;
-      });
+      ReleaseApiUtils.createDependentServicePoint(sboid, meansOfTransport).then(
+        (sePoDependentInfo: SePoDependentInfo) => (info = sePoDependentInfo)
+      );
     });
 
     it('Step-4: New Traffic Point', () => {
-      trafficPointSloid = `${parentServicePointSloid}:trafficPoint:1`;
-
-      CommonUtils.post('/service-point-directory/v1/traffic-point-elements', {
-        numberWithoutCheckDigit: numberWithoutCheckDigit,
-        sloid: trafficPointSloid,
-        parentSloid: parentServicePointSloid,
-        validFrom: ReleaseApiUtils.FIRST_ATLAS_DATE,
-        validTo: ReleaseApiUtils.FIRST_ATLAS_DATE,
-        trafficPointElementType: 'BOARDING_PLATFORM',
-      }).then((response) => {
-        expect(response.status).to.equal(
-          CommonUtils.HTTP_REST_API_RESPONSE_CREATED
-        );
-        expect(response.body.parentSloid).to.equal(parentServicePointSloid);
-
-        expect(response.body).to.have.property('sloid').that.is.a('string');
-        trafficPointSloid = response.body.sloid;
-
-        expect(response.body)
-          .property('servicePointNumber')
-          .property('number')
-          .that.is.a('number')
-          .and.equals(numberWithoutCheckDigit);
-      });
+      trafficPointSloid = `${info.parentServicePointSloid}:trafficPoint:1`;
+      ReleaseApiUtils.createDependentTrafficPoint(trafficPointSloid, info);
     });
   }
 );
@@ -135,7 +93,7 @@ describe(
       expect(stopPoint)
         .to.have.property('sloid')
         .that.is.a('string')
-        .and.to.equal(parentServicePointSloid);
+        .and.to.equal(info.parentServicePointSloid);
       expect(stopPoint)
         .to.have.property('freeText')
         .that.is.a('string')
@@ -155,12 +113,12 @@ describe(
 
     it('Step-1: New reduced Stop Point', () => {
       CommonUtils.post('/prm-directory/v1/stop-points', {
-        sloid: parentServicePointSloid,
+        sloid: info.parentServicePointSloid,
         validFrom: validFrom,
         validTo: validTo,
         meansOfTransport: meansOfTransport,
         freeText: freeText,
-        numberWithoutCheckDigit: numberWithoutCheckDigit,
+        numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       }).then((response) => {
         expect(response.status).to.equal(
           CommonUtils.HTTP_REST_API_RESPONSE_CREATED
@@ -174,7 +132,7 @@ describe(
 
     it('Step-2: Check reduced Stop Point', () => {
       CommonUtils.get(
-        `/prm-directory/v1/stop-points?sloids=${parentServicePointSloid}&fromDate=${validFrom}&toDate=${validTo}`
+        `/prm-directory/v1/stop-points?sloids=${info.parentServicePointSloid}&fromDate=${validFrom}&toDate=${validTo}`
       ).then((response) => {
         expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
@@ -193,13 +151,13 @@ describe(
       validTo = ReleaseApiUtils.tomorrowAsAtlasString();
       meansOfTransport = meansOfTransport.concat(ELEVATOR);
       CommonUtils.put(`/prm-directory/v1/stop-points/${stopPointId}`, {
-        sloid: parentServicePointSloid,
+        sloid: info.parentServicePointSloid,
         validFrom: validFrom,
         validTo: validTo, // Updated
         etagVersion: etagVersion,
         meansOfTransport: meansOfTransport,
         freeText: freeText,
-        numberWithoutCheckDigit: numberWithoutCheckDigit,
+        numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       }).then((response) => {
         expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
@@ -250,17 +208,17 @@ describe('PRM: New reduced Toilet', { testIsolation: false }, () => {
     expect(toilet)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
   };
 
   it('Step-1: New reduced Toilet', () => {
-    toiletSloid = `${parentServicePointSloid}:TOILET1`; // Has to be initialized here, because before parentServicePointSloid is not known
+    toiletSloid = `${info.parentServicePointSloid}:TOILET1`; // Has to be initialized here, because before parentServicePointSloid is not known
     CommonUtils.post('/prm-directory/v1/toilets', {
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       sloid: toiletSloid,
       validFrom: validFrom,
       validTo: validTo,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       designation: designation,
       wheelchairToilet: wheelchairToilet,
       additionalInformation: additionalInformation,
@@ -277,7 +235,7 @@ describe('PRM: New reduced Toilet', { testIsolation: false }, () => {
 
   it('Step-2: Get reduced Toilet', () => {
     CommonUtils.get(
-      `/prm-directory/v1/toilets?parentServicePointSloids=${parentServicePointSloid}`
+      `/prm-directory/v1/toilets?parentServicePointSloids=${info.parentServicePointSloid}`
     ).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
@@ -301,7 +259,7 @@ describe('PRM: New reduced Toilet', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersion,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       wheelchairToilet: wheelchairToilet,
@@ -360,7 +318,7 @@ describe('PRM: New reduced Ticket Counter', { testIsolation: false }, () => {
     expect(ticketCounter)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
 
     expect(ticketCounter)
       .to.have.property('inductionLoop')
@@ -374,12 +332,12 @@ describe('PRM: New reduced Ticket Counter', { testIsolation: false }, () => {
   };
 
   it('Step-1: New reduced Ticket Counter', () => {
-    ticketCounterSloid = `${parentServicePointSloid}:${referencePointElementType}1`; // Has to be initialized here, because before the input-variables are not known
+    ticketCounterSloid = `${info.parentServicePointSloid}:${referencePointElementType}1`; // Has to be initialized here, because before the input-variables are not known
     CommonUtils.post('/prm-directory/v1/contact-points', {
       sloid: ticketCounterSloid,
       validFrom: validFrom,
       validTo: validTo,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       inductionLoop: inductionLoop,
@@ -398,7 +356,7 @@ describe('PRM: New reduced Ticket Counter', { testIsolation: false }, () => {
 
   it('Step-2: Get reduced Ticket Counter', () => {
     CommonUtils.get(
-      `/prm-directory/v1/contact-points?parentServicePointSloids=${parentServicePointSloid}`
+      `/prm-directory/v1/contact-points?parentServicePointSloids=${info.parentServicePointSloid}`
     ).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
       const ticketCounter = ReleaseApiUtils.getPrmObjectById(
@@ -421,7 +379,7 @@ describe('PRM: New reduced Ticket Counter', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersion,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       inductionLoop: inductionLoop,
@@ -465,7 +423,7 @@ describe('PRM: New reduced Platform', { testIsolation: false }, () => {
     expect(platform).to.have.property('sloid').and.to.equal(trafficPointSloid);
     expect(platform)
       .to.have.property('parentServicePointSloid')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
     expect(platform)
       .to.have.property('additionalInformation')
       .and.to.equal(additionalInformation);
@@ -499,8 +457,8 @@ describe('PRM: New reduced Platform', { testIsolation: false }, () => {
       sloid: trafficPointSloid,
       validFrom: validFrom,
       validTo: validTo,
-      parentServicePointSloid: parentServicePointSloid,
-      numberWithoutCheckDigit: numberWithoutCheckDigit, // From ServicePoint
+      parentServicePointSloid: info.parentServicePointSloid,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit, // From ServicePoint
       additionalInformation: additionalInformation,
       height: height,
       inclinationLongitudinal: inclinationLongitudinal,
@@ -562,8 +520,8 @@ describe('PRM: New reduced Platform', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersion,
-      parentServicePointSloid: parentServicePointSloid,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      parentServicePointSloid: info.parentServicePointSloid,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       additionalInformation: additionalInformation,
       height: height,
       inclinationLongitudinal: inclinationLongitudinal,
@@ -605,7 +563,7 @@ describe('PRM: New reduced Parking Lot', { testIsolation: false }, () => {
     expect(parkingLot).to.have.property('sloid').and.to.equal(parkingLotSloid);
     expect(parkingLot)
       .to.have.property('parentServicePointSloid')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
 
     expect(parkingLot)
       .to.have.property('designation')
@@ -622,18 +580,18 @@ describe('PRM: New reduced Parking Lot', { testIsolation: false }, () => {
   };
 
   it('Step-1: New reduced Parking Lot', () => {
-    parkingLotSloid = `${parentServicePointSloid}:PARKING_LOT1`; // Has to be initialized here, because before parentServicePointSloid is not known
+    parkingLotSloid = `${info.parentServicePointSloid}:PARKING_LOT1`; // Has to be initialized here, because before parentServicePointSloid is not known
 
     CommonUtils.post('/prm-directory/v1/parking-lots', {
       sloid: parkingLotSloid,
       validFrom: validFrom,
       validTo: validTo,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       placesAvailable: placesAvailable,
       prmPlacesAvailable: prmPlacesAvailable,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(
         CommonUtils.HTTP_REST_API_RESPONSE_CREATED
@@ -647,7 +605,7 @@ describe('PRM: New reduced Parking Lot', { testIsolation: false }, () => {
 
   it('Step-2: Get reduced Parking Lot', () => {
     CommonUtils.get(
-      `/prm-directory/v1/parking-lots?parentServicePointSloids=${parentServicePointSloid}`
+      `/prm-directory/v1/parking-lots?parentServicePointSloids=${info.parentServicePointSloid}`
     ).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
@@ -678,12 +636,12 @@ describe('PRM: New reduced Parking Lot', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersion,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       placesAvailable: placesAvailable,
       prmPlacesAvailable: prmPlacesAvailable,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
@@ -739,7 +697,7 @@ describe('PRM: New reduced Information Desk', { testIsolation: false }, () => {
     expect(informationDesk)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
 
     expect(informationDesk)
       .to.have.property('inductionLoop')
@@ -753,12 +711,12 @@ describe('PRM: New reduced Information Desk', { testIsolation: false }, () => {
   };
 
   it('Step-1: New reduced Information Desk', () => {
-    informationDeskSloid = `${parentServicePointSloid}:${referencePointElementType}1`; // Has to be initialized here, because before the input-variables are not known
+    informationDeskSloid = `${info.parentServicePointSloid}:${referencePointElementType}1`; // Has to be initialized here, because before the input-variables are not known
     CommonUtils.post('/prm-directory/v1/contact-points', {
       sloid: informationDeskSloid,
       validFrom: validFrom,
       validTo: validTo,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       inductionLoop: inductionLoop,
@@ -800,7 +758,7 @@ describe('PRM: New reduced Information Desk', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersion,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       inductionLoop: inductionLoop,
@@ -838,7 +796,7 @@ describe(
 
     it('Step-1: No TOILET-relation for sloid (reduced)', () => {
       CommonUtils.get(
-        `/prm-directory/v1/relations?parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=TOILET`
+        `/prm-directory/v1/relations?parentServicePointSloids=${info.parentServicePointSloid}&referencePointElementTypes=TOILET`
       ).then((response) => {
         validateNoRelationResponse(response, 0);
       });
@@ -846,7 +804,7 @@ describe(
 
     it('Step-2: No PLATFORM-relation for sloid (reduced)', () => {
       CommonUtils.get(
-        `/prm-directory/v1/relations?parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=PLATFORM`
+        `/prm-directory/v1/relations?parentServicePointSloids=${info.parentServicePointSloid}&referencePointElementTypes=PLATFORM`
       ).then((response) => {
         validateNoRelationResponse(response, 0);
       });
@@ -854,7 +812,7 @@ describe(
 
     it('Step-3: No PARKING_LOT-relation for sloid (reduced)', () => {
       CommonUtils.get(
-        `/prm-directory/v1/relations?parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=PARKING_LOT`
+        `/prm-directory/v1/relations?parentServicePointSloids=${info.parentServicePointSloid}&referencePointElementTypes=PARKING_LOT`
       ).then((response) => {
         validateNoRelationResponse(response, 0);
       });
@@ -862,7 +820,7 @@ describe(
 
     it('Step-4: No relation for parent-sloid (reduced)', () => {
       CommonUtils.get(
-        `/prm-directory/v1/relations?parentServicePointSloids=${parentServicePointSloid}`
+        `/prm-directory/v1/relations?parentServicePointSloids=${info.parentServicePointSloid}`
       ).then((response) => {
         validateNoRelationResponse(response, 0);
       });

@@ -1,12 +1,13 @@
 import CommonUtils from '../../../support/util/common-utils';
-import ReleaseApiUtils from '../../../support/util/release-api-utils';
+import ReleaseApiUtils, {
+  SePoDependentInfo,
+} from '../../../support/util/release-api-utils';
 import PrmConstants from '../../../support/util/prm-constants';
 
 // Documentation: PRM-Data-Fact-Matrix: https://confluence.sbb.ch/x/vgdpl
 
-let parentServicePointSloid = '';
+let info: SePoDependentInfo;
 let referencePointSloid = '';
-let numberWithoutCheckDigit = -1;
 let trafficPointSloid = '';
 let etagVersion = -1;
 let etagVersionRelation = -1;
@@ -36,7 +37,7 @@ const validatePrmObject = (object, validFrom: string, validTo: string) => {
     .to.have.property('number')
     .to.have.property('number')
     .that.is.a('number')
-    .and.to.equal(numberWithoutCheckDigit);
+    .and.to.equal(info.numberWithoutCheckDigit);
   expect(object)
     .to.have.property('status')
     .that.is.a('string')
@@ -52,7 +53,7 @@ describe(
   'Create ServicePoint and TrafficPoint for complete StopPoint',
   { testIsolation: false },
   () => {
-    let sboid = '';
+    let sboid: string;
 
     it('Step-1: Login on ATLAS', () => {
       cy.atlasLogin();
@@ -68,54 +69,14 @@ describe(
     });
 
     it('Step-3: New ServicePoint', () => {
-      CommonUtils.post('/service-point-directory/v1/service-points', {
-        country: 'SWITZERLAND',
-        designationOfficial: ReleaseApiUtils.today(),
-        businessOrganisation: sboid,
-        meansOfTransport: meansOfTransport,
-        validFrom: '2019-06-18',
-        validTo: '9999-12-31',
-      }).then((response) => {
-        expect(response.status).to.equal(
-          CommonUtils.HTTP_REST_API_RESPONSE_CREATED
-        );
-
-        expect(response.body).to.have.property('sloid').that.is.a('string');
-        parentServicePointSloid = response.body.sloid;
-
-        expect(response.body)
-          .property('number')
-          .property('number')
-          .that.is.a('number');
-        numberWithoutCheckDigit = response.body.number.number;
-      });
+      ReleaseApiUtils.createDependentServicePoint(sboid, meansOfTransport).then(
+        (sePoDependentInfo: SePoDependentInfo) => (info = sePoDependentInfo)
+      );
     });
 
     it('Step-4: New Traffic Point', () => {
-      trafficPointSloid = `${parentServicePointSloid}:trafficPoint:1`;
-
-      CommonUtils.post('/service-point-directory/v1/traffic-point-elements', {
-        numberWithoutCheckDigit: numberWithoutCheckDigit,
-        sloid: trafficPointSloid,
-        parentSloid: parentServicePointSloid,
-        validFrom: ReleaseApiUtils.FIRST_ATLAS_DATE,
-        validTo: ReleaseApiUtils.FIRST_ATLAS_DATE,
-        trafficPointElementType: 'BOARDING_PLATFORM',
-      }).then((response) => {
-        expect(response.status).to.equal(
-          CommonUtils.HTTP_REST_API_RESPONSE_CREATED
-        );
-        expect(response.body.parentSloid).to.equal(parentServicePointSloid);
-
-        expect(response.body).to.have.property('sloid').that.is.a('string');
-        trafficPointSloid = response.body.sloid;
-
-        expect(response.body)
-          .property('servicePointNumber')
-          .property('number')
-          .that.is.a('number')
-          .and.equals(numberWithoutCheckDigit);
-      });
+      trafficPointSloid = `${info.parentServicePointSloid}:trafficPoint:1`;
+      ReleaseApiUtils.createDependentTrafficPoint(trafficPointSloid, info);
     });
   }
 );
@@ -129,7 +90,7 @@ describe('PRM: Complete Stop Point', { testIsolation: false }, () => {
     expect(stopPoint)
       .to.have.property('sloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
     expect(stopPoint)
       .to.have.property('freeText')
       .that.is.a('string')
@@ -243,7 +204,7 @@ describe('PRM: Complete Stop Point', { testIsolation: false }, () => {
 
   it('Step-1: New complete Stop Point', () => {
     CommonUtils.post('/prm-directory/v1/stop-points', {
-      sloid: parentServicePointSloid,
+      sloid: info.parentServicePointSloid,
       validFrom: validFrom,
       validTo: validTo,
       meansOfTransport: meansOfTransport,
@@ -267,7 +228,7 @@ describe('PRM: Complete Stop Point', { testIsolation: false }, () => {
       wheelchairTicketMachine: wheelchairTicketMachine,
       assistanceRequestFulfilled: assistanceRequestFulfilled,
       ticketMachine: ticketMachine,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(
         CommonUtils.HTTP_REST_API_RESPONSE_CREATED
@@ -281,7 +242,7 @@ describe('PRM: Complete Stop Point', { testIsolation: false }, () => {
 
   it('Step-2: Check complete Stop Point', () => {
     CommonUtils.get(
-      `/prm-directory/v1/stop-points?sloids=${parentServicePointSloid}&fromDate=${validFrom}&toDate=${validTo}`
+      `/prm-directory/v1/stop-points?sloids=${info.parentServicePointSloid}&fromDate=${validFrom}&toDate=${validTo}`
     ).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
@@ -300,7 +261,7 @@ describe('PRM: Complete Stop Point', { testIsolation: false }, () => {
     meansOfTransport = meansOfTransport.concat(METRO);
 
     CommonUtils.put(`/prm-directory/v1/stop-points/${stopPointId}`, {
-      sloid: parentServicePointSloid,
+      sloid: info.parentServicePointSloid,
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersion,
@@ -325,7 +286,7 @@ describe('PRM: Complete Stop Point', { testIsolation: false }, () => {
       wheelchairTicketMachine: wheelchairTicketMachine,
       assistanceRequestFulfilled: assistanceRequestFulfilled,
       ticketMachine: ticketMachine,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
@@ -362,7 +323,7 @@ describe('PRM: Complete Reference Point', { testIsolation: false }, () => {
       .and.to.equal(referencePointSloid);
     expect(referencePoint)
       .to.have.property('parentServicePointSloid')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
     expect(referencePoint)
       .to.have.property('designation')
       .and.to.equal(designation);
@@ -378,16 +339,16 @@ describe('PRM: Complete Reference Point', { testIsolation: false }, () => {
   };
 
   it('Step-1: Create new complete Reference Point', () => {
-    referencePointSloid = `${parentServicePointSloid}:referencePoint1`; // Has to be initialized here, because before parentServicePointSloid is not known
+    referencePointSloid = `${info.parentServicePointSloid}:referencePoint1`; // Has to be initialized here, because before parentServicePointSloid is not known
 
     CommonUtils.post('/prm-directory/v1/reference-points', {
       sloid: referencePointSloid,
       validFrom: validFrom,
       validTo: validTo,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       referencePointType: referencePointType,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       additionalInformation: additionalInformation,
       mainReferencePoint: mainReferencePoint,
     }).then((response) => {
@@ -426,10 +387,10 @@ describe('PRM: Complete Reference Point', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersion,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       referencePointType: referencePointType,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       additionalInformation: additionalInformation,
       mainReferencePoint: mainReferencePoint,
     }).then((response) => {
@@ -506,7 +467,7 @@ describe('PRM: Check relations for sloid', { testIsolation: false }, () => {
 
   it('Step-6: No relation for parent-sloid', () => {
     CommonUtils.get(
-      `/prm-directory/v1/relations?parentServicePointSloids=${parentServicePointSloid}`
+      `/prm-directory/v1/relations?parentServicePointSloids=${info.parentServicePointSloid}`
     ).then((response) => {
       checkResponse(response);
     });
@@ -540,7 +501,7 @@ describe('PRM: Complete Toilet', { testIsolation: false }, () => {
     expect(prmObject)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
   };
 
   const validate = (toilet) => {
@@ -575,7 +536,7 @@ describe('PRM: Complete Toilet', { testIsolation: false }, () => {
     expect(relation)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
     expect(relation)
       .to.have.property('referencePointElementType')
       .that.is.a('string')
@@ -595,17 +556,17 @@ describe('PRM: Complete Toilet', { testIsolation: false }, () => {
   };
 
   it('Step-1: New complete Toilet', () => {
-    toiletSloid = `${parentServicePointSloid}:${referencePointElementType}1`; // Initialisierung des sloid
+    toiletSloid = `${info.parentServicePointSloid}:${referencePointElementType}1`; // Initialisierung des sloid
 
     CommonUtils.post('/prm-directory/v1/toilets', {
       sloid: toiletSloid,
       validFrom: validFrom,
       validTo: validTo,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       wheelchairToilet: wheelchairToilet,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(
         CommonUtils.HTTP_REST_API_RESPONSE_CREATED
@@ -656,7 +617,7 @@ describe('PRM: Complete Toilet', { testIsolation: false }, () => {
 
   const checkRelations = () => {
     checkRelation(
-      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
+      `parentServicePointSloids=${info.parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
     );
     checkRelation(
       `referencePointSloids=${referencePointSloid}&referencePointElementTypes=${referencePointElementType}`
@@ -697,12 +658,12 @@ describe('PRM: Complete Toilet', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersionRelation,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       tactileVisualMarks: tactileVisualMarks,
       contrastingAreas: contrastingAreas,
       stepFreeAccess: stepFreeAccess,
       referencePointElementType: referencePointElementType,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       referencePointSloid: referencePointSloid,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
@@ -735,11 +696,11 @@ describe('PRM: Complete Toilet', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersionToilet,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       wheelchairToilet: wheelchairToilet,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
@@ -790,7 +751,7 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
     expect(prmObject)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
   };
 
   const validate = (ticketCounter) => {
@@ -834,7 +795,7 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
     expect(relation)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
     expect(relation)
       .to.have.property('referencePointElementType')
       .that.is.a('string')
@@ -854,7 +815,7 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
   };
 
   it('Step-1: New complete Ticket Counter', () => {
-    ticketCounterSloid = `${parentServicePointSloid}:${contactPointType}1`;
+    ticketCounterSloid = `${info.parentServicePointSloid}:${contactPointType}1`;
 
     // TODO: Export POST/PUT-bodies?
     CommonUtils.post('/prm-directory/v1/contact-points', {
@@ -862,13 +823,13 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
       sloid: ticketCounterSloid,
       validFrom: validFrom,
       validTo: validTo,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       inductionLoop: inductionLoop,
       openingHours: openingHours,
       wheelchairAccess: wheelchairAccess,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(
         CommonUtils.HTTP_REST_API_RESPONSE_CREATED
@@ -920,7 +881,7 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
 
   const checkRelations = () => {
     checkRelation(
-      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
+      `parentServicePointSloids=${info.parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
     );
     checkRelation(
       `referencePointSloids=${referencePointSloid}&referencePointElementTypes=${referencePointElementType}`
@@ -961,12 +922,12 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersionRelation,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       tactileVisualMarks: tactileVisualMarks,
       contrastingAreas: contrastingAreas,
       stepFreeAccess: stepFreeAccess,
       referencePointElementType: referencePointElementType,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       referencePointSloid: referencePointSloid,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
@@ -1000,13 +961,13 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersionTicketCounter,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       inductionLoop: inductionLoop,
       openingHours: openingHours,
       wheelchairAccess: wheelchairAccess,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
@@ -1068,7 +1029,7 @@ describe('PRM: Complete Platform', { testIsolation: false }, () => {
     expect(prmObject)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
   };
 
   const validate = (platform) => {
@@ -1122,7 +1083,7 @@ describe('PRM: Complete Platform', { testIsolation: false }, () => {
     expect(relation)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
     expect(relation)
       .to.have.property('referencePointElementType')
       .that.is.a('string')
@@ -1146,7 +1107,7 @@ describe('PRM: Complete Platform', { testIsolation: false }, () => {
       sloid: trafficPointSloid,
       validFrom: validFrom,
       validTo: validTo,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       boardingDevice: boardingDevice,
       adviceAccessInfo: adviceAccessInfo,
       additionalInformation: additionalInformation,
@@ -1157,7 +1118,7 @@ describe('PRM: Complete Platform', { testIsolation: false }, () => {
       inclinationWidth: inclinationWidth,
       levelAccessWheelchair: levelAccessWheelchair,
       superelevation: superelevation,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(
         CommonUtils.HTTP_REST_API_RESPONSE_CREATED
@@ -1205,7 +1166,7 @@ describe('PRM: Complete Platform', { testIsolation: false }, () => {
 
   const checkRelations = () => {
     checkRelation(
-      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
+      `parentServicePointSloids=${info.parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
     );
     checkRelation(
       `referencePointSloids=${referencePointSloid}&referencePointElementTypes=${referencePointElementType}`
@@ -1246,12 +1207,12 @@ describe('PRM: Complete Platform', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersionRelation,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       tactileVisualMarks: tactileVisualMarks,
       contrastingAreas: contrastingAreas,
       stepFreeAccess: stepFreeAccess,
       referencePointElementType: referencePointElementType,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       referencePointSloid: referencePointSloid,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
@@ -1282,7 +1243,7 @@ describe('PRM: Complete Platform', { testIsolation: false }, () => {
       sloid: trafficPointSloid,
       validFrom: validFrom,
       validTo: validTo,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       boardingDevice: boardingDevice,
       adviceAccessInfo: adviceAccessInfo,
       additionalInformation: additionalInformation,
@@ -1293,7 +1254,7 @@ describe('PRM: Complete Platform', { testIsolation: false }, () => {
       inclinationWidth: inclinationWidth,
       levelAccessWheelchair: levelAccessWheelchair,
       superelevation: superelevation,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       etagVersion: etagVersionPlatform,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
@@ -1342,7 +1303,7 @@ describe('PRM: Complete Parking Lot', { testIsolation: false }, () => {
     expect(prmObject)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
   };
 
   const validate = (parkingLot) => {
@@ -1379,7 +1340,7 @@ describe('PRM: Complete Parking Lot', { testIsolation: false }, () => {
     expect(relation)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
     expect(relation)
       .to.have.property('tactileVisualMarks')
       .that.is.a('string')
@@ -1413,7 +1374,7 @@ describe('PRM: Complete Parking Lot', { testIsolation: false }, () => {
 
   const checkRelations = () => {
     checkRelation(
-      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
+      `parentServicePointSloids=${info.parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`
     );
     checkRelation(
       `referencePointSloids=${referencePointSloid}&referencePointElementTypes=${referencePointElementType}`
@@ -1435,19 +1396,19 @@ describe('PRM: Complete Parking Lot', { testIsolation: false }, () => {
   };
 
   it('Step-1: New complete Parking Lot', () => {
-    parkingLotSloid = `${parentServicePointSloid}:${referencePointElementType}1`;
+    parkingLotSloid = `${info.parentServicePointSloid}:${referencePointElementType}1`;
 
     CommonUtils.post('/prm-directory/v1/parking-lots', {
       sloid: parkingLotSloid,
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: 0,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       placesAvailable: placesAvailable,
       prmPlacesAvailable: prmPlacesAvailable,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(
         CommonUtils.HTTP_REST_API_RESPONSE_CREATED
@@ -1494,12 +1455,12 @@ describe('PRM: Complete Parking Lot', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersionParkingLot,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       placesAvailable: placesAvailable,
       prmPlacesAvailable: prmPlacesAvailable,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
       const parkingLot = ReleaseApiUtils.getPrmObjectById(
@@ -1533,12 +1494,12 @@ describe('PRM: Complete Parking Lot', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersionRelation,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       tactileVisualMarks: tactileVisualMarks,
       contrastingAreas: contrastingAreas,
       stepFreeAccess: stepFreeAccess,
       referencePointElementType: referencePointElementType,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       referencePointSloid: referencePointSloid,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
@@ -1591,7 +1552,7 @@ describe('PRM: Complete Information Desk', { testIsolation: false }, () => {
     expect(prmObject)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
   };
 
   const validate = (informationDesk) => {
@@ -1635,7 +1596,7 @@ describe('PRM: Complete Information Desk', { testIsolation: false }, () => {
     expect(relation)
       .to.have.property('parentServicePointSloid')
       .that.is.a('string')
-      .and.to.equal(parentServicePointSloid);
+      .and.to.equal(info.parentServicePointSloid);
     expect(relation)
       .to.have.property('referencePointElementType')
       .that.is.a('string')
@@ -1655,7 +1616,7 @@ describe('PRM: Complete Information Desk', { testIsolation: false }, () => {
   };
 
   it('Step-1: New complete Information Desk', () => {
-    informationDeskSloid = `${parentServicePointSloid}:${contactPointType}1`;
+    informationDeskSloid = `${info.parentServicePointSloid}:${contactPointType}1`;
 
     // TODO: Export POST/PUT-bodies?
     CommonUtils.post('/prm-directory/v1/contact-points', {
@@ -1663,13 +1624,13 @@ describe('PRM: Complete Information Desk', { testIsolation: false }, () => {
       sloid: informationDeskSloid,
       validFrom: validFrom,
       validTo: validTo,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       inductionLoop: inductionLoop,
       openingHours: openingHours,
       wheelchairAccess: wheelchairAccess,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(
         CommonUtils.HTTP_REST_API_RESPONSE_CREATED
@@ -1744,7 +1705,7 @@ describe('PRM: Complete Information Desk', { testIsolation: false }, () => {
     );
 
     checkRelation(
-      `parentServicePointSloids=${parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`,
+      `parentServicePointSloids=${info.parentServicePointSloid}&referencePointElementTypes=${referencePointElementType}`,
       numberOfExpectedContactPoints,
       numberOfExpectedContactPoints
     );
@@ -1780,12 +1741,12 @@ describe('PRM: Complete Information Desk', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersionRelation,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       tactileVisualMarks: tactileVisualMarks,
       contrastingAreas: contrastingAreas,
       stepFreeAccess: stepFreeAccess,
       referencePointElementType: referencePointElementType,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
       referencePointSloid: referencePointSloid,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
@@ -1819,13 +1780,13 @@ describe('PRM: Complete Information Desk', { testIsolation: false }, () => {
       validFrom: validFrom,
       validTo: validTo,
       etagVersion: etagVersionInformationDesk,
-      parentServicePointSloid: parentServicePointSloid,
+      parentServicePointSloid: info.parentServicePointSloid,
       designation: designation,
       additionalInformation: additionalInformation,
       inductionLoop: inductionLoop,
       openingHours: openingHours,
       wheelchairAccess: wheelchairAccess,
-      numberWithoutCheckDigit: numberWithoutCheckDigit,
+      numberWithoutCheckDigit: info.numberWithoutCheckDigit,
     }).then((response) => {
       expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
