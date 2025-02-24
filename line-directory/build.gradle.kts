@@ -20,7 +20,7 @@ dependencies {
     implementation("org.apache.tika:tika-core:3.1.0")
 
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.8.Final")
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.9.Final")
 
     implementation(project(":base-atlas"))
     implementation(project(":user-administration-security"))
