@@ -21,9 +21,9 @@ class DateOrderExceptionTest {
         // when & then
         ErrorResponse errorResponse = exception.getErrorResponse();
         assertThat(errorResponse.getStatus()).isEqualTo(400);
-        assertThat(errorResponse.getMessage()).isEqualTo("Edited ValidFrom is bigger than edited ValidTo");
-        assertThat(errorResponse.getError()).isEqualTo("Edited ValidFrom is bigger than edited ValidTo");
-        DisplayInfo displayInfo = exception.getErrorResponse().getDetails().iterator().next().getDisplayInfo();
+        assertThat(errorResponse.getMessage()).isEqualTo("Edited ValidFrom is bigger than edited ValidTo; validFrom: 2300-01-01 validTo: 2000-01-01");
+        assertThat(errorResponse.getError()).isEqualTo("Edited ValidFrom is bigger than edited ValidTo; validFrom: 2300-01-01 validTo: 2000-01-01");
+        DisplayInfo displayInfo = exception.getErrorResponse().getDetails().getFirst().getDisplayInfo();
 
         assertThat(displayInfo.getParameters()).hasSize(2);
         assertThat(displayInfo
