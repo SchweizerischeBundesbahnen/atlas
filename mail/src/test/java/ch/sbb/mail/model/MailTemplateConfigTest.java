@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 class MailTemplateConfigTest {
 
   @Test
-   void shouldThrowExceptionWhenMailTypeIsNull() {
+  void shouldThrowExceptionWhenMailTypeIsNull() {
     //when
     assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
         () -> getMailTemplateConfig(null));
   }
 
   @Test
-   void shouldReturnAtlasStandardTemplate() {
+  void shouldReturnAtlasStandardTemplate() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.ATLAS_STANDARD);
     //then
@@ -25,7 +25,7 @@ class MailTemplateConfigTest {
   }
 
   @Test
-   void shouldReturnTuImportTemplate() {
+  void shouldReturnTuImportTemplate() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.TU_IMPORT);
     //then
@@ -33,7 +33,7 @@ class MailTemplateConfigTest {
   }
 
   @Test
-   void shouldReturnSchedulingErrorNotificationTemplate() {
+  void shouldReturnSchedulingErrorNotificationTemplate() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.SCHEDULING_ERROR_NOTIFICATION);
     //then
@@ -102,6 +102,14 @@ class MailTemplateConfigTest {
     MailTemplateConfig result = getMailTemplateConfig(MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION);
     //then
     assertThat(result).isEqualTo(MailTemplateConfig.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION_TEMPLATE);
+  }
+
+  @Test
+  void shouldReturnLineStartWorkflowNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.LINE_START_WORKFLOW_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.LINE_START_WORKFLOW_NOTIFICATION_TEMPLATE);
   }
 
 }
