@@ -235,7 +235,7 @@ export class StopPointFormGroupBuilder {
       dynamicAudioSystem: value.dynamicAudioSystem!,
       dynamicOpticSystem: value.dynamicOpticSystem!,
       infoTicketMachine: value.infoTicketMachine!,
-      interoperable: value.interoperable!,
+      interoperable: value.interoperable ?? false,
       ticketMachine: value.ticketMachine!,
       visualInfo: value.visualInfo!,
       wheelchairTicketMachine: value.wheelchairTicketMachine!,
