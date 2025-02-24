@@ -112,4 +112,12 @@ class MailTemplateConfigTest {
     assertThat(result).isEqualTo(MailTemplateConfig.LINE_START_WORKFLOW_NOTIFICATION_TEMPLATE);
   }
 
+  @Test
+  void shouldReturnLineApprovedWorkflowNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.LINE_APPROVED_WORKFLOW_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.LINE_APPROVED_WORKFLOW_NOTIFICATION_TEMPLATE);
+  }
+
 }
