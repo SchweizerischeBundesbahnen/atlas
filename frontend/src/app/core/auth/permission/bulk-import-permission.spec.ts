@@ -1,4 +1,4 @@
-import {BulkImportPermission} from "./bulk-import-permission";
+import {BULK_IMPORT_APPLICATIONS, BulkImportPermission} from "./bulk-import-permission";
 import {ApplicationRole, ApplicationType, PermissionRestrictionType} from "../../../api";
 
 describe('BulkImportPermission', () => {
@@ -37,5 +37,14 @@ describe('BulkImportPermission', () => {
       permissionRestrictions: [{type: PermissionRestrictionType.BulkImport, valueAsString: "true"}]
     }]);
     expect(result).toBeTrue();
+  });
+
+  it('should have bulk import applications ', () => {
+    expect(BULK_IMPORT_APPLICATIONS.length).toBe(4);
+
+    expect(BULK_IMPORT_APPLICATIONS).toContain(ApplicationType.Sepodi);
+    expect(BULK_IMPORT_APPLICATIONS).toContain(ApplicationType.Prm);
+    expect(BULK_IMPORT_APPLICATIONS).toContain(ApplicationType.Lidi);
+    expect(BULK_IMPORT_APPLICATIONS).toContain(ApplicationType.Ttfn);
   });
 });
