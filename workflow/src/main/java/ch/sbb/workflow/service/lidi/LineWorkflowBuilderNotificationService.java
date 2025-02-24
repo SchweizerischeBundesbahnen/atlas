@@ -1,9 +1,9 @@
 package ch.sbb.workflow.service.lidi;
 
+import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.workflow.entity.LineWorkflow;
-import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +31,8 @@ public class LineWorkflowBuilderNotificationService {
   public MailNotification buildWorkflowStartedMailNotification(LineWorkflow lineWorkflow) {
     return MailNotification.builder()
         .from(from)
-        .mailType(MailType.WORKFLOW_NOTIFICATION)
-        .subject(buildSubject(lineWorkflow))
+        .mailType(MailType.LINE_START_WORKFLOW_NOTIFICATION)
+        .subject(buildStartSubject(lineWorkflow))
         .to(List.of(workflowLineReceiver))
         .cc(List.of(lineWorkflow.getClient().getMail()))
         .templateProperties(buildMailProperties(lineWorkflow))
@@ -48,6 +48,10 @@ public class LineWorkflowBuilderNotificationService {
         .cc(List.of(atlasBusiness))
         .templateProperties(buildMailProperties(lineWorkflow))
         .build();
+  }
+
+  private String buildStartSubject(LineWorkflow lineWorkflow) {
+    return "Antrag prüfen zu / vérifier la demande de  / controllare la richiesta per: " + lineWorkflow.getSwissId();
   }
 
   private String buildSubject(LineWorkflow lineWorkflow) {
