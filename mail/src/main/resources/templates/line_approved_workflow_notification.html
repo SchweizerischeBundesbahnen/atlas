@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml' xmlns:th='http://www.thymeleaf.org'>
+<head>
+    <title th:text="${properties.get(0).get('title')}"></title>
+    <meta charset='UTF-8'>
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: 'IBM Plex Sans', sans-serif;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .logo-container {
+            width: 12%;
+            float: left;
+        }
+
+        .logo {
+            margin: 35px 35px 35px 40px;
+            top: 32px;
+            left: 47px;
+            width: 45px;
+            height: 45px;
+            background-size: 23px 23px;
+        }
+
+        .logo-title {
+            color: #06348b;
+            position: absolute;
+            top: 83px;
+            left: 47px;
+            width: 45px;
+            height: 20px;
+            line-height: 20px;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .header-title {
+            font-size: large;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header-container {
+            width: 100%;
+            height: 100%;
+            float: left;
+            text-align: justify;
+        }
+
+        .content-container {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .header-title-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .footer {
+            margin-top: 32px;
+            margin-left: 20px;
+            margin-bottom: 30px;
+        }
+
+        .mail-container {
+            padding-bottom: 30px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="mail-container">
+    <div class='header-container'>
+        <div class='logo-container'>
+            <div class='logo'>
+                <img src="logo-atlas.jpeg" th:src="'cid:' + ${logo}" th:width='45'/>
+                <div class='logo-title'>
+                    atlas
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  GERMAN  -->
+    <div>
+        <div class='content-container'>
+            <div class="header-title-container">
+            <span class='header-title'>
+                <b>Antrag für eine neue/geänderte Linie genehmigt </b>
+            </span>
+            </div>
+            <div>
+                Der von Ihnen gestellte Antrag für die <b>[[${properties.get(0).get('swissId')}]]</b> -
+                <b>[[${properties.get(0).get('description')}]]</b> wurde überprüft und genehmigt.
+                <span th:if="${properties.get(0).get('checkComment')}">
+                     Bitte beachten Sie dazu die nachfolgende Bemerkung der prüfenden Person:
+                    <br/><br/>
+                    <i>[[${properties.get(0).get('checkComment')}]]</i>
+                </span>
+                <br/>
+                <br/>
+                Durch einen Klick auf <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
+                gelangen Sie direkt zur Linie <b>[[${properties.get(0).get('swissId')}]]</b> -
+                <b>[[${properties.get(0).get('description')}]].</b>
+            </div>
+        </div>
+        <div class='footer'>
+            Digitale Grüsse,<br/>
+            atlas - Linienverzeichnis
+        </div>
+    </div>
+    <hr>
+    <!--  FRENCH  -->
+    <div>
+        <div class='content-container'>
+            <div class="header-title-container">
+            <span class='header-title'>
+                <b>Demande pour une ligne nouvelle/modifiée approuvée</b>
+            </span>
+            </div>
+            <div>
+                La demande que vous avez faite pour la ligne <b>[[${properties.get(0).get('swissId')}]]</b> -
+                <b>[[${properties.get(0).get('description')}]]</b> a été vérifiée et approuvée.
+                <span th:if="${properties.get(0).get('checkComment')}">
+                     Bitte beachten Sie dazu die nachfolgende Bemerkung der prüfenden Person:
+                    <br/><br/>
+                    <i>[[${properties.get(0).get('checkComment')}]]</i>
+                </span>
+                <br/>
+                <br/>
+                En cliquant sur <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
+                , vous accédez directement à la ligne <b>[[${properties.get(0).get('swissId')}]]</b> -
+                <b>[[${properties.get(0).get('description')}]].</b>
+            </div>
+        </div>
+        <div class='footer'>
+            Salutations digitales,<br/>
+            atlas - Répertoire des lignes
+        </div>
+    </div>
+    <hr>
+    <!--  ITALIAN  -->
+    <div>
+        <div class='content-container'>
+            <div class="header-title-container">
+            <span class='header-title'>
+                <b>Richiesta di una linea nuova/modificata approvata</b>
+            </span>
+            </div>
+            <div>
+                La sua richiesta per la linea <b>[[${properties.get(0).get('swissId')}]]</b> -
+                <b>[[${properties.get(0).get('description')}]]</b> è stata controllata e approvata.
+                <span th:if="${properties.get(0).get('checkComment')}">
+                     Si rimanda al seguente commento dell'esaminatore:
+                    <br/><br/>
+                    <i>[[${properties.get(0).get('checkComment')}]]</i>
+                </span>
+                <br/>
+                <br/>
+                Cliccare su <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
+                per accedere direttamente alla linea <b>[[${properties.get(0).get('swissId')}]]</b> -
+                <b>[[${properties.get(0).get('description')}]].</b>
+            </div>
+        </div>
+        <div class='footer'>
+            Saluti digitali,<br/>
+            atlas - Cartella delle linee
+        </div>
+    </div>
+    <hr>
+</div>
+</body>
+</html>
