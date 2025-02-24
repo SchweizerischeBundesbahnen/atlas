@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.452.0"
+version = "2.453.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
