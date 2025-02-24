@@ -39,6 +39,17 @@ public class LineWorkflowBuilderNotificationService {
         .build();
   }
 
+  public MailNotification buildWorkflowApprovedMailNotification(LineWorkflow lineWorkflow) {
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.LINE_APPROVED_WORKFLOW_NOTIFICATION)
+        .subject(buildApprovedSubject(lineWorkflow))
+        .to(List.of(lineWorkflow.getClient().getMail()))
+        .cc(List.of(atlasBusiness))
+        .templateProperties(buildMailProperties(lineWorkflow))
+        .build();
+  }
+
   public MailNotification buildWorkflowCompletedMailNotification(LineWorkflow lineWorkflow) {
     return MailNotification.builder()
         .from(from)
@@ -54,11 +65,16 @@ public class LineWorkflowBuilderNotificationService {
     return "Antrag prüfen zu / vérifier la demande de  / controllare la richiesta per: " + lineWorkflow.getSwissId();
   }
 
+  private String buildApprovedSubject(LineWorkflow lineWorkflow) {
+    return "Antrag genehmigt / demande approuvée / richiesta approvata: " + lineWorkflow.getSwissId();
+  }
+
   private String buildSubject(LineWorkflow lineWorkflow) {
     return "Antrag zu " + lineWorkflow.getSwissId() + " " + getWorkflowDescription(lineWorkflow) + " " + buildTranslatedStatus(
         lineWorkflow);
   }
 
+  //todo: use this to generate subject
   private String buildTranslatedStatus(LineWorkflow lineWorkflow) {
     return switch (lineWorkflow.getStatus()) {
       case STARTED -> "prüfen";

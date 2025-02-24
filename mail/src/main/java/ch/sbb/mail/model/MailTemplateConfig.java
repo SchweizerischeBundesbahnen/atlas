@@ -5,6 +5,7 @@ import static ch.sbb.atlas.kafka.model.mail.MailType.ATLAS_STANDARD;
 import static ch.sbb.atlas.kafka.model.mail.MailType.BULK_IMPORT_RESULT_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.CANCEL_STOP_POINT_WORKFLOW_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.LINE_APPROVED_WORKFLOW_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.LINE_START_WORKFLOW_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.REJECT_STOP_POINT_WORKFLOW_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.SCHEDULING_ERROR_NOTIFICATION;
@@ -40,6 +41,7 @@ public enum MailTemplateConfig {
       true),
   WORKFLOW_NOTIFICATION_TEMPLATE("workflow_notification", null, null, true, false, true),
   LINE_START_WORKFLOW_NOTIFICATION_TEMPLATE("line_start_workflow_notification", null, null, true, false, true),
+  LINE_APPROVED_WORKFLOW_NOTIFICATION_TEMPLATE("line_approved_workflow_notification", null, null, true, false, true),
   START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION_TEMPLATE("start_stop_point_workflow_examinant_notification", null, null, true,
       false, true),
   START_STOP_POINT_WORKFLOW_CC_NOTIFICATION_TEMPLATE("start_stop_point_workflow_cc_notification", null, null, true, false, true),
@@ -69,6 +71,7 @@ public enum MailTemplateConfig {
     MAIL_TYPE_TEMPLATE_CONFIG.put(TU_IMPORT, IMPORT_TU_TEMPLATE);
     MAIL_TYPE_TEMPLATE_CONFIG.put(SCHEDULING_ERROR_NOTIFICATION, SCHEDULING_ERROR_NOTIFICATION_TEMPLATE);
     MAIL_TYPE_TEMPLATE_CONFIG.put(LINE_START_WORKFLOW_NOTIFICATION, LINE_START_WORKFLOW_NOTIFICATION_TEMPLATE);
+    MAIL_TYPE_TEMPLATE_CONFIG.put(LINE_APPROVED_WORKFLOW_NOTIFICATION, LINE_APPROVED_WORKFLOW_NOTIFICATION_TEMPLATE);
     MAIL_TYPE_TEMPLATE_CONFIG.put(WORKFLOW_NOTIFICATION, WORKFLOW_NOTIFICATION_TEMPLATE);
     MAIL_TYPE_TEMPLATE_CONFIG.put(UPDATE_GEOLOCATION_ERROR_NOTIFICATION, UPDATE_GEOLOCATION_ERROR_NOTIFICATION_TEMPLATE);
     MAIL_TYPE_TEMPLATE_CONFIG.put(UPDATE_GEOLOCATION_SUCCESS_NOTIFICATION, UPDATE_GEOLOCATION_SUCCESS_NOTIFICATION_TEMPLATE);
