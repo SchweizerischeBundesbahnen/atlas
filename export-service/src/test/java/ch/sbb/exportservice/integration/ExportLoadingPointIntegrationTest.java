@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
-import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
@@ -24,7 +23,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
- class ExportLoadingPointIntegrationTest {
+class ExportLoadingPointIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;
@@ -38,7 +37,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
   private Job exportLoadingPointJsonJob;
 
   @Test
-   void shouldExecuteExportLoadingPointCsvJob() throws Exception {
+  void shouldExecuteExportLoadingPointCsvJob() throws Exception {
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
@@ -55,7 +54,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
   }
 
   @Test
-   void shouldExecuteExportLoadingPointJsonJob() throws Exception {
+  void shouldExecuteExportLoadingPointJsonJob() throws Exception {
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)

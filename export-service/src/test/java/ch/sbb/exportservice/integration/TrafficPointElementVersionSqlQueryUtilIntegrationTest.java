@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.entity.sepodi.TrafficPointElementVersion;
-import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.reader.TrafficPointElementVersionRowMapper;
 import ch.sbb.exportservice.reader.TrafficPointElementVersionSqlQueryUtil;
 import java.sql.Connection;
