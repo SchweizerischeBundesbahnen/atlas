@@ -56,7 +56,8 @@ class LineWorkflowBuilderNotificationServiceTest {
             .build());
 
     assertThat(mailNotification.getFrom()).isEqualTo("no-reply-atlas@sbb.ch");
-    assertThat(mailNotification.getSubject()).isEqualTo("Antrag zu ch:1:slnid:123 Linie 1 genehmigt");
+    assertThat(mailNotification.getSubject()).isEqualTo(
+        "Antrag zurückgewiesen / Demande rejetée / Domanda respinta: ch:1:slnid:123");
     Map<String, Object> properties = mailNotification.getTemplateProperties().get(0);
     assertThat(properties)
         .containsEntry("description", "Linie 1")

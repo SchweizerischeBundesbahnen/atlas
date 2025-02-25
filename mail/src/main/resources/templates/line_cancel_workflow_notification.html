@@ -91,12 +91,12 @@
         <div class='content-container'>
             <div class="header-title-container">
             <span class='header-title'>
-                <b>Antrag für eine neue/geänderte Linie genehmigt </b>
+                <b>Antrag für eine neue/geänderte Linie zurückgewiesen </b>
             </span>
             </div>
             <div>
                 Der von Ihnen gestellte Antrag für die <b>[[${properties.get(0).get('swissId')}]]</b> -
-                <b>[[${properties.get(0).get('description')}]]</b> wurde überprüft und genehmigt.
+                <b>[[${properties.get(0).get('description')}]]</b> wurde überprüft und zurückgewiesen.
                 <br/><br/>
                 <span th:if="${properties.get(0).get('checkComment')}">
                      Bitte beachten Sie dazu die nachfolgende Bemerkung der prüfenden Person:
@@ -121,15 +121,15 @@
         <div class='content-container'>
             <div class="header-title-container">
             <span class='header-title'>
-                <b>Demande pour une ligne nouvelle/modifiée approuvée</b>
+                <b>Demande pour une ligne nouvelle/modifiée rejetée</b>
             </span>
             </div>
             <div>
                 La demande que vous avez faite pour la ligne <b>[[${properties.get(0).get('swissId')}]]</b> -
-                <b>[[${properties.get(0).get('description')}]]</b> a été vérifiée et approuvée.
+                <b>[[${properties.get(0).get('description')}]]</b> a été examinée et rejetée.
                 <br/><br/>
                 <span th:if="${properties.get(0).get('checkComment')}">
-                    Veuillez tenir compte à ce sujet de la remarque suivante de la personne chargée de l'examen:
+                     Veuillez tenir compte à ce sujet de la remarque suivante de la personne chargée de l'examen:
                     <br/><br/>
                     <i>[[${properties.get(0).get('checkComment')}]]</i>
                 </span>
@@ -156,10 +156,10 @@
             </div>
             <div>
                 La sua richiesta per la linea <b>[[${properties.get(0).get('swissId')}]]</b> -
-                <b>[[${properties.get(0).get('description')}]]</b> è stata controllata e approvata.
+                <b>[[${properties.get(0).get('description')}]]</b> è stata esaminata e respinta.
                 <br/><br/>
                 <span th:if="${properties.get(0).get('checkComment')}">
-                     Si rimanda al seguente commento dell'esaminatore:
+                    Si prega di fare riferimento al seguente commento dell'esaminatore:
                     <br/><br/>
                     <i>[[${properties.get(0).get('checkComment')}]]</i>
                 </span>
