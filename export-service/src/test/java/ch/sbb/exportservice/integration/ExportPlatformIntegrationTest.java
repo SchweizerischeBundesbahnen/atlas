@@ -5,7 +5,6 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;

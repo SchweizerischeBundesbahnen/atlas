@@ -4,10 +4,9 @@ import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.export.enumeration.ExportFileName;
-import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportFilePath;
+import jakarta.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -27,14 +26,20 @@ public abstract class FileUploadTasklet implements Tasklet {
   @Autowired
   protected AmazonService amazonService;
 
-  private final ExportTypeBase exportType;
-  private final ExportFileName exportFileName;
+  private final ExportFilePath systemFile;
 
-  protected ExportFilePath exportFilePath;
+  protected final ExportFilePath s3File;
 
-  protected FileUploadTasklet(ExportTypeBase exportType, ExportFileName exportFileName) {
-    this.exportType = exportType;
-    this.exportFileName = exportFileName;
+  protected FileUploadTasklet(
+      ExportFilePath.ExportFilePathBuilder systemFile,
+      ExportFilePath.ExportFilePathBuilder s3File) {
+    this.systemFile = systemFile.extension(getExportExtensionFileType().getExtension()).build();
+    this.s3File = s3File.extension(getExportExtensionFileType().getExtension()).build();
+  }
+
+  @PostConstruct
+  private void init() {
+    systemFile.setSystemDir(fileService.getDir());
   }
 
   protected abstract ExportExtensionFileType getExportExtensionFileType();
@@ -42,15 +47,14 @@ public abstract class FileUploadTasklet implements Tasklet {
   protected abstract void putFile() throws IOException;
 
   protected File file() {
-    return Paths.get(exportFilePath.actualDateFilePath()).toFile();
+    return Paths.get(systemFile.actualDateFilePath()).toFile();
   }
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    exportFilePath = new ExportFilePath(exportType, exportFileName, fileService.getDir(), getExportExtensionFileType());
-    log.info("File {} uploading...", exportFilePath.actualDateFilePath());
+    log.info("File {} uploading...", systemFile.actualDateFilePath());
     exportFile();
-    log.info("File {} uploaded!", exportFilePath.actualDateFilePath());
+    log.info("File {} uploaded!", systemFile.actualDateFilePath());
     return RepeatStatus.FINISHED;
   }
 

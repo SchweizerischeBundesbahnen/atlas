@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.prm.ParkingLotVersion;
-import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.reader.ParkingLotVersionRowMapper;
 import ch.sbb.exportservice.reader.ParkingLotVersionSqlQueryUtil;
 import java.sql.Connection;
