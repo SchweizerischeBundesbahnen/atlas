@@ -21,7 +21,7 @@ class LineWorkflowBuilderNotificationServiceTest {
 
   @Test
   void buildWorkflowStartedNotification() {
-    MailNotification mailNotification = lineWorkflowBuilderNotificationService.buildWorkflowStartedMailNotification(
+    MailNotification mailNotification = lineWorkflowBuilderNotificationService.buildWorkflowMailNotification(
         LineWorkflow.builder()
             .status(WorkflowStatus.STARTED)
             .workflowComment("Wee need this workflow")
@@ -42,9 +42,33 @@ class LineWorkflowBuilderNotificationServiceTest {
 
   @Test
   void buildWorkflowCompletedNotification() {
-    MailNotification mailNotification = lineWorkflowBuilderNotificationService.buildWorkflowCompletedMailNotification(
+    MailNotification mailNotification = lineWorkflowBuilderNotificationService.buildWorkflowMailNotification(
         LineWorkflow.builder()
             .status(WorkflowStatus.APPROVED)
+            .workflowComment("Wee need this workflow")
+            .swissId("ch:1:slnid:123")
+            .businessObjectId(1100L)
+            .description("Linie 1")
+            .checkComment("This is great")
+            .examinant(
+                Person.builder().firstName("Mr").lastName("Crabbs").function("Dinerbesitzer").mail("crabbs@meer.com").build())
+            .client(Person.builder().firstName("Hai").lastName("Fisch").function("Schwimmer").mail("hai@meer.com").build())
+            .build());
+
+    assertThat(mailNotification.getFrom()).isEqualTo("no-reply-atlas@sbb.ch");
+    assertThat(mailNotification.getSubject()).isEqualTo(
+        "Antrag genehmigt / demande approuvée / richiesta approvata: ch:1:slnid:123");
+    Map<String, Object> properties = mailNotification.getTemplateProperties().get(0);
+    assertThat(properties)
+        .containsEntry("description", "Linie 1")
+        .containsEntry("url", "http://localhost:4200/line-directory/lines/ch:1:slnid:123?id=1100");
+  }
+
+  @Test
+  void buildWorkflowRejectedNotification() {
+    MailNotification mailNotification = lineWorkflowBuilderNotificationService.buildWorkflowMailNotification(
+        LineWorkflow.builder()
+            .status(WorkflowStatus.REJECTED)
             .workflowComment("Wee need this workflow")
             .swissId("ch:1:slnid:123")
             .businessObjectId(1100L)
