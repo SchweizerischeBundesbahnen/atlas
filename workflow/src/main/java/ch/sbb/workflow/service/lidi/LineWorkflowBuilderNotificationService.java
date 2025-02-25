@@ -53,8 +53,8 @@ public class LineWorkflowBuilderNotificationService {
   public MailNotification buildWorkflowCompletedMailNotification(LineWorkflow lineWorkflow) {
     return MailNotification.builder()
         .from(from)
-        .mailType(MailType.WORKFLOW_NOTIFICATION)
-        .subject(buildSubject(lineWorkflow))
+        .mailType(MailType.LINE_CANCEL_WORKFLOW_NOTIFICATION)
+        .subject(buildCanceledSubject(lineWorkflow))
         .to(List.of(lineWorkflow.getClient().getMail()))
         .cc(List.of(atlasBusiness))
         .templateProperties(buildMailProperties(lineWorkflow))
@@ -69,9 +69,8 @@ public class LineWorkflowBuilderNotificationService {
     return "Antrag genehmigt / demande approuvée / richiesta approvata: " + lineWorkflow.getSwissId();
   }
 
-  private String buildSubject(LineWorkflow lineWorkflow) {
-    return "Antrag zu " + lineWorkflow.getSwissId() + " " + getWorkflowDescription(lineWorkflow) + " " + buildTranslatedStatus(
-        lineWorkflow);
+  private String buildCanceledSubject(LineWorkflow lineWorkflow) {
+    return "Antrag zurückgewiesen / Demande rejetée / Domanda respinta: " + lineWorkflow.getSwissId();
   }
 
   //todo: use this to generate subject
@@ -97,6 +96,7 @@ public class LineWorkflowBuilderNotificationService {
     return mailProperties;
   }
 
+  //delete me
   private String getTeaser(LineWorkflow lineWorkflow) {
     return switch (lineWorkflow.getStatus()) {
       case STARTED ->
