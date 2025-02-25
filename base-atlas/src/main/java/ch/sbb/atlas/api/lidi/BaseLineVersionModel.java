@@ -39,7 +39,7 @@ public abstract class BaseLineVersionModel extends BaseVersionModel implements D
   private String slnid;
 
   @Schema(description = "LongName", example = "Spiseggfräser; Talstation - Bergstation; Ersatzbus")
-  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String longName;
 

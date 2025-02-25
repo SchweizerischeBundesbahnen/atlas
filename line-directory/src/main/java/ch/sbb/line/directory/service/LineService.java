@@ -3,6 +3,7 @@ package ch.sbb.line.directory.service;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.versioning.convert.ReflectionHelper;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.Line;
@@ -168,40 +169,10 @@ public class LineService {
         editedVersion, currentVersions);
     lineUpdateValidationService.validateVersioningNotAffectingReview(currentVersions, versionedObjects);
 
-    List<LineVersion> preSaveVersions = currentVersions.stream().map(this::copyLineVersion).toList();
+    List<LineVersion> preSaveVersions = currentVersions.stream().map(ReflectionHelper::copyObjectViaBuilder).toList();
     versionableService.applyVersioning(LineVersion.class, versionedObjects,
         version -> save(version, Optional.of(currentVersion), preSaveVersions),
         this::deleteById);
-  }
-
-  private LineVersion copyLineVersion(LineVersion lineVersion) {
-    return LineVersion.builder()
-        .id(lineVersion.getId())
-        .status(lineVersion.getStatus())
-        .lineType(lineVersion.getLineType())
-        .slnid(lineVersion.getSlnid())
-        .paymentType(lineVersion.getPaymentType())
-        .number(lineVersion.getNumber())
-        .alternativeName(lineVersion.getAlternativeName())
-        .combinationName(lineVersion.getCombinationName())
-        .longName(lineVersion.getLongName())
-        .colorFontRgb(lineVersion.getColorFontRgb())
-        .colorBackRgb(lineVersion.getColorBackRgb())
-        .colorFontCmyk(lineVersion.getColorFontCmyk())
-        .colorBackCmyk(lineVersion.getColorBackCmyk())
-        .description(lineVersion.getDescription())
-        .icon(lineVersion.getIcon())
-        .validFrom(lineVersion.getValidFrom())
-        .validTo(lineVersion.getValidTo())
-        .businessOrganisation(lineVersion.getBusinessOrganisation())
-        .comment(lineVersion.getComment())
-        .swissLineNumber(lineVersion.getSwissLineNumber())
-        .version(lineVersion.getVersion())
-        .creator(lineVersion.getCreator())
-        .creationDate(lineVersion.getCreationDate())
-        .editor(lineVersion.getEditor())
-        .editionDate(lineVersion.getEditionDate())
-        .build();
   }
 
 }
