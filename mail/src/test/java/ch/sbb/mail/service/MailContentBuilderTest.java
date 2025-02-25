@@ -1,10 +1,10 @@
 package ch.sbb.mail.service;
 
-
 import static ch.sbb.mail.model.MailTemplateConfig.getMailTemplateConfig;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
@@ -23,14 +23,14 @@ class MailContentBuilderTest {
   private MailContentBuilder mailContentBuilder;
 
   @BeforeEach
-   void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     mailContentBuilder = new MailContentBuilder(templateEngine);
     mailContentBuilder.setActiveProfile("dev");
   }
 
   @Test
-   void shouldReturnToFromMailTemplateConfig() {
+  void shouldReturnToFromMailTemplateConfig() {
     //given
     MailNotification mailNotification = MailNotification.builder().build();
 
@@ -43,12 +43,12 @@ class MailContentBuilderTest {
   }
 
   @Test
-   void shouldReturnToFromMailNotification() {
+  void shouldReturnToFromMailNotification() {
     //given
     MailNotification mailNotification =
         MailNotification.builder()
-                        .to(singletonList("asd@b.ch"))
-                        .build();
+            .to(singletonList("asd@b.ch"))
+            .build();
 
     //when
     String[] result = mailContentBuilder.getTo(getMailTemplateConfig(MailType.TU_IMPORT),
@@ -60,26 +60,25 @@ class MailContentBuilderTest {
   }
 
   @Test
-   void shouldThrowExceptionWhenToFromMailNotificationAndMailTemplateCofigIsNull() {
+  void shouldThrowExceptionWhenToFromMailNotificationAndMailTemplateConfigIsNull() {
     //given
     MailNotification mailNotification =
         MailNotification.builder()
-                        .build();
-
+            .build();
+    MailTemplateConfig mailTemplateConfig = getMailTemplateConfig(MailType.ATLAS_STANDARD);
     //when
-    assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
-        () -> mailContentBuilder.getTo(getMailTemplateConfig(MailType.ATLAS_STANDARD),
-            mailNotification));
+    assertThrows(IllegalArgumentException.class,
+        () -> mailContentBuilder.getTo(mailTemplateConfig, mailNotification));
   }
 
   @Test
-   void shouldGetSubjectFromMailNotification(){
+  void shouldGetSubjectFromMailNotification() {
     //given
     MailNotification mailNotification =
         MailNotification.builder()
-                        .to(singletonList("asd@b.ch"))
+            .to(singletonList("asd@b.ch"))
             .subject("Soggetto")
-                        .build();
+            .build();
 
     //when
     String result = mailContentBuilder.getSubject(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,
@@ -90,14 +89,14 @@ class MailContentBuilderTest {
   }
 
   @Test
-   void shouldGetSubjectForProdFromMailNotification(){
+  void shouldGetSubjectForProdFromMailNotification() {
     //given
     mailContentBuilder.setActiveProfile("prod");
     MailNotification mailNotification =
         MailNotification.builder()
-                        .to(singletonList("asd@b.ch"))
-                        .subject("Soggetto")
-                        .build();
+            .to(singletonList("asd@b.ch"))
+            .subject("Soggetto")
+            .build();
 
     //when
     String result = mailContentBuilder.getSubject(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,
@@ -108,13 +107,13 @@ class MailContentBuilderTest {
   }
 
   @Test
-   void shouldGetSubjectFromMailTemplateConfig(){
+  void shouldGetSubjectFromMailTemplateConfig() {
     //given
     MailNotification mailNotification =
         MailNotification.builder()
-                        .to(singletonList("asd@b.ch"))
+            .to(singletonList("asd@b.ch"))
             .subject("Soggetto")
-                        .build();
+            .build();
 
     //when
     String result = mailContentBuilder.getSubject(MailTemplateConfig.IMPORT_TU_TEMPLATE,
@@ -125,27 +124,27 @@ class MailContentBuilderTest {
   }
 
   @Test
-   void shouldThrowExceptionWhenNoSubjectIsDefined(){
+  void shouldThrowExceptionWhenNoSubjectIsDefined() {
     //given
     MailNotification mailNotification =
         MailNotification.builder()
-                        .to(singletonList("asd@b.ch"))
-                        .build();
+            .to(singletonList("asd@b.ch"))
+            .build();
 
     //when
     assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
-        () ->  mailContentBuilder.getSubject(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,
-        mailNotification));
+        () -> mailContentBuilder.getSubject(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,
+            mailNotification));
   }
 
   @Test
-   void shouldGetFromFromMailNotification(){
+  void shouldGetFromFromMailNotification() {
     //given
     MailNotification mailNotification =
         MailNotification.builder()
-                        .from("asd@b.ch")
+            .from("asd@b.ch")
             .subject("Soggetto")
-                        .build();
+            .build();
 
     //when
     String result = mailContentBuilder.getFrom(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,
@@ -156,13 +155,13 @@ class MailContentBuilderTest {
   }
 
   @Test
-   void shouldGetFromFromMailTemplateConfig(){
+  void shouldGetFromFromMailTemplateConfig() {
     //given
     MailNotification mailNotification =
         MailNotification.builder()
-                        .to(singletonList("asd@b.ch"))
+            .to(singletonList("asd@b.ch"))
             .subject("Soggetto")
-                        .build();
+            .build();
 
     //when
     String result = mailContentBuilder.getFrom(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,

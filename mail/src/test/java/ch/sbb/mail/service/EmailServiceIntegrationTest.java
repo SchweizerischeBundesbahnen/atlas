@@ -36,7 +36,7 @@ class EmailServiceIntegrationTest {
   private MailService mailService;
 
   @Test
-   void shouldSendSimpleMail() throws MessagingException, IOException {
+  void shouldSendSimpleMail() throws MessagingException, IOException {
     //given
     MailNotification mail = createMail();
 
@@ -51,11 +51,11 @@ class EmailServiceIntegrationTest {
 
     assertThat(mail.getSubject()).isEqualTo(current.getSubject());
     assertThat(mail.getTo()).contains(current.getAllRecipients()[0].toString());
-    assertThat(valueOf(current.getContent()).contains(mail.getContent())).isTrue();
+    assertThat(valueOf(current.getContent())).contains(mail.getContent());
   }
 
   @Test
-   void shouldThrowExceptionWhenSendSimpleEmailHasNotRecipientAddress() {
+  void shouldThrowExceptionWhenSendSimpleEmailHasNotRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")
@@ -70,7 +70,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-   void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedRecipientAddress() {
+  void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")
@@ -85,7 +85,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-   void shouldSendEmailWithTUHtmlTemplate() throws MessagingException, IOException {
+  void shouldSendEmailWithTUHtmlTemplate() throws MessagingException, IOException {
     //given
     List<Map<String, Object>> templateProperties = new ArrayList<>();
     Map<String, Object> objectMap1 = new HashMap<>();
@@ -126,7 +126,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-   void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedFromAddress() {
+  void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedFromAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")
@@ -140,7 +140,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-   void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotRecipientAddress() {
+  void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")
@@ -155,7 +155,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-   void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedRecipientAddress() {
+  void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")
@@ -170,7 +170,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-   void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedFromAddress() {
+  void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedFromAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")
