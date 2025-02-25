@@ -33,7 +33,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
 
@@ -48,7 +48,7 @@ class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
   @Autowired
   private StopPointWorkflowTransitionService stopPointWorkflowTransitionService;
 
-  @MockBean
+  @MockitoBean
   private SePoDiClientService sePoDiClientService;
 
   private ListAppender<ILoggingEvent> listAppender;
