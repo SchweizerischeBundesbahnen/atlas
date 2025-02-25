@@ -206,4 +206,17 @@ class LineStatusDeciderTest {
     // Then
     assertThat(result).isEqualTo(Status.DRAFT);
   }
+
+  @Test
+  void shouldSetStatusToValidatedOnBusinessOrganisationUpdate() {
+    // Given
+    LineVersion currentLineVersion =
+        LineTestData.lineVersionBuilder().businessOrganisation("sboid").build();
+    LineVersion newLineVersion =
+        LineTestData.lineVersionBuilder().businessOrganisation("newsboid").build();
+    // When
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    // Then
+    assertThat(result).isEqualTo(Status.VALIDATED);
+  }
 }
