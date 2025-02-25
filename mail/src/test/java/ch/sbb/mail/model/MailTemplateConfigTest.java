@@ -99,9 +99,9 @@ class MailTemplateConfigTest {
   @Test
   void shouldReturnLineStartWorkflowNotification() {
     //when
-    MailTemplateConfig result = getMailTemplateConfig(MailType.LINE_START_WORKFLOW_NOTIFICATION);
+    MailTemplateConfig result = getMailTemplateConfig(MailType.LINE_STARTED_WORKFLOW_NOTIFICATION);
     //then
-    assertThat(result).isEqualTo(MailTemplateConfig.LINE_START_WORKFLOW_NOTIFICATION_TEMPLATE);
+    assertThat(result).isEqualTo(MailTemplateConfig.LINE_STARTED_WORKFLOW_NOTIFICATION_TEMPLATE);
   }
 
   @Test
@@ -115,9 +115,9 @@ class MailTemplateConfigTest {
   @Test
   void shouldReturnLineCanceledWorkflowNotification() {
     //when
-    MailTemplateConfig result = getMailTemplateConfig(MailType.LINE_CANCEL_WORKFLOW_NOTIFICATION);
+    MailTemplateConfig result = getMailTemplateConfig(MailType.LINE_REJECTED_WORKFLOW_NOTIFICATION);
     //then
-    assertThat(result).isEqualTo(MailTemplateConfig.LINE_CANCEL_WORKFLOW_NOTIFICATION_TEMPLATE);
+    assertThat(result).isEqualTo(MailTemplateConfig.LINE_REJECTED_WORKFLOW_NOTIFICATION_TEMPLATE);
   }
 
 }

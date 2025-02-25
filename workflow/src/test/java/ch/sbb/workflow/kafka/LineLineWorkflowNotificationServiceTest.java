@@ -17,29 +17,29 @@ import org.mockito.MockitoAnnotations;
 
 class LineLineWorkflowNotificationServiceTest {
 
- private LineWorkflowNotificationService notificationService;
+  private LineWorkflowNotificationService notificationService;
 
- @Mock
- private MailProducerService mailProducerService;
+  @Mock
+  private MailProducerService mailProducerService;
 
- @Mock
- private LineWorkflowBuilderNotificationService lineWorkflowBuilderNotificationService;
+  @Mock
+  private LineWorkflowBuilderNotificationService lineWorkflowBuilderNotificationService;
 
- @BeforeEach
-   void setUp() {
-  MockitoAnnotations.openMocks(this);
-  notificationService = new LineWorkflowNotificationService(mailProducerService, lineWorkflowBuilderNotificationService);
- }
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
+    notificationService = new LineWorkflowNotificationService(mailProducerService, lineWorkflowBuilderNotificationService);
+  }
 
   @Test
-   void shouldSendEventToMail() {
+  void shouldSendEventToMail() {
     //given
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .workflowType(WorkflowType.LINE)
         .status(WorkflowStatus.STARTED)
         .build();
     MailNotification mailNotification = MailNotification.builder().build();
-   when(lineWorkflowBuilderNotificationService.buildWorkflowStartedMailNotification(lineWorkflow)).thenReturn(mailNotification);
+    when(lineWorkflowBuilderNotificationService.buildWorkflowMailNotification(lineWorkflow)).thenReturn(mailNotification);
 
     //when
     notificationService.sendEventToMail(lineWorkflow);
@@ -49,12 +49,12 @@ class LineLineWorkflowNotificationServiceTest {
   }
 
   @Test
-   void shouldNotSendEventToMail() {
+  void shouldNotSendEventToMail() {
     //given
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .build();
     MailNotification mailNotification = MailNotification.builder().build();
-   when(lineWorkflowBuilderNotificationService.buildWorkflowStartedMailNotification(lineWorkflow)).thenReturn(mailNotification);
+    when(lineWorkflowBuilderNotificationService.buildWorkflowMailNotification(lineWorkflow)).thenReturn(mailNotification);
     //when
     notificationService.sendEventToMail(lineWorkflow);
     //then

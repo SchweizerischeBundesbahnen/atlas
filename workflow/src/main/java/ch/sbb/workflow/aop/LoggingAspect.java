@@ -66,12 +66,8 @@ public class LoggingAspect {
           details.put("servicePointVersionId", model.getVersionId());
           details.put("sloid", model.getSloid());
         }
-        case Long id -> {
-          details.put("workflowId", id);
-        }
-        default -> {
-          log.warn("Unexpected value: " + arg);
-        }
+        case Long id -> details.put("workflowId", id);
+        default -> log.warn("Unexpected value: {}", arg);
       }
     }
     return details;
