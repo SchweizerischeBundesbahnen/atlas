@@ -67,7 +67,7 @@ class AmazonServiceIntegrationTest {
   void shouldUploadZippedCsvCorrectly() throws IOException {
     File file = getMinimalServicePointCsvFile();
 
-    URL url = amazonService.putZipFile(AmazonBucket.EXPORT, file, INTEGRATION_TEST_DIR);
+    URL url = amazonService.putZipFileCleanupBoth(AmazonBucket.EXPORT, file, INTEGRATION_TEST_DIR);
     InputStreamResource inputStreamResource = amazonService.pullFileAsStream(AmazonBucket.EXPORT,
         INTEGRATION_TEST_DIR + "/" + CSV_FILE + ".zip");
     //check is a zip file

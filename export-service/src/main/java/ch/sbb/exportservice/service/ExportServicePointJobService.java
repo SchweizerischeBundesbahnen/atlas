@@ -3,8 +3,8 @@ package ch.sbb.exportservice.service;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
 
-import ch.sbb.atlas.export.enumeration.ExportTypeBase;
-import ch.sbb.exportservice.model.SePoDiExportType;
+import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportTypeV1;
 import java.util.List;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -22,8 +22,15 @@ public class ExportServicePointJobService extends BaseExportJobService {
   }
 
   @Override
-  protected List<ExportTypeBase> getExportTypes() {
-    return List.of(SePoDiExportType.values());
+  protected List<JobParams> getExportTypes() {
+    return List.of(
+        new JobParams(ExportType.SWISS_FULL, ExportTypeV1.SWISS_ONLY_FULL),
+        new JobParams(ExportType.SWISS_ACTUAL, ExportTypeV1.SWISS_ONLY_ACTUAL),
+        new JobParams(ExportType.SWISS_FUTURE_TIMETABLE, ExportTypeV1.SWISS_ONLY_TIMETABLE_FUTURE),
+        new JobParams(ExportType.WORLD_FULL, ExportTypeV1.WORLD_FULL),
+        new JobParams(ExportType.WORLD_ACTUAL, ExportTypeV1.WORLD_ONLY_ACTUAL),
+        new JobParams(ExportType.WORLD_FUTURE_TIMETABLE, ExportTypeV1.WORLD_ONLY_TIMETABLE_FUTURE)
+    );
   }
 
 }

@@ -2,20 +2,19 @@ package ch.sbb.exportservice.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
-import ch.sbb.exportservice.model.SePoDiExportType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
- class NotAllowedExportFileExceptionTest {
+class NotAllowedExportFileExceptionTest {
 
   @Test
-   void shouldGetNotAllowedExportFileException() {
+  void shouldGetNotAllowedExportFileException() {
     // given
 
     // when
     NotAllowedExportFileException exception = Assertions.assertThrows(NotAllowedExportFileException.class, () -> {
-      throw new NotAllowedExportFileException(SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, SePoDiExportType.SWISS_ONLY_FULL);
+      throw new NotAllowedExportFileException(SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION,
+          SePoDiExportType.SWISS_ONLY_FULL);
     });
 
     // then

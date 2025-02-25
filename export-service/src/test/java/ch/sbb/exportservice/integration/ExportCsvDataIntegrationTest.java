@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
-import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.io.File;
@@ -26,7 +25,7 @@ class ExportCsvDataIntegrationTest extends BaseExportCsvDataIntegrationTest {
 
   @Test
   void shouldExportDataWithoutSemiColonContent() throws Exception {
-    when(amazonService.putZipFile(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
+    when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
     when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
     JobParameters jobParameters = new JobParametersBuilder()
@@ -50,7 +49,7 @@ class ExportCsvDataIntegrationTest extends BaseExportCsvDataIntegrationTest {
 
   @Test
   void shouldExportDataWithoutNewLine() throws Exception {
-    when(amazonService.putZipFile(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
+    when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
     when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
     JobParameters jobParameters = new JobParametersBuilder()

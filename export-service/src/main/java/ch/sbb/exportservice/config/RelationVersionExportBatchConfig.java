@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.model.PrmBatchExportFileName.RELATION_VERSION;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_RELATION_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_RELATION_JSON_JOB_NAME;
 
@@ -9,7 +8,12 @@ import ch.sbb.atlas.export.model.prm.RelationVersionCsvModel;
 import ch.sbb.exportservice.entity.RelationVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.model.ExportFilePath;
+import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
+import ch.sbb.exportservice.model.ExportObject;
+import ch.sbb.exportservice.model.ExportObjectV1;
+import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportTypeV1;
 import ch.sbb.exportservice.processor.RelationVersionCsvProcessor;
 import ch.sbb.exportservice.processor.RelationVersionJsonProcessor;
 import ch.sbb.exportservice.reader.RelationVersionRowMapper;
@@ -56,7 +60,7 @@ public class RelationVersionExportBatchConfig {
   @StepScope
   public JdbcCursorItemReader<RelationVersion> relationReader(
       @Autowired @Qualifier("prmDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
     JdbcCursorItemReader<RelationVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
@@ -89,9 +93,9 @@ public class RelationVersionExportBatchConfig {
   @Bean
   @StepScope
   public FlatFileItemWriter<RelationVersionCsvModel> relationCsvWriter(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return csvRelationVersionWriter.csvWriter(exportType, RELATION_VERSION);
+    return csvRelationVersionWriter.csvWriter(ExportObject.RELATION, exportType);
   }
 
   @Bean
@@ -111,6 +115,7 @@ public class RelationVersionExportBatchConfig {
   public Step uploadRelationCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
         .tasklet(uploadRelationCsvFileTasklet(null), transactionManager)
+        .tasklet(uploadRelationCsvFileTaskletV1(null, null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
@@ -118,9 +123,21 @@ public class RelationVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadRelationCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return new UploadCsvFileTasklet(exportType, RELATION_VERSION);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.RELATION, exportType);
+    return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
+  }
+
+  @Bean
+  @StepScope
+  public UploadCsvFileTasklet uploadRelationCsvFileTaskletV1(
+      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+  ) {
+    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.RELATION, exportType);
+    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.RELATION_VERSION, exportTypeV1);
+    return new UploadCsvFileTasklet(systemFile, s3File);
   }
 
   @Bean
@@ -134,9 +151,10 @@ public class RelationVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteCsvFileTasklet relationCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return new DeleteCsvFileTasklet(exportType, RELATION_VERSION);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.RELATION, exportType);
+    return new DeleteCsvFileTasklet(filePathBuilder);
   }
 
   @Bean
@@ -156,6 +174,7 @@ public class RelationVersionExportBatchConfig {
   public Step uploadRelationJsonFileStep() {
     return new StepBuilder("uploadJsonFile", jobRepository)
         .tasklet(uploadRelationJsonFileTasklet(null), transactionManager)
+        .tasklet(uploadRelationJsonFileTaskletV1(null, null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
@@ -163,8 +182,20 @@ public class RelationVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadRelationJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new UploadJsonFileTasklet(exportType, RELATION_VERSION);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.RELATION, exportType);
+    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTasklet uploadRelationJsonFileTaskletV1(
+      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+  ) {
+    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.RELATION, exportType);
+    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.RELATION_VERSION, exportTypeV1);
+    return new UploadJsonFileTasklet(systemFile, s3File);
   }
 
   @Bean
@@ -178,8 +209,9 @@ public class RelationVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteJsonFileTasklet fileRelationJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new DeleteJsonFileTasklet(exportType, RELATION_VERSION);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.RELATION, exportType);
+    return new DeleteJsonFileTasklet(filePathBuilder);
   }
 
   @Bean
@@ -205,8 +237,8 @@ public class RelationVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadRelationVersionModel> relationJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return jsonRelationVersionWriter.getWriter(exportType, RELATION_VERSION);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return jsonRelationVersionWriter.getWriter(ExportObject.RELATION, exportType);
   }
 
 }

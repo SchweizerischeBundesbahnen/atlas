@@ -1,16 +1,15 @@
 package ch.sbb.exportservice.service;
 
-import ch.sbb.atlas.export.enumeration.ExportTypeBase;
-import ch.sbb.exportservice.model.PrmExportType;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
+
+import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportTypeV1;
+import java.util.List;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
 
 @Component
 public class ExportReferencePointJobService extends BaseExportJobService {
@@ -23,8 +22,12 @@ public class ExportReferencePointJobService extends BaseExportJobService {
   }
 
   @Override
-  protected List<ExportTypeBase> getExportTypes() {
-    return List.of(PrmExportType.values());
+  protected List<JobParams> getExportTypes() {
+    return List.of(
+        new JobParams(ExportType.FULL, ExportTypeV1.FULL),
+        new JobParams(ExportType.ACTUAL, ExportTypeV1.ACTUAL),
+        new JobParams(ExportType.FUTURE_TIMETABLE, ExportTypeV1.TIMETABLE_FUTURE)
+    );
   }
 
 }
