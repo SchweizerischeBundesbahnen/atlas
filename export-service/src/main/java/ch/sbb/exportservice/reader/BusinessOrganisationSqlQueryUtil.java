@@ -1,8 +1,11 @@
 package ch.sbb.exportservice.reader;
 
-import ch.sbb.atlas.export.enumeration.ExportType;
+import static ch.sbb.exportservice.model.ExportType.FULL;
+import static ch.sbb.exportservice.model.ExportType.FUTURE_TIMETABLE;
+
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.versioning.date.DateHelper;
+import ch.sbb.exportservice.model.ExportType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -26,13 +29,13 @@ public class BusinessOrganisationSqlQueryUtil extends SqlQueryUtil {
 
   public String getSqlQuery(ExportType exportType) {
     final LocalDate date =
-        exportType == ExportType.FUTURE_TIMETABLE ? FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now())
+        exportType == FUTURE_TIMETABLE ? FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now())
             : LocalDate.now();
     final String dateAsSqlString = DateHelper.getDateAsSqlString(date);
 
     final String sqlQuery = buildSqlQuery(
         SELECT_STATEMENT.formatted(dateAsSqlString),
-        exportType == ExportType.FULL ? "" : WHERE_CLAUSE.formatted(dateAsSqlString),
+        exportType == FULL ? "" : WHERE_CLAUSE.formatted(dateAsSqlString),
         GROUP_BY,
         ORDER_BY
     );

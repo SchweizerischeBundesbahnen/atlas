@@ -1,17 +1,16 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_JSON_JOB_NAME;
 
-import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
-import ch.sbb.atlas.export.enumeration.BoDiBatchExportFileName;
-import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.exportservice.entity.lidi.TimetableFieldNumber;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
+import ch.sbb.exportservice.model.ExportFilePath;
+import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
+import ch.sbb.exportservice.model.ExportObject;
+import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.model.TimetableFieldNumberCsvModel;
 import ch.sbb.exportservice.processor.TimetableFieldNumberCsvProcessor;
 import ch.sbb.exportservice.processor.TimetableFieldNumberJsonProcessor;
@@ -94,12 +93,12 @@ public class TimetableFieldNumberExportBatchConfig {
   public FlatFileItemWriter<TimetableFieldNumberCsvModel> timetableFieldNumberCsvWriter(
       @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return csvWriter.csvWriter(exportType, );
+    return csvWriter.csvWriter(ExportObject.TIMETABLE_FIELD_NUMBER, exportType);
   }
 
   @Bean
   @Qualifier(EXPORT_TTFN_CSV_JOB_NAME)
-  public Job exportCsvJob(ItemReader<TimetableFieldNumber> itemReader) {
+  public Job exportTTFNCsvJob(ItemReader<TimetableFieldNumber> itemReader) {
     return new JobBuilder(EXPORT_TTFN_CSV_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
@@ -123,7 +122,8 @@ public class TimetableFieldNumberExportBatchConfig {
   public UploadCsvFileTasklet uploadTimetableFieldNumberCsvFileTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return new UploadCsvFileTasklet(exportType, );
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TIMETABLE_FIELD_NUMBER, exportType);
+    return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
   }
 
   @Bean
@@ -139,12 +139,13 @@ public class TimetableFieldNumberExportBatchConfig {
   public DeleteCsvFileTasklet deleteTimetableFieldNumberCsvFileTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return new DeleteCsvFileTasklet(exportType, );
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TIMETABLE_FIELD_NUMBER, exportType);
+    return new DeleteCsvFileTasklet(filePathBuilder);
   }
 
   @Bean
   @Qualifier(EXPORT_TTFN_JSON_JOB_NAME)
-  public Job exportJsonJob(ItemReader<TimetableFieldNumber> itemReader) {
+  public Job exportTTFNJsonJob(ItemReader<TimetableFieldNumber> itemReader) {
     return new JobBuilder(EXPORT_TTFN_JSON_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
@@ -167,7 +168,8 @@ public class TimetableFieldNumberExportBatchConfig {
   @StepScope
   public UploadJsonFileTasklet uploadTimetableFieldNumberJsonFileTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new UploadJsonFileTasklet(exportType, );
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TIMETABLE_FIELD_NUMBER, exportType);
+    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
   }
 
   @Bean
@@ -182,7 +184,8 @@ public class TimetableFieldNumberExportBatchConfig {
   @StepScope
   public DeleteJsonFileTasklet deleteTimetableFieldNumberJsonFileTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new DeleteJsonFileTasklet(exportType, );
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TIMETABLE_FIELD_NUMBER, exportType);
+    return new DeleteJsonFileTasklet(filePathBuilder);
   }
 
   @Bean
@@ -209,7 +212,7 @@ public class TimetableFieldNumberExportBatchConfig {
   @StepScope
   public JsonFileItemWriter<TimetableFieldNumberModel> timetableFieldNumberJsonFileItemWriter(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonWriter.getWriter(exportType, );
+    return jsonWriter.getWriter(ExportObject.TIMETABLE_FIELD_NUMBER, exportType);
   }
 
 }

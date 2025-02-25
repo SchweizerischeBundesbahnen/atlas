@@ -88,14 +88,14 @@ class AmazonServiceTest {
   }
 
   @Test
-  void shouldPutZipFile() throws IOException {
+  void shouldPutZipFileCleanupZipWithCleanup() throws IOException {
     //given
     Path tempFile = createTempFile();
     Path zipFile = createTempFile();
     //when
     when(fileService.zipFile(tempFile.toFile())).thenReturn(zipFile.toFile());
 
-    amazonService.putZipFile(AmazonBucket.EXPORT, tempFile.toFile(), "dir");
+    amazonService.putZipFileCleanupBoth(AmazonBucket.EXPORT, tempFile.toFile(), "dir");
     //then
     verify(fileService).zipFile(tempFile.toFile());
     verify(s3Client).putObject(any(PutObjectRequest.class), any(RequestBody.class));

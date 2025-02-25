@@ -1,5 +1,6 @@
-package ch.sbb.atlas.export.enumeration;
+package ch.sbb.business.organisation.directory.service.export;
 
+import ch.sbb.atlas.export.enumeration.ExportFileName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum BoDiBatchExportFileName implements ExportFileName {
 
-  TRANSPORT_COMPANY("transport_company", "transport_company"),
-  BUSINESS_ORGANISATION_VERSION("business_organisation", "business_organisation_versions"); // todo: not stream already (remove
-  // and check that v1 still works)
+  BUSINESS_ORGANISATION_VERSION("business_organisation", "business_organisation_versions");
 
   private final String baseDir;
   private final String fileName;

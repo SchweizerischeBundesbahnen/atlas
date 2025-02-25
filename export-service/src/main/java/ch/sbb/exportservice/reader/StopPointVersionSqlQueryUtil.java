@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.reader;
 
-import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.model.ExportType;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +16,7 @@ public class StopPointVersionSqlQueryUtil extends SqlQueryUtil {
   private static final String WHERE_STATEMENT = "WHERE '%s' between spv.valid_from and spv.valid_to";
   private static final String GROUP_BY_STATEMENT = "GROUP BY spv.id";
 
-  public String getSqlQuery(PrmExportType exportType) {
+  public String getSqlQuery(ExportType exportType) {
     final String sqlQuery = buildSqlQuery(SELECT_STATEMENT, getWhereClause(exportType, WHERE_STATEMENT), GROUP_BY_STATEMENT);
     log.info("Execution SQL query:");
     log.info(sqlQuery);

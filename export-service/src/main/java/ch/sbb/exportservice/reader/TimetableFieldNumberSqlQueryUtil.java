@@ -1,8 +1,11 @@
 package ch.sbb.exportservice.reader;
 
-import ch.sbb.atlas.export.enumeration.ExportType;
+import static ch.sbb.exportservice.model.ExportType.ACTUAL;
+import static ch.sbb.exportservice.model.ExportType.FULL;
+
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.versioning.date.DateHelper;
+import ch.sbb.exportservice.model.ExportType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +24,8 @@ public class TimetableFieldNumberSqlQueryUtil extends SqlQueryUtil {
 
   public String getSqlQuery(ExportType exportType) {
     String additionalWhereClause = "";
-    if (exportType != ExportType.FULL) {
-      String date = DateHelper.getDateAsSqlString(exportType == ExportType.ACTUAL_DATE ? LocalDate.now()
+    if (exportType != FULL) {
+      String date = DateHelper.getDateAsSqlString(exportType == ACTUAL ? LocalDate.now()
           : FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
       additionalWhereClause = "WHERE '%s' >= tv.validFrom AND '%s' <= tv.validTo".formatted(date, date);
     }

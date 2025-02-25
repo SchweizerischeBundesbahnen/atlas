@@ -74,7 +74,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
   URL putZipFile(File zipFile) {
     try {
-      URL url = amazonService.putZipFile(AmazonBucket.EXPORT, zipFile, getDirectory());
+      URL url = amazonService.putZipFileCleanupBoth(AmazonBucket.EXPORT, zipFile, getDirectory());
       log.info("Export - ZIP File {} Successfully Put to the directory {}: {}", zipFile.getName(), getDirectory(), url);
       return url;
     } catch (IOException e) {

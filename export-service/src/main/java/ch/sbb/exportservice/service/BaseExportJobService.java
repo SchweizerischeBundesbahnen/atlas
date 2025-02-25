@@ -1,11 +1,14 @@
 package ch.sbb.exportservice.service;
 
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_V1_JOB_PARAMETER;
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
-import ch.sbb.atlas.export.enumeration.ExportTypeBase;
+import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportTypeV1;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -30,12 +33,13 @@ public abstract class BaseExportJobService {
     this.exportJsonJob = exportJsonJob;
   }
 
-  protected abstract List<ExportTypeBase> getExportTypes();
+  protected abstract List<JobParams> getExportTypes();
 
-  protected void startExportJob(ExportTypeBase exportType, Job job) {
+  protected void startExportJob(JobParams jobParams, Job job) {
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, exportType.toString())
+        .addString(EXPORT_TYPE_JOB_PARAMETER, jobParams.exportType.toString())
+        .addString(EXPORT_TYPE_V1_JOB_PARAMETER, jobParams.exportTypeV1.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     try {
       JobExecution execution = jobLauncher.run(job, jobParameters);
@@ -48,11 +52,17 @@ public abstract class BaseExportJobService {
 
   public void startExportJobs() {
     log.info("Starting export CSV and JSON execution...");
-    for (ExportTypeBase exportType : getExportTypes()) {
-      startExportJob(exportType, exportCsvJob);
-      startExportJob(exportType, exportJsonJob);
+    for (JobParams jobParams : getExportTypes()) {
+      startExportJob(jobParams, exportCsvJob);
+      startExportJob(jobParams, exportJsonJob);
     }
     log.info("CSV and JSON export execution finished!");
   }
 
+  @RequiredArgsConstructor
+  protected static class JobParams {
+
+    private final ExportType exportType;
+    private final ExportTypeV1 exportTypeV1;
+  }
 }
