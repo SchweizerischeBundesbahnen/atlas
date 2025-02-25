@@ -49,14 +49,6 @@ class MailTemplateConfigTest {
   }
 
   @Test
-  void shouldReturnWorkflowNotification() {
-    //when
-    MailTemplateConfig result = getMailTemplateConfig(MailType.WORKFLOW_NOTIFICATION);
-    //then
-    assertThat(result).isEqualTo(MailTemplateConfig.WORKFLOW_NOTIFICATION_TEMPLATE);
-  }
-
-  @Test
   void shouldReturnStartStopPointWorkflowExaminantNotification() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION);
@@ -118,6 +110,14 @@ class MailTemplateConfigTest {
     MailTemplateConfig result = getMailTemplateConfig(MailType.LINE_APPROVED_WORKFLOW_NOTIFICATION);
     //then
     assertThat(result).isEqualTo(MailTemplateConfig.LINE_APPROVED_WORKFLOW_NOTIFICATION_TEMPLATE);
+  }
+
+  @Test
+  void shouldReturnLineCanceledWorkflowNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.LINE_CANCEL_WORKFLOW_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.LINE_CANCEL_WORKFLOW_NOTIFICATION_TEMPLATE);
   }
 
 }
