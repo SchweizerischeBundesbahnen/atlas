@@ -59,7 +59,7 @@ import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 
 class StopPointWorkflowControllerTest extends BaseControllerApiTest {
@@ -78,10 +78,10 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @Autowired
   private OtpRepository otpRepository;
 
-  @MockBean
+  @MockitoBean
   private SePoDiClientService sePoDiClientService;
 
-  @MockBean
+  @MockitoBean
   private StopPointWorkflowNotificationService notificationService;
 
   @AfterEach
@@ -556,13 +556,14 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
     //given
     mvc.perform(post("/v1/stop-point/workflows")
-        .contentType(contentType)
-        .content(mapper.writeValueAsString(workflowModel))
-    )
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(workflowModel))
+        )
         .andExpect(status().isBadRequest())
         .andExpect(result -> {
           assertThat(result.getResolvedException()).isInstanceOf(StopPointWorkflowExaminantEmailNotUniqueException.class);
-          assertThat(result.getResolvedException().getMessage()).contains(StopPointWorkflowExaminantEmailNotUniqueException.UNIQUE_EMAIL_MESSAGE);
+          assertThat(result.getResolvedException().getMessage()).contains(
+              StopPointWorkflowExaminantEmailNotUniqueException.UNIQUE_EMAIL_MESSAGE);
         });
 
   }

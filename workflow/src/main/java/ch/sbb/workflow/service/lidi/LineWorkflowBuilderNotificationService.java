@@ -19,6 +19,7 @@ public class LineWorkflowBuilderNotificationService {
 
   @Value("${spring.profiles.active:local}")
   private String activeProfile;
+
   @Value("${mail.workflow.line.receiver}")
   private String workflowLineReceiver;
 
