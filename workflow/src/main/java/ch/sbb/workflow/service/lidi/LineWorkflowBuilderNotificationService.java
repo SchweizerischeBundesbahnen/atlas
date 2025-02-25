@@ -28,96 +28,60 @@ public class LineWorkflowBuilderNotificationService {
   @Value("${mail.workflow.atlas.business}")
   private String atlasBusiness;
 
-  public MailNotification buildWorkflowStartedMailNotification(LineWorkflow lineWorkflow) {
+  public MailNotification buildWorkflowMailNotification(LineWorkflow lineWorkflow) {
     return MailNotification.builder()
         .from(from)
-        .mailType(MailType.LINE_START_WORKFLOW_NOTIFICATION)
-        .subject(buildStartSubject(lineWorkflow))
-        .to(List.of(workflowLineReceiver))
-        .cc(List.of(lineWorkflow.getClient().getMail()))
+        .mailType(getMailType(lineWorkflow))
+        .subject(buildSubject(lineWorkflow))
+        .to(getTo(lineWorkflow))
+        .cc(getCC(lineWorkflow))
         .templateProperties(buildMailProperties(lineWorkflow))
         .build();
   }
 
-  public MailNotification buildWorkflowApprovedMailNotification(LineWorkflow lineWorkflow) {
-    return MailNotification.builder()
-        .from(from)
-        .mailType(MailType.LINE_APPROVED_WORKFLOW_NOTIFICATION)
-        .subject(buildApprovedSubject(lineWorkflow))
-        .to(List.of(lineWorkflow.getClient().getMail()))
-        .cc(List.of(atlasBusiness))
-        .templateProperties(buildMailProperties(lineWorkflow))
-        .build();
-  }
-
-  public MailNotification buildWorkflowCompletedMailNotification(LineWorkflow lineWorkflow) {
-    return MailNotification.builder()
-        .from(from)
-        .mailType(MailType.LINE_CANCEL_WORKFLOW_NOTIFICATION)
-        .subject(buildCanceledSubject(lineWorkflow))
-        .to(List.of(lineWorkflow.getClient().getMail()))
-        .cc(List.of(atlasBusiness))
-        .templateProperties(buildMailProperties(lineWorkflow))
-        .build();
-  }
-
-  private String buildStartSubject(LineWorkflow lineWorkflow) {
-    return "Antrag prüfen zu / vérifier la demande de  / controllare la richiesta per: " + lineWorkflow.getSwissId();
-  }
-
-  private String buildApprovedSubject(LineWorkflow lineWorkflow) {
-    return "Antrag genehmigt / demande approuvée / richiesta approvata: " + lineWorkflow.getSwissId();
-  }
-
-  private String buildCanceledSubject(LineWorkflow lineWorkflow) {
-    return "Antrag zurückgewiesen / Demande rejetée / Domanda respinta: " + lineWorkflow.getSwissId();
-  }
-
-  //todo: use this to generate subject
-  private String buildTranslatedStatus(LineWorkflow lineWorkflow) {
+  List<String> getCC(LineWorkflow lineWorkflow) {
     return switch (lineWorkflow.getStatus()) {
-      case STARTED -> "prüfen";
-      case APPROVED -> "genehmigt";
-      case REJECTED -> "zurückgewiesen";
+      case STARTED -> List.of(lineWorkflow.getClient().getMail());
+      case APPROVED, REJECTED -> List.of(atlasBusiness);
       default -> throw new IllegalArgumentException();
     };
+  }
+
+  List<String> getTo(LineWorkflow lineWorkflow) {
+    return switch (lineWorkflow.getStatus()) {
+      case STARTED -> List.of(workflowLineReceiver);
+      case APPROVED, REJECTED -> List.of(lineWorkflow.getClient().getMail());
+      default -> throw new IllegalArgumentException();
+    };
+  }
+
+  MailType getMailType(LineWorkflow lineWorkflow) {
+    return switch (lineWorkflow.getStatus()) {
+      case STARTED -> MailType.LINE_STARTED_WORKFLOW_NOTIFICATION;
+      case APPROVED -> MailType.LINE_APPROVED_WORKFLOW_NOTIFICATION;
+      case REJECTED -> MailType.LINE_REJECTED_WORKFLOW_NOTIFICATION;
+      default -> throw new IllegalArgumentException();
+    };
+  }
+
+  private String buildSubject(LineWorkflow lineWorkflow) {
+    return LineWorkflowSubject.getSubject(lineWorkflow) + lineWorkflow.getSwissId();
   }
 
   private List<Map<String, Object>> buildMailProperties(LineWorkflow lineWorkflow) {
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
-    mailContentProperty.put("title", "Antrag für eine neue/geänderte Linie " + buildTranslatedStatus(lineWorkflow));
-    mailContentProperty.put("teaser", getTeaser(lineWorkflow));
     mailContentProperty.put("swissId", lineWorkflow.getSwissId());
-    mailContentProperty.put("description", getWorkflowDescription(lineWorkflow));
+    mailContentProperty.put("description", lineWorkflow.getDescription());
     mailContentProperty.put("checkComment", StringUtils.trimToNull(lineWorkflow.getCheckComment()));
     mailContentProperty.put("url", getUrl(lineWorkflow));
     mailProperties.add(mailContentProperty);
     return mailProperties;
   }
 
-  //delete me
-  private String getTeaser(LineWorkflow lineWorkflow) {
-    return switch (lineWorkflow.getStatus()) {
-      case STARTED ->
-          "Es wurde eine neue Linie bzw. eine Änderung an einer bestehenden Linie erfasst welche eine Freigabe erfordert.";
-      case APPROVED, REJECTED ->
-          "Der von Ihnen gestellte Antrag für die " + lineWorkflow.getSwissId() + " " + getWorkflowDescription(
-              lineWorkflow) + " wurde überprüft und " + buildTranslatedStatus(lineWorkflow) + ".";
-      default -> throw new IllegalArgumentException();
-    };
-  }
-
   private String getUrl(LineWorkflow lineWorkflow) {
     return AtlasFrontendBaseUrl.getUrl(activeProfile) + LINE_URL + lineWorkflow.getSwissId() + "?id="
         + lineWorkflow.getBusinessObjectId();
-  }
-
-  private String getWorkflowDescription(LineWorkflow lineWorkflow) {
-    if (StringUtils.isBlank(lineWorkflow.getDescription())) {
-      return "(Keine Linienbezeichnung)";
-    }
-    return lineWorkflow.getDescription();
   }
 
 }
