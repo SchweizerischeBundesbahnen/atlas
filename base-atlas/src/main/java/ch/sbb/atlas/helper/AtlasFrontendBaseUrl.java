@@ -19,18 +19,12 @@ public enum AtlasFrontendBaseUrl {
     if (activeProfile == null || "local".equals(activeProfile)) {
       return LOCAL.getUrl();
     }
-    if ("dev".equals(activeProfile)) {
-      return DEV.getUrl();
-    }
-    if ("test".equals(activeProfile)) {
-      return TEST.getUrl();
-    }
-    if ("int".equals(activeProfile)) {
-      return INT.getUrl();
-    }
-    if ("prod".equals(activeProfile)) {
-      return PROD.getUrl();
-    }
-    throw new IllegalStateException("Please use a valid profile");
+    return switch (activeProfile) {
+      case "dev" -> DEV.getUrl();
+      case "test" -> TEST.getUrl();
+      case "int" -> INT.getUrl();
+      case "prod" -> PROD.getUrl();
+      default -> throw new IllegalStateException("Please use a valid profile");
+    };
   }
 }
