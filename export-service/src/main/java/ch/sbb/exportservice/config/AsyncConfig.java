@@ -1,7 +1,8 @@
 package ch.sbb.exportservice.config;
 
-import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
-import ch.sbb.exportservice.model.SePoDiExportType;
+import ch.sbb.exportservice.controller.FileStreamingControllerApiV1;
+import ch.sbb.exportservice.model.ExportObjectV1;
+import ch.sbb.exportservice.model.ExportTypeV1;
 import jakarta.validation.constraints.NotNull;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
@@ -40,8 +41,8 @@ public class AsyncConfig implements AsyncConfigurer, DisposableBean {
 
   /**
    * When using {@link StreamingResponseBody}
-   * {@link ch.sbb.exportservice.controller.FileStreamingControllerApiV1#streamExportJsonFile(SePoDiBatchExportFileName,
-   * SePoDiExportType)},
+   * {@link FileStreamingControllerApiV1#streamExportJsonFile(ExportObjectV1,
+   * ExportTypeV1)},
    * it is highly recommended to configure TaskExecutor used in Spring MVC for executing asynchronous requests.
    *
    * @return taskExecutor

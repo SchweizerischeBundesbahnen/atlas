@@ -33,6 +33,7 @@ public class JobDescriptionConstants {
   public static final String EXPORT_RELATION_JSON_JOB_NAME = "exportRelationJsonJob";
 
   public static final String EXPORT_TYPE_JOB_PARAMETER = "exportType";
+  public static final String EXPORT_TYPE_V1_JOB_PARAMETER = "exportTypeV1";
   public static final String START_AT_JOB_PARAMETER = "startAt";
   public static final String EXECUTION_TYPE_PARAMETER = "EXECUTION";
   public static final String EXECUTION_BATCH_PARAMETER = "BATCH";

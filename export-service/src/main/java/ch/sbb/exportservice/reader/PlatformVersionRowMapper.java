@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 import org.springframework.jdbc.core.RowMapper;
 
 public class PlatformVersionRowMapper extends BaseRowMapper implements RowMapper<PlatformVersion> {
@@ -67,11 +68,10 @@ public class PlatformVersionRowMapper extends BaseRowMapper implements RowMapper
 
   void setInfoOpportunities(PlatformVersion.PlatformVersionBuilder<?, ?> platformVersionBuilder, String listOfInfoOpportunities) {
     if (listOfInfoOpportunities != null) {
-      platformVersionBuilder.infoOpportunities(
-          RowMapperUtil.stringToSet(listOfInfoOpportunities, InfoOpportunityAttributeType::valueOf));
-      platformVersionBuilder.infoOpportunitiesPipeList(
-          RowMapperUtil.stringsToPipedString(
-              RowMapperUtil.stringToSet(listOfInfoOpportunities, InfoOpportunityAttributeType::valueOf)));
+      final Set<InfoOpportunityAttributeType> types = RowMapperUtil.stringToSet(listOfInfoOpportunities,
+          InfoOpportunityAttributeType::valueOf);
+      platformVersionBuilder.infoOpportunities(types);
+      platformVersionBuilder.infoOpportunitiesPipeList(RowMapperUtil.enumsToPipedString(types));
     }
   }
 }

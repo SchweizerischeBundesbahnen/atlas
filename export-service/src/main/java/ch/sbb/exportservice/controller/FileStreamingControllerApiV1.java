@@ -6,8 +6,8 @@ import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
 import ch.sbb.exportservice.model.ExportFilePath;
-import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
-import ch.sbb.exportservice.model.SePoDiExportType;
+import ch.sbb.exportservice.model.ExportObjectV1;
+import ch.sbb.exportservice.model.ExportTypeV1;
 import ch.sbb.exportservice.service.FileExportService;
 import io.micrometer.tracing.annotation.NewSpan;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +29,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Export Service Point Batch")
-@RequestMapping("v1/export")
+@Tag(name = "Export File Streaming")
+@RequestMapping(value = {"v1/export", "v1/export/bodi", "v1/export/prm"})
 @RestController
 @AllArgsConstructor
 @Slf4j
@@ -39,7 +38,7 @@ public class FileStreamingControllerApiV1 {
 
   private final FileExportService fileExportService;
 
-  @GetMapping(value = "json/{exportFileName}/{sePoDiExportType}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "json/{type}/{subtype}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Returns the today generated file as Stream"),
       @ApiResponse(responseCode = "404", description = "No file found for today date", content = @Content(schema =
@@ -48,15 +47,14 @@ public class FileStreamingControllerApiV1 {
   @NewSpan
   @Async
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportJsonFile(
-      @PathVariable SePoDiBatchExportFileName exportFileName,
-      @PathVariable SePoDiExportType sePoDiExportType) {
-    checkInputPath(exportFileName, sePoDiExportType);
-    InputStreamResource body = fileExportService.streamJsonFile(sePoDiExportType, exportFileName);
+      @PathVariable ExportObjectV1 type,
+      @PathVariable ExportTypeV1 subtype) throws NotAllowedExportFileException {
+    InputStreamResource body = fileExportService.streamJsonFile(ExportFilePath.buildV1(type, subtype));
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
 
-  @GetMapping(value = "json/latest/{exportFileName}/{sePoDiExportType}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "json/latest/{type}/{subtype}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Returns the today generated file as Stream"),
       @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
@@ -65,15 +63,14 @@ public class FileStreamingControllerApiV1 {
   @NewSpan
   @Async
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportJsonFile(
-      @PathVariable SePoDiBatchExportFileName exportFileName,
-      @PathVariable SePoDiExportType sePoDiExportType) {
-    checkInputPath(exportFileName, sePoDiExportType);
-    InputStreamResource body = fileExportService.streamLatestJsonFile(sePoDiExportType, exportFileName);
+      @PathVariable ExportObjectV1 type,
+      @PathVariable ExportTypeV1 subtype) throws NotAllowedExportFileException {
+    InputStreamResource body = fileExportService.streamLatestJsonFile(ExportFilePath.buildV1(type, subtype));
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
 
-  @GetMapping(value = "download-gzip-json/{exportFileName}/{sePoDiExportType}")
+  @GetMapping(value = "download-gzip-json/{type}/{subtype}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Returns the today generated file"),
       @ApiResponse(responseCode = "404", description = "No file found for today date", content = @Content(schema =
@@ -82,16 +79,15 @@ public class FileStreamingControllerApiV1 {
   @NewSpan
   @Async
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportGzFile(
-      @PathVariable SePoDiBatchExportFileName exportFileName,
-      @PathVariable SePoDiExportType sePoDiExportType) throws NotAllowedExportFileException {
-    checkInputPath(exportFileName, sePoDiExportType);
-    ExportFilePath exportFilePath = new ExportFilePath(sePoDiExportType, exportFileName);
+      @PathVariable ExportObjectV1 type,
+      @PathVariable ExportTypeV1 subtype) throws NotAllowedExportFileException {
+    final ExportFilePath exportFilePath = ExportFilePath.buildV1(type, subtype);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.fileName());
     InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
-  @GetMapping(value = "download-gzip-json/latest/{exportFileName}/{sePoDiExportType}")
+  @GetMapping(value = "download-gzip-json/latest/{type}/{subtype}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Returns the latest generated file"),
       @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
@@ -100,23 +96,13 @@ public class FileStreamingControllerApiV1 {
   @NewSpan
   @Async
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportGzFile(
-      @PathVariable SePoDiBatchExportFileName exportFileName,
-      @PathVariable SePoDiExportType sePoDiExportType) throws NotAllowedExportFileException {
-    checkInputPath(exportFileName, sePoDiExportType);
-    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(sePoDiExportType, exportFileName);
+      @PathVariable ExportObjectV1 type,
+      @PathVariable ExportTypeV1 subtype) throws NotAllowedExportFileException {
+    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(ExportFilePath.buildV1(type, subtype));
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
     InputStreamResource body = fileExportService.streamGzipFile(latestUploadedFileName);
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
-  private void checkInputPath(SePoDiBatchExportFileName exportFileName, SePoDiExportType sePoDiExportType) {
-    final List<SePoDiBatchExportFileName> worldOnlyTypes = List.of(
-        SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION,
-        SePoDiBatchExportFileName.LOADING_POINT_VERSION
-    );
-    if (worldOnlyTypes.contains(exportFileName) && !SePoDiExportType.getWorldOnly().contains(sePoDiExportType)) {
-      throw new NotAllowedExportFileException(exportFileName, sePoDiExportType);
-    }
-  }
-
 }
+// todo: create V2StreamingController

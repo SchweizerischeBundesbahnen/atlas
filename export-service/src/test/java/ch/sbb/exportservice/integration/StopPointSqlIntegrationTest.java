@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.exportservice.entity.prm.StopPointVersion;
-import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.reader.StopPointVersionRowMapper;
 import ch.sbb.exportservice.reader.StopPointVersionSqlQueryUtil;
 import java.sql.Connection;
@@ -22,7 +21,7 @@ class StopPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
   void shouldReturnFullStopPoints() throws SQLException {
     //given
 
-    insertStopPoint(8507000, "ch:1:sloid:70000", LocalDate.of(2000,1,1),LocalDate.of(2099,12,31));
+    insertStopPoint(8507000, "ch:1:sloid:70000", LocalDate.of(2000, 1, 1), LocalDate.of(2099, 12, 31));
     String sqlQuery = StopPointVersionSqlQueryUtil.getSqlQuery(PrmExportType.FULL);
 
     //when
@@ -36,7 +35,7 @@ class StopPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldReturnActualStopPoints() throws SQLException {
     //given
-    insertStopPoint(8507000, "ch:1:sloid:70000", LocalDate.now(),LocalDate.now());
+    insertStopPoint(8507000, "ch:1:sloid:70000", LocalDate.now(), LocalDate.now());
 
     String sqlQuery = StopPointVersionSqlQueryUtil.getSqlQuery(PrmExportType.ACTUAL);
 
