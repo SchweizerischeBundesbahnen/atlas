@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.service;
 
-import ch.sbb.atlas.export.enumeration.ExportType;
-import ch.sbb.atlas.export.enumeration.ExportTypeBase;
+import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportTypeV1;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.util.List;
 import org.springframework.batch.core.Job;
@@ -20,8 +20,12 @@ public class ExportBusinessOrganisationJobService extends BaseExportJobService {
   }
 
   @Override
-  protected List<ExportTypeBase> getExportTypes() {
-    return List.of(ExportType.values());
+  protected List<JobParams> getExportTypes() {
+    return List.of(
+        new JobParams(ExportType.FULL, ExportTypeV1.FULL),
+        new JobParams(ExportType.ACTUAL, ExportTypeV1.ACTUAL),
+        new JobParams(ExportType.FUTURE_TIMETABLE, ExportTypeV1.TIMETABLE_FUTURE)
+    );
   }
 
 }

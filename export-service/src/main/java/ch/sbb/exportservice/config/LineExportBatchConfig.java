@@ -3,13 +3,14 @@ package ch.sbb.exportservice.config;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_JSON_JOB_NAME;
 
-import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
-import ch.sbb.atlas.export.enumeration.BoDiBatchExportFileName;
-import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.exportservice.entity.lidi.Line;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
+import ch.sbb.exportservice.model.ExportFilePath;
+import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
+import ch.sbb.exportservice.model.ExportObject;
+import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.model.LineCsvModel;
 import ch.sbb.exportservice.processor.LineCsvProcessor;
 import ch.sbb.exportservice.processor.LineJsonProcessor;
@@ -21,7 +22,6 @@ import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvLineWriter;
-import ch.sbb.exportservice.writer.JsonBusinessOrganisationWriter;
 import ch.sbb.exportservice.writer.JsonLineWriter;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
@@ -93,12 +93,12 @@ public class LineExportBatchConfig {
   public FlatFileItemWriter<LineCsvModel> lineCsvWriter(
       @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return csvWriter.csvWriter(exportType, );
+    return csvWriter.csvWriter(ExportObject.LINE, exportType);
   }
 
   @Bean
   @Qualifier(EXPORT_LINE_CSV_JOB_NAME)
-  public Job exportCsvJob(ItemReader<Line> itemReader) {
+  public Job exportLineCsvJob(ItemReader<Line> itemReader) {
     return new JobBuilder(EXPORT_LINE_CSV_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
@@ -122,7 +122,8 @@ public class LineExportBatchConfig {
   public UploadCsvFileTasklet uploadLineCsvFileTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return new UploadCsvFileTasklet(exportType, );
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.LINE, exportType);
+    return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
   }
 
   @Bean
@@ -138,12 +139,13 @@ public class LineExportBatchConfig {
   public DeleteCsvFileTasklet deleteLineCsvFileTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return new DeleteCsvFileTasklet(exportType, );
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.LINE, exportType);
+    return new DeleteCsvFileTasklet(filePathBuilder);
   }
 
   @Bean
   @Qualifier(EXPORT_LINE_JSON_JOB_NAME)
-  public Job exportJsonJob(ItemReader<Line> itemReader) {
+  public Job exportLineJsonJob(ItemReader<Line> itemReader) {
     return new JobBuilder(EXPORT_LINE_JSON_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
@@ -166,7 +168,8 @@ public class LineExportBatchConfig {
   @StepScope
   public UploadJsonFileTasklet uploadLineJsonFileTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new UploadJsonFileTasklet(exportType, );
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.LINE, exportType);
+    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
   }
 
   @Bean
@@ -181,7 +184,8 @@ public class LineExportBatchConfig {
   @StepScope
   public DeleteJsonFileTasklet deleteLineJsonFileTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new DeleteJsonFileTasklet(exportType, );
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.LINE, exportType);
+    return new DeleteJsonFileTasklet(filePathBuilder);
   }
 
   @Bean
@@ -208,7 +212,7 @@ public class LineExportBatchConfig {
   @StepScope
   public JsonFileItemWriter<LineVersionModelV2> lineJsonFileItemWriter(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonWriter.getWriter(exportType, );
+    return jsonWriter.getWriter(ExportObject.LINE, exportType);
   }
 
 }
