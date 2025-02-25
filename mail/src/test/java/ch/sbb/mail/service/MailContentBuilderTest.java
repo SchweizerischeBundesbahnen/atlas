@@ -4,6 +4,7 @@ import static ch.sbb.mail.model.MailTemplateConfig.getMailTemplateConfig;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
@@ -64,11 +65,10 @@ class MailContentBuilderTest {
     MailNotification mailNotification =
         MailNotification.builder()
             .build();
-
+    MailTemplateConfig mailTemplateConfig = getMailTemplateConfig(MailType.ATLAS_STANDARD);
     //when
-    assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
-        () -> mailContentBuilder.getTo(getMailTemplateConfig(MailType.ATLAS_STANDARD),
-            mailNotification));
+    assertThrows(IllegalArgumentException.class,
+        () -> mailContentBuilder.getTo(mailTemplateConfig, mailNotification));
   }
 
   @Test
