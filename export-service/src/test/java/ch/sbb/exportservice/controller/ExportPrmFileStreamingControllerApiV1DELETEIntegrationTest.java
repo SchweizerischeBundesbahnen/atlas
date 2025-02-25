@@ -15,7 +15,7 @@ import ch.sbb.exportservice.service.ExportToiletJobService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-class ExportPrmFileStreamingControllerApiV1IntegrationTest extends BaseControllerApiTest {
+class ExportPrmFileStreamingControllerApiV1DELETEIntegrationTest extends BaseControllerApiTest {
 
   @MockBean
   private ExportStopPointJobService exportStopPointJobService;

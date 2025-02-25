@@ -3,8 +3,6 @@ package ch.sbb.exportservice.service;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.export.enumeration.ExportFileName;
-import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportFilePath;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +17,13 @@ public class FileExportService {
   private final AmazonFileStreamingService amazonFileStreamingService;
   private final AmazonService amazonService;
 
-  public InputStreamResource streamJsonFile(ExportTypeBase exportTypeBase, ExportFileName exportFileName) {
-    ExportFilePath exportFilePath = new ExportFilePath(exportTypeBase, exportFileName);
+  public InputStreamResource streamJsonFile(ExportFilePath exportFilePath) {
     logStreamingStart(exportFilePath.fileToStream());
     return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, exportFilePath.fileToStream());
   }
 
-  public InputStreamResource streamLatestJsonFile(ExportTypeBase exportTypeBase, ExportFileName exportFileName) {
-    String latestUploadedFileName = getLatestUploadedFileName(exportTypeBase, exportFileName);
+  public InputStreamResource streamLatestJsonFile(ExportFilePath exportFilePath) {
+    String latestUploadedFileName = getLatestUploadedFileName(exportFilePath);
     logStreamingStart(latestUploadedFileName);
     return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, latestUploadedFileName);
   }
@@ -36,8 +33,7 @@ public class FileExportService {
     return amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, fileName);
   }
 
-  public String getLatestUploadedFileName(ExportTypeBase exportTypeBase, ExportFileName exportFileName) {
-    ExportFilePath exportFilePath = new ExportFilePath(exportTypeBase, exportFileName);
+  public String getLatestUploadedFileName(ExportFilePath exportFilePath) {
     return amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT, exportFilePath.s3BucketDirPath(),
         exportFilePath.getPrefix());
   }

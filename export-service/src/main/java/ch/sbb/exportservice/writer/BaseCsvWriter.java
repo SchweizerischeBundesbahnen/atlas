@@ -1,10 +1,10 @@
 package ch.sbb.exportservice.writer;
 
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.export.enumeration.ExportFileName;
-import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportFilePath;
+import ch.sbb.exportservice.model.ExportObject;
+import ch.sbb.exportservice.model.ExportType;
 import java.nio.charset.StandardCharsets;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
@@ -22,7 +22,7 @@ public abstract class BaseCsvWriter<T> {
   @Autowired
   private FileService fileService;
 
-  public FlatFileItemWriter<T> csvWriter(ExportTypeBase exportType, ExportFileName exportFileName) {
+  public FlatFileItemWriter<T> csvWriter(ExportObject exportType, ExportType exportFileName) {
     FlatFileItemWriter<T> writer = new FlatFileItemWriter<>();
     writer.setResource(new FileSystemResource(getFilePath(exportType, exportFileName)));
     writer.setAppendAllowed(true);
@@ -33,9 +33,12 @@ public abstract class BaseCsvWriter<T> {
     return writer;
   }
 
-  private String getFilePath(ExportTypeBase exportType, ExportFileName exportFileName) {
-    return new ExportFilePath(exportType, exportFileName, fileService.getDir(),
-        ExportExtensionFileType.CSV_EXTENSION).actualDateFilePath();
+  private String getFilePath(ExportObject exportType, ExportType exportFileName) {
+    return ExportFilePath.getV2Builder(exportType, exportFileName)
+        .systemDir(fileService.getDir())
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .build()
+        .actualDateFilePath();
   }
 
   private DelimitedLineAggregator<T> getLineAggregator() {

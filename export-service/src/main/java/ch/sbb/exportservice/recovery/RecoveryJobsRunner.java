@@ -56,7 +56,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 @Slf4j
-public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyEvent> {
+public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyEvent> { // todo: add lidi,bo,subline,ttfn jobs
 
   private static final List<String> EXPORT_SERVICE_POINT_JOBS_NAME = List.of(EXPORT_SERVICE_POINT_CSV_JOB_NAME,
       EXPORT_SERVICE_POINT_JSON_JOB_NAME);
@@ -67,7 +67,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private static final List<String> EXPORT_STOP_POINT_JOBS_NAME = List.of(EXPORT_STOP_POINT_CSV_JOB_NAME,
       EXPORT_STOP_POINT_JSON_JOB_NAME);
   private static final List<String> EXPORT_PLATFORM_JOBS_NAME = List.of(EXPORT_PLATFORM_CSV_JOB_NAME,
-          EXPORT_PLATFORM_JSON_JOB_NAME);
+      EXPORT_PLATFORM_JSON_JOB_NAME);
   private static final List<String> EXPORT_REFERENCE_POINT_JOB_NAME = List.of(EXPORT_REFERENCE_POINT_CSV_JOB_NAME,
       EXPORT_REFERENCE_POINT_JSON_JOB_NAME);
   private static final List<String> EXPORT_CONTACT_POINT_JOB_NAME = List.of(EXPORT_CONTACT_POINT_CSV_JOB_NAME,

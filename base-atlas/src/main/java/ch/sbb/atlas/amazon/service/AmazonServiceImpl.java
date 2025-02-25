@@ -51,9 +51,22 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   @Override
-  public URL putZipFile(AmazonBucket bucket, File file, String dir) throws IOException {
-    File zipFile = fileService.zipFile(file);
+  public URL putZipFileCleanupBoth(AmazonBucket bucket, File file, String dir) throws IOException {
+    ZipPutResult zipPutResult = zipAndPutFile(bucket, file, dir);
+    Files.deleteIfExists(file.toPath());
+    Files.deleteIfExists(zipPutResult.zipFile().toPath());
+    return zipPutResult.url();
+  }
 
+  @Override
+  public URL putZipFileCleanupZip(AmazonBucket bucket, File file, String dir) throws IOException {
+    ZipPutResult zipPutResult = zipAndPutFile(bucket, file, dir);
+    Files.deleteIfExists(zipPutResult.zipFile().toPath());
+    return zipPutResult.url();
+  }
+
+  private ZipPutResult zipAndPutFile(AmazonBucket bucket, File file, String dir) throws IOException {
+    File zipFile = fileService.zipFile(file);
     String filePathName = getFilePathName(zipFile, dir);
     PutObjectRequest putObjectRequest = PutObjectRequest.builder()
         .bucket(getAmazonBucketConfig(bucket).getBucketName())
@@ -62,10 +75,11 @@ public class AmazonServiceImpl implements AmazonService {
         .contentLength(zipFile.length())
         .build();
     URL url = executePutObjectRequest(putObjectRequest, bucket, filePathName, RequestBody.fromFile(zipFile));
+    return new ZipPutResult(zipFile, url);
+  }
 
-    Files.deleteIfExists(file.toPath());
-    Files.deleteIfExists(zipFile.toPath());
-    return url;
+  private record ZipPutResult(File zipFile, URL url) {
+
   }
 
   @Override

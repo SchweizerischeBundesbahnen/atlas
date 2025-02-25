@@ -5,7 +5,6 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POI
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -38,7 +37,7 @@ class ExportStopPointIntegrationTest extends BasePrmSqlIntegrationTest {
 
   @BeforeEach
   void initData() throws SQLException {
-   insertStopPoint(8507000, "ch:1:sloid:70000", LocalDate.now(),LocalDate.now());
+    insertStopPoint(8507000, "ch:1:sloid:70000", LocalDate.now(), LocalDate.now());
   }
 
   @Test

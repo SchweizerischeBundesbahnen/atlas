@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BoDiDbSchemaCreation;
-import ch.sbb.exportservice.model.BoDiExportType;
 import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.io.File;
@@ -51,7 +50,8 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
 
   @Test
   void shouldExecuteExportTransportCompanyCsvJob() throws Exception {
-    when(amazonService.putZipFile(any(), fileArgumentCaptor.capture(), any())).thenReturn(URI.create("https://sbb.ch").toURL());
+    when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(
+        URI.create("https://sbb.ch").toURL());
     when(transportCompanyCsvFileDeletingTasklet.execute(any(), any())).thenReturn(null);
 
     // given

@@ -3,8 +3,8 @@ package ch.sbb.business.organisation.directory.service;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.export.enumeration.BoDiBatchExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportType;
+import ch.sbb.business.organisation.directory.service.export.BoDiBatchExportFileName;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class BusinessOrganisationAmazonService {
 
   private String getFileToStream(ExportType exportType) {
     return BoDiBatchExportFileName.BUSINESS_ORGANISATION_VERSION.getBaseDir() + "/" +
-        getFileName(exportType) + ".json.gz"; // todo
+        getFileName(exportType) + ".json.gz";
   }
 
   public String getFileName(ExportType exportType) {

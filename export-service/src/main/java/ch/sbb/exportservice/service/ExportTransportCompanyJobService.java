@@ -3,8 +3,8 @@ package ch.sbb.exportservice.service;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
 
-import ch.sbb.atlas.export.enumeration.ExportTypeBase;
-import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportTypeV1;
 import java.util.List;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -22,8 +22,10 @@ public class ExportTransportCompanyJobService extends BaseExportJobService {
   }
 
   @Override
-  protected List<ExportTypeBase> getExportTypes() {
-    return List.of(PrmExportType.FULL);
+  protected List<JobParams> getExportTypes() {
+    return List.of(
+        new JobParams(ExportType.FULL, ExportTypeV1.FULL)
+    );
   }
 
 }

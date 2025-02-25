@@ -1,0 +1,15 @@
+package ch.sbb.exportservice.model;
+
+public enum ExportTypeV1 {
+
+  SWISS_ONLY_FULL,
+  SWISS_ONLY_ACTUAL,
+  SWISS_ONLY_TIMETABLE_FUTURE,
+  WORLD_FULL,
+  WORLD_ONLY_ACTUAL,
+  WORLD_ONLY_TIMETABLE_FUTURE,
+  FULL,
+  ACTUAL,
+  TIMETABLE_FUTURE
+
+}

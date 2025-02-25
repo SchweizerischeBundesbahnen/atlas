@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.model.PrmBatchExportFileName.TOILET_VERSION;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_JSON_JOB_NAME;
 
@@ -9,7 +8,12 @@ import ch.sbb.atlas.export.model.prm.ToiletVersionCsvModel;
 import ch.sbb.exportservice.entity.prm.ToiletVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.model.ExportFilePath;
+import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
+import ch.sbb.exportservice.model.ExportObject;
+import ch.sbb.exportservice.model.ExportObjectV1;
+import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportTypeV1;
 import ch.sbb.exportservice.processor.ToiletVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ToiletVersionJsonProcessor;
 import ch.sbb.exportservice.reader.ToiletVersionRowMapper;
@@ -56,7 +60,7 @@ public class ToiletVersionExportBatchConfig {
   @StepScope
   public JdbcCursorItemReader<ToiletVersion> toiletReader(
       @Autowired @Qualifier("prmDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
     JdbcCursorItemReader<ToiletVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
@@ -89,9 +93,9 @@ public class ToiletVersionExportBatchConfig {
   @Bean
   @StepScope
   public FlatFileItemWriter<ToiletVersionCsvModel> toiletCsvWriter(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return csvToiletVersionWriter.csvWriter(exportType, TOILET_VERSION);
+    return csvToiletVersionWriter.csvWriter(ExportObject.TOILET, exportType);
   }
 
   @Bean
@@ -111,6 +115,7 @@ public class ToiletVersionExportBatchConfig {
   public Step uploadToiletCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
         .tasklet(uploadToiletCsvFileTasklet(null), transactionManager)
+        .tasklet(uploadToiletCsvFileTaskletV1(null, null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
@@ -118,9 +123,21 @@ public class ToiletVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadToiletCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return new UploadCsvFileTasklet(exportType, TOILET_VERSION);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TOILET, exportType);
+    return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
+  }
+
+  @Bean
+  @StepScope
+  public UploadCsvFileTasklet uploadToiletCsvFileTaskletV1(
+      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+  ) {
+    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.TOILET, exportType);
+    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.TOILET_VERSION, exportTypeV1);
+    return new UploadCsvFileTasklet(systemFile, s3File);
   }
 
   @Bean
@@ -134,9 +151,10 @@ public class ToiletVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteCsvFileTasklet toiletCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return new DeleteCsvFileTasklet(exportType, TOILET_VERSION);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TOILET, exportType);
+    return new DeleteCsvFileTasklet(filePathBuilder);
   }
 
   @Bean
@@ -156,6 +174,7 @@ public class ToiletVersionExportBatchConfig {
   public Step uploadToiletJsonFileStep() {
     return new StepBuilder("uploadJsonFile", jobRepository)
         .tasklet(uploadToiletJsonFileTasklet(null), transactionManager)
+        .tasklet(uploadToiletJsonFileTaskletV1(null, null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
@@ -163,8 +182,20 @@ public class ToiletVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadToiletJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new UploadJsonFileTasklet(exportType, TOILET_VERSION);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TOILET, exportType);
+    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTasklet uploadToiletJsonFileTaskletV1(
+      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+  ) {
+    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.TOILET, exportType);
+    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.TOILET_VERSION, exportTypeV1);
+    return new UploadJsonFileTasklet(systemFile, s3File);
   }
 
   @Bean
@@ -178,8 +209,9 @@ public class ToiletVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteJsonFileTasklet fileToiletJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new DeleteJsonFileTasklet(exportType, TOILET_VERSION);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TOILET, exportType);
+    return new DeleteJsonFileTasklet(filePathBuilder);
   }
 
   @Bean
@@ -205,8 +237,8 @@ public class ToiletVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadToiletVersionModel> toiletJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return jsonToiletVersionWriter.getWriter(exportType, TOILET_VERSION);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return jsonToiletVersionWriter.getWriter(ExportObject.TOILET, exportType);
   }
 
 }

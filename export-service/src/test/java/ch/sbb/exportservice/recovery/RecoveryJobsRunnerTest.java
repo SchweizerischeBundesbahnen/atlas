@@ -16,7 +16,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.service.ExportContactPointJobService;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportParkingLotJobService;
@@ -112,9 +111,9 @@ class RecoveryJobsRunnerTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, fileService, jobRepository,
-            exportServicePointJobService, exportTrafficPointElementJobService, exportLoadingPointJobService,
-            exportStopPointJobService, exportPlatformJobService, exportReferencePointJobService, exportContactPointJobService,
-        exportToiletJobService ,exportParkingLotJobService, exportRelationJobService);
+        exportServicePointJobService, exportTrafficPointElementJobService, exportLoadingPointJobService,
+        exportStopPointJobService, exportPlatformJobService, exportReferencePointJobService, exportContactPointJobService,
+        exportToiletJobService, exportParkingLotJobService, exportRelationJobService);
   }
 
   @Test
@@ -132,7 +131,8 @@ class RecoveryJobsRunnerTest {
     when(jobExecution.getCreateTime()).thenReturn(LocalDateTime.now());
     when(jobExplorer.getJobInstanceCount(EXPORT_SERVICE_POINT_CSV_JOB_NAME)).thenReturn(Long.valueOf(
         TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
-    when(jobExplorer.getJobInstances(EXPORT_SERVICE_POINT_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
+    when(jobExplorer.getJobInstances(EXPORT_SERVICE_POINT_CSV_JOB_NAME, 0,
+        TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
         List.of(jobInstance));
     when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(List.of(jobExecution));
     when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
@@ -160,7 +160,8 @@ class RecoveryJobsRunnerTest {
     when(jobExecution.getCreateTime()).thenReturn(LocalDateTime.now());
     when(jobExplorer.getJobInstanceCount(EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME)).thenReturn(Long.valueOf(
         TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
-    when(jobExplorer.getJobInstances(EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
+    when(jobExplorer.getJobInstances(EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME, 0,
+        TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
         List.of(jobInstance));
     when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(List.of(jobExecution));
     when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
@@ -188,7 +189,8 @@ class RecoveryJobsRunnerTest {
     when(jobExecution.getCreateTime()).thenReturn(LocalDateTime.now());
     when(jobExplorer.getJobInstanceCount(EXPORT_LOADING_POINT_CSV_JOB_NAME)).thenReturn(Long.valueOf(
         TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
-    when(jobExplorer.getJobInstances(EXPORT_LOADING_POINT_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
+    when(jobExplorer.getJobInstances(EXPORT_LOADING_POINT_CSV_JOB_NAME, 0,
+        TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
         List.of(jobInstance));
     when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(List.of(jobExecution));
     when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
@@ -216,7 +218,8 @@ class RecoveryJobsRunnerTest {
     when(jobExecution.getCreateTime()).thenReturn(LocalDateTime.now());
     when(jobExplorer.getJobInstanceCount(EXPORT_STOP_POINT_CSV_JOB_NAME)).thenReturn(Long.valueOf(
         TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
-    when(jobExplorer.getJobInstances(EXPORT_STOP_POINT_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
+    when(
+        jobExplorer.getJobInstances(EXPORT_STOP_POINT_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
         List.of(jobInstance));
     when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(List.of(jobExecution));
     when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
@@ -243,9 +246,9 @@ class RecoveryJobsRunnerTest {
     when(jobExecution.getStepExecutions()).thenReturn(List.of(stepExecution));
     when(jobExecution.getCreateTime()).thenReturn(LocalDateTime.now());
     when(jobExplorer.getJobInstanceCount(EXPORT_PLATFORM_CSV_JOB_NAME)).thenReturn(Long.valueOf(
-            TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
+        TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
     when(jobExplorer.getJobInstances(EXPORT_PLATFORM_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
-            List.of(jobInstance));
+        List.of(jobInstance));
     when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(List.of(jobExecution));
     when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
 
@@ -273,7 +276,8 @@ class RecoveryJobsRunnerTest {
     when(jobExecution.getCreateTime()).thenReturn(LocalDateTime.now());
     when(jobExplorer.getJobInstanceCount(EXPORT_REFERENCE_POINT_CSV_JOB_NAME)).thenReturn(Long.valueOf(
         TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
-    when(jobExplorer.getJobInstances(EXPORT_REFERENCE_POINT_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
+    when(jobExplorer.getJobInstances(EXPORT_REFERENCE_POINT_CSV_JOB_NAME, 0,
+        TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
         List.of(jobInstance));
     when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(List.of(jobExecution));
     when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
@@ -302,7 +306,8 @@ class RecoveryJobsRunnerTest {
     when(jobExecution.getCreateTime()).thenReturn(LocalDateTime.now());
     when(jobExplorer.getJobInstanceCount(EXPORT_CONTACT_POINT_CSV_JOB_NAME)).thenReturn(Long.valueOf(
         TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
-    when(jobExplorer.getJobInstances(EXPORT_CONTACT_POINT_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
+    when(jobExplorer.getJobInstances(EXPORT_CONTACT_POINT_CSV_JOB_NAME, 0,
+        TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
         List.of(jobInstance));
     when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(List.of(jobExecution));
     when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
