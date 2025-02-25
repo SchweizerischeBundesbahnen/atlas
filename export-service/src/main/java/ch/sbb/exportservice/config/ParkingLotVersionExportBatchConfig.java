@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.model.PrmBatchExportFileName.PARKING_LOT_VERSION;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PARKING_LOT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PARKING_LOT_JSON_JOB_NAME;
 
@@ -9,7 +8,12 @@ import ch.sbb.atlas.export.model.prm.ParkingLotVersionCsvModel;
 import ch.sbb.exportservice.entity.prm.ParkingLotVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.model.ExportFilePath;
+import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
+import ch.sbb.exportservice.model.ExportObject;
+import ch.sbb.exportservice.model.ExportObjectV1;
+import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportTypeV1;
 import ch.sbb.exportservice.processor.ParkingLotVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ParkingLotVersionJsonProcessor;
 import ch.sbb.exportservice.reader.ParkingLotVersionRowMapper;
@@ -56,7 +60,7 @@ public class ParkingLotVersionExportBatchConfig {
   @StepScope
   public JdbcCursorItemReader<ParkingLotVersion> parkingLotReader(
       @Autowired @Qualifier("prmDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
     JdbcCursorItemReader<ParkingLotVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
@@ -89,9 +93,9 @@ public class ParkingLotVersionExportBatchConfig {
   @Bean
   @StepScope
   public FlatFileItemWriter<ParkingLotVersionCsvModel> parkingLotCsvWriter(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return csvParkingLotVersionWriter.csvWriter(exportType, PARKING_LOT_VERSION);
+    return csvParkingLotVersionWriter.csvWriter(ExportObject.PARKING_LOT, exportType);
   }
 
   @Bean
@@ -111,6 +115,7 @@ public class ParkingLotVersionExportBatchConfig {
   public Step uploadParkingLotCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
         .tasklet(uploadParkingLotCsvFileTasklet(null), transactionManager)
+        .tasklet(uploadParkingLotCsvFileTaskletV1(null, null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
@@ -118,9 +123,21 @@ public class ParkingLotVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadParkingLotCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return new UploadCsvFileTasklet(exportType, PARKING_LOT_VERSION);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.PARKING_LOT, exportType);
+    return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
+  }
+
+  @Bean
+  @StepScope
+  public UploadCsvFileTasklet uploadParkingLotCsvFileTaskletV1(
+      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+  ) {
+    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.PARKING_LOT, exportType);
+    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.PARKING_LOT_VERSION, exportTypeV1);
+    return new UploadCsvFileTasklet(systemFile, s3File);
   }
 
   @Bean
@@ -134,9 +151,10 @@ public class ParkingLotVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteCsvFileTasklet parkingLotCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return new DeleteCsvFileTasklet(exportType, PARKING_LOT_VERSION);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.PARKING_LOT, exportType);
+    return new DeleteCsvFileTasklet(filePathBuilder);
   }
 
   @Bean
@@ -156,6 +174,7 @@ public class ParkingLotVersionExportBatchConfig {
   public Step uploadParkingLotJsonFileStep() {
     return new StepBuilder("uploadJsonFile", jobRepository)
         .tasklet(uploadParkingLotJsonFileTasklet(null), transactionManager)
+        .tasklet(uploadParkingLotJsonFileTaskletV1(null, null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
@@ -163,8 +182,20 @@ public class ParkingLotVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadParkingLotJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new UploadJsonFileTasklet(exportType, PARKING_LOT_VERSION);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.PARKING_LOT, exportType);
+    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTasklet uploadParkingLotJsonFileTaskletV1(
+      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+  ) {
+    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.PARKING_LOT, exportType);
+    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.PARKING_LOT_VERSION, exportTypeV1);
+    return new UploadJsonFileTasklet(systemFile, s3File);
   }
 
   @Bean
@@ -178,8 +209,9 @@ public class ParkingLotVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteJsonFileTasklet fileParkingLotJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new DeleteJsonFileTasklet(exportType, PARKING_LOT_VERSION);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.PARKING_LOT, exportType);
+    return new DeleteJsonFileTasklet(filePathBuilder);
   }
 
   @Bean
@@ -205,8 +237,8 @@ public class ParkingLotVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadParkingLotVersionModel> parkingLotJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return jsonParkingLotVersionWriter.getWriter(exportType, PARKING_LOT_VERSION);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return jsonParkingLotVersionWriter.getWriter(ExportObject.PARKING_LOT, exportType);
   }
 
 }

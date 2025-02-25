@@ -6,7 +6,6 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
