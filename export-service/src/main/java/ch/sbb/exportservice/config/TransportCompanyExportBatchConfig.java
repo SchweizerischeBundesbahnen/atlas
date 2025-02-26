@@ -3,23 +3,22 @@ package ch.sbb.exportservice.config;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.exportservice.entity.bodi.TransportCompany;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportFilePath;
-import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
-import ch.sbb.exportservice.model.ExportObject;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
+import ch.sbb.exportservice.model.ExportFilePathV2;
+import ch.sbb.exportservice.model.ExportObjectV2;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.model.TransportCompanyCsvModel;
 import ch.sbb.exportservice.processor.TransportCompanyCsvProcessor;
 import ch.sbb.exportservice.processor.TransportCompanyJsonProcessor;
 import ch.sbb.exportservice.reader.TransportCompanyRowMapper;
 import ch.sbb.exportservice.reader.TransportCompanySqlQueryUtil;
-import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvTransportCompanyWriter;
 import ch.sbb.exportservice.writer.JsonTransportCompanyWriter;
@@ -52,6 +51,8 @@ public class TransportCompanyExportBatchConfig {
   private final StepTracerListener stepTracerListener;
   private final CsvTransportCompanyWriter csvTransportCompanyWriter;
   private final JsonTransportCompanyWriter jsonTransportCompanyWriter;
+
+  private final FileService fileService;
 
   @Bean
   @StepScope
@@ -90,7 +91,7 @@ public class TransportCompanyExportBatchConfig {
   @StepScope
   public FlatFileItemWriter<TransportCompanyCsvModel> transportCompanyCsvWriter(
   ) {
-    return csvTransportCompanyWriter.csvWriter(ExportObject.TRANSPORT_COMPANY, ExportType.FULL);
+    return csvTransportCompanyWriter.csvWriter(ExportObjectV2.TRANSPORT_COMPANY, ExportTypeV2.FULL);
   }
 
   @Bean
@@ -101,7 +102,7 @@ public class TransportCompanyExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportTransportCompanyCsvStep(itemReader))
         .next(uploadTransportCompanyCsvFileStep())
-        .next(deleteTransportCompanyCsvFileStep())
+        //        .next(deleteTransportCompanyCsvFileStep())
         .end()
         .build();
   }
@@ -116,13 +117,15 @@ public class TransportCompanyExportBatchConfig {
 
   @Bean
   @StepScope
-  public UploadCsvFileTasklet uploadTransportCompanyCsvFileTasklet(
-  ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TRANSPORT_COMPANY, ExportType.FULL);
-    return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
+  public UploadCsvFileTaskletV2 uploadTransportCompanyCsvFileTasklet() {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TRANSPORT_COMPANY, ExportTypeV2.FULL)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadCsvFileTaskletV2(filePath);
   }
 
-  @Bean
+  /*@Bean
   public Step deleteTransportCompanyCsvFileStep() {
     return new StepBuilder("deleteCsvFiles", jobRepository)
         .tasklet(transportCompanyCsvFileDeletingTasklet(), transactionManager)
@@ -134,9 +137,10 @@ public class TransportCompanyExportBatchConfig {
   @StepScope
   public DeleteCsvFileTasklet transportCompanyCsvFileDeletingTasklet(
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TRANSPORT_COMPANY, ExportType.FULL);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TRANSPORT_COMPANY,
+        ExportTypeV2.FULL);
     return new DeleteCsvFileTasklet(filePathBuilder);
-  }
+  }*/
 
   @Bean
   @Qualifier(EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME)
@@ -146,7 +150,7 @@ public class TransportCompanyExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportTransportCompanyJsonStep(itemReader))
         .next(uploadTransportCompanyJsonFileStep())
-        .next(deleteTransportCompanyJsonFileStep())
+        //        .next(deleteTransportCompanyJsonFileStep())
         .end()
         .build();
   }
@@ -161,12 +165,15 @@ public class TransportCompanyExportBatchConfig {
 
   @Bean
   @StepScope
-  public UploadJsonFileTasklet uploadTransportCompanyJsonFileTasklet() {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TRANSPORT_COMPANY, ExportType.FULL);
-    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
+  public UploadJsonFileTaskletV2 uploadTransportCompanyJsonFileTasklet() {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TRANSPORT_COMPANY, ExportTypeV2.FULL)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadJsonFileTaskletV2(filePath);
   }
 
-  @Bean
+  /*@Bean
   public Step deleteTransportCompanyJsonFileStep() {
     return new StepBuilder("deleteJsonFiles", jobRepository)
         .tasklet(fileTransportCompanyJsonDeletingTasklet(), transactionManager)
@@ -177,9 +184,10 @@ public class TransportCompanyExportBatchConfig {
   @Bean
   @StepScope
   public DeleteJsonFileTasklet fileTransportCompanyJsonDeletingTasklet() {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.TRANSPORT_COMPANY, ExportType.FULL);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TRANSPORT_COMPANY,
+        ExportTypeV2.FULL);
     return new DeleteJsonFileTasklet(filePathBuilder);
-  }
+  }*/
 
   @Bean
   public Step exportTransportCompanyJsonStep(ItemReader<TransportCompany> itemReader) {
@@ -204,7 +212,7 @@ public class TransportCompanyExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<TransportCompanyModel> transportCompanyJsonFileItemWriter() {
-    return jsonTransportCompanyWriter.getWriter(ExportObject.TRANSPORT_COMPANY, ExportType.FULL);
+    return jsonTransportCompanyWriter.getWriter(ExportObjectV2.TRANSPORT_COMPANY, ExportTypeV2.FULL);
   }
 
 }

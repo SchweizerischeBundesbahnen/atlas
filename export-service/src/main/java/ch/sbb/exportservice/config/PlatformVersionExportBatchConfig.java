@@ -3,25 +3,26 @@ package ch.sbb.exportservice.config;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_JSON_JOB_NAME;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
+import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
 import ch.sbb.exportservice.entity.prm.PlatformVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportFilePath;
-import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
-import ch.sbb.exportservice.model.ExportObject;
-import ch.sbb.exportservice.model.ExportObjectV1;
-import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.ExportTypeV1;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
+import ch.sbb.exportservice.model.ExportFilePathV2;
+import ch.sbb.exportservice.model.ExportObjectV2;
+import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.processor.PlatformVersionCsvProcessor;
 import ch.sbb.exportservice.processor.PlatformVersionJsonProcessor;
 import ch.sbb.exportservice.reader.PlatformVersionRowMapper;
 import ch.sbb.exportservice.reader.PlatformVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvPlatformVersionWriter;
 import ch.sbb.exportservice.writer.JsonPlatformVersionWriter;
@@ -56,15 +57,17 @@ public class PlatformVersionExportBatchConfig {
   private final CsvPlatformVersionWriter csvPlatformVersionWriter;
   private final JsonPlatformVersionWriter jsonPlatformVersionWriter;
 
+  private final FileService fileService;
+
   @Bean
   @StepScope
   public JdbcCursorItemReader<PlatformVersion> platformReader(
       @Autowired @Qualifier("prmDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     JdbcCursorItemReader<PlatformVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(PlatformVersionSqlQueryUtil.getSqlQuery(exportType));
+    itemReader.setSql(PlatformVersionSqlQueryUtil.getSqlQuery(exportTypeV2));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new PlatformVersionRowMapper());
     return itemReader;
@@ -93,9 +96,9 @@ public class PlatformVersionExportBatchConfig {
   @Bean
   @StepScope
   public FlatFileItemWriter<PlatformVersionCsvModel> platformCsvWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    return csvPlatformVersionWriter.csvWriter(ExportObject.PLATFORM, exportType);
+    return csvPlatformVersionWriter.csvWriter(ExportObjectV2.PLATFORM, exportTypeV2);
   }
 
   @Bean
@@ -105,9 +108,10 @@ public class PlatformVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportPlatformCsvStep(itemReader))
-        .next(uploadPlatformCsvFileStep())
+        .next(uploadPlatformCsvFileStepV2())
+        // todo: copy
         .next(uploadPlatformCsvFileStepV1()) // todo: add this step to all other configs with V1 tasklet
-        .next(deletePlatformCsvFileStep())
+        //.next(deletePlatformCsvFileStep())
         .end()
         .build();
   }
@@ -119,9 +123,10 @@ public class PlatformVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportPlatformJsonStep(itemReader))
-        .next(uploadPlatformJsonFileStep())
+        .next(uploadPlatformJsonFileStepV2())
+        // todo: copy
         .next(uploadPlatformJsonFileStepV1()) // todo: add this step to all other configs with V1 tasklet
-        .next(deletePlatformJsonFileStep())
+        //.next(deletePlatformJsonFileStep())
         .end()
         .build();
   }
@@ -149,14 +154,14 @@ public class PlatformVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadPlatformVersionModel> platformJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonPlatformVersionWriter.getWriter(ExportObject.PLATFORM, exportType);
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    return jsonPlatformVersionWriter.getWriter(ExportObjectV2.PLATFORM, exportTypeV2);
   }
 
   @Bean
-  public Step uploadPlatformCsvFileStep() {
-    return new StepBuilder("uploadCsvFile", jobRepository)
-        .tasklet(uploadPlatformCsvFileTasklet(null), transactionManager)
+  public Step uploadPlatformCsvFileStepV2() {
+    return new StepBuilder("uploadCsvFileV2", jobRepository)
+        .tasklet(uploadPlatformCsvFileTaskletV2(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
@@ -164,15 +169,15 @@ public class PlatformVersionExportBatchConfig {
   @Bean
   public Step uploadPlatformCsvFileStepV1() {
     return new StepBuilder("uploadCsvFileV1", jobRepository)
-        .tasklet(uploadPlatformCsvFileTaskletV1(null, null), transactionManager)
+        .tasklet(uploadPlatformCsvFileTaskletV1(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
-  public Step uploadPlatformJsonFileStep() {
-    return new StepBuilder("uploadJsonFile", jobRepository)
-        .tasklet(uploadPlatformJsonFileTasklet(null), transactionManager)
+  public Step uploadPlatformJsonFileStepV2() {
+    return new StepBuilder("uploadJsonFileV2", jobRepository)
+        .tasklet(uploadPlatformJsonFileTaskletV2(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
@@ -180,12 +185,12 @@ public class PlatformVersionExportBatchConfig {
   @Bean
   public Step uploadPlatformJsonFileStepV1() {
     return new StepBuilder("uploadJsonFileV1", jobRepository)
-        .tasklet(uploadPlatformJsonFileTaskletV1(null, null), transactionManager)
+        .tasklet(uploadPlatformJsonFileTaskletV1(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
-  @Bean
+  /*@Bean
   public Step deletePlatformCsvFileStep() {
     return new StepBuilder("deleteCsvFiles", jobRepository)
         .tasklet(filePlatformCsvDeletingTasklet(null), transactionManager)
@@ -199,59 +204,59 @@ public class PlatformVersionExportBatchConfig {
         .tasklet(filePlatformJsonDeletingTasklet(null), transactionManager)
         .listener(stepTracerListener)
         .build();
-  }
+  }*/
 
   @Bean
   @StepScope
-  public UploadCsvFileTasklet uploadPlatformCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.PLATFORM, exportType);
-    return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
+  public UploadCsvFileTaskletV2 uploadPlatformCsvFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.PLATFORM, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadCsvFileTaskletV2(filePath);
   }
 
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadPlatformCsvFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,
-      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+      @Value("#{jobParameters[exportTypeV1]}") ExportType exportTypeV1 // todo: or PrmExportType?
   ) {
-    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.PLATFORM, exportType);
-    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.PLATFORM_VERSION, exportTypeV1);
-    return new UploadCsvFileTasklet(systemFile, s3File);
+    return new UploadCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.PLATFORM_VERSION);
   }
 
   @Bean
   @StepScope
-  public UploadJsonFileTasklet uploadPlatformJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.PLATFORM, exportType);
-    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
+  public UploadJsonFileTaskletV2 uploadPlatformJsonFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.PLATFORM, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadJsonFileTaskletV2(filePath);
   }
 
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadPlatformJsonFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,
-      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+      @Value("#{jobParameters[exportTypeV1]}") ExportType exportTypeV1 // todo: or PrmExportType?
   ) {
-    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.PLATFORM, exportType);
-    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.PLATFORM_VERSION, exportTypeV1);
-    return new UploadJsonFileTasklet(systemFile, s3File);
+    return new UploadJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.PLATFORM_VERSION);
   }
 
-  @Bean
+  /*@Bean
   @StepScope
   public DeleteCsvFileTasklet filePlatformCsvDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.PLATFORM, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.PLATFORM, exportTypeV2);
     return new DeleteCsvFileTasklet(filePathBuilder);
   }
 
   @Bean
   @StepScope
   public DeleteJsonFileTasklet filePlatformJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.PLATFORM, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.PLATFORM, exportTypeV2);
     return new DeleteJsonFileTasklet(filePathBuilder);
-  }
+  }*/
 }
