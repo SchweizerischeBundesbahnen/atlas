@@ -8,20 +8,12 @@ import ch.sbb.atlas.export.model.prm.ReferencePointVersionCsvModel;
 import ch.sbb.exportservice.entity.prm.ReferencePointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportFilePath;
-import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
-import ch.sbb.exportservice.model.ExportObject;
-import ch.sbb.exportservice.model.ExportObjectV1;
-import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.ExportTypeV1;
+import ch.sbb.exportservice.model.ExportObjectV2;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.processor.ReferencePointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ReferencePointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.ReferencePointVersionRowMapper;
 import ch.sbb.exportservice.reader.ReferencePointVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvReferencePointVersionWriter;
 import ch.sbb.exportservice.writer.JsonReferencePointVersionWriter;
@@ -60,11 +52,11 @@ public class ReferencePointVersionExportBatchConfig {
   @StepScope
   public JdbcCursorItemReader<ReferencePointVersion> referencePointReader(
       @Autowired @Qualifier("prmDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     JdbcCursorItemReader<ReferencePointVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(ReferencePointVersionSqlQueryUtil.getSqlQuery(exportType));
+    itemReader.setSql(ReferencePointVersionSqlQueryUtil.getSqlQuery(exportTypeV2));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new ReferencePointVersionRowMapper());
     return itemReader;
@@ -93,9 +85,9 @@ public class ReferencePointVersionExportBatchConfig {
   @Bean
   @StepScope
   public FlatFileItemWriter<ReferencePointVersionCsvModel> referencePointCsvWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    return csvReferencePointVersionWriter.csvWriter(ExportObject.REFERENCE_POINT, exportType);
+    return csvReferencePointVersionWriter.csvWriter(ExportObjectV2.REFERENCE_POINT, exportTypeV2);
   }
 
   @Bean
@@ -105,13 +97,13 @@ public class ReferencePointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportReferencePointCsvStep(itemReader))
-        .next(uploadReferencePointCsvFileStep())
-        .next(deleteReferencePointCsvFileStep())
+        //        .next(uploadReferencePointCsvFileStep())
+        //        .next(deleteReferencePointCsvFileStep())
         .end()
         .build();
   }
 
-  @Bean
+  /*@Bean
   public Step uploadReferencePointCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
         .tasklet(uploadReferencePointCsvFileTasklet(null), transactionManager)
@@ -123,20 +115,20 @@ public class ReferencePointVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadReferencePointCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.REFERENCE_POINT, exportType);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.REFERENCE_POINT, exportTypeV2);
     return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
   }
 
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadReferencePointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
       @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
   ) {
-    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.REFERENCE_POINT, exportType);
-    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.REFERENCE_POINT_VERSION, exportTypeV1);
+    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.REFERENCE_POINT, exportTypeV2);
+    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.REFERENCE_POINT_VERSION, exportTypeV1);
     return new UploadCsvFileTasklet(systemFile, s3File);
   }
 
@@ -151,11 +143,11 @@ public class ReferencePointVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteCsvFileTasklet referencePointCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.REFERENCE_POINT, exportType);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.REFERENCE_POINT, exportTypeV2);
     return new DeleteCsvFileTasklet(filePathBuilder);
-  }
+  }*/
 
   @Bean
   @Qualifier(EXPORT_REFERENCE_POINT_JSON_JOB_NAME)
@@ -164,56 +156,57 @@ public class ReferencePointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportReferencePointJsonStep(itemReader))
-        .next(uploadReferencePointJsonFileStep())
-        .next(deleteReferencePointJsonFileStep())
+        //        .next(uploadReferencePointJsonFileStep())
+        //        .next(deleteReferencePointJsonFileStep())
         .end()
         .build();
   }
 
-  @Bean
-  public Step uploadReferencePointJsonFileStep() {
-    return new StepBuilder("uploadJsonFile", jobRepository)
-        .tasklet(uploadReferencePointJsonFileTasklet(null), transactionManager)
-        .tasklet(uploadReferencePointJsonFileTaskletV1(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
+  /*
+    @Bean
+    public Step uploadReferencePointJsonFileStep() {
+      return new StepBuilder("uploadJsonFile", jobRepository)
+          .tasklet(uploadReferencePointJsonFileTasklet(null), transactionManager)
+          .tasklet(uploadReferencePointJsonFileTaskletV1(null, null), transactionManager)
+          .listener(stepTracerListener)
+          .build();
+    }
 
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadReferencePointJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.REFERENCE_POINT, exportType);
-    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
-  }
+    @Bean
+    @StepScope
+    public UploadJsonFileTasklet uploadReferencePointJsonFileTasklet(
+        @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+      final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.REFERENCE_POINT, exportTypeV2);
+      return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
+    }
 
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadReferencePointJsonFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,
-      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
-  ) {
-    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.REFERENCE_POINT, exportType);
-    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.REFERENCE_POINT_VERSION, exportTypeV1);
-    return new UploadJsonFileTasklet(systemFile, s3File);
-  }
+    @Bean
+    @StepScope
+    public UploadJsonFileTasklet uploadReferencePointJsonFileTaskletV1(
+        @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
+        @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+    ) {
+      final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.REFERENCE_POINT, exportTypeV2);
+      final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.REFERENCE_POINT_VERSION, exportTypeV1);
+      return new UploadJsonFileTasklet(systemFile, s3File);
+    }
 
-  @Bean
-  public Step deleteReferencePointJsonFileStep() {
-    return new StepBuilder("deleteJsonFiles", jobRepository)
-        .tasklet(fileReferencePointJsonDeletingTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
+    @Bean
+    public Step deleteReferencePointJsonFileStep() {
+      return new StepBuilder("deleteJsonFiles", jobRepository)
+          .tasklet(fileReferencePointJsonDeletingTasklet(null), transactionManager)
+          .listener(stepTracerListener)
+          .build();
+    }
 
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet fileReferencePointJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.REFERENCE_POINT, exportType);
-    return new DeleteJsonFileTasklet(filePathBuilder);
-  }
-
+    @Bean
+    @StepScope
+    public DeleteJsonFileTasklet fileReferencePointJsonDeletingTasklet(
+        @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+      final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.REFERENCE_POINT, exportTypeV2);
+      return new DeleteJsonFileTasklet(filePathBuilder);
+    }
+  */
   @Bean
   public Step exportReferencePointJsonStep(ItemReader<ReferencePointVersion> itemReader) {
     String stepName = "exportReferencePointJsonStep";
@@ -237,8 +230,8 @@ public class ReferencePointVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadReferencePointVersionModel> referencePointJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonReferencePointVersionWriter.getWriter(ExportObject.REFERENCE_POINT, exportType);
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    return jsonReferencePointVersionWriter.getWriter(ExportObjectV2.REFERENCE_POINT, exportTypeV2);
   }
 
 }

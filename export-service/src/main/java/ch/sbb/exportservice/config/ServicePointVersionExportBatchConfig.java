@@ -7,21 +7,13 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.exportservice.entity.sepodi.ServicePointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportFilePath;
-import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
-import ch.sbb.exportservice.model.ExportObject;
-import ch.sbb.exportservice.model.ExportObjectV1;
-import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.ExportTypeV1;
+import ch.sbb.exportservice.model.ExportObjectV2;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.processor.ServicePointVersionCsvServicePointProcessor;
 import ch.sbb.exportservice.processor.ServicePointVersionJsonServicePointProcessor;
 import ch.sbb.exportservice.reader.ServicePointVersionRowMapper;
 import ch.sbb.exportservice.reader.ServicePointVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvServicePointVersionWriter;
 import ch.sbb.exportservice.writer.JsonServicePointVersionWriter;
@@ -50,25 +42,20 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class ServicePointVersionExportBatchConfig {
 
   private final JobRepository jobRepository;
-
   private final PlatformTransactionManager transactionManager;
-
   private final JobCompletionListener jobCompletionListener;
-
   private final StepTracerListener stepTracerListener;
-
   private final JsonServicePointVersionWriter jsonServicePointVersionWriter;
-
   private final CsvServicePointVersionWriter csvServicePointVersionWriter;
 
   @Bean
   @StepScope
   public JdbcCursorItemReader<ServicePointVersion> reader(
       @Autowired @Qualifier("servicePointDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     JdbcCursorItemReader<ServicePointVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(ServicePointVersionSqlQueryUtil.getSqlQuery(exportType));
+    itemReader.setSql(ServicePointVersionSqlQueryUtil.getSqlQuery(exportTypeV2));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new ServicePointVersionRowMapper());
     return itemReader;
@@ -77,15 +64,15 @@ public class ServicePointVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadServicePointVersionModel> jsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonServicePointVersionWriter.getWriter(ExportObject.SERVICE_POINT, exportType);
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    return jsonServicePointVersionWriter.getWriter(ExportObjectV2.SERVICE_POINT, exportTypeV2);
   }
 
   @Bean
   @StepScope
   public FlatFileItemWriter<ServicePointVersionCsvModel> csvWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return csvServicePointVersionWriter.csvWriter(ExportObject.SERVICE_POINT, exportType);
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    return csvServicePointVersionWriter.csvWriter(ExportObjectV2.SERVICE_POINT, exportTypeV2);
   }
 
   @Bean
@@ -135,8 +122,8 @@ public class ServicePointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportServicePointCsvStep(itemReader))
-        .next(uploadCsvFileStep())
-        .next(deleteCsvFileStep())
+        //        .next(uploadCsvFileStep())
+        //        .next(deleteCsvFileStep())
         .end()
         .build();
   }
@@ -148,55 +135,55 @@ public class ServicePointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportServicePointJsonStep(itemReader))
-        .next(uploadJsonFileStep())
-        .next(deleteJsonFileStep())
+        //        .next(uploadJsonFileStep())
+        //        .next(deleteJsonFileStep())
         .end()
         .build();
   }
 
-  @Bean
+  /*@Bean
   @StepScope
   public UploadCsvFileTasklet uploadCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.SERVICE_POINT, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.SERVICE_POINT, exportTypeV2);
     return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
   }
 
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadCsvFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
       @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
   ) {
-    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.SERVICE_POINT, exportType);
-    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.SERVICE_POINT_VERSION, exportTypeV1);
+    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.SERVICE_POINT, exportTypeV2);
+    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.SERVICE_POINT_VERSION, exportTypeV1);
     return new UploadCsvFileTasklet(systemFile, s3File);
   }
 
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.SERVICE_POINT, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.SERVICE_POINT, exportTypeV2);
     return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
   }
 
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadJsonFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
       @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
   ) {
-    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.SERVICE_POINT, exportType);
-    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.SERVICE_POINT_VERSION, exportTypeV1);
+    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.SERVICE_POINT, exportTypeV2);
+    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.SERVICE_POINT_VERSION, exportTypeV1);
     return new UploadJsonFileTasklet(systemFile, s3File);
   }
 
   @Bean
   @StepScope
   public DeleteJsonFileTasklet fileJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.SERVICE_POINT, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.SERVICE_POINT, exportTypeV2);
     return new DeleteJsonFileTasklet(filePathBuilder);
   }
 
@@ -204,8 +191,8 @@ public class ServicePointVersionExportBatchConfig {
   @StepScope
   @Qualifier("fileCsvDeletingTasklet")
   public DeleteCsvFileTasklet fileCsvDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.SERVICE_POINT, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.SERVICE_POINT, exportTypeV2);
     return new DeleteCsvFileTasklet(filePathBuilder);
   }
 
@@ -241,6 +228,6 @@ public class ServicePointVersionExportBatchConfig {
         .tasklet(fileJsonDeletingTasklet(null), transactionManager)
         .listener(stepTracerListener)
         .build();
-  }
+  }*/
 
 }

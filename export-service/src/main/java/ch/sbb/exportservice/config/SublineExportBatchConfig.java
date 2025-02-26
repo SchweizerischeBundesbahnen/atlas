@@ -3,23 +3,22 @@ package ch.sbb.exportservice.config;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SUBLINE_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SUBLINE_JSON_JOB_NAME;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.exportservice.entity.lidi.Subline;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportFilePath;
-import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
-import ch.sbb.exportservice.model.ExportObject;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
+import ch.sbb.exportservice.model.ExportFilePathV2;
+import ch.sbb.exportservice.model.ExportObjectV2;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.model.SublineCsvModel;
 import ch.sbb.exportservice.processor.SublineCsvProcessor;
 import ch.sbb.exportservice.processor.SublineJsonProcessor;
 import ch.sbb.exportservice.reader.SublineRowMapper;
 import ch.sbb.exportservice.reader.SublineSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvSublineWriter;
 import ch.sbb.exportservice.writer.JsonSublineWriter;
@@ -54,15 +53,17 @@ public class SublineExportBatchConfig {
   private final CsvSublineWriter csvWriter;
   private final JsonSublineWriter jsonWriter;
 
+  private final FileService fileService;
+
   @Bean
   @StepScope
   public JdbcCursorItemReader<Subline> sublineReader(
       @Autowired @Qualifier("lineDirectoryDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     JdbcCursorItemReader<Subline> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(SublineSqlQueryUtil.getSqlQuery(exportType));
+    itemReader.setSql(SublineSqlQueryUtil.getSqlQuery(exportTypeV2));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new SublineRowMapper());
     return itemReader;
@@ -91,9 +92,9 @@ public class SublineExportBatchConfig {
   @Bean
   @StepScope
   public FlatFileItemWriter<SublineCsvModel> sublineCsvWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    return csvWriter.csvWriter(ExportObject.SUBLINE, exportType);
+    return csvWriter.csvWriter(ExportObjectV2.SUBLINE, exportTypeV2);
   }
 
   @Bean
@@ -104,7 +105,7 @@ public class SublineExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportSublineCsvStep(itemReader))
         .next(uploadSublineCsvFileStep())
-        .next(deleteSublineCsvFileStep())
+        //        .next(deleteSublineCsvFileStep())
         .end()
         .build();
   }
@@ -119,14 +120,17 @@ public class SublineExportBatchConfig {
 
   @Bean
   @StepScope
-  public UploadCsvFileTasklet uploadSublineCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+  public UploadCsvFileTaskletV2 uploadSublineCsvFileTasklet(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.SUBLINE, exportType);
-    return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.SUBLINE, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadCsvFileTaskletV2(filePath);
   }
 
-  @Bean
+  /*@Bean
   public Step deleteSublineCsvFileStep() {
     return new StepBuilder("deleteCsvFiles", jobRepository)
         .tasklet(deleteSublineCsvFileTasklet(null), transactionManager)
@@ -137,11 +141,11 @@ public class SublineExportBatchConfig {
   @Bean
   @StepScope
   public DeleteCsvFileTasklet deleteSublineCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.SUBLINE, exportType);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.SUBLINE, exportTypeV2);
     return new DeleteCsvFileTasklet(filePathBuilder);
-  }
+  }*/
 
   @Bean
   @Qualifier(EXPORT_SUBLINE_JSON_JOB_NAME)
@@ -151,7 +155,7 @@ public class SublineExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportSublineJsonStep(itemReader))
         .next(uploadSublineJsonFileStep())
-        .next(deleteSublineJsonFileStep())
+        //        .next(deleteSublineJsonFileStep())
         .end()
         .build();
   }
@@ -166,13 +170,16 @@ public class SublineExportBatchConfig {
 
   @Bean
   @StepScope
-  public UploadJsonFileTasklet uploadSublineJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.SUBLINE, exportType);
-    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
+  public UploadJsonFileTaskletV2 uploadSublineJsonFileTasklet(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.SUBLINE, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadJsonFileTaskletV2(filePath);
   }
 
-  @Bean
+  /*@Bean
   public Step deleteSublineJsonFileStep() {
     return new StepBuilder("deleteJsonFiles", jobRepository)
         .tasklet(deleteSublineJsonFileTasklet(null), transactionManager)
@@ -183,10 +190,10 @@ public class SublineExportBatchConfig {
   @Bean
   @StepScope
   public DeleteJsonFileTasklet deleteSublineJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.SUBLINE, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.SUBLINE, exportTypeV2);
     return new DeleteJsonFileTasklet(filePathBuilder);
-  }
+  }*/
 
   @Bean
   public Step exportSublineJsonStep(ItemReader<Subline> itemReader) {
@@ -211,8 +218,8 @@ public class SublineExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadSublineVersionModelV2> sublineJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonWriter.getWriter(ExportObject.SUBLINE, exportType);
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    return jsonWriter.getWriter(ExportObjectV2.SUBLINE, exportTypeV2);
   }
 
 }
