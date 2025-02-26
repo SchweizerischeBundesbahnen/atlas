@@ -32,7 +32,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/addExaminants.ts
-model/affectedSublines.ts
+model/affectedSublinesModel.ts
 model/applicationRole.ts
 model/applicationType.ts
 model/basicAttributeType.ts
