@@ -570,12 +570,6 @@ class SublineShorteningServiceTest {
     assertThat(affectedSublinesModel.getNotAllowedSublines()).isEmpty();
   }
 
-  //TODO what did i test already?
-  //TODO i tested only checkaffectedSublines with multiple scenarios
-
-  //TODO what i need to test?
-  //TODO i need to test checkAndPrepareSublinesToShort
-
   @Test
   void shouldReturnAllSublinesToShort() {
     LineVersion lineVersion = LineVersion.builder()
