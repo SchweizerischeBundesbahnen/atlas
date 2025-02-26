@@ -30,7 +30,7 @@ public class SublineShorteningService {
     List<String> allowedSublines = new ArrayList<>();
     List<String> notAllowedSublines = new ArrayList<>();
 
-    LineVersion editedVersion = copyLineVersion(lineVersion);
+    LineVersion editedVersion = cloneLineVersion(lineVersion);
     editedVersion.setValidFrom(validFrom);
     editedVersion.setValidTo(validTo);
 
@@ -84,7 +84,7 @@ public class SublineShorteningService {
   }
 
   private boolean isSublineShorteningAllowed(LineVersion editedVersion, SublineVersionRange range, int versionCount) {
-    if (versionCount <= 1) {
+    if (versionCount == 1) {
       return true;
     }
     return isShorteningAllowedValidFrom(editedVersion, range) && isShorteningAllowedValidTo(editedVersion, range);
@@ -305,7 +305,7 @@ public class SublineShorteningService {
         .build();
   }
 
-  public LineVersion copyLineVersion(LineVersion lineVersion) {
+  public LineVersion cloneLineVersion(LineVersion lineVersion) {
     return LineVersion.builder()
         .id(lineVersion.getId())
         .status(lineVersion.getStatus())
