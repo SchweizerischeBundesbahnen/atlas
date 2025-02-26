@@ -173,4 +173,16 @@ class BulkImportCsvReaderTest {
         "Expected ENUM but got 0 in column meansOfTransport");
   }
 
+  @Test
+  void shouldTreatNullingWithIgnoreCase() throws IOException {
+    String csvLine = """
+        ch:1:sloid:7000;;01.04.2021;31.12.2099;Bern;;;true;;;<null>;;;70003;<NuLL>;2600037.945;1199749.812;LV95;<NULL>
+        """;
+    BulkImportUpdateContainer<ServicePointUpdateCsvModel> result = BulkImportCsvReader.readObject(
+        ServicePointUpdateCsvModel.class, SERVICE_POINT_UPDATE_HEADER, csvLine, 1);
+
+    assertThat(result.hasDataValidationErrors()).isFalse();
+    assertThat(result.getAttributesToNull()).hasSize(3).containsExactlyInAnyOrder("height", "meansOfTransport", "businessOrganisation");
+  }
+
 }

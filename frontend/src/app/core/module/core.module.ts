@@ -14,7 +14,6 @@ import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
-import { EmptyToNullDirective } from '../text-input/empty-to-null';
 import { TrimInputDirective } from '../text-input/trim-input';
 import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
 import { TableFilterComponent } from '../components/table-filter/table-filter.component';
@@ -89,7 +88,6 @@ const coreComponents = [
   SideNavComponent,
   TableComponent,
   UserComponent,
-  EmptyToNullDirective,
   TrimInputDirective,
   WithDefaultValueDirective,
   TableFilterComponent,
