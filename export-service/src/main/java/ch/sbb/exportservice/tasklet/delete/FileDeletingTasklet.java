@@ -1,9 +1,10 @@
-package ch.sbb.exportservice.tasklet;
+package ch.sbb.exportservice.tasklet.delete;
 
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.export.enumeration.ExportFileName;
+import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFilePath;
-import jakarta.annotation.PostConstruct;
+import ch.sbb.exportservice.model.ExportFilePathV1;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,24 +22,20 @@ public abstract class FileDeletingTasklet implements Tasklet {
   @Autowired
   private FileService fileService;
 
-  private final ExportFilePath exportFilePath;
+  private final ExportTypeBase exportType;
+  private final ExportFileName exportFileName;
 
-  protected FileDeletingTasklet(ExportFilePath.ExportFilePathBuilder filePathBuilder) {
-    this.exportFilePath = filePathBuilder
-        .extension(getExportExtensionFileType().getExtension())
-        .build();
-  }
-
-  @PostConstruct
-  public void init() {
-    exportFilePath.setSystemDir(fileService.getDir());
+  protected FileDeletingTasklet(ExportTypeBase exportType, ExportFileName exportFileName) {
+    this.exportType = exportType;
+    this.exportFileName = exportFileName;
   }
 
   protected abstract ExportExtensionFileType getExportExtensionFileType();
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    final String filePath = exportFilePath.actualDateFilePath();
+    String filePath = new ExportFilePathV1(exportType, exportFileName, fileService.getDir(),
+        getExportExtensionFileType()).actualDateFilePath();
     log.info("File {} deleting...", filePath);
     try {
       Path path = Paths.get(filePath);
@@ -51,4 +48,5 @@ public abstract class FileDeletingTasklet implements Tasklet {
     log.info("File {} deleted!", filePath);
     return RepeatStatus.FINISHED;
   }
+
 }

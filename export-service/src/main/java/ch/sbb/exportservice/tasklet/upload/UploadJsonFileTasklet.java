@@ -1,15 +1,15 @@
-package ch.sbb.exportservice.tasklet;
+package ch.sbb.exportservice.tasklet.upload;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
+import ch.sbb.atlas.export.enumeration.ExportFileName;
+import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFilePath;
 import java.io.IOException;
 
 public class UploadJsonFileTasklet extends FileUploadTasklet {
 
-  public UploadJsonFileTasklet(ExportFilePath.ExportFilePathBuilder systemFile,
-      ExportFilePath.ExportFilePathBuilder s3File) {
-    super(systemFile, s3File);
+  public UploadJsonFileTasklet(ExportTypeBase exportType, ExportFileName exportFileName) {
+    super(exportType, exportFileName);
   }
 
   @Override
@@ -19,6 +19,7 @@ public class UploadJsonFileTasklet extends FileUploadTasklet {
 
   @Override
   protected void putFile() throws IOException {
-    amazonService.putGzipFile(AmazonBucket.EXPORT, file(), s3File.s3BucketDirPath());
+    amazonService.putGzipFile(AmazonBucket.EXPORT, file(), exportFilePath.s3BucketDirPath());
   }
+
 }
