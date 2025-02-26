@@ -266,7 +266,10 @@ export class LineDetailComponent implements OnInit, OnDestroy {
           } else {
             const successMessage =
               this.buildSuccessMessageForShortening(affectedSublines);
-            return this.openSublineShorteningDialog(affectedSublines).pipe(
+            return this.openSublineShorteningDialog(
+              affectedSublines,
+              lineVersion
+            ).pipe(
               map((confirmed) => {
                 return { confirmed, successMessage };
               })
@@ -317,12 +320,15 @@ export class LineDetailComponent implements OnInit, OnDestroy {
   }
 
   openSublineShorteningDialog(
-    affectedSublines: AffectedSublinesModel
+    affectedSublines: AffectedSublinesModel,
+    lineVersion: UpdateLineVersionV2
   ): Observable<boolean> {
     return this.dialog
       .open(SublineShorteningDialogComponent, {
         data: {
           affectedSublines: affectedSublines,
+          validFrom: lineVersion.validFrom,
+          validTo: lineVersion.validTo,
         },
       })
       .afterClosed()
