@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BoDiDbSchemaCreation;
-import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.io.File;
 import java.net.URI;

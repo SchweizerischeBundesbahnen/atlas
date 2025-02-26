@@ -3,7 +3,7 @@ package ch.sbb.exportservice.model;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum ExportType {
+public enum ExportTypeV2 {
 
   ACTUAL,
   FULL,

@@ -3,7 +3,7 @@ package ch.sbb.exportservice.model;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum ExportObject {
+public enum ExportObjectV2 {
 
   BUSINESS_ORGANISATION,
   CONTACT_POINT,
