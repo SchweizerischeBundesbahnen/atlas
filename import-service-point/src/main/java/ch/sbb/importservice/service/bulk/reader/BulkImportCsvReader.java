@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @UtilityClass
 public class BulkImportCsvReader {
 
-  public static final String NULLING_VALUE = "<null>";
+  private static final String NULLING_VALUE = "<null>";
 
   public static String readHeaderLineIgnoringBom(String rawLine) {
     return rawLine.replaceAll(String.valueOf(CsvExportWriter.UTF_8_BYTE_ORDER_MARK), "");
@@ -75,7 +75,7 @@ public class BulkImportCsvReader {
       throws IOException {
     List<String> toNullAttributes = calculateAttributesToNull(header, line);
 
-    line = line.replace(NULLING_VALUE, "");
+    line = line.replaceAll("(?i)" + NULLING_VALUE, "");
 
     CsvExceptionHandler csvExceptionHandler = new CsvExceptionHandler();
     try (MappingIterator<T> mappingIterator = AtlasCsvReader.CSV_MAPPER
@@ -118,7 +118,7 @@ public class BulkImportCsvReader {
 
       Map<String, String> lineAsMap = stringMap.next();
       lineAsMap.forEach((key, value) -> {
-        if (NULLING_VALUE.equals(value)) {
+        if (NULLING_VALUE.equalsIgnoreCase(value)) {
           toNullAttributes.add(key);
         }
       });
