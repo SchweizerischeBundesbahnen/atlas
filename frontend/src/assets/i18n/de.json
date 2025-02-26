@@ -510,7 +510,7 @@
       "TITLE": "Hinweis",
       "ALLOWED": {
         "MESSAGE": "Teillinien dürfen nur innerhalb der Gültigkeit der Hauptlinie gültig sein. Wenn möglich kürzt atlas die verbundenen Teillinien auf den letzten Gültigkeitstag der Hauptlinie.",
-        "SHORT_AUTOMATICALLY_NOTICE": "Es können alle Teillinien automatisch eingekürzt werden.",
+        "SHORT_AUTOMATICALLY_NOTICE": "Mit dieser Meldung wirst du darauf hingewiesen, dass alle Teillinien automatisch auf die Gültigkeit (Gültig von: {{validFrom}} und Gültig bis: {{validTo}}) gekürzt werden.",
         "SUCCESS": "Die Linie wurde erfolgreich gespeichert und wo möglich wurden die Teillinien angepasst in der Gültigkeit."
       },
       "NOT_ALLOWED": {
