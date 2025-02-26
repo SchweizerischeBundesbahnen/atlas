@@ -1,11 +1,11 @@
 package ch.sbb.exportservice.reader;
 
-import static ch.sbb.exportservice.model.ExportType.FULL;
-import static ch.sbb.exportservice.model.ExportType.FUTURE_TIMETABLE;
+import static ch.sbb.exportservice.model.ExportTypeV2.FULL;
+import static ch.sbb.exportservice.model.ExportTypeV2.FUTURE_TIMETABLE;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.versioning.date.DateHelper;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -27,15 +27,15 @@ public class BusinessOrganisationSqlQueryUtil extends SqlQueryUtil {
   private static final String ORDER_BY = "ORDER BY bov.sboid, bov.valid_from ASC";
   private static final String GROUP_BY = "group by bov.id, tc.id";
 
-  public String getSqlQuery(ExportType exportType) {
+  public String getSqlQuery(ExportTypeV2 exportTypeV2) {
     final LocalDate date =
-        exportType == FUTURE_TIMETABLE ? FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now())
+        exportTypeV2 == FUTURE_TIMETABLE ? FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now())
             : LocalDate.now();
     final String dateAsSqlString = DateHelper.getDateAsSqlString(date);
 
     final String sqlQuery = buildSqlQuery(
         SELECT_STATEMENT.formatted(dateAsSqlString),
-        exportType == FULL ? "" : WHERE_CLAUSE.formatted(dateAsSqlString),
+        exportTypeV2 == FULL ? "" : WHERE_CLAUSE.formatted(dateAsSqlString),
         GROUP_BY,
         ORDER_BY
     );

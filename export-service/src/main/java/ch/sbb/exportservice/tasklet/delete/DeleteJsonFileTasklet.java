@@ -1,13 +1,14 @@
-package ch.sbb.exportservice.tasklet;
+package ch.sbb.exportservice.tasklet.delete;
 
+import ch.sbb.atlas.export.enumeration.ExportFileName;
+import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFilePath;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 
 public class DeleteJsonFileTasklet extends FileDeletingTasklet implements Tasklet {
 
-  public DeleteJsonFileTasklet(ExportFilePath.ExportFilePathBuilder filePathBuilder) {
-    super(filePathBuilder);
+  public DeleteJsonFileTasklet(ExportTypeBase exportType, ExportFileName exportFileName) {
+    super(exportType, exportFileName);
   }
 
   @Override

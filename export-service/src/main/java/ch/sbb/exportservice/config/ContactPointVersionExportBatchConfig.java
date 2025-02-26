@@ -8,20 +8,12 @@ import ch.sbb.atlas.export.model.prm.ContactPointVersionCsvModel;
 import ch.sbb.exportservice.entity.prm.ContactPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportFilePath;
-import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
-import ch.sbb.exportservice.model.ExportObject;
-import ch.sbb.exportservice.model.ExportObjectV1;
-import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.ExportTypeV1;
+import ch.sbb.exportservice.model.ExportObjectV2;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.processor.ContactPointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ContactPointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.ContactPointVersionRowMapper;
 import ch.sbb.exportservice.reader.ContactPointVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvContactPointVersionWriter;
 import ch.sbb.exportservice.writer.JsonContactPointVersionWriter;
@@ -60,11 +52,11 @@ public class ContactPointVersionExportBatchConfig {
   @StepScope
   public JdbcCursorItemReader<ContactPointVersion> contactPointReader(
       @Autowired @Qualifier("prmDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     JdbcCursorItemReader<ContactPointVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(ContactPointVersionSqlQueryUtil.getSqlQuery(exportType));
+    itemReader.setSql(ContactPointVersionSqlQueryUtil.getSqlQuery(exportTypeV2));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new ContactPointVersionRowMapper());
     return itemReader;
@@ -93,9 +85,9 @@ public class ContactPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public FlatFileItemWriter<ContactPointVersionCsvModel> contactPointCsvWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    return csvContactPointVersionWriter.csvWriter(ExportObject.CONTACT_POINT, exportType);
+    return csvContactPointVersionWriter.csvWriter(ExportObjectV2.CONTACT_POINT, exportTypeV2);
   }
 
   @Bean
@@ -105,13 +97,13 @@ public class ContactPointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportContactPointCsvStep(itemReader))
-        .next(uploadContactPointCsvFileStep())
-        .next(deleteContactPointCsvFileStep())
+        //        .next(uploadContactPointCsvFileStep())
+        //        .next(deleteContactPointCsvFileStep())
         .end()
         .build();
   }
 
-  @Bean
+  /*@Bean
   public Step uploadContactPointCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
         .tasklet(uploadContactPointCsvFileTasklet(null), transactionManager)
@@ -122,18 +114,15 @@ public class ContactPointVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public UploadCsvFileTasklet uploadContactPointCsvFileTaskletV1(@Value("#{jobParameters[exportType]}") ExportType exportType,
+  public UploadCsvFileTasklet uploadContactPointCsvFileTaskletV1(@Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
       @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1) {
-    ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.CONTACT_POINT, exportType);
-    ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.CONTACT_POINT_VERSION, exportTypeV1);
     return new UploadCsvFileTasklet(systemFile, s3File);
   }
 
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadContactPointCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    ExportFilePathBuilder filePath = ExportFilePath.getV2Builder(ExportObject.CONTACT_POINT, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
     return new UploadCsvFileTasklet(filePath, filePath);
   }
 
@@ -148,11 +137,11 @@ public class ContactPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteCsvFileTasklet contactPointCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.CONTACT_POINT, exportType);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.CONTACT_POINT, exportTypeV2);
     return new DeleteCsvFileTasklet(filePathBuilder);
-  }
+  }*/
 
   @Bean
   @Qualifier(EXPORT_CONTACT_POINT_JSON_JOB_NAME)
@@ -161,13 +150,13 @@ public class ContactPointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportContactPointJsonStep(itemReader))
-        .next(uploadContactPointJsonFileStep())
-        .next(deleteContactPointJsonFileStep())
+        //        .next(uploadContactPointJsonFileStep())
+        //        .next(deleteContactPointJsonFileStep())
         .end()
         .build();
   }
 
-  @Bean
+  /*@Bean
   public Step uploadContactPointJsonFileStep() {
     return new StepBuilder("uploadJsonFile", jobRepository)
         .tasklet(uploadContactPointJsonFileTasklet(null), transactionManager)
@@ -179,22 +168,19 @@ public class ContactPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadContactPointJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    ExportFilePathBuilder filePath = ExportFilePath.getV2Builder(ExportObject.CONTACT_POINT, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
     return new UploadJsonFileTasklet(filePath, filePath);
   }
 
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadContactPointJsonFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
       @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1) {
-    ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.CONTACT_POINT, exportType);
-    ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.CONTACT_POINT_VERSION, exportTypeV1);
     return new UploadJsonFileTasklet(systemFile, s3File);
   }
 
-  @Bean
+  /*@Bean
   public Step deleteContactPointJsonFileStep() {
     return new StepBuilder("deleteJsonFiles", jobRepository)
         .tasklet(fileContactPointJsonDeletingTasklet(null), transactionManager)
@@ -205,10 +191,10 @@ public class ContactPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteJsonFileTasklet fileContactPointJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.CONTACT_POINT, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.CONTACT_POINT, exportTypeV2);
     return new DeleteJsonFileTasklet(filePathBuilder);
-  }
+  }*/
 
   @Bean
   public Step exportContactPointJsonStep(ItemReader<ContactPointVersion> itemReader) {
@@ -233,8 +219,8 @@ public class ContactPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadContactPointVersionModel> contactPointJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonContactPointVersionWriter.getWriter(ExportObject.CONTACT_POINT, exportType);
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    return jsonContactPointVersionWriter.getWriter(ExportObjectV2.CONTACT_POINT, exportTypeV2);
   }
 
 }
