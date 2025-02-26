@@ -26,7 +26,6 @@ import { DateRange } from '../../../../core/versioning/date-range';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
-import moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { SublineShorteningDialogComponent } from '../../dialog/subline-shortening-dialog/subline-shortening-dialog.component';
 import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
@@ -249,8 +248,6 @@ export class LineDetailComponent implements OnInit, OnDestroy {
   }
 
   updateLine(id: number, lineVersion: UpdateLineVersionV2): void {
-    const validFromDate = moment(lineVersion.validFrom).toDate();
-    const validToDate = moment(lineVersion.validTo).toDate();
     const defaultSuccessMessage = 'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS';
     this.refreshSublineTable = false;
 
@@ -260,7 +257,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
     }
 
     this.linesService
-      .checkAffectedSublines(id, validFromDate, validToDate)
+      .checkAffectedSublines(id, lineVersion)
       .pipe(
         switchMap((affectedSublines) => {
           if (affectedSublines.affectedSublinesEmpty) {
