@@ -45,6 +45,14 @@ class SublineShorteningServiceTest {
         .description("desc")
         .build();
 
+    LineVersion editedVersion = LineVersion.builder()
+        .id(1000L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2015, 12, 31))
+        .description("desc")
+        .build();
+
     SublineVersion sublineVersion = SublineVersion.builder()
         .slnid("12345")
         .validFrom(LocalDate.of(2001, 1, 1))
@@ -56,9 +64,7 @@ class SublineShorteningServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
         new ArrayList<>(List.of(sublineVersion)));
 
-    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion,
-        LocalDate.of(2000, 1, 1),
-        LocalDate.of(2015, 12, 31));
+    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion, editedVersion);
     assertThat(affectedSublinesModel.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(sublineVersion.getSlnid()));
   }
@@ -70,6 +76,14 @@ class SublineShorteningServiceTest {
         .slnid("mainline")
         .validFrom(LocalDate.of(1999, 1, 1))
         .validTo(LocalDate.of(2017, 12, 31))
+        .description("desc")
+        .build();
+
+    LineVersion editedVersion = LineVersion.builder()
+        .id(1000L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2015, 12, 31))
         .description("desc")
         .build();
 
@@ -105,9 +119,7 @@ class SublineShorteningServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
         new ArrayList<>(List.of(sublineVersion, sublineVersion2, sublineVersionNew, sublineVersionNew2)));
 
-    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion,
-        LocalDate.of(2000, 1, 1),
-        LocalDate.of(2015, 12, 31));
+    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion, editedVersion);
     assertThat(affectedSublinesModel.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(sublineVersionNew2.getSlnid(), sublineVersion2.getSlnid()));
   }
@@ -119,6 +131,14 @@ class SublineShorteningServiceTest {
         .slnid("mainline")
         .validFrom(LocalDate.of(2004, 1, 1))
         .validTo(LocalDate.of(2015, 12, 31))
+        .description("desc")
+        .build();
+
+    LineVersion editedVersion = LineVersion.builder()
+        .id(1000L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2004, 1, 31))
+        .validTo(LocalDate.of(2016, 1, 1))
         .description("desc")
         .build();
 
@@ -154,9 +174,7 @@ class SublineShorteningServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
         List.of(allowedSublineVersion, allowedSublineVersion2, notAllowedSublineVersion, notAllowedSublineVersion2));
 
-    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion,
-        LocalDate.of(2004, 1, 31),
-        LocalDate.of(2016, 1, 1));
+    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion, editedVersion);
     assertThat(affectedSublinesModel.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(allowedSublineVersion.getSlnid()));
     assertThat(affectedSublinesModel.getNotAllowedSublines()).containsExactlyInAnyOrderElementsOf(
@@ -170,6 +188,14 @@ class SublineShorteningServiceTest {
         .slnid("mainline")
         .validFrom(LocalDate.of(1999, 1, 1))
         .validTo(LocalDate.of(2017, 12, 31))
+        .description("desc")
+        .build();
+
+    LineVersion editedVersion = LineVersion.builder()
+        .id(1000L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2004, 1, 1))
+        .validTo(LocalDate.of(2015, 12, 31))
         .description("desc")
         .build();
 
@@ -206,9 +232,7 @@ class SublineShorteningServiceTest {
         new ArrayList<>(List.of(notAllowedSublineVersion, notAllowedSublineVersion2, notAllowedSublineVersion3,
             notAllowedSublineVersion4)));
 
-    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion,
-        LocalDate.of(2004, 1, 1),
-        LocalDate.of(2015, 12, 31));
+    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion, editedVersion);
     assertThat(affectedSublinesModel.getNotAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(notAllowedSublineVersion.getSlnid(),
             notAllowedSublineVersion4.getSlnid()));
@@ -278,6 +302,14 @@ class SublineShorteningServiceTest {
         .description("desc2")
         .build();
 
+    LineVersion editedVersion = LineVersion.builder()
+        .id(1001L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2011, 1, 1))
+        .validTo(LocalDate.of(2016, 1, 1))
+        .description("desc2")
+        .build();
+
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(anyString())).thenReturn(new ArrayList<>(List.of(lineVersion1,
         lineVersion2)));
 
@@ -312,9 +344,7 @@ class SublineShorteningServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
         new ArrayList<>(List.of(sublineVersion1, sublineVersion2, sublineVersion3, sublineVersion4)));
 
-    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion2,
-        LocalDate.of(2011, 1, 1),
-        LocalDate.of(2016, 1, 1));
+    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion2, editedVersion);
 
     assertThat(affectedSublinesModel.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(sublineVersion1.getSlnid(),
@@ -327,6 +357,14 @@ class SublineShorteningServiceTest {
         .id(1000L)
         .slnid("mainline")
         .validFrom(LocalDate.of(1999, 1, 1))
+        .validTo(LocalDate.of(2010, 12, 31))
+        .description("desc")
+        .build();
+
+    LineVersion editedVersion = LineVersion.builder()
+        .id(1000L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2003, 12, 31))
         .validTo(LocalDate.of(2010, 12, 31))
         .description("desc")
         .build();
@@ -373,9 +411,7 @@ class SublineShorteningServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
         new ArrayList<>(List.of(sublineVersion1, sublineVersion2, sublineVersion3, sublineVersion4)));
 
-    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion1,
-        LocalDate.of(2003, 12, 31),
-        LocalDate.of(2010, 12, 31));
+    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion1, editedVersion);
 
     assertThat(affectedSublinesModel.getAllowedSublines()).containsExactlyInAnyOrderElementsOf(
         List.of(sublineVersion1.getSlnid(),
@@ -397,6 +433,14 @@ class SublineShorteningServiceTest {
         .slnid("mainline")
         .validFrom(LocalDate.of(2011, 1, 1))
         .validTo(LocalDate.of(2017, 12, 31))
+        .description("desc2")
+        .build();
+
+    LineVersion editedVersion = LineVersion.builder()
+        .id(1001L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2011, 1, 1))
+        .validTo(LocalDate.of(2016, 12, 31))
         .description("desc2")
         .build();
 
@@ -442,9 +486,7 @@ class SublineShorteningServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
         new ArrayList<>(List.of(sublineVersion1, sublineVersion2, sublineVersion3, sublineVersion4)));
 
-    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion2,
-        LocalDate.of(2011, 1, 1),
-        LocalDate.of(2016, 12, 31));
+    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion2, editedVersion);
 
     assertThat(affectedSublinesModel.getAllowedSublines()).isEmpty();
     assertThat(affectedSublinesModel.getNotAllowedSublines()).isEmpty();
@@ -457,6 +499,14 @@ class SublineShorteningServiceTest {
         .slnid("mainline")
         .validFrom(LocalDate.of(1999, 1, 1))
         .validTo(LocalDate.of(2010, 12, 31))
+        .description("desc")
+        .build();
+
+    LineVersion editedVersion = LineVersion.builder()
+        .id(1000L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(1999, 1, 1))
+        .validTo(LocalDate.of(2009, 12, 31))
         .description("desc")
         .build();
 
@@ -502,9 +552,7 @@ class SublineShorteningServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
         new ArrayList<>(List.of(sublineVersion1, sublineVersion2, sublineVersion3, sublineVersion4)));
 
-    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion1,
-        LocalDate.of(1999, 1, 1),
-        LocalDate.of(2009, 12, 31));
+    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion1, editedVersion);
 
     assertThat(affectedSublinesModel.getAllowedSublines()).isEmpty();
     assertThat(affectedSublinesModel.getNotAllowedSublines()).isEmpty();
@@ -528,6 +576,14 @@ class SublineShorteningServiceTest {
         .description("desc2")
         .build();
 
+    LineVersion editedVersion = LineVersion.builder()
+        .id(1001L)
+        .slnid("mainline")
+        .validFrom(LocalDate.of(2013, 1, 1))
+        .validTo(LocalDate.of(2017, 12, 31))
+        .description("desc2")
+        .build();
+
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(anyString())).thenReturn(new ArrayList<>(List.of(lineVersion1,
         lineVersion2)));
 
@@ -562,9 +618,7 @@ class SublineShorteningServiceTest {
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
         new ArrayList<>(List.of(sublineVersion1, sublineVersion2, sublineVersion3, sublineVersion4)));
 
-    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion2,
-        LocalDate.of(2013, 1, 1),
-        LocalDate.of(2017, 12, 31));
+    AffectedSublinesModel affectedSublinesModel = sublineShorteningService.checkAffectedSublines(lineVersion2, editedVersion);
 
     assertThat(affectedSublinesModel.getAllowedSublines()).isEmpty();
     assertThat(affectedSublinesModel.getNotAllowedSublines()).isEmpty();
