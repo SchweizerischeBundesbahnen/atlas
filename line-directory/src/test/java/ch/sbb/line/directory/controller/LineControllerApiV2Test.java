@@ -130,8 +130,22 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
     lineVersion.setSlnid("ch:1:slnid:1000000");
     LineVersion saved = lineVersionRepository.saveAndFlush(lineVersion);
 
-    String validFrom = "1999-01-01";
-    String validTo = "2019-12-31";
+    UpdateLineVersionModelV2 updateLineVersionModelV2 = UpdateLineVersionModelV2.builder()
+        .id(saved.getId())
+        .validFrom(LocalDate.of(1999, 1, 1))
+        .validTo(LocalDate.of(2019, 12, 31))
+        .description(lineVersion.getDescription())
+        .number(lineVersion.getNumber())
+        .swissLineNumber(lineVersion.getSwissLineNumber())
+        .lineConcessionType(lineVersion.getConcessionType())
+        .shortNumber(lineVersion.getShortNumber())
+        .offerCategory(lineVersion.getOfferCategory())
+        .slnid(lineVersion.getSlnid())
+        .longName(lineVersion.getLongName())
+        .businessOrganisation(lineVersion.getBusinessOrganisation())
+        .comment(lineVersion.getComment())
+        .etagVersion(lineVersion.getVersion())
+        .build();
 
     SublineVersion subline = SublineTestData.sublineVersionV2Builder().build();
     subline.setValidFrom(LocalDate.of(1999, 1, 1));
@@ -140,9 +154,10 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
     subline.setBusinessOrganisation("ch:1:sboid:1100000");
     sublineVersionRepository.saveAndFlush(subline);
 
-    mvc.perform(get("/v2/lines/affectedSublines/" + saved.getId())
-            .param("validFrom", validFrom)
-            .param("validTo", validTo))
+    mvc.perform(post("/v2/lines/affectedSublines/" + saved.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateLineVersionModelV2)
+            ))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.allowedSublines").isArray())
         .andExpect(jsonPath("$.notAllowedSublines").isArray())
