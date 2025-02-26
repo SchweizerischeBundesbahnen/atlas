@@ -29,6 +29,7 @@ import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
 import {BoDisplayPipe} from "../form-components/bo-select/bo-display.pipe";
 import {LinkComponent} from "../form-components/link/link.component";
 import {DialogCloseComponent} from "../components/dialog/close/dialog-close.component";
+import {EmptyToNullDirective} from "../text-input/empty-to-null";
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import {DialogCloseComponent} from "../components/dialog/close/dialog-close.comp
     SloidComponent,
     AtlasClipboardComponent,
     BoDisplayPipe,
+    EmptyToNullDirective,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule, CdkCopyToClipboard],
   exports: [
