@@ -2,6 +2,8 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -38,11 +40,11 @@ class LineStatusDeciderTest {
   }
 
   @Test
-  void shouldSetStatusToDraftOnUpdateOrderlyNameChange() {
+  void shouldSetStatusToDraftOnUpdateOrderlyShortNumberChange() {
     // Given
     LineVersion currentLineVersion =
-        LineTestData.lineVersionBuilder().longName("current name").build();
-    LineVersion newLineVersion = LineTestData.lineVersionBuilder().longName("new name").build();
+        LineTestData.lineVersionBuilder().shortNumber("curr num").build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().longName("new num").build();
     // When
     Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
     // Then
@@ -50,11 +52,11 @@ class LineStatusDeciderTest {
   }
 
   @Test
-  void shouldSetStatusToDraftOnUpdateOrderlyNameChangeFromNull() {
+  void shouldSetStatusToDraftOnUpdateOrderlyShortNumberChangeFromNull() {
     // Given
     LineVersion currentLineVersion =
-        LineTestData.lineVersionBuilder().longName(null).build();
-    LineVersion newLineVersion = LineTestData.lineVersionBuilder().longName("new name").build();
+        LineTestData.lineVersionBuilder().shortNumber(null).build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().shortNumber("new num").build();
     // When
     Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
     // Then
@@ -62,11 +64,11 @@ class LineStatusDeciderTest {
   }
 
   @Test
-  void shouldSetStatusToDraftOnUpdateOrderlyNameChangeToNull() {
+  void shouldSetStatusToDraftOnUpdateOrderlyShortNumberChangeToNull() {
     // Given
     LineVersion currentLineVersion =
-        LineTestData.lineVersionBuilder().longName("something").build();
-    LineVersion newLineVersion = LineTestData.lineVersionBuilder().longName(null).build();
+        LineTestData.lineVersionBuilder().shortNumber("something").build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().shortNumber(null).build();
     // When
     Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
     // Then
@@ -177,6 +179,43 @@ class LineStatusDeciderTest {
     // When
     Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
         List.of(currentLineVersion));
+    // Then
+    assertThat(result).isEqualTo(Status.VALIDATED);
+  }
+
+  @Test
+  void shouldSetStatusToDraftOnOfferCategoryUpdate() {
+    // Given
+    LineVersion currentLineVersion =
+        LineTestData.lineVersionBuilder().offerCategory(OfferCategory.IC).build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().offerCategory(OfferCategory.B).build();
+    // When
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    // Then
+    assertThat(result).isEqualTo(Status.DRAFT);
+  }
+
+  @Test
+  void shouldSetStatusToDraftOnConcessionTypeUpdate() {
+    // Given
+    LineVersion currentLineVersion =
+        LineTestData.lineVersionBuilder().concessionType(LineConcessionType.CANTONALLY_APPROVED_LINE).build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION).build();
+    // When
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    // Then
+    assertThat(result).isEqualTo(Status.DRAFT);
+  }
+
+  @Test
+  void shouldSetStatusToValidatedOnBusinessOrganisationUpdate() {
+    // Given
+    LineVersion currentLineVersion =
+        LineTestData.lineVersionBuilder().businessOrganisation("sboid").build();
+    LineVersion newLineVersion =
+        LineTestData.lineVersionBuilder().businessOrganisation("newsboid").build();
+    // When
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.VALIDATED);
   }
