@@ -1,5 +1,5 @@
 export * from './addExaminants';
-export * from './affectedSublines';
+export * from './affectedSublinesModel';
 export * from './applicationRole';
 export * from './applicationType';
 export * from './basicAttributeType';
