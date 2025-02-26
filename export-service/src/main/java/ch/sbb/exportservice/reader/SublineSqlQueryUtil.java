@@ -1,11 +1,11 @@
 package ch.sbb.exportservice.reader;
 
-import static ch.sbb.exportservice.model.ExportType.ACTUAL;
-import static ch.sbb.exportservice.model.ExportType.FULL;
+import static ch.sbb.exportservice.model.ExportTypeV2.ACTUAL;
+import static ch.sbb.exportservice.model.ExportTypeV2.FULL;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.versioning.date.DateHelper;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +30,11 @@ public class SublineSqlQueryUtil extends SqlQueryUtil {
       """;
   private static final String ORDER_BY_STATEMENT = "ORDER BY sv.slnid, sv.validFrom";
 
-  public String getSqlQuery(ExportType exportType) {
+  public String getSqlQuery(ExportTypeV2 exportTypeV2) {
     final String today = DateHelper.getDateAsSqlString(LocalDate.now());
     String additionalWhereClause = "";
-    if (exportType != FULL) {
-      final String date = exportType == ACTUAL ? today :
+    if (exportTypeV2 != FULL) {
+      final String date = exportTypeV2 == ACTUAL ? today :
           DateHelper.getDateAsSqlString(FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
       additionalWhereClause = "WHERE '%s' >= sv.validFrom AND '%s' <= sv.validTo".formatted(date, date);
     }

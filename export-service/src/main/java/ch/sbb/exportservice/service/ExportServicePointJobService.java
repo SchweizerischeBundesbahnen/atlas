@@ -3,8 +3,8 @@ package ch.sbb.exportservice.service;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
 
-import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.ExportTypeV1;
+import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import java.util.List;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -24,12 +24,12 @@ public class ExportServicePointJobService extends BaseExportJobService {
   @Override
   protected List<JobParams> getExportTypes() {
     return List.of(
-        new JobParams(ExportType.SWISS_FULL, ExportTypeV1.SWISS_ONLY_FULL),
-        new JobParams(ExportType.SWISS_ACTUAL, ExportTypeV1.SWISS_ONLY_ACTUAL),
-        new JobParams(ExportType.SWISS_FUTURE_TIMETABLE, ExportTypeV1.SWISS_ONLY_TIMETABLE_FUTURE),
-        new JobParams(ExportType.WORLD_FULL, ExportTypeV1.WORLD_FULL),
-        new JobParams(ExportType.WORLD_ACTUAL, ExportTypeV1.WORLD_ONLY_ACTUAL),
-        new JobParams(ExportType.WORLD_FUTURE_TIMETABLE, ExportTypeV1.WORLD_ONLY_TIMETABLE_FUTURE)
+        new JobParams(ExportTypeV2.SWISS_FULL, SePoDiExportType.SWISS_ONLY_FULL),
+        new JobParams(ExportTypeV2.SWISS_ACTUAL, SePoDiExportType.SWISS_ONLY_ACTUAL),
+        new JobParams(ExportTypeV2.SWISS_FUTURE_TIMETABLE, SePoDiExportType.SWISS_ONLY_TIMETABLE_FUTURE),
+        new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL),
+        new JobParams(ExportTypeV2.WORLD_ACTUAL, SePoDiExportType.WORLD_ONLY_ACTUAL),
+        new JobParams(ExportTypeV2.WORLD_FUTURE_TIMETABLE, SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE)
     );
   }
 

@@ -5,7 +5,7 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
-import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.File;
 import java.io.FileInputStream;

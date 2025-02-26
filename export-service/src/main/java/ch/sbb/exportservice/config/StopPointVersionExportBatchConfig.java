@@ -8,20 +8,12 @@ import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.exportservice.entity.prm.StopPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportFilePath;
-import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
-import ch.sbb.exportservice.model.ExportObject;
-import ch.sbb.exportservice.model.ExportObjectV1;
-import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.ExportTypeV1;
+import ch.sbb.exportservice.model.ExportObjectV2;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.processor.StopPointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.StopPointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.StopPointVersionRowMapper;
 import ch.sbb.exportservice.reader.StopPointVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvStopPointVersionWriter;
 import ch.sbb.exportservice.writer.JsonStopPointVersionWriter;
@@ -60,11 +52,11 @@ public class StopPointVersionExportBatchConfig {
   @StepScope
   public JdbcCursorItemReader<StopPointVersion> stopPointReader(
       @Autowired @Qualifier("prmDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     JdbcCursorItemReader<StopPointVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(StopPointVersionSqlQueryUtil.getSqlQuery(exportType));
+    itemReader.setSql(StopPointVersionSqlQueryUtil.getSqlQuery(exportTypeV2));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new StopPointVersionRowMapper());
     return itemReader;
@@ -93,9 +85,9 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public FlatFileItemWriter<StopPointVersionCsvModel> stopPointCsvWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    return csvStopPointVersionWriter.csvWriter(ExportObject.STOP_POINT, exportType);
+    return csvStopPointVersionWriter.csvWriter(ExportObjectV2.STOP_POINT, exportTypeV2);
   }
 
   @Bean
@@ -105,13 +97,13 @@ public class StopPointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportStopPointCsvStep(itemReader))
-        .next(uploadStopPointCsvFileStep())
-        .next(deleteStopPointCsvFileStep())
+        //        .next(uploadStopPointCsvFileStep())
+        //        .next(deleteStopPointCsvFileStep())
         .end()
         .build();
   }
 
-  @Bean
+  /*@Bean
   public Step uploadStopPointCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
         .tasklet(uploadStopPointCsvFileTasklet(null), transactionManager)
@@ -123,20 +115,20 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadStopPointCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.STOP_POINT, exportType);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
     return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
   }
 
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadStopPointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
       @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
   ) {
-    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.STOP_POINT, exportType);
-    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.STOP_POINT_VERSION, exportTypeV1);
+    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
+    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.STOP_POINT_VERSION, exportTypeV1);
     return new UploadCsvFileTasklet(systemFile, s3File);
   }
 
@@ -151,11 +143,11 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteCsvFileTasklet stopPointCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.STOP_POINT, exportType);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
     return new DeleteCsvFileTasklet(filePathBuilder);
-  }
+  }*/
 
   @Bean
   @Qualifier(EXPORT_STOP_POINT_JSON_JOB_NAME)
@@ -164,13 +156,13 @@ public class StopPointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportStopPointJsonStep(itemReader))
-        .next(uploadStopPointJsonFileStep())
-        .next(deleteStopPointJsonFileStep())
+        //        .next(uploadStopPointJsonFileStep())
+        //        .next(deleteStopPointJsonFileStep())
         .end()
         .build();
   }
 
-  @Bean
+  /*@Bean
   public Step uploadStopPointJsonFileStep() {
     return new StepBuilder("uploadJsonFile", jobRepository)
         .tasklet(uploadStopPointJsonFileTasklet(null), transactionManager)
@@ -182,19 +174,19 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadStopPointJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.STOP_POINT, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
     return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
   }
 
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadStopPointJsonFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
       @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
   ) {
-    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.STOP_POINT, exportType);
-    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.STOP_POINT_VERSION, exportTypeV1);
+    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
+    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.STOP_POINT_VERSION, exportTypeV1);
     return new UploadJsonFileTasklet(systemFile, s3File);
   }
 
@@ -209,11 +201,11 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteJsonFileTasklet fileStopPointJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.STOP_POINT, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
     return new DeleteJsonFileTasklet(filePathBuilder);
   }
-
+*/
   @Bean
   public Step exportStopPointJsonStep(ItemReader<StopPointVersion> itemReader) {
     String stepName = "exportStopPointJsonStep";
@@ -237,8 +229,8 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadStopPointVersionModel> stopPointJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonStopPointVersionWriter.getWriter(ExportObject.STOP_POINT, exportType);
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    return jsonStopPointVersionWriter.getWriter(ExportObjectV2.STOP_POINT, exportTypeV2);
   }
 
 }

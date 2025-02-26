@@ -5,7 +5,7 @@ import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFile
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
-import ch.sbb.exportservice.model.ExportFilePath;
+import ch.sbb.exportservice.model.ExportFilePathV1;
 import ch.sbb.exportservice.model.ExportObjectV1;
 import ch.sbb.exportservice.model.ExportTypeV1;
 import ch.sbb.exportservice.service.FileExportService;
@@ -49,7 +49,7 @@ public class FileStreamingControllerApiV1 {
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportJsonFile(
       @PathVariable ExportObjectV1 type,
       @PathVariable ExportTypeV1 subtype) throws NotAllowedExportFileException {
-    InputStreamResource body = fileExportService.streamJsonFile(ExportFilePath.buildV1(type, subtype));
+    InputStreamResource body = fileExportService.streamJsonFile(ExportFilePathV1.buildV1(type, subtype));
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
@@ -65,7 +65,7 @@ public class FileStreamingControllerApiV1 {
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportJsonFile(
       @PathVariable ExportObjectV1 type,
       @PathVariable ExportTypeV1 subtype) throws NotAllowedExportFileException {
-    InputStreamResource body = fileExportService.streamLatestJsonFile(ExportFilePath.buildV1(type, subtype));
+    InputStreamResource body = fileExportService.streamLatestJsonFile(ExportFilePathV1.buildV1(type, subtype));
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
@@ -81,9 +81,9 @@ public class FileStreamingControllerApiV1 {
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportGzFile(
       @PathVariable ExportObjectV1 type,
       @PathVariable ExportTypeV1 subtype) throws NotAllowedExportFileException {
-    final ExportFilePath exportFilePath = ExportFilePath.buildV1(type, subtype);
-    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.fileName());
-    InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
+    final ExportFilePathV1 exportFilePathV1 = ExportFilePathV1.buildV1(type, subtype);
+    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePathV1.fileName());
+    InputStreamResource body = fileExportService.streamGzipFile(exportFilePathV1.fileToStream());
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
@@ -98,7 +98,7 @@ public class FileStreamingControllerApiV1 {
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportGzFile(
       @PathVariable ExportObjectV1 type,
       @PathVariable ExportTypeV1 subtype) throws NotAllowedExportFileException {
-    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(ExportFilePath.buildV1(type, subtype));
+    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(ExportFilePathV1.buildV1(type, subtype));
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
     InputStreamResource body = fileExportService.streamGzipFile(latestUploadedFileName);
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));

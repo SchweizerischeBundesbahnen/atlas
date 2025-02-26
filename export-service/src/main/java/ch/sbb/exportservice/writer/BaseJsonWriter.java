@@ -2,9 +2,9 @@ package ch.sbb.exportservice.writer;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFilePath;
-import ch.sbb.exportservice.model.ExportObject;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportFilePathV2;
+import ch.sbb.exportservice.model.ExportObjectV2;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -21,7 +21,7 @@ public abstract class BaseJsonWriter<T> {
   @Autowired
   private FileService fileService;
 
-  public JsonFileItemWriter<T> getWriter(ExportObject exportType, ExportType exportFileName) {
+  public JsonFileItemWriter<T> getWriter(ExportObjectV2 exportType, ExportTypeV2 exportFileName) {
     JacksonJsonObjectMarshaller<T> jacksonJsonObjectMarshaller = new JacksonJsonObjectMarshaller<>();
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
@@ -35,8 +35,8 @@ public abstract class BaseJsonWriter<T> {
     return writer;
   }
 
-  private String getFilePath(ExportObject exportType, ExportType exportFileName) {
-    return ExportFilePath.getV2Builder(exportType, exportFileName)
+  private String getFilePath(ExportObjectV2 exportType, ExportTypeV2 exportFileName) {
+    return ExportFilePathV2.getV2Builder(exportType, exportFileName)
         .systemDir(fileService.getDir())
         .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
         .build()

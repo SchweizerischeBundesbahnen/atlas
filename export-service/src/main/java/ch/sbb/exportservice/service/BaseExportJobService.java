@@ -4,8 +4,8 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_V1_JOB_PARAMETER;
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
-import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.ExportTypeV1;
+import ch.sbb.atlas.export.enumeration.ExportTypeBase;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public abstract class BaseExportJobService {
   protected void startExportJob(JobParams jobParams, Job job) {
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, jobParams.exportType.toString())
+        .addString(EXPORT_TYPE_JOB_PARAMETER, jobParams.exportTypeV2.toString())
         .addString(EXPORT_TYPE_V1_JOB_PARAMETER, jobParams.exportTypeV1.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     try {
@@ -62,7 +62,7 @@ public abstract class BaseExportJobService {
   @RequiredArgsConstructor
   protected static class JobParams {
 
-    private final ExportType exportType;
-    private final ExportTypeV1 exportTypeV1;
+    private final ExportTypeV2 exportTypeV2;
+    private final ExportTypeBase exportTypeV1; // todo: check if in every impl correct concretion used
   }
 }
