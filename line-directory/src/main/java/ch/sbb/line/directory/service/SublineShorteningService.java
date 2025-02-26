@@ -8,7 +8,6 @@ import ch.sbb.line.directory.model.LineVersionRange;
 import ch.sbb.line.directory.model.SublineVersionRange;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -26,13 +25,9 @@ public class SublineShorteningService {
   private final SublineVersionRepository sublineVersionRepository;
   private final LineVersionRepository lineVersionRepository;
 
-  public AffectedSublinesModel checkAffectedSublines(LineVersion lineVersion, LocalDate validFrom, LocalDate validTo) {
+  public AffectedSublinesModel checkAffectedSublines(LineVersion lineVersion, LineVersion editedVersion) {
     List<String> allowedSublines = new ArrayList<>();
     List<String> notAllowedSublines = new ArrayList<>();
-
-    LineVersion editedVersion = cloneLineVersion(lineVersion);
-    editedVersion.setValidFrom(validFrom);
-    editedVersion.setValidTo(validTo);
 
     if (isOnlyValidityChanged(lineVersion, editedVersion) && isShortening(lineVersion, editedVersion)) {
       List<LineVersion> lineVersions = getAllLineVersionsBySlnid(lineVersion.getSlnid());
@@ -171,8 +166,7 @@ public class SublineShorteningService {
     List<SublineVersionRange> sublinesToShort = new ArrayList<>();
 
     if (isOnlyValidityChanged) {
-      AffectedSublinesModel affectedSublinesModel = checkAffectedSublines(currentVersion, editedVersion.getValidFrom(),
-          editedVersion.getValidTo());
+      AffectedSublinesModel affectedSublinesModel = checkAffectedSublines(currentVersion, editedVersion);
 
       if (!affectedSublinesModel.getAllowedSublines().isEmpty()) {
         sublinesToShort = prepareSublinesToShort(currentVersion, editedVersion, affectedSublinesModel.getAllowedSublines());
