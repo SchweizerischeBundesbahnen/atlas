@@ -19,13 +19,12 @@ partition "LineStatusDecider"{
         if (Relevant attribute change or prolongation?) then (yes)
         floating note
               Relevant attributes are:
-               - swissLineNumber
                - number
-               - desciption
-               - longName
-               - alternativeName
-               - combinationName
-               - lineType if changed to ORDERLY
+               - swissLineNumber
+               - description
+               - shortNumber
+               - offerCategory
+               - concessionType
         endnote
         :Status = DRAFT;
         stop

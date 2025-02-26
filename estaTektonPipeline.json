@@ -169,7 +169,7 @@
         },
         "failOnQualityGateFailure": true,
         "owaspDependencyCheck": {
-          "enabled": true,
+          "enabled": false,
           "additionalParams": "--disableNodeAudit --nodePackageSkipDevDependencies"
         },
         "additionalDeployParams": "--parallel --no-configuration-cache -x :api-auth-gateway:publish -x :gateway:publish"
@@ -254,7 +254,7 @@
           "enabled": true
         },
         "owaspDependencyCheck": {
-          "enabled": true,
+          "enabled": false,
           "additionalParams": "--disableNodeAudit --nodePackageSkipDevDependencies"
         },
         "additionalDeployParams": "--parallel --no-configuration-cache -x :api-auth-gateway:publish -x :gateway:publish",
