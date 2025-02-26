@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.reader;
 
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,8 +16,8 @@ public class PlatformVersionSqlQueryUtil extends SqlQueryUtil {
   private static final String WHERE_STATEMENT = "WHERE '%s' between pv.valid_from and pv.valid_to";
   private static final String GROUP_BY_STATEMENT = "GROUP BY pv.id";
 
-  public String getSqlQuery(ExportType exportType) {
-    final String sqlQuery = buildSqlQuery(SELECT_STATEMENT, getWhereClause(exportType, WHERE_STATEMENT), GROUP_BY_STATEMENT);
+  public String getSqlQuery(ExportTypeV2 exportTypeV2) {
+    final String sqlQuery = buildSqlQuery(SELECT_STATEMENT, getWhereClause(exportTypeV2, WHERE_STATEMENT), GROUP_BY_STATEMENT);
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;

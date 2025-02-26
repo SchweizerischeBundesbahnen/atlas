@@ -7,21 +7,13 @@ import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
 import ch.sbb.exportservice.entity.prm.LoadingPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportFilePath;
-import ch.sbb.exportservice.model.ExportFilePath.ExportFilePathBuilder;
-import ch.sbb.exportservice.model.ExportObject;
-import ch.sbb.exportservice.model.ExportObjectV1;
-import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.ExportTypeV1;
+import ch.sbb.exportservice.model.ExportObjectV2;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.model.LoadingPointVersionCsvModel;
 import ch.sbb.exportservice.processor.LoadingPointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.LoadingPointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.LoadingPointVersionRowMapper;
 import ch.sbb.exportservice.reader.LoadingPointVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.DeleteJsonFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvLoadingPointVersionWriter;
 import ch.sbb.exportservice.writer.JsonLoadingPointVersionWriter;
@@ -60,11 +52,11 @@ public class LoadingPointVersionExportBatchConfig {
   @StepScope
   public JdbcCursorItemReader<LoadingPointVersion> loadingPointReader(
       @Autowired @Qualifier("servicePointDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     JdbcCursorItemReader<LoadingPointVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(LoadingPointVersionSqlQueryUtil.getSqlQuery(exportType));
+    itemReader.setSql(LoadingPointVersionSqlQueryUtil.getSqlQuery(exportTypeV2));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new LoadingPointVersionRowMapper());
     return itemReader;
@@ -93,9 +85,9 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public FlatFileItemWriter<LoadingPointVersionCsvModel> loadingPointCsvWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    return csvLoadingPointVersionWriter.csvWriter(ExportObject.LOADING_POINT, exportType);
+    return csvLoadingPointVersionWriter.csvWriter(ExportObjectV2.LOADING_POINT, exportTypeV2);
   }
 
   @Bean
@@ -105,13 +97,13 @@ public class LoadingPointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportLoadingPointCsvStep(itemReader))
-        .next(uploadLoadingPointCsvFileStep())
-        .next(deleteLoadingPointCsvFileStep())
+        //        .next(uploadLoadingPointCsvFileStep())
+        //        .next(deleteLoadingPointCsvFileStep())
         .end()
         .build();
   }
 
-  @Bean
+  /*@Bean
   public Step uploadLoadingPointCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
         .tasklet(uploadLoadingPointCsvFileTasklet(null), transactionManager)
@@ -123,20 +115,20 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadLoadingPointCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.LOADING_POINT, exportType);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.LOADING_POINT, exportTypeV2);
     return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
   }
 
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadLoadingPointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
       @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
   ) {
-    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.LOADING_POINT, exportType);
-    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.LOADING_POINT_VERSION, exportTypeV1);
+    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.LOADING_POINT, exportTypeV2);
+    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.LOADING_POINT_VERSION, exportTypeV1);
     return new UploadCsvFileTasklet(systemFile, s3File);
   }
 
@@ -151,11 +143,11 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteCsvFileTasklet loadingPointCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.LOADING_POINT, exportType);
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.LOADING_POINT, exportTypeV2);
     return new DeleteCsvFileTasklet(filePathBuilder);
-  }
+  }*/
 
   @Bean
   @Qualifier(EXPORT_LOADING_POINT_JSON_JOB_NAME)
@@ -164,13 +156,13 @@ public class LoadingPointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportLoadingPointJsonStep(itemReader))
-        .next(uploadLoadingPointJsonFileStep())
-        .next(deleteLoadingPointJsonFileStep())
+        //        .next(uploadLoadingPointJsonFileStep())
+        //        .next(deleteLoadingPointJsonFileStep())
         .end()
         .build();
   }
 
-  @Bean
+  /*@Bean
   public Step uploadLoadingPointJsonFileStep() {
     return new StepBuilder("uploadJsonFile", jobRepository)
         .tasklet(uploadLoadingPointJsonFileTasklet(null), transactionManager)
@@ -182,18 +174,18 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadLoadingPointJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.LOADING_POINT, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.LOADING_POINT, exportTypeV2);
     return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
   }
 
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadLoadingPointJsonFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
       @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1) {
-    final ExportFilePathBuilder systemFile = ExportFilePath.getV2Builder(ExportObject.LOADING_POINT, exportType);
-    final ExportFilePathBuilder s3File = ExportFilePath.getV1Builder(ExportObjectV1.LOADING_POINT_VERSION, exportTypeV1);
+    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.LOADING_POINT, exportTypeV2);
+    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.LOADING_POINT_VERSION, exportTypeV1);
     return new UploadJsonFileTasklet(systemFile, s3File);
   }
 
@@ -208,10 +200,10 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public DeleteJsonFileTasklet fileLoadingPointJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePath.getV2Builder(ExportObject.LOADING_POINT, exportType);
+      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.LOADING_POINT, exportTypeV2);
     return new DeleteJsonFileTasklet(filePathBuilder);
-  }
+  }*/
 
   @Bean
   public Step exportLoadingPointJsonStep(ItemReader<LoadingPointVersion> itemReader) {
@@ -236,8 +228,8 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadLoadingPointVersionModel> loadingPointJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonLoadingPointVersionWriter.getWriter(ExportObject.LOADING_POINT, exportType);
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    return jsonLoadingPointVersionWriter.getWriter(ExportObjectV2.LOADING_POINT, exportTypeV2);
   }
 
 }
