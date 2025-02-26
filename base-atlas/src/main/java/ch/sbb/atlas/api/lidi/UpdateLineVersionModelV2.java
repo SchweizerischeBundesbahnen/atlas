@@ -46,7 +46,7 @@ public class UpdateLineVersionModelV2 extends BaseLineVersionModel {
   private LineConcessionType lineConcessionType;
 
   @Schema(description = "ShortNumber", example = "61")
-  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String shortNumber;
 
