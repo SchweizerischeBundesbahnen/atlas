@@ -1,12 +1,10 @@
 package ch.sbb.exportservice.service;
 
-import static ch.sbb.atlas.export.enumeration.ExportType.ACTUAL_DATE;
-import static ch.sbb.atlas.export.enumeration.ExportType.FULL;
-import static ch.sbb.atlas.export.enumeration.ExportType.FUTURE_TIMETABLE;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_JSON_JOB_NAME;
 
 import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.model.PrmExportType;
 import java.util.List;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -26,9 +24,9 @@ public class ExportToiletJobService extends BaseExportJobService {
   @Override
   protected List<JobParams> getExportTypes() {
     return List.of(
-        new JobParams(ExportTypeV2.FULL, FULL),
-        new JobParams(ExportTypeV2.ACTUAL, ACTUAL_DATE),
-        new JobParams(ExportTypeV2.FUTURE_TIMETABLE, FUTURE_TIMETABLE)
+        new JobParams(ExportTypeV2.FULL, PrmExportType.FULL),
+        new JobParams(ExportTypeV2.ACTUAL, PrmExportType.ACTUAL),
+        new JobParams(ExportTypeV2.FUTURE_TIMETABLE, PrmExportType.TIMETABLE_FUTURE)
     );
   }
 
