@@ -2,8 +2,8 @@
 
 <!-- toc -->
 
-- [Delete specific batch job](#delete-specific-batch-job)
-- [Reset batch db](#reset-batch-db)
+- [Reset specific batch job](#reset-specific-batch-job)
+- [Reset all batch db](#reset-all-batch-db)
 
 <!-- tocstop -->
 
