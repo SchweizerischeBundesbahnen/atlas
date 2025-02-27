@@ -5,7 +5,6 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
-import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
 import ch.sbb.exportservice.entity.prm.PlatformVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
@@ -15,6 +14,7 @@ import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.model.PrmBatchExportFileName;
+import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.processor.PlatformVersionCsvProcessor;
 import ch.sbb.exportservice.processor.PlatformVersionJsonProcessor;
 import ch.sbb.exportservice.reader.PlatformVersionRowMapper;
@@ -220,7 +220,7 @@ public class PlatformVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadPlatformCsvFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") ExportType exportTypeV1 // todo: or PrmExportType?
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
   ) {
     return new UploadCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.PLATFORM_VERSION);
   }
@@ -239,7 +239,7 @@ public class PlatformVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadPlatformJsonFileTaskletV1(
-      @Value("#{jobParameters[exportTypeV1]}") ExportType exportTypeV1 // todo: or PrmExportType?
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
   ) {
     return new UploadJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.PLATFORM_VERSION);
   }
