@@ -63,6 +63,8 @@ public abstract class BaseExportJobService {
   protected static class JobParams {
 
     private final ExportTypeV2 exportTypeV2;
-    private final ExportTypeBase exportTypeV1; // todo: check if in every impl correct concretion used
+    private final ExportTypeBase exportTypeV1;
   }
 }
+
+// todo: add LiDi JobServices
