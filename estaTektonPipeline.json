@@ -13,7 +13,7 @@
   },
   "gradle": {
     "artifactoryMavenRepo": "atlas.mvn",
-    "buildTaskName": "esta-gradle-build-large"
+    "buildTaskName": "atlas-gradle-build"
   },
   "docker": [
     {
