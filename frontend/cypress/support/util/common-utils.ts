@@ -421,8 +421,14 @@ export default class CommonUtils {
     });
   }
 
-  private static generateRandomString(length) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  private static generateRandomString(length: number) {
+    return CommonUtils.generateRandom(
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+      length
+    );
+  }
+
+  static generateRandom(characters: string, length: number) {
     return Array.from({ length }, () =>
       characters.charAt(Math.floor(Math.random() * characters.length))
     ).join('');
