@@ -1,4 +1,4 @@
-# Import Service Point
+# Bulk Import
 
 <!-- toc -->
 
@@ -15,29 +15,23 @@
 - [Development](#development-1)
   * [Spring Batch](#spring-batch)
 - [Jobs](#jobs)
-  * [Import ServicePoint](#import-servicepoint)
-  * [Import TrafficPoint](#import-trafficpoint)
-  * [Import LoadingPoint](#import-loadingpoint)
-  * [Import Didok User](#import-didok-user)
-    + [How to](#how-to)
-      - [Import SePoDi Users](#import-sepodi-users)
-      - [Import PRM Users](#import-prm-users)
-  * [Import Service API calls](#import-service-api-calls)
+  * [Bulk Import](#bulk-import)
   * [Tech Stack](#tech-stack)
   * [Reset Batch](#reset-batch)
 
 <!-- tocstop -->
 
-The main goal of the Atlas Import Service Point is to import Didok Service Point Directory Data from a CSV file uploaded on the
-Amazon S3 Bucket to the Service Point Directory service.
+The aim of “bulk import” is to modify a large amount of data in a simple and quick way.
 
-See [ADR-0015](https://confluence.sbb.ch/display/ATLAS/ADR-0015%3A++Service+Point+Directory+Import)
+The atlas support Team and transport companies will have the need to make major adjustments to data 
+(create/update/terminate).
+This is a hybrid between manual data maintenance and data maintenance via interface.
+
+See [ADR-0023](https://confluence.sbb.ch/x/_wgyog)
 
 ## ATLAS
 
-This application is part of ATLAS. General documentation is
-available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README.md)
-.
+This application is part of ATLAS. General documentation is available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README.md).
 
 ## Project Versioning
 
@@ -88,6 +82,10 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ![Architecture](documentation/AtlasImportArch.svg)
 
+## Use Case
+
+![UseCase](documentation/UseCase.svg)
+
 ## Development
 
 ### Spring Batch
@@ -103,85 +101,9 @@ Job to scale the import process.
 
 ## Jobs
 
-### Import ServicePoint
+### Bulk Import
 
-The import ServicePoint Job is responsible to:
-
-* download, parse and group by didok number the **DINSTSTELLEN_V3_IMPORT_{date_time}.csv** from the Amazon S3 Bucket
-* send over HTTP chunks with lists of ServicePoints grouped by didok number (multithreading)
-* a retry system is configured on the step level when certain exception are thrown
-  (see [StepUtils.java](src/main/java/ch/sbb/importservice/utils/StepUtils.java))
-* the [RecoveryJobsRunner.java](src/main/java/ch/sbb/importservice/recovery/RecoveryJobsRunner.java) checks at startup if
-  there are jobs not completed. When an uncompleted job is found, it will be restarted
-* After a job has been completed (successfully or unsuccessfully) an email notification is sent to TechSupport-ATLAS@sbb.ch
-
-### Import TrafficPoint
-
-The import TrafficPoint Job is responsible to:
-
-* download, parse and group by didok number the **VERKEHRSPUNKTELEMENTE_ALL_V1_{date_time}.csv** from the Amazon S3 Bucket
-* send over HTTP chunks with lists of TrafficPoints grouped by didok number (multithreading)
-* a retry system is configured on the step level when certain exception are thrown
-  (see [StepUtils.java](src/main/java/ch/sbb/importservice/utils/StepUtils.java))
-* the [RecoveryJobsRunner.java](src/main/java/ch/sbb/importservice/recovery/RecoveryJobsRunner.java) checks at startup if
-  there are jobs not completed. When an uncompleted job is found, it will be restarted
-* After a job has been completed (successfully or unsuccessfully) an email notification is sent to TechSupport-ATLAS@sbb.ch
-
-### Import LoadingPoint
-
-The import LoadingPoint Job is responsible to:
-
-* download, parse and group by didok number the **DIDOK3_LADESTELLEN_{date_time}.csv** from the Amazon S3 Bucket
-* send over HTTP chunks with lists of LoadingPoints grouped by didok number (multithreading)
-* a retry system is configured on the step level when certain exception are thrown
-  (see [StepUtils.java](src/main/java/ch/sbb/importservice/utils/StepUtils.java))
-* the [RecoveryJobsRunner.java](src/main/java/ch/sbb/importservice/recovery/RecoveryJobsRunner.java) checks at startup if
-  there are jobs not completed. When an uncompleted job is found, it will be restarted
-* After a job has been completed (successfully or unsuccessfully) an email notification is sent to TechSupport-ATLAS@sbb.ch
-
-### Import Didok User
-
-The ImportDidokUser Job is responsible for migrating the users defined in Didok to ATLAS.
-This maintenance Job will be executed on time and does not require any scheduling, recovery, etc.. configuration. 
-When the Didok Migration is finished this job will be deleted.
-
-#### How to 
-
-To import the Didok users we need 2 files, one for SePoDi and one for PRM (see the examples
-[SePoDi_Test.csv](src/test/resources/SePoDi_Test.csv) ,  
-[PRM_Test.csv](src/test/resources/PRM_Test.csv)).
-
-:warning: **These 2 files must be regenerated before Production migration**  :warning:
-
-##### Import SePoDi Users
-
-Use the end point **{host}/v1/import/maintenance/didok-sepodi-user** and add to the **form-data** 
-the file [SePoDi_Test.csv](src/test/resources/SePoDi_Test.csv) with key **file**
-
-:warning: **Make sure that file and end point are correct: API -> didok-sepodi-user and file contains SePoDi Users**  :warning:
-
-````shell
-curl --location '{host}/import-service-point/v1/import/maintenance/didok-sepodi-user' \
---header 'Authorization: Bearer {your-bearer}' \
---form 'file=@"{filepath}"'
-````
-
-##### Import PRM Users
-
-Use the end point **{host}/v1/import/maintenance/didok-pmr-user** and add to the **form-data** 
-the file [PRM_Test.csv](src/test/resources/PRM_Test.csv) with key **file**
-
-:warning: **Make sure that file and end point are correct: API -> didok-prm-user and file contains PRM Users**  :warning:
-
-````shell
-curl --location '{host}/import-service-point/v1/import/maintenance/didok-prm-user' \
---header 'Authorization: Bearer {your-bearer}' \
---form 'file=@"{filepath}"'
-````
-
-### Import Service API calls
-
-See [ImportServicePointBatchControllerApiV1.java](src/main/java/ch/sbb/importservice/controller/ImportServicePointBatchController.java)
+TODO
 
 ### Tech Stack
 
