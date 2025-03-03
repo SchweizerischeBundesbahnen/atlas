@@ -15,11 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 public class SublineSqlQueryUtil extends SqlQueryUtil {
 
   private static final String SELECT_STATEMENT = """
-      SELECT sv.*, parent.offer_category, parent.short_number, parent.number as line_number, parent.prio
+      SELECT sv.*, parent.offer_category, parent.short_number, parent.number as line_number, parent.swiss_line_number, parent.prio
       FROM subline_version as sv
                left join (select lv.slnid, string_agg(lv.offer_category, '|') as offer_category,
                                  string_agg(lv.short_number, '|') as short_number,
                                  string_agg(lv.number, '|') as number,
+                                 string_agg(lv.swiss_line_number, '|') as swiss_line_number,
                                  string_agg(
                                          case
                                              when '2025-02-18' between lv.valid_from and lv.valid_to then '1'
@@ -28,7 +29,7 @@ public class SublineSqlQueryUtil extends SqlQueryUtil {
                           from (select * from line_version order by valid_from) lv group by lv.slnid) parent
                          on sv.mainline_slnid = parent.slnid
       """;
-  private static final String ORDER_BY_STATEMENT = "ORDER BY sv.slnid, sv.validFrom";
+  private static final String ORDER_BY_STATEMENT = "ORDER BY sv.slnid, sv.valid_from";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
     final String today = DateHelper.getDateAsSqlString(LocalDate.now());
@@ -36,7 +37,7 @@ public class SublineSqlQueryUtil extends SqlQueryUtil {
     if (exportTypeV2 != FULL) {
       final String date = exportTypeV2 == ACTUAL ? today :
           DateHelper.getDateAsSqlString(FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
-      additionalWhereClause = "WHERE '%s' >= sv.validFrom AND '%s' <= sv.validTo".formatted(date, date);
+      additionalWhereClause = "WHERE '%s' >= sv.valid_from AND '%s' <= sv.valid_to".formatted(date, date);
     }
 
     final String sqlQuery = buildSqlQuery(SELECT_STATEMENT.formatted(today, today), additionalWhereClause, ORDER_BY_STATEMENT);
