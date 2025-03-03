@@ -13,20 +13,15 @@ public class SublineRowMapper implements RowMapper<Subline> {
 
   @Override
   public Subline mapRow(ResultSet rs, int rowNum) throws SQLException {
-    final byte prioIdx = getPrioIdx(rs.getString("prio"));
-
     return Subline.builder()
         .slnid(rs.getString("slnid"))
-        .mainlineSlnid(rs.getString("mainlineSlnid"))
+        .mainlineSlnid(rs.getString("mainline_slnid"))
         .validFrom(rs.getDate("valid_from").toLocalDate())
         .validTo(rs.getDate("valid_to").toLocalDate())
         .status(Status.valueOf(rs.getString("status")))
         .sublineType(SublineType.valueOf(rs.getString("subline_type")))
         .concessionType(SublineConcessionType.valueOf(rs.getString("concession_type")))
         .swissSublineNumber(rs.getString("swiss_subline_number"))
-        .number(rs.getString("line_number").split("\\|")[prioIdx])
-        .shortNumber(rs.getString("short_number").split("\\|")[prioIdx])
-        .offerCategory(OfferCategory.valueOf(rs.getString("offer_category").split("\\|")[prioIdx]))
         .description(rs.getString("description"))
         .longName(rs.getString("long_name"))
         .businessOrganisation(rs.getString("business_organisation"))
@@ -35,19 +30,12 @@ public class SublineRowMapper implements RowMapper<Subline> {
         .editionDate(rs.getTimestamp("edition_date").toLocalDateTime())
         .editor(rs.getString("editor"))
         .version(rs.getInt("version"))
+        // From Line
+        .number(rs.getString("line_number"))
+        .swissLineNumber(rs.getString("swiss_line_number"))
+        .shortNumber(rs.getString("short_number"))
+        .offerCategory(OfferCategory.valueOf(rs.getString("offer_category")))
         .build();
-  }
-
-  private byte getPrioIdx(String prio) {
-    final String[] split = prio.split("\\|");
-    byte idx = 0;
-    for (byte i = 0; i < split.length; i++) {
-      if (split[i].equals("1") || split[i].equals("2")) {
-        return i;
-      }
-      idx = i;
-    }
-    return idx;
   }
 
 }
