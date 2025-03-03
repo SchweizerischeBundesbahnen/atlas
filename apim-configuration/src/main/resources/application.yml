@@ -5,7 +5,7 @@ publishing:
       exportDirectory: local
       apis:
         - business-organisation-directory
-        - import-service-point
+        - bulk-import-service
         - line-directory
         - service-point-directory
         - export-service

@@ -1,4 +1,4 @@
-# Bulk Import
+# Bulk Import Service
 
 <!-- toc -->
 
@@ -12,6 +12,7 @@
   * [Production](#production)
   * [Project Infrastructure](#project-infrastructure)
 - [Big Picture Architecture](#big-picture-architecture)
+- [Use Case](#use-case)
 - [Development](#development-1)
   * [Spring Batch](#spring-batch)
 - [Jobs](#jobs)

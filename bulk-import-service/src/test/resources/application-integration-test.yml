@@ -1,36 +1,22 @@
-server:
-  port: 8090
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info, metrics
-  endpoint:
-    health:
-      show-details: always
-
 spring:
-  application:
-    name: import-service-point
-  servlet:
-    multipart:
-      max-file-size: 300MB
-      max-request-size: 300MB
-  datasource:
-    url: jdbc:postgresql://localhost:5440/import-service
-    username: user
-    password: pwd
-    driver-class-name: org.postgresql.Driver
-    application:
-      name: import-service-point
   batch:
     jdbc:
       initialize-schema: NEVER
       isolation-level-for-create: default
     job:
       enabled: false
+
   jpa:
     open-in-view: false
+    properties:
+      hibernate:
+        #    show-sql: true
+        #        format_sql: true
+        order_inserts: true
+        jdbc:
+          batch_size: 500
+  main:
+    banner-mode: OFF
   security:
     oauth2:
       resourceserver:
@@ -48,21 +34,7 @@ spring:
             scope:
               - api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
   kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      auto-offset-reset: earliest
-      enable-auto-commit: true
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: "*"
-        max:
-          poll:
-            interval:
-              ms: 1200000
+    bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
     producer:
       properties:
         max:
@@ -72,7 +44,32 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       retries: 1
 
+auth:
+  audience:
+    service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
+
+logging:
+  level:
+    root: ERROR
+    org:
+      hibernate: ERROR
+      jboss: ERROR
+      springframework:
+        core: fatal
+        beans: fatal
+        context: fatal
+        transaction: error
+        boot:
+          test: error
+        test: error
+        web: error
+info:
+  app:
+    name: bulk-import-service
+    version: 1.0.0
+
 kafka:
+  enabled: false
   atlas:
     user:
       administration:
@@ -81,9 +78,6 @@ kafka:
     mail:
       topic: atlas.mail
       groupId: atlas.kafka.mail.groupId
-auth:
-  audience:
-    service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
 
 atlas:
   client:

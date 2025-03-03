@@ -49,39 +49,39 @@ val zipArtifactProd = artifacts.add("uploadZipProd", zipDirectoryProd.get().asFi
 }
 
 
-task<JavaExec>("generateApiSpec") {
+tasks.register<JavaExec>("generateApiSpec", fun JavaExec.() {
     mainClass = "ch.sbb.atlas.apim.configuration.ApimConfigurationGeneratorApplication"
     classpath = sourceSets["main"].runtimeClasspath
     args(listOf(project.version))
     mustRunAfter(tasks.getByName("processResources"))
-}
+})
 
-task<Zip>("createZipApimProd") {
+tasks.register<Zip>("createZipApimProd", fun Zip.() {
     from("src/main/resources/api-prod/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
     mustRunAfter(tasks.getByName("generateApiSpec"))
-}
+})
 
-task<Zip>("createZipApimDev") {
+tasks.register<Zip>("createZipApimDev", fun Zip.() {
     archiveAppendix = "dev"
     from("src/main/resources/api-dev/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
     mustRunAfter(tasks.getByName("generateApiSpec"))
-}
+})
 
-task<Zip>("createZipApimTest") {
+tasks.register<Zip>("createZipApimTest", fun Zip.() {
     archiveAppendix = "test"
     from("src/main/resources/api-test/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
     mustRunAfter(tasks.getByName("generateApiSpec"))
-}
+})
 
-task<Zip>("createZipApimInt") {
+tasks.register<Zip>("createZipApimInt", fun Zip.() {
     archiveAppendix = "int"
     from("src/main/resources/api-int/")
     destinationDirectory.set(layout.buildDirectory.dir("libs"))
     mustRunAfter(tasks.getByName("generateApiSpec"))
-}
+})
 
 tasks.register("generateSpec") {
     dependsOn(tasks.getByName("generateApiSpec"))

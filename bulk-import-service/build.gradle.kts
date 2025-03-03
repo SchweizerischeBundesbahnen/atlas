@@ -8,7 +8,7 @@ plugins {
 group = "ch.sbb.atlas"
 version = "2.477.0"
 
-description = "Atlas Import Service Point"
+description = "Atlas Bulk Import Service"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
