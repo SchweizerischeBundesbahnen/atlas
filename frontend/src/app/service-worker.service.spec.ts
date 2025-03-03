@@ -10,7 +10,9 @@ describe('ServiceWorkerService', () => {
   let service: ServiceWorkerService;
 
   const matDialogSpy = jasmine.createSpyObj<MatDialog>(['open']);
-  const matDialogRefSpy = jasmine.createSpyObj<MatDialogRef<DialogComponent>>(['afterClosed']);
+  const matDialogRefSpy = jasmine.createSpyObj<MatDialogRef<DialogComponent>>([
+    'afterClosed',
+  ]);
   matDialogSpy.open.and.returnValue(matDialogRefSpy);
 
   class SwUpdateMock {
@@ -51,7 +53,7 @@ describe('ServiceWorkerService', () => {
     });
     expect(service['openSWDialog']).toHaveBeenCalledOnceWith(
       'SW_DIALOG.UPDATE_TITLE',
-      'SW_DIALOG.UPDATE_MESSAGE',
+      'SW_DIALOG.UPDATE_MESSAGE'
     );
     expect(matDialogSpy.open).toHaveBeenCalledOnceWith(DialogComponent, {
       data: {
@@ -82,7 +84,7 @@ describe('ServiceWorkerService', () => {
     swUpdateMock.unrecoverable.next();
     expect(service['openSWDialog']).toHaveBeenCalledOnceWith(
       'SW_DIALOG.UNRECOVERABLE_TITLE',
-      'SW_DIALOG.UNRECOVERABLE_MESSAGE',
+      'SW_DIALOG.UNRECOVERABLE_MESSAGE'
     );
     expect(matDialogSpy.open).toHaveBeenCalledOnceWith(DialogComponent, {
       data: {

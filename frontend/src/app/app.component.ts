@@ -15,7 +15,7 @@ export class AppComponent {
 
   constructor(
     public readonly loadingSpinnerService: LoadingSpinnerService,
-    private readonly _swService: ServiceWorkerService,
+    private readonly _swService: ServiceWorkerService
   ) {}
 }
 
