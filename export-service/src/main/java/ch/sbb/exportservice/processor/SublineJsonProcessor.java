@@ -10,7 +10,30 @@ public class SublineJsonProcessor implements ItemProcessor<Subline, ReadSublineV
 
   @Override
   public ReadSublineVersionModelV2 process(Subline subline) {
-    return null; // todo
+    return ReadSublineVersionModelV2.builder()
+        .id(subline.getId())
+        .swissSublineNumber(subline.getSwissSublineNumber())
+        .mainlineSlnid(subline.getMainlineSlnid())
+        .sublineConcessionType(subline.getConcessionType())
+        .status(subline.getStatus())
+        .sublineType(subline.getSublineType())
+        .slnid(subline.getSlnid())
+        .description(subline.getDescription())
+        .longName(subline.getLongName())
+        .validFrom(subline.getValidFrom())
+        .validTo(subline.getValidTo())
+        .businessOrganisation(subline.getBusinessOrganisation())
+        .etagVersion(subline.getVersion())
+        .creator(subline.getCreator())
+        .creationDate(subline.getCreationDate())
+        .editor(subline.getEditor())
+        .editionDate(subline.getEditionDate())
+
+        .mainSwissLineNumber(subline.getSwissLineNumber())
+        .mainLineNumber(subline.getNumber())
+        .mainShortNumber(subline.getShortNumber())
+        .mainLineOfferCategory(subline.getOfferCategory())
+        .build();
   }
 
 }

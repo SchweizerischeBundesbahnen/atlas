@@ -14,6 +14,7 @@ public class LineRowMapper implements RowMapper<Line> {
   @Override
   public Line mapRow(ResultSet rs, int rowNum) throws SQLException {
     return Line.builder()
+        .id(rs.getLong("id"))
         .slnid(rs.getString("slnid"))
         .validFrom(rs.getDate("valid_from").toLocalDate())
         .validTo(rs.getDate("valid_to").toLocalDate())
