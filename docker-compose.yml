@@ -97,7 +97,7 @@ services:
       - "-c"
       - "datestyle=iso, ymd"
 
-  import-service-point-db:
+  bulk-import-service-db:
     image: postgres:17.1
     restart: always
     ports:
@@ -105,7 +105,7 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pwd
-      POSTGRES_DB: import-service
+      POSTGRES_DB: bulk-import-service
     volumes:
       - "/var/lib/postgresql/data"
     command:

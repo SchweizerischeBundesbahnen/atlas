@@ -1,0 +1,10 @@
+sloid;number;validFrom;validTo;designationOfficial;designationLong;stopPointType;freightServicePoint;operatingPointType;operatingPointTechnicalTimetableType;meansOfTransport;categories;operatingPointTrafficPointType;sortCodeOfDestinationStation;businessOrganisation;east;north;spatialReference;height
+ch:1:sloid:7000;;01.04.2021;31.12.2099;Bern;;ORDERLY;true;;;TRAIN|BUS;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;<null>
+ch:1:sloid:7001;7000;;;Bern;;ORDERLY;true;;;TRAIN|BUS;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;<null>
+ch:1:sloid:8000;;heute;moregen;Bern;;nein;ja;yes;auch;CAR;1;egal;fünfzig;ch:1:sboid:100001;osten;norden;welt;20m
+ch:1:sloid:notfound;;01.04.2021;31.12.2099;Bern;;ORDERLY;true;;;TRAIN|BUS;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;<null>
+ch:1:sloid:1;;01.04.2021;31.12.2099;NoChanges;;ORDERLY;true;;;TRAIN;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;<null>
+ch:1:sloid:notunique;;01.04.2021;31.12.2099;DuplicateSloid;;ORDERLY;true;;;TRAIN;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;<null>
+ch:1:sloid:notunique;;01.04.2021;31.12.2099;DuplicateSloid;;ORDERLY;true;;;TRAIN;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;<null>
+;8507000;01.04.2021;31.12.2099;DuplicateNumber;;ORDERLY;true;;;TRAIN;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;<null>
+;8507000;01.04.2021;31.12.2099;DuplicateNumber;;ORDERLY;true;;;TRAIN;;;70003;ch:1:sboid:100001;2600037.945;1199749.812;LV95;<null>
