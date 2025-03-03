@@ -13,21 +13,17 @@ describe(
     // so that no conflicts can occur IRAQ=99, LEBANON=98, VIETNAM=32, TURKMENISTAN=67, ARMENIA=58, JAPAN=42
     const country = 'IRAQ';
     const numberShort = Cypress._.random(10000, 99999);
-    const abbreviation = CommonUtils.generateRandom(
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-      6
-    );
     const designationOfficial = new Date().toISOString();
     const sortCodeOfDestinationStation = '76608';
     const meansOfTransport = ['TRAIN'];
     const operatingPointTrafficPointType = 'TARIFF_POINT';
 
-    const setEtagVersion = (etagVersionHolder) => {
-      expect(etagVersionHolder)
+    const setEtagVersion = (etagVersionContainer) => {
+      expect(etagVersionContainer)
         .property('etagVersion')
         .to.be.a('number')
         .and.greaterThan(etagVersion);
-      etagVersion = etagVersionHolder.etagVersion;
+      etagVersion = etagVersionContainer.etagVersion;
     };
 
     it('Step-1: Login on ATLAS', () => {
@@ -47,22 +43,11 @@ describe(
       CommonUtils.post('/service-point-directory/v1/service-points', {
         numberShort: numberShort,
         country: country,
-        sloid: null,
         designationOfficial: designationOfficial,
-        // TODO: abbreviation: abbreviation,
         businessOrganisation: sboid,
-        categories: [],
-        operatingPointRouteNetwork: null,
-        operatingPointKilometerMasterNumber: null,
-        meansOfTransport: [],
         validFrom: '2019-06-18',
         validTo: '2099-12-31',
         etagVersion: etagVersion,
-        creationDate: '2017-11-09T11:53:05',
-        editionDate: '2023-09-21T13:55:17.948358',
-        editor: 'u233445',
-        creator: 'GSU_DIDOK',
-        // TODO: Check that creator and editor, etagVersion etc. are not used, but are overwritten
       }).then((response) => {
         expect(response.status).to.equal(
           CommonUtils.HTTP_REST_API_RESPONSE_CREATED
@@ -75,52 +60,21 @@ describe(
           .property('meansOfTransport')
           .to.exist.and.to.be.an('array')
           .that.has.lengthOf(0);
-
+        
         setEtagVersion(response.body);
       });
     });
-
-    // it('Step-3: Get service point version', () => {
-    //   CommonUtils.get(
-    //     `/service-point-directory/v1/service-points/versions/${servicePointId}`
-    //   ).then((response) => {
-    //     expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
-    //
-    //     expect(response)
-    //       .property('body')
-    //       .property('etagVersion')
-    //       .to.be.a('number');
-    //     etagVersion = response.body.etagVersion;
-    //
-    //     expect(response)
-    //       .property('body')
-    //       .property('number')
-    //       .property('number')
-    //       .to.be.a('number');
-    //     numberWithoutCheckDigit = response.body.number.number;
-    //   });
-    // });
 
     it('Step-4: Update Service Point to FreightServicePoint', () => {
       CommonUtils.put(
         `/service-point-directory/v1/service-points/${servicePointId}`,
         {
-          numberShort: numberShort,
-          country: country,
           designationOfficial: designationOfficial,
-          // TODO: abbreviation: abbreviation,
           businessOrganisation: sboid,
-          categories: [],
           operatingPointRouteNetwork: false,
-          operatingPointKilometerMasterNumber: null,
-          meansOfTransport: [],
           validFrom: '2019-06-18',
           validTo: '2099-12-31',
           etagVersion: etagVersion,
-          creationDate: '2017-11-09T11:53:05',
-          editionDate: '2023-09-21T14:01:38.718812',
-          editor: 'u233445',
-          creator: 'GSU_DIDOK',
           freightServicePoint: true,
           sortCodeOfDestinationStation: sortCodeOfDestinationStation,
         }
@@ -146,22 +100,12 @@ describe(
       CommonUtils.put(
         `/service-point-directory/v1/service-points/${servicePointId}`,
         {
-          numberShort: numberShort,
-          country: country,
           designationOfficial: designationOfficial,
-          // TODO: abbreviation: abbreviation,
           businessOrganisation: sboid,
-          categories: [],
           operatingPointRouteNetwork: false,
-          operatingPointKilometerMasterNumber: null,
-          meansOfTransport: [],
           validFrom: '2019-06-18',
           validTo: '2099-12-31',
           etagVersion: etagVersion,
-          creationDate: '2017-11-09T11:53:05',
-          editionDate: '2023-09-21T13:56:21.271179',
-          editor: 'u233445',
-          creator: 'GSU_DIDOK',
           operatingPointTechnicalTimetableType: 'BRANCH',
         }
       ).then((response) => {
@@ -188,22 +132,13 @@ describe(
       CommonUtils.put(
         `/service-point-directory/v1/service-points/${servicePointId}`,
         {
-          numberShort: numberShort,
-          country: country,
           designationOfficial: designationOfficial,
-          // TODO: abbreviation: abbreviation,
           businessOrganisation: sboid,
-          categories: [],
           operatingPointRouteNetwork: false,
-          operatingPointKilometerMasterNumber: null,
           meansOfTransport: meansOfTransport,
           validFrom: '2019-06-18',
           validTo: '2099-12-31',
           etagVersion: etagVersion,
-          creationDate: '2017-11-09T11:53:05',
-          editionDate: '2023-09-21T14:00:31.153228',
-          editor: 'u233445',
-          creator: 'GSU_DIDOK',
           stopPointType: 'ORDERLY',
           freightServicePoint: false,
         }
@@ -230,22 +165,13 @@ describe(
       CommonUtils.put(
         `/service-point-directory/v1/service-points/${servicePointId}`,
         {
-          numberShort: numberShort,
-          country: country,
           designationOfficial: designationOfficial,
-          // TODO: abbreviation: abbreviation,
           businessOrganisation: sboid,
-          categories: [],
           operatingPointRouteNetwork: false,
           operatingPointKilometerMasterNumber: null,
-          meansOfTransport: [],
           validFrom: '2019-06-18',
           validTo: '2099-12-31',
           etagVersion: etagVersion,
-          creationDate: '2017-11-09T11:53:05',
-          editionDate: '2023-09-21T14:02:35.548359',
-          editor: 'u233445',
-          creator: 'GSU_DIDOK',
           operatingPointTrafficPointType: operatingPointTrafficPointType,
         }
       ).then((response) => {
@@ -257,6 +183,21 @@ describe(
         const firstVersion = response.body[0];
 
         expect(firstVersion)
+          .property('operatingPointTrafficPointType')
+          .to.equal(operatingPointTrafficPointType);
+      });
+    });
+
+    it('Step-8: Check service point version', () => {
+      CommonUtils.get(
+        `/service-point-directory/v1/service-points/versions/${servicePointId}`
+      ).then((response) => {
+        expect(response)
+          .property('status')
+          .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+        expect(response)
+          .property('body')
           .property('operatingPointTrafficPointType')
           .to.equal(operatingPointTrafficPointType);
       });
