@@ -40,6 +40,9 @@ const dialogMock = {
     RouterModule,
     TranslateModule,
   ],
-  providers: [{ provide: MatDialogRef, useValue: dialogMock }, { provide: TranslatePipe }],
+  providers: [
+    { provide: MatDialogRef, useValue: dialogMock },
+    { provide: TranslatePipe },
+  ],
 })
 export class AppTestingModule {}
