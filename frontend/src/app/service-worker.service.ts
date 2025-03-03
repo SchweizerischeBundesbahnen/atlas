@@ -12,7 +12,7 @@ export class ServiceWorkerService {
   constructor(
     private readonly appRef: ApplicationRef,
     private readonly swUpdate: SwUpdate,
-    private readonly dialog: MatDialog,
+    private readonly dialog: MatDialog
   ) {
     if (swUpdate.isEnabled) {
       const appIsStable$ = appRef.isStable.pipe(first((isStable) => isStable));
@@ -23,15 +23,26 @@ export class ServiceWorkerService {
 
       swUpdate.versionUpdates
         .pipe(filter((versionEvent) => versionEvent.type === 'VERSION_READY'))
-        .subscribe(() => this.openSWDialog('SW_DIALOG.UPDATE_TITLE', 'SW_DIALOG.UPDATE_MESSAGE'));
+        .subscribe(() =>
+          this.openSWDialog(
+            'SW_DIALOG.UPDATE_TITLE',
+            'SW_DIALOG.UPDATE_MESSAGE'
+          )
+        );
 
       swUpdate.unrecoverable.subscribe(() =>
-        this.openSWDialog('SW_DIALOG.UNRECOVERABLE_TITLE', 'SW_DIALOG.UNRECOVERABLE_MESSAGE'),
+        this.openSWDialog(
+          'SW_DIALOG.UNRECOVERABLE_TITLE',
+          'SW_DIALOG.UNRECOVERABLE_MESSAGE'
+        )
       );
     }
   }
 
-  private openSWDialog(titleTranslateKey: string, messageTranslateKey: string): void {
+  private openSWDialog(
+    titleTranslateKey: string,
+    messageTranslateKey: string
+  ): void {
     this.dialog
       .open(DialogComponent, {
         data: {
