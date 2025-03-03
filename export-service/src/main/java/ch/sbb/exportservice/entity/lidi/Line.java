@@ -25,6 +25,7 @@ import org.hibernate.annotations.Immutable;
 @Immutable
 public class Line extends BaseEntity {
 
+  private Long id;
   private String slnid;
   private LocalDate validFrom;
 

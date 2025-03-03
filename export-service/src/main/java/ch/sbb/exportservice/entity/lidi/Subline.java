@@ -25,6 +25,7 @@ import org.hibernate.annotations.Immutable;
 @Immutable
 public class Subline extends BaseEntity {
 
+  private Long id;
   private String slnid;
   private String mainlineSlnid;
   private LocalDate validFrom;
@@ -37,6 +38,7 @@ public class Subline extends BaseEntity {
 
   // derived from parent
   private String number;
+  private String swissLineNumber;
   private String shortNumber;
   private OfferCategory offerCategory;
 
