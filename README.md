@@ -34,7 +34,7 @@ This is the repository for business relevant services for ATLAS.
   * [User Administration](#user-administration)
   * [Service-Point-Directory](#service-point-directory)
   * [Prm-Directory](#prm-directory)
-  * [Import Service-Point](#import-service-point)
+  * [Bulk Import Service](#bulk-import-service)
   * [Location Service](#location-service)
   * [Base Service lib](#base-service-lib)
   * [Frontend](#frontend)
@@ -297,10 +297,9 @@ Business service for PRM (Person with Reduced Mobility) Data. All of these busin
 versioning.
 See [Prm-Directory documentation](prm-directory/README.md);
 
-### Import Service-Point
+### Bulk Import Service
 
-Spring Batch Job to import CSV from Amazon or provided files to [Service-Point-Directory](#service-point-directory)
-See [Import-Service-Point documentation](import-service-point/README.md);
+Spring Batch Job to import CSV File. See [Bulk-Import-Service documentation](bulk-import-service/README.md);
 
 ### Location Service
 
