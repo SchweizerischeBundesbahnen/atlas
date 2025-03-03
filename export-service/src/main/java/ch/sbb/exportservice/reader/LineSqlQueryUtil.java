@@ -14,15 +14,15 @@ import lombok.extern.slf4j.Slf4j;
 @UtilityClass
 public class LineSqlQueryUtil extends SqlQueryUtil {
 
-  private static final String SELECT_STATEMENT = "SELECT lv.* FROM line_version as lv where lv.swissLineNumber is not null";
-  private static final String ORDER_BY_STATEMENT = "ORDER BY lv.slnid, lv.validFrom ASC";
+  private static final String SELECT_STATEMENT = "SELECT lv.* FROM line_version as lv where lv.swiss_line_number is not null";
+  private static final String ORDER_BY_STATEMENT = "ORDER BY lv.slnid, lv.valid_from ASC";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
     String additionalWhereClause = "";
     if (exportTypeV2 != FULL) {
       String date = DateHelper.getDateAsSqlString(exportTypeV2 == ACTUAL ? LocalDate.now()
           : FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
-      additionalWhereClause = "AND '%s' >= lv.validFrom AND '%s' <= lv.validTo".formatted(date, date);
+      additionalWhereClause = "AND '%s' >= lv.valid_from AND '%s' <= lv.valid_to".formatted(date, date);
     }
 
     final String sqlQuery = buildSqlQuery(SELECT_STATEMENT, additionalWhereClause, ORDER_BY_STATEMENT);
