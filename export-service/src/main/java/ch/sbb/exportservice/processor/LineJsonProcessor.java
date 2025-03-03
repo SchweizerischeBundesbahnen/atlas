@@ -11,7 +11,25 @@ public class LineJsonProcessor implements ItemProcessor<Line, LineVersionModelV2
   @Override
   public LineVersionModelV2 process(Line line) {
     return LineVersionModelV2.builder()
-        .build(); // todo
+        .id(line.getId())
+        .status(line.getStatus())
+        .lineType(line.getLineType())
+        .slnid(line.getSlnid())
+        .number(line.getNumber())
+        .longName(line.getLongName())
+        .shortNumber(line.getShortNumber())
+        .offerCategory(line.getOfferCategory())
+        .description(line.getDescription())
+        .validFrom(line.getValidFrom())
+        .validTo(line.getValidTo())
+        .businessOrganisation(line.getBusinessOrganisation())
+        .comment(line.getComment())
+        .etagVersion(line.getVersion())
+        .creator(line.getCreator())
+        .creationDate(line.getCreationDate())
+        .editor(line.getEditor())
+        .editionDate(line.getEditionDate())
+        .build();
   }
 
 }
