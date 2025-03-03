@@ -2,6 +2,7 @@ package ch.sbb.exportservice.controller;
 
 import ch.sbb.exportservice.service.ExportBusinessOrganisationJobService;
 import ch.sbb.exportservice.service.ExportContactPointJobService;
+import ch.sbb.exportservice.service.ExportLineJobService;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportParkingLotJobService;
 import ch.sbb.exportservice.service.ExportPlatformJobService;
@@ -9,6 +10,7 @@ import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportRelationJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
+import ch.sbb.exportservice.service.ExportSublineJobService;
 import ch.sbb.exportservice.service.ExportToiletJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.service.ExportTransportCompanyJobService;
@@ -35,6 +37,9 @@ public class ExportControllerApiV2 {
 
   ExportControllerApiV2(
       ExportBusinessOrganisationJobService exportBusinessOrganisationJobService,
+      // Zu viele Abhängigkeiten ...
+      ExportLineJobService exportLineJobService,
+      ExportSublineJobService exportSublineJobService,
       ExportTransportCompanyJobService exportTransportCompanyJobService,
       ExportStopPointJobService exportStopPointJobService,
       ExportPlatformJobService exportPlatformJobService,
@@ -59,6 +64,8 @@ public class ExportControllerApiV2 {
     runnableMap.put("sepodi/service-point-batch", exportServicePointJobService::startExportJobs);
     runnableMap.put("sepodi/traffic-point-batch", exportTrafficPointElementJobService::startExportJobs);
     runnableMap.put("sepodi/loading-point-batch", exportLoadingPointJobService::startExportJobs);
+    runnableMap.put("lidi/line-batch", exportLineJobService::startExportJobs);
+    runnableMap.put("lidi/subline-batch", exportSublineJobService::startExportJobs);
   }
 
   @PostMapping("{businessType}/{batchName}")
