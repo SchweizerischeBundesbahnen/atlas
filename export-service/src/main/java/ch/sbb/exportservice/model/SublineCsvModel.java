@@ -28,12 +28,16 @@ public class SublineCsvModel {
   private Status status;
   private SublineType sublineType;
   private SublineConcessionType concessionType;
+  private String description;
+  private String longName;
+
+  // From Line
   private String swissSublineNumber;
+  private String swissLineNumber;
   private String number;
   private String shortNumber;
   private OfferCategory offerCategory;
-  private String description;
-  private String longName;
+
   private String businessOrganisation;
   private String creationTime;
   private String editionTime;

@@ -22,14 +22,16 @@ public class SublineCsvProcessor implements ItemProcessor<Subline, SublineCsvMod
         .sublineType(subline.getSublineType())
         .concessionType(subline.getConcessionType())
         .swissSublineNumber(subline.getSwissSublineNumber())
-        .number(subline.getNumber())
-        .shortNumber(subline.getShortNumber())
-        .offerCategory(subline.getOfferCategory())
         .description(subline.getDescription())
         .longName(subline.getLongName())
         .businessOrganisation(subline.getBusinessOrganisation())
         .creationTime(LOCAL_DATE_FORMATTER.format(subline.getCreationDate()))
         .editionTime(LOCAL_DATE_FORMATTER.format(subline.getEditionDate()))
+        // From Line
+        .swissLineNumber(subline.getSwissLineNumber())
+        .number(subline.getNumber())
+        .shortNumber(subline.getShortNumber())
+        .offerCategory(subline.getOfferCategory())
         .build();
   }
 
