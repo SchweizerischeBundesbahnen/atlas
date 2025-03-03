@@ -1,18 +1,28 @@
-import {Component, EventEmitter, Input, NgModule, Output} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {ApplicationRole, ApplicationType, TimetableHearingStatement} from './api';
-import {AtlasButtonType} from './core/components/button/atlas-button.type';
-import {TableColumn} from './core/components/table/table-column';
-import {TablePagination} from './core/components/table/table-pagination';
-import {AtlasFieldCustomError} from './core/form-components/atlas-field-error/atlas-field-custom-error';
-import {SelectionModel} from '@angular/cdk/collections';
-import {TableFilter} from './core/components/table-filter/config/table-filter';
-import {CreationEditionRecord} from './core/components/base-detail/user-edit-info/creation-edition-record';
-import {BaseDetailController} from './core/components/base-detail/base-detail-controller';
-import {Record} from './core/components/base-detail/record';
-import {AuthService} from './core/auth/auth.service';
-import {UserService} from './core/auth/user/user.service';
-import {Observable, of, Subject } from 'rxjs';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  NgModule,
+  Output,
+} from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import {
+  ApplicationRole,
+  ApplicationType,
+  TimetableHearingStatement,
+} from './api';
+import { AtlasButtonType } from './core/components/button/atlas-button.type';
+import { TableColumn } from './core/components/table/table-column';
+import { TablePagination } from './core/components/table/table-pagination';
+import { AtlasFieldCustomError } from './core/form-components/atlas-field-error/atlas-field-custom-error';
+import { SelectionModel } from '@angular/cdk/collections';
+import { TableFilter } from './core/components/table-filter/config/table-filter';
+import { CreationEditionRecord } from './core/components/base-detail/user-edit-info/creation-edition-record';
+import { BaseDetailController } from './core/components/base-detail/base-detail-controller';
+import { Record } from './core/components/base-detail/record';
+import { AuthService } from './core/auth/auth.service';
+import { UserService } from './core/auth/user/user.service';
+import { Observable, of, Subject } from 'rxjs';
 import { PermissionService } from './core/auth/permission/permission.service';
 import { PageService } from './core/pages/page.service';
 import { Pages } from './pages/pages';
@@ -104,7 +114,10 @@ export class MockTableComponent<DATATYPE> {
   @Input() checkBoxModeEnabled = false;
   @Input() showPaginator = true;
 
-  @Input() checkBoxSelection = new SelectionModel<TimetableHearingStatement>(true, []);
+  @Input() checkBoxSelection = new SelectionModel<TimetableHearingStatement>(
+    true,
+    []
+  );
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
   @Output() getTableElementsEvent = new EventEmitter<TablePagination>();
 }
@@ -220,7 +233,10 @@ export const pageServiceMock: Partial<PageService> = {
   },
 };
 
-export const authServiceSpy = jasmine.createSpyObj<AuthService>(['login', 'logout']);
+export const authServiceSpy = jasmine.createSpyObj<AuthService>([
+  'login',
+  'logout',
+]);
 
 // Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself
 @NgModule({
@@ -237,8 +253,6 @@ export const authServiceSpy = jasmine.createSpyObj<AuthService>(['login', 'logou
     MockMatPaginatorComponent,
     MockNavigationSepodiPrmComponent,
   ],
-  exports: [
-    MockSelectComponent
-  ]
+  exports: [MockSelectComponent],
 })
 export class AppMockComponents {}
