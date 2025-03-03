@@ -100,7 +100,7 @@
     "karma-jasmine-html-reporter": "^2.1",
     "karma-sonarqube-reporter": "^1.4",
     "lint-staged": "^15.2.10",
-    "prettier": "^3.3.3",
+    "prettier": "^3.5.3",
     "typescript": "^5.5"
   },
   "optionalDependencies": {

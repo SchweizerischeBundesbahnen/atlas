@@ -9,47 +9,55 @@ import { adminUser } from './core/auth/guards/admin.guard';
 const routes: Routes = [
   {
     path: Pages.TTFN.path,
-    loadChildren: () => import('./pages/ttfn/ttfn.module').then((m) => m.TtfnModule),
+    loadChildren: () =>
+      import('./pages/ttfn/ttfn.module').then((m) => m.TtfnModule),
     data: { headerTitle: Pages.TTFN.headerTitle },
   },
   {
     path: Pages.BULK_IMPORT.path,
     loadChildren: () =>
-      import('./pages/bulk-import/bulk-import.module').then((m) => m.BulkImportModule),
+      import('./pages/bulk-import/bulk-import.module').then(
+        (m) => m.BulkImportModule
+      ),
     data: { headerTitle: Pages.BULK_IMPORT.headerTitle },
     canActivate: [loggedInUsers],
   },
   {
     path: Pages.LIDI.path,
-    loadChildren: () => import('./pages/lidi/lidi.module').then((m) => m.LidiModule),
+    loadChildren: () =>
+      import('./pages/lidi/lidi.module').then((m) => m.LidiModule),
     data: { headerTitle: Pages.LIDI.headerTitle },
   },
   {
     path: Pages.BODI.path,
-    loadChildren: () => import('./pages/bodi/bodi.module').then((m) => m.BodiModule),
+    loadChildren: () =>
+      import('./pages/bodi/bodi.module').then((m) => m.BodiModule),
     data: { headerTitle: Pages.BODI.headerTitle },
   },
   {
     path: Pages.SEPODI.path,
-    loadChildren: () => import('./pages/sepodi/sepodi.module').then((m) => m.SepodiModule),
+    loadChildren: () =>
+      import('./pages/sepodi/sepodi.module').then((m) => m.SepodiModule),
     data: { headerTitle: Pages.SEPODI.headerTitle },
   },
   {
     path: Pages.TTH.path,
-    loadChildren: () => import('./pages/tth/tth.module').then((m) => m.TthModule),
+    loadChildren: () =>
+      import('./pages/tth/tth.module').then((m) => m.TthModule),
     data: { headerTitle: Pages.TTH.headerTitle },
     canActivate: [canActivateTimetableHearing],
   },
   {
     path: Pages.PRM.path,
-    loadChildren: () => import('./pages/prm/prm.module').then((m) => m.PrmModule),
+    loadChildren: () =>
+      import('./pages/prm/prm.module').then((m) => m.PrmModule),
     data: { headerTitle: Pages.PRM.headerTitle },
   },
   {
     path: Pages.USER_ADMINISTRATION.path,
     loadChildren: () =>
       import('./pages/user-administration/user-administration.module').then(
-        (m) => m.UserAdministrationModule,
+        (m) => m.UserAdministrationModule
       ),
     data: { headerTitle: Pages.USER_ADMINISTRATION.headerTitle },
     canActivate: [adminUser],
