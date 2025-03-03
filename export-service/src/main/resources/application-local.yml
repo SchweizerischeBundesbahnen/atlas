@@ -26,22 +26,34 @@ spring:
       username: user
       password: pwd
       driver-class-name: org.postgresql.Driver
+      hikari:
+        minimumIdle: 2
+        maximumPoolSize: 5
+        idleTimeout: 120000
+        connectionTimeout: 300000
+        leakDetectionThreshold: 300000
     prm:
       url: jdbc:postgresql://localhost:5442/prm-directory?currentSchema=prm_directory
       username: user
       password: pwd
       driver-class-name: org.postgresql.Driver
+      hikari:
+        minimumIdle: 2
+        maximumPoolSize: 5
+        idleTimeout: 120000
+        connectionTimeout: 300000
+        leakDetectionThreshold: 300000
     bodi:
       url: jdbc:postgresql://localhost:5435/business-organisation-directory?currentSchema=business_organisation_directory
       username: user
       password: pwd
       driver-class-name: org.postgresql.Driver
-    hikari:
-      minimumIdle: 2
-      maximumPoolSize: 10
-      idleTimeout: 120000
-      connectionTimeout: 300000
-      leakDetectionThreshold: 300000
+      hikari:
+        minimumIdle: 2
+        maximumPoolSize: 5
+        idleTimeout: 120000
+        connectionTimeout: 300000
+        leakDetectionThreshold: 300000
   batch:
     datasource:
       url: jdbc:postgresql://localhost:5441/export-service

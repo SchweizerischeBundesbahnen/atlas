@@ -20,6 +20,7 @@ public class PrmDataSourceConfiguration {
   }
 
   @Bean(name = "prmDataSource")
+  @ConfigurationProperties("spring.datasource.prm.hikari")
   public DataSource prmDataSource() {
     return prmDataSourceProperties()
         .initializeDataSourceBuilder()
@@ -32,11 +33,9 @@ public class PrmDataSourceConfiguration {
     return new JdbcTransactionManager(prmDataSource());
   }
 
-
   @Bean
   public NamedParameterJdbcTemplate prmJdbcTemplate(@Qualifier("prmDataSource") DataSource dataSource) {
     return new NamedParameterJdbcTemplate(dataSource);
   }
-
 
 }
