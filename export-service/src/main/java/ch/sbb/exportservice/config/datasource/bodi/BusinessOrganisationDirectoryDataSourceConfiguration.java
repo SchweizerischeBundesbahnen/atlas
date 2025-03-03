@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.config.datasource;
+package ch.sbb.exportservice.config.datasource.bodi;
 
 import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
@@ -18,6 +18,7 @@ public class BusinessOrganisationDirectoryDataSourceConfiguration {
   }
 
   @Bean(name = "businessOrganisationDirectoryDataSource")
+  @ConfigurationProperties("spring.datasource.bodi.hikari")
   public DataSource businessOrganisationDirectoryDataSource() {
     return transportCompanyDataSourceProperties()
         .initializeDataSourceBuilder()
