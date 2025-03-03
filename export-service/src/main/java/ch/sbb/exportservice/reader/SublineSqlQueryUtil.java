@@ -14,20 +14,85 @@ import lombok.extern.slf4j.Slf4j;
 @UtilityClass
 public class SublineSqlQueryUtil extends SqlQueryUtil {
 
+  private static final String LINE_VIEW = """
+      select *
+      from (
+               select f.*, v.valid_from, v.valid_to
+               from (
+                        select swiss_line_number,
+                               number,
+                               description,
+                               short_number,
+                               offer_category,
+                               status,
+                               line_type,
+                               business_organisation,
+                               slnid
+                        from (
+                                 select distinct on (slnid) *
+                                 from ((select distinct on (slnid) 1 as rank,
+                                                                   swiss_line_number,
+                                                                   number,
+                                                                   description,
+                                                                   short_number,
+                                                                   offer_category,
+                                                                   status,
+                                                                   line_type,
+                                                                   business_organisation,
+                                                                   slnid,
+                                                                   valid_from,
+                                                                   valid_to
+                                        from line_version
+                                        where valid_from <= current_date
+                                          and current_date <= valid_to)
+                                       union all
+                                       (select distinct on (slnid) 2 as rank,
+                                                                   swiss_line_number,
+                                                                   number,
+                                                                   description,
+                                                                   short_number,
+                                                                   offer_category,
+                                                                   status,
+                                                                   line_type,
+                                                                   business_organisation,
+                                                                   slnid,
+                                                                   valid_from,
+                                                                   valid_to
+                                        from line_version
+                                        where valid_from >= current_date
+                                        order by slnid, valid_from)
+                                       union all
+                                       (select distinct on (slnid) 3 as rank,
+                                                                   swiss_line_number,
+                                                                   number,
+                                                                   description,
+                                                                   short_number,
+                                                                   offer_category,
+                                                                   status,
+                                                                   line_type,
+                                                                   business_organisation,
+                                                                   slnid,
+                                                                   valid_from,
+                                                                   valid_to
+                                        from line_version
+                                        where valid_to <= current_date
+                                        order by slnid, valid_to desc)) as ranked order by slnid, rank
+                             ) as chosen
+                    ) f
+                        join (
+                   select slnid, min(valid_from) as valid_from, max(valid_to) as valid_to
+                   from line_version
+                   group by slnid
+               ) v on f.slnid = v.slnid
+           )
+      """;
+
   private static final String SELECT_STATEMENT = """
-      SELECT sv.*, parent.offer_category, parent.short_number, parent.number as line_number, parent.swiss_line_number, parent.prio
+      SELECT sv.*, parent.offer_category, parent.short_number, parent.number as line_number, parent.swiss_line_number
       FROM subline_version as sv
-               left join (select lv.slnid, string_agg(lv.offer_category, '|') as offer_category,
-                                 string_agg(lv.short_number, '|') as short_number,
-                                 string_agg(lv.number, '|') as number,
-                                 string_agg(lv.swiss_line_number, '|') as swiss_line_number,
-                                 string_agg(
-                                         case
-                                             when '2025-02-18' between lv.valid_from and lv.valid_to then '1'
-                                             when '2025-02-18' < lv.valid_from then '2'
-                                             else '3' end, '|') as prio
-                          from (select * from line_version order by valid_from) lv group by lv.slnid) parent
-                         on sv.mainline_slnid = parent.slnid
+      join (""" + LINE_VIEW + """
+      ) as parent
+      on sv.mainline_slnid = parent.slnid
       """;
   private static final String ORDER_BY_STATEMENT = "ORDER BY sv.slnid, sv.valid_from";
 
@@ -40,7 +105,7 @@ public class SublineSqlQueryUtil extends SqlQueryUtil {
       additionalWhereClause = "WHERE '%s' >= sv.valid_from AND '%s' <= sv.valid_to".formatted(date, date);
     }
 
-    final String sqlQuery = buildSqlQuery(SELECT_STATEMENT.formatted(today, today), additionalWhereClause, ORDER_BY_STATEMENT);
+    final String sqlQuery = buildSqlQuery(SELECT_STATEMENT, additionalWhereClause, ORDER_BY_STATEMENT);
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;
