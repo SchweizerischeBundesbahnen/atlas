@@ -28,7 +28,7 @@ public class SublineJsonProcessor implements ItemProcessor<Subline, ReadSublineV
         .creationDate(subline.getCreationDate())
         .editor(subline.getEditor())
         .editionDate(subline.getEditionDate())
-
+        // From Line
         .mainSwissLineNumber(subline.getSwissLineNumber())
         .mainLineNumber(subline.getNumber())
         .mainShortNumber(subline.getShortNumber())
