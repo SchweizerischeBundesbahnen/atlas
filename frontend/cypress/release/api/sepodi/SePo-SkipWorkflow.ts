@@ -1,12 +1,15 @@
 import CommonUtils from '../../../support/util/common-utils';
 import ReleaseApiUtils from '../../../support/util/release-api-utils';
 
+const VALIDATED = 'VALIDATED';
+const DRAFT = 'DRAFT';
+
 describe(
   'SePo: Scenario skip-workflow: New StopPoint',
   { testIsolation: false },
   () => {
     const today = ReleaseApiUtils.today();
-    const dateInMonth = today.getMonth();
+    const dateInMonth = today.getMonth().toString().padStart(2, '0');
     const meansOfTransport = 'UNKNOWN';
     const north = `12051${dateInMonth}`; // LV95 in Switzerland
     const east = `26520${dateInMonth}`;
@@ -50,21 +53,23 @@ describe(
           CommonUtils.HTTP_REST_API_RESPONSE_CREATED
         );
 
-        // expect(response.body).to.have.property('sloid').that.is.a('string');
-        // sloid = response.body.sloid;
-
         expect(response.body)
           .property('number')
           .property('number')
-          .that.is.a('string');
+          .that.is.a('number');
         numberWithoutCheckDigit = response.body.number.number;
 
         expect(response.body).to.have.property('id').that.is.a('number');
         servicePointVersionId = response.body.id;
+
+        expect(response.body)
+          .to.have.property('status')
+          .that.is.a('string')
+          .and.to.equal(DRAFT);
       });
     });
 
-    it.skip('Step-4: Skip workflow for Service Point', () => {
+    it('Step-4: Skip workflow for Service Point', () => {
       CommonUtils.post(
         `/service-point-directory/v1/service-points/versions/${servicePointVersionId}/skip-workflow`,
         {}
@@ -72,14 +77,14 @@ describe(
         expect(response.status).to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
         expect(response.body).to.have.property('status').that.is.a('string');
-        expect(response.body.status).to.equal('VALIDATED');
+        expect(response.body.status).to.equal(VALIDATED);
 
         expect(response.body).to.have.property('id').that.is.a('number');
         expect(response.body.id).to.equal(servicePointVersionId);
       });
     });
 
-    it.skip('Step-5: Check SePo status', () => {
+    it('Step-5: Check SePo status', () => {
       CommonUtils.get(
         `/service-point-directory/v1/service-points/${numberWithoutCheckDigit}`
       ).then((response) => {
@@ -89,14 +94,13 @@ describe(
 
         expect(response)
           .property('body')
-          .property('objects')
           .to.exist.and.to.be.an('array')
           .that.has.lengthOf(1);
 
-        const sePoObject = response.body.objects[0];
+        const sePoObject = response.body[0];
 
-        expect(sePoObject).property('status').to.equal('VALIDATED');
-        expect(sePoObject).property('id').to.equal(numberWithoutCheckDigit);
+        expect(sePoObject).property('status').to.equal(VALIDATED);
+        expect(sePoObject).property('id').to.equal(servicePointVersionId);
       });
     });
   }
