@@ -19,67 +19,80 @@
     {
       "dockerFile": "line-directory/docker/Dockerfile",
       "imageName": "line-directory",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "dockerFile": "business-organisation-directory/docker/Dockerfile",
       "imageName": "business-organisation-directory",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "dockerFile": "service-point-directory/docker/Dockerfile",
       "imageName": "service-point-directory",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "dockerFile": "prm-directory/docker/Dockerfile",
       "imageName": "prm-directory",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "dockerFile": "import-service-point/docker/Dockerfile",
       "imageName": "import-service-point",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "dockerFile": "export-service/docker/Dockerfile",
       "imageName": "export-service",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "imageName": "mail",
       "dockerFile": "mail/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "imageName": "scheduling",
       "dockerFile": "scheduling/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
       "dockerFile": "gateway/docker/Dockerfile",
-      "imageName": "gateway"
+      "imageName": "gateway",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "dockerFile": "user-administration/docker/Dockerfile",
       "imageName": "user-administration",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
       "dockerFile": "workflow/docker/Dockerfile",
-      "imageName": "workflow"
+      "imageName": "workflow",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
       "dockerFile": "location/docker/Dockerfile",
-      "imageName": "location"
+      "imageName": "location",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "dockerFile": "api-auth-gateway/docker/Dockerfile",
       "imageName": "api-auth-gateway",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "buildTaskName": "esta-buildah-small"
     },
     {
       "dockerFile": "frontend/docker/Dockerfile",
