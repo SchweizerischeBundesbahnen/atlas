@@ -18,6 +18,7 @@ public final class ExportFilePathV1 {
   private final String dir;
   @Getter
   private final String prefix;
+  @Getter
   private final String fileName;
   private final String extension;
 
