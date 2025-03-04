@@ -1,8 +1,5 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_JSON_JOB_NAME;
-
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.exportservice.entity.lidi.Line;
@@ -19,6 +16,8 @@ import ch.sbb.exportservice.reader.LineRowMapper;
 import ch.sbb.exportservice.reader.LineSqlQueryUtil;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvLineWriter;
 import ch.sbb.exportservice.writer.JsonLineWriter;
@@ -221,5 +220,7 @@ public class LineExportBatchConfig {
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     return jsonWriter.getWriter(ExportObjectV2.LINE, exportTypeV2);
   }
+
+  // todo: include deletion
 
 }

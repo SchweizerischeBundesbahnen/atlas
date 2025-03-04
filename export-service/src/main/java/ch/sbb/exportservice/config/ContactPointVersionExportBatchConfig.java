@@ -1,19 +1,33 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_JSON_JOB_NAME;
-
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.export.model.prm.ContactPointVersionCsvModel;
 import ch.sbb.exportservice.entity.prm.ContactPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
+import ch.sbb.exportservice.model.ExportFilePathV1;
+import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.model.PrmBatchExportFileName;
+import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.processor.ContactPointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ContactPointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.ContactPointVersionRowMapper;
 import ch.sbb.exportservice.reader.ContactPointVersionSqlQueryUtil;
+import ch.sbb.exportservice.tasklet.RenameTasklet;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTasklet;
+import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvContactPointVersionWriter;
 import ch.sbb.exportservice.writer.JsonContactPointVersionWriter;
@@ -48,6 +62,8 @@ public class ContactPointVersionExportBatchConfig {
   private final CsvContactPointVersionWriter csvContactPointVersionWriter;
   private final JsonContactPointVersionWriter jsonContactPointVersionWriter;
 
+  private final FileService fileService;
+
   @Bean
   @StepScope
   public JdbcCursorItemReader<ContactPointVersion> contactPointReader(
@@ -60,6 +76,23 @@ public class ContactPointVersionExportBatchConfig {
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new ContactPointVersionRowMapper());
     return itemReader;
+  }
+
+  // --- CSV ---
+  @Bean
+  @Qualifier(EXPORT_CONTACT_POINT_CSV_JOB_NAME)
+  public Job exportContactPointCsvJob(ItemReader<ContactPointVersion> itemReader) {
+    return new JobBuilder(EXPORT_CONTACT_POINT_CSV_JOB_NAME, jobRepository)
+        .listener(jobCompletionListener)
+        .incrementer(new RunIdIncrementer())
+        .flow(exportContactPointCsvStep(itemReader))
+        .next(uploadContactPointCsvFileStepV2())
+        .next(renameContactPointCsvStep())
+        .next(uploadContactPointCsvFileStepV1())
+        .next(deleteContactPointCsvFileStepV2())
+        .next(deleteContactPointCsvFileStepV1())
+        .end()
+        .build();
   }
 
   @Bean
@@ -90,59 +123,111 @@ public class ContactPointVersionExportBatchConfig {
     return csvContactPointVersionWriter.csvWriter(ExportObjectV2.CONTACT_POINT, exportTypeV2);
   }
 
+  // BEGIN: Upload Csv V2
   @Bean
-  @Qualifier(EXPORT_CONTACT_POINT_CSV_JOB_NAME)
-  public Job exportContactPointCsvJob(ItemReader<ContactPointVersion> itemReader) {
-    return new JobBuilder(EXPORT_CONTACT_POINT_CSV_JOB_NAME, jobRepository)
-        .listener(jobCompletionListener)
-        .incrementer(new RunIdIncrementer())
-        .flow(exportContactPointCsvStep(itemReader))
-        //        .next(uploadContactPointCsvFileStep())
-        //        .next(deleteContactPointCsvFileStep())
-        .end()
-        .build();
-  }
-
-  /*@Bean
-  public Step uploadContactPointCsvFileStep() {
-    return new StepBuilder("uploadCsvFile", jobRepository)
-        .tasklet(uploadContactPointCsvFileTasklet(null), transactionManager)
-        .tasklet(uploadContactPointCsvFileTaskletV1(null, null), transactionManager)
+  public Step uploadContactPointCsvFileStepV2() {
+    return new StepBuilder("uploadCsvFileV2", jobRepository)
+        .tasklet(uploadContactPointCsvFileTaskletV2(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
   @StepScope
-  public UploadCsvFileTasklet uploadContactPointCsvFileTaskletV1(@Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
-      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1) {
-    return new UploadCsvFileTasklet(systemFile, s3File);
-  }
-
-  @Bean
-  @StepScope
-  public UploadCsvFileTasklet uploadContactPointCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    return new UploadCsvFileTasklet(filePath, filePath);
-  }
-
-  @Bean
-  public Step deleteContactPointCsvFileStep() {
-    return new StepBuilder("deleteCsvFiles", jobRepository)
-        .tasklet(contactPointCsvFileDeletingTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public DeleteCsvFileTasklet contactPointCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
+  public UploadCsvFileTaskletV2 uploadContactPointCsvFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.CONTACT_POINT, exportTypeV2);
-    return new DeleteCsvFileTasklet(filePathBuilder);
-  }*/
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.CONTACT_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadCsvFileTaskletV2(filePathV2);
+  }
+  // END: Upload Csv V2
 
+  // BEGIN: Upload Csv V1
+  @Bean
+  public Step uploadContactPointCsvFileStepV1() {
+    return new StepBuilder("uploadCsvFileV1", jobRepository)
+        .tasklet(uploadContactPointCsvFileTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadCsvFileTasklet uploadContactPointCsvFileTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
+  ) {
+    return new UploadCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION);
+  }
+  // END: Upload Csv V1
+
+  // BEGIN: Rename Csv
+  @Bean
+  public Step renameContactPointCsvStep() {
+    return new StepBuilder("renameCsv", jobRepository)
+        .tasklet(renameContactPointTasklet(null, null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public RenameTasklet renameContactPointTasklet(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1,
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.CONTACT_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION,
+        fileService.getDir(), ExportExtensionFileType.CSV_EXTENSION);
+    return new RenameTasklet(filePathV2, filePathV1);
+  }
+  // END: Rename Csv
+
+  // BEGIN: Delete Csv V2
+  @Bean
+  public Step deleteContactPointCsvFileStepV2() {
+    return new StepBuilder("deleteCsvFileV2", jobRepository)
+        .tasklet(deleteContactPointCsvFileTaskletV2(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteCsvFileTaskletV2 deleteContactPointCsvFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
+  ) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.CONTACT_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteCsvFileTaskletV2(filePathV2);
+  }
+  // END: Delete Csv V2
+
+  // BEGIN: Delete Csv V1
+  @Bean
+  public Step deleteContactPointCsvFileStepV1() {
+    return new StepBuilder("deleteCsvFileV1", jobRepository)
+        .tasklet(deleteContactPointCsvFileTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteCsvFileTasklet deleteContactPointCsvFileTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
+  ) {
+    return new DeleteCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION);
+  }
+  // END: Delete Csv V1
+
+  // --- JSON ---
   @Bean
   @Qualifier(EXPORT_CONTACT_POINT_JSON_JOB_NAME)
   public Job exportContactPointJsonJob(ItemReader<ContactPointVersion> itemReader) {
@@ -150,51 +235,14 @@ public class ContactPointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportContactPointJsonStep(itemReader))
-        //        .next(uploadContactPointJsonFileStep())
-        //        .next(deleteContactPointJsonFileStep())
+        .next(uploadContactPointJsonFileStepV2())
+        .next(renameContactPointJsonStep())
+        .next(uploadContactPointJsonFileStepV1())
+        .next(deleteContactPointJsonFileStepV2())
+        .next(deleteContactPointJsonFileStepV1())
         .end()
         .build();
   }
-
-  /*@Bean
-  public Step uploadContactPointJsonFileStep() {
-    return new StepBuilder("uploadJsonFile", jobRepository)
-        .tasklet(uploadContactPointJsonFileTasklet(null), transactionManager)
-        .tasklet(uploadContactPointJsonFileTaskletV1(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadContactPointJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    return new UploadJsonFileTasklet(filePath, filePath);
-  }
-
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadContactPointJsonFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
-      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1) {
-    return new UploadJsonFileTasklet(systemFile, s3File);
-  }
-
-  /*@Bean
-  public Step deleteContactPointJsonFileStep() {
-    return new StepBuilder("deleteJsonFiles", jobRepository)
-        .tasklet(fileContactPointJsonDeletingTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet fileContactPointJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.CONTACT_POINT, exportTypeV2);
-    return new DeleteJsonFileTasklet(filePathBuilder);
-  }*/
 
   @Bean
   public Step exportContactPointJsonStep(ItemReader<ContactPointVersion> itemReader) {
@@ -223,4 +271,106 @@ public class ContactPointVersionExportBatchConfig {
     return jsonContactPointVersionWriter.getWriter(ExportObjectV2.CONTACT_POINT, exportTypeV2);
   }
 
+  // BEGIN: Upload Json V2 ---
+  @Bean
+  public Step uploadContactPointJsonFileStepV2() {
+    return new StepBuilder("uploadJsonFileV2", jobRepository)
+        .tasklet(uploadContactPointJsonFileTaskletV2(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTaskletV2 uploadContactPointJsonFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.CONTACT_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadJsonFileTaskletV2(filePathV2);
+  }
+  // END: Upload Json V2
+
+  // BEGIN: Rename Json
+  @Bean
+  public Step renameContactPointJsonStep() {
+    return new StepBuilder("renameJson", jobRepository)
+        .tasklet(renameContactPointJsonTasklet(null, null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public RenameTasklet renameContactPointJsonTasklet(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1,
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.CONTACT_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION,
+        fileService.getDir(), ExportExtensionFileType.JSON_EXTENSION);
+    return new RenameTasklet(filePathV2, filePathV1);
+  }
+  // END: Rename Json
+
+  // BEGIN: Upload Json V1
+  @Bean
+  public Step uploadContactPointJsonFileStepV1() {
+    return new StepBuilder("uploadJsonFileV1", jobRepository)
+        .tasklet(uploadContactPointJsonFileTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTasklet uploadContactPointJsonFileTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
+  ) {
+    return new UploadJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION);
+  }
+  // END: Upload Json V1
+
+  // BEGIN: Delete Json V2
+  @Bean
+  public Step deleteContactPointJsonFileStepV2() {
+    return new StepBuilder("deleteJsonFileV2", jobRepository)
+        .tasklet(deleteContactPointJsonTaskletV2(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteJsonFileTaskletV2 deleteContactPointJsonTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.CONTACT_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteJsonFileTaskletV2(filePathV2);
+  }
+  // END: Delete Json V2
+
+  // BEGIN: Delete Json V1
+  @Bean
+  public Step deleteContactPointJsonFileStepV1() {
+    return new StepBuilder("deleteJsonFileV1", jobRepository)
+        .tasklet(deleteContactPointJsonTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteJsonFileTasklet deleteContactPointJsonTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1) {
+
+    return new DeleteJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION);
+  }
+  // END: Delete Json V1
+  // todo: check retries on exceptions over all jobs
 }
