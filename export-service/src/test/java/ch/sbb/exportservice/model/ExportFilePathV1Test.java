@@ -1,8 +1,7 @@
 package ch.sbb.exportservice.model;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.LocalDate;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class ExportFilePathV1Test {
@@ -13,7 +12,7 @@ class ExportFilePathV1Test {
     ExportFilePathV1 exportFilePathV1 = new ExportFilePathV1(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION, "",
         ExportExtensionFileType.JSON_EXTENSION, LocalDate.of(2024, 3, 10));
     // then
-    assertThat(exportFilePathV1.fileName()).isEqualTo("full-stop_point-2024-03-10");
+    assertThat(exportFilePathV1.getFileName()).isEqualTo("full-stop_point-2024-03-10");
   }
 
   @Test
@@ -22,7 +21,7 @@ class ExportFilePathV1Test {
     ExportFilePathV1 exportFilePathV1 = new ExportFilePathV1(SePoDiExportType.SWISS_ONLY_ACTUAL,
         SePoDiBatchExportFileName.SERVICE_POINT_VERSION, "", ExportExtensionFileType.CSV_EXTENSION, LocalDate.of(2024, 3, 10));
     // then
-    assertThat(exportFilePathV1.fileName()).isEqualTo("actual_date-swiss-only-service_point-2024-03-10");
+    assertThat(exportFilePathV1.getFileName()).isEqualTo("actual_date-swiss-only-service_point-2024-03-10");
   }
 
   @Test

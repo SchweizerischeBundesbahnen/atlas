@@ -1,10 +1,9 @@
 package ch.sbb.exportservice.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.RelationVersion;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.reader.RelationVersionRowMapper;
 import ch.sbb.exportservice.reader.RelationVersionSqlQueryUtil;
 import java.sql.Connection;
@@ -14,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class RelationSqlIntegrationTest extends BasePrmSqlIntegrationTest {
@@ -24,7 +24,7 @@ class RelationSqlIntegrationTest extends BasePrmSqlIntegrationTest {
 
     insertRelation(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), "ch:1:sloid:7000:2",
         LocalDate.of(2000, 1, 1), LocalDate.of(2099, 12, 31));
-    String sqlQuery = RelationVersionSqlQueryUtil.getSqlQuery(PrmExportType.FULL);
+    String sqlQuery = RelationVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.FULL);
 
     //when
     List<RelationVersion> result = executeQuery(sqlQuery);
@@ -40,7 +40,7 @@ class RelationSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     insertRelation(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), "ch:1:sloid:7000:2",
         LocalDate.now(), LocalDate.now());
 
-    String sqlQuery = RelationVersionSqlQueryUtil.getSqlQuery(PrmExportType.ACTUAL);
+    String sqlQuery = RelationVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.ACTUAL);
 
     //when
     List<RelationVersion> result = executeQuery(sqlQuery);
@@ -56,7 +56,7 @@ class RelationSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     insertRelation(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), "ch:1:sloid:7000:2",
         actualTimetableYearChangeDate.minusYears(1), actualTimetableYearChangeDate.plusYears(1));
-    String sqlQuery = RelationVersionSqlQueryUtil.getSqlQuery(PrmExportType.TIMETABLE_FUTURE);
+    String sqlQuery = RelationVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
 
     //when
     List<RelationVersion> result = executeQuery(sqlQuery);

@@ -1,13 +1,13 @@
 package ch.sbb.exportservice.integration;
 
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.exportservice.BatchDataSourceConfigTest;
+import ch.sbb.exportservice.model.SePoDiExportType;
+import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.exportservice.BatchDataSourceConfigTest;
-import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;

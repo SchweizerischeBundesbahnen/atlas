@@ -1,21 +1,21 @@
 package ch.sbb.exportservice.integration;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BoDiDbSchemaCreation;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Files;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -57,7 +57,7 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, BoDiExportType.FULL.toString())
+        .addString(EXPORT_TYPE_JOB_PARAMETER, ExportTypeV2.FULL.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     // when
     JobExecution jobExecution = jobLauncher.run(exportTransportCompanyCsvJob, jobParameters);
@@ -85,7 +85,7 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, BoDiExportType.FULL.toString())
+        .addString(EXPORT_TYPE_JOB_PARAMETER, ExportTypeV2.FULL.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     // when
     JobExecution jobExecution = jobLauncher.run(exportTransportCompanyJsonJob, jobParameters);
