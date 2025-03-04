@@ -7,9 +7,9 @@
 
 <!-- tocstop -->
 
-## Reset specific batch job
+## Reset a specific batch job
 
-In order to rerun a specific job, to import the initial data, use the following script: 
+To rerun a specific job, to import the initial data, use the following script: 
 
 ```sql
 DELETE from batch_job_execution_context where job_execution_id in (
@@ -40,24 +40,10 @@ DELETE from batch_job_execution where job_instance_id in (
 DELETE FROM batch_job_instance where job_name = '{{jobname}}';
 ```
 
-Job names ServicePoint: 
-- importServicePointCsvJob
-- importLoadingPointCsvJob
-- importTrafficPointCsvJob
-
-Job names PRM: 
-- importStopPointCsvJob
-- importPlatformCsvJob
-- importReferencePointCsvJob
-- importParkingLotCsvJob
-- importInfoDeskCsvJob
-- importTicketCounterCsvJob
-- importToiletCsvJob
-- importRelationCsvJob
-
 ## Reset all batch db
 
-:warning: **If you use this script the all jobs are run from scratch!** Please consider to use the above script if you want to 
+:warning: **If you use this script, all jobs are run from scratch!**
+Please consider using the above script if you want to 
 delete just a specific job. 
 
 ```sql
@@ -74,5 +60,13 @@ FROM BATCH_JOB_EXECUTION;
 DELETE
 FROM BATCH_JOB_INSTANCE;
 DELETE
-FROM import_process_item;
+FROM bulk_import;
+DELETE
+FROM bulk_import_log;
+DELETE
+FROM bulk_import_log_seq;
+DELETE
+FROM geo_update_import_process_item;
+DELETE
+FROM permission_restriction;
 ```
