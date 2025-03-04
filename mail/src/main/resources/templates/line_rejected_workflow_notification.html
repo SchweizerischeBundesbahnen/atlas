@@ -72,6 +72,12 @@
             padding-bottom: 30px;
         }
 
+        hr {
+            height: 2px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+        }
     </style>
 </head>
 <body>
@@ -94,6 +100,10 @@
                 <b>Antrag für eine neue/geänderte Linie zurückgewiesen </b>
             </span>
             </div>
+            <i>Pour la version française voir ci-dessous. / Per la versione in lingua italiana vedi sotto.</i>
+            <br><br>
+            <hr>
+            <br>
             <div>
                 Der von Ihnen gestellte Antrag für die <b>[[${properties.get(0).get('swissId')}]]</b> -
                 <b>[[${properties.get(0).get('description')}]]</b> wurde überprüft und zurückgewiesen.
@@ -155,7 +165,7 @@
         <div class='content-container'>
             <div class="header-title-container">
             <span class='header-title'>
-                <b>Richiesta di una linea nuova/modificata approvata</b>
+                <b>Richiesta di una linea nuova/modificata respinta</b>
             </span>
             </div>
             <div>
