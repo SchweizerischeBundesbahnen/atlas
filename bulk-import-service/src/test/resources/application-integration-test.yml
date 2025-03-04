@@ -65,7 +65,7 @@ logging:
         web: error
 info:
   app:
-    name: import-service-point
+    name: bulk-import-service
     version: 1.0.0
 
 kafka:
