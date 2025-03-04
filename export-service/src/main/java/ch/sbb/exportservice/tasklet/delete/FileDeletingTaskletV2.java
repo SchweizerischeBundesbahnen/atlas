@@ -30,7 +30,7 @@ public abstract class FileDeletingTaskletV2 implements Tasklet {
         Files.deleteIfExists(path);
       }
     } catch (IOException e) {
-      log.info("File could not be deleted", e);
+      log.error("File could not be deleted", e);
     }
     log.info("File {} deleted!", filePath);
     return RepeatStatus.FINISHED;
