@@ -20,7 +20,6 @@ public class PrmDataSourceConfiguration {
   @Bean(name = "prmDataSource")
   @ConfigurationProperties("spring.datasource.prm.hikari")
   public DataSource prmDataSource() {
-
     return prmDataSourceProperties()
         .initializeDataSourceBuilder()
         .type(HikariDataSource.class)
