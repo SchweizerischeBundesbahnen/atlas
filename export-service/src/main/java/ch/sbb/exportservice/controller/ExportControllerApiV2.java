@@ -27,13 +27,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Export")
-@RequestMapping("v1/export")
+@RequestMapping("v2/export")
 @RestController
-public class ExportControllerApiV1 {
+public class ExportControllerApiV2 {
 
   private final Map<String, Runnable> runnableMap;
 
-  ExportControllerApiV1(
+  ExportControllerApiV2(
       ExportBusinessOrganisationJobService exportBusinessOrganisationJobService,
       ExportTransportCompanyJobService exportTransportCompanyJobService,
       ExportStopPointJobService exportStopPointJobService,
@@ -56,20 +56,9 @@ public class ExportControllerApiV1 {
     runnableMap.put("prm/toilet-batch", exportToiletJobService::startExportJobs);
     runnableMap.put("prm/parking-lot-batch", exportParkingLotJobService::startExportJobs);
     runnableMap.put("prm/relation-batch", exportRelationJobService::startExportJobs);
-    runnableMap.put("service-point-batch", exportServicePointJobService::startExportJobs);
-    runnableMap.put("traffic-point-batch", exportTrafficPointElementJobService::startExportJobs);
-    runnableMap.put("loading-point-batch", exportLoadingPointJobService::startExportJobs);
-  }
-
-  @PostMapping("{batchName}")
-  @ResponseStatus(HttpStatus.OK)
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200"),
-  })
-  @NewSpan
-  @Async
-  public void startExport(@PathVariable String batchName) {
-    runnableMap.get(batchName).run();
+    runnableMap.put("sepodi/service-point-batch", exportServicePointJobService::startExportJobs);
+    runnableMap.put("sepodi/traffic-point-batch", exportTrafficPointElementJobService::startExportJobs);
+    runnableMap.put("sepodi/loading-point-batch", exportLoadingPointJobService::startExportJobs);
   }
 
   @PostMapping("{businessType}/{batchName}")
@@ -80,9 +69,14 @@ public class ExportControllerApiV1 {
   @NewSpan
   @Async
   public void startExport(@PathVariable String businessType, @PathVariable String batchName) {
-    runnableMap.get(businessType + "/" + batchName).run();
+    final String operationKey = businessType + "/" + batchName;
+    if (!runnableMap.containsKey(operationKey)) {
+      throw new UnsupportedOperationException("Not supporting export of " + operationKey);
+    }
+    runnableMap.get(operationKey).run();
   }
 
 }
 
 // todo: add LiDi endpoints
+// todo: update scheduling
