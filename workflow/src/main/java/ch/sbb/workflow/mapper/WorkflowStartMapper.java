@@ -15,6 +15,7 @@ public class WorkflowStartMapper {
         .description(model.getDescription())
         .workflowComment(model.getWorkflowComment())
         .client(ClientPersonMapper.toEntity(model.getClient()))
+        .number(model.getNumber())
         .build();
   }
 
