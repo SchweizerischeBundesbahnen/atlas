@@ -1,10 +1,9 @@
 package ch.sbb.exportservice.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.entity.sepodi.ServicePointVersion;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.reader.ServicePointVersionRowMapper;
 import ch.sbb.exportservice.reader.ServicePointVersionSqlQueryUtil;
 import java.sql.Connection;
@@ -14,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
@@ -27,7 +27,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     String sboid = "ch:1:sboid:101999";
     insertSharedBusinessOrganisation(sboid, "abb", now, now);
     insertSharedBusinessOrganisation(sboid, "abbIt", now.plusMonths(1), now.plusMonths(2));
-    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_ACTUAL);
+    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_ACTUAL);
 
     //when
     List<ServicePointVersion> result = executeQuery(sqlQuery);
@@ -48,7 +48,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     insertServicePoint(servicePointNumber, now, now, Country.ALBANIA);
     String sboid = "ch:1:sboid:101999";
     insertSharedBusinessOrganisation(sboid, "abb", now.minusMonths(2), now.minusMonths(1));
-    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_ACTUAL);
+    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_ACTUAL);
 
     //when
     List<ServicePointVersion> result = executeQuery(sqlQuery);
@@ -68,7 +68,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     insertServicePoint(1956734, now, now, Country.ALBANIA);
     insertServicePoint(7847382, now.minusMonths(5), now.minusMonths(4), Country.AFGHANISTAN);
     insertServicePoint(8547389, now.plusMonths(4), now.plusMonths(5), Country.SWITZERLAND);
-    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_FULL);
+    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FULL);
 
     //when
     List<ServicePointVersion> result = executeQuery(sqlQuery);
@@ -84,7 +84,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     LocalDate now = LocalDate.now();
     int servicePointNumber = 1905886;
     insertServicePoint(servicePointNumber, now, now, Country.ALBANIA);
-    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_ACTUAL);
+    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_ACTUAL);
 
     //when
     List<ServicePointVersion> result = executeQuery(sqlQuery);
@@ -101,7 +101,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     int servicePointNumber = 1905886;
     insertServicePoint(servicePointNumber, now, now, Country.EGYPT);
-    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE);
+    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
 
     //when
     List<ServicePointVersion> result = executeQuery(sqlQuery);
@@ -120,7 +120,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     insertServicePoint(servicePointNumberAfghanistan, now, now, Country.AFGHANISTAN);
     int servicePointNumberSwitzerland = 8572299;
     insertServicePoint(servicePointNumberSwitzerland, now, now, Country.SWITZERLAND);
-    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.SWISS_ONLY_TIMETABLE_FUTURE);
+    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.SWISS_FUTURE_TIMETABLE);
 
     //when
     List<ServicePointVersion> result = executeQuery(sqlQuery);
@@ -137,7 +137,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     LocalDate now = LocalDate.now();
     int servicePointNumber = 8572299;
     insertServicePoint(servicePointNumber, now, now, Country.SWITZERLAND);
-    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.SWISS_ONLY_ACTUAL);
+    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.SWISS_ACTUAL);
 
     //when
     List<ServicePointVersion> result = executeQuery(sqlQuery);
@@ -156,7 +156,7 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     insertServicePoint(servicePointNumberAfghanistan, now, now, Country.AFGHANISTAN);
     int servicePointNumberSwitzerland = 8572299;
     insertServicePoint(servicePointNumberSwitzerland, now.minusMonths(5), now.minusMonths(4), Country.SWITZERLAND);
-    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.SWISS_ONLY_FULL);
+    String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.SWISS_FULL);
 
     //when
     List<ServicePointVersion> result = executeQuery(sqlQuery);

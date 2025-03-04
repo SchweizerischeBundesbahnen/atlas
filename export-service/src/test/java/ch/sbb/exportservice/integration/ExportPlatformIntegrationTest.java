@@ -1,11 +1,11 @@
 package ch.sbb.exportservice.integration;
 
+import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;

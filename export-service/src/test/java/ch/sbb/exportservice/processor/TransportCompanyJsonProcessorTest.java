@@ -1,11 +1,10 @@
 package ch.sbb.exportservice.processor;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import ch.sbb.exportservice.entity.bodi.TransportCompany;
 import java.time.LocalDateTime;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class TransportCompanyJsonProcessorTest {
