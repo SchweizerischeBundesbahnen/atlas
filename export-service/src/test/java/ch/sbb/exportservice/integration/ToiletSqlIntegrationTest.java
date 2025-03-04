@@ -1,10 +1,9 @@
 package ch.sbb.exportservice.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.prm.ToiletVersion;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.reader.ToiletVersionRowMapper;
 import ch.sbb.exportservice.reader.ToiletVersionSqlQueryUtil;
 import java.sql.Connection;
@@ -14,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 public class ToiletSqlIntegrationTest extends BasePrmSqlIntegrationTest {
@@ -24,7 +24,7 @@ public class ToiletSqlIntegrationTest extends BasePrmSqlIntegrationTest {
 
     insertToilet(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), LocalDate.of(2000, 1, 1),
         LocalDate.of(2099, 12, 31));
-    String sqlQuery = ToiletVersionSqlQueryUtil.getSqlQuery(PrmExportType.FULL);
+    String sqlQuery = ToiletVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.FULL);
 
     //when
     List<ToiletVersion> result = executeQuery(sqlQuery);
@@ -40,7 +40,7 @@ public class ToiletSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     insertToilet(2, "ch:1:sloid:7001:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), LocalDate.now(),
         LocalDate.now());
 
-    String sqlQuery = ToiletVersionSqlQueryUtil.getSqlQuery(PrmExportType.ACTUAL);
+    String sqlQuery = ToiletVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.ACTUAL);
 
     //when
     List<ToiletVersion> result = executeQuery(sqlQuery);
@@ -57,7 +57,7 @@ public class ToiletSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     insertToilet(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000),
         actualTimetableYearChangeDate.minusYears(1),
         actualTimetableYearChangeDate.plusYears(1));
-    String sqlQuery = ToiletVersionSqlQueryUtil.getSqlQuery(PrmExportType.TIMETABLE_FUTURE);
+    String sqlQuery = ToiletVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
 
     //when
     List<ToiletVersion> result = executeQuery(sqlQuery);

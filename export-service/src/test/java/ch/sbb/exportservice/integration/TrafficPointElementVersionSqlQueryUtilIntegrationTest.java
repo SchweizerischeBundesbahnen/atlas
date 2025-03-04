@@ -1,10 +1,9 @@
 package ch.sbb.exportservice.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.entity.sepodi.TrafficPointElementVersion;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.reader.TrafficPointElementVersionRowMapper;
 import ch.sbb.exportservice.reader.TrafficPointElementVersionSqlQueryUtil;
 import java.sql.Connection;
@@ -14,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
@@ -27,7 +27,7 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     insertTrafficPoint("ch:1:sloid:2", LocalDate.of(2020, 1, 1), LocalDate.of(2030, 1, 1));
     insertTrafficPoint("ch:1:sloid:3", LocalDate.of(2050, 1, 1), LocalDate.of(2060, 1, 1));
 
-    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_FULL);
+    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FULL);
 
     //when
     final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);
@@ -51,7 +51,7 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     final String sloid = "ch:1:sloid:77559:0:2";
     insertTrafficPoint(sloid, futureDate, futureDate);
     insertTrafficPoint("ch:1:sloid:1", futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE);
+    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
 
     //when
     final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);
@@ -76,7 +76,7 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     final String sloid = "ch:1:sloid:77559:0:2";
     insertTrafficPoint(sloid, now, now);
     insertTrafficPoint("ch:1:sloid:1", now.minusMonths(5), now.minusMonths(4));
-    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_ACTUAL);
+    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
 
     //when
     final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);
