@@ -20,6 +20,7 @@ public class ServicePointDataSourceConfiguration {
   }
 
   @Bean(name = "servicePointDataSource")
+  @ConfigurationProperties("spring.datasource.service-point.hikari")
   public DataSource servicePointDataSource() {
     return servicePointDataSourceProperties()
         .initializeDataSourceBuilder()
@@ -36,6 +37,5 @@ public class ServicePointDataSourceConfiguration {
   public NamedParameterJdbcTemplate sePoDiJdbcTemplate(@Qualifier("servicePointDataSource") DataSource dataSource) {
     return new NamedParameterJdbcTemplate(dataSource);
   }
-
 
 }
