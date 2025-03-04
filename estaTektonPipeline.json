@@ -41,8 +41,8 @@
       "buildTaskName": "esta-buildah-small"
     },
     {
-      "dockerFile": "import-service-point/docker/Dockerfile",
-      "imageName": "import-service-point",
+      "dockerFile": "bulk-import-service/docker/Dockerfile",
+      "imageName": "bulk-import-service",
       "artifactoryDockerRepo": "atlas.docker",
       "buildTaskName": "esta-buildah-small"
     },
