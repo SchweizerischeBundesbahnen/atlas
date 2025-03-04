@@ -21,7 +21,7 @@
   * [Export LoadingPointVersions](#export-loadingpointversions)
   * [Export StopPointVersions](#export-stoppointversions)
   * [Export PlatformVersion](#export-platformversion)
-  * [Export PlatformVersion](#export-platformversion-1)
+  * [Export ReferencePointVersion](#export-referencepointversion)
   * [Export ContactPointVersion](#export-contactpointversion)
   * [Export Toilet](#export-toilet)
   * [Jobs Recovery](#jobs-recovery)

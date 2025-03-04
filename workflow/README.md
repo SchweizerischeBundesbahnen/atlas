@@ -54,7 +54,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Development
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=workflow-dev
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/workflow-dev
 * Openshift
   Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
 * Project deploy: https://workflow.dev.sbb-cloud.net
@@ -62,7 +62,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Test
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=workflow-test
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/workflow-test
 * Openshift
   Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
 * Project deploy: https://workflow.test.sbb-cloud.net
@@ -70,7 +70,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Integration
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=workflow-int
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/workflow-int
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
 * Project deploy: https://workflow.int.sbb-cloud.net
@@ -78,7 +78,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Production
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=workflow-prod
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/workflow-prod
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
 * Project deploy: https://workflow.prod.sbb-cloud.net

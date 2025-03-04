@@ -92,7 +92,7 @@ Maps, OpenStreetMap, etc.
 
 ### Development
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=service-point-directory-dev
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/service-point-directory-dev
 * Openshift
   Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
 * Project deploy: https://service-point-directory.dev.sbb-cloud.net
@@ -101,7 +101,7 @@ Maps, OpenStreetMap, etc.
 
 ### Test
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=service-point-directory-test
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/service-point-directory-test
 * Openshift
   Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
 * Project deploy: https://service-point-directory.test.sbb-cloud.net
@@ -110,7 +110,7 @@ Maps, OpenStreetMap, etc.
 
 ### Integration
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=service-point-directory-int
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/service-point-directory-int
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
 * Project deploy: https://service-point-directory.int.sbb-cloud.net
@@ -119,7 +119,7 @@ Maps, OpenStreetMap, etc.
 
 ### Production
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=service-point-directory-prod
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/service-point-directory-prod
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
 * Project deploy: https://service-point-directory.prod.sbb-cloud.net
