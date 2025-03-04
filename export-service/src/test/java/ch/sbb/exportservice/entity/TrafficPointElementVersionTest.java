@@ -1,10 +1,9 @@
 package ch.sbb.exportservice.entity;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.exportservice.entity.sepodi.TrafficPointElementVersion;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
  class TrafficPointElementVersionTest {

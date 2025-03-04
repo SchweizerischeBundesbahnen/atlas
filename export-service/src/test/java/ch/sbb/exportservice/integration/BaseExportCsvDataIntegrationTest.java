@@ -1,11 +1,10 @@
 package ch.sbb.exportservice.integration;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
-
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,7 +17,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 public abstract class BaseExportCsvDataIntegrationTest {
 
@@ -29,10 +28,10 @@ public abstract class BaseExportCsvDataIntegrationTest {
   @Qualifier(EXPORT_SERVICE_POINT_CSV_JOB_NAME)
   protected Job exportServicePointCsvJob;
 
-  @MockBean
+  @MockitoBean
   protected AmazonService amazonService;
 
-  @MockBean
+  @MockitoBean
   @Qualifier("fileCsvDeletingTasklet")
   protected DeleteCsvFileTasklet deleteCsvFileTasklet;
 

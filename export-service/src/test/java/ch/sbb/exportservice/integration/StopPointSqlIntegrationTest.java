@@ -1,9 +1,8 @@
 package ch.sbb.exportservice.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.exportservice.entity.prm.StopPointVersion;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.reader.StopPointVersionRowMapper;
 import ch.sbb.exportservice.reader.StopPointVersionSqlQueryUtil;
 import java.sql.Connection;
@@ -13,6 +12,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class StopPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
@@ -22,7 +22,7 @@ class StopPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     //given
 
     insertStopPoint(8507000, "ch:1:sloid:70000", LocalDate.of(2000, 1, 1), LocalDate.of(2099, 12, 31));
-    String sqlQuery = StopPointVersionSqlQueryUtil.getSqlQuery(PrmExportType.FULL);
+    String sqlQuery = StopPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.FULL);
 
     //when
     List<StopPointVersion> result = executeQuery(sqlQuery);
@@ -37,7 +37,7 @@ class StopPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     //given
     insertStopPoint(8507000, "ch:1:sloid:70000", LocalDate.now(), LocalDate.now());
 
-    String sqlQuery = StopPointVersionSqlQueryUtil.getSqlQuery(PrmExportType.ACTUAL);
+    String sqlQuery = StopPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.ACTUAL);
 
     //when
     List<StopPointVersion> result = executeQuery(sqlQuery);
@@ -53,7 +53,7 @@ class StopPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     insertStopPoint(8507000, "ch:1:sloid:70000", actualTimetableYearChangeDate.minusYears(1),
         actualTimetableYearChangeDate.plusYears(1));
-    String sqlQuery = StopPointVersionSqlQueryUtil.getSqlQuery(PrmExportType.TIMETABLE_FUTURE);
+    String sqlQuery = StopPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.FUTURE_TIMETABLE);
 
     //when
     List<StopPointVersion> result = executeQuery(sqlQuery);
