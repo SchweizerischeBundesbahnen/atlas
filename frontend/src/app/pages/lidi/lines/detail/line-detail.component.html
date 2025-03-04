@@ -60,7 +60,7 @@
             </div>
             @if(form.disabled && showWorkflow){
               <app-workflow
-                [descriptionForWorkflow]="selectedVersion.description"
+                [descriptionForWorkflow]="selectedVersion.description!"
                 [lineRecord]="selectedVersion"
                 (workflowEvent)="reloadRecord()"
               ></app-workflow>

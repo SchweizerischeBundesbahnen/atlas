@@ -4,15 +4,12 @@ api.module.ts
 api/api.ts
 api/bulkImport.service.ts
 api/businessOrganisations.service.ts
-api/businessOrganisationsExport.service.ts
 api/clientCredentialAdministration.service.ts
 api/companies.service.ts
-api/exportServicePointBatch.service.ts
 api/geoData.service.ts
 api/lines.service.ts
 api/loadingPoints.service.ts
 api/personWithReducedMobility.service.ts
-api/personWithReducedMobilityExport.service.ts
 api/platformBulkImport.service.ts
 api/servicePointBulkImport.service.ts
 api/servicePointUpdateGeo.service.ts
@@ -38,8 +35,6 @@ model/addExaminants.ts
 model/applicationRole.ts
 model/applicationType.ts
 model/basicAttributeType.ts
-model/boDiBatchExportFileName.ts
-model/boDiExportType.ts
 model/boardingDeviceAttributeType.ts
 model/booleanOptionalAttributeType.ts
 model/bulkImportError.ts
@@ -51,7 +46,6 @@ model/bulkImportResult.ts
 model/bulkImportUpdateContainerPlatformReducedUpdateCsvModel.ts
 model/bulkImportUpdateContainerServicePointCreateCsvModel.ts
 model/bulkImportUpdateContainerServicePointUpdateCsvModel.ts
-model/bulkImportUpdateContainerTrafficPointCreateCsvModel.ts
 model/bulkImportUpdateContainerTrafficPointUpdateCsvModel.ts
 model/businessObjectType.ts
 model/businessOrganisation.ts
@@ -93,6 +87,7 @@ model/country.ts
 model/countryPermissionRestrictionModel.ts
 model/coverage.ts
 model/coverageType.ts
+model/createLineVersionV2.ts
 model/createLoadingPointVersion.ts
 model/createServicePointVersion.ts
 model/createSublineVersionV2.ts
@@ -151,8 +146,6 @@ model/person.ts
 model/platformOverview.ts
 model/platformReducedUpdateCsvModel.ts
 model/platformVersion.ts
-model/prmBatchExportFileName.ts
-model/prmExportType.ts
 model/readContactPointVersion.ts
 model/readDecision.ts
 model/readLoadingPointVersion.ts
@@ -172,8 +165,6 @@ model/referencePointElementType.ts
 model/referencePointVersion.ts
 model/relationVersion.ts
 model/sboidPermissionRestrictionModel.ts
-model/sePoDiBatchExportFileName.ts
-model/sePoDiExportType.ts
 model/servicePointCreateCsvModel.ts
 model/servicePointFotComment.ts
 model/servicePointGeolocation.ts
@@ -213,7 +204,6 @@ model/timetableHearingStatementV2.ts
 model/timetableHearingYear.ts
 model/toiletOverview.ts
 model/toiletVersion.ts
-model/trafficPointCreateCsvModel.ts
 model/trafficPointElementType.ts
 model/trafficPointUpdateCsvModel.ts
 model/transportCompany.ts
