@@ -2,15 +2,75 @@
 
 <!-- toc -->
 
-- [Project Versioning](#project-versioning)
+- [Links](#links)
+  * [Localhost](#localhost)
+  * [Development](#development)
+  * [Test](#test)
+  * [Integration](#integration)
+  * [Production](#production)
+  * [Project Infrastructure](#project-infrastructure)
+- [Development](#development-1)
+  * [Tech Stack](#tech-stack)
 - [GraphAPI](#graphapi)
 
 <!-- tocstop -->
 
-## Project Versioning
+## Links
 
-This project uses [Semantic Versioning](https://semver.org/).
+### Localhost
 
+* Swagger UI: http://localhost:8086/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Api Docs as JSON: http://localhost:8086/v3/api-docs/
+* Api Docs as YAML: http://localhost:8086/v3/api-docs.yaml
+* Rest-api generated doc: http://localhost:8086/static/rest-api.html
+
+### Development
+
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/user-administration-dev
+* Openshift
+  Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
+* Project deploy: https://user-administration.dev.sbb-cloud.net
+* Swagger UI: https://user-administration.dev.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+
+### Test
+
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/user-administration-test
+* Openshift
+  Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
+* Project deploy: https://user-administration.test.sbb-cloud.net
+* Swagger UI: https://user-administration.test.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+
+### Integration
+
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/user-administration-int
+* Openshift
+  Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
+* Project deploy: https://user-administration.int.sbb-cloud.net
+* Swagger UI: https://user-administration.int.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+
+### Production
+
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/user-administration-prod
+* Openshift
+  Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
+* Project deploy: https://user-administration.prod.sbb-cloud.net
+* Swagger UI:  https://user-administration.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+
+### Project Infrastructure
+
+* Jenkins: https://ci.sbb.ch/job/KI_ATLAS/job/atlas/
+* Sonarqube: https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas&branch=master
+* JFrog / Artifactory
+    * Maven repository: https://bin.sbb.ch/ui/repos/tree/General/atlas.mvn
+    * Docker registry: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker
+* Infrastructure
+  documentation: https://confluence.sbb.ch/display/ATLAS/%5BATLAS%5D+7.1.+Infrastruktur+Ebene+1
+
+## Development
+
+### Tech Stack
+
+See [Tech Stack Documentation](../documentation/tech-stack-service.md)
 ## GraphAPI
 
 This project stores roles and BusinessOrganisation responsibilities of our users.

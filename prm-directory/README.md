@@ -51,7 +51,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Development
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=prm-directory-dev
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/prm-directory-dev
 * Openshift
   Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
 * Project deploy: https://prm-directory.dev.sbb-cloud.net
@@ -60,7 +60,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Test
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=prm-directory-test
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/prm-directory-test
 * Openshift
   Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
 * Project deploy: https://prm-directory.test.sbb-cloud.net
@@ -70,7 +70,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Integration
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=prm-directory-int
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/prm-directory-int
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
 * Project deploy: https://prm-directory.int.sbb-cloud.net
@@ -80,7 +80,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Production
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=prm-directory-prod
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/prm-directory-prod
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
 * Project deploy: https://prm-directory.prod.sbb-cloud.net

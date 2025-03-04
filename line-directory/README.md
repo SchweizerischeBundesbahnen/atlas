@@ -41,7 +41,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Development
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=line-directory-dev
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/line-directory-dev
 * Openshift
   Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
 * Project deploy: https://line-directory.dev.sbb-cloud.net
@@ -50,7 +50,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Test
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=line-directory-test
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/line-directory-test
 * Openshift
   Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
 * Project deploy: https://line-directory.test.sbb-cloud.net
@@ -59,7 +59,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Integration
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=line-directory-int
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/line-directory-int
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
 * Project deploy: https://line-directory.int.sbb-cloud.net
@@ -68,7 +68,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Production
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=line-directory-prod
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/line-directory-prod
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
 * Project deploy: https://line-directory.prod.sbb-cloud.net

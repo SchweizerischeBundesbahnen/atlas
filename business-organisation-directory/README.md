@@ -46,7 +46,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Development
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=business-organisation-directory-dev
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/business-organisation-directory-dev
 * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
 * Project deploy: https://business-organisation-directory.dev.sbb-cloud.net
 * Swagger
@@ -54,7 +54,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Test
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=business-organisation-directory-test
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/business-organisation-directory-test
 * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
 * Project deploy: https://business-organisation-directory.test.sbb-cloud.net
 * Swagger
@@ -62,7 +62,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Integration
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=business-organisation-directory-int
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/business-organisation-directory-int
 * Openshift Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
 * Project deploy: https://business-organisation-directory.int.sbb-cloud.net
 * Swagger
@@ -70,7 +70,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Production
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=business-organisation-directory-prod
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/business-organisation-directory-prod
 * Openshift Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
 * Project deploy: https://business-organisation-directory.prod.sbb-cloud.net
 * Swagger UI:  https://business-organisation-directory.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
