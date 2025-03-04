@@ -1,10 +1,10 @@
 package ch.sbb.exportservice.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.entity.prm.LoadingPointVersion;
+import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.reader.LoadingPointVersionRowMapper;
 import ch.sbb.exportservice.reader.LoadingPointVersionSqlQueryUtil;
 import java.sql.Connection;
@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
@@ -30,7 +31,7 @@ class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     insertLoadingPoint(50, servicePointNumber, now.minusMonths(5), now.minusMonths(4));
     insertLoadingPoint(60, servicePointNumber, now, now);
     insertLoadingPoint(70, servicePointNumber, now.plusMonths(4), now.plusMonths(5));
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_FULL);
+    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FULL);
 
     // when
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
@@ -57,7 +58,7 @@ class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     insertSharedBusinessOrganisation(sboid, "testIt", now, now);
     insertLoadingPoint(50, servicePointNumber, now.minusMonths(5), now.minusMonths(4));
     insertLoadingPoint(60, servicePointNumber, now, now);
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_ACTUAL);
+    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_ACTUAL);
 
     // when
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
@@ -80,7 +81,7 @@ class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     insertSharedBusinessOrganisation(sboid, "testIt", futureDate, futureDate);
     insertLoadingPoint(50, servicePointNumber, futureDate, futureDate);
     insertLoadingPoint(60, servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE);
+    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
 
     // when
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
@@ -103,7 +104,7 @@ class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     insertSharedBusinessOrganisation(sboid, "testIt", futureDate.minusMonths(5), futureDate.minusMonths(4));
     insertLoadingPoint(50, servicePointNumber, futureDate, futureDate);
     insertLoadingPoint(60, servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE);
+    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
 
     // when
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
@@ -125,7 +126,7 @@ class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     insertServicePoint(servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4), Country.AFGHANISTAN);
     insertSharedBusinessOrganisation(sboid, "testIt", futureDate.minusMonths(5), futureDate.minusMonths(4));
     insertLoadingPoint(60, servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE);
+    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
 
     // when
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
