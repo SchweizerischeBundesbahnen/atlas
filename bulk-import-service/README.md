@@ -5,7 +5,6 @@
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-  * [Localhost](#localhost)
   * [Development](#development)
   * [Test](#test)
   * [Integration](#integration)
@@ -40,32 +39,27 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ## Links
 
-### Localhost
-
-* Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
-* Project deploy: https://import-service-point-int.dev.sbb-cloud.net
-
 ### Development
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=import-service-point-dev
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/bulk-import-service-dev
 * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
 * Project deploy: https://import-service-point-int.dev.sbb-cloud.net
 
 ### Test
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=import-service-point-test
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/bulk-import-service-test
 * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
 * Project deploy: https://import-service-point-int.test.sbb-cloud.net
 
 ### Integration
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=import-service-point-int
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/bulk-import-service-int
 * Openshift Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
 * Project deploy: https://import-service-point-int.int.sbb-cloud.net
 
 ### Production
 
-* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=import-service-point-prod
+* DB AWS PostgreSQL: https://backstage.sbb-cloud.net/catalog/default/resource/bulk-import-service-prod
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
 
