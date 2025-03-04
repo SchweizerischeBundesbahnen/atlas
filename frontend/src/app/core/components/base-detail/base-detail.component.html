@@ -49,14 +49,6 @@
               }}</span>
             <ng-container #additionalInfo *ngTemplateOutlet="additionalInfo"></ng-container>
           </div>
-          <div *ngIf="controller.form.disabled">
-            <app-workflow
-              *ngIf="controller.isWorkflowable()"
-              [descriptionForWorkflow]="this.controller.getDescriptionForWorkflow()"
-              [lineRecord]="this.controller.record"
-              (workflowEvent)="receiveWorkflowEvent()"
-            ></app-workflow>
-          </div>
         </div>
 
         <div>
@@ -70,7 +62,6 @@
         </div>
       </div>
     </atlas-detail-page-content>
-
 
     <atlas-detail-footer>
       <atlas-button
