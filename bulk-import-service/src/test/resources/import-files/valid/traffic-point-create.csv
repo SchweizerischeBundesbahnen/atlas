@@ -1,0 +1,2 @@
+﻿sloid;validFrom;validTo;trafficPointElementType;parentSloid;stopPointSloid;number;designation;designationOperational;length;boardingAreaHeight;compassDirection;east;north;spatialReference;height
+ch:1:sloid:7000:1:5016;01.04.2021;31.12.2099;BOARDING_PLATFORM;ch:1:sloid:7000:1;ch:1:sloid:7000;;Perron 3;CAMPSTR2;12;16;278;2600037.945;1199749.812;LV95;540.2
