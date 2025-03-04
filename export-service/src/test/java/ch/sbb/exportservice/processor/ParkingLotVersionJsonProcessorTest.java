@@ -1,7 +1,5 @@
 package ch.sbb.exportservice.processor;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
 import ch.sbb.atlas.model.Status;
@@ -9,6 +7,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.prm.ParkingLotVersion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class ParkingLotVersionJsonProcessorTest {

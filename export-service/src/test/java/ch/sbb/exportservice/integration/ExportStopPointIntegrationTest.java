@@ -1,13 +1,13 @@
 package ch.sbb.exportservice.integration;
 
+import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;

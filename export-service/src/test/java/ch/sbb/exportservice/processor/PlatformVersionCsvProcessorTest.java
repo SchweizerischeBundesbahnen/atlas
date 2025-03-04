@@ -1,7 +1,5 @@
 package ch.sbb.exportservice.processor;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
@@ -14,6 +12,7 @@ import ch.sbb.exportservice.entity.prm.PlatformVersion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 public class PlatformVersionCsvProcessorTest {

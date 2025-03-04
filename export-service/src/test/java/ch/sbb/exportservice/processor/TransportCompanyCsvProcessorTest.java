@@ -1,18 +1,11 @@
 package ch.sbb.exportservice.processor;
 
-import static ch.sbb.exportservice.processor.BaseServicePointProcessor.LOCAL_DATE_FORMATTER;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.export.model.prm.ToiletVersionCsvModel;
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.bodi.TransportCompany;
-import ch.sbb.exportservice.entity.prm.ToiletVersion;
 import ch.sbb.exportservice.model.TransportCompanyCsvModel;
-import java.time.LocalDate;
+import static ch.sbb.exportservice.processor.BaseServicePointProcessor.LOCAL_DATE_FORMATTER;
 import java.time.LocalDateTime;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class TransportCompanyCsvProcessorTest {

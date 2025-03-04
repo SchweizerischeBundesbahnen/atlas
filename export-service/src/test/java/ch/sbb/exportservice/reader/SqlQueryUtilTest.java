@@ -2,12 +2,11 @@ package ch.sbb.exportservice.reader;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.versioning.date.DateHelper;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Test;
-
+import ch.sbb.exportservice.model.ExportTypeV2;
 import java.time.LocalDate;
-
+import org.apache.commons.lang3.StringUtils;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class SqlQueryUtilTest {
 
@@ -19,7 +18,7 @@ class SqlQueryUtilTest {
     // given
     // when
     final String query = SqlQueryUtil.getFromStatementQueryForWorldOnlyTypes(
-        SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE, FROM_STATEMENT);
+        ExportTypeV2.WORLD_FUTURE_TIMETABLE, FROM_STATEMENT);
 
     // then
     final LocalDate expectedDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
@@ -32,7 +31,7 @@ class SqlQueryUtilTest {
     // given
     // when
     final String query = SqlQueryUtil.getFromStatementQueryForWorldOnlyTypes(
-        SePoDiExportType.WORLD_FULL, FROM_STATEMENT);
+        ExportTypeV2.WORLD_FULL, FROM_STATEMENT);
 
     // then
     final LocalDate expectedDate = LocalDate.now();
@@ -45,7 +44,7 @@ class SqlQueryUtilTest {
     // given
     // when
     final String query = SqlQueryUtil.getFromStatementQueryForWorldOnlyTypes(
-        SePoDiExportType.WORLD_ONLY_ACTUAL, FROM_STATEMENT);
+        ExportTypeV2.WORLD_ACTUAL, FROM_STATEMENT);
 
     // then
     final LocalDate expectedDate = LocalDate.now();
@@ -57,7 +56,7 @@ class SqlQueryUtilTest {
   void shouldReturnWhereClauseForWorldOnlyFutureTimetable() {
     // given
     // when
-    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE, WHERE_CLAUSE);
+    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(ExportTypeV2.WORLD_FUTURE_TIMETABLE, WHERE_CLAUSE);
 
     // then
     final LocalDate expectedDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
@@ -69,7 +68,7 @@ class SqlQueryUtilTest {
   void shouldReturnWhereClauseForWorldOnlyFull() {
     // given
     // when
-    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(SePoDiExportType.WORLD_FULL, WHERE_CLAUSE);
+    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(ExportTypeV2.WORLD_FULL, WHERE_CLAUSE);
 
     // then
     assertThat(query).isEqualTo("");
@@ -79,7 +78,7 @@ class SqlQueryUtilTest {
   void shouldReturnWhereClauseForWorldOnlyActual() {
     // given
     // when
-    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(SePoDiExportType.WORLD_ONLY_ACTUAL, WHERE_CLAUSE);
+    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(ExportTypeV2.WORLD_ACTUAL, WHERE_CLAUSE);
 
     // then
     final LocalDate expectedDate = LocalDate.now();
@@ -98,7 +97,7 @@ class SqlQueryUtilTest {
     String groupByStatement = "GROUP BY cpv.id";
     // when
     final String query = SqlQueryUtil.buildSqlQuery(select,
-        SqlQueryUtil.getWhereClause(PrmExportType.FULL, whereStatementContactPointVersion), groupByStatement);
+        SqlQueryUtil.getWhereClause(ExportTypeV2.FULL, whereStatementContactPointVersion), groupByStatement);
     final String expectedQuery = select + StringUtils.SPACE + groupByStatement + ";";
 
     // then
@@ -116,7 +115,7 @@ class SqlQueryUtilTest {
     String groupByStatement = "GROUP BY cpv.id";
     // when
     final String query = SqlQueryUtil.buildSqlQuery(select,
-        SqlQueryUtil.getWhereClause(PrmExportType.ACTUAL, whereStatementContactPointVersion), groupByStatement);
+        SqlQueryUtil.getWhereClause(ExportTypeV2.ACTUAL, whereStatementContactPointVersion), groupByStatement);
     final LocalDate expectedDate = LocalDate.now();
     final String expectedDateAsString = DateHelper.getDateAsSqlString(expectedDate);
     final String expectedQuery =
@@ -138,7 +137,7 @@ class SqlQueryUtilTest {
     String groupByStatement = "GROUP BY cpv.id";
     // when
     final String query = SqlQueryUtil.buildSqlQuery(select,
-        SqlQueryUtil.getWhereClause(PrmExportType.TIMETABLE_FUTURE, whereStatementContactPointVersion), groupByStatement);
+        SqlQueryUtil.getWhereClause(ExportTypeV2.FUTURE_TIMETABLE, whereStatementContactPointVersion), groupByStatement);
     final LocalDate futureTimeTableYearDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     final String expectedDateAsString = DateHelper.getDateAsSqlString(futureTimeTableYearDate);
     final String expectedQuery =
