@@ -1,7 +1,5 @@
 package ch.sbb.exportservice.processor;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
@@ -9,6 +7,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.entity.prm.ContactPointVersion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class ContactPointVersionJsonProcessorTest {

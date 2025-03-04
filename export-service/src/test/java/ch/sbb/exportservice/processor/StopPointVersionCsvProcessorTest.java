@@ -1,7 +1,5 @@
 package ch.sbb.exportservice.processor;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
@@ -12,6 +10,7 @@ import ch.sbb.exportservice.entity.prm.StopPointVersion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class StopPointVersionCsvProcessorTest {
