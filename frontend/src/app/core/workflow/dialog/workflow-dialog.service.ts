@@ -12,7 +12,10 @@ export class WorkflowDialogService {
 
   constructor(private dialog: MatDialog) {}
 
-  openNew(lineRecord: LineRecord, descriptionForWorkflow: string): Observable<boolean> {
+  openNew(
+    lineRecord: LineRecord,
+    descriptionForWorkflow: string
+  ): Observable<boolean> {
     const dialogData: WorkflowDialogData = {
       title: 'WORKFLOW.BUTTON.ADD',
       message: '',
@@ -20,12 +23,16 @@ export class WorkflowDialogService {
       confirmText: 'WORKFLOW.BUTTON.START',
       lineRecord: lineRecord,
       descriptionForWorkflow: descriptionForWorkflow,
+      number: lineRecord.number,
     };
 
     return this.open(dialogData);
   }
 
-  openExisting(lineRecord: LineRecord, descriptionForWorkflow: string): Observable<boolean> {
+  openExisting(
+    lineRecord: LineRecord,
+    descriptionForWorkflow: string
+  ): Observable<boolean> {
     const dialogData: WorkflowDialogData = {
       title: 'WORKFLOW.TITLE',
       message: '',
@@ -33,6 +40,7 @@ export class WorkflowDialogService {
       confirmText: 'WORKFLOW.BUTTON.START',
       lineRecord: lineRecord,
       descriptionForWorkflow: descriptionForWorkflow,
+      number: lineRecord.number,
     };
     return this.open(dialogData);
   }

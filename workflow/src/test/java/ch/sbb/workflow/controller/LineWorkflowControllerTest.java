@@ -65,6 +65,7 @@ class LineWorkflowControllerTest extends BaseControllerApiTest {
         .workflowComment("comment")
         .workflowType(WorkflowType.LINE)
         .businessObjectId(123456L)
+        .number("IC8")
         .build();
 
     controller.startWorkflow(workflowModel);
@@ -92,6 +93,7 @@ class LineWorkflowControllerTest extends BaseControllerApiTest {
         .workflowComment("comment")
         .checkComment("comment")
         .businessObjectId(123456L)
+        .number("IC8")
         .build();
 
     LineWorkflow entity = workflowRepository.save(lineWorkflow);
@@ -119,6 +121,7 @@ class LineWorkflowControllerTest extends BaseControllerApiTest {
         .checkComment("comment")
         .workflowType(WorkflowType.LINE)
         .businessObjectId(123456L)
+        .number("IC8")
         .build();
 
     //given
@@ -250,6 +253,7 @@ class LineWorkflowControllerTest extends BaseControllerApiTest {
         .workflowComment("comment")
         .workflowType(WorkflowType.LINE)
         .businessObjectId(123456L)
+        .number("IC8")
         .build();
     WorkflowModel startedWorkflow = controller.startWorkflow(workflowModel);
 
