@@ -33,7 +33,9 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
       description: 'This is just a description.',
       number: '1111111',
     }).then((response) => {
-      expect(response.status).to.equal(201);
+      expect(response.status).to.equal(
+        CommonUtils.HTTP_REST_API_RESPONSE_CREATED
+      );
 
       expect(response.body).to.have.property('slnid').that.is.a('string');
       slnid = response.body.slnid;

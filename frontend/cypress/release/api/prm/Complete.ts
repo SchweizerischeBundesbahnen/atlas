@@ -491,7 +491,7 @@ describe('PRM: Complete Toilet', { testIsolation: false }, () => {
   );
 
   const validFrom = ReleaseApiUtils.todayAsAtlasString();
-  const validTo = ReleaseApiUtils.todayAsAtlasString();
+  let validTo = ReleaseApiUtils.todayAsAtlasString();
   const referencePointElementType = `TOILET`;
   const numberOfExpectedToilets = 1;
 
@@ -652,6 +652,7 @@ describe('PRM: Complete Toilet', { testIsolation: false }, () => {
     stepFreeAccess = ReleaseApiUtils.extractOneRandomValue(
       PrmConstants.stepFreeAccessValues()
     );
+    validTo = ReleaseApiUtils.tomorrowAsAtlasString();
 
     CommonUtils.put(`/prm-directory/v1/relations/${relationId}`, {
       sloid: toiletSloid,
@@ -737,7 +738,7 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
   );
 
   const validFrom = ReleaseApiUtils.todayAsAtlasString();
-  const validTo = ReleaseApiUtils.todayAsAtlasString();
+  let validTo = ReleaseApiUtils.todayAsAtlasString();
   const contactPointType = 'TICKET_COUNTER';
   const referencePointElementType = 'CONTACT_POINT';
   const openingHours = 'Öffnungszeiten: 08:00 - 20:00';
@@ -916,6 +917,7 @@ describe('PRM: Complete Ticket Counter', { testIsolation: false }, () => {
     stepFreeAccess = ReleaseApiUtils.extractOneRandomValue(
       PrmConstants.stepFreeAccessValues()
     );
+    validTo = ReleaseApiUtils.tomorrowAsAtlasString();
 
     CommonUtils.put(`/prm-directory/v1/relations/${relationId}`, {
       sloid: ticketCounterSloid,
@@ -1002,7 +1004,7 @@ describe('PRM: Complete Platform', { testIsolation: false }, () => {
 
   const referencePointElementType = 'PLATFORM';
   const validFrom = ReleaseApiUtils.todayAsAtlasString();
-  const validTo = ReleaseApiUtils.todayAsAtlasString();
+  let validTo = ReleaseApiUtils.todayAsAtlasString();
 
   const adviceAccessInfo = 'adviceAccessInfo';
 
@@ -1201,6 +1203,7 @@ describe('PRM: Complete Platform', { testIsolation: false }, () => {
     stepFreeAccess = ReleaseApiUtils.extractOneRandomValue(
       PrmConstants.stepFreeAccessValues()
     );
+    validTo = ReleaseApiUtils.tomorrowAsAtlasString();
 
     CommonUtils.put(`/prm-directory/v1/relations/${relationId}`, {
       sloid: trafficPointSloid,
@@ -1294,9 +1297,8 @@ describe('PRM: Complete Parking Lot', { testIsolation: false }, () => {
   );
 
   const validFrom = ReleaseApiUtils.todayAsAtlasString();
-  const validTo = ReleaseApiUtils.todayAsAtlasString();
+  let validTo = ReleaseApiUtils.todayAsAtlasString();
   const referencePointElementType = 'PARKING_LOT';
-  const openingHours = 'Öffnungszeiten: 08:00 - 20:00';
 
   const validateCommonCompleteParkingLotAttributes = (prmObject) => {
     validatePrmObject(prmObject, validFrom, validTo);
@@ -1488,6 +1490,7 @@ describe('PRM: Complete Parking Lot', { testIsolation: false }, () => {
     stepFreeAccess = ReleaseApiUtils.extractOneRandomValue(
       PrmConstants.stepFreeAccessValues()
     );
+    validTo = ReleaseApiUtils.tomorrowAsAtlasString();
 
     CommonUtils.put(`/prm-directory/v1/relations/${relationId}`, {
       sloid: parkingLotSloid,
@@ -1537,7 +1540,7 @@ describe('PRM: Complete Information Desk', { testIsolation: false }, () => {
   );
 
   const validFrom = ReleaseApiUtils.todayAsAtlasString();
-  const validTo = ReleaseApiUtils.todayAsAtlasString();
+  let validTo = ReleaseApiUtils.todayAsAtlasString();
   const contactPointType = 'INFORMATION_DESK';
   const referencePointElementType = 'CONTACT_POINT';
   const openingHours = 'Öffnungszeiten: 08:00 - 20:00';
@@ -1735,6 +1738,7 @@ describe('PRM: Complete Information Desk', { testIsolation: false }, () => {
     stepFreeAccess = ReleaseApiUtils.extractOneRandomValue(
       PrmConstants.stepFreeAccessValues()
     );
+    validTo = ReleaseApiUtils.tomorrowAsAtlasString();
 
     CommonUtils.put(`/prm-directory/v1/relations/${relationId}`, {
       sloid: informationDeskSloid,
