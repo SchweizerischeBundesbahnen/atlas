@@ -37,6 +37,11 @@ public class WorkflowModel {
   @NotBlank
   private String swissId;
 
+  @Schema(description = "Number", example = "IC8")
+  @Size(max = AtlasFieldLengths.LENGTH_50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String number;
+
   @Schema(description = "Workflow Type", example = "LINE")
   @NotNull
   private WorkflowType workflowType;
