@@ -1,8 +1,5 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
-
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.exportservice.entity.bodi.TransportCompany;
@@ -19,6 +16,8 @@ import ch.sbb.exportservice.reader.TransportCompanyRowMapper;
 import ch.sbb.exportservice.reader.TransportCompanySqlQueryUtil;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvTransportCompanyWriter;
 import ch.sbb.exportservice.writer.JsonTransportCompanyWriter;
@@ -214,5 +213,5 @@ public class TransportCompanyExportBatchConfig {
   public JsonFileItemWriter<TransportCompanyModel> transportCompanyJsonFileItemWriter() {
     return jsonTransportCompanyWriter.getWriter(ExportObjectV2.TRANSPORT_COMPANY, ExportTypeV2.FULL);
   }
-
+  // todo: include deletion
 }
