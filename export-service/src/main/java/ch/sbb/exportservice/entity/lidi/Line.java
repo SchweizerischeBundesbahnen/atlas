@@ -27,9 +27,10 @@ public class Line extends BaseEntity {
 
   private Long id;
   private String slnid;
-  private LocalDate validFrom;
 
+  private LocalDate validFrom;
   private LocalDate validTo;
+
   private Status status;
   private LineType lineType;
   private LineConcessionType concessionType;
