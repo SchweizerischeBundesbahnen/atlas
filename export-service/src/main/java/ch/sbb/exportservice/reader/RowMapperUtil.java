@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -23,10 +24,16 @@ public class RowMapperUtil {
   }
 
   public static <T> Set<T> stringToSet(String values, Function<String, T> mapping) {
+    if (values == null) {
+      return Collections.emptySet();
+    }
     return Arrays.stream(values.split("\\|")).map(mapping).collect(Collectors.toSet());
   }
 
   public static String stringsToPipedString(Collection<String> collection) {
+    if (collection == null || collection.isEmpty()) {
+      return "";
+    }
     return String.join("|", collection);
   }
 
