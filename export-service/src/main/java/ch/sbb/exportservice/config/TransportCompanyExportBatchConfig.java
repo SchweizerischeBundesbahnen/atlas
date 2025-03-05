@@ -14,6 +14,8 @@ import ch.sbb.exportservice.processor.TransportCompanyCsvProcessor;
 import ch.sbb.exportservice.processor.TransportCompanyJsonProcessor;
 import ch.sbb.exportservice.reader.TransportCompanyRowMapper;
 import ch.sbb.exportservice.reader.TransportCompanySqlQueryUtil;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
@@ -66,6 +68,20 @@ public class TransportCompanyExportBatchConfig {
     return itemReader;
   }
 
+  // --- CSV ---
+  @Bean
+  @Qualifier(EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME)
+  public Job exportTransportCompanyCsvJob(ItemReader<TransportCompany> itemReader) {
+    return new JobBuilder(EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME, jobRepository)
+        .listener(jobCompletionListener)
+        .incrementer(new RunIdIncrementer())
+        .flow(exportTransportCompanyCsvStep(itemReader))
+        .next(uploadTransportCompanyCsvFileStep())
+        .next(deleteTransportCompanyCsvFileStep())
+        .end()
+        .build();
+  }
+
   @Bean
   public Step exportTransportCompanyCsvStep(ItemReader<TransportCompany> itemReader) {
     final String stepName = "exportTransportCompanyCsvStep";
@@ -93,19 +109,7 @@ public class TransportCompanyExportBatchConfig {
     return csvTransportCompanyWriter.csvWriter(ExportObjectV2.TRANSPORT_COMPANY, ExportTypeV2.FULL);
   }
 
-  @Bean
-  @Qualifier(EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME)
-  public Job exportTransportCompanyCsvJob(ItemReader<TransportCompany> itemReader) {
-    return new JobBuilder(EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME, jobRepository)
-        .listener(jobCompletionListener)
-        .incrementer(new RunIdIncrementer())
-        .flow(exportTransportCompanyCsvStep(itemReader))
-        .next(uploadTransportCompanyCsvFileStep())
-        //        .next(deleteTransportCompanyCsvFileStep())
-        .end()
-        .build();
-  }
-
+  // BEGIN: Upload Csv
   @Bean
   public Step uploadTransportCompanyCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
@@ -123,24 +127,29 @@ public class TransportCompanyExportBatchConfig {
         .build();
     return new UploadCsvFileTaskletV2(filePath);
   }
+  // END: Upload Csv
 
-  /*@Bean
+  // BEGIN: Delete Csv
+  @Bean
   public Step deleteTransportCompanyCsvFileStep() {
-    return new StepBuilder("deleteCsvFiles", jobRepository)
-        .tasklet(transportCompanyCsvFileDeletingTasklet(), transactionManager)
+    return new StepBuilder("deleteCsvFile", jobRepository)
+        .tasklet(deleteTransportCompanyCsvFileTasklet(), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
   @StepScope
-  public DeleteCsvFileTasklet transportCompanyCsvFileDeletingTasklet(
-  ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TRANSPORT_COMPANY,
-        ExportTypeV2.FULL);
-    return new DeleteCsvFileTasklet(filePathBuilder);
-  }*/
+  public DeleteCsvFileTaskletV2 deleteTransportCompanyCsvFileTasklet() {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TRANSPORT_COMPANY, ExportTypeV2.FULL)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteCsvFileTaskletV2(filePath);
+  }
+  // END: Delete Csv
 
+  // --- JSON ---
   @Bean
   @Qualifier(EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME)
   public Job exportTransportCompanyJsonJob(ItemReader<TransportCompany> itemReader) {
@@ -149,44 +158,10 @@ public class TransportCompanyExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportTransportCompanyJsonStep(itemReader))
         .next(uploadTransportCompanyJsonFileStep())
-        //        .next(deleteTransportCompanyJsonFileStep())
+        .next(deleteTransportCompanyJsonFileStep())
         .end()
         .build();
   }
-
-  @Bean
-  public Step uploadTransportCompanyJsonFileStep() {
-    return new StepBuilder("uploadJsonFile", jobRepository)
-        .tasklet(uploadTransportCompanyJsonFileTasklet(), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public UploadJsonFileTaskletV2 uploadTransportCompanyJsonFileTasklet() {
-    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TRANSPORT_COMPANY, ExportTypeV2.FULL)
-        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
-        .systemDir(fileService.getDir())
-        .build();
-    return new UploadJsonFileTaskletV2(filePath);
-  }
-
-  /*@Bean
-  public Step deleteTransportCompanyJsonFileStep() {
-    return new StepBuilder("deleteJsonFiles", jobRepository)
-        .tasklet(fileTransportCompanyJsonDeletingTasklet(), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet fileTransportCompanyJsonDeletingTasklet() {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TRANSPORT_COMPANY,
-        ExportTypeV2.FULL);
-    return new DeleteJsonFileTasklet(filePathBuilder);
-  }*/
 
   @Bean
   public Step exportTransportCompanyJsonStep(ItemReader<TransportCompany> itemReader) {
@@ -213,5 +188,45 @@ public class TransportCompanyExportBatchConfig {
   public JsonFileItemWriter<TransportCompanyModel> transportCompanyJsonFileItemWriter() {
     return jsonTransportCompanyWriter.getWriter(ExportObjectV2.TRANSPORT_COMPANY, ExportTypeV2.FULL);
   }
-  // todo: include deletion
+
+  // BEGIN: Upload Json
+  @Bean
+  public Step uploadTransportCompanyJsonFileStep() {
+    return new StepBuilder("uploadJsonFile", jobRepository)
+        .tasklet(uploadTransportCompanyJsonFileTasklet(), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTaskletV2 uploadTransportCompanyJsonFileTasklet() {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TRANSPORT_COMPANY, ExportTypeV2.FULL)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadJsonFileTaskletV2(filePath);
+  }
+  // END: Upload Json
+
+  // BEGIN: Delete Json
+  @Bean
+  public Step deleteTransportCompanyJsonFileStep() {
+    return new StepBuilder("deleteJsonFile", jobRepository)
+        .tasklet(deleteTransportCompanyJsonFileTasklet(), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteJsonFileTaskletV2 deleteTransportCompanyJsonFileTasklet() {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TRANSPORT_COMPANY, ExportTypeV2.FULL)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteJsonFileTaskletV2(filePath);
+  }
+  // END: Delete Json
+
 }
