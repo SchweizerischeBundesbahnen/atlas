@@ -60,7 +60,7 @@ describe(
           .property('meansOfTransport')
           .to.exist.and.to.be.an('array')
           .that.has.lengthOf(0);
-        
+
         setEtagVersion(response.body);
       });
     });
@@ -95,7 +95,6 @@ describe(
       });
     });
 
-    // TODO: Fix Step-Count at last
     it('Step-5: Update Service Point to OperatingPoint', () => {
       CommonUtils.put(
         `/service-point-directory/v1/service-points/${servicePointId}`,
