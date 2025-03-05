@@ -1,8 +1,5 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_JSON_JOB_NAME;
-
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
 import ch.sbb.exportservice.entity.lidi.TimetableFieldNumber;
@@ -19,6 +16,8 @@ import ch.sbb.exportservice.reader.TimetableFieldNumberRowMapper;
 import ch.sbb.exportservice.reader.TimetableFieldNumberSqlQueryUtil;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvTimetableFieldNumberWriter;
 import ch.sbb.exportservice.writer.JsonTimetableFieldNumberWriter;
@@ -224,5 +223,5 @@ public class TimetableFieldNumberExportBatchConfig {
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     return jsonWriter.getWriter(ExportObjectV2.TIMETABLE_FIELD_NUMBER, exportTypeV2);
   }
-
+  // todo: include deletion
 }
