@@ -73,6 +73,7 @@ public class LineWorkflowBuilderNotificationService {
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("swissId", lineWorkflow.getSwissId());
+    mailContentProperty.put("number", lineWorkflow.getNumber());
     mailContentProperty.put("description", lineWorkflow.getDescription());
     mailContentProperty.put("checkComment", StringUtils.trimToNull(lineWorkflow.getCheckComment()));
     mailContentProperty.put("url", getUrl(lineWorkflow));
