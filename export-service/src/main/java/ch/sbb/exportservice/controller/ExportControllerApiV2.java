@@ -85,5 +85,4 @@ public class ExportControllerApiV2 {
 
 }
 
-// todo: add LiDi endpoints
 // todo: update scheduling

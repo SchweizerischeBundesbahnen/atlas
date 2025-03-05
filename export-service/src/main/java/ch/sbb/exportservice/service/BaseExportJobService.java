@@ -1,18 +1,16 @@
 package ch.sbb.exportservice.service;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_V1_JOB_PARAMETER;
-
 import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_V1_JOB_PARAMETER;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -36,13 +34,17 @@ public abstract class BaseExportJobService {
   protected abstract List<JobParams> getExportTypes();
 
   protected void startExportJob(JobParams jobParams, Job job) {
-    JobParameters jobParameters = new JobParametersBuilder()
+    final JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
         .addString(EXPORT_TYPE_JOB_PARAMETER, jobParams.exportTypeV2.toString())
-        .addString(EXPORT_TYPE_V1_JOB_PARAMETER, jobParams.exportTypeV1.toString())
-        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis());
+
+    if (jobParams.exportTypeV1 != null) {
+      jobParametersBuilder.addString(EXPORT_TYPE_V1_JOB_PARAMETER, jobParams.exportTypeV1.toString());
+    }
+
     try {
-      JobExecution execution = jobLauncher.run(job, jobParameters);
+      JobExecution execution = jobLauncher.run(job, jobParametersBuilder.toJobParameters());
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
@@ -64,7 +66,12 @@ public abstract class BaseExportJobService {
 
     private final ExportTypeV2 exportTypeV2;
     private final ExportTypeBase exportTypeV1;
-  }
-}
 
-// todo: add LiDi JobServices
+    protected JobParams(ExportTypeV2 exportTypeV2) {
+      this.exportTypeV2 = exportTypeV2;
+      this.exportTypeV1 = null;
+    }
+
+  }
+
+}
