@@ -20,14 +20,14 @@ public class TimetableFieldNumberSqlQueryUtil extends SqlQueryUtil {
           left join timetable_field_line_relation tflr on tv.id = tflr.timetable_field_version_id
       """;
   private static final String GROUP_BY_STATEMENT = "group by tv.id, tv.ttfnid, tv.valid_from";
-  private static final String ORDER_BY_STATEMENT = "ORDER BY tv.ttfnid, tv.validFrom";
+  private static final String ORDER_BY_STATEMENT = "ORDER BY tv.ttfnid, tv.valid_from";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
     String additionalWhereClause = "";
     if (exportTypeV2 != FULL) {
       String date = DateHelper.getDateAsSqlString(exportTypeV2 == ACTUAL ? LocalDate.now()
           : FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
-      additionalWhereClause = "WHERE '%s' >= tv.validFrom AND '%s' <= tv.validTo".formatted(date, date);
+      additionalWhereClause = "WHERE '%s' >= tv.valid_from AND '%s' <= tv.valid_to".formatted(date, date);
     }
 
     final String sqlQuery = buildSqlQuery(SELECT_STATEMENT, additionalWhereClause, GROUP_BY_STATEMENT, ORDER_BY_STATEMENT);
