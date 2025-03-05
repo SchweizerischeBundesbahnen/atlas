@@ -23,6 +23,7 @@ import org.hibernate.annotations.Immutable;
 @Immutable
 public class TimetableFieldNumber extends BaseEntity {
 
+  private Long id;
   private String ttfnid;
   private LocalDate validFrom;
   private LocalDate validTo;
