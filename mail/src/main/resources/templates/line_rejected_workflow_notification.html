@@ -105,7 +105,9 @@
             <hr>
             <br>
             <div>
-                Der von Ihnen gestellte Antrag für die <b>[[${properties.get(0).get('swissId')}]]</b> -
+                Der von Ihnen gestellte Antrag für die
+                <b>[[${properties.get(0).get('number')}]]</b>
+                <b>[[${properties.get(0).get('swissId')}]]</b> -
                 <b>[[${properties.get(0).get('description')}]]</b> wurde überprüft und zurückgewiesen.
                 <br/><br/>
                 <span th:if="${properties.get(0).get('checkComment')}">
@@ -137,7 +139,9 @@
             </span>
             </div>
             <div>
-                La demande que vous avez faite pour la ligne <b>[[${properties.get(0).get('swissId')}]]</b> -
+                La demande que vous avez faite pour la ligne
+                <b>[[${properties.get(0).get('number')}]]</b>
+                <b>[[${properties.get(0).get('swissId')}]]</b> -
                 <b>[[${properties.get(0).get('description')}]]</b> a été examinée et rejetée.
                 <br/><br/>
                 <span th:if="${properties.get(0).get('checkComment')}">
@@ -169,7 +173,9 @@
             </span>
             </div>
             <div>
-                La sua richiesta per la linea <b>[[${properties.get(0).get('swissId')}]]</b> -
+                La sua richiesta per la linea
+                <b>[[${properties.get(0).get('number')}]]</b>
+                <b>[[${properties.get(0).get('swissId')}]]</b> -
                 <b>[[${properties.get(0).get('description')}]]</b> è stata esaminata e respinta.
                 <br/><br/>
                 <span th:if="${properties.get(0).get('checkComment')}">
