@@ -65,7 +65,7 @@ public class AmazonServiceImpl implements AmazonService {
     return zipPutResult.url();
   }
 
-  private ZipPutResult zipAndPutFile(AmazonBucket bucket, File file, String dir) throws IOException {
+  private ZipPutResult zipAndPutFile(AmazonBucket bucket, File file, String dir) {
     File zipFile = fileService.zipFile(file);
     String filePathName = getFilePathName(zipFile, dir);
     PutObjectRequest putObjectRequest = PutObjectRequest.builder()

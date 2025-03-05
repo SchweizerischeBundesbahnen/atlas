@@ -22,15 +22,12 @@ public class RenameTasklet implements Tasklet {
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    try {
-      final File v2File = new File(filePathV2.actualDateFilePath());
-      final File v1File = new File(filePathV1.actualDateFilePath());
-      final boolean renamed = v2File.renameTo(v1File);
-      if (!renamed) {
-        throw new RuntimeException("Could not rename!");
-      }
-    } catch (Exception e) {
-      log.error("Error during execution of RenameTasklet", e);
+    final File v2File = new File(filePathV2.actualDateFilePath());
+    final File v1File = new File(filePathV1.actualDateFilePath());
+    final boolean renamed = v2File.renameTo(v1File);
+    if (!renamed) {
+      log.error("Error during execution of RenameTasklet");
+      throw new RuntimeException("Could not rename!");
     }
     return RepeatStatus.FINISHED;
   }
