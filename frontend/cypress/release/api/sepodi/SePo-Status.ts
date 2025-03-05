@@ -14,8 +14,8 @@ describe('SePo: Status Scenario', { testIsolation: false }, () => {
   let sboid: string;
   let height: number = 0;
   let scenario: string;
-  let north: string;
-  let east: string;
+  let north: number;
+  let east: number;
   let validFrom: string;
   let validTo: string;
   let designationOfficial: string;
@@ -104,12 +104,13 @@ describe('SePo: Status Scenario', { testIsolation: false }, () => {
   const setServicePointAttributes = (
     heightToBeSet: number,
     designationOfficialPrefix: string,
-    validToMonth: string
+    validToMonth: string,
+    updateDesignationLong: boolean = true
   ) => {
     height = heightToBeSet;
     scenario = height.toString().padStart(2, '0');
-    north = `12051${scenario}.${scenario}`;
-    east = `26520${scenario}.${scenario}`;
+    north = Number(`12051${scenario}.${scenario}`);
+    east = Number(`26520${scenario}.${scenario}`);
 
     // If validFrom-validTo > 60 days -> status=DRAFT and
     // if validFrom-validTo < 60 days -> status=VALIDATED
@@ -117,7 +118,9 @@ describe('SePo: Status Scenario', { testIsolation: false }, () => {
     validTo = `20${scenario}-${validToMonth}-31`;
 
     designationOfficial = `${designationOfficialPrefix} ${timeWithSeconds}`;
-    designationLong = `Scenario ${scenario} at ${timeWithSeconds}`;
+    if (updateDesignationLong) {
+      designationLong = `Scenario ${scenario} at ${timeWithSeconds}`;
+    }
   };
 
   const getBody = (additionalAttributes: object) => {
@@ -490,7 +493,8 @@ describe('SePo: Status Scenario', { testIsolation: false }, () => {
     setServicePointAttributes(
       99, // Change marker
       leaveMeUnchanged,
-      validitySmallerThan60DaysCausesStatusToBeValidated
+      validitySmallerThan60DaysCausesStatusToBeValidated,
+      false
     );
 
     // Validity before first and after last version so that all 15 versions are enlarged
@@ -513,20 +517,25 @@ describe('SePo: Status Scenario', { testIsolation: false }, () => {
         response,
         CommonUtils.HTTP_REST_API_RESPONSE_OK
       );
-      debugger;
+
+      expect(body).to.be.an('array').and.be.of.length(15);
+      
       body.forEach((version) => {
-        expect(version).property('status').be(statusDraft);
+        expect(version).to.have.property('status').which.equals(statusDraft);
+
+        expect(version).to.have.property('validFrom').which.contains('01-01');
+        expect(version).to.have.property('validTo').which.contains('12-31');
 
         expect(version)
           .property('servicePointGeolocation')
           .property('lv95')
           .property('north')
-          .be(north);
+          .equals(north);
         expect(version)
           .property('servicePointGeolocation')
           .property('lv95')
           .property('east')
-          .be(east);
+          .equals(east);
       });
     });
   });
