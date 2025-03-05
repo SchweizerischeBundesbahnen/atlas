@@ -28,9 +28,10 @@ public class Subline extends BaseEntity {
   private Long id;
   private String slnid;
   private String mainlineSlnid;
-  private LocalDate validFrom;
 
+  private LocalDate validFrom;
   private LocalDate validTo;
+
   private Status status;
   private SublineType sublineType;
   private SublineConcessionType concessionType;
