@@ -1,24 +1,38 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
-
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.exportservice.entity.sepodi.TrafficPointElementVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
+import ch.sbb.exportservice.model.ExportFilePathV1;
+import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.model.TrafficPointVersionCsvModel;
 import ch.sbb.exportservice.processor.TrafficPointElementVersionCsvProcessor;
 import ch.sbb.exportservice.processor.TrafficPointElementVersionJsonProcessor;
 import ch.sbb.exportservice.reader.TrafficPointElementVersionRowMapper;
 import ch.sbb.exportservice.reader.TrafficPointElementVersionSqlQueryUtil;
+import ch.sbb.exportservice.tasklet.RenameTasklet;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTasklet;
+import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvTrafficPointElementVersionWriter;
 import ch.sbb.exportservice.writer.JsonTrafficPointElementVersionWriter;
 import javax.sql.DataSource;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -38,7 +52,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TrafficPointElementVersionExportBatchConfig {
 
   private final JobRepository jobRepository;
@@ -47,6 +61,8 @@ public class TrafficPointElementVersionExportBatchConfig {
   private final StepTracerListener stepTracerListener;
   private final JsonTrafficPointElementVersionWriter jsonTrafficPointElementVersionWriter;
   private final CsvTrafficPointElementVersionWriter csvTrafficPointElementVersionWriter;
+
+  private final FileService fileService;
 
   @Bean
   @StepScope
@@ -62,28 +78,21 @@ public class TrafficPointElementVersionExportBatchConfig {
     return itemReader;
   }
 
+  // --- CSV ---
   @Bean
-  @StepScope
-  public JsonFileItemWriter<ReadTrafficPointElementVersionModel> trafficPointElementJsonFileItemWriter(
-      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
-    return jsonTrafficPointElementVersionWriter.getWriter(ExportObjectV2.TRAFFIC_POINT, exportTypeV2);
-  }
-
-  @Bean
-  @StepScope
-  public FlatFileItemWriter<TrafficPointVersionCsvModel> trafficPointElementCsvWriter(
-      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
-    return csvTrafficPointElementVersionWriter.csvWriter(ExportObjectV2.TRAFFIC_POINT, exportTypeV2);
-  }
-
-  @Bean
-  public TrafficPointElementVersionCsvProcessor trafficPointElementVersionCsvProcessor() {
-    return new TrafficPointElementVersionCsvProcessor();
-  }
-
-  @Bean
-  public TrafficPointElementVersionJsonProcessor trafficPointElementVersionJsonProcessor() {
-    return new TrafficPointElementVersionJsonProcessor();
+  @Qualifier(EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME)
+  public Job exportTrafficPointElementCsvJob(ItemReader<TrafficPointElementVersion> itemReader) {
+    return new JobBuilder(EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME, jobRepository)
+        .listener(jobCompletionListener)
+        .incrementer(new RunIdIncrementer())
+        .flow(exportTrafficPointElementCsvStep(itemReader))
+        .next(uploadTrafficPointCsvFileStepV2())
+        .next(renameTrafficPointCsvStep())
+        .next(uploadTrafficPointCsvFileStepV1())
+        .next(deleteTrafficPointCsvFileStepV2())
+        .next(deleteTrafficPointCsvFileStepV1())
+        .end()
+        .build();
   }
 
   @Bean
@@ -98,6 +107,140 @@ public class TrafficPointElementVersionExportBatchConfig {
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
         .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  public TrafficPointElementVersionCsvProcessor trafficPointElementVersionCsvProcessor() {
+    return new TrafficPointElementVersionCsvProcessor();
+  }
+
+  @Bean
+  @StepScope
+  public FlatFileItemWriter<TrafficPointVersionCsvModel> trafficPointElementCsvWriter(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    return csvTrafficPointElementVersionWriter.csvWriter(ExportObjectV2.TRAFFIC_POINT, exportTypeV2);
+  }
+
+  // BEGIN: Upload Csv V2
+  @Bean
+  public Step uploadTrafficPointCsvFileStepV2() {
+    return new StepBuilder("uploadCsvFileV2", jobRepository)
+        .tasklet(uploadTrafficPointCsvFileTaskletV2(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadCsvFileTaskletV2 uploadTrafficPointCsvFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
+  ) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.TRAFFIC_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadCsvFileTaskletV2(filePathV2);
+  }
+  // END: Upload Csv V2
+
+  // BEGIN: Upload Csv V1
+  @Bean
+  public Step uploadTrafficPointCsvFileStepV1() {
+    return new StepBuilder("uploadCsvFileV1", jobRepository)
+        .tasklet(uploadTrafficPointCsvFileTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadCsvFileTasklet uploadTrafficPointCsvFileTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1
+  ) {
+    return new UploadCsvFileTasklet(exportTypeV1, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+  }
+  // END: Upload Csv V1
+
+  // BEGIN: Rename Csv
+  @Bean
+  public Step renameTrafficPointCsvStep() {
+    return new StepBuilder("renameCsv", jobRepository)
+        .tasklet(renameTrafficPointTasklet(null, null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public RenameTasklet renameTrafficPointTasklet(
+      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1,
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.TRAFFIC_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1,
+        SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION,
+        fileService.getDir(), ExportExtensionFileType.CSV_EXTENSION);
+    return new RenameTasklet(filePathV2, filePathV1);
+  }
+  // END: Rename Csv
+
+  // BEGIN: Delete Csv V2
+  @Bean
+  public Step deleteTrafficPointCsvFileStepV2() {
+    return new StepBuilder("deleteCsvFileV2", jobRepository)
+        .tasklet(deleteTrafficPointCsvFileTaskletV2(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteCsvFileTaskletV2 deleteTrafficPointCsvFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
+  ) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.TRAFFIC_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteCsvFileTaskletV2(filePathV2);
+  }
+  // END: Delete Csv V2
+
+  // BEGIN: Delete Csv V1
+  @Bean
+  public Step deleteTrafficPointCsvFileStepV1() {
+    return new StepBuilder("deleteCsvFileV1", jobRepository)
+        .tasklet(deleteTrafficPointCsvFileTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteCsvFileTasklet deleteTrafficPointCsvFileTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1
+  ) {
+    return new DeleteCsvFileTasklet(exportTypeV1, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+  }
+  // END: Delete Csv V1
+
+  // --- JSON ---
+  @Bean
+  @Qualifier(EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME)
+  public Job exportTrafficPointElementJsonJob(ItemReader<TrafficPointElementVersion> itemReader) {
+    return new JobBuilder(EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME, jobRepository)
+        .listener(jobCompletionListener)
+        .incrementer(new RunIdIncrementer())
+        .flow(exportTrafficPointElementJsonStep(itemReader))
+        .next(uploadTrafficPointJsonFileStepV2())
+        .next(renameTrafficPointJsonStep())
+        .next(uploadTrafficPointJsonFileStepV1())
+        .next(deleteTrafficPointJsonFileStepV2())
+        .next(deleteTrafficPointJsonFileStepV1())
+        .end()
         .build();
   }
 
@@ -117,117 +260,118 @@ public class TrafficPointElementVersionExportBatchConfig {
   }
 
   @Bean
-  @Qualifier(EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME)
-  public Job exportTrafficPointElementCsvJob(ItemReader<TrafficPointElementVersion> itemReader) {
-    return new JobBuilder(EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME, jobRepository)
-        .listener(jobCompletionListener)
-        .incrementer(new RunIdIncrementer())
-        .flow(exportTrafficPointElementCsvStep(itemReader))
-        //        .next(uploadTrafficPointElementCsvFileStep())
-        //        .next(deleteTrafficPointElementCsvFileStep())
-        .end()
-        .build();
-  }
-
-  @Bean
-  @Qualifier(EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME)
-  public Job exportTrafficPointElementJsonJob(ItemReader<TrafficPointElementVersion> itemReader) {
-    return new JobBuilder(EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME, jobRepository)
-        .listener(jobCompletionListener)
-        .incrementer(new RunIdIncrementer())
-        .flow(exportTrafficPointElementJsonStep(itemReader))
-        //        .next(uploadTrafficPointElementJsonFileStep())
-        //        .next(deleteTrafficPointElementJsonFileStep())
-        .end()
-        .build();
-  }
-
-  /*@Bean
-  @StepScope
-  public UploadCsvFileTasklet uploadTrafficPointElementCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TRAFFIC_POINT, exportTypeV2);
-    return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
+  public TrafficPointElementVersionJsonProcessor trafficPointElementVersionJsonProcessor() {
+    return new TrafficPointElementVersionJsonProcessor();
   }
 
   @Bean
   @StepScope
-  public UploadCsvFileTasklet uploadTrafficPointElementCsvFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
-      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+  public JsonFileItemWriter<ReadTrafficPointElementVersionModel> trafficPointElementJsonFileItemWriter(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    return jsonTrafficPointElementVersionWriter.getWriter(ExportObjectV2.TRAFFIC_POINT, exportTypeV2);
+  }
+
+  // BEGIN: Upload Json V2 ---
+  @Bean
+  public Step uploadTrafficPointJsonFileStepV2() {
+    return new StepBuilder("uploadJsonFileV2", jobRepository)
+        .tasklet(uploadTrafficPointJsonFileTaskletV2(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTaskletV2 uploadTrafficPointJsonFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.TRAFFIC_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadJsonFileTaskletV2(filePathV2);
+  }
+  // END: Upload Json V2
+
+  // BEGIN: Rename Json
+  @Bean
+  public Step renameTrafficPointJsonStep() {
+    return new StepBuilder("renameJson", jobRepository)
+        .tasklet(renameTrafficPointJsonTasklet(null, null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public RenameTasklet renameTrafficPointJsonTasklet(
+      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1,
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.TRAFFIC_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1,
+        SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION,
+        fileService.getDir(), ExportExtensionFileType.JSON_EXTENSION);
+    return new RenameTasklet(filePathV2, filePathV1);
+  }
+  // END: Rename Json
+
+  // BEGIN: Upload Json V1
+  @Bean
+  public Step uploadTrafficPointJsonFileStepV1() {
+    return new StepBuilder("uploadJsonFileV1", jobRepository)
+        .tasklet(uploadTrafficPointJsonFileTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTasklet uploadTrafficPointJsonFileTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1
   ) {
-    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.TOILET, exportTypeV2);
-    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.TRAFFIC_POINT_ELEMENT_VERSION,
-        exportTypeV1);
-    return new UploadCsvFileTasklet(systemFile, s3File);
+    return new UploadJsonFileTasklet(exportTypeV1, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
+  // END: Upload Json V1
 
+  // BEGIN: Delete Json V2
   @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadTrafficPointElementJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TRAFFIC_POINT, exportTypeV2);
-    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
-  }
-
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadTrafficPointElementJsonFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
-      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
-  ) {
-    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.TRAFFIC_POINT, exportTypeV2);
-    final ExportFilePathBuilder s3FIle = ExportFilePathV1.getV1Builder(ExportObjectV1.TRAFFIC_POINT_ELEMENT_VERSION,
-        exportTypeV1);
-    return new UploadJsonFileTasklet(systemFile, s3FIle);
-  }
-
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet fileTrafficPointElementJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TRAFFIC_POINT, exportTypeV2);
-    return new DeleteJsonFileTasklet(filePathBuilder);
-  }
-
-  @Bean
-  @StepScope
-  public DeleteCsvFileTasklet fileTrafficPointElementCsvDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TRAFFIC_POINT, exportTypeV2);
-    return new DeleteCsvFileTasklet(filePathBuilder);
-  }
-
-  @Bean
-  public Step uploadTrafficPointElementCsvFileStep() {
-    return new StepBuilder("uploadCsvFile", jobRepository)
-        .tasklet(uploadTrafficPointElementCsvFileTasklet(null), transactionManager)
+  public Step deleteTrafficPointJsonFileStepV2() {
+    return new StepBuilder("deleteJsonFileV2", jobRepository)
+        .tasklet(deleteTrafficPointJsonTaskletV2(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
-  public Step uploadTrafficPointElementJsonFileStep() {
-    return new StepBuilder("uploadJsonFile", jobRepository)
-        .tasklet(uploadTrafficPointElementJsonFileTasklet(null), transactionManager)
+  @StepScope
+  public DeleteJsonFileTaskletV2 deleteTrafficPointJsonTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.TRAFFIC_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteJsonFileTaskletV2(filePathV2);
+  }
+  // END: Delete Json V2
+
+  // BEGIN: Delete Json V1
+  @Bean
+  public Step deleteTrafficPointJsonFileStepV1() {
+    return new StepBuilder("deleteJsonFileV1", jobRepository)
+        .tasklet(deleteTrafficPointJsonTaskletV1(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
-  public Step deleteTrafficPointElementCsvFileStep() {
-    return new StepBuilder("deleteCsvFiles", jobRepository)
-        .tasklet(fileTrafficPointElementCsvDeletingTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
+  @StepScope
+  public DeleteJsonFileTasklet deleteTrafficPointJsonTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") SePoDiExportType exportTypeV1) {
 
-  @Bean
-  public Step deleteTrafficPointElementJsonFileStep() {
-    return new StepBuilder("deleteJsonFiles", jobRepository)
-        .tasklet(fileTrafficPointElementJsonDeletingTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }*/
+    return new DeleteJsonFileTasklet(exportTypeV1, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+  }
+  // END: Delete Json V1
 
 }
