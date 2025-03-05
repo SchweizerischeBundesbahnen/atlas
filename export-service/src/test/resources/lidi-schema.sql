@@ -64,3 +64,36 @@ create table subline_version
     constraint subline_slnid_unique
         unique (slnid, valid_from)
 );
+
+-- TTFN
+CREATE SEQUENCE timetable_field_number_version_seq START WITH 1000 INCREMENT BY 1;
+create table timetable_field_number_version
+(
+    id                           bigint           not null
+        primary key,
+    ttfnid                       varchar(500)     not null,
+    description                  varchar(255),
+    number                       varchar(50)      not null,
+    swiss_timetable_field_number varchar(50)      not null,
+    status                       varchar(50)      not null,
+    creation_date                timestamp        not null,
+    creator                      varchar(50)      not null,
+    edition_date                 timestamp        not null,
+    editor                       varchar(50)      not null,
+    valid_from                   date             not null,
+    valid_to                     date             not null,
+    business_organisation        varchar(50)      not null,
+    comment                      varchar(1500),
+    version                      bigint default 0 not null
+);
+
+CREATE SEQUENCE timetable_field_line_relation_seq START WITH 1000 INCREMENT BY 1;
+create table timetable_field_line_relation
+(
+    id                         bigint not null
+        primary key,
+    slnid                      varchar(500),
+    timetable_field_version_id bigint
+        constraint fk_timetable_field_number_version
+            references timetable_field_number_version
+);
