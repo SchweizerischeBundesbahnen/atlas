@@ -3,7 +3,9 @@ package ch.sbb.exportservice.recovery;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import static ch.sbb.exportservice.recovery.RecoveryJobsRunner.TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE;
+import ch.sbb.exportservice.service.ExportBusinessOrganisationJobService;
 import ch.sbb.exportservice.service.ExportContactPointJobService;
+import ch.sbb.exportservice.service.ExportLineJobService;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportParkingLotJobService;
 import ch.sbb.exportservice.service.ExportPlatformJobService;
@@ -11,8 +13,10 @@ import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportRelationJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
+import ch.sbb.exportservice.service.ExportSublineJobService;
 import ch.sbb.exportservice.service.ExportToiletJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
+import ch.sbb.exportservice.service.ExportTransportCompanyJobService;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
@@ -93,6 +97,18 @@ class RecoveryJobsRunnerTest {
   private ExportRelationJobService exportRelationJobService;
 
   @Mock
+  private ExportLineJobService exportLineJobService;
+
+  @Mock
+  private ExportBusinessOrganisationJobService exportBusinessOrganisationJobService;
+
+  @Mock
+  private ExportTransportCompanyJobService exportTransportCompanyJobService;
+
+  @Mock
+  private ExportSublineJobService exportSublineJobService;
+
+  @Mock
   private JobInstance jobInstance;
 
   @Mock
@@ -113,7 +129,8 @@ class RecoveryJobsRunnerTest {
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, fileService, jobRepository,
         exportServicePointJobService, exportTrafficPointElementJobService, exportLoadingPointJobService,
         exportStopPointJobService, exportPlatformJobService, exportReferencePointJobService, exportContactPointJobService,
-        exportToiletJobService, exportParkingLotJobService, exportRelationJobService);
+        exportToiletJobService, exportParkingLotJobService, exportRelationJobService, exportLineJobService,
+        exportBusinessOrganisationJobService, exportTransportCompanyJobService, exportSublineJobService);
   }
 
   @Test

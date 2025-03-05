@@ -1,7 +1,15 @@
 package ch.sbb.exportservice.recovery;
 
+import ch.sbb.exportservice.service.ExportBusinessOrganisationJobService;
+import ch.sbb.exportservice.service.ExportLineJobService;
+import ch.sbb.exportservice.service.ExportSublineJobService;
+import ch.sbb.exportservice.service.ExportTransportCompanyJobService;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PARKING_LOT_CSV_JOB_NAME;
@@ -16,6 +24,8 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SUBLINE_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SUBLINE_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
@@ -34,6 +44,10 @@ import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import ch.sbb.exportservice.service.ExportToiletJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_JSON_JOB_NAME;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -56,7 +70,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 @Slf4j
-public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyEvent> { // todo: add lidi,bo,subline,ttfn jobs
+public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyEvent> {
 
   private static final List<String> EXPORT_SERVICE_POINT_JOBS_NAME = List.of(EXPORT_SERVICE_POINT_CSV_JOB_NAME,
       EXPORT_SERVICE_POINT_JSON_JOB_NAME);
@@ -95,6 +109,10 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private final ExportToiletJobService exportToiletJobService;
   private final ExportParkingLotJobService exportParkingLotJobService;
   private final ExportRelationJobService exportRelationJobService;
+  private final ExportLineJobService exportLineJobService;
+  private final ExportBusinessOrganisationJobService exportBusinessOrganisationJobService;
+  private final ExportTransportCompanyJobService exportTransportCompanyJobService;
+  private final ExportSublineJobService exportSublineJobService;
 
   @Override
   @Async
@@ -104,6 +122,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     checkExportServicePointJobToRecover();
     checkExportTrafficPointJobToRecover();
     checkExportLoadingPointJobToRecover();
+
     checkExportStopPointJobToRecover();
     checkExportPlatformJobToRecover();
     checkExportReferencePointJobToRecover();
@@ -111,6 +130,13 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     checkExportToiletJobToRecover();
     checkExportParkingLotJobToRecover();
     checkExportRelationJobToRecover();
+
+    checkExportTransportCompanyJobToRecover();
+    checkExportBusinessOrganisationJobToRecover();
+
+    checkExportLineJobToRecover();
+    checkExportSublineJobToRecover();
+    checkExportTimetableFieldNumberJobToRecover();
   }
 
   private boolean checkIfHasJobsToRecover(List<String> exportJobsName) {
@@ -204,6 +230,26 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
 
   private void checkExportRelationJobToRecover() {
     checkJobToRecover(exportRelationJobService, EXPORT_RELATION_JOB_NAME);
+  }
+
+  private void checkExportTransportCompanyJobToRecover() {
+    checkJobToRecover(exportTransportCompanyJobService, List.of(EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME, EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME));
+  }
+
+  private void checkExportBusinessOrganisationJobToRecover() {
+    checkJobToRecover(exportBusinessOrganisationJobService, List.of(EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME, EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME));
+  }
+
+  private void checkExportLineJobToRecover() {
+    checkJobToRecover(exportLineJobService, List.of(EXPORT_LINE_CSV_JOB_NAME, EXPORT_LINE_JSON_JOB_NAME));
+  }
+
+  private void checkExportSublineJobToRecover() {
+    checkJobToRecover(exportSublineJobService, List.of(EXPORT_SUBLINE_CSV_JOB_NAME, EXPORT_SUBLINE_JSON_JOB_NAME));
+  }
+
+  private void checkExportTimetableFieldNumberJobToRecover() {
+    checkJobToRecover(exportSublineJobService, List.of(EXPORT_TTFN_CSV_JOB_NAME, EXPORT_TTFN_JSON_JOB_NAME));
   }
 
   private void checkJobToRecover(BaseExportJobService jobService, List<String> jobsName) {
