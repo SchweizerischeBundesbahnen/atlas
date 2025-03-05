@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.service;
 
-import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_JSON_JOB_NAME;
@@ -23,11 +22,10 @@ public class ExportLineJobService extends BaseExportJobService {
 
   @Override
   protected List<JobParams> getExportTypes() {
-    // V1 not needed
     return List.of(
-        new JobParams(ExportTypeV2.FULL, ExportType.FULL),
-        new JobParams(ExportTypeV2.ACTUAL, ExportType.ACTUAL_DATE),
-        new JobParams(ExportTypeV2.FUTURE_TIMETABLE, ExportType.FUTURE_TIMETABLE)
+        new JobParams(ExportTypeV2.FULL),
+        new JobParams(ExportTypeV2.ACTUAL),
+        new JobParams(ExportTypeV2.FUTURE_TIMETABLE)
     );
   }
 
