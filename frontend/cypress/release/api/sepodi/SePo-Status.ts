@@ -1,14 +1,7 @@
 import CommonUtils from '../../../support/util/common-utils';
 import ReleaseApiUtils from '../../../support/util/release-api-utils';
 
-// # Documentation can be found at https://confluence.sbb.ch/x/pS4ynw
-// # TODO: Use Verkehrsmittel & Haltestellentyp combinations
-// # TODO: Add after each scenario-version-creation (POST/PUT) that the 4 attributes are in the right state
-// #       - designationOfficial
-// #       - servicePointGeolocation->north/east
-// #       - meansOfTransport=TRAIN
-// #       - validFrom-validTo
-
+// Documentation can be found at https://confluence.sbb.ch/x/pS4ynw
 describe('SePo: Status Scenario', { testIsolation: false }, () => {
   let servicePointId: number;
   let sboid: string;
@@ -35,9 +28,6 @@ describe('SePo: Status Scenario', { testIsolation: false }, () => {
   const changeMe = 'change me';
   const leaveMeUnchanged = 'leave me unchanged';
   const timeWithSeconds = new Date().toISOString().split('T')[1].split('.')[0]; // e.g. 16:25:20
-
-  // TODO: Check: Use SBB as business organisation to be most flexible
-  // const businessOrganisation = 'ch:1:sboid:100001';
 
   const setEtagVersion = (etagVersionContainer) => {
     expect(etagVersionContainer)
@@ -186,8 +176,6 @@ describe('SePo: Status Scenario', { testIsolation: false }, () => {
         statusDraft,
         CommonUtils.HTTP_REST_API_RESPONSE_CREATED
       );
-
-      // TODO: Check attributes of the POST-Body
 
       expect(response).property('body').property('id').to.be.a('number');
       servicePointId = response.body.id;
@@ -519,7 +507,7 @@ describe('SePo: Status Scenario', { testIsolation: false }, () => {
       );
 
       expect(body).to.be.an('array').and.be.of.length(15);
-      
+
       body.forEach((version) => {
         expect(version).to.have.property('status').which.equals(statusDraft);
 
