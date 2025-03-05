@@ -45,7 +45,7 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
   private Job exportTransportCompanyJsonJob;
 
   @MockitoBean
-  @Qualifier("transportCompanyCsvFileDeletingTasklet")
+  @Qualifier("deleteTransportCompanyCsvFileTasklet")
   private DeleteCsvFileTasklet transportCompanyCsvFileDeletingTasklet;
 
   @Test

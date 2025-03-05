@@ -14,6 +14,8 @@ import ch.sbb.exportservice.processor.TimetableFieldNumberCsvProcessor;
 import ch.sbb.exportservice.processor.TimetableFieldNumberJsonProcessor;
 import ch.sbb.exportservice.reader.TimetableFieldNumberRowMapper;
 import ch.sbb.exportservice.reader.TimetableFieldNumberSqlQueryUtil;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_CSV_JOB_NAME;
@@ -68,8 +70,22 @@ public class TimetableFieldNumberExportBatchConfig {
     return itemReader;
   }
 
+  // --- CSV ---
   @Bean
-  public Step exportTimetableFieldNumberCsvStep(ItemReader<TimetableFieldNumber> itemReader) {
+  @Qualifier(EXPORT_TTFN_CSV_JOB_NAME)
+  public Job exportTtfnCsvJob(ItemReader<TimetableFieldNumber> itemReader) {
+    return new JobBuilder(EXPORT_TTFN_CSV_JOB_NAME, jobRepository)
+        .listener(jobCompletionListener)
+        .incrementer(new RunIdIncrementer())
+        .flow(exportTtfnCsvStep(itemReader))
+        .next(uploadTtfnCsvFileStep())
+        .next(deleteTtfnCsvFileStep())
+        .end()
+        .build();
+  }
+
+  @Bean
+  public Step exportTtfnCsvStep(ItemReader<TimetableFieldNumber> itemReader) {
     final String stepName = "exportTimetableFieldNumberCsvStep";
     return new StepBuilder(stepName, jobRepository)
         .<TimetableFieldNumber, TimetableFieldNumberCsvModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
@@ -96,30 +112,18 @@ public class TimetableFieldNumberExportBatchConfig {
     return csvWriter.csvWriter(ExportObjectV2.TIMETABLE_FIELD_NUMBER, exportTypeV2);
   }
 
+  // BEGIN: Upload Csv
   @Bean
-  @Qualifier(EXPORT_TTFN_CSV_JOB_NAME)
-  public Job exportTTFNCsvJob(ItemReader<TimetableFieldNumber> itemReader) {
-    return new JobBuilder(EXPORT_TTFN_CSV_JOB_NAME, jobRepository)
-        .listener(jobCompletionListener)
-        .incrementer(new RunIdIncrementer())
-        .flow(exportTimetableFieldNumberCsvStep(itemReader))
-        .next(uploadTimetableFieldNumberCsvFileStep())
-        //        .next(deleteTimetableFieldNumberCsvFileStep())
-        .end()
-        .build();
-  }
-
-  @Bean
-  public Step uploadTimetableFieldNumberCsvFileStep() {
+  public Step uploadTtfnCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
-        .tasklet(uploadTimetableFieldNumberCsvFileTasklet(null), transactionManager)
+        .tasklet(uploadTtfnCsvFileTasklet(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
   @StepScope
-  public UploadCsvFileTaskletV2 uploadTimetableFieldNumberCsvFileTasklet(
+  public UploadCsvFileTaskletV2 uploadTtfnCsvFileTasklet(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TIMETABLE_FIELD_NUMBER, exportTypeV2)
@@ -128,77 +132,46 @@ public class TimetableFieldNumberExportBatchConfig {
         .build();
     return new UploadCsvFileTaskletV2(filePath);
   }
+  // END: Upload Csv
 
-  /*@Bean
-  public Step deleteTimetableFieldNumberCsvFileStep() {
-    return new StepBuilder("deleteCsvFiles", jobRepository)
-        .tasklet(deleteTimetableFieldNumberCsvFileTasklet(null), transactionManager)
+  // BEGIN: Delete Csv
+  @Bean
+  public Step deleteTtfnCsvFileStep() {
+    return new StepBuilder("deleteCsvFile", jobRepository)
+        .tasklet(deleteTtfnCsvFileTasklet(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
   @StepScope
-  public DeleteCsvFileTasklet deleteTimetableFieldNumberCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
+  public DeleteCsvFileTaskletV2 deleteTtfnCsvFileTasklet(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TIMETABLE_FIELD_NUMBER,
-        exportTypeV2);
-    return new DeleteCsvFileTasklet(filePathBuilder);
-  }*/
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TIMETABLE_FIELD_NUMBER, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteCsvFileTaskletV2(filePath);
+  }
+  // END: Delete Csv
 
+  // --- JSON ---
   @Bean
   @Qualifier(EXPORT_TTFN_JSON_JOB_NAME)
-  public Job exportTTFNJsonJob(ItemReader<TimetableFieldNumber> itemReader) {
+  public Job exportTtfnJsonJob(ItemReader<TimetableFieldNumber> itemReader) {
     return new JobBuilder(EXPORT_TTFN_JSON_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
-        .flow(exportTimetableFieldNumberJsonStep(itemReader))
-        .next(uploadTimetableFieldNumberJsonFileStep())
-        //        .next(deleteTimetableFieldNumberJsonFileStep())
+        .flow(exportTtfnJsonStep(itemReader))
+        .next(uploadTtfnJsonFileStep())
+        .next(deleteTtfnJsonFileStep())
         .end()
         .build();
   }
 
   @Bean
-  public Step uploadTimetableFieldNumberJsonFileStep() {
-    return new StepBuilder("uploadJsonFile", jobRepository)
-        .tasklet(uploadTimetableFieldNumberJsonFileTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public UploadJsonFileTaskletV2 uploadTimetableFieldNumberJsonFileTasklet(
-      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TIMETABLE_FIELD_NUMBER, exportTypeV2)
-        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
-        .systemDir(fileService.getDir())
-        .build();
-    return new UploadJsonFileTaskletV2(filePath);
-  }
-
-  /*
-    @Bean
-    public Step deleteTimetableFieldNumberJsonFileStep() {
-      return new StepBuilder("deleteJsonFiles", jobRepository)
-          .tasklet(deleteTimetableFieldNumberJsonFileTasklet(null), transactionManager)
-          .listener(stepTracerListener)
-          .build();
-    }
-
-    @Bean
-    @StepScope
-    public DeleteJsonFileTasklet deleteTimetableFieldNumberJsonFileTasklet(
-        @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-      final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TIMETABLE_FIELD_NUMBER,
-          exportTypeV2);
-      return new DeleteJsonFileTasklet(filePathBuilder);
-    }
-  */
-  @Bean
-  public Step exportTimetableFieldNumberJsonStep(ItemReader<TimetableFieldNumber> itemReader) {
+  public Step exportTtfnJsonStep(ItemReader<TimetableFieldNumber> itemReader) {
     final String stepName = "exportTimetableFieldNumberJsonStep";
     return new StepBuilder(stepName, jobRepository)
         .<TimetableFieldNumber, TimetableFieldNumberModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
@@ -223,5 +196,47 @@ public class TimetableFieldNumberExportBatchConfig {
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     return jsonWriter.getWriter(ExportObjectV2.TIMETABLE_FIELD_NUMBER, exportTypeV2);
   }
-  // todo: include deletion
+
+  // BEGIN: Upload Json
+  @Bean
+  public Step uploadTtfnJsonFileStep() {
+    return new StepBuilder("uploadJsonFile", jobRepository)
+        .tasklet(uploadTtfnJsonFileTasklet(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTaskletV2 uploadTtfnJsonFileTasklet(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TIMETABLE_FIELD_NUMBER, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadJsonFileTaskletV2(filePath);
+  }
+  // END: Upload Json
+
+  // BEGIN: Delete Json
+  @Bean
+  public Step deleteTtfnJsonFileStep() {
+    return new StepBuilder("deleteJsonFile", jobRepository)
+        .tasklet(deleteTtfnJsonFileTasklet(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteJsonFileTaskletV2 deleteTtfnJsonFileTasklet(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TIMETABLE_FIELD_NUMBER, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteJsonFileTaskletV2(filePath);
+  }
+  // END: Delete Json
+
 }

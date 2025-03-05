@@ -7,7 +7,8 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class NotAllowedExportFileException extends AtlasException { // todo: new type combination validation for
+public class NotAllowedExportFileException extends AtlasException {
+  // todo: impl type validation in both streaming controllers and use this exception
 
   private final Enum<?> type;
   private final Enum<?> subType;
@@ -23,7 +24,7 @@ public class NotAllowedExportFileException extends AtlasException { // todo: new
         .status(HttpStatus.BAD_REQUEST.value())
         .message("Download file [" + type + "] with export type [" + subType + "] not allowed!")
         .error("To download the file [" + type + "] are only allowed the following export types: "
-            + Arrays.toString(subType.getDeclaringClass().getEnumConstants())) // todo: replace ...
+            + Arrays.toString(subType.getDeclaringClass().getEnumConstants()))
         .build();
   }
 }
