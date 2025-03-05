@@ -1,5 +1,6 @@
 package ch.sbb.business.organisation.directory.service.export;
 
+import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionExportRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
