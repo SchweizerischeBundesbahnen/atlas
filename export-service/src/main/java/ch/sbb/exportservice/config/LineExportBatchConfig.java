@@ -14,6 +14,8 @@ import ch.sbb.exportservice.processor.LineCsvProcessor;
 import ch.sbb.exportservice.processor.LineJsonProcessor;
 import ch.sbb.exportservice.reader.LineRowMapper;
 import ch.sbb.exportservice.reader.LineSqlQueryUtil;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_CSV_JOB_NAME;
@@ -68,6 +70,20 @@ public class LineExportBatchConfig {
     return itemReader;
   }
 
+  // --- CSV ---
+  @Bean
+  @Qualifier(EXPORT_LINE_CSV_JOB_NAME)
+  public Job exportLineCsvJob(ItemReader<Line> itemReader) {
+    return new JobBuilder(EXPORT_LINE_CSV_JOB_NAME, jobRepository)
+        .listener(jobCompletionListener)
+        .incrementer(new RunIdIncrementer())
+        .flow(exportLineCsvStep(itemReader))
+        .next(uploadLineCsvFileStep())
+        .next(deleteLineCsvFileStep())
+        .end()
+        .build();
+  }
+
   @Bean
   public Step exportLineCsvStep(ItemReader<Line> itemReader) {
     final String stepName = "exportLineCsvStep";
@@ -96,19 +112,7 @@ public class LineExportBatchConfig {
     return csvWriter.csvWriter(ExportObjectV2.LINE, exportTypeV2);
   }
 
-  @Bean
-  @Qualifier(EXPORT_LINE_CSV_JOB_NAME)
-  public Job exportLineCsvJob(ItemReader<Line> itemReader) {
-    return new JobBuilder(EXPORT_LINE_CSV_JOB_NAME, jobRepository)
-        .listener(jobCompletionListener)
-        .incrementer(new RunIdIncrementer())
-        .flow(exportLineCsvStep(itemReader))
-        .next(uploadLineCsvFileStep())
-        //        .next(deleteLineCsvFileStep())
-        .end()
-        .build();
-  }
-
+  // BEGIN: Upload Csv
   @Bean
   public Step uploadLineCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
@@ -128,10 +132,12 @@ public class LineExportBatchConfig {
         .build();
     return new UploadCsvFileTaskletV2(filePath);
   }
+  // END: Upload Csv
 
-  /*@Bean
+  // BEGIN: Delete Csv
+  @Bean
   public Step deleteLineCsvFileStep() {
-    return new StepBuilder("deleteCsvFiles", jobRepository)
+    return new StepBuilder("deleteCsvFile", jobRepository)
         .tasklet(deleteLineCsvFileTasklet(null), transactionManager)
         .listener(stepTracerListener)
         .build();
@@ -139,13 +145,18 @@ public class LineExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteCsvFileTasklet deleteLineCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
+  public DeleteCsvFileTaskletV2 deleteLineCsvFileTasklet(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.LINE, exportTypeV2);
-    return new DeleteCsvFileTasklet(filePathBuilder);
-  }*/
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.LINE, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteCsvFileTaskletV2(filePath);
+  }
+  // END: Delete Csv
 
+  // --- JSON ---
   @Bean
   @Qualifier(EXPORT_LINE_JSON_JOB_NAME)
   public Job exportLineJsonJob(ItemReader<Line> itemReader) {
@@ -154,45 +165,10 @@ public class LineExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportLineJsonStep(itemReader))
         .next(uploadLineJsonFileStep())
-        //        .next(deleteLineJsonFileStep())
+        .next(deleteLineJsonFileStep())
         .end()
         .build();
   }
-
-  @Bean
-  public Step uploadLineJsonFileStep() {
-    return new StepBuilder("uploadJsonFile", jobRepository)
-        .tasklet(uploadLineJsonFileTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public UploadJsonFileTaskletV2 uploadLineJsonFileTasklet(
-      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.LINE, exportTypeV2)
-        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
-        .systemDir(fileService.getDir())
-        .build();
-    return new UploadJsonFileTaskletV2(filePath);
-  }
-
- /* @Bean
-  public Step deleteLineJsonFileStep() {
-    return new StepBuilder("deleteJsonFiles", jobRepository)
-        .tasklet(deleteLineJsonFileTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet deleteLineJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.LINE, exportTypeV2);
-    return new DeleteJsonFileTasklet(filePathBuilder);
-  }*/
 
   @Bean
   public Step exportLineJsonStep(ItemReader<Line> itemReader) {
@@ -221,6 +197,46 @@ public class LineExportBatchConfig {
     return jsonWriter.getWriter(ExportObjectV2.LINE, exportTypeV2);
   }
 
-  // todo: include deletion
+  // BEGIN: Upload Json
+  @Bean
+  public Step uploadLineJsonFileStep() {
+    return new StepBuilder("uploadJsonFile", jobRepository)
+        .tasklet(uploadLineJsonFileTasklet(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTaskletV2 uploadLineJsonFileTasklet(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.LINE, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadJsonFileTaskletV2(filePath);
+  }
+  // END: Upload Json
+
+  // BEGIN: Delete Json
+  @Bean
+  public Step deleteLineJsonFileStep() {
+    return new StepBuilder("deleteJsonFile", jobRepository)
+        .tasklet(deleteLineJsonFileTasklet(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteJsonFileTaskletV2 deleteLineJsonFileTasklet(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.LINE, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteJsonFileTaskletV2(filePath);
+  }
+  // END: Delete Json
 
 }

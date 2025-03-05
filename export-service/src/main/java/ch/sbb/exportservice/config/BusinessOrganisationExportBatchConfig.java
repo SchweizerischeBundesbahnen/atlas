@@ -14,6 +14,8 @@ import ch.sbb.exportservice.processor.BusinessOrganisationCsvProcessor;
 import ch.sbb.exportservice.processor.BusinessOrganisationJsonProcessor;
 import ch.sbb.exportservice.reader.BusinessOrganisationRowMapper;
 import ch.sbb.exportservice.reader.BusinessOrganisationSqlQueryUtil;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME;
@@ -68,6 +70,20 @@ public class BusinessOrganisationExportBatchConfig {
     return itemReader;
   }
 
+  // --- CSV ---
+  @Bean
+  @Qualifier(EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME)
+  public Job exportCsvJob(ItemReader<BusinessOrganisation> itemReader) {
+    return new JobBuilder(EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME, jobRepository)
+        .listener(jobCompletionListener)
+        .incrementer(new RunIdIncrementer())
+        .flow(exportBusinessOrganisationCsvStep(itemReader))
+        .next(uploadBusinessOrganisationCsvFileStep())
+        .next(deleteBusinessOrganisationCsvFileStep())
+        .end()
+        .build();
+  }
+
   @Bean
   public Step exportBusinessOrganisationCsvStep(ItemReader<BusinessOrganisation> itemReader) {
     final String stepName = "exportBusinessOrganisationCsvStep";
@@ -96,19 +112,7 @@ public class BusinessOrganisationExportBatchConfig {
     return csvWriter.csvWriter(ExportObjectV2.BUSINESS_ORGANISATION, exportTypeV2);
   }
 
-  @Bean
-  @Qualifier(EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME)
-  public Job exportCsvJob(ItemReader<BusinessOrganisation> itemReader) {
-    return new JobBuilder(EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME, jobRepository)
-        .listener(jobCompletionListener)
-        .incrementer(new RunIdIncrementer())
-        .flow(exportBusinessOrganisationCsvStep(itemReader))
-        .next(uploadBusinessOrganisationCsvFileStep())
-        //        .next(deleteBusinessOrganisationCsvFileStep())
-        .end()
-        .build();
-  }
-
+  // BEGIN: Upload Csv
   @Bean
   public Step uploadBusinessOrganisationCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
@@ -128,10 +132,12 @@ public class BusinessOrganisationExportBatchConfig {
         .build();
     return new UploadCsvFileTaskletV2(filePath);
   }
+  // END: Upload Csv
 
-  /*@Bean
+  // BEGIN: Delete Csv
+  @Bean
   public Step deleteBusinessOrganisationCsvFileStep() {
-    return new StepBuilder("deleteCsvFiles", jobRepository)
+    return new StepBuilder("deleteCsvFile", jobRepository)
         .tasklet(deleteBusinessOrganisationCsvFileTasklet(null), transactionManager)
         .listener(stepTracerListener)
         .build();
@@ -139,12 +145,18 @@ public class BusinessOrganisationExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteCsvFileTasklet deleteBusinessOrganisationCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+  public DeleteCsvFileTaskletV2 deleteBusinessOrganisationCsvFileTasklet(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    return new DeleteCsvFileTasklet(exportType, BoDiBatchExportFileName.BUSINESS_ORGANISATION_VERSION);
-  }*/
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.BUSINESS_ORGANISATION, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteCsvFileTaskletV2(filePath);
+  }
+  // END: Delete Csv
 
+  // --- JSON ---
   @Bean
   @Qualifier(EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME)
   public Job exportJsonJob(ItemReader<BusinessOrganisation> itemReader) {
@@ -153,44 +165,10 @@ public class BusinessOrganisationExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportBusinessOrganisationJsonStep(itemReader))
         .next(uploadBusinessOrganisationJsonFileStep())
-        //        .next(deleteBusinessOrganisationJsonFileStep())
+        .next(deleteBusinessOrganisationJsonFileStep())
         .end()
         .build();
   }
-
-  @Bean
-  public Step uploadBusinessOrganisationJsonFileStep() {
-    return new StepBuilder("uploadJsonFile", jobRepository)
-        .tasklet(uploadBusinessOrganisationJsonFileTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public UploadJsonFileTaskletV2 uploadBusinessOrganisationJsonFileTasklet(
-      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.BUSINESS_ORGANISATION, exportTypeV2)
-        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
-        .systemDir(fileService.getDir())
-        .build();
-    return new UploadJsonFileTaskletV2(filePath);
-  }
-
-  /*@Bean
-  public Step deleteBusinessOrganisationJsonFileStep() {
-    return new StepBuilder("deleteJsonFiles", jobRepository)
-        .tasklet(deleteBusinessOrganisationJsonFileTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet deleteBusinessOrganisationJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new DeleteJsonFileTasklet(exportType, BoDiBatchExportFileName.BUSINESS_ORGANISATION_VERSION);
-  }*/
 
   @Bean
   public Step exportBusinessOrganisationJsonStep(ItemReader<BusinessOrganisation> itemReader) {
@@ -219,5 +197,46 @@ public class BusinessOrganisationExportBatchConfig {
     return jsonWriter.getWriter(ExportObjectV2.BUSINESS_ORGANISATION, exportTypeV2);
   }
 
-  // todo: include deletion
+  // BEGIN: Upload Json
+  @Bean
+  public Step uploadBusinessOrganisationJsonFileStep() {
+    return new StepBuilder("uploadJsonFile", jobRepository)
+        .tasklet(uploadBusinessOrganisationJsonFileTasklet(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTaskletV2 uploadBusinessOrganisationJsonFileTasklet(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.BUSINESS_ORGANISATION, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadJsonFileTaskletV2(filePath);
+  }
+  // END: Upload Json
+
+  // BEGIN: Delete Json
+  @Bean
+  public Step deleteBusinessOrganisationJsonFileStep() {
+    return new StepBuilder("deleteJsonFile", jobRepository)
+        .tasklet(deleteBusinessOrganisationJsonFileTasklet(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteJsonFileTaskletV2 deleteBusinessOrganisationJsonFileTasklet(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.BUSINESS_ORGANISATION, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteJsonFileTaskletV2(filePath);
+  }
+  // END: Delete Json
+
 }
