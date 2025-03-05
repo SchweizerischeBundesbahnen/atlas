@@ -12,6 +12,7 @@ public class TimetableFieldNumberRowMapper implements RowMapper<TimetableFieldNu
   @Override
   public TimetableFieldNumber mapRow(ResultSet rs, int rowNum) throws SQLException {
     return TimetableFieldNumber.builder()
+        .id(rs.getLong("id"))
         .ttfnid(rs.getString("ttfnid"))
         .validFrom(rs.getDate("valid_from").toLocalDate())
         .validTo(rs.getDate("valid_to").toLocalDate())
