@@ -1,19 +1,33 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_JSON_JOB_NAME;
-
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.exportservice.entity.prm.StopPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
+import ch.sbb.exportservice.model.ExportFilePathV1;
+import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.model.PrmBatchExportFileName;
+import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.processor.StopPointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.StopPointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.StopPointVersionRowMapper;
 import ch.sbb.exportservice.reader.StopPointVersionSqlQueryUtil;
+import ch.sbb.exportservice.tasklet.RenameTasklet;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTasklet;
+import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvStopPointVersionWriter;
 import ch.sbb.exportservice.writer.JsonStopPointVersionWriter;
@@ -48,6 +62,8 @@ public class StopPointVersionExportBatchConfig {
   private final CsvStopPointVersionWriter csvStopPointVersionWriter;
   private final JsonStopPointVersionWriter jsonStopPointVersionWriter;
 
+  private final FileService fileService;
+
   @Bean
   @StepScope
   public JdbcCursorItemReader<StopPointVersion> stopPointReader(
@@ -60,6 +76,23 @@ public class StopPointVersionExportBatchConfig {
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new StopPointVersionRowMapper());
     return itemReader;
+  }
+
+  // --- CSV ---
+  @Bean
+  @Qualifier(EXPORT_STOP_POINT_CSV_JOB_NAME)
+  public Job exportStopPointCsvJob(ItemReader<StopPointVersion> itemReader) {
+    return new JobBuilder(EXPORT_STOP_POINT_CSV_JOB_NAME, jobRepository)
+        .listener(jobCompletionListener)
+        .incrementer(new RunIdIncrementer())
+        .flow(exportStopPointCsvStep(itemReader))
+        .next(uploadStopPointCsvFileStepV2())
+        .next(renameStopPointCsvStep())
+        .next(uploadStopPointCsvFileStepV1())
+        .next(deleteStopPointCsvFileStepV2())
+        .next(deleteStopPointCsvFileStepV1())
+        .end()
+        .build();
   }
 
   @Bean
@@ -90,65 +123,111 @@ public class StopPointVersionExportBatchConfig {
     return csvStopPointVersionWriter.csvWriter(ExportObjectV2.STOP_POINT, exportTypeV2);
   }
 
+  // BEGIN: Upload Csv V2
   @Bean
-  @Qualifier(EXPORT_STOP_POINT_CSV_JOB_NAME)
-  public Job exportStopPointCsvJob(ItemReader<StopPointVersion> itemReader) {
-    return new JobBuilder(EXPORT_STOP_POINT_CSV_JOB_NAME, jobRepository)
-        .listener(jobCompletionListener)
-        .incrementer(new RunIdIncrementer())
-        .flow(exportStopPointCsvStep(itemReader))
-        //        .next(uploadStopPointCsvFileStep())
-        //        .next(deleteStopPointCsvFileStep())
-        .end()
-        .build();
-  }
-
-  /*@Bean
-  public Step uploadStopPointCsvFileStep() {
-    return new StepBuilder("uploadCsvFile", jobRepository)
-        .tasklet(uploadStopPointCsvFileTasklet(null), transactionManager)
-        .tasklet(uploadStopPointCsvFileTaskletV1(null, null), transactionManager)
+  public Step uploadStopPointCsvFileStepV2() {
+    return new StepBuilder("uploadCsvFileV2", jobRepository)
+        .tasklet(uploadStopPointCsvFileTaskletV2(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
   @StepScope
-  public UploadCsvFileTasklet uploadStopPointCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
+  public UploadCsvFileTaskletV2 uploadStopPointCsvFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
-    return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadCsvFileTaskletV2(filePathV2);
+  }
+  // END: Upload Csv V2
+
+  // BEGIN: Upload Csv V1
+  @Bean
+  public Step uploadStopPointCsvFileStepV1() {
+    return new StepBuilder("uploadCsvFileV1", jobRepository)
+        .tasklet(uploadStopPointCsvFileTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
   }
 
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadStopPointCsvFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
-      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
   ) {
-    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
-    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.STOP_POINT_VERSION, exportTypeV1);
-    return new UploadCsvFileTasklet(systemFile, s3File);
+    return new UploadCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION);
   }
+  // END: Upload Csv V1
 
+  // BEGIN: Rename Csv
   @Bean
-  public Step deleteStopPointCsvFileStep() {
-    return new StepBuilder("deleteCsvFiles", jobRepository)
-        .tasklet(stopPointCsvFileDeletingTasklet(null), transactionManager)
+  public Step renameStopPointCsvStep() {
+    return new StepBuilder("renameCsv", jobRepository)
+        .tasklet(renameStopPointTasklet(null, null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
   @StepScope
-  public DeleteCsvFileTasklet stopPointCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
-  ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
-    return new DeleteCsvFileTasklet(filePathBuilder);
-  }*/
+  public RenameTasklet renameStopPointTasklet(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1,
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION,
+        fileService.getDir(), ExportExtensionFileType.CSV_EXTENSION);
+    return new RenameTasklet(filePathV2, filePathV1);
+  }
+  // END: Rename Csv
 
+  // BEGIN: Delete Csv V2
+  @Bean
+  public Step deleteStopPointCsvFileStepV2() {
+    return new StepBuilder("deleteCsvFileV2", jobRepository)
+        .tasklet(deleteStopPointCsvFileTaskletV2(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteCsvFileTaskletV2 deleteStopPointCsvFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
+  ) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteCsvFileTaskletV2(filePathV2);
+  }
+  // END: Delete Csv V2
+
+  // BEGIN: Delete Csv V1
+  @Bean
+  public Step deleteStopPointCsvFileStepV1() {
+    return new StepBuilder("deleteCsvFileV1", jobRepository)
+        .tasklet(deleteStopPointCsvFileTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteCsvFileTasklet deleteStopPointCsvFileTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
+  ) {
+    return new DeleteCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION);
+  }
+  // END: Delete Csv V1
+
+  // --- JSON ---
   @Bean
   @Qualifier(EXPORT_STOP_POINT_JSON_JOB_NAME)
   public Job exportStopPointJsonJob(ItemReader<StopPointVersion> itemReader) {
@@ -156,56 +235,15 @@ public class StopPointVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportStopPointJsonStep(itemReader))
-        //        .next(uploadStopPointJsonFileStep())
-        //        .next(deleteStopPointJsonFileStep())
+        .next(uploadStopPointJsonFileStepV2())
+        .next(renameStopPointJsonStep())
+        .next(uploadStopPointJsonFileStepV1())
+        .next(deleteStopPointJsonFileStepV2())
+        .next(deleteStopPointJsonFileStepV1())
         .end()
         .build();
   }
 
-  /*@Bean
-  public Step uploadStopPointJsonFileStep() {
-    return new StepBuilder("uploadJsonFile", jobRepository)
-        .tasklet(uploadStopPointJsonFileTasklet(null), transactionManager)
-        .tasklet(uploadStopPointJsonFileTaskletV1(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadStopPointJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
-    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
-  }
-
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadStopPointJsonFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
-      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
-  ) {
-    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
-    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.STOP_POINT_VERSION, exportTypeV1);
-    return new UploadJsonFileTasklet(systemFile, s3File);
-  }
-
-  @Bean
-  public Step deleteStopPointJsonFileStep() {
-    return new StepBuilder("deleteJsonFiles", jobRepository)
-        .tasklet(fileStopPointJsonDeletingTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet fileStopPointJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2);
-    return new DeleteJsonFileTasklet(filePathBuilder);
-  }
-*/
   @Bean
   public Step exportStopPointJsonStep(ItemReader<StopPointVersion> itemReader) {
     String stepName = "exportStopPointJsonStep";
@@ -232,5 +270,107 @@ public class StopPointVersionExportBatchConfig {
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     return jsonStopPointVersionWriter.getWriter(ExportObjectV2.STOP_POINT, exportTypeV2);
   }
+
+  // BEGIN: Upload Json V2 ---
+  @Bean
+  public Step uploadStopPointJsonFileStepV2() {
+    return new StepBuilder("uploadJsonFileV2", jobRepository)
+        .tasklet(uploadStopPointJsonFileTaskletV2(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTaskletV2 uploadStopPointJsonFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadJsonFileTaskletV2(filePathV2);
+  }
+  // END: Upload Json V2
+
+  // BEGIN: Rename Json
+  @Bean
+  public Step renameStopPointJsonStep() {
+    return new StepBuilder("renameJson", jobRepository)
+        .tasklet(renameStopPointJsonTasklet(null, null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public RenameTasklet renameStopPointJsonTasklet(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1,
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    final ExportFilePathV1 filePathV1 = new ExportFilePathV1(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION,
+        fileService.getDir(), ExportExtensionFileType.JSON_EXTENSION);
+    return new RenameTasklet(filePathV2, filePathV1);
+  }
+  // END: Rename Json
+
+  // BEGIN: Upload Json V1
+  @Bean
+  public Step uploadStopPointJsonFileStepV1() {
+    return new StepBuilder("uploadJsonFileV1", jobRepository)
+        .tasklet(uploadStopPointJsonFileTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTasklet uploadStopPointJsonFileTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
+  ) {
+    return new UploadJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION);
+  }
+  // END: Upload Json V1
+
+  // BEGIN: Delete Json V2
+  @Bean
+  public Step deleteStopPointJsonFileStepV2() {
+    return new StepBuilder("deleteJsonFileV2", jobRepository)
+        .tasklet(deleteStopPointJsonTaskletV2(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteJsonFileTaskletV2 deleteStopPointJsonTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.STOP_POINT, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteJsonFileTaskletV2(filePathV2);
+  }
+  // END: Delete Json V2
+
+  // BEGIN: Delete Json V1
+  @Bean
+  public Step deleteStopPointJsonFileStepV1() {
+    return new StepBuilder("deleteJsonFileV1", jobRepository)
+        .tasklet(deleteStopPointJsonTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteJsonFileTasklet deleteStopPointJsonTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1) {
+
+    return new DeleteJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.STOP_POINT_VERSION);
+  }
+  // END: Delete Json V1
 
 }

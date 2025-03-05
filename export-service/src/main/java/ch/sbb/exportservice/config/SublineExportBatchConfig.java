@@ -1,8 +1,5 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SUBLINE_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SUBLINE_JSON_JOB_NAME;
-
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.exportservice.entity.lidi.Subline;
@@ -19,6 +16,8 @@ import ch.sbb.exportservice.reader.SublineRowMapper;
 import ch.sbb.exportservice.reader.SublineSqlQueryUtil;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SUBLINE_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SUBLINE_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvSublineWriter;
 import ch.sbb.exportservice.writer.JsonSublineWriter;
@@ -221,5 +220,5 @@ public class SublineExportBatchConfig {
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     return jsonWriter.getWriter(ExportObjectV2.SUBLINE, exportTypeV2);
   }
-
+  // todo: include deletion
 }

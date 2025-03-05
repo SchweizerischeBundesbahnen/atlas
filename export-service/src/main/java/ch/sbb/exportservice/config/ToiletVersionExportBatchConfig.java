@@ -1,19 +1,29 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_JSON_JOB_NAME;
-
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
 import ch.sbb.atlas.export.model.prm.ToiletVersionCsvModel;
 import ch.sbb.exportservice.entity.prm.ToiletVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
+import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.model.PrmBatchExportFileName;
+import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.processor.ToiletVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ToiletVersionJsonProcessor;
 import ch.sbb.exportservice.reader.ToiletVersionRowMapper;
 import ch.sbb.exportservice.reader.ToiletVersionSqlQueryUtil;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
+import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvToiletVersionWriter;
 import ch.sbb.exportservice.writer.JsonToiletVersionWriter;
@@ -48,6 +58,8 @@ public class ToiletVersionExportBatchConfig {
   private final CsvToiletVersionWriter csvToiletVersionWriter;
   private final JsonToiletVersionWriter jsonToiletVersionWriter;
 
+  private final FileService fileService;
+
   @Bean
   @StepScope
   public JdbcCursorItemReader<ToiletVersion> toiletReader(
@@ -60,6 +72,21 @@ public class ToiletVersionExportBatchConfig {
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new ToiletVersionRowMapper());
     return itemReader;
+  }
+
+  // --- CSV ---
+  @Bean
+  @Qualifier(EXPORT_TOILET_CSV_JOB_NAME)
+  public Job toiletPointCsvJob(ItemReader<ToiletVersion> itemReader) {
+    return new JobBuilder(EXPORT_TOILET_CSV_JOB_NAME, jobRepository)
+        .listener(jobCompletionListener)
+        .incrementer(new RunIdIncrementer())
+        .flow(exportToiletCsvStep(itemReader))
+        .next(uploadToiletCsvFileStepV2())
+        .next(uploadToiletCsvFileStepV1())
+        .next(deleteToiletCsvFileStepV2())
+        .end()
+        .build();
   }
 
   @Bean
@@ -90,65 +117,67 @@ public class ToiletVersionExportBatchConfig {
     return csvToiletVersionWriter.csvWriter(ExportObjectV2.TOILET, exportTypeV2);
   }
 
+  // BEGIN: Upload Csv V2
   @Bean
-  @Qualifier(EXPORT_TOILET_CSV_JOB_NAME)
-  public Job toiletPointCsvJob(ItemReader<ToiletVersion> itemReader) {
-    return new JobBuilder(EXPORT_TOILET_CSV_JOB_NAME, jobRepository)
-        .listener(jobCompletionListener)
-        .incrementer(new RunIdIncrementer())
-        .flow(exportToiletCsvStep(itemReader))
-        //        .next(uploadToiletCsvFileStep())
-        //        .next(deleteToiletCsvFileStep())
-        .end()
-        .build();
-  }
-
-  /*@Bean
-  public Step uploadToiletCsvFileStep() {
-    return new StepBuilder("uploadCsvFile", jobRepository)
-        .tasklet(uploadToiletCsvFileTasklet(null), transactionManager)
-        .tasklet(uploadToiletCsvFileTaskletV1(null, null), transactionManager)
+  public Step uploadToiletCsvFileStepV2() {
+    return new StepBuilder("uploadCsvFileV2", jobRepository)
+        .tasklet(uploadToiletCsvFileTaskletV2(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
   @StepScope
-  public UploadCsvFileTasklet uploadToiletCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
-  ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TOILET, exportTypeV2);
-    return new UploadCsvFileTasklet(filePathBuilder, filePathBuilder);
+  public UploadCsvFileTaskletV2 uploadToiletCsvFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TOILET, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadCsvFileTaskletV2(filePath);
+  }
+  // END: Upload Csv V2
+
+  // BEGIN: Upload Csv V1
+  @Bean
+  public Step uploadToiletCsvFileStepV1() {
+    return new StepBuilder("uploadCsvFileV1", jobRepository)
+        .tasklet(uploadToiletCsvFileTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
   }
 
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadToiletCsvFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
-      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
   ) {
-    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.TOILET, exportTypeV2);
-    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.TOILET_VERSION, exportTypeV1);
-    return new UploadCsvFileTasklet(systemFile, s3File);
+    return new UploadCsvFileTasklet(exportTypeV1, PrmBatchExportFileName.TOILET_VERSION);
   }
+  // END: Upload Csv V1
 
+  // BEGIN: Delete Csv V2
   @Bean
-  public Step deleteToiletCsvFileStep() {
-    return new StepBuilder("deleteCsvFiles", jobRepository)
-        .tasklet(toiletCsvFileDeletingTasklet(null), transactionManager)
+  public Step deleteToiletCsvFileStepV2() {
+    return new StepBuilder("deleteCsvV2", jobRepository)
+        .tasklet(deleteToiletCsvFileTaskletV2(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
 
   @Bean
   @StepScope
-  public DeleteCsvFileTasklet toiletCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2
-  ) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TOILET, exportTypeV2);
-    return new DeleteCsvFileTasklet(filePathBuilder);
-  }*/
+  public DeleteCsvFileTaskletV2 deleteToiletCsvFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TOILET, exportTypeV2)
+        .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteCsvFileTaskletV2(filePath);
+  }
+  // END: Delete Csv V2
 
+  // --- JSON ---
   @Bean
   @Qualifier(EXPORT_TOILET_JSON_JOB_NAME)
   public Job exportToiletJsonJob(ItemReader<ToiletVersion> itemReader) {
@@ -156,55 +185,12 @@ public class ToiletVersionExportBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportToiletJsonStep(itemReader))
-        //        .next(uploadToiletJsonFileStep())
-        //        .next(deleteToiletJsonFileStep())
+        .next(uploadToiletJsonFileStepV2())
+        .next(uploadToiletJsonFileStepV1())
+        .next(deleteToiletJsonFileStepV2())
         .end()
         .build();
   }
-
-  /*@Bean
-  public Step uploadToiletJsonFileStep() {
-    return new StepBuilder("uploadJsonFile", jobRepository)
-        .tasklet(uploadToiletJsonFileTasklet(null), transactionManager)
-        .tasklet(uploadToiletJsonFileTaskletV1(null, null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadToiletJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TOILET, exportTypeV2);
-    return new UploadJsonFileTasklet(filePathBuilder, filePathBuilder);
-  }
-
-  @Bean
-  @StepScope
-  public UploadJsonFileTasklet uploadToiletJsonFileTaskletV1(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2,
-      @Value("#{jobParameters[exportTypeV1]}") ExportTypeV1 exportTypeV1
-  ) {
-    final ExportFilePathBuilder systemFile = ExportFilePathV1.getV2Builder(ExportObjectV2.TOILET, exportTypeV2);
-    final ExportFilePathBuilder s3File = ExportFilePathV1.getV1Builder(ExportObjectV1.TOILET_VERSION, exportTypeV1);
-    return new UploadJsonFileTasklet(systemFile, s3File);
-  }
-
-  @Bean
-  public Step deleteToiletJsonFileStep() {
-    return new StepBuilder("deleteJsonFiles", jobRepository)
-        .tasklet(fileToiletJsonDeletingTasklet(null), transactionManager)
-        .listener(stepTracerListener)
-        .build();
-  }
-
-  @Bean
-  @StepScope
-  public DeleteJsonFileTasklet fileToiletJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportTypeV2 exportTypeV2) {
-    final ExportFilePathBuilder filePathBuilder = ExportFilePathV1.getV2Builder(ExportObjectV2.TOILET, exportTypeV2);
-    return new DeleteJsonFileTasklet(filePathBuilder);
-  }*/
 
   @Bean
   public Step exportToiletJsonStep(ItemReader<ToiletVersion> itemReader) {
@@ -232,5 +218,65 @@ public class ToiletVersionExportBatchConfig {
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     return jsonToiletVersionWriter.getWriter(ExportObjectV2.TOILET, exportTypeV2);
   }
+
+  // BEGIN: Upload Json V2
+  @Bean
+  public Step uploadToiletJsonFileStepV2() {
+    return new StepBuilder("uploadJsonFileV2", jobRepository)
+        .tasklet(uploadToiletJsonFileTaskletV2(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTaskletV2 uploadToiletJsonFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TOILET, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new UploadJsonFileTaskletV2(filePath);
+  }
+  // END: Upload Json V2
+
+  // BEGIN: Upload Json V1
+  @Bean
+  public Step uploadToiletJsonFileStepV1() {
+    return new StepBuilder("uploadJsonFileV1", jobRepository)
+        .tasklet(uploadToiletJsonFileTaskletV1(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTasklet uploadToiletJsonFileTaskletV1(
+      @Value("#{jobParameters[exportTypeV1]}") PrmExportType exportTypeV1
+  ) {
+    return new UploadJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.TOILET_VERSION);
+  }
+  // END: Upload Json V1
+
+  // BEGIN: Delete Json V2
+  @Bean
+  public Step deleteToiletJsonFileStepV2() {
+    return new StepBuilder("deleteJsonFileV2", jobRepository)
+        .tasklet(deleteToiletJsonFileTaskletV2(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public DeleteJsonFileTaskletV2 deleteToiletJsonFileTaskletV2(
+      @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
+    final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TOILET, exportTypeV2)
+        .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
+        .systemDir(fileService.getDir())
+        .build();
+    return new DeleteJsonFileTaskletV2(filePath);
+  }
+  // END: Delete Json V2
 
 }

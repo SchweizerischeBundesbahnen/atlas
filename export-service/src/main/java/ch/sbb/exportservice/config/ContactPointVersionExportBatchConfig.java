@@ -372,5 +372,5 @@ public class ContactPointVersionExportBatchConfig {
     return new DeleteJsonFileTasklet(exportTypeV1, PrmBatchExportFileName.CONTACT_POINT_VERSION);
   }
   // END: Delete Json V1
-  // todo: check retries on exceptions over all jobs
+
 }
