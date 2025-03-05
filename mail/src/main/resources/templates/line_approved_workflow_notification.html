@@ -72,6 +72,12 @@
             padding-bottom: 30px;
         }
 
+        hr {
+            height: 2px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+        }
     </style>
 </head>
 <body>
@@ -94,8 +100,14 @@
                 <b>Antrag für eine neue/geänderte Linie genehmigt </b>
             </span>
             </div>
+            <i>Pour la version française voir ci-dessous. / Per la versione in lingua italiana vedi sotto.</i>
+            <br><br>
+            <hr>
+            <br>
             <div>
-                Der von Ihnen gestellte Antrag für die <b>[[${properties.get(0).get('swissId')}]]</b> -
+                Der von Ihnen gestellte Antrag für die
+                <b>[[${properties.get(0).get('number')}]]</b>
+                <b>[[${properties.get(0).get('swissId')}]]</b> -
                 <b>[[${properties.get(0).get('description')}]]</b> wurde überprüft und genehmigt.
                 <br/><br/>
                 <span th:if="${properties.get(0).get('checkComment')}">
@@ -106,7 +118,8 @@
                 <br/>
                 <br/>
                 Durch einen Klick auf <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
-                gelangen Sie direkt zur Linie <b>[[${properties.get(0).get('swissId')}]]</b> -
+                gelangen Sie direkt zur Linie <b>[[${properties.get(0).get('number')}]]</b>
+                <b>[[${properties.get(0).get('swissId')}]]</b> -
                 <b>[[${properties.get(0).get('description')}]].</b>
             </div>
         </div>
@@ -125,7 +138,9 @@
             </span>
             </div>
             <div>
-                La demande que vous avez faite pour la ligne <b>[[${properties.get(0).get('swissId')}]]</b> -
+                La demande que vous avez faite pour la ligne
+                <b>[[${properties.get(0).get('number')}]]</b>
+                <b>[[${properties.get(0).get('swissId')}]]</b> -
                 <b>[[${properties.get(0).get('description')}]]</b> a été vérifiée et approuvée.
                 <br/><br/>
                 <span th:if="${properties.get(0).get('checkComment')}">
@@ -136,7 +151,8 @@
                 <br/>
                 <br/>
                 En cliquant sur <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
-                , vous accédez directement à la ligne <b>[[${properties.get(0).get('swissId')}]]</b> -
+                , vous accédez directement à la ligne <b>[[${properties.get(0).get('number')}]]</b>
+                <b>[[${properties.get(0).get('swissId')}]]</b> -
                 <b>[[${properties.get(0).get('description')}]].</b>
             </div>
         </div>
@@ -155,7 +171,9 @@
             </span>
             </div>
             <div>
-                La sua richiesta per la linea <b>[[${properties.get(0).get('swissId')}]]</b> -
+                La sua richiesta per la linea
+                <b>[[${properties.get(0).get('number')}]]</b>
+                <b>[[${properties.get(0).get('swissId')}]]</b> -
                 <b>[[${properties.get(0).get('description')}]]</b> è stata controllata e approvata.
                 <br/><br/>
                 <span th:if="${properties.get(0).get('checkComment')}">
@@ -166,7 +184,8 @@
                 <br/>
                 <br/>
                 Cliccare su <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
-                per accedere direttamente alla linea <b>[[${properties.get(0).get('swissId')}]]</b> -
+                per accedere direttamente alla linea <b>[[${properties.get(0).get('number')}]]</b>
+                <b>[[${properties.get(0).get('swissId')}]]</b> -
                 <b>[[${properties.get(0).get('description')}]].</b>
             </div>
         </div>

@@ -17,8 +17,8 @@ import {
 } from '../../../api';
 import { TranslateService } from '@ngx-translate/core';
 import { ValidationService } from '../../validation/validation.service';
-import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 import { Observable } from 'rxjs';
+import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 
 @Component({
   selector: 'app-workflow-dialog',
@@ -26,39 +26,40 @@ import { Observable } from 'rxjs';
   styleUrls: ['./workflow-dialog.component.scss'],
 })
 export class WorkflowDialogComponent implements OnInit {
-  workflowStartFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
-    comment: new FormControl('', [
-      Validators.required,
-      AtlasFieldLengthValidator.comments,
-      AtlasCharsetsValidator.iso88591,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
-    firstName: new FormControl('', [
-      Validators.required,
-      AtlasFieldLengthValidator.length_50,
-      AtlasCharsetsValidator.iso88591,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
-    lastName: new FormControl('', [
-      Validators.required,
-      AtlasFieldLengthValidator.length_50,
-      AtlasCharsetsValidator.iso88591,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
-    function: new FormControl('', [
-      Validators.required,
-      AtlasFieldLengthValidator.length_50,
-      AtlasCharsetsValidator.iso88591,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
-    mail: new FormControl('', [
-      Validators.required,
-      AtlasFieldLengthValidator.length_255,
-      AtlasCharsetsValidator.email,
-      AtlasCharsetsValidator.iso88591,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
-  });
+  workflowStartFormGroup: FormGroup<WorkflowFormGroup> =
+    new FormGroup<WorkflowFormGroup>({
+      comment: new FormControl('', [
+        Validators.required,
+        AtlasFieldLengthValidator.comments,
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
+      firstName: new FormControl('', [
+        Validators.required,
+        AtlasFieldLengthValidator.length_50,
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
+      lastName: new FormControl('', [
+        Validators.required,
+        AtlasFieldLengthValidator.length_50,
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
+      function: new FormControl('', [
+        Validators.required,
+        AtlasFieldLengthValidator.length_50,
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
+      mail: new FormControl('', [
+        Validators.required,
+        AtlasFieldLengthValidator.length_255,
+        AtlasCharsetsValidator.email,
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
+    });
 
   workflowId?: number;
   workflowStatusTranslated$?: Observable<string>;
@@ -69,7 +70,7 @@ export class WorkflowDialogComponent implements OnInit {
     private notificationService: NotificationService,
     private workflowService: WorkflowService,
     private userAdministrationService: UserAdministrationService,
-    private translateService: TranslateService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -95,15 +96,18 @@ export class WorkflowDialogComponent implements OnInit {
     this.workflowService
       .getWorkflow(workflowId)
       .subscribe((workflow: Workflow) =>
-        this.populateWorkflowStartFormGroupFromPersistence(workflow),
+        this.populateWorkflowStartFormGroupFromPersistence(workflow)
       );
   }
 
   private filterWorkflowsInProgress() {
     const lineVersionWorkflows: LineVersionWorkflow[] = [];
-    this.data.lineRecord.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
+    this.data.lineRecord.lineVersionWorkflows?.forEach((lvw) =>
+      lineVersionWorkflows.push(lvw)
+    );
     return lineVersionWorkflows.filter(
-      (lvw) => lvw.workflowProcessingStatus === WorkflowProcessingStatus.InProgress,
+      (lvw) =>
+        lvw.workflowProcessingStatus === WorkflowProcessingStatus.InProgress
     );
   }
 
@@ -118,12 +122,20 @@ export class WorkflowDialogComponent implements OnInit {
 
   private populateWorkflowStartFormGroupFromPersistence(workflow: Workflow) {
     this.workflowStatusTranslated$ = this.translateService.get(
-      'WORKFLOW.STATUS.' + workflow.workflowStatus,
+      'WORKFLOW.STATUS.' + workflow.workflowStatus
     );
-    this.workflowStartFormGroup.controls.comment.setValue(workflow.workflowComment);
-    this.workflowStartFormGroup.controls.firstName.setValue(workflow.client?.firstName);
-    this.workflowStartFormGroup.controls.lastName.setValue(workflow.client?.lastName);
-    this.workflowStartFormGroup.controls.function.setValue(workflow.client?.personFunction);
+    this.workflowStartFormGroup.controls.comment.setValue(
+      workflow.workflowComment
+    );
+    this.workflowStartFormGroup.controls.firstName.setValue(
+      workflow.client?.firstName
+    );
+    this.workflowStartFormGroup.controls.lastName.setValue(
+      workflow.client?.lastName
+    );
+    this.workflowStartFormGroup.controls.function.setValue(
+      workflow.client?.personFunction
+    );
     this.workflowStartFormGroup.controls.mail.setValue(workflow.client?.mail);
   }
 
@@ -141,11 +153,13 @@ export class WorkflowDialogComponent implements OnInit {
 
   private populateWorkflowStart(): WorkflowStart {
     return {
-      businessObjectId: this.data.lineRecord.id !== undefined ? this.data.lineRecord.id : NaN,
+      businessObjectId:
+        this.data.lineRecord.id !== undefined ? this.data.lineRecord.id : NaN,
       swissId: this.data.lineRecord.slnid ?? '',
       workflowType: WorkflowTypeEnum.Line,
       description: this.data.descriptionForWorkflow,
       workflowComment: this.workflowStartFormGroup.value.comment!,
+      number: this.data.number,
       client: {
         firstName: this.workflowStartFormGroup.value.firstName!,
         lastName: this.workflowStartFormGroup.value.lastName!,
