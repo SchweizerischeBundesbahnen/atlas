@@ -1,0 +1,1 @@
+ALTER TABLE line_workflow add column number varchar(50) default null;
