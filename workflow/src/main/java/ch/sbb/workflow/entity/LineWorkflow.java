@@ -54,6 +54,10 @@ public class LineWorkflow {
   @Size(max = AtlasFieldLengths.LENGTH_500)
   private String swissId;
 
+  @NotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_8)
+  private String number;
+
   @NotNull
   @Enumerated(EnumType.STRING)
   private WorkflowType workflowType;
