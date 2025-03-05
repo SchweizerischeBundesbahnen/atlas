@@ -2,7 +2,6 @@ package ch.sbb.exportservice.model;
 
 import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -21,10 +20,6 @@ public enum SePoDiExportType implements ExportTypeBase {
   private final String dir;
   private final String fileTypePrefix;
 
-  public static List<ExportTypeBase> getWorldOnly() {
-    return List.of(WORLD_FULL, WORLD_ONLY_ACTUAL, WORLD_ONLY_TIMETABLE_FUTURE);
-  }
-
   private static class Constants {
 
     private static final String FULL_DIR_NAME = "full";
@@ -34,4 +29,5 @@ public enum SePoDiExportType implements ExportTypeBase {
     private static final String WORLD_PREFIX = "world";
 
   }
+
 }
