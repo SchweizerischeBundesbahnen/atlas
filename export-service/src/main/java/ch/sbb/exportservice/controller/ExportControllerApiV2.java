@@ -11,6 +11,7 @@ import ch.sbb.exportservice.service.ExportRelationJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import ch.sbb.exportservice.service.ExportSublineJobService;
+import ch.sbb.exportservice.service.ExportTimetableFieldNumberJobService;
 import ch.sbb.exportservice.service.ExportToiletJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.service.ExportTransportCompanyJobService;
@@ -37,7 +38,7 @@ public class ExportControllerApiV2 {
 
   ExportControllerApiV2(
       ExportBusinessOrganisationJobService exportBusinessOrganisationJobService,
-      // Zu viele Abhängigkeiten ...
+      ExportTimetableFieldNumberJobService exportTimetableFieldNumberJobService,
       ExportLineJobService exportLineJobService,
       ExportSublineJobService exportSublineJobService,
       ExportTransportCompanyJobService exportTransportCompanyJobService,
@@ -66,6 +67,7 @@ public class ExportControllerApiV2 {
     runnableMap.put("sepodi/loading-point-batch", exportLoadingPointJobService::startExportJobs);
     runnableMap.put("lidi/line-batch", exportLineJobService::startExportJobs);
     runnableMap.put("lidi/subline-batch", exportSublineJobService::startExportJobs);
+    runnableMap.put("lidi/ttfn-batch", exportTimetableFieldNumberJobService::startExportJobs);
   }
 
   @PostMapping("{businessType}/{batchName}")

@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.config;
 
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.exportservice.entity.lidi.TimetableFieldNumber;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
@@ -174,7 +174,7 @@ public class TimetableFieldNumberExportBatchConfig {
   public Step exportTtfnJsonStep(ItemReader<TimetableFieldNumber> itemReader) {
     final String stepName = "exportTimetableFieldNumberJsonStep";
     return new StepBuilder(stepName, jobRepository)
-        .<TimetableFieldNumber, TimetableFieldNumberModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
+        .<TimetableFieldNumber, TimetableFieldNumberVersionModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(timetableFieldNumberJsonProcessor())
         .writer(timetableFieldNumberJsonFileItemWriter(null))
@@ -192,7 +192,7 @@ public class TimetableFieldNumberExportBatchConfig {
 
   @Bean
   @StepScope
-  public JsonFileItemWriter<TimetableFieldNumberModel> timetableFieldNumberJsonFileItemWriter(
+  public JsonFileItemWriter<TimetableFieldNumberVersionModel> timetableFieldNumberJsonFileItemWriter(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     return jsonWriter.getWriter(ExportObjectV2.TIMETABLE_FIELD_NUMBER, exportTypeV2);
   }
