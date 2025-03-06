@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class ExportFileNameConverter implements Converter<String, ExportFileName> {
 
   @Override
-  public ExportFileName convert(String source) { // todo: can source be null?
+  public ExportFileName convert(String source) {
     try {
       return SePoDiBatchExportFileName.valueOf(source);
     } catch (IllegalArgumentException ignored) {
