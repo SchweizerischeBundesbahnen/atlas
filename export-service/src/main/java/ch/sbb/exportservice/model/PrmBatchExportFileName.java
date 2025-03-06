@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
+@Deprecated(forRemoval = true)
 public enum PrmBatchExportFileName implements ExportFileName {
 
   STOP_POINT_VERSION("stop_point", "stop_point"),

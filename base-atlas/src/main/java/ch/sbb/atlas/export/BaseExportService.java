@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
+@Deprecated(forRemoval = true)
 public abstract class BaseExportService<T extends BaseVersion> {
 
   private final FileService fileService;
