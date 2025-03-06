@@ -2,11 +2,12 @@ package ch.sbb.exportservice.integration;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.model.SePoDiExportType;
-import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import ch.sbb.exportservice.service.BaseExportJobService;
+import ch.sbb.exportservice.service.BaseExportJobService.JobParams;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
@@ -14,7 +15,6 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,10 +39,8 @@ class ExportTrafficPointElementIntegrationTest {
   @Test
   void shouldExecuteExportServicePointCsvJob() throws Exception {
     // given
-    JobParameters jobParameters = new JobParametersBuilder()
-        .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, SePoDiExportType.WORLD_FULL.toString())
-        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportTrafficPointElementCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -56,10 +54,8 @@ class ExportTrafficPointElementIntegrationTest {
   @Test
   void shouldExecuteExportServicePointJsonJob() throws Exception {
     // given
-    JobParameters jobParameters = new JobParametersBuilder()
-        .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, SePoDiExportType.WORLD_FULL.toString())
-        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportTrafficPointElementJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
