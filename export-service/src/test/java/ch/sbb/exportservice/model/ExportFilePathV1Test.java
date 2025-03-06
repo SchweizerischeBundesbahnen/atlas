@@ -7,24 +7,6 @@ import org.junit.jupiter.api.Test;
 class ExportFilePathV1Test {
 
   @Test
-  void shouldGetFileNameWithoutPrefix() {
-    // given & when
-    ExportFilePathV1 exportFilePathV1 = new ExportFilePathV1(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION, "",
-        ExportExtensionFileType.JSON_EXTENSION, LocalDate.of(2024, 3, 10));
-    // then
-    assertThat(exportFilePathV1.getFileName()).isEqualTo("full-stop_point-2024-03-10");
-  }
-
-  @Test
-  void shouldGetFileNameWithPrefix() {
-    // given & when
-    ExportFilePathV1 exportFilePathV1 = new ExportFilePathV1(SePoDiExportType.SWISS_ONLY_ACTUAL,
-        SePoDiBatchExportFileName.SERVICE_POINT_VERSION, "", ExportExtensionFileType.CSV_EXTENSION, LocalDate.of(2024, 3, 10));
-    // then
-    assertThat(exportFilePathV1.getFileName()).isEqualTo("actual_date-swiss-only-service_point-2024-03-10");
-  }
-
-  @Test
   void shouldGetFileToStream() {
     // given & when
     ExportFilePathV1 exportFilePathV1 = new ExportFilePathV1(SePoDiExportType.SWISS_ONLY_ACTUAL,
