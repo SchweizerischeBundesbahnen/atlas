@@ -114,16 +114,17 @@ describe('SePo: Status Scenario', { testIsolation: false }, () => {
   };
 
   const getBody = (additionalAttributes: object) => {
-    const body = {
-      designationLong: designationLong,
-      designationOfficial: designationOfficial,
-      businessOrganisation: sboid,
-      validFrom: validFrom,
-      validTo: validTo,
-      etagVersion: etagVersion,
-    };
-    Object.assign(body, additionalAttributes);
-    return body;
+    return Object.assign(
+      {
+        designationLong: designationLong,
+        designationOfficial: designationOfficial,
+        businessOrganisation: sboid,
+        validFrom: validFrom,
+        validTo: validTo,
+        etagVersion: etagVersion,
+      },
+      additionalAttributes
+    );
   };
 
   const addSePoVersion = (additionalBodyAttributes: object) => {
