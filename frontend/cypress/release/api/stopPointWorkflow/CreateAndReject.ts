@@ -10,7 +10,6 @@ describe(
     let parentServicePointSloid: string;
     let stopPointWorkflowId: number;
 
-    const statusRejected = 'REJECTED';
     const meansOfTransport = 'UNKNOWN';
     // Mark designationOfficial to be able to filter the emails in Outlook
     const designationOfficial: string = `${new Date().toISOString()}API`;
@@ -77,69 +76,18 @@ describe(
     });
 
     it('Step-4: Create the workflow', () => {
-      CommonUtils.post('/workflow/v1/stop-point/workflows', {
-        applicantMail: 'joel.hofer@sbb.ch',
-        versionId: parentServicePointId,
-        sloid: parentServicePointSloid,
-        ccEmails: [],
-        workflowComment: 'workflowComment',
-        examinants: [
-          {
-            firstName: 'Vorname',
-            lastName: 'Nachname',
-            judgement: null,
-            decisionType: null,
-            organisation: 'Empfänger',
-            personFunction: 'Funktion',
-            mail: 'joel.hofer@sbb.ch',
-          },
-        ],
-      }).then((response) => {
-        expect(response)
-          .property('status')
-          .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_CREATED);
-
-        expect(response).property('body').property('id').to.be.a('number');
-        stopPointWorkflowId = response.body.id;
-      });
+      ReleaseApiUtils.createStopPointWorkflow(
+        parentServicePointId,
+        parentServicePointSloid
+      ).then((id: number) => (stopPointWorkflowId = id));
     });
 
     it('Step-5: Reject the workflow', () => {
-      CommonUtils.post(
-        `/workflow/v1/stop-point/workflows/reject/${stopPointWorkflowId}`,
-        {
-          mail: 'joel.hofer@sbb.ch',
-          organisation: 'The Fot',
-        }
-      ).then((response) => {
-        expect(response)
-          .property('status')
-          .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
-
-        expect(response)
-          .property('body')
-          .property('status')
-          .to.equal(statusRejected);
-      });
+      ReleaseApiUtils.rejectWorkflow(stopPointWorkflowId);
     });
 
     it('Step-6: Check status of workflow is REJECTED', () => {
-      CommonUtils.get(
-        `/workflow/v1/stop-point/workflows/${stopPointWorkflowId}`
-      ).then((response) => {
-        expect(response)
-          .property('status')
-          .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
-
-        expect(response)
-          .property('body')
-          .property('status')
-          .to.equal(statusRejected);
-        expect(response)
-          .property('body')
-          .property('id')
-          .to.equal(stopPointWorkflowId);
-      });
+      ReleaseApiUtils.checkWorkflowStatus(stopPointWorkflowId, 'REJECTED');
     });
   }
 );

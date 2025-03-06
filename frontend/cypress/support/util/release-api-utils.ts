@@ -6,6 +6,8 @@ export type SePoDependentInfo = {
   numberWithoutCheckDigit: number;
 };
 
+const workflowEmail = 'joel.hofer@sbb.ch';
+
 export default class ReleaseApiUtils {
   static FIRST_ATLAS_DATE = '1700-01-01';
   static LAST_ATLAS_DATE = '9999-12-31';
@@ -152,4 +154,73 @@ export default class ReleaseApiUtils {
         .and.equals(info.numberWithoutCheckDigit);
     });
   }
+
+  static checkWorkflowStatus(
+    stopPointWorkflowId: number,
+    expectedStatus: string
+  ) {
+    CommonUtils.get(
+      `/workflow/v1/stop-point/workflows/${stopPointWorkflowId}`
+    ).then((response) => {
+      expect(response)
+        .property('status')
+        .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      expect(response)
+        .property('body')
+        .property('status')
+        .to.equal(expectedStatus);
+      expect(response)
+        .property('body')
+        .property('id')
+        .to.equal(stopPointWorkflowId);
+    });
+  }
+
+  static rejectWorkflow(stopPointWorkflowId: number) {
+    CommonUtils.post(
+      `/workflow/v1/stop-point/workflows/reject/${stopPointWorkflowId}`,
+      {
+        mail: workflowEmail,
+        organisation: 'The Fot',
+      }
+    ).then((response) => {
+      expect(response)
+        .property('status')
+        .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      expect(response).property('body').property('status').to.equal('REJECTED');
+    });
+  }
+
+  static createStopPointWorkflow = (
+    parentServicePointId: number,
+    parentServicePointSloid: string
+  ): Chainable<number> => {
+    return CommonUtils.post('/workflow/v1/stop-point/workflows', {
+      applicantMail: 'joel.hofer@sbb.ch',
+      versionId: parentServicePointId,
+      sloid: parentServicePointSloid,
+      ccEmails: [],
+      workflowComment: 'workflowComment',
+      examinants: [
+        {
+          firstName: 'Vorname',
+          lastName: 'Nachname',
+          judgement: null,
+          decisionType: null,
+          organisation: 'Empfänger',
+          personFunction: 'Funktion',
+          mail: 'joel.hofer@sbb.ch',
+        },
+      ],
+    }).then((response) => {
+      expect(response)
+        .property('status')
+        .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_CREATED);
+
+      expect(response).property('body').property('id').to.be.a('number');
+      return response.body.id;
+    });
+  };
 }
