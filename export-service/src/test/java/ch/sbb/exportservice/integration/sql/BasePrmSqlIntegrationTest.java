@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.integration;
+package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -19,7 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-abstract class BasePrmSqlIntegrationTest {
+public abstract class BasePrmSqlIntegrationTest {
 
   @Autowired
   @Qualifier("prmDataSource")
