@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
+@Deprecated(forRemoval = true)
 public enum BoDiBatchExportFileName implements ExportFileName {
 
   BUSINESS_ORGANISATION_VERSION("business_organisation", "business_organisation_versions");
