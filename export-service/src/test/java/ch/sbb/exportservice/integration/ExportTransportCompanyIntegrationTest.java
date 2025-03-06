@@ -6,7 +6,6 @@ import ch.sbb.exportservice.BoDiDbSchemaCreation;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.service.BaseExportJobService;
 import ch.sbb.exportservice.service.BaseExportJobService.JobParams;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
