@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
+@Deprecated(forRemoval = true)
 public enum PrmExportType implements ExportTypeBase {
 
   FULL(Constants.FULL_DIR_NAME, ""),

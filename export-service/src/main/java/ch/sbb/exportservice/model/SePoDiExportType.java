@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
+@Deprecated(forRemoval = true)
 public enum SePoDiExportType implements ExportTypeBase {
 
   SWISS_ONLY_FULL(Constants.FULL_DIR_NAME, Constants.SWISS_ONLY_PREFIX),
