@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"ttfnid", "validFrom", "validTo", "status", "swissTimetableFieldNumber",
     "number", "businessOrganisation", "description", "comment", "lineRelations", "creationTime", "editionTime"})
+@Deprecated(forRemoval = true)
 public class TimetableFieldNumberVersionCsvModel implements VersionCsvModel {
 
   @JsonProperty("ttfnid")
