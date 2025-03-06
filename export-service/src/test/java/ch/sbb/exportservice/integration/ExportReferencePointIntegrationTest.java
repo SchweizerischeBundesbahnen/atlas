@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.integration;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.exportservice.integration.sql.BasePrmSqlIntegrationTest;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;

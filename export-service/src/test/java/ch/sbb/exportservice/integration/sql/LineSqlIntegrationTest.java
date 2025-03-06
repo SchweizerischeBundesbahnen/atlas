@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.integration;
+package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
