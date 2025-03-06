@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.integration;
+package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
@@ -76,7 +76,7 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     final String sloid = "ch:1:sloid:77559:0:2";
     insertTrafficPoint(sloid, now, now);
     insertTrafficPoint("ch:1:sloid:1", now.minusMonths(5), now.minusMonths(4));
-    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_FUTURE_TIMETABLE);
+    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(ExportTypeV2.WORLD_ACTUAL);
 
     //when
     final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);

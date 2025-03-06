@@ -28,16 +28,13 @@ class ExportCsvDataIntegrationTest extends BaseExportCsvDataIntegrationTest {
     when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
     when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
-    JobParameters jobParameters = new JobParametersBuilder()
-        .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, SePoDiExportType.WORLD_FULL.toString())
-        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
-
     // when
-    jobLauncher.run(exportServicePointCsvJob, jobParameters);
+    exportServicePointJobService.startExportJobs();
 
     // then
-    File exportedCsvFile = fileArgumentCaptor.getValue();
+    File exportedCsvFile =
+        fileArgumentCaptor.getAllValues().stream().filter(i -> i.getName().startsWith("full-world-")).findFirst().orElseThrow();
+
     List<ServicePointVersionCsvModel> exportedCsv = parseCsv(exportedCsvFile);
     Files.delete(exportedCsvFile.toPath());
 
@@ -52,16 +49,13 @@ class ExportCsvDataIntegrationTest extends BaseExportCsvDataIntegrationTest {
     when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
     when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
-    JobParameters jobParameters = new JobParametersBuilder()
-        .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, SePoDiExportType.WORLD_FULL.toString())
-        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
-
     // when
-    jobLauncher.run(exportServicePointCsvJob, jobParameters);
+    exportServicePointJobService.startExportJobs();
 
     // then
-    File exportedCsvFile = fileArgumentCaptor.getValue();
+    File exportedCsvFile =
+        fileArgumentCaptor.getAllValues().stream().filter(i -> i.getName().startsWith("full-world-")).findFirst().orElseThrow();
+
     List<ServicePointVersionCsvModel> exportedCsv = parseCsv(exportedCsvFile);
     Files.delete(exportedCsvFile.toPath());
 
