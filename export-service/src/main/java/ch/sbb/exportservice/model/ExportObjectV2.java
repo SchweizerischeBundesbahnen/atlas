@@ -8,33 +8,33 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ExportObjectV2 {
 
-  BUSINESS_ORGANISATION(Constants.DEFAULTS),
-  CONTACT_POINT(Constants.DEFAULTS),
-  LINE(Constants.DEFAULTS),
-  PARKING_LOT(Constants.DEFAULTS),
-  PLATFORM(Constants.DEFAULTS),
-  REFERENCE_POINT(Constants.DEFAULTS),
-  RELATION(Constants.DEFAULTS),
-  STOP_POINT(Constants.DEFAULTS),
-  SUBLINE(Constants.DEFAULTS),
-  TIMETABLE_FIELD_NUMBER(Constants.DEFAULTS),
-  TOILET(Constants.DEFAULTS),
-  TRANSPORT_COMPANY(Constants.DEFAULTS),
-  SERVICE_POINT(Constants.SPECIALS),
-  TRAFFIC_POINT(Constants.SPECIALS),
-  LOADING_POINT(Constants.SPECIALS);
+  BUSINESS_ORGANISATION(ExportTypes.DEFAULT),
+  CONTACT_POINT(ExportTypes.DEFAULT),
+  LINE(ExportTypes.DEFAULT),
+  PARKING_LOT(ExportTypes.DEFAULT),
+  PLATFORM(ExportTypes.DEFAULT),
+  REFERENCE_POINT(ExportTypes.DEFAULT),
+  RELATION(ExportTypes.DEFAULT),
+  STOP_POINT(ExportTypes.DEFAULT),
+  SUBLINE(ExportTypes.DEFAULT),
+  TIMETABLE_FIELD_NUMBER(ExportTypes.DEFAULT),
+  TOILET(ExportTypes.DEFAULT),
+  TRANSPORT_COMPANY(ExportTypes.DEFAULT),
+  SERVICE_POINT(ExportTypes.SWISS_WORLD),
+  TRAFFIC_POINT(ExportTypes.SWISS_WORLD),
+  LOADING_POINT(ExportTypes.SWISS_WORLD);
 
   private final List<ExportTypeV2> supportedExportTypes;
 
-  private static class Constants {
+  private static class ExportTypes {
 
-    public static final List<ExportTypeV2> DEFAULTS = List.of(
+    public static final List<ExportTypeV2> DEFAULT = List.of(
         ExportTypeV2.FULL,
         ExportTypeV2.ACTUAL,
         ExportTypeV2.FUTURE_TIMETABLE
     );
 
-    public static final List<ExportTypeV2> SPECIALS = List.of(
+    public static final List<ExportTypeV2> SWISS_WORLD = List.of(
         ExportTypeV2.SWISS_FULL,
         ExportTypeV2.SWISS_ACTUAL,
         ExportTypeV2.SWISS_FUTURE_TIMETABLE,
