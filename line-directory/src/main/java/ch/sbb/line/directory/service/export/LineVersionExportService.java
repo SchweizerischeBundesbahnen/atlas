@@ -11,15 +11,14 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.model.csv.LineVersionCsvModel;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
-
 import static java.util.stream.Collectors.toList;
+import org.springframework.stereotype.Service;
 
 @Service
+@Deprecated(forRemoval = true)
 public class LineVersionExportService extends BaseExportService<LineVersion> {
 
   private final LineVersionRepository lineVersionRepository;

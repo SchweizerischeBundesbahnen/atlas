@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
+@Deprecated(forRemoval = true)
 public enum SePoDiBatchExportFileName implements ExportFileName {
 
   SERVICE_POINT_VERSION("service_point", "service_point"),
