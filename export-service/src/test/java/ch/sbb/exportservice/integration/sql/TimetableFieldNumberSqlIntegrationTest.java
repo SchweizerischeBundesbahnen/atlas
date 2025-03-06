@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.integration;
+package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.model.Status;

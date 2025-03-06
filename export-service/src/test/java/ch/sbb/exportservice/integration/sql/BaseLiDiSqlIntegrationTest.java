@@ -1,10 +1,9 @@
-package ch.sbb.exportservice.integration;
+package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.LiDiDbSchemaCreation;
-import ch.sbb.exportservice.PrmDbSchemaCreation;
 import ch.sbb.exportservice.entity.lidi.Line;
 import ch.sbb.exportservice.entity.lidi.Subline;
 import ch.sbb.exportservice.entity.lidi.TimetableFieldNumber;
@@ -22,7 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-abstract class BaseLiDiSqlIntegrationTest {
+public abstract class BaseLiDiSqlIntegrationTest {
 
   @Autowired
   @Qualifier("lineDirectoryDataSource")
