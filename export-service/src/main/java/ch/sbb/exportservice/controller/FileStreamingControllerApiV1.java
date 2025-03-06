@@ -129,5 +129,5 @@ public class FileStreamingControllerApiV1 {
       default -> throw new BadRequestException("Unsupported export type " + exportType);
     }
   }
-  // todo: spring cannot map pathvariables to interface types
+
 }
