@@ -1,1 +1,5 @@
+drop table business_organisation_version;
+drop table business_organisation_version_business_types;
+
+drop table transport_company_relation;
 drop table transport_company;
