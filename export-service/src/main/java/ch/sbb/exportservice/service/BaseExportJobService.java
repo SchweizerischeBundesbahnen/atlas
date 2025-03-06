@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -33,7 +34,7 @@ public abstract class BaseExportJobService {
 
   protected abstract List<JobParams> getExportTypes();
 
-  protected void startExportJob(JobParams jobParams, Job job) {
+  public static JobParameters buildJobParameters(JobParams jobParams) {
     final JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
         .addString(EXPORT_TYPE_JOB_PARAMETER, jobParams.exportTypeV2.toString())
@@ -42,9 +43,12 @@ public abstract class BaseExportJobService {
     if (jobParams.exportTypeV1 != null) {
       jobParametersBuilder.addString(EXPORT_TYPE_V1_JOB_PARAMETER, jobParams.exportTypeV1.toString());
     }
+    return jobParametersBuilder.toJobParameters();
+  }
 
+  protected void startExportJob(JobParams jobParams, Job job) {
     try {
-      JobExecution execution = jobLauncher.run(job, jobParametersBuilder.toJobParameters());
+      JobExecution execution = jobLauncher.run(job, buildJobParameters(jobParams));
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
@@ -62,12 +66,12 @@ public abstract class BaseExportJobService {
   }
 
   @RequiredArgsConstructor
-  protected static class JobParams {
+  public static class JobParams {
 
     private final ExportTypeV2 exportTypeV2;
     private final ExportTypeBase exportTypeV1;
 
-    protected JobParams(ExportTypeV2 exportTypeV2) {
+    public JobParams(ExportTypeV2 exportTypeV2) {
       this.exportTypeV2 = exportTypeV2;
       this.exportTypeV1 = null;
     }

@@ -4,11 +4,12 @@ import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BoDiDbSchemaCreation;
 import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.service.BaseExportJobService;
+import ch.sbb.exportservice.service.BaseExportJobService.JobParams;
 import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Files;
@@ -21,7 +22,6 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,19 +46,16 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
 
   @MockitoBean
   @Qualifier("deleteTransportCompanyCsvFileTasklet")
-  private DeleteCsvFileTasklet transportCompanyCsvFileDeletingTasklet;
+  private DeleteCsvFileTaskletV2 transportCompanyCsvFileDeletingTasklet;
 
   @Test
   void shouldExecuteExportTransportCompanyCsvJob() throws Exception {
-    when(amazonService.putZipFileCleanupBoth(any(), fileArgumentCaptor.capture(), any())).thenReturn(
+    when(amazonService.putZipFileCleanupZip(any(), fileArgumentCaptor.capture(), any())).thenReturn(
         URI.create("https://sbb.ch").toURL());
     when(transportCompanyCsvFileDeletingTasklet.execute(any(), any())).thenReturn(null);
 
     // given
-    JobParameters jobParameters = new JobParametersBuilder()
-        .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, ExportTypeV2.FULL.toString())
-        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportTransportCompanyCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -83,10 +80,7 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
   @Test
   void shouldExecuteExportTransportCompanyJsonJob() throws Exception {
     // given
-    JobParameters jobParameters = new JobParametersBuilder()
-        .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, ExportTypeV2.FULL.toString())
-        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportTransportCompanyJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
