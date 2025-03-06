@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class ExportTypeBaseConverter implements Converter<String, ExportTypeBase> {
 
   @Override
-  public ExportTypeBase convert(String source) { // todo: can source be null?
+  public ExportTypeBase convert(String source) {
     try {
       return SePoDiExportType.valueOf(source);
     } catch (IllegalArgumentException ignored) {
