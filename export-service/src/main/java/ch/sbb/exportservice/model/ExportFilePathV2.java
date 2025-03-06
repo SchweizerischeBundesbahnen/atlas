@@ -36,6 +36,9 @@ public final class ExportFilePathV2 {
     return s3BucketDirPath() + PATH_DELIMITER + fileName() + ".json.gz";
   }
 
+  /**
+   * systemDir is expected to have a trailing backslash
+   */
   public String actualDateFilePath() {
     return systemDir + fileName() + extension;
   }
@@ -60,7 +63,7 @@ public final class ExportFilePathV2 {
     };
 
     final String prefix = switch (subtype) {
-      case SWISS_FULL, SWISS_ACTUAL, SWISS_FUTURE_TIMETABLE -> "swiss-only";
+      case SWISS_FULL, SWISS_ACTUAL, SWISS_FUTURE_TIMETABLE -> "swiss";
       case WORLD_FULL, WORLD_ACTUAL, WORLD_FUTURE_TIMETABLE -> "world";
       default -> "";
     };
