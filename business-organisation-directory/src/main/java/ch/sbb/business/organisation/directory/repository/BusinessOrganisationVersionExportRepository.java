@@ -4,6 +4,7 @@ import ch.sbb.business.organisation.directory.entity.BusinessOrganisationExportV
 import java.time.LocalDate;
 import java.util.List;
 
+@Deprecated(forRemoval = true)
 public interface BusinessOrganisationVersionExportRepository {
 
   List<BusinessOrganisationExportVersionWithTuInfo> findAll();

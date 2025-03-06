@@ -4,15 +4,15 @@ import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationExportVersionWithTuInfo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
+@Deprecated(forRemoval = true)
 public class BusinessOrganisationVersionExportRepositoryImpl implements BusinessOrganisationVersionExportRepository {
 
   private static final String ORDER_BY = " ORDER BY bov.sboid, bov.valid_from ASC";
