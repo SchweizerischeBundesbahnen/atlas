@@ -20,7 +20,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
 
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.9.Final")
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.10.Final")
 
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
