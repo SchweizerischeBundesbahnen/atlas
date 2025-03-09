@@ -9,7 +9,7 @@ group = "ch.sbb.atlas"
 version = "2.485.0"
 
 description = "Atlas User Administration"
-extra["microsoftGraphSdkVersion"] = "6.30.1"
+extra["microsoftGraphSdkVersion"] = "6.31.0"
 extra["azureIdentityVersion"] = "1.15.3"
 
 dependencies {
@@ -26,7 +26,7 @@ dependencies {
     implementation(project(":kafka"))
     implementation("org.springframework.kafka:spring-kafka")
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.9.Final")
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.10.Final")
 
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
