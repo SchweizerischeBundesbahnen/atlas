@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.entity.prm;
+package ch.sbb.exportservice.entity.sepodi;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.BaseEntity;
