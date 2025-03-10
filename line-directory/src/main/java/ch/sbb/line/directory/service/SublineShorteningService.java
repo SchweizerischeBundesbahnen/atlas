@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.api.lidi.AffectedSublinesModel;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.model.AffectedSublinesData;
@@ -8,6 +9,7 @@ import ch.sbb.line.directory.model.LineVersionRange;
 import ch.sbb.line.directory.model.SublineVersionRange;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -30,6 +32,7 @@ public class SublineShorteningService {
     List<String> notAllowedSublines = new ArrayList<>();
 
     if (isOnlyValidityChanged(lineVersion, editedVersion) && isShortening(lineVersion, editedVersion)) {
+
       List<LineVersion> lineVersions = getAllLineVersionsBySlnid(lineVersion.getSlnid());
       LineVersionRange lineVersionRange = getOldestAndLatestLineVersion(lineVersions);
       Map<String, List<SublineVersion>> sublineVersions = getAllSublinesByMainlineSlnid(lineVersion.getSlnid());
@@ -93,21 +96,27 @@ public class SublineShorteningService {
     for (List<SublineVersion> versions : data.getSublineVersions().values()) {
       SublineVersionRange range = getOldestAndLatestSublineVersion(versions);
       String slnid = range.getLatestVersion().getSlnid();
-      if (isSublineShorteningAllowed(data.getEditedVersion(), range, versions.size())) {
-        data.getAllowedSublines().add(slnid);
-      } else {
-        data.getNotAllowedSublines().add(slnid);
+      if (isSublineValidityAffectedByUpdatedMainline(data.getEditedVersion().getValidFrom(),
+          data.getEditedVersion().getValidTo(), range)) {
+        if (isSublineShorteningAllowed(data.getEditedVersion(), range, versions.size())) {
+          data.getAllowedSublines().add(slnid);
+        } else {
+          data.getNotAllowedSublines().add(slnid);
+        }
       }
     }
   }
 
   private void processSublineVersionsValidFrom(AffectedSublinesData data) {
-    for (List<SublineVersion> versions : data.getSublineVersions().values()) {
-      SublineVersionRange range = getOldestAndLatestSublineVersion(versions);
-      if (isShorteningAllowedValidFrom(data.getEditedVersion(), range)) {
-        data.getAllowedSublines().add(range.getLatestVersion().getSlnid());
-      } else {
-        data.getNotAllowedSublines().add(range.getLatestVersion().getSlnid());
+    for (List<SublineVersion> sublineVersions : data.getSublineVersions().values()) {
+      SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(sublineVersions);
+      if (isSublineValidityAffectedByUpdatedMainline(data.getEditedVersion().getValidFrom(),
+          data.getEditedVersion().getValidTo(), sublineVersionRange)) {
+        if (isShorteningAllowedValidFrom(data.getEditedVersion(), sublineVersionRange)) {
+          data.getAllowedSublines().add(sublineVersionRange.getLatestVersion().getSlnid());
+        } else {
+          data.getNotAllowedSublines().add(sublineVersionRange.getLatestVersion().getSlnid());
+        }
       }
     }
   }
@@ -115,10 +124,13 @@ public class SublineShorteningService {
   private void processSublineVersionsValidTo(AffectedSublinesData data) {
     for (List<SublineVersion> versions : data.getSublineVersions().values()) {
       SublineVersionRange range = getOldestAndLatestSublineVersion(versions);
-      if (isShorteningAllowedValidTo(data.getEditedVersion(), range)) {
-        data.getAllowedSublines().add(range.getLatestVersion().getSlnid());
-      } else {
-        data.getNotAllowedSublines().add(range.getLatestVersion().getSlnid());
+      if (isSublineValidityAffectedByUpdatedMainline(data.getEditedVersion().getValidFrom(), data.getEditedVersion().getValidTo(),
+          range)) {
+        if (isShorteningAllowedValidTo(data.getEditedVersion(), range)) {
+          data.getAllowedSublines().add(range.getLatestVersion().getSlnid());
+        } else {
+          data.getNotAllowedSublines().add(range.getLatestVersion().getSlnid());
+        }
       }
     }
   }
@@ -133,32 +145,82 @@ public class SublineShorteningService {
     boolean isOnlyValidToChanged = isOnlyValidToChanged(lineVersion, editedVersion);
     boolean isOnlyValidFromChanged = isOnlyValidFromChanged(lineVersion, editedVersion);
 
-    if (isMatchingVersion(lineVersion, lineVersionRange.getOldestVersion()) && isOnlyValidFromChanged && !isOnlyValidToChanged) {
+    if (lineVersions.size() == 1 && isBothValidityChanged(lineVersion, editedVersion)) {
       for (String slnid : sublinesToShort) {
-        List<SublineVersion> versions = findAllSublineVersionsBySlnid(slnid);
-        SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(versions);
-
-        SublineVersion oldVersion = cloneSublineVersion(sublineVersionRange.getOldestVersion());
-        SublineVersion editedSublineVersion = cloneSublineVersion(sublineVersionRange.getOldestVersion());
-        editedSublineVersion.setValidFrom(editedVersion.getValidFrom());
-        SublineVersionRange sublineVersionToUpdate = new SublineVersionRange(oldVersion, editedSublineVersion);
-        sublinesToUpdate.add(sublineVersionToUpdate);
+        processBothValidityChanged(slnid, lineVersion, editedVersion, sublinesToUpdate);
       }
     }
 
-    if (isMatchingVersion(lineVersion, lineVersionRange.getLatestVersion()) && !isOnlyValidFromChanged && isOnlyValidToChanged) {
+    if (isMatchingVersion(lineVersion, lineVersionRange.getOldestVersion()) && isOnlyValidFromChanged) {
       for (String slnid : sublinesToShort) {
-        List<SublineVersion> versions = findAllSublineVersionsBySlnid(slnid);
-        SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(versions);
-
-        SublineVersion oldVersion = cloneSublineVersion(sublineVersionRange.getLatestVersion());
-        SublineVersion editedSublineVersion = cloneSublineVersion(sublineVersionRange.getLatestVersion());
-        editedSublineVersion.setValidTo(editedVersion.getValidTo());
-        SublineVersionRange sublineVersionToUpdate = new SublineVersionRange(oldVersion, editedSublineVersion);
-        sublinesToUpdate.add(sublineVersionToUpdate);
+        processOnlyValidFromChange(slnid, editedVersion, sublinesToUpdate);
       }
     }
+
+    if (isMatchingVersion(lineVersion, lineVersionRange.getLatestVersion()) && isOnlyValidToChanged) {
+      for (String slnid : sublinesToShort) {
+        processOnlyValidToChange(slnid, editedVersion, sublinesToUpdate);
+      }
+    }
+
     return sublinesToUpdate;
+  }
+
+  private void processBothValidityChanged(String slnid, LineVersion lineVersion, LineVersion editedVersion,
+      List<SublineVersionRange> sublinesToUpdate) {
+
+    List<SublineVersion> sublineVersions = findAllSublineVersionsBySlnid(slnid);
+    SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(sublineVersions);
+
+    if (sublineVersions.size() > 1) {
+      if (isShorteningValidFrom(lineVersion, editedVersion)) {
+        SublineVersion oldVersion = cloneSublineVersion(sublineVersionRange.getOldestVersion());
+        SublineVersion oldVersionEdit = cloneSublineVersion(sublineVersionRange.getOldestVersion());
+        oldVersionEdit.setValidFrom(editedVersion.getValidFrom());
+        sublinesToUpdate.add(new SublineVersionRange(oldVersion, oldVersionEdit));
+      }
+      if (isShorteningValidTo(lineVersion, editedVersion)) {
+        SublineVersion latestVersion = cloneSublineVersion(sublineVersionRange.getLatestVersion());
+        SublineVersion latestVersionEdit = cloneSublineVersion(sublineVersionRange.getLatestVersion());
+        latestVersionEdit.setValidTo(editedVersion.getValidTo());
+        sublinesToUpdate.add(new SublineVersionRange(latestVersion, latestVersionEdit));
+      }
+    } else {
+      SublineVersion sublineVersion = cloneSublineVersion(sublineVersionRange.getOldestVersion());
+      SublineVersion editedSublineVersion = cloneSublineVersion(sublineVersionRange.getOldestVersion());
+      if (isShorteningValidFrom(lineVersion, editedVersion)) {
+        editedSublineVersion.setValidFrom(editedVersion.getValidFrom());
+      }
+      if (isShorteningValidTo(lineVersion, editedVersion)) {
+        editedSublineVersion.setValidTo(editedVersion.getValidTo());
+      }
+      sublinesToUpdate.add(new SublineVersionRange(sublineVersion, editedSublineVersion));
+    }
+  }
+
+  private void processOnlyValidFromChange(String slnid, LineVersion editedVersion,
+      List<SublineVersionRange> sublinesToUpdate) {
+    List<SublineVersion> versions = findAllSublineVersionsBySlnid(slnid);
+    SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(versions);
+
+    SublineVersion oldVersion = cloneSublineVersion(sublineVersionRange.getOldestVersion());
+    SublineVersion editedSublineVersion = cloneSublineVersion(sublineVersionRange.getOldestVersion());
+
+    editedSublineVersion.setValidFrom(editedVersion.getValidFrom());
+
+    sublinesToUpdate.add(new SublineVersionRange(oldVersion, editedSublineVersion));
+  }
+
+  private void processOnlyValidToChange(String slnid, LineVersion editedVersion,
+      List<SublineVersionRange> sublinesToUpdate) {
+    List<SublineVersion> versions = findAllSublineVersionsBySlnid(slnid);
+    SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(versions);
+
+    SublineVersion latestVersion = cloneSublineVersion(sublineVersionRange.getLatestVersion());
+    SublineVersion editedSublineVersion = cloneSublineVersion(sublineVersionRange.getLatestVersion());
+
+    editedSublineVersion.setValidTo(editedVersion.getValidTo());
+    sublinesToUpdate.add(new SublineVersionRange(latestVersion, editedSublineVersion));
   }
 
   public List<SublineVersionRange> checkAndPrepareToShortSublines(LineVersion currentVersion, LineVersion editedVersion) {
@@ -178,6 +240,14 @@ public class SublineShorteningService {
   private static boolean isShortening(LineVersion currentVersion, LineVersion editedVersion) {
     return (editedVersion.getValidFrom().isAfter(currentVersion.getValidFrom()) || editedVersion.getValidTo()
         .isBefore(currentVersion.getValidTo()));
+  }
+
+  private static boolean isShorteningValidFrom(LineVersion currentVersion, LineVersion editedVersion) {
+    return editedVersion.getValidFrom().isAfter(currentVersion.getValidFrom());
+  }
+
+  private static boolean isShorteningValidTo(LineVersion currentVersion, LineVersion editedVersion) {
+    return editedVersion.getValidTo().isBefore(currentVersion.getValidTo());
   }
 
   private boolean isShorteningAllowedValidTo(LineVersion editedVersion, SublineVersionRange sublineVersionRange) {
@@ -215,6 +285,12 @@ public class SublineShorteningService {
     boolean validToChanged = !Objects.equals(edited.getValidTo(), current.getValidTo());
     boolean validFromChanged = !Objects.equals(edited.getValidFrom(), current.getValidFrom());
     return (validToChanged || validFromChanged) && areNonValidityFieldsEqual(current, edited);
+  }
+
+  private static boolean isBothValidityChanged(LineVersion current, LineVersion edited) {
+    boolean validToChanged = !Objects.equals(edited.getValidTo(), current.getValidTo());
+    boolean validFromChanged = !Objects.equals(edited.getValidFrom(), current.getValidFrom());
+    return (validToChanged && validFromChanged) && areNonValidityFieldsEqual(current, edited);
   }
 
   private static boolean isOnlyValidToChanged(LineVersion current, LineVersion edited) {
@@ -277,6 +353,16 @@ public class SublineShorteningService {
     return sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
   }
 
+  private boolean isSublineValidityAffectedByUpdatedMainline(LocalDate validFrom, LocalDate validTo,
+      SublineVersionRange sublineVersionRange) {
+
+    DateRange dateRangeSubline = new DateRange(sublineVersionRange.getOldestVersion().getValidFrom(),
+        sublineVersionRange.getLatestVersion().getValidTo());
+    DateRange dateRangeMainline = new DateRange(validFrom, validTo);
+
+    return !dateRangeSubline.isDateRangeContainedIn(dateRangeMainline);
+  }
+
   private static SublineVersion cloneSublineVersion(SublineVersion sublineVersion) {
     return SublineVersion.builder()
         .slnid(sublineVersion.getSlnid())
@@ -298,37 +384,4 @@ public class SublineShorteningService {
         .version(sublineVersion.getVersion())
         .build();
   }
-
-  public LineVersion cloneLineVersion(LineVersion lineVersion) {
-    return LineVersion.builder()
-        .id(lineVersion.getId())
-        .status(lineVersion.getStatus())
-        .lineType(lineVersion.getLineType())
-        .slnid(lineVersion.getSlnid())
-        .paymentType(lineVersion.getPaymentType())
-        .number(lineVersion.getNumber())
-        .alternativeName(lineVersion.getAlternativeName())
-        .combinationName(lineVersion.getCombinationName())
-        .longName(lineVersion.getLongName())
-        .colorFontRgb(lineVersion.getColorFontRgb())
-        .colorBackRgb(lineVersion.getColorBackRgb())
-        .colorFontCmyk(lineVersion.getColorFontCmyk())
-        .colorBackCmyk(lineVersion.getColorBackCmyk())
-        .description(lineVersion.getDescription())
-        .icon(lineVersion.getIcon())
-        .validFrom(lineVersion.getValidFrom())
-        .validTo(lineVersion.getValidTo())
-        .businessOrganisation(lineVersion.getBusinessOrganisation())
-        .comment(lineVersion.getComment())
-        .swissLineNumber(lineVersion.getSwissLineNumber())
-        .version(lineVersion.getVersion())
-        .creator(lineVersion.getCreator())
-        .creationDate(lineVersion.getCreationDate())
-        .editor(lineVersion.getEditor())
-        .editionDate(lineVersion.getEditionDate())
-        .concessionType(lineVersion.getConcessionType())
-        .offerCategory(lineVersion.getOfferCategory())
-        .build();
-  }
-
 }
