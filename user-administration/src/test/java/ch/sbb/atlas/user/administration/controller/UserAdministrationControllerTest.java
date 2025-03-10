@@ -10,7 +10,6 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.user.administration.UserDisplayNameModel;
-import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
@@ -100,30 +99,28 @@ class UserAdministrationControllerTest {
             .application(ApplicationType.LIDI)
             .role(ApplicationRole.WRITER)
             .permissionRestrictions(Set.of(PermissionRestriction.builder()
-                    .restriction("sboid")
-                    .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+                .restriction("sboid")
+                .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
                 .build()))
             .build()));
 
     String sbbuid = "u1234566";
-    when(userAdministrationService.getAllUserIds()).thenReturn(List.of(sbbuid));
-    when(graphApiService.resolveUsers(any())).thenReturn(List.of(UserModel.builder().sbbUserId(sbbuid).build()));
-    when(userAdministrationService.getUserPermissions(any())).thenReturn(List.of(
-        UserPermission.builder()
-            .sbbUserId(sbbuid)
-            .application(ApplicationType.TIMETABLE_HEARING)
-            .role(ApplicationRole.WRITER)
-            .permissionRestrictions(Set.of(PermissionRestriction.builder()
-                .restriction("BERN")
-                .type(PermissionRestrictionType.CANTON)
-                .build()))
-            .build()));
+    UserPermission userPermission = UserPermission.builder()
+        .sbbUserId(sbbuid)
+        .application(ApplicationType.TIMETABLE_HEARING)
+        .role(ApplicationRole.WRITER)
+        .permissionRestrictions(Set.of(PermissionRestriction.builder()
+            .restriction("BERN")
+            .type(PermissionRestrictionType.CANTON)
+            .build()))
+        .build();
+    when(userAdministrationService.getAllUsers()).thenReturn(List.of(userPermission));
 
     userAdministrationController.syncPermissions();
 
     verify(userPermissionDistributor, times(2)).pushUserPermissionToKafka(userAdministrationModelArgumentCaptor.capture());
 
-    UserAdministrationModel sentClientCredential = userAdministrationModelArgumentCaptor.getAllValues().get(0);
+    UserAdministrationModel sentClientCredential = userAdministrationModelArgumentCaptor.getAllValues().getFirst();
     assertThat(sentClientCredential.getUserId()).isEqualTo("1234-12453-13421345-11");
     assertThat(sentClientCredential.getPermissions()).hasSize(1);
     assertThat(sentClientCredential.getPermissions().iterator().next().getRestrictions()).hasSize(1);
