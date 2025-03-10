@@ -870,4 +870,88 @@ class SublineShorteningServiceTest {
     List<SublineVersionRange> list = sublineShorteningService.checkAndPrepareToShortSublines(lineVersion, editedVersion);
     assertThat(list).isEmpty();
   }
+
+  @Test
+  void checkAndPrepareToShortSublinesBoth() {
+    LineVersion lineVersion = LineTestData.lineVersion();
+    lineVersion.setId(1000L);
+    lineVersion.setSlnid("mainline");
+    lineVersion.setValidFrom(LocalDate.of(1999, 1, 1));
+    lineVersion.setValidTo(LocalDate.of(2017, 1, 1));
+
+    LineVersion editedVersion = LineTestData.lineVersion();
+    editedVersion.setSlnid("mainline");
+    editedVersion.setValidFrom(LocalDate.of(2003, 1, 1));
+    editedVersion.setValidTo(LocalDate.of(2015, 1, 1));
+
+    SublineVersion sublineVersion = SublineVersion.builder()
+        .slnid("1234")
+        .validFrom(LocalDate.of(1999, 1, 1))
+        .validTo(LocalDate.of(2008, 1, 1))
+        .description("version 1")
+        .mainlineSlnid("mainline")
+        .build();
+
+    SublineVersion sublineVersion2 = SublineVersion.builder()
+        .slnid("1234")
+        .validFrom(LocalDate.of(2008, 1, 2))
+        .validTo(LocalDate.of(2017, 1, 1))
+        .description("version 2")
+        .mainlineSlnid("mainline")
+        .build();
+
+    List<String> slnid = new ArrayList<>();
+    slnid.add(sublineVersion.getSlnid());
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(anyString())).thenReturn(new ArrayList<>(List.of(lineVersion)));
+
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
+        new ArrayList<>(List.of(sublineVersion, sublineVersion2)));
+
+    when(sublineVersionRepository.findAllBySlnidOrderByValidFrom("1234")).thenReturn(
+        new ArrayList<>(List.of(sublineVersion, sublineVersion2)));
+
+    List<SublineVersionRange> sublinesToShort = sublineShorteningService.checkAndPrepareToShortSublines(lineVersion,
+        editedVersion);
+
+    assertThat(sublinesToShort).hasSize(2);
+  }
+
+  @Test
+  void checkAndPrepareToShortSublinesOneVersion() {
+    LineVersion lineVersion = LineTestData.lineVersion();
+    lineVersion.setId(1000L);
+    lineVersion.setSlnid("mainline");
+    lineVersion.setValidFrom(LocalDate.of(1999, 1, 1));
+    lineVersion.setValidTo(LocalDate.of(2017, 1, 1));
+
+    LineVersion editedVersion = LineTestData.lineVersion();
+    editedVersion.setSlnid("mainline");
+    editedVersion.setValidFrom(LocalDate.of(2003, 1, 1));
+    editedVersion.setValidTo(LocalDate.of(2015, 1, 1));
+
+    SublineVersion sublineVersion = SublineVersion.builder()
+        .slnid("1234")
+        .validFrom(LocalDate.of(1999, 1, 1))
+        .validTo(LocalDate.of(2017, 1, 1))
+        .description("version 1")
+        .mainlineSlnid("mainline")
+        .build();
+
+    List<String> slnid = new ArrayList<>();
+    slnid.add(sublineVersion.getSlnid());
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(anyString())).thenReturn(new ArrayList<>(List.of(lineVersion)));
+
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(anyString())).thenReturn(
+        new ArrayList<>(List.of(sublineVersion)));
+
+    when(sublineVersionRepository.findAllBySlnidOrderByValidFrom("1234")).thenReturn(
+        new ArrayList<>(List.of(sublineVersion)));
+
+    List<SublineVersionRange> sublinesToShort = sublineShorteningService.checkAndPrepareToShortSublines(lineVersion,
+        editedVersion);
+
+    assertThat(sublinesToShort).hasSize(1);
+  }
 }
