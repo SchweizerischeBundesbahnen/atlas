@@ -1,4 +1,4 @@
-package ch.sbb.importservice.config;
+package ch.sbb.importservice.job.geo;
 
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.importservice.listener.GeoLocationJobCompletionListener;
@@ -40,7 +40,7 @@ public class ServicePointGeoLocationUpdateConfig {
   private final StepTracerListener stepTracerListener;
   private final ServicePointUpdateGeoLocationService geoLocationService;
   private final ServicePointUpdateGeoLocationApiWriter geoApiWriter;
-  
+
   @StepScope
   @Bean
   public ThreadSafeListItemReader<ServicePointSwissWithGeoLocationModel> servicePointGeoLocationListItemReader() {
