@@ -16,8 +16,9 @@
   * [Spring Batch](#spring-batch)
 - [Jobs](#jobs)
   * [Bulk Import](#bulk-import)
-  * [Tech Stack](#tech-stack)
-  * [Reset Batch](#reset-batch)
+  * [Service Point Geo Location](#service-point-geo-location)
+- [Tech Stack](#tech-stack)
+- [Reset Batch](#reset-batch)
 
 <!-- tocstop -->
 
@@ -100,10 +101,16 @@ Job to scale the import process.
 
 TODO
 
-### Tech Stack
+### Service Point Geo Location
+
+This job is responsible to update weakly the Geo Location Data: country, canton, district, municipality and town.
+
+![GeoLocationJob](documentation/geolocation-job.drawio.svg)
+
+## Tech Stack
 
 See [Tech Stack Documentation](../documentation/tech-stack-service.md)
 
-### Reset Batch
+## Reset Batch
 
 See [Batch Reset](../documentation/batch_util.md)

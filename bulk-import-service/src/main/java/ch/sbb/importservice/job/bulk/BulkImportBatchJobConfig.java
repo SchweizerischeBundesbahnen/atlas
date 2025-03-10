@@ -1,4 +1,4 @@
-package ch.sbb.importservice.config;
+package ch.sbb.importservice.job.bulk;
 
 import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_JOB_NAME;
 
@@ -57,7 +57,8 @@ public class BulkImportBatchJobConfig {
   private final BulkImportDataExecutionToLogFileListener bulkImportDataExecutionToLogFileListener;
 
   @Bean
-  public Job bulkImportJob(ThreadSafeListItemReader<BulkImportUpdateContainer<?>> itemReader, ItemWriter<BulkImportUpdateContainer<?>> itemWriter) {
+  public Job bulkImportJob(ThreadSafeListItemReader<BulkImportUpdateContainer<?>> itemReader,
+      ItemWriter<BulkImportUpdateContainer<?>> itemWriter) {
     return new JobBuilder(BULK_IMPORT_JOB_NAME, jobRepository)
         .listener(bulkImportJobCompletionListener)
         .incrementer(new RunIdIncrementer())
