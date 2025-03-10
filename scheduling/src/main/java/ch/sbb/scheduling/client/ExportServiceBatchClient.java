@@ -6,39 +6,51 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(name = "exportServicePointBatch", url = "${atlas.client.gateway.url}", configuration = OAuthFeignConfig.class)
+@FeignClient(name = "exportServicePointBatch", url = "${atlas.client.gateway.url}/export-service/v2/export", configuration = OAuthFeignConfig.class)
 public interface ExportServiceBatchClient {
 
-  @PostMapping(value = "/export-service/v1/export/service-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response postTriggerExportServicePointBatch();
+  @PostMapping(value = "sepodi/service-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportServicePointBatch();
 
-  @PostMapping(value = "/export-service/v1/export/traffic-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response postTriggerExportTrafficPointBatch();
+  @PostMapping(value = "sepodi/traffic-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportTrafficPointBatch();
 
-  @PostMapping(value = "/export-service/v1/export/loading-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response postTriggerExportLoadingPointBatch();
+  @PostMapping(value = "sepodi/loading-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportLoadingPointBatch();
 
-  @PostMapping(value = "/export-service/v1/export/prm/stop-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response postTriggerExportStopPointBatch();
+  @PostMapping(value = "prm/stop-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportStopPointBatch();
 
-  @PostMapping(value = "/export-service/v1/export/prm/platform-batch", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response postTriggerExportPlatformBatch();
+  @PostMapping(value = "prm/platform-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportPlatformBatch();
 
-  @PostMapping(value = "/export-service/v1/export/prm/reference-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response postTriggerExportReferencePointBatch();
+  @PostMapping(value = "prm/reference-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportReferencePointBatch();
 
-  @PostMapping(value = "/export-service/v1/export/prm/contact-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response postTriggerExportContactPointBatch();
+  @PostMapping(value = "prm/contact-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportContactPointBatch();
 
-  @PostMapping(value = "/export-service/v1/export/prm/toilet-batch", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response postTriggerExportToiletBatch();
+  @PostMapping(value = "prm/toilet-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportToiletBatch();
 
-  @PostMapping(value = "/export-service/v1/export/prm/parking-lot-batch", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response postTriggerExportParkingLotBatch();
+  @PostMapping(value = "prm/parking-lot-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportParkingLotBatch();
 
-  @PostMapping(value = "/export-service/v1/export/prm/relation-batch", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response postTriggerExportRelationBatch();
+  @PostMapping(value = "prm/relation-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportRelationBatch();
 
-  @PostMapping(value = "/export-service/v1/export/bodi/transport-company-batch", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response postTriggerExportTransportCompanyBatch();
+  @PostMapping(value = "bodi/business-organisation-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportBusinessOrganisationBatch();
+
+  @PostMapping(value = "bodi/transport-company-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportTransportCompanyBatch();
+
+  @PostMapping(value = "lidi/line-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportLineBatch();
+
+  @PostMapping(value = "lidi/subline-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportSublineBatch();
+
+  @PostMapping(value = "lidi/ttfn-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportTimetableFieldNumberBatch();
 }
