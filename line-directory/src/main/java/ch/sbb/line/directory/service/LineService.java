@@ -92,14 +92,20 @@ public class LineService {
     lineValidationService.validateNotRevoked(currentVersion);
     lineUpdateValidationService.validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
 
-    List<SublineVersionRange> sublinesToShort = sublineShorteningService.checkAndPrepareToShortSublines(currentVersion,
-        editedVersion);
+    boolean isShortening = sublineShorteningService.isShortening(currentVersion, editedVersion);
+    boolean isOnlyValidityChanged = sublineShorteningService.isOnlyValidityChanged(currentVersion, editedVersion);
 
-    if (!sublinesToShort.isEmpty()) {
-      for (SublineVersionRange sublineToShort : sublinesToShort) {
-        sublineService.updateVersion(sublineToShort.getOldestVersion(), sublineToShort.getLatestVersion());
+    if (isShortening && isOnlyValidityChanged) {
+      List<SublineVersionRange> sublinesToShort = sublineShorteningService.checkAndPrepareToShortSublines(currentVersion,
+          editedVersion);
+
+      if (!sublinesToShort.isEmpty()) {
+        for (SublineVersionRange sublineToShort : sublinesToShort) {
+          sublineService.updateVersion(sublineToShort.getOldestVersion(), sublineToShort.getLatestVersion());
+        }
       }
     }
+    
     updateVersion(currentVersion, editedVersion);
   }
 
