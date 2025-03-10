@@ -1,7 +1,7 @@
 include::../../../../auto-rest-doc/src/main/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
 
 image::logo-atlas.svg[50,50,align=left,role=left]
-= Export Timetable Field Number API Guide
+= Export Timetable Field Number API Guide [DEPRECATED]
 
 link:rest-api.html[*< Back to main*]
 

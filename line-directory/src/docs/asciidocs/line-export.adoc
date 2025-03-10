@@ -1,7 +1,7 @@
 include::../../../../auto-rest-doc/src/main/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
 
 image::logo-atlas.svg[50,50,align=left,role=left]
-= Line Export API Guide
+= Line Export API Guide [DEPRECATED]
 
 link:rest-api.html[*< Back to main*]
 
