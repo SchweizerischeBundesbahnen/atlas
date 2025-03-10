@@ -135,7 +135,7 @@ U need only to configure some secrets:
 }
 ```
 
-## Scheduler Export
+## Scheduler Export [Deprecated]
 
 LiDi exports CSV files and put them on [Atlas Amazon S3 Client](../amazon-s3/README.md).
 These exports are triggered
