@@ -9,6 +9,11 @@ export type SePoDependentInfo = {
 
 const workflowEmail = 'joel.hofer@sbb.ch';
 
+export type RestartStopPointWorkflowData = {
+  stopPointWorkflowId: number;
+  examinantIds: number[];
+};
+
 export default class ReleaseApiUtils {
   static FIRST_ATLAS_DATE = '1700-01-01';
   static LAST_ATLAS_DATE = '9999-12-31';
@@ -209,8 +214,9 @@ export default class ReleaseApiUtils {
   }
 
   static restartStopPointWorkflow(
-    stopPointWorkflowId: number
-  ): Chainable<number> {
+    stopPointWorkflowId: number,
+    examinantIds: number[]
+  ): Cypress.Chainable<RestartStopPointWorkflowData> {
     return CommonUtils.post(
       `/workflow/v1/stop-point/workflows/restart/${stopPointWorkflowId}`,
       {
@@ -225,21 +231,43 @@ export default class ReleaseApiUtils {
         .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
       expect(response).property('body').property('status').to.equal('HEARING');
+
+      expect(response)
+        .property('body')
+        .property('examinants')
+        .to.be.an('array')
+        .of.length(3);
+
+      response.body.examinants.forEach((examinant) => {
+        expect(examinantIds).to.not.include(examinant.id);
+      });
+
       expect(response).property('body').property('id').to.be.a('number');
-      return response.body.id;
+      return {
+        stopPointWorkflowId: response.body.id,
+        examinantIds: response.body.examinants.map((examinant) => examinant.id),
+      };
     });
   }
 
-  static startStopPointWorkflow(stopPointWorkflowId: number) {
-    CommonUtils.post(
-      `/workflow/v1/stop-point/workflows/start/${stopPointWorkflowId}`,
-      {}
+  static startStopPointWorkflow(
+    stopPointWorkflowId: number
+  ): Chainable<number[]> {
+    return CommonUtils.post(
+      `/workflow/v1/stop-point/workflows/start/${stopPointWorkflowId}`
     ).then((response) => {
       expect(response)
         .property('status')
         .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
       expect(response).property('body').property('status').to.equal('HEARING');
+
+      expect(response)
+        .property('body')
+        .property('examinants')
+        .to.be.an('array')
+        .of.length(3);
+      return response.body.examinants.map((examinant) => examinant.id);
     });
   }
 
@@ -287,6 +315,27 @@ export default class ReleaseApiUtils {
         .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
 
       expect(response).property('body').property('status').to.equal('CANCELED');
+    });
+  }
+
+  static overrideExaminantOfStopPointWorkflow(
+    stopPointWorkflowId: number,
+    examinantId: number,
+    fotJudgement: string,
+    fotMotivation: string
+  ) {
+    CommonUtils.post(
+      `/workflow/v1/stop-point/workflows/override-vote/${stopPointWorkflowId}/${examinantId}`,
+      {
+        firstName: 'VornameBAV',
+        lastName: 'NachnameBAV',
+        fotJudgement: fotJudgement,
+        fotMotivation: fotMotivation,
+      }
+    ).then((response) => {
+      expect(response)
+        .property('status')
+        .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
     });
   }
 }

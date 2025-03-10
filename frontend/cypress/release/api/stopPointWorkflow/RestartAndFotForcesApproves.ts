@@ -5,14 +5,14 @@ import ReleaseApiUtils, {
 } from '../../../support/util/release-api-utils';
 
 describe(
-  'StopPointWorkflow: Scenario restart-and-cancel',
+  'StopPointWorkflow: Scenario Restart and FOT forces approved answers',
   { testIsolation: false },
   () => {
     let sboid: string;
     let info: SePoDependentInfo;
     let stopPointWorkflowId: number;
-    let stopPointWorkflowRestartedId: number;
     let examinantIds: number[];
+    let stopPointWorkflowRestartedId: number;
 
     const meansOfTransport = ['UNKNOWN'];
 
@@ -74,18 +74,27 @@ describe(
       ).then((data: RestartStopPointWorkflowData) => {
         stopPointWorkflowRestartedId = data.stopPointWorkflowId;
         expect(stopPointWorkflowId).to.not.equal(stopPointWorkflowRestartedId);
+
+        examinantIds = data.examinantIds;
       });
     });
 
-    it('Step-7: Cancel the restarted workflow', () => {
-      ReleaseApiUtils.cancelStopPointWorkflow(stopPointWorkflowRestartedId);
+    it('Step-7: Override examinants in restarted workflow', () => {
+      examinantIds.forEach((examinantId) =>
+        ReleaseApiUtils.overrideExaminantOfStopPointWorkflow(
+          stopPointWorkflowRestartedId,
+          examinantId,
+          'YES',
+          "Ich sage 'JA'"
+        )
+      );
     });
 
     it('Step-8: Check status of (restarted) workflows', () => {
       ReleaseApiUtils.checkWorkflowStatus(stopPointWorkflowId, 'REJECTED');
       ReleaseApiUtils.checkWorkflowStatus(
         stopPointWorkflowRestartedId,
-        'CANCELED'
+        'APPROVED'
       );
     });
   }
