@@ -46,16 +46,19 @@ public class SublineController implements SublineApiV1 {
     return toModel(createdVersion);
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportFullSublineVersions() {
     return sublineVersionExportService.exportFullVersions();
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportActualSublineVersions() {
     return sublineVersionExportService.exportActualVersions();
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportFutureTimetableSublineVersions() {
     return sublineVersionExportService.exportFutureTimetableVersions();
