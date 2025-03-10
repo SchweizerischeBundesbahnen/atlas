@@ -1,6 +1,6 @@
 package ch.sbb.importservice.service.geo;
 
-import static ch.sbb.importservice.config.ServicePointGeoLocationUpdateConfig.UPDATE_SERVICE_POINT_GEO_JOB;
+import static ch.sbb.importservice.job.geo.ServicePointGeoLocationUpdateConfig.UPDATE_SERVICE_POINT_GEO_JOB;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
 import lombok.RequiredArgsConstructor;

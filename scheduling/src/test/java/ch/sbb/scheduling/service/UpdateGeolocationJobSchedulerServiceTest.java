@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.scheduling.client.ImportServicePointBatchClient;
+import ch.sbb.scheduling.client.BulkImportServiceBatchClient;
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Request;
 import feign.Request.HttpMethod;
@@ -22,7 +22,7 @@ class UpdateGeolocationJobSchedulerServiceTest {
   private UpdateGeolocationJobSchedulerService service;
 
   @Mock
-  private ImportServicePointBatchClient client;
+  private BulkImportServiceBatchClient client;
 
   @BeforeEach
   void setUp() {

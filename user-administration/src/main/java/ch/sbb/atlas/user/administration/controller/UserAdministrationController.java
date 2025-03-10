@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.RestrictionWithoutTypeException;
@@ -137,16 +138,32 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
 
   @Override
   public void syncPermissions() {
-    log.info("Starting to sync each permission to kafka topic");
+    log.info("Start user/client-permissions sync...");
+    syncClientCredentials();
+    syncUserCredentials();
+    log.info("Sync completed. Goodbye.");
+  }
+
+  private void syncUserCredentials() {
+    log.info("Starting to sync each user permission to kafka topic");
+    List<UserPermission> allUser = userAdministrationService.getAllUsers();
+    allUser.forEach(userPermission -> {
+      UserModel userModel = UserModel.builder()
+          .permissions(Set.of(UserPermissionMapper.toModel(userPermission)))
+          .sbbUserId(userPermission.getSbbUserId())
+          .build();
+      UserAdministrationModel kafkaModel = KafkaModelMapper.toKafkaModel(userModel);
+      userPermissionDistributor.pushUserPermissionToKafka(kafkaModel);
+    });
+    log.info("Users were synched to kafka");
+  }
+
+  private void syncClientCredentials() {
+    log.info("Starting to sync each client permission to kafka topic");
     ClientCredentialMapper.toModel(clientCredentialAdministrationService.getClientCredentialPermissions())
         .forEach(clientCredentialPermission -> userPermissionDistributor.pushUserPermissionToKafka(
             KafkaModelMapper.toKafkaModel(clientCredentialPermission)));
     log.info("ClientCredentials were synched to kafka");
-
-    List<String> allUserIds = userAdministrationService.getAllUserIds();
-    allUserIds.forEach(user -> userPermissionDistributor.pushUserPermissionToKafka(KafkaModelMapper.toKafkaModel(getUser(user))));
-    log.info("Users were synched to kafka");
-    log.info("Sync completed. Goodbye.");
   }
 
 }
