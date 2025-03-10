@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
-import ch.sbb.exportservice.entity.prm.LoadingPointVersion;
+import ch.sbb.exportservice.entity.sepodi.LoadingPointVersion;
 import org.springframework.batch.item.ItemProcessor;
 
 public class LoadingPointVersionJsonProcessor implements ItemProcessor<LoadingPointVersion, ReadLoadingPointVersionModel> {

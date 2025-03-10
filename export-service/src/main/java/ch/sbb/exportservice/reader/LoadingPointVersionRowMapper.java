@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.reader;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.prm.LoadingPointVersion;
-import ch.sbb.exportservice.entity.prm.LoadingPointVersion.LoadingPointVersionBuilder;
+import ch.sbb.exportservice.entity.sepodi.LoadingPointVersion;
+import ch.sbb.exportservice.entity.sepodi.LoadingPointVersion.LoadingPointVersionBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
