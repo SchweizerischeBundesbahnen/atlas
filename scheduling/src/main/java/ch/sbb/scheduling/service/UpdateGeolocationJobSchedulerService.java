@@ -1,7 +1,7 @@
 package ch.sbb.scheduling.service;
 
 import ch.sbb.scheduling.aspect.annotation.SpanTracing;
-import ch.sbb.scheduling.client.ImportServicePointBatchClient;
+import ch.sbb.scheduling.client.BulkImportServiceBatchClient;
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class UpdateGeolocationJobSchedulerService extends BaseSchedulerService {
 
-  private final ImportServicePointBatchClient importServicePointBatchClient;
+  private final BulkImportServiceBatchClient bulkImportServiceBatchClient;
 
-  public UpdateGeolocationJobSchedulerService(ImportServicePointBatchClient importServicePointBatchClient) {
-    this.importServicePointBatchClient = importServicePointBatchClient;
+  public UpdateGeolocationJobSchedulerService(BulkImportServiceBatchClient bulkImportServiceBatchClient) {
+    this.bulkImportServiceBatchClient = bulkImportServiceBatchClient;
     this.clientName = "ImportServicePointBatch-Client";
   }
 
@@ -28,7 +28,7 @@ public class UpdateGeolocationJobSchedulerService extends BaseSchedulerService {
   @Scheduled(cron = "${scheduler.import-service-point.geo-location-update-trigger-batch.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "updateGeolocationServicePointJob", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response updateGeoLocations() {
-    return executeRequest(importServicePointBatchClient::triggerUpdateGeolocationServicePointJob, "Update GeoLocation");
+    return executeRequest(bulkImportServiceBatchClient::triggerUpdateGeolocationServicePointJob, "Update GeoLocation");
   }
 
 }
