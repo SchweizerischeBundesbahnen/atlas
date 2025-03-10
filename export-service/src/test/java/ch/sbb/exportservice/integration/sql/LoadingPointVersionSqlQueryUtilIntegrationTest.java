@@ -2,7 +2,7 @@ package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.exportservice.entity.prm.LoadingPointVersion;
+import ch.sbb.exportservice.entity.sepodi.LoadingPointVersion;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.reader.LoadingPointVersionRowMapper;
 import ch.sbb.exportservice.reader.LoadingPointVersionSqlQueryUtil;
