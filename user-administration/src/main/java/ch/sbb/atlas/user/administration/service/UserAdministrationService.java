@@ -3,8 +3,8 @@ package ch.sbb.atlas.user.administration.service;
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
-import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
@@ -41,6 +41,10 @@ public class UserAdministrationService {
 
   public List<String> getAllUserIds() {
     return userPermissionRepository.findAll().stream().map(UserPermission::getSbbUserId).distinct().toList();
+  }
+  
+  public List<UserPermission> getAllUsers() {
+    return userPermissionRepository.findAll();
   }
 
   public List<UserPermission> getUserPermissions(String sbbUserId) {
@@ -91,12 +95,13 @@ public class UserAdministrationService {
         .findFirst();
   }
 
-  public List<UserModel> filterForPermittedUserInAtlas(List<UserModel> foundUsers, ApplicationType applicationType){
+  public List<UserModel> filterForPermittedUserInAtlas(List<UserModel> foundUsers, ApplicationType applicationType) {
     List<UserModel> permittedUser = new ArrayList<>();
 
     for (UserModel userModel : foundUsers) {
 
-      Optional<UserPermission> userPermission = userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication(userModel.getSbbUserId(), applicationType);
+      Optional<UserPermission> userPermission = userPermissionRepository.findBySbbUserIdIgnoreCaseAndApplication(
+          userModel.getSbbUserId(), applicationType);
 
       userPermission.ifPresent(permission -> {
         ApplicationRole role = permission.getRole();
