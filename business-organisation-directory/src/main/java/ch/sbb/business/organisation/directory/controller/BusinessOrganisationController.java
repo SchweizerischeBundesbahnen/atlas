@@ -135,16 +135,19 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
     service.deleteAll(versions);
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportFullBusinessOrganisationVersions() {
     return exportService.exportFullVersionsAllFormats();
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportActualBusinessOrganisationVersions() {
     return exportService.exportActualVersionsAllFormats();
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportFutureTimetableBusinessOrganisationVersions() {
     return exportService.exportFutureTimetableVersionsAllFormats();
