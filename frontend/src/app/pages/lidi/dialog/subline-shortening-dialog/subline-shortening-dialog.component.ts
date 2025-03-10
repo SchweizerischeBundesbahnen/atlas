@@ -12,14 +12,14 @@ import { TranslateService } from '@ngx-translate/core';
   providers: [DatePipe],
 })
 export class SublineShorteningDialogComponent {
-  public get hasAllowedOnly() {
+  get hasAllowedOnly() {
     return (
       !this.data.affectedSublines.hasNotAllowedSublinesOnly &&
       this.data.affectedSublines.hasAllowedSublinesOnly
     );
   }
 
-  public get hasAllowedAndNotAllowed() {
+  get hasAllowedAndNotAllowed() {
     return (
       this.data.affectedSublines.hasAllowedSublinesOnly &&
       this.data.affectedSublines.hasNotAllowedSublinesOnly
@@ -52,27 +52,35 @@ export class SublineShorteningDialogComponent {
     return { key: '', params: {} };
   }
 
-  public get isValidFromShortened() {
+  get isValidFromShortened() {
     return this.data.isValidFromShortened;
   }
 
-  public get isValidToShortened() {
+  get isValidToShortened() {
     return this.data.isValidToShortened;
   }
 
-  public get hasNotAllowedOnly() {
+  get hasNotAllowedOnly() {
     return (
       this.data.affectedSublines.hasNotAllowedSublinesOnly &&
       !this.data.affectedSublines.hasAllowedSublinesOnly
     );
   }
 
-  public get validFrom() {
+  get validFrom() {
     return this.datePipe.transform(new Date(this.data.validFrom), 'dd.MM.yyyy');
   }
 
-  public get validTo() {
+  get validTo() {
     return this.datePipe.transform(new Date(this.data.validTo), 'dd.MM.yyyy');
+  }
+
+  get allowedSublines() {
+    return this.data.affectedSublines.allowedSublines;
+  }
+
+  get notAllowedSublines() {
+    return this.data.affectedSublines.notAllowedSublines;
   }
 
   constructor(
