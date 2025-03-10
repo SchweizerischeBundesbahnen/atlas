@@ -140,6 +140,14 @@ scheduler:
       chron: "0 25 0 * * ?" #At 00:25:00am every day
     transport-company-trigger-batch:
       chron: "0 26 0 * * ?" #At 00:26:00am every day
+    business-organisation-trigger-batch:
+      chron: "0 27 0 * * ?" #At 00:27:00am every day
+    line-trigger-batch:
+      chron: "0 28 0 * * ?" #At 00:28:00am every day
+    subline-trigger-batch:
+      chron: "0 29 0 * * ?" #At 00:29:00am every day
+    timetable-field-number-trigger-batch:
+      chron: "0 30 0 * * ?" #At 00:30:00am every day
 
   location:
     sync:
