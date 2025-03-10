@@ -510,7 +510,8 @@
       "TITLE": "Nota",
       "ALLOWED": {
         "MESSAGE": "Le linee parziali possono essere valide solo nel periodo di validità della linea principale. Se possibile, atlas accorcia le linee parziali collegate all'ultimo giorno di validità della linea principale.",
-        "SHORT_AUTOMATICALLY_NOTICE": "Questo messaggio informa che tutte le righe parziali vengono automaticamente accorciate in base alla validità (Valido da: {{validFrom}} e Valido a: {{validTo}}).",
+        "SHORT_AUTOMATICALLY_NOTICE_BOTH": "Questo messaggio informa che tutte le righe parziali vengono automaticamente accorciate in base alla validità (Valido da: {{validFrom}} e Valido a: {{validTo}}).",
+        "SHORT_AUTOMATICALLY_NOTICE": "Questo messaggio informa che tutte le righe parziali vengono automaticamente accorciate in base alla validità {{validity}}: {{date}}.",
         "SUCCESS": "La riga è stata salvata con successo e, dove possibile, la validità delle righe parziali è stata adattata."
       },
       "NOT_ALLOWED": {
