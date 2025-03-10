@@ -18,8 +18,8 @@ public class ClientCredentialMapper {
 
     return groupedClients.entrySet().stream().map(client -> ClientCredentialModel.builder()
         .clientCredentialId(client.getKey())
-        .alias(client.getValue().get(0).getAlias())
-        .comment(client.getValue().get(0).getComment())
+        .alias(client.getValue().getFirst().getAlias())
+        .comment(client.getValue().getFirst().getComment())
         .permissions(client.getValue().stream().map(permission -> PermissionModel.builder()
             .role(permission.getRole())
             .application(permission.getApplication())
@@ -39,7 +39,7 @@ public class ClientCredentialMapper {
     if (clientCredentialModels.size() != 1) {
       throw new IllegalStateException();
     }
-    return clientCredentialModels.get(0);
+    return clientCredentialModels.getFirst();
   }
 
   public static ClientCredentialPermission toEntity(PermissionModel permissionModel,
