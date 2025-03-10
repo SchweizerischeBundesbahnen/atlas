@@ -237,7 +237,7 @@ public class SublineShorteningService {
     return sublinesToShort;
   }
 
-  private static boolean isShortening(LineVersion currentVersion, LineVersion editedVersion) {
+  public boolean isShortening(LineVersion currentVersion, LineVersion editedVersion) {
     return (editedVersion.getValidFrom().isAfter(currentVersion.getValidFrom()) || editedVersion.getValidTo()
         .isBefore(currentVersion.getValidTo()));
   }
@@ -281,7 +281,7 @@ public class SublineShorteningService {
         && Objects.equals(edited.getNumber(), current.getNumber());
   }
 
-  private static boolean isOnlyValidityChanged(LineVersion current, LineVersion edited) {
+  public boolean isOnlyValidityChanged(LineVersion current, LineVersion edited) {
     boolean validToChanged = !Objects.equals(edited.getValidTo(), current.getValidTo());
     boolean validFromChanged = !Objects.equals(edited.getValidFrom(), current.getValidFrom());
     return (validToChanged || validFromChanged) && areNonValidityFieldsEqual(current, edited);
