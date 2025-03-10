@@ -45,6 +45,9 @@ export class LineDetailComponent implements OnInit, OnDestroy {
   form!: FormGroup<LineDetailFormGroup>;
   initForm!: FormGroup<LineDetailFormGroup>;
 
+  isValidFromShortened!: boolean;
+  isValidToShortened!: boolean;
+
   isNew = false;
 
   refreshSublineTable = false;
@@ -252,6 +255,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
     this.refreshSublineTable = false;
 
     if (!this.isOnlyValidityChangedToTruncation()) {
+      console.log('test');
       this.updateLineVersion(id, lineVersion, defaultSuccessMessage);
       return;
     }
@@ -329,6 +333,8 @@ export class LineDetailComponent implements OnInit, OnDestroy {
           affectedSublines: affectedSublines,
           validFrom: lineVersion.validFrom,
           validTo: lineVersion.validTo,
+          isValidFromShortened: this.isValidFromShortened,
+          isValidToShortened: this.isValidToShortened,
         },
       })
       .afterClosed()
@@ -470,10 +476,12 @@ export class LineDetailComponent implements OnInit, OnDestroy {
     const validFromShortened = this.form.value.validFrom?.isAfter(
       this.initForm.value.validFrom
     );
+    this.isValidFromShortened = validFromShortened!;
     const validToShortened = this.form.value.validTo?.isBefore(
       this.initForm.value.validTo
     );
 
+    this.isValidToShortened = validToShortened!;
     return formsEqual && (validFromShortened || validToShortened);
   }
 
