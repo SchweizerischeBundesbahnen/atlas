@@ -2,7 +2,7 @@ package ch.sbb.exportservice.config;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
-import ch.sbb.exportservice.entity.prm.LoadingPointVersion;
+import ch.sbb.exportservice.entity.sepodi.LoadingPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
