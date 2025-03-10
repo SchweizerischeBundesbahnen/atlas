@@ -6,9 +6,9 @@
 <div class="dialog" data-cy="dialog">
   <h1 class="font-bold-4xl">{{'LIDI.SUBLINE_SHORTENING.TITLE' | translate  }}</h1>
 
-  @if(hasAllowedOnly) {
-    {{ 'LIDI.SUBLINE_SHORTENING.ALLOWED.SHORT_AUTOMATICALLY_NOTICE' | translate:{ validFrom: validFrom, validTo: validTo} }}
-  }
+  <div *ngIf="hasAllowedOnly && notice">
+    {{ notice.key | translate: notice.params }}
+  </div>
 
 
     @if(hasAllowedAndNotAllowed) {
