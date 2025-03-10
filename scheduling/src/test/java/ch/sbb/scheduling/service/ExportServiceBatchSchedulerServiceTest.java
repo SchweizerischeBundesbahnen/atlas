@@ -15,9 +15,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 
- class ExportServiceBatchSchedulerServiceTest {
+class ExportServiceBatchSchedulerServiceTest {
+
+  private static final Response RESPONSE = Response.builder().status(200).reason("OK")
+      .request(Request.create(HttpMethod.POST, "/api", Collections.emptyMap(), null, Util.UTF_8, null)).build();
 
   private ExportServiceBatchSchedulerService exportServiceBatchSchedulerService;
 
@@ -25,22 +27,15 @@ import org.springframework.http.HttpStatus;
   private ExportServiceBatchClient client;
 
   @BeforeEach
-   void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     exportServiceBatchSchedulerService = new ExportServiceBatchSchedulerService(client);
   }
 
   @Test
-   void shouldPostTriggerExportServicePointBatchSuccessfully() {
+  void shouldPostTriggerExportServicePointBatchSuccessfully() {
     //given
-    Response response = Response.builder()
-        .status(200)
-        .reason("OK")
-        .request(
-            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                null, Util.UTF_8, null))
-        .build();
-    when(client.postTriggerExportServicePointBatch()).thenReturn(response);
+    when(client.exportServicePointBatch()).thenReturn(RESPONSE);
 
     //when
     Response result = exportServiceBatchSchedulerService.postTriggerExportServicePointBatch();
@@ -51,16 +46,9 @@ import org.springframework.http.HttpStatus;
   }
 
   @Test
-   void shouldPostTriggerExportTrafficPointBatchSuccessfully() {
+  void shouldPostTriggerExportTrafficPointBatchSuccessfully() {
     //given
-    Response response = Response.builder()
-        .status(200)
-        .reason("OK")
-        .request(
-            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                null, Util.UTF_8, null))
-        .build();
-    when(client.postTriggerExportTrafficPointBatch()).thenReturn(response);
+    when(client.exportTrafficPointBatch()).thenReturn(RESPONSE);
 
     //when
     Response result = exportServiceBatchSchedulerService.postTriggerExportTrafficPointBatch();
@@ -71,16 +59,9 @@ import org.springframework.http.HttpStatus;
   }
 
   @Test
-   void shouldPostTriggerExportLoadingPointBatchSuccessfully() {
+  void shouldPostTriggerExportLoadingPointBatchSuccessfully() {
     //given
-    Response response = Response.builder()
-        .status(200)
-        .reason("OK")
-        .request(
-            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                null, Util.UTF_8, null))
-        .build();
-    when(client.postTriggerExportLoadingPointBatch()).thenReturn(response);
+    when(client.exportLoadingPointBatch()).thenReturn(RESPONSE);
 
     //when
     Response result = exportServiceBatchSchedulerService.postTriggerExportLoadingPointBatch();
@@ -91,16 +72,9 @@ import org.springframework.http.HttpStatus;
   }
 
   @Test
-   void shouldPostTriggerExportStopPointBatchSuccessfully() {
+  void shouldPostTriggerExportStopPointBatchSuccessfully() {
     //given
-    Response response = Response.builder()
-        .status(200)
-        .reason("OK")
-        .request(
-            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                null, Util.UTF_8, null))
-        .build();
-    when(client.postTriggerExportStopPointBatch()).thenReturn(response);
+    when(client.exportStopPointBatch()).thenReturn(RESPONSE);
 
     //when
     Response result = exportServiceBatchSchedulerService.postTriggerExportStopPointBatch();
@@ -111,16 +85,9 @@ import org.springframework.http.HttpStatus;
   }
 
   @Test
-   void shouldPostTriggerExportPlatformBatchSuccessfully() {
+  void shouldPostTriggerExportPlatformBatchSuccessfully() {
     //given
-    Response response = Response.builder()
-        .status(200)
-        .reason("OK")
-        .request(
-            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                null, Util.UTF_8, null))
-        .build();
-    when(client.postTriggerExportPlatformBatch()).thenReturn(response);
+    when(client.exportPlatformBatch()).thenReturn(RESPONSE);
 
     //when
     Response result = exportServiceBatchSchedulerService.postTriggerExportPlatformBatch();
@@ -132,140 +99,142 @@ import org.springframework.http.HttpStatus;
 
   @Test
   void shouldTriggerExportReferencePointBatchSuccessfully() {
-   //given
-   Response response = Response.builder()
-       .status(200)
-       .reason("OK")
-       .request(
-           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-               null, Util.UTF_8, null))
-       .build();
-   when(client.postTriggerExportReferencePointBatch()).thenReturn(response);
+    //given
+    when(client.exportReferencePointBatch()).thenReturn(RESPONSE);
 
-   //when
-   Response result = exportServiceBatchSchedulerService.postTriggerExportReferencePointBatch();
+    //when
+    Response result = exportServiceBatchSchedulerService.postTriggerExportReferencePointBatch();
 
-   //then
-   assertThat(result).isNotNull();
-   assertThat(result.status()).isEqualTo(200);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
   }
 
   @Test
   void shouldTriggerExportContactPointBatchSuccessfully() {
-   //given
-   Response response = Response.builder()
-       .status(200)
-       .reason("OK")
-       .request(
-           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-               null, Util.UTF_8, null))
-       .build();
-   when(client.postTriggerExportContactPointBatch()).thenReturn(response);
+    //given
+    when(client.exportContactPointBatch()).thenReturn(RESPONSE);
 
-   //when
-   Response result = exportServiceBatchSchedulerService.postTriggerExportContactPointBatch();
+    //when
+    Response result = exportServiceBatchSchedulerService.postTriggerExportContactPointBatch();
 
-   //then
-   assertThat(result).isNotNull();
-   assertThat(result.status()).isEqualTo(200);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
   }
 
   @Test
   void shouldTriggerExportToiletBatchSuccessfully() {
-   //given
-   Response response = Response.builder()
-       .status(200)
-       .reason("OK")
-       .request(
-           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-               null, Util.UTF_8, null))
-       .build();
-   when(client.postTriggerExportToiletBatch()).thenReturn(response);
+    //given
+    when(client.exportToiletBatch()).thenReturn(RESPONSE);
 
-   //when
-   Response result = exportServiceBatchSchedulerService.postTriggerExportToiletBatch();
+    //when
+    Response result = exportServiceBatchSchedulerService.postTriggerExportToiletBatch();
 
-   //then
-   assertThat(result).isNotNull();
-   assertThat(result.status()).isEqualTo(200);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
   }
 
   @Test
-   void shouldPostLoadCompaniesFromCRDUnsuccessful() {
+  void shouldPostLoadCompaniesFromCRDUnsuccessful() {
     //given
-    Response response = Response.builder()
-        .status(HttpStatus.BAD_REQUEST.value())
-        .reason("Bad Request")
-        .request(
-            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                null, Util.UTF_8, null))
-        .build();
-    when(client.postTriggerExportServicePointBatch()).thenReturn(response);
+    when(client.exportServicePointBatch()).thenReturn(RESPONSE.toBuilder().status(400).build());
 
     //when
-    assertThrows(SchedulingExecutionException.class, () -> {
-      exportServiceBatchSchedulerService.postTriggerExportServicePointBatch();
-    });
+    assertThrows(SchedulingExecutionException.class,
+        () -> exportServiceBatchSchedulerService.postTriggerExportServicePointBatch());
   }
 
   @Test
   void shouldTriggerExportParkingLotBatchSuccessfully() {
-   //given
-   Response response = Response.builder()
-       .status(200)
-       .reason("OK")
-       .request(
-           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-               null, Util.UTF_8, null))
-       .build();
-   when(client.postTriggerExportParkingLotBatch()).thenReturn(response);
+    //given
+    when(client.exportParkingLotBatch()).thenReturn(RESPONSE);
 
-   //when
-   Response result = exportServiceBatchSchedulerService.postTriggerExportParkingLotBatch();
+    //when
+    Response result = exportServiceBatchSchedulerService.postTriggerExportParkingLotBatch();
 
-   //then
-   assertThat(result).isNotNull();
-   assertThat(result.status()).isEqualTo(200);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
   }
 
   @Test
   void shouldTriggerExportRelationBatchSuccessfully() {
-   //given
-   Response response = Response.builder()
-       .status(200)
-       .reason("OK")
-       .request(
-           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-               null, Util.UTF_8, null))
-       .build();
-   when(client.postTriggerExportRelationBatch()).thenReturn(response);
+    //given
+    when(client.exportRelationBatch()).thenReturn(RESPONSE);
 
-   //when
-   Response result = exportServiceBatchSchedulerService.postTriggerExportRelationBatch();
+    //when
+    Response result = exportServiceBatchSchedulerService.postTriggerExportRelationBatch();
 
-   //then
-   assertThat(result).isNotNull();
-   assertThat(result.status()).isEqualTo(200);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  void shouldTriggerExportBusinessOrganisationBatchSuccessfully() {
+    //given
+    when(client.exportBusinessOrganisationBatch()).thenReturn(RESPONSE);
+
+    //when
+    Response result = exportServiceBatchSchedulerService.postTriggerExportBusinessOrganisationBatch();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
   }
 
   @Test
   void shouldTriggerExportTransportCompanyBatchSuccessfully() {
-   //given
-   Response response = Response.builder()
-       .status(200)
-       .reason("OK")
-       .request(
-           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-               null, Util.UTF_8, null))
-       .build();
-   when(client.postTriggerExportTransportCompanyBatch()).thenReturn(response);
+    //given
+    when(client.exportTransportCompanyBatch()).thenReturn(RESPONSE);
 
-   //when
-   Response result = exportServiceBatchSchedulerService.postTriggerExportTransportCompanyBatch();
+    //when
+    Response result = exportServiceBatchSchedulerService.postTriggerExportTransportCompanyBatch();
 
-   //then
-   assertThat(result).isNotNull();
-   assertThat(result.status()).isEqualTo(200);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  void shouldTriggerExportLineBatchSuccessfully() {
+    //given
+    when(client.exportLineBatch()).thenReturn(RESPONSE);
+
+    //when
+    Response result = exportServiceBatchSchedulerService.postTriggerExportLineBatch();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  void shouldTriggerExportSublineBatchSuccessfully() {
+    //given
+    when(client.exportSublineBatch()).thenReturn(RESPONSE);
+
+    //when
+    Response result = exportServiceBatchSchedulerService.postTriggerExportSublineBatch();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  void shouldTriggerExportTimetableFieldNumberBatchSuccessfully() {
+    //given
+    when(client.exportTimetableFieldNumberBatch()).thenReturn(RESPONSE);
+
+    //when
+    Response result = exportServiceBatchSchedulerService.postTriggerExportTimetableFieldNumberBatch();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
   }
 
 }
