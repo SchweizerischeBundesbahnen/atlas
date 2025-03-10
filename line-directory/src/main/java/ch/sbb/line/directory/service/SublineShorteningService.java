@@ -153,13 +153,13 @@ public class SublineShorteningService {
 
     if (isMatchingVersion(lineVersion, lineVersionRange.getOldestVersion()) && isOnlyValidFromChanged) {
       for (String slnid : sublinesToShort) {
-        processOnlyValidFromChange(slnid, editedVersion, sublinesToUpdate);
+        processOnlyValidFromChanged(slnid, editedVersion, sublinesToUpdate);
       }
     }
 
     if (isMatchingVersion(lineVersion, lineVersionRange.getLatestVersion()) && isOnlyValidToChanged) {
       for (String slnid : sublinesToShort) {
-        processOnlyValidToChange(slnid, editedVersion, sublinesToUpdate);
+        processOnlyValidToChanged(slnid, editedVersion, sublinesToUpdate);
       }
     }
 
@@ -198,7 +198,7 @@ public class SublineShorteningService {
     }
   }
 
-  private void processOnlyValidFromChange(String slnid, LineVersion editedVersion,
+  private void processOnlyValidFromChanged(String slnid, LineVersion editedVersion,
       List<SublineVersionRange> sublinesToUpdate) {
     List<SublineVersion> versions = findAllSublineVersionsBySlnid(slnid);
     SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(versions);
@@ -211,7 +211,7 @@ public class SublineShorteningService {
     sublinesToUpdate.add(new SublineVersionRange(oldVersion, editedSublineVersion));
   }
 
-  private void processOnlyValidToChange(String slnid, LineVersion editedVersion,
+  private void processOnlyValidToChanged(String slnid, LineVersion editedVersion,
       List<SublineVersionRange> sublinesToUpdate) {
     List<SublineVersion> versions = findAllSublineVersionsBySlnid(slnid);
     SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(versions);

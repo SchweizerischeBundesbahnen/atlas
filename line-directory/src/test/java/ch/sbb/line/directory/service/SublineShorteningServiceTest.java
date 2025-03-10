@@ -55,8 +55,8 @@ class SublineShorteningServiceTest {
 
     SublineVersion sublineVersion = SublineVersion.builder()
         .slnid("12345")
-        .validFrom(LocalDate.of(2001, 1, 1))
-        .validTo(LocalDate.of(2008, 12, 31))
+        .validFrom(LocalDate.of(1999, 1, 1))
+        .validTo(LocalDate.of(2017, 12, 31))
         .description("oldestVersion")
         .build();
 
