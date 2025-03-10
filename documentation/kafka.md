@@ -9,7 +9,7 @@ Swagger-UI for creating topics etc.: https://automation-ng.kafka.sbb.ch/swagger-
 ## Atlas
 
 Atlas is currently on *Swisscloud* and using SASL/SCRAM for authentication.
-Links to the environments can be found on https://confluence.sbb.ch/display/KAFKA/Umgebungen.
+Links to the environments can be found on https://confluence.sbb.ch/x/RZLlQw.
 
 ## Automation
 
