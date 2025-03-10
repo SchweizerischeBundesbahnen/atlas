@@ -4,6 +4,7 @@ import { AffectedSublinesModel } from '../../../../api';
 import { Router } from '@angular/router';
 import { Pages } from '../../../pages';
 import { DatePipe } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-subline-shortening-dialog',
@@ -23,6 +24,40 @@ export class SublineShorteningDialogComponent {
       this.data.affectedSublines.hasAllowedSublinesOnly &&
       this.data.affectedSublines.hasNotAllowedSublinesOnly
     );
+  }
+
+  get notice() {
+    if (this.isValidFromShortened && this.isValidToShortened) {
+      return {
+        key: 'LIDI.SUBLINE_SHORTENING.ALLOWED.SHORT_AUTOMATICALLY_NOTICE_BOTH',
+        params: { validFrom: this.validFrom, validTo: this.validTo },
+      };
+    } else if (this.isValidFromShortened) {
+      return {
+        key: 'LIDI.SUBLINE_SHORTENING.ALLOWED.SHORT_AUTOMATICALLY_NOTICE',
+        params: {
+          validity: this.translateService.instant('COMMON.VALID_FROM'),
+          date: this.validFrom,
+        },
+      };
+    } else if (this.isValidToShortened) {
+      return {
+        key: 'LIDI.SUBLINE_SHORTENING.ALLOWED.SHORT_AUTOMATICALLY_NOTICE',
+        params: {
+          validity: this.translateService.instant('COMMON.VALID_TO'),
+          date: this.validTo,
+        },
+      };
+    }
+    return { key: '', params: {} };
+  }
+
+  public get isValidFromShortened() {
+    return this.data.isValidFromShortened;
+  }
+
+  public get isValidToShortened() {
+    return this.data.isValidToShortened;
   }
 
   public get hasNotAllowedOnly() {
@@ -47,9 +82,12 @@ export class SublineShorteningDialogComponent {
       affectedSublines: AffectedSublinesModel;
       validFrom: Date;
       validTo: Date;
+      isValidFromShortened: boolean;
+      isValidToShortened: boolean;
     },
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private translateService: TranslateService
   ) {}
 
   openNewTabOfSubline(slnid: string) {
