@@ -4,12 +4,13 @@ import ReleaseApiUtils, {
 } from '../../../support/util/release-api-utils';
 
 describe(
-  'StopPointWorkflow: Scenario create-and-fot-reject',
+  'StopPointWorkflow: Scenario restart-and-cancel',
   { testIsolation: false },
   () => {
     let sboid: string;
     let info: SePoDependentInfo;
     let stopPointWorkflowId: number;
+    let stopPointWorkflowRestartedId: number;
 
     const meansOfTransport = ['UNKNOWN'];
 
@@ -58,12 +59,31 @@ describe(
       ).then((id: number) => (stopPointWorkflowId = id));
     });
 
-    it('Step-5: Reject the workflow', () => {
-      ReleaseApiUtils.rejectWorkflow(stopPointWorkflowId);
+    it('Step-5: Start the workflow', () => {
+      ReleaseApiUtils.startStopPointWorkflow(stopPointWorkflowId);
     });
 
-    it('Step-6: Check status of workflow is REJECTED', () => {
+    it('Step-6: Restart the workflow', () => {
+      ReleaseApiUtils.restartStopPointWorkflow(stopPointWorkflowId).then(
+        (id: number) => {
+          stopPointWorkflowRestartedId = id;
+          expect(stopPointWorkflowId).to.not.equal(
+            stopPointWorkflowRestartedId
+          );
+        }
+      );
+    });
+
+    it('Step-7: Cancel the restarted workflow', () => {
+      ReleaseApiUtils.cancelStopPointWorkflow(stopPointWorkflowRestartedId);
+    });
+
+    it('Step-8: Check status of (restarted) workflows', () => {
       ReleaseApiUtils.checkWorkflowStatus(stopPointWorkflowId, 'REJECTED');
+      ReleaseApiUtils.checkWorkflowStatus(
+        stopPointWorkflowRestartedId,
+        'CANCELED'
+      );
     });
   }
 );

@@ -3,6 +3,7 @@ import Chainable = Cypress.Chainable;
 
 export type SePoDependentInfo = {
   parentServicePointSloid: string;
+  parentServicePointId: number;
   numberWithoutCheckDigit: number;
 };
 
@@ -96,32 +97,46 @@ export default class ReleaseApiUtils {
   }
 
   static createDependentServicePoint(
-    sboid: string,
-    // The service-point needs to have a meansOfTransport, so that a PRM-stopPoint can be created.
+    sboid: string, // The service-point needs to have a meansOfTransport, so that a PRM-stopPoint can be created.
     // The meansOfTransport BUS leads to the reduced and TRAIN to the complete variant
-    // Code: https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/base-atlas/src/main/java/ch/sbb/atlas/servicepoint/enumeration/MeanOfTransport.java
-    meansOfTransport: string[]
+    // Code:
+    // https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/base-atlas/src/main/java/ch/sbb/atlas/servicepoint/enumeration/MeanOfTransport.java
+    meansOfTransport: string[],
+    additionalAttributes: object = {}
   ): Chainable<SePoDependentInfo> {
-    return CommonUtils.post('/service-point-directory/v1/service-points', {
-      country: 'SWITZERLAND',
-      designationOfficial: ReleaseApiUtils.today(),
-      businessOrganisation: sboid,
-      meansOfTransport: meansOfTransport,
-      validFrom: ReleaseApiUtils.LAST_ATLAS_DATE,
-      validTo: ReleaseApiUtils.LAST_ATLAS_DATE,
-    }).then((response) => {
-      expect(response.status).to.equal(
-        CommonUtils.HTTP_REST_API_RESPONSE_CREATED
-      );
-      expect(response.body).to.have.property('sloid').that.is.a('string');
-      expect(response.body)
+    const body = Object.assign(
+      {
+        country: 'SWITZERLAND',
+        // Mark designationOfficial to be able to filter the emails in Outlook
+        designationOfficial: `${new Date().toISOString()}API`,
+        businessOrganisation: sboid,
+        meansOfTransport: meansOfTransport,
+        validFrom: ReleaseApiUtils.FIRST_ATLAS_DATE,
+        validTo: ReleaseApiUtils.LAST_ATLAS_DATE,
+      },
+      additionalAttributes
+    );
+    return CommonUtils.post(
+      '/service-point-directory/v1/service-points',
+      body
+    ).then((response) => {
+      expect(response)
+        .property('status')
+        .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_CREATED);
+
+      expect(response).property('body').property('sloid').to.be.a('string');
+      expect(response)
+        .property('body')
         .property('number')
         .property('number')
-        .that.is.a('number');
+        .to.be.a('number');
+
+      expect(response).property('body').property('id').to.be.a('number');
 
       return {
         parentServicePointSloid: response.body.sloid,
         numberWithoutCheckDigit: response.body.number.number,
+        parentServicePointId: response.body.id,
       };
     });
   }
@@ -193,6 +208,41 @@ export default class ReleaseApiUtils {
     });
   }
 
+  static restartStopPointWorkflow(
+    stopPointWorkflowId: number
+  ): Chainable<number> {
+    return CommonUtils.post(
+      `/workflow/v1/stop-point/workflows/restart/${stopPointWorkflowId}`,
+      {
+        // Mark designationOfficial to be able to filter the emails in Outlook
+        designationOfficial: `${new Date().toISOString()}API`,
+        mail: workflowEmail,
+        organisation: 'The Fot',
+      }
+    ).then((response) => {
+      expect(response)
+        .property('status')
+        .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      expect(response).property('body').property('status').to.equal('HEARING');
+      expect(response).property('body').property('id').to.be.a('number');
+      return response.body.id;
+    });
+  }
+
+  static startStopPointWorkflow(stopPointWorkflowId: number) {
+    CommonUtils.post(
+      `/workflow/v1/stop-point/workflows/start/${stopPointWorkflowId}`,
+      {}
+    ).then((response) => {
+      expect(response)
+        .property('status')
+        .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      expect(response).property('body').property('status').to.equal('HEARING');
+    });
+  }
+
   static createStopPointWorkflow = (
     parentServicePointId: number,
     parentServicePointSloid: string
@@ -223,4 +273,20 @@ export default class ReleaseApiUtils {
       return response.body.id;
     });
   };
+
+  static cancelStopPointWorkflow(stopPointWorkflowId: number) {
+    CommonUtils.post(
+      `/workflow/v1/stop-point/workflows/cancel/${stopPointWorkflowId}`,
+      {
+        mail: workflowEmail,
+        organisation: 'The Fot',
+      }
+    ).then((response) => {
+      expect(response)
+        .property('status')
+        .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      expect(response).property('body').property('status').to.equal('CANCELED');
+    });
+  }
 }
