@@ -1,7 +1,7 @@
 import ReleaseApiUtils, {
   RestartStopPointWorkflowData,
   SePoDependentInfo,
-} from '../../../support/util/release-api-utils';
+} from '../../../support/util/release-api/release-api-utils';
 
 describe(
   'StopPointWorkflow: Scenario Restart and FOT forces approved answers',

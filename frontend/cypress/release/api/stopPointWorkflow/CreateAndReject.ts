@@ -1,7 +1,7 @@
 import CommonUtils from '../../../support/util/common-utils';
 import ReleaseApiUtils, {
   SePoDependentInfo,
-} from '../../../support/util/release-api-utils';
+} from '../../../support/util/release-api/release-api-utils';
 
 describe(
   'StopPointWorkflow: Scenario create-and-fot-reject',

@@ -1,4 +1,4 @@
-import CommonUtils from './common-utils';
+import CommonUtils from '../common-utils';
 import Chainable = Cypress.Chainable;
 
 export type SePoDependentInfo = {

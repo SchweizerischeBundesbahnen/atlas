@@ -1,5 +1,5 @@
 import CommonUtils from '../../../support/util/common-utils';
-import ReleaseApiUtils from '../../../support/util/release-api-utils';
+import ReleaseApiUtils from '../../../support/util/release-api/release-api-utils';
 
 // Documentation can be found at https://confluence.sbb.ch/x/pS4ynw
 describe('SePo: Status Scenario', { testIsolation: false }, () => {
