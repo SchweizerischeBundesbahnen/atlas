@@ -1,6 +1,6 @@
 import TthUtils from "../../../support/util/tth-utils";
 import CommonUtils from "../../../support/util/common-utils";
-import ReleaseApiUtils from "../../../support/util/release-api-utils";
+import ReleaseApiUtils from "../../../support/util/release-api/release-api-utils";
 
 describe('TTH: Create a statement with several email-addresses', {testIsolation: false}, () => {
 

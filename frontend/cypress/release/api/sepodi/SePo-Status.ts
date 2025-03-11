@@ -1,5 +1,5 @@
 import CommonUtils from '../../../support/util/common-utils';
-import ReleaseApiUtils from '../../../support/util/release-api-utils';
+import ReleaseApiUtils from '../../../support/util/release-api/release-api-utils';
 
 // Documentation can be found at https://confluence.sbb.ch/x/pS4ynw
 describe('SePo: Status Scenario', { testIsolation: false }, () => {
@@ -114,16 +114,17 @@ describe('SePo: Status Scenario', { testIsolation: false }, () => {
   };
 
   const getBody = (additionalAttributes: object) => {
-    const body = {
-      designationLong: designationLong,
-      designationOfficial: designationOfficial,
-      businessOrganisation: sboid,
-      validFrom: validFrom,
-      validTo: validTo,
-      etagVersion: etagVersion,
-    };
-    Object.assign(body, additionalAttributes);
-    return body;
+    return Object.assign(
+      {
+        designationLong: designationLong,
+        designationOfficial: designationOfficial,
+        businessOrganisation: sboid,
+        validFrom: validFrom,
+        validTo: validTo,
+        etagVersion: etagVersion,
+      },
+      additionalAttributes
+    );
   };
 
   const addSePoVersion = (additionalBodyAttributes: object) => {

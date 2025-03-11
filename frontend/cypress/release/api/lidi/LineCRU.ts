@@ -1,5 +1,5 @@
 import CommonUtils from '../../../support/util/common-utils';
-import ReleaseApiUtils from '../../../support/util/release-api-utils';
+import ReleaseApiUtils from '../../../support/util/release-api/release-api-utils';
 
 const VALID_FROM = '2024-08-01';
 describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
