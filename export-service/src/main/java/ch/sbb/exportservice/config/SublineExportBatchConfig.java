@@ -10,6 +10,7 @@ import ch.sbb.exportservice.model.ExportFilePathV2;
 import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.model.SublineCsvModel;
+import ch.sbb.exportservice.processor.MainlineService;
 import ch.sbb.exportservice.processor.SublineCsvProcessor;
 import ch.sbb.exportservice.processor.SublineJsonProcessor;
 import ch.sbb.exportservice.reader.SublineRowMapper;
@@ -32,10 +33,12 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.json.JsonFileItemWriter;
+import org.springframework.batch.item.support.CompositeItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,6 +58,7 @@ public class SublineExportBatchConfig {
   private final JsonSublineWriter jsonWriter;
 
   private final FileService fileService;
+  private final MainlineService mainlineService;
 
   @Bean
   @StepScope
@@ -90,7 +94,7 @@ public class SublineExportBatchConfig {
     return new StepBuilder(stepName, jobRepository)
         .<Subline, SublineCsvModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
-        .processor(sublineCsvProcessor())
+        .processor(new CompositeItemProcessor<>(sublineMainlineEnrichingProcessor(), sublineCsvProcessor()))
         .writer(sublineCsvWriter(null))
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
@@ -102,6 +106,11 @@ public class SublineExportBatchConfig {
   @Bean
   public SublineCsvProcessor sublineCsvProcessor() {
     return new SublineCsvProcessor();
+  }
+
+  @Bean
+  public ItemProcessor<Subline, Subline> sublineMainlineEnrichingProcessor() {
+    return mainlineService::addMainlinePropertiesToSubline;
   }
 
   @Bean
@@ -176,7 +185,7 @@ public class SublineExportBatchConfig {
     return new StepBuilder(stepName, jobRepository)
         .<Subline, ReadSublineVersionModelV2>chunk(StepUtils.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
-        .processor(sublineJsonProcessor())
+        .processor(new CompositeItemProcessor<>(sublineMainlineEnrichingProcessor(), sublineJsonProcessor()))
         .writer(sublineJsonFileItemWriter(null))
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
