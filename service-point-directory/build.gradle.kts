@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.489.0"
+version = "2.490.0"
 
 description = "ServicePointDirectory"
 extra["shedlockVersion"] = "5.16.0"
