@@ -5,6 +5,7 @@ import static ch.sbb.exportservice.processor.BaseServicePointProcessor.LOCAL_DAT
 
 import ch.sbb.exportservice.entity.lidi.Subline;
 import ch.sbb.exportservice.model.SublineCsvModel;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -28,8 +29,8 @@ public class SublineCsvProcessor implements ItemProcessor<Subline, SublineCsvMod
         .creationTime(LOCAL_DATE_FORMATTER.format(subline.getCreationDate()))
         .editionTime(LOCAL_DATE_FORMATTER.format(subline.getEditionDate()))
         // From Line
+        .number(Objects.requireNonNull(subline.getNumber(), "Line must have a number!"))
         .swissLineNumber(subline.getSwissLineNumber())
-        .number(subline.getNumber())
         .shortNumber(subline.getShortNumber())
         .offerCategory(subline.getOfferCategory())
         .build();
