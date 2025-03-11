@@ -146,31 +146,6 @@ export default class ReleaseApiUtils {
     });
   }
 
-  static createDependentStopPointObjects(): Chainable<SePoDependentInfo> {
-    return CommonUtils.createDependentBusinessOrganisation(
-      ReleaseApiUtils.today(),
-      ReleaseApiUtils.today()
-    ).then((sboidOfBO: string) => {
-      const sboid = sboidOfBO;
-      const dateInMonth: string = new Date()
-        .getMonth()
-        .toString()
-        .padStart(2, '0');
-      // The service-point need to have a meansOfTransport,
-      // so that a StopPointWorkflow can be created and started.
-      return ReleaseApiUtils.createDependentServicePoint(sboid, ['UNKNOWN'], {
-        servicePointGeolocation: {
-          spatialReference: 'LV95',
-          north: `12051${dateInMonth}`,
-          east: `26520${dateInMonth}`,
-          height: 1,
-        },
-      }).then((sePoDependentInfo: SePoDependentInfo) => {
-        return sePoDependentInfo;
-      });
-    });
-  }
-
   static createDependentTrafficPoint(
     trafficPointSloid: string,
     info: SePoDependentInfo

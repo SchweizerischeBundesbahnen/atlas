@@ -1,7 +1,8 @@
-import ReleaseApiUtils, {
+import {
   RestartStopPointWorkflowData,
   SePoDependentInfo,
 } from '../../../support/util/release-api/release-api-utils';
+import StopPointWorkflow from '../../../support/util/release-api/stop-point-workflow';
 
 describe(
   'StopPointWorkflow: Scenario Restart and FOT forces approved answers',
@@ -17,7 +18,7 @@ describe(
     });
 
     it('Step-2: Create dependent Business Organisation and Service Point', () => {
-      ReleaseApiUtils.createDependentStopPointObjects().then(
+      StopPointWorkflow.createDependentStopPointObjects().then(
         (sePoDependentInfo: SePoDependentInfo) => {
           info = sePoDependentInfo;
         }
@@ -25,33 +26,34 @@ describe(
     });
 
     it('Step-3: Create the workflow', () => {
-      ReleaseApiUtils.createStopPointWorkflow(
+      StopPointWorkflow.create(
         info.parentServicePointId,
         info.parentServicePointSloid
       ).then((id: number) => (stopPointWorkflowId = id));
     });
 
     it('Step-4: Start the workflow', () => {
-      ReleaseApiUtils.startStopPointWorkflow(stopPointWorkflowId).then(
+      StopPointWorkflow.start(stopPointWorkflowId).then(
         (ids: number[]) => (examinantIds = ids)
       );
     });
 
     it('Step-5: Restart the workflow', () => {
-      ReleaseApiUtils.restartStopPointWorkflow(
-        stopPointWorkflowId,
-        examinantIds
-      ).then((data: RestartStopPointWorkflowData) => {
-        stopPointWorkflowRestartedId = data.stopPointWorkflowId;
-        expect(stopPointWorkflowId).to.not.equal(stopPointWorkflowRestartedId);
+      StopPointWorkflow.restart(stopPointWorkflowId, examinantIds).then(
+        (data: RestartStopPointWorkflowData) => {
+          stopPointWorkflowRestartedId = data.stopPointWorkflowId;
+          expect(stopPointWorkflowId).to.not.equal(
+            stopPointWorkflowRestartedId
+          );
 
-        examinantIds = data.examinantIds;
-      });
+          examinantIds = data.examinantIds;
+        }
+      );
     });
 
     it('Step-6: Override examinants in restarted workflow', () => {
       examinantIds.forEach((examinantId) =>
-        ReleaseApiUtils.overrideExaminantOfStopPointWorkflow(
+        StopPointWorkflow.overrideExaminantVote(
           stopPointWorkflowRestartedId,
           examinantId,
           'YES',
@@ -61,11 +63,8 @@ describe(
     });
 
     it('Step-7: Check status of (restarted) workflows', () => {
-      ReleaseApiUtils.checkWorkflowStatus(stopPointWorkflowId, 'REJECTED');
-      ReleaseApiUtils.checkWorkflowStatus(
-        stopPointWorkflowRestartedId,
-        'APPROVED'
-      );
+      StopPointWorkflow.checkStatus(stopPointWorkflowId, 'REJECTED');
+      StopPointWorkflow.checkStatus(stopPointWorkflowRestartedId, 'APPROVED');
     });
   }
 );

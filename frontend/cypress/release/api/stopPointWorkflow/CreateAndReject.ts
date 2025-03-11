@@ -1,6 +1,5 @@
-import ReleaseApiUtils, {
-  SePoDependentInfo,
-} from '../../../support/util/release-api/release-api-utils';
+import { SePoDependentInfo } from '../../../support/util/release-api/release-api-utils';
+import StopPointWorkflow from '../../../support/util/release-api/stop-point-workflow';
 
 describe(
   'StopPointWorkflow: Scenario create-and-fot-reject',
@@ -14,7 +13,7 @@ describe(
     });
 
     it('Step-2: Create dependent Business Organisation and Service Point', () => {
-      ReleaseApiUtils.createDependentStopPointObjects().then(
+      StopPointWorkflow.createDependentStopPointObjects().then(
         (sePoDependentInfo: SePoDependentInfo) => {
           info = sePoDependentInfo;
         }
@@ -22,18 +21,18 @@ describe(
     });
 
     it('Step-3: Create the workflow', () => {
-      ReleaseApiUtils.createStopPointWorkflow(
+      StopPointWorkflow.create(
         info.parentServicePointId,
         info.parentServicePointSloid
       ).then((id: number) => (stopPointWorkflowId = id));
     });
 
     it('Step-4: Reject the workflow', () => {
-      ReleaseApiUtils.rejectWorkflow(stopPointWorkflowId);
+      StopPointWorkflow.reject(stopPointWorkflowId);
     });
 
     it('Step-5: Check status of workflow is REJECTED', () => {
-      ReleaseApiUtils.checkWorkflowStatus(stopPointWorkflowId, 'REJECTED');
+      StopPointWorkflow.checkStatus(stopPointWorkflowId, 'REJECTED');
     });
   }
 );

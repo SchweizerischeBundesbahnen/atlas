@@ -1,7 +1,8 @@
-import ReleaseApiUtils, {
+import {
   RestartStopPointWorkflowData,
   SePoDependentInfo,
 } from '../../../support/util/release-api/release-api-utils';
+import StopPointWorkflow from '../../../support/util/release-api/stop-point-workflow';
 
 describe(
   'StopPointWorkflow: Scenario restart-and-cancel',
@@ -17,7 +18,7 @@ describe(
     });
 
     it('Step-2: Create dependent Business Organisation and Service Point', () => {
-      ReleaseApiUtils.createDependentStopPointObjects().then(
+      StopPointWorkflow.createDependentStopPointObjects().then(
         (sePoDependentInfo: SePoDependentInfo) => {
           info = sePoDependentInfo;
         }
@@ -25,38 +26,36 @@ describe(
     });
 
     it('Step-3: Create the workflow', () => {
-      ReleaseApiUtils.createStopPointWorkflow(
+      StopPointWorkflow.create(
         info.parentServicePointId,
         info.parentServicePointSloid
       ).then((id: number) => (stopPointWorkflowId = id));
     });
 
     it('Step-4: Start the workflow', () => {
-      ReleaseApiUtils.startStopPointWorkflow(stopPointWorkflowId).then(
+      StopPointWorkflow.start(stopPointWorkflowId).then(
         (ids: number[]) => (examinantIds = ids)
       );
     });
 
     it('Step-5: Restart the workflow', () => {
-      ReleaseApiUtils.restartStopPointWorkflow(
-        stopPointWorkflowId,
-        examinantIds
-      ).then((data: RestartStopPointWorkflowData) => {
-        stopPointWorkflowRestartedId = data.stopPointWorkflowId;
-        expect(stopPointWorkflowId).to.not.equal(stopPointWorkflowRestartedId);
-      });
+      StopPointWorkflow.restart(stopPointWorkflowId, examinantIds).then(
+        (data: RestartStopPointWorkflowData) => {
+          stopPointWorkflowRestartedId = data.stopPointWorkflowId;
+          expect(stopPointWorkflowId).to.not.equal(
+            stopPointWorkflowRestartedId
+          );
+        }
+      );
     });
 
     it('Step-6: Cancel the restarted workflow', () => {
-      ReleaseApiUtils.cancelStopPointWorkflow(stopPointWorkflowRestartedId);
+      StopPointWorkflow.cancel(stopPointWorkflowRestartedId);
     });
 
     it('Step-7: Check status of (restarted) workflows', () => {
-      ReleaseApiUtils.checkWorkflowStatus(stopPointWorkflowId, 'REJECTED');
-      ReleaseApiUtils.checkWorkflowStatus(
-        stopPointWorkflowRestartedId,
-        'CANCELED'
-      );
+      StopPointWorkflow.checkStatus(stopPointWorkflowId, 'REJECTED');
+      StopPointWorkflow.checkStatus(stopPointWorkflowRestartedId, 'CANCELED');
     });
   }
 );
