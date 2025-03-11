@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.reader;
 
-import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
@@ -30,11 +29,6 @@ public class SublineRowMapper implements RowMapper<Subline> {
         .editionDate(rs.getTimestamp("edition_date").toLocalDateTime())
         .editor(rs.getString("editor"))
         .version(rs.getInt("version"))
-        // From Line
-        .number(rs.getString("line_number"))
-        .swissLineNumber(rs.getString("swiss_line_number"))
-        .shortNumber(rs.getString("short_number"))
-        .offerCategory(OfferCategory.valueOf(rs.getString("offer_category")))
         .build();
   }
 
