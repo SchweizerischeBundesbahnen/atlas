@@ -155,7 +155,6 @@ public class LineService {
     lineVersion.setStatus(lineStatusDecider.getStatusForLine(lineVersion, currentLineVersion, currentLineVersions));
     lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
     lineVersionRepository.saveAndFlush(lineVersion);
-    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
     return lineVersion;
   }
 
@@ -187,7 +186,7 @@ public class LineService {
     versionableService.applyVersioning(LineVersion.class, versionedObjects,
         version -> save(version, Optional.of(currentVersion), preSaveVersions),
         this::deleteById);
-
+    lineValidationService.validateLineAfterVersioningBusinessRule(editedVersion);
   }
 
   private void shortSublines(LineVersion currentVersion, LineVersion editedVersion) {
