@@ -422,8 +422,8 @@
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "La validité de la ligne {{validFrom}}-{{validTo}} est en dehors de la validité de la ligne partielle {{sublinie.swissSublineNumber}}. Celle-ci est {{sublinie.validFrom}}-{{sublinie.validTo}}."
       },
-      "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La ligne temporaire valide de {{validFrom}} à {{validTo}} dépasse la validité maximale de 12 mois.",
-      "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La version de {{validFrom}} à {{validTo}} fait partie de versions temporaires connexes. Ensemble, elles dépassent la validité maximale de 12 mois.",
+      "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La ligne temporaire valide de {{validFrom}} à {{validTo}} dépasse la validité maximale de 14 jours.",
+      "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La version de {{validFrom}} à {{validTo}} fait partie de versions temporaires connexes. Ensemble, elles dépassent la validité maximale de 14 jours.",
       "UPDATE_IN_REVIEW": "Il n'est pas possible de modifier le type ou la validité pendant une audition. Veuillez attendre la fin de l'audition. Si vous avez des questions, veuillez vous adresser au service atlas.",
       "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Cette modification a des répercussions sur une version qui se trouve en cours d'audition. Veuillez attendre la fin de l'audition. Si vous avez des questions, veuillez vous adresser au service atlas.",
       "NUMBER": "Numéro de ligne",
