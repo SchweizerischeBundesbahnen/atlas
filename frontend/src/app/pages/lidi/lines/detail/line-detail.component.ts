@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AffectedSublinesModel,
   ApplicationRole,
@@ -37,7 +37,7 @@ import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
 })
 export class LineDetailComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<boolean>();
-  eventEmitter = new EventEmitter<boolean>();
+  eventSubject = new Subject<boolean>();
 
   selectedVersionIndex!: number;
   selectedVersion!: LineVersionV2;
@@ -251,7 +251,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
 
   updateLine(id: number, lineVersion: UpdateLineVersionV2): void {
     const defaultSuccessMessage = 'LIDI.LINE.NOTIFICATION.EDIT_SUCCESS';
-    this.eventEmitter.emit(false);
+    this.eventSubject.next(false);
     if (!this.isOnlyValidityChangedToTruncation()) {
       this.updateLineVersion(id, lineVersion, defaultSuccessMessage);
       return;
@@ -315,7 +315,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
           ])
           .then(() => {
             this.ngOnInit();
-            this.eventEmitter.emit(true);
+            this.eventSubject.next(true);
           });
       });
   }
