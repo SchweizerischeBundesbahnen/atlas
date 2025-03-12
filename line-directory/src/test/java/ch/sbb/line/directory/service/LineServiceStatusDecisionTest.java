@@ -278,12 +278,11 @@ import org.springframework.transaction.annotation.Transactional;
   @Test
    void updateScenario1a() {
     //given
-    version1 = lineVersionRepository.save(version1);
+    version1 = lineVersionRepository.saveAndFlush(version1);
     LineVersion editedVersion = version1Builder().build();
-    editedVersion.setDescription("Description <changed>");
-    editedVersion.setComment("Scenario 1");
+    editedVersion.setNumber("Des>");
     editedVersion.setValidFrom(LocalDate.of(2020, 1, 1));
-    editedVersion.setValidTo(LocalDate.of(2020, 1, 15));
+    editedVersion.setValidTo(LocalDate.of(2020, 1, 1));
     editedVersion.setVersion(version1.getVersion());
 
     //when
@@ -296,14 +295,14 @@ import org.springframework.transaction.annotation.Transactional;
     assertThat(result).isNotNull().hasSize(2);
 
     // Version 1
-    LineVersion firstTemporalVersion = result.get(0);
+    LineVersion firstTemporalVersion = result.getFirst();
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
-    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 1, 15));
+    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.DRAFT);
 
     // Version 2
     LineVersion secondTemporalVersion = result.get(1);
-    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 16));
+    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 2));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(version1.getValidTo());
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
   }
