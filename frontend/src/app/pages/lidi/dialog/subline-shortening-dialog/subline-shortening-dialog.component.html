@@ -13,10 +13,10 @@
 
     @if(hasAllowedAndNotAllowed) {
       <div class="mb-4">
-        <p class="font-lg">{{'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.MESSAGE' | translate  }}</p>
+        <p class="font-lg">{{'LIDI.SUBLINE_SHORTENING.MESSAGE' | translate  }}</p>
         <p class="font-bold-lg">{{'LIDI.SUBLINE_SHORTENING.ALLOWED_AND_NOT_ALLOWED.SHORT_AUTOMATICALLY' | translate  }}</p>
 
-        <div class="" *ngFor="let slnid of allowedSublines">
+        <div *ngFor="let slnid of allowedSublines">
           <atlas-link
             label="{{ slnid }}"
             (linkClicked)="openNewTabOfSubline(slnid)"
@@ -45,7 +45,7 @@
 
   @if(hasNotAllowedOnly) {
     <div class="mb-">
-      <p class="font-lg">{{'LIDI.SUBLINE_SHORTENING.NOT_ALLOWED.MESSAGE' | translate  }}</p>
+      <p class="font-lg">{{'LIDI.SUBLINE_SHORTENING.MESSAGE' | translate  }}</p>
       <p class="font-bold-lg">{{'LIDI.SUBLINE_SHORTENING.NOT_ALLOWED.SHORT_MANUAL_NOTICE' | translate  }}</p>
       <div *ngFor="let slnid of notAllowedSublines">
         <atlas-link
