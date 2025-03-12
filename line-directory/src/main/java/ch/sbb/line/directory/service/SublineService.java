@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.service;
 
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
@@ -7,10 +8,15 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.exception.DateRangeConflictException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.model.LineVersionRange;
+import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
+import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
@@ -23,8 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class SublineService {
 
   private final SublineVersionRepository sublineVersionRepository;
+  private final LineVersionRepository lineVersionRepository;
   private final VersionableService versionableService;
-  private final LineService lineService;
   private final SublineValidationService sublineValidationService;
   private final CoverageService coverageService;
 
@@ -53,6 +59,7 @@ public class SublineService {
   SublineVersion save(SublineVersion sublineVersion) {
     sublineVersion.setStatus(Status.VALIDATED);
     sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion);
+    validateSublineValidity(sublineVersion);
     SublineVersion savedVersion = sublineVersionRepository.saveAndFlush(sublineVersion);
     sublineValidationService.validateSublineAfterVersioningBusinessRule(sublineVersion);
     return savedVersion;
@@ -101,8 +108,31 @@ public class SublineService {
   }
 
   public LineVersion getMainLineVersion(String mainSlnid) {
-    List<LineVersion> lineVersions = lineService.findLineVersions(mainSlnid);
+    List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(mainSlnid);
+
     return OverviewDisplayBuilder.getPrioritizedVersion(lineVersions);
   }
 
+  public void validateSublineValidity(SublineVersion sublineVersion) {
+    List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(sublineVersion.getMainlineSlnid());
+    LineVersionRange lineVersionRange = getOldestAndLatestLine(lineVersions);
+
+    DateRange dateRangeMainline =
+        new DateRange(lineVersionRange.getOldestVersion().getValidFrom(), lineVersionRange.getLatestVersion().getValidTo());
+    DateRange dateRangeSubline = new DateRange(sublineVersion.getValidFrom(), sublineVersion.getValidTo());
+
+    if (!dateRangeSubline.isDateRangeContainedIn(dateRangeMainline)) {
+      throw new DateRangeConflictException(dateRangeMainline);
+    }
+  }
+
+  private LineVersionRange getOldestAndLatestLine(List<LineVersion> lines) {
+    LineVersion oldest = lines.stream()
+        .min(Comparator.comparing(LineVersion::getValidFrom))
+        .orElseThrow(() -> new NoSuchElementException("No line found"));
+    LineVersion latest = lines.stream()
+        .max(Comparator.comparing(LineVersion::getValidTo))
+        .orElseThrow(() -> new NoSuchElementException("No line found"));
+    return new LineVersionRange(oldest, latest);
+  }
 }

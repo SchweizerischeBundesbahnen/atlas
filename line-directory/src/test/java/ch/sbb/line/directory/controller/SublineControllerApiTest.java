@@ -134,8 +134,8 @@ import org.springframework.test.web.servlet.MvcResult;
     SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
         .mainlineSlnid(
             lineVersionModel.getSlnid())
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31))
+        .validFrom(LocalDate.of(2020, 2, 1))
+        .validTo(LocalDate.of(2020, 11, 30))
         .description("desc2")
         .build();
     sublineController.createSublineVersion(sublineVersionModel1);
@@ -156,8 +156,8 @@ import org.springframework.test.web.servlet.MvcResult;
         .build();
     SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
         .mainlineSlnid(lineVersionModel.getSlnid())
-        .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-        .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
+        .validFrom(LocalDate.of(2020, 2, 1))
+        .validTo(LocalDate.of(2020, 11, 1))
         .description("desc2")
         .build();
     sublineController.createSublineVersion(sublineVersionModel1);
@@ -180,13 +180,8 @@ import org.springframework.test.web.servlet.MvcResult;
     SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
         .mainlineSlnid(
             lineVersionModel.getSlnid())
-        .validFrom(LocalDate.now()
-            .withMonth(1)
-            .withDayOfMonth(
-                1))
-        .validTo(LocalDate.now()
-            .withMonth(12)
-            .withDayOfMonth(31))
+        .validFrom(LocalDate.of(2020, 2, 1))
+        .validTo(LocalDate.of(2020, 11, 1))
         .description("desc2")
         .build();
     sublineController.createSublineVersion(sublineVersionModel1);
