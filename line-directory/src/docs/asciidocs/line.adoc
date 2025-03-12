@@ -29,10 +29,6 @@ include::{snippets}/line-controller-api-test/should-return-line-delete-conflict-
 
 include::{snippets}/line-controller-api-test/should-return-not-found-error-response-when-no-found-lines/atlas-doc.adoc[]
 
-== Get Subline Coverage
-
-include::{snippets}/line-controller-api-test/should-get-subline-coverage/atlas-doc.adoc[]
-
 == Get LineVersion Get Line V2
 
 include::{snippets}/line-controller-api-v2-test/should-get-line-version/atlas-doc.adoc[]
