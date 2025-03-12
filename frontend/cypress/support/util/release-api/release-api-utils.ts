@@ -7,6 +7,24 @@ export type SePoDependentInfo = {
   numberWithoutCheckDigit: number;
 };
 
+export enum PrmExportType {
+  ACTUAL = 'ACTUAL',
+  FUTURE = 'TIMETABLE_FUTURE',
+  FULL = 'FULL',
+}
+
+export enum SwissExportType {
+  FULL = 'SWISS_ONLY_FULL',
+  ACTUAL = 'SWISS_ONLY_ACTUAL',
+  FUTURE = 'SWISS_ONLY_TIMETABLE_FUTURE',
+}
+
+export enum WorldExportType {
+  FULL = 'WORLD_FULL',
+  ACTUAL = 'WORLD_ONLY_ACTUAL',
+  FUTURE = 'WORLD_ONLY_TIMETABLE_FUTURE',
+}
+
 const workflowEmail = 'joel.hofer@sbb.ch';
 
 export type RestartStopPointWorkflowData = {
@@ -194,6 +212,26 @@ export default class ReleaseApiUtils {
         .property('body')
         .property('id')
         .to.equal(stopPointWorkflowId);
+    });
+  }
+
+  static jsonExportChecker(
+    minimumBodyLength: number,
+    exportFileName: string,
+    exportType: string
+  ) {
+    CommonUtils.get(
+      `/export-service/v1/export/prm/json/latest/${exportFileName}/${exportType}`
+    ).then((response) => {
+      expect(response)
+        .property('status')
+        .to.equal(CommonUtils.HTTP_REST_API_RESPONSE_OK);
+
+      expect(response)
+        .property('body')
+        .property('length')
+        .to.be.a('number')
+        .and.greaterThan(minimumBodyLength);
     });
   }
 
