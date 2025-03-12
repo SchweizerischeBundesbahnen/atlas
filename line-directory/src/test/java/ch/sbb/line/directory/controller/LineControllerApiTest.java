@@ -186,7 +186,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .alternativeName("alternative")
             .combinationName("combination")
             .longName("long name")
-            .lineType(LineType.TEMPORARY)
+            .lineType(LineType.DISPOSITION)
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC5")
             .build();
@@ -215,7 +215,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .alternativeName("alternative")
             .combinationName("combination")
             .longName("long name")
-            .lineType(LineType.TEMPORARY)
+            .lineType(LineType.DISPOSITION)
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber(null)
             .build();
@@ -226,7 +226,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .contentType(contentType)
         ).andExpect(status().isOk())
         .andExpect(jsonPath("$[0].businessOrganisation", is("sbb")))
-        .andExpect(jsonPath("$[0].lidiElementType", is(LidiElementType.TEMPORARY.toString())))
+        .andExpect(jsonPath("$[0].lidiElementType", is(LidiElementType.DISPOSITION.toString())))
         .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
         .andExpect(jsonPath("$[0].slnid", is(lineVersion.getSlnid())))
         .andExpect(jsonPath("$[0].validFrom", is("2000-01-01")))
@@ -244,7 +244,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .alternativeName("alternative")
             .combinationName("combination")
             .longName("long name")
-            .lineType(LineType.TEMPORARY)
+            .lineType(LineType.DISPOSITION)
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC5")
             .build();
@@ -258,7 +258,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
         .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
         .andExpect(jsonPath("$[0]." + longName, is("long name")))
         .andExpect(jsonPath("$[0]." + slnid, is(lineVersion.getSlnid())))
-        .andExpect(jsonPath("$[0]." + LineVersionModelV2.Fields.lineType, is(LineType.TEMPORARY.toString())))
+        .andExpect(jsonPath("$[0]." + LineVersionModelV2.Fields.lineType, is(LineType.DISPOSITION.toString())))
         .andExpect(jsonPath("$[0]." + paymentType, is(PaymentType.LOCAL.toString())))
         .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC5")))
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("sbb")))
@@ -277,7 +277,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .alternativeName("alternative")
             .combinationName("combination")
             .longName("long name")
-            .lineType(LineType.TEMPORARY)
+            .lineType(LineType.DISPOSITION)
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber(null)
             .build();
@@ -289,7 +289,7 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .description("b0.Ic2-sibline")
-            .sublineType(SublineType.TEMPORARY)
+            .sublineType(SublineType.DISPOSITION)
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();

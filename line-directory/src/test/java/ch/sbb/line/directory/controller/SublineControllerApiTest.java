@@ -75,7 +75,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .alternativeName("alternative")
             .combinationName("combination")
             .longName("long name")
-            .lineType(LineType.TEMPORARY)
+            .lineType(LineType.DISPOSITION)
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC2-libne")
             .build();
