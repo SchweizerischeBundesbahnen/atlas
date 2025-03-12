@@ -11,10 +11,8 @@ import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +32,8 @@ public class SublineShorteningService {
     if (isOnlyValidityChanged(lineVersion, editedVersion) && isShortening(lineVersion, editedVersion)) {
 
       List<LineVersion> lineVersions = getAllLineVersionsBySlnid(lineVersion.getSlnid());
-      LineVersionRange lineVersionRange = getOldestAndLatestLineVersion(lineVersions);
+      LineVersionRange lineVersionRange = getOldestAndLatestLineVersion(lineVersion.getSlnid());
+
       Map<String, List<SublineVersion>> sublineVersions = getAllSublinesByMainlineSlnid(lineVersion.getSlnid());
 
       AffectedSublinesData data = AffectedSublinesData.builder()
@@ -93,12 +92,12 @@ public class SublineShorteningService {
   }
 
   private void processSingleLineVersion(AffectedSublinesData data) {
-    for (List<SublineVersion> versions : data.getSublineVersions().values()) {
-      SublineVersionRange range = getOldestAndLatestSublineVersion(versions);
-      String slnid = range.getLatestVersion().getSlnid();
+    for (List<SublineVersion> sublineVersions : data.getSublineVersions().values()) {
+      String slnid = getSlnidSubline(sublineVersions);
+      SublineVersionRange range = getOldestAndLatestSublineVersion(slnid);
       if (isSublineValidityAffectedByUpdatedMainline(data.getEditedVersion().getValidFrom(),
           data.getEditedVersion().getValidTo(), range)) {
-        if (isSublineShorteningAllowed(data.getEditedVersion(), range, versions.size())) {
+        if (isSublineShorteningAllowed(data.getEditedVersion(), range, sublineVersions.size())) {
           data.getAllowedSublines().add(slnid);
         } else {
           data.getNotAllowedSublines().add(slnid);
@@ -109,7 +108,9 @@ public class SublineShorteningService {
 
   private void processSublineVersionsValidFrom(AffectedSublinesData data) {
     for (List<SublineVersion> sublineVersions : data.getSublineVersions().values()) {
-      SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(sublineVersions);
+      String slnid = getSlnidSubline(sublineVersions);
+      SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(slnid);
+
       if (isSublineValidityAffectedByUpdatedMainline(data.getEditedVersion().getValidFrom(),
           data.getEditedVersion().getValidTo(), sublineVersionRange)) {
         if (isShorteningAllowedValidFrom(data.getEditedVersion(), sublineVersionRange)) {
@@ -122,8 +123,10 @@ public class SublineShorteningService {
   }
 
   private void processSublineVersionsValidTo(AffectedSublinesData data) {
-    for (List<SublineVersion> versions : data.getSublineVersions().values()) {
-      SublineVersionRange range = getOldestAndLatestSublineVersion(versions);
+    for (List<SublineVersion> sublineVersions : data.getSublineVersions().values()) {
+      String slnid = getSlnidSubline(sublineVersions);
+
+      SublineVersionRange range = getOldestAndLatestSublineVersion(slnid);
       if (isSublineValidityAffectedByUpdatedMainline(data.getEditedVersion().getValidFrom(), data.getEditedVersion().getValidTo(),
           range)) {
         if (isShorteningAllowedValidTo(data.getEditedVersion(), range)) {
@@ -140,37 +143,37 @@ public class SublineShorteningService {
 
     List<SublineVersionRange> sublinesToUpdate = new ArrayList<>();
     List<LineVersion> lineVersions = getAllLineVersionsBySlnid(lineVersion.getSlnid());
-    LineVersionRange lineVersionRange = getOldestAndLatestLineVersion(lineVersions);
+    LineVersionRange lineVersionRange = getOldestAndLatestLineVersion(lineVersion.getSlnid());
 
     boolean isOnlyValidToChanged = isOnlyValidToChanged(lineVersion, editedVersion);
     boolean isOnlyValidFromChanged = isOnlyValidFromChanged(lineVersion, editedVersion);
 
     if (lineVersions.size() == 1 && isBothValidityChanged(lineVersion, editedVersion)) {
-      for (String slnid : sublinesToShort) {
-        processBothValidityChanged(slnid, lineVersion, editedVersion, sublinesToUpdate);
+      for (String sublineSlnid : sublinesToShort) {
+        processBothValidityChanged(sublineSlnid, lineVersion, editedVersion, sublinesToUpdate);
       }
     }
 
     if (isMatchingVersion(lineVersion, lineVersionRange.getOldestVersion()) && isOnlyValidFromChanged) {
-      for (String slnid : sublinesToShort) {
-        processOnlyValidFromChanged(slnid, editedVersion, sublinesToUpdate);
+      for (String sublineSlnid : sublinesToShort) {
+        processOnlyValidFromChanged(sublineSlnid, editedVersion, sublinesToUpdate);
       }
     }
 
     if (isMatchingVersion(lineVersion, lineVersionRange.getLatestVersion()) && isOnlyValidToChanged) {
-      for (String slnid : sublinesToShort) {
-        processOnlyValidToChanged(slnid, editedVersion, sublinesToUpdate);
+      for (String sublineSlnid : sublinesToShort) {
+        processOnlyValidToChanged(sublineSlnid, editedVersion, sublinesToUpdate);
       }
     }
 
     return sublinesToUpdate;
   }
 
-  private void processBothValidityChanged(String slnid, LineVersion lineVersion, LineVersion editedVersion,
+  private void processBothValidityChanged(String sublineSlnid, LineVersion lineVersion, LineVersion editedVersion,
       List<SublineVersionRange> sublinesToUpdate) {
 
-    List<SublineVersion> sublineVersions = findAllSublineVersionsBySlnid(slnid);
-    SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(sublineVersions);
+    List<SublineVersion> sublineVersions = findAllSublineVersionsBySlnid(sublineSlnid);
+    SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(sublineSlnid);
 
     if (sublineVersions.size() > 1) {
       if (isShorteningValidFrom(lineVersion, editedVersion)) {
@@ -198,10 +201,9 @@ public class SublineShorteningService {
     }
   }
 
-  private void processOnlyValidFromChanged(String slnid, LineVersion editedVersion,
+  private void processOnlyValidFromChanged(String sublineSlnid, LineVersion editedVersion,
       List<SublineVersionRange> sublinesToUpdate) {
-    List<SublineVersion> versions = findAllSublineVersionsBySlnid(slnid);
-    SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(versions);
+    SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(sublineSlnid);
 
     SublineVersion oldVersion = cloneSublineVersion(sublineVersionRange.getOldestVersion());
     SublineVersion editedSublineVersion = cloneSublineVersion(sublineVersionRange.getOldestVersion());
@@ -211,10 +213,9 @@ public class SublineShorteningService {
     sublinesToUpdate.add(new SublineVersionRange(oldVersion, editedSublineVersion));
   }
 
-  private void processOnlyValidToChanged(String slnid, LineVersion editedVersion,
+  private void processOnlyValidToChanged(String sublineSlnid, LineVersion editedVersion,
       List<SublineVersionRange> sublinesToUpdate) {
-    List<SublineVersion> versions = findAllSublineVersionsBySlnid(slnid);
-    SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(versions);
+    SublineVersionRange sublineVersionRange = getOldestAndLatestSublineVersion(sublineSlnid);
 
     SublineVersion latestVersion = cloneSublineVersion(sublineVersionRange.getLatestVersion());
     SublineVersion editedSublineVersion = cloneSublineVersion(sublineVersionRange.getLatestVersion());
@@ -305,24 +306,16 @@ public class SublineShorteningService {
     return validFromChanged && validToUnchanged && areNonValidityFieldsEqual(current, edited);
   }
 
-  private SublineVersionRange getOldestAndLatestSublineVersion(List<SublineVersion> sublines) {
-    SublineVersion oldest = sublines.stream()
-        .min(Comparator.comparing(SublineVersion::getValidFrom))
-        .orElseThrow(() -> new NoSuchElementException("No sublines found"));
-    SublineVersion latest = sublines.stream()
-        .max(Comparator.comparing(SublineVersion::getValidTo))
-        .orElseThrow(() -> new NoSuchElementException("No sublines found"));
-    return new SublineVersionRange(oldest, latest);
+  private SublineVersionRange getOldestAndLatestSublineVersion(String slnid) {
+    SublineVersion oldestVersion = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid).getFirst();
+    SublineVersion latestVersion = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid).getLast();
+    return new SublineVersionRange(oldestVersion, latestVersion);
   }
 
-  private LineVersionRange getOldestAndLatestLineVersion(List<LineVersion> lines) {
-    LineVersion oldest = lines.stream()
-        .min(Comparator.comparing(LineVersion::getValidFrom))
-        .orElseThrow(() -> new NoSuchElementException("No line found"));
-    LineVersion latest = lines.stream()
-        .max(Comparator.comparing(LineVersion::getValidTo))
-        .orElseThrow(() -> new NoSuchElementException("No line found"));
-    return new LineVersionRange(oldest, latest);
+  private LineVersionRange getOldestAndLatestLineVersion(String slnid) {
+    LineVersion oldestVersion = lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid).getFirst();
+    LineVersion latestVersion = lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid).getLast();
+    return new LineVersionRange(oldestVersion, latestVersion);
   }
 
   private boolean isSublineVersionsEmpty(Map<String, List<SublineVersion>> sublineVersions) {
@@ -351,6 +344,10 @@ public class SublineShorteningService {
 
   private List<SublineVersion> findAllSublineVersionsBySlnid(String slnid) {
     return sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
+  }
+
+  private String getSlnidSubline(List<SublineVersion> sublineVersions) {
+    return sublineVersions.getFirst().getSlnid();
   }
 
   private boolean isSublineValidityAffectedByUpdatedMainline(LocalDate validFrom, LocalDate validTo,
