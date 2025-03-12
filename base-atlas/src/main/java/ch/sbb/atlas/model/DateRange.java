@@ -3,6 +3,7 @@ package ch.sbb.atlas.model;
 import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -48,6 +49,10 @@ public class DateRange {
   public boolean isDateRangeContainedIn(DateRange givenDateRange) {
     return (from.equals(givenDateRange.getFrom()) || from.isAfter(givenDateRange.getFrom()))
         && (to.equals(givenDateRange.getTo()) || to.isBefore(givenDateRange.getTo()));
+  }
+
+  public long getValidityInDays() {
+    return ChronoUnit.DAYS.between(from, to) + 1;
   }
 
   public static DateRange fromVersionable(Versionable versionable) {
