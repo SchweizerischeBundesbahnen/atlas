@@ -19,9 +19,10 @@ import org.springframework.http.HttpStatus;
 public class TemporaryLineValidationException extends AtlasException {
 
   private static final String CODE_PREFIX = "LIDI.LINE.";
-  private static final String MESSAGE_NO_RELATING_VERSIONS = "Temporary version from {0} to {1} exceeds maximum validity of 12 months";
+  private static final String MESSAGE_NO_RELATING_VERSIONS = "Temporary version from {0} to {1} exceeds maximum validity of 14 "
+      + "days";
   private static final String MESSAGE_WITH_RELATING_VERSIONS = "Temporary version from {0} to {1} "
-      + "is a part of relating temporary versions, which together exceed maximum validity of 12 months";
+      + "is a part of relating temporary versions, which together exceed maximum validity of 14 days";
   private static final String CODE_NO_RELATING_VERSIONS = "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY";
   private static final String CODE_WITH_RELATING_VERSIONS = "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY";
 
