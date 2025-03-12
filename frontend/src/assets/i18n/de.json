@@ -423,6 +423,7 @@
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Gültigkeit der Teillinie {{sublinie.swissSublineNumber}}. Diese ist {{sublinie.validFrom}}-{{sublinie.validTo}}."
       },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Die temporäre Linie mit der Gültigkeit von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 14 Tagen.",
+      "ORDERLY_LINE_MIN_VALIDITY": "Die ordentliche Linie mit der Gültigkeit von {{validFrom}} bis {{validTo}} unterschreitet die minimale Gültigkeit von 15 Tagen.",
       "UPDATE_IN_REVIEW": "Während einer Anhörung ist es nicht möglich den Typ oder die Gültigkeit zu verändern. Bitte warten Sie den Abschluss der Anhörung ab. Bei Fragen wenden Sie sich bitte an die Fachstelle atlas.",
       "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Diese Änderung hat Auswirkungen auf eine Version, welche sich in einer Anhörung befindet. Bitte warten Sie den Abschluss der Anhörung ab. Bei Fragen wenden Sie sich bitte an die Fachstelle atlas.",
       "NUMBER": "Liniennummer",
