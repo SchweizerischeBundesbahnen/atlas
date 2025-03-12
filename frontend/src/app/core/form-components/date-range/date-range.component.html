@@ -51,9 +51,11 @@
         required
         list="validToSuggestions"
       />
-      <datalist id="validToSuggestions">
-        <option value="31.12.9999"></option>
-      </datalist>
+      @if (showMaxValidityAutoFill){
+        <datalist id="validToSuggestions">
+          <option value="31.12.9999"></option>
+        </datalist>
+      }
       <mat-datepicker-toggle [for]="validToPicker">
         <mat-icon matDatepickerToggleIcon>
           <form-date-icon [enabled]="controlTo.enabled"></form-date-icon>
