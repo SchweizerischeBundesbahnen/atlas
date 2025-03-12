@@ -40,7 +40,6 @@ public class SublineValidationService {
 
   private final SublineVersionRepository sublineVersionRepository;
   private final LineVersionRepository lineVersionRepository;
-  private final CoverageValidationService coverageValidationService;
   private final SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   public void validatePreconditionSublineBusinessRules(SublineVersion sublineVersion) {
@@ -80,16 +79,6 @@ public class SublineValidationService {
     if (sublineVersion.getSublineType() == SublineType.CONCESSION ^ sublineVersion.getSwissSublineNumber() != null) {
       throw new SublineConcessionSwissSublineNumberException();
     }
-  }
-
-  public void validateSublineAfterVersioningBusinessRule(SublineVersion sublineVersion) {
-    LineVersion lineVersion = lineVersionRepository.findAllBySlnidOrderByValidFrom(
-            sublineVersion.getMainlineSlnid())
-        .stream()
-        .findFirst()
-        .orElseThrow(() -> new IllegalStateException(
-            "No Line found for the given subline!"));
-    coverageValidationService.validateLineSublineCoverage(lineVersion);
   }
 
   void validateSublineConflict(SublineVersion sublineVersion) {
