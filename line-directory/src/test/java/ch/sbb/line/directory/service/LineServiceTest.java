@@ -65,9 +65,6 @@ class LineServiceTest {
   private LineUpdateValidationService lineUpdateValidationService;
 
   @Mock
-  private CoverageService coverageService;
-
-  @Mock
   private LineSearchRestrictions lineSearchRestrictions;
 
   @Mock
@@ -85,7 +82,7 @@ class LineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
-        versionableService, lineValidationService, lineUpdateValidationService, coverageService, lineStatusDecider,
+        versionableService, lineValidationService, lineUpdateValidationService, lineStatusDecider,
         sublineShorteningService, sublineService);
   }
 
@@ -272,7 +269,7 @@ class LineServiceTest {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
     lineVersion.setId(1L);
-    when(lineVersionRepository.findById(1L)).thenReturn(Optional.of(lineVersion));
+    when(lineVersionRepository.existsById(1L)).thenReturn(true);
 
     // When
     lineService.deleteById(1L);

@@ -19,7 +19,6 @@ import { SwitchVersionComponent } from '../components/switch-version/switch-vers
 import { TableFilterComponent } from '../components/table-filter/table-filter.component';
 import { ErrorNotificationComponent } from '../notification/error/error-notification.component';
 import { WithDefaultValueDirective } from '../text-input/with-default-value.directive';
-import { CoverageComponent } from '../components/coverage/coverage.component';
 import { FormModule } from './form.module';
 import { RelationComponent } from '../components/relation/relation.component';
 import { UserDetailInfoComponent } from '../components/base-detail/user-edit-info/user-detail-info.component';
@@ -92,7 +91,6 @@ const coreComponents = [
   WithDefaultValueDirective,
   TableFilterComponent,
   ErrorNotificationComponent,
-  CoverageComponent,
   RelationComponent,
   DisplayDatePipe,
   DecimalNumberPipe,

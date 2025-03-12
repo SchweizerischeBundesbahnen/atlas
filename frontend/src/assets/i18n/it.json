@@ -39,13 +39,6 @@
     "REVOKE": "Revocare",
     "DELETE": "Eliminare",
     "CANCEL": "Annulla",
-    "COVERAGE": {
-      "HEADING": "Validazioni",
-      "LINE_SUBLINE": "Linea / Linea parziale",
-      "LINE_TIMETABLE_FIELD": "Linea / Tabella oraria",
-      "COMPLETE": "Completo",
-      "INCOMPLETE": "Incompleto"
-    },
     "NODATAFOUND": "Nessun dato trovato.",
     "TYPE_TO_SEARCH": "Digitare almeno 2 caratteri per iniziare la ricerca.",
     "TYPE_TO_SEARCH_SHORT": "Digitare almeno 2 caratteri...",
