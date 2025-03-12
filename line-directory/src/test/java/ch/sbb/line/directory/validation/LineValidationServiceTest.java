@@ -17,6 +17,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineTypeOrderlyException;
+import ch.sbb.line.directory.exception.OrderlyLineValidityException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -300,6 +301,32 @@ class LineValidationServiceTest {
 
     //when and then
     assertThrows(LineTypeOrderlyException.class, () -> lineValidationService.dynamicBeanValidation(lineVersion));
+  }
+
+  @Test
+  void shouldNotSaveOrderlyLineWithValidity14Days() {
+    // Given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder()
+        .lineType(LineType.ORDERLY)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 1, 14))
+        .build();
+    // When
+    assertThatExceptionOfType(OrderlyLineValidityException.class).isThrownBy(
+        () -> lineValidationService.validateOrderlyLinesDuration(List.of(lineVersion)));
+  }
+
+  @Test
+  void shouldSaveOrderlyLineWithValidity15Days() {
+    // Given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder()
+        .lineType(LineType.ORDERLY)
+        .validFrom(LocalDate.of(2021, 10, 1))
+        .validTo(LocalDate.of(2021, 10, 15))
+        .build();
+    // When & Then
+    assertThatNoException().isThrownBy(
+        () -> lineValidationService.validateOrderlyLinesDuration(List.of(lineVersion)));
   }
 
 }
