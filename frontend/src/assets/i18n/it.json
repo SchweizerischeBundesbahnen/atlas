@@ -417,7 +417,7 @@
       "CONFLICT": {
         "SWISS_NUMBER": "Il numero di linea CH (CHLNR) {{swissLineNumber}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
         "DELETE": "La linea {{slnid}} non può essere eliminata perché è ancora referenziata alla linea parziale {{SublineVersion.slnid}}",
-        "SUBLINE_VALIDITY": "La data specificata non è valida e non rientra nella validità della riga di livello superiore. La linea madre è valida da: {{validFrom}} a: {{validTo}}"
+        "SUBLINE_VALIDITY": "La data specificata non è valida e non rientra nella validità della riga di livello superiore. La linea principale è valida da: {{validFrom}} a: {{validTo}}"
       },
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "La validità della linea {{validFrom}}-{{validTo}} non rientra nel campo di validità della linea parziale {{sublinie.swissSublineNumber}}. Quest’ultimo è {{sublinie.validFrom}}-{{sublinie.validTo}}."
@@ -508,18 +508,16 @@
     },
     "SUBLINE_SHORTENING": {
       "TITLE": "Nota",
+      "MESSAGE": "Le linee parziali possono essere valide solo nel periodo di validità della linea principale. Se possibile, atlas accorcia le linee parziali collegate all'ultimo giorno di validità della linea principale.",
       "ALLOWED": {
-        "MESSAGE": "Le linee parziali possono essere valide solo nel periodo di validità della linea principale. Se possibile, atlas accorcia le linee parziali collegate all'ultimo giorno di validità della linea principale.",
-        "SHORT_AUTOMATICALLY_NOTICE_BOTH": "Questo messaggio informa che tutte le righe parziali vengono automaticamente accorciate in base alla validità (Valido da: {{validFrom}} e Valido a: {{validTo}}).",
-        "SHORT_AUTOMATICALLY_NOTICE": "Questo messaggio informa che tutte le righe parziali vengono automaticamente accorciate in base alla validità {{validity}}: {{date}}.",
-        "SUCCESS": "La riga è stata salvata con successo e, dove possibile, la validità delle righe parziali è stata adattata."
+        "SHORT_AUTOMATICALLY_NOTICE_BOTH": "Questo messaggio informa che tutte le linee parziali vengono automaticamente accorciate in base alla validità (Valido da: {{validFrom}} e Valido a: {{validTo}}).",
+        "SHORT_AUTOMATICALLY_NOTICE": "Questo messaggio informa che tutte le linee parziali vengono automaticamente accorciate in base alla validità {{validity}}: {{date}}.",
+        "SUCCESS": "La linea è stata salvata con successo e, dove possibile, la validità delle linee parziali è stata adattata."
       },
       "NOT_ALLOWED": {
-        "MESSAGE": "Le linee parziali possono essere valide solo nel periodo di validità della linea principale. Se possibile, atlas accorcia le linee parziali collegate all'ultimo giorno di validità della linea principale.",
         "SHORT_MANUAL_NOTICE": "Nessuna linea parziale può essere accorciata automaticamente. Si prega di accorciare le linee seguenti da soli o tramite il servizio specializzato atlas:"
       },
       "ALLOWED_AND_NOT_ALLOWED": {
-        "MESSAGE": "Le linee parziali possono essere valide solo nel periodo di validità della linea principale. Se possibile, atlas accorcia le linee parziali collegate all'ultimo giorno di validità della linea principale. Se ciò non è possibile, le linee parziali devono essere modificate da soli o tramite il Servizio specializzato atlas.",
         "SHORT_AUTOMATICALLY": "Le seguenti linee parziali possono essere accorciate automaticamente:",
         "SHORT_MANUAL": "Le seguenti linee parziali devono essere accorciate personalmente:",
         "CLICK_NOTICE_PREFIX": "Fare clic su",
