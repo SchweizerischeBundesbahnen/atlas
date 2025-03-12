@@ -2,6 +2,7 @@ package ch.sbb.line.directory.validation;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.exception.LineConflictException;
@@ -59,7 +60,7 @@ public class LineValidationService {
       LocalDate minValidFrom = savedLine.getFirst().getValidFrom();
       LocalDate maxValidTo = savedLine.getLast().getValidTo();
 
-      long validityInDays = ChronoUnit.DAYS.between(minValidFrom, maxValidTo);
+      long validityInDays = new DateRange(minValidFrom, maxValidTo).getValidityInDays();
       if (validityInDays > TEMPORARY_LINE_MAX_VALIDITY_IN_DAYS) {
         throw new TemporaryLineValidationException(minValidFrom, maxValidTo);
       }

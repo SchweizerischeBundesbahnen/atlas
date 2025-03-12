@@ -97,4 +97,16 @@ class DateRangeTest {
 
     assertThat(dateRange.isDateRangeContainedIn(givenDateRange)).isFalse();
   }
+
+  @Test
+  void shouldCalculateDateDayRange() {
+    DateRange dateRange = new DateRange(LocalDate.now(), LocalDate.now());
+    assertThat(dateRange.getValidityInDays()).isEqualTo(1);
+
+    dateRange = new DateRange(LocalDate.of(2021, 1, 1), LocalDate.of(2021, 1, 14));
+    assertThat(dateRange.getValidityInDays()).isEqualTo(14);
+
+    dateRange = new DateRange(LocalDate.of(2021, 1, 1), LocalDate.of(2021, 1, 15));
+    assertThat(dateRange.getValidityInDays()).isEqualTo(15);
+  }
 }

@@ -79,6 +79,19 @@ class LineValidationServiceTest {
   }
 
   @Test
+  void shouldNotSaveTemporaryLineWithValidity15Days() {
+    // Given
+    LineVersion lineVersion = LineTestData.lineVersionBuilder()
+        .lineType(LineType.TEMPORARY)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 1, 15))
+        .build();
+    // When
+    assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
+        () -> lineValidationService.validateTemporaryLinesDuration(List.of(lineVersion)));
+  }
+
+  @Test
   void shouldSaveTemporaryLine() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
