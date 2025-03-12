@@ -416,7 +416,8 @@
       "LINES": "Lignes",
       "CONFLICT": {
         "SWISS_NUMBER": "Le numéro de ligne CH (CHLNR) {{swissLineNumber}} est déjà attribué de {{validFrom}} à {{validTo}} par {{slnid}}.",
-        "DELETE": "La ligne {{slnid}} ne peut pas être effacée, car elle est encore référencée par la ligne partielle {{SublineVersion.slnid}}."
+        "DELETE": "La ligne {{slnid}} ne peut pas être effacée, car elle est encore référencée par la ligne partielle {{SublineVersion.slnid}}.",
+        "SUBLINE_VALIDITY": "La date indiquée n'est pas valable et se situe en dehors de la validité de la ligne supérieure. La ligne supérieure est valable du : {{validFrom}} à : {{validTo}}"
       },
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "La validité de la ligne {{validFrom}}-{{validTo}} est en dehors de la validité de la ligne partielle {{sublinie.swissSublineNumber}}. Celle-ci est {{sublinie.validFrom}}-{{sublinie.validTo}}."
@@ -503,6 +504,25 @@
         "DESCRIPTION": "Désignation de la ligne",
         "STATUS": "Statut d'audition",
         "SLNID": "SLNID"
+      }
+    },
+    "SUBLINE_SHORTENING": {
+      "TITLE": "Remarque",
+      "MESSAGE": "Les lignes partielles ne peuvent être valables que pendant la durée de validité de la ligne principale. Si possible, atlas raccourcit les lignes partielles reliées au dernier jour de validité de la ligne principale.",
+      "ALLOWED": {
+        "SHORT_AUTOMATICALLY_NOTICE_BOTH": "Ce message te signale que toutes les lignes partielles seront automatiquement réduites à la validité (Valable du : {{validFrom}} et Valable jusqu'au : {{validTo}}).",
+        "SHORT_AUTOMATICALLY_NOTICE": "Ce message te signale que toutes les lignes partielles seront automatiquement réduites à la validité {{validity}}: {{date}}.",
+        "SUCCESS": "La ligne a été enregistrée avec succès et, si possible, les lignes partielles ont été adaptées en termes de validité."
+      },
+      "NOT_ALLOWED": {
+        "SHORT_MANUAL_NOTICE": "Aucune ligne partielle ne peut être raccourcie automatiquement. Veuillez raccourcir vous-même les lignes suivantes ou les faire raccourcir par le service atlas:"
+      },
+      "ALLOWED_AND_NOT_ALLOWED": {
+        "SHORT_AUTOMATICALLY": "Les lignes partielles suivantes peuvent être raccourcies automatiquement:",
+        "SHORT_MANUAL": "Les lignes partielles suivantes doivent être raccourcies elles-mêmes:",
+        "CLICK_NOTICE_PREFIX": "En cliquant sur",
+        "CLICK_NOTICE_ACTION": "Suivant",
+        "CLICK_NOTICE_SUFFIX": "toutes les lignes partielles possibles sont automatiquement raccourcies."
       }
     }
   },

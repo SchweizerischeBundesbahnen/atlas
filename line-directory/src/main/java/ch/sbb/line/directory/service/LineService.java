@@ -11,6 +11,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.model.SublineVersionRange;
 import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -39,6 +40,8 @@ public class LineService {
   private final LineUpdateValidationService lineUpdateValidationService;
   private final CoverageService coverageService;
   private final LineStatusDecider lineStatusDecider;
+  private final SublineShorteningService sublineShorteningService;
+  private final SublineService sublineService;
 
   public Page<Line> findAll(LineSearchRestrictions searchRestrictions) {
     return lineRepository.findAll(searchRestrictions.getSpecification(),
@@ -63,6 +66,10 @@ public class LineService {
     return lineVersionRepository.findById(id);
   }
 
+  public LineVersion getLineVersionById(Long id) {
+    return findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  }
+
   @Transactional
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas"
       + ".kafka.model.user.admin.ApplicationType).LIDI)")
@@ -84,6 +91,14 @@ public class LineService {
   public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
     lineValidationService.validateNotRevoked(currentVersion);
     lineUpdateValidationService.validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
+
+    boolean isOnlyValidityChanged = sublineShorteningService.isOnlyValidityChanged(currentVersion, editedVersion);
+    boolean isShortening = sublineShorteningService.isShortening(currentVersion, editedVersion);
+
+    if (isOnlyValidityChanged && isShortening) {
+      shortSublines(currentVersion, editedVersion);
+    }
+
     updateVersion(currentVersion, editedVersion);
   }
 
@@ -95,7 +110,7 @@ public class LineService {
   }
 
   public void skipWorkflow(Long lineVersionId) {
-    LineVersion lineVersion = findById(lineVersionId).orElseThrow(() -> new IdNotFoundException(lineVersionId));
+    LineVersion lineVersion = getLineVersionById(lineVersionId);
     if (lineVersion.getStatus() == Status.DRAFT) {
       lineVersion.setStatus(Status.VALIDATED);
       lineVersionRepository.save(lineVersion);
@@ -104,8 +119,7 @@ public class LineService {
 
   @Transactional
   public void deleteById(Long id) {
-    LineVersion lineVersion = lineVersionRepository.findById(id).orElseThrow(
-        () -> new IdNotFoundException(id));
+    LineVersion lineVersion = getLineVersionById(id);
     coverageService.deleteCoverageLine(lineVersion.getSlnid());
     lineVersionRepository.deleteById(id);
   }
@@ -173,6 +187,18 @@ public class LineService {
     versionableService.applyVersioning(LineVersion.class, versionedObjects,
         version -> save(version, Optional.of(currentVersion), preSaveVersions),
         this::deleteById);
+
+  }
+
+  private void shortSublines(LineVersion currentVersion, LineVersion editedVersion) {
+    List<SublineVersionRange> sublinesToShort = sublineShorteningService.checkAndPrepareToShortSublines(currentVersion,
+        editedVersion);
+
+    if (!sublinesToShort.isEmpty()) {
+      for (SublineVersionRange sublineToShort : sublinesToShort) {
+        sublineService.updateVersion(sublineToShort.getOldestVersion(), sublineToShort.getLatestVersion());
+      }
+    }
   }
 
 }

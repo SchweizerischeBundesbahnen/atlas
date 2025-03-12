@@ -416,7 +416,8 @@
       "LINES": "Linien",
       "CONFLICT": {
         "SWISS_NUMBER": "Die CH-Liniennummer (CHLNR) {{swissLineNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{slnid}} vergeben.",
-        "DELETE": "Linie mit {{slnid}} kann nicht gelöscht werden, da sie noch von Teillinie {{SublineVersion.slnid}} referenziert wird"
+        "DELETE": "Linie mit {{slnid}} kann nicht gelöscht werden, da sie noch von Teillinie {{SublineVersion.slnid}} referenziert wird",
+        "SUBLINE_VALIDITY": "Das angegebene Datum ist ungültig und liegt ausserhalb der Gültigkeit der übergeordneten Linie. Die übergeordneten Linie ist gültig von: {{validFrom}} bis: {{validTo}}"
       },
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Gültigkeit der Teillinie {{sublinie.swissSublineNumber}}. Diese ist {{sublinie.validFrom}}-{{sublinie.validTo}}."
@@ -503,6 +504,25 @@
         "DESCRIPTION": "Linienbezeichnung",
         "STATUS": "Anhörungsstatus",
         "SLNID": "SLNID"
+      }
+    },
+    "SUBLINE_SHORTENING": {
+      "TITLE": "Hinweis",
+      "MESSAGE": "Teillinien dürfen nur innerhalb der Gültigkeit der Hauptlinie gültig sein. Wenn möglich kürzt atlas die verbundenen Teillinien auf den letzten Gültigkeitstag der Hauptlinie.",
+      "ALLOWED": {
+        "SHORT_AUTOMATICALLY_NOTICE_BOTH": "Mit dieser Meldung wirst du darauf hingewiesen, dass alle Teillinien automatisch auf die Gültigkeit (Gültig von: {{validFrom}} und Gültig bis: {{validTo}}) gekürzt werden.",
+        "SHORT_AUTOMATICALLY_NOTICE": "Mit dieser Meldung wirst du darauf hingewiesen, dass alle Teillinien automatisch auf die Gültigkeit {{validity}}: {{date}} gekürzt werden.",
+        "SUCCESS": "Die Linie wurde erfolgreich gespeichert und wo möglich wurden die Teillinien angepasst in der Gültigkeit."
+      },
+      "NOT_ALLOWED": {
+        "SHORT_MANUAL_NOTICE": "Es können keine Teillinien automatisch eingekürzt werden. Bitte folgende Linien selbst oder über die Fachstelle atlas einkürzen:"
+      },
+      "ALLOWED_AND_NOT_ALLOWED": {
+        "SHORT_AUTOMATICALLY": "Folgende Teillinien können automatisch gekürzt werden:",
+        "SHORT_MANUAL": "Kürze folgende Teillinien selbst ein:",
+        "CLICK_NOTICE_PREFIX": "Mit Klick auf",
+        "CLICK_NOTICE_ACTION": "Weiter",
+        "CLICK_NOTICE_SUFFIX": "werden alle möglichen Teillinien automatisch gekürzt."
       }
     }
   },
