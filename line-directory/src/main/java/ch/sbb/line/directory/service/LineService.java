@@ -92,20 +92,13 @@ public class LineService {
     lineValidationService.validateNotRevoked(currentVersion);
     lineUpdateValidationService.validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
 
-    boolean isShortening = sublineShorteningService.isShortening(currentVersion, editedVersion);
     boolean isOnlyValidityChanged = sublineShorteningService.isOnlyValidityChanged(currentVersion, editedVersion);
+    boolean isShortening = sublineShorteningService.isShortening(currentVersion, editedVersion);
 
-    if (isShortening && isOnlyValidityChanged) {
-      List<SublineVersionRange> sublinesToShort = sublineShorteningService.checkAndPrepareToShortSublines(currentVersion,
-          editedVersion);
-
-      if (!sublinesToShort.isEmpty()) {
-        for (SublineVersionRange sublineToShort : sublinesToShort) {
-          sublineService.updateVersion(sublineToShort.getOldestVersion(), sublineToShort.getLatestVersion());
-        }
-      }
+    if (isOnlyValidityChanged && isShortening) {
+      shortSublines(currentVersion, editedVersion);
     }
-    
+
     updateVersion(currentVersion, editedVersion);
   }
 
@@ -195,6 +188,17 @@ public class LineService {
         version -> save(version, Optional.of(currentVersion), preSaveVersions),
         this::deleteById);
 
+  }
+
+  private void shortSublines(LineVersion currentVersion, LineVersion editedVersion) {
+    List<SublineVersionRange> sublinesToShort = sublineShorteningService.checkAndPrepareToShortSublines(currentVersion,
+        editedVersion);
+
+    if (!sublinesToShort.isEmpty()) {
+      for (SublineVersionRange sublineToShort : sublinesToShort) {
+        sublineService.updateVersion(sublineToShort.getOldestVersion(), sublineToShort.getLatestVersion());
+      }
+    }
   }
 
 }
