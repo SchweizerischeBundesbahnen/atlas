@@ -2,16 +2,17 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toSet;
 
+import ch.sbb.atlas.api.lidi.AffectedSublinesModel;
 import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.mapper.LineVersionWorkflowMapper;
 import ch.sbb.line.directory.service.LineService;
+import ch.sbb.line.directory.service.SublineShorteningService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LineControllerV2 implements LineApiV2 {
 
   private final LineService lineService;
+  private final SublineShorteningService sublineShorteningService;
 
   @Override
   public List<LineVersionModelV2> getLineVersionsV2(String slnid) {
@@ -43,12 +45,18 @@ public class LineControllerV2 implements LineApiV2 {
 
   @Override
   public List<LineVersionModelV2> updateLineVersion(Long id, UpdateLineVersionModelV2 newVersion) {
-    LineVersion versionToUpdate = lineService.findById(id)
-        .orElseThrow(() -> new IdNotFoundException(id));
+    LineVersion versionToUpdate = lineService.getLineVersionById(id);
     lineService.update(versionToUpdate, toEntityFromUpdate(newVersion, versionToUpdate), lineService.findLineVersions(
         versionToUpdate.getSlnid()));
     return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .toList();
+  }
+
+  @Override
+  public AffectedSublinesModel checkAffectedSublines(Long id, UpdateLineVersionModelV2 newVersion) {
+    LineVersion lineVersion = lineService.getLineVersionById(id);
+    LineVersion editedVersion = toEntityFromUpdate(newVersion, lineVersion);
+    return sublineShorteningService.checkAffectedSublines(lineVersion, editedVersion);
   }
 
   private LineVersionModelV2 toModel(LineVersion lineVersion) {

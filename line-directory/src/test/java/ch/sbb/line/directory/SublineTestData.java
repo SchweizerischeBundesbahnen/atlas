@@ -38,8 +38,8 @@ public class SublineTestData {
 
   public static SublineVersionModelBuilder<?, ?> sublineVersionModelBuilder() {
     return SublineVersionModel.builder()
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2000, 12, 31))
+        .validFrom(LocalDate.of(2020, 2, 1))
+        .validTo(LocalDate.of(2020, 11, 30))
         .businessOrganisation("sbb")
         .number("number")
         .description("description")

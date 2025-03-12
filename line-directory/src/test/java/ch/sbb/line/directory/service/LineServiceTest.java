@@ -75,11 +75,18 @@ class LineServiceTest {
 
   private LineService lineService;
 
+  @Mock
+  private SublineShorteningService sublineShorteningService;
+
+  @Mock
+  private SublineService sublineService;
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
-        versionableService, lineValidationService, lineUpdateValidationService, coverageService, lineStatusDecider);
+        versionableService, lineValidationService, lineUpdateValidationService, coverageService, lineStatusDecider,
+        sublineShorteningService, sublineService);
   }
 
   @Test
@@ -111,7 +118,6 @@ class LineServiceTest {
     // Then
     verify(lineVersionRepository).findAllBySlnidOrderByValidFrom(slnid);
   }
-
 
   @Test
   void shouldFindLineVersionsForV1() {
@@ -293,4 +299,5 @@ class LineServiceTest {
     //then
     verify(lineVersionRepository).incrementVersion("slnid");
   }
+
 }
