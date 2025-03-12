@@ -508,18 +508,16 @@
     },
     "SUBLINE_SHORTENING": {
       "TITLE": "Hinweis",
+      "MESSAGE": "Teillinien dürfen nur innerhalb der Gültigkeit der Hauptlinie gültig sein. Wenn möglich kürzt atlas die verbundenen Teillinien auf den letzten Gültigkeitstag der Hauptlinie.",
       "ALLOWED": {
-        "MESSAGE": "Teillinien dürfen nur innerhalb der Gültigkeit der Hauptlinie gültig sein. Wenn möglich kürzt atlas die verbundenen Teillinien auf den letzten Gültigkeitstag der Hauptlinie.",
         "SHORT_AUTOMATICALLY_NOTICE_BOTH": "Mit dieser Meldung wirst du darauf hingewiesen, dass alle Teillinien automatisch auf die Gültigkeit (Gültig von: {{validFrom}} und Gültig bis: {{validTo}}) gekürzt werden.",
         "SHORT_AUTOMATICALLY_NOTICE": "Mit dieser Meldung wirst du darauf hingewiesen, dass alle Teillinien automatisch auf die Gültigkeit {{validity}}: {{date}} gekürzt werden.",
         "SUCCESS": "Die Linie wurde erfolgreich gespeichert und wo möglich wurden die Teillinien angepasst in der Gültigkeit."
       },
       "NOT_ALLOWED": {
-        "MESSAGE": "Teillinien dürfen nur innerhalb der Gültigkeit der Hauptlinie gültig sein. Wenn möglich kürzt atlas die verbundenen Teillinien auf den letzten Gültigkeitstag der Hauptlinie.",
         "SHORT_MANUAL_NOTICE": "Es können keine Teillinien automatisch eingekürzt werden. Bitte folgende Linien selbst oder über die Fachstelle atlas einkürzen:"
       },
       "ALLOWED_AND_NOT_ALLOWED": {
-        "MESSAGE": "Teillinien dürfen nur innerhalb der Gültigkeit der Hauptlinie gültig sein. Wenn möglich kürzt atlas die verbundenen Teillinien auf den letzten Gültigkeitstag der Hauptlinie. Falls dies nicht möglich ist, sollen die Teillinien selbst oder über die Fachstelle atlas angepasst werden.",
         "SHORT_AUTOMATICALLY": "Folgende Teillinien können automatisch gekürzt werden:",
         "SHORT_MANUAL": "Kürze folgende Teillinien selbst ein:",
         "CLICK_NOTICE_PREFIX": "Mit Klick auf",
