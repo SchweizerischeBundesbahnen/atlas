@@ -38,7 +38,6 @@ public class LineService {
   private final VersionableService versionableService;
   private final LineValidationService lineValidationService;
   private final LineUpdateValidationService lineUpdateValidationService;
-  private final CoverageService coverageService;
   private final LineStatusDecider lineStatusDecider;
   private final SublineShorteningService sublineShorteningService;
   private final SublineService sublineService;
@@ -121,8 +120,9 @@ public class LineService {
 
   @Transactional
   public void deleteById(Long id) {
-    LineVersion lineVersion = getLineVersionById(id);
-    coverageService.deleteCoverageLine(lineVersion.getSlnid());
+    if (!lineVersionRepository.existsById(id)) {
+      throw new IdNotFoundException(id);
+    }
     lineVersionRepository.deleteById(id);
   }
 
@@ -139,14 +139,6 @@ public class LineService {
     }
 
     lineVersionRepository.deleteAll(currentVersions);
-  }
-
-  public List<Line> getAllCoveredLines() {
-    return lineRepository.getAllCoveredLines();
-  }
-
-  public List<LineVersion> getAllCoveredLineVersions() {
-    return lineVersionRepository.getAllCoveredLineVersions();
   }
 
   LineVersion save(LineVersion lineVersion) {
