@@ -15,7 +15,6 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
 import ch.sbb.line.directory.service.LineVersionSnapshotService;
 import ch.sbb.line.directory.service.export.LineVersionExportService;
@@ -43,8 +42,6 @@ class LineControllerTest {
 
   @Mock
   private LineService lineService;
-  @Mock
-  private CoverageService coverageService;
 
   @Mock
   private LineVersionExportService lineVersionExportService;
@@ -81,7 +78,7 @@ class LineControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineController = new LineController(lineService, coverageService, lineVersionExportService, lineVersionSnapshotService);
+    lineController = new LineController(lineService, lineVersionExportService, lineVersionSnapshotService);
     when(lineService.create(any())).then(i -> i.getArgument(0, LineVersion.class));
   }
 
