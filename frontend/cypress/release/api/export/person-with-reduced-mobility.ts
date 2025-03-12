@@ -44,7 +44,7 @@ describe('Check latest exports in PRM', { testIsolation: false }, () => {
 
   it('Step-7: Check Stop Point', () => {
     const name = 'STOP_POINT_VERSION';
-    // ReleaseApiUtils.jsonExportChecker(28977, name, ExportType.FULL);
+    ReleaseApiUtils.jsonExportChecker(28977, name, PrmExportType.FULL);
     ReleaseApiUtils.jsonExportChecker(23179, name, PrmExportType.ACTUAL);
     ReleaseApiUtils.jsonExportChecker(23189, name, PrmExportType.FUTURE);
   });
