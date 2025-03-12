@@ -32,7 +32,6 @@ public class SublineService {
   private final LineVersionRepository lineVersionRepository;
   private final VersionableService versionableService;
   private final SublineValidationService sublineValidationService;
-  private final CoverageService coverageService;
 
   @Transactional
   @PreAuthorize("""
@@ -61,7 +60,6 @@ public class SublineService {
     sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion);
     validateSublineValidity(sublineVersion);
     SublineVersion savedVersion = sublineVersionRepository.saveAndFlush(sublineVersion);
-    sublineValidationService.validateSublineAfterVersioningBusinessRule(sublineVersion);
     return savedVersion;
   }
 
@@ -74,7 +72,6 @@ public class SublineService {
   @Transactional
   public void deleteById(Long id) {
     SublineVersion sublineVersion = sublineVersionRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
-    coverageService.deleteCoverageSubline(sublineVersion.getSlnid());
     sublineVersionRepository.deleteById(id);
   }
 
