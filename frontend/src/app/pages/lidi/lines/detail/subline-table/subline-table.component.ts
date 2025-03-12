@@ -1,16 +1,10 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../../core/components/table/table-column';
 import { ElementType, Line, LinesService } from '../../../../../api';
 import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../../../pages';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -19,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class SublineTableComponent implements OnInit, OnDestroy {
   @Input() mainLineSlnid!: string;
-  @Input() eventEmitter!: EventEmitter<boolean>;
+  @Input() eventSubject!: Observable<boolean>;
 
   private onDestroy$ = new Subject<boolean>();
 
@@ -43,15 +37,17 @@ export class SublineTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getOverview();
-    this.subscribeToParentEmitter();
+    this.subscribeToParent();
   }
 
-  subscribeToParentEmitter(): void {
-    this.eventEmitter.subscribe((refreshTable: boolean) => {
-      if (refreshTable) {
-        this.getOverview();
-      }
-    });
+  subscribeToParent(): void {
+    this.eventSubject
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((refreshTable: boolean) => {
+        if (refreshTable) {
+          this.getOverview();
+        }
+      });
   }
 
   rowClicked(subline: Line) {
