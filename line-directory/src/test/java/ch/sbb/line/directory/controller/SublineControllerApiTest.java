@@ -86,7 +86,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
             .description("b0.Ic2-sibline")
-            .sublineType(SublineType.TEMPORARY)
+            .sublineType(SublineType.DISPOSITION)
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
