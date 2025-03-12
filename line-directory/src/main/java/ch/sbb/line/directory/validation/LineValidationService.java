@@ -24,7 +24,6 @@ public class LineValidationService {
   private static final int ORDERLY_LINE_MIN_VALIDITY_IN_DAYS = 15;
 
   private final LineVersionRepository lineVersionRepository;
-  private final CoverageValidationService coverageValidationService;
   private final SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   public void validateLinePreconditionBusinessRule(LineVersion lineVersion) {
@@ -36,8 +35,6 @@ public class LineValidationService {
     List<LineVersion> savedLine = lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid());
     validateTemporaryLinesDuration(savedLine);
     validateOrderlyLinesDuration(savedLine);
-
-    coverageValidationService.validateLineSublineCoverage(lineVersion);
   }
 
   public void validateNotRevoked(LineVersion lineVersion) {
