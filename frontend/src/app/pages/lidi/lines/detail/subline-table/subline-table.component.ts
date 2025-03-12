@@ -1,9 +1,9 @@
 import {
   Component,
+  EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
-  SimpleChanges,
+  OnInit,
 } from '@angular/core';
 import { TableColumn } from '../../../../../core/components/table/table-column';
 import { ElementType, Line, LinesService } from '../../../../../api';
@@ -17,9 +17,9 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'app-subline-table',
   templateUrl: './subline-table.component.html',
 })
-export class SublineTableComponent implements OnChanges, OnDestroy {
+export class SublineTableComponent implements OnInit, OnDestroy {
   @Input() mainLineSlnid!: string;
-  @Input() refreshSublineTable!: boolean;
+  @Input() eventEmitter!: EventEmitter<boolean>;
 
   private onDestroy$ = new Subject<boolean>();
 
@@ -41,9 +41,17 @@ export class SublineTableComponent implements OnChanges, OnDestroy {
     private router: Router
   ) {}
 
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
+  ngOnInit() {
     this.getOverview();
+    this.subscribeToParentEmitter();
+  }
+
+  subscribeToParentEmitter(): void {
+    this.eventEmitter.subscribe((refreshTable: boolean) => {
+      if (refreshTable) {
+        this.getOverview();
+      }
+    });
   }
 
   rowClicked(subline: Line) {
