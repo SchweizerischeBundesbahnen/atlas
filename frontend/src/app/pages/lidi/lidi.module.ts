@@ -11,6 +11,7 @@ import { LidiWorkflowOverviewComponent } from './workflow/overview/lidi-workflow
 import { LineVersionSnapshotDetailComponent } from './workflow/detail/line-version-snapshot-detail.component';
 import { LineDetailFormComponent } from './lines/detail/line-detail-form/line-detail-form.component';
 import { SublineTableComponent } from './lines/detail/subline-table/subline-table.component';
+import { SublineShorteningDialogComponent } from './dialog/subline-shortening-dialog/subline-shortening-dialog.component';
 import { NgOptimizedImage } from '@angular/common';
 
 @NgModule({
@@ -24,6 +25,7 @@ import { NgOptimizedImage } from '@angular/common';
     SublineDetailComponent,
     MainlineDescriptionPipe,
     SublineTableComponent,
+    SublineShorteningDialogComponent,
   ],
   imports: [CoreModule, LidiRoutingModule, FormModule, NgOptimizedImage],
 })

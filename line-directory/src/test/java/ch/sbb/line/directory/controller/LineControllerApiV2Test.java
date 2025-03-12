@@ -17,8 +17,11 @@ import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -36,9 +39,13 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
+  @Autowired
+  private SublineVersionRepository sublineVersionRepository;
+
   @AfterEach
   void tearDown() {
     lineVersionRepository.deleteAll();
+    sublineVersionRepository.deleteAll();
   }
 
   @Test
@@ -112,5 +119,50 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + UpdateLineVersionModelV2.Fields.swissLineNumber, is("b0.IC2")))
         .andExpect(jsonPath("$[0]." + Fields.lineType, is(LineType.ORDERLY.toString())))
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
+  }
+
+  @Test
+  void shouldCheckAffectedSublines() throws Exception {
+    LineVersion lineVersion = LineTestData.lineVersionV2Builder().build();
+    lineVersion.setValidFrom(LocalDate.of(1999, 1, 1));
+    lineVersion.setValidTo(LocalDate.of(2020, 12, 31));
+    lineVersion.setBusinessOrganisation("ch:1:sboid:1100000");
+    lineVersion.setSlnid("ch:1:slnid:1000000");
+    LineVersion saved = lineVersionRepository.saveAndFlush(lineVersion);
+
+    UpdateLineVersionModelV2 updateLineVersionModelV2 = UpdateLineVersionModelV2.builder()
+        .id(saved.getId())
+        .validFrom(LocalDate.of(1999, 1, 1))
+        .validTo(LocalDate.of(2019, 12, 31))
+        .description(lineVersion.getDescription())
+        .number(lineVersion.getNumber())
+        .swissLineNumber(lineVersion.getSwissLineNumber())
+        .lineConcessionType(lineVersion.getConcessionType())
+        .shortNumber(lineVersion.getShortNumber())
+        .offerCategory(lineVersion.getOfferCategory())
+        .slnid(lineVersion.getSlnid())
+        .longName(lineVersion.getLongName())
+        .businessOrganisation(lineVersion.getBusinessOrganisation())
+        .comment(lineVersion.getComment())
+        .etagVersion(lineVersion.getVersion())
+        .build();
+
+    SublineVersion subline = SublineTestData.sublineVersionV2Builder().build();
+    subline.setValidFrom(LocalDate.of(1999, 1, 1));
+    subline.setValidTo(LocalDate.of(2020, 12, 31));
+    subline.setSlnid("ch:1:slnid:1000000:1");
+    subline.setBusinessOrganisation("ch:1:sboid:1100000");
+    sublineVersionRepository.saveAndFlush(subline);
+
+    mvc.perform(post("/v2/lines/affectedSublines/" + saved.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateLineVersionModelV2)
+            ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.allowedSublines").isArray())
+        .andExpect(jsonPath("$.notAllowedSublines").isArray())
+        .andExpect(jsonPath("$.affectedSublinesEmpty").exists())
+        .andExpect(jsonPath("$.hasAllowedSublinesOnly").exists())
+        .andExpect(jsonPath("$.hasNotAllowedSublinesOnly").exists());
   }
 }
