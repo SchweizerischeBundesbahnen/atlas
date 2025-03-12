@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LineValidationService {
 
-  private static final int DAYS_OF_YEAR = 365;
+  private static final int TEMPORARY_LINE_MAX_VALIDITY_IN_DAYS = 14;
 
   private final LineVersionRepository lineVersionRepository;
   private final CoverageValidationService coverageValidationService;
@@ -67,7 +67,7 @@ public class LineValidationService {
 
   void doValidateTemporaryLinesDuration(LineVersion lineVersion,
       List<LineVersion> allVersions) {
-    if (getDaysBetween(lineVersion.getValidFrom(), lineVersion.getValidTo()) > DAYS_OF_YEAR) {
+    if (getDaysBetween(lineVersion.getValidFrom(), lineVersion.getValidTo()) > TEMPORARY_LINE_MAX_VALIDITY_IN_DAYS) {
       throw new TemporaryLineValidationException(List.of(lineVersion));
     }
     if (allVersions.isEmpty()) {
@@ -90,7 +90,7 @@ public class LineValidationService {
     } while (!versionsWhichRelate.isEmpty());
 
     if (getDaysBetween(relatedVersions.first().getValidFrom(),
-        relatedVersions.last().getValidTo()) > DAYS_OF_YEAR) {
+        relatedVersions.last().getValidTo()) > TEMPORARY_LINE_MAX_VALIDITY_IN_DAYS) {
       throw new TemporaryLineValidationException(new ArrayList<>(relatedVersions));
     }
   }
