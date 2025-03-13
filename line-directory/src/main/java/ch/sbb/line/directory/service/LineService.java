@@ -78,11 +78,13 @@ public class LineService {
   }
 
   @Transactional
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas"
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#lineVersion, T(ch.sbb.atlas"
       + ".kafka.model.user.admin.ApplicationType).LIDI)")
-  public LineVersion createV2(LineVersion businessObject) {
-    lineValidationService.dynamicBeanValidation(businessObject);
-    return save(businessObject);
+  public LineVersion createV2(LineVersion lineVersion) {
+    lineValidationService.dynamicBeanValidation(lineVersion);
+    LineVersion savedLineVersion = save(lineVersion);
+    lineValidationService.validateLineAfterVersioningBusinessRule(savedLineVersion);
+    return savedLineVersion;
   }
 
   @Transactional
