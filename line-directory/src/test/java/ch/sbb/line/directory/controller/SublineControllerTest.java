@@ -11,7 +11,6 @@ import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
 import ch.sbb.line.directory.service.SublineService;
 import ch.sbb.line.directory.service.export.SublineVersionExportService;
@@ -37,9 +36,6 @@ class SublineControllerTest {
 
   @Mock
   private LineService lineService;
-
-  @Mock
-  private CoverageService coverageService;
 
   @Mock
   private SublineVersionExportService sublineVersionExportService;
@@ -69,8 +65,7 @@ class SublineControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sublineController = new SublineController(sublineService, coverageService,
-        sublineVersionExportService);
+    sublineController = new SublineController(sublineService, sublineVersionExportService);
     when(sublineService.create(any())).then(i -> i.getArgument(0, SublineVersion.class));
   }
 
