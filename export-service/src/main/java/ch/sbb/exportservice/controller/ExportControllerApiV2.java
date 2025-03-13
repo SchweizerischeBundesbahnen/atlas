@@ -86,5 +86,3 @@ public class ExportControllerApiV2 {
   }
 
 }
-
-// todo: update scheduling
