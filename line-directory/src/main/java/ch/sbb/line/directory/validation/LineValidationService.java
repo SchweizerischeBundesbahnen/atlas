@@ -2,22 +2,17 @@ package ch.sbb.line.directory.validation;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineTypeOrderlyException;
+import ch.sbb.line.directory.exception.OrderlyLineValidityException;
 import ch.sbb.line.directory.exception.RevokedException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class LineValidationService {
 
-  private static final int DAYS_OF_YEAR = 365;
+  private static final int TEMPORARY_LINE_MAX_VALIDITY_IN_DAYS = 14;
+  private static final int ORDERLY_LINE_MIN_VALIDITY_IN_DAYS = 15;
 
   private final LineVersionRepository lineVersionRepository;
   private final CoverageValidationService coverageValidationService;
@@ -37,7 +33,10 @@ public class LineValidationService {
   }
 
   public void validateLineAfterVersioningBusinessRule(LineVersion lineVersion) {
-    validateTemporaryLinesDuration(lineVersion);
+    List<LineVersion> savedLine = lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid());
+    validateTemporaryLinesDuration(savedLine);
+    validateOrderlyLinesDuration(savedLine);
+
     coverageValidationService.validateLineSublineCoverage(lineVersion);
   }
 
@@ -57,41 +56,29 @@ public class LineValidationService {
     }
   }
 
-  void validateTemporaryLinesDuration(LineVersion lineVersion) {
-    if (LineType.TEMPORARY.equals(lineVersion.getLineType())) {
-      List<LineVersion> allBySlnidOrderByValidFrom = lineVersionRepository.findAllBySlnidOrderByValidFrom(
-          lineVersion.getSlnid());
-      doValidateTemporaryLinesDuration(lineVersion, allBySlnidOrderByValidFrom);
+  void validateTemporaryLinesDuration(List<LineVersion> savedLine) {
+    if (LineType.TEMPORARY.equals(savedLine.getFirst().getLineType())) {
+
+      LocalDate minValidFrom = savedLine.getFirst().getValidFrom();
+      LocalDate maxValidTo = savedLine.getLast().getValidTo();
+
+      long validityInDays = new DateRange(minValidFrom, maxValidTo).getValidityInDays();
+      if (validityInDays > TEMPORARY_LINE_MAX_VALIDITY_IN_DAYS) {
+        throw new TemporaryLineValidationException(minValidFrom, maxValidTo);
+      }
     }
   }
 
-  void doValidateTemporaryLinesDuration(LineVersion lineVersion,
-      List<LineVersion> allVersions) {
-    if (getDaysBetween(lineVersion.getValidFrom(), lineVersion.getValidTo()) > DAYS_OF_YEAR) {
-      throw new TemporaryLineValidationException(List.of(lineVersion));
-    }
-    if (allVersions.isEmpty()) {
-      return;
-    }
-    allVersions = allVersions.stream()
-        .filter(version -> LineType.TEMPORARY.equals(version.getLineType())
-            && !Objects.equals(lineVersion.getId(), version.getId()))
-        .collect(Collectors.toList());
+  void validateOrderlyLinesDuration(List<LineVersion> savedLine) {
+    if (LineType.ORDERLY.equals(savedLine.getFirst().getLineType())) {
 
-    SortedSet<LineVersion> relatedVersions = new TreeSet<>(
-        Comparator.comparing(LineVersion::getValidFrom));
-    relatedVersions.add(lineVersion);
+      LocalDate minValidFrom = savedLine.getFirst().getValidFrom();
+      LocalDate maxValidTo = savedLine.getLast().getValidTo();
 
-    List<LineVersion> versionsWhichRelate;
-    do {
-      versionsWhichRelate = getRelatedVersions(relatedVersions, allVersions);
-      relatedVersions.addAll(versionsWhichRelate);
-      allVersions.removeAll(versionsWhichRelate);
-    } while (!versionsWhichRelate.isEmpty());
-
-    if (getDaysBetween(relatedVersions.first().getValidFrom(),
-        relatedVersions.last().getValidTo()) > DAYS_OF_YEAR) {
-      throw new TemporaryLineValidationException(new ArrayList<>(relatedVersions));
+      long validityInDays = new DateRange(minValidFrom, maxValidTo).getValidityInDays();
+      if (validityInDays < ORDERLY_LINE_MIN_VALIDITY_IN_DAYS) {
+        throw new OrderlyLineValidityException(minValidFrom, maxValidTo);
+      }
     }
   }
 
@@ -104,24 +91,6 @@ public class LineValidationService {
         || lineVersion.getSwissLineNumber() == null)) {
       throw new LineTypeOrderlyException(lineVersion.getLineType());
     }
-  }
-
-  private List<LineVersion> getRelatedVersions(SortedSet<LineVersion> relatedVersions,
-      List<LineVersion> allTemporaryVersions) {
-    return allTemporaryVersions.stream()
-        .filter(version -> areDatesRelated(version.getValidTo(),
-            relatedVersions.first().getValidFrom())
-            || areDatesRelated(version.getValidFrom(),
-            relatedVersions.last().getValidTo()))
-        .collect(Collectors.toList());
-  }
-
-  private long getDaysBetween(LocalDate date1, LocalDate date2) {
-    return Math.abs(ChronoUnit.DAYS.between(date1, date2));
-  }
-
-  private boolean areDatesRelated(LocalDate date1, LocalDate date2) {
-    return getDaysBetween(date1, date2) == 1;
   }
 
 }
