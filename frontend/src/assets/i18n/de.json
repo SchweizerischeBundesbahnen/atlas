@@ -39,13 +39,6 @@
     "REVOKE": "Fehlerfassung",
     "DELETE": "Löschen",
     "CANCEL": "Abbrechen",
-    "COVERAGE": {
-      "HEADING": "Validierungen",
-      "LINE_SUBLINE": "Linie / Teillinie",
-      "LINE_TIMETABLE_FIELD": "Line / Fahrplanfeld",
-      "COMPLETE": "Vollständig",
-      "INCOMPLETE": "Lückenhaft"
-    },
     "NODATAFOUND": "Es wurden keine Daten gefunden.",
     "TYPE_TO_SEARCH": "Tippen Sie mindestens 2 Zeichen ein, um die Suche zu beginnen.",
     "TYPE_TO_SEARCH_SHORT": "Tippen Sie mindestens 2 Zeichen ein...",

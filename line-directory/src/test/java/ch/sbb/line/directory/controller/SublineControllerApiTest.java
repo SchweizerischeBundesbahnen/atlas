@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.controller;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -10,17 +9,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
-import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.ModelType;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
-import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
-import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.service.export.SublineVersionExportService;
@@ -31,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MvcResult;
 
- class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
+class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -49,59 +41,15 @@ import org.springframework.test.web.servlet.MvcResult;
   private SublineVersionRepository sublineVersionRepository;
 
   @Autowired
-  private CoverageRepository coverageRepository;
-
-  @Autowired
   private SublineVersionExportService sublineVersionExportService;
 
   @MockBean
   private AmazonService amazonService;
 
   @AfterEach
-   void tearDown() {
+  void tearDown() {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
-    coverageRepository.deleteAll();
-  }
-
-  @Test
-  void shouldGetSublineCoverage() throws Exception {
-    //given
-    LineVersionModel lineVersionModel =
-        LineTestData.lineVersionModelBuilder()
-            .validTo(LocalDate.of(2000, 12, 31))
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .businessOrganisation("sbb")
-            .alternativeName("alternative")
-            .combinationName("combination")
-            .longName("long name")
-            .lineType(LineType.DISPOSITION)
-            .paymentType(PaymentType.LOCAL)
-            .swissLineNumber("b0.IC2-libne")
-            .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 12, 31))
-            .businessOrganisation("sbb")
-            .description("b0.Ic2-sibline")
-            .sublineType(SublineType.DISPOSITION)
-            .paymentType(PaymentType.LOCAL)
-            .mainlineSlnid(lineVersionSaved.getSlnid())
-            .build();
-    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
-        sublineVersionModel);
-    //when
-    mvc.perform(get("/v1/sublines/subline-coverage/" + sublineVersionSaved.getSlnid())
-            .contentType(contentType)
-        ).andExpect(status().isOk())
-        .andExpect(jsonPath("$.slnid", is(sublineVersionSaved.getSlnid())))
-        .andExpect(jsonPath("$.modelType", is(ModelType.SUBLINE.toString())))
-        .andExpect(jsonPath("$.coverageType", is(CoverageType.COMPLETE.toString())))
-        .andExpect(jsonPath("$.validFrom", is("2000-01-01")))
-        .andExpect(jsonPath("$.validTo", is("2000-12-31")))
-        .andExpect(jsonPath("$.validationErrorType", is(nullValue())));
   }
 
   @Test
@@ -192,18 +140,18 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(status().isOk()).andReturn();
   }
 
-   @Test
-   void shouldRevokeSubline() throws Exception {
-     //given
-     LineVersionModel lineVersionModel = lineController.createLineVersion(
-         LineTestData.lineVersionModelBuilder().build());
-     SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
-         SublineTestData.sublineVersionModelBuilder()
-             .mainlineSlnid(lineVersionModel.getSlnid())
-             .build());
+  @Test
+  void shouldRevokeSubline() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = lineController.createLineVersion(
+        LineTestData.lineVersionModelBuilder().build());
+    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+        SublineTestData.sublineVersionModelBuilder()
+            .mainlineSlnid(lineVersionModel.getSlnid())
+            .build());
 
-     //when
-     mvc.perform(post("/v1/sublines/" + sublineVersionSaved.getSlnid() + "/revoke")
-     ).andExpect(status().isOk());
-   }
+    //when
+    mvc.perform(post("/v1/sublines/" + sublineVersionSaved.getSlnid() + "/revoke")
+    ).andExpect(status().isOk());
+  }
 }
