@@ -179,6 +179,41 @@ class LineServiceTest {
   }
 
   @Test
+  void shouldCreateLineWithAfterVersioningValidation() {
+    // Given
+    when(lineVersionRepository.save(any())).thenAnswer(i -> i.getArgument(0, LineVersion.class));
+    LineVersion lineVersion = LineTestData.lineVersion();
+    // When
+    LineVersion result = lineService.createV2(lineVersion);
+
+    // Then
+    verify(lineValidationService).dynamicBeanValidation(lineVersion);
+    verify(lineVersionRepository).saveAndFlush(lineVersion);
+    verify(lineValidationService).validateLineAfterVersioningBusinessRule(lineVersion);
+    assertThat(result).isEqualTo(lineVersion);
+  }
+
+  @Test
+  void shouldUpdateLineWithAfterVersioningValidation() {
+    // Given
+    when(lineVersionRepository.save(any())).thenAnswer(i -> i.getArgument(0, LineVersion.class));
+    LineVersion currentVersion = LineTestData.lineVersionBuilder().version(0).build();
+    LineVersion editedVersion = LineTestData.lineVersionBuilder().version(0).build();
+    // When
+    List<LineVersion> currentVersions = List.of(currentVersion);
+    lineService.update(currentVersion, editedVersion, currentVersions);
+
+    // Then
+    verify(lineValidationService).validateNotRevoked(currentVersion);
+    verify(lineUpdateValidationService).validateFieldsNotUpdatableForLineTypeOrderly(currentVersion, editedVersion);
+    verify(sublineShorteningService).isOnlyValidityChanged(currentVersion, editedVersion);
+    verify(sublineShorteningService).isShortening(currentVersion, editedVersion);
+    verify(lineUpdateValidationService).validateLineForUpdate(any(), any(), any());
+    verify(lineUpdateValidationService).validateVersioningNotAffectingReview(any(), any());
+    verify(lineValidationService).validateLineAfterVersioningBusinessRule(editedVersion);
+  }
+
+  @Test
   void shouldDeleteLinesWhenNotFound() {
     // Given
     String slnid = "ch:1:ttfnid:1000083";

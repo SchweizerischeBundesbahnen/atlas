@@ -37,6 +37,8 @@ import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { NgOptimizedImage } from '@angular/common';
+import {DateRangeComponent} from "../../../../core/form-components/date-range/date-range.component";
+import {DateIconComponent} from "../../../../core/form-components/date-icon/date-icon.component";
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -133,6 +135,8 @@ function setupTestBed(
       DetailPageContentComponent,
       DateRangeTextComponent,
       DisplayDatePipe,
+      DateRangeComponent,
+      DateIconComponent,
     ],
     imports: [AppTestingModule, NgOptimizedImage],
     providers: [
