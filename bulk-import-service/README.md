@@ -99,7 +99,19 @@ Job to scale the import process.
 
 ### Bulk Import
 
-TODO
+Bulk Imports are used to perform mass operations on atlas. There are various scenarios where business objects get 
+create, updated or terminated.
+
+To start a Bulk Import the `BulkImportApiV1` accepts a CSV or Excel file.
+
+The spring batch job defined in [BulkImportBatchJobConfig](/src/main/java/ch/sbb/importservice/job/bulk/BulkImportBatchJobConfig.java) 
+performs the following steps:
+- Read the CSV file (Excel files are converted)
+- Write against the respective API to perform Bulk Operations
+
+To read different CSV files readers implement the `BulkImportItemReader` interface and are selected based on the scenario.
+Same goes for the `BulkImportItemWriter` for the writer logic.
+
 
 ### Service Point Geo Location
 
