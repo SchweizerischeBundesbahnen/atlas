@@ -48,9 +48,6 @@ class SublineServiceTest {
   private SublineValidationService sublineValidationService;
 
   @Mock
-  private CoverageService coverageService;
-
-  @Mock
   private LineVersionRepository lineVersionRepository;
 
   private SublineService sublineService;
@@ -59,8 +56,7 @@ class SublineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, lineVersionRepository, versionableService,
-        sublineValidationService,
-        coverageService);
+        sublineValidationService);
     when(sublineVersionRepository.saveAndFlush(any())).then(i -> i.getArgument(0));
   }
 
@@ -104,7 +100,6 @@ class SublineServiceTest {
     // Then
     verify(sublineValidationService).validatePreconditionSublineBusinessRules(sublineVersion);
     verify(sublineVersionRepository).saveAndFlush(sublineVersion);
-    verify(sublineValidationService).validateSublineAfterVersioningBusinessRule(sublineVersion);
     assertThat(result).isEqualTo(sublineVersion);
   }
 
