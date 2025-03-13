@@ -1,0 +1,58 @@
+include::../../../../auto-rest-doc/src/main/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Export Service API Guide
+
+link:rest-api.html[*< Back to main*]
+
+The Export Service generates nightly the following zipped CSV and gzipped JSON file types for all business objects:
+
+*Types only for Service Point Directory exports*
+
+* SWISS_ACTUAL
+* SWISS_FULL
+* SWISS_FUTURE_TIMETABLE
+* WORLD_ACTUAL
+* WORLD_FULL
+* WORLD_FUTURE_TIMETABLE
+
+*Default types for all other exports*
+
+* FULL
+* ACTUAL
+* FUTURE_TIMETABLE
+
+If you want to consume this files you have two options:
+
+* Via API: see following section
+* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
+
+== Get Json - Successfully
+
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-get-service-point-json-successfully/atlas-doc.adoc[]
+
+== Download Gzip (Json) - Successfully
+
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-download-service-point-gzip-json-successfully/method-path.adoc[]
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-download-service-point-gzip-json-successfully/path-variables.adoc[]
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-download-service-point-gzip-json-successfully/query-params.adoc[]
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-download-service-point-gzip-json-successfully/request-body.adoc[]
+
+=== Example request
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-download-service-point-gzip-json-successfully/curl-request.adoc[]
+
+== Get latest Json - Successfully
+
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-get-latest-service-point-json-successfully/atlas-doc.adoc[]
+
+== Download latest Gzip (Json) - Successfully
+
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-download-latest-service-point-gzip-json-successfully/method-path.adoc[]
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-download-latest-service-point-gzip-json-successfully/path-variables.adoc[]
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-download-latest-service-point-gzip-json-successfully/query-params.adoc[]
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-download-latest-service-point-gzip-json-successfully/request-body.adoc[]
+
+=== Example request
+include::{snippets}/file-streaming-controller-api-v2-integration-test/should-download-latest-service-point-gzip-json-successfully/curl-request.adoc[]
+
+link:rest-api.html[*< Back to main*]
