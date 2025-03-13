@@ -17,4 +17,4 @@ Customers get exactly the data they want.
 If you need every day all data, like all actual ServicePoints or all future timetable ServicePoints,
 choose CSV or JSON file available on the Export Service Point Service, otherwise, use the Service Point API.
 
-For more information see https://confluence.sbb.ch/x/yJLIk .
+For more information see https://confluence.sbb.ch/x/yJLIk.
