@@ -29,14 +29,6 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
 
   List<LineVersion> findAllBySlnidOrderByValidFrom(String slnid);
 
-  @Query("SELECT lv FROM line_version as lv"
-      + " JOIN coverage as c "
-      + " ON lv.slnid = c.slnid"
-      + " WHERE c.modelType = ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE"
-      + " AND c.coverageType = ch.sbb.atlas.api.lidi.enumaration.CoverageType.COMPLETE"
-      + " ORDER BY lv.slnid, lv.validFrom ASC")
-  List<LineVersion> getAllCoveredLineVersions();
-
   @Modifying(clearAutomatically = true, flushAutomatically = true)
   @Transactional
   @Query("update line_version v set v.version = (v.version + 1) where v.slnid = :slnid")

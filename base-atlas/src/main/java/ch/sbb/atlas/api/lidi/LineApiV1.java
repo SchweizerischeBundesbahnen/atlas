@@ -43,12 +43,6 @@ public interface LineApiV1 {
       + ".ApplicationType).LIDI)")
   void revokeLine(@PathVariable String slnid);
 
-  @GetMapping("/covered")
-  List<LineModel> getCoveredLines();
-
-  @GetMapping("/versions/covered")
-  List<LineVersionModel> getCoveredVersionLines();
-
   @DeleteMapping("{slnid}")
   void deleteLines(@PathVariable String slnid);
 
@@ -66,9 +60,6 @@ public interface LineApiV1 {
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).LIDI)")
   void skipWorkflow(@PathVariable Long id);
-
-  @GetMapping("line-coverage/{slnid}")
-  CoverageModel getLineCoverage(@PathVariable String slnid);
 
   @Operation(description = "Export all line versions as csv and zip file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)

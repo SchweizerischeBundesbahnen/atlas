@@ -2,7 +2,6 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toSet;
 
-import ch.sbb.atlas.api.lidi.CoverageModel;
 import ch.sbb.atlas.api.lidi.LineApiV1;
 import ch.sbb.atlas.api.lidi.LineModel;
 import ch.sbb.atlas.api.lidi.LineRequestParams;
@@ -17,12 +16,10 @@ import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
-import ch.sbb.line.directory.mapper.CoverageMapper;
 import ch.sbb.line.directory.mapper.LineVersionSnapshotMapper;
 import ch.sbb.line.directory.mapper.LineVersionWorkflowMapper;
 import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.model.search.LineVersionSnapshotSearchRestrictions;
-import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
 import ch.sbb.line.directory.service.LineVersionSnapshotService;
 import ch.sbb.line.directory.service.export.LineVersionExportService;
@@ -42,7 +39,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class LineController implements LineApiV1 {
 
   private final LineService lineService;
-  private final CoverageService coverageService;
   private final LineVersionExportService lineVersionExportService;
 
   private final LineVersionSnapshotService lineVersionSnapshotService;
@@ -76,16 +72,6 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public List<LineModel> getCoveredLines() {
-    return lineService.getAllCoveredLines().stream().map(this::toModel).toList();
-  }
-
-  @Override
-  public List<LineVersionModel> getCoveredVersionLines() {
-    return lineService.getAllCoveredLineVersions().stream().map(this::toModel).toList();
-  }
-
-  @Override
   public List<LineVersionModel> getLineVersions(String slnid) {
     List<LineVersionModel> lineVersionModels = lineService.findLineVersionsForV1(slnid).stream()
         .map(this::toModel)
@@ -106,11 +92,6 @@ public class LineController implements LineApiV1 {
   @Override
   public void skipWorkflow(Long id) {
     lineService.skipWorkflow(id);
-  }
-
-  @Override
-  public CoverageModel getLineCoverage(String slnid) {
-    return CoverageMapper.toModel(coverageService.getSublineCoverageBySlnidAndLineModelType(slnid));
   }
 
   @Override

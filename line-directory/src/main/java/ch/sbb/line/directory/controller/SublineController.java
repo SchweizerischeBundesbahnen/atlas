@@ -1,13 +1,10 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.atlas.api.lidi.CoverageModel;
 import ch.sbb.atlas.api.lidi.SublineApiV1;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
-import ch.sbb.line.directory.mapper.CoverageMapper;
-import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
 import ch.sbb.line.directory.service.export.SublineVersionExportService;
 import java.net.URL;
@@ -22,11 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class SublineController implements SublineApiV1 {
 
   private final SublineService sublineService;
-  private final CoverageService coverageService;
 
   private final SublineVersionExportService sublineVersionExportService;
 
-   @Override
+  @Override
   public List<SublineVersionModel> getSublineVersion(String slnid) {
     List<SublineVersionModel> sublineVersionModels = sublineService.findSubline(slnid)
         .stream()
@@ -48,12 +44,6 @@ public class SublineController implements SublineApiV1 {
     sublineVersion.setStatus(Status.VALIDATED);
     SublineVersion createdVersion = sublineService.create(sublineVersion);
     return toModel(createdVersion);
-  }
-
-  @Override
-  public CoverageModel getSublineCoverage(String slnid) {
-    return CoverageMapper.toModel(
-        coverageService.getSublineCoverageBySlnidAndSublineModelType(slnid));
   }
 
   @Override
