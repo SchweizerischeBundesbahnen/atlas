@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
- class SublineValidationServiceTest {
+class SublineValidationServiceTest {
 
   @Mock
   private SublineVersionRepository sublineVersionRepository;
@@ -42,18 +42,15 @@ import org.mockito.MockitoAnnotations;
   private LineVersionRepository lineVersionRepository;
 
   @Mock
-  private CoverageValidationService coverageValidationService;
-
-  @Mock
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   private SublineValidationService sublineValidationService;
 
   @BeforeEach()
-   void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineValidationService = new SublineValidationService(sublineVersionRepository,
-        lineVersionRepository, coverageValidationService, sharedBusinessOrganisationService);
+        lineVersionRepository, sharedBusinessOrganisationService);
   }
 
   @Test
@@ -124,7 +121,6 @@ import org.mockito.MockitoAnnotations;
     assertThat(result).isTrue();
   }
 
-
   @Test
   void shouldNotSaveWhenSublineRangeIsOutsideOfTheMainLine() {
     //given
@@ -150,96 +146,96 @@ import org.mockito.MockitoAnnotations;
     assertThat(result).isTrue();
   }
 
-   @Test
-   void shouldThrowExceptionIfMainLineIsNotFound() {
-     //given
-     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(Collections.emptyList());
+  @Test
+  void shouldThrowExceptionIfMainLineIsNotFound() {
+    //given
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(Collections.emptyList());
 
-     SublineVersion sublineVersion = SublineTestData.sublineVersion();
-     sublineVersion.setValidFrom(LocalDate.of(1999, 12, 31));
-     sublineVersion.setValidTo(LocalDate.of(2002, 1, 1));
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setValidFrom(LocalDate.of(1999, 12, 31));
+    sublineVersion.setValidTo(LocalDate.of(2002, 1, 1));
 
-     //when
-     assertThatExceptionOfType(SlnidNotFoundException.class).isThrownBy(
-         () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
-   }
+    //when
+    assertThatExceptionOfType(SlnidNotFoundException.class).isThrownBy(
+        () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
+  }
 
-   @Test
-   void shouldThrowExceptionIfMainLineTypeDoesNotMatch() {
-     //given
-     LineVersion mainLineVersion = LineTestData.lineVersion();
-     mainLineVersion.setLineType(LineType.ORDERLY);
-     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
+  @Test
+  void shouldThrowExceptionIfMainLineTypeDoesNotMatch() {
+    //given
+    LineVersion mainLineVersion = LineTestData.lineVersion();
+    mainLineVersion.setLineType(LineType.ORDERLY);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
 
-     SublineVersion sublineVersion = SublineTestData.sublineVersion();
-     sublineVersion.setSublineType(SublineType.TEMPORARY);
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setSublineType(SublineType.TEMPORARY);
 
-     //when
-     assertThatExceptionOfType(SublineTypeMissmatchException.class).isThrownBy(
-         () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
-   }
+    //when
+    assertThatExceptionOfType(SublineTypeMissmatchException.class).isThrownBy(
+        () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
+  }
 
-   @Test
-   void shouldThrowExceptionIfConcessionTypeIsPresentOnOtherType() {
-     //given
-     LineVersion mainLineVersion = LineTestData.lineVersion();
-     mainLineVersion.setLineType(LineType.ORDERLY);
-     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
+  @Test
+  void shouldThrowExceptionIfConcessionTypeIsPresentOnOtherType() {
+    //given
+    LineVersion mainLineVersion = LineTestData.lineVersion();
+    mainLineVersion.setLineType(LineType.ORDERLY);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
 
-     SublineVersion sublineVersion = SublineTestData.sublineVersion();
-     sublineVersion.setSublineType(SublineType.TECHNICAL);
-     sublineVersion.setConcessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE);
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setSublineType(SublineType.TECHNICAL);
+    sublineVersion.setConcessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE);
 
-     //when
-     assertThatExceptionOfType(SublineConcessionException.class).isThrownBy(
-         () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
-   }
+    //when
+    assertThatExceptionOfType(SublineConcessionException.class).isThrownBy(
+        () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
+  }
 
-   @Test
-   void shouldThrowExceptionIfConcessionTypeIsMissingOnConcessionType() {
-     //given
-     LineVersion mainLineVersion = LineTestData.lineVersion();
-     mainLineVersion.setLineType(LineType.ORDERLY);
-     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
+  @Test
+  void shouldThrowExceptionIfConcessionTypeIsMissingOnConcessionType() {
+    //given
+    LineVersion mainLineVersion = LineTestData.lineVersion();
+    mainLineVersion.setLineType(LineType.ORDERLY);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
 
-     SublineVersion sublineVersion = SublineTestData.sublineVersion();
-     sublineVersion.setSublineType(SublineType.CONCESSION);
-     sublineVersion.setConcessionType(null);
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setSublineType(SublineType.CONCESSION);
+    sublineVersion.setConcessionType(null);
 
-     //when
-     assertThatExceptionOfType(SublineConcessionException.class).isThrownBy(
-         () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
-   }
+    //when
+    assertThatExceptionOfType(SublineConcessionException.class).isThrownBy(
+        () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
+  }
 
-   @Test
-   void shouldThrowExceptionIfMainlineRevoked() {
-     //given
-     LineVersion mainLineVersion = LineTestData.lineVersion();
-     mainLineVersion.setStatus(Status.REVOKED);
-     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
+  @Test
+  void shouldThrowExceptionIfMainlineRevoked() {
+    //given
+    LineVersion mainLineVersion = LineTestData.lineVersion();
+    mainLineVersion.setStatus(Status.REVOKED);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
 
-     SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
 
-     //when
-     assertThatExceptionOfType(RevokedException.class).isThrownBy(
-         () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
-   }
+    //when
+    assertThatExceptionOfType(RevokedException.class).isThrownBy(
+        () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
+  }
 
-   @Test
-   void shouldThrowExceptionIfConcessionTypeIsMissingSwissSublineNumber() {
-     //given
-     LineVersion mainLineVersion = LineTestData.lineVersion();
-     mainLineVersion.setLineType(LineType.ORDERLY);
-     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
+  @Test
+  void shouldThrowExceptionIfConcessionTypeIsMissingSwissSublineNumber() {
+    //given
+    LineVersion mainLineVersion = LineTestData.lineVersion();
+    mainLineVersion.setLineType(LineType.ORDERLY);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(any())).thenReturn(List.of(mainLineVersion));
 
-     SublineVersion sublineVersion = SublineTestData.sublineVersion();
-     sublineVersion.setSublineType(SublineType.CONCESSION);
-     sublineVersion.setConcessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE);
-     sublineVersion.setSwissSublineNumber(null);
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setSublineType(SublineType.CONCESSION);
+    sublineVersion.setConcessionType(SublineConcessionType.CANTONALLY_APPROVED_LINE);
+    sublineVersion.setSwissSublineNumber(null);
 
-     //when
-     assertThatExceptionOfType(SublineConcessionSwissSublineNumberException.class).isThrownBy(
-         () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
-   }
+    //when
+    assertThatExceptionOfType(SublineConcessionSwissSublineNumberException.class).isThrownBy(
+        () -> sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion));
+  }
 
 }
