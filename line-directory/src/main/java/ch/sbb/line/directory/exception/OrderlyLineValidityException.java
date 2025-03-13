@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class TemporaryLineValidationException extends AtlasException {
+public class OrderlyLineValidityException extends AtlasException {
 
   private final LocalDate minValidFrom;
   private final LocalDate maxValidTo;
@@ -24,7 +24,7 @@ public class TemporaryLineValidationException extends AtlasException {
     return ErrorResponse.builder()
         .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
         .message("Business rule validation failed")
-        .error("Temporary line validation")
+        .error("Orderly line validation")
         .details(new TreeSet<>(getErrorDetails()))
         .build();
   }
@@ -33,9 +33,9 @@ public class TemporaryLineValidationException extends AtlasException {
     return List.of(
         ValidFromDetail.builder()
             .field(Fields.validTo)
-            .message("Temporary line from {0} to {1} exceeds maximum validity of 14 days")
+            .message("Orderly line from {0} to {1} must have a validity of at least 15 days")
             .displayInfo(builder()
-                .code("LIDI.LINE.TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY")
+                .code("LIDI.LINE.ORDERLY_LINE_MIN_VALIDITY")
                 .with(Fields.validFrom, minValidFrom)
                 .with(Fields.validTo, maxValidTo)
                 .build()).build()

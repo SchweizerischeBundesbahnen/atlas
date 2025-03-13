@@ -23,6 +23,7 @@ export class DateRangeComponent {
   @Input() infoIconTitleUntil = '';
   @Input() required = true;
   @Input() setDateExamples = false;
+  @Input() showMaxValidityAutoFill = true;
 
   @Input() controlNameFrom = 'validFrom';
   @Input() controlNameTo = 'validTo';
