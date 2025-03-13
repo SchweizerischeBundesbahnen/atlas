@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.495.0"
+version = "2.496.0"
 
 description = "Atlas User Administration"
 extra["microsoftGraphSdkVersion"] = "6.31.0"
