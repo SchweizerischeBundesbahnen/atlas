@@ -422,8 +422,8 @@
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "La validità della linea {{validFrom}}-{{validTo}} non rientra nel campo di validità della linea parziale {{sublinie.swissSublineNumber}}. Quest’ultimo è {{sublinie.validFrom}}-{{sublinie.validTo}}."
       },
-      "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La linea temporanea con validità dal {{validFrom}} al {{validTo}} supera la validità massima di 12 mesi.",
-      "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La versione dal {{validFrom}} al {{validTo}} è parte di versioni temporanee contigue. Insieme, esse superano la validità massima di 12 mesi.",
+      "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La linea temporanea con validità dal {{validFrom}} al {{validTo}} supera la validità massima di 14 giorni.",
+      "ORDERLY_LINE_MIN_VALIDITY": "La linea ordinaria con validità da {{validFrom}} a {{validTo}} ha una validità minima di 15 giorni.",
       "UPDATE_IN_REVIEW": "Nel corso dell'udienza non è possibile modificare il tipo o la validità della linea.",
       "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Questa modifica riguarda una versione in consultazione. Attendere il completamento della consultazione. Per qualsiasi domanda, contattare l'Unità atlas.",
       "NUMBER": "Numero di linea",
