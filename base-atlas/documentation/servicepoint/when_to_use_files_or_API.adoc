@@ -13,7 +13,6 @@ Customers get exactly the data they want.
 
 *ATTENTION: Our API is not suitable for bulk exports. Customers should therefore use the files to obtain large amounts of data.*
 
-
 === How to decide between Service Point Directory API or File (JSON/CSV)
 If you need every day all data, like all actual ServicePoints or all future timetable ServicePoints,
 choose CSV or JSON file available on the Export Service Point Service, otherwise, use the Service Point API.

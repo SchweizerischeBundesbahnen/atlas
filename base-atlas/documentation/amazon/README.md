@@ -7,9 +7,7 @@
 - [Atlas Users onboarding](#atlas-users-onboarding)
 - [Development](#development)
   * [S3 Bucket](#s3-bucket)
-    + [Naming convention](#naming-convention)
-      - [Buckets name](#buckets-name)
-      - [Buckets directory](#buckets-directory)
+    + [Bucket naming](#bucket-naming)
   * [Intellij Plugin](#intellij-plugin)
 
 <!-- tocstop -->
@@ -35,17 +33,11 @@ See [Amazon S3 Bucket Users Onboarding](Amazon_S3_Buckets_Users_Onboarding.adoc)
 
 ## Development
 
-Already created Amazon S3 credentials are stored
-in: [Restricted passwords](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050#RestrictedAccess:Passw%C3%B6rter,Hashcodes-DataBroker:Atlasexport/importfilesstorage)
-
 ### S3 Bucket
 
-#### Naming convention
+#### Bucket naming
 
-##### Buckets name
-
-Atlas Buckets name definition (
-see [Atlas S3 Buckets](https://self.sbb-cloud.net/tools/aws/s3/list)):
+Atlas Buckets name definition (see [Atlas S3 Buckets](https://self.sbb-cloud.net/tools/aws/s3/list)):
 
 * prefix: **atlas-data-export-**
 * env postfix:
@@ -54,28 +46,10 @@ see [Atlas S3 Buckets](https://self.sbb-cloud.net/tools/aws/s3/list)):
     * int: **int-dev**
     * prod: **prod**
 
-:warning: Disclaimer: the postfix for dev, test and int is always following by dev because of
-the [SBB bucket name generation](https://self.sbb-cloud.net/tools/aws/s3/new), for more information
-see [AmazonServiceImpl.java](src/main/java/ch/sbb/atlas/amazon/service/AmazonServiceImpl.java)
-#getBucketNameFromActiveProfile()
-
-##### Buckets directory
-
-For each service we define a directory in our bucket. E.g. for the LineDirectory Service:
-
-```
-atlas-data-export-prod
-│
-└───line
-│   │   full_line_versions_2022-08-16.csv
-│   │   file012.txt
-```
-
-Each Service must define the property [**
-amazon.bucket.dir**](src/main/java/ch/sbb/atlas/amazon/service/AmazonServiceImpl.java)#bucketDir in
-its properties file.
+⚠️ Disclaimer: the postfix for dev, test and int is always following by dev because of
+the [SBB bucket name generation](https://self.sbb-cloud.net/tools/aws/s3/new).
 
 ### Intellij Plugin
 
 To browse on a Bucket
-install [AWS Toolkit IntelliJ Plugin](https://blog.jetbrains.com/idea/2022/02/aws-in-intellij-idea/)
+install [AWS Toolkit IntelliJ Plugin](https://blog.jetbrains.com/idea/2022/02/aws-in-intellij-idea/).
