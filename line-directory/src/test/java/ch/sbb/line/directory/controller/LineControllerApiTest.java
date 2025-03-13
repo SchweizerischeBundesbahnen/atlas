@@ -24,7 +24,6 @@ import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
-import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -56,9 +55,6 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   private SublineVersionRepository sublineVersionRepository;
 
   @Autowired
-  private CoverageRepository coverageRepository;
-
-  @Autowired
   private LineVersionExportService lineVersionExportService;
 
   @Autowired
@@ -71,7 +67,6 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   void tearDown() {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
-    coverageRepository.deleteAll();
     lineVersionSnapshotService.deleteAll();
   }
 
