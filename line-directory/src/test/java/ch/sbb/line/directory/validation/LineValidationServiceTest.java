@@ -40,9 +40,6 @@ class LineValidationServiceTest {
   private LineVersionRepository lineVersionRepository;
 
   @Mock
-  private CoverageValidationService coverageValidationService;
-
-  @Mock
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   private LineValidationService lineValidationService;
@@ -50,8 +47,7 @@ class LineValidationServiceTest {
   @BeforeEach()
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineValidationService = new LineValidationService(lineVersionRepository,
-        coverageValidationService, sharedBusinessOrganisationService);
+    lineValidationService = new LineValidationService(lineVersionRepository, sharedBusinessOrganisationService);
   }
 
   @Test
@@ -103,62 +99,6 @@ class LineValidationServiceTest {
     // When & Then
     assertThatNoException().isThrownBy(
         () -> lineValidationService.validateTemporaryLinesDuration(List.of(lineVersion)));
-  }
-
-  @Test
-  void shouldThrowLineRangeSmallerThenSublineRangeExceptionWhenLineRangeIsRightSmallerThenSublineRange() {
-    // Given
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
-    sublineVersion.setValidTo(LocalDate.of(2000, 12, 31));
-    List<SublineVersion> sublineVersions = new ArrayList<>();
-    sublineVersions.add(sublineVersion);
-
-    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(
-        sublineVersions);
-
-    LineVersion lineVersion = LineTestData.lineVersion();
-    lineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
-    lineVersion.setValidTo(LocalDate.of(2000, 12, 30));
-    List<LineVersion> lineVersions = new ArrayList<>();
-    lineVersions.add(lineVersion);
-
-    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
-        lineVersions);
-
-    // When
-    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
-
-    // then
-    verify(coverageValidationService).validateLineSublineCoverage(lineVersion);
-  }
-
-  @Test
-  void shouldThrowLineRangeSmallerThenSublineRangeExceptionWhenLineRangeIsSmallerThenSublineRange() {
-    // Given
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
-    sublineVersion.setValidTo(LocalDate.of(2000, 12, 31));
-    List<SublineVersion> sublineVersions = new ArrayList<>();
-    sublineVersions.add(sublineVersion);
-
-    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(
-        sublineVersions);
-
-    LineVersion lineVersion = LineTestData.lineVersion();
-    lineVersion.setValidFrom(LocalDate.of(2000, 1, 2));
-    lineVersion.setValidTo(LocalDate.of(2000, 12, 30));
-    List<LineVersion> lineVersions = new ArrayList<>();
-    lineVersions.add(lineVersion);
-
-    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
-        lineVersions);
-
-    // When
-    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
-
-    //then
-    verify(coverageValidationService).validateLineSublineCoverage(lineVersion);
   }
 
   @Test

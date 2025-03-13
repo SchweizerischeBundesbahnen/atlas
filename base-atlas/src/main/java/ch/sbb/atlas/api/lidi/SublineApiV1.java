@@ -31,9 +31,6 @@ public interface SublineApiV1 {
   @GetMapping("versions/{slnid}")
   List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);
 
-  @GetMapping("subline-coverage/{slnid}")
-  CoverageModel getSublineCoverage(@PathVariable String slnid);
-
   @Operation(description = "Export all subline versions as csv and zip file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullSublineVersions();
