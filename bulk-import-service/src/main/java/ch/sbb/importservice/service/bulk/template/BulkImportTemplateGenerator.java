@@ -38,7 +38,7 @@ public class BulkImportTemplateGenerator {
             .objectType(BusinessObjectType.SERVICE_POINT)
             .importType(ImportType.CREATE)
             .build(),
-        ServicePointTemplateGenerator::getServicePointUpdateCsvModelExample
+        ServicePointTemplateGenerator::getServicePointCreateCsvModelExample
     );
 
     templateLookup.put(
