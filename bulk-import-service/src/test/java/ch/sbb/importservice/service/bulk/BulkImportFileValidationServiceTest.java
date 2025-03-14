@@ -9,14 +9,11 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.ImportFiles;
 import ch.sbb.importservice.exception.ContentTypeFileValidationException;
 import ch.sbb.importservice.exception.FileHeaderValidationException;
 import ch.sbb.importservice.model.BulkImportConfig;
-import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.service.bulk.template.BulkImportTemplateGenerator;
 import ch.sbb.importservice.service.bulk.template.ServicePointTemplateGenerator;
 import ch.sbb.importservice.service.prm.platform.update.PlatformUpdate;
@@ -27,6 +24,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,78 +165,9 @@ class BulkImportFileValidationServiceTest {
             ServicePointUpdate.CONFIG));
   }
 
-  @Test
-  void shouldReturnValidFileHeaderServicePointCreate() {
-    BulkImportConfig bulkImportConfig = BulkImportConfig.builder()
-        .importType(ImportType.CREATE)
-        .application(ApplicationType.SEPODI)
-        .objectType(BusinessObjectType.SERVICE_POINT)
-        .build();
-
-    Mockito.when(fileService.getDir()).thenReturn("./export/");
-
-    File file = bulkImportTemplateGenerator.generateCsvTemplate(bulkImportConfig);
-
-    assertDoesNotThrow(() -> bulkImportFileValidationService.validateFileHeader(file,
-        bulkImportConfig));
-  }
-
-  @Test
-  void shouldReturnValidFileHeaderServicePointUpdate() {
-    BulkImportConfig bulkImportConfig = BulkImportConfig.builder()
-        .importType(ImportType.UPDATE)
-        .application(ApplicationType.SEPODI)
-        .objectType(BusinessObjectType.SERVICE_POINT)
-        .build();
-
-    Mockito.when(fileService.getDir()).thenReturn("./export/");
-
-    File file = bulkImportTemplateGenerator.generateCsvTemplate(bulkImportConfig);
-
-    assertDoesNotThrow(() -> bulkImportFileValidationService.validateFileHeader(file,
-        bulkImportConfig));
-  }
-
-  @Test
-  void shouldReturnValidFileHeaderTrafficPointCreate() {
-    BulkImportConfig bulkImportConfig = BulkImportConfig.builder()
-        .importType(ImportType.CREATE)
-        .application(ApplicationType.SEPODI)
-        .objectType(BusinessObjectType.TRAFFIC_POINT)
-        .build();
-
-    Mockito.when(fileService.getDir()).thenReturn("./export/");
-
-    File file = bulkImportTemplateGenerator.generateCsvTemplate(bulkImportConfig);
-
-    assertDoesNotThrow(() -> bulkImportFileValidationService.validateFileHeader(file,
-        bulkImportConfig));
-  }
-
-  @Test
-  void shouldReturnValidFileHeaderTrafficPointUpdate() {
-    BulkImportConfig bulkImportConfig = BulkImportConfig.builder()
-        .importType(ImportType.UPDATE)
-        .application(ApplicationType.SEPODI)
-        .objectType(BusinessObjectType.TRAFFIC_POINT)
-        .build();
-
-    Mockito.when(fileService.getDir()).thenReturn("./export/");
-
-    File file = bulkImportTemplateGenerator.generateCsvTemplate(bulkImportConfig);
-
-    assertDoesNotThrow(() -> bulkImportFileValidationService.validateFileHeader(file,
-        bulkImportConfig));
-  }
-
-  @Test
-  void shouldReturnValidFileHeaderPlatformReducedUpdate() {
-    BulkImportConfig bulkImportConfig = BulkImportConfig.builder()
-        .importType(ImportType.UPDATE)
-        .application(ApplicationType.PRM)
-        .objectType(BusinessObjectType.PLATFORM_REDUCED)
-        .build();
-
+  @ParameterizedTest
+  @MethodSource("ch.sbb.importservice.utils.BulkImportTemplateArgumentsData#implementedTemplates")
+  void shouldReturnValidFileHeaderServicePointCreate(BulkImportConfig bulkImportConfig) {
     Mockito.when(fileService.getDir()).thenReturn("./export/");
 
     File file = bulkImportTemplateGenerator.generateCsvTemplate(bulkImportConfig);
