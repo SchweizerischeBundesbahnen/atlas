@@ -36,8 +36,8 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getNumber().getValue()).isEqualTo(servicePointNumber);
-    assertThat(result.get(0).getBusinessOrganisationRelation().getBusinessOrganisation()).isEqualTo(sboid);
-    assertThat(result.get(0).getBusinessOrganisationRelation().getBusinessOrganisationAbbreviationIt()).isEqualTo("abb");
+    assertThat(result.get(0).getSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(sboid);
+    assertThat(result.get(0).getSharedBusinessOrganisation().getBusinessOrganisationAbbreviationIt()).isEqualTo("abb");
   }
 
   @Test
@@ -57,8 +57,8 @@ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationT
     assertThat(result).isNotEmpty();
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getNumber().getValue()).isEqualTo(servicePointNumber);
-    assertThat(result.get(0).getBusinessOrganisationRelation().getBusinessOrganisation()).isEqualTo(sboid);
-    assertThat(result.get(0).getBusinessOrganisationRelation().getBusinessOrganisationAbbreviationIt()).isEqualTo(null);
+    assertThat(result.get(0).getSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(sboid);
+    assertThat(result.get(0).getSharedBusinessOrganisation().getBusinessOrganisationAbbreviationIt()).isEqualTo(null);
   }
 
   @Test
