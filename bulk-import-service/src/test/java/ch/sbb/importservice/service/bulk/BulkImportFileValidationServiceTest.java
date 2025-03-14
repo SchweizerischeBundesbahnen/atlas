@@ -6,18 +6,28 @@ import static ch.sbb.importservice.service.bulk.BulkImportFileValidationService.
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.ImportFiles;
 import ch.sbb.importservice.exception.ContentTypeFileValidationException;
 import ch.sbb.importservice.exception.FileHeaderValidationException;
+import ch.sbb.importservice.model.BulkImportConfig;
+import ch.sbb.importservice.service.bulk.template.BulkImportTemplateGenerator;
+import ch.sbb.importservice.service.bulk.template.ServicePointTemplateGenerator;
 import ch.sbb.importservice.service.prm.platform.update.PlatformUpdate;
 import ch.sbb.importservice.service.sepodi.service.point.update.ServicePointUpdate;
 import ch.sbb.importservice.service.sepodi.traffic.point.update.TrafficPointUpdate;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 
@@ -26,6 +36,18 @@ class BulkImportFileValidationServiceTest {
 
   @Autowired
   private BulkImportFileValidationService bulkImportFileValidationService;
+
+  private ServicePointTemplateGenerator servicePointTemplateGenerator;
+
+  @Mock
+  private FileService fileService;
+
+  private BulkImportTemplateGenerator bulkImportTemplateGenerator;
+
+  @BeforeEach
+  void setUp() {
+    bulkImportTemplateGenerator = new BulkImportTemplateGenerator(fileService);
+  }
 
   @Test
   void shouldReturnOnValidCsvFile() throws IOException {
@@ -102,7 +124,8 @@ class BulkImportFileValidationServiceTest {
   @Test
   void shouldReportInvalidFileHeaderOnPlatformReducedUpdateInvalidHeaderCsvFile() throws IOException {
     File file = ImportFiles.getFileByPath("import-files/invalid/platform-reduced-update-invalid-header.csv");
-    MockMultipartFile multipartFile = new MockMultipartFile("file", "platform-reduced-update-invalid-header.csv", CSV_CONTENT_TYPE,
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "platform-reduced-update-invalid-header.csv",
+        CSV_CONTENT_TYPE,
         Files.readAllBytes(file.toPath()));
 
     assertThatExceptionOfType(FileHeaderValidationException.class).isThrownBy(
@@ -140,5 +163,16 @@ class BulkImportFileValidationServiceTest {
     assertThatExceptionOfType(ContentTypeFileValidationException.class).isThrownBy(
         () -> bulkImportFileValidationService.validateFileAndPrepareFile(multipartFile,
             ServicePointUpdate.CONFIG));
+  }
+
+  @ParameterizedTest
+  @MethodSource("ch.sbb.importservice.utils.BulkImportTemplateArgumentsData#implementedTemplates")
+  void shouldReturnValidFileHeaderServicePointCreate(BulkImportConfig bulkImportConfig) {
+    Mockito.when(fileService.getDir()).thenReturn("./export/");
+
+    File file = bulkImportTemplateGenerator.generateCsvTemplate(bulkImportConfig);
+
+    assertDoesNotThrow(() -> bulkImportFileValidationService.validateFileHeader(file,
+        bulkImportConfig));
   }
 }
