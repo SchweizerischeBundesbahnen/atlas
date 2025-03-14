@@ -57,7 +57,7 @@ public class BulkImportFileValidationService {
     return file;
   }
 
-  private void validateFileHeader(File file, BulkImportConfig bulkImportConfig) {
+  public void validateFileHeader(File file, BulkImportConfig bulkImportConfig) {
     String fileHeader = getFileHeader(file);
     String expectedFileHeader = getExpectedFileHeader(bulkImportConfig);
     if (!Objects.equals(fileHeader, expectedFileHeader)) {
