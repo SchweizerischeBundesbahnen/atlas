@@ -38,11 +38,9 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -171,7 +169,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
   }
 
   @ParameterizedTest
-  @MethodSource("getArgumentsImplementedTemplates")
+  @MethodSource("ch.sbb.importservice.utils.BulkImportTemplateArgumentsData#implementedTemplates")
   void shouldDownloadTemplateSuccessfully(BulkImportConfig importConfig) throws Exception {
     // When
     String urlTemplatePath =
@@ -186,7 +184,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
   }
 
   @ParameterizedTest
-  @MethodSource("getArgumentsForNotImplementedTemplates")
+  @MethodSource("ch.sbb.importservice.utils.BulkImportTemplateArgumentsData#notImplementedTemplates")
   void shouldDownloadTemplateForNotImplementedUseCasesUnsuccessfully(BulkImportConfig importConfig) throws Exception {
     //given
     String urlTemplatePath =
@@ -196,26 +194,6 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
     mvc.perform(MockMvcRequestBuilders.get(urlTemplatePath))
         .andExpect(status().isNotImplemented())
         .andReturn();
-  }
-
-  static Stream<Arguments> getArgumentsForNotImplementedTemplates() {
-    return Stream.of(
-        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.TERMINATE)),
-        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.TERMINATE)),
-        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.CREATE)),
-        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.UPDATE)),
-        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.TERMINATE))
-    );
-  }
-
-  static Stream<Arguments> getArgumentsImplementedTemplates() {
-    return Stream.of(
-        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.CREATE)),
-        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.UPDATE)),
-        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.CREATE)),
-        Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.UPDATE)),
-        Arguments.of(new BulkImportConfig(ApplicationType.PRM, BusinessObjectType.PLATFORM_REDUCED, ImportType.UPDATE))
-    );
   }
 
   @Test
