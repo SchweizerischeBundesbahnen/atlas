@@ -24,7 +24,7 @@ public class ServicePointVersionJsonServicePointProcessor extends BaseServicePoi
         .operatingPointWithTimetable(servicePointVersion.isOperatingPointWithTimetable())
         .freightServicePoint(servicePointVersion.isFreightServicePoint())
         .sortCodeOfDestinationStation(servicePointVersion.getSortCodeOfDestinationStation())
-        .businessOrganisation(servicePointVersion.getBusinessOrganisationRelation().getBusinessOrganisation())
+        .businessOrganisation(servicePointVersion.getSharedBusinessOrganisation().getBusinessOrganisation())
         .categories(getCategoriesSorted(servicePointVersion))
         .operatingPointType(servicePointVersion.getOperatingPointType())
         .operatingPointTechnicalTimetableType(servicePointVersion.getOperatingPointTechnicalTimetableType())

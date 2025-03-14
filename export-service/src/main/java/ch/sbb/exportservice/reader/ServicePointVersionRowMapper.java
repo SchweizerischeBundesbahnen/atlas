@@ -68,7 +68,7 @@ public class ServicePointVersionRowMapper extends BaseRowMapper implements RowMa
     }
     servicePointVersionBuilder.sortCodeOfDestinationStation(rs.getString("sort_code_of_destination_station"));
 
-    servicePointVersionBuilder.businessOrganisationRelation(getBusinessOrganisation(rs));
+    servicePointVersionBuilder.sharedBusinessOrganisation(getBusinessOrganisation(rs));
 
     Optional.ofNullable(rs.getString("status"))
         .ifPresent(status -> servicePointVersionBuilder.status(Status.valueOf(status)));
