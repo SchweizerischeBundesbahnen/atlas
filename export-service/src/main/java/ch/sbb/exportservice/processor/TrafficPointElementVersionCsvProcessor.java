@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
-import ch.sbb.exportservice.entity.bodi.BusinessOrganisationRelation;
+import ch.sbb.exportservice.entity.bodi.SharedBusinessOrganisation;
 import ch.sbb.exportservice.entity.sepodi.TrafficPointElementVersion;
 import ch.sbb.exportservice.entity.sepodi.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.exportservice.model.TrafficPointVersionCsvModel;
@@ -15,7 +15,7 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
 
   @Override
   public TrafficPointVersionCsvModel process(TrafficPointElementVersion version) {
-    BusinessOrganisationRelation servicePointBusinessOrganisationRelation = version.getServicePointBusinessOrganisationRelation();
+    SharedBusinessOrganisation servicePointSharedBusinessOrganisation = version.getServicePointSharedBusinessOrganisation();
     TrafficPointVersionCsvModelBuilder builder = TrafficPointVersionCsvModel.builder()
         .sloid(version.getSloid())
         .numberShort(version.getServicePointNumber().getNumberShort())
@@ -35,24 +35,24 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
         .creationDate(LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
         .editionDate(LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
         .parentSloidServicePoint(version.getParentSloidServicePoint())
-        .servicePointBusinessOrganisation(servicePointBusinessOrganisationRelation.getBusinessOrganisation())
-        .servicePointBusinessOrganisationNumber(servicePointBusinessOrganisationRelation.getBusinessOrganisationNumber())
+        .servicePointBusinessOrganisation(servicePointSharedBusinessOrganisation.getBusinessOrganisation())
+        .servicePointBusinessOrganisationNumber(servicePointSharedBusinessOrganisation.getBusinessOrganisationNumber())
         .servicePointBusinessOrganisationAbbreviationDe(
-            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationDe())
+            servicePointSharedBusinessOrganisation.getBusinessOrganisationAbbreviationDe())
         .servicePointBusinessOrganisationAbbreviationFr(
-            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationFr())
+            servicePointSharedBusinessOrganisation.getBusinessOrganisationAbbreviationFr())
         .servicePointBusinessOrganisationAbbreviationIt(
-            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationIt())
+            servicePointSharedBusinessOrganisation.getBusinessOrganisationAbbreviationIt())
         .servicePointBusinessOrganisationAbbreviationEn(
-            servicePointBusinessOrganisationRelation.getBusinessOrganisationAbbreviationEn())
+            servicePointSharedBusinessOrganisation.getBusinessOrganisationAbbreviationEn())
         .servicePointBusinessOrganisationDescriptionDe(
-            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionDe())
+            servicePointSharedBusinessOrganisation.getBusinessOrganisationDescriptionDe())
         .servicePointBusinessOrganisationDescriptionFr(
-            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionFr())
+            servicePointSharedBusinessOrganisation.getBusinessOrganisationDescriptionFr())
         .servicePointBusinessOrganisationDescriptionIt(
-            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionIt())
+            servicePointSharedBusinessOrganisation.getBusinessOrganisationDescriptionIt())
         .servicePointBusinessOrganisationDescriptionEn(
-            servicePointBusinessOrganisationRelation.getBusinessOrganisationDescriptionEn());
+            servicePointSharedBusinessOrganisation.getBusinessOrganisationDescriptionEn());
 
     if (version.getTrafficPointElementGeolocation() != null) {
       buildGeolocation(version.getTrafficPointElementGeolocation(), builder);

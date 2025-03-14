@@ -15,7 +15,7 @@ import lombok.experimental.FieldNameConstants;
 @ToString
 @Builder
 @FieldNameConstants
-public class BusinessOrganisationRelation {
+public class SharedBusinessOrganisation {
 
   private String businessOrganisation;
   private Integer businessOrganisationNumber;
