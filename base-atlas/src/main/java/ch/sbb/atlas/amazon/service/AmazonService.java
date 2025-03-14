@@ -15,6 +15,7 @@ public interface AmazonService {
 
   URL putGzipFile(AmazonBucket bucket, File file, String dir) throws IOException;
 
+  @Deprecated(forRemoval = true)
   URL putZipFileCleanupZip(AmazonBucket bucket, File file, String dir) throws IOException;
 
   File pullFile(AmazonBucket bucket, String filePath);
