@@ -2,7 +2,7 @@ package ch.sbb.exportservice.entity.sepodi;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.BaseEntity;
-import ch.sbb.exportservice.entity.bodi.BusinessOrganisationRelation;
+import ch.sbb.exportservice.entity.bodi.SharedBusinessOrganisation;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class LoadingPointVersion extends BaseEntity {
 
   private ServicePointNumber servicePointNumber;
 
-  private BusinessOrganisationRelation servicePointBusinessOrganisationRelation;
+  private SharedBusinessOrganisation servicePointSharedBusinessOrganisation;
 
   private String parentSloidServicePoint;
 

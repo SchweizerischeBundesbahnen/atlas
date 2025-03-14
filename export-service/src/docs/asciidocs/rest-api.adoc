@@ -31,7 +31,7 @@ This service exports the following data:
 * subline
 * timetable-field-number
 
-To get daily updated data, we recommend file users to only retrieve data after **00:30 (Europe/Zuerich time zone)** in the
+To get daily updated data, we recommend file users to only retrieve data after **01:00 (Europe/Zuerich time zone)** in the
 morning.
 
 link:export-usage.html[*Export REST API Documentation*]
