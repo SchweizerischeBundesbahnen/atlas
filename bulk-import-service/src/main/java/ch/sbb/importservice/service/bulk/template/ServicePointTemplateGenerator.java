@@ -17,6 +17,8 @@ import lombok.experimental.UtilityClass;
 public class ServicePointTemplateGenerator {
 
   private static final String DEFAULT_SLOID = "ch:1:sloid:7000";
+  private static final Integer DEFAULT_NUMBERSHORT = 7000;
+  private static final Integer DEFAULT_UIC_COUNTRYCODE = 85;
   private static final LocalDate DEFAULT_VALID_FROM = LocalDate.of(2021, 4, 1);
   private static final LocalDate DEFAULT_VALID_TO = LocalDate.of(2099, 12, 31);
   private static final String DEFAULT_DESIGNATION_OFFICIAL = "Bern";
@@ -51,8 +53,9 @@ public class ServicePointTemplateGenerator {
   }
 
   public static ServicePointCreateCsvModel getServicePointCreateCsvModelExample() {
-    return ServicePointCreateCsvModel.builder().numberShort(7000)
-        .uicCountryCode(85)
+    return ServicePointCreateCsvModel.builder()
+        .numberShort(DEFAULT_NUMBERSHORT)
+        .uicCountryCode(DEFAULT_UIC_COUNTRYCODE)
         .validFrom(DEFAULT_VALID_FROM)
         .validTo(DEFAULT_VALID_TO)
         .designationOfficial(DEFAULT_DESIGNATION_OFFICIAL)
