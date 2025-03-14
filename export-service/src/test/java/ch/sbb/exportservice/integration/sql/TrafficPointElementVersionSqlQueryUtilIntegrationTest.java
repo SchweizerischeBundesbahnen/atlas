@@ -38,7 +38,7 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     final TrafficPointElementVersion trafficPointElementVersion = result.stream().filter(t -> "ch:1:sloid:2".equals(t.getSloid()))
         .findFirst().orElseThrow();
     assertThat(trafficPointElementVersion).isNotNull();
-    assertThat(trafficPointElementVersion.getServicePointBusinessOrganisationRelation().getBusinessOrganisation()).isEqualTo(
+    assertThat(trafficPointElementVersion.getServicePointSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(
         "ch:1:sboid:101999");
   }
 
@@ -62,7 +62,7 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     final TrafficPointElementVersion trafficPointElementVersion = result.stream().filter(t -> t.getSloid().equals(sloid))
         .findFirst().orElseThrow();
     assertThat(trafficPointElementVersion).isNotNull();
-    assertThat(trafficPointElementVersion.getServicePointBusinessOrganisationRelation().getBusinessOrganisation()).isEqualTo(
+    assertThat(trafficPointElementVersion.getServicePointSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(
         "ch:1:sboid:101999");
     result.forEach(t -> assertThat(isDateInRange(futureDate, t.getValidFrom(), t.getValidTo())).isTrue());
   }
@@ -87,7 +87,7 @@ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
     final TrafficPointElementVersion trafficPointElementVersion = result.stream().filter(t -> t.getSloid().equals(sloid))
         .findFirst().orElseThrow();
     assertThat(trafficPointElementVersion).isNotNull();
-    assertThat(trafficPointElementVersion.getServicePointBusinessOrganisationRelation().getBusinessOrganisation()).isEqualTo(
+    assertThat(trafficPointElementVersion.getServicePointSharedBusinessOrganisation().getBusinessOrganisation()).isEqualTo(
         "ch:1:sboid:101999");
     result.forEach(t -> assertThat(isDateInRange(now, t.getValidFrom(), t.getValidTo())).isTrue());
   }

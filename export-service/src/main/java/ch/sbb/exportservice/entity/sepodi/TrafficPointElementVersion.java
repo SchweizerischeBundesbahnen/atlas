@@ -3,7 +3,7 @@ package ch.sbb.exportservice.entity.sepodi;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.exportservice.entity.BaseEntity;
-import ch.sbb.exportservice.entity.bodi.BusinessOrganisationRelation;
+import ch.sbb.exportservice.entity.bodi.SharedBusinessOrganisation;
 import ch.sbb.exportservice.entity.sepodi.geolocation.TrafficPointElementGeolocation;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -41,7 +41,7 @@ public class TrafficPointElementVersion extends BaseEntity {
 
   private String sloid;
 
-  private BusinessOrganisationRelation servicePointBusinessOrganisationRelation;
+  private SharedBusinessOrganisation servicePointSharedBusinessOrganisation;
 
   private String parentSloid;
 
