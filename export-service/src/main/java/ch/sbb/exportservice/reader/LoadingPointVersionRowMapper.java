@@ -21,7 +21,7 @@ public class LoadingPointVersionRowMapper extends BaseRowMapper implements RowMa
     builder.designationLong(rs.getString("designation_long"));
     builder.connectionPoint(rs.getBoolean("connection_point"));
     builder.servicePointNumber(servicePointNumber);
-    builder.servicePointBusinessOrganisationRelation(getBusinessOrganisation(rs));
+    builder.servicePointSharedBusinessOrganisation(getBusinessOrganisation(rs));
     builder.parentSloidServicePoint(rs.getString("parent_service_point_sloid"));
     builder.validFrom(rs.getObject("valid_from", LocalDate.class));
     builder.validTo(rs.getObject("valid_to", LocalDate.class));

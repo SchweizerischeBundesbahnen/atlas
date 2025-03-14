@@ -2,6 +2,7 @@ package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.exportservice.entity.lidi.Subline;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -29,8 +30,8 @@ public class SublineJsonProcessor implements ItemProcessor<Subline, ReadSublineV
         .editor(subline.getEditor())
         .editionDate(subline.getEditionDate())
         // From Line
+        .mainLineNumber(Objects.requireNonNull(subline.getNumber(), "Line must have a number!"))
         .mainSwissLineNumber(subline.getSwissLineNumber())
-        .mainLineNumber(subline.getNumber())
         .mainShortNumber(subline.getShortNumber())
         .mainLineOfferCategory(subline.getOfferCategory())
         .build();
