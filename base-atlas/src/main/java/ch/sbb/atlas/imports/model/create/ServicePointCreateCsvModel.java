@@ -18,6 +18,7 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableTyp
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDate;
@@ -181,6 +182,7 @@ public class ServicePointCreateCsvModel implements Validatable<ServicePointCreat
     return List.of(new UniqueField<>("number", ServicePointCreateCsvModel::getNumber));
   }
 
+  @JsonIgnore
   public String getNumber() {
     if (Country.from(uicCountryCode) == null || numberShort == null || validNumberShortLength()) {
       return null;
