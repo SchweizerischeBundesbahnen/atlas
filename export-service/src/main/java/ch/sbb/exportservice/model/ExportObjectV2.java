@@ -8,23 +8,24 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ExportObjectV2 {
 
-  BUSINESS_ORGANISATION(ExportTypes.DEFAULT),
-  CONTACT_POINT(ExportTypes.DEFAULT),
-  LINE(ExportTypes.DEFAULT),
-  PARKING_LOT(ExportTypes.DEFAULT),
-  PLATFORM(ExportTypes.DEFAULT),
-  REFERENCE_POINT(ExportTypes.DEFAULT),
-  RELATION(ExportTypes.DEFAULT),
-  STOP_POINT(ExportTypes.DEFAULT),
-  SUBLINE(ExportTypes.DEFAULT),
-  TIMETABLE_FIELD_NUMBER(ExportTypes.DEFAULT),
-  TOILET(ExportTypes.DEFAULT),
-  TRANSPORT_COMPANY(List.of(ExportTypeV2.FULL)),
-  SERVICE_POINT(ExportTypes.SWISS_WORLD),
-  TRAFFIC_POINT(ExportTypes.SWISS_WORLD),
-  LOADING_POINT(ExportTypes.SWISS_WORLD);
+  BUSINESS_ORGANISATION(ExportTypes.DEFAULT, "business-organisation"),
+  CONTACT_POINT(ExportTypes.DEFAULT, "contact-point"),
+  LINE(ExportTypes.DEFAULT, "line"),
+  PARKING_LOT(ExportTypes.DEFAULT, "parking-lot"),
+  PLATFORM(ExportTypes.DEFAULT, "platform"),
+  REFERENCE_POINT(ExportTypes.DEFAULT, "reference-point"),
+  RELATION(ExportTypes.DEFAULT, "relation"),
+  STOP_POINT(ExportTypes.DEFAULT, "stop-point"),
+  SUBLINE(ExportTypes.DEFAULT, "subline"),
+  TIMETABLE_FIELD_NUMBER(ExportTypes.DEFAULT, "timetable-field-number"),
+  TOILET(ExportTypes.DEFAULT, "toilet"),
+  TRANSPORT_COMPANY(List.of(ExportTypeV2.FULL), "transport-company"),
+  SERVICE_POINT(ExportTypes.SWISS_WORLD, "service-point"),
+  TRAFFIC_POINT(ExportTypes.SWISS_WORLD, "traffic-point"),
+  LOADING_POINT(ExportTypes.SWISS_WORLD, "loading-point");
 
   private final List<ExportTypeV2> supportedExportTypes;
+  private final String name;
 
   private static class ExportTypes {
 

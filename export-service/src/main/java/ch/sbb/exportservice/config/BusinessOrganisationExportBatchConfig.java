@@ -1,5 +1,8 @@
 package ch.sbb.exportservice.config;
 
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
@@ -14,12 +17,9 @@ import ch.sbb.exportservice.processor.BusinessOrganisationCsvProcessor;
 import ch.sbb.exportservice.processor.BusinessOrganisationJsonProcessor;
 import ch.sbb.exportservice.reader.BusinessOrganisationRowMapper;
 import ch.sbb.exportservice.reader.BusinessOrganisationSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
-import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvBusinessOrganisationWriter;
 import ch.sbb.exportservice.writer.JsonBusinessOrganisationWriter;
@@ -145,14 +145,14 @@ public class BusinessOrganisationExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteCsvFileTaskletV2 deleteBusinessOrganisationCsvFileTasklet(
+  public FileDeletingTaskletV2 deleteBusinessOrganisationCsvFileTasklet(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.BUSINESS_ORGANISATION, exportTypeV2)
         .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
-    return new DeleteCsvFileTaskletV2(filePath);
+    return new FileDeletingTaskletV2(filePath);
   }
   // END: Delete Csv
 
@@ -229,13 +229,13 @@ public class BusinessOrganisationExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteJsonFileTaskletV2 deleteBusinessOrganisationJsonFileTasklet(
+  public FileDeletingTaskletV2 deleteBusinessOrganisationJsonFileTasklet(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.BUSINESS_ORGANISATION, exportTypeV2)
         .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
-    return new DeleteJsonFileTaskletV2(filePath);
+    return new FileDeletingTaskletV2(filePath);
   }
   // END: Delete Json
 
