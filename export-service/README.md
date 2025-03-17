@@ -114,6 +114,72 @@ We use
 1. Batch DB
 2. ServicePoint DB
 
+### How to export to Amazon S3
+
+#### Add base-atlas dependency
+
+In order to be able to export files to [SBB Amazon S3](../base-atlas/documentation/amazon/README.md) you have to add this
+library to your module:
+
+~~~kotlin
+implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
+implementation(project(":base-atlas"))
+~~~
+
+### Configure Amazon Client
+
+#### Add Amazon Client Properties
+
+~~~
+amazon:
+  accessKey: ${AMAZON_S3_ACCESS_KEY}
+  secretKey: ${AMAZON_S3_SECRET_KEY}
+  region: "eu-central-1"
+  bucketName: "atlas-data-export-dev-dev"
+  objectExpirationDays: 30
+~~~
+
+#### Configure Amazon Client Secrets Chart
+
+You have to define in the **Chart template** the following properties:
+
+~~~
+- name: AMAZON_S3_ACCESS_KEY
+  valueFrom:
+    secretKeyRef:
+        name: amazon-client-{{ .Values.YOUR-APPLICATION.name }}
+        key: amazon-access-key
+- name: AMAZON_S3_SECRET_KEY
+  valueFrom:
+    secretKeyRef:
+        name: amazon-client-{{ .Values.YOUR-APPLICATION.name }}
+        key: amazon-secret-key
+~~~
+
+#### Add the Secrets to Open Shift
+
+Remember to store the secrets to our Open Shift for every environments (e.g.
+see [amazon-client-line-directory]https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/ns/atlas-dev/secrets/amazon-client-line-directory)
+
+#### Configure Client
+
+See [AmazonConfig.java](/src/main/java/ch/sbb/exportservice/config/AmazonConfig.java)
+
+#### Configure beans
+
+Configure `FileService` bean:
+
+~~~java
+@Bean
+public FileService fileService(){
+    return new FileServiceImpl();
+    }  
+~~~
+
+#### Upload the file
+
+For an file upload example see [UploadJsonFileTaskletV2.java](/src/main/java/ch/sbb/exportservice/tasklet/upload/UploadJsonFileTaskletV2.java).
+
 ## Jobs
 
 ### Exports for Service Point Directory
