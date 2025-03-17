@@ -15,6 +15,15 @@
 - [Development](#development-1)
   * [Spring Batch](#spring-batch)
   * [Multiple DataSources](#multiple-datasources)
+  * [How to export to Amazon S3](#how-to-export-to-amazon-s3)
+    + [Add base-atlas dependency](#add-base-atlas-dependency)
+  * [Configure Amazon Client](#configure-amazon-client)
+    + [Add Amazon Client Properties](#add-amazon-client-properties)
+    + [Configure Amazon Client Secrets Chart](#configure-amazon-client-secrets-chart)
+    + [Add the Secrets to Open Shift](#add-the-secrets-to-open-shift)
+    + [Configure Client](#configure-client)
+    + [Configure beans](#configure-beans)
+    + [Upload the file](#upload-the-file)
 - [Jobs](#jobs)
   * [Exports for Service Point Directory](#exports-for-service-point-directory)
     + [Export ServicePointVersions](#export-servicepointversions)
@@ -170,9 +179,9 @@ Configure `FileService` bean:
 
 ~~~java
 @Bean
-public FileService fileService(){
-    return new FileServiceImpl();
-    }  
+public FileService fileService() {
+  return new FileServiceImpl();
+}
 ~~~
 
 #### Upload the file
