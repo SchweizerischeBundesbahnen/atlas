@@ -5,8 +5,9 @@ import { UserService } from '../../service/user.service';
 import {ApplicationType, User} from '../../../../api';
 
 @Component({
-  selector: 'app-user-select',
-  templateUrl: './user-select.component.html',
+    selector: 'app-user-select',
+    templateUrl: './user-select.component.html',
+    standalone: false
 })
 export class UserSelectComponent {
   constructor(private readonly userService: UserService) {}

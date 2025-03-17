@@ -14,9 +14,10 @@ import { map } from 'rxjs/operators';
 import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
 
 @Component({
-  selector: 'app-contact-point-detail',
-  templateUrl: './contact-point-detail.component.html',
-  providers: [ValidityService],
+    selector: 'app-contact-point-detail',
+    templateUrl: './contact-point-detail.component.html',
+    providers: [ValidityService],
+    standalone: false
 })
 export class ContactPointDetailComponent
   extends PrmTabDetailBaseComponent<ReadContactPointVersion>

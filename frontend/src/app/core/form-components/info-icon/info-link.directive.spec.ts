@@ -7,7 +7,8 @@ import { of } from 'rxjs';
 import SpyObj = jasmine.SpyObj;
 
 @Component({
-  template: `<span infoLink infoLinkTranslationKey="TEST_TRANSLATION_KEY">Test</span>`,
+    template: `<span infoLink infoLinkTranslationKey="TEST_TRANSLATION_KEY">Test</span>`,
+    standalone: false
 })
 class TestComponent {}
 

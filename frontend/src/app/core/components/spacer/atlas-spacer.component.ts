@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'atlas-spacer',
-  templateUrl: './atlas-spacer.component.html',
-  styleUrls: ['atlas-spacer.component.scss'],
+    selector: 'atlas-spacer',
+    templateUrl: './atlas-spacer.component.html',
+    styleUrls: ['atlas-spacer.component.scss'],
+    standalone: false
 })
 export class AtlasSpacerComponent implements OnInit {
   @Input() height!: string;

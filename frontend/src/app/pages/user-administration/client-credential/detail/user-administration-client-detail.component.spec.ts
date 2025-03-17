@@ -5,8 +5,9 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-client-credential-administration-create',
-  template: '',
+    selector: 'app-client-credential-administration-create',
+    template: '',
+    standalone: false
 })
 class MockAppClientCredentialAdministrationCreateComponent {}
 

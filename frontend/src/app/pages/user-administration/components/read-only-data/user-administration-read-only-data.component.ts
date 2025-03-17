@@ -4,10 +4,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Data } from './data';
 
 @Component({
-  selector: 'app-user-administration-read-only-data',
-  templateUrl: './user-administration-read-only-data.component.html',
-  styleUrls: ['user-administration-read-only-data.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-user-administration-read-only-data',
+    templateUrl: './user-administration-read-only-data.component.html',
+    styleUrls: ['user-administration-read-only-data.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UserAdministrationReadOnlyDataComponent<T extends Data> {
   @Input() data!: T;

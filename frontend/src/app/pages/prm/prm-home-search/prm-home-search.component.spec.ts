@@ -11,8 +11,9 @@ import {ServicePointSearchType} from "../../../core/search-service-point/service
 
 
 @Component({
-  selector: 'app-search-service-point-panel',
-  template: '<h1>SearchServicePointMockComponent</h1>',
+    selector: 'app-search-service-point-panel',
+    template: '<h1>SearchServicePointMockComponent</h1>',
+    standalone: false
 })
 class SearchServicePointPanelMockComponent {
   @Input() searchType!: ServicePointSearchType;

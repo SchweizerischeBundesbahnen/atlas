@@ -5,9 +5,10 @@ export const PRM_DETAIL_TAB_LINK = 'detail';
 export const PRM_RELATIONS_TAB_LINK = 'relations';
 
 @Component({
-  selector: 'prm-detail-with-relation-tab',
-  templateUrl: './detail-with-relation-tab.component.html',
-  styleUrls: ['./detail-with-relation-tab.component.scss']
+    selector: 'prm-detail-with-relation-tab',
+    templateUrl: './detail-with-relation-tab.component.html',
+    styleUrls: ['./detail-with-relation-tab.component.scss'],
+    standalone: false
 })
 export class DetailWithRelationTabComponent implements OnInit, OnChanges {
 

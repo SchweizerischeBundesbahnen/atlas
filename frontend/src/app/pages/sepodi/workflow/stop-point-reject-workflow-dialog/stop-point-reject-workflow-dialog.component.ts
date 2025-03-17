@@ -11,9 +11,10 @@ import {Router} from "@angular/router";
 import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
 
 @Component({
-  selector: 'app-stop-point-reject-workflow-dialog',
-  templateUrl: './stop-point-reject-workflow-dialog.component.html',
-  styleUrl: './stop-point-reject-workflow-dialog.component.scss'
+    selector: 'app-stop-point-reject-workflow-dialog',
+    templateUrl: './stop-point-reject-workflow-dialog.component.html',
+    styleUrl: './stop-point-reject-workflow-dialog.component.scss',
+    standalone: false
 })
 export class StopPointRejectWorkflowDialogComponent implements OnInit {
 

@@ -24,8 +24,9 @@ import {PermissionService} from "../../../../core/auth/permission/permission.ser
 import {addElementsToArrayWhenNotUndefined} from "../../../../core/util/arrays";
 
 @Component({
-  selector: 'stop-point-workflow-overview',
-  templateUrl: './stop-point-workflow-overview.component.html',
+    selector: 'stop-point-workflow-overview',
+    templateUrl: './stop-point-workflow-overview.component.html',
+    standalone: false
 })
 export class StopPointWorkflowOverviewComponent implements OnInit {
 

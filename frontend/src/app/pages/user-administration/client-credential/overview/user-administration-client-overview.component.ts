@@ -7,8 +7,9 @@ import { TablePagination } from '../../../../core/components/table/table-paginat
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 
 @Component({
-  selector: 'app-client-credential-administration-overview',
-  templateUrl: './user-administration-client-overview.component.html',
+    selector: 'app-client-credential-administration-overview',
+    templateUrl: './user-administration-client-overview.component.html',
+    standalone: false
 })
 export class UserAdministrationClientOverviewComponent implements OnDestroy {
   clientCredentials: ClientCredential[] = [];

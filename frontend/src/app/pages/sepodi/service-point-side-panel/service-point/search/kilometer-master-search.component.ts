@@ -14,9 +14,10 @@ import { map } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'kilometer-master-search',
-  templateUrl: './kilometer-master-search.component.html',
-  styleUrls: ['./kilometer-master-search.component.scss'],
+    selector: 'kilometer-master-search',
+    templateUrl: './kilometer-master-search.component.html',
+    styleUrls: ['./kilometer-master-search.component.scss'],
+    standalone: false
 })
 export class KilometerMasterSearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = 'number';

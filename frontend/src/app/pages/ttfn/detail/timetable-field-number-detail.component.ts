@@ -18,10 +18,11 @@ import {ValidityService} from "../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 @Component({
-  selector: 'app-timetable-field-number-detail',
-  templateUrl: './timetable-field-number-detail.component.html',
-  styleUrls: ['./timetable-field-number-detail.component.scss'],
-  providers: [ValidityService]
+    selector: 'app-timetable-field-number-detail',
+    templateUrl: './timetable-field-number-detail.component.html',
+    styleUrls: ['./timetable-field-number-detail.component.scss'],
+    providers: [ValidityService],
+    standalone: false
 })
 export class TimetableFieldNumberDetailComponent
   extends BaseDetailController<TimetableFieldNumberVersion>

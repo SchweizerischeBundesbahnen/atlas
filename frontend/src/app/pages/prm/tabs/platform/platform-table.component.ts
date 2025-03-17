@@ -21,8 +21,9 @@ import { tap } from 'rxjs/operators';
 import { TableContentPaginationAndSorting } from '../../../../core/components/table/table-content-pagination-and-sorting';
 
 @Component({
-  selector: 'app-platform',
-  templateUrl: './platform-table.component.html',
+    selector: 'app-platform',
+    templateUrl: './platform-table.component.html',
+    standalone: false
 })
 export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {
 

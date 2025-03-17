@@ -3,8 +3,9 @@ import { BusinessOrganisation } from '../../../api';
 import { BusinessOrganisationLanguageService } from './business-organisation-language.service';
 
 @Pipe({
-  name: 'boSelectionDisplay',
-  pure: false,
+    name: 'boSelectionDisplay',
+    pure: false,
+    standalone: false
 })
 export class BoSelectionDisplayPipe implements PipeTransform {
   constructor(

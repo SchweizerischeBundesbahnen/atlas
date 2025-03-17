@@ -13,9 +13,10 @@ import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/
 import { AtlasFieldLengthValidator } from '../../../../../core/validation/field-lengths/atlas-field-length-validator';
 
 @Component({
-  selector: 'app-client-credential-administration-create',
-  templateUrl: './user-administration-client-create.component.html',
-  viewProviders: [BusinessOrganisationsService, UserPermissionManager],
+    selector: 'app-client-credential-administration-create',
+    templateUrl: './user-administration-client-create.component.html',
+    viewProviders: [BusinessOrganisationsService, UserPermissionManager],
+    standalone: false
 })
 export class UserAdministrationClientCreateComponent {
   saveEnabled = true;

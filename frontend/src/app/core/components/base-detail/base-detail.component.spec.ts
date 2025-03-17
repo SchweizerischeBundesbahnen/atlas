@@ -21,8 +21,9 @@ import { DetailPageContentComponent } from '../detail-page-content/detail-page-c
 import { PermissionService } from '../../auth/permission/permission.service';
 
 @Component({
-  selector: 'app-coverage',
-  template: '<p>Mock Product Editor Component</p>',
+    selector: 'app-coverage',
+    template: '<p>Mock Product Editor Component</p>',
+    standalone: false
 })
 class MockAppCoverageComponent {
   @Input() pageType!: Record;

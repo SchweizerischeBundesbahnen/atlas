@@ -3,7 +3,8 @@ import { Pages } from '../../pages';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  templateUrl: './bodi-overview.component.html',
+    templateUrl: './bodi-overview.component.html',
+    standalone: false
 })
 export class BodiOverviewComponent {
   TABS = [

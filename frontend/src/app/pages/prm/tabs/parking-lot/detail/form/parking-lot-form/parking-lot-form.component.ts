@@ -4,9 +4,10 @@ import {ParkingLotFormGroup} from '../parking-lot-form-group';
 import {BooleanOptionalAttributeType} from '../../../../../../../api';
 
 @Component({
-  selector: 'app-parking-lot-form',
-  templateUrl: './parking-lot-form.component.html',
-  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    selector: 'app-parking-lot-form',
+    templateUrl: './parking-lot-form.component.html',
+    viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    standalone: false
 })
 export class ParkingLotFormComponent {
   @Input() form!: FormGroup<ParkingLotFormGroup>;

@@ -25,8 +25,9 @@ import { DetailPageContainerComponent } from '../../../../../core/components/det
 import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
 
 @Component({
-  selector: 'app-user-administration-read-only-data',
-  template: '',
+    selector: 'app-user-administration-read-only-data',
+    template: '',
+    standalone: false
 })
 export class MockUserAdministrationReadOnlyDataComponent<T extends Data> {
   @Input() data!: T;

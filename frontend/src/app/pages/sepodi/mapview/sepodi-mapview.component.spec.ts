@@ -8,16 +8,18 @@ import {ServicePointSearchType} from "../../../core/search-service-point/service
 import {AtlasButtonComponent} from "../../../core/components/button/atlas-button.component";
 
 @Component({
-  selector: 'atlas-map',
-  template: '',
+    selector: 'atlas-map',
+    template: '',
+    standalone: false
 })
 export class MockAtlasMapComponent {
   @Input() isSidePanelOpen = false;
 }
 
 @Component({
-  selector: 'app-search-service-point-panel',
-  template: '<h1>SearchServicePointMockComponent</h1>',
+    selector: 'app-search-service-point-panel',
+    template: '<h1>SearchServicePointMockComponent</h1>',
+    standalone: false
 })
 class SearchServicePointMockComponent {
   @Input() searchType!: ServicePointSearchType;

@@ -9,9 +9,10 @@ import { DialogService } from '../../../../../core/components/dialog/dialog.serv
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-user-administration-create',
-  templateUrl: './user-administration-user-create.component.html',
-  viewProviders: [BusinessOrganisationsService, UserPermissionManager],
+    selector: 'app-user-administration-create',
+    templateUrl: './user-administration-user-create.component.html',
+    viewProviders: [BusinessOrganisationsService, UserPermissionManager],
+    standalone: false
 })
 export class UserAdministrationUserCreateComponent {
   userLoaded?: User;

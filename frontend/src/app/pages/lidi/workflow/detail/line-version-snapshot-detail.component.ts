@@ -9,8 +9,9 @@ import {WorkflowFormGroup} from '../../../../core/workflow/workflow-form-group';
 import {WorkflowCheckFormGroup} from '../../../../core/workflow/workflow-check-form/workflow-check-form-group';
 
 @Component({
-  templateUrl: './line-version-snapshot-detail.component.html',
-  styleUrls: ['./line-version-snapshot-detail.component.scss'],
+    templateUrl: './line-version-snapshot-detail.component.html',
+    styleUrls: ['./line-version-snapshot-detail.component.scss'],
+    standalone: false
 })
 export class LineVersionSnapshotDetailComponent implements OnInit {
   lineVersionSnapshot!: LineVersionSnapshot;

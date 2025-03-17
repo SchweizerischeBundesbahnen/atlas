@@ -8,7 +8,8 @@ import { AppTestingModule } from '../../app.testing.module';
 const keyUpEvent = new KeyboardEvent('keyup');
 
 @Component({
-  template: ` <input [formControl]="form" withDefaultValue="defaultValue" /> `,
+    template: ` <input [formControl]="form" withDefaultValue="defaultValue" /> `,
+    standalone: false
 })
 class TestComponent {
   form = new FormControl();

@@ -14,9 +14,10 @@ import { BusinessOrganisation, BusinessOrganisationsService } from '../../../api
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'bo-select',
-  templateUrl: './business-organisation-select.component.html',
-  styleUrls: ['./business-organisation-select.component.scss'],
+    selector: 'bo-select',
+    templateUrl: './business-organisation-select.component.html',
+    styleUrls: ['./business-organisation-select.component.scss'],
+    standalone: false
 })
 export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = 'sboid';

@@ -36,7 +36,8 @@ const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = 
 ];
 
 @Component({
-  templateUrl: './bulk-import-overview.component.html',
+    templateUrl: './bulk-import-overview.component.html',
+    standalone: false
 })
 export class BulkImportOverviewComponent implements OnInit {
   protected readonly OPTIONS_SCENARIO = OPTIONS_SCENARIO;

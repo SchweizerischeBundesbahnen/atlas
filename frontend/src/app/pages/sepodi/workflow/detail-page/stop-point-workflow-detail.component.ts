@@ -33,8 +33,9 @@ import {
 import {AddExaminantsDialogService} from "./add-examinants-dialog/add-examinants-dialog.service";
 
 @Component({
-  selector: 'stop-point-workflow-detail',
-  templateUrl: './stop-point-workflow-detail.component.html',
+    selector: 'stop-point-workflow-detail',
+    templateUrl: './stop-point-workflow-detail.component.html',
+    standalone: false
 })
 export class StopPointWorkflowDetailComponent implements OnInit {
   protected readonly WorkflowStatus = WorkflowStatus;

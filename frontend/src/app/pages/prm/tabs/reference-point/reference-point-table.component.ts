@@ -12,8 +12,9 @@ import {TableColumn} from '../../../../core/components/table/table-column';
 import {TableContentPaginationAndSorting} from "../../../../core/components/table/table-content-pagination-and-sorting";
 
 @Component({
-  selector: 'app-reference-point-table',
-  templateUrl: './reference-point-table.component.html',
+    selector: 'app-reference-point-table',
+    templateUrl: './reference-point-table.component.html',
+    standalone: false
 })
 export class ReferencePointTableComponent extends BasePrmTabComponentService implements OnInit {
   tableColumns: TableColumn<ReadReferencePointVersion>[] = [

@@ -24,9 +24,10 @@ import { map } from 'rxjs/operators';
 import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
 
 @Component({
-  selector: 'app-platforms',
-  templateUrl: './platform-detail.component.html',
-  providers: [ValidityService],
+    selector: 'app-platforms',
+    templateUrl: './platform-detail.component.html',
+    providers: [ValidityService],
+    standalone: false
 })
 export class PlatformDetailComponent
   extends PrmTabDetailBaseComponent<ReadPlatformVersion>

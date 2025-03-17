@@ -3,8 +3,9 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from './dialog.data';
 
 @Component({
-  selector: 'app-dialog',
-  templateUrl: './dialog.component.html',
+    selector: 'app-dialog',
+    templateUrl: './dialog.component.html',
+    standalone: false
 })
 export class DialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}

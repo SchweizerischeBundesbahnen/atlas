@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../pages';
 
 @Component({
-  selector: 'app-user-administration-overview',
-  templateUrl: './user-administration-overview.component.html',
+    selector: 'app-user-administration-overview',
+    templateUrl: './user-administration-overview.component.html',
+    standalone: false
 })
 export class UserAdministrationOverviewComponent {
   TABS = [
