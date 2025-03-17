@@ -11,125 +11,59 @@ import feign.Request.HttpMethod;
 import feign.Response;
 import feign.Util;
 import java.util.Collections;
-import org.junit.jupiter.api.BeforeEach;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 
 class ExportServiceBatchSchedulerServiceTest {
 
-  private static final Response RESPONSE = Response.builder().status(200).reason("OK")
-      .request(Request.create(HttpMethod.POST, "/api", Collections.emptyMap(), null, Util.UTF_8, null)).build();
+  private static final Response RESPONSE = Response.builder()
+      .status(200)
+      .reason("OK")
+      .request(Request.create(HttpMethod.POST, "/api", Collections.emptyMap(), null, Util.UTF_8, null))
+      .build();
 
-  private ExportServiceBatchSchedulerService exportServiceBatchSchedulerService;
-
-  @Mock
-  private ExportServiceBatchClient client;
-
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.openMocks(this);
-    exportServiceBatchSchedulerService = new ExportServiceBatchSchedulerService(client);
+  private static Stream<BatchTestCase> batchTestCasesProvider() {
+    final ExportServiceBatchClient client = Mockito.mock(ExportServiceBatchClient.class);
+    return batchTestCases(client);
   }
 
-  @Test
-  void shouldPostTriggerExportServicePointBatchSuccessfully() {
-    //given
-    when(client.exportServicePointBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportServicePointBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
+  private static Stream<BatchTestCase> batchTestCases(ExportServiceBatchClient client) {
+    final ExportServiceBatchSchedulerService schedulerService = new ExportServiceBatchSchedulerService(client);
+    return Stream.of(
+        new BatchTestCase(client::exportServicePointBatch, schedulerService::postTriggerExportServicePointBatch),
+        new BatchTestCase(client::exportTrafficPointBatch, schedulerService::postTriggerExportTrafficPointBatch),
+        new BatchTestCase(client::exportLoadingPointBatch, schedulerService::postTriggerExportLoadingPointBatch),
+        new BatchTestCase(client::exportStopPointBatch, schedulerService::postTriggerExportStopPointBatch),
+        new BatchTestCase(client::exportPlatformBatch, schedulerService::postTriggerExportPlatformBatch),
+        new BatchTestCase(client::exportReferencePointBatch, schedulerService::postTriggerExportReferencePointBatch),
+        new BatchTestCase(client::exportContactPointBatch, schedulerService::postTriggerExportContactPointBatch),
+        new BatchTestCase(client::exportToiletBatch, schedulerService::postTriggerExportToiletBatch),
+        new BatchTestCase(client::exportParkingLotBatch, schedulerService::postTriggerExportParkingLotBatch),
+        new BatchTestCase(client::exportRelationBatch, schedulerService::postTriggerExportRelationBatch),
+        new BatchTestCase(client::exportBusinessOrganisationBatch, schedulerService::postTriggerExportBusinessOrganisationBatch),
+        new BatchTestCase(client::exportTransportCompanyBatch, schedulerService::postTriggerExportTransportCompanyBatch),
+        new BatchTestCase(client::exportLineBatch, schedulerService::postTriggerExportLineBatch),
+        new BatchTestCase(client::exportSublineBatch, schedulerService::postTriggerExportSublineBatch),
+        new BatchTestCase(client::exportTimetableFieldNumberBatch, schedulerService::postTriggerExportTimetableFieldNumberBatch)
+    );
   }
 
-  @Test
-  void shouldPostTriggerExportTrafficPointBatchSuccessfully() {
-    //given
-    when(client.exportTrafficPointBatch()).thenReturn(RESPONSE);
+  private record BatchTestCase(Supplier<Response> clientFunction, Supplier<Response> serviceFunction) {
 
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportTrafficPointBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
   }
 
-  @Test
-  void shouldPostTriggerExportLoadingPointBatchSuccessfully() {
+  @ParameterizedTest
+  @MethodSource("batchTestCasesProvider")
+  void shouldPostTriggerExportBatchSuccessfully(BatchTestCase testCase) {
     //given
-    when(client.exportLoadingPointBatch()).thenReturn(RESPONSE);
+    when(testCase.clientFunction.get()).thenReturn(RESPONSE);
 
     //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportLoadingPointBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
-  }
-
-  @Test
-  void shouldPostTriggerExportStopPointBatchSuccessfully() {
-    //given
-    when(client.exportStopPointBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportStopPointBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
-  }
-
-  @Test
-  void shouldPostTriggerExportPlatformBatchSuccessfully() {
-    //given
-    when(client.exportPlatformBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportPlatformBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
-  }
-
-  @Test
-  void shouldTriggerExportReferencePointBatchSuccessfully() {
-    //given
-    when(client.exportReferencePointBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportReferencePointBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
-  }
-
-  @Test
-  void shouldTriggerExportContactPointBatchSuccessfully() {
-    //given
-    when(client.exportContactPointBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportContactPointBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
-  }
-
-  @Test
-  void shouldTriggerExportToiletBatchSuccessfully() {
-    //given
-    when(client.exportToiletBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportToiletBatch();
+    Response result = testCase.serviceFunction.get();
 
     //then
     assertThat(result).isNotNull();
@@ -139,102 +73,12 @@ class ExportServiceBatchSchedulerServiceTest {
   @Test
   void shouldPostLoadCompaniesFromCRDUnsuccessful() {
     //given
-    when(client.exportServicePointBatch()).thenReturn(RESPONSE.toBuilder().status(400).build());
+    final ExportServiceBatchClient mock = Mockito.mock(ExportServiceBatchClient.class);
+    when(mock.exportServicePointBatch()).thenReturn(RESPONSE.toBuilder().status(400).build());
 
     //when
     assertThrows(SchedulingExecutionException.class,
-        () -> exportServiceBatchSchedulerService.postTriggerExportServicePointBatch());
-  }
-
-  @Test
-  void shouldTriggerExportParkingLotBatchSuccessfully() {
-    //given
-    when(client.exportParkingLotBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportParkingLotBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
-  }
-
-  @Test
-  void shouldTriggerExportRelationBatchSuccessfully() {
-    //given
-    when(client.exportRelationBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportRelationBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
-  }
-
-  @Test
-  void shouldTriggerExportBusinessOrganisationBatchSuccessfully() {
-    //given
-    when(client.exportBusinessOrganisationBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportBusinessOrganisationBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
-  }
-
-  @Test
-  void shouldTriggerExportTransportCompanyBatchSuccessfully() {
-    //given
-    when(client.exportTransportCompanyBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportTransportCompanyBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
-  }
-
-  @Test
-  void shouldTriggerExportLineBatchSuccessfully() {
-    //given
-    when(client.exportLineBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportLineBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
-  }
-
-  @Test
-  void shouldTriggerExportSublineBatchSuccessfully() {
-    //given
-    when(client.exportSublineBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportSublineBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
-  }
-
-  @Test
-  void shouldTriggerExportTimetableFieldNumberBatchSuccessfully() {
-    //given
-    when(client.exportTimetableFieldNumberBatch()).thenReturn(RESPONSE);
-
-    //when
-    Response result = exportServiceBatchSchedulerService.postTriggerExportTimetableFieldNumberBatch();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(200);
+        () -> new ExportServiceBatchSchedulerService(mock).postTriggerExportServicePointBatch());
   }
 
 }

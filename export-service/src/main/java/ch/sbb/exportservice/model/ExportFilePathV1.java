@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 
+@Deprecated(forRemoval = true)
 public final class ExportFilePathV1 {
 
   private static final String PATH_DELIMITER = "/";

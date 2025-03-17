@@ -1,5 +1,8 @@
 package ch.sbb.exportservice.config;
 
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_JSON_JOB_NAME;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.exportservice.entity.lidi.TimetableFieldNumber;
@@ -14,12 +17,9 @@ import ch.sbb.exportservice.processor.TimetableFieldNumberCsvProcessor;
 import ch.sbb.exportservice.processor.TimetableFieldNumberJsonProcessor;
 import ch.sbb.exportservice.reader.TimetableFieldNumberRowMapper;
 import ch.sbb.exportservice.reader.TimetableFieldNumberSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
-import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvTimetableFieldNumberWriter;
 import ch.sbb.exportservice.writer.JsonTimetableFieldNumberWriter;
@@ -145,14 +145,14 @@ public class TimetableFieldNumberExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteCsvFileTaskletV2 deleteTtfnCsvFileTasklet(
+  public FileDeletingTaskletV2 deleteTtfnCsvFileTasklet(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TIMETABLE_FIELD_NUMBER, exportTypeV2)
         .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
-    return new DeleteCsvFileTaskletV2(filePath);
+    return new FileDeletingTaskletV2(filePath);
   }
   // END: Delete Csv
 
@@ -229,13 +229,13 @@ public class TimetableFieldNumberExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteJsonFileTaskletV2 deleteTtfnJsonFileTasklet(
+  public FileDeletingTaskletV2 deleteTtfnJsonFileTasklet(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TIMETABLE_FIELD_NUMBER, exportTypeV2)
         .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
-    return new DeleteJsonFileTaskletV2(filePath);
+    return new FileDeletingTaskletV2(filePath);
   }
   // END: Delete Json
 
