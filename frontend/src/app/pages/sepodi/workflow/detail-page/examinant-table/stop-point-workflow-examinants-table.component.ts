@@ -5,10 +5,11 @@ import {ExaminantFormGroup, StopPointWorkflowDetailFormGroupBuilder} from '../de
 import { ValidationService } from '../../../../../core/validation/validation.service';
 
 @Component({
-  selector: 'stop-point-workflow-examinants-table',
-  templateUrl: './stop-point-workflow-examinants-table.component.html',
-  styleUrls: ['./stop-point-workflow-examinants-table.component.scss'],
-  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    selector: 'stop-point-workflow-examinants-table',
+    templateUrl: './stop-point-workflow-examinants-table.component.html',
+    styleUrls: ['./stop-point-workflow-examinants-table.component.scss'],
+    viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    standalone: false
 })
 export class StopPointWorkflowExaminantsTableComponent {
   readonly WorkflowStatus = WorkflowStatus;

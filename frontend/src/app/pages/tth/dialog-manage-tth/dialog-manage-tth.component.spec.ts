@@ -11,8 +11,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AppTestingModule } from '../../../app.testing.module';
 
 @Component({
-  selector: 'atlas-slide-toggle',
-  template: '<p>MockAtlasSlideToggleComponent</p>',
+    selector: 'atlas-slide-toggle',
+    template: '<p>MockAtlasSlideToggleComponent</p>',
+    standalone: false
 })
 class MockAtlasSlideToggleComponent {
   @Input() toggle = false;

@@ -14,9 +14,10 @@ import { map } from 'rxjs/operators';
 import { PrmTabDetailBaseComponent } from '../../../shared/prm-tab-detail-base.component';
 
 @Component({
-  selector: 'app-reference-point',
-  templateUrl: './reference-point-detail.component.html',
-  providers: [ValidityService],
+    selector: 'app-reference-point',
+    templateUrl: './reference-point-detail.component.html',
+    providers: [ValidityService],
+    standalone: false
 })
 export class ReferencePointDetailComponent
   extends PrmTabDetailBaseComponent<ReadReferencePointVersion>

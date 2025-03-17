@@ -14,9 +14,10 @@ import { MatSelectChange } from '@angular/material/select';
 import { PrmVariantInfoService } from '../../prm-variant-info.service';
 
 @Component({
-  selector: 'app-stop-point-complete-form',
-  templateUrl: './stop-point-complete-form.component.html',
-  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    selector: 'app-stop-point-complete-form',
+    templateUrl: './stop-point-complete-form.component.html',
+    viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    standalone: false
 })
 export class StopPointCompleteFormComponent implements OnInit {
   @Input() form!: FormGroup<StopPointDetailFormGroup>;

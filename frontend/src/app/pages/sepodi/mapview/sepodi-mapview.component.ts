@@ -10,9 +10,10 @@ import { UserService } from '../../../core/auth/user/user.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 
 @Component({
-  selector: 'app-sepodi-mapview',
-  templateUrl: './sepodi-mapview.component.html',
-  styleUrls: ['./sepodi-mapview.component.scss'],
+    selector: 'app-sepodi-mapview',
+    templateUrl: './sepodi-mapview.component.html',
+    styleUrls: ['./sepodi-mapview.component.scss'],
+    standalone: false
 })
 export class SepodiMapviewComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('detailContainer') detailContainer!: ElementRef<HTMLElement>;

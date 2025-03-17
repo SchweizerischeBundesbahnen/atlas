@@ -4,7 +4,8 @@ import { Cantons } from './Cantons';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Pipe({
-  name: 'displayCanton',
+    name: 'displayCanton',
+    standalone: false
 })
 export class DisplayCantonPipe implements PipeTransform {
   constructor(private translatePipe: TranslatePipe) {}

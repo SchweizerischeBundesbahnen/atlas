@@ -24,9 +24,10 @@ import { MatSelectChange } from '@angular/material/select';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
 
 @Component({
-  selector: 'app-relation-tab-detail',
-  templateUrl: './relation-tab-detail.component.html',
-  providers: [ValidityService],
+    selector: 'app-relation-tab-detail',
+    templateUrl: './relation-tab-detail.component.html',
+    providers: [ValidityService],
+    standalone: false
 })
 export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   referencePoints: ReadReferencePointVersion[] = [];

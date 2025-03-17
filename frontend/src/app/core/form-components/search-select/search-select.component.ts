@@ -13,9 +13,10 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-  selector: 'form-search-select',
-  templateUrl: './search-select.component.html',
-  styleUrls: ['./search-select.component.scss'],
+    selector: 'form-search-select',
+    templateUrl: './search-select.component.html',
+    styleUrls: ['./search-select.component.scss'],
+    standalone: false
 })
 export class SearchSelectComponent<TYPE> {
   @Input() items$: Observable<TYPE[]> = of([]);

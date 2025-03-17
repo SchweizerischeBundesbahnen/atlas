@@ -12,9 +12,10 @@ import { TableFilter } from '../../../../core/components/table-filter/config/tab
 import { TableService } from '../../../../core/components/table/table.service';
 
 @Component({
-  selector: 'app-service-point-traffic-point-elements-table',
-  templateUrl: './traffic-point-elements-table.component.html',
-  styleUrls: ['./traffic-point-elements-table.component.scss'],
+    selector: 'app-service-point-traffic-point-elements-table',
+    templateUrl: './traffic-point-elements-table.component.html',
+    styleUrls: ['./traffic-point-elements-table.component.scss'],
+    standalone: false
 })
 export class TrafficPointElementsTableComponent implements OnInit {
 

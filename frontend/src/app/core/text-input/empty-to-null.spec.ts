@@ -6,7 +6,8 @@ import { By } from '@angular/platform-browser';
 import { AppTestingModule } from '../../app.testing.module';
 
 @Component({
-  template: ` <input [formControl]="form" emptyToNull /> `,
+    template: ` <input [formControl]="form" emptyToNull /> `,
+    standalone: false
 })
 class TestComponent {
   form = new FormControl();

@@ -17,9 +17,10 @@ import {AddExaminantsFormGroup, AddExaminantsFormGroupBuilder} from "./add-exami
 import {catchError, of} from "rxjs";
 
 @Component({
-  selector: 'app-add-examinants',
-  templateUrl: './add-examinants.component.html',
-  styleUrls: ['./add-examinants.component.scss'],
+    selector: 'app-add-examinants',
+    templateUrl: './add-examinants.component.html',
+    styleUrls: ['./add-examinants.component.scss'],
+    standalone: false
 })
 export class AddExaminantsComponent implements OnInit {
 

@@ -2,9 +2,10 @@ import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@an
 import {FileUploadError} from './file-upload-error';
 
 @Component({
-  selector: 'atlas-file-upload',
-  templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.scss'],
+    selector: 'atlas-file-upload',
+    templateUrl: './file-upload.component.html',
+    styleUrls: ['./file-upload.component.scss'],
+    standalone: false
 })
 export class FileUploadComponent {
   @Input() acceptedFileExtension!: string;

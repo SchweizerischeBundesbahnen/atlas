@@ -6,9 +6,10 @@ import {
 } from "./today-and-future-timetable-header/today-and-future-timetable-header.component";
 
 @Component({
-  selector: 'form-date-range',
-  templateUrl: './date-range.component.html',
-  styleUrls: ['../text-field/text-field.component.scss'],
+    selector: 'form-date-range',
+    templateUrl: './date-range.component.html',
+    styleUrls: ['../text-field/text-field.component.scss'],
+    standalone: false
 })
 export class DateRangeComponent {
 

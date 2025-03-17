@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'decimalNumber',
+    name: 'decimalNumber',
+    standalone: false
 })
 export class DecimalNumberPipe implements PipeTransform {
   transform(value: number | undefined, digits: number) {

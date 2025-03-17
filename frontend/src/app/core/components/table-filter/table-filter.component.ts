@@ -10,9 +10,10 @@ import {TableFilterSingleSearch} from "./config/table-filter-single-search";
 import {TableFilterBoolean} from "./config/table-filter-boolean";
 
 @Component({
-  selector: 'app-table-filter',
-  templateUrl: './table-filter.component.html',
-  styleUrls: ['./table-filter.component.scss'],
+    selector: 'app-table-filter',
+    templateUrl: './table-filter.component.html',
+    styleUrls: ['./table-filter.component.scss'],
+    standalone: false
 })
 export class TableFilterComponent<TFilterConfig> {
   @Input() filterConfigurations: TableFilter<TFilterConfig>[][] = [];

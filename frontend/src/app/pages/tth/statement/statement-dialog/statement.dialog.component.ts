@@ -9,8 +9,9 @@ import {takeUntil} from 'rxjs/operators';
 import {ValidationService} from 'src/app/core/validation/validation.service';
 
 @Component({
-  selector: 'app-dialog',
-  templateUrl: './statement.dialog.component.html',
+    selector: 'app-dialog',
+    templateUrl: './statement.dialog.component.html',
+    standalone: false
 })
 export class StatementDialogComponent {
   private ngUnsubscribe = new Subject<void>();

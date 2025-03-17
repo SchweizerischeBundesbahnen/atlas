@@ -74,8 +74,9 @@ const mockData = {
 };
 
 @Component({
-  selector: 'app-coverage',
-  template: '<p>Mock Product Editor Component</p>',
+    selector: 'app-coverage',
+    template: '<p>Mock Product Editor Component</p>',
+    standalone: false
 })
 class MockAppCoverageComponent {
   @Input() pageType!: Page;

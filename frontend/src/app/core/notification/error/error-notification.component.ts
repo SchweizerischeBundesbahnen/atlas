@@ -4,9 +4,10 @@ import { NotificationService } from '../notification.service';
 import { ErrorResponse } from '../../../api';
 
 @Component({
-  selector: 'error-notification',
-  templateUrl: './error-notification.component.html',
-  styleUrls: ['./error-notification.component.scss'],
+    selector: 'error-notification',
+    templateUrl: './error-notification.component.html',
+    styleUrls: ['./error-notification.component.scss'],
+    standalone: false
 })
 export class ErrorNotificationComponent {
   constructor(

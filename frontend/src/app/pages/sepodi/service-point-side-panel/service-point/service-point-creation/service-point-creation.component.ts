@@ -22,10 +22,11 @@ import {DetailFormComponent} from "../../../../../core/leave-guard/leave-dirty-f
 import {PermissionService} from "../../../../../core/auth/permission/permission.service";
 
 @Component({
-  selector: 'app-service-point-creation',
-  templateUrl: './service-point-creation.component.html',
-  styleUrls: ['./service-point-creation.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-service-point-creation',
+    templateUrl: './service-point-creation.component.html',
+    styleUrls: ['./service-point-creation.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ServicePointCreationComponent implements OnInit, DetailFormComponent {
   public form: FormGroup<ServicePointDetailFormGroup> =

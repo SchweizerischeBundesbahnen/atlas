@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'atlas-detail-page-container',
-  templateUrl: './detail-page-container.component.html',
-  styleUrls: ['detail-page-container.component.scss'],
+    selector: 'atlas-detail-page-container',
+    templateUrl: './detail-page-container.component.html',
+    styleUrls: ['detail-page-container.component.scss'],
+    standalone: false
 })
 export class DetailPageContainerComponent {}

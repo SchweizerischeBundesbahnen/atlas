@@ -14,9 +14,10 @@ import { TransportCompaniesService, TransportCompany } from '../../../api';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'tu-select',
-  templateUrl: './transport-company-select.component.html',
-  styleUrls: ['./transport-company-select.component.scss'],
+    selector: 'tu-select',
+    templateUrl: './transport-company-select.component.html',
+    styleUrls: ['./transport-company-select.component.scss'],
+    standalone: false
 })
 export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = '';

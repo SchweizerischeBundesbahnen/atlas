@@ -12,8 +12,9 @@ import { TableFilter } from '../../../core/components/table-filter/config/table-
 import { Pages } from '../../pages';
 
 @Component({
-  selector: 'app-bodi-transport-companies',
-  templateUrl: './transport-companies.component.html',
+    selector: 'app-bodi-transport-companies',
+    templateUrl: './transport-companies.component.html',
+    standalone: false
 })
 export class TransportCompaniesComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<TransportCompany>[] = [

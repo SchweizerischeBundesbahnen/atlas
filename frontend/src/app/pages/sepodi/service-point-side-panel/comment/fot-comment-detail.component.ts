@@ -19,9 +19,10 @@ export interface FotCommentFormGroup {
 }
 
 @Component({
-  selector: 'app-service-point-fot-comment',
-  templateUrl: './fot-comment-detail.component.html',
-  styleUrls: ['./fot-comment-detail.component.scss'],
+    selector: 'app-service-point-fot-comment',
+    templateUrl: './fot-comment-detail.component.html',
+    styleUrls: ['./fot-comment-detail.component.scss'],
+    standalone: false
 })
 export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
   form!: FormGroup<FotCommentFormGroup>;

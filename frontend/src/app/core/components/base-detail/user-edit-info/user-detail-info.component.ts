@@ -7,10 +7,11 @@ import { CreationEditionRecord } from './creation-edition-record';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-user-detail-info [record]',
-  templateUrl: './user-detail-info.component.html',
-  styleUrls: ['./user-detail-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-user-detail-info [record]',
+    templateUrl: './user-detail-info.component.html',
+    styleUrls: ['./user-detail-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UserDetailInfoComponent {
   @Input() short = false;

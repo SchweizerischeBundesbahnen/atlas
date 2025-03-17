@@ -6,8 +6,9 @@ import {VersionsHandlingService} from "../../../../../core/versioning/versions-h
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
 
 @Component({
-  selector: 'app-toilet-detail-panel',
-  templateUrl: './toilet-detail-panel.component.html',
+    selector: 'app-toilet-detail-panel',
+    templateUrl: './toilet-detail-panel.component.html',
+    standalone: false
 })
 export class ToiletDetailPanelComponent implements OnInit {
   isNew = false;

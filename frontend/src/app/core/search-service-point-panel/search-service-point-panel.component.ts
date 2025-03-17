@@ -2,9 +2,10 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ServicePointSearchType} from "../search-service-point/service-point-search";
 
 @Component({
-  selector: 'app-search-service-point-panel',
-  templateUrl: './search-service-point-panel.component.html',
-  styleUrls: ['./search-service-point-panel.component.scss']
+    selector: 'app-search-service-point-panel',
+    templateUrl: './search-service-point-panel.component.html',
+    styleUrls: ['./search-service-point-panel.component.scss'],
+    standalone: false
 })
 export class SearchServicePointPanelComponent {
 

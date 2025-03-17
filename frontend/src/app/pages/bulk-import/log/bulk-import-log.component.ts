@@ -5,9 +5,10 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { BulkImportLogEntry, BulkImportResult, BulkImportService } from '../../../api';
 
 @Component({
-  selector: 'bulk-import-log',
-  templateUrl: './bulk-import-log.component.html',
-  styleUrl: 'bulk-import-log.component.scss',
+    selector: 'bulk-import-log',
+    templateUrl: './bulk-import-log.component.html',
+    styleUrl: 'bulk-import-log.component.scss',
+    standalone: false
 })
 export class BulkImportLogComponent implements OnInit {
   data$?: Observable<{ importResult?: BulkImportResultTemplate; id: unknown }>;

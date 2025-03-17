@@ -32,10 +32,11 @@ const NUMBER_COLONS_PLATFORM = 1;
 const NUMBER_COLONS_AREA = 0;
 
 @Component({
-  selector: 'app-traffic-point-elements',
-  templateUrl: './traffic-point-elements-detail.component.html',
-  styleUrls: ['./traffic-point-elements-detail.component.scss'],
-  providers: [ValidityService]
+    selector: 'app-traffic-point-elements',
+    templateUrl: './traffic-point-elements-detail.component.html',
+    styleUrls: ['./traffic-point-elements-detail.component.scss'],
+    providers: [ValidityService],
+    standalone: false
 })
 export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
   readonly extractSloid = (option: AreaOption) => option.sloid;

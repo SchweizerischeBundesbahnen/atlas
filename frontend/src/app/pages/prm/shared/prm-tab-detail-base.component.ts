@@ -12,7 +12,8 @@ import { tap } from 'rxjs/operators';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 
 @Component({
-  template: '',
+    template: '',
+    standalone: false
 })
 export abstract class PrmTabDetailBaseComponent<T>
   implements OnInit, DetailFormComponent, DetailWithCancelEdit

@@ -12,8 +12,9 @@ import {TablePagination} from "../../../../core/components/table/table-paginatio
 import {TableContentPaginationAndSorting} from "../../../../core/components/table/table-content-pagination-and-sorting";
 
 @Component({
-  selector: 'app-contact-point-table',
-  templateUrl: './contact-point-table.component.html',
+    selector: 'app-contact-point-table',
+    templateUrl: './contact-point-table.component.html',
+    standalone: false
 })
 export class ContactPointTableComponent extends BasePrmTabComponentService implements OnInit {
 

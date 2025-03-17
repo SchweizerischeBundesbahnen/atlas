@@ -4,9 +4,10 @@ import {DecisionFormGroup} from './decision-form-group';
 import {JudgementType} from 'src/app/api';
 
 @Component({
-  selector: 'decision-form',
-  templateUrl: './decision-form.component.html',
-  styleUrls: ['decision-form.component.scss'],
+    selector: 'decision-form',
+    templateUrl: './decision-form.component.html',
+    styleUrls: ['decision-form.component.scss'],
+    standalone: false
 })
 export class DecisionFormComponent {
   protected readonly JudgementType = JudgementType;

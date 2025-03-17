@@ -26,10 +26,11 @@ import { Validity } from '../../model/validity';
 import { ValidityService } from '../validity/validity.service';
 
 @Component({
-  selector: 'app-loading-points',
-  templateUrl: './loading-points-detail.component.html',
-  styleUrls: ['./loading-points-detail.component.scss'],
-  providers: [ValidityService],
+    selector: 'app-loading-points',
+    templateUrl: './loading-points-detail.component.html',
+    styleUrls: ['./loading-points-detail.component.scss'],
+    providers: [ValidityService],
+    standalone: false
 })
 export class LoadingPointsDetailComponent implements DetailFormComponent {
   loadingPointVersions!: ReadLoadingPointVersion[];

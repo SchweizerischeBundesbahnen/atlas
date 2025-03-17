@@ -14,9 +14,10 @@ import {Pages} from "../../../pages";
 import {StopPointRejectWorkflowDialogData} from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog-data";
 
 @Component({
-  selector: 'app-stop-point-restart-workflow-dialog',
-  templateUrl: './stop-point-restart-workflow-dialog.component.html',
-  styleUrls: ['./stop-point-restart-workflow-dialog.component.scss']
+    selector: 'app-stop-point-restart-workflow-dialog',
+    templateUrl: './stop-point-restart-workflow-dialog.component.html',
+    styleUrls: ['./stop-point-restart-workflow-dialog.component.scss'],
+    standalone: false
 })
 export class StopPointRestartWorkflowDialogComponent implements OnInit {
 

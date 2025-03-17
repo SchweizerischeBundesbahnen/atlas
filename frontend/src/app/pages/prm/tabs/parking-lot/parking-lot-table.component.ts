@@ -12,8 +12,9 @@ import {ParkingLotOverview, PersonWithReducedMobilityService} from "../../../../
 import {TableContentPaginationAndSorting} from "../../../../core/components/table/table-content-pagination-and-sorting";
 
 @Component({
-  selector: 'app-parking-lot-table',
-  templateUrl: './parking-lot-table.component.html',
+    selector: 'app-parking-lot-table',
+    templateUrl: './parking-lot-table.component.html',
+    standalone: false
 })
 export class ParkingLotTableComponent extends BasePrmTabComponentService implements OnInit {
   tableColumns: TableColumn<ParkingLotOverview>[] = [

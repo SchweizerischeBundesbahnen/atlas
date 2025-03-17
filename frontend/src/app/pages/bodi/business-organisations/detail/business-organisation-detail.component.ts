@@ -24,9 +24,10 @@ import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 
 @Component({
-  templateUrl: './business-organisation-detail.component.html',
-  styleUrls: ['./business-organisation-detail.component.scss'],
-  providers: [ValidityService],
+    templateUrl: './business-organisation-detail.component.html',
+    styleUrls: ['./business-organisation-detail.component.scss'],
+    providers: [ValidityService],
+    standalone: false
 })
 export class BusinessOrganisationDetailComponent
   extends BaseDetailController<BusinessOrganisationVersion>

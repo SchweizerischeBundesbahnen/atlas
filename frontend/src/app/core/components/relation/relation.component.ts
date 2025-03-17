@@ -5,9 +5,10 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 
 @Component({
-  selector: 'app-relation',
-  templateUrl: './relation.component.html',
-  styleUrls: ['./relation.component.scss'],
+    selector: 'app-relation',
+    templateUrl: './relation.component.html',
+    styleUrls: ['./relation.component.scss'],
+    standalone: false
 })
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export class RelationComponent<RECORD_TYPE> {
