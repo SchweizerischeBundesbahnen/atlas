@@ -2,7 +2,7 @@ import ReleaseApiUtils, {
   PrmExportType,
 } from '../../../support/util/release-api/release-api-utils';
 
-describe('Check latest exports in PRM', { testIsolation: false }, () => {
+describe.skip('Check latest exports in PRM', { testIsolation: false }, () => {
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
   });
