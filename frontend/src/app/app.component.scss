@@ -10,6 +10,11 @@ mat-sidenav {
   mat-nav-list {
     padding: initial;
   }
+
+  &.mat-drawer-opened {
+    max-width: 239px;
+  }
+
 }
 
 mat-sidenav-content {
