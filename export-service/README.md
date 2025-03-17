@@ -158,8 +158,7 @@ You have to define in the **Chart template** the following properties:
 
 #### Add the Secrets to Open Shift
 
-Remember to store the secrets to our Open Shift for every environments (e.g.
-see [amazon-client-line-directory]https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/ns/atlas-dev/secrets/amazon-client-line-directory)
+Remember to store the secrets to our Open Shift for every environment.
 
 #### Configure Client
 
