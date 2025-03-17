@@ -20,7 +20,7 @@
         <div class="mb-2">
           <span class="font-bold-lg color-gray-900">{{ 'WORKFLOW.STATUS_DETAIL' | translate }} </span>
           <span class="color-gray-900">{{
-              'WORKFLOW.STATUS.' + this.lineVersionSnapshot.workflowStatus | translate
+              'WORKFLOW.STATUS.' + lineVersionSnapshot.workflowStatus | translate
             }}</span>
         </div>
         <app-workflow-form
@@ -52,7 +52,7 @@
           <i class="bi bi-exclamation-diamond-fill warning-icon fs-5 me-1"></i>
         </span>
           <a
-            (click)="this.navigateToLine()"
+            (click)="navigateToLine()"
             class="font-bold-base color-primary-400 mb-2"
             target="_blank"
           >{{ 'LIDI.LINE_VERSION_SNAPSHOT.NAVIGATE_TO_VERSION' | translate }}
@@ -63,11 +63,11 @@
         <div class="mb-2">
           <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
           <span class="color-gray-900">{{
-            'COMMON.STATUS_TYPES.' + this.lineVersionSnapshot.status | translate
+            'COMMON.STATUS_TYPES.' + lineVersionSnapshot.status | translate
             }}</span>
           <span class=" ps-3 font-bold-lg color-gray-900">{{ 'LIDI.TYPE' | translate }} </span>
           <span class="color-gray-900" data-cy="lineTypeReadOnly">
-            {{ 'LIDI.LINE.TYPES.' + this.lineVersionSnapshot.lineType | translate }}
+            {{ 'LIDI.LINE.TYPES.' + lineVersionSnapshot.lineType | translate }}
           </span>
         </div>
         <line-detail-form
