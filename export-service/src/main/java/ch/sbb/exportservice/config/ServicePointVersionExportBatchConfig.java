@@ -1,5 +1,8 @@
 package ch.sbb.exportservice.config;
 
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.exportservice.entity.sepodi.ServicePointVersion;
@@ -19,15 +22,12 @@ import ch.sbb.exportservice.reader.ServicePointVersionRowMapper;
 import ch.sbb.exportservice.reader.ServicePointVersionSqlQueryUtil;
 import ch.sbb.exportservice.tasklet.RenameTasklet;
 import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTasklet;
-import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvServicePointVersionWriter;
 import ch.sbb.exportservice.writer.JsonServicePointVersionWriter;
@@ -144,6 +144,7 @@ public class ServicePointVersionExportBatchConfig {
   // END: Upload Csv V2
 
   // BEGIN: Upload Csv V1
+  @Deprecated(forRemoval = true)
   @Bean
   public Step uploadServicePointCsvFileStepV1() {
     return new StepBuilder("uploadCsvFileV1", jobRepository)
@@ -152,6 +153,7 @@ public class ServicePointVersionExportBatchConfig {
         .build();
   }
 
+  @Deprecated(forRemoval = true)
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadServicePointCsvFileTaskletV1(
@@ -162,6 +164,7 @@ public class ServicePointVersionExportBatchConfig {
   // END: Upload Csv V1
 
   // BEGIN: Rename Csv
+  @Deprecated(forRemoval = true)
   @Bean
   public Step renameServicePointCsvStep() {
     return new StepBuilder("renameCsv", jobRepository)
@@ -170,6 +173,7 @@ public class ServicePointVersionExportBatchConfig {
         .build();
   }
 
+  @Deprecated(forRemoval = true)
   @Bean
   @StepScope
   public RenameTasklet renameServicePointTasklet(
@@ -196,18 +200,19 @@ public class ServicePointVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteCsvFileTaskletV2 deleteServicePointCsvFileTaskletV2(
+  public FileDeletingTaskletV2 deleteServicePointCsvFileTaskletV2(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.SERVICE_POINT, exportTypeV2)
         .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
-    return new DeleteCsvFileTaskletV2(filePathV2);
+    return new FileDeletingTaskletV2(filePathV2);
   }
   // END: Delete Csv V2
 
   // BEGIN: Delete Csv V1
+  @Deprecated(forRemoval = true)
   @Bean
   public Step deleteServicePointCsvFileStepV1() {
     return new StepBuilder("deleteCsvFileV1", jobRepository)
@@ -216,6 +221,7 @@ public class ServicePointVersionExportBatchConfig {
         .build();
   }
 
+  @Deprecated(forRemoval = true)
   @Bean
   @StepScope
   public DeleteCsvFileTasklet deleteServicePointCsvFileTaskletV1(
@@ -291,6 +297,7 @@ public class ServicePointVersionExportBatchConfig {
   // END: Upload Json V2
 
   // BEGIN: Rename Json
+  @Deprecated(forRemoval = true)
   @Bean
   public Step renameServicePointJsonStep() {
     return new StepBuilder("renameJson", jobRepository)
@@ -299,6 +306,7 @@ public class ServicePointVersionExportBatchConfig {
         .build();
   }
 
+  @Deprecated(forRemoval = true)
   @Bean
   @StepScope
   public RenameTasklet renameServicePointJsonTasklet(
@@ -315,6 +323,7 @@ public class ServicePointVersionExportBatchConfig {
   // END: Rename Json
 
   // BEGIN: Upload Json V1
+  @Deprecated(forRemoval = true)
   @Bean
   public Step uploadServicePointJsonFileStepV1() {
     return new StepBuilder("uploadJsonFileV1", jobRepository)
@@ -323,6 +332,7 @@ public class ServicePointVersionExportBatchConfig {
         .build();
   }
 
+  @Deprecated(forRemoval = true)
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadServicePointJsonFileTaskletV1(
@@ -343,17 +353,18 @@ public class ServicePointVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteJsonFileTaskletV2 deleteServicePointJsonTaskletV2(
+  public FileDeletingTaskletV2 deleteServicePointJsonTaskletV2(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     final ExportFilePathV2 filePathV2 = ExportFilePathV2.getV2Builder(ExportObjectV2.SERVICE_POINT, exportTypeV2)
         .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
-    return new DeleteJsonFileTaskletV2(filePathV2);
+    return new FileDeletingTaskletV2(filePathV2);
   }
   // END: Delete Json V2
 
   // BEGIN: Delete Json V1
+  @Deprecated(forRemoval = true)
   @Bean
   public Step deleteServicePointJsonFileStepV1() {
     return new StepBuilder("deleteJsonFileV1", jobRepository)
@@ -362,6 +373,7 @@ public class ServicePointVersionExportBatchConfig {
         .build();
   }
 
+  @Deprecated(forRemoval = true)
   @Bean
   @StepScope
   public DeleteJsonFileTasklet deleteServicePointJsonTaskletV1(
