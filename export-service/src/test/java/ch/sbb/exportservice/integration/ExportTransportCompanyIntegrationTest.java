@@ -1,21 +1,22 @@
 package ch.sbb.exportservice.integration;
 
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BoDiDbSchemaCreation;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.service.BaseExportJobService;
 import ch.sbb.exportservice.service.BaseExportJobService.JobParams;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
+import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Files;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -45,7 +46,7 @@ class ExportTransportCompanyIntegrationTest extends BaseExportCsvDataIntegration
 
   @MockitoBean
   @Qualifier("deleteTransportCompanyCsvFileTasklet")
-  private DeleteCsvFileTaskletV2 transportCompanyCsvFileDeletingTasklet;
+  private FileDeletingTaskletV2 transportCompanyCsvFileDeletingTasklet;
 
   @Test
   void shouldExecuteExportTransportCompanyCsvJob() throws Exception {
