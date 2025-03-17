@@ -12,11 +12,11 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
 @Slf4j
-public abstract class FileDeletingTaskletV2 implements Tasklet {
+public class FileDeletingTaskletV2 implements Tasklet {
 
   private final ExportFilePathV2 exportFilePath;
 
-  protected FileDeletingTaskletV2(ExportFilePathV2 filePath) {
+  public FileDeletingTaskletV2(ExportFilePathV2 filePath) {
     this.exportFilePath = filePath;
   }
 

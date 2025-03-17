@@ -6,6 +6,7 @@ import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import java.io.IOException;
 
+@Deprecated(forRemoval = true)
 public class UploadJsonFileTasklet extends FileUploadTasklet {
 
   public UploadJsonFileTasklet(ExportTypeBase exportType, ExportFileName exportFileName) {

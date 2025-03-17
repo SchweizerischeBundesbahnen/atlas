@@ -1,5 +1,8 @@
 package ch.sbb.exportservice.config;
 
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_JSON_JOB_NAME;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
 import ch.sbb.atlas.export.model.prm.ToiletVersionCsvModel;
@@ -16,14 +19,11 @@ import ch.sbb.exportservice.processor.ToiletVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ToiletVersionJsonProcessor;
 import ch.sbb.exportservice.reader.ToiletVersionRowMapper;
 import ch.sbb.exportservice.reader.ToiletVersionSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
-import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTasklet;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvToiletVersionWriter;
 import ch.sbb.exportservice.writer.JsonToiletVersionWriter;
@@ -139,6 +139,7 @@ public class ToiletVersionExportBatchConfig {
   // END: Upload Csv V2
 
   // BEGIN: Upload Csv V1
+  @Deprecated(forRemoval = true)
   @Bean
   public Step uploadToiletCsvFileStepV1() {
     return new StepBuilder("uploadCsvFileV1", jobRepository)
@@ -147,6 +148,7 @@ public class ToiletVersionExportBatchConfig {
         .build();
   }
 
+  @Deprecated(forRemoval = true)
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadToiletCsvFileTaskletV1(
@@ -167,13 +169,13 @@ public class ToiletVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteCsvFileTaskletV2 deleteToiletCsvFileTaskletV2(
+  public FileDeletingTaskletV2 deleteToiletCsvFileTaskletV2(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TOILET, exportTypeV2)
         .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
-    return new DeleteCsvFileTaskletV2(filePath);
+    return new FileDeletingTaskletV2(filePath);
   }
   // END: Delete Csv V2
 
@@ -241,6 +243,7 @@ public class ToiletVersionExportBatchConfig {
   // END: Upload Json V2
 
   // BEGIN: Upload Json V1
+  @Deprecated(forRemoval = true)
   @Bean
   public Step uploadToiletJsonFileStepV1() {
     return new StepBuilder("uploadJsonFileV1", jobRepository)
@@ -249,6 +252,7 @@ public class ToiletVersionExportBatchConfig {
         .build();
   }
 
+  @Deprecated(forRemoval = true)
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadToiletJsonFileTaskletV1(
@@ -269,13 +273,13 @@ public class ToiletVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteJsonFileTaskletV2 deleteToiletJsonFileTaskletV2(
+  public FileDeletingTaskletV2 deleteToiletJsonFileTaskletV2(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.TOILET, exportTypeV2)
         .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
-    return new DeleteJsonFileTaskletV2(filePath);
+    return new FileDeletingTaskletV2(filePath);
   }
   // END: Delete Json V2
 
