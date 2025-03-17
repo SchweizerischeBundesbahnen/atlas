@@ -1,5 +1,8 @@
 package ch.sbb.exportservice.config;
 
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_JSON_JOB_NAME;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.exportservice.entity.lidi.Line;
@@ -14,12 +17,9 @@ import ch.sbb.exportservice.processor.LineCsvProcessor;
 import ch.sbb.exportservice.processor.LineJsonProcessor;
 import ch.sbb.exportservice.reader.LineRowMapper;
 import ch.sbb.exportservice.reader.LineSqlQueryUtil;
-import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTaskletV2;
-import ch.sbb.exportservice.tasklet.delete.DeleteJsonFileTaskletV2;
+import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LINE_JSON_JOB_NAME;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvLineWriter;
 import ch.sbb.exportservice.writer.JsonLineWriter;
@@ -145,14 +145,14 @@ public class LineExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteCsvFileTaskletV2 deleteLineCsvFileTasklet(
+  public FileDeletingTaskletV2 deleteLineCsvFileTasklet(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.LINE, exportTypeV2)
         .extension(ExportExtensionFileType.CSV_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
-    return new DeleteCsvFileTaskletV2(filePath);
+    return new FileDeletingTaskletV2(filePath);
   }
   // END: Delete Csv
 
@@ -229,13 +229,13 @@ public class LineExportBatchConfig {
 
   @Bean
   @StepScope
-  public DeleteJsonFileTaskletV2 deleteLineJsonFileTasklet(
+  public FileDeletingTaskletV2 deleteLineJsonFileTasklet(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2) {
     final ExportFilePathV2 filePath = ExportFilePathV2.getV2Builder(ExportObjectV2.LINE, exportTypeV2)
         .extension(ExportExtensionFileType.JSON_EXTENSION.getExtension())
         .systemDir(fileService.getDir())
         .build();
-    return new DeleteJsonFileTaskletV2(filePath);
+    return new FileDeletingTaskletV2(filePath);
   }
   // END: Delete Json
 

@@ -18,6 +18,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Deprecated(forRemoval = true)
 @Slf4j
 public abstract class FileUploadTasklet implements Tasklet {
 

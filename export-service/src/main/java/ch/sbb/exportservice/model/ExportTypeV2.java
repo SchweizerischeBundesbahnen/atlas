@@ -1,17 +1,23 @@
 package ch.sbb.exportservice.model;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum ExportTypeV2 {
 
-  ACTUAL,
-  FULL,
-  FUTURE_TIMETABLE,
+  ACTUAL("actual-date", ""),
+  FULL("full", ""),
+  FUTURE_TIMETABLE("future-timetable", ""),
 
-  SWISS_ACTUAL,
-  SWISS_FULL,
-  SWISS_FUTURE_TIMETABLE,
+  SWISS_ACTUAL("actual-date", "swiss"),
+  SWISS_FULL("full", "swiss"),
+  SWISS_FUTURE_TIMETABLE("future-timetable", "swiss"),
 
-  WORLD_ACTUAL,
-  WORLD_FULL,
-  WORLD_FUTURE_TIMETABLE,
+  WORLD_ACTUAL("actual-date", "world"),
+  WORLD_FULL("full", "world"),
+  WORLD_FUTURE_TIMETABLE("future-timetable", "world");
+
+  final String dir;
+  final String prefix;
 
 }

@@ -56,24 +56,12 @@ public final class ExportFilePathV2 {
   }
 
   public static ExportFilePathV2Builder getV2Builder(ExportObjectV2 type, ExportTypeV2 subtype) {
-    final String dir = switch (subtype) {
-      case ACTUAL, SWISS_ACTUAL, WORLD_ACTUAL -> "actual-date";
-      case FULL, SWISS_FULL, WORLD_FULL -> "full";
-      case FUTURE_TIMETABLE, SWISS_FUTURE_TIMETABLE, WORLD_FUTURE_TIMETABLE -> "future-timetable";
-    };
-
-    final String prefix = switch (subtype) {
-      case SWISS_FULL, SWISS_ACTUAL, SWISS_FUTURE_TIMETABLE -> "swiss";
-      case WORLD_FULL, WORLD_ACTUAL, WORLD_FUTURE_TIMETABLE -> "world";
-      default -> "";
-    };
-
-    ExportFilePathV2Builder exportFilePathBuilder = new ExportFilePathV2Builder();
+    final ExportFilePathV2Builder exportFilePathBuilder = new ExportFilePathV2Builder();
     exportFilePathBuilder.actualDate(LocalDate.now());
-    exportFilePathBuilder.baseDir("v2" + PATH_DELIMITER + type.name().toLowerCase().replace('_', '-'));
-    exportFilePathBuilder.dir(dir);
-    exportFilePathBuilder.prefix(prefix);
-    exportFilePathBuilder.fileName(type.name().toLowerCase().replace('_', '-'));
+    exportFilePathBuilder.baseDir("v2" + PATH_DELIMITER + type.getName());
+    exportFilePathBuilder.dir(subtype.dir);
+    exportFilePathBuilder.prefix(subtype.prefix);
+    exportFilePathBuilder.fileName(type.getName());
     return exportFilePathBuilder;
   }
 
