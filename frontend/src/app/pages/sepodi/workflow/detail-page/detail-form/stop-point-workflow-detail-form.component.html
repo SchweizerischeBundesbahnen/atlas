@@ -113,7 +113,7 @@
           <em class="bi bi-geo-alt-fill"></em
           >{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
         </span>
-        @if (this.stopPoint.servicePointGeolocation?.lv95) {
+        @if (stopPoint.servicePointGeolocation?.lv95) {
           <atlas-link label="Swisstopo" (linkClicked)="goToSwissTopo()"></atlas-link>
           /
         }

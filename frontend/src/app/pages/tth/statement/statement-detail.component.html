@@ -206,8 +206,8 @@
                 controlName="statementSender.emails"
               >
                 <atlas-clipboard
-                  [value]="this.emails"
-                  [showMe]="this.form.disabled"
+                  [value]="emails"
+                  [showMe]="form.disabled"
                   class="ps-2 pt-2"
                 ></atlas-clipboard>
               </atlas-text-list>
@@ -234,7 +234,7 @@
               <atlas-file
                 (downloadFile)="downloadFile($event.name)"
                 (fileDeleted)="removeDocument($event.name)"
-                [deleteEnabled]="this.form.enabled"
+                [deleteEnabled]="form.enabled"
                 [downloadEnabled]="true"
                 [file]="{ name: document.fileName, size: document.fileSize }"
               ></atlas-file>
@@ -366,7 +366,7 @@
       </atlas-button>
       <atlas-button
         (click)="save()"
-        [disabled]="!(this.form.dirty || this.uploadedFiles.length > 0)"
+        [disabled]="!(form.dirty || uploadedFiles.length > 0)"
         [footerEdit]="form.enabled"
         [submitButton]="true"
         buttonDataCy="save-item"
