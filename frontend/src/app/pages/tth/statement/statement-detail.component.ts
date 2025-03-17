@@ -39,9 +39,10 @@ import { PermissionService } from '../../../core/auth/permission/permission.serv
 import {LoadingSpinnerService} from "../../../core/components/loading-spinner/loading-spinner.service";
 
 @Component({
-  selector: 'app-statement-detail',
-  templateUrl: './statement-detail.component.html',
-  styleUrls: ['./statement-detail.component.scss'],
+    selector: 'app-statement-detail',
+    templateUrl: './statement-detail.component.html',
+    styleUrls: ['./statement-detail.component.scss'],
+    standalone: false
 })
 export class StatementDetailComponent implements OnInit, DetailFormComponent {
   YEAR_OPTIONS: number[] = [];

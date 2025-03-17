@@ -6,8 +6,9 @@ import {ReadContactPointVersion, ReadServicePointVersion,} from '../../../../../
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
 
 @Component({
-  selector: 'app-contact-point-detail-panel',
-  templateUrl: './contact-point-detail-panel.component.html',
+    selector: 'app-contact-point-detail-panel',
+    templateUrl: './contact-point-detail-panel.component.html',
+    standalone: false
 })
 export class ContactPointDetailPanelComponent implements OnInit {
   isNew = false;

@@ -22,8 +22,9 @@ import { Pages } from '../../pages';
 import { TableService } from '../../../core/components/table/table.service';
 
 @Component({
-  selector: 'app-timetable-field-number-overview',
-  templateUrl: './timetable-field-number-overview.component.html',
+    selector: 'app-timetable-field-number-overview',
+    templateUrl: './timetable-field-number-overview.component.html',
+    standalone: false
 })
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
   private readonly tableFilterConfigIntern = {

@@ -6,9 +6,10 @@ import {Subscription} from 'rxjs';
 import {PermissionService} from "../../auth/permission/permission.service";
 
 @Component({
-  selector: 'app-detail-wrapper [controller][headingNew]',
-  templateUrl: './base-detail.component.html',
-  styleUrls: ['./base-detail.component.scss'],
+    selector: 'app-detail-wrapper [controller][headingNew]',
+    templateUrl: './base-detail.component.html',
+    styleUrls: ['./base-detail.component.scss'],
+    standalone: false
 })
 export class BaseDetailComponent implements OnInit, OnDestroy {
   @Input() controller!: BaseDetailController<Record>;

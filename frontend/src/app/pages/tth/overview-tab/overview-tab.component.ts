@@ -6,7 +6,8 @@ import { Cantons } from '../../../core/cantons/Cantons';
 import { HearingOverviewTab } from './model/hearing-overview-tab';
 
 @Component({
-  templateUrl: './overview-tab.component.html',
+    templateUrl: './overview-tab.component.html',
+    standalone: false
 })
 export class OverviewTabComponent implements OnInit {
   TABS: HearingOverviewTab[] = [

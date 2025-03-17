@@ -41,9 +41,10 @@ import { TthTableFilterSettingsService } from '../tth-table-filter-settings.serv
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 
 @Component({
-  selector: 'app-timetable-hearing-overview-detail',
-  templateUrl: './overview-detail.component.html',
-  styleUrls: ['./overview-detail.component.scss'],
+    selector: 'app-timetable-hearing-overview-detail',
+    templateUrl: './overview-detail.component.html',
+    styleUrls: ['./overview-detail.component.scss'],
+    standalone: false
 })
 export class OverviewDetailComponent implements OnInit {
   timeTableHearingStatements: TimetableHearingStatementV2[] = [];

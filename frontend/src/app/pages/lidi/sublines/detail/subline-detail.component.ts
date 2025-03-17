@@ -28,9 +28,10 @@ import {DetailHelperService, DetailWithCancelEdit} from "../../../../core/detail
 import {DialogService} from "../../../../core/components/dialog/dialog.service";
 
 @Component({
-  templateUrl: './subline-detail.component.html',
-  styleUrls: ['./subline-detail.component.scss'],
-  providers: [ValidityService],
+    templateUrl: './subline-detail.component.html',
+    styleUrls: ['./subline-detail.component.scss'],
+    providers: [ValidityService],
+    standalone: false
 })
 export class SublineDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   protected readonly Pages = Pages;

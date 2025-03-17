@@ -5,9 +5,10 @@ import { AppTestingModule } from '../../app.testing.module';
 import { ScrollToTopDirective } from './scroll-to-top.directive';
 
 @Component({
-  template: ` <div id="scrollbar-content-container" class="full-height">
+    template: ` <div id="scrollbar-content-container" class="full-height">
     <div scrollToTop id="some-child-component">Random Content</div>
   </div>`,
+    standalone: false
 })
 class TestComponent {}
 

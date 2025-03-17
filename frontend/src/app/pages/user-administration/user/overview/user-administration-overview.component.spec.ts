@@ -14,8 +14,9 @@ import {PermissionService} from "../../../../core/auth/permission/permission.ser
 import {RouterModule} from "@angular/router";
 
 @Component({
-  selector: 'form-search-select',
-  template: '',
+    selector: 'form-search-select',
+    template: '',
+    standalone: false
 })
 class MockFormSearchSelectComponent {
   @Input() items$ = of([]);
@@ -25,8 +26,9 @@ class MockFormSearchSelectComponent {
 }
 
 @Component({
-  selector: 'app-user-select',
-  template: '<p>app-user-select</p>',
+    selector: 'app-user-select',
+    template: '<p>app-user-select</p>',
+    standalone: false
 })
 class MockUserSelectComponent {
   @Input() form?: FormGroup;

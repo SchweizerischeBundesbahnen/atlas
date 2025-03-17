@@ -55,8 +55,9 @@ const addStopPointWorkflowDialogService = jasmine.createSpyObj(
 );
 
 @Component({
-  selector: 'service-point-form',
-  template: '<h1>ServicePointFormMockComponent</h1>',
+    selector: 'service-point-form',
+    template: '<h1>ServicePointFormMockComponent</h1>',
+    standalone: false
 })
 class ServicePointFormMockComponent {
   @Input() form?: FormGroup;
@@ -65,8 +66,9 @@ class ServicePointFormMockComponent {
 }
 
 @Component({
-  selector: 'sepodi-geography',
-  template: '<h1>ServicePointGeographyMockComponent</h1>',
+    selector: 'sepodi-geography',
+    template: '<h1>ServicePointGeographyMockComponent</h1>',
+    standalone: false
 })
 class ServicePointGeographyMockComponent {
   @Input() form?: FormGroup;

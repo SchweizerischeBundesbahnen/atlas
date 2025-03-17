@@ -3,9 +3,10 @@ import { HearingStatus, TimetableHearingYear } from '../../../../api';
 import { Pages } from '../../../pages';
 
 @Component({
-  selector: 'app-timetable-hearing-overview-tab-heading',
-  templateUrl: './overview-tab-heading.component.html',
-  styleUrls: ['./overview-tab-heading.component.scss'],
+    selector: 'app-timetable-hearing-overview-tab-heading',
+    templateUrl: './overview-tab-heading.component.html',
+    styleUrls: ['./overview-tab-heading.component.scss'],
+    standalone: false
 })
 export class OverviewTabHeadingComponent {
   @Input() cantonShort!: string;

@@ -5,9 +5,10 @@ import { StatusChangeData } from '../tth-change-status-dialog/model/status-chang
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 
 @Component({
-  selector: 'app-base-change-dialog',
-  templateUrl: './base-change-dialog.component.html',
-  styleUrls: ['./base-change-dialog.component.scss'],
+    selector: 'app-base-change-dialog',
+    templateUrl: './base-change-dialog.component.html',
+    styleUrls: ['./base-change-dialog.component.scss'],
+    standalone: false
 })
 export class BaseChangeDialogComponent {
   @Input() formGroup!: FormGroup;

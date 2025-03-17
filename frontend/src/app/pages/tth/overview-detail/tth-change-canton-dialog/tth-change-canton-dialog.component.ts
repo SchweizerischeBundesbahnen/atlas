@@ -11,8 +11,9 @@ import { ValidationService } from 'src/app/core/validation/validation.service';
 import { TimetableHearingStatementsService } from '../../../../api';
 
 @Component({
-  selector: 'app-tth-change-canton-dialog',
-  templateUrl: './tth-change-canton-dialog.component.html',
+    selector: 'app-tth-change-canton-dialog',
+    templateUrl: './tth-change-canton-dialog.component.html',
+    standalone: false
 })
 export class TthChangeCantonDialogComponent {
   formGroup = new FormGroup<TthChangeCantonFormGroup>({

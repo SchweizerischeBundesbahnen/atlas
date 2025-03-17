@@ -6,8 +6,9 @@ import {ReadParkingLotVersion, ReadServicePointVersion,} from '../../../../../ap
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
 
 @Component({
-  selector: 'app-parking-lot-detail-panel',
-  templateUrl: './parking-lot-detail-panel.component.html',
+    selector: 'app-parking-lot-detail-panel',
+    templateUrl: './parking-lot-detail-panel.component.html',
+    standalone: false
 })
 export class ParkingLotDetailPanelComponent implements OnInit {
   isNew = false;

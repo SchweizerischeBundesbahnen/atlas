@@ -11,8 +11,9 @@ import {Pages} from 'src/app/pages/pages';
 import {ValidationService} from "../../../../../../../core/validation/validation.service";
 
 @Component({
-  selector: 'decision-override',
-  templateUrl: './decision-override.component.html',
+    selector: 'decision-override',
+    templateUrl: './decision-override.component.html',
+    standalone: false
 })
 export class DecisionOverrideComponent implements OnInit, OnChanges {
   protected readonly JudgementType = JudgementType;

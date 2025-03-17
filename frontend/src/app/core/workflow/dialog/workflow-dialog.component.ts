@@ -21,9 +21,10 @@ import { Observable } from 'rxjs';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 
 @Component({
-  selector: 'app-workflow-dialog',
-  templateUrl: './workflow-dialog.component.html',
-  styleUrls: ['./workflow-dialog.component.scss'],
+    selector: 'app-workflow-dialog',
+    templateUrl: './workflow-dialog.component.html',
+    styleUrls: ['./workflow-dialog.component.scss'],
+    standalone: false
 })
 export class WorkflowDialogComponent implements OnInit {
   workflowStartFormGroup: FormGroup<WorkflowFormGroup> =

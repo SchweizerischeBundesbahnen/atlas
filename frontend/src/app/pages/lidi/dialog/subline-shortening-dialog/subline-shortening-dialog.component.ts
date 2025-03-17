@@ -7,9 +7,10 @@ import { DatePipe } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-subline-shortening-dialog',
-  templateUrl: './subline-shortening-dialog.component.html',
-  providers: [DatePipe],
+    selector: 'app-subline-shortening-dialog',
+    templateUrl: './subline-shortening-dialog.component.html',
+    providers: [DatePipe],
+    standalone: false
 })
 export class SublineShorteningDialogComponent {
   get hasAllowedOnly() {

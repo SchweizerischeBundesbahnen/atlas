@@ -82,8 +82,9 @@ mockTimetableHearingStatementsService.getPreviousStatement.and.returnValue(of(al
 mockTimetableHearingStatementsService.getResponsibleTransportCompanies.and.returnValue(of([transportCompany]));
 
 @Component({
-  selector: 'app-user-detail-info',
-  template: '<p>MockUserDetailInfoComponent</p>',
+    selector: 'app-user-detail-info',
+    template: '<p>MockUserDetailInfoComponent</p>',
+    standalone: false
 })
 class MockUserDetailInfoComponent {
   @Input() short = false;

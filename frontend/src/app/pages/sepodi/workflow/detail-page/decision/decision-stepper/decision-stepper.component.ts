@@ -10,8 +10,9 @@ import { map } from 'rxjs/operators';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'sepodi-wf-decision-stepper',
-  templateUrl: './decision-stepper.component.html',
+    selector: 'sepodi-wf-decision-stepper',
+    templateUrl: './decision-stepper.component.html',
+    standalone: false
 })
 export class DecisionStepperComponent {
   @ViewChild('stepper') readonly stepper?: MatStepper;

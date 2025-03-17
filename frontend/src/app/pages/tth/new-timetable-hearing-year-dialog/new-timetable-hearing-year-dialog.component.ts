@@ -17,8 +17,9 @@ import { NewHearingYearValidator } from './new-hearing-year-validator';
 import { TthUtils } from '../util/tth-utils';
 
 @Component({
-  selector: 'app-tthdialog',
-  templateUrl: './new-timetable-hearing-year-dialog.component.html',
+    selector: 'app-tthdialog',
+    templateUrl: './new-timetable-hearing-year-dialog.component.html',
+    standalone: false
 })
 export class NewTimetableHearingYearDialogComponent implements OnInit {
   form: FormGroup = new FormGroup<NewTimetableHearingYearFormGroup>(

@@ -4,9 +4,10 @@ import { ContactPointFormGroup } from '../contact-point-form-group';
 import { ContactPointType, StandardAttributeType } from '../../../../../../../api';
 
 @Component({
-  selector: 'app-contact-point-form',
-  templateUrl: './contact-point-form.component.html',
-  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    selector: 'app-contact-point-form',
+    templateUrl: './contact-point-form.component.html',
+    viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    standalone: false
 })
 export class ContactPointFormComponent {
   @Input() form!: FormGroup<ContactPointFormGroup>;

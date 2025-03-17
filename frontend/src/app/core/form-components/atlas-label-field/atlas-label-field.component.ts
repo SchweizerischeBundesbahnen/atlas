@@ -3,8 +3,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { FieldExample } from '../text-field/field-example';
 
 @Component({
-  selector: 'app-atlas-label-field',
-  templateUrl: './atlas-label-field.component.html',
+    selector: 'app-atlas-label-field',
+    templateUrl: './atlas-label-field.component.html',
+    standalone: false
 })
 export class AtlasLabelFieldComponent {
   @Input() required!: boolean;

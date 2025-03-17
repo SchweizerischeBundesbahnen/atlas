@@ -19,9 +19,10 @@ import { UserService } from '../../../core/auth/user/user.service';
 import { SERVICE_POINT_MIN_ZOOM } from './map-style';
 
 @Component({
-  selector: 'atlas-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss'],
+    selector: 'atlas-map',
+    templateUrl: './map.component.html',
+    styleUrls: ['./map.component.scss'],
+    standalone: false
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public isSidePanelOpen = false;

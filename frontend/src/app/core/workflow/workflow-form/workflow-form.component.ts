@@ -2,8 +2,9 @@ import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-workflow-form',
-  templateUrl: './workflow-form.component.html',
+    selector: 'app-workflow-form',
+    templateUrl: './workflow-form.component.html',
+    standalone: false
 })
 export class WorkflowFormComponent {
   @Input() formGroup!: FormGroup;

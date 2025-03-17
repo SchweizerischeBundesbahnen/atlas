@@ -20,8 +20,9 @@ export interface Obj {
 }
 
 @Pipe({
-  name: 'showTitle',
-  pure: true,
+    name: 'showTitle',
+    pure: true,
+    standalone: false
 })
 class ShowTitlePipeMock implements PipeTransform {
   transform(value: string | Date): string {
@@ -30,8 +31,9 @@ class ShowTitlePipeMock implements PipeTransform {
 }
 
 @Pipe({
-  name: 'format',
-  pure: true,
+    name: 'format',
+    pure: true,
+    standalone: false
 })
 class FormatPipeMock implements PipeTransform {
   transform<T>(value: string | Date, column: TableColumn<T>): string {

@@ -5,9 +5,10 @@ import {filter} from "rxjs/operators";
 import {Pages} from "../../pages";
 
 @Component({
-  selector: 'app-prm-home-search',
-  templateUrl: './prm-home-search.component.html',
-  styleUrls: ['./prm-home-search.component.scss'],
+    selector: 'app-prm-home-search',
+    templateUrl: './prm-home-search.component.html',
+    styleUrls: ['./prm-home-search.component.scss'],
+    standalone: false
 })
 export class PrmHomeSearchComponent {
   servicePointSearch = ServicePointSearch.PRM;

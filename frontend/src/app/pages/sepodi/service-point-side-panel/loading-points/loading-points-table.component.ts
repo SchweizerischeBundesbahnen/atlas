@@ -10,9 +10,10 @@ import { TableService } from '../../../../core/components/table/table.service';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 
 @Component({
-  selector: 'app-service-point-loading-points',
-  templateUrl: './loading-points-table.component.html',
-  styleUrls: ['./loading-points-table.component.scss'],
+    selector: 'app-service-point-loading-points',
+    templateUrl: './loading-points-table.component.html',
+    styleUrls: ['./loading-points-table.component.scss'],
+    standalone: false
 })
 export class LoadingPointsTableComponent implements OnInit {
   tableColumns: TableColumn<ReadLoadingPointVersion>[] = [

@@ -16,8 +16,9 @@ import {TableFilterDateSelect} from '../../../core/components/table-filter/confi
 import {Pages} from '../../pages';
 
 @Component({
-  selector: 'app-lidi-lines',
-  templateUrl: './lines.component.html',
+    selector: 'app-lidi-lines',
+    templateUrl: './lines.component.html',
+    standalone: false
 })
 export class LinesComponent implements OnInit, OnDestroy {
   private readonly tableFilterConfigIntern = {
