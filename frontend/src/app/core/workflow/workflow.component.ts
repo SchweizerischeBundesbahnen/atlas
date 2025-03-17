@@ -4,9 +4,10 @@ import { LinesService, LineVersionWorkflow, WorkflowProcessingStatus } from '../
 import { WorkflowDialogService } from './dialog/workflow-dialog.service';
 
 @Component({
-  selector: 'app-workflow [lineRecord]',
-  templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.scss'],
+    selector: 'app-workflow [lineRecord]',
+    templateUrl: './workflow.component.html',
+    styleUrls: ['./workflow.component.scss'],
+    standalone: false
 })
 export class WorkflowComponent implements OnInit, OnChanges {
   @Input() lineRecord!: LineRecord;

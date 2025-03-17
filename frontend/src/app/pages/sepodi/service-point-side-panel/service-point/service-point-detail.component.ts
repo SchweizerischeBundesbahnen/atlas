@@ -27,9 +27,10 @@ import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-s
 import {takeUntil} from "rxjs/operators";
 
 @Component({
-  selector: 'app-service-point',
-  templateUrl: './service-point-detail.component.html',
-  providers: [ValidityService],
+    selector: 'app-service-point',
+    templateUrl: './service-point-detail.component.html',
+    providers: [ValidityService],
+    standalone: false
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   readonly servicePointStatus = Status;

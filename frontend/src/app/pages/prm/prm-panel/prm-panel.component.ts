@@ -17,9 +17,10 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {PrmTabsService} from './prm-tabs.service';
 
 @Component({
-  selector: 'app-prm-panel',
-  templateUrl: './prm-panel.component.html',
-  styleUrls: ['./prm-panel.component.scss'],
+    selector: 'app-prm-panel',
+    templateUrl: './prm-panel.component.html',
+    styleUrls: ['./prm-panel.component.scss'],
+    standalone: false
 })
 export class PrmPanelComponent {
   selectedServicePointVersion!: ReadServicePointVersion;

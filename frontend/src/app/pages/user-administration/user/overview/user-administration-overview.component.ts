@@ -12,9 +12,10 @@ import { TablePagination } from '../../../../core/components/table/table-paginat
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
-  selector: 'app-user-administration-overview',
-  templateUrl: './user-administration-overview.component.html',
-  styleUrls: ['./user-administration-overview.component.scss'],
+    selector: 'app-user-administration-overview',
+    templateUrl: './user-administration-overview.component.html',
+    styleUrls: ['./user-administration-overview.component.scss'],
+    standalone: false
 })
 export class UserAdministrationUserOverviewComponent {
   userPageResult: { users: User[]; totalCount: number } = { users: [], totalCount: 0 };

@@ -13,8 +13,9 @@ import { TableFilter } from '../../../../core/components/table-filter/config/tab
 import { Pages } from '../../../pages';
 
 @Component({
-  selector: 'app-lidi-workflow-overview',
-  templateUrl: './lidi-workflow-overview.component.html',
+    selector: 'app-lidi-workflow-overview',
+    templateUrl: './lidi-workflow-overview.component.html',
+    standalone: false
 })
 export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   lineSnapshotsTableColumns: TableColumn<LineVersionSnapshot>[] = [

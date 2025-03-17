@@ -4,9 +4,10 @@ import moment, {Moment} from "moment/moment";
 import {TimetableYearChangeService} from "../../../../api";
 
 @Component({
-  selector: 'today-and-future-timetable-header',
-  templateUrl: 'today-and-future-timetable-header.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'today-and-future-timetable-header',
+    templateUrl: 'today-and-future-timetable-header.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TodayAndFutureTimetableHeaderComponent {
 

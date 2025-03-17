@@ -10,9 +10,10 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { TableFilter } from '../table-filter/config/table-filter';
 
 @Component({
-  selector: 'app-table [tableData][tableColumns][editElementEvent]',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
+    selector: 'app-table [tableData][tableColumns][editElementEvent]',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss'],
+    standalone: false
 })
 export class TableComponent<DATATYPE> implements OnInit {
   @Input() checkBoxSelection = new SelectionModel<DATATYPE>(true, []);

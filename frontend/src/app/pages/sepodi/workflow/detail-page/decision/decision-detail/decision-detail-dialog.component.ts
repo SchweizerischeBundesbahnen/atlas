@@ -7,8 +7,9 @@ import {DecisionType, ReadDecision, StopPointWorkflowService, WorkflowStatus} fr
 import {SPECIAL_DECISION_TYPES} from "../../detail-form/stop-point-workflow-detail-form-group";
 
 @Component({
-  selector: 'decision-detail-dialog',
-  templateUrl: './decision-detail-dialog.component.html',
+    selector: 'decision-detail-dialog',
+    templateUrl: './decision-detail-dialog.component.html',
+    standalone: false
 })
 export class DecisionDetailDialogComponent implements OnInit {
 

@@ -22,8 +22,9 @@ export const LV95_MAX_DIGITS = 5;
 export const WGS84_MAX_DIGITS = 11;
 
 @Component({
-  selector: 'sepodi-geography',
-  templateUrl: './geography.component.html',
+    selector: 'sepodi-geography',
+    templateUrl: './geography.component.html',
+    standalone: false
 })
 export class GeographyComponent implements OnDestroy, OnChanges {
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;

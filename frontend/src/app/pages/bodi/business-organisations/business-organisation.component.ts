@@ -16,8 +16,9 @@ import { TableFilter } from '../../../core/components/table-filter/config/table-
 import { Pages } from '../../pages';
 
 @Component({
-  selector: 'app-bodi-business-organisations',
-  templateUrl: './business-organisation.component.html',
+    selector: 'app-bodi-business-organisations',
+    templateUrl: './business-organisation.component.html',
+    standalone: false
 })
 export class BusinessOrganisationComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<BusinessOrganisation>[] = this.getColumns();

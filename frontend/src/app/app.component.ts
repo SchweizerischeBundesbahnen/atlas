@@ -4,10 +4,11 @@ import { ServiceWorkerService } from './service-worker.service';
 import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  providers: [ServiceWorkerService],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    providers: [ServiceWorkerService],
+    standalone: false
 })
 export class AppComponent {
   @ViewChild('sidenav') sideNav?: MatSidenav;

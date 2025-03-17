@@ -21,9 +21,10 @@ export interface SelectOptionGroup {
 }
 
 @Component({
-  selector: 'atlas-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
+    selector: 'atlas-select',
+    templateUrl: './select.component.html',
+    styleUrls: ['./select.component.scss'],
+    standalone: false
 })
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export class SelectComponent<TYPE> implements OnInit, OnChanges {

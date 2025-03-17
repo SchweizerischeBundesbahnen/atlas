@@ -12,8 +12,9 @@ import {WhitespaceValidator} from '../../validation/whitespace/whitespace-valida
 import {PermissionService} from "../../auth/permission/permission.service";
 
 @Component({
-  selector: 'app-workflow-check-form',
-  templateUrl: './workflow-check-form.component.html',
+    selector: 'app-workflow-check-form',
+    templateUrl: './workflow-check-form.component.html',
+    standalone: false
 })
 export class WorkflowCheckFormComponent implements OnInit {
   @Input() workflowId: number | undefined;

@@ -19,9 +19,10 @@ interface OfferCategoryGroup {
 }
 
 @Component({
-  selector: 'line-detail-form',
-  templateUrl: './line-detail-form.component.html',
-  styleUrls: ['./line-detail-form.component.scss'],
+    selector: 'line-detail-form',
+    templateUrl: './line-detail-form.component.html',
+    styleUrls: ['./line-detail-form.component.scss'],
+    standalone: false
 })
 export class LineDetailFormComponent {
   @Input() form!: FormGroup;

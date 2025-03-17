@@ -14,9 +14,10 @@ import { ReadOnlyData } from '../../../components/read-only-data/read-only-data'
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-client-credential-administration-edit',
-  templateUrl: './user-administration-client-edit.component.html',
-  viewProviders: [BusinessOrganisationsService, UserPermissionManager],
+    selector: 'app-client-credential-administration-edit',
+    templateUrl: './user-administration-client-edit.component.html',
+    viewProviders: [BusinessOrganisationsService, UserPermissionManager],
+    standalone: false
 })
 export class UserAdministrationClientEditComponent implements OnInit {
   @Input() client!: ClientCredential;

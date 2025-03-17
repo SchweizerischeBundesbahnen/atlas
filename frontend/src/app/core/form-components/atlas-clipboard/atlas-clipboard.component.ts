@@ -2,9 +2,10 @@ import {Component, HostListener, Input} from '@angular/core';
 import {NotificationService} from "../../notification/notification.service";
 
 @Component({
-  selector: 'atlas-clipboard',
-  templateUrl: './atlas-clipboard.component.html',
-  styleUrl: './atlas-clipboard.component.scss'
+    selector: 'atlas-clipboard',
+    templateUrl: './atlas-clipboard.component.html',
+    styleUrl: './atlas-clipboard.component.scss',
+    standalone: false
 })
 export class AtlasClipboardComponent {
 

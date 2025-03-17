@@ -5,8 +5,9 @@ import { CompanyFormGroup } from './company-form-group';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  templateUrl: './company-detail.component.html',
-  styleUrls: ['./company-detail.component.scss'],
+    templateUrl: './company-detail.component.html',
+    styleUrls: ['./company-detail.component.scss'],
+    standalone: false
 })
 export class CompanyDetailComponent implements OnInit {
   company!: Company;

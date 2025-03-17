@@ -12,8 +12,9 @@ import {TablePagination} from "../../../../core/components/table/table-paginatio
 import {TableContentPaginationAndSorting} from "../../../../core/components/table/table-content-pagination-and-sorting";
 
 @Component({
-  selector: 'app-toilet',
-  templateUrl: './toilet.component.html',
+    selector: 'app-toilet',
+    templateUrl: './toilet.component.html',
+    standalone: false
 })
 export class ToiletComponent extends BasePrmTabComponentService implements OnInit {
 

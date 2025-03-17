@@ -11,8 +11,9 @@ import {
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
 
 @Component({
-  selector: 'app-platform-detail-panel',
-  templateUrl: './platform-detail-panel.component.html',
+    selector: 'app-platform-detail-panel',
+    templateUrl: './platform-detail-panel.component.html',
+    standalone: false
 })
 export class PlatformDetailPanelComponent implements OnInit {
   isNew = false;

@@ -3,7 +3,8 @@ import { isEmpty } from '../../../util/strings';
 import { Observable, of } from 'rxjs';
 
 @Directive({
-  selector: '[mouseOverTitle]',
+    selector: '[mouseOverTitle]',
+    standalone: false
 })
 export class MouseOverTitleDirective {
   @Input() mouseOverTitle: (value: string) => Observable<string> = () => of('');

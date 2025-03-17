@@ -3,8 +3,9 @@ import { ClientCredential } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-client-credential-administration',
-  templateUrl: './user-administration-client-detail.component.html',
+    selector: 'app-client-credential-administration',
+    templateUrl: './user-administration-client-detail.component.html',
+    standalone: false
 })
 export class UserAdministrationClientDetailComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute) {}

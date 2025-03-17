@@ -14,9 +14,10 @@ import { map } from 'rxjs/operators';
 import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
 
 @Component({
-  selector: 'app-toilet-detail',
-  templateUrl: './toilet-detail.component.html',
-  providers: [ValidityService],
+    selector: 'app-toilet-detail',
+    templateUrl: './toilet-detail.component.html',
+    providers: [ValidityService],
+    standalone: false
 })
 export class ToiletDetailComponent
   extends PrmTabDetailBaseComponent<ReadToiletVersion>

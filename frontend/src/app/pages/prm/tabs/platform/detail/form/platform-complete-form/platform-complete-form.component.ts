@@ -8,9 +8,10 @@ import {
 } from '../../../../../../../api';
 
 @Component({
-  selector: 'app-platform-complete-form',
-  templateUrl: './platform-complete-form.component.html',
-  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    selector: 'app-platform-complete-form',
+    templateUrl: './platform-complete-form.component.html',
+    viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    standalone: false
 })
 export class PlatformCompleteFormComponent {
   @Input() form!: FormGroup<CompletePlatformFormGroup>;

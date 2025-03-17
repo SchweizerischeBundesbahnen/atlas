@@ -27,8 +27,9 @@ let component: CompanyDetailComponent;
 let fixture: ComponentFixture<CompanyDetailComponent>;
 
 @Component({
-  selector: 'atlas-text-field',
-  template: '<p>Mock Table Component</p>',
+    selector: 'atlas-text-field',
+    template: '<p>Mock Table Component</p>',
+    standalone: false
 })
 class MockAtlasTextFieldComponent {
   @Input() controlName!: string;

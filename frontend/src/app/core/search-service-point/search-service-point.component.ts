@@ -18,9 +18,10 @@ const SEARCH_SERVICE_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.SERVICE_POINT';
 const SEARCH_STOP_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.STOP_POINT';
 
 @Component({
-  selector: 'app-search-service-point',
-  templateUrl: './search-service-point.component.html',
-  styleUrls: ['./search-service-point.component.scss'],
+    selector: 'app-search-service-point',
+    templateUrl: './search-service-point.component.html',
+    styleUrls: ['./search-service-point.component.scss'],
+    standalone: false
 })
 export class SearchServicePointComponent implements OnInit {
   private readonly MIN_LENGTH_TERM = 2;

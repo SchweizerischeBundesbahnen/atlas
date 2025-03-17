@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'atlas-file',
-  templateUrl: './file.component.html',
-  styleUrls: ['./file.component.scss'],
+    selector: 'atlas-file',
+    templateUrl: './file.component.html',
+    styleUrls: ['./file.component.scss'],
+    standalone: false
 })
 export class FileComponent {
   @Input() file!: File | { name: string; size: number };

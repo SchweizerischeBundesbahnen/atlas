@@ -4,8 +4,9 @@ import {StandardAttributeType} from "../../../../../../../api";
 import {ToiletFormGroup} from "../toilet-form-group";
 
 @Component({
-  selector: 'app-toilet-form',
-  templateUrl: './toilet-form.component.html',
+    selector: 'app-toilet-form',
+    templateUrl: './toilet-form.component.html',
+    standalone: false
 })
 export class ToiletFormComponent {
 

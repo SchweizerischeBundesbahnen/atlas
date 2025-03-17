@@ -6,8 +6,9 @@ import {map} from "rxjs/operators";
 import {VersionsHandlingService} from "../../versioning/versions-handling.service";
 
 @Pipe({
-  name: 'boDisplay',
-  pure: true,
+    name: 'boDisplay',
+    pure: true,
+    standalone: false
 })
 export class BoDisplayPipe implements PipeTransform {
   constructor(

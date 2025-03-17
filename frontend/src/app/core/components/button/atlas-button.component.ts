@@ -7,8 +7,9 @@ import {Countries} from '../../country/Countries';
 import {PermissionService} from "../../auth/permission/permission.service";
 
 @Component({
-  selector: 'atlas-button[buttonType]',
-  templateUrl: './atlas-button.component.html',
+    selector: 'atlas-button[buttonType]',
+    templateUrl: './atlas-button.component.html',
+    standalone: false
 })
 export class AtlasButtonComponent {
   @Input() applicationType!: ApplicationType;

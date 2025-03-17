@@ -9,9 +9,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../../../api';
 
 @Component({
-  selector: 'app-user-administration-edit',
-  templateUrl: './user-administration-user-edit.component.html',
-  viewProviders: [UserPermissionManager],
+    selector: 'app-user-administration-edit',
+    templateUrl: './user-administration-user-edit.component.html',
+    viewProviders: [UserPermissionManager],
+    standalone: false
 })
 export class UserAdministrationUserEditComponent implements OnInit {
   @Input() user?: User;

@@ -49,8 +49,9 @@ import { WorkflowComponent } from '../../../../core/workflow/workflow.component'
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
-  selector: 'app-coverage',
-  template: '<p>Mock Product Editor Component</p>',
+    selector: 'app-coverage',
+    template: '<p>Mock Product Editor Component</p>',
+    standalone: false
 })
 class MockAppCoverageComponent {
   @Input() pageType!: Record;
@@ -58,8 +59,9 @@ class MockAppCoverageComponent {
 }
 
 @Component({
-  selector: 'app-subline-table',
-  template: '<p>Mock subline table Component</p>',
+    selector: 'app-subline-table',
+    template: '<p>Mock subline table Component</p>',
+    standalone: false
 })
 export class MockSublineTableComponent {
   @Input() mainLineSlnid!: string;

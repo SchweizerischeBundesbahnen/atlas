@@ -7,8 +7,9 @@ import { Component, Input } from '@angular/core';
 import {ApplicationType} from "../../../../api";
 
 @Component({
-  selector: 'form-search-select',
-  template: '<p>form-search-select</p>',
+    selector: 'form-search-select',
+    template: '<p>form-search-select</p>',
+    standalone: false
 })
 class MockFormSearchSelectComponent {
   @Input() items$ = of([]);

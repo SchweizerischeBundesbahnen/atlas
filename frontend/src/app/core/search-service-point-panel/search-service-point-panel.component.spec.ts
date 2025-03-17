@@ -7,8 +7,9 @@ import {ServicePointSearchType} from "../search-service-point/service-point-sear
 import {AppTestingModule} from "../../app.testing.module";
 
 @Component({
-  selector: 'app-search-service-point',
-  template: '<h1>SearchServicePointComponent</h1>',
+    selector: 'app-search-service-point',
+    template: '<h1>SearchServicePointComponent</h1>',
+    standalone: false
 })
 class SearchServicePointMockComponent {
   @Input() searchType!: ServicePointSearchType;

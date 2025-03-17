@@ -23,10 +23,11 @@ import {Countries} from '../../../../core/country/Countries';
 import {BULK_IMPORT_APPLICATIONS} from "../../../../core/auth/permission/bulk-import-permission";
 
 @Component({
-  selector: 'app-user-administration-application-config',
-  templateUrl: './user-administration-application-config.component.html',
-  styleUrls: ['./user-administration-application-config.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-user-administration-application-config',
+    templateUrl: './user-administration-application-config.component.html',
+    styleUrls: ['./user-administration-application-config.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UserAdministrationApplicationConfigComponent implements OnInit, OnDestroy {
   @Input() application!: ApplicationType;

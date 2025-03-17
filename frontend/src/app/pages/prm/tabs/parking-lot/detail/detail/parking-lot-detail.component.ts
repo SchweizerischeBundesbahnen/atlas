@@ -14,9 +14,10 @@ import { map } from 'rxjs/operators';
 import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
 
 @Component({
-  selector: 'app-parking-lot-detail',
-  templateUrl: './parking-lot-detail.component.html',
-  providers: [ValidityService],
+    selector: 'app-parking-lot-detail',
+    templateUrl: './parking-lot-detail.component.html',
+    providers: [ValidityService],
+    standalone: false
 })
 export class ParkingLotDetailComponent
   extends PrmTabDetailBaseComponent<ReadParkingLotVersion>

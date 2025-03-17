@@ -4,9 +4,10 @@ import {FieldExample} from './field-example';
 import {AtlasFieldCustomError} from '../atlas-field-error/atlas-field-custom-error';
 
 @Component({
-  selector: 'atlas-text-field',
-  templateUrl: './text-field.component.html',
-  styleUrls: ['./text-field.component.scss'],
+    selector: 'atlas-text-field',
+    templateUrl: './text-field.component.html',
+    styleUrls: ['./text-field.component.scss'],
+    standalone: false
 })
 export class TextFieldComponent {
   @Input() controlName!: string;

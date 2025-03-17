@@ -22,9 +22,10 @@ import {Pages} from 'src/app/pages/pages';
 import {SloidHelper} from "../../../../../core/util/sloidHelper";
 
 @Component({
-  selector: 'stop-point-workflow-detail-form',
-  templateUrl: './stop-point-workflow-detail-form.component.html',
-  viewProviders: [{provide: ControlContainer, useExisting: NgForm}],
+    selector: 'stop-point-workflow-detail-form',
+    templateUrl: './stop-point-workflow-detail-form.component.html',
+    viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    standalone: false
 })
 export class StopPointWorkflowDetailFormComponent implements OnInit {
   readonly WorkflowStatus = WorkflowStatus;

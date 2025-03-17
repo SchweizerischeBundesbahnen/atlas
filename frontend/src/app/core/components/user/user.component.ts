@@ -5,9 +5,10 @@ import {UserService} from "../../auth/user/user.service";
 import {User} from "../../auth/user/user";
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss'],
+    selector: 'app-user',
+    templateUrl: './user.component.html',
+    styleUrls: ['./user.component.scss'],
+    standalone: false
 })
 export class UserComponent implements OnInit {
   user: User | undefined;

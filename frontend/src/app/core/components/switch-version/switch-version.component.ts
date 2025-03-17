@@ -18,9 +18,10 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatRow} from "@angular/material/table";
 
 @Component({
-  selector: 'app-switch-version',
-  templateUrl: './switch-version.component.html',
-  styleUrls: ['./switch-version.component.scss'],
+    selector: 'app-switch-version',
+    templateUrl: './switch-version.component.html',
+    styleUrls: ['./switch-version.component.scss'],
+    standalone: false
 })
 export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() records!: Array<Record>;

@@ -5,9 +5,10 @@ import { take } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
 
 @Component({
-  selector: 'dialog-manage-tth',
-  templateUrl: './dialog-manage-tth.component.html',
-  styleUrls: ['./dialog-manage-tth.component.scss'],
+    selector: 'dialog-manage-tth',
+    templateUrl: './dialog-manage-tth.component.html',
+    styleUrls: ['./dialog-manage-tth.component.scss'],
+    standalone: false
 })
 export class DialogManageTthComponent implements OnInit {
   @ViewChild('loadingView', { static: true }) loadingView!: TemplateRef<this>;

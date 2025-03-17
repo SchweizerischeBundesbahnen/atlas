@@ -1,7 +1,10 @@
 import { Directive, HostListener, Self } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
-@Directive({ selector: '[emptyToNull]' })
+@Directive({
+    selector: '[emptyToNull]',
+    standalone: false
+})
 export class EmptyToNullDirective {
   constructor(@Self() private ngControl: NgControl) {}
 

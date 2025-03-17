@@ -35,9 +35,10 @@ import { PermissionService } from '../../../../../core/auth/permission/permissio
 import { filter, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-stop-point-detail',
-  templateUrl: './stop-point-detail.component.html',
-  providers: [ValidityService],
+    selector: 'app-stop-point-detail',
+    templateUrl: './stop-point-detail.component.html',
+    providers: [ValidityService],
+    standalone: false
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;

@@ -1,6 +1,9 @@
 import {AfterViewInit, Directive, ElementRef, HostListener, Input, Self} from '@angular/core';
 
-@Directive({selector: '[removeChars]'})
+@Directive({
+    selector: '[removeChars]',
+    standalone: false
+})
 export class RemoveCharsDirective implements AfterViewInit {
   @Input() removeChars: string[] = [];
 

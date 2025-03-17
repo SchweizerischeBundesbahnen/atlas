@@ -4,7 +4,8 @@ import { By } from '@angular/platform-browser';
 import { FileDropDirective } from './file-drop.directive';
 
 @Component({
-  template: `<div atlas-file-drop>Test Dropzone</div>`,
+    template: `<div atlas-file-drop>Test Dropzone</div>`,
+    standalone: false
 })
 class TestComponent {}
 

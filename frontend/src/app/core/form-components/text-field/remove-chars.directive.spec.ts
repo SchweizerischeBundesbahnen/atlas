@@ -10,7 +10,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 
 @Component({
-  template: ` <atlas-text-field
+    template: ` <atlas-text-field
     [formGroup]="formGroup"
     [required]="true"
     controlName="east"
@@ -18,6 +18,7 @@ import { By } from '@angular/platform-browser';
     [removeChars]="['\\'']"
   >
   </atlas-text-field>`,
+    standalone: false
 })
 class TestComponent {
   formGroup = new FormGroup({ east: new FormControl('1') });

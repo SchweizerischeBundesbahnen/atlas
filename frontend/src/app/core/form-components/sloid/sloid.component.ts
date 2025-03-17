@@ -3,9 +3,10 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AtlasCharsetsValidator} from '../../validation/charsets/atlas-charsets-validator';
 
 @Component({
-  selector: 'atlas-sloid',
-  templateUrl: './sloid.component.html',
-  styleUrls: ['./sloid.component.scss'],
+    selector: 'atlas-sloid',
+    templateUrl: './sloid.component.html',
+    styleUrls: ['./sloid.component.scss'],
+    standalone: false
 })
 export class SloidComponent implements OnInit {
   @Input() formGroup!: FormGroup;

@@ -24,8 +24,9 @@ import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
-  templateUrl: './transport-company-detail.component.html',
-  styleUrls: ['./transport-company-detail.component.scss'],
+    templateUrl: './transport-company-detail.component.html',
+    styleUrls: ['./transport-company-detail.component.scss'],
+    standalone: false
 })
 export class TransportCompanyDetailComponent implements OnInit, DetailFormComponent {
   transportCompany!: TransportCompany;

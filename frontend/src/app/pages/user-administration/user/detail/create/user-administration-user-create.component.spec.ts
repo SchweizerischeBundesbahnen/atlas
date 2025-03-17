@@ -19,8 +19,9 @@ import {DetailPageContentComponent} from "../../../../../core/components/detail-
 import SpyObj = jasmine.SpyObj;
 
 @Component({
-  selector: 'app-user-select',
-  template: '',
+    selector: 'app-user-select',
+    template: '',
+    standalone: false
 })
 class MockUserSelectComponent {
   @Input() form?: FormGroup;

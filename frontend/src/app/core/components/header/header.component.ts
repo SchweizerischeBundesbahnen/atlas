@@ -6,9 +6,10 @@ import {Observable} from 'rxjs';
 import {NON_PROD_STAGES, Stages} from '../../constants/stages';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: false
 })
 export class HeaderComponent implements OnInit {
   version: string = environment.appVersion;

@@ -8,8 +8,9 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-subline-table',
-  templateUrl: './subline-table.component.html',
+    selector: 'app-subline-table',
+    templateUrl: './subline-table.component.html',
+    standalone: false
 })
 export class SublineTableComponent implements OnInit, OnDestroy {
   @Input() mainLineSlnid!: string;

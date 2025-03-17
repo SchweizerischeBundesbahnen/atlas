@@ -3,9 +3,10 @@ import { Cantons } from '../../../core/cantons/Cantons';
 import { Canton } from '../../../core/cantons/Canton';
 
 @Component({
-  selector: 'app-timetable-hearing-overview',
-  templateUrl: './timetable-hearing-overview.component.html',
-  styleUrls: ['./timetable-hearing-overview.component.scss'],
+    selector: 'app-timetable-hearing-overview',
+    templateUrl: './timetable-hearing-overview.component.html',
+    styleUrls: ['./timetable-hearing-overview.component.scss'],
+    standalone: false
 })
 export class TimetableHearingOverviewComponent {
   get cantons(): Canton[] {

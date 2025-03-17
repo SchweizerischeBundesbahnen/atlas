@@ -69,8 +69,9 @@ const workflowDialogData: AddStopPointWorkflowDialogData = {
 }
 
 @Component({
-  selector: 'stop-point-workflow-detail-form',
-  template: '<p>Mock AddStopPointWorkflowDetailForm Component</p>'
+    selector: 'stop-point-workflow-detail-form',
+    template: '<p>Mock AddStopPointWorkflowDetailForm Component</p>',
+    standalone: false
 })
 export class MockStopPointWorkflowDetailFormComponent {
   @Input() stopPoint!: ReadServicePointVersion;

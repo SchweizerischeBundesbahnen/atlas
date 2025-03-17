@@ -36,9 +36,10 @@ export const FOREIGN_TABS = TABS.filter((i) =>
 );
 
 @Component({
-  selector: 'app-service-point-side-panel',
-  templateUrl: './service-point-side-panel.component.html',
-  styleUrls: ['./service-point-side-panel.component.scss'],
+    selector: 'app-service-point-side-panel',
+    templateUrl: './service-point-side-panel.component.html',
+    styleUrls: ['./service-point-side-panel.component.scss'],
+    standalone: false
 })
 export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
   servicePointVersions!: ReadServicePointVersion[];

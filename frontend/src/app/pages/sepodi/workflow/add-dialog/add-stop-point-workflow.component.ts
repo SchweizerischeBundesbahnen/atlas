@@ -15,9 +15,10 @@ import {
 } from "../detail-page/detail-form/stop-point-workflow-detail-form-group";
 
 @Component({
-  selector: 'app-workflow-dialog',
-  templateUrl: './add-stop-point-workflow.component.html',
-  styleUrls: ['./add-stop-point-workflow.component.scss']
+    selector: 'app-workflow-dialog',
+    templateUrl: './add-stop-point-workflow.component.html',
+    styleUrls: ['./add-stop-point-workflow.component.scss'],
+    standalone: false
 })
 export class AddStopPointWorkflowComponent implements OnInit {
 

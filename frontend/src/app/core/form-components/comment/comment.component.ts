@@ -2,9 +2,10 @@ import {Component, Input} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'form-comment',
-  templateUrl: './comment.component.html',
-  styleUrls: ['./comment.component.scss'],
+    selector: 'form-comment',
+    templateUrl: './comment.component.html',
+    styleUrls: ['./comment.component.scss'],
+    standalone: false
 })
 export class CommentComponent {
   @Input() formGroup!: FormGroup;

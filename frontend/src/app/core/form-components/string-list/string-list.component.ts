@@ -5,8 +5,9 @@ import {concat, Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 @Component({
-  selector: 'atlas-text-list',
-  templateUrl: './string-list.component.html',
+    selector: 'atlas-text-list',
+    templateUrl: './string-list.component.html',
+    standalone: false
 })
 export class StringListComponent implements OnChanges {
   @Input() formGroup?: FormGroup;

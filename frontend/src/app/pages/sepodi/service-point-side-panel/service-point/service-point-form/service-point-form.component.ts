@@ -23,9 +23,10 @@ import {PermissionService} from "../../../../../core/auth/permission/permission.
 import {AtLeastOneValidator} from "../../../../../core/validation/boolean-cross-validator/at-least-one-validator";
 
 @Component({
-  selector: 'service-point-form',
-  templateUrl: './service-point-form.component.html',
-  styleUrls: ['./service-point-form.component.scss'],
+    selector: 'service-point-form',
+    templateUrl: './service-point-form.component.html',
+    styleUrls: ['./service-point-form.component.scss'],
+    standalone: false
 })
 export class ServicePointFormComponent implements OnInit, OnDestroy {
   @ContentChild(GeographyComponent, {static: true}) geographyComponent?: GeographyComponent;

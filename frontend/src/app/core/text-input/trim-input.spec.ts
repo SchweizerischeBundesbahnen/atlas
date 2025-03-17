@@ -6,7 +6,8 @@ import { TrimInputDirective } from './trim-input';
 import { AppTestingModule } from '../../app.testing.module';
 
 @Component({
-  template: ` <input [formControl]="form" trim /> `,
+    template: ` <input [formControl]="form" trim /> `,
+    standalone: false
 })
 class TestComponent {
   form = new FormControl();

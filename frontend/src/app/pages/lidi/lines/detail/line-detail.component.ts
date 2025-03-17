@@ -31,9 +31,10 @@ import { SublineShorteningDialogComponent } from '../../dialog/subline-shortenin
 import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './line-detail.component.html',
-  styleUrls: ['./line-detail.component.scss'],
-  providers: [ValidityService],
+    templateUrl: './line-detail.component.html',
+    styleUrls: ['./line-detail.component.scss'],
+    providers: [ValidityService],
+    standalone: false
 })
 export class LineDetailComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<boolean>();

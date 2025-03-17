@@ -4,9 +4,10 @@ import { AtlasFieldCustomError } from './atlas-field-custom-error';
 import { ValidationService } from '../../validation/validation.service';
 
 @Component({
-  selector: 'app-atlas-field-error',
-  templateUrl: './atlas-field-error.component.html',
-  styleUrls: ['./atlas-field-error.component.scss'],
+    selector: 'app-atlas-field-error',
+    templateUrl: './atlas-field-error.component.html',
+    styleUrls: ['./atlas-field-error.component.scss'],
+    standalone: false
 })
 export class AtlasFieldErrorComponent {
   @Input() controlName!: string;

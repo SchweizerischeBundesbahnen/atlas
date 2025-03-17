@@ -1,7 +1,8 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
-  name: 'searchResultHighlight',
+    name: 'searchResultHighlight',
+    standalone: false
 })
 export class SearchResultHighlightPipe implements PipeTransform {
   transform(value: string, search: string): string {

@@ -8,9 +8,10 @@ import {
 } from '../../../../../../../api';
 
 @Component({
-  selector: 'app-platform-reduced-form',
-  templateUrl: './platform-reduced-form.component.html',
-  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    selector: 'app-platform-reduced-form',
+    templateUrl: './platform-reduced-form.component.html',
+    viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+    standalone: false
 })
 export class PlatformReducedFormComponent implements OnInit {
   @Input() form!: FormGroup<ReducedPlatformFormGroup>;

@@ -3,7 +3,8 @@ import {Pages} from '../../pages';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
-  templateUrl: './lidi-overview.component.html',
+    templateUrl: './lidi-overview.component.html',
+    standalone: false
 })
 export class LidiOverviewComponent {
   TABS = [

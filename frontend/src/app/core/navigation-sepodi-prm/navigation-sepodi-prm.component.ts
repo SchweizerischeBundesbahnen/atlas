@@ -16,8 +16,9 @@ export type TargetPageType =
   | 'platform-detail'
 
 @Component({
-  selector: 'app-navigation-sepodi-prm',
-  templateUrl: './navigation-sepodi-prm.component.html'
+    selector: 'app-navigation-sepodi-prm',
+    templateUrl: './navigation-sepodi-prm.component.html',
+    standalone: false
 })
 export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
 

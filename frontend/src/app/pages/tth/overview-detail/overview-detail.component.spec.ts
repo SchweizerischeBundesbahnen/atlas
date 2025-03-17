@@ -31,8 +31,9 @@ import {AtlasLabelFieldComponent} from '../../../core/form-components/atlas-labe
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 @Component({
-  selector: 'app-timetable-hearing-overview-tab-heading',
-  template: '<p>MockAppTthOverviewTabHeadingComponent</p>',
+    selector: 'app-timetable-hearing-overview-tab-heading',
+    template: '<p>MockAppTthOverviewTabHeadingComponent</p>',
+    standalone: false
 })
 class MockAppTthOverviewTabHeadingComponent {
   @Input() cantonShort!: string;

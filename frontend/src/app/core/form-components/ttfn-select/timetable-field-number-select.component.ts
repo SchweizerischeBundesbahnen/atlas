@@ -14,9 +14,10 @@ import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'ttfn-select',
-  templateUrl: './timetable-field-number-select.component.html',
-  styleUrls: ['./timetable-field-number-select.component.scss'],
+    selector: 'ttfn-select',
+    templateUrl: './timetable-field-number-select.component.html',
+    styleUrls: ['./timetable-field-number-select.component.scss'],
+    standalone: false
 })
 export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = 'ttfnid';

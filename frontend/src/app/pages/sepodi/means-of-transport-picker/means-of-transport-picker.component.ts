@@ -3,9 +3,10 @@ import {FormGroup} from '@angular/forms';
 import {MeanOfTransport} from '../../../api';
 
 @Component({
-  selector: 'means-of-transport-picker',
-  templateUrl: './means-of-transport-picker.component.html',
-  styleUrls: ['./means-of-transport-picker.component.scss'],
+    selector: 'means-of-transport-picker',
+    templateUrl: './means-of-transport-picker.component.html',
+    styleUrls: ['./means-of-transport-picker.component.scss'],
+    standalone: false
 })
 export class MeansOfTransportPickerComponent implements OnInit {
   @Input() controlName!: string;

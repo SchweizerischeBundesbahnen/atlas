@@ -10,8 +10,9 @@ import {ValidationService} from 'src/app/core/validation/validation.service';
 import {TimetableHearingStatementsService} from "../../../../api";
 
 @Component({
-  selector: 'app-tth-change-status-dialog',
-  templateUrl: './tth-change-status-dialog.component.html',
+    selector: 'app-tth-change-status-dialog',
+    templateUrl: './tth-change-status-dialog.component.html',
+    standalone: false
 })
 export class TthChangeStatusDialogComponent {
   formGroup = new FormGroup<TthChangeStatusFormGroup>({
