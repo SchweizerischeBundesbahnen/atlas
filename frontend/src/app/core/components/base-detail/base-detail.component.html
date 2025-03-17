@@ -89,7 +89,7 @@
         <div *ngIf="isEditButtonVisible()">
           <atlas-button
             (buttonClicked)="controller.toggleEdit()"
-            [applicationType]="this.controller.getApplicationType()"
+            [applicationType]="controller.getApplicationType()"
             [businessOrganisation]="selectedRecord.businessOrganisation!"
             [disabled]="controller.form.enabled || selectedRecord.status === 'REVOKED'"
             buttonDataCy="edit-item"
@@ -100,7 +100,7 @@
         </div>
         <atlas-button
           (buttonClicked)="controller.revoke()"
-          [applicationType]="this.controller.getApplicationType()"
+          [applicationType]="controller.getApplicationType()"
           [disabled]="controller.form.enabled || controller.record.status === 'REVOKED'"
           buttonDataCy="revoke-item"
           buttonText="COMMON.REVOKE"
