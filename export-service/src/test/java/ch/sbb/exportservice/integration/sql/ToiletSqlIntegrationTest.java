@@ -2,10 +2,10 @@ package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.prm.ToiletVersion;
+import ch.sbb.exportservice.job.toilet.ToiletVersion;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.reader.ToiletVersionRowMapper;
-import ch.sbb.exportservice.reader.ToiletVersionSqlQueryUtil;
+import ch.sbb.exportservice.job.toilet.ToiletVersionRowMapper;
+import ch.sbb.exportservice.job.toilet.ToiletVersionSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -2,10 +2,10 @@ package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.exportservice.entity.lidi.TimetableFieldNumber;
+import ch.sbb.exportservice.job.ttfn.TimetableFieldNumber;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.reader.TimetableFieldNumberRowMapper;
-import ch.sbb.exportservice.reader.TimetableFieldNumberSqlQueryUtil;
+import ch.sbb.exportservice.job.ttfn.TimetableFieldNumberRowMapper;
+import ch.sbb.exportservice.job.ttfn.TimetableFieldNumberSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
