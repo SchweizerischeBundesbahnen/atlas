@@ -1,10 +1,7 @@
 import { Directive, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-@Directive({
-    selector: '[backButton]',
-    standalone: false
-})
+@Directive({ selector: '[backButton]' })
 export class BackButtonDirective {
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 

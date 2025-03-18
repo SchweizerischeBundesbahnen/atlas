@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApplicationType, TimetableFieldNumbersService, TimetableFieldNumberVersion,} from '../../../api';
 import {BaseDetailController} from '../../../core/components/base-detail/base-detail-controller';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import {NotificationService} from '../../../core/notification/notification.service';
 import {catchError} from 'rxjs';
 import moment from 'moment';
@@ -16,13 +16,20 @@ import {AtlasFieldLengthValidator} from '../../../core/validation/field-lengths/
 import {TimetableFieldNumberDetailFormGroup} from './timetable-field-number-detail-form-group';
 import {ValidityService} from "../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../core/auth/permission/permission.service";
+import { BaseDetailComponent } from '../../../core/components/base-detail/base-detail.component';
+import { NgIf } from '@angular/common';
+import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
+import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
+import { BusinessOrganisationSelectComponent } from '../../../core/form-components/bo-select/business-organisation-select.component';
+import { CommentComponent } from '../../../core/form-components/comment/comment.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-timetable-field-number-detail',
     templateUrl: './timetable-field-number-detail.component.html',
     styleUrls: ['./timetable-field-number-detail.component.scss'],
     providers: [ValidityService],
-    standalone: false
+    imports: [BaseDetailComponent, ReactiveFormsModule, NgIf, TextFieldComponent, DateRangeComponent, BusinessOrganisationSelectComponent, CommentComponent, TranslatePipe]
 })
 export class TimetableFieldNumberDetailComponent
   extends BaseDetailController<TimetableFieldNumberVersion>

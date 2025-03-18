@@ -44,19 +44,18 @@ describe('StatementDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StatementDialogComponent, MockAtlasButtonComponent],
-      imports: [AppTestingModule, FormModule],
-      providers: [
+    imports: [AppTestingModule, FormModule, StatementDialogComponent, MockAtlasButtonComponent],
+    providers: [
         { provide: MAT_DIALOG_DATA, useValue: form },
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: MatDialogRef, useValue: dialogRefSpy },
         {
-          provide: TimetableHearingStatementsService,
-          useValue: mockTimetableHearingStatementsService,
+            provide: TimetableHearingStatementsService,
+            useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(StatementDialogComponent);
     component = fixture.componentInstance;

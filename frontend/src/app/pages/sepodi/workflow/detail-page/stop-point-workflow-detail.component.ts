@@ -31,11 +31,20 @@ import {
   StopPointRestartWorkflowDialogService
 } from "../stop-point-restart-workflow-dialog/stop-point-restart-workflow-dialog.service";
 import {AddExaminantsDialogService} from "./add-examinants-dialog/add-examinants-dialog.service";
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { StopPointWorkflowDetailFormComponent } from './detail-form/stop-point-workflow-detail-form.component';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
+import { AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'stop-point-workflow-detail',
     templateUrl: './stop-point-workflow-detail.component.html',
-    standalone: false
+    imports: [DetailPageContainerComponent, DetailPageContentComponent, StopPointWorkflowDetailFormComponent, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, BackButtonDirective, AsyncPipe, TranslatePipe]
 })
 export class StopPointWorkflowDetailComponent implements OnInit {
   protected readonly WorkflowStatus = WorkflowStatus;

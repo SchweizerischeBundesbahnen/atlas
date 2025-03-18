@@ -91,8 +91,7 @@ describe('ReferencePointDetailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ReferencePointDetailComponent,
+    imports: [AppTestingModule, ReferencePointDetailComponent,
         SloidComponent,
         AtlasSlideToggleComponent,
         MockAtlasButtonComponent,
@@ -112,10 +111,8 @@ describe('ReferencePointDetailComponent', () => {
         UserDetailInfoComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
-        DetailFooterComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        DetailFooterComponent],
+    providers: [
         { provide: PermissionService, useValue: permissionService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
@@ -123,8 +120,8 @@ describe('ReferencePointDetailComponent', () => {
         { provide: DialogService, useValue: dialogService },
         TranslatePipe,
         SplitServicePointNumberPipe,
-      ],
-    });
+    ],
+});
   });
 
   describe('new reference point', () => {

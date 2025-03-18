@@ -13,15 +13,15 @@ describe('SearchSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SearchSelectComponent, AtlasFieldErrorComponent],
-      imports: [
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         NgSelectModule,
         ReactiveFormsModule,
-      ],
-    }).compileComponents();
+        SearchSelectComponent, AtlasFieldErrorComponent,
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(SearchSelectComponent);
     component = fixture.componentInstance;

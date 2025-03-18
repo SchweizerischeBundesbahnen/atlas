@@ -24,20 +24,17 @@ describe('DecisionOverrideComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations:[
-        DecisionOverrideComponent,
+    imports: [AppTestingModule, DecisionOverrideComponent,
         CommentComponent,
         AtlasFieldErrorComponent,
         TextFieldComponent,
-        AtlasLabelFieldComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
-        {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
-        {provide: PermissionService, useValue: adminPermissionServiceMock},
-        {provide: NotificationService, useValue: notificationService},
-      ]
-    })
+        AtlasLabelFieldComponent],
+    providers: [
+        { provide: StopPointWorkflowService, useValue: stopPointWorkflowService },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
+        { provide: NotificationService, useValue: notificationService },
+    ]
+})
       .compileComponents();
 
     fixture = TestBed.createComponent(DecisionOverrideComponent);

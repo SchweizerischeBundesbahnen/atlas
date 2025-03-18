@@ -19,26 +19,20 @@ import { UserAdministrationClientOverviewComponent } from './client-credential/o
 import { UserAdministrationClientEditComponent } from './client-credential/detail/edit/user-administration-client-edit.component';
 
 @NgModule({
-    declarations: [
-        UserAdministrationOverviewComponent,
-
+    imports: [UserAdministrationRoutingModule, CoreModule, FormModule, FormsModule, UserAdministrationOverviewComponent,
         UserAdministrationUserOverviewComponent,
         UserAdministrationUserDetailComponent,
         UserAdministrationUserEditComponent,
         UserAdministrationUserCreateComponent,
-
         UserAdministrationClientOverviewComponent,
         UserAdministrationClientDetailComponent,
         UserAdministrationClientCreateComponent,
         UserAdministrationClientEditComponent,
-
         UserAdministrationApplicationConfigComponent,
         UserSelectComponent,
         UserAdministrationReadOnlyDataComponent,
         EditTitlePipe,
-        UserSelectFormatPipe,
-    ],
-    imports: [UserAdministrationRoutingModule, CoreModule, FormModule, FormsModule],
+        UserSelectFormatPipe],
     exports: [
         UserSelectComponent
     ]

@@ -46,24 +46,21 @@ describe('TimetableFieldNumberOverviewComponent', () => {
     ).and.returnValue(of(timetableFieldNumberContainer));
 
     TestBed.configureTestingModule({
-      declarations: [
-        TimetableFieldNumberOverviewComponent,
+    imports: [AppTestingModule, TimetableFieldNumberOverviewComponent,
         MockTableComponent,
-        AtlasButtonComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        AtlasButtonComponent],
+    providers: [
         {
-          provide: TimetableFieldNumbersService,
-          useValue: timetableFieldNumberServiceSpy,
+            provide: TimetableFieldNumbersService,
+            useValue: timetableFieldNumberServiceSpy,
         },
         TranslatePipe,
         {
-          provide: PermissionService,
-          useValue: adminPermissionServiceMock,
+            provide: PermissionService,
+            useValue: adminPermissionServiceMock,
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(TimetableFieldNumberOverviewComponent);
     component = fixture.componentInstance;

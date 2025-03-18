@@ -9,15 +9,23 @@ import {
   StandardAttributeType,
 } from '../../../../../../api';
 import { TranslationSortingService } from '../../../../../../core/translation/translation-sorting.service';
-import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
+import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { PrmVariantInfoService } from '../../prm-variant-info.service';
+import { MeansOfTransportPickerComponent } from '../../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { AtlasFieldErrorComponent } from '../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
+import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
+import { DateRangeComponent } from '../../../../../../core/form-components/date-range/date-range.component';
+import { SelectComponent } from '../../../../../../core/form-components/select/select.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-stop-point-complete-form',
     templateUrl: './stop-point-complete-form.component.html',
     viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
-    standalone: false
+    imports: [MeansOfTransportPickerComponent, ReactiveFormsModule, MatCheckbox, AtlasFieldErrorComponent, CommentComponent, TextFieldComponent, DateRangeComponent, SelectComponent, TranslatePipe]
 })
 export class StopPointCompleteFormComponent implements OnInit {
   @Input() form!: FormGroup<StopPointDetailFormGroup>;

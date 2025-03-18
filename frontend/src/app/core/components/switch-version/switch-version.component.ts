@@ -15,13 +15,14 @@ import {DateService} from '../../date/date.service';
 import {TableColumn} from '../table/table-column';
 import {Status} from '../../../api';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatRow} from "@angular/material/table";
+import { MatRow, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef } from "@angular/material/table";
+import { NgFor, NgIf, NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-switch-version',
     templateUrl: './switch-version.component.html',
     styleUrls: ['./switch-version.component.scss'],
-    standalone: false
+    imports: [MatTable, NgFor, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, NgIf, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgClass, TranslatePipe]
 })
 export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() records!: Array<Record>;

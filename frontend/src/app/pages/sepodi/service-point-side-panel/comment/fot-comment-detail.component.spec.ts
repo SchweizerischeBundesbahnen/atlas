@@ -30,21 +30,18 @@ describe('FotCommentDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        FotCommentDetailComponent,
+    imports: [AppTestingModule, FotCommentDetailComponent,
         MockAtlasButtonComponent,
         CommentComponent,
         AtlasFieldErrorComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
-        DetailFooterComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        DetailFooterComponent],
+    providers: [
         { provide: ActivatedRoute, useValue: route },
         { provide: ServicePointsService, useValue: servicePointService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(FotCommentDetailComponent);
     component = fixture.componentInstance;

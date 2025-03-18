@@ -30,14 +30,13 @@ describe('NavigationSepodiPrmComponent', () => {
     routerSpy = jasmine.createSpyObj(['navigateByUrl']);
 
     await TestBed.configureTestingModule({
-      declarations: [NavigationSepodiPrmComponent],
-      imports: [AppTestingModule],
-      providers: [
-        {provide: Router, useValue: routerSpy},
+    imports: [AppTestingModule, NavigationSepodiPrmComponent],
+    providers: [
+        { provide: Router, useValue: routerSpy },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityServiceSpy },
         { provide: ServicePointsService, useValue: servicePointsServiceSpy }
-      ]
-    })
+    ]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(NavigationSepodiPrmComponent);

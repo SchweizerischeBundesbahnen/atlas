@@ -15,20 +15,18 @@ describe('StringListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        StringListComponent,
-        TextFieldComponent,
-        MockAtlasFieldErrorComponent,
-        MockAtlasLabelFieldComponent,
-      ],
-      imports: [
+    declarations: [MockAtlasLabelFieldComponent],
+    imports: [
         ReactiveFormsModule,
         MatChipsModule,
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-    }).compileComponents();
+        StringListComponent,
+        TextFieldComponent,
+        MockAtlasFieldErrorComponent,
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(StringListComponent);
     component = fixture.componentInstance;

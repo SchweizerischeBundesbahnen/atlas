@@ -19,11 +19,15 @@ import { mergeMap } from 'rxjs';
 import { SloidHelper } from '../../../../core/util/sloidHelper';
 import { tap } from 'rxjs/operators';
 import { TableContentPaginationAndSorting } from '../../../../core/components/table/table-content-pagination-and-sorting';
+import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 
 @Component({
     selector: 'app-platform',
     templateUrl: './platform-table.component.html',
-    standalone: false
+    imports: [NavigationSepodiPrmComponent, TableComponent, DetailFooterComponent, AtlasButtonComponent]
 })
 export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {
 

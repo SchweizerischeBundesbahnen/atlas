@@ -18,16 +18,13 @@ describe('WorkflowComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppTestingModule, MatExpansionModule],
-      declarations: [
-        WorkflowComponent,
+    imports: [AppTestingModule, MatExpansionModule, WorkflowComponent,
         AtlasButtonComponent,
         AtlasFieldErrorComponent,
         AtlasLabelFieldComponent,
-        TextFieldComponent,
-      ],
-      providers: [{ provide: PermissionService, useValue: adminPermissionServiceMock }, { provide: TranslatePipe }],
-    }).compileComponents();
+        TextFieldComponent],
+    providers: [{ provide: PermissionService, useValue: adminPermissionServiceMock }, { provide: TranslatePipe }],
+}).compileComponents();
 
     fixture = TestBed.createComponent(WorkflowComponent);
     fixture.componentInstance.lineRecord = {

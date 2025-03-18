@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import {
   ApplicationType,
   HearingStatus,
@@ -27,7 +27,7 @@ import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
 import { SelectionModel } from '@angular/cdk/collections';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { TthChangeCantonDialogService } from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -39,12 +39,20 @@ import { TableService } from '../../../core/components/table/table.service';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { TthTableFilterSettingsService } from '../tth-table-filter-settings.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { OverviewTabHeadingComponent } from '../overview-tab/overview-tab-heading/overview-tab-heading.component';
+import { NgIf } from '@angular/common';
+import { SelectComponent } from '../../../core/form-components/select/select.component';
+import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { DownloadIconComponent } from '../../../core/form-components/download-icon/download-icon.component';
+import { TableComponent } from '../../../core/components/table/table.component';
+import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 
 @Component({
     selector: 'app-timetable-hearing-overview-detail',
     templateUrl: './overview-detail.component.html',
     styleUrls: ['./overview-detail.component.scss'],
-    standalone: false
+    imports: [OverviewTabHeadingComponent, NgIf, SelectComponent, AtlasSpacerComponent, AtlasButtonComponent, DownloadIconComponent, TableComponent, RouterOutlet, DisplayDatePipe, TranslatePipe]
 })
 export class OverviewDetailComponent implements OnInit {
   timeTableHearingStatements: TimetableHearingStatementV2[] = [];

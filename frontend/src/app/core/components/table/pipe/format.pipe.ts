@@ -5,8 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Pipe({
     name: 'format',
-    pure: false,
-    standalone: false
+    pure: false
 })
 export class FormatPipe implements PipeTransform {
   constructor(private readonly translatePipe: TranslatePipe) {}

@@ -46,21 +46,18 @@ describe('PlatformTableComponent', () => {
     routerSpy = jasmine.createSpyObj(['navigate']);
 
     TestBed.configureTestingModule({
-      declarations: [
-        PlatformTableComponent,
+    imports: [AppTestingModule, PlatformTableComponent,
         MockAtlasButtonComponent,
         MockTableComponent,
         DetailFooterComponent,
-        MockNavigationSepodiPrmComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        MockNavigationSepodiPrmComponent],
+    providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
         { provide: TrafficPointElementsService, useValue: trafficPointElementsService },
         { provide: Router, useValue: routerSpy },
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(PlatformTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

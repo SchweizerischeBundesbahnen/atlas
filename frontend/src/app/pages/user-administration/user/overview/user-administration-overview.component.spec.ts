@@ -16,7 +16,8 @@ import {RouterModule} from "@angular/router";
 @Component({
     selector: 'form-search-select',
     template: '',
-    standalone: false
+    imports: [MaterialModule,
+        FormsModule]
 })
 class MockFormSearchSelectComponent {
   @Input() items$ = of([]);
@@ -28,7 +29,8 @@ class MockFormSearchSelectComponent {
 @Component({
     selector: 'app-user-select',
     template: '<p>app-user-select</p>',
-    standalone: false
+    imports: [MaterialModule,
+        FormsModule]
 })
 class MockUserSelectComponent {
   @Input() form?: FormGroup;
@@ -45,32 +47,30 @@ describe('UserAdministrationUserOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        TranslateModule.forRoot({
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+        RouterModule.forRoot([]),
+        MaterialModule,
+        FormsModule,
         UserAdministrationUserOverviewComponent,
         AtlasButtonComponent,
         MockTableComponent,
         MockFormSearchSelectComponent,
         MockUserSelectComponent,
-      ],
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        RouterModule.forRoot([]),
-        MaterialModule,
-        FormsModule,
-      ],
-      providers: [
+    ],
+    providers: [
         {
-          provide: UserService,
-          useValue: userServiceMock,
+            provide: UserService,
+            useValue: userServiceMock,
         },
         {
-          provide: PermissionService,
-          useValue: adminPermissionServiceMock,
+            provide: PermissionService,
+            useValue: adminPermissionServiceMock,
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationUserOverviewComponent);
     component = fixture.componentInstance;

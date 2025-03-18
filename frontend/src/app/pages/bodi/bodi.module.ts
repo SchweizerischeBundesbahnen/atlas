@@ -11,15 +11,12 @@ import { CompaniesComponent } from './companies/companies.component';
 import { CompanyDetailComponent } from './companies/detail/company-detail.component';
 
 @NgModule({
-  declarations: [
-    BodiOverviewComponent,
-    BusinessOrganisationComponent,
-    BusinessOrganisationDetailComponent,
-    TransportCompaniesComponent,
-    TransportCompanyDetailComponent,
-    CompaniesComponent,
-    CompanyDetailComponent,
-  ],
-  imports: [CoreModule, BodiRoutingModule, FormModule],
+    imports: [CoreModule, BodiRoutingModule, FormModule, BodiOverviewComponent,
+        BusinessOrganisationComponent,
+        BusinessOrganisationDetailComponent,
+        TransportCompaniesComponent,
+        TransportCompanyDetailComponent,
+        CompaniesComponent,
+        CompanyDetailComponent],
 })
 export class BodiModule {}

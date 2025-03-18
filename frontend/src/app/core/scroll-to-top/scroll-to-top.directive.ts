@@ -1,9 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, Self } from '@angular/core';
 
-@Directive({
-    selector: '[scrollToTop]',
-    standalone: false
-})
+@Directive({ selector: '[scrollToTop]' })
 export class ScrollToTopDirective implements AfterViewInit {
   constructor(@Self() private elementRef: ElementRef<HTMLElement>) {}
 

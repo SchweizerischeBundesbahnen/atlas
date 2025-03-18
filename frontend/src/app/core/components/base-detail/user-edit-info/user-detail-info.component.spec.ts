@@ -17,15 +17,15 @@ describe('UserDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserDetailInfoComponent],
-      imports: [
+    imports: [
         AppTestingModule,
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      providers: [{ provide: UserAdministrationService, useValue: userAdminServiceMock }],
-    }).compileComponents();
+        UserDetailInfoComponent,
+    ],
+    providers: [{ provide: UserAdministrationService, useValue: userAdminServiceMock }],
+}).compileComponents();
   });
 
   beforeEach(() => {

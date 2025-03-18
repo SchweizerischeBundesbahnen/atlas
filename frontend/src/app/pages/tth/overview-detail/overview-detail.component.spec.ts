@@ -33,7 +33,7 @@ import {PermissionService} from "../../../core/auth/permission/permission.servic
 @Component({
     selector: 'app-timetable-hearing-overview-tab-heading',
     template: '<p>MockAppTthOverviewTabHeadingComponent</p>',
-    standalone: false
+    imports: [AppTestingModule]
 })
 class MockAppTthOverviewTabHeadingComponent {
   @Input() cantonShort!: string;
@@ -110,29 +110,26 @@ async function baseTestConfiguration() {
   );
 
   await TestBed.configureTestingModule({
-    declarations: [
-      OverviewDetailComponent,
-      SelectComponent,
-      AtlasLabelFieldComponent,
-      MockAtlasFieldErrorComponent,
-      AtlasSpacerComponent,
-      MockAppTthOverviewTabHeadingComponent,
-      MockTableComponent,
-      MockAtlasButtonComponent,
-    ],
-    imports: [AppTestingModule],
+    imports: [AppTestingModule, OverviewDetailComponent,
+        SelectComponent,
+        AtlasLabelFieldComponent,
+        MockAtlasFieldErrorComponent,
+        AtlasSpacerComponent,
+        MockAppTthOverviewTabHeadingComponent,
+        MockTableComponent,
+        MockAtlasButtonComponent],
     providers: [
-      {
-        provide: TimetableHearingStatementsService,
-        useValue: mockTimetableHearingStatementsService,
-      },
-      { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
-      { provide: TranslatePipe },
-      { provide: DisplayDatePipe },
-      { provide: PermissionService, useValue: adminPermissionServiceMock },
-      { provide: TableService },
+        {
+            provide: TimetableHearingStatementsService,
+            useValue: mockTimetableHearingStatementsService,
+        },
+        { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
+        { provide: TranslatePipe },
+        { provide: DisplayDatePipe },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
+        { provide: TableService },
     ],
-  }).compileComponents();
+}).compileComponents();
 
   return TestBed.createComponent(OverviewDetailComponent);
 }

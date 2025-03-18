@@ -223,36 +223,33 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
   transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation.calls.reset();
 
   TestBed.configureTestingModule({
-    declarations: [
-      TransportCompanyDetailComponent,
-      RelationComponent,
-      SearchSelectComponent,
-      CommentComponent,
-      MockAtlasButtonComponent,
-      TextFieldComponent,
-      AtlasLabelFieldComponent,
-      AtlasFieldErrorComponent,
-      DetailPageContainerComponent,
-      DetailPageContentComponent,
-      DetailFooterComponent,
-    ],
-    imports: [AppTestingModule],
+    imports: [AppTestingModule, TransportCompanyDetailComponent,
+        RelationComponent,
+        SearchSelectComponent,
+        CommentComponent,
+        MockAtlasButtonComponent,
+        TextFieldComponent,
+        AtlasLabelFieldComponent,
+        AtlasFieldErrorComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent],
     providers: [
-      {
-        provide: ActivatedRoute,
-        useValue: { snapshot: { data: { transportCompanyDetail: data } } },
-      },
-      {
-        provide: PermissionService,
-        useValue: adminPermissionServiceMock,
-      },
-      {
-        provide: TransportCompanyRelationsService,
-        useValue: transportCompanyRelationsServiceSpy,
-      },
-      { provide: TranslatePipe },
+        {
+            provide: ActivatedRoute,
+            useValue: { snapshot: { data: { transportCompanyDetail: data } } },
+        },
+        {
+            provide: PermissionService,
+            useValue: adminPermissionServiceMock,
+        },
+        {
+            provide: TransportCompanyRelationsService,
+            useValue: transportCompanyRelationsServiceSpy,
+        },
+        { provide: TranslatePipe },
     ],
-  })
+})
     .compileComponents()
     .then();
 }

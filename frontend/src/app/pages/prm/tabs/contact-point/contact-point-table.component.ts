@@ -10,11 +10,15 @@ import {TableService} from "../../../../core/components/table/table.service";
 import {Pages} from "../../../pages";
 import {TablePagination} from "../../../../core/components/table/table-pagination";
 import {TableContentPaginationAndSorting} from "../../../../core/components/table/table-content-pagination-and-sorting";
+import { NgIf } from '@angular/common';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 
 @Component({
     selector: 'app-contact-point-table',
     templateUrl: './contact-point-table.component.html',
-    standalone: false
+    imports: [NgIf, AtlasButtonComponent, TableComponent, DetailFooterComponent]
 })
 export class ContactPointTableComponent extends BasePrmTabComponentService implements OnInit {
 

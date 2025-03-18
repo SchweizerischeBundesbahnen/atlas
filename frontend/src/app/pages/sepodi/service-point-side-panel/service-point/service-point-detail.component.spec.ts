@@ -57,7 +57,7 @@ const addStopPointWorkflowDialogService = jasmine.createSpyObj(
 @Component({
     selector: 'service-point-form',
     template: '<h1>ServicePointFormMockComponent</h1>',
-    standalone: false
+    imports: [AppTestingModule, FormsModule]
 })
 class ServicePointFormMockComponent {
   @Input() form?: FormGroup;
@@ -68,7 +68,7 @@ class ServicePointFormMockComponent {
 @Component({
     selector: 'sepodi-geography',
     template: '<h1>ServicePointGeographyMockComponent</h1>',
-    standalone: false
+    imports: [AppTestingModule, FormsModule]
 })
 class ServicePointGeographyMockComponent {
   @Input() form?: FormGroup;
@@ -90,8 +90,7 @@ describe('ServicePointDetailComponent', () => {
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        ServicePointDetailComponent,
+    imports: [AppTestingModule, FormsModule, ServicePointDetailComponent,
         TextFieldComponent,
         AtlasLabelFieldComponent,
         AtlasFieldErrorComponent,
@@ -108,11 +107,8 @@ describe('ServicePointDetailComponent', () => {
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-        MockNavigationSepodiPrmComponent,
-        MockPrmRecordingObligationComponent,
-      ],
-      imports: [AppTestingModule, FormsModule],
-      providers: [
+        MockNavigationSepodiPrmComponent],
+    providers: [
         ValidityService,
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -123,8 +119,8 @@ describe('ServicePointDetailComponent', () => {
         { provide: MapService, useValue: mapServiceSpy },
         { provide: AddStopPointWorkflowDialogService, useValue: addStopPointWorkflowDialogService },
         { provide: Router, useValue: routerSpy },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(ServicePointDetailComponent);
     component = fixture.componentInstance;

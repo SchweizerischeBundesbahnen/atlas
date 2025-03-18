@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import { FormGroup, ReactiveFormsModule } from "@angular/forms";
 import {
   StopPointRestartWorkflowFormGroup,
   StopPointRestartWorkflowFormGroupBuilder
@@ -12,12 +12,18 @@ import {Router} from "@angular/router";
 import {NotificationService} from "../../../../core/notification/notification.service";
 import {Pages} from "../../../pages";
 import {StopPointRejectWorkflowDialogData} from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog-data";
+import { DialogCloseComponent } from '../../../../core/components/dialog/close/dialog-close.component';
+import { DialogContentComponent } from '../../../../core/components/dialog/content/dialog-content.component';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
+import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-stop-point-restart-workflow-dialog',
     templateUrl: './stop-point-restart-workflow-dialog.component.html',
     styleUrls: ['./stop-point-restart-workflow-dialog.component.scss'],
-    standalone: false
+    imports: [DialogCloseComponent, DialogContentComponent, ReactiveFormsModule, TextFieldComponent, CommentComponent, DialogFooterComponent, TranslatePipe]
 })
 export class StopPointRestartWorkflowDialogComponent implements OnInit {
 

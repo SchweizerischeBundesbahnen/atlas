@@ -27,18 +27,15 @@ describe('PlatformDetailPanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        PlatformDetailPanelComponent,
+    imports: [AppTestingModule, PlatformDetailPanelComponent,
         DetailWithRelationTabComponent,
-        DetailPageContainerComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
+        DetailPageContainerComponent],
+    providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
         TranslatePipe,
         SplitServicePointNumberPipe,
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(PlatformDetailPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

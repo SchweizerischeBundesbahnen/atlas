@@ -15,19 +15,19 @@ describe('UserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserComponent],
-      imports: [
+    imports: [
         MaterialModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      providers: [
+        UserComponent,
+    ],
+    providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: UserService, useValue: adminUserServiceMock },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

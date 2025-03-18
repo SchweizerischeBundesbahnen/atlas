@@ -13,9 +13,8 @@ describe('TimetableHearingOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimetableHearingOverviewComponent, CantonCardComponent],
-      imports: [AppTestingModule, TthModule, TranslateModule.forRoot()],
-    }).compileComponents();
+    imports: [AppTestingModule, TthModule, TranslateModule.forRoot(), TimetableHearingOverviewComponent, CantonCardComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(TimetableHearingOverviewComponent);
     component = fixture.componentInstance;

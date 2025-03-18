@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { tap } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ApplicationType, PermissionRestrictionType, SwissCanton, User } from '../../../../api';
 import { tableColumns } from './table-column-definition';
 import { SearchType, SearchTypes } from './search-type';
@@ -10,12 +10,20 @@ import { Cantons } from '../../../../core/cantons/Cantons';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { MatSelectChange } from '@angular/material/select';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { MatLabel } from '@angular/material/form-field';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { NgFor, NgIf } from '@angular/common';
+import { UserSelectComponent } from '../user-select/user-select.component';
+import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-user-administration-overview',
     templateUrl: './user-administration-overview.component.html',
     styleUrls: ['./user-administration-overview.component.scss'],
-    standalone: false
+    imports: [TableComponent, MatLabel, MatRadioGroup, ReactiveFormsModule, FormsModule, NgFor, MatRadioButton, NgIf, UserSelectComponent, BusinessOrganisationSelectComponent, SelectComponent, RouterOutlet, TranslatePipe]
 })
 export class UserAdministrationUserOverviewComponent {
   userPageResult: { users: User[]; totalCount: number } = { users: [], totalCount: 0 };

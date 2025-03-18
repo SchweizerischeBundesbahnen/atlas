@@ -46,32 +46,29 @@ describe('AddExaminantsComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [
-        AddExaminantsComponent,
+    imports: [AppTestingModule, FormModule, AddExaminantsComponent,
         AtlasButtonComponent,
         StopPointWorkflowExaminantsTableComponent,
         StringListComponent,
         DialogCloseComponent,
         DialogFooterComponent,
-        DialogContentComponent,
-      ],
-      imports: [AppTestingModule, FormModule],
-      providers: [
+        DialogContentComponent],
+    providers: [
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: workflowDialogData,
+            provide: MAT_DIALOG_DATA,
+            useValue: workflowDialogData,
         },
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: DetailHelperService, useValue: detailHelperService },
         {
-          provide: StopPointWorkflowService,
-          useValue: stopPointWorkflowService,
+            provide: StopPointWorkflowService,
+            useValue: stopPointWorkflowService,
         },
         { provide: Router, useValue: router },
         { provide: TranslatePipe },
-      ],
-    })
+    ],
+})
       .compileComponents()
       .then();
 

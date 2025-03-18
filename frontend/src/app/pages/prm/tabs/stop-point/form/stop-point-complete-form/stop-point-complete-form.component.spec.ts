@@ -31,22 +31,19 @@ describe('StopPointCompleteFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        StopPointCompleteFormComponent,
+    imports: [AppTestingModule, StopPointCompleteFormComponent,
         MockSelectComponent,
         TextFieldComponent,
         MockAtlasFieldErrorComponent,
         InfoIconComponent,
         AtlasLabelFieldComponent,
         MeansOfTransportPickerComponent,
-        AtlasSpacerComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        AtlasSpacerComponent],
+    providers: [
         { provide: TranslatePipe },
         { provide: PrmVariantInfoService, useValue: prmVariantInfoService },
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(StopPointCompleteFormComponent);
     component = fixture.componentInstance;
     fixture.componentInstance.form =

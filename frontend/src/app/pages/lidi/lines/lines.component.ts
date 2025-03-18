@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TableColumn} from '../../../core/components/table/table-column';
-import {Router} from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import {Subscription} from 'rxjs';
 import {BusinessOrganisation, ElementType, LidiElementType, Line, LinesService, Status} from '../../../api';
 import {TableService} from '../../../core/components/table/table.service';
@@ -14,11 +14,13 @@ import {TableFilterMultiSelect} from '../../../core/components/table-filter/conf
 import {TableFilter} from '../../../core/components/table-filter/config/table-filter';
 import {TableFilterDateSelect} from '../../../core/components/table-filter/config/table-filter-date-select';
 import {Pages} from '../../pages';
+import { TableComponent } from '../../../core/components/table/table.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-lidi-lines',
     templateUrl: './lines.component.html',
-    standalone: false
+    imports: [TableComponent, RouterOutlet, TranslatePipe]
 })
 export class LinesComponent implements OnInit, OnDestroy {
   private readonly tableFilterConfigIntern = {

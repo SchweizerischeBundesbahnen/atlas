@@ -7,6 +7,7 @@
     "publish-frontend": "sh ./npm_publish.sh",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage",
+    "test-dir": "ng test --include src/app/pages/{replace-me} --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage",
     "test-debug": "ng test --watch true --browsers=Chrome",
     "lint": "ng lint",
     "format": "prettier --write src/**/*.ts",

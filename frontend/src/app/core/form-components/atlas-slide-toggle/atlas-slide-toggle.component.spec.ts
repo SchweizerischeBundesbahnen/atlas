@@ -8,8 +8,8 @@ describe('AtlasSlideToggleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AtlasSlideToggleComponent],
-    }).compileComponents();
+    imports: [AtlasSlideToggleComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(AtlasSlideToggleComponent);
     component = fixture.componentInstance;

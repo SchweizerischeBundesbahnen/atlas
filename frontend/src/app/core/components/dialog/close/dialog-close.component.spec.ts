@@ -9,9 +9,8 @@ describe('DialogCloseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DialogCloseComponent],
-      imports: [MaterialModule],
-    }).compileComponents();
+    imports: [MaterialModule, DialogCloseComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(DialogCloseComponent);
     component = fixture.componentInstance;

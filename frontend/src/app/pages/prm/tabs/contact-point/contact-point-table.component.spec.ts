@@ -49,13 +49,12 @@ describe('ContactPointTableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ContactPointTableComponent, MockAtlasButtonComponent, MockTableComponent, DetailFooterComponent],
-      imports: [AppTestingModule],
-      providers: [
+    imports: [AppTestingModule, ContactPointTableComponent, MockAtlasButtonComponent, MockTableComponent, DetailFooterComponent],
+    providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService }
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(ContactPointTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

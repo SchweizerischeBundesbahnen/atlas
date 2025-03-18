@@ -10,7 +10,7 @@ import {AtlasButtonComponent} from "../../../core/components/button/atlas-button
 @Component({
     selector: 'atlas-map',
     template: '',
-    standalone: false
+    imports: [AppTestingModule]
 })
 export class MockAtlasMapComponent {
   @Input() isSidePanelOpen = false;
@@ -19,7 +19,7 @@ export class MockAtlasMapComponent {
 @Component({
     selector: 'app-search-service-point-panel',
     template: '<h1>SearchServicePointMockComponent</h1>',
-    standalone: false
+    imports: [AppTestingModule]
 })
 class SearchServicePointMockComponent {
   @Input() searchType!: ServicePointSearchType;
@@ -34,10 +34,9 @@ describe('SepodiMapviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SepodiMapviewComponent, MockAtlasMapComponent, SearchServicePointMockComponent, AtlasButtonComponent],
-      imports: [AppTestingModule],
-      providers: [{provide: AuthService, useValue: authService}],
-    }).compileComponents();
+    imports: [AppTestingModule, SepodiMapviewComponent, MockAtlasMapComponent, SearchServicePointMockComponent, AtlasButtonComponent],
+    providers: [{ provide: AuthService, useValue: authService }],
+}).compileComponents();
 
     fixture = TestBed.createComponent(SepodiMapviewComponent);
     component = fixture.componentInstance;

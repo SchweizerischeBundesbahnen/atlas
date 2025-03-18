@@ -18,20 +18,17 @@ import {TthChangeCantonDialogComponent} from './overview-detail/tth-change-canto
 import {TthChangeStatusDialogComponent} from './overview-detail/tth-change-status-dialog/tth-change-status-dialog.component';
 
 @NgModule({
-  declarations: [
-    TimetableHearingOverviewComponent,
-    CantonCardComponent,
-    OverviewDetailComponent,
-    OverviewTabComponent,
-    OverviewTabHeadingComponent,
-    StatementDetailComponent,
-    DialogManageTthComponent,
-    TthChangeStatusDialogComponent,
-    NewTimetableHearingYearDialogComponent,
-    StatementDialogComponent,
-    BaseChangeDialogComponent,
-    TthChangeCantonDialogComponent,
-  ],
-  imports: [CoreModule, TthRoutingModule, FormModule],
+    imports: [CoreModule, TthRoutingModule, FormModule, TimetableHearingOverviewComponent,
+        CantonCardComponent,
+        OverviewDetailComponent,
+        OverviewTabComponent,
+        OverviewTabHeadingComponent,
+        StatementDetailComponent,
+        DialogManageTthComponent,
+        TthChangeStatusDialogComponent,
+        NewTimetableHearingYearDialogComponent,
+        StatementDialogComponent,
+        BaseChangeDialogComponent,
+        TthChangeCantonDialogComponent],
 })
 export class TthModule {}

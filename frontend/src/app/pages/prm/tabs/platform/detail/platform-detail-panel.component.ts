@@ -9,11 +9,16 @@ import {
   ReadTrafficPointElementVersion,
 } from '../../../../../api';
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { NgIf } from '@angular/common';
+import { DateRangeTextComponent } from '../../../../../core/versioning/date-range-text/date-range-text.component';
+import { DetailWithRelationTabComponent } from '../../relation/tab/detail-with-relation-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-platform-detail-panel',
     templateUrl: './platform-detail-panel.component.html',
-    standalone: false
+    imports: [DetailPageContainerComponent, NgIf, DateRangeTextComponent, DetailWithRelationTabComponent, TranslatePipe]
 })
 export class PlatformDetailPanelComponent implements OnInit {
   isNew = false;

@@ -19,23 +19,22 @@ describe('SublineShorteningDialogComponent', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      declarations: [SublineShorteningDialogComponent],
-      imports: [AppTestingModule],
-      providers: [
+    imports: [AppTestingModule, SublineShorteningDialogComponent],
+    providers: [
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            isAllowed: true,
-            affectedSublines: {
-              allowedSublines: [],
-              notAllowedSublines: [],
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+                isAllowed: true,
+                affectedSublines: {
+                    allowedSublines: [],
+                    notAllowedSublines: [],
+                },
             },
-          },
         },
         { provide: TranslatePipe },
         { provide: Router, useValue: routerSpy },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(SublineShorteningDialogComponent);
     component = fixture.componentInstance;

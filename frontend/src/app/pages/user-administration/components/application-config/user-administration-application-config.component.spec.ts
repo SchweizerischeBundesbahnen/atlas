@@ -51,28 +51,26 @@ describe('UserAdministrationApplicationConfigComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        TranslateModule.forRoot({
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+        MaterialModule,
+        BrowserAnimationsModule,
         UserAdministrationApplicationConfigComponent,
         SelectComponent,
         AtlasLabelFieldComponent,
         AtlasSpacerComponent,
         MockAtlasFieldErrorComponent,
-      ],
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        MaterialModule,
-        BrowserAnimationsModule,
-      ],
-      providers: [
+    ],
+    providers: [
         {
-          provide: UserPermissionManager,
-          useValue: userPermissionManagerSpy,
+            provide: UserPermissionManager,
+            useValue: userPermissionManagerSpy,
         },
         { provide: TranslatePipe },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationApplicationConfigComponent);
     component = fixture.componentInstance;

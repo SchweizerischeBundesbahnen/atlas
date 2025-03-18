@@ -37,19 +37,18 @@ describe('TthChangeCantonDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TthChangeCantonDialogComponent, BaseChangeDialogComponent],
-      imports: [AppTestingModule, FormModule],
-      providers: [
+    imports: [AppTestingModule, FormModule, TthChangeCantonDialogComponent, BaseChangeDialogComponent],
+    providers: [
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            title: 'Title',
-            message: 'message',
-            tths: [statement],
-            justification: 'Forza Napoli',
-            type: 'SINGLE',
-            id: 1,
-          },
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+                title: 'Title',
+                message: 'message',
+                tths: [statement],
+                justification: 'Forza Napoli',
+                type: 'SINGLE',
+                id: 1,
+            },
         },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
@@ -57,12 +56,12 @@ describe('TthChangeCantonDialogComponent', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         {
-          provide: TimetableHearingStatementsService,
-          useValue: mockTimetableHearingStatementsService,
+            provide: TimetableHearingStatementsService,
+            useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(TthChangeCantonDialogComponent);
     component = fixture.componentInstance;

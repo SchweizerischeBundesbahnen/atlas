@@ -27,8 +27,7 @@ import {TableFilterBoolean} from "./config/table-filter-boolean";
 
 @Component({
     selector: 'input [matChipInputFor]',
-    template: '',
-    standalone: false
+    template: ''
 })
 class MockMatChipInputComponent {
   @Input() matChipInputFor: any;
@@ -39,8 +38,7 @@ class MockMatChipInputComponent {
 
 @Component({
     selector: 'atlas-select',
-    template: '',
-    standalone: false
+    template: ''
 })
 class MockAtlasSelectComponent {
   @Output() selectChanged = new EventEmitter();
@@ -61,8 +59,7 @@ class MockAtlasSelectComponent {
 
 @Component({
     selector: 'input [matDatepicker]',
-    template: '',
-    standalone: false
+    template: ''
 })
 class MockMatDatepickerInputComponent {
   @Output() dateChange: EventEmitter<Partial<MatDatepickerInputEvent<Moment | null, any>>> =
@@ -74,22 +71,19 @@ class MockMatDatepickerInputComponent {
 
 @Component({
     selector: 'mat-datepicker',
-    template: '',
-    standalone: false
+    template: ''
 })
 class MockMatDatepickerComponent {}
 
 @Component({
     selector: 'mat-icon',
-    template: '',
-    standalone: false
+    template: ''
 })
 class MockMatIconComponent {}
 
 @Component({
     selector: 'mat-chip-row',
-    template: '',
-    standalone: false
+    template: ''
 })
 class MockMatChipRowComponent {
   @Output() removed: EventEmitter<void> = new EventEmitter<void>();
@@ -97,8 +91,7 @@ class MockMatChipRowComponent {
 
 @Component({
     selector: 'bo-select',
-    template: '',
-    standalone: false
+    template: ''
 })
 class MockBoSelectComponent {
   @Output() boSelectionChanged = new EventEmitter<BusinessOrganisation>();
@@ -109,8 +102,7 @@ class MockBoSelectComponent {
 
 @Component({
     selector: 'ttfn-select',
-    template: '',
-    standalone: false
+    template: ''
 })
 class MockTtfnSelectComponent {
   @Output() ttfnSelectionChanged = new EventEmitter<TimetableFieldNumber>();
@@ -123,8 +115,7 @@ class MockTtfnSelectComponent {
 
 @Component({
     selector: 'tu-select',
-    template: '',
-    standalone: false
+    template: ''
 })
 class MockTuSelectComponent {
   @Output() tuSelectionChanged = new EventEmitter<TransportCompany>();
@@ -136,8 +127,7 @@ class MockTuSelectComponent {
 
 @Component({
     selector: 'mat-chip-grid',
-    template: '<ng-content></ng-content>',
-    standalone: false
+    template: '<ng-content></ng-content>'
 })
 class MockMatChipGridComponent {
   @Input() disabled = false;
@@ -145,8 +135,7 @@ class MockMatChipGridComponent {
 
 @Component({
     selector: 'mat-datepicker-toggle',
-    template: '',
-    standalone: false
+    template: ''
 })
 class MockMatDatepickerToggleComponent<D> {
   @Input() for!: MatDatepickerPanel<MatDatepickerControl<any>, D>;
@@ -158,7 +147,10 @@ describe('TableFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        TranslateModule.forRoot({
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
         // Tested component
         TableFilterComponent,
         // Mocks
@@ -180,14 +172,9 @@ describe('TableFilterComponent', () => {
         AtlasLabelFieldComponent,
         InstanceOfPipe,
         AtlasSlideToggleComponent,
-      ],
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
-      providers: [TranslatePipe],
-    }).compileComponents();
+    ],
+    providers: [TranslatePipe],
+}).compileComponents();
   });
 
   beforeEach(() => {

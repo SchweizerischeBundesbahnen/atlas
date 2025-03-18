@@ -6,11 +6,13 @@ import { Pages } from '../../../../pages';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { TableComponent } from '../../../../../core/components/table/table.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-subline-table',
     templateUrl: './subline-table.component.html',
-    standalone: false
+    imports: [TableComponent, TranslatePipe]
 })
 export class SublineTableComponent implements OnInit, OnDestroy {
   @Input() mainLineSlnid!: string;

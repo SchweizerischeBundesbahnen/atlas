@@ -4,8 +4,7 @@ import { FormatPipe } from './format.pipe';
 
 @Pipe({
     name: 'showTitle',
-    pure: false,
-    standalone: false
+    pure: false
 })
 export class ShowTitlePipe implements PipeTransform {
   private readonly SHOW_TOOLTIP_LENGTH = 15;

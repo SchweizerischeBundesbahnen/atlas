@@ -10,7 +10,7 @@ import {
   SboidPermissionRestrictionModel,
   SwissCanton,
 } from '../../../../api';
-import {FormControl, FormGroup} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {UserPermissionManager} from '../../service/user-permission-manager';
 import {
   BusinessOrganisationLanguageService
@@ -21,13 +21,20 @@ import {Cantons} from '../../../../core/cantons/Cantons';
 import {MatSelectChange} from '@angular/material/select';
 import {Countries} from '../../../../core/country/Countries';
 import {BULK_IMPORT_APPLICATIONS} from "../../../../core/auth/permission/bulk-import-permission";
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasSlideToggleComponent } from '../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { RelationComponent } from '../../../../core/components/relation/relation.component';
+import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-user-administration-application-config',
     templateUrl: './user-administration-application-config.component.html',
     styleUrls: ['./user-administration-application-config.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [SelectComponent, AtlasLabelFieldComponent, AtlasSlideToggleComponent, NgIf, RelationComponent, BusinessOrganisationSelectComponent, ReactiveFormsModule, AsyncPipe, TranslatePipe]
 })
 export class UserAdministrationApplicationConfigComponent implements OnInit, OnDestroy {
   @Input() application!: ApplicationType;

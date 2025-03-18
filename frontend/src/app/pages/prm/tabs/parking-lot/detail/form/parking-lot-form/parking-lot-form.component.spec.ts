@@ -18,19 +18,16 @@ describe('ParkingLotFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ParkingLotFormComponent,
+    imports: [AppTestingModule, ParkingLotFormComponent,
         TextFieldComponent,
         AtlasLabelFieldComponent,
         MockAtlasFieldErrorComponent,
         AtlasSpacerComponent,
         InfoIconComponent,
         SelectComponent,
-        CommentComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [{ provide: TranslatePipe }],
-    });
+        CommentComponent],
+    providers: [{ provide: TranslatePipe }],
+});
     fixture = TestBed.createComponent(ParkingLotFormComponent);
     component = fixture.componentInstance;
     component.form = ParkingLotFormGroupBuilder.buildFormGroup();

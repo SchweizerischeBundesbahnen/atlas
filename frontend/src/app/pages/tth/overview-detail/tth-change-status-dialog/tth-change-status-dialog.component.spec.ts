@@ -45,25 +45,22 @@ describe('TthChangeStatusDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        TthChangeStatusDialogComponent,
+    imports: [AppTestingModule, FormModule, TthChangeStatusDialogComponent,
         BaseChangeDialogComponent,
         CommentComponent,
         ErrorNotificationComponent,
-        MaintenanceIconComponent,
-      ],
-      imports: [AppTestingModule, FormModule],
-      providers: [
+        MaintenanceIconComponent],
+    providers: [
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            title: 'Title',
-            message: 'message',
-            tths: [statement],
-            justification: 'Forza Napoli',
-            type: 'SINGLE',
-            id: 1,
-          },
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+                title: 'Title',
+                message: 'message',
+                tths: [statement],
+                justification: 'Forza Napoli',
+                type: 'SINGLE',
+                id: 1,
+            },
         },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
@@ -71,12 +68,12 @@ describe('TthChangeStatusDialogComponent', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         {
-          provide: TimetableHearingStatementsService,
-          useValue: mockTimetableHearingStatementsService,
+            provide: TimetableHearingStatementsService,
+            useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(TthChangeStatusDialogComponent);
     component = fixture.componentInstance;

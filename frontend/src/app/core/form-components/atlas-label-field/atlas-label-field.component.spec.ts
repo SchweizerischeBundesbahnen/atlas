@@ -14,14 +14,14 @@ describe('AtlasLableFieldComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AtlasLabelFieldComponent],
-      imports: [
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      providers: [{ provide: TranslatePipe }],
-    }).compileComponents();
+        AtlasLabelFieldComponent,
+    ],
+    providers: [{ provide: TranslatePipe }],
+}).compileComponents();
 
     fixture = TestBed.createComponent(AtlasLabelFieldComponent);
     component = fixture.componentInstance;

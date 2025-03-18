@@ -3,8 +3,7 @@ import { User } from '../../../../api';
 
 @Pipe({
     name: 'userSelectFormat',
-    pure: true,
-    standalone: false
+    pure: true
 })
 export class UserSelectFormatPipe implements PipeTransform {
   transform(user: User): string {

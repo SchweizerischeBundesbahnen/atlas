@@ -46,10 +46,9 @@ describe('LidiWorkflowOverviewComponent', () => {
     ).and.returnValue(of(versionContainer));
 
     TestBed.configureTestingModule({
-      declarations: [LidiWorkflowOverviewComponent, MockTableComponent],
-      imports: [AppTestingModule],
-      providers: [{ provide: LinesService, useValue: linesServiceSpy }, TranslatePipe],
-    }).compileComponents();
+    imports: [AppTestingModule, LidiWorkflowOverviewComponent, MockTableComponent],
+    providers: [{ provide: LinesService, useValue: linesServiceSpy }, TranslatePipe],
+}).compileComponents();
 
     fixture = TestBed.createComponent(LidiWorkflowOverviewComponent);
     component = fixture.componentInstance;

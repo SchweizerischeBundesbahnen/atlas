@@ -47,13 +47,12 @@ describe('ParkingLotTableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ParkingLotTableComponent, MockAtlasButtonComponent, MockTableComponent, DetailFooterComponent],
-      imports: [AppTestingModule],
-      providers: [
+    imports: [AppTestingModule, ParkingLotTableComponent, MockAtlasButtonComponent, MockTableComponent, DetailFooterComponent],
+    providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService }
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(ParkingLotTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

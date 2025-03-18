@@ -29,7 +29,7 @@ let fixture: ComponentFixture<CompanyDetailComponent>;
 @Component({
     selector: 'atlas-text-field',
     template: '<p>Mock Table Component</p>',
-    standalone: false
+    imports: [AppTestingModule]
 })
 class MockAtlasTextFieldComponent {
   @Input() controlName!: string;
@@ -81,25 +81,22 @@ describe('CompanyDetailComponent', () => {
 
 function setupTestBed(data: { companyDetail: string | Company }) {
   TestBed.configureTestingModule({
-    declarations: [
-      CompanyDetailComponent,
-      ErrorNotificationComponent,
-      InfoIconComponent,
-      LinkIconComponent,
-      AtlasLabelFieldComponent,
-      AtlasFieldErrorComponent,
-      MockAtlasTextFieldComponent,
-      DetailPageContainerComponent,
-      DetailPageContentComponent,
-      DetailFooterComponent,
-      MockAtlasButtonComponent,
-    ],
-    imports: [AppTestingModule],
+    imports: [AppTestingModule, CompanyDetailComponent,
+        ErrorNotificationComponent,
+        InfoIconComponent,
+        LinkIconComponent,
+        AtlasLabelFieldComponent,
+        AtlasFieldErrorComponent,
+        MockAtlasTextFieldComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
+        MockAtlasButtonComponent],
     providers: [
-      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
-      { provide: TranslatePipe },
+        { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
+        { provide: TranslatePipe },
     ],
-  })
+})
     .compileComponents()
     .then();
 }

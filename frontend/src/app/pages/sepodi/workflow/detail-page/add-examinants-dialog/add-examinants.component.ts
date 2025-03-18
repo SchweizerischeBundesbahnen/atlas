@@ -4,7 +4,7 @@ import {AddExaminants, StopPointPerson, StopPointWorkflowService} from 'src/app/
 import { DetailHelperService } from 'src/app/core/detail/detail-helper.service';
 import {NotificationService} from "../../../../../core/notification/notification.service";
 import {Router} from "@angular/router";
-import {FormGroup} from "@angular/forms";
+import { FormGroup, ReactiveFormsModule } from "@angular/forms";
 import {
   StopPointWorkflowDetailFormGroupBuilder
 } from "../detail-form/stop-point-workflow-detail-form-group";
@@ -15,12 +15,19 @@ import {AtlasCharsetsValidator} from "../../../../../core/validation/charsets/at
 import {AtlasFieldLengthValidator} from "../../../../../core/validation/field-lengths/atlas-field-length-validator";
 import {AddExaminantsFormGroup, AddExaminantsFormGroupBuilder} from "./add-examinants-form-group";
 import {catchError, of} from "rxjs";
+import { DialogCloseComponent } from '../../../../../core/components/dialog/close/dialog-close.component';
+import { DialogContentComponent } from '../../../../../core/components/dialog/content/dialog-content.component';
+import { StopPointWorkflowExaminantsTableComponent } from '../examinant-table/stop-point-workflow-examinants-table.component';
+import { StringListComponent } from '../../../../../core/form-components/string-list/string-list.component';
+import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { DialogFooterComponent } from '../../../../../core/components/dialog/footer/dialog-footer.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-add-examinants',
     templateUrl: './add-examinants.component.html',
     styleUrls: ['./add-examinants.component.scss'],
-    standalone: false
+    imports: [DialogCloseComponent, DialogContentComponent, StopPointWorkflowExaminantsTableComponent, StringListComponent, ReactiveFormsModule, AtlasFieldErrorComponent, DialogFooterComponent, TranslatePipe]
 })
 export class AddExaminantsComponent implements OnInit {
 

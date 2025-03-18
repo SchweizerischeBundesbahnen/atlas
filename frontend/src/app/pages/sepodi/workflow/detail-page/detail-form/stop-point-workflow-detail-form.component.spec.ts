@@ -42,21 +42,18 @@ describe('StopPointWorkflowDetailFormComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [
-        StopPointWorkflowDetailFormComponent,
+    imports: [AppTestingModule, FormModule, StopPointWorkflowDetailFormComponent,
         StopPointWorkflowExaminantsTableComponent,
         StringListComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
         SplitServicePointNumberPipe,
-        AtlasSpacerComponent,
-      ],
-      imports: [AppTestingModule, FormModule],
-      providers: [
-        {provide: TranslatePipe},
-        {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
-      ],
-    }).compileComponents().then();
+        AtlasSpacerComponent],
+    providers: [
+        { provide: TranslatePipe },
+        { provide: StopPointWorkflowService, useValue: stopPointWorkflowService },
+    ],
+}).compileComponents().then();
 
     fixture = TestBed.createComponent(StopPointWorkflowDetailFormComponent);
     component = fixture.componentInstance;

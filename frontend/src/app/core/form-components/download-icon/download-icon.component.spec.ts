@@ -8,8 +8,8 @@ describe('DownloadIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DownloadIconComponent],
-    }).compileComponents();
+    imports: [DownloadIconComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(DownloadIconComponent);
     component = fixture.componentInstance;

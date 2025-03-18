@@ -10,13 +10,12 @@ describe('DialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DialogComponent],
-      imports: [AppTestingModule],
-      providers: [
+    imports: [AppTestingModule, DialogComponent],
+    providers: [
         { provide: MAT_DIALOG_DATA, useValue: { title: 'Title', message: 'message' } },
         { provide: MatDialogRef, useValue: {} },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

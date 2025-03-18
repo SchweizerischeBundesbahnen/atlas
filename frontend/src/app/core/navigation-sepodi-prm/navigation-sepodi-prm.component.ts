@@ -6,6 +6,8 @@ import {
   ServicePointsService
 } from "../../api";
 import {Countries} from "../country/Countries";
+import { NgIf } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export type TargetPageType =
   | 'stop-point'
@@ -18,7 +20,7 @@ export type TargetPageType =
 @Component({
     selector: 'app-navigation-sepodi-prm',
     templateUrl: './navigation-sepodi-prm.component.html',
-    standalone: false
+    imports: [NgIf, TranslatePipe]
 })
 export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
 

@@ -31,9 +31,8 @@ import { TargetPageType } from './core/navigation-sepodi-prm/navigation-sepodi-p
 import { Page } from './core/model/page';
 
 @Component({
-    selector: 'app-switch-version',
-    template: '<h1>version switch mock</h1>',
-    standalone: false
+  selector: 'app-switch-version',
+  template: '<h1>version switch mock</h1>',
 })
 export class MockSwitchVersionComponent {
   @Input() records!: Array<Record>;
@@ -44,9 +43,8 @@ export class MockSwitchVersionComponent {
 }
 
 @Component({
-    selector: 'app-detail-wrapper [controller][headingNew]',
-    template: '<p>Mock Product Editor Component</p>',
-    standalone: false
+  selector: 'app-detail-wrapper [controller][headingNew]',
+  template: '<p>Mock Product Editor Component</p>',
 })
 export class MockAppDetailWrapperComponent {
   @Input() controller!: BaseDetailController<Record>;
@@ -54,18 +52,16 @@ export class MockAppDetailWrapperComponent {
 }
 
 @Component({
-    selector: 'form-info-icon',
-    template: '',
-    standalone: false
+  selector: 'form-info-icon',
+  template: '',
 })
 export class MockInfoIconComponent {
   @Input() infoTitle = '';
 }
 
 @Component({
-    selector: 'bo-select',
-    template: '<p>Mock Business Organisation Select Component</p>',
-    standalone: false
+  selector: 'bo-select',
+  template: '<p>Mock Business Organisation Select Component</p>',
 })
 export class MockBoSelectComponent {
   @Input() valueExtraction = 'sboid';
@@ -76,9 +72,8 @@ export class MockBoSelectComponent {
 }
 
 @Component({
-    selector: 'atlas-select',
-    template: '<p>Mock Select Component</p>',
-    standalone: false
+  selector: 'atlas-select',
+  template: '<p>Mock Select Component</p>',
 })
 export class MockSelectComponent {
   @Input() label: string | undefined;
@@ -104,9 +99,8 @@ export class MockSelectComponent {
 }
 
 @Component({
-    selector: 'app-table',
-    template: '<p>Mock Table Component</p>',
-    standalone: false
+  selector: 'app-table',
+  template: '<p>Mock Table Component</p>',
 })
 export class MockTableComponent<DATATYPE> {
   @Input() tableData: DATATYPE[] = [];
@@ -129,9 +123,8 @@ export class MockTableComponent<DATATYPE> {
 }
 
 @Component({
-    selector: 'atlas-button',
-    template: '',
-    standalone: false
+  selector: 'atlas-button',
+  template: '',
 })
 export class MockAtlasButtonComponent {
   @Input() applicationType!: ApplicationType;
@@ -150,18 +143,16 @@ export class MockAtlasButtonComponent {
 }
 
 @Component({
-    selector: 'app-user-detail-info [record]',
-    template: '',
-    standalone: false
+  selector: 'app-user-detail-info [record]',
+  template: '',
 })
 export class MockUserDetailInfoComponent {
   @Input() record!: CreationEditionRecord;
 }
 
 @Component({
-    selector: 'app-atlas-field-error',
-    template: '',
-    standalone: false
+  selector: 'app-atlas-field-error',
+  template: '',
 })
 export class MockAtlasFieldErrorComponent {
   @Input() controlName!: string;
@@ -171,9 +162,8 @@ export class MockAtlasFieldErrorComponent {
 }
 
 @Component({
-    selector: 'mat-paginator',
-    template: '',
-    standalone: false
+  selector: 'mat-paginator',
+  template: '',
 })
 export class MockMatPaginatorComponent {
   @Input() pageSizeOptions?: number[];
@@ -183,9 +173,8 @@ export class MockMatPaginatorComponent {
 }
 
 @Component({
-    selector: 'app-atlas-label-field',
-    template: '',
-    standalone: false
+  selector: 'app-atlas-label-field',
+  template: '',
 })
 export class MockAtlasLabelFieldComponent {
   @Input() required!: boolean;
@@ -196,9 +185,8 @@ export class MockAtlasLabelFieldComponent {
 }
 
 @Component({
-    selector: 'app-navigation-sepodi-prm',
-    template: '<h1>MockNavigationSepodiPrmComponent</h1>',
-    standalone: false
+  selector: 'app-navigation-sepodi-prm',
+  template: '<h1>MockNavigationSepodiPrmComponent</h1>',
 })
 export class MockNavigationSepodiPrmComponent {
   @Input() targetPage!: TargetPageType;
@@ -261,7 +249,7 @@ export const authServiceSpy = jasmine.createSpyObj<AuthService>([
 
 // Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself
 @NgModule({
-  declarations: [
+  imports: [
     MockAppDetailWrapperComponent,
     MockTableComponent,
     MockBoSelectComponent,

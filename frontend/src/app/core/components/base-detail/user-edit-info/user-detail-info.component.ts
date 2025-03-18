@@ -5,13 +5,15 @@ import { DATE_PATTERN, DATE_TIME_FORMAT_WITHOUT_SECONDS } from '../../../date/da
 import { catchError, forkJoin, Observable, of } from 'rxjs';
 import { CreationEditionRecord } from './creation-edition-record';
 import { map } from 'rxjs/operators';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-user-detail-info [record]',
     templateUrl: './user-detail-info.component.html',
     styleUrls: ['./user-detail-info.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [NgIf, AsyncPipe, TranslatePipe]
 })
 export class UserDetailInfoComponent {
   @Input() short = false;

@@ -8,7 +8,7 @@ import {
   ReadStopPointVersion,
   ReadTrafficPointElementVersion,
 } from '../../../../../../api';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PrmMeanOfTransportHelper } from '../../../../util/prm-mean-of-transport-helper';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import {
@@ -22,12 +22,24 @@ import { PermissionService } from '../../../../../../core/auth/permission/permis
 import { EMPTY, Observable, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PrmTabDetailBaseComponent } from '../../../../shared/prm-tab-detail-base.component';
+import { DetailPageContentComponent } from '../../../../../../core/components/detail-page-content/detail-page-content.component';
+import { NgIf } from '@angular/common';
+import { SwitchVersionComponent } from '../../../../../../core/components/switch-version/switch-version.component';
+import { NavigationSepodiPrmComponent } from '../../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { DateRangeComponent } from '../../../../../../core/form-components/date-range/date-range.component';
+import { PlatformReducedFormComponent } from '../form/platform-reduced-form/platform-reduced-form.component';
+import { PlatformCompleteFormComponent } from '../form/platform-complete-form/platform-complete-form.component';
+import { MatDivider } from '@angular/material/divider';
+import { UserDetailInfoComponent } from '../../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-platforms',
     templateUrl: './platform-detail.component.html',
     providers: [ValidityService],
-    standalone: false
+    imports: [DetailPageContentComponent, NgIf, SwitchVersionComponent, NavigationSepodiPrmComponent, DateRangeComponent, ReactiveFormsModule, PlatformReducedFormComponent, PlatformCompleteFormComponent, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
 })
 export class PlatformDetailComponent
   extends PrmTabDetailBaseComponent<ReadPlatformVersion>

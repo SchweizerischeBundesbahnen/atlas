@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { ReadServicePointVersion } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
@@ -7,6 +7,12 @@ import { MapService } from '../map/map.service';
 import { Subscription } from 'rxjs';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { Countries } from '../../../core/country/Countries';
+import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
+import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
+import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
+import { NgFor } from '@angular/common';
+import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const TABS = [
   {
@@ -39,7 +45,7 @@ export const FOREIGN_TABS = TABS.filter((i) =>
     selector: 'app-service-point-side-panel',
     templateUrl: './service-point-side-panel.component.html',
     styleUrls: ['./service-point-side-panel.component.scss'],
-    standalone: false
+    imports: [DetailPageContainerComponent, DateRangeTextComponent, MatTabNav, NgFor, MatTabLink, RouterLinkActive, RouterLink, MatTabNavPanel, RouterOutlet, SplitServicePointNumberPipe, TranslatePipe]
 })
 export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
   servicePointVersions!: ReadServicePointVersion[];

@@ -4,8 +4,7 @@ import { User } from '../../../../../api';
 
 @Pipe({
     name: 'editTitle',
-    pure: true,
-    standalone: false
+    pure: true
 })
 export class EditTitlePipe implements PipeTransform {
   constructor(private readonly translatePipe: TranslatePipe) {}

@@ -124,23 +124,20 @@ describe('RelationTabDetailComponent', () => {
     personWithReducedMobilityService.getRelationsBySloid.and.returnValue(of([]));
     personWithReducedMobilityService.updateRelation.and.returnValue(of());
     TestBed.configureTestingModule({
-      declarations: [
-        RelationTabDetailComponent,
+    imports: [AppTestingModule, RelationTabDetailComponent,
         AtlasSpacerComponent,
         MockAtlasButtonComponent,
         MockSelectComponent,
         MockSwitchVersionComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-        MockUserDetailInfoComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        MockUserDetailInfoComponent],
+    providers: [
         ValidityService,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(RelationTabDetailComponent);
     component = fixture.componentInstance;
   });

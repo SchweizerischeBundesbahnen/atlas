@@ -13,15 +13,14 @@ describe('BoDiOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BodiOverviewComponent, BusinessOrganisationComponent, AtlasButtonComponent],
-      imports: [AppTestingModule],
-      providers: [
+    imports: [AppTestingModule, BodiOverviewComponent, BusinessOrganisationComponent, AtlasButtonComponent],
+    providers: [
         {
-          provide: PermissionService,
-          useValue: adminPermissionServiceMock,
+            provide: PermissionService,
+            useValue: adminPermissionServiceMock,
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

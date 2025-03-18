@@ -7,12 +7,23 @@ import { CreationEditionRecord } from '../../../../../core/components/base-detai
 import moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../../../api';
+import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
+import { NgIf, NgFor } from '@angular/common';
+import { UserAdministrationReadOnlyDataComponent } from '../../../components/read-only-data/user-administration-read-only-data.component';
+import { UserAdministrationApplicationConfigComponent } from '../../../components/application-config/user-administration-application-config.component';
+import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import { BackButtonDirective } from '../../../../../core/components/button/back-button/back-button.directive';
+import { TranslatePipe } from '@ngx-translate/core';
+import { EditTitlePipe } from './edit-title.pipe';
 
 @Component({
     selector: 'app-user-administration-edit',
     templateUrl: './user-administration-user-edit.component.html',
     viewProviders: [UserPermissionManager],
-    standalone: false
+    imports: [ScrollToTopDirective, DetailPageContainerComponent, DetailPageContentComponent, NgIf, UserAdministrationReadOnlyDataComponent, NgFor, UserAdministrationApplicationConfigComponent, UserDetailInfoComponent, DetailFooterComponent, BackButtonDirective, TranslatePipe, EditTitlePipe]
 })
 export class UserAdministrationUserEditComponent implements OnInit {
   @Input() user?: User;

@@ -9,7 +9,7 @@ const keyUpEvent = new KeyboardEvent('keyup');
 
 @Component({
     template: ` <input [formControl]="form" withDefaultValue="defaultValue" /> `,
-    standalone: false
+    imports: [AppTestingModule]
 })
 class TestComponent {
   form = new FormControl();
@@ -22,9 +22,8 @@ describe('WithDefaultValueDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [WithDefaultValueDirective, TestComponent],
-      imports: [AppTestingModule],
-    }).createComponent(TestComponent);
+    imports: [AppTestingModule, WithDefaultValueDirective, TestComponent],
+}).createComponent(TestComponent);
 
     component = fixture.componentInstance;
 

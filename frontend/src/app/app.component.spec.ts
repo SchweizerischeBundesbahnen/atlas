@@ -19,25 +19,22 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppTestingModule],
-      declarations: [
-        AppComponent,
-        HeaderComponent,
+    imports: [AppTestingModule, HeaderComponent,
         MaintenanceIconComponent,
         UserComponent,
         LanguageSwitcherComponent,
         SideNavComponent,
         LoadingSpinnerComponent,
-        InfoIconComponent,
-      ],
-      providers: [
+        InfoIconComponent],
+    declarations: [AppComponent],
+    providers: [
         { provide: AuthService, useValue: authServiceSpy },
         {
-          provide: SwUpdate,
-          useValue: {},
+            provide: SwUpdate,
+            useValue: {},
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

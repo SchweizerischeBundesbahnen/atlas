@@ -11,10 +11,9 @@ describe('PrmInfoBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PrmInfoBoxComponent],
-      imports: [AppTestingModule],
-      providers: [{ provide: TranslatePipe }],
-    }).compileComponents();
+    imports: [AppTestingModule, PrmInfoBoxComponent],
+    providers: [{ provide: TranslatePipe }],
+}).compileComponents();
 
     fixture = TestBed.createComponent(PrmInfoBoxComponent);
     component = fixture.componentInstance;

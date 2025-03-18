@@ -54,13 +54,12 @@ describe('MapComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MapComponent],
-      imports: [AppTestingModule],
-      providers: [
-        {provide: MapService, useValue: mapService},
-        {provide: PermissionService, useValue: adminPermissionServiceMock},
-      ],
-    }).compileComponents();
+    imports: [AppTestingModule, MapComponent],
+    providers: [
+        { provide: MapService, useValue: mapService },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
+    ],
+}).compileComponents();
 
     spyOn(maplibregl, 'Marker').and.returnValue(markerSpy);
     fixture = TestBed.createComponent(MapComponent);

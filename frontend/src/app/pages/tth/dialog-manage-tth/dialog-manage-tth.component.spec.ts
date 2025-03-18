@@ -13,7 +13,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 @Component({
     selector: 'atlas-slide-toggle',
     template: '<p>MockAtlasSlideToggleComponent</p>',
-    standalone: false
+    imports: [AppTestingModule]
 })
 class MockAtlasSlideToggleComponent {
   @Input() toggle = false;
@@ -51,36 +51,34 @@ describe('DialogManageTthComponent', () => {
     );
 
     await TestBed.configureTestingModule({
-      declarations: [
+    providers: [
+        {
+            provide: MAT_DIALOG_DATA,
+            useValue: matDialogDataMock,
+        },
+        {
+            provide: TimetableHearingYearsService,
+            useValue: tthYearsServiceSpy,
+        },
+        {
+            provide: NotificationService,
+            useValue: notificationServiceSpy,
+        },
+        {
+            provide: MatDialogRef<DialogManageTthComponent, boolean>,
+            useValue: matDialogRefSpy,
+        },
+    ],
+    imports: [
+        AppTestingModule,
+        TranslateModule.forRoot({
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
         DialogManageTthComponent,
         MockAtlasButtonComponent,
         MockAtlasSlideToggleComponent,
-      ],
-      providers: [
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: matDialogDataMock,
-        },
-        {
-          provide: TimetableHearingYearsService,
-          useValue: tthYearsServiceSpy,
-        },
-        {
-          provide: NotificationService,
-          useValue: notificationServiceSpy,
-        },
-        {
-          provide: MatDialogRef<DialogManageTthComponent, boolean>,
-          useValue: matDialogRefSpy,
-        },
-      ],
-      imports: [
-        AppTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     tthYearsServiceSpy.getHearingYear.and.stub().and.returnValue(of(tthYear));
 

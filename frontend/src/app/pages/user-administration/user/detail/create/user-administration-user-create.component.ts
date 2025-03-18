@@ -7,12 +7,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
+import { MatLabel } from '@angular/material/form-field';
+import { UserSelectComponent } from '../../user-select/user-select.component';
+import { NgIf, NgFor } from '@angular/common';
+import { UserAdministrationReadOnlyDataComponent } from '../../../components/read-only-data/user-administration-read-only-data.component';
+import { UserAdministrationApplicationConfigComponent } from '../../../components/application-config/user-administration-application-config.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-user-administration-create',
     templateUrl: './user-administration-user-create.component.html',
     viewProviders: [BusinessOrganisationsService, UserPermissionManager],
-    standalone: false
+    imports: [ScrollToTopDirective, DetailPageContainerComponent, DetailPageContentComponent, MatLabel, UserSelectComponent, NgIf, UserAdministrationReadOnlyDataComponent, NgFor, UserAdministrationApplicationConfigComponent, DetailFooterComponent, TranslatePipe]
 })
 export class UserAdministrationUserCreateComponent {
   userLoaded?: User;

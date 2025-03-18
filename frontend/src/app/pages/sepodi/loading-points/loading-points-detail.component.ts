@@ -11,7 +11,7 @@ import { VersionsHandlingService } from '../../../core/versioning/versions-handl
 import { DateRange } from '../../../core/versioning/date-range';
 import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { Pages } from '../../pages';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   LoadingPointDetailFormGroup,
   LoadingPointFormGroupBuilder,
@@ -24,13 +24,29 @@ import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validity } from '../../model/validity';
 import { ValidityService } from '../validity/validity.service';
+import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
+import { NgIf, NgFor } from '@angular/common';
+import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
+import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
+import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
+import { SwitchVersionComponent } from '../../../core/components/switch-version/switch-version.component';
+import { MatLabel } from '@angular/material/form-field';
+import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
+import { MatDivider } from '@angular/material/divider';
+import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-loading-points',
     templateUrl: './loading-points-detail.component.html',
     styleUrls: ['./loading-points-detail.component.scss'],
     providers: [ValidityService],
-    standalone: false
+    imports: [DetailPageContainerComponent, NgIf, DateRangeTextComponent, DetailPageContentComponent, TextFieldComponent, ReactiveFormsModule, SwitchVersionComponent, MatLabel, AtlasSpacerComponent, MatRadioGroup, NgFor, MatRadioButton, AtlasFieldErrorComponent, DateRangeComponent, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
 })
 export class LoadingPointsDetailComponent implements DetailFormComponent {
   loadingPointVersions!: ReadLoadingPointVersion[];

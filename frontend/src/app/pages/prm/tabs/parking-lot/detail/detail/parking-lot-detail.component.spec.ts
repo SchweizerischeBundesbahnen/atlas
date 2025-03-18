@@ -92,7 +92,11 @@ describe('ParkingLotDetailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        AppTestingModule,
+        RouterModule.forRoot([{
+                path: ':sloid', redirectTo: ''
+            }]),
         ParkingLotDetailComponent,
         SloidComponent,
         AtlasSlideToggleComponent,
@@ -114,23 +118,17 @@ describe('ParkingLotDetailComponent', () => {
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-      ],
-      imports: [
-        AppTestingModule,
-        RouterModule.forRoot([{
-          path: ':sloid', redirectTo: ''
-        }]),
-      ],
-      providers: [
-        {provide: PermissionService, useValue: adminPermissionServiceMock},
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
-        {provide: NotificationService, useValue: notificationService},
-        {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService},
-        {provide: DialogService, useValue: dialogService},
+    ],
+    providers: [
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: NotificationService, useValue: notificationService },
+        { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
+        { provide: DialogService, useValue: dialogService },
         TranslatePipe,
         SplitServicePointNumberPipe,
-      ],
-    });
+    ],
+});
   });
 
   describe('new parking lot', () => {

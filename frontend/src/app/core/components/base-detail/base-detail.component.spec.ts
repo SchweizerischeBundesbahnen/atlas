@@ -23,7 +23,7 @@ import { PermissionService } from '../../auth/permission/permission.service';
 @Component({
     selector: 'app-coverage',
     template: '<p>Mock Product Editor Component</p>',
-    standalone: false
+    imports: [AppTestingModule]
 })
 class MockAppCoverageComponent {
   @Input() pageType!: Record;
@@ -39,22 +39,19 @@ describe('BaseDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        BaseDetailComponent,
+    imports: [AppTestingModule, BaseDetailComponent,
         MockAppCoverageComponent,
         AtlasButtonComponent,
         MockUserDetailInfoComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-        DateRangeTextComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        DateRangeTextComponent],
+    providers: [
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: NotificationService, useValue: notificationServiceSpy },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   function init(controller: BaseDetailController<any>) {

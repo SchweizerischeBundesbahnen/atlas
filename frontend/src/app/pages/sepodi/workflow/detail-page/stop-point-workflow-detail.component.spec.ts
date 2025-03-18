@@ -102,8 +102,7 @@ describe('StopPointWorkflowDetailComponent', () => {
     dialogServiceSpy = getDialogServiceSpy();
 
     TestBed.configureTestingModule({
-      declarations: [
-        StopPointWorkflowDetailComponent,
+    imports: [AppTestingModule, FormModule, StopPointWorkflowDetailComponent,
         StopPointWorkflowDetailFormComponent,
         StopPointWorkflowExaminantsTableComponent,
         StringListComponent,
@@ -114,10 +113,8 @@ describe('StopPointWorkflowDetailComponent', () => {
         DetailPageContainerComponent,
         DetailFooterComponent,
         AtlasSpacerComponent,
-        UserDetailInfoComponent,
-      ],
-      imports: [AppTestingModule, FormModule],
-      providers: [
+        UserDetailInfoComponent],
+    providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: TranslatePipe },
         { provide: DialogService, useValue: dialogServiceSpy },
@@ -126,15 +123,15 @@ describe('StopPointWorkflowDetailComponent', () => {
         { provide: ValidationService, useClass: ValidationService },
         { provide: AddExaminantsDialogService, useValue: addExaminantsDialogService },
         {
-          provide: StopPointRejectWorkflowDialogService,
-          useValue: stopPointRejectWorkflowDialogServiceSpy,
+            provide: StopPointRejectWorkflowDialogService,
+            useValue: stopPointRejectWorkflowDialogServiceSpy,
         },
         {
-          provide: MatDialog,
-          useValue: dialogSpy,
+            provide: MatDialog,
+            useValue: dialogSpy,
         },
-      ],
-    })
+    ],
+})
       .compileComponents()
       .then();
 

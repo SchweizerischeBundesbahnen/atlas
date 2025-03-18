@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { Subject } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -9,11 +9,12 @@ import { ChangeCantonData } from './model/change-canton-data';
 import { takeUntil } from 'rxjs/operators';
 import { ValidationService } from 'src/app/core/validation/validation.service';
 import { TimetableHearingStatementsService } from '../../../../api';
+import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 
 @Component({
     selector: 'app-tth-change-canton-dialog',
     templateUrl: './tth-change-canton-dialog.component.html',
-    standalone: false
+    imports: [BaseChangeDialogComponent, ReactiveFormsModule]
 })
 export class TthChangeCantonDialogComponent {
   formGroup = new FormGroup<TthChangeCantonFormGroup>({

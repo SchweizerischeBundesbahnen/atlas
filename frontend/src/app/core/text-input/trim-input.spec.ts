@@ -7,7 +7,7 @@ import { AppTestingModule } from '../../app.testing.module';
 
 @Component({
     template: ` <input [formControl]="form" trim /> `,
-    standalone: false
+    imports: [AppTestingModule]
 })
 class TestComponent {
   form = new FormControl();
@@ -22,9 +22,8 @@ describe('TrimInputDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [TrimInputDirective, TestComponent],
-      imports: [AppTestingModule],
-    }).createComponent(TestComponent);
+    imports: [AppTestingModule, TrimInputDirective, TestComponent],
+}).createComponent(TestComponent);
 
     component = fixture.componentInstance;
 

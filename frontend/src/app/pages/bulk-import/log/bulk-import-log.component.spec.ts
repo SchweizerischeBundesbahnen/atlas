@@ -31,18 +31,18 @@ describe('BulkImportLogComponent', () => {
       .withArgs(10)
       .and.returnValue(of(importResult));
     await TestBed.configureTestingModule({
-      imports: [
+    imports: [
         UserDisplayNamePipeMock,
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      declarations: [BulkImportLogComponent, MockMatPaginatorComponent],
-      providers: [
+        BulkImportLogComponent, MockMatPaginatorComponent,
+    ],
+    providers: [
         { provide: BulkImportService, useValue: bulkImportServiceSpy },
         { provide: ActivatedRoute, useValue: { params: of({ id: 10 }) } },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(BulkImportLogComponent);
     component = fixture.componentInstance;

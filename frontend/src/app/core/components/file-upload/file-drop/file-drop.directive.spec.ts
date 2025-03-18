@@ -3,10 +3,7 @@ import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { FileDropDirective } from './file-drop.directive';
 
-@Component({
-    template: `<div atlas-file-drop>Test Dropzone</div>`,
-    standalone: false
-})
+@Component({ template: `<div atlas-file-drop>Test Dropzone</div>` })
 class TestComponent {}
 
 describe('FileDropDirective', () => {
@@ -14,8 +11,8 @@ describe('FileDropDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [FileDropDirective, TestComponent],
-    }).createComponent(TestComponent);
+    imports: [FileDropDirective, TestComponent],
+}).createComponent(TestComponent);
 
     fixture.detectChanges();
   });

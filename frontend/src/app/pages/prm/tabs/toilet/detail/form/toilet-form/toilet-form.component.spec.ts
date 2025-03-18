@@ -18,19 +18,16 @@ describe('ToiletFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        ToiletFormComponent,
+    imports: [AppTestingModule, ToiletFormComponent,
         TextFieldComponent,
         AtlasLabelFieldComponent,
         MockAtlasFieldErrorComponent,
         AtlasSpacerComponent,
         InfoIconComponent,
         SelectComponent,
-        CommentComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [{ provide: TranslatePipe }],
-    })
+        CommentComponent],
+    providers: [{ provide: TranslatePipe }],
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(ToiletFormComponent);

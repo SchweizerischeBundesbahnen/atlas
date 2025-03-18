@@ -25,28 +25,26 @@ describe('BusinessOrganisationSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        BusinessOrganisationSelectComponent,
-        SearchSelectComponent,
-        AtlasLabelFieldComponent,
-        AtlasFieldErrorComponent,
-      ],
-      imports: [
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         NgSelectModule,
         MaterialModule,
         HttpClientTestingModule,
-      ],
-      providers: [
+        BusinessOrganisationSelectComponent,
+        SearchSelectComponent,
+        AtlasLabelFieldComponent,
+        AtlasFieldErrorComponent,
+    ],
+    providers: [
         TranslatePipe,
         {
-          provide: BusinessOrganisationsService,
-          useValue: businessOrganisationsService,
+            provide: BusinessOrganisationsService,
+            useValue: businessOrganisationsService,
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(BusinessOrganisationSelectComponent);
     component = fixture.componentInstance;

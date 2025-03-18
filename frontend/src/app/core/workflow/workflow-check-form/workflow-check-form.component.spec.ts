@@ -32,23 +32,20 @@ describe('WorkflowCheckFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        WorkflowCheckFormComponent,
+    providers: [
+        { provide: PermissionService, useValue: permissionServiceMock },
+        { provide: WorkflowService, useValue: workflowServiceSpy },
+        { provide: TranslatePipe },
+    ],
+    imports: [AppTestingModule, WorkflowCheckFormComponent,
         WorkflowFormComponent,
         AtlasButtonComponent,
         InfoIconComponent,
         CommentComponent,
         AtlasFieldErrorComponent,
         AtlasLabelFieldComponent,
-        TextFieldComponent,
-      ],
-      providers: [
-        { provide: PermissionService, useValue: permissionServiceMock },
-        { provide: WorkflowService, useValue: workflowServiceSpy },
-        { provide: TranslatePipe },
-      ],
-      imports: [AppTestingModule],
-    }).compileComponents();
+        TextFieldComponent],
+}).compileComponents();
     fixture = TestBed.createComponent(WorkflowCheckFormComponent);
     component = fixture.componentInstance;
 

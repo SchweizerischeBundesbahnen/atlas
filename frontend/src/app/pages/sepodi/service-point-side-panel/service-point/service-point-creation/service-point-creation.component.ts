@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder,} from '../service-point-detail-form-group';
 import {
   ApplicationRole,
@@ -20,13 +20,22 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MapService} from '../../../map/map.service';
 import {DetailFormComponent} from "../../../../../core/leave-guard/leave-dirty-form-guard.service";
 import {PermissionService} from "../../../../../core/auth/permission/permission.service";
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
+import { SelectComponent } from '../../../../../core/form-components/select/select.component';
+import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
+import { ServicePointFormComponent } from '../service-point-form/service-point-form.component';
+import { GeographyComponent } from '../../../geography/geography.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-service-point-creation',
     templateUrl: './service-point-creation.component.html',
     styleUrls: ['./service-point-creation.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [DetailPageContainerComponent, DetailPageContentComponent, SelectComponent, ReactiveFormsModule, TextFieldComponent, ServicePointFormComponent, GeographyComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
 })
 export class ServicePointCreationComponent implements OnInit, DetailFormComponent {
   public form: FormGroup<ServicePointDetailFormGroup> =

@@ -35,16 +35,13 @@ describe('StopPointWorkflowOverviewComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [
-        StopPointWorkflowOverviewComponent,
-        MockTableComponent
-      ],
-      imports: [AppTestingModule, FormModule],
-      providers: [
+    imports: [AppTestingModule, FormModule, StopPointWorkflowOverviewComponent,
+        MockTableComponent],
+    providers: [
         { provide: PermissionService, useValue: permissionServiceMock },
         { provide: StopPointWorkflowService, useValue: stopPointWorkflowService },
-      ]
-    }).compileComponents().then();
+    ]
+}).compileComponents().then();
     fixture = TestBed.createComponent(StopPointWorkflowOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

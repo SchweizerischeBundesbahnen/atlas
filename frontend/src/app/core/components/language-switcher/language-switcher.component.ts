@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DateAdapter } from '@angular/material/core';
 import { Language } from './language';
+import { NgFor, NgClass, UpperCasePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-language-switcher',
     templateUrl: './language-switcher.component.html',
     styleUrls: ['./language-switcher.component.scss'],
-    standalone: false
+    imports: [NgFor, RouterLink, NgClass, UpperCasePipe]
 })
 export class LanguageSwitcherComponent {
   static readonly STORED_LANGUAGE_KEY = 'language';

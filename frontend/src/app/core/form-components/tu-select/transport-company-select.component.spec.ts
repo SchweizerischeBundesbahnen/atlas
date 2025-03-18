@@ -20,22 +20,20 @@ describe('TransportCompanySelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        TransportCompanySelectComponent,
-        SearchSelectComponent,
-        AtlasLabelFieldComponent,
-        AtlasFieldErrorComponent,
-      ],
-      imports: [
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         NgSelectModule,
         MaterialModule,
         HttpClientTestingModule,
-      ],
-      providers: [TranslatePipe],
-    }).compileComponents();
+        TransportCompanySelectComponent,
+        SearchSelectComponent,
+        AtlasLabelFieldComponent,
+        AtlasFieldErrorComponent,
+    ],
+    providers: [TranslatePipe],
+}).compileComponents();
 
     fixture = TestBed.createComponent(TransportCompanySelectComponent);
     component = fixture.componentInstance;

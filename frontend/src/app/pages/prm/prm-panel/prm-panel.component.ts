@@ -7,7 +7,7 @@ import {
 } from '../../../api';
 import {DateRange} from '../../../core/versioning/date-range';
 import {VersionsHandlingService} from '../../../core/versioning/versions-handling.service';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import {map, switchMap, tap} from 'rxjs/operators';
 import {
   BusinessOrganisationLanguageService
@@ -15,12 +15,17 @@ import {
 import {PRM_TABS} from './prm-tabs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {PrmTabsService} from './prm-tabs.service';
+import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
+import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
+import { NgFor } from '@angular/common';
+import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-prm-panel',
     templateUrl: './prm-panel.component.html',
     styleUrls: ['./prm-panel.component.scss'],
-    standalone: false
+    imports: [DateRangeTextComponent, MatTabNav, NgFor, MatTabLink, RouterLinkActive, RouterLink, MatTabNavPanel, RouterOutlet, SplitServicePointNumberPipe, TranslatePipe]
 })
 export class PrmPanelComponent {
   selectedServicePointVersion!: ReadServicePointVersion;

@@ -1,17 +1,30 @@
 import {Component, OnInit} from '@angular/core';
 import {LinesService, LineVersion, LineVersionSnapshot, Workflow, WorkflowService,} from '../../../../api';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormControl, FormGroup} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
 import {Pages} from '../../../pages';
 import {LineVersionSnapshotDetailFormGroup} from './line-version-snapshot-detail-form-group';
 import {WorkflowFormGroup} from '../../../../core/workflow/workflow-form-group';
 import {WorkflowCheckFormGroup} from '../../../../core/workflow/workflow-check-form/workflow-check-form-group';
+import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
+import { WorkflowFormComponent } from '../../../../core/workflow/workflow-form/workflow-form.component';
+import { NgIf } from '@angular/common';
+import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
+import { LineDetailFormComponent } from '../../lines/detail/line-detail-form/line-detail-form.component';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     templateUrl: './line-version-snapshot-detail.component.html',
     styleUrls: ['./line-version-snapshot-detail.component.scss'],
-    standalone: false
+    imports: [ScrollToTopDirective, DetailPageContainerComponent, DetailPageContentComponent, DateRangeTextComponent, WorkflowFormComponent, ReactiveFormsModule, NgIf, LinkIconComponent, LineDetailFormComponent, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, BackButtonDirective, TranslatePipe]
 })
 export class LineVersionSnapshotDetailComponent implements OnInit {
   lineVersionSnapshot!: LineVersionSnapshot;

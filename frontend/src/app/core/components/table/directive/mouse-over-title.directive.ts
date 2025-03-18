@@ -2,10 +2,7 @@ import { Directive, HostBinding, HostListener, Input } from '@angular/core';
 import { isEmpty } from '../../../util/strings';
 import { Observable, of } from 'rxjs';
 
-@Directive({
-    selector: '[mouseOverTitle]',
-    standalone: false
-})
+@Directive({ selector: '[mouseOverTitle]' })
 export class MouseOverTitleDirective {
   @Input() mouseOverTitle: (value: string) => Observable<string> = () => of('');
   @Input() mouseOverTitleValue = '';

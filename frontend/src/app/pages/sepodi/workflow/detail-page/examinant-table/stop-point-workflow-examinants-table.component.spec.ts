@@ -21,15 +21,12 @@ describe('StopPointWorkflowExaminantsTableComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [
-        StopPointWorkflowExaminantsTableComponent,
+    imports: [AppTestingModule, FormModule, StopPointWorkflowExaminantsTableComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
-        AtlasSpacerComponent,
-      ],
-      imports: [AppTestingModule, FormModule],
-      providers: [{ provide: TranslatePipe }],
-    })
+        AtlasSpacerComponent],
+    providers: [{ provide: TranslatePipe }],
+})
       .compileComponents()
       .then();
 

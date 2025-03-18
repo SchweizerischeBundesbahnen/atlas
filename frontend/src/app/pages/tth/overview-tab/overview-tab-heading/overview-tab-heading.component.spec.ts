@@ -13,10 +13,9 @@ describe('TimetableHearingOverviewTabHeadingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OverviewTabHeadingComponent, DisplayDatePipe],
-      imports: [AppTestingModule],
-      providers: [{ provide: TranslatePipe }],
-    }).compileComponents();
+    imports: [AppTestingModule, OverviewTabHeadingComponent, DisplayDatePipe],
+    providers: [{ provide: TranslatePipe }],
+}).compileComponents();
 
     fixture = TestBed.createComponent(OverviewTabHeadingComponent);
     component = fixture.componentInstance;

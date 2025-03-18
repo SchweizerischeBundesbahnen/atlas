@@ -21,8 +21,7 @@ export interface Obj {
 
 @Pipe({
     name: 'showTitle',
-    pure: true,
-    standalone: false
+    pure: true
 })
 class ShowTitlePipeMock implements PipeTransform {
   transform(value: string | Date): string {
@@ -32,8 +31,7 @@ class ShowTitlePipeMock implements PipeTransform {
 
 @Pipe({
     name: 'format',
-    pure: true,
-    standalone: false
+    pure: true
 })
 class FormatPipeMock implements PipeTransform {
   transform<T>(value: string | Date, column: TableColumn<T>): string {
@@ -52,8 +50,7 @@ describe('TableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        LoadingSpinnerComponent,
+    imports: [AppTestingModule, LoadingSpinnerComponent,
         TableFilterComponent,
         BusinessOrganisationSelectComponent,
         DateIconComponent,
@@ -61,11 +58,9 @@ describe('TableComponent', () => {
         MockAtlasFieldErrorComponent,
         TableComponent,
         ShowTitlePipeMock,
-        FormatPipeMock,
-      ],
-      imports: [AppTestingModule],
-      providers: [TranslatePipe, TableService],
-    }).compileComponents();
+        FormatPipeMock],
+    providers: [TranslatePipe, TableService],
+}).compileComponents();
   });
 
   beforeEach(() => {

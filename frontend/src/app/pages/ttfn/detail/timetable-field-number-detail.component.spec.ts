@@ -76,7 +76,7 @@ const mockData = {
 @Component({
     selector: 'app-coverage',
     template: '<p>Mock Product Editor Component</p>',
-    standalone: false
+    imports: [AppTestingModule]
 })
 class MockAppCoverageComponent {
   @Input() pageType!: Page;
@@ -94,8 +94,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   ]);
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        TimetableFieldNumberDetailComponent,
+    imports: [AppTestingModule, TimetableFieldNumberDetailComponent,
         MockAppCoverageComponent,
         MockAppDetailWrapperComponent,
         MockBoSelectComponent,
@@ -104,17 +103,15 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
         AtlasFieldErrorComponent,
         AtlasLabelFieldComponent,
         TextFieldComponent,
-        CommentComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        CommentComponent],
+    providers: [
         { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: { snapshot: { data: mockData } } },
         { provide: TranslatePipe },
-      ],
-    })
+    ],
+})
       .compileComponents()
       .then();
   });
@@ -180,32 +177,30 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        RouterModule.forRoot([{ path: '', component: HomeComponent }]),
+        AppTestingModule,
+        FormModule,
         TimetableFieldNumberDetailComponent,
         MockAppDetailWrapperComponent,
         MockAppCoverageComponent,
         ErrorNotificationComponent,
         InfoIconComponent,
-      ],
-      imports: [
-        RouterModule.forRoot([{ path: '', component: HomeComponent }]),
-        AppTestingModule,
-        FormModule,
-      ],
-      providers: [
+    ],
+    providers: [
         { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
         {
-          provide: ActivatedRoute,
-          useValue: { snapshot: { data: { timetableFieldNumberDetail: 'add' } } },
+            provide: ActivatedRoute,
+            useValue: { snapshot: { data: { timetableFieldNumberDetail: 'add' } } },
         },
         {
-          provide: PermissionService,
-          useValue: adminPermissionServiceMock,
+            provide: PermissionService,
+            useValue: adminPermissionServiceMock,
         },
         { provide: TranslatePipe },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

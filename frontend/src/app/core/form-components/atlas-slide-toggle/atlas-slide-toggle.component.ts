@@ -3,8 +3,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 @Component({
     selector: 'atlas-slide-toggle',
     templateUrl: './atlas-slide-toggle.component.html',
-    styleUrls: ['./atlas-slide-toggle.component.scss'],
-    standalone: false
+    styleUrls: ['./atlas-slide-toggle.component.scss']
 })
 export class AtlasSlideToggleComponent {
   @Input() toggle = false;

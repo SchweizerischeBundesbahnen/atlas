@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
 import {
@@ -20,11 +20,14 @@ import { TableFilterDateSelect } from '../../../core/components/table-filter/con
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../pages';
 import { TableService } from '../../../core/components/table/table.service';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { TableComponent } from '../../../core/components/table/table.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-timetable-field-number-overview',
     templateUrl: './timetable-field-number-overview.component.html',
-    standalone: false
+    imports: [AtlasButtonComponent, TableComponent, RouterOutlet, TranslatePipe]
 })
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
   private readonly tableFilterConfigIntern = {

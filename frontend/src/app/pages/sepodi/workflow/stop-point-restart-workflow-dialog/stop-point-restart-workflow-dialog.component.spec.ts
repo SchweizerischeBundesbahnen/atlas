@@ -75,27 +75,24 @@ describe('StopPointRestartWorkflowDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        StopPointRestartWorkflowDialogComponent,
+    imports: [AppTestingModule, FormModule, StopPointRestartWorkflowDialogComponent,
         DialogFooterComponent,
         DialogContentComponent,
-        DialogCloseComponent
-      ],
-      imports: [AppTestingModule, FormModule],
-      providers: [
+        DialogCloseComponent],
+    providers: [
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: workflowDialogData,
+            provide: MAT_DIALOG_DATA,
+            useValue: workflowDialogData,
         },
-        {provide: MatDialogRef, useValue: dialogRefSpy},
-        {provide: NotificationService, useValue: notificationServiceSpy},
-        {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
-        {provide: UserAdministrationService, useValue: userAdministrationServiceMock},
-        {provide: DetailHelperService, useValue: detailHelperService},
-        {provide: Router, useValue: router},
-        {provide: TranslatePipe}
-      ]
-    })
+        { provide: MatDialogRef, useValue: dialogRefSpy },
+        { provide: NotificationService, useValue: notificationServiceSpy },
+        { provide: StopPointWorkflowService, useValue: stopPointWorkflowService },
+        { provide: UserAdministrationService, useValue: userAdministrationServiceMock },
+        { provide: DetailHelperService, useValue: detailHelperService },
+        { provide: Router, useValue: router },
+        { provide: TranslatePipe }
+    ]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(StopPointRestartWorkflowDialogComponent);

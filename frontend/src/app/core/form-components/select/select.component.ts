@@ -10,8 +10,14 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MatOption} from '@angular/material/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatOption, MatOptgroup } from '@angular/material/core';
+import { NgIf, NgFor, NgTemplateOutlet } from '@angular/common';
+import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { AtlasSpacerComponent } from '../../components/spacer/atlas-spacer.component';
+import { MatSelect } from '@angular/material/select';
+import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export interface SelectOptionGroup {
@@ -24,7 +30,7 @@ export interface SelectOptionGroup {
     selector: 'atlas-select',
     templateUrl: './select.component.html',
     styleUrls: ['./select.component.scss'],
-    standalone: false
+    imports: [ReactiveFormsModule, NgIf, AtlasLabelFieldComponent, AtlasSpacerComponent, MatSelect, MatOption, NgFor, NgTemplateOutlet, MatOptgroup, AtlasFieldErrorComponent, TranslatePipe]
 })
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export class SelectComponent<TYPE> implements OnInit, OnChanges {

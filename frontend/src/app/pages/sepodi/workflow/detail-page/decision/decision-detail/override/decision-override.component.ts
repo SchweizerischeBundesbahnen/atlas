@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
 import {DecisionOverrideFormGroup, DecisionOverrideFormGroupBuilder,} from './decision-override-form-group';
 import {Router} from '@angular/router';
@@ -9,11 +9,16 @@ import {NotificationService} from 'src/app/core/notification/notification.servic
 import {PermissionService} from 'src/app/core/auth/permission/permission.service';
 import {Pages} from 'src/app/pages/pages';
 import {ValidationService} from "../../../../../../../core/validation/validation.service";
+import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { AtlasFieldErrorComponent } from '../../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { CommentComponent } from '../../../../../../../core/form-components/comment/comment.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'decision-override',
     templateUrl: './decision-override.component.html',
-    standalone: false
+    imports: [ReactiveFormsModule, TextFieldComponent, MatRadioGroup, MatRadioButton, AtlasFieldErrorComponent, CommentComponent, TranslatePipe]
 })
 export class DecisionOverrideComponent implements OnInit, OnChanges {
   protected readonly JudgementType = JudgementType;

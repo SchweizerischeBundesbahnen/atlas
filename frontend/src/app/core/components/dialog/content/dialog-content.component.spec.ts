@@ -8,9 +8,8 @@ let fixture: ComponentFixture<DialogContentComponent>;
 describe('DialogContentComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DialogContentComponent],
-      imports: [AppTestingModule],
-    }).compileComponents();
+    imports: [AppTestingModule, DialogContentComponent],
+}).compileComponents();
   });
 
   beforeEach(() => {

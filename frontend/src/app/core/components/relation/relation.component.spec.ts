@@ -13,15 +13,15 @@ describe('TransportCompanyRelationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RelationComponent],
-      imports: [
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         MaterialModule,
         BrowserAnimationsModule,
-      ],
-    }).compileComponents();
+        RelationComponent,
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(RelationComponent);
     component = fixture.componentInstance;

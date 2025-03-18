@@ -25,8 +25,7 @@ describe('DecisionStepperComponent', () => {
     spWfServiceSpy = jasmine.createSpyObj(['obtainOtp', 'verifyOtp', 'voteWorkflow']);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        DecisionStepperComponent,
+    imports: [AppTestingModule, DecisionStepperComponent,
         DecisionFormComponent,
         CommentComponent,
         AtlasFieldErrorComponent,
@@ -34,21 +33,19 @@ describe('DecisionStepperComponent', () => {
         AtlasLabelFieldComponent,
         LoadingSpinnerComponent,
         DialogContentComponent,
-        DialogCloseComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        DialogCloseComponent],
+    providers: [
         { provide: MatDialogRef, useValue: dialogRefSpy },
         {
-          provide: StopPointWorkflowService,
-          useValue: spWfServiceSpy,
+            provide: StopPointWorkflowService,
+            useValue: spWfServiceSpy,
         },
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: 1,
+            provide: MAT_DIALOG_DATA,
+            useValue: 1,
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(DecisionStepperComponent);
     component = fixture.componentInstance;

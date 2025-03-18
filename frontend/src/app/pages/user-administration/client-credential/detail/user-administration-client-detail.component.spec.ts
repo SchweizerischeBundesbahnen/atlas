@@ -6,8 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-client-credential-administration-create',
-    template: '',
-    standalone: false
+    template: ''
 })
 class MockAppClientCredentialAdministrationCreateComponent {}
 
@@ -17,14 +16,12 @@ describe('UserAdministrationClientDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        UserAdministrationClientDetailComponent,
-        MockAppClientCredentialAdministrationCreateComponent,
-      ],
-      providers: [
+    imports: [UserAdministrationClientDetailComponent,
+        MockAppClientCredentialAdministrationCreateComponent],
+    providers: [
         { provide: ActivatedRoute, useValue: { snapshot: { data: { clientCredential: {} } } } },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationClientDetailComponent);
     component = fixture.componentInstance;

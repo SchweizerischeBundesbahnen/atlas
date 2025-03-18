@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Pages } from '../../pages';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { OverviewToTabShareDataService } from './service/overview-to-tab-share-data.service';
 import { Cantons } from '../../../core/cantons/Cantons';
 import { HearingOverviewTab } from './model/hearing-overview-tab';
+import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
+import { NgFor } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     templateUrl: './overview-tab.component.html',
-    standalone: false
+    imports: [MatTabNav, NgFor, RouterLinkActive, MatTabLink, RouterLink, MatTabNavPanel, RouterOutlet, TranslatePipe]
 })
 export class OverviewTabComponent implements OnInit {
   TABS: HearingOverviewTab[] = [

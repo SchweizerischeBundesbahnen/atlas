@@ -58,19 +58,17 @@ describe('Toilet Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ToiletComponent,
+    imports: [AppTestingModule, ToiletComponent,
         MockAtlasButtonComponent,
         MockTableComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
-        DetailFooterComponent
-      ],
-      imports: [AppTestingModule],
-      providers: [
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
-        {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService}
-      ],
-    });
+        DetailFooterComponent],
+    providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService }
+    ],
+});
     fixture = TestBed.createComponent(ToiletComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
