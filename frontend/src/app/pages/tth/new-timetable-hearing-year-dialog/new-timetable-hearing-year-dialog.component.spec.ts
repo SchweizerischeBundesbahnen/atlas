@@ -62,8 +62,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
       of(getTimetableHearingYears()),
     );
     await TestBed.configureTestingModule({
-      declarations: [
-        NewTimetableHearingYearDialogComponent,
+    imports: [AppTestingModule, NewTimetableHearingYearDialogComponent,
         DateRangeComponent,
         DateIconComponent,
         InfoIconComponent,
@@ -71,16 +70,14 @@ describe('NewTimetableHearingYearDialogComponent', () => {
         InfoIconComponent,
         SelectComponent,
         AtlasSpacerComponent,
-        MockAtlasFieldErrorComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        MockAtlasFieldErrorComponent],
+    providers: [
         { provide: MAT_DIALOG_DATA, useValue: { title: 'Title' } },
         { provide: MatDialogRef, useValue: {} },
         { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
         TranslatePipe,
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

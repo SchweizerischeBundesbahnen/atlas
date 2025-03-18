@@ -71,7 +71,7 @@ const workflowDialogData: AddStopPointWorkflowDialogData = {
 @Component({
     selector: 'stop-point-workflow-detail-form',
     template: '<p>Mock AddStopPointWorkflowDetailForm Component</p>',
-    standalone: false
+    imports: [AppTestingModule, FormModule]
 })
 export class MockStopPointWorkflowDetailFormComponent {
   @Input() stopPoint!: ReadServicePointVersion;
@@ -86,8 +86,7 @@ describe('AddStopPointWorkflowComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [
-        AddStopPointWorkflowComponent,
+    imports: [AppTestingModule, FormModule, AddStopPointWorkflowComponent,
         WorkflowFormComponent,
         WorkflowCheckFormComponent,
         StopPointWorkflowExaminantsTableComponent,
@@ -105,23 +104,21 @@ describe('AddStopPointWorkflowComponent', () => {
         AtlasSpacerComponent,
         DialogCloseComponent,
         DialogFooterComponent,
-        DialogContentComponent,
-      ],
-      imports: [AppTestingModule, FormModule],
-      providers: [
+        DialogContentComponent],
+    providers: [
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: workflowDialogData,
+            provide: MAT_DIALOG_DATA,
+            useValue: workflowDialogData,
         },
-        {provide: MatDialogRef, useValue: dialogRefSpy},
-        {provide: NotificationService, useValue: notificationServiceSpy},
-        {provide: DetailHelperService, useValue: detailHelperService},
-        {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
-        {provide: UserService, useValue: adminUserServiceMock},
-        {provide: Router, useValue: router},
-        {provide: TranslatePipe},
-      ],
-    })
+        { provide: MatDialogRef, useValue: dialogRefSpy },
+        { provide: NotificationService, useValue: notificationServiceSpy },
+        { provide: DetailHelperService, useValue: detailHelperService },
+        { provide: StopPointWorkflowService, useValue: stopPointWorkflowService },
+        { provide: UserService, useValue: adminUserServiceMock },
+        { provide: Router, useValue: router },
+        { provide: TranslatePipe },
+    ],
+})
       .compileComponents()
       .then();
 

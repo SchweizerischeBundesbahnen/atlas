@@ -1,14 +1,18 @@
 import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TimetableHearingYear, TimetableHearingYearsService } from '../../../api';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogClose } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
+import { NgTemplateOutlet } from '@angular/common';
+import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'dialog-manage-tth',
     templateUrl: './dialog-manage-tth.component.html',
     styleUrls: ['./dialog-manage-tth.component.scss'],
-    standalone: false
+    imports: [MatDialogClose, NgTemplateOutlet, AtlasSlideToggleComponent, AtlasButtonComponent, TranslatePipe]
 })
 export class DialogManageTthComponent implements OnInit {
   @ViewChild('loadingView', { static: true }) loadingView!: TemplateRef<this>;

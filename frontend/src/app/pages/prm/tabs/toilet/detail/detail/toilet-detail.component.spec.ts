@@ -93,7 +93,11 @@ describe('ToiletDetailComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        AppTestingModule,
+        RouterModule.forRoot([{
+                path: ':sloid', redirectTo: ''
+            }]),
         ToiletDetailComponent,
         ToiletFormComponent,
         SloidComponent,
@@ -116,23 +120,17 @@ describe('ToiletDetailComponent', () => {
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-      ],
-      imports: [
-        AppTestingModule,
-        RouterModule.forRoot([{
-          path: ':sloid', redirectTo: ''
-        }]),
-      ],
-      providers: [
-        {provide: PermissionService, useValue: adminPermissionServiceMock},
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
-        {provide: NotificationService, useValue: notificationService},
-        {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService},
-        {provide: DialogService, useValue: dialogService},
+    ],
+    providers: [
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: NotificationService, useValue: notificationService },
+        { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
+        { provide: DialogService, useValue: dialogService },
         TranslatePipe,
         SplitServicePointNumberPipe,
-      ],
-    });
+    ],
+});
   });
 
   describe('new toilet', () => {

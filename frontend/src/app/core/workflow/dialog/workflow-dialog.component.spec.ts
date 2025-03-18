@@ -146,31 +146,28 @@ describe('WorkflowDialogComponent open', () => {
 
 function setupTestBed(workflowDialogData: WorkflowDialogData) {
   TestBed.configureTestingModule({
-    declarations: [
-      WorkflowDialogComponent,
-      WorkflowFormComponent,
-      WorkflowCheckFormComponent,
-      CommentComponent,
-      ErrorNotificationComponent,
-      MockAtlasButtonComponent,
-      DialogCloseComponent,
-      DialogFooterComponent,
-      DialogContentComponent,
-    ],
-    imports: [AppTestingModule, FormModule],
+    imports: [AppTestingModule, FormModule, WorkflowDialogComponent,
+        WorkflowFormComponent,
+        WorkflowCheckFormComponent,
+        CommentComponent,
+        ErrorNotificationComponent,
+        MockAtlasButtonComponent,
+        DialogCloseComponent,
+        DialogFooterComponent,
+        DialogContentComponent],
     providers: [
-      { provide: PermissionService, useValue: adminPermissionServiceMock },
-      { provide: UserAdministrationService, useValue: userAdministrationServiceMock },
-      { provide: WorkflowService, useValue: workflowServiceMock },
-      {
-        provide: MAT_DIALOG_DATA,
-        useValue: workflowDialogData,
-      },
-      { provide: MatDialogRef, useValue: dialogRefSpy },
-      { provide: NotificationService, useValue: notificationServiceSpy },
-      { provide: TranslatePipe },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
+        { provide: UserAdministrationService, useValue: userAdministrationServiceMock },
+        { provide: WorkflowService, useValue: workflowServiceMock },
+        {
+            provide: MAT_DIALOG_DATA,
+            useValue: workflowDialogData,
+        },
+        { provide: MatDialogRef, useValue: dialogRefSpy },
+        { provide: NotificationService, useValue: notificationServiceSpy },
+        { provide: TranslatePipe },
     ],
-  })
+})
     .compileComponents()
     .then();
 }

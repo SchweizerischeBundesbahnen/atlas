@@ -13,7 +13,7 @@ import {
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
 import { Pages } from '../../../../pages';
 import { catchError, EMPTY, finalize, Observable, of, switchMap, take } from 'rxjs';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { map, tap } from 'rxjs/operators';
@@ -22,12 +22,23 @@ import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty
 import { RelationFormGroup, RelationFormGroupBuilder } from './relation-form-group';
 import { MatSelectChange } from '@angular/material/select';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
+import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
+import { SelectComponent } from '../../../../../core/form-components/select/select.component';
+import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
+import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
+import { MatDivider } from '@angular/material/divider';
+import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-relation-tab-detail',
     templateUrl: './relation-tab-detail.component.html',
     providers: [ValidityService],
-    standalone: false
+    imports: [DetailPageContentComponent, SelectComponent, AtlasSpacerComponent, NgIf, SwitchVersionComponent, DateRangeComponent, ReactiveFormsModule, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, AsyncPipe, TranslatePipe]
 })
 export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   referencePoints: ReadReferencePointVersion[] = [];

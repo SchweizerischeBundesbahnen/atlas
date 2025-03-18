@@ -33,27 +33,26 @@ describe('BaseChangeDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BaseChangeDialogComponent],
-      imports: [AppTestingModule, FormModule],
-      providers: [
+    imports: [AppTestingModule, FormModule, BaseChangeDialogComponent],
+    providers: [
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: MatDialogRef, useValue: dialogRefSpy },
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            title: 'Title',
-            message: 'message',
-            tths: [statement],
-            justification: 'Forza Napoli',
-            type: 'SINGLE',
-            id: 1,
-          },
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+                title: 'Title',
+                message: 'message',
+                tths: [statement],
+                justification: 'Forza Napoli',
+                type: 'SINGLE',
+                id: 1,
+            },
         },
         { provide: TranslatePipe },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(BaseChangeDialogComponent);
     component = fixture.componentInstance;

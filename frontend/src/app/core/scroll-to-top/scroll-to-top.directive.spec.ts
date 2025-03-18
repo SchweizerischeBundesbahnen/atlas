@@ -8,7 +8,7 @@ import { ScrollToTopDirective } from './scroll-to-top.directive';
     template: ` <div id="scrollbar-content-container" class="full-height">
     <div scrollToTop id="some-child-component">Random Content</div>
   </div>`,
-    standalone: false
+    imports: [AppTestingModule]
 })
 class TestComponent {}
 
@@ -18,9 +18,8 @@ describe('ScrollToTopDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [ScrollToTopDirective, TestComponent],
-      imports: [AppTestingModule],
-    }).createComponent(TestComponent);
+    imports: [AppTestingModule, ScrollToTopDirective, TestComponent],
+}).createComponent(TestComponent);
 
     scrollContainer = fixture.debugElement.query(By.css('#scrollbar-content-container'));
   });

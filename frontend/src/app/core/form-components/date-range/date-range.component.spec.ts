@@ -28,19 +28,17 @@ describe('DateRangeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        DateRangeComponent,
+    imports: [AppTestingModule, MatDatepicker, DateRangeComponent,
         TodayAndFutureTimetableHeaderComponent,
         DateIconComponent,
         AtlasFieldErrorComponent,
         InfoIconComponent,
-        AtlasLabelFieldComponent,
-      ],
-      imports: [AppTestingModule, MatDatepicker],
-      providers: [
-        {provide: TranslatePipe},
-        {provide: TimetableYearChangeService, useValue: timetableYearChangeService}],
-    }).compileComponents();
+        AtlasLabelFieldComponent],
+    providers: [
+        { provide: TranslatePipe },
+        { provide: TimetableYearChangeService, useValue: timetableYearChangeService }
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

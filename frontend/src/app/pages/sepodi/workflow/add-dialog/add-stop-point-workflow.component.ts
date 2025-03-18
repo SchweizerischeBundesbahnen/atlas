@@ -13,12 +13,17 @@ import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder
 } from "../detail-page/detail-form/stop-point-workflow-detail-form-group";
+import { DialogCloseComponent } from '../../../../core/components/dialog/close/dialog-close.component';
+import { DialogContentComponent } from '../../../../core/components/dialog/content/dialog-content.component';
+import { StopPointWorkflowDetailFormComponent } from '../detail-page/detail-form/stop-point-workflow-detail-form.component';
+import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-workflow-dialog',
     templateUrl: './add-stop-point-workflow.component.html',
     styleUrls: ['./add-stop-point-workflow.component.scss'],
-    standalone: false
+    imports: [DialogCloseComponent, DialogContentComponent, StopPointWorkflowDetailFormComponent, DialogFooterComponent, TranslatePipe]
 })
 export class AddStopPointWorkflowComponent implements OnInit {
 

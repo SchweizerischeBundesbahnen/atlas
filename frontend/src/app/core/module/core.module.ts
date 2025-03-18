@@ -111,32 +111,30 @@ const coreComponents = [
 ];
 
 @NgModule({
-  declarations: [
-    ...coreComponents,
-    ShowTitlePipe,
-    MouseOverTitleDirective,
-    FormatPipe,
-    InstanceOfPipe,
-  ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    TranslateModule,
-    RouterModule,
-    FormModule,
-    HttpClientModule,
-    OAuthModule.forRoot({
-      resourceServer: {
-        // When sendAccessToken is set to true and you send
-        // a request to these, the access token is appended.
-        // Documentation:
-        // https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/working-with-httpinterceptors.html
-        allowedUrls: [environment.atlasApiUrl],
-        sendAccessToken: true,
-      },
-    }),
-  ],
-  exports: [...coreComponents, CommonModule, MaterialModule, TranslateModule],
-  providers: [TranslatePipe, FormatPipe, { provide: OAuthStorage, useClass: OAuthCookieStorage }],
+    imports: [
+        CommonModule,
+        MaterialModule,
+        TranslateModule,
+        RouterModule,
+        FormModule,
+        HttpClientModule,
+        OAuthModule.forRoot({
+            resourceServer: {
+                // When sendAccessToken is set to true and you send
+                // a request to these, the access token is appended.
+                // Documentation:
+                // https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/working-with-httpinterceptors.html
+                allowedUrls: [environment.atlasApiUrl],
+                sendAccessToken: true,
+            },
+        }),
+        ...coreComponents,
+        ShowTitlePipe,
+        MouseOverTitleDirective,
+        FormatPipe,
+        InstanceOfPipe,
+    ],
+    exports: [...coreComponents, CommonModule, MaterialModule, TranslateModule],
+    providers: [TranslatePipe, FormatPipe, { provide: OAuthStorage, useClass: OAuthCookieStorage }],
 })
 export class CoreModule {}

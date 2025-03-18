@@ -7,7 +7,7 @@ import {
 } from '../../../../api';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { catchError } from 'rxjs';
@@ -22,12 +22,18 @@ import { BusinessOrganisationDetailFormGroup } from './business-organisation-det
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { BaseDetailComponent } from '../../../../core/components/base-detail/base-detail.component';
+import { NgIf } from '@angular/common';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     templateUrl: './business-organisation-detail.component.html',
     styleUrls: ['./business-organisation-detail.component.scss'],
     providers: [ValidityService],
-    standalone: false
+    imports: [BaseDetailComponent, ReactiveFormsModule, NgIf, TextFieldComponent, DateRangeComponent, SelectComponent, TranslatePipe]
 })
 export class BusinessOrganisationDetailComponent
   extends BaseDetailController<BusinessOrganisationVersion>

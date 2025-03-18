@@ -26,19 +26,16 @@ describe('ToiletDetailPanelComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [
-        ToiletDetailPanelComponent,
+    imports: [AppTestingModule, ToiletDetailPanelComponent,
         PrmDetailPanelComponent,
         DetailWithRelationTabComponent,
-        DetailPageContainerComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
+        DetailPageContainerComponent],
+    providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
         TranslatePipe,
         SplitServicePointNumberPipe,
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(ToiletDetailPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

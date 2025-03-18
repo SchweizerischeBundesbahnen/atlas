@@ -67,8 +67,7 @@ describe('DecisionDetailDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations:[
-        DecisionDetailDialogComponent,
+    imports: [AppTestingModule, DecisionDetailDialogComponent,
         DecisionOverrideComponent,
         DecisionFormComponent,
         CommentComponent,
@@ -79,15 +78,13 @@ describe('DecisionDetailDialogComponent', () => {
         DialogContentComponent,
         DialogCloseComponent,
         DialogFooterComponent,
-        MockAtlasButtonComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
-        {provide: MatDialogRef, useValue: dialogRefSpy},
-        {provide: MAT_DIALOG_DATA, useValue: dialogData},
-        {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
-      ]
-    });
+        MockAtlasButtonComponent],
+    providers: [
+        { provide: MatDialogRef, useValue: dialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: dialogData },
+        { provide: StopPointWorkflowService, useValue: stopPointWorkflowService },
+    ]
+});
   });
 
   describe('without existing decision', () => {

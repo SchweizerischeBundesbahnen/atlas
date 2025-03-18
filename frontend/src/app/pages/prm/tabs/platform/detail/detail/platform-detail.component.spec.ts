@@ -151,7 +151,14 @@ describe('PlatformDetailComponent', () => {
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
     TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        AppTestingModule,
+        RouterModule.forRoot([
+            {
+                path: ':sloid',
+                redirectTo: '',
+            },
+        ]),
         PlatformDetailComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
@@ -173,17 +180,8 @@ describe('PlatformDetailComponent', () => {
         DetailPageContentComponent,
         DetailFooterComponent,
         MockNavigationSepodiPrmComponent,
-      ],
-      imports: [
-        AppTestingModule,
-        RouterModule.forRoot([
-          {
-            path: ':sloid',
-            redirectTo: '',
-          },
-        ]),
-      ],
-      providers: [
+    ],
+    providers: [
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
@@ -192,8 +190,8 @@ describe('PlatformDetailComponent', () => {
         { provide: Router, useValue: routerSpy },
         TranslatePipe,
         SplitServicePointNumberPipe,
-      ],
-    });
+    ],
+});
   });
 
   describe('new reduced platform', () => {

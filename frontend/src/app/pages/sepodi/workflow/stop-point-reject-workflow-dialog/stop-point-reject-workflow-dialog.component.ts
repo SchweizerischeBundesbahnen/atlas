@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {StopPointRejectWorkflowFormGroup, StopPointRejectWorkflowFormGroupBuilder} from "./stop-point-reject-workflow-form-group";
-import {FormGroup} from "@angular/forms";
+import { FormGroup, ReactiveFormsModule } from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {StopPointRejectWorkflowDialogData} from "./stop-point-reject-workflow-dialog-data";
 import {NotificationService} from "../../../../core/notification/notification.service";
@@ -9,12 +9,18 @@ import {ValidationService} from "../../../../core/validation/validation.service"
 import {Pages} from "../../../pages";
 import {Router} from "@angular/router";
 import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
+import { DialogCloseComponent } from '../../../../core/components/dialog/close/dialog-close.component';
+import { DialogContentComponent } from '../../../../core/components/dialog/content/dialog-content.component';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
+import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-stop-point-reject-workflow-dialog',
     templateUrl: './stop-point-reject-workflow-dialog.component.html',
     styleUrl: './stop-point-reject-workflow-dialog.component.scss',
-    standalone: false
+    imports: [DialogCloseComponent, DialogContentComponent, ReactiveFormsModule, TextFieldComponent, CommentComponent, DialogFooterComponent, TranslatePipe]
 })
 export class StopPointRejectWorkflowDialogComponent implements OnInit {
 

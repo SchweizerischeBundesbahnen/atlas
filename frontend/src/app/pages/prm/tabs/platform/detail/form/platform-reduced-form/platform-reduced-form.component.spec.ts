@@ -18,18 +18,15 @@ describe('PlatformReducedFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        PlatformReducedFormComponent,
+    imports: [AppTestingModule, PlatformReducedFormComponent,
         SelectComponent,
         InfoIconComponent,
         TextFieldComponent,
         MockAtlasFieldErrorComponent,
         AtlasLabelFieldComponent,
-        AtlasSpacerComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [{ provide: TranslatePipe }],
-    });
+        AtlasSpacerComponent],
+    providers: [{ provide: TranslatePipe }],
+});
     fixture = TestBed.createComponent(PlatformReducedFormComponent);
     component = fixture.componentInstance;
     component.form = PlatformFormGroupBuilder.buildReducedFormGroup();

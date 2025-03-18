@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, EMPTY, Observable, of, take } from 'rxjs';
 import { Pages } from '../../../pages';
@@ -8,6 +8,12 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { ServicePointFotComment, ServicePointsService } from '../../../../api';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { NgIf } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export interface FotCommentFormGroup {
   fotComment: FormControl<string | null | undefined>;
@@ -22,7 +28,7 @@ export interface FotCommentFormGroup {
     selector: 'app-service-point-fot-comment',
     templateUrl: './fot-comment-detail.component.html',
     styleUrls: ['./fot-comment-detail.component.scss'],
-    standalone: false
+    imports: [ReactiveFormsModule, DetailPageContentComponent, CommentComponent, DetailFooterComponent, AtlasButtonComponent, NgIf, TranslatePipe]
 })
 export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
   form!: FormGroup<FotCommentFormGroup>;

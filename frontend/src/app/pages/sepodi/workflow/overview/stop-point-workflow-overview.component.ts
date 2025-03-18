@@ -22,11 +22,13 @@ import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas
 import {TableFilterBoolean} from "../../../../core/components/table-filter/config/table-filter-boolean";
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 import {addElementsToArrayWhenNotUndefined} from "../../../../core/util/arrays";
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'stop-point-workflow-overview',
     templateUrl: './stop-point-workflow-overview.component.html',
-    standalone: false
+    imports: [TableComponent, TranslatePipe]
 })
 export class StopPointWorkflowOverviewComponent implements OnInit {
 

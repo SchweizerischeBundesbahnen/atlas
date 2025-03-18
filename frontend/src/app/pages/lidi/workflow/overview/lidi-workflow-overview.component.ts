@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LinesService, LineVersionSnapshot, WorkflowStatus } from '../../../../api';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
@@ -11,11 +11,13 @@ import { TableFilterMultiSelect } from '../../../../core/components/table-filter
 import { TableFilterDateSelect } from '../../../../core/components/table-filter/config/table-filter-date-select';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../../pages';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-lidi-workflow-overview',
     templateUrl: './lidi-workflow-overview.component.html',
-    standalone: false
+    imports: [TableComponent, RouterOutlet, TranslatePipe]
 })
 export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   lineSnapshotsTableColumns: TableColumn<LineVersionSnapshot>[] = [

@@ -11,10 +11,9 @@ describe('DateRangeTextComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DateRangeTextComponent, DisplayDatePipe],
-      imports: [AppTestingModule],
-      providers: [{ provide: TranslatePipe }],
-    }).compileComponents();
+    imports: [AppTestingModule, DateRangeTextComponent, DisplayDatePipe],
+    providers: [{ provide: TranslatePipe }],
+}).compileComponents();
 
     fixture = TestBed.createComponent(DateRangeTextComponent);
     component = fixture.componentInstance;

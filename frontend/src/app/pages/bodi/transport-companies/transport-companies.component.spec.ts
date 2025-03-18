@@ -1,14 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { TransportCompaniesComponent } from './transport-companies.component';
 import {
   ContainerTransportCompany,
   TransportCompaniesService,
   TransportCompanyStatus,
 } from '../../../api';
-import { AppTestingModule } from '../../../app.testing.module';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
+import { TableComponent } from '../../../core/components/table/table.component';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
@@ -29,10 +30,11 @@ describe('TransportCompaniesComponent', () => {
   let transportCompaniesServiceSpy: SpyObj<TransportCompaniesService>;
 
   beforeEach(() => {
-    transportCompaniesServiceSpy = jasmine.createSpyObj<TransportCompaniesService>(
-      'TransportCompaniesServiceSpy',
-      ['getTransportCompanies'],
-    );
+    transportCompaniesServiceSpy =
+      jasmine.createSpyObj<TransportCompaniesService>(
+        'TransportCompaniesServiceSpy',
+        ['getTransportCompanies']
+      );
     (
       transportCompaniesServiceSpy.getTransportCompanies as Spy<
         () => Observable<ContainerTransportCompany>
@@ -40,13 +42,22 @@ describe('TransportCompaniesComponent', () => {
     ).and.returnValue(of(transportCompany));
 
     TestBed.configureTestingModule({
-      declarations: [TransportCompaniesComponent, MockTableComponent],
-      imports: [AppTestingModule],
+      imports: [TransportCompaniesComponent, TranslateModule.forRoot()],
       providers: [
-        { provide: TransportCompaniesService, useValue: transportCompaniesServiceSpy },
         TranslatePipe,
+        RouterOutlet,
+        {
+          provide: TransportCompaniesService,
+          useValue: transportCompaniesServiceSpy,
+        },
+        { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(TransportCompaniesComponent, {
+        remove: { imports: [TableComponent] },
+        add: { imports: [MockTableComponent] },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(TransportCompaniesComponent);
     component = fixture.componentInstance;
@@ -63,7 +74,9 @@ describe('TransportCompaniesComponent', () => {
       size: 10,
     });
 
-    expect(transportCompaniesServiceSpy.getTransportCompanies).toHaveBeenCalledOnceWith(
+    expect(
+      transportCompaniesServiceSpy.getTransportCompanies
+    ).toHaveBeenCalledOnceWith(
       [],
       [
         TransportCompanyStatus.Current,
@@ -73,7 +86,7 @@ describe('TransportCompaniesComponent', () => {
       ],
       0,
       10,
-      ['number,asc'],
+      ['number,asc']
     );
 
     expect(component.transportCompanies.length).toEqual(1);

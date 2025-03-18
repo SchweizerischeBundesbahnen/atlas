@@ -21,7 +21,8 @@ import SpyObj = jasmine.SpyObj;
 @Component({
     selector: 'app-user-select',
     template: '',
-    standalone: false
+    imports: [RouterTestingModule,
+        MaterialModule]
 })
 class MockUserSelectComponent {
   @Input() form?: FormGroup;
@@ -66,48 +67,46 @@ describe('UserAdministrationUserCreateComponent', () => {
       },
     });
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        RouterTestingModule,
+        MaterialModule,
+        TranslateModule.forRoot({
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
         UserAdministrationUserCreateComponent,
         MockUserSelectComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-      ],
-      imports: [
-        RouterTestingModule,
-        MaterialModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
-      providers: [
+    ],
+    providers: [
         {
-          provide: UserService,
-          useValue: userServiceSpy,
+            provide: UserService,
+            useValue: userServiceSpy,
         },
         {
-          provide: UserPermissionManager,
-          useValue: userPermissionManagerSpy,
+            provide: UserPermissionManager,
+            useValue: userPermissionManagerSpy,
         },
         {
-          provide: NotificationService,
-          useValue: notificationServiceSpy,
+            provide: NotificationService,
+            useValue: notificationServiceSpy,
         },
         TranslatePipe,
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: { user: undefined },
+            provide: MAT_DIALOG_DATA,
+            useValue: { user: undefined },
         },
         {
-          provide: MatDialogRef,
-          useValue: {
-            close: () => {
-              // mock implementation
+            provide: MatDialogRef,
+            useValue: {
+                close: () => {
+                    // mock implementation
+                },
             },
-          },
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationUserCreateComponent);
     component = fixture.componentInstance;

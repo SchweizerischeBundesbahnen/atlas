@@ -8,8 +8,7 @@ import {ApplicationType} from "../../../../api";
 
 @Component({
     selector: 'form-search-select',
-    template: '<p>form-search-select</p>',
-    standalone: false
+    template: '<p>form-search-select</p>'
 })
 class MockFormSearchSelectComponent {
   @Input() items$ = of([]);
@@ -26,9 +25,9 @@ describe('UserSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserSelectComponent, MockFormSearchSelectComponent],
-      providers: [{ provide: UserService, useValue: userServiceSpy }],
-    }).compileComponents();
+    imports: [UserSelectComponent, MockFormSearchSelectComponent],
+    providers: [{ provide: UserService, useValue: userServiceSpy }],
+}).compileComponents();
 
     fixture = TestBed.createComponent(UserSelectComponent);
     component = fixture.componentInstance;

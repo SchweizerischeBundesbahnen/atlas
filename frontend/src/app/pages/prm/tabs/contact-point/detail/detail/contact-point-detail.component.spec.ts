@@ -98,7 +98,14 @@ describe('ContactPointDetailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        AppTestingModule,
+        RouterModule.forRoot([
+            {
+                path: ':sloid',
+                redirectTo: '',
+            },
+        ]),
         ContactPointDetailComponent,
         SloidComponent,
         AtlasSlideToggleComponent,
@@ -120,17 +127,8 @@ describe('ContactPointDetailComponent', () => {
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-      ],
-      imports: [
-        AppTestingModule,
-        RouterModule.forRoot([
-          {
-            path: ':sloid',
-            redirectTo: '',
-          },
-        ]),
-      ],
-      providers: [
+    ],
+    providers: [
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
@@ -138,8 +136,8 @@ describe('ContactPointDetailComponent', () => {
         { provide: DialogService, useValue: dialogService },
         TranslatePipe,
         SplitServicePointNumberPipe,
-      ],
-    });
+    ],
+});
   });
 
   describe('new contact point', () => {

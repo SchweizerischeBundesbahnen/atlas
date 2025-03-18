@@ -54,13 +54,12 @@ describe('ReferencePointTableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ReferencePointTableComponent, MockAtlasButtonComponent, MockTableComponent, DetailFooterComponent],
-      imports: [AppTestingModule],
-      providers: [
+    imports: [AppTestingModule, ReferencePointTableComponent, MockAtlasButtonComponent, MockTableComponent, DetailFooterComponent],
+    providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService }
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(ReferencePointTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ReadOnlyData } from './read-only-data';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Data } from './data';
+import { NgFor, NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-user-administration-read-only-data',
     templateUrl: './user-administration-read-only-data.component.html',
     styleUrls: ['user-administration-read-only-data.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [NgFor, NgClass, TranslatePipe]
 })
 export class UserAdministrationReadOnlyDataComponent<T extends Data> {
   @Input() data!: T;

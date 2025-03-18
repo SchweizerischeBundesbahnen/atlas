@@ -3,12 +3,18 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { BulkImportLogEntry, BulkImportResult, BulkImportService } from '../../../api';
+import { NgTemplateOutlet, NgClass, AsyncPipe, DatePipe } from '@angular/common';
+import { MatPaginator } from '@angular/material/paginator';
+import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { UserDisplayNamePipe } from '../../../core/pipe/user-display-name.pipe';
+import { ParamsForTranslationPipe } from '../../../core/pipe/params-for-translation.pipe';
 
 @Component({
     selector: 'bulk-import-log',
     templateUrl: './bulk-import-log.component.html',
     styleUrl: 'bulk-import-log.component.scss',
-    standalone: false
+    imports: [NgTemplateOutlet, NgClass, MatPaginator, LoadingSpinnerComponent, AsyncPipe, DatePipe, TranslatePipe, UserDisplayNamePipe, ParamsForTranslationPipe]
 })
 export class BulkImportLogComponent implements OnInit {
   data$?: Observable<{ importResult?: BulkImportResultTemplate; id: unknown }>;

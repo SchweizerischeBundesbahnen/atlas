@@ -9,9 +9,8 @@ describe('TimetableHearingOverviewTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OverviewTabComponent],
-      imports: [AppTestingModule],
-    }).compileComponents();
+    imports: [AppTestingModule, OverviewTabComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(OverviewTabComponent);
     component = fixture.componentInstance;

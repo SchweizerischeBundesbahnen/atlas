@@ -8,9 +8,8 @@ let fixture: ComponentFixture<DetailFooterComponent>;
 describe('DetailFooterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DetailFooterComponent],
-      imports: [AppTestingModule],
-    }).compileComponents();
+    imports: [AppTestingModule, DetailFooterComponent],
+}).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,15 +1,16 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ClientCredential, ClientCredentialAdministrationService } from '../../../../api';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
+import { TableComponent } from '../../../../core/components/table/table.component';
 
 @Component({
     selector: 'app-client-credential-administration-overview',
     templateUrl: './user-administration-client-overview.component.html',
-    standalone: false
+    imports: [TableComponent, RouterOutlet]
 })
 export class UserAdministrationClientOverviewComponent implements OnDestroy {
   clientCredentials: ClientCredential[] = [];

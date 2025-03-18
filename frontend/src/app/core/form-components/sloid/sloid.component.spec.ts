@@ -11,15 +11,15 @@ describe('SloidComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SloidComponent],
-      imports: [
+    imports: [
         FormModule,
         TranslateModule.forRoot({
-          loader: {provide: TranslateLoader, useClass: TranslateFakeLoader},
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      providers: [{provide: TranslatePipe}],
-    }).compileComponents();
+        SloidComponent,
+    ],
+    providers: [{ provide: TranslatePipe }],
+}).compileComponents();
 
     fixture = TestBed.createComponent(SloidComponent);
     component = fixture.componentInstance;

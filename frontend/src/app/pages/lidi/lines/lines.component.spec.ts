@@ -52,10 +52,9 @@ describe('LinesComponent', () => {
     );
 
     TestBed.configureTestingModule({
-      declarations: [LinesComponent, MockTableComponent],
-      imports: [AppTestingModule],
-      providers: [{ provide: LinesService, useValue: linesServiceSpy }, TranslatePipe],
-    }).compileComponents();
+    imports: [AppTestingModule, LinesComponent, MockTableComponent],
+    providers: [{ provide: LinesService, useValue: linesServiceSpy }, TranslatePipe],
+}).compileComponents();
 
     fixture = TestBed.createComponent(LinesComponent);
     component = fixture.componentInstance;

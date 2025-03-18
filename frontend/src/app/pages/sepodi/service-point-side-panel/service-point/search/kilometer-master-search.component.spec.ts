@@ -25,21 +25,19 @@ describe('KilometerMasterSearchComponent', () => {
       .and.returnValue(of());
 
     await TestBed.configureTestingModule({
-      declarations: [
-        KilometerMasterSearchComponent,
-        SearchSelectComponent,
-        AtlasFieldErrorComponent,
-      ],
-      providers: [{ provide: ServicePointsService, useValue: servicePointsServiceSpy }],
-      imports: [
+    providers: [{ provide: ServicePointsService, useValue: servicePointsServiceSpy }],
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         NgSelectModule,
         MaterialModule,
         HttpClientTestingModule,
-      ],
-    }).compileComponents();
+        KilometerMasterSearchComponent,
+        SearchSelectComponent,
+        AtlasFieldErrorComponent,
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(KilometerMasterSearchComponent);
     component = fixture.componentInstance;

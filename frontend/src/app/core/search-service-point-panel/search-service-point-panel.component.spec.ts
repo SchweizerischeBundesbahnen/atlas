@@ -9,7 +9,7 @@ import {AppTestingModule} from "../../app.testing.module";
 @Component({
     selector: 'app-search-service-point',
     template: '<h1>SearchServicePointComponent</h1>',
-    standalone: false
+    imports: [AppTestingModule]
 })
 class SearchServicePointMockComponent {
   @Input() searchType!: ServicePointSearchType;
@@ -22,9 +22,8 @@ describe('SearchServicePointPanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SearchServicePointPanelComponent, AtlasButtonComponent, SearchServicePointMockComponent],
-      imports: [AppTestingModule]
-    })
+    imports: [AppTestingModule, SearchServicePointPanelComponent, AtlasButtonComponent, SearchServicePointMockComponent]
+})
       .compileComponents();
 
     fixture = TestBed.createComponent(SearchServicePointPanelComponent);

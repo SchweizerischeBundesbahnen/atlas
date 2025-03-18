@@ -1,14 +1,17 @@
 import {Component} from '@angular/core';
 import {ServicePointSearch} from '../../../core/search-service-point/service-point-search';
-import {NavigationEnd, Router} from "@angular/router";
+import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
 import {filter} from "rxjs/operators";
 import {Pages} from "../../pages";
+import { SearchServicePointPanelComponent } from '../../../core/search-service-point-panel/search-service-point-panel.component';
+import { NgIf, NgClass } from '@angular/common';
+import { PrmInfoBoxComponent } from './prm-info-box/prm-info-box.component';
 
 @Component({
     selector: 'app-prm-home-search',
     templateUrl: './prm-home-search.component.html',
     styleUrls: ['./prm-home-search.component.scss'],
-    standalone: false
+    imports: [SearchServicePointPanelComponent, NgIf, PrmInfoBoxComponent, NgClass, RouterOutlet]
 })
 export class PrmHomeSearchComponent {
   servicePointSearch = ServicePointSearch.PRM;

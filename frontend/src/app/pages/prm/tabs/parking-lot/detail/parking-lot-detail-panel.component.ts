@@ -4,11 +4,15 @@ import {VersionsHandlingService} from '../../../../../core/versioning/versions-h
 import {DateRange} from '../../../../../core/versioning/date-range';
 import {ReadParkingLotVersion, ReadServicePointVersion,} from '../../../../../api';
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { PrmDetailPanelComponent } from '../../detail-panel/prm-detail-panel.component';
+import { DetailWithRelationTabComponent } from '../../relation/tab/detail-with-relation-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-parking-lot-detail-panel',
     templateUrl: './parking-lot-detail-panel.component.html',
-    standalone: false
+    imports: [DetailPageContainerComponent, PrmDetailPanelComponent, DetailWithRelationTabComponent, TranslatePipe]
 })
 export class ParkingLotDetailPanelComponent implements OnInit {
   isNew = false;

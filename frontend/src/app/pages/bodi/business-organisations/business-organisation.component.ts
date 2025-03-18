@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { TableColumn } from '../../../core/components/table/table-column';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BusinessOrganisation, BusinessOrganisationsService, Status } from '../../../api';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
@@ -14,11 +14,13 @@ import { TableFilterMultiSelect } from '../../../core/components/table-filter/co
 import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../pages';
+import { TableComponent } from '../../../core/components/table/table.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-bodi-business-organisations',
     templateUrl: './business-organisation.component.html',
-    standalone: false
+    imports: [TableComponent, RouterOutlet, TranslatePipe]
 })
 export class BusinessOrganisationComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<BusinessOrganisation>[] = this.getColumns();

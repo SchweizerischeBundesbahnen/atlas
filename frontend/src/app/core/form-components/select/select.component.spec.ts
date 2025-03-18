@@ -14,15 +14,15 @@ describe('SelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SelectComponent, InfoIconComponent, AtlasLabelFieldComponent],
-      imports: [
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         NgSelectModule,
         ReactiveFormsModule,
-      ],
-    }).compileComponents();
+        SelectComponent, InfoIconComponent, AtlasLabelFieldComponent,
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(SelectComponent);
     component = fixture.componentInstance;

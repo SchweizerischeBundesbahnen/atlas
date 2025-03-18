@@ -14,10 +14,9 @@ let fixture: ComponentFixture<LanguageSwitcherComponent>;
 describe('LanguageSwitcherComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LanguageSwitcherComponent],
-      imports: [AppTestingModule],
-      providers: [{ provide: DateAdapter, useValue: dateAdapter }],
-    }).compileComponents();
+    imports: [AppTestingModule, LanguageSwitcherComponent],
+    providers: [{ provide: DateAdapter, useValue: dateAdapter }],
+}).compileComponents();
   });
 
   beforeEach(() => {

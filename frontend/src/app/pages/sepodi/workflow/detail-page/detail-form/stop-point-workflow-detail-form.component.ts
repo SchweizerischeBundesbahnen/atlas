@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
+import { ControlContainer, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 import {
   SPECIAL_DECISION_TYPES,
   StopPointWorkflowDetailFormGroup,
@@ -20,12 +20,25 @@ import {AtlasFieldLengthValidator} from 'src/app/core/validation/field-lengths/a
 import {DecisionDetailDialogService} from '../decision/decision-detail/decision-detail-dialog.service';
 import {Pages} from 'src/app/pages/pages';
 import {SloidHelper} from "../../../../../core/util/sloidHelper";
+import { LinkComponent } from '../../../../../core/form-components/link/link.component';
+import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
+import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
+import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
+import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
+import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
+import { StopPointWorkflowExaminantsTableComponent } from '../examinant-table/stop-point-workflow-examinants-table.component';
+import { StringListComponent } from '../../../../../core/form-components/string-list/string-list.component';
+import { DisplayDatePipe } from '../../../../../core/pipe/display-date.pipe';
+import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
+import { AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
+import { BoDisplayPipe } from '../../../../../core/form-components/bo-select/bo-display.pipe';
 
 @Component({
     selector: 'stop-point-workflow-detail-form',
     templateUrl: './stop-point-workflow-detail-form.component.html',
     viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
-    standalone: false
+    imports: [LinkComponent, AtlasSpacerComponent, AtlasButtonComponent, TextFieldComponent, ReactiveFormsModule, CommentComponent, InfoIconComponent, StopPointWorkflowExaminantsTableComponent, StringListComponent, DisplayDatePipe, SplitServicePointNumberPipe, AsyncPipe, TranslatePipe, BoDisplayPipe]
 })
 export class StopPointWorkflowDetailFormComponent implements OnInit {
   readonly WorkflowStatus = WorkflowStatus;

@@ -15,18 +15,15 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        HeaderComponent,
+    imports: [AppTestingModule, HeaderComponent,
         UserComponent,
         LanguageSwitcherComponent,
         MaintenanceIconComponent,
-        InfoIconComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        InfoIconComponent],
+    providers: [
         { provide: AuthService, useValue: authServiceSpy },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

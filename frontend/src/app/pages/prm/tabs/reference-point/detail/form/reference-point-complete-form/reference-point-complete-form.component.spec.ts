@@ -18,19 +18,16 @@ describe('ReferencePointCompleteFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ReferencePointCompleteFormComponent,
+    imports: [AppTestingModule, ReferencePointCompleteFormComponent,
         TextFieldComponent,
         AtlasLabelFieldComponent,
         MockAtlasFieldErrorComponent,
         AtlasSpacerComponent,
         InfoIconComponent,
         SelectComponent,
-        CommentComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [{ provide: TranslatePipe }],
-    });
+        CommentComponent],
+    providers: [{ provide: TranslatePipe }],
+});
     fixture = TestBed.createComponent(ReferencePointCompleteFormComponent);
     component = fixture.componentInstance;
     component.form = ReferencePointFormGroupBuilder.buildCompleteFormGroup();
