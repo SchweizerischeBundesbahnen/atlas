@@ -2,10 +2,10 @@ package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.prm.ParkingLotVersion;
+import ch.sbb.exportservice.job.parkinglot.ParkingLotVersion;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.reader.ParkingLotVersionRowMapper;
-import ch.sbb.exportservice.reader.ParkingLotVersionSqlQueryUtil;
+import ch.sbb.exportservice.job.parkinglot.ParkingLotVersionRowMapper;
+import ch.sbb.exportservice.job.parkinglot.ParkingLotVersionSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

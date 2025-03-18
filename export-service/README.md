@@ -26,22 +26,22 @@
     + [Upload the file](#upload-the-file)
 - [Jobs](#jobs)
   * [Exports for Service Point Directory](#exports-for-service-point-directory)
-    + [Export ServicePointVersions](#export-servicepointversions)
-    + [Export TrafficPointElementVersions](#export-trafficpointelementversions)
-    + [Export LoadingPointVersions](#export-loadingpointversions)
+    + [Export Service Point Version](#export-service-point-version)
+    + [Export Traffic Point Element Version](#export-traffic-point-element-version)
+    + [Export Loading Point Version](#export-loading-point-version)
   * [Export PRM Directory](#export-prm-directory)
-    + [Export StopPointVersions](#export-stoppointversions)
-    + [Export PlatformVersion](#export-platformversion)
-    + [Export ReferencePointVersion](#export-referencepointversion)
-    + [Export ContactPointVersion](#export-contactpointversion)
+    + [Export Stop Point Version](#export-stop-point-version)
+    + [Export Platform Version](#export-platform-version)
+    + [Export Reference Point Version](#export-reference-point-version)
+    + [Export Contact Point Version](#export-contact-point-version)
     + [Export Toilet](#export-toilet)
     + [Export Relation](#export-relation)
   * [Export Business Organisation Directory](#export-business-organisation-directory)
-    + [Export Business Organisations](#export-business-organisations)
+    + [Export Business Organisation](#export-business-organisation)
     + [Export Transport Company](#export-transport-company)
   * [Export Line Directory](#export-line-directory)
     + [Export Lines](#export-lines)
-    + [Export Sublines](#export-sublines)
+    + [Export Subline](#export-subline)
     + [Export Timetable Field Number](#export-timetable-field-number)
   * [Jobs Recovery](#jobs-recovery)
 - [Tech Stack](#tech-stack)
@@ -96,7 +96,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Project Infrastructure
 
-* Tekton : https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas
+* Tekton: https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas
 * Sonarqube: https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas&branch=master
 * JFrog / Artifactory
     * Maven repository: https://bin.sbb.ch/ui/repos/tree/General/atlas.mvn
@@ -186,19 +186,18 @@ public FileService fileService() {
 
 #### Upload the file
 
-For an file upload example see [UploadJsonFileTaskletV2.java](/src/main/java/ch/sbb/exportservice/tasklet/upload/UploadJsonFileTaskletV2.java).
+For a file upload example see [UploadJsonFileTaskletV2.java](/src/main/java/ch/sbb/exportservice/tasklet/upload/UploadJsonFileTaskletV2.java).
 
 ## Jobs
 
 ### Exports for Service Point Directory
 
-#### Export ServicePointVersions
+#### Export Service Point Version
 
-The
-export [ServicePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ServicePointVersionExportBatchConfig.java)
+The export [ServicePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/servicepoint/ServicePointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ServicePointVersion](src/main/java/ch/sbb/exportservice/entity/sepodi/ServicePointVersion.java) data from ServicePoint
+* read [ServicePointVersion](src/main/java/ch/sbb/exportservice/job/servicepoint/ServicePointVersion.java) data from ServicePoint
   dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -212,13 +211,12 @@ Job is responsible to:
         * world
         * swiss
 
-#### Export TrafficPointElementVersions
+#### Export Traffic Point Element Version
 
-The
-export [TrafficPointElementVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/TrafficPointElementVersionExportBatchConfig.java)
+The export [TrafficPointElementVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/trafficpoint/TrafficPointElementVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [TrafficPointElementVersions](src/main/java/ch/sbb/exportservice/entity/sepodi/TrafficPointElementVersion.java) data
+* read [TrafficPointElementVersions](src/main/java/ch/sbb/exportservice/job/trafficpoint/TrafficPointElementVersion.java) data
   from ServicePoint dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -229,13 +227,12 @@ Job is responsible to:
     * future-timetable
         * world
 
-#### Export LoadingPointVersions
+#### Export Loading Point Version
 
-The
-export [LoadingPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/LoadingPointVersionExportBatchConfig.java)
+The export [LoadingPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/loadingpoint/LoadingPointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [LoadingPointVersions](src/main/java/ch/sbb/exportservice/entity/sepodi/LoadingPointVersion.java) data
+* read [LoadingPointVersions](src/main/java/ch/sbb/exportservice/job/loadingpoint/LoadingPointVersion.java) data
   from ServicePoint dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -248,13 +245,12 @@ Job is responsible to:
 
 ### Export PRM Directory
 
-#### Export StopPointVersions
+#### Export Stop Point Version
 
-The
-export [StopPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/StopPointVersionExportBatchConfig.java)
+The export [StopPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/stoppoint/StopPointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [StopPointVersions](src/main/java/ch/sbb/exportservice/entity/prm/StopPointVersion.java) data
+* read [StopPointVersions](src/main/java/ch/sbb/exportservice/job/stoppoint/StopPointVersion.java) data
   from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -262,13 +258,12 @@ Job is responsible to:
     * full
     * future-timetable
 
-#### Export PlatformVersion
+#### Export Platform Version
 
-The
-export [PlatformVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/PlatformVersionExportBatchConfig.java)
+The export [PlatformVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/platform/PlatformVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [PlatformVersion](src/main/java/ch/sbb/exportservice/entity/prm/PlatformVersion.java) data
+* read [PlatformVersion](src/main/java/ch/sbb/exportservice/job/platform/PlatformVersion.java) data
   from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -276,13 +271,12 @@ Job is responsible to:
     * full
     * future-timetable
 
-#### Export ReferencePointVersion
+#### Export Reference Point Version
 
-The
-export [ReferencePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ReferencePointVersionExportBatchConfig.java)
+The export [ReferencePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/referencepoint/ReferencePointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ReferencePointVersion](src/main/java/ch/sbb/exportservice/entity/prm/ReferencePointVersion.java) data
+* read [ReferencePointVersion](src/main/java/ch/sbb/exportservice/job/referencepoint/ReferencePointVersion.java) data
   from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -290,13 +284,12 @@ Job is responsible to:
     * full
     * future-timetable
 
-#### Export ContactPointVersion
+#### Export Contact Point Version
 
-The
-export [ContactPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ContactPointVersionExportBatchConfig.java)
+The export [ContactPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/contactpoint/ContactPointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ContactPointVersion](src/main/java/ch/sbb/exportservice/entity/prm/ContactPointVersion.java) data
+* read [ContactPointVersion](src/main/java/ch/sbb/exportservice/job/contactpoint/ContactPointVersion.java) data
   from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -306,11 +299,10 @@ Job is responsible to:
 
 #### Export Toilet
 
-The
-export [ToiletVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ToiletVersionExportBatchConfig.java)
+The export [ToiletVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/toilet/ToiletVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ToiletVersion](src/main/java/ch/sbb/exportservice/entity/prm/ToiletVersion.java) data
+* read [ToiletVersion](src/main/java/ch/sbb/exportservice/job/toilet/ToiletVersion.java) data
   from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -320,11 +312,10 @@ Job is responsible to:
 
 #### Export Relation
 
-The
-export [RelationVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/RelationVersionExportBatchConfig.java)
+The export [RelationVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/relation/RelationVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [RelationVersion](src/main/java/ch/sbb/exportservice/entity/RelationVersion.java) data
+* read [RelationVersion](src/main/java/ch/sbb/exportservice/job/relation/RelationVersion.java) data
   from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -334,13 +325,12 @@ Job is responsible to:
 
 ### Export Business Organisation Directory
 
-#### Export Business Organisations
+#### Export Business Organisation
 
-The
-export [BusinessOrganisationExportBatchConfig](src/main/java/ch/sbb/exportservice/config/BusinessOrganisationExportBatchConfig.java)
+The export [BusinessOrganisationExportBatchConfig](src/main/java/ch/sbb/exportservice/job/businessorganisation/BusinessOrganisationExportBatchConfig.java)
 Job is responsible to:
 
-* read [BusinessOrganisation](src/main/java/ch/sbb/exportservice/entity/bodi/BusinessOrganisation.java) data
+* read [BusinessOrganisation](src/main/java/ch/sbb/exportservice/job/businessorganisation/BusinessOrganisation.java) data
   from BoDi dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -350,11 +340,10 @@ Job is responsible to:
 
 #### Export Transport Company
 
-The
-export [TransportCompanyExportBatchConfig](src/main/java/ch/sbb/exportservice/config/TransportCompanyExportBatchConfig.java)
+The export [TransportCompanyExportBatchConfig](src/main/java/ch/sbb/exportservice/job/transportcompany/TransportCompanyExportBatchConfig.java)
 Job is responsible to:
 
-* read [TransportCompany](src/main/java/ch/sbb/exportservice/entity/bodi/TransportCompany.java) data
+* read [TransportCompany](src/main/java/ch/sbb/exportservice/job/transportcompany/TransportCompany.java) data
   from BoDi dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -366,11 +355,10 @@ Job is responsible to:
 
 #### Export Lines
 
-The
-export [LineExportBatchConfig](src/main/java/ch/sbb/exportservice/config/LineExportBatchConfig.java)
+The export [LineExportBatchConfig](src/main/java/ch/sbb/exportservice/job/line/LineExportBatchConfig.java)
 Job is responsible to:
 
-* read [Line](src/main/java/ch/sbb/exportservice/entity/lidi/Line.java) data
+* read [Line](src/main/java/ch/sbb/exportservice/job/line/Line.java) data
   from LiDi dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -378,13 +366,12 @@ Job is responsible to:
   * full
   * future-timetable
 
-#### Export Sublines
+#### Export Subline
 
-The
-export [SublineExportBatchConfig](src/main/java/ch/sbb/exportservice/config/SublineExportBatchConfig.java)
+The export [SublineExportBatchConfig](src/main/java/ch/sbb/exportservice/job/subline/SublineExportBatchConfig.java)
 Job is responsible to:
 
-* read [Subline](src/main/java/ch/sbb/exportservice/entity/lidi/Subline.java) data
+* read [Subline](src/main/java/ch/sbb/exportservice/job/subline/Subline.java) data
   from LiDi dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
@@ -394,11 +381,10 @@ Job is responsible to:
 
 #### Export Timetable Field Number
 
-The
-export [TimetableFieldNumberExportBatchConfig](src/main/java/ch/sbb/exportservice/config/TimetableFieldNumberExportBatchConfig.java)
+The export [TimetableFieldNumberExportBatchConfig](src/main/java/ch/sbb/exportservice/job/ttfn/TimetableFieldNumberExportBatchConfig.java)
 Job is responsible to:
 
-* read [TimetableFieldNumber](src/main/java/ch/sbb/exportservice/entity/lidi/TimetableFieldNumber.java) data
+* read [TimetableFieldNumber](src/main/java/ch/sbb/exportservice/job/ttfn/TimetableFieldNumber.java) data
   from LiDi dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
