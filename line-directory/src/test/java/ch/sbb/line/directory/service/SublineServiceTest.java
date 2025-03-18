@@ -108,7 +108,7 @@ class SublineServiceTest {
     // Given
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
     sublineVersion.setId(1L);
-    when(sublineVersionRepository.findById(1L)).thenReturn(Optional.of(sublineVersion));
+    when(sublineVersionRepository.existsById(1L)).thenReturn(true);
 
     // When
     sublineService.deleteById(1L);
@@ -146,7 +146,7 @@ class SublineServiceTest {
   @Test
   void shouldNotDeleteSublineWhenNotFound() {
     // Given
-    when(sublineVersionRepository.findById(ID)).thenReturn(Optional.empty());
+    when(sublineVersionRepository.existsById(ID)).thenReturn(false);
 
     // When
     assertThatExceptionOfType(NotFoundException.class).isThrownBy(
