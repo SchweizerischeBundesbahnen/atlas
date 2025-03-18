@@ -3,16 +3,15 @@ package ch.sbb.line.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 
 class LineStatusDeciderTest {
@@ -46,7 +45,8 @@ class LineStatusDeciderTest {
         LineTestData.lineVersionBuilder().shortNumber("curr num").build();
     LineVersion newLineVersion = LineTestData.lineVersionBuilder().longName("new num").build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.DRAFT);
   }
@@ -58,7 +58,8 @@ class LineStatusDeciderTest {
         LineTestData.lineVersionBuilder().shortNumber(null).build();
     LineVersion newLineVersion = LineTestData.lineVersionBuilder().shortNumber("new num").build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.DRAFT);
   }
@@ -70,7 +71,8 @@ class LineStatusDeciderTest {
         LineTestData.lineVersionBuilder().shortNumber("something").build();
     LineVersion newLineVersion = LineTestData.lineVersionBuilder().shortNumber(null).build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.DRAFT);
   }
@@ -82,7 +84,8 @@ class LineStatusDeciderTest {
         LineTestData.lineVersionBuilder().longName("current name").build();
     LineVersion newLineVersion = LineTestData.lineVersionBuilder().lineType(LineType.TEMPORARY).longName("new name").build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.VALIDATED);
   }
@@ -94,7 +97,8 @@ class LineStatusDeciderTest {
         LineTestData.lineVersionBuilder().validTo(LocalDate.of(2020, 12, 31)).build();
     LineVersion newLineVersion = LineTestData.lineVersionBuilder().validTo(LocalDate.of(2025, 12, 31)).build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.DRAFT);
   }
@@ -106,7 +110,8 @@ class LineStatusDeciderTest {
         LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2020, 1, 1)).build();
     LineVersion newLineVersion = LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2018, 1, 1)).build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.DRAFT);
   }
@@ -118,7 +123,8 @@ class LineStatusDeciderTest {
         LineTestData.lineVersionBuilder().validTo(LocalDate.of(2020, 12, 31)).build();
     LineVersion newLineVersion = LineTestData.lineVersionBuilder().validTo(LocalDate.of(2020, 11, 30)).build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.VALIDATED);
   }
@@ -130,7 +136,8 @@ class LineStatusDeciderTest {
         LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2020, 1, 1)).build();
     LineVersion newLineVersion = LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2020, 2, 1)).build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.VALIDATED);
   }
@@ -139,10 +146,11 @@ class LineStatusDeciderTest {
   void shouldSetStatusToInReviewIfItIsAlreadyInReview() {
     // Given
     LineVersion currentLineVersion =
-            LineTestData.lineVersionBuilder().id(1L).status(Status.IN_REVIEW).build();
+        LineTestData.lineVersionBuilder().id(1L).status(Status.IN_REVIEW).build();
     LineVersion newLineVersion = LineTestData.lineVersionBuilder().id(1L).description("Other description").build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.IN_REVIEW);
   }
@@ -190,7 +198,8 @@ class LineStatusDeciderTest {
         LineTestData.lineVersionBuilder().offerCategory(OfferCategory.IC).build();
     LineVersion newLineVersion = LineTestData.lineVersionBuilder().offerCategory(OfferCategory.B).build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.DRAFT);
   }
@@ -200,9 +209,11 @@ class LineStatusDeciderTest {
     // Given
     LineVersion currentLineVersion =
         LineTestData.lineVersionBuilder().concessionType(LineConcessionType.CANTONALLY_APPROVED_LINE).build();
-    LineVersion newLineVersion = LineTestData.lineVersionBuilder().concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION).build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().concessionType(LineConcessionType.LINE_OF_A_ZONE_CONCESSION)
+        .build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.DRAFT);
   }
@@ -215,7 +226,8 @@ class LineStatusDeciderTest {
     LineVersion newLineVersion =
         LineTestData.lineVersionBuilder().businessOrganisation("newsboid").build();
     // When
-    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
     // Then
     assertThat(result).isEqualTo(Status.VALIDATED);
   }
