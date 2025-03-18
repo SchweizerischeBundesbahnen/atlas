@@ -1,7 +1,8 @@
 package ch.sbb.exportservice.controller;
 
-import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFileNameFromS3ObjectName;
+
+import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.exportservice.exception.NotAllowedExportFileExceptionV2;
 import ch.sbb.exportservice.model.ExportFilePathV2;
@@ -40,6 +41,8 @@ public class FileStreamingControllerApiV2 {
   @GetMapping(value = "json/{exportObject}/{exportType}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Returns the today generated file as Stream"),
+      @ApiResponse(responseCode = "400", description = "Not supported export type", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "404", description = "No file found for today date", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
@@ -56,7 +59,9 @@ public class FileStreamingControllerApiV2 {
 
   @GetMapping(value = "json/latest/{exportObject}/{exportType}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Returns the today generated file as Stream"),
+      @ApiResponse(responseCode = "200", description = "Returns the latest generated file as Stream"),
+      @ApiResponse(responseCode = "400", description = "Not supported export type", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
@@ -74,6 +79,8 @@ public class FileStreamingControllerApiV2 {
   @GetMapping(value = "download-gzip-json/{exportObject}/{exportType}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Returns the today generated file"),
+      @ApiResponse(responseCode = "400", description = "Not supported export type", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "404", description = "No file found for today date", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
@@ -92,6 +99,8 @@ public class FileStreamingControllerApiV2 {
   @GetMapping(value = "download-gzip-json/latest/{exportObject}/{exportType}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Returns the latest generated file"),
+      @ApiResponse(responseCode = "400", description = "Not supported export type", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
