@@ -1,9 +1,5 @@
 package ch.sbb.exportservice.recovery;
 
-import ch.sbb.exportservice.service.ExportBusinessOrganisationJobService;
-import ch.sbb.exportservice.service.ExportLineJobService;
-import ch.sbb.exportservice.service.ExportSublineJobService;
-import ch.sbb.exportservice.service.ExportTransportCompanyJobService;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
@@ -30,24 +26,28 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_C
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
-
-import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.batch.exception.JobExecutionException;
-import ch.sbb.exportservice.service.BaseExportJobService;
-import ch.sbb.exportservice.service.ExportContactPointJobService;
-import ch.sbb.exportservice.service.ExportLoadingPointJobService;
-import ch.sbb.exportservice.service.ExportParkingLotJobService;
-import ch.sbb.exportservice.service.ExportPlatformJobService;
-import ch.sbb.exportservice.service.ExportReferencePointJobService;
-import ch.sbb.exportservice.service.ExportRelationJobService;
-import ch.sbb.exportservice.service.ExportServicePointJobService;
-import ch.sbb.exportservice.service.ExportStopPointJobService;
-import ch.sbb.exportservice.service.ExportToiletJobService;
-import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TTFN_JSON_JOB_NAME;
+
+import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.batch.exception.JobExecutionException;
+import ch.sbb.exportservice.job.BaseExportJobService;
+import ch.sbb.exportservice.job.businessorganisation.ExportBusinessOrganisationJobService;
+import ch.sbb.exportservice.job.contactpoint.ExportContactPointJobService;
+import ch.sbb.exportservice.job.line.ExportLineJobService;
+import ch.sbb.exportservice.job.loadingpoint.ExportLoadingPointJobService;
+import ch.sbb.exportservice.job.parkinglot.ExportParkingLotJobService;
+import ch.sbb.exportservice.job.platform.ExportPlatformJobService;
+import ch.sbb.exportservice.job.referencepoint.ExportReferencePointJobService;
+import ch.sbb.exportservice.job.relation.ExportRelationJobService;
+import ch.sbb.exportservice.job.servicepoint.ExportServicePointJobService;
+import ch.sbb.exportservice.job.stoppoint.ExportStopPointJobService;
+import ch.sbb.exportservice.job.subline.ExportSublineJobService;
+import ch.sbb.exportservice.job.toilet.ExportToiletJobService;
+import ch.sbb.exportservice.job.trafficpoint.ExportTrafficPointElementJobService;
+import ch.sbb.exportservice.job.transportcompany.ExportTransportCompanyJobService;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -233,11 +233,13 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   }
 
   private void checkExportTransportCompanyJobToRecover() {
-    checkJobToRecover(exportTransportCompanyJobService, List.of(EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME, EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME));
+    checkJobToRecover(exportTransportCompanyJobService,
+        List.of(EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME, EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME));
   }
 
   private void checkExportBusinessOrganisationJobToRecover() {
-    checkJobToRecover(exportBusinessOrganisationJobService, List.of(EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME, EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME));
+    checkJobToRecover(exportBusinessOrganisationJobService,
+        List.of(EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME, EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME));
   }
 
   private void checkExportLineJobToRecover() {
