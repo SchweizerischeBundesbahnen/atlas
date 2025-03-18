@@ -13,7 +13,7 @@ public class FileNotFoundOnS3Exception extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+        .status(HttpStatus.NOT_FOUND.value())
         .message("""
             File not found on S3. The export might not have run yet.
             Please consult the docs at: https://export-service.prod.app.sbb.ch/static/rest-api.html for data availability.
