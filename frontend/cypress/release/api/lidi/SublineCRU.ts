@@ -30,7 +30,7 @@ describe(
         lineType: 'ORDERLY',
         businessOrganisation: sboid,
         validFrom: ReleaseApiUtils.todayAsAtlasString(),
-        validTo: ReleaseApiUtils.tomorrowAsAtlasString(),
+        validTo: ReleaseApiUtils.in4WeeksAsAtlasString(),
         lineConcessionType: 'LINE_ABROAD',
         offerCategory: 'SL',
         description: 'This is just a description.',
