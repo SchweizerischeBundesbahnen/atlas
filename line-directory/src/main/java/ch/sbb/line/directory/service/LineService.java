@@ -118,12 +118,12 @@ public class LineService {
     }
   }
 
-  @Transactional
-  public void deleteById(Long id) {
+  void deleteById(Long id) {
     if (!lineVersionRepository.existsById(id)) {
       throw new IdNotFoundException(id);
     }
     lineVersionRepository.deleteById(id);
+    sublineVersionRepository.flush();
   }
 
   public void deleteAll(String slnid) {
