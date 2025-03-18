@@ -11,14 +11,13 @@
  */
 
 
-export type SublineConcessionType = 'FEDERALLY_LICENSED_OR_APPROVED_LINE' | 'VARIANT_OF_A_FRANCHISED_LINE' | 'CANTONALLY_APPROVED_LINE' | 'RACK_FREE_TRIPS' | 'RACK_FREE_UNPUBLISHED_LINE' | 'LINE_ABROAD';
+export type SublineConcessionType = 'FEDERALLY_LICENSED_OR_APPROVED_LINE' | 'VARIANT_OF_A_LICENSED_LINE' | 'CANTONALLY_APPROVED_LINE' | 'RIGHT_FREE_LINE' | 'NOT_LICENSED_UNPUBLISHED_LINE' | 'LINE_ABROAD';
 
 export const SublineConcessionType = {
-    FederallyLicensedOrApprovedLine: 'FEDERALLY_LICENSED_OR_APPROVED_LINE' as SublineConcessionType,
-    VariantOfAFranchisedLine: 'VARIANT_OF_A_FRANCHISED_LINE' as SublineConcessionType,
-    CantonallyApprovedLine: 'CANTONALLY_APPROVED_LINE' as SublineConcessionType,
-    RackFreeTrips: 'RACK_FREE_TRIPS' as SublineConcessionType,
-    RackFreeUnpublishedLine: 'RACK_FREE_UNPUBLISHED_LINE' as SublineConcessionType,
-    LineAbroad: 'LINE_ABROAD' as SublineConcessionType
+  FederallyLicensedOrApprovedLine: 'FEDERALLY_LICENSED_OR_APPROVED_LINE' as SublineConcessionType,
+  VariantOfALicensedLine: 'VARIANT_OF_A_LICENSED_LINE' as SublineConcessionType,
+  CantonallyApprovedLine: 'CANTONALLY_APPROVED_LINE' as SublineConcessionType,
+  RightFreeLine: 'RIGHT_FREE_LINE' as SublineConcessionType,
+  NotLicensedUnpublishedLine: 'NOT_LICENSED_UNPUBLISHED_LINE' as SublineConcessionType,
+  LineAbroad: 'LINE_ABROAD' as SublineConcessionType
 };
-
