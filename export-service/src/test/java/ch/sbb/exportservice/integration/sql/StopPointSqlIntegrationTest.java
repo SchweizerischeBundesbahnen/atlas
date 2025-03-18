@@ -1,10 +1,10 @@
 package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
-import ch.sbb.exportservice.entity.prm.StopPointVersion;
+import ch.sbb.exportservice.job.stoppoint.StopPointVersion;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.reader.StopPointVersionRowMapper;
-import ch.sbb.exportservice.reader.StopPointVersionSqlQueryUtil;
+import ch.sbb.exportservice.job.stoppoint.StopPointVersionRowMapper;
+import ch.sbb.exportservice.job.stoppoint.StopPointVersionSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

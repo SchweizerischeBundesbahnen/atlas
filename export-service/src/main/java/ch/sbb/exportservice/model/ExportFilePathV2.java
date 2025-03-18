@@ -1,13 +1,14 @@
 package ch.sbb.exportservice.model;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import lombok.Builder;
 import lombok.Getter;
 
 @Builder
-public final class ExportFilePathV2 {
+public final class ExportFilePathV2 implements Serializable {
 
   private static final String PATH_DELIMITER = "/";
   private static final String FILENAME_DELIMITER = "-";

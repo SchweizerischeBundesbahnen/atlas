@@ -37,6 +37,14 @@ public abstract class FileUploadTaskletV2 implements Tasklet {
     log.info("File {} uploading...", filePath.actualDateFilePath());
     exportFile();
     log.info("File {} uploaded!", filePath.actualDateFilePath());
+
+    chunkContext
+        .getStepContext()
+        .getStepExecution()
+        .getJobExecution()
+        .getExecutionContext()
+        .put("filePathV2", filePath);
+
     return RepeatStatus.FINISHED;
   }
 

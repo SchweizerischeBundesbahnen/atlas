@@ -1,12 +1,14 @@
 package ch.sbb.exportservice.integration.sql;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BoDiDbSchemaCreation;
-import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
+import ch.sbb.exportservice.job.businessorganisation.BusinessOrganisation;
+import ch.sbb.exportservice.job.businessorganisation.BusinessOrganisationRowMapper;
+import ch.sbb.exportservice.job.businessorganisation.BusinessOrganisationSqlQueryUtil;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.reader.BusinessOrganisationRowMapper;
-import ch.sbb.exportservice.reader.BusinessOrganisationSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +16,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -1,14 +1,15 @@
 package ch.sbb.exportservice.integration;
 
-import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.exportservice.BatchDataSourceConfigTest;
-import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.SePoDiExportType;
-import ch.sbb.exportservice.service.BaseExportJobService;
-import ch.sbb.exportservice.service.BaseExportJobService.JobParams;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.exportservice.BatchDataSourceConfigTest;
+import ch.sbb.exportservice.job.BaseExportJobService;
+import ch.sbb.exportservice.job.BaseExportJobService.JobParams;
+import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -40,7 +41,8 @@ class ExportTrafficPointElementIntegrationTest {
   void shouldExecuteExportServicePointCsvJob() throws Exception {
     // given
 
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(
+        new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportTrafficPointElementCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -55,7 +57,8 @@ class ExportTrafficPointElementIntegrationTest {
   void shouldExecuteExportServicePointJsonJob() throws Exception {
     // given
 
-    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(
+        new JobParams(ExportTypeV2.WORLD_FULL, SePoDiExportType.WORLD_FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportTrafficPointElementJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

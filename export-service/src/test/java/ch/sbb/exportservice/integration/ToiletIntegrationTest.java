@@ -1,14 +1,15 @@
 package ch.sbb.exportservice.integration;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.exportservice.integration.sql.BasePrmSqlIntegrationTest;
-import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.model.PrmExportType;
-import ch.sbb.exportservice.service.BaseExportJobService;
-import ch.sbb.exportservice.service.BaseExportJobService.JobParams;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_JSON_JOB_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.exportservice.integration.sql.BasePrmSqlIntegrationTest;
+import ch.sbb.exportservice.job.BaseExportJobService;
+import ch.sbb.exportservice.job.BaseExportJobService.JobParams;
+import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.model.PrmExportType;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
