@@ -3,7 +3,6 @@ package ch.sbb.line.directory.validation;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,9 +11,7 @@ import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineTypeOrderlyException;
 import ch.sbb.line.directory.exception.OrderlyLineValidityException;
@@ -226,7 +223,7 @@ class LineValidationServiceTest {
   void shouldThrowLineTypeOrderlyExceptionWhenLineTypeIsNotOrderlyAndConcessionTypeIsNotNull(LineType lineType) {
     //given
     LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(lineType).swissLineNumber(null)
-        .concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION).build();
+        .concessionType(LineConcessionType.LINE_OF_A_ZONE_CONCESSION).build();
 
     //when and then
     assertThrows(LineTypeOrderlyException.class, () -> lineValidationService.dynamicBeanValidation(lineVersion));

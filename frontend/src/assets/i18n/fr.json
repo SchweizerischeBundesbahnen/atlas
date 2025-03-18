@@ -395,12 +395,12 @@
     "LINE_CONCESSION": {
       "TYPE": "Type de concession",
       "FEDERALLY_LICENSED_OR_APPROVED_LINE": "Ligne au bénéfice d’une concession ou d’une autorisation fédérale (EK)",
-      "VARIANT_OF_A_FRANCHISED_LINE": "Variante d’une ligne concessionnaire (VK)",
-      "FEDERAL_TERRITORIAL_CONCESSION": "Concession territoriale fédérale (GK)",
-      "LINE_OF_A_TERRITORIAL_CONCESSION": "Ligne d’une concession territoriale (LG)",
+      "VARIANT_OF_A_LICENSED_LINE": "Variante d’une ligne concessionnaire (VK)",
+      "FEDERAL_ZONE_CONCESSION": "Concession territoriale fédérale (GK)",
+      "LINE_OF_A_ZONE_CONCESSION": "Ligne d’une concession territoriale (LG)",
       "CANTONALLY_APPROVED_LINE": "Ligne au bénéfice d’une autorisation cantonale (KB)",
-      "RACK_FREE_TRIPS": "Courses ne relevant pas de la régale (RF)",
-      "RACK_FREE_UNPUBLISHED_LINE": "Ligne ne relevant pas de la régale/non publiée (NP)",
+      "RIGHT_FREE_LINE": "Courses ne relevant pas de la régale (RF)",
+      "NOT_LICENSED_UNPUBLISHED_LINE": "Ligne ne relevant pas de la régale/non publiée (NP)",
       "COLLECTION_LINE": "Ligne collective (SL)",
       "LINE_ABROAD": "Ligne à l’étranger (AL))"
     },
