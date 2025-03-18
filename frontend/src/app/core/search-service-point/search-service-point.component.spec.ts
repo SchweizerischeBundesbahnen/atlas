@@ -26,14 +26,13 @@ describe('SearchServicePointComponent', () => {
     servicePointsServiceSpy.searchServicePoints.withArgs({ value: 'be' }).and.returnValue(of());
 
     TestBed.configureTestingModule({
-      declarations: [SearchServicePointComponent, SearchSelectComponent],
-      imports: [AppTestingModule],
-      providers: [
+    imports: [AppTestingModule, SearchServicePointComponent, SearchSelectComponent],
+    providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ServicePointsService, useValue: servicePointsServiceSpy },
         { provide: TranslatePipe },
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(SearchServicePointComponent);
     component = fixture.componentInstance;
     fixture.componentInstance.searchType = ServicePointSearch.SePoDi;

@@ -142,8 +142,7 @@ describe('LoadingPointsDetailComponent', () => {
 
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     return TestBed.configureTestingModule({
-      declarations: [
-        LoadingPointsDetailComponent,
+    imports: [AppTestingModule, LoadingPointsDetailComponent,
         DisplayDatePipe,
         SplitServicePointNumberPipe,
         MockAtlasButtonComponent,
@@ -163,10 +162,8 @@ describe('LoadingPointsDetailComponent', () => {
         UserDetailInfoComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
-        DetailFooterComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        DetailFooterComponent],
+    providers: [
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: ServicePointsService, useValue: servicePointService },
@@ -174,7 +171,7 @@ describe('LoadingPointsDetailComponent', () => {
         { provide: DialogService, useValue: dialogService },
         SplitServicePointNumberPipe,
         TranslatePipe,
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   }
 });

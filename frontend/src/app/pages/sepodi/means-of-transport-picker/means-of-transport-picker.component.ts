@@ -1,12 +1,17 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {MeanOfTransport} from '../../../api';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
+import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'means-of-transport-picker',
     templateUrl: './means-of-transport-picker.component.html',
     styleUrls: ['./means-of-transport-picker.component.scss'],
-    standalone: false
+    imports: [ReactiveFormsModule, NgIf, AtlasLabelFieldComponent, AtlasSpacerComponent, NgFor, NgClass, AtlasFieldErrorComponent, TranslatePipe]
 })
 export class MeansOfTransportPickerComponent implements OnInit {
   @Input() controlName!: string;

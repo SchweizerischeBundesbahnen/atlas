@@ -84,24 +84,21 @@ describe('ServicePointSidePanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ServicePointSidePanelComponent,
+    imports: [AppTestingModule, ServicePointSidePanelComponent,
         DisplayDatePipe,
         SplitServicePointNumberPipe,
         MockAtlasButtonComponent,
         DateRangeTextComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
-        DetailFooterComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        DetailFooterComponent],
+    providers: [
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: TrafficPointMapService, useValue: trafficPointMapService },
         SplitServicePointNumberPipe,
-      ],
-    });
+    ],
+});
   });
 
   describe('panel for servicePoint in Switzerland', () => {

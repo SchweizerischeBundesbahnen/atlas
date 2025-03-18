@@ -13,13 +13,13 @@ describe('CantonCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CantonCardComponent],
-      imports: [
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-    }).compileComponents();
+        CantonCardComponent,
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(CantonCardComponent);
     component = fixture.componentInstance;

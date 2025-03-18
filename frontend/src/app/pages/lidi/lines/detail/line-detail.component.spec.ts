@@ -51,7 +51,7 @@ import { NgOptimizedImage } from '@angular/common';
 @Component({
     selector: 'app-coverage',
     template: '<p>Mock Product Editor Component</p>',
-    standalone: false
+    imports: [AppTestingModule, FormModule, NgOptimizedImage]
 })
 class MockAppCoverageComponent {
   @Input() pageType!: Record;
@@ -61,7 +61,7 @@ class MockAppCoverageComponent {
 @Component({
     selector: 'app-subline-table',
     template: '<p>Mock subline table Component</p>',
-    standalone: false
+    imports: [AppTestingModule, FormModule, NgOptimizedImage]
 })
 export class MockSublineTableComponent {
   @Input() mainLineSlnid!: string;
@@ -454,42 +454,39 @@ function setupTestBed(
   data: { lineDetail: string | LineVersionV2[] }
 ) {
   TestBed.configureTestingModule({
-    declarations: [
-      LineDetailComponent,
-      LineDetailFormComponent,
-      ErrorNotificationComponent,
-      InfoIconComponent,
-      CommentComponent,
-      LinkIconComponent,
-      AtlasLabelFieldComponent,
-      AtlasFieldErrorComponent,
-      TextFieldComponent,
-      SelectComponent,
-      AtlasSpacerComponent,
-      DetailPageContainerComponent,
-      DetailPageContentComponent,
-      DetailFooterComponent,
-      AtlasButtonComponent,
-      UserDetailInfoComponent,
-      SwitchVersionComponent,
-      MockAppCoverageComponent,
-      DateRangeComponent,
-      DateRangeTextComponent,
-      DateIconComponent,
-      DisplayDatePipe,
-      WorkflowComponent,
-      MockSublineTableComponent,
-    ],
-    imports: [AppTestingModule, FormModule, NgOptimizedImage],
+    imports: [AppTestingModule, FormModule, NgOptimizedImage, LineDetailComponent,
+        LineDetailFormComponent,
+        ErrorNotificationComponent,
+        InfoIconComponent,
+        CommentComponent,
+        LinkIconComponent,
+        AtlasLabelFieldComponent,
+        AtlasFieldErrorComponent,
+        TextFieldComponent,
+        SelectComponent,
+        AtlasSpacerComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
+        AtlasButtonComponent,
+        UserDetailInfoComponent,
+        SwitchVersionComponent,
+        MockAppCoverageComponent,
+        DateRangeComponent,
+        DateRangeTextComponent,
+        DateIconComponent,
+        DisplayDatePipe,
+        WorkflowComponent,
+        MockSublineTableComponent],
     providers: [
-      { provide: FormBuilder },
-      { provide: LinesService, useValue: linesService },
-      { provide: DialogService, useValue: dialogService },
-      { provide: PermissionService, useValue: adminPermissionServiceMock },
-      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
-      { provide: TranslatePipe },
+        { provide: FormBuilder },
+        { provide: LinesService, useValue: linesService },
+        { provide: DialogService, useValue: dialogService },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
+        { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
+        { provide: TranslatePipe },
     ],
-  })
+})
     .overrideComponent(SublineDetailComponent, {
       set: {
         providers: [{ provide: ValidityService, useValue: validityService }],

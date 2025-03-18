@@ -12,12 +12,21 @@ import { DialogService } from '../../../../../core/components/dialog/dialog.serv
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
+import { UserAdministrationReadOnlyDataComponent } from '../../../components/read-only-data/user-administration-read-only-data.component';
+import { NgFor, NgIf } from '@angular/common';
+import { UserAdministrationApplicationConfigComponent } from '../../../components/application-config/user-administration-application-config.component';
+import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-client-credential-administration-edit',
     templateUrl: './user-administration-client-edit.component.html',
     viewProviders: [BusinessOrganisationsService, UserPermissionManager],
-    standalone: false
+    imports: [ScrollToTopDirective, DetailPageContainerComponent, DetailPageContentComponent, UserAdministrationReadOnlyDataComponent, NgFor, UserAdministrationApplicationConfigComponent, UserDetailInfoComponent, DetailFooterComponent, NgIf, TranslatePipe]
 })
 export class UserAdministrationClientEditComponent implements OnInit {
   @Input() client!: ClientCredential;

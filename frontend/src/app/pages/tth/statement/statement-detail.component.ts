@@ -16,7 +16,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { Cantons } from '../../../core/cantons/Cantons';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
@@ -37,12 +37,33 @@ import { TableService } from '../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import {LoadingSpinnerService} from "../../../core/components/loading-spinner/loading-spinner.service";
+import { ScrollToTopDirective } from '../../../core/scroll-to-top/scroll-to-top.directive';
+import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
+import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { SelectComponent } from '../../../core/form-components/select/select.component';
+import { TimetableFieldNumberSelectComponent } from '../../../core/form-components/ttfn-select/timetable-field-number-select.component';
+import { TransportCompanySelectComponent } from '../../../core/form-components/tu-select/transport-company-select.component';
+import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
+import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
+import { StringListComponent } from '../../../core/form-components/string-list/string-list.component';
+import { AtlasClipboardComponent } from '../../../core/form-components/atlas-clipboard/atlas-clipboard.component';
+import { CommentComponent } from '../../../core/form-components/comment/comment.component';
+import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { FileComponent } from '../../../core/components/file-upload/file/file.component';
+import { FileUploadComponent } from '../../../core/components/file-upload/file-upload.component';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
+import { DisplayCantonPipe } from '../../../core/cantons/display-canton.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-statement-detail',
     templateUrl: './statement-detail.component.html',
     styleUrls: ['./statement-detail.component.scss'],
-    standalone: false
+    imports: [ScrollToTopDirective, LoadingSpinnerComponent, DetailPageContainerComponent, DetailPageContentComponent, ReactiveFormsModule, NgIf, UserDetailInfoComponent, SelectComponent, TimetableFieldNumberSelectComponent, TransportCompanySelectComponent, AtlasSpacerComponent, TextFieldComponent, StringListComponent, AtlasClipboardComponent, CommentComponent, AtlasLabelFieldComponent, NgFor, FileComponent, FileUploadComponent, AtlasButtonComponent, DetailFooterComponent, DisplayCantonPipe, AsyncPipe, TranslatePipe]
 })
 export class StatementDetailComponent implements OnInit, DetailFormComponent {
   YEAR_OPTIONS: number[] = [];

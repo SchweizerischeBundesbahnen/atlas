@@ -12,12 +12,25 @@ import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { EMPTY, Observable, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PrmTabDetailBaseComponent } from '../../../shared/prm-tab-detail-base.component';
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { NgIf } from '@angular/common';
+import { DateRangeTextComponent } from '../../../../../core/versioning/date-range-text/date-range-text.component';
+import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
+import { SloidComponent } from '../../../../../core/form-components/sloid/sloid.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
+import { ReferencePointCompleteFormComponent } from './form/reference-point-complete-form/reference-point-complete-form.component';
+import { MatDivider } from '@angular/material/divider';
+import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-reference-point',
     templateUrl: './reference-point-detail.component.html',
     providers: [ValidityService],
-    standalone: false
+    imports: [DetailPageContainerComponent, NgIf, DateRangeTextComponent, DetailPageContentComponent, SloidComponent, ReactiveFormsModule, SwitchVersionComponent, ReferencePointCompleteFormComponent, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
 })
 export class ReferencePointDetailComponent
   extends PrmTabDetailBaseComponent<ReadReferencePointVersion>

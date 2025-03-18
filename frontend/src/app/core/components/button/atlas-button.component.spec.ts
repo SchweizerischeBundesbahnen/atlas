@@ -35,10 +35,9 @@ const permissionServiceMock: Partial<PermissionService> = {
 describe('AtlasButtonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AtlasButtonComponent],
-      imports: [AppTestingModule],
-      providers: [{ provide: PermissionService, useValue: permissionServiceMock }],
-    }).compileComponents();
+    imports: [AppTestingModule, AtlasButtonComponent],
+    providers: [{ provide: PermissionService, useValue: permissionServiceMock }],
+}).compileComponents();
   });
 
   beforeEach(() => {

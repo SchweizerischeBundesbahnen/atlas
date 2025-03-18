@@ -58,47 +58,45 @@ describe('UserAdministrationClientCreateComponent', () => {
       },
     });
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        RouterTestingModule,
+        MaterialModule,
+        TranslateModule.forRoot({
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
         UserAdministrationClientCreateComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-      ],
-      imports: [
-        RouterTestingModule,
-        MaterialModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
-      providers: [
+    ],
+    providers: [
         {
-          provide: UserService,
-          useValue: userServiceSpy,
+            provide: UserService,
+            useValue: userServiceSpy,
         },
         {
-          provide: UserPermissionManager,
-          useValue: userPermissionManagerSpy,
+            provide: UserPermissionManager,
+            useValue: userPermissionManagerSpy,
         },
         {
-          provide: NotificationService,
-          useValue: notificationServiceSpy,
+            provide: NotificationService,
+            useValue: notificationServiceSpy,
         },
         TranslatePipe,
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: { user: undefined },
+            provide: MAT_DIALOG_DATA,
+            useValue: { user: undefined },
         },
         {
-          provide: MatDialogRef,
-          useValue: {
-            close: () => {
-              // mock implementation
+            provide: MatDialogRef,
+            useValue: {
+                close: () => {
+                    // mock implementation
+                },
             },
-          },
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationClientCreateComponent);
     component = fixture.componentInstance;

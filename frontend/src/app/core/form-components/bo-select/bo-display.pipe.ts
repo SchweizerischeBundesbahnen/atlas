@@ -7,8 +7,7 @@ import {VersionsHandlingService} from "../../versioning/versions-handling.servic
 
 @Pipe({
     name: 'boDisplay',
-    pure: true,
-    standalone: false
+    pure: true
 })
 export class BoDisplayPipe implements PipeTransform {
   constructor(

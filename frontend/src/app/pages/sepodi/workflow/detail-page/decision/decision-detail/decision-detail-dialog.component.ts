@@ -5,11 +5,17 @@ import {DecisionOverrideComponent} from './override/decision-override.component'
 import {DecisionFormGroupBuilder} from '../decision-form/decision-form-group';
 import {DecisionType, ReadDecision, StopPointWorkflowService, WorkflowStatus} from 'src/app/api';
 import {SPECIAL_DECISION_TYPES} from "../../detail-form/stop-point-workflow-detail-form-group";
+import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
+import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
+import { DecisionFormComponent } from '../decision-form/decision-form.component';
+import { DialogFooterComponent } from '../../../../../../core/components/dialog/footer/dialog-footer.component';
+import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'decision-detail-dialog',
     templateUrl: './decision-detail-dialog.component.html',
-    standalone: false
+    imports: [DialogCloseComponent, DialogContentComponent, DecisionFormComponent, DecisionOverrideComponent, DialogFooterComponent, AtlasButtonComponent, TranslatePipe]
 })
 export class DecisionDetailDialogComponent implements OnInit {
 

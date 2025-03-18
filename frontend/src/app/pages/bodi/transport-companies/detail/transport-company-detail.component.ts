@@ -9,7 +9,7 @@ import {
 } from '../../../../api';
 import {Observable, of} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
 import moment, {Moment} from 'moment';
 import {TableColumn} from '../../../../core/components/table/table-column';
@@ -22,11 +22,24 @@ import {TransportCompanyFormGroup} from './transport-company-form-group';
 import {ActivatedRoute} from '@angular/router';
 import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
+import { RelationComponent } from '../../../../core/components/relation/relation.component';
+import { NgIf } from '@angular/common';
+import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
+import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     templateUrl: './transport-company-detail.component.html',
     styleUrls: ['./transport-company-detail.component.scss'],
-    standalone: false
+    imports: [ScrollToTopDirective, DetailPageContainerComponent, DetailPageContentComponent, ReactiveFormsModule, TextFieldComponent, CommentComponent, RelationComponent, NgIf, BusinessOrganisationSelectComponent, DateRangeComponent, DetailFooterComponent, AtlasButtonComponent, BackButtonDirective, TranslatePipe]
 })
 export class TransportCompanyDetailComponent implements OnInit, DetailFormComponent {
   transportCompany!: TransportCompany;

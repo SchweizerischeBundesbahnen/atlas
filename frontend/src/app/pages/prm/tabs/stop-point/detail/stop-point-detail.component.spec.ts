@@ -79,8 +79,7 @@ describe('StopPointDetailComponent', () => {
     notificationService = jasmine.createSpyObj('notificationService', ['success']);
 
     TestBed.configureTestingModule({
-      declarations: [
-        StopPointDetailComponent,
+    imports: [AppTestingModule, StopPointDetailComponent,
         MockAtlasButtonComponent,
         SwitchVersionComponent,
         UserDetailInfoComponent,
@@ -94,10 +93,8 @@ describe('StopPointDetailComponent', () => {
         MeansOfTransportPickerComponent,
         AtlasSpacerComponent,
         DetailFooterComponent,
-        MockNavigationSepodiPrmComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        MockNavigationSepodiPrmComponent],
+    providers: [
         ValidityService,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: prmServiceSpy },
@@ -105,8 +102,8 @@ describe('StopPointDetailComponent', () => {
         { provide: NotificationService, useValue: notificationService },
         { provide: Router, useValue: routerSpy },
         TranslatePipe,
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(StopPointDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

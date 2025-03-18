@@ -10,12 +10,11 @@ describe('LinkComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LinkComponent, LinkIconComponent],
-      imports: [TranslateModule.forRoot({
-        loader: {provide: TranslateLoader, useClass: TranslateFakeLoader},
-      })],
-      providers: [TranslatePipe]
-    }).compileComponents();
+    imports: [TranslateModule.forRoot({
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }), LinkComponent, LinkIconComponent],
+    providers: [TranslatePipe]
+}).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,10 +1,7 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-@Directive({
-    selector: '[infoLink]',
-    standalone: false
-})
+@Directive({ selector: '[infoLink]' })
 export class InfoLinkDirective {
   @Input() infoLinkTranslationKey = '';
 

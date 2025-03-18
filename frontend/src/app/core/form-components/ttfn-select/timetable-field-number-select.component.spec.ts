@@ -20,22 +20,20 @@ describe('TimetableFieldNumberSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        TimetableFieldNumberSelectComponent,
-        SearchSelectComponent,
-        AtlasLabelFieldComponent,
-        AtlasFieldErrorComponent,
-      ],
-      imports: [
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         NgSelectModule,
         MaterialModule,
         HttpClientTestingModule,
-      ],
-      providers: [TranslatePipe],
-    }).compileComponents();
+        TimetableFieldNumberSelectComponent,
+        SearchSelectComponent,
+        AtlasLabelFieldComponent,
+        AtlasFieldErrorComponent,
+    ],
+    providers: [TranslatePipe],
+}).compileComponents();
 
     fixture = TestBed.createComponent(TimetableFieldNumberSelectComponent);
     component = fixture.componentInstance;

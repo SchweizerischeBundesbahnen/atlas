@@ -41,26 +41,24 @@ describe('UserAdministrationClientOverviewComponent', () => {
     ).and.returnValue(of(clientContainer));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        UserAdministrationClientOverviewComponent,
-        AtlasButtonComponent,
-        MockTableComponent,
-      ],
-      imports: [
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         RouterTestingModule,
         MaterialModule,
         HttpClientTestingModule,
-      ],
-      providers: [
+        UserAdministrationClientOverviewComponent,
+        AtlasButtonComponent,
+        MockTableComponent,
+    ],
+    providers: [
         {
-          provide: ClientCredentialAdministrationService,
-          useValue: clientCredentialAdministrationServiceSpy,
+            provide: ClientCredentialAdministrationService,
+            useValue: clientCredentialAdministrationServiceSpy,
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationClientOverviewComponent);
     component = fixture.componentInstance;

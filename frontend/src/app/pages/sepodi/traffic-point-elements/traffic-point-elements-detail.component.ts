@@ -12,7 +12,7 @@ import {VersionsHandlingService} from '../../../core/versioning/versions-handlin
 import {DateRange} from '../../../core/versioning/date-range';
 import {catchError, EMPTY, Observable, of} from 'rxjs';
 import {Pages} from '../../pages';
-import {FormGroup} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {TrafficPointElementDetailFormGroup, TrafficPointElementFormGroupBuilder,} from './traffic-point-detail-form-group';
 import {DialogService} from '../../../core/components/dialog/dialog.service';
 import {ValidationService} from '../../../core/validation/validation.service';
@@ -22,6 +22,22 @@ import {ValidityConfirmationService} from '../validity/validity-confirmation.ser
 import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import {GeographyFormGroup, GeographyFormGroupBuilder} from '../geography/geography-form-group';
 import {ValidityService} from "../validity/validity.service";
+import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
+import { NgIf } from '@angular/common';
+import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
+import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
+import { SloidComponent } from '../../../core/form-components/sloid/sloid.component';
+import { SwitchVersionComponent } from '../../../core/components/switch-version/switch-version.component';
+import { NavigationSepodiPrmComponent } from '../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
+import { SelectComponent } from '../../../core/form-components/select/select.component';
+import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
+import { GeographyComponent } from '../geography/geography.component';
+import { MatDivider } from '@angular/material/divider';
+import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -36,7 +52,7 @@ const NUMBER_COLONS_AREA = 0;
     templateUrl: './traffic-point-elements-detail.component.html',
     styleUrls: ['./traffic-point-elements-detail.component.scss'],
     providers: [ValidityService],
-    standalone: false
+    imports: [DetailPageContainerComponent, NgIf, DateRangeTextComponent, DetailPageContentComponent, SloidComponent, ReactiveFormsModule, SwitchVersionComponent, NavigationSepodiPrmComponent, TextFieldComponent, SelectComponent, DateRangeComponent, GeographyComponent, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
 })
 export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
   readonly extractSloid = (option: AreaOption) => option.sloid;

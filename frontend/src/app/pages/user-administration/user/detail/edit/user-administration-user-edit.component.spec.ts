@@ -33,7 +33,8 @@ import {DetailPageContentComponent} from "../../../../../core/components/detail-
 @Component({
     selector: 'app-user-administration-read-only-data',
     template: '',
-    standalone: false
+    imports: [MaterialModule,
+        RouterTestingModule]
 })
 export class MockUserAdministrationReadOnlyDataComponent<T extends Data> {
   @Input() data!: T;
@@ -90,7 +91,12 @@ describe('UserAdministrationUserEditComponent', () => {
       },
     });
     await TestBed.configureTestingModule({
-      declarations: [
+    imports: [
+        TranslateModule.forRoot({
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+        MaterialModule,
+        RouterTestingModule,
         UserAdministrationUserEditComponent,
         MockUserAdministrationReadOnlyDataComponent,
         EditTitlePipe,
@@ -98,30 +104,23 @@ describe('UserAdministrationUserEditComponent', () => {
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-      ],
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        MaterialModule,
-        RouterTestingModule,
-      ],
-      providers: [
+    ],
+    providers: [
         TranslatePipe,
         {
-          provide: UserService,
-          useValue: userServiceSpy,
+            provide: UserService,
+            useValue: userServiceSpy,
         },
         {
-          provide: NotificationService,
-          useValue: notificationServiceSpy,
+            provide: NotificationService,
+            useValue: notificationServiceSpy,
         },
         {
-          provide: DialogService,
-          useValue: dialogServiceSpy,
+            provide: DialogService,
+            useValue: dialogServiceSpy,
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationUserEditComponent);
     component = fixture.componentInstance;

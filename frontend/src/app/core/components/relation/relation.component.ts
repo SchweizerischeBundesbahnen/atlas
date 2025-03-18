@@ -1,14 +1,16 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
-import { MatSort, Sort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
+import { MatSort, Sort, MatSortHeader } from '@angular/material/sort';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from '@angular/material/table';
+import { NgIf, NgClass, NgFor } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-relation',
     templateUrl: './relation.component.html',
     styleUrls: ['./relation.component.scss'],
-    standalone: false
+    imports: [NgIf, MatTable, MatSort, NgClass, NgFor, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, TranslatePipe]
 })
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export class RelationComponent<RECORD_TYPE> {

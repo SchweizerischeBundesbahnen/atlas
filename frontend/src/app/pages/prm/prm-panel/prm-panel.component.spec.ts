@@ -22,21 +22,17 @@ describe('PrmPanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        PrmPanelComponent,
+    imports: [AppTestingModule, PrmPanelComponent,
         MockAtlasButtonComponent,
         SplitServicePointNumberPipe,
         DateRangeTextComponent,
-        DisplayDatePipe,
-        MockPrmRecordingObligationComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        DisplayDatePipe],
+    providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         TranslatePipe,
         SplitServicePointNumberPipe,
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(PrmPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

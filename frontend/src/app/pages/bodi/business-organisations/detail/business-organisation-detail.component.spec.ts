@@ -212,25 +212,22 @@ function setupTestBed(
   data: { businessOrganisationDetail: string | BusinessOrganisationVersion },
 ) {
   TestBed.configureTestingModule({
-    declarations: [
-      BusinessOrganisationDetailComponent,
-      MockAppDetailWrapperComponent,
-      MockSelectComponent,
-      ErrorNotificationComponent,
-      InfoIconComponent,
-      DetailPageContainerComponent,
-      DetailFooterComponent,
-    ],
-    imports: [AppTestingModule, FormModule],
+    imports: [AppTestingModule, FormModule, BusinessOrganisationDetailComponent,
+        MockAppDetailWrapperComponent,
+        MockSelectComponent,
+        ErrorNotificationComponent,
+        InfoIconComponent,
+        DetailPageContainerComponent,
+        DetailFooterComponent],
     providers: [
-      { provide: FormBuilder },
-      { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
-      { provide: PermissionService, useValue: adminPermissionServiceMock },
-      { provide: ValidityService, useValue: validityService },
-      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
-      { provide: TranslatePipe },
+        { provide: FormBuilder },
+        { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
+        { provide: ValidityService, useValue: validityService },
+        { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
+        { provide: TranslatePipe },
     ],
-  })
+})
     .compileComponents()
     .then();
 }

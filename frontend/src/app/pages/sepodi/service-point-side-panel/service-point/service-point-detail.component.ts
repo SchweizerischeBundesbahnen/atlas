@@ -9,7 +9,7 @@ import {
   ServicePointsService,
   Status,
 } from '../../../../api';
-import {FormGroup} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder,} from './service-point-detail-form-group';
 import {MapService} from '../../map/map.service';
 import {BehaviorSubject, catchError, EMPTY, Observable, of, Subject, take} from 'rxjs';
@@ -25,12 +25,24 @@ import {ValidityService} from '../../validity/validity.service';
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
 import {takeUntil} from "rxjs/operators";
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
+import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { ServicePointFormComponent } from './service-point-form/service-point-form.component';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { GeographyComponent } from '../../geography/geography.component';
+import { MatDivider } from '@angular/material/divider';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-service-point',
     templateUrl: './service-point-detail.component.html',
     providers: [ValidityService],
-    standalone: false
+    imports: [DetailPageContainerComponent, NgIf, SwitchVersionComponent, NavigationSepodiPrmComponent, ServicePointFormComponent, TextFieldComponent, ReactiveFormsModule, GeographyComponent, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, AsyncPipe, TranslatePipe]
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   readonly servicePointStatus = Status;

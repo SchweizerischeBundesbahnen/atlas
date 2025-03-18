@@ -7,7 +7,7 @@ import { AppTestingModule } from '../../app.testing.module';
 
 @Component({
     template: ` <input [formControl]="form" emptyToNull /> `,
-    standalone: false
+    imports: [AppTestingModule]
 })
 class TestComponent {
   form = new FormControl();
@@ -22,9 +22,8 @@ describe('EmptyToNullDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [EmptyToNullDirective, TestComponent],
-      imports: [AppTestingModule],
-    }).createComponent(TestComponent);
+    imports: [AppTestingModule, EmptyToNullDirective, TestComponent],
+}).createComponent(TestComponent);
 
     component = fixture.componentInstance;
 

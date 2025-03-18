@@ -1,13 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { UserService } from '../../service/user.service';
 import {ApplicationType, User} from '../../../../api';
+import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
+import { UserSelectFormatPipe } from './user-select-format.pipe';
 
 @Component({
     selector: 'app-user-select',
     templateUrl: './user-select.component.html',
-    standalone: false
+    imports: [SearchSelectComponent, ReactiveFormsModule, UserSelectFormatPipe]
 })
 export class UserSelectComponent {
   constructor(private readonly userService: UserService) {}

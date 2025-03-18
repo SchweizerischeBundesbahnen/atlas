@@ -1,5 +1,9 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Tab} from "../../../../tab";
+import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
+import { NgFor } from '@angular/common';
+import { RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const PRM_DETAIL_TAB_LINK = 'detail';
 export const PRM_RELATIONS_TAB_LINK = 'relations';
@@ -8,7 +12,7 @@ export const PRM_RELATIONS_TAB_LINK = 'relations';
     selector: 'prm-detail-with-relation-tab',
     templateUrl: './detail-with-relation-tab.component.html',
     styleUrls: ['./detail-with-relation-tab.component.scss'],
-    standalone: false
+    imports: [MatTabNav, NgFor, MatTabLink, RouterLinkActive, RouterLink, MatTabNavPanel, RouterOutlet, TranslatePipe]
 })
 export class DetailWithRelationTabComponent implements OnInit, OnChanges {
 

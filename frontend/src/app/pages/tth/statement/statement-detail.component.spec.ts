@@ -84,7 +84,7 @@ mockTimetableHearingStatementsService.getResponsibleTransportCompanies.and.retur
 @Component({
     selector: 'app-user-detail-info',
     template: '<p>MockUserDetailInfoComponent</p>',
-    standalone: false
+    imports: [AppTestingModule, FormModule]
 })
 class MockUserDetailInfoComponent {
   @Input() short = false;
@@ -287,41 +287,38 @@ function setupTestBed(activatedRoute: {
   mockTimetableHearingYearsService.getHearingYears.and.returnValue(of(years));
 
   TestBed.configureTestingModule({
-    declarations: [
-      LoadingSpinnerComponent,
-      StatementDetailComponent,
-      ErrorNotificationComponent,
-      AtlasSpacerComponent,
-      DetailPageContainerComponent,
-      DetailPageContentComponent,
-      DetailFooterComponent,
-      InfoIconComponent,
-      CommentComponent,
-      LinkIconComponent,
-      MockAtlasButtonComponent,
-      MockSelectComponent,
-      MockUserDetailInfoComponent,
-      FileUploadComponent,
-      FileSizePipe,
-      FileComponent,
-      StringListComponent,
-    ],
-    imports: [AppTestingModule, FormModule],
+    imports: [AppTestingModule, FormModule, LoadingSpinnerComponent,
+        StatementDetailComponent,
+        ErrorNotificationComponent,
+        AtlasSpacerComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
+        InfoIconComponent,
+        CommentComponent,
+        LinkIconComponent,
+        MockAtlasButtonComponent,
+        MockSelectComponent,
+        MockUserDetailInfoComponent,
+        FileUploadComponent,
+        FileSizePipe,
+        FileComponent,
+        StringListComponent],
     providers: [
-      { provide: FormBuilder },
-      { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
-      {
-        provide: TimetableHearingStatementsService,
-        useValue: mockTimetableHearingStatementsService,
-      },
-      { provide: PermissionService, useValue: adminPermissionServiceMock },
-      { provide: TranslatePipe },
-      {
-        provide: ActivatedRoute,
-        useValue: activatedRoute,
-      },
+        { provide: FormBuilder },
+        { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
+        {
+            provide: TimetableHearingStatementsService,
+            useValue: mockTimetableHearingStatementsService,
+        },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
+        { provide: TranslatePipe },
+        {
+            provide: ActivatedRoute,
+            useValue: activatedRoute,
+        },
     ],
-  })
+})
     .compileComponents()
     .then();
 }

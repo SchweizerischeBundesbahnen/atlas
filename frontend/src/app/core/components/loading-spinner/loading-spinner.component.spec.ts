@@ -10,9 +10,8 @@ describe('LoadingSpinnerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LoadingSpinnerComponent],
-      imports: [BrowserAnimationsModule],
-    })
+    imports: [BrowserAnimationsModule, LoadingSpinnerComponent],
+})
       .overrideComponent(LoadingSpinnerComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })

@@ -26,19 +26,16 @@ describe('ContactPointDetailPanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ContactPointDetailPanelComponent,
+    imports: [AppTestingModule, ContactPointDetailPanelComponent,
         PrmDetailPanelComponent,
         DetailWithRelationTabComponent,
-        DetailPageContainerComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
+        DetailPageContainerComponent],
+    providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
         TranslatePipe,
         SplitServicePointNumberPipe,
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(ContactPointDetailPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

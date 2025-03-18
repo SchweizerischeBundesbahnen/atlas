@@ -13,7 +13,7 @@ import {
 } from '../../../../api';
 import {catchError, EMPTY, Observable, of} from 'rxjs';
 import {NotificationService} from '../../../../core/notification/notification.service';
-import {FormGroup} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Pages} from '../../../pages';
 import {map} from 'rxjs/operators';
@@ -26,12 +26,30 @@ import {VersionsHandlingService} from "../../../../core/versioning/versions-hand
 import {DateRange} from "../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../core/detail/detail-helper.service";
 import {DialogService} from "../../../../core/components/dialog/dialog.service";
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
+import { NgIf } from '@angular/common';
+import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
+import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
+import { MatLabel } from '@angular/material/form-field';
+import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
+import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MainlineDescriptionPipe } from './mainline-description.pipe';
 
 @Component({
     templateUrl: './subline-detail.component.html',
     styleUrls: ['./subline-detail.component.scss'],
     providers: [ValidityService],
-    standalone: false
+    imports: [DetailPageContainerComponent, ScrollToTopDirective, DetailPageContentComponent, DateRangeTextComponent, NgIf, SwitchVersionComponent, SearchSelectComponent, ReactiveFormsModule, MatLabel, LinkIconComponent, SelectComponent, TextFieldComponent, DateRangeComponent, BusinessOrganisationSelectComponent, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe, MainlineDescriptionPipe]
 })
 export class SublineDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   protected readonly Pages = Pages;

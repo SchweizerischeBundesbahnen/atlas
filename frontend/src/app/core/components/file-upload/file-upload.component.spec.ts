@@ -23,9 +23,8 @@ describe('FileUploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FileUploadComponent, MockAtlasButtonComponent],
-      imports: [AppTestingModule],
-    }).compileComponents();
+    imports: [AppTestingModule, FileUploadComponent, MockAtlasButtonComponent],
+}).compileComponents();
   });
 
   beforeEach(() => {

@@ -8,15 +8,22 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CoordinatePair, GeoDataService, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { debounceTime, merge, Subject } from 'rxjs';
 import { MapService } from '../map/map.service';
-import { MatRadioChange } from '@angular/material/radio';
+import { MatRadioChange, MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { takeUntil } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
+import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import { NgIf } from '@angular/common';
+import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
+import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
+import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const LV95_MAX_DIGITS = 5;
 export const WGS84_MAX_DIGITS = 11;
@@ -24,7 +31,7 @@ export const WGS84_MAX_DIGITS = 11;
 @Component({
     selector: 'sepodi-geography',
     templateUrl: './geography.component.html',
-    standalone: false
+    imports: [InfoIconComponent, AtlasSlideToggleComponent, NgIf, ReactiveFormsModule, MatRadioGroup, MatRadioButton, TextFieldComponent, RemoveCharsDirective, DecimalNumberPipe, TranslatePipe]
 })
 export class GeographyComponent implements OnDestroy, OnChanges {
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;

@@ -24,20 +24,17 @@ describe('LoadingPointsTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        LoadingPointsTableComponent,
+    imports: [AppTestingModule, LoadingPointsTableComponent,
         MockTableComponent,
         MockAtlasButtonComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
-        DetailFooterComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        DetailFooterComponent],
+    providers: [
         { provide: ActivatedRoute, useValue: route },
         { provide: LoadingPointsService, useValue: loadingPointService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(LoadingPointsTableComponent);
     component = fixture.componentInstance;

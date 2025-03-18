@@ -17,15 +17,15 @@ describe('TextFieldComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TextFieldComponent, InfoIconComponent],
-      imports: [
+    imports: [
         FormModule,
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      providers: [{ provide: TranslatePipe }],
-    }).compileComponents();
+        TextFieldComponent, InfoIconComponent,
+    ],
+    providers: [{ provide: TranslatePipe }],
+}).compileComponents();
 
     fixture = TestBed.createComponent(TextFieldComponent);
     component = fixture.componentInstance;

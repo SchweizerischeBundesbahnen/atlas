@@ -1,11 +1,19 @@
 import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {FileUploadError} from './file-upload-error';
+import { FileDropDirective } from './file-drop/file-drop.directive';
+import { NgIf, NgFor, NgStyle } from '@angular/common';
+import { AtlasButtonComponent } from '../button/atlas-button.component';
+import { DownloadIconComponent } from '../../form-components/download-icon/download-icon.component';
+import { UploadIconComponent } from '../../form-components/upload-icon/upload-icon.component';
+import { FileComponent } from './file/file.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { FileSizePipe } from './file-size/file-size.pipe';
 
 @Component({
     selector: 'atlas-file-upload',
     templateUrl: './file-upload.component.html',
     styleUrls: ['./file-upload.component.scss'],
-    standalone: false
+    imports: [FileDropDirective, NgIf, AtlasButtonComponent, DownloadIconComponent, UploadIconComponent, NgFor, FileComponent, NgStyle, TranslatePipe, FileSizePipe]
 })
 export class FileUploadComponent {
   @Input() acceptedFileExtension!: string;

@@ -14,22 +14,22 @@ describe('HomeComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HomeComponent],
-      imports: [
+    imports: [
         HttpClientTestingModule,
         BrowserAnimationsModule,
         RouterModule.forRoot([]),
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      providers: [
+        HomeComponent,
+    ],
+    providers: [
         {
-          provide: PageService,
-          useValue: pageServiceMock,
+            provide: PageService,
+            useValue: pageServiceMock,
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;

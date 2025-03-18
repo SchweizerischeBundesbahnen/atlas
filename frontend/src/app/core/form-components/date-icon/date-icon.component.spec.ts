@@ -8,8 +8,8 @@ describe('DateIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DateIconComponent],
-    }).compileComponents();
+    imports: [DateIconComponent],
+}).compileComponents();
   });
 
   beforeEach(() => {

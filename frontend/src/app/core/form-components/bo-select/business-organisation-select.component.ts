@@ -9,15 +9,20 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BusinessOrganisation, BusinessOrganisationsService } from '../../../api';
 import { map } from 'rxjs/operators';
+import { SearchSelectComponent } from '../search-select/search-select.component';
+import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { NgIf, NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
+import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
 
 @Component({
     selector: 'bo-select',
     templateUrl: './business-organisation-select.component.html',
     styleUrls: ['./business-organisation-select.component.scss'],
-    standalone: false
+    imports: [SearchSelectComponent, ReactiveFormsModule, AtlasLabelFieldComponent, NgIf, NgClass, TranslatePipe, BoSelectionDisplayPipe]
 })
 export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = 'sboid';
