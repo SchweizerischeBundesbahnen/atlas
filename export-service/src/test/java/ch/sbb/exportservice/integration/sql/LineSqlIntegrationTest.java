@@ -109,6 +109,83 @@ class LineSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {
 
   }
 
+  @Test
+  void shouldReturnTimetableYearsLines() throws SQLException {
+    //given
+    Line line = Line.builder()
+        .id(1L)
+        .slnid("ch:1:slnid:100000")
+        .validFrom(LocalDate.of(2024, 12, 15))
+        .validTo(LocalDate.of(2024, 12, 15))
+        .status(Status.VALIDATED)
+        .lineType(LineType.ORDERLY)
+        .concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
+        .swissLineNumber("r.01")
+        .description("Linie on First Years Date")
+        .number("1")
+        .offerCategory(OfferCategory.B)
+        .businessOrganisation("ch:1:sboid:10000011")
+        .build();
+    insertLineVersion(line);
+
+    line = Line.builder()
+        .id(2L)
+        .slnid("ch:1:slnid:100001")
+        .validFrom(LocalDate.of(2026, 12, 12))
+        .validTo(LocalDate.of(2026, 12, 12))
+        .status(Status.VALIDATED)
+        .lineType(LineType.ORDERLY)
+        .concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
+        .swissLineNumber("r.02")
+        .description("Linie on Last Years Date")
+        .number("2")
+        .offerCategory(OfferCategory.B)
+        .businessOrganisation("ch:1:sboid:10000011")
+        .build();
+    insertLineVersion(line);
+
+    line = Line.builder()
+        .id(3L)
+        .slnid("ch:1:slnid:100002")
+        .validFrom(LocalDate.of(2026, 12, 13))
+        .validTo(LocalDate.of(2026, 12, 13))
+        .status(Status.VALIDATED)
+        .lineType(LineType.ORDERLY)
+        .concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
+        .swissLineNumber("r.03")
+        .description("Linie after Last Years Date")
+        .number("3")
+        .offerCategory(OfferCategory.B)
+        .businessOrganisation("ch:1:sboid:10000011")
+        .build();
+    insertLineVersion(line);
+
+    line = Line.builder()
+        .id(4L)
+        .slnid("ch:1:slnid:100003")
+        .validFrom(LocalDate.of(2024, 12, 14))
+        .validTo(LocalDate.of(2024, 12, 14))
+        .status(Status.VALIDATED)
+        .lineType(LineType.ORDERLY)
+        .concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
+        .swissLineNumber("r.04")
+        .description("Linie before first Years Date")
+        .number("4")
+        .offerCategory(OfferCategory.B)
+        .businessOrganisation("ch:1:sboid:10000011")
+        .build();
+    insertLineVersion(line);
+
+    String sqlQuery = LineSqlQueryUtil.getSqlQuery(ExportTypeV2.TIMETABLE_YEARS);
+
+    //when
+    List<Line> result = executeQuery(sqlQuery);
+
+    //then
+    assertThat(result).hasSize(2);
+    assertThat(result).extracting(Line::getId).containsExactly(1L, 2L);
+  }
+
   private List<Line> executeQuery(String sqlQuery) throws SQLException {
     List<Line> result = new ArrayList<>();
     Connection connection = lineDirectoryDataSource.getConnection();
