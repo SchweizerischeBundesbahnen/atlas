@@ -47,6 +47,7 @@ module.exports = [{
 
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@angular-eslint/prefer-standalone": ["warn"],
     },
 }, {
   files: ["cypress/**/*.ts"],
