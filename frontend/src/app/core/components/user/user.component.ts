@@ -3,12 +3,16 @@ import {AuthService} from '../../auth/auth.service';
 import {ApplicationRole, ApplicationType, Permission} from '../../../api';
 import {UserService} from "../../auth/user/user.service";
 import {User} from "../../auth/user/user";
+import { NgIf, NgFor } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu } from '@angular/material/menu';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-user',
     templateUrl: './user.component.html',
     styleUrls: ['./user.component.scss'],
-    standalone: false
+    imports: [NgIf, MatButton, MatMenuTrigger, MatMenu, NgFor, TranslatePipe]
 })
 export class UserComponent implements OnInit {
   user: User | undefined;

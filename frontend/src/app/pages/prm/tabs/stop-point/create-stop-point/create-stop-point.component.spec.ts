@@ -20,15 +20,15 @@ describe('CreateStopPointComponent', () => {
     dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
     dialogService.confirm.and.returnValue(of(true));
     TestBed.configureTestingModule({
-      declarations: [CreateStopPointComponent],
-      imports: [
+    imports: [
         MatStepperModule,
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      providers: [{ provide: DialogService, useValue: dialogService }],
-    });
+        CreateStopPointComponent,
+    ],
+    providers: [{ provide: DialogService, useValue: dialogService }],
+});
     fixture = TestBed.createComponent(CreateStopPointComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

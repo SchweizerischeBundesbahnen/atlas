@@ -13,19 +13,16 @@ describe('LidiOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        LidiOverviewComponent,
+    imports: [AppTestingModule, LidiOverviewComponent,
         LinesComponent,
-        AtlasButtonComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        AtlasButtonComponent],
+    providers: [
         {
-          provide: PermissionService,
-          useValue: adminPermissionServiceMock,
+            provide: PermissionService,
+            useValue: adminPermissionServiceMock,
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

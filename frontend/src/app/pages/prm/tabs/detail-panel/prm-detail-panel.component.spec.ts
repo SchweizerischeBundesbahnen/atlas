@@ -12,16 +12,13 @@ describe('PrmDetailPanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        PrmDetailPanelComponent,
+    imports: [AppTestingModule, PrmDetailPanelComponent,
         DateRangeTextComponent,
-        DisplayDatePipe
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        DisplayDatePipe],
+    providers: [
         TranslatePipe,
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(PrmDetailPanelComponent);
     component = fixture.componentInstance;
   });

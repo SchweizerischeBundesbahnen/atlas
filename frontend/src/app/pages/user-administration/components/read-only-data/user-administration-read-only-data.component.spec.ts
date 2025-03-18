@@ -17,14 +17,14 @@ describe('UserAdministrationReadOnlyDataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserAdministrationReadOnlyDataComponent],
-      imports: [
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      providers: [TranslatePipe],
-    }).compileComponents();
+        UserAdministrationReadOnlyDataComponent,
+    ],
+    providers: [TranslatePipe],
+}).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationReadOnlyDataComponent);
     component = fixture.componentInstance;

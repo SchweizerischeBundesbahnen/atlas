@@ -1,13 +1,18 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, ReactiveFormsModule } from '@angular/forms';
 import {FieldExample} from '../text-field/field-example';
 import {concat, Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
+import { TextFieldComponent } from '../text-field/text-field.component';
+import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
+import { NgClass, NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { MatChipSet, MatChip, MatChipRemove } from '@angular/material/chips';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'atlas-text-list',
     templateUrl: './string-list.component.html',
-    standalone: false
+    imports: [TextFieldComponent, ReactiveFormsModule, AtlasFieldErrorComponent, NgClass, MatChipSet, NgFor, MatChip, NgIf, MatChipRemove, AsyncPipe, TranslatePipe]
 })
 export class StringListComponent implements OnChanges {
   @Input() formGroup?: FormGroup;

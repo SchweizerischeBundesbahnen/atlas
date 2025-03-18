@@ -4,8 +4,7 @@ import { BusinessOrganisationLanguageService } from './business-organisation-lan
 
 @Pipe({
     name: 'boSelectionDisplay',
-    pure: false,
-    standalone: false
+    pure: false
 })
 export class BoSelectionDisplayPipe implements PipeTransform {
   constructor(

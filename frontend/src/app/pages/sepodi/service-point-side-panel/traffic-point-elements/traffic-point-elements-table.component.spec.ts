@@ -49,23 +49,20 @@ describe('TrafficPointElementsTableComponent', () => {
     routerSpy = jasmine.createSpyObj(['navigate']);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        TrafficPointElementsTableComponent,
+    imports: [AppTestingModule, TrafficPointElementsTableComponent,
         MockAtlasButtonComponent,
         MockTableComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-        MockNavigationSepodiPrmComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
+        MockNavigationSepodiPrmComponent],
+    providers: [
         { provide: AuthService, useValue: authService },
         { provide: TrafficPointElementsService, useValue: trafficPointElementsService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: routerSpy },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(TrafficPointElementsTableComponent);
     component = fixture.componentInstance;

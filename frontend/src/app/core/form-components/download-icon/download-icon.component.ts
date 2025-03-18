@@ -2,8 +2,7 @@ import {Component, Input} from '@angular/core';
 
 @Component({
     selector: 'download-icon',
-    templateUrl: './download-icon.component.html',
-    standalone: false
+    templateUrl: './download-icon.component.html'
 })
 export class DownloadIconComponent {
   @Input() readonly!: boolean;

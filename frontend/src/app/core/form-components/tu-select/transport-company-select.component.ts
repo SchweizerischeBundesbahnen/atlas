@@ -9,15 +9,19 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TransportCompaniesService, TransportCompany } from '../../../api';
 import { map } from 'rxjs/operators';
+import { SearchSelectComponent } from '../search-select/search-select.component';
+import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { NgIf, NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'tu-select',
     templateUrl: './transport-company-select.component.html',
     styleUrls: ['./transport-company-select.component.scss'],
-    standalone: false
+    imports: [SearchSelectComponent, ReactiveFormsModule, AtlasLabelFieldComponent, NgIf, NgClass, TranslatePipe]
 })
 export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = '';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BulkImportFormGroup, BulkImportFormGroupBuilder } from '../detail/bulk-import-form-group';
 import {
   ApplicationType,
@@ -26,6 +26,14 @@ import { FileDownloadService } from '../../../core/components/file-upload/file/f
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { LoadingSpinnerService } from '../../../core/components/loading-spinner/loading-spinner.service';
 import { tap } from 'rxjs/operators';
+import { SelectComponent } from '../../../core/form-components/select/select.component';
+import { NgIf } from '@angular/common';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { UserSelectComponent } from '../../user-administration/user/user-select/user-select.component';
+import { StringListComponent } from '../../../core/form-components/string-list/string-list.component';
+import { FileUploadComponent } from '../../../core/components/file-upload/file-upload.component';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = [
   [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update],
@@ -37,7 +45,7 @@ const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = 
 
 @Component({
     templateUrl: './bulk-import-overview.component.html',
-    standalone: false
+    imports: [ReactiveFormsModule, SelectComponent, NgIf, MatCheckbox, UserSelectComponent, StringListComponent, FileUploadComponent, AtlasButtonComponent, TranslatePipe]
 })
 export class BulkImportOverviewComponent implements OnInit {
   protected readonly OPTIONS_SCENARIO = OPTIONS_SCENARIO;

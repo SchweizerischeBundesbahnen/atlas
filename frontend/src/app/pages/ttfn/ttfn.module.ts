@@ -6,7 +6,6 @@ import { TimetableFieldNumberDetailComponent } from './detail/timetable-field-nu
 import { FormModule } from '../../core/module/form.module';
 
 @NgModule({
-  declarations: [TimetableFieldNumberOverviewComponent, TimetableFieldNumberDetailComponent],
-  imports: [CoreModule, TtfnRoutingModule, FormModule],
+    imports: [CoreModule, TtfnRoutingModule, FormModule, TimetableFieldNumberOverviewComponent, TimetableFieldNumberDetailComponent],
 })
 export class TtfnModule {}

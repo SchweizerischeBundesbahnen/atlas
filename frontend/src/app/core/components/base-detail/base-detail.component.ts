@@ -4,12 +4,22 @@ import {KeepaliveService} from '../../keepalive/keepalive.service';
 import {Record} from './record';
 import {Subscription} from 'rxjs';
 import {PermissionService} from "../../auth/permission/permission.service";
+import { ScrollToTopDirective } from '../../scroll-to-top/scroll-to-top.directive';
+import { DetailPageContainerComponent } from '../detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../detail-page-content/detail-page-content.component';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { DateRangeTextComponent } from '../../versioning/date-range-text/date-range-text.component';
+import { SwitchVersionComponent } from '../switch-version/switch-version.component';
+import { UserDetailInfoComponent } from './user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-detail-wrapper [controller][headingNew]',
     templateUrl: './base-detail.component.html',
     styleUrls: ['./base-detail.component.scss'],
-    standalone: false
+    imports: [ScrollToTopDirective, DetailPageContainerComponent, DetailPageContentComponent, NgIf, DateRangeTextComponent, SwitchVersionComponent, NgTemplateOutlet, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
 })
 export class BaseDetailComponent implements OnInit, OnDestroy {
   @Input() controller!: BaseDetailController<Record>;

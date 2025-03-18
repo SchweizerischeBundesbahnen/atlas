@@ -4,8 +4,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Pipe({
     name: 'mainlineDescription',
-    pure: true,
-    standalone: false
+    pure: true
 })
 export class MainlineDescriptionPipe implements PipeTransform {
   constructor(private readonly translatePipe: TranslatePipe) {}

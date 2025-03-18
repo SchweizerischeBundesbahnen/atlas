@@ -6,10 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import SpyObj = jasmine.SpyObj;
 
-@Component({
-    template: `<span infoLink infoLinkTranslationKey="TEST_TRANSLATION_KEY">Test</span>`,
-    standalone: false
-})
+@Component({ template: `<span infoLink infoLinkTranslationKey="TEST_TRANSLATION_KEY">Test</span>` })
 class TestComponent {}
 
 describe('InfoLinkDirective', () => {
@@ -20,9 +17,9 @@ describe('InfoLinkDirective', () => {
     translateServiceSpy = jasmine.createSpyObj<TranslateService>('TranslateServiceMock', ['get']);
     translateServiceSpy.get = jasmine.createSpy().and.returnValue(of('https://atlas.test.ch'));
     fixture = TestBed.configureTestingModule({
-      declarations: [InfoLinkDirective, TestComponent],
-      providers: [{ provide: TranslateService, useValue: translateServiceSpy }],
-    }).createComponent(TestComponent);
+    imports: [InfoLinkDirective, TestComponent],
+    providers: [{ provide: TranslateService, useValue: translateServiceSpy }],
+}).createComponent(TestComponent);
 
     fixture.detectChanges();
   });

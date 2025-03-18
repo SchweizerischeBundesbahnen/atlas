@@ -33,12 +33,23 @@ import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { ReferencePointCreationHintService } from './reference-point-creation-hint/reference-point-creation-hint.service';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
 import { filter, map } from 'rxjs/operators';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { CreateStopPointComponent } from '../create-stop-point/create-stop-point.component';
+import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
+import { NavigationSepodiPrmComponent } from '../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { StopPointReducedFormComponent } from '../form/stop-point-reduced-form/stop-point-reduced-form.component';
+import { StopPointCompleteFormComponent } from '../form/stop-point-complete-form/stop-point-complete-form.component';
+import { MatDivider } from '@angular/material/divider';
+import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-stop-point-detail',
     templateUrl: './stop-point-detail.component.html',
     providers: [ValidityService],
-    standalone: false
+    imports: [NgIf, CreateStopPointComponent, SwitchVersionComponent, NavigationSepodiPrmComponent, StopPointReducedFormComponent, StopPointCompleteFormComponent, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, AsyncPipe, TranslatePipe]
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;

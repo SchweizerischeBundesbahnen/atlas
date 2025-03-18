@@ -13,7 +13,7 @@ import {ServicePointSearchType} from "../../../core/search-service-point/service
 @Component({
     selector: 'app-search-service-point-panel',
     template: '<h1>SearchServicePointMockComponent</h1>',
-    standalone: false
+    imports: [AppTestingModule]
 })
 class SearchServicePointPanelMockComponent {
   @Input() searchType!: ServicePointSearchType;
@@ -26,16 +26,15 @@ describe('PrmHomeSearchComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PrmHomeSearchComponent, SearchServicePointPanelMockComponent, PrmInfoBoxComponent],
-      imports: [AppTestingModule],
-      providers: [
-        {provide: TranslatePipe},
+    imports: [AppTestingModule, PrmHomeSearchComponent, SearchServicePointPanelMockComponent, PrmInfoBoxComponent],
+    providers: [
+        { provide: TranslatePipe },
         provideRouter([
-          {path: 'prm-directory', component: PrmHomeSearchComponent},
-          {path: 'prm-directory/stop-points', component: PrmHomeSearchComponent}
+            { path: 'prm-directory', component: PrmHomeSearchComponent },
+            { path: 'prm-directory/stop-points', component: PrmHomeSearchComponent }
         ])
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(PrmHomeSearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

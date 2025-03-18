@@ -5,11 +5,13 @@ import {NON_PROD_STAGES} from '../../constants/stages';
 import {environment} from '../../../../environments/environment';
 import {Countries} from '../../country/Countries';
 import {PermissionService} from "../../auth/permission/permission.service";
+import { NgIf, NgClass, NgTemplateOutlet } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'atlas-button[buttonType]',
     templateUrl: './atlas-button.component.html',
-    standalone: false
+    imports: [NgIf, NgClass, NgTemplateOutlet, TranslatePipe]
 })
 export class AtlasButtonComponent {
   @Input() applicationType!: ApplicationType;

@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogClose, MatDialogActions } from '@angular/material/dialog';
 import { NewTimetableHearingYearDialogData } from './model/new-timetable-hearing-year-dialog.data';
 import { HearingStatus, TimetableHearingYear, TimetableHearingYearsService } from '../../../api';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
@@ -15,11 +15,15 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NewHearingYearValidator } from './new-hearing-year-validator';
 import { TthUtils } from '../util/tth-utils';
+import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { SelectComponent } from '../../../core/form-components/select/select.component';
+import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-tthdialog',
     templateUrl: './new-timetable-hearing-year-dialog.component.html',
-    standalone: false
+    imports: [ReactiveFormsModule, MatDialogClose, AtlasLabelFieldComponent, SelectComponent, DateRangeComponent, MatDialogActions, TranslatePipe]
 })
 export class NewTimetableHearingYearDialogComponent implements OnInit {
   form: FormGroup = new FormGroup<NewTimetableHearingYearFormGroup>(

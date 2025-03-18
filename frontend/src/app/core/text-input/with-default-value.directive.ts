@@ -1,10 +1,7 @@
 import { Directive, HostListener, Input, Self } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
-@Directive({
-    selector: '[withDefaultValue]',
-    standalone: false
-})
+@Directive({ selector: '[withDefaultValue]' })
 export class WithDefaultValueDirective {
   @Input() withDefaultValue!: string;
 

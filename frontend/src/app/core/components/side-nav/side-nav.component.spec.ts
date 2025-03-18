@@ -16,29 +16,29 @@ describe('SideNavComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SideNavComponent],
-      imports: [
+    imports: [
         RouterModule.forRoot([
-          {
-            path: Pages.LIDI.path,
-            component: LidiOverviewComponent,
-          },
-          {
-            path: Pages.TTFN.path,
-            component: TimetableFieldNumberOverviewComponent,
-          },
+            {
+                path: Pages.LIDI.path,
+                component: LidiOverviewComponent,
+            },
+            {
+                path: Pages.TTFN.path,
+                component: TimetableFieldNumberOverviewComponent,
+            },
         ]),
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      providers: [
+        SideNavComponent,
+    ],
+    providers: [
         {
-          provide: PageService,
-          useValue: pageServiceMock,
+            provide: PageService,
+            useValue: pageServiceMock,
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

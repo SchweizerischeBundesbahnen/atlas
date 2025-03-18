@@ -18,7 +18,7 @@ import { By } from '@angular/platform-browser';
     [removeChars]="['\\'']"
   >
   </atlas-text-field>`,
-    standalone: false
+    imports: [AppTestingModule]
 })
 class TestComponent {
   formGroup = new FormGroup({ east: new FormControl('1') });
@@ -32,16 +32,13 @@ describe('RemoveCharsDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [
-        TextFieldComponent,
+    imports: [AppTestingModule, TextFieldComponent,
         AtlasLabelFieldComponent,
         AtlasFieldErrorComponent,
         RemoveCharsDirective,
-        TestComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [TranslatePipe],
-    }).createComponent(TestComponent);
+        TestComponent],
+    providers: [TranslatePipe],
+}).createComponent(TestComponent);
 
     component = fixture.componentInstance;
 

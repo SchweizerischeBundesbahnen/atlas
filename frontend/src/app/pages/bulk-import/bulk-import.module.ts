@@ -9,14 +9,14 @@ import {UserDisplayNamePipe} from '../../core/pipe/user-display-name.pipe';
 import {ParamsForTranslationPipe} from '../../core/pipe/params-for-translation.pipe';
 
 @NgModule({
-  declarations: [BulkImportOverviewComponent, BulkImportLogComponent],
-  imports: [
-    CoreModule,
-    BulkImportRoutingModule,
-    FormModule,
-    UserAdministrationModule,
-    UserDisplayNamePipe,
-    ParamsForTranslationPipe,
-  ],
+    imports: [
+        CoreModule,
+        BulkImportRoutingModule,
+        FormModule,
+        UserAdministrationModule,
+        UserDisplayNamePipe,
+        ParamsForTranslationPipe,
+        BulkImportOverviewComponent, BulkImportLogComponent,
+    ],
 })
 export class BulkImportModule {}

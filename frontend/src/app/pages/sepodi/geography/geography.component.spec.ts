@@ -42,26 +42,24 @@ describe('GeographyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        GeographyComponent,
-        TextFieldComponent,
-        RemoveCharsDirective,
-        DecimalNumberPipe,
-      ],
-      imports: [
+    imports: [
         AppTestingModule,
         FormModule,
         MaterialModule,
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      providers: [
+        GeographyComponent,
+        TextFieldComponent,
+        RemoveCharsDirective,
+        DecimalNumberPipe,
+    ],
+    providers: [
         { provide: TranslatePipe },
         { provide: MapService, useValue: mapService },
         { provide: CoordinateTransformationService, useValue: coordinateTransformationServiceSpy },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(GeographyComponent);
     component = fixture.componentInstance;

@@ -12,16 +12,16 @@ describe('UserAdministrationOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserAdministrationOverviewComponent, MockAtlasButtonComponent],
-      imports: [
+    imports: [
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         RouterModule.forRoot([]),
         MaterialModule,
         FormsModule,
-      ],
-    }).compileComponents();
+        UserAdministrationOverviewComponent, MockAtlasButtonComponent,
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationOverviewComponent);
     component = fixture.componentInstance;

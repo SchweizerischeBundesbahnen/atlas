@@ -2,12 +2,14 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { LineRecord } from './model/line-record';
 import { LinesService, LineVersionWorkflow, WorkflowProcessingStatus } from '../../api';
 import { WorkflowDialogService } from './dialog/workflow-dialog.service';
+import { NgIf } from '@angular/common';
+import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 
 @Component({
     selector: 'app-workflow [lineRecord]',
     templateUrl: './workflow.component.html',
     styleUrls: ['./workflow.component.scss'],
-    standalone: false
+    imports: [NgIf, AtlasButtonComponent]
 })
 export class WorkflowComponent implements OnInit, OnChanges {
   @Input() lineRecord!: LineRecord;

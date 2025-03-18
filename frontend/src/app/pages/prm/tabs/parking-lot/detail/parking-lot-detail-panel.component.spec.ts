@@ -26,19 +26,16 @@ describe('ParkingLotDetailPanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ParkingLotDetailPanelComponent,
+    imports: [AppTestingModule, ParkingLotDetailPanelComponent,
         PrmDetailPanelComponent,
         DetailWithRelationTabComponent,
-        DetailPageContainerComponent,
-      ],
-      imports: [AppTestingModule],
-      providers: [
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
+        DetailPageContainerComponent],
+    providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
         TranslatePipe,
         SplitServicePointNumberPipe,
-      ],
-    });
+    ],
+});
     fixture = TestBed.createComponent(ParkingLotDetailPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

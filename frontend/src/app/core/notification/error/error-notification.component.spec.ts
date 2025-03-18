@@ -49,28 +49,28 @@ let fixture: ComponentFixture<ErrorNotificationComponent>;
 describe('Error Notification component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ErrorNotificationComponent],
-      imports: [
+    imports: [
         RouterModule.forRoot([]),
         HttpClientTestingModule,
         ReactiveFormsModule,
         MaterialModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-      ],
-      providers: [
+        ErrorNotificationComponent,
+    ],
+    providers: [
         {
-          provide: MatSnackBarRef,
-          useValue: {},
+            provide: MatSnackBarRef,
+            useValue: {},
         },
         {
-          provide: MAT_SNACK_BAR_DATA,
-          useValue: {}, // Add any data you wish to test if it is passed/used correctly
+            provide: MAT_SNACK_BAR_DATA,
+            useValue: {}, // Add any data you wish to test if it is passed/used correctly
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

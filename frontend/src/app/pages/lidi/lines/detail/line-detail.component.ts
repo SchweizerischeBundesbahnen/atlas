@@ -29,12 +29,26 @@ import { DetailHelperService } from '../../../../core/detail/detail-helper.servi
 import { MatDialog } from '@angular/material/dialog';
 import { SublineShorteningDialogComponent } from '../../dialog/subline-shortening-dialog/subline-shortening-dialog.component';
 import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
+import { NgIf } from '@angular/common';
+import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
+import { SublineTableComponent } from './subline-table/subline-table.component';
+import { WorkflowComponent } from '../../../../core/workflow/workflow.component';
+import { LinkComponent } from '../../../../core/form-components/link/link.component';
+import { LineDetailFormComponent } from './line-detail-form/line-detail-form.component';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     templateUrl: './line-detail.component.html',
     styleUrls: ['./line-detail.component.scss'],
     providers: [ValidityService],
-    standalone: false
+    imports: [DetailPageContainerComponent, ScrollToTopDirective, DetailPageContentComponent, DateRangeTextComponent, NgIf, SwitchVersionComponent, SublineTableComponent, WorkflowComponent, LinkComponent, LineDetailFormComponent, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
 })
 export class LineDetailComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<boolean>();

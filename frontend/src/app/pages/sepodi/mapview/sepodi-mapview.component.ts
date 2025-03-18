@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { GeoJsonProperties } from 'geojson';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { Pages } from '../../pages';
 import { MapService } from '../map/map.service';
 import { Subscription } from 'rxjs';
@@ -8,12 +8,16 @@ import { ServicePointSearch } from '../../../core/search-service-point/service-p
 import { ApplicationType } from '../../../api';
 import { UserService } from '../../../core/auth/user/user.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { SearchServicePointPanelComponent } from '../../../core/search-service-point-panel/search-service-point-panel.component';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { NgClass } from '@angular/common';
+import { MapComponent } from '../map/map.component';
 
 @Component({
     selector: 'app-sepodi-mapview',
     templateUrl: './sepodi-mapview.component.html',
     styleUrls: ['./sepodi-mapview.component.scss'],
-    standalone: false
+    imports: [SearchServicePointPanelComponent, AtlasButtonComponent, NgClass, RouterOutlet, MapComponent]
 })
 export class SepodiMapviewComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('detailContainer') detailContainer!: ElementRef<HTMLElement>;

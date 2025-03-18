@@ -15,18 +15,15 @@ import { SublineShorteningDialogComponent } from './dialog/subline-shortening-di
 import { NgOptimizedImage } from '@angular/common';
 
 @NgModule({
-  declarations: [
-    LineVersionSnapshotDetailComponent,
-    LidiWorkflowOverviewComponent,
-    LineDetailFormComponent,
-    LidiOverviewComponent,
-    LinesComponent,
-    LineDetailComponent,
-    SublineDetailComponent,
-    MainlineDescriptionPipe,
-    SublineTableComponent,
-    SublineShorteningDialogComponent,
-  ],
-  imports: [CoreModule, LidiRoutingModule, FormModule, NgOptimizedImage],
+    imports: [CoreModule, LidiRoutingModule, FormModule, NgOptimizedImage, LineVersionSnapshotDetailComponent,
+        LidiWorkflowOverviewComponent,
+        LineDetailFormComponent,
+        LidiOverviewComponent,
+        LinesComponent,
+        LineDetailComponent,
+        SublineDetailComponent,
+        MainlineDescriptionPipe,
+        SublineTableComponent,
+        SublineShorteningDialogComponent],
 })
 export class LidiModule {}

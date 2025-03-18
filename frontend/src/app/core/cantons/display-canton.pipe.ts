@@ -3,10 +3,7 @@ import { SwissCanton } from '../../api';
 import { Cantons } from './Cantons';
 import { TranslatePipe } from '@ngx-translate/core';
 
-@Pipe({
-    name: 'displayCanton',
-    standalone: false
-})
+@Pipe({ name: 'displayCanton' })
 export class DisplayCantonPipe implements PipeTransform {
   constructor(private translatePipe: TranslatePipe) {}
 
