@@ -11,17 +11,16 @@
  */
 
 
-export type LineConcessionType = 'FEDERALLY_LICENSED_OR_APPROVED_LINE' | 'VARIANT_OF_A_FRANCHISED_LINE' | 'FEDERAL_TERRITORIAL_CONCESSION' | 'LINE_OF_A_TERRITORIAL_CONCESSION' | 'CANTONALLY_APPROVED_LINE' | 'RACK_FREE_TRIPS' | 'RACK_FREE_UNPUBLISHED_LINE' | 'COLLECTION_LINE' | 'LINE_ABROAD';
+export type LineConcessionType = 'FEDERALLY_LICENSED_OR_APPROVED_LINE' | 'VARIANT_OF_A_LICENSED_LINE' | 'FEDERAL_ZONE_CONCESSION' | 'LINE_OF_A_ZONE_CONCESSION' | 'CANTONALLY_APPROVED_LINE' | 'RIGHT_FREE_LINE' | 'NOT_LICENSED_UNPUBLISHED_LINE' | 'COLLECTION_LINE' | 'LINE_ABROAD';
 
 export const LineConcessionType = {
-    FederallyLicensedOrApprovedLine: 'FEDERALLY_LICENSED_OR_APPROVED_LINE' as LineConcessionType,
-    VariantOfAFranchisedLine: 'VARIANT_OF_A_FRANCHISED_LINE' as LineConcessionType,
-    FederalTerritorialConcession: 'FEDERAL_TERRITORIAL_CONCESSION' as LineConcessionType,
-    LineOfATerritorialConcession: 'LINE_OF_A_TERRITORIAL_CONCESSION' as LineConcessionType,
-    CantonallyApprovedLine: 'CANTONALLY_APPROVED_LINE' as LineConcessionType,
-    RackFreeTrips: 'RACK_FREE_TRIPS' as LineConcessionType,
-    RackFreeUnpublishedLine: 'RACK_FREE_UNPUBLISHED_LINE' as LineConcessionType,
-    CollectionLine: 'COLLECTION_LINE' as LineConcessionType,
-    LineAbroad: 'LINE_ABROAD' as LineConcessionType
+  FederallyLicensedOrApprovedLine: 'FEDERALLY_LICENSED_OR_APPROVED_LINE' as LineConcessionType,
+  VariantOfALicensedLine: 'VARIANT_OF_A_LICENSED_LINE' as LineConcessionType,
+  FederalZoneConcession: 'FEDERAL_ZONE_CONCESSION' as LineConcessionType,
+  LineOfAZoneConcession: 'LINE_OF_A_ZONE_CONCESSION' as LineConcessionType,
+  CantonallyApprovedLine: 'CANTONALLY_APPROVED_LINE' as LineConcessionType,
+  RightFreeLine: 'RIGHT_FREE_LINE' as LineConcessionType,
+  NotLicensedUnpublishedLine: 'NOT_LICENSED_UNPUBLISHED_LINE' as LineConcessionType,
+  CollectionLine: 'COLLECTION_LINE' as LineConcessionType,
+  LineAbroad: 'LINE_ABROAD' as LineConcessionType
 };
-
