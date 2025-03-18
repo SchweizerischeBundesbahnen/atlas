@@ -71,7 +71,9 @@ public class SublineService {
 
   @Transactional
   public void deleteById(Long id) {
-    SublineVersion sublineVersion = sublineVersionRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+    if (!sublineVersionRepository.existsById(id)) {
+      throw new IdNotFoundException(id);
+    }
     sublineVersionRepository.deleteById(id);
   }
 
