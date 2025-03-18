@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
 import jakarta.validation.ConstraintViolation;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 class SublineVersionModelTest {
 
@@ -37,6 +40,30 @@ class SublineVersionModelTest {
         .validTo(VALID_TO)
         .businessOrganisation("businessOrganisation")
         .mainlineSlnid("mainlineSlnid");
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = SublineConcessionType.class, names = {"LINE_ABROAD",
+      "CANTONALLY_APPROVED_LINE", "FEDERALLY_LICENSED_OR_APPROVED_LINE",
+      "VARIANT_OF_A_LICENSED_LINE", "NOT_LICENSED_UNPUBLISHED_LINE", "RIGHT_FREE_LINE"})
+  void shouldValidateConcessionTypeWithLineTypeOrderly(SublineConcessionType concessionType) {
+    //given
+    SublineVersionModelV2 sublineVersionModelV2 = SublineVersionModelV2.builder()
+        .sublineConcessionType(concessionType)
+        .longName("longName")
+        .description("description")
+        .validFrom(VALID_FROM)
+        .validTo(VALID_TO)
+        .businessOrganisation("businessOrganisation")
+        .mainlineSlnid("mainlineSlnid")
+        .slnid("ch:1:slind:1000:8")
+        .swissSublineNumber("b1.L1.X")
+        .build();
+    //when
+    Set<ConstraintViolation<SublineVersionModelV2>> constraintViolations = validator.validate(sublineVersionModelV2);
+    //then
+    assertThat(constraintViolations).isEmpty();
+
   }
 
   @Test
@@ -107,7 +134,7 @@ class SublineVersionModelTest {
   }
 
   @Test
-   void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
+  void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
     //given
     SublineVersionModel lineVersion = sublineVersionModel()
         .validFrom(LocalDate.of(1699, 12, 31))
@@ -123,7 +150,7 @@ class SublineVersionModelTest {
   }
 
   @Test
-   void shouldHaveDateValidationExceptionWhenValidFromIsAfter9999_12_31() {
+  void shouldHaveDateValidationExceptionWhenValidFromIsAfter9999_12_31() {
     //given
     SublineVersionModel lineVersion = sublineVersionModel()
         .validFrom(LocalDate.of(10000, 1, 1))
@@ -143,7 +170,7 @@ class SublineVersionModelTest {
   }
 
   @Test
-   void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
+  void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
     //given
     SublineVersionModel lineVersion = sublineVersionModel()
         .validTo(LocalDate.of(1699, 12, 31))
@@ -163,7 +190,7 @@ class SublineVersionModelTest {
   }
 
   @Test
-   void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
+  void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
     //given
     SublineVersionModel lineVersion = sublineVersionModel()
         .validTo(LocalDate.of(10000, 1, 1))

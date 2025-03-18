@@ -69,12 +69,12 @@ public class SublineService {
     sublineVersionRepository.saveAll(sublineVersions);
   }
 
-  @Transactional
-  public void deleteById(Long id) {
+  void deleteById(Long id) {
     if (!sublineVersionRepository.existsById(id)) {
       throw new IdNotFoundException(id);
     }
     sublineVersionRepository.deleteById(id);
+    sublineVersionRepository.flush();
   }
 
   public void deleteAll(String slnid) {
