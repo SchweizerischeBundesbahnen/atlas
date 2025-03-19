@@ -395,12 +395,12 @@
     "LINE_CONCESSION": {
       "TYPE": "Konzessionstyp",
       "FEDERALLY_LICENSED_OR_APPROVED_LINE": "Eidg. konzessionierte oder bewilligte Linie (EK)",
-      "VARIANT_OF_A_FRANCHISED_LINE": "Variante einer konzessionierten Linie (VK)",
-      "FEDERAL_TERRITORIAL_CONCESSION": "Eidg. Gebietskonzession (GK)",
-      "LINE_OF_A_TERRITORIAL_CONCESSION": "Linie einer Gebietskonzession (LG)",
+      "VARIANT_OF_A_LICENSED_LINE": "Variante einer konzessionierten Linie (VK)",
+      "FEDERAL_ZONE_CONCESSION": "Eidg. Gebietskonzession (GK)",
+      "LINE_OF_A_ZONE_CONCESSION": "Linie einer Gebietskonzession (LG)",
       "CANTONALLY_APPROVED_LINE": "Kantonal bewilligte Linie (KB)",
-      "RACK_FREE_TRIPS": "Regalfreie Fahrten (RF)",
-      "RACK_FREE_UNPUBLISHED_LINE": "Regalfreie/nicht publizierte Linie (NP)",
+      "RIGHT_FREE_LINE": "Regalfreie Fahrten (RF)",
+      "NOT_LICENSED_UNPUBLISHED_LINE": "Regalfreie/nicht publizierte Linie (NP)",
       "COLLECTION_LINE": "Sammellinie (SL)",
       "LINE_ABROAD": "Linie im Ausland (AL)"
     },

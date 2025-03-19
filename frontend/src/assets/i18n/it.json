@@ -395,12 +395,12 @@
     "LINE_CONCESSION": {
       "TYPE": "Tipo di concessione",
       "FEDERALLY_LICENSED_OR_APPROVED_LINE": "Linea autorizzata o con concessione federale (EK)",
-      "VARIANT_OF_A_FRANCHISED_LINE": "Variante di una linea con concessione (VK)",
-      "FEDERAL_TERRITORIAL_CONCESSION": "Concessione federale territoriale (GK)",
-      "LINE_OF_A_TERRITORIAL_CONCESSION": "Linea territoriale con concessione (LG)",
+      "VARIANT_OF_A_LICENSED_LINE": "Variante di una linea con concessione (VK)",
+      "FEDERAL_ZONE_CONCESSION": "Concessione federale territoriale (GK)",
+      "LINE_OF_A_ZONE_CONCESSION": "Linea territoriale con concessione (LG)",
       "CANTONALLY_APPROVED_LINE": "Linea autorizzata dal Cantone (KB)",
-      "RACK_FREE_TRIPS": "Corse senza concessione (RF)",
-      "RACK_FREE_UNPUBLISHED_LINE": "Corse senza concessione/non pubblicate (NP)",
+      "RIGHT_FREE_LINE": "Corse senza concessione (RF)",
+      "NOT_LICENSED_UNPUBLISHED_LINE": "Corse senza concessione/non pubblicate (NP)",
       "COLLECTION_LINE": "Linea di raccolta (SL)",
       "LINE_ABROAD": "Linea all’estero (AL)"
     },
