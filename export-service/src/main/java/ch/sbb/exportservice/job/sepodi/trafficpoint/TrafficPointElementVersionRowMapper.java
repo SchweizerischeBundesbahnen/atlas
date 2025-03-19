@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.exportservice.job.sepodi.BaseSepodiRowMapper;
-import ch.sbb.exportservice.utile.RowMapperUtil;
+import ch.sbb.exportservice.util.RowMapperUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;

@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.prm.relation;
 
 import ch.sbb.atlas.export.model.prm.RelationVersionCsvModel;
-import ch.sbb.exportservice.utile.MapperUtil;
+import ch.sbb.exportservice.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 

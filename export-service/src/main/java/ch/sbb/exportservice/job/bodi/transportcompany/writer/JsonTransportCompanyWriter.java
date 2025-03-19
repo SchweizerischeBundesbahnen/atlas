@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.job.bodi.transportcompany;
+package ch.sbb.exportservice.job.bodi.transportcompany.writer;
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.exportservice.job.BaseJsonWriter;
