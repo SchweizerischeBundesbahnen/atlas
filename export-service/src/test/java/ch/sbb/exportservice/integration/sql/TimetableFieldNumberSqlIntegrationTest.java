@@ -1,11 +1,13 @@
 package ch.sbb.exportservice.integration.sql;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumber;
+import ch.sbb.exportservice.job.lidi.ttfn.entity.TimetableFieldNumber;
+import ch.sbb.exportservice.job.lidi.ttfn.sql.TimetableFieldNumberRowMapper;
+import ch.sbb.exportservice.job.lidi.ttfn.sql.TimetableFieldNumberSqlQueryUtil;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumberRowMapper;
-import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumberSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,9 +15,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.Test;
 
 class TimetableFieldNumberSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {
