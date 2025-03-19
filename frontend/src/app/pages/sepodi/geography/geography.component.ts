@@ -14,7 +14,11 @@ import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { debounceTime, merge, Subject } from 'rxjs';
 import { MapService } from '../map/map.service';
-import { MatRadioChange, MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import {
+  MatRadioButton,
+  MatRadioChange,
+  MatRadioGroup,
+} from '@angular/material/radio';
 import { takeUntil } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
@@ -29,9 +33,20 @@ export const LV95_MAX_DIGITS = 5;
 export const WGS84_MAX_DIGITS = 11;
 
 @Component({
-    selector: 'sepodi-geography',
-    templateUrl: './geography.component.html',
-    imports: [InfoIconComponent, AtlasSlideToggleComponent, NgIf, ReactiveFormsModule, MatRadioGroup, MatRadioButton, TextFieldComponent, RemoveCharsDirective, DecimalNumberPipe, TranslatePipe]
+  selector: 'sepodi-geography',
+  templateUrl: './geography.component.html',
+  imports: [
+    InfoIconComponent,
+    AtlasSlideToggleComponent,
+    NgIf,
+    ReactiveFormsModule,
+    MatRadioGroup,
+    MatRadioButton,
+    TextFieldComponent,
+    RemoveCharsDirective,
+    DecimalNumberPipe,
+    TranslatePipe,
+  ],
 })
 export class GeographyComponent implements OnDestroy, OnChanges {
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
@@ -81,7 +96,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
     private changeDetector: ChangeDetectorRef,
-    private readonly geoDataService: GeoDataService,
+    private readonly geoDataService: GeoDataService
   ) {
     this.mapService.clickedGeographyCoordinates
       .pipe(takeUntilDestroyed())
@@ -131,10 +146,11 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   initTransformedCoordinatePair() {
     if (!this.currentCoordinates) return;
-    this.transformedCoordinatePair = this.coordinateTransformationService.transform(
-      this.currentCoordinates,
-      this.transformedSpatialReference,
-    );
+    this.transformedCoordinatePair =
+      this.coordinateTransformationService.transform(
+        this.currentCoordinates,
+        this.transformedSpatialReference
+      );
     this.changeDetector.detectChanges();
   }
 
@@ -164,25 +180,32 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     const previousCoordinatePair = this.currentCoordinates!;
     previousCoordinatePair.spatialReference = this.transformedSpatialReference;
 
-    const transformedCoordinatePair = this.coordinateTransformationService.transform(
-      previousCoordinatePair,
-      this.currentSpatialReference!,
-    );
+    const transformedCoordinatePair =
+      this.coordinateTransformationService.transform(
+        previousCoordinatePair,
+        this.currentSpatialReference!
+      );
 
     this.setFormGroupValue(transformedCoordinatePair);
     this.initTransformedCoordinatePair();
   }
 
-  onChangeCoordinatesManually(coordinates: CoordinatePair, updateHeight: boolean) {
+  onChangeCoordinatesManually(
+    coordinates: CoordinatePair,
+    updateHeight: boolean
+  ) {
     if (this.currentSpatialReference === SpatialReference.Lv95) {
       coordinates = this.coordinateTransformationService.transform(
         coordinates,
-        SpatialReference.Wgs84,
+        SpatialReference.Wgs84
       )!;
     }
     if (coordinates && coordinates.north && coordinates.east) {
-      this.setHeightFromGeoData(coordinates, updateHeight)
-      this.mapService.placeMarkerAndFlyTo({ lat: coordinates.north, lng: coordinates.east });
+      this.setHeightFromGeoData(coordinates, updateHeight);
+      this.mapService.placeMarkerAndFlyTo({
+        lat: coordinates.north,
+        lng: coordinates.east,
+      });
       this.initTransformedCoordinatePair();
     }
   }
@@ -191,7 +214,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     if (this.currentSpatialReference === SpatialReference.Lv95) {
       coordinatesWgs84 = this.coordinateTransformationService.transform(
         coordinatesWgs84,
-        SpatialReference.Lv95,
+        SpatialReference.Lv95
       )!;
     }
     this.setHeightFromGeoData(coordinatesWgs84, true);
@@ -208,13 +231,18 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     }
   }
 
-  public setHeightFromGeoData(coordinatePair: CoordinatePair, updateHeight: boolean) {
+  public setHeightFromGeoData(
+    coordinatePair: CoordinatePair,
+    updateHeight: boolean
+  ) {
     if (coordinatePair && updateHeight) {
-      this.geoDataService.getLocationInformation(coordinatePair).subscribe((value) => {
-        this._form?.patchValue({
-          height: value.height,
+      this.geoDataService
+        .getLocationInformation(coordinatePair)
+        .subscribe((value) => {
+          this._form?.patchValue({
+            height: value.height,
+          });
         });
-      });
     }
   }
 }
