@@ -14,7 +14,7 @@ import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.exportservice.job.sepodi.BaseSepodiRowMapper;
 import ch.sbb.exportservice.job.sepodi.servicepoint.ServicePointGeolocation.ServicePointGeolocationBuilder;
 import ch.sbb.exportservice.job.sepodi.servicepoint.ServicePointVersion.ServicePointVersionBuilder;
-import ch.sbb.exportservice.util.RowMapperUtil;
+import ch.sbb.exportservice.utile.RowMapperUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;

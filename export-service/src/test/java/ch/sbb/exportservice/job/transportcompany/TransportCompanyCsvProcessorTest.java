@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.job.transportcompany;
 
-import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_FORMATTER;
+import static ch.sbb.exportservice.utile.MapperUtil.LOCAL_DATE_FORMATTER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;

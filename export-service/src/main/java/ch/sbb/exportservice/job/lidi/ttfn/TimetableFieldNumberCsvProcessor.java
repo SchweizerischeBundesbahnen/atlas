@@ -1,9 +1,9 @@
 package ch.sbb.exportservice.job.lidi.ttfn;
 
-import static ch.sbb.exportservice.util.MapperUtil.DATE_FORMATTER;
-import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_FORMATTER;
+import static ch.sbb.exportservice.utile.MapperUtil.DATE_FORMATTER;
+import static ch.sbb.exportservice.utile.MapperUtil.LOCAL_DATE_FORMATTER;
 
-import ch.sbb.exportservice.util.RowMapperUtil;
+import ch.sbb.exportservice.utile.RowMapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
