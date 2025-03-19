@@ -6,7 +6,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.exportservice.job.prm.stoppoint.StopPointVersion.StopPointVersionBuilder;
-import ch.sbb.exportservice.utile.RowMapperUtil;
+import ch.sbb.exportservice.util.RowMapperUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;

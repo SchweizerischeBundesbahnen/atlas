@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.service;
 
-import ch.sbb.exportservice.utile.JobDescriptionConstant;
+import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.sepodi.loadingpoint;
 
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_LOADING_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_LOADING_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_LOADING_POINT_JSON_JOB_NAME;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.model.ExportTypeV2;

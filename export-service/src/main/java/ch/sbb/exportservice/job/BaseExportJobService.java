@@ -1,12 +1,12 @@
 package ch.sbb.exportservice.job;
 
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TYPE_JOB_PARAMETER;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TYPE_V1_JOB_PARAMETER;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TYPE_JOB_PARAMETER;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TYPE_V1_JOB_PARAMETER;
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.utile.JobDescriptionConstant;
+import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
