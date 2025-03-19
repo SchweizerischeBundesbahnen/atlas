@@ -42,7 +42,10 @@ describe('CompaniesComponent', () => {
         TranslatePipe,
         RouterOutlet,
         { provide: CompaniesService, useValue: companiesServiceSpy },
-        { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
+        {
+          provide: ActivatedRoute,
+          useValue: { paramMap: new Subject() },
+        },
       ],
     })
       .overrideComponent(CompaniesComponent, {

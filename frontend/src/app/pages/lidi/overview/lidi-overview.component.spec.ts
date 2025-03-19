@@ -1,11 +1,11 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {LidiOverviewComponent} from './lidi-overview.component';
-import {LinesComponent} from '../lines/lines.component';
-import {AppTestingModule} from '../../../app.testing.module';
-import {AtlasButtonComponent} from '../../../core/components/button/atlas-button.component';
-import {PermissionService} from "../../../core/auth/permission/permission.service";
-import {adminPermissionServiceMock} from "../../../app.testing.mocks";
+import { LidiOverviewComponent } from './lidi-overview.component';
+import { LinesComponent } from '../lines/lines.component';
+import { AppTestingModule } from '../../../app.testing.module';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { adminPermissionServiceMock } from '../../../app.testing.mocks';
 
 describe('LidiOverviewComponent', () => {
   let component: LidiOverviewComponent;
@@ -13,16 +13,19 @@ describe('LidiOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, LidiOverviewComponent,
+      imports: [
+        AppTestingModule,
+        LidiOverviewComponent,
         LinesComponent,
-        AtlasButtonComponent],
-    providers: [
+        AtlasButtonComponent,
+      ],
+      providers: [
         {
-            provide: PermissionService,
-            useValue: adminPermissionServiceMock,
+          provide: PermissionService,
+          useValue: adminPermissionServiceMock,
         },
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

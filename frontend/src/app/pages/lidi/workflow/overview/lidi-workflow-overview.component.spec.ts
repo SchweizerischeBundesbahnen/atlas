@@ -1,11 +1,12 @@
-import {ContainerLineVersionSnapshot} from 'src/app/api/model/containerLineVersionSnapshot';
-import {LinesService, LineType, WorkflowStatus} from '../../../../api';
-import {LidiWorkflowOverviewComponent} from './lidi-workflow-overview.component';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {Observable, of} from 'rxjs';
-import {AppTestingModule} from '../../../../app.testing.module';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MockTableComponent} from '../../../../app.testing.mocks';
+import { ContainerLineVersionSnapshot } from 'src/app/api/model/containerLineVersionSnapshot';
+import { LinesService, LineType, WorkflowStatus } from '../../../../api';
+import { LidiWorkflowOverviewComponent } from './lidi-workflow-overview.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Observable, of } from 'rxjs';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockTableComponent } from '../../../../app.testing.mocks';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { ActivatedRoute } from '@angular/router';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
@@ -25,7 +26,7 @@ const versionContainer: ContainerLineVersionSnapshot = {
       paymentType: 'INTERNATIONAL',
       shortNumber: 'asd',
       lineConcessionType: 'CANTONALLY_APPROVED_LINE',
-      offerCategory: "BAT"
+      offerCategory: 'BAT',
     },
   ],
   totalCount: 1,
@@ -42,13 +43,27 @@ describe('LidiWorkflowOverviewComponent', () => {
       'getLineVersionSnapshot',
     ]);
     (
-      linesServiceSpy.getLineVersionSnapshot as Spy<() => Observable<ContainerLineVersionSnapshot>>
+      linesServiceSpy.getLineVersionSnapshot as Spy<
+        () => Observable<ContainerLineVersionSnapshot>
+      >
     ).and.returnValue(of(versionContainer));
 
     TestBed.configureTestingModule({
-    imports: [AppTestingModule, LidiWorkflowOverviewComponent, MockTableComponent],
-    providers: [{ provide: LinesService, useValue: linesServiceSpy }, TranslatePipe],
-}).compileComponents();
+      imports: [LidiWorkflowOverviewComponent, TranslateModule.forRoot()],
+      providers: [
+        TranslatePipe,
+        { provide: LinesService, useValue: linesServiceSpy },
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { queryParams: {} } },
+        },
+      ],
+    })
+      .overrideComponent(LidiWorkflowOverviewComponent, {
+        remove: { imports: [TableComponent] },
+        add: { imports: [MockTableComponent] },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(LidiWorkflowOverviewComponent);
     component = fixture.componentInstance;
