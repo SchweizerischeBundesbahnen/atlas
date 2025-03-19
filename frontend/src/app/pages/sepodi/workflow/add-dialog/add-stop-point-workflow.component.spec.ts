@@ -69,9 +69,9 @@ const workflowDialogData: AddStopPointWorkflowDialogData = {
 }
 
 @Component({
-    selector: 'stop-point-workflow-detail-form',
-    template: '<p>Mock AddStopPointWorkflowDetailForm Component</p>',
-    imports: [AppTestingModule, FormModule]
+  selector: 'stop-point-workflow-detail-form',
+  template: '<p>Mock AddStopPointWorkflowDetailForm Component</p>',
+  imports: [AppTestingModule, FormModule]
 })
 export class MockStopPointWorkflowDetailFormComponent {
   @Input() stopPoint!: ReadServicePointVersion;
@@ -86,7 +86,7 @@ describe('AddStopPointWorkflowComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-    imports: [AppTestingModule, FormModule, AddStopPointWorkflowComponent,
+      imports: [AppTestingModule, FormModule, AddStopPointWorkflowComponent,
         WorkflowFormComponent,
         WorkflowCheckFormComponent,
         StopPointWorkflowExaminantsTableComponent,
@@ -105,10 +105,10 @@ describe('AddStopPointWorkflowComponent', () => {
         DialogCloseComponent,
         DialogFooterComponent,
         DialogContentComponent],
-    providers: [
+      providers: [
         {
-            provide: MAT_DIALOG_DATA,
-            useValue: workflowDialogData,
+          provide: MAT_DIALOG_DATA,
+          useValue: workflowDialogData,
         },
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
@@ -117,8 +117,8 @@ describe('AddStopPointWorkflowComponent', () => {
         { provide: UserService, useValue: adminUserServiceMock },
         { provide: Router, useValue: router },
         { provide: TranslatePipe },
-    ],
-})
+      ],
+    })
       .compileComponents()
       .then();
 
