@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.prm.relation;
 
-import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_RELATION_CSV_JOB_NAME;
-import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_RELATION_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_RELATION_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_RELATION_JSON_JOB_NAME;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.model.ExportTypeV2;
