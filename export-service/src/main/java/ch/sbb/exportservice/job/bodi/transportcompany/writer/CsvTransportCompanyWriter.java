@@ -1,7 +1,8 @@
-package ch.sbb.exportservice.job.bodi.transportcompany;
+package ch.sbb.exportservice.job.bodi.transportcompany.writer;
 
 import ch.sbb.exportservice.job.BaseCsvWriter;
-import ch.sbb.exportservice.job.bodi.transportcompany.TransportCompanyCsvModel.Fields;
+import ch.sbb.exportservice.job.bodi.transportcompany.model.TransportCompanyCsvModel;
+import ch.sbb.exportservice.job.bodi.transportcompany.model.TransportCompanyCsvModel.Fields;
 import org.springframework.stereotype.Component;
 
 @Component

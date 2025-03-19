@@ -1,7 +1,8 @@
-package ch.sbb.exportservice.job.bodi.transportcompany;
+package ch.sbb.exportservice.job.bodi.transportcompany.sql;
 
 import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
-import ch.sbb.exportservice.job.bodi.transportcompany.TransportCompany.TransportCompanyBuilder;
+import ch.sbb.exportservice.job.bodi.transportcompany.entity.TransportCompany;
+import ch.sbb.exportservice.job.bodi.transportcompany.entity.TransportCompany.TransportCompanyBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
