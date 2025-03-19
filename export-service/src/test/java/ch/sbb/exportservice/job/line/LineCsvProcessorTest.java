@@ -6,7 +6,10 @@ import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.exportservice.job.BaseServicePointProcessor;
+import ch.sbb.exportservice.job.lidi.line.Line;
+import ch.sbb.exportservice.job.lidi.line.LineCsvModel;
+import ch.sbb.exportservice.job.lidi.line.LineCsvProcessor;
+import ch.sbb.exportservice.util.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -47,8 +50,8 @@ class LineCsvProcessorTest {
         .number("1")
         .offerCategory(OfferCategory.B)
         .businessOrganisation("ch:1:sboid:10000011")
-        .creationTime(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
-        .editionTime(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .creationTime(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .editionTime(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
         .build();
 
     LineCsvModel result = new LineCsvProcessor().process(line);
