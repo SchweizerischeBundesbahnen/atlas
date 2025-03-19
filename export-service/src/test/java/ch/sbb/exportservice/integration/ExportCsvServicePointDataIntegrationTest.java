@@ -2,7 +2,7 @@ package ch.sbb.exportservice.integration;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
-import ch.sbb.exportservice.job.servicepoint.ServicePointVersionCsvModel;
+import ch.sbb.exportservice.job.sepodi.servicepoint.ServicePointVersionCsvModel;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
