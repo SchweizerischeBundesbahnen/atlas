@@ -7,7 +7,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.bodi.businessorganisation.model.BusinessOrganisation;
 import ch.sbb.exportservice.job.bodi.businessorganisation.model.BusinessOrganisationCsvModel;
 import ch.sbb.exportservice.job.bodi.businessorganisation.processor.BusinessOrganisationCsvProcessor;
-import ch.sbb.exportservice.util.MapperUtil;
+import ch.sbb.exportservice.utile.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;

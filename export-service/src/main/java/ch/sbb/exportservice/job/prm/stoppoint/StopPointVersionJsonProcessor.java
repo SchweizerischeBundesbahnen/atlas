@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.job.prm.stoppoint;
 
-import static ch.sbb.exportservice.util.MapperUtil.getMeansOfTransportSorted;
+import static ch.sbb.exportservice.utile.MapperUtil.getMeansOfTransportSorted;
 
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import lombok.extern.slf4j.Slf4j;
