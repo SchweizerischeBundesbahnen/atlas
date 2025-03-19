@@ -10,7 +10,7 @@ import ch.sbb.atlas.export.model.prm.RelationVersionCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.job.prm.relation.RelationVersion;
 import ch.sbb.exportservice.job.prm.relation.RelationVersionCsvProcessor;
-import ch.sbb.exportservice.util.MapperUtil;
+import ch.sbb.exportservice.utile.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.job.sepodi.servicepoint;
 
-import static ch.sbb.exportservice.util.MapperUtil.getMeansOfTransportSorted;
+import static ch.sbb.exportservice.utile.MapperUtil.getMeansOfTransportSorted;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.exportservice.job.sepodi.BaseSepodiProcessor;
