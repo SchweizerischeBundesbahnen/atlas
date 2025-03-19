@@ -8,7 +8,9 @@ import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.exportservice.job.BaseServicePointProcessor;
+import ch.sbb.exportservice.job.prm.stoppoint.StopPointVersion;
+import ch.sbb.exportservice.job.prm.stoppoint.StopPointVersionCsvProcessor;
+import ch.sbb.exportservice.util.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -78,10 +80,10 @@ class StopPointVersionCsvProcessorTest {
         .wheelchairTicketMachine("PARTIALLY")
         .assistanceRequestFulfilled("YES")
         .ticketMachine("YES")
-        .validFrom(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 1, 1)))
-        .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
-        .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
-        .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .validFrom(MapperUtil.DATE_FORMATTER.format(LocalDate.of(2020, 1, 1)))
+        .validTo(MapperUtil.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
+        .creationDate(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .editionDate(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
         .status(Status.VALIDATED)
         .build();
 

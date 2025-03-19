@@ -7,6 +7,8 @@ import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.exportservice.job.prm.referencepoint.ReferencePointVersion;
+import ch.sbb.exportservice.job.prm.referencepoint.ReferencePointVersionJsonProcessor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

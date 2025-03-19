@@ -6,6 +6,8 @@ import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.exportservice.job.prm.platform.PlatformVersion;
+import ch.sbb.exportservice.job.prm.platform.PlatformVersionJsonProcessor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;

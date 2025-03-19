@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumber;
+import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumberJsonProcessor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

@@ -7,6 +7,8 @@ import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.exportservice.job.lidi.line.Line;
+import ch.sbb.exportservice.job.lidi.line.LineJsonProcessor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

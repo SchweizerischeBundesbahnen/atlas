@@ -6,7 +6,9 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.export.model.prm.ReferencePointVersionCsvModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.job.BaseServicePointProcessor;
+import ch.sbb.exportservice.job.prm.referencepoint.ReferencePointVersion;
+import ch.sbb.exportservice.job.prm.referencepoint.ReferencePointVersionCsvProcessor;
+import ch.sbb.exportservice.util.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -43,10 +45,10 @@ class ReferencePointVersionCsvProcessorTest {
         .mainReferencePoint(true)
         .additionalInformation("Langer Text")
         .referencePointType("MAIN_STATION_ENTRANCE")
-        .validFrom(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 1, 1)))
-        .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
-        .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(creationDate))
-        .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(editionDate))
+        .validFrom(MapperUtil.DATE_FORMATTER.format(LocalDate.of(2020, 1, 1)))
+        .validTo(MapperUtil.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
+        .creationDate(MapperUtil.LOCAL_DATE_FORMATTER.format(creationDate))
+        .editionDate(MapperUtil.LOCAL_DATE_FORMATTER.format(editionDate))
         .status(Status.VALIDATED)
         .build();
 
