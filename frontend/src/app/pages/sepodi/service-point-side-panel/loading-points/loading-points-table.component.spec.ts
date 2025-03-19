@@ -1,15 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoadingPointsTableComponent } from './loading-points-table.component';
-import { AppTestingModule } from '../../../../app.testing.module';
-import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
+import {
+  MockAtlasButtonComponent,
+  MockTableComponent,
+} from '../../../../app.testing.mocks';
 import { of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingPointsService } from '../../../../api';
 import { LOADING_POINT } from '../../../../../test/data/loading-point';
-import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
-import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
-import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('LoadingPointsTableComponent', () => {
   let component: LoadingPointsTableComponent;
@@ -18,23 +20,25 @@ describe('LoadingPointsTableComponent', () => {
   const loadingPointService = jasmine.createSpyObj('LoadingPointsService', [
     'getLoadingPointOverview',
   ]);
-  loadingPointService.getLoadingPointOverview.and.returnValue(of(LOADING_POINT));
+  loadingPointService.getLoadingPointOverview.and.returnValue(
+    of(LOADING_POINT)
+  );
   const route = { parent: { snapshot: { params: { id: 8504414 } } } };
   let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, LoadingPointsTableComponent,
-        MockTableComponent,
-        MockAtlasButtonComponent,
-        DetailPageContainerComponent,
-        DetailPageContentComponent,
-        DetailFooterComponent],
-    providers: [
+      imports: [LoadingPointsTableComponent, TranslateModule.forRoot()],
+      providers: [
         { provide: ActivatedRoute, useValue: route },
         { provide: LoadingPointsService, useValue: loadingPointService },
-    ],
-}).compileComponents();
+      ],
+    })
+      .overrideComponent(LoadingPointsTableComponent, {
+        remove: { imports: [AtlasButtonComponent, TableComponent] },
+        add: { imports: [MockAtlasButtonComponent, MockTableComponent] },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(LoadingPointsTableComponent);
     component = fixture.componentInstance;
@@ -52,9 +56,9 @@ describe('LoadingPointsTableComponent', () => {
       size: 10,
     });
 
-    expect(loadingPointService.getLoadingPointOverview).toHaveBeenCalledOnceWith(8504414, 0, 10, [
-      'designation,asc',
-    ]);
+    expect(
+      loadingPointService.getLoadingPointOverview
+    ).toHaveBeenCalledOnceWith(8504414, 0, 10, ['designation,asc']);
   });
 
   it('should go to new', () => {

@@ -1,6 +1,6 @@
-import { Component, OnDestroy} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {VersionsHandlingService} from '../../../../core/versioning/versions-handling.service';
+import { Component, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import {
   ApplicationRole,
   ApplicationType,
@@ -10,23 +10,37 @@ import {
   Status,
 } from '../../../../api';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder,} from './service-point-detail-form-group';
-import {MapService} from '../../map/map.service';
-import {BehaviorSubject, catchError, EMPTY, Observable, of, Subject, take} from 'rxjs';
-import {Pages} from '../../../pages';
-import {DialogService} from '../../../../core/components/dialog/dialog.service';
-import {ValidationService} from '../../../../core/validation/validation.service';
-import {NotificationService} from '../../../../core/notification/notification.service';
-import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {ServicePointAbbreviationAllowList} from './service-point-abbreviation-allow-list';
-import {GeographyFormGroup, GeographyFormGroupBuilder,} from '../../geography/geography-form-group';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {ValidityService} from '../../validity/validity.service';
-import {PermissionService} from "../../../../core/auth/permission/permission.service";
-import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
-import {takeUntil} from "rxjs/operators";
+import {
+  ServicePointDetailFormGroup,
+  ServicePointFormGroupBuilder,
+} from './service-point-detail-form-group';
+import { MapService } from '../../map/map.service';
+import {
+  BehaviorSubject,
+  catchError,
+  EMPTY,
+  Observable,
+  of,
+  Subject,
+  take,
+} from 'rxjs';
+import { Pages } from '../../../pages';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { ValidationService } from '../../../../core/validation/validation.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { ServicePointAbbreviationAllowList } from './service-point-abbreviation-allow-list';
+import {
+  GeographyFormGroup,
+  GeographyFormGroupBuilder,
+} from '../../geography/geography-form-group';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ValidityService } from '../../validity/validity.service';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { AddStopPointWorkflowDialogService } from '../../workflow/add-dialog/add-stop-point-workflow-dialog.service';
+import { takeUntil } from 'rxjs/operators';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
 import { ServicePointFormComponent } from './service-point-form/service-point-form.component';
@@ -39,12 +53,29 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-service-point',
-    templateUrl: './service-point-detail.component.html',
-    providers: [ValidityService],
-    imports: [DetailPageContainerComponent, NgIf, SwitchVersionComponent, NavigationSepodiPrmComponent, ServicePointFormComponent, TextFieldComponent, ReactiveFormsModule, GeographyComponent, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, AsyncPipe, TranslatePipe]
+  selector: 'app-service-point',
+  templateUrl: './service-point-detail.component.html',
+  providers: [ValidityService],
+  imports: [
+    DetailPageContainerComponent,
+    NgIf,
+    SwitchVersionComponent,
+    NavigationSepodiPrmComponent,
+    ServicePointFormComponent,
+    TextFieldComponent,
+    ReactiveFormsModule,
+    GeographyComponent,
+    MatDivider,
+    UserDetailInfoComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
-export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
+export class ServicePointDetailComponent
+  implements OnDestroy, DetailFormComponent
+{
   readonly servicePointStatus = Status;
 
   private onDestroy$ = new Subject<boolean>();
@@ -101,7 +132,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
       ServicePointFormGroupBuilder.addGroupToForm(
         this.form,
         'servicePointGeolocation',
-        this._savedGeographyForm ?? GeographyFormGroupBuilder.buildFormGroup(),
+        this._savedGeographyForm ?? GeographyFormGroupBuilder.buildFormGroup()
       );
       this.form.markAsDirty();
     }
@@ -110,7 +141,10 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   onGeographyDisabled() {
     if (this.form?.controls.servicePointGeolocation) {
       this._savedGeographyForm = this.form.controls.servicePointGeolocation;
-      ServicePointFormGroupBuilder.removeGroupFromForm(this.form, 'servicePointGeolocation');
+      ServicePointFormGroupBuilder.removeGroupFromForm(
+        this.form,
+        'servicePointGeolocation'
+      );
       this.form.markAsDirty();
     }
   }
@@ -136,21 +170,27 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
       this.preferredId = Number(queryParamId);
     }
     VersionsHandlingService.addVersionNumbers(this.servicePointVersions);
-    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.servicePointVersions);
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
+      this.servicePointVersions
+    );
 
     let selectedVersion: ReadServicePointVersion;
     if (this.preferredId) {
       selectedVersion =
         this.servicePointVersions.find((i) => i.id === this.preferredId) ??
-        VersionsHandlingService.determineDefaultVersionByValidity(this.servicePointVersions);
+        VersionsHandlingService.determineDefaultVersionByValidity(
+          this.servicePointVersions
+        );
       this.preferredId = undefined;
     } else {
-      selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.servicePointVersions,
-      );
+      selectedVersion =
+        VersionsHandlingService.determineDefaultVersionByValidity(
+          this.servicePointVersions
+        );
     }
 
-    this.selectedVersionIndex = this.servicePointVersions.indexOf(selectedVersion);
+    this.selectedVersionIndex =
+      this.servicePointVersions.indexOf(selectedVersion);
     this.initSelectedVersion(selectedVersion);
   }
 
@@ -167,21 +207,29 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   initShowRevokeButton(version: ReadServicePointVersion) {
-    this.showRevokeButton = !(this.servicePointVersions.map(value => value.status).includes("IN_REVIEW") || version.status === "REVOKED");
+    this.showRevokeButton = !(
+      this.servicePointVersions
+        .map((value) => value.status)
+        .includes('IN_REVIEW') || version.status === 'REVOKED'
+    );
   }
 
   private displayAndSelectServicePointOnMap() {
-    this.mapService.mapInitialized.pipe(
-      takeUntil(this.onDestroy$))
+    this.mapService.mapInitialized
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe((initialized) => {
-      if (initialized) {
-        if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
-          this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
+        if (initialized) {
+          if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
+            this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
+          }
+          this.mapService.centerOn(
+            this.selectedVersion?.servicePointGeolocation?.wgs84
+          );
+          this.mapService.displayCurrentCoordinates(
+            this.selectedVersion?.servicePointGeolocation?.wgs84
+          );
         }
-        this.mapService.centerOn(this.selectedVersion?.servicePointGeolocation?.wgs84);
-        this.mapService.displayCurrentCoordinates(this.selectedVersion?.servicePointGeolocation?.wgs84);
-      }
-    });
+      });
   }
 
   toggleEdit() {
@@ -232,12 +280,16 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
 
   private confirmBoTransfer(): Observable<boolean> {
     const currentlySelectedBo = this.form?.controls.businessOrganisation.value;
-    const permission = this.permissionService.getApplicationUserPermission(ApplicationType.Sepodi);
+    const permission = this.permissionService.getApplicationUserPermission(
+      ApplicationType.Sepodi
+    );
     if (
       !this.permissionService.isAdmin &&
       permission.role == ApplicationRole.Writer &&
       currentlySelectedBo &&
-      !PermissionService.getSboidRestrictions(permission).includes(currentlySelectedBo)
+      !PermissionService.getSboidRestrictions(permission).includes(
+        currentlySelectedBo
+      )
     ) {
       return this.dialogService.confirm({
         title: 'DIALOG.CONFIRM_BO_TRANSFER_TITLE',
@@ -253,7 +305,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
       this.validityService.updateValidity(this.form);
       this.validityService.validateAndDisableCustom(
         () => this.updateVersion(),
-        () => this.disableForm(),
+        () => this.disableForm()
       );
     }
   }
@@ -269,9 +321,13 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
             .pipe(catchError(this.handleError))
             .subscribe(() => {
               this.hasAbbreviation = !!this.form?.controls.abbreviation.value;
-              this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
+              this.notificationService.success(
+                'SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS'
+              );
               this.router
-                .navigate(['..', this.selectedVersion!.number.number], { relativeTo: this.route })
+                .navigate(['..', this.selectedVersion!.number.number], {
+                  relativeTo: this.route,
+                })
                 .then(() => this.mapService.refreshMap());
             });
         } else {
@@ -289,17 +345,17 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   };
 
   checkIfAbbreviationIsAllowed() {
-    this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
-      element.includes(this.selectedVersion!.businessOrganisation),
+    this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some(
+      (element) => element.includes(this.selectedVersion!.businessOrganisation)
     );
   }
 
   isSelectedVersionHighDate(
     servicePointVersions: ReadServicePointVersion[],
-    selectedVersion: ReadServicePointVersion,
+    selectedVersion: ReadServicePointVersion
   ) {
     this.isLatestVersionSelected = !servicePointVersions.some(
-      (obj) => obj.validTo > selectedVersion.validTo,
+      (obj) => obj.validTo > selectedVersion.validTo
     );
   }
 
@@ -317,7 +373,9 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
             .revokeServicePoint(this.selectedVersion!.number.number)
             .pipe(catchError(this.handleError))
             .subscribe(() => {
-              this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.REVOKE_SUCCESS');
+              this.notificationService.success(
+                'SEPODI.SERVICE_POINTS.NOTIFICATION.REVOKE_SUCCESS'
+              );
               this.router
                 .navigate(['..', this.selectedVersion!.number.number], {
                   relativeTo: this.route,
@@ -343,18 +401,22 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
             .pipe(catchError(this.handleError))
             .subscribe(() => {
               this.notificationService.success(
-                'SEPODI.SERVICE_POINTS.NOTIFICATION.VALIDATE_SUCCESS',
+                'SEPODI.SERVICE_POINTS.NOTIFICATION.VALIDATE_SUCCESS'
               );
-              this.router.navigate(['..', this.selectedVersion!.number.number], {
-                relativeTo: this.route,
-              });
+              this.router.navigate(
+                ['..', this.selectedVersion!.number.number],
+                {
+                  relativeTo: this.route,
+                }
+              );
             });
         }
       });
   }
 
   updateVersion() {
-    const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form!);
+    const servicePointVersion =
+      ServicePointFormGroupBuilder.getWritableServicePoint(this.form!);
     this.update(this.selectedVersion!.id!, servicePointVersion);
   }
 
