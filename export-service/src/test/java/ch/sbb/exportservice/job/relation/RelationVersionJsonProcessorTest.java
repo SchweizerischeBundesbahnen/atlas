@@ -8,6 +8,8 @@ import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.exportservice.job.prm.relation.RelationVersion;
+import ch.sbb.exportservice.job.prm.relation.RelationVersionJsonProcessor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

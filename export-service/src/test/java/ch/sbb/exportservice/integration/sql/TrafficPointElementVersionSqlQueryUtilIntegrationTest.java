@@ -2,10 +2,10 @@ package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.exportservice.job.trafficpoint.TrafficPointElementVersion;
+import ch.sbb.exportservice.job.sepodi.trafficpoint.TrafficPointElementVersion;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.job.trafficpoint.TrafficPointElementVersionRowMapper;
-import ch.sbb.exportservice.job.trafficpoint.TrafficPointElementVersionSqlQueryUtil;
+import ch.sbb.exportservice.job.sepodi.trafficpoint.TrafficPointElementVersionRowMapper;
+import ch.sbb.exportservice.job.sepodi.trafficpoint.TrafficPointElementVersionSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

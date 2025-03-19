@@ -395,7 +395,7 @@ Job is responsible to:
 ### Jobs Recovery
 
 * a retry system is configured on the step level when certain exception are thrown (
-  see [StepUtils.java](src/main/java/ch/sbb/exportservice/utils/StepUtils.java))
+  see [StepUtils.java](src/main/java/ch/sbb/exportservice/util/StepUtils.java))
 * [RecoveryJobsRunner.java](src/main/java/ch/sbb/exportservice/recovery/RecoveryJobsRunner.java) checks at startup if there are
   any unfinished jobs or if all jobs have been run. In case
   there are incomplete jobs or not all jobs have been run all jobs are run again.
@@ -404,3 +404,5 @@ Job is responsible to:
 ## Tech Stack
 
 See [Tech Stack Documentation](../documentation/tech-stack-service.md)
+
+[//]: # (todo)
