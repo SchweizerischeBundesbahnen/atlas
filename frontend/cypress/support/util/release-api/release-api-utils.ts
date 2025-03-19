@@ -68,6 +68,10 @@ export default class ReleaseApiUtils {
     return ReleaseApiUtils.atlasDay(1);
   }
 
+  static in4WeeksAsAtlasString() {
+    return ReleaseApiUtils.atlasDay(28);
+  }
+
   static makeCommonChecks = (
     response: Cypress.Response<any>,
     slnid: string,
