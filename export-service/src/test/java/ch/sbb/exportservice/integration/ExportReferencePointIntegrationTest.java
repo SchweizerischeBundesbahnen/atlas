@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.integration;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.amazon.service.AmazonService;

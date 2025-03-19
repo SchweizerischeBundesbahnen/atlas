@@ -5,10 +5,10 @@ import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.exportservice.job.line.Line;
+import ch.sbb.exportservice.job.lidi.line.Line;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.job.line.LineRowMapper;
-import ch.sbb.exportservice.job.line.LineSqlQueryUtil;
+import ch.sbb.exportservice.job.lidi.line.LineRowMapper;
+import ch.sbb.exportservice.job.lidi.line.LineSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +16,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 
 class LineSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {

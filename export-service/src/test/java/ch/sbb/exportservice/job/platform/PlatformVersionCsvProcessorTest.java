@@ -10,7 +10,9 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.job.BaseServicePointProcessor;
+import ch.sbb.exportservice.job.prm.platform.PlatformVersion;
+import ch.sbb.exportservice.job.prm.platform.PlatformVersionCsvProcessor;
+import ch.sbb.exportservice.util.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -79,10 +81,10 @@ public class PlatformVersionCsvProcessorTest {
         .wheelChairAreaLength(0.000)
         .wheelChairAreaWidth(0.000)
         .vehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED.toString())
-        .validFrom(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 1, 1)))
-        .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
-        .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(creationDate))
-        .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(editionDate))
+        .validFrom(MapperUtil.DATE_FORMATTER.format(LocalDate.of(2020, 1, 1)))
+        .validTo(MapperUtil.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
+        .creationDate(MapperUtil.LOCAL_DATE_FORMATTER.format(creationDate))
+        .editionDate(MapperUtil.LOCAL_DATE_FORMATTER.format(editionDate))
         .status(Status.VALIDATED)
         .build();
 

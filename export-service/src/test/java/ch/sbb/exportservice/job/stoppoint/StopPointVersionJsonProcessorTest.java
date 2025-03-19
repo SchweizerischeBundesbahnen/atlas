@@ -8,6 +8,8 @@ import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.exportservice.job.prm.stoppoint.StopPointVersion;
+import ch.sbb.exportservice.job.prm.stoppoint.StopPointVersionJsonProcessor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;

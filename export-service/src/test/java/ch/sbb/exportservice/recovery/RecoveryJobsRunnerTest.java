@@ -1,37 +1,37 @@
 package ch.sbb.exportservice.recovery;
 
 import static ch.sbb.exportservice.recovery.RecoveryJobsRunner.TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_RELATION_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_PLATFORM_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_RELATION_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_STOP_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TYPE_JOB_PARAMETER;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.exportservice.job.businessorganisation.ExportBusinessOrganisationJobService;
-import ch.sbb.exportservice.job.contactpoint.ExportContactPointJobService;
-import ch.sbb.exportservice.job.line.ExportLineJobService;
-import ch.sbb.exportservice.job.loadingpoint.ExportLoadingPointJobService;
-import ch.sbb.exportservice.job.parkinglot.ExportParkingLotJobService;
-import ch.sbb.exportservice.job.platform.ExportPlatformJobService;
-import ch.sbb.exportservice.job.referencepoint.ExportReferencePointJobService;
-import ch.sbb.exportservice.job.relation.ExportRelationJobService;
-import ch.sbb.exportservice.job.servicepoint.ExportServicePointJobService;
-import ch.sbb.exportservice.job.stoppoint.ExportStopPointJobService;
-import ch.sbb.exportservice.job.subline.ExportSublineJobService;
-import ch.sbb.exportservice.job.toilet.ExportToiletJobService;
-import ch.sbb.exportservice.job.trafficpoint.ExportTrafficPointElementJobService;
-import ch.sbb.exportservice.job.transportcompany.ExportTransportCompanyJobService;
+import ch.sbb.exportservice.job.bodi.businessorganisation.service.ExportBusinessOrganisationJobService;
+import ch.sbb.exportservice.job.bodi.transportcompany.ExportTransportCompanyJobService;
+import ch.sbb.exportservice.job.lidi.line.ExportLineJobService;
+import ch.sbb.exportservice.job.lidi.subline.ExportSublineJobService;
+import ch.sbb.exportservice.job.prm.contactpoint.ExportContactPointJobService;
+import ch.sbb.exportservice.job.prm.parkinglot.ExportParkingLotJobService;
+import ch.sbb.exportservice.job.prm.platform.ExportPlatformJobService;
+import ch.sbb.exportservice.job.prm.referencepoint.ExportReferencePointJobService;
+import ch.sbb.exportservice.job.prm.relation.ExportRelationJobService;
+import ch.sbb.exportservice.job.prm.stoppoint.ExportStopPointJobService;
+import ch.sbb.exportservice.job.prm.toilet.ExportToiletJobService;
+import ch.sbb.exportservice.job.sepodi.loadingpoint.ExportLoadingPointJobService;
+import ch.sbb.exportservice.job.sepodi.servicepoint.ExportServicePointJobService;
+import ch.sbb.exportservice.job.sepodi.trafficpoint.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.model.SePoDiExportType;
-import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -140,7 +140,7 @@ class RecoveryJobsRunnerTest {
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
-    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
@@ -169,7 +169,7 @@ class RecoveryJobsRunnerTest {
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
-    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
@@ -198,7 +198,7 @@ class RecoveryJobsRunnerTest {
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
-    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
@@ -227,7 +227,7 @@ class RecoveryJobsRunnerTest {
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
-    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
@@ -256,7 +256,7 @@ class RecoveryJobsRunnerTest {
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
-    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
@@ -284,7 +284,7 @@ class RecoveryJobsRunnerTest {
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
-    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
 
     when(jobParameters.getParameters()).thenReturn(parameters);
@@ -314,7 +314,7 @@ class RecoveryJobsRunnerTest {
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
-    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
 
     when(jobParameters.getParameters()).thenReturn(parameters);
@@ -344,7 +344,7 @@ class RecoveryJobsRunnerTest {
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
-    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
 
     when(jobParameters.getParameters()).thenReturn(parameters);
