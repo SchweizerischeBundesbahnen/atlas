@@ -17,9 +17,9 @@ import org.junit.jupiter.params.provider.EnumSource;
 class LineVersionModelV2Test extends BaseValidatorTest {
 
   @ParameterizedTest
-  @EnumSource(value = LineConcessionType.class, names = {"COLLECTION_LINE", "LINE_OF_A_TERRITORIAL_CONCESSION", "LINE_ABROAD",
-      "FEDERAL_TERRITORIAL_CONCESSION", "CANTONALLY_APPROVED_LINE", "FEDERALLY_LICENSED_OR_APPROVED_LINE",
-      "VARIANT_OF_A_FRANCHISED_LINE", "RACK_FREE_UNPUBLISHED_LINE", "RACK_FREE_TRIPS"})
+  @EnumSource(value = LineConcessionType.class, names = {"COLLECTION_LINE", "LINE_OF_A_ZONE_CONCESSION", "LINE_ABROAD",
+      "FEDERAL_ZONE_CONCESSION", "CANTONALLY_APPROVED_LINE", "FEDERALLY_LICENSED_OR_APPROVED_LINE",
+      "VARIANT_OF_A_LICENSED_LINE", "NOT_LICENSED_UNPUBLISHED_LINE", "RIGHT_FREE_LINE"})
   void shouldValidateConcessionTypeWithLineTypeOrderly(LineConcessionType concessionType) {
     //given
     LineVersionModelV2 lineVersionModelV2 = LineVersionModelV2.builder()
@@ -77,7 +77,7 @@ class LineVersionModelV2Test extends BaseValidatorTest {
     LineVersionModelV2 lineVersionModelV2 = LineVersionModelV2.builder()
         .lineType(LineType.ORDERLY)
         .offerCategory(OfferCategory.IC)
-        .lineConcessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
+        .lineConcessionType(LineConcessionType.LINE_OF_A_ZONE_CONCESSION)
         .shortNumber("6")
         .number("number")
         .longName("longName")
