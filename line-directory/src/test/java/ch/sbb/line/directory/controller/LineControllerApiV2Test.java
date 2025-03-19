@@ -93,7 +93,7 @@ class LineControllerApiV2Test extends BaseControllerApiTest {
             .longName("long name")
             .lineType(LineType.ORDERLY)
             .swissLineNumber("b0.IC6")
-            .lineConcessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
+            .lineConcessionType(LineConcessionType.LINE_OF_A_ZONE_CONCESSION)
             .build();
 
     LineVersionModelV2 lineVersionSaved = lineControllerV2.createLineVersionV2(createLineVersionModelV2);
