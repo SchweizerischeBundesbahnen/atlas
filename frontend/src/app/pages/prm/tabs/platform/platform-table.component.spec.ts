@@ -5,14 +5,18 @@ import {
   MockNavigationSepodiPrmComponent,
   MockTableComponent,
 } from '../../../../app.testing.mocks';
-import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
-import { PersonWithReducedMobilityService, TrafficPointElementsService } from '../../../../api';
+import {
+  PersonWithReducedMobilityService,
+  TrafficPointElementsService,
+} from '../../../../api';
 import { of } from 'rxjs';
 import { BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER } from '../../../../../test/data/traffic-point-element';
-import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
 import SpyObj = jasmine.SpyObj;
 
 describe('PlatformTableComponent', () => {
@@ -22,15 +26,16 @@ describe('PlatformTableComponent', () => {
 
   const personWithReducedMobilityService = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['getPlatformOverview'],
+    ['getPlatformOverview']
   );
   personWithReducedMobilityService.getPlatformOverview.and.returnValue(of([]));
 
-  const trafficPointElementsService = jasmine.createSpyObj('trafficPointElementsService', [
-    'getPlatformsOfServicePoint',
-  ]);
+  const trafficPointElementsService = jasmine.createSpyObj(
+    'trafficPointElementsService',
+    ['getPlatformsOfServicePoint']
+  );
   trafficPointElementsService.getPlatformsOfServicePoint.and.returnValue(
-    of(BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER),
+    of(BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER)
   );
 
   const activatedRouteMock = {
@@ -46,18 +51,35 @@ describe('PlatformTableComponent', () => {
     routerSpy = jasmine.createSpyObj(['navigate']);
 
     TestBed.configureTestingModule({
-    imports: [AppTestingModule, PlatformTableComponent,
-        MockAtlasButtonComponent,
-        MockTableComponent,
-        DetailFooterComponent,
-        MockNavigationSepodiPrmComponent],
-    providers: [
+      imports: [PlatformTableComponent],
+      providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
-        { provide: TrafficPointElementsService, useValue: trafficPointElementsService },
+        {
+          provide: PersonWithReducedMobilityService,
+          useValue: personWithReducedMobilityService,
+        },
+        {
+          provide: TrafficPointElementsService,
+          useValue: trafficPointElementsService,
+        },
         { provide: Router, useValue: routerSpy },
-    ],
-});
+      ],
+    }).overrideComponent(PlatformTableComponent, {
+      remove: {
+        imports: [
+          AtlasButtonComponent,
+          TableComponent,
+          NavigationSepodiPrmComponent,
+        ],
+      },
+      add: {
+        imports: [
+          MockAtlasButtonComponent,
+          MockTableComponent,
+          MockNavigationSepodiPrmComponent,
+        ],
+      },
+    });
     fixture = TestBed.createComponent(PlatformTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
