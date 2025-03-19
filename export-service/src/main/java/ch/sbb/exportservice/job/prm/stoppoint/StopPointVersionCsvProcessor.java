@@ -1,10 +1,10 @@
 package ch.sbb.exportservice.job.prm.stoppoint;
 
-import static ch.sbb.exportservice.utile.MapperUtil.mapBooleanOptionalAttributeType;
-import static ch.sbb.exportservice.utile.MapperUtil.mapStandardAttributeType;
+import static ch.sbb.exportservice.util.MapperUtil.mapBooleanOptionalAttributeType;
+import static ch.sbb.exportservice.util.MapperUtil.mapStandardAttributeType;
 
 import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
-import ch.sbb.exportservice.utile.MapperUtil;
+import ch.sbb.exportservice.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
