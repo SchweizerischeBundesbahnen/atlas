@@ -6,7 +6,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumber;
 import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumberCsvModel;
 import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumberCsvProcessor;
-import ch.sbb.exportservice.util.MapperUtil;
+import ch.sbb.exportservice.utile.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

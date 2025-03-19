@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.job.bodi.transportcompany;
 
-import ch.sbb.exportservice.util.MapperUtil;
+import ch.sbb.exportservice.utile.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 

@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.lidi.line;
 
-import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_LINE_CSV_JOB_NAME;
-import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_LINE_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_LINE_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_LINE_JSON_JOB_NAME;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.model.ExportTypeV2;

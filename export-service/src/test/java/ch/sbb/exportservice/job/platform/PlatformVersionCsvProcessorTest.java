@@ -12,7 +12,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.job.prm.platform.PlatformVersion;
 import ch.sbb.exportservice.job.prm.platform.PlatformVersionCsvProcessor;
-import ch.sbb.exportservice.util.MapperUtil;
+import ch.sbb.exportservice.utile.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;

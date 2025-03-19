@@ -8,7 +8,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.job.prm.toilet.ToiletVersion;
 import ch.sbb.exportservice.job.prm.toilet.ToiletVersionCsvProcessor;
-import ch.sbb.exportservice.util.MapperUtil;
+import ch.sbb.exportservice.utile.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
