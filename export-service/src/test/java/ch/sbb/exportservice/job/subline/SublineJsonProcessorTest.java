@@ -6,6 +6,8 @@ import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.exportservice.job.lidi.subline.Subline;
+import ch.sbb.exportservice.job.lidi.subline.SublineJsonProcessor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

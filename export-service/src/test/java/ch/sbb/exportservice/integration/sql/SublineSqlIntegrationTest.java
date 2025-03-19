@@ -7,11 +7,11 @@ import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.exportservice.job.line.Line;
-import ch.sbb.exportservice.job.subline.Subline;
+import ch.sbb.exportservice.job.lidi.line.Line;
+import ch.sbb.exportservice.job.lidi.subline.Subline;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.job.subline.SublineRowMapper;
-import ch.sbb.exportservice.job.subline.SublineSqlQueryUtil;
+import ch.sbb.exportservice.job.lidi.subline.SublineRowMapper;
+import ch.sbb.exportservice.job.lidi.subline.SublineSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +19,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

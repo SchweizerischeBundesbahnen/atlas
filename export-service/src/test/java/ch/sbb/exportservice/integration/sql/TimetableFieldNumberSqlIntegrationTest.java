@@ -2,10 +2,10 @@ package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.exportservice.job.ttfn.TimetableFieldNumber;
+import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumber;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.job.ttfn.TimetableFieldNumberRowMapper;
-import ch.sbb.exportservice.job.ttfn.TimetableFieldNumberSqlQueryUtil;
+import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumberRowMapper;
+import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumberSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 
 class TimetableFieldNumberSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {
@@ -28,8 +30,8 @@ class TimetableFieldNumberSqlIntegrationTest extends BaseLiDiSqlIntegrationTest 
         .ttfnid("ch:1:ttfnid:123")
         .swissTimetableFieldNumber("sttfn")
         .status(Status.VALIDATED)
-        .validFrom(LocalDate.of(2020,1,1))
-        .validTo(LocalDate.of(2020,12,31))
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
         .businessOrganisation("ch:1:sboid:100000")
         .comment("comment")
         .build();

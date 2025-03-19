@@ -2,10 +2,10 @@ package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.exportservice.job.loadingpoint.LoadingPointVersion;
+import ch.sbb.exportservice.job.sepodi.loadingpoint.LoadingPointVersion;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.job.loadingpoint.LoadingPointVersionRowMapper;
-import ch.sbb.exportservice.job.loadingpoint.LoadingPointVersionSqlQueryUtil;
+import ch.sbb.exportservice.job.sepodi.loadingpoint.LoadingPointVersionRowMapper;
+import ch.sbb.exportservice.job.sepodi.loadingpoint.LoadingPointVersionSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

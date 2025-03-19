@@ -6,7 +6,10 @@ import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import ch.sbb.atlas.api.lidi.enumaration.SublineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.exportservice.job.BaseServicePointProcessor;
+import ch.sbb.exportservice.job.lidi.subline.Subline;
+import ch.sbb.exportservice.job.lidi.subline.SublineCsvModel;
+import ch.sbb.exportservice.job.lidi.subline.SublineCsvProcessor;
+import ch.sbb.exportservice.util.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -55,8 +58,8 @@ class SublineCsvProcessorTest {
         .number("lNr")
         .shortNumber("snr")
         .offerCategory(OfferCategory.IC)
-        .creationTime(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
-        .editionTime(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .creationTime(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .editionTime(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
         .build();
 
     SublineCsvModel result = new SublineCsvProcessor().process(subline);

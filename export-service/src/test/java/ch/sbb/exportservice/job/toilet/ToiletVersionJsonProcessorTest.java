@@ -7,6 +7,8 @@ import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.exportservice.job.prm.toilet.ToiletVersion;
+import ch.sbb.exportservice.job.prm.toilet.ToiletVersionJsonProcessor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

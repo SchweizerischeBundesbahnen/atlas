@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
+import ch.sbb.exportservice.job.bodi.transportcompany.TransportCompany;
+import ch.sbb.exportservice.job.bodi.transportcompany.TransportCompanyJsonProcessor;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
