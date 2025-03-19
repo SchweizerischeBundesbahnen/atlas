@@ -1,11 +1,11 @@
 package ch.sbb.exportservice.job.bodi.businessorganisation.batch;
 
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_BUSINESS_ORGANISATION_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_BUSINESS_ORGANISATION_JSON_JOB_NAME;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
-import ch.sbb.exportservice.job.bodi.businessorganisation.model.BusinessOrganisation;
+import ch.sbb.exportservice.job.bodi.businessorganisation.entity.BusinessOrganisation;
 import ch.sbb.exportservice.job.bodi.businessorganisation.model.BusinessOrganisationCsvModel;
 import ch.sbb.exportservice.job.bodi.businessorganisation.processor.BusinessOrganisationCsvProcessor;
 import ch.sbb.exportservice.job.bodi.businessorganisation.processor.BusinessOrganisationJsonProcessor;
@@ -22,7 +22,7 @@ import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
-import ch.sbb.exportservice.utile.StepUtil;
+import ch.sbb.exportservice.util.StepUtil;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -91,7 +91,7 @@ public class BusinessOrganisationExportBatchConfig {
         .<BusinessOrganisation, BusinessOrganisationCsvModel>chunk(StepUtil.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(businessOrganisationCsvProcessor())
-        .writer(BusinessOrganisationCsvWriter(null))
+        .writer(businessOrganisationCsvWriter(null))
         .faultTolerant()
         .backOffPolicy(StepUtil.getBackOffPolicy(stepName))
         .retryPolicy(StepUtil.getRetryPolicy(stepName))
@@ -106,7 +106,7 @@ public class BusinessOrganisationExportBatchConfig {
 
   @Bean
   @StepScope
-  public FlatFileItemWriter<BusinessOrganisationCsvModel> BusinessOrganisationCsvWriter(
+  public FlatFileItemWriter<BusinessOrganisationCsvModel> businessOrganisationCsvWriter(
       @Value("#{jobParameters[exportTypeV2]}") ExportTypeV2 exportTypeV2
   ) {
     return csvWriter.csvWriter(ExportObjectV2.BUSINESS_ORGANISATION, exportTypeV2);

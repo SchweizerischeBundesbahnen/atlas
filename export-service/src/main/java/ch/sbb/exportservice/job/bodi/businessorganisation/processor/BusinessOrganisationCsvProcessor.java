@@ -1,11 +1,11 @@
 package ch.sbb.exportservice.job.bodi.businessorganisation.processor;
 
-import static ch.sbb.exportservice.utile.MapperUtil.DATE_FORMATTER;
-import static ch.sbb.exportservice.utile.MapperUtil.LOCAL_DATE_FORMATTER;
+import static ch.sbb.exportservice.util.MapperUtil.DATE_FORMATTER;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_FORMATTER;
 
 import ch.sbb.atlas.api.bodi.SboidToSaidConverter;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
-import ch.sbb.exportservice.job.bodi.businessorganisation.model.BusinessOrganisation;
+import ch.sbb.exportservice.job.bodi.businessorganisation.entity.BusinessOrganisation;
 import ch.sbb.exportservice.job.bodi.businessorganisation.model.BusinessOrganisationCsvModel;
 import java.util.List;
 import java.util.stream.Collectors;

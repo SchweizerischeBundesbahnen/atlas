@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.utile;
+package ch.sbb.exportservice.util;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
@@ -16,11 +16,11 @@ public class MapperUtil {
   public static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern(
       AtlasApiConstants.DATE_TIME_FORMAT_PATTERN);
 
-  public String mapStandardAttributeType(StandardAttributeType attributeType) {
+  public static String mapStandardAttributeType(StandardAttributeType attributeType) {
     return attributeType != null ? attributeType.toString() : null;
   }
 
-  public String mapBooleanOptionalAttributeType(BooleanOptionalAttributeType booleanOptionalAttributeType) {
+  public static String mapBooleanOptionalAttributeType(BooleanOptionalAttributeType booleanOptionalAttributeType) {
     return booleanOptionalAttributeType != null ? booleanOptionalAttributeType.toString() : null;
   }
 

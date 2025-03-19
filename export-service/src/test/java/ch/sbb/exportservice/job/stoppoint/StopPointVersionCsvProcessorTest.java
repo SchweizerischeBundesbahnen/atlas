@@ -10,7 +10,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.exportservice.job.prm.stoppoint.StopPointVersion;
 import ch.sbb.exportservice.job.prm.stoppoint.StopPointVersionCsvProcessor;
-import ch.sbb.exportservice.utile.MapperUtil;
+import ch.sbb.exportservice.util.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;

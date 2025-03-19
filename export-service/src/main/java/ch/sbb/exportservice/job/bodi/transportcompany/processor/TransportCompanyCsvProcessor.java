@@ -1,6 +1,8 @@
-package ch.sbb.exportservice.job.bodi.transportcompany;
+package ch.sbb.exportservice.job.bodi.transportcompany.processor;
 
-import ch.sbb.exportservice.utile.MapperUtil;
+import ch.sbb.exportservice.job.bodi.transportcompany.entity.TransportCompany;
+import ch.sbb.exportservice.job.bodi.transportcompany.model.TransportCompanyCsvModel;
+import ch.sbb.exportservice.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 

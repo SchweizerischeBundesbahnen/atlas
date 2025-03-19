@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.lidi.ttfn;
 
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TTFN_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TTFN_JSON_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TTFN_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TTFN_JSON_JOB_NAME;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.model.ExportTypeV2;

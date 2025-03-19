@@ -8,7 +8,7 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.job.prm.platform.PlatformVersion.PlatformVersionBuilder;
-import ch.sbb.exportservice.utile.RowMapperUtil;
+import ch.sbb.exportservice.util.RowMapperUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;

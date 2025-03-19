@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.job.bodi.businessorganisation.model;
+package ch.sbb.exportservice.job.bodi.businessorganisation.entity;
 
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.Status;

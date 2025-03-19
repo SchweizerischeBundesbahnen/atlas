@@ -1,12 +1,12 @@
 package ch.sbb.exportservice.job.transportcompany;
 
-import static ch.sbb.exportservice.utile.MapperUtil.LOCAL_DATE_FORMATTER;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_FORMATTER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
-import ch.sbb.exportservice.job.bodi.transportcompany.TransportCompany;
-import ch.sbb.exportservice.job.bodi.transportcompany.TransportCompanyCsvModel;
-import ch.sbb.exportservice.job.bodi.transportcompany.TransportCompanyCsvProcessor;
+import ch.sbb.exportservice.job.bodi.transportcompany.entity.TransportCompany;
+import ch.sbb.exportservice.job.bodi.transportcompany.model.TransportCompanyCsvModel;
+import ch.sbb.exportservice.job.bodi.transportcompany.processor.TransportCompanyCsvProcessor;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
