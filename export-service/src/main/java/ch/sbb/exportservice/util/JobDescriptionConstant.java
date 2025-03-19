@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.utile;
+package ch.sbb.exportservice.util;
 
 import lombok.experimental.UtilityClass;
 

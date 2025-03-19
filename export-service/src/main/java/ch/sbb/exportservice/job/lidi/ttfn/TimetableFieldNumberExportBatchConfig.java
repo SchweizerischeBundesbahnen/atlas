@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.lidi.ttfn;
 
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TTFN_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TTFN_JSON_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TTFN_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TTFN_JSON_JOB_NAME;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
@@ -14,7 +14,7 @@ import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.tasklet.delete.FileDeletingTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadCsvFileTaskletV2;
 import ch.sbb.exportservice.tasklet.upload.UploadJsonFileTaskletV2;
-import ch.sbb.exportservice.utile.StepUtil;
+import ch.sbb.exportservice.util.StepUtil;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;

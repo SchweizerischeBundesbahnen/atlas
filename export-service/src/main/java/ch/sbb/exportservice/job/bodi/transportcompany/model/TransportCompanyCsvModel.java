@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.job.bodi.transportcompany;
+package ch.sbb.exportservice.job.bodi.transportcompany.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
