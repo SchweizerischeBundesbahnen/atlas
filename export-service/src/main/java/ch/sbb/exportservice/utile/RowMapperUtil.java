@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.util;
+package ch.sbb.exportservice.utile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

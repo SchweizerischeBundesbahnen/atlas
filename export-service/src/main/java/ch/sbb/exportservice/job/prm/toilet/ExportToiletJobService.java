@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.prm.toilet;
 
-import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TOILET_CSV_JOB_NAME;
-import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TOILET_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TOILET_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TOILET_JSON_JOB_NAME;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.model.ExportTypeV2;
