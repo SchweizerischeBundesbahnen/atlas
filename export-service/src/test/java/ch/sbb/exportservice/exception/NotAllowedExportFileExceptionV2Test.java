@@ -23,7 +23,7 @@ class NotAllowedExportFileExceptionV2Test {
     assertThat(errorResponse.getStatus()).isEqualTo(400);
     assertThat(errorResponse.getMessage()).isEqualTo("Download file [LINE] with unsupported export type [FULL]!");
     assertThat(errorResponse.getError()).isEqualTo(
-        "To download the file [LINE] are only allowed the following export types: [FULL, ACTUAL, FUTURE_TIMETABLE]");
+        "To download the file [LINE] are only allowed the following export types: [FULL, ACTUAL, FUTURE_TIMETABLE, TIMETABLE_YEARS]");
   }
 
 }
