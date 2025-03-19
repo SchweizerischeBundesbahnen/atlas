@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.integration;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_JSON_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_PLATFORM_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_PLATFORM_JSON_JOB_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.exportservice.integration.sql.BasePrmSqlIntegrationTest;

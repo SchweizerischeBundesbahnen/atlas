@@ -1,17 +1,18 @@
 package ch.sbb.exportservice.service;
 
-import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
+
+import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
-import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -20,7 +21,7 @@ import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.explore.JobExplorer;
 
- class JobHelperServiceTest {
+class JobHelperServiceTest {
 
   @Mock
   private JobExplorer jobExplorer;
@@ -37,13 +38,13 @@ import org.springframework.batch.core.explore.JobExplorer;
   private JobHelperService jobHelperService;
 
   @BeforeEach
-   void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     jobHelperService = new JobHelperService(jobExplorer);
   }
 
   @Test
-   void shouldReturnMinDateWhenNoJobExecutionWasFound() {
+  void shouldReturnMinDateWhenNoJobExecutionWasFound() {
     //when
     LocalDate result = jobHelperService.getDateForImportFileToDownload("myJob");
     //then
@@ -51,10 +52,10 @@ import org.springframework.batch.core.explore.JobExplorer;
   }
 
   @Test
-   void shouldReturnDateWhenJobExecutionWasFound() {
+  void shouldReturnDateWhenJobExecutionWasFound() {
     //given
     Map<String, JobParameter<?>> parameters = new HashMap<>();
-    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     when(jobExplorer.findJobInstancesByJobName(any(), anyInt(), anyInt())).thenReturn(List.of(jobInstance));
     when(jobExplorer.getLastJobExecution(jobInstance)).thenReturn(jobExecution);
     when(jobExecution.getJobParameters()).thenReturn(jobParameters);
@@ -71,7 +72,7 @@ import org.springframework.batch.core.explore.JobExplorer;
   }
 
   @Test
-   void shouldReturnTrueWhenMatchedDateIsBetweenTodayAndMatchingDate() {
+  void shouldReturnTrueWhenMatchedDateIsBetweenTodayAndMatchingDate() {
     //given
     LocalDate matchingDate = LocalDate.now();
     LocalDate lastEditionDate = LocalDate.now();
@@ -84,7 +85,7 @@ import org.springframework.batch.core.explore.JobExplorer;
   }
 
   @Test
-   void shouldReturnTrueWhenLastEditionDateIsBetweenTodayAndMatchingDate() {
+  void shouldReturnTrueWhenLastEditionDateIsBetweenTodayAndMatchingDate() {
     //given
     LocalDate now = LocalDate.now();
     LocalDate matchingDate = now.minusDays(2);
@@ -98,7 +99,7 @@ import org.springframework.batch.core.explore.JobExplorer;
   }
 
   @Test
-   void shouldReturnFalseWhenLastEditionDateIsNotBetweenTodayAndMatchingDate() {
+  void shouldReturnFalseWhenLastEditionDateIsNotBetweenTodayAndMatchingDate() {
     //given
     LocalDate now = LocalDate.now();
     LocalDate lastEditionDate = now.minusDays(1);

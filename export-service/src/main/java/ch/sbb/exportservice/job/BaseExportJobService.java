@@ -1,12 +1,12 @@
 package ch.sbb.exportservice.job;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_V1_JOB_PARAMETER;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TYPE_JOB_PARAMETER;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TYPE_V1_JOB_PARAMETER;
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +37,9 @@ public abstract class BaseExportJobService {
 
   public static JobParameters buildJobParameters(JobParams jobParams) {
     final JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
-        .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
+        .addString(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, JobDescriptionConstant.EXECUTION_BATCH_PARAMETER)
         .addString(EXPORT_TYPE_JOB_PARAMETER, jobParams.exportTypeV2.toString())
-        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis());
+        .addLong(JobDescriptionConstant.START_AT_JOB_PARAMETER, System.currentTimeMillis());
 
     if (jobParams.exportTypeV1 != null) {
       jobParametersBuilder.addString(EXPORT_TYPE_V1_JOB_PARAMETER, jobParams.exportTypeV1.toString());
