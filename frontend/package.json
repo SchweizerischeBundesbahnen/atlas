@@ -9,7 +9,7 @@
     "test": "ng test --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage",
     "test-dir": "ng test --include src/app/pages/prm --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage",
     "test-debug": "ng test --watch true --browsers=Chrome",
-    "test-dir-debug": "ng test --watch true --include src/app/pages/prm --browsers=Chrome",
+    "test-dir-debug": "ng test --watch true --include src/app/pages/sepodi --browsers=Chrome",
     "lint": "ng lint",
     "format": "prettier --write src/**/*.ts",
     "build:ngssc": "ng run atlas-frontend:ngsscbuild:production",
