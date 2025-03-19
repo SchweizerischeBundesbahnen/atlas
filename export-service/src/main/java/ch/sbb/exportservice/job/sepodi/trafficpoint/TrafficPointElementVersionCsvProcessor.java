@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.exportservice.job.sepodi.BaseSepodiProcessor;
 import ch.sbb.exportservice.job.sepodi.SharedBusinessOrganisation;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.TrafficPointVersionCsvModel.TrafficPointVersionCsvModelBuilder;
-import ch.sbb.exportservice.util.MapperUtil;
+import ch.sbb.exportservice.utile.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 

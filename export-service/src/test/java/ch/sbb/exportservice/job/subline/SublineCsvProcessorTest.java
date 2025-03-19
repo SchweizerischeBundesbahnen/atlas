@@ -9,7 +9,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.lidi.subline.Subline;
 import ch.sbb.exportservice.job.lidi.subline.SublineCsvModel;
 import ch.sbb.exportservice.job.lidi.subline.SublineCsvProcessor;
-import ch.sbb.exportservice.util.MapperUtil;
+import ch.sbb.exportservice.utile.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
