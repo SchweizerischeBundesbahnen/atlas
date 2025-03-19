@@ -162,9 +162,11 @@ services:
       - "datestyle=iso, ymd"
 
   zookeeper:
-    image: wurstmeister/zookeeper
+    image: bitnami/zookeeper
     ports:
       - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
 
   kafka:
     image: wurstmeister/kafka
