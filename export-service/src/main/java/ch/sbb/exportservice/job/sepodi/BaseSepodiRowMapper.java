@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.job.sepodi;
 
-import ch.sbb.exportservice.util.RowMapperUtil;
+import ch.sbb.exportservice.utile.RowMapperUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

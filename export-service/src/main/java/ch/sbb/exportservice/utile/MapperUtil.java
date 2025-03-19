@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.util;
+package ch.sbb.exportservice.utile;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;

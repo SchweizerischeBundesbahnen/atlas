@@ -3,7 +3,7 @@ package ch.sbb.exportservice.job.bodi.businessorganisation.sql;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.bodi.businessorganisation.model.BusinessOrganisation;
-import ch.sbb.exportservice.util.RowMapperUtil;
+import ch.sbb.exportservice.utile.RowMapperUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
