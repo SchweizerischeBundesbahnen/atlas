@@ -5,12 +5,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.lidi.line.entity.Line;
 import ch.sbb.exportservice.job.lidi.line.sql.LineRowMapper;
 import ch.sbb.exportservice.job.lidi.line.sql.LineSqlQueryUtil;
+import ch.sbb.exportservice.job.line.Line.LineBuilder;
 import ch.sbb.exportservice.model.ExportTypeV2;
+import ch.sbb.exportservice.utils.ExportFutureTimetableUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -109,70 +112,62 @@ class LineSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {
 
   }
 
+  //  @formatter:off
+  /**
+   *               |---------Timetable Years Range---------|
+   *    |----| Line 1: Before Date range -> X
+   *               | Line 2: Valid Only On Range Start -> Exported
+   *                                                       | Line 3: Valid Only On Range End -> Exported
+   *          |---------------| Line 4: Valid over range start -> Exported
+   *                                              |---------------| Line 5: Valid over range end -> Exported
+   *           |---------------------------------------------------| Line 6: Valid over total range -> Exported
+   *                                                             |------| Line 7: Valid After range -> X
+   */
+  //  @formatter:on
   @Test
   void shouldReturnTimetableYearsLines() throws SQLException {
     //given
-    Line line = Line.builder()
-        .id(1L)
-        .slnid("ch:1:slnid:100000")
-        .validFrom(LocalDate.of(2024, 12, 15))
-        .validTo(LocalDate.of(2024, 12, 15))
-        .status(Status.VALIDATED)
-        .lineType(LineType.ORDERLY)
-        .concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
-        .swissLineNumber("r.01")
-        .description("Linie on First Years Date")
-        .number("1")
-        .offerCategory(OfferCategory.B)
-        .businessOrganisation("ch:1:sboid:10000011")
+    DateRange timetableYearsDateRange = ExportFutureTimetableUtil.getTimetableYearsDateRange();
+
+    Line line = lineBuilder(1)
+        .validFrom(timetableYearsDateRange.getFrom().minusDays(2))
+        .validTo(timetableYearsDateRange.getFrom().minusDays(1))
         .build();
     insertLineVersion(line);
 
-    line = Line.builder()
-        .id(2L)
-        .slnid("ch:1:slnid:100001")
-        .validFrom(LocalDate.of(2026, 12, 12))
-        .validTo(LocalDate.of(2026, 12, 12))
-        .status(Status.VALIDATED)
-        .lineType(LineType.ORDERLY)
-        .concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
-        .swissLineNumber("r.02")
-        .description("Linie on Last Years Date")
-        .number("2")
-        .offerCategory(OfferCategory.B)
-        .businessOrganisation("ch:1:sboid:10000011")
+    line = lineBuilder(2)
+        .validFrom(timetableYearsDateRange.getFrom())
+        .validTo(timetableYearsDateRange.getFrom())
         .build();
     insertLineVersion(line);
 
-    line = Line.builder()
-        .id(3L)
-        .slnid("ch:1:slnid:100002")
-        .validFrom(LocalDate.of(2026, 12, 13))
-        .validTo(LocalDate.of(2026, 12, 13))
-        .status(Status.VALIDATED)
-        .lineType(LineType.ORDERLY)
-        .concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
-        .swissLineNumber("r.03")
-        .description("Linie after Last Years Date")
-        .number("3")
-        .offerCategory(OfferCategory.B)
-        .businessOrganisation("ch:1:sboid:10000011")
+    line = lineBuilder(3)
+        .validFrom(timetableYearsDateRange.getTo())
+        .validTo(timetableYearsDateRange.getTo())
         .build();
     insertLineVersion(line);
 
-    line = Line.builder()
-        .id(4L)
-        .slnid("ch:1:slnid:100003")
-        .validFrom(LocalDate.of(2024, 12, 14))
-        .validTo(LocalDate.of(2024, 12, 14))
-        .status(Status.VALIDATED)
-        .lineType(LineType.ORDERLY)
-        .concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
-        .swissLineNumber("r.04")
-        .description("Linie before first Years Date")
-        .number("4")
-        .offerCategory(OfferCategory.B)
-        .businessOrganisation("ch:1:sboid:10000011")
+    line = lineBuilder(4)
+        .validFrom(timetableYearsDateRange.getFrom().minusDays(7))
+        .validTo(timetableYearsDateRange.getFrom().plusDays(10))
+        .build();
+    insertLineVersion(line);
+
+    line = lineBuilder(5)
+        .validFrom(timetableYearsDateRange.getTo().minusDays(12))
+        .validTo(timetableYearsDateRange.getTo().plusDays(15))
+        .build();
+    insertLineVersion(line);
+
+    line = lineBuilder(6)
+        .validFrom(timetableYearsDateRange.getFrom().minusDays(18))
+        .validTo(timetableYearsDateRange.getTo().plusDays(20))
+        .build();
+    insertLineVersion(line);
+
+    line = lineBuilder(7)
+        .validFrom(timetableYearsDateRange.getTo().plusDays(2))
+        .validTo(timetableYearsDateRange.getTo().plusDays(5))
         .build();
     insertLineVersion(line);
 
@@ -182,8 +177,22 @@ class LineSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {
     List<Line> result = executeQuery(sqlQuery);
 
     //then
-    assertThat(result).hasSize(2);
-    assertThat(result).extracting(Line::getId).containsExactly(1L, 2L);
+    assertThat(result).hasSize(5);
+    assertThat(result).extracting(Line::getId).containsExactly(2L, 3L, 4L, 5L, 6L);
+  }
+
+  private LineBuilder<?, ?> lineBuilder(int id){
+    return Line.builder()
+        .id((long) id)
+        .slnid("ch:1:slnid:10000"+id)
+        .status(Status.VALIDATED)
+        .lineType(LineType.ORDERLY)
+        .concessionType(LineConcessionType.LINE_OF_A_ZONE_CONCESSION)
+        .swissLineNumber("r.0"+id)
+        .description("Linie "+id)
+        .number(String.valueOf(id))
+        .offerCategory(OfferCategory.B)
+        .businessOrganisation("ch:1:sboid:10000011");
   }
 
   private List<Line> executeQuery(String sqlQuery) throws SQLException {
