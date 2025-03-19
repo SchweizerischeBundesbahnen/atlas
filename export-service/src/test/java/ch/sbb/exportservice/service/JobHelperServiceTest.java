@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.exportservice.utile.JobDescriptionConstant;
+import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
