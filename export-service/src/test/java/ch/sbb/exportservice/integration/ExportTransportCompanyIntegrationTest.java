@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.integration;
 
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TRANSPORT_COMPANY_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

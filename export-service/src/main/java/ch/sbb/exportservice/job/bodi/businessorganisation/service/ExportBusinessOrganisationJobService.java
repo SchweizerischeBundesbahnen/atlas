@@ -2,7 +2,7 @@ package ch.sbb.exportservice.job.bodi.businessorganisation.service;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.utile.JobDescriptionConstant;
+import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.util.List;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;

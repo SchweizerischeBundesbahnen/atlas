@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.lidi.subline;
 
-import static ch.sbb.exportservice.utile.MapperUtil.DATE_FORMATTER;
-import static ch.sbb.exportservice.utile.MapperUtil.LOCAL_DATE_FORMATTER;
+import static ch.sbb.exportservice.util.MapperUtil.DATE_FORMATTER;
+import static ch.sbb.exportservice.util.MapperUtil.LOCAL_DATE_FORMATTER;
 
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;

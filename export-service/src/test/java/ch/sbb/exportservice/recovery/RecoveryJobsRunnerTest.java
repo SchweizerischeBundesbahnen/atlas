@@ -1,15 +1,15 @@
 package ch.sbb.exportservice.recovery;
 
 import static ch.sbb.exportservice.recovery.RecoveryJobsRunner.TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_LOADING_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_PLATFORM_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_RELATION_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_STOP_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utile.JobDescriptionConstant.EXPORT_TYPE_JOB_PARAMETER;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_PLATFORM_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_RELATION_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_STOP_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TYPE_JOB_PARAMETER;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.job.bodi.businessorganisation.service.ExportBusinessOrganisationJobService;
-import ch.sbb.exportservice.job.bodi.transportcompany.ExportTransportCompanyJobService;
+import ch.sbb.exportservice.job.bodi.transportcompany.service.ExportTransportCompanyJobService;
 import ch.sbb.exportservice.job.lidi.line.ExportLineJobService;
 import ch.sbb.exportservice.job.lidi.subline.ExportSublineJobService;
 import ch.sbb.exportservice.job.prm.contactpoint.ExportContactPointJobService;
@@ -31,7 +31,7 @@ import ch.sbb.exportservice.job.sepodi.loadingpoint.ExportLoadingPointJobService
 import ch.sbb.exportservice.job.sepodi.servicepoint.ExportServicePointJobService;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.model.SePoDiExportType;
-import ch.sbb.exportservice.utile.JobDescriptionConstant;
+import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;

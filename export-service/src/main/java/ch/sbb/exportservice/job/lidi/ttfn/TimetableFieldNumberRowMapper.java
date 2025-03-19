@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.lidi.ttfn;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.exportservice.utile.RowMapperUtil;
+import ch.sbb.exportservice.util.RowMapperUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.function.Function;

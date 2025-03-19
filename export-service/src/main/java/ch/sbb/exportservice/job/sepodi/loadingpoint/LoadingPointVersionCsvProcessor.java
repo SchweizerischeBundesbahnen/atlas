@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.job.sepodi.loadingpoint;
 
 import ch.sbb.exportservice.job.sepodi.SharedBusinessOrganisation;
-import ch.sbb.exportservice.utile.MapperUtil;
+import ch.sbb.exportservice.util.MapperUtil;
 import org.springframework.batch.item.ItemProcessor;
 
 public class LoadingPointVersionCsvProcessor implements ItemProcessor<LoadingPointVersion,

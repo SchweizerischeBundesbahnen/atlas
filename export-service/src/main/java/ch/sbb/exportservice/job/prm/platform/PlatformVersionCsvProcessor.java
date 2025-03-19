@@ -1,12 +1,12 @@
 package ch.sbb.exportservice.job.prm.platform;
 
-import static ch.sbb.exportservice.utile.MapperUtil.mapBooleanOptionalAttributeType;
+import static ch.sbb.exportservice.util.MapperUtil.mapBooleanOptionalAttributeType;
 
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
-import ch.sbb.exportservice.utile.MapperUtil;
+import ch.sbb.exportservice.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 

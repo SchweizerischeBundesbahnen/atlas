@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.job.bodi.transportcompany;
+package ch.sbb.exportservice.job.bodi.transportcompany.sql;
 
 import ch.sbb.exportservice.job.SqlQueryUtil;
 import lombok.experimental.UtilityClass;

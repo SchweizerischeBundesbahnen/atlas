@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.job.bodi.transportcompany;
+package ch.sbb.exportservice.job.bodi.transportcompany.entity;
 
 import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import java.time.LocalDateTime;
