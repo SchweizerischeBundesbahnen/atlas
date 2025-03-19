@@ -2,6 +2,7 @@ package ch.sbb.exportservice.job.trafficpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.exportservice.job.sepodi.trafficpoint.TrafficPointElementVersion;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;

@@ -4,9 +4,9 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.LiDiDbSchemaCreation;
-import ch.sbb.exportservice.job.line.Line;
-import ch.sbb.exportservice.job.subline.Subline;
-import ch.sbb.exportservice.job.ttfn.TimetableFieldNumber;
+import ch.sbb.exportservice.job.lidi.line.Line;
+import ch.sbb.exportservice.job.lidi.subline.Subline;
+import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumber;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -73,7 +73,8 @@ public abstract class BaseLiDiSqlIntegrationTest {
             formatDate(timetableFieldNumber.getValidFrom()), formatDate(timetableFieldNumber.getValidTo()),
             timetableFieldNumber.getStatus(), timetableFieldNumber.getSwissTimetableFieldNumber(),
             timetableFieldNumber.getNumber(),
-            timetableFieldNumber.getBusinessOrganisation(), timetableFieldNumber.getDescription(), timetableFieldNumber.getComment());
+            timetableFieldNumber.getBusinessOrganisation(), timetableFieldNumber.getDescription(),
+            timetableFieldNumber.getComment());
     execute(insertSql);
   }
 

@@ -3,7 +3,10 @@ package ch.sbb.exportservice.job.ttfn;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.exportservice.job.BaseServicePointProcessor;
+import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumber;
+import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumberCsvModel;
+import ch.sbb.exportservice.job.lidi.ttfn.TimetableFieldNumberCsvProcessor;
+import ch.sbb.exportservice.util.MapperUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -41,8 +44,8 @@ class TimetableFieldNumberCsvProcessorTest {
         .businessOrganisation("ch:1:sboid:100000")
         .lineRelations("")
         .comment("comment")
-        .creationTime(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
-        .editionTime(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .creationTime(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
+        .editionTime(MapperUtil.LOCAL_DATE_FORMATTER.format(LocalDateTime.of(2024, 2, 7, 20, 0)))
         .build();
 
     TimetableFieldNumberCsvModel result = new TimetableFieldNumberCsvProcessor().process(timetableFieldNumber);

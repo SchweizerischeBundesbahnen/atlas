@@ -6,6 +6,8 @@ import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.exportservice.job.prm.contactpoint.ContactPointVersion;
+import ch.sbb.exportservice.job.prm.contactpoint.ContactPointVersionJsonProcessor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

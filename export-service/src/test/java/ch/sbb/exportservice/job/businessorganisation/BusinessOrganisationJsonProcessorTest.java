@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.exportservice.job.bodi.businessorganisation.model.BusinessOrganisation;
+import ch.sbb.exportservice.job.bodi.businessorganisation.processor.BusinessOrganisationJsonProcessor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
