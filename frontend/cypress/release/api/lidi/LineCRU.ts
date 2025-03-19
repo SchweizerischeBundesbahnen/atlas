@@ -27,7 +27,7 @@ describe('LiDi: Scenario Line-CRUD: New Line', { testIsolation: false }, () => {
       businessOrganisation: sboid,
       validFrom: ReleaseApiUtils.todayAsAtlasString(),
       validTo: ReleaseApiUtils.in4WeeksAsAtlasString(),
-      lineConcessionType: 'RACK_FREE_TRIPS',
+      lineConcessionType: 'LINE_OF_A_ZONE_CONCESSION',
       offerCategory: 'SL',
       description: 'This is just a description.',
       number: '1111111',
