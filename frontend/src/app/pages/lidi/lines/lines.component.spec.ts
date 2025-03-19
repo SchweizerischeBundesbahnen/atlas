@@ -1,25 +1,32 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {Observable, of} from 'rxjs';
-import {LinesComponent} from './lines.component';
-import {ContainerLine, ElementType, LidiElementType, Line, LinesService, Status} from '../../../api';
-import {AppTestingModule} from '../../../app.testing.module';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MockTableComponent} from '../../../app.testing.mocks';
-import {Router} from "@angular/router";
-import {Pages} from "../../pages";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Observable, of, Subject } from 'rxjs';
+import { LinesComponent } from './lines.component';
+import {
+  ContainerLine,
+  ElementType,
+  LidiElementType,
+  Line,
+  LinesService,
+  Status,
+} from '../../../api';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockTableComponent } from '../../../app.testing.mocks';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Pages } from '../../pages';
+import { TableComponent } from '../../../core/components/table/table.component';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
 const line: Line = {
-  swissLineNumber: "IC6",
-  elementType: "SUBLINE",
-  status: "VALIDATED",
-  lidiElementType: "CONCESSION",
-  slnid: "ch:1:slnid:8000",
-  businessOrganisation: "ch:1:sboid:123",
+  swissLineNumber: 'IC6',
+  elementType: 'SUBLINE',
+  status: 'VALIDATED',
+  lidiElementType: 'CONCESSION',
+  slnid: 'ch:1:slnid:8000',
+  businessOrganisation: 'ch:1:sboid:123',
   validFrom: new Date('2021-12-31'),
-  validTo: new Date('2099-12-31')
-}
+  validTo: new Date('2099-12-31'),
+};
 
 const versionContainer: ContainerLine = {
   objects: [
@@ -32,7 +39,7 @@ const versionContainer: ContainerLine = {
       businessOrganisation: 'SBB',
       swissLineNumber: 'L1',
       lidiElementType: LidiElementType.Orderly,
-      elementType: ElementType.Line
+      elementType: ElementType.Line,
     },
   ],
   totalCount: 1,
@@ -46,15 +53,29 @@ describe('LinesComponent', () => {
   let linesServiceSpy: SpyObj<LinesService>;
 
   beforeEach(() => {
-    linesServiceSpy = jasmine.createSpyObj<LinesService>('LinesServiceSpy', ['getLines']);
-    (linesServiceSpy.getLines as Spy<() => Observable<ContainerLine>>).and.returnValue(
-      of(versionContainer)
-    );
+    linesServiceSpy = jasmine.createSpyObj<LinesService>('LinesServiceSpy', [
+      'getLines',
+    ]);
+    (
+      linesServiceSpy.getLines as Spy<() => Observable<ContainerLine>>
+    ).and.returnValue(of(versionContainer));
 
     TestBed.configureTestingModule({
-    imports: [AppTestingModule, LinesComponent, MockTableComponent],
-    providers: [{ provide: LinesService, useValue: linesServiceSpy }, TranslatePipe],
-}).compileComponents();
+      imports: [LinesComponent, TranslateModule.forRoot()],
+      providers: [
+        TranslatePipe,
+        { provide: LinesService, useValue: linesServiceSpy },
+        {
+          provide: ActivatedRoute,
+          useValue: { paramMap: new Subject() },
+        },
+      ],
+    })
+      .overrideComponent(LinesComponent, {
+        remove: { imports: [TableComponent] },
+        add: { imports: [MockTableComponent] },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(LinesComponent);
     component = fixture.componentInstance;
@@ -68,22 +89,30 @@ describe('LinesComponent', () => {
 
   it('should edit line', () => {
     //given
-    line.elementType = "LINE"
+    line.elementType = 'LINE';
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     //when
-    component.editVersion(line)
+    component.editVersion(line);
     //then
-    expect(router.navigate).toHaveBeenCalledWith([Pages.LIDI.path, Pages.LINES.path, line.slnid]);
+    expect(router.navigate).toHaveBeenCalledWith([
+      Pages.LIDI.path,
+      Pages.LINES.path,
+      line.slnid,
+    ]);
   });
 
   it('should edit subline', () => {
     //given
-    line.elementType = 'SUBLINE'
+    line.elementType = 'SUBLINE';
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     //when
-    component.editVersion(line)
+    component.editVersion(line);
     //then
-    expect(router.navigate).toHaveBeenCalledWith([Pages.LIDI.path, Pages.SUBLINES.path, line.slnid]);
+    expect(router.navigate).toHaveBeenCalledWith([
+      Pages.LIDI.path,
+      Pages.SUBLINES.path,
+      line.slnid,
+    ]);
   });
 
   it('should getOverview', () => {

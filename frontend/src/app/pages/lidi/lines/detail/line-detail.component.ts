@@ -45,10 +45,25 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    templateUrl: './line-detail.component.html',
-    styleUrls: ['./line-detail.component.scss'],
-    providers: [ValidityService],
-    imports: [DetailPageContainerComponent, ScrollToTopDirective, DetailPageContentComponent, DateRangeTextComponent, NgIf, SwitchVersionComponent, SublineTableComponent, WorkflowComponent, LinkComponent, LineDetailFormComponent, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
+  templateUrl: './line-detail.component.html',
+  styleUrls: ['./line-detail.component.scss'],
+  providers: [ValidityService],
+  imports: [
+    DetailPageContainerComponent,
+    ScrollToTopDirective,
+    DetailPageContentComponent,
+    DateRangeTextComponent,
+    NgIf,
+    SwitchVersionComponent,
+    SublineTableComponent,
+    WorkflowComponent,
+    LinkComponent,
+    LineDetailFormComponent,
+    UserDetailInfoComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class LineDetailComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<boolean>();
