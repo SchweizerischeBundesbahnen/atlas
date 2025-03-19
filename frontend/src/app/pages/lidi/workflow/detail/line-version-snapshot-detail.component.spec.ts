@@ -37,8 +37,8 @@ import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { NgOptimizedImage } from '@angular/common';
-import {DateRangeComponent} from "../../../../core/form-components/date-range/date-range.component";
-import {DateIconComponent} from "../../../../core/form-components/date-icon/date-icon.component";
+import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
+import { DateIconComponent } from '../../../../core/form-components/date-icon/date-icon.component';
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -55,7 +55,7 @@ const lineVersionSnapsot: LineVersionSnapshot = {
   workflowId: 1,
   workflowStatus: 'ADDED',
   shortNumber: 'short',
-  lineConcessionType: 'LINE_OF_A_TERRITORIAL_CONCESSION',
+  lineConcessionType: 'LINE_OF_A_ZONE_CONCESSION',
   offerCategory: 'ASC',
 };
 
