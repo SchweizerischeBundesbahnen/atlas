@@ -15,15 +15,34 @@
 - [Development](#development-1)
   * [Spring Batch](#spring-batch)
   * [Multiple DataSources](#multiple-datasources)
+  * [How to export to Amazon S3](#how-to-export-to-amazon-s3)
+    + [Add base-atlas dependency](#add-base-atlas-dependency)
+  * [Configure Amazon Client](#configure-amazon-client)
+    + [Add Amazon Client Properties](#add-amazon-client-properties)
+    + [Configure Amazon Client Secrets Chart](#configure-amazon-client-secrets-chart)
+    + [Add the Secrets to Open Shift](#add-the-secrets-to-open-shift)
+    + [Configure Client](#configure-client)
+    + [Configure beans](#configure-beans)
+    + [Upload the file](#upload-the-file)
 - [Jobs](#jobs)
-  * [Export ServicePointVersions](#export-servicepointversions)
-  * [Export TrafficPointElementVersions](#export-trafficpointelementversions)
-  * [Export LoadingPointVersions](#export-loadingpointversions)
-  * [Export StopPointVersions](#export-stoppointversions)
-  * [Export PlatformVersion](#export-platformversion)
-  * [Export ReferencePointVersion](#export-referencepointversion)
-  * [Export ContactPointVersion](#export-contactpointversion)
-  * [Export Toilet](#export-toilet)
+  * [Exports for Service Point Directory](#exports-for-service-point-directory)
+    + [Export Service Point Version](#export-service-point-version)
+    + [Export Traffic Point Element Version](#export-traffic-point-element-version)
+    + [Export Loading Point Version](#export-loading-point-version)
+  * [Export PRM Directory](#export-prm-directory)
+    + [Export Stop Point Version](#export-stop-point-version)
+    + [Export Platform Version](#export-platform-version)
+    + [Export Reference Point Version](#export-reference-point-version)
+    + [Export Contact Point Version](#export-contact-point-version)
+    + [Export Toilet](#export-toilet)
+    + [Export Relation](#export-relation)
+  * [Export Business Organisation Directory](#export-business-organisation-directory)
+    + [Export Business Organisation](#export-business-organisation)
+    + [Export Transport Company](#export-transport-company)
+  * [Export Line Directory](#export-line-directory)
+    + [Export Lines](#export-lines)
+    + [Export Subline](#export-subline)
+    + [Export Timetable Field Number](#export-timetable-field-number)
   * [Jobs Recovery](#jobs-recovery)
 - [Tech Stack](#tech-stack)
 
@@ -77,7 +96,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Project Infrastructure
 
-* Tekton : https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas
+* Tekton: https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas
 * Sonarqube: https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas&branch=master
 * JFrog / Artifactory
     * Maven repository: https://bin.sbb.ch/ui/repos/tree/General/atlas.mvn
@@ -104,55 +123,101 @@ We use
 1. Batch DB
 2. ServicePoint DB
 
+### How to export to Amazon S3
+
+#### Add base-atlas dependency
+
+In order to be able to export files to [SBB Amazon S3](../base-atlas/documentation/amazon/README.md) you have to add this
+library to your module:
+
+~~~kotlin
+implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
+implementation(project(":base-atlas"))
+~~~
+
+### Configure Amazon Client
+
+#### Add Amazon Client Properties
+
+~~~
+amazon:
+  accessKey: ${AMAZON_S3_ACCESS_KEY}
+  secretKey: ${AMAZON_S3_SECRET_KEY}
+  region: "eu-central-1"
+  bucketName: "atlas-data-export-dev-dev"
+  objectExpirationDays: 30
+~~~
+
+#### Configure Amazon Client Secrets Chart
+
+You have to define in the **Chart template** the following properties:
+
+~~~
+- name: AMAZON_S3_ACCESS_KEY
+  valueFrom:
+    secretKeyRef:
+        name: amazon-client-{{ .Values.YOUR-APPLICATION.name }}
+        key: amazon-access-key
+- name: AMAZON_S3_SECRET_KEY
+  valueFrom:
+    secretKeyRef:
+        name: amazon-client-{{ .Values.YOUR-APPLICATION.name }}
+        key: amazon-secret-key
+~~~
+
+#### Add the Secrets to Open Shift
+
+Remember to store the secrets to our Open Shift for every environment.
+
+#### Configure Client
+
+See [AmazonConfig.java](/src/main/java/ch/sbb/exportservice/config/AmazonConfig.java)
+
+#### Configure beans
+
+Configure `FileService` bean:
+
+~~~java
+@Bean
+public FileService fileService() {
+  return new FileServiceImpl();
+}
+~~~
+
+#### Upload the file
+
+For a file upload example see [UploadJsonFileTaskletV2.java](/src/main/java/ch/sbb/exportservice/tasklet/upload/UploadJsonFileTaskletV2.java).
+
 ## Jobs
 
-### Export ServicePointVersions
+### Exports for Service Point Directory
 
-The
-export [ServicePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ServicePointVersionExportBatchConfig.java)
+#### Export Service Point Version
+
+The export [ServicePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/sepodi/servicepoint/batch/ServicePointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ServicePointVersion](src/main/java/ch/sbb/exportservice/entity/ServicePointVersion.java) data from ServicePoint
-  dataSource
+* read [ServicePointVersion](src/main/java/ch/sbb/exportservice/job/sepodi/servicepoint/entity/ServicePointVersion.java) data from ServicePoint dataSource
 * generate zipped CSV and gzipped JSON Files based
-  on [ExportType.java](src/main/java/ch/sbb/exportservice/model/SePoDiExportType.java):
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
         * world
-        * swiss-only
+        * swiss
     * full
         * world
-        * swiss-only
+        * swiss
     * future-timetable
         * world
-        * swiss-only
+        * swiss
 
-### Export TrafficPointElementVersions
+#### Export Traffic Point Element Version
 
-The
-export [TrafficPointElementVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/TrafficPointElementVersionExportBatchConfig.java)
+The export [TrafficPointElementVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/sepodi/trafficpoint/batch/TrafficPointElementVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [TrafficPointElementVersions](src/main/java/ch/sbb/exportservice/entity/TrafficPointElementVersion.java) data
-  from ServicePoint dataSource
+* read [TrafficPointElementVersion](src/main/java/ch/sbb/exportservice/job/sepodi/trafficpoint/entity/TrafficPointElementVersion.java) data from ServicePoint dataSource
 * generate zipped CSV and gzipped JSON Files based
-  on [ExportType.java](src/main/java/ch/sbb/exportservice/model/SePoDiExportType.java):
-    * actual-date
-        * world
-    * full
-        * world
-    * future-timetable
-        * world
-
-### Export LoadingPointVersions
-
-The
-export [LoadingPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/LoadingPointVersionExportBatchConfig.java)
-Job is responsible to:
-
-* read [LoadingPointVersions](src/main/java/ch/sbb/exportservice/entity/LoadingPointVersion.java) data
-  from ServicePoint dataSource
-* generate zipped CSV and gzipped JSON Files based
-  on [ExportType.java](src/main/java/ch/sbb/exportservice/model/SePoDiExportType.java):
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
         * world
     * full
@@ -160,81 +225,163 @@ Job is responsible to:
     * future-timetable
         * world
 
-### Export StopPointVersions
+#### Export Loading Point Version
 
-The
-export [StopPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/StopPointVersionExportBatchConfig.java)
+The export [LoadingPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/sepodi/loadingpoint/batch/LoadingPointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [StopPointVersions](src/main/java/ch/sbb/exportservice/entity/StopPointVersion.java) data
-  from Prm dataSource
+* read [LoadingPointVersion](src/main/java/ch/sbb/exportservice/job/sepodi/loadingpoint/entity/LoadingPointVersion.java) data from ServicePoint dataSource
 * generate zipped CSV and gzipped JSON Files based
-  on [PrmExportType.java](src/main/java/ch/sbb/exportservice/model/PrmExportType.java):
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
+    * actual-date
+        * world
+    * full
+        * world
+    * future-timetable
+        * world
+
+### Export PRM Directory
+
+#### Export Stop Point Version
+
+The export [StopPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/stoppoint/batch/StopPointVersionExportBatchConfig.java)
+Job is responsible to:
+
+* read [StopPointVersion](src/main/java/ch/sbb/exportservice/job/prm/stoppoint/entity/StopPointVersion.java) data from Prm dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
     * full
     * future-timetable
 
-### Export PlatformVersion
+#### Export Platform Version
 
-The
-export [PlatformVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/PlatformVersionExportBatchConfig.java)
+The export [PlatformVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/platform/batch/PlatformVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [PlatformVersion](src/main/java/ch/sbb/exportservice/entity/PlatformVersion.java) data
-  from Prm dataSource
+* read [PlatformVersion](src/main/java/ch/sbb/exportservice/job/prm/platform/entity/PlatformVersion.java) data from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
-  on [PrmExportType.java](src/main/java/ch/sbb/exportservice/model/PrmExportType.java):
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
     * full
     * future-timetable
 
-### Export ReferencePointVersion
+#### Export Reference Point Version
 
-The
-export [ReferencePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ReferencePointVersionExportBatchConfig.java)
+The export [ReferencePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/referencepoint/batch/ReferencePointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ReferencePointVersion](src/main/java/ch/sbb/exportservice/entity/ReferencePointVersion.java) data
-  from Prm dataSource
+* read [ReferencePointVersion](src/main/java/ch/sbb/exportservice/job/prm/referencepoint/entity/ReferencePointVersion.java) data from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
-  on [PrmExportType.java](src/main/java/ch/sbb/exportservice/model/PrmExportType.java):
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
     * full
     * future-timetable
 
-### Export ContactPointVersion
+#### Export Contact Point Version
 
-The
-export [ContactPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ContactPointVersionExportBatchConfig.java)
+The export [ContactPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/contactpoint/batch/ContactPointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ContactPointVersion](src/main/java/ch/sbb/exportservice/entity/ContactPointVersion.java) data
-  from Prm dataSource
+* read [ContactPointVersion](src/main/java/ch/sbb/exportservice/job/prm/contactpoint/entity/ContactPointVersion.java) data from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
-  on [PrmExportType.java](src/main/java/ch/sbb/exportservice/model/PrmExportType.java):
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
     * full
     * future-timetable
 
-### Export Toilet
+#### Export Toilet
 
-The
-export [ToiletVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ToiletVersionExportBatchConfig.java)
+The export [ToiletVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/toilet/batch/ToiletVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ToiletVersion](src/main/java/ch/sbb/exportservice/entity/ToiletVersion.java) data
-  from Prm dataSource
+* read [ToiletVersion](src/main/java/ch/sbb/exportservice/job/prm/toilet/entity/ToiletVersion.java) data from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
-  on [PrmExportType.java](src/main/java/ch/sbb/exportservice/model/PrmExportType.java):
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
     * full
     * future-timetable
+
+#### Export Relation
+
+The export [RelationVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/relation/batch/RelationVersionExportBatchConfig.java)
+Job is responsible to:
+
+* read [RelationVersion](src/main/java/ch/sbb/exportservice/job/prm/relation/entity/RelationVersion.java) data from Prm dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
+  * actual-date
+  * full
+  * future-timetable
+
+### Export Business Organisation Directory
+
+#### Export Business Organisation
+
+The export [BusinessOrganisationExportBatchConfig](src/main/java/ch/sbb/exportservice/job/bodi/businessorganisation/batch/BusinessOrganisationExportBatchConfig.java)
+Job is responsible to:
+
+* read [BusinessOrganisation](src/main/java/ch/sbb/exportservice/job/bodi/businessorganisation/entity/BusinessOrganisation.java) data from BoDi dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
+  * actual-date
+  * full
+  * future-timetable
+
+#### Export Transport Company
+
+The export [TransportCompanyExportBatchConfig](src/main/java/ch/sbb/exportservice/job/bodi/transportcompany/batch/TransportCompanyExportBatchConfig.java)
+Job is responsible to:
+
+* read [TransportCompany](src/main/java/ch/sbb/exportservice/job/bodi/transportcompany/entity/TransportCompany.java) data from BoDi dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
+  * actual-date
+  * full
+  * future-timetable
+
+### Export Line Directory
+
+#### Export Lines
+
+The export [LineExportBatchConfig](src/main/java/ch/sbb/exportservice/job/lidi/line/batch/LineExportBatchConfig.java)
+Job is responsible to:
+
+* read [Line](src/main/java/ch/sbb/exportservice/job/lidi/line/entity/Line.java) data from LiDi dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
+  * actual-date
+  * full
+  * future-timetable
+
+#### Export Subline
+
+The export [SublineExportBatchConfig](src/main/java/ch/sbb/exportservice/job/lidi/subline/batch/SublineExportBatchConfig.java)
+Job is responsible to:
+
+* read [Subline](src/main/java/ch/sbb/exportservice/job/lidi/subline/entity/Subline.java) data from LiDi dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
+  * actual-date
+  * full
+  * future-timetable
+
+#### Export Timetable Field Number
+
+The export [TimetableFieldNumberExportBatchConfig](src/main/java/ch/sbb/exportservice/job/lidi/ttfn/batch/TimetableFieldNumberExportBatchConfig.java)
+Job is responsible to:
+
+* read [TimetableFieldNumber](src/main/java/ch/sbb/exportservice/job/lidi/ttfn/entity/TimetableFieldNumber.java) data from LiDi dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
+  * actual-date
+  * full
+  * future-timetable
 
 ### Jobs Recovery
 
-* a retry system is configured on the step level when certain exception are thrown (
-  see [StepUtils.java](src/main/java/ch/sbb/exportservice/utils/StepUtils.java))
-* [RecoveryJobsRunner.java](src/main/java/ch/sbb/exportservice/recovery/RecoveryJobsRunner.java) checks at startup if there are
+* a retry system is configured on the step level when certain exception are thrown (see [StepUtil](src/main/java/ch/sbb/exportservice/util/StepUtil.java))
+* [RecoveryJobsRunner](src/main/java/ch/sbb/exportservice/recovery/RecoveryJobsRunner.java) checks at startup if there are
   any unfinished jobs or if all jobs have been run. In case
   there are incomplete jobs or not all jobs have been run all jobs are run again.
 * If a job has been completed unsuccessfully an email notification is sent to TechSupport-ATLAS@sbb.ch

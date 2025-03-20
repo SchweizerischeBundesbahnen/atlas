@@ -1,7 +1,5 @@
 package ch.sbb.exportservice;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.AtlasApiConstants;
@@ -17,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +66,7 @@ class AmazonServiceIntegrationTest {
   void shouldUploadZippedCsvCorrectly() throws IOException {
     File file = getMinimalServicePointCsvFile();
 
-    URL url = amazonService.putZipFile(AmazonBucket.EXPORT, file, INTEGRATION_TEST_DIR);
+    URL url = amazonService.putZipFileCleanupBoth(AmazonBucket.EXPORT, file, INTEGRATION_TEST_DIR);
     InputStreamResource inputStreamResource = amazonService.pullFileAsStream(AmazonBucket.EXPORT,
         INTEGRATION_TEST_DIR + "/" + CSV_FILE + ".zip");
     //check is a zip file

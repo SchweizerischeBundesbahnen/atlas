@@ -28,7 +28,3 @@ see https://docs.aws.amazon.com/AmazonS3/latest/userguide/service_code_examples.
 
 For more information please contact us:
 +++<a href="mailto:TechSupport-ATLAS@sbb.ch">TechSupport-ATLAS@sbb.ch</a>+++
-
-
-        
-   
