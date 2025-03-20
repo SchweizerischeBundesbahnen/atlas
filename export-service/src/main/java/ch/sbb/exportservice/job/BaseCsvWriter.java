@@ -8,21 +8,19 @@ import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.writer.AtlasWrapperFieldExtractor;
 import ch.sbb.exportservice.writer.CsvFlatFileHeaderCallback;
 import java.nio.charset.StandardCharsets;
+import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.stereotype.Component;
 
-@Component
+@RequiredArgsConstructor
 public abstract class BaseCsvWriter<T> {
-
-  protected abstract String[] getCsvHeader();
 
   private static final String DELIMITER = ";";
 
-  @Autowired
-  private FileService fileService;
+  protected abstract String[] getCsvHeader();
+
+  private final FileService fileService;
 
   public FlatFileItemWriter<T> csvWriter(ExportObjectV2 exportType, ExportTypeV2 exportFileName) {
     FlatFileItemWriter<T> writer = new FlatFileItemWriter<>();

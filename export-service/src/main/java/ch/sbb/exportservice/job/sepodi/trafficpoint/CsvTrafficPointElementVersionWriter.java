@@ -1,11 +1,16 @@
 package ch.sbb.exportservice.job.sepodi.trafficpoint;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.job.BaseCsvWriter;
 import ch.sbb.exportservice.job.sepodi.trafficpoint.TrafficPointVersionCsvModel.Fields;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CsvTrafficPointElementVersionWriter extends BaseCsvWriter<TrafficPointVersionCsvModel> {
+
+  CsvTrafficPointElementVersionWriter(FileService fileService) {
+    super(fileService);
+  }
 
   @Override
   protected String[] getCsvHeader() {
