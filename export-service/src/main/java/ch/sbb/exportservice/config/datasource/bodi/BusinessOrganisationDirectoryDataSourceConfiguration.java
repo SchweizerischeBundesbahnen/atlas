@@ -13,14 +13,14 @@ public class BusinessOrganisationDirectoryDataSourceConfiguration {
 
   @Bean
   @ConfigurationProperties("spring.datasource.bodi")
-  public DataSourceProperties transportCompanyDataSourceProperties() {
+  public DataSourceProperties businessOrganisationDirectoryDataSourceProperties() {
     return new DataSourceProperties();
   }
 
   @Bean(name = "businessOrganisationDirectoryDataSource")
   @ConfigurationProperties("spring.datasource.bodi.hikari")
   public DataSource businessOrganisationDirectoryDataSource() {
-    return transportCompanyDataSourceProperties()
+    return businessOrganisationDirectoryDataSourceProperties()
         .initializeDataSourceBuilder()
         .type(HikariDataSource.class)
         .build();

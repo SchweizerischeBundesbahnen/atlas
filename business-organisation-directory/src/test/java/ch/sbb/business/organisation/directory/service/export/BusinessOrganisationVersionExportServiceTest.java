@@ -1,5 +1,6 @@
 package ch.sbb.business.organisation.directory.service.export;
 
+import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionExportRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
@@ -8,7 +9,6 @@ import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.exception.ExportException;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationExportVersionWithTuInfo;
-import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionExportRepository;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
- class BusinessOrganisationVersionExportServiceTest {
+class BusinessOrganisationVersionExportServiceTest {
 
   @Mock
   private BusinessOrganisationVersionExportRepository repository;
@@ -34,13 +34,13 @@ import org.mockito.MockitoAnnotations;
   private BusinessOrganisationVersionExportService exportService;
 
   @BeforeEach
-   void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     exportService = new BusinessOrganisationVersionExportService(fileService, amazonService, repository);
   }
 
   @Test
-   void shouldGetFullVersionsCsv() throws IOException {
+  void shouldGetFullVersionsCsv() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
         BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -66,20 +66,20 @@ import org.mockito.MockitoAnnotations;
   }
 
   @Test
-   void shouldGetFullVersionsJson() throws IOException {
+  void shouldGetFullVersionsJson() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
-            BusinessOrganisationExportVersionWithTuInfo.builder()
-                    .validFrom(LocalDate.of(2021, 1, 1))
-                    .validTo(LocalDate.of(2021, 12, 31))
-                    .sboid("ch:1:sboid:100001")
-                    .build();
+        BusinessOrganisationExportVersionWithTuInfo.builder()
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 12, 31))
+            .sboid("ch:1:sboid:100001")
+            .build();
     BusinessOrganisationExportVersionWithTuInfo version2 =
-            BusinessOrganisationExportVersionWithTuInfo.builder()
-                    .validFrom(LocalDate.of(2022, 1, 1))
-                    .validTo(LocalDate.of(2022, 12, 31))
-                    .sboid("ch:1:sboid:100000")
-                    .build();
+        BusinessOrganisationExportVersionWithTuInfo.builder()
+            .validFrom(LocalDate.of(2022, 1, 1))
+            .validTo(LocalDate.of(2022, 12, 31))
+            .sboid("ch:1:sboid:100000")
+            .build();
     List<BusinessOrganisationExportVersionWithTuInfo> versions = List.of(version1, version2);
     when(repository.findAll()).thenReturn(versions);
     //when
@@ -92,7 +92,7 @@ import org.mockito.MockitoAnnotations;
   }
 
   @Test
-   void shouldGetActualVersionsCsv() throws IOException {
+  void shouldGetActualVersionsCsv() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
         BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -117,19 +117,19 @@ import org.mockito.MockitoAnnotations;
   }
 
   @Test
-   void shouldGetActualVersionsJson() throws IOException {
+  void shouldGetActualVersionsJson() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
-            BusinessOrganisationExportVersionWithTuInfo.builder()
-                    .validFrom(LocalDate.of(2021, 1, 1))
-                    .validTo(LocalDate.of(2021, 12, 31))
-                    .sboid("ch:1:sboid:100001")
-                    .build();
+        BusinessOrganisationExportVersionWithTuInfo.builder()
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 12, 31))
+            .sboid("ch:1:sboid:100001")
+            .build();
     BusinessOrganisationExportVersionWithTuInfo version2 =
-            BusinessOrganisationExportVersionWithTuInfo.builder().validFrom(LocalDate.of(2022, 1, 1))
-                    .validTo(LocalDate.of(2022, 12, 31))
-                    .sboid("ch:1:sboid:100000")
-                    .build();
+        BusinessOrganisationExportVersionWithTuInfo.builder().validFrom(LocalDate.of(2022, 1, 1))
+            .validTo(LocalDate.of(2022, 12, 31))
+            .sboid("ch:1:sboid:100000")
+            .build();
     List<BusinessOrganisationExportVersionWithTuInfo> versions = List.of(version1, version2);
     when(repository.findVersionsValidOn(LocalDate.now())).thenReturn(versions);
     //when
@@ -142,7 +142,7 @@ import org.mockito.MockitoAnnotations;
   }
 
   @Test
-   void shouldGetFutureTimetableVersionsCsv() throws IOException {
+  void shouldGetFutureTimetableVersionsCsv() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
         BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -168,20 +168,20 @@ import org.mockito.MockitoAnnotations;
   }
 
   @Test
-   void shouldGetFutureTimetableVersionsJson() throws IOException {
+  void shouldGetFutureTimetableVersionsJson() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
-            BusinessOrganisationExportVersionWithTuInfo.builder()
-                    .validFrom(LocalDate.of(2021, 1, 1))
-                    .validTo(LocalDate.of(2021, 12, 31))
-                    .sboid("ch:1:sboid:100001")
-                    .build();
+        BusinessOrganisationExportVersionWithTuInfo.builder()
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 12, 31))
+            .sboid("ch:1:sboid:100001")
+            .build();
     BusinessOrganisationExportVersionWithTuInfo version2 =
-            BusinessOrganisationExportVersionWithTuInfo.builder()
-                    .validFrom(LocalDate.of(2022, 1, 1))
-                    .validTo(LocalDate.of(2022, 12, 31))
-                    .sboid("ch:1:sboid:100000")
-                    .build();
+        BusinessOrganisationExportVersionWithTuInfo.builder()
+            .validFrom(LocalDate.of(2022, 1, 1))
+            .validTo(LocalDate.of(2022, 12, 31))
+            .sboid("ch:1:sboid:100000")
+            .build();
     List<BusinessOrganisationExportVersionWithTuInfo> versions = List.of(version1, version2);
     when(repository.findVersionsValidOn(LocalDate.now())).thenReturn(versions);
     //when
