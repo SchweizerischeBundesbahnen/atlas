@@ -1,11 +1,13 @@
 package ch.sbb.exportservice.integration.sql;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.exportservice.job.sepodi.servicepoint.ServicePointVersion;
+import ch.sbb.exportservice.job.sepodi.servicepoint.entity.ServicePointVersion;
+import ch.sbb.exportservice.job.sepodi.servicepoint.sql.ServicePointVersionRowMapper;
+import ch.sbb.exportservice.job.sepodi.servicepoint.sql.ServicePointVersionSqlQueryUtil;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.job.sepodi.servicepoint.ServicePointVersionRowMapper;
-import ch.sbb.exportservice.job.sepodi.servicepoint.ServicePointVersionSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +15,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
