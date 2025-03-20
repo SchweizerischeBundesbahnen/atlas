@@ -203,7 +203,9 @@ describe('TrafficPointElementsDetailComponent', () => {
 
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     return TestBed.configureTestingModule({
-    imports: [AppTestingModule, TrafficPointElementsDetailComponent,
+      imports: [
+        AppTestingModule,
+        TrafficPointElementsDetailComponent,
         DisplayDatePipe,
         SplitServicePointNumberPipe,
         MockAtlasButtonComponent,
@@ -224,20 +226,24 @@ describe('TrafficPointElementsDetailComponent', () => {
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-        MockNavigationSepodiPrmComponent],
-    providers: [
+        MockNavigationSepodiPrmComponent,
+      ],
+      providers: [
         { provide: AuthService, useValue: authService },
         { provide: TrafficPointMapService, useValue: trafficPointMapService },
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: MapService, useValue: mapService },
-        { provide: CoordinateTransformationService, useValue: coordinateTransformationService },
+        {
+          provide: CoordinateTransformationService,
+          useValue: coordinateTransformationService,
+        },
         { provide: ServicePointsService, useValue: servicePointService },
         { provide: TrafficPointElementsService, useValue: trafficPointService },
         { provide: DialogService, useValue: dialogService },
         { provide: Router, useValue: routerSpy },
         SplitServicePointNumberPipe,
         TranslatePipe,
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
   }
 });

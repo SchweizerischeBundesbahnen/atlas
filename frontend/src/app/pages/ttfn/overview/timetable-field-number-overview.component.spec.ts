@@ -1,14 +1,22 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TimetableFieldNumberOverviewComponent} from './timetable-field-number-overview.component';
-import {Observable, of} from 'rxjs';
-import {ContainerTimetableFieldNumber, TimetableFieldNumbersService} from '../../../api';
-import {AppTestingModule} from '../../../app.testing.module';
-import {TranslatePipe} from '@ngx-translate/core';
-import {AtlasButtonComponent} from '../../../core/components/button/atlas-button.component';
-import {adminPermissionServiceMock, MockTableComponent} from '../../../app.testing.mocks';
-import {DEFAULT_STATUS_SELECTION} from '../../../core/constants/status.choices';
-import {PermissionService} from "../../../core/auth/permission/permission.service";
+import { TimetableFieldNumberOverviewComponent } from './timetable-field-number-overview.component';
+import { Observable, of, Subject } from 'rxjs';
+import {
+  ContainerTimetableFieldNumber,
+  TimetableFieldNumbersService,
+} from '../../../api';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import {
+  adminPermissionServiceMock,
+  MockAtlasButtonComponent,
+  MockTableComponent,
+} from '../../../app.testing.mocks';
+import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
+import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { ActivatedRoute } from '@angular/router';
+import { TableComponent } from '../../../core/components/table/table.component';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
@@ -34,33 +42,41 @@ describe('TimetableFieldNumberOverviewComponent', () => {
 
   let timetableFieldNumberServiceSpy: SpyObj<TimetableFieldNumbersService>;
 
-  beforeEach(() => {
-    timetableFieldNumberServiceSpy = jasmine.createSpyObj<TimetableFieldNumbersService>(
-      'TimetableFieldNumbersServiceSpy',
-      ['getOverview']
-    );
+  beforeEach(async () => {
+    timetableFieldNumberServiceSpy =
+      jasmine.createSpyObj<TimetableFieldNumbersService>(
+        'TimetableFieldNumbersServiceSpy',
+        ['getOverview']
+      );
     (
       timetableFieldNumberServiceSpy.getOverview as Spy<
         () => Observable<ContainerTimetableFieldNumber>
       >
     ).and.returnValue(of(timetableFieldNumberContainer));
 
-    TestBed.configureTestingModule({
-    imports: [AppTestingModule, TimetableFieldNumberOverviewComponent,
-        MockTableComponent,
-        AtlasButtonComponent],
-    providers: [
+    await TestBed.configureTestingModule({
+      imports: [
+        TimetableFieldNumberOverviewComponent,
+        TranslateModule.forRoot(),
+      ],
+      providers: [
         {
-            provide: TimetableFieldNumbersService,
-            useValue: timetableFieldNumberServiceSpy,
+          provide: TimetableFieldNumbersService,
+          useValue: timetableFieldNumberServiceSpy,
         },
         TranslatePipe,
         {
-            provide: PermissionService,
-            useValue: adminPermissionServiceMock,
+          provide: PermissionService,
+          useValue: adminPermissionServiceMock,
         },
-    ],
-}).compileComponents();
+        { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
+      ],
+    })
+      .overrideComponent(TimetableFieldNumberOverviewComponent, {
+        remove: { imports: [AtlasButtonComponent, TableComponent] },
+        add: { imports: [MockAtlasButtonComponent, MockTableComponent] },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(TimetableFieldNumberOverviewComponent);
     component = fixture.componentInstance;
