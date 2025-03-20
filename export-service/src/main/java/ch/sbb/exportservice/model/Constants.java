@@ -2,6 +2,7 @@ package ch.sbb.exportservice.model;
 
 import lombok.experimental.UtilityClass;
 
+@Deprecated(forRemoval = true)
 @UtilityClass
 public class Constants {
 

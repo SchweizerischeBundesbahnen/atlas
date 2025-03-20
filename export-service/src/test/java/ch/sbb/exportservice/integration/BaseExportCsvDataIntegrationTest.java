@@ -1,11 +1,10 @@
 package ch.sbb.exportservice.integration;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
-
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
-import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
-import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
+import ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel;
+import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;
+import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,11 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 public abstract class BaseExportCsvDataIntegrationTest {
 
@@ -26,15 +24,14 @@ public abstract class BaseExportCsvDataIntegrationTest {
   protected JobLauncher jobLauncher;
 
   @Autowired
-  @Qualifier(EXPORT_SERVICE_POINT_CSV_JOB_NAME)
-  protected Job exportServicePointCsvJob;
+  protected ExportServicePointJobService exportServicePointJobService;
 
-  @MockBean
+  @MockitoBean
   protected AmazonService amazonService;
 
-  @MockBean
-  @Qualifier("fileCsvDeletingTasklet")
-  protected FileCsvDeletingTasklet fileCsvDeletingTasklet;
+  @MockitoBean
+  @Qualifier("deleteServicePointCsvFileTaskletV1")
+  protected DeleteCsvFileTasklet deleteCsvFileTasklet;
 
   @Captor
   protected ArgumentCaptor<File> fileArgumentCaptor;

@@ -1,10 +1,8 @@
 package ch.sbb.exportservice.writer;
 
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.ArrayList;
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class AtlasWrapperFieldExtractorTest {
