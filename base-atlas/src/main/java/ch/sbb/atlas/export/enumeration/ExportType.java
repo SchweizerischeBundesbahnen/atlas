@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
+@Deprecated(forRemoval = true)
 public enum ExportType implements ExportTypeBase {
 
   FULL("full", "full_"),

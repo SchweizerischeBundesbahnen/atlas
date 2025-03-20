@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
     "paymentType", "number", "businessOrganisation", "alternativeName", "combinationName",
     "longName", "colorFontRgb", "colorBackRgb", "colorFontCmyk", "colorBackCmyk", "icon",
     "description", "comment", "creationTime", "editionTime"})
+@Deprecated(forRemoval = true)
 public class LineVersionCsvModel implements VersionCsvModel {
 
   @JsonProperty("slnid")
