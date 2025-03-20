@@ -194,11 +194,10 @@ For a file upload example see [UploadJsonFileTaskletV2.java](/src/main/java/ch/s
 
 #### Export Service Point Version
 
-The export [ServicePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/servicepoint/ServicePointVersionExportBatchConfig.java)
+The export [ServicePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/sepodi/servicepoint/batch/ServicePointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ServicePointVersion](src/main/java/ch/sbb/exportservice/job/servicepoint/ServicePointVersion.java) data from ServicePoint
-  dataSource
+* read [ServicePointVersion](src/main/java/ch/sbb/exportservice/job/sepodi/servicepoint/entity/ServicePointVersion.java) data from ServicePoint dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
@@ -213,11 +212,10 @@ Job is responsible to:
 
 #### Export Traffic Point Element Version
 
-The export [TrafficPointElementVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/trafficpoint/TrafficPointElementVersionExportBatchConfig.java)
+The export [TrafficPointElementVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/sepodi/trafficpoint/batch/TrafficPointElementVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [TrafficPointElementVersions](src/main/java/ch/sbb/exportservice/job/trafficpoint/TrafficPointElementVersion.java) data
-  from ServicePoint dataSource
+* read [TrafficPointElementVersion](src/main/java/ch/sbb/exportservice/job/sepodi/trafficpoint/entity/TrafficPointElementVersion.java) data from ServicePoint dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
@@ -229,11 +227,10 @@ Job is responsible to:
 
 #### Export Loading Point Version
 
-The export [LoadingPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/loadingpoint/LoadingPointVersionExportBatchConfig.java)
+The export [LoadingPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/sepodi/loadingpoint/batch/LoadingPointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [LoadingPointVersions](src/main/java/ch/sbb/exportservice/job/loadingpoint/LoadingPointVersion.java) data
-  from ServicePoint dataSource
+* read [LoadingPointVersion](src/main/java/ch/sbb/exportservice/job/sepodi/loadingpoint/entity/LoadingPointVersion.java) data from ServicePoint dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
@@ -247,11 +244,10 @@ Job is responsible to:
 
 #### Export Stop Point Version
 
-The export [StopPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/stoppoint/StopPointVersionExportBatchConfig.java)
+The export [StopPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/stoppoint/batch/StopPointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [StopPointVersions](src/main/java/ch/sbb/exportservice/job/stoppoint/StopPointVersion.java) data
-  from Prm dataSource
+* read [StopPointVersion](src/main/java/ch/sbb/exportservice/job/prm/stoppoint/entity/StopPointVersion.java) data from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
@@ -260,11 +256,10 @@ Job is responsible to:
 
 #### Export Platform Version
 
-The export [PlatformVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/platform/PlatformVersionExportBatchConfig.java)
+The export [PlatformVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/platform/batch/PlatformVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [PlatformVersion](src/main/java/ch/sbb/exportservice/job/platform/PlatformVersion.java) data
-  from Prm dataSource
+* read [PlatformVersion](src/main/java/ch/sbb/exportservice/job/prm/platform/entity/PlatformVersion.java) data from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
@@ -273,11 +268,10 @@ Job is responsible to:
 
 #### Export Reference Point Version
 
-The export [ReferencePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/referencepoint/ReferencePointVersionExportBatchConfig.java)
+The export [ReferencePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/referencepoint/batch/ReferencePointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ReferencePointVersion](src/main/java/ch/sbb/exportservice/job/referencepoint/ReferencePointVersion.java) data
-  from Prm dataSource
+* read [ReferencePointVersion](src/main/java/ch/sbb/exportservice/job/prm/referencepoint/entity/ReferencePointVersion.java) data from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
@@ -286,11 +280,10 @@ Job is responsible to:
 
 #### Export Contact Point Version
 
-The export [ContactPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/contactpoint/ContactPointVersionExportBatchConfig.java)
+The export [ContactPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/contactpoint/batch/ContactPointVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ContactPointVersion](src/main/java/ch/sbb/exportservice/job/contactpoint/ContactPointVersion.java) data
-  from Prm dataSource
+* read [ContactPointVersion](src/main/java/ch/sbb/exportservice/job/prm/contactpoint/entity/ContactPointVersion.java) data from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
@@ -299,11 +292,10 @@ Job is responsible to:
 
 #### Export Toilet
 
-The export [ToiletVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/toilet/ToiletVersionExportBatchConfig.java)
+The export [ToiletVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/toilet/batch/ToiletVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [ToiletVersion](src/main/java/ch/sbb/exportservice/job/toilet/ToiletVersion.java) data
-  from Prm dataSource
+* read [ToiletVersion](src/main/java/ch/sbb/exportservice/job/prm/toilet/entity/ToiletVersion.java) data from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
     * actual-date
@@ -312,11 +304,10 @@ Job is responsible to:
 
 #### Export Relation
 
-The export [RelationVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/relation/RelationVersionExportBatchConfig.java)
+The export [RelationVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/job/prm/relation/batch/RelationVersionExportBatchConfig.java)
 Job is responsible to:
 
-* read [RelationVersion](src/main/java/ch/sbb/exportservice/job/relation/RelationVersion.java) data
-  from Prm dataSource
+* read [RelationVersion](src/main/java/ch/sbb/exportservice/job/prm/relation/entity/RelationVersion.java) data from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
   * actual-date
@@ -327,11 +318,10 @@ Job is responsible to:
 
 #### Export Business Organisation
 
-The export [BusinessOrganisationExportBatchConfig](src/main/java/ch/sbb/exportservice/job/businessorganisation/BusinessOrganisationExportBatchConfig.java)
+The export [BusinessOrganisationExportBatchConfig](src/main/java/ch/sbb/exportservice/job/bodi/businessorganisation/batch/BusinessOrganisationExportBatchConfig.java)
 Job is responsible to:
 
-* read [BusinessOrganisation](src/main/java/ch/sbb/exportservice/job/businessorganisation/BusinessOrganisation.java) data
-  from BoDi dataSource
+* read [BusinessOrganisation](src/main/java/ch/sbb/exportservice/job/bodi/businessorganisation/entity/BusinessOrganisation.java) data from BoDi dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
   * actual-date
@@ -340,11 +330,10 @@ Job is responsible to:
 
 #### Export Transport Company
 
-The export [TransportCompanyExportBatchConfig](src/main/java/ch/sbb/exportservice/job/transportcompany/TransportCompanyExportBatchConfig.java)
+The export [TransportCompanyExportBatchConfig](src/main/java/ch/sbb/exportservice/job/bodi/transportcompany/batch/TransportCompanyExportBatchConfig.java)
 Job is responsible to:
 
-* read [TransportCompany](src/main/java/ch/sbb/exportservice/job/transportcompany/TransportCompany.java) data
-  from BoDi dataSource
+* read [TransportCompany](src/main/java/ch/sbb/exportservice/job/bodi/transportcompany/entity/TransportCompany.java) data from BoDi dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
   * actual-date
@@ -355,11 +344,10 @@ Job is responsible to:
 
 #### Export Lines
 
-The export [LineExportBatchConfig](src/main/java/ch/sbb/exportservice/job/line/LineExportBatchConfig.java)
+The export [LineExportBatchConfig](src/main/java/ch/sbb/exportservice/job/lidi/line/batch/LineExportBatchConfig.java)
 Job is responsible to:
 
-* read [Line](src/main/java/ch/sbb/exportservice/job/line/Line.java) data
-  from LiDi dataSource
+* read [Line](src/main/java/ch/sbb/exportservice/job/lidi/line/entity/Line.java) data from LiDi dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
   * actual-date
@@ -368,11 +356,10 @@ Job is responsible to:
 
 #### Export Subline
 
-The export [SublineExportBatchConfig](src/main/java/ch/sbb/exportservice/job/subline/SublineExportBatchConfig.java)
+The export [SublineExportBatchConfig](src/main/java/ch/sbb/exportservice/job/lidi/subline/batch/SublineExportBatchConfig.java)
 Job is responsible to:
 
-* read [Subline](src/main/java/ch/sbb/exportservice/job/subline/Subline.java) data
-  from LiDi dataSource
+* read [Subline](src/main/java/ch/sbb/exportservice/job/lidi/subline/entity/Subline.java) data from LiDi dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
   * actual-date
@@ -381,11 +368,10 @@ Job is responsible to:
 
 #### Export Timetable Field Number
 
-The export [TimetableFieldNumberExportBatchConfig](src/main/java/ch/sbb/exportservice/job/ttfn/TimetableFieldNumberExportBatchConfig.java)
+The export [TimetableFieldNumberExportBatchConfig](src/main/java/ch/sbb/exportservice/job/lidi/ttfn/batch/TimetableFieldNumberExportBatchConfig.java)
 Job is responsible to:
 
-* read [TimetableFieldNumber](src/main/java/ch/sbb/exportservice/job/ttfn/TimetableFieldNumber.java) data
-  from LiDi dataSource
+* read [TimetableFieldNumber](src/main/java/ch/sbb/exportservice/job/lidi/ttfn/entity/TimetableFieldNumber.java) data from LiDi dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [ExportTypeV2.java](src/main/java/ch/sbb/exportservice/model/ExportTypeV2.java):
   * actual-date
@@ -394,9 +380,8 @@ Job is responsible to:
 
 ### Jobs Recovery
 
-* a retry system is configured on the step level when certain exception are thrown (
-  see [StepUtils.java](src/main/java/ch/sbb/exportservice/util/StepUtils.java))
-* [RecoveryJobsRunner.java](src/main/java/ch/sbb/exportservice/recovery/RecoveryJobsRunner.java) checks at startup if there are
+* a retry system is configured on the step level when certain exception are thrown (see [StepUtil](src/main/java/ch/sbb/exportservice/util/StepUtil.java))
+* [RecoveryJobsRunner](src/main/java/ch/sbb/exportservice/recovery/RecoveryJobsRunner.java) checks at startup if there are
   any unfinished jobs or if all jobs have been run. In case
   there are incomplete jobs or not all jobs have been run all jobs are run again.
 * If a job has been completed unsuccessfully an email notification is sent to TechSupport-ATLAS@sbb.ch
@@ -404,5 +389,3 @@ Job is responsible to:
 ## Tech Stack
 
 See [Tech Stack Documentation](../documentation/tech-stack-service.md)
-
-[//]: # (todo)

@@ -189,13 +189,14 @@ public class AtlasExceptionHandlerTest {
     ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.atlasException(exception);
 
     // Then
-    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(500);
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(404);
   }
 
   @Test
   void shouldHandlePropertyReferenceException() {
     // Given
-    PropertyReferenceException exception = new PropertyReferenceException("id", TypeInformation.of(Long.class), Collections.emptyList());
+    PropertyReferenceException exception = new PropertyReferenceException("id", TypeInformation.of(Long.class),
+        Collections.emptyList());
 
     // When
     ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.propertyReferenceException(exception);
@@ -217,9 +218,9 @@ public class AtlasExceptionHandlerTest {
   }
 
   @Test
-  void shouldHandleNoResourceFoundException () {
+  void shouldHandleNoResourceFoundException() {
     // Given
-    NoResourceFoundException exception = new NoResourceFoundException (HttpMethod.GET, "/resource");
+    NoResourceFoundException exception = new NoResourceFoundException(HttpMethod.GET, "/resource");
 
     // When
     ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.handleNoResourceFoundException(exception);
@@ -229,12 +230,13 @@ public class AtlasExceptionHandlerTest {
   }
 
   @Test
-  void shouldHandleHttpRequestMethodNotSupportedException  () {
+  void shouldHandleHttpRequestMethodNotSupportedException() {
     // Given
-    HttpRequestMethodNotSupportedException  exception = new HttpRequestMethodNotSupportedException("method");
+    HttpRequestMethodNotSupportedException exception = new HttpRequestMethodNotSupportedException("method");
 
     // When
-    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.handleHttpRequestMethodNotSupportedException(exception);
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.handleHttpRequestMethodNotSupportedException(
+        exception);
 
     // Then
     assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(400);
