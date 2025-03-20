@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { EmptyToNullDirective } from './empty-to-null';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { AppTestingModule } from '../../app.testing.module';
 
 @Component({
-    template: ` <input [formControl]="form" emptyToNull /> `,
-    imports: [AppTestingModule]
+  template: ` <input [formControl]="form" emptyToNull /> `,
+  imports: [EmptyToNullDirective, ReactiveFormsModule],
 })
 class TestComponent {
   form = new FormControl();
@@ -22,8 +22,8 @@ describe('EmptyToNullDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-    imports: [AppTestingModule, EmptyToNullDirective, TestComponent],
-}).createComponent(TestComponent);
+      imports: [AppTestingModule, EmptyToNullDirective, TestComponent],
+    }).createComponent(TestComponent);
 
     component = fixture.componentInstance;
 
