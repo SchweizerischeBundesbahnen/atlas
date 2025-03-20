@@ -38,7 +38,7 @@ class SublineSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {
         .validTo(LocalDate.of(2099, 12, 31))
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
-        .concessionType(LineConcessionType.LINE_OF_A_TERRITORIAL_CONCESSION)
+        .concessionType(LineConcessionType.LINE_OF_A_ZONE_CONCESSION)
         .swissLineNumber("r.01")
         .description("Linie 1")
         .number("1")
