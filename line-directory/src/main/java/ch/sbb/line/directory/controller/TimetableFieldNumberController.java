@@ -1,11 +1,11 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberApiV1;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.exception.TtfnidNotFoundException;
@@ -145,16 +145,19 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
     timetableFieldNumberService.deleteAll(allVersionsVersioned);
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportFullTimetableFieldNumberVersions() {
     return versionExportService.exportFullVersions();
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportActualTimetableFieldNumberVersions() {
     return versionExportService.exportActualVersions();
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportTimetableYearChangeTimetableFieldNumberVersions() {
     return versionExportService.exportFutureTimetableVersions();

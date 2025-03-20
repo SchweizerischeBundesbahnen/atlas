@@ -13,9 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -23,9 +20,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
+@Deprecated(forRemoval = true)
 public abstract class BaseExportService<T extends BaseVersion> {
 
   private final FileService fileService;
@@ -75,7 +75,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
   URL putZipFile(File zipFile) {
     try {
-      URL url = amazonService.putZipFile(AmazonBucket.EXPORT, zipFile, getDirectory());
+      URL url = amazonService.putZipFileCleanupBoth(AmazonBucket.EXPORT, zipFile, getDirectory());
       log.info("Export - ZIP File {} Successfully Put to the directory {}: {}", zipFile.getName(), getDirectory(), url);
       return url;
     } catch (IOException e) {
@@ -94,7 +94,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
       throw new ExportException(gZipFile, e);
     }
   }
-  
+
   protected File createCsvFile(List<T> versions, ExportType exportType) {
 
     File csvFile = createFile(exportType, ".csv");
@@ -117,7 +117,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
     try {
       objectMapper
-              .writeValue(jsonFile, versionJsonModels);
+          .writeValue(jsonFile, versionJsonModels);
     } catch (IOException e) {
       throw new ExportException(jsonFile, e);
     }
@@ -129,7 +129,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
   protected abstract List<VersionCsvModel> convertToCsvModel(List<T> versions);
 
-  protected List<BaseVersionModel> convertToJsonModel(List<T> versions){
+  protected List<BaseVersionModel> convertToJsonModel(List<T> versions) {
     throw new UnsupportedOperationException();
   }
 
@@ -158,8 +158,8 @@ public abstract class BaseExportService<T extends BaseVersion> {
   protected File createFile(ExportType exportType, String extension) {
     String dir = fileService.getDir();
     String actualDate = LocalDate.now()
-            .format(DateTimeFormatter.ofPattern(
-                    AtlasApiConstants.DATE_FORMAT_PATTERN));
+        .format(DateTimeFormatter.ofPattern(
+            AtlasApiConstants.DATE_FORMAT_PATTERN));
     return new File(dir + exportType.getFileTypePrefix() + getFileName() + actualDate + extension);
   }
 

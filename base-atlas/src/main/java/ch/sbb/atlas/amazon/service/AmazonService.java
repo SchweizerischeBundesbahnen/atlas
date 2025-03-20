@@ -11,9 +11,12 @@ public interface AmazonService {
 
   URL putFile(AmazonBucket bucket, File file, String dir);
 
-  URL putZipFile(AmazonBucket bucket, File file, String dir) throws IOException;
+  URL putZipFileCleanupBoth(AmazonBucket bucket, File file, String dir) throws IOException;
 
   URL putGzipFile(AmazonBucket bucket, File file, String dir) throws IOException;
+
+  @Deprecated(forRemoval = true)
+  URL putZipFileCleanupZip(AmazonBucket bucket, File file, String dir) throws IOException;
 
   File pullFile(AmazonBucket bucket, String filePath);
 

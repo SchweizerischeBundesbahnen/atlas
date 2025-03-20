@@ -61,14 +61,17 @@ public interface LineApiV1 {
       + ".ApplicationType).LIDI)")
   void skipWorkflow(@PathVariable Long id);
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all line versions as csv and zip file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullLineVersions();
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all actual line versions as csv and zip file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualLineVersions();
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all line versions for the current timetable year change as csv and zip file to the ATLAS "
       + "Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)

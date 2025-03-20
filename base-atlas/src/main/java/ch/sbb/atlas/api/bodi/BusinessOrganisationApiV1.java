@@ -89,15 +89,18 @@ public interface BusinessOrganisationApiV1 {
   @DeleteMapping("{sboid}")
   void deleteBusinessOrganisation(@PathVariable String sboid);
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all Business Organisations versions as csv, zip and gz file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullBusinessOrganisationVersions();
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all actual Business Organisations versions as csv, zip and gz file to the ATLAS Amazon S3 "
       + "Bucket")
   @PostMapping(value = "/export/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualBusinessOrganisationVersions();
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all Business Organisations versions for the current timetable year change as csv, zip and gz "
       + "file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -108,6 +111,7 @@ public interface BusinessOrganisationApiV1 {
   @Operation(description = "Write all Business Organisations to kafka again for redistribution")
   void syncBusinessOrganisations();
 
+  @Deprecated(forRemoval = true)
   @GetMapping(value = "/export/download-gz-json/{exportType}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
@@ -116,6 +120,7 @@ public interface BusinessOrganisationApiV1 {
   })
   ResponseEntity<InputStreamResource> streamGzipFile(@PathVariable("exportType") ExportType exportType);
 
+  @Deprecated(forRemoval = true)
   @GetMapping(value = "/export/download-json/{exportType}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
