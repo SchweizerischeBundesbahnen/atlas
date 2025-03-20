@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @JsonPropertyOrder({"slnid", "mainlineSlnid", "validFrom", "validTo", "swissSublineNumber",
     "status", "sublineType", "paymentType", "number", "businessOrganisation", "longName",
     "description", "creationTime", "editionTime"})
+@Deprecated(forRemoval = true)
 public class SublineVersionCsvModel implements VersionCsvModel {
 
   @JsonProperty("slnid")

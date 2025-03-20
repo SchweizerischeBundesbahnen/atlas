@@ -12,7 +12,7 @@ Below are the links to the REST API Documentations:
 * link:transport-company.html[*Transport Company REST API Documentation*]
 * link:companies.html[*Company (CRD) REST API Documentation*]
 
-== Business Organisation Export REST API Documentation
+== Business Organisation Export REST API Documentation [DEPRECATED]
 
 Below are the links to the Export REST API Documentations:
 
