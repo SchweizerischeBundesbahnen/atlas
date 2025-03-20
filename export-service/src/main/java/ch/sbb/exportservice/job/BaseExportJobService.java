@@ -47,16 +47,6 @@ public abstract class BaseExportJobService {
     return jobParametersBuilder.toJobParameters();
   }
 
-  protected void startExportJob(JobParams jobParams, Job job) {
-    try {
-      JobExecution execution = jobLauncher.run(job, buildJobParameters(jobParams));
-      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
-    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
-             JobParametersInvalidException e) {
-      throw new JobExecutionException(job.getName(), e);
-    }
-  }
-
   public void startExportJobs() {
     log.info("Starting export CSV and JSON execution...");
     for (JobParams jobParams : getExportTypes()) {
@@ -64,6 +54,16 @@ public abstract class BaseExportJobService {
       startExportJob(jobParams, exportJsonJob);
     }
     log.info("CSV and JSON export execution finished!");
+  }
+
+  private void startExportJob(JobParams jobParams, Job job) {
+    try {
+      JobExecution execution = jobLauncher.run(job, buildJobParameters(jobParams));
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+             JobParametersInvalidException e) {
+      throw new JobExecutionException(job.getName(), e);
+    }
   }
 
   @RequiredArgsConstructor
