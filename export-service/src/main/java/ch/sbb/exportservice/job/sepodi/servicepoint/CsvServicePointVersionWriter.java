@@ -2,12 +2,17 @@ package ch.sbb.exportservice.job.sepodi.servicepoint;
 
 import static ch.sbb.exportservice.job.sepodi.servicepoint.ServicePointVersionCsvModel.Fields.numberShort;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.job.BaseCsvWriter;
 import ch.sbb.exportservice.job.sepodi.servicepoint.ServicePointVersionCsvModel.Fields;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CsvServicePointVersionWriter extends BaseCsvWriter<ServicePointVersionCsvModel> {
+
+  CsvServicePointVersionWriter(FileService fileService) {
+    super(fileService);
+  }
 
   @Override
   protected String[] getCsvHeader() {
