@@ -31,14 +31,17 @@ public interface SublineApiV1 {
   @GetMapping("versions/{slnid}")
   List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all subline versions as csv and zip file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullSublineVersions();
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all actual subline versions as csv and zip file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualSublineVersions();
 
+  @Deprecated(forRemoval = true)
   @Operation(description = "Export all subline versions for the current timetable year change as csv and zip file to the ATLAS "
       + "Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)

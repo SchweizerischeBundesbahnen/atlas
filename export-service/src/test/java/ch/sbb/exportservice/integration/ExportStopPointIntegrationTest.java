@@ -1,12 +1,14 @@
 package ch.sbb.exportservice.integration;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_JSON_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_STOP_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_STOP_POINT_JSON_JOB_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.exportservice.integration.sql.BasePrmSqlIntegrationTest;
+import ch.sbb.exportservice.job.BaseExportJobService;
+import ch.sbb.exportservice.job.BaseExportJobService.JobParams;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.model.PrmExportType;
-import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +18,6 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,16 +39,13 @@ class ExportStopPointIntegrationTest extends BasePrmSqlIntegrationTest {
 
   @BeforeEach
   void initData() throws SQLException {
-   insertStopPoint(8507000, "ch:1:sloid:70000", LocalDate.now(),LocalDate.now());
+    insertStopPoint(8507000, "ch:1:sloid:70000", LocalDate.now(), LocalDate.now());
   }
 
   @Test
   void shouldExecuteExportStopPointCsvJob() throws Exception {
     // given
-    JobParameters jobParameters = new JobParametersBuilder()
-        .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, PrmExportType.FULL.toString())
-        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportStopPointCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -61,10 +59,7 @@ class ExportStopPointIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldExecuteExportStopPointJsonJob() throws Exception {
     // given
-    JobParameters jobParameters = new JobParametersBuilder()
-        .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, PrmExportType.FULL.toString())
-        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    JobParameters jobParameters = BaseExportJobService.buildJobParameters(new JobParams(ExportTypeV2.FULL, PrmExportType.FULL));
     // when
     JobExecution jobExecution = jobLauncher.run(exportStopPointJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();

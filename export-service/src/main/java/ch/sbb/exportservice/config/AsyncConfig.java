@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.config;
 
-import ch.sbb.exportservice.controller.ExportServicePointBatchControllerApiV1;
-import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
-import ch.sbb.exportservice.model.SePoDiExportType;
+import ch.sbb.exportservice.controller.FileStreamingControllerApiV2;
+import ch.sbb.exportservice.model.ExportObjectV2;
+import ch.sbb.exportservice.model.ExportTypeV2;
 import jakarta.validation.constraints.NotNull;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @Slf4j
 @Configuration
 @EnableAsync
-public class AsyncConfig implements AsyncConfigurer , DisposableBean {
+public class AsyncConfig implements AsyncConfigurer, DisposableBean {
 
   private static final int CORE_POOL_SIZE = 100;
   private static final int MAX_POOL_SIZE = 200;
@@ -40,9 +40,8 @@ public class AsyncConfig implements AsyncConfigurer , DisposableBean {
   private ThreadPoolTaskExecutor executor;
 
   /**
-   * When using {@link StreamingResponseBody}
-   * {@link ExportServicePointBatchControllerApiV1#streamExportJsonFile(SePoDiBatchExportFileName,
-   * SePoDiExportType)},
+   * When using {@link StreamingResponseBody} such as here:
+   * {@link FileStreamingControllerApiV2#streamExportJsonFile(ExportObjectV2, ExportTypeV2)},
    * it is highly recommended to configure TaskExecutor used in Spring MVC for executing asynchronous requests.
    *
    * @return taskExecutor
@@ -100,7 +99,7 @@ public class AsyncConfig implements AsyncConfigurer , DisposableBean {
   }
 
   @Override
-  public void destroy(){
+  public void destroy() {
     log.info("Shutdown executor...");
     executor.shutdown();
   }

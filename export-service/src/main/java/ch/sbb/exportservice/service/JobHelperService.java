@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.service;
 
-import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -60,8 +60,8 @@ public class JobHelperService {
       if (lastJobExecution != null) {
         Map<String, JobParameter<?>> parameters = lastJobExecution.getJobParameters().getParameters();
         if (parameters.containsKey(
-            JobDescriptionConstants.EXECUTION_TYPE_PARAMETER) && JobDescriptionConstants.EXECUTION_BATCH_PARAMETER.equals(
-            parameters.get(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER).getValue())) {
+            JobDescriptionConstant.EXECUTION_TYPE_PARAMETER) && JobDescriptionConstant.EXECUTION_BATCH_PARAMETER.equals(
+            parameters.get(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER).getValue())) {
           jobExecutions.add(lastJobExecution);
         }
       }

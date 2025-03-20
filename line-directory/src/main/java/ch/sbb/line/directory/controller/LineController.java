@@ -94,16 +94,19 @@ public class LineController implements LineApiV1 {
     lineService.skipWorkflow(id);
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportFullLineVersions() {
     return lineVersionExportService.exportFullVersions();
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportActualLineVersions() {
     return lineVersionExportService.exportActualVersions();
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public List<URL> exportFutureTimetableLineVersions() {
     return lineVersionExportService.exportFutureTimetableVersions();
