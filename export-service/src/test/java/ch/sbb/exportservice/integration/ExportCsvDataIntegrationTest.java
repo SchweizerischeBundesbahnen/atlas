@@ -1,17 +1,17 @@
 package ch.sbb.exportservice.integration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
-import ch.sbb.exportservice.job.sepodi.servicepoint.ServicePointVersionCsvModel;
+import ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.List;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 @BatchDataSourceConfigTest
