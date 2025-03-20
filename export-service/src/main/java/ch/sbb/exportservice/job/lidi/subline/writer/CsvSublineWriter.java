@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.job.lidi.subline.writer;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.job.BaseCsvWriter;
 import ch.sbb.exportservice.job.lidi.subline.model.SublineCsvModel;
 import ch.sbb.exportservice.job.lidi.subline.model.SublineCsvModel.Fields;
@@ -7,6 +8,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CsvSublineWriter extends BaseCsvWriter<SublineCsvModel> {
+
+  CsvSublineWriter(FileService fileService) {
+    super(fileService);
+  }
 
   @Override
   protected String[] getCsvHeader() {

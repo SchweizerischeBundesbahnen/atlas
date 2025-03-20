@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.job.bodi.transportcompany.writer;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.job.BaseCsvWriter;
 import ch.sbb.exportservice.job.bodi.transportcompany.model.TransportCompanyCsvModel;
 import ch.sbb.exportservice.job.bodi.transportcompany.model.TransportCompanyCsvModel.Fields;
@@ -7,6 +8,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CsvTransportCompanyWriter extends BaseCsvWriter<TransportCompanyCsvModel> {
+
+  CsvTransportCompanyWriter(FileService fileService) {
+    super(fileService);
+  }
 
   @Override
   protected String[] getCsvHeader() {
