@@ -14,9 +14,9 @@ import ch.sbb.exportservice.job.prm.referencepoint.service.ExportReferencePointJ
 import ch.sbb.exportservice.job.prm.relation.service.ExportRelationJobService;
 import ch.sbb.exportservice.job.prm.stoppoint.service.ExportStopPointJobService;
 import ch.sbb.exportservice.job.prm.toilet.service.ExportToiletJobService;
-import ch.sbb.exportservice.job.sepodi.loadingpoint.ExportLoadingPointJobService;
-import ch.sbb.exportservice.job.sepodi.servicepoint.ExportServicePointJobService;
-import ch.sbb.exportservice.job.sepodi.trafficpoint.ExportTrafficPointElementJobService;
+import ch.sbb.exportservice.job.sepodi.loadingpoint.service.ExportLoadingPointJobService;
+import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;
+import ch.sbb.exportservice.job.sepodi.trafficpoint.service.ExportTrafficPointElementJobService;
 import io.micrometer.tracing.annotation.NewSpan;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

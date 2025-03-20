@@ -2,8 +2,8 @@ package ch.sbb.exportservice.integration;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
-import ch.sbb.exportservice.job.sepodi.servicepoint.ServicePointVersionCsvModel;
-import ch.sbb.exportservice.job.sepodi.servicepoint.ExportServicePointJobService;
+import ch.sbb.exportservice.job.sepodi.servicepoint.model.ServicePointVersionCsvModel;
+import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;
 import ch.sbb.exportservice.tasklet.delete.DeleteCsvFileTasklet;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.File;

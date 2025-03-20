@@ -27,9 +27,9 @@ import ch.sbb.exportservice.job.prm.referencepoint.service.ExportReferencePointJ
 import ch.sbb.exportservice.job.prm.relation.service.ExportRelationJobService;
 import ch.sbb.exportservice.job.prm.stoppoint.service.ExportStopPointJobService;
 import ch.sbb.exportservice.job.prm.toilet.service.ExportToiletJobService;
-import ch.sbb.exportservice.job.sepodi.loadingpoint.ExportLoadingPointJobService;
-import ch.sbb.exportservice.job.sepodi.servicepoint.ExportServicePointJobService;
-import ch.sbb.exportservice.job.sepodi.trafficpoint.ExportTrafficPointElementJobService;
+import ch.sbb.exportservice.job.sepodi.loadingpoint.service.ExportLoadingPointJobService;
+import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;
+import ch.sbb.exportservice.job.sepodi.trafficpoint.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.time.LocalDateTime;
