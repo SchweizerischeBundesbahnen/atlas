@@ -17,7 +17,7 @@ Below are the links to the REST API Documentations:
 * link:timetable-hearing-year.html[*Timetable hearing year REST API Documentation*]
 * link:timetable-hearing-statement.html[*Timetable hearing statement REST API Documentation*]
 
-== LiDi Line Directory Export REST API Documentation
+== LiDi Line Directory Export REST API Documentation [DEPRECATED]
 
 Below are the links to the Export REST API Documentations:
 

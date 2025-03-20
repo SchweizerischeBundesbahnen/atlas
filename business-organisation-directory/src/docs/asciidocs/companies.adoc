@@ -13,14 +13,4 @@ include::{snippets}/company-controller-api-test/should-get-companies/atlas-doc.a
 
 include::{snippets}/company-controller-api-test/should-get-company/atlas-doc.adoc[]
 
-== Export Business Organisation - Successfully
-
-include::{snippets}/business-organisation-controller-integration-test/should-export-actual-business-organisation-versions/atlas-doc.adoc[]
-include::{snippets}/business-organisation-controller-integration-test/should-export-full-business-organisation-versions/atlas-doc.adoc[]
-include::{snippets}/business-organisation-controller-integration-test/should-export-future-timetable-business-organisation-versions/atlas-doc.adoc[]
-
-== Stream Business Organisation Json - Successfully
-
-include::{snippets}/business-organisation-controller-streaming-response-body-tests/should-read-json-after-export-timetable-year-change-business-organisation-versions/atlas-doc.adoc[]
-
 link:rest-api.html[*< Back to main*]
