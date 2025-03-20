@@ -9,17 +9,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.nio.charset.StandardCharsets;
+import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.json.JacksonJsonObjectMarshaller;
 import org.springframework.batch.item.json.JsonFileItemWriter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.stereotype.Component;
 
-@Component
+@RequiredArgsConstructor
 public abstract class BaseJsonWriter<T> {
 
-  @Autowired
-  private FileService fileService;
+  private final FileService fileService;
 
   public JsonFileItemWriter<T> getWriter(ExportObjectV2 exportType, ExportTypeV2 exportFileName) {
     JacksonJsonObjectMarshaller<T> jacksonJsonObjectMarshaller = new JacksonJsonObjectMarshaller<>();

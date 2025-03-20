@@ -1,11 +1,16 @@
 package ch.sbb.exportservice.job.sepodi.loadingpoint;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.job.BaseCsvWriter;
 import ch.sbb.exportservice.job.sepodi.loadingpoint.LoadingPointVersionCsvModel.Fields;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CsvLoadingPointVersionWriter extends BaseCsvWriter<LoadingPointVersionCsvModel> {
+
+  CsvLoadingPointVersionWriter(FileService fileService) {
+    super(fileService);
+  }
 
   @Override
   protected String[] getCsvHeader() {

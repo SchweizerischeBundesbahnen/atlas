@@ -2,10 +2,10 @@ package ch.sbb.exportservice.integration.sql;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.job.prm.relation.RelationVersion;
+import ch.sbb.exportservice.job.prm.relation.entity.RelationVersion;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.job.prm.relation.RelationVersionRowMapper;
-import ch.sbb.exportservice.job.prm.relation.RelationVersionSqlQueryUtil;
+import ch.sbb.exportservice.job.prm.relation.sql.RelationVersionRowMapper;
+import ch.sbb.exportservice.job.prm.relation.sql.RelationVersionSqlQueryUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 
 class RelationSqlIntegrationTest extends BasePrmSqlIntegrationTest {
