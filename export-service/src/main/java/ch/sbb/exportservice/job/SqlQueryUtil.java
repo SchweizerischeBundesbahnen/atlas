@@ -10,7 +10,7 @@ import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.utils.ExportFutureTimetableUtil;
+import ch.sbb.exportservice.util.ExportYearsTimetableUtil;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
@@ -88,7 +88,7 @@ public abstract class SqlQueryUtil {
           yield "'%s' >= valid_from AND '%s' <= valid_to".formatted(futureTimetable, futureTimetable);
         }
         case TIMETABLE_YEARS -> {
-          DateRange timetableYearsDateRange = ExportFutureTimetableUtil.getTimetableYearsDateRange();
+          DateRange timetableYearsDateRange = ExportYearsTimetableUtil.getTimetableYearsDateRange();
           String timetableYearsStart = DateHelper.getDateAsSqlString(timetableYearsDateRange.getFrom());
           String timetableYearsEnd = DateHelper.getDateAsSqlString(timetableYearsDateRange.getTo());
           yield "'%s' <= valid_to  AND valid_from <= '%s'".formatted(timetableYearsStart, timetableYearsEnd);
