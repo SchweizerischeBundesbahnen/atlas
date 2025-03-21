@@ -6,6 +6,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.lidi.subline.entity.Subline;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import org.springframework.jdbc.core.RowMapper;
 
 public class SublineRowMapper implements RowMapper<Subline> {
@@ -19,7 +20,7 @@ public class SublineRowMapper implements RowMapper<Subline> {
         .validTo(rs.getDate("valid_to").toLocalDate())
         .status(Status.valueOf(rs.getString("status")))
         .sublineType(SublineType.valueOf(rs.getString("subline_type")))
-        .concessionType(SublineConcessionType.valueOf(rs.getString("concession_type")))
+        .concessionType(Optional.ofNullable(rs.getString("concession_type")).map(SublineConcessionType::valueOf).orElse(null))
         .swissSublineNumber(rs.getString("swiss_subline_number"))
         .description(rs.getString("description"))
         .longName(rs.getString("long_name"))
