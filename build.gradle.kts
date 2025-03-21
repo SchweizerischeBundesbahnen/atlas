@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.520.0"
+version = "2.521.0"
 
 extra["awsS3Version"] = "2.31.5"
 extra["swaggerCoreVersion"] = "2.2.29"
