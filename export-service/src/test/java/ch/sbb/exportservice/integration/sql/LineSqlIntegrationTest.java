@@ -11,9 +11,9 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.lidi.line.entity.Line;
 import ch.sbb.exportservice.job.lidi.line.sql.LineRowMapper;
 import ch.sbb.exportservice.job.lidi.line.sql.LineSqlQueryUtil;
-import ch.sbb.exportservice.job.line.Line.LineBuilder;
+import ch.sbb.exportservice.job.lidi.line.entity.Line.LineBuilder;
 import ch.sbb.exportservice.model.ExportTypeV2;
-import ch.sbb.exportservice.utils.ExportFutureTimetableUtil;
+import ch.sbb.exportservice.util.ExportYearsTimetableUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -127,7 +127,7 @@ class LineSqlIntegrationTest extends BaseLiDiSqlIntegrationTest {
   @Test
   void shouldReturnTimetableYearsLines() throws SQLException {
     //given
-    DateRange timetableYearsDateRange = ExportFutureTimetableUtil.getTimetableYearsDateRange();
+    DateRange timetableYearsDateRange = ExportYearsTimetableUtil.getTimetableYearsDateRange();
 
     Line line = lineBuilder(1)
         .validFrom(timetableYearsDateRange.getFrom().minusDays(2))
