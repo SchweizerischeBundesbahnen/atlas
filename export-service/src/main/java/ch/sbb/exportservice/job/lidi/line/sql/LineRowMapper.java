@@ -7,6 +7,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.exportservice.job.lidi.line.entity.Line;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import org.springframework.jdbc.core.RowMapper;
 
 public class LineRowMapper implements RowMapper<Line> {
@@ -26,7 +27,7 @@ public class LineRowMapper implements RowMapper<Line> {
         .longName(rs.getString("long_name"))
         .number(rs.getString("number"))
         .shortNumber(rs.getString("short_number"))
-        .offerCategory(OfferCategory.valueOf(rs.getString("offer_category")))
+        .offerCategory(Optional.ofNullable(rs.getString("offer_category")).map(OfferCategory::valueOf).orElse(null))
         .businessOrganisation(rs.getString("business_organisation"))
         .comment(rs.getString("comment"))
         .creationDate(rs.getTimestamp("creation_date").toLocalDateTime())
