@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class ExportFutureTimetableUtil {
+public class ExportYearsTimetableUtil {
 
   public static DateRange getTimetableYearsDateRange() {
     return getTimetableYearsDateRange(LocalDate.now());
