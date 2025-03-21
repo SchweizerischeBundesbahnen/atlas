@@ -21,7 +21,7 @@ public class LineRowMapper implements RowMapper<Line> {
         .validTo(rs.getDate("valid_to").toLocalDate())
         .status(Status.valueOf(rs.getString("status")))
         .lineType(LineType.valueOf(rs.getString("line_type")))
-        .concessionType(LineConcessionType.valueOf(rs.getString("concession_type")))
+        .concessionType(Optional.ofNullable(rs.getString("concession_type")).map(LineConcessionType::valueOf).orElse(null))
         .swissLineNumber(rs.getString("swiss_line_number"))
         .description(rs.getString("description"))
         .longName(rs.getString("long_name"))
