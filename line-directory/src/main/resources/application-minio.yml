@@ -1,0 +1,15 @@
+amazon:
+  region: ${MINIO_REGION}
+  bucketConfigs:
+    export-files:
+      accessKey: ${MINIO_ACCESS_KEY}
+      secretKey: ${MINIO_SECRET_KEY}
+      endpoint: "http://localhost:9000"
+      forcePathStyle: true
+      objectExpirationDays:
+    hearing-documents:
+      accessKey: ${MINIO_ACCESS_KEY}
+      secretKey: ${MINIO_SECRET_KEY}
+      endpoint: "http://localhost:9000"
+      forcePathStyle: true
+      objectExpirationDays:
