@@ -1,9 +1,9 @@
 amazon:
-  region: ${MINIO_REGION}
+  region: local
   bucketConfigs:
     bulk-import:
-      accessKey: ${MINIO_ACCESS_KEY}
-      secretKey: ${MINIO_SECRET_KEY}
+      accessKey: NSVCQSGo2klxYXInNuob
+      secretKey: jiiCYSlwdHBkrSg8J4Htqm7Ej8ydlprZGgYFwELc
       endpoint: "http://localhost:9000"
       forcePathStyle: true
       objectExpirationDays:
