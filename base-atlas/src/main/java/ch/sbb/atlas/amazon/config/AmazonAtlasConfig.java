@@ -32,11 +32,12 @@ public class AmazonAtlasConfig {
 
     return amazonBucketConfig.entrySet().stream().map(entry -> {
       AmazonBucketConfig bucketConfig = entry.getValue();
-      AwsCredentials awsCredentials = AwsBasicCredentials.create(bucketConfig.getAccessKey(), bucketConfig.getSecretKey());
       S3ClientBuilder s3ClientBuilder = S3Client.builder()
           .region(Region.of(props.getRegion()))
-          .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
           .forcePathStyle(bucketConfig.isForcePathStyle());
+
+      AwsCredentials awsCredentials = AwsBasicCredentials.create(bucketConfig.getAccessKey(), bucketConfig.getSecretKey());
+      s3ClientBuilder.credentialsProvider(StaticCredentialsProvider.create(awsCredentials));
 
       if (bucketConfig.getEndpoint() != null) {
         s3ClientBuilder.endpointOverride(URI.create(bucketConfig.getEndpoint()));
