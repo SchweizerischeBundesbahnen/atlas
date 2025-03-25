@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/?([a-z]*)"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+      "Access-Control-Allow-Headers": "Accept, Content-Type, Content-Encoding, Server, Transfer-Encoding",
+      "X-Content-Type-Options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-xss-protection": "1; mode=block"
+    },
+    "bodyFileName": "azure/azure_token_ok_response.json"
+  }
+}
+
+
