@@ -180,3 +180,27 @@ services:
       KAFKA_DELETE_TOPIC_ENABLE: 'true'
       # atlas.mail will have 1 partition and 1 replicas
       KAFKA_CREATE_TOPICS: "atlas.mail:1:1,atlas.user.administration:1:1,atlas.business.organisation:1:1,atlas.transport.company:1:1,atlas.service.point:1:1"
+
+  wiremock:
+    image: wiremock/wiremock:latest
+    container_name: axi-wiremock
+    ports:
+      - "8081:8080"  # default port
+      - "8082:8080"  # sharing-info port
+      - "8083:8080"  # sweepay port
+      - "8084:8080"  # paysafe port
+      - "8085:8080"  # prepaid port
+      - "8086:8080"  # lockers port
+      - "8087:8080"  # orchfin port
+      - "8088:8080"  # stage and pay port
+    volumes:
+      - ./docker:/home/wiremock
+
+  wiremock_build:
+    build:
+      dockerfile: Dockerfile
+      context: ./wiremock
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./docker:/home/wiremock
