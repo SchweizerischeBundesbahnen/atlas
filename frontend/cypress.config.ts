@@ -24,6 +24,7 @@ export default defineConfig({
     inlineAssets: true,
     saveAllAttempts: false,
     debug: true,
+    saveJson: true
   },
 
   env: {
