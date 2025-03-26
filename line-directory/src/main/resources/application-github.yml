@@ -1,0 +1,107 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/line-directory?currentSchema=line_directory
+    username: user
+    password: pwd
+    driver-class-name: org.postgresql.Driver
+  application:
+    name: line-directory
+  jpa:
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  jmx:
+    enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+        max:
+          poll:
+            interval:
+              ms: 1200000
+    producer:
+      properties:
+        max:
+          request:
+            size: 3000000
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 1
+
+kafka:
+  atlas:
+    user:
+      administration:
+        topic: atlas.user.administration
+        groupId: atlas.kafka.lidi.user.administration.groupId
+    business:
+      organisation:
+        topic: atlas.business.organisation
+        groupId: atlas.kafka.lidi.business.organisation.groupId
+    transport:
+      company:
+        topic: atlas.transport.company
+        groupId: atlas.kafka.lidi.transport.company.groupId
+auth:
+  audience:
+    service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
+server:
+  port: 8082
+  error:
+    include-message: always
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+info:
+  app:
+    name: line-directory
+    version: 1.0.0
+    buildtime: ${time}
+logging:
+  level:
+    root: INFO
+    org.hibernate: ERROR
+amazon:
+  region: "eu-central-1"
+  bucketConfigs:
+    export-files:
+      accessKey: ${AMAZON_S3_ACCESS_KEY}
+      secretKey: ${AMAZON_S3_SECRET_KEY}
+      bucketName: "atlas-data-export-dev-dev"
+      objectExpirationDays: 30
+    hearing-documents:
+      accessKey: ${AMAZON_S3_HEARING_DOCS_ACCESS_KEY}
+      secretKey: ${AMAZON_S3_HEARING_DOCS_SECRET_KEY}
+      bucketName: "atlas-hearing-documents-dev-dev"
+      objectExpirationDays: 100000
+
+atlas:
+  client:
+    gateway:
+      url: "http://localhost:8888"
+
