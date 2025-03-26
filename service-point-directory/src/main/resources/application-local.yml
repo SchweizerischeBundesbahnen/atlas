@@ -121,7 +121,7 @@ logging:
 
 journeyPoi:
   client:
-    url: http://localhost:8666
+    url: https://journey-pois-int.api.sbb.ch:443
 
 atlas:
   client:
