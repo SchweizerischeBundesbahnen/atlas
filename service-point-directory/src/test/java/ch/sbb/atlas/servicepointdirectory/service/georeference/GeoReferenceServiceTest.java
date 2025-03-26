@@ -29,7 +29,7 @@ class GeoReferenceServiceTest {
   @MockBean
   private OAuthFeignConfig oAuthFeignConfig;
   @MockBean
-  private JourneyPoiClient journeyPoiClient;
+  private JourneyPoiClientBase journeyPoiClient;
 
   @Autowired
   private GeoReferenceService geoReferenceService;
