@@ -1,0 +1,55 @@
+server:
+  port: 8094
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+info:
+  app:
+    name: location
+    version: 1.0.0
+    buildtime: ${time}
+
+spring:
+  datasource:
+    location:
+      url: jdbc:postgresql://localhost:5443/location?currentSchema=location
+      username: user
+      password: pwd
+      driver-class-name: org.postgresql.Driver
+    service-point:
+      url: jdbc:postgresql://localhost:5439/service-point-directory?currentSchema=service_point_directory
+      username: user
+      password: pwd
+      driver-class-name: org.postgresql.Driver
+      hikari:
+        minimumIdle: 2
+        maximumPoolSize: 5
+        idleTimeout: 120000
+        connectionTimeout: 300000
+        leakDetectionThreshold: 300000
+    prm:
+      url: jdbc:postgresql://localhost:5442/prm-directory?currentSchema=prm_directory
+      username: user
+      password: pwd
+      driver-class-name: org.postgresql.Driver
+      hikari:
+        minimumIdle: 2
+        maximumPoolSize: 5
+        idleTimeout: 120000
+        connectionTimeout: 300000
+        leakDetectionThreshold: 300000
+  application:
+    name: location
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+auth:
+  audience:
+    service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
