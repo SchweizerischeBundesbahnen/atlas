@@ -181,7 +181,7 @@ services:
       # atlas.mail will have 1 partition and 1 replicas
       KAFKA_CREATE_TOPICS: "atlas.mail:1:1,atlas.user.administration:1:1,atlas.business.organisation:1:1,atlas.transport.company:1:1,atlas.service.point:1:1"
 
-  wiremock_build:
+  wiremock:
     build:
       dockerfile: Dockerfile
       context: ./wiremock
