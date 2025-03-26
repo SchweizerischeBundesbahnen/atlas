@@ -30,7 +30,7 @@ import org.springframework.ws.transport.http.HttpsUrlConnectionMessageSender;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-@Profile("!integration-test")
+@Profile({"!integration-test & !github"})
 public class CrdSoapClientConfig {
 
   public static final String MARSHALL_CONTEXT_PATH = "ch.sbb.business.organisation.directory.service.crd";
@@ -69,12 +69,12 @@ public class CrdSoapClientConfig {
   @Bean
   public WebServiceTemplate webServiceTemplate(WebServiceTemplateBuilder builder) throws Exception {
     return builder.setDefaultUri(config.getUrl())
-                  .setMarshaller(marshaller())
-                  .setUnmarshaller(marshaller())
-                  .additionalMessageSenders(createWebServiceMessageSender())
-                  // LoggingInterceptor for Debugging purposes
-                  .additionalInterceptors(securityInterceptor()/*, soapMessageLoggerInterceptor*/)
-                  .build();
+        .setMarshaller(marshaller())
+        .setUnmarshaller(marshaller())
+        .additionalMessageSenders(createWebServiceMessageSender())
+        // LoggingInterceptor for Debugging purposes
+        .additionalInterceptors(securityInterceptor()/*, soapMessageLoggerInterceptor*/)
+        .build();
   }
 
   private WebServiceMessageSender createWebServiceMessageSender() {
