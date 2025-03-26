@@ -1,0 +1,45 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/v1/address/country/closest"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+      "Access-Control-Allow-Headers": "Accept, Content-Type, Content-Encoding, Server, Transfer-Encoding",
+      "X-Content-Type-Options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-xss-protection": "1; mode=block"
+    },
+    "jsonBody": {
+      "countryCode": {
+        "isoCountryCode": "DE",
+        "isoCountryCodeAlpha2": "DE",
+        "isoCountryCodeAlpha3": "DEU",
+        "isoCountryCodeNumeric": "276"
+      },
+      "name": "Polla",
+      "nameOfficialI18n": {
+        "de": "Polla",
+        "en": "Polla",
+        "fr": "Polla",
+        "it": "Polla"
+      },
+      "nameI18n": {
+        "de": "Polla",
+        "en": "Polla",
+        "fr": "Polla",
+        "it": "Polla"
+      },
+      "source": {
+        "name": "name",
+        "id": "id"
+      }
+    }
+  }
+}
+
+
