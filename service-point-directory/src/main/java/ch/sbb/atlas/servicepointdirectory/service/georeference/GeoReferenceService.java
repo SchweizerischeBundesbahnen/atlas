@@ -13,13 +13,12 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
 import feign.FeignException.FeignClientException;
+import java.math.BigDecimal;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -27,7 +26,7 @@ import java.util.Optional;
 public class GeoReferenceService {
 
   private final GeoAdminChClient geoAdminChClient;
-  private final JourneyPoiClient journeyPoiClient;
+  private final JourneyPoiClientBase journeyPoiClient;
 
   private final CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
 
@@ -39,9 +38,9 @@ public class GeoReferenceService {
     GeoAdminResponse geoAdminResponse = geoAdminChClient.getGeoReference(new GeoAdminParams(coordinatePair));
     GeoReference swissTopoInformation = toGeoReference(geoAdminResponse);
 
-    if(callHeightService){
-        GeoAdminHeightResponse geoAdminHeightResponse = getHeight(coordinatePair);
-        swissTopoInformation.setHeight(geoAdminHeightResponse.getHeight());
+    if (callHeightService) {
+      GeoAdminHeightResponse geoAdminHeightResponse = getHeight(coordinatePair);
+      swissTopoInformation.setHeight(geoAdminHeightResponse.getHeight());
     }
 
     if (swissTopoInformation.getCountry() == null) {
@@ -88,14 +87,14 @@ public class GeoReferenceService {
     result.setCountry(Country.fromIsoCode(isoCountryCode));
     return result;
   }
+
   public GeoAdminHeightResponse getHeight(CoordinatePair coordinatePair) {
-    if(coordinatePair.getSpatialReference() != SpatialReference.LV95){
+    if (coordinatePair.getSpatialReference() != SpatialReference.LV95) {
       coordinatePair = coordinateTransformer.transform(coordinatePair, SpatialReference.LV95);
     }
     try {
       return geoAdminChClient.getHeight(coordinatePair.getEast(), coordinatePair.getNorth());
-    }
-    catch (FeignClientException e){
+    } catch (FeignClientException e) {
       return handleFeignClientException(e);
     } catch (Exception e) {
       throw new HeightNotCalculatableException();
@@ -113,7 +112,8 @@ public class GeoReferenceService {
   public void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {
     if (servicePointVersion.hasGeolocation()) {
       ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
-      GeoReference geoReference = getGeoReference(servicePointGeolocation.asCoordinatePair(),servicePointGeolocation.getHeight() == null);
+      GeoReference geoReference = getGeoReference(servicePointGeolocation.asCoordinatePair(),
+          servicePointGeolocation.getHeight() == null);
 
       if (geoReference.getHeight() != null) {
         servicePointGeolocation.setHeight(geoReference.getHeight());
