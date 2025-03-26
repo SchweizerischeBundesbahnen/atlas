@@ -1,10 +1,11 @@
 package ch.sbb.business.organisation.directory.service.crd;
 
 import ch.sbb.business.organisation.directory.service.crd.CrdSoapClientConfig.CrdHeaders;
-import java.util.List;
 import jakarta.xml.bind.JAXBElement;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -12,7 +13,8 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-@Profile("!integration-test")
+@Primary
+@Profile({"!integration-test & !github"})
 public class CrdClientImpl implements CrdClient {
 
   private final WebServiceTemplate webServiceTemplate;
