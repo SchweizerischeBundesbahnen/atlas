@@ -87,18 +87,20 @@ logging:
     root: INFO
     org.hibernate: ERROR
 amazon:
-  region: "eu-central-1"
+  region: local
   bucketConfigs:
     export-files:
-      accessKey: ${AMAZON_S3_ACCESS_KEY}
-      secretKey: ${AMAZON_S3_SECRET_KEY}
-      bucketName: "atlas-data-export-dev-dev"
-      objectExpirationDays: 30
+      accessKey: NSVCQSGo2klxYXInNuob
+      secretKey: jiiCYSlwdHBkrSg8J4Htqm7Ej8ydlprZGgYFwELc
+      endpoint: "http://localhost:9000"
+      forcePathStyle: true
+      objectExpirationDays:
     hearing-documents:
-      accessKey: ${AMAZON_S3_HEARING_DOCS_ACCESS_KEY}
-      secretKey: ${AMAZON_S3_HEARING_DOCS_SECRET_KEY}
-      bucketName: "atlas-hearing-documents-dev-dev"
-      objectExpirationDays: 100000
+      accessKey: NSVCQSGo2klxYXInNuob
+      secretKey: jiiCYSlwdHBkrSg8J4Htqm7Ej8ydlprZGgYFwELc
+      endpoint: "http://localhost:9000"
+      forcePathStyle: true
+      objectExpirationDays:
 
 atlas:
   client:
