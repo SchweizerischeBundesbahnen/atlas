@@ -42,7 +42,7 @@ import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClientBase;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -70,7 +70,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   private OAuthFeignConfig oAuthFeignConfig;
 
   @MockitoBean
-  private JourneyPoiClient journeyPoiClient;
+  private JourneyPoiClientBase journeyPoiClient;
 
   @MockitoBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
