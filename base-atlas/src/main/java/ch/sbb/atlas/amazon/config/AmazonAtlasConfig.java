@@ -3,6 +3,7 @@ package ch.sbb.atlas.amazon.config;
 import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonBucketClient;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -13,6 +14,7 @@ import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3ClientBuilder;
 import software.amazon.awssdk.services.s3.model.BucketLifecycleConfiguration;
 import software.amazon.awssdk.services.s3.model.ExpirationStatus;
 import software.amazon.awssdk.services.s3.model.GetBucketLifecycleConfigurationRequest;
@@ -30,13 +32,22 @@ public class AmazonAtlasConfig {
 
     return amazonBucketConfig.entrySet().stream().map(entry -> {
       AmazonBucketConfig bucketConfig = entry.getValue();
-      AwsCredentials awsCredentials = AwsBasicCredentials.create(bucketConfig.getAccessKey(), bucketConfig.getSecretKey());
-      S3Client s3Client = S3Client.builder()
+      S3ClientBuilder s3ClientBuilder = S3Client.builder()
           .region(Region.of(props.getRegion()))
-          .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
-          .build();
+          .forcePathStyle(bucketConfig.isForcePathStyle());
 
-      setBucketLifecycleConfiguration(bucketConfig, s3Client);
+      AwsCredentials awsCredentials = AwsBasicCredentials.create(bucketConfig.getAccessKey(), bucketConfig.getSecretKey());
+      s3ClientBuilder.credentialsProvider(StaticCredentialsProvider.create(awsCredentials));
+
+      if (bucketConfig.getEndpoint() != null) {
+        s3ClientBuilder.endpointOverride(URI.create(bucketConfig.getEndpoint()));
+      }
+
+      S3Client s3Client = s3ClientBuilder.build();
+
+      if (bucketConfig.getObjectExpirationDays() != null) {
+        setBucketLifecycleConfiguration(bucketConfig, s3Client);
+      }
 
       return new AmazonBucketClient(AmazonBucket.fromProperty(entry.getKey()), s3Client, bucketConfig);
     }).toList();
