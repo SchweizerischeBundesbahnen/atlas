@@ -11,19 +11,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AmazonConfigProps {
-    private String region;
 
-    private Map<String, AmazonBucketConfig> bucketConfigs;
+  private String region;
 
-    @Data
-    @Builder
-    public static class AmazonBucketConfig {
-        private String accessKey;
+  private Map<String, AmazonBucketConfig> bucketConfigs;
 
-        private String secretKey;
+  @Data
+  @Builder
+  public static class AmazonBucketConfig {
 
-        private String bucketName;
+    private String accessKey;
 
-        private int objectExpirationDays;
-    }
+    private String secretKey;
+
+    private String bucketName;
+
+    private Integer objectExpirationDays;
+
+    private String endpoint;
+
+    private boolean forcePathStyle;
+  }
+
 }
