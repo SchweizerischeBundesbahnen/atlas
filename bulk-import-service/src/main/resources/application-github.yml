@@ -95,10 +95,11 @@ mail:
     import-service-point: TechSupport-ATLAS@sbb.ch
 
 amazon:
-  region: "eu-central-1"
+  region: local
   bucketConfigs:
     bulk-import:
-      accessKey: ${AMAZON_S3_BULK_IMPORT_ACCESS_KEY}
-      secretKey: ${AMAZON_S3_BULK_IMPORT_SECRET_KEY}
-      bucketName: "atlas-bulk-import-dev-dev"
-      objectExpirationDays: 365
+      accessKey: NSVCQSGo2klxYXInNuob
+      secretKey: jiiCYSlwdHBkrSg8J4Htqm7Ej8ydlprZGgYFwELc
+      endpoint: "http://localhost:9000"
+      forcePathStyle: true
+      objectExpirationDays:
