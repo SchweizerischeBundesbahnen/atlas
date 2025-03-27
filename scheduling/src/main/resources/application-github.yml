@@ -1,0 +1,171 @@
+server:
+  port: 8085
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+  endpoint:
+    health:
+      show-details: always
+
+spring:
+  application:
+    name: scheduling
+  datasource:
+    url: jdbc:postgresql://localhost:5436/scheduling
+    username: user
+    password: pwd
+    driver-class-name: org.postgresql.Driver
+    application:
+      name: scheduling
+  jpa:
+    open-in-view: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+      client:
+        provider:
+          azure:
+            issuer-uri: http://localhost:8666/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+        registration:
+          azure:
+            authorization-grant-type: client_credentials
+            client-id: ${SCHEDULING_CLIENT_ID}
+            client-secret: ${SCHEDULING_CLIENT_SECRET}
+            scope:
+              - api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+        max:
+          poll:
+            interval:
+              ms: 1200000
+    producer:
+      properties:
+        max:
+          request:
+            size: 3000000
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 1
+
+kafka:
+  atlas:
+    mail:
+      topic: atlas.mail
+      groupId: atlas.kafka.mail.groupId
+auth:
+  audience:
+    service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
+
+scheduler:
+  zone: "Europe/Zurich"
+  bodi:
+    export:
+      business-organisation:
+        full:
+          chron: "0 0 3 * * ?" #At 03:00:00am every day
+        actual:
+          chron: "0 5 3 * * ?" #At 03:05:00am every day
+        future:
+          chron: "0 10 3 * * ?" #At 03:10:00am every day
+    import:
+      tu:
+        crd:
+          chron: "0 0 2 * * ?" #At 02:00:00am every day
+        bav:
+          chron: "0 0 1 * * ?" #At 01:00:00am every day
+
+  lidi:
+    export:
+      line:
+        full:
+          chron: "0 0 3 * * ?" #At 03:00:00am every day
+        actual:
+          chron: "0 5 3 * * ?" #At 03:05:00am every day
+        future:
+          chron: "0 10 3 * * ?" #At 03:10:00am every day
+      subline:
+        full:
+          chron: "0 15 3 * * ?" #At 03:15:00am every day
+        actual:
+          chron: "0 20 3 * * ?" #At 03:20:00am every day
+        future:
+          chron: "0 25 3 * * ?" #At 03:25:00am every day
+      timetable:
+        full:
+          chron: "0 30 3 * * ?" #At 03:15:00am every day
+        actual:
+          chron: "0 35 3 * * ?" #At 03:20:00am every day
+        future:
+          chron: "0 40 3 * * ?" #At 03:25:00am every day
+
+  import-service-point:
+    geo-location-update-trigger-batch:
+      chron: "0 0 23 * * SUN" #At 23:00 on Sunday.
+
+  export-service:
+    service-point-trigger-batch:
+      chron: "0 1 0 * * ?" #At 00:01:00am every day
+    traffic-point-trigger-batch:
+      chron: "0 5 0 * * ?" #At 00:05:00am every day
+    loading-point-trigger-batch:
+      chron: "0 8 0 * * ?" #At 00:08:00am every day
+    stop-point-trigger-batch:
+      chron: "0 10 0 * * ?" #At 00:10:00am every day
+    platform-trigger-batch:
+      chron: "0 13 0 * * ?" #At 00:13:00am every day
+    reference-point-trigger-batch:
+      chron: "0 15 0 * * ?" #At 00:15:00am every day
+    contact-point-trigger-batch:
+      chron: "0 17 0 * * ?" #At 00:17:00am every day
+    toilet-trigger-batch:
+      chron: "0 20 0 * * ?" #At 00:20:00am every day
+    parking-lot-trigger-batch:
+      chron: "0 22 0 * * ?" #At 00:22:00am every day
+    relation-trigger-batch:
+      chron: "0 25 0 * * ?" #At 00:25:00am every day
+    transport-company-trigger-batch:
+      chron: "0 26 0 * * ?" #At 00:26:00am every day
+    business-organisation-trigger-batch:
+      chron: "0 27 0 * * ?" #At 00:27:00am every day
+    line-trigger-batch:
+      chron: "0 28 0 * * ?" #At 00:28:00am every day
+    subline-trigger-batch:
+      chron: "0 29 0 * * ?" #At 00:29:00am every day
+    timetable-field-number-trigger-batch:
+      chron: "0 30 0 * * ?" #At 00:30:00am every day
+
+  location:
+    sync:
+      chron: "0 0 6 * * ?" #At 06:00 every day
+
+  workflow:
+    end-expired-workflows:
+      chron: "0 5 0 * * ?" #At 00:05:00am every day
+
+atlas:
+  client:
+    gateway:
+      url: "http://localhost:8888"
+
+mail:
+  receiver:
+    scheduling: TechSupport-ATLAS@sbb.ch
+
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
