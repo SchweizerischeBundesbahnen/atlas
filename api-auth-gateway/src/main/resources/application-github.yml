@@ -1,0 +1,56 @@
+server:
+  port: 6969
+spring:
+  application:
+    name: api-auth-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: api
+          uri: http://localhost:8888
+          predicates:
+            - Path=/**
+      default-filters:
+        - AssureAuthorizationFilter
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      httpclient:
+        connect-timeout: 2000
+        response-timeout: 20000
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: http://localhost:4200,https://developer-int.sbb.ch
+            allowed-methods: GET,PUT,POST,DELETE
+            allowed-headers: "*"
+            exposed-headers:
+              - "Correlation-Id"
+  # Client Credentials for Unauthenticated Requests
+  security:
+    oauth2:
+      client:
+        registration:
+          sbb:
+            client-id: 53c15fc4-cd4c-4b01-87f4-6ba50ded9e10
+            client-secret: ${UNAUTHORIZED_API_CLIENT_SECRET}
+            authorization-grant-type: client_credentials
+            scope: api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
+        provider:
+          sbb:
+            token-uri: http://localhost:8666/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+info:
+  app:
+    name: api-auth-gateway
+    version: ${version}
+    buildtime: ${time}
+logging:
+  level:
+    root: INFO
