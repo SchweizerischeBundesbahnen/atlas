@@ -25,7 +25,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+          issuer-uri: http://localhost:8666/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
       client:
         provider:
           azure:

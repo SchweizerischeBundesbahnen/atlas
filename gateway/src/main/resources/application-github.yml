@@ -1,0 +1,57 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: http://localhost:4200,https://developer-int.sbb.ch
+            allowed-methods: GET,PUT,POST,DELETE
+            allowed-headers: "*"
+            exposed-headers:
+              - "Correlation-Id"
+      observability:
+        enabled: true
+management:
+  tracing:
+    enabled: true
+    baggage:
+      correlation:
+        enabled: true
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+info:
+  app:
+    name: gateway
+    version: 1.0.0
+    buildtime: ${time}
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: ERROR
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
+
+gateway:
+  routes:
+    line-directory: http://localhost:8082
+    business-organisation-directory: http://localhost:8083
+    user-administration: http://localhost:8086
+    workflow: http://localhost:8087
+    service-point-directory: http://localhost:8088
+    import-service-point: http://localhost:8090
+    bulk-import-service: http://localhost:8090
+    export-service: http://localhost:8092
+    prm-directory: http://localhost:8093
+    location: http://localhost:8094
