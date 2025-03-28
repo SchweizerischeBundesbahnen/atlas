@@ -38,12 +38,12 @@ export class AuthService {
     private oauthStorage: OAuthStorage,
   ) {
     this.oauthService.configure(environment.authConfig);
-    // this.oauthService.setupAutomaticSilentRefresh();
-    // this.oauthService.events.subscribe(event => {
-    //   if (event.type === 'token_refresh_error') {
-    //     this.removeLoginTokenFromStorage();
-    //   }
-    // })
+    this.oauthService.setupAutomaticSilentRefresh();
+    this.oauthService.events.subscribe(event => {
+      if (event.type === 'token_refresh_error') {
+        this.removeLoginTokenFromStorage();
+      }
+    })
 
     this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       if (!this.oauthService.hasValidAccessToken()) {
