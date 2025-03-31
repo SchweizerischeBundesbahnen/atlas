@@ -49,6 +49,7 @@ export class AuthService {
       if (!this.oauthService.hasValidAccessToken()) {
         this.removeLoginTokenFromStorage();
       }
+
       if (this.oauthService.getIdentityClaims()) {
         const user = this.userFromAccessToken();
         this.userService.setCurrentUserAndLoadPermissions(user).subscribe(() => {
