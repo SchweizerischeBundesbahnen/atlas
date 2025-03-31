@@ -210,9 +210,7 @@ services:
 
   wiremock:
     build:
-      dockerfile: Dockerfile
       context: ./wiremock
+      dockerfile: Dockerfile
     ports:
       - "8666:8080"
-    volumes:
-      - ./docker:/home/wiremock
