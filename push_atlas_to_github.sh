@@ -40,7 +40,9 @@ pushToGitHub() {
   echo "Remove all tags"
   git tag | xargs git tag -d
   echo "Push to GitHub..."
-  git push origin master -f
+  echo "rename to main branch"
+  git branch -m "main"
+  git push origin main -f
 }
 
 pushing() {
