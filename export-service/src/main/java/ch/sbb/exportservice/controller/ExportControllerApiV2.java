@@ -25,8 +25,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,14 +78,13 @@ public class ExportControllerApiV2 {
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   @NewSpan
-  @Async
-  public CompletableFuture<Void> startExport(@PathVariable String businessType, @PathVariable String batchName) {
+  public ResponseEntity<Void> startExport(@PathVariable String businessType, @PathVariable String batchName) {
     final String operationKey = businessType + "/" + batchName;
     if (!runnableMap.containsKey(operationKey)) {
       throw new BadRequestException("Not supporting export of " + operationKey);
     }
     runnableMap.get(operationKey).run();
-    return CompletableFuture.completedFuture(null);
+    return ResponseEntity.ok().build();
   }
 
 }

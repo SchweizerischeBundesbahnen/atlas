@@ -19,6 +19,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.scheduling.annotation.Async;
 
 @Slf4j
 public abstract class BaseExportJobService {
@@ -47,6 +48,7 @@ public abstract class BaseExportJobService {
     return jobParametersBuilder.toJobParameters();
   }
 
+  @Async
   public void startExportJobs() {
     log.info("Starting export CSV and JSON execution...");
     for (JobParams jobParams : getExportTypes()) {
