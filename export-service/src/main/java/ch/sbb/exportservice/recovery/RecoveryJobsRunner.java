@@ -258,7 +258,6 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     if (checkIfHasJobsToRecover(jobsName)) {
       logRerunning(jobsName);
       jobService.startExportJobs();
-      lodRecovered();
     } else {
       logNotFound();
     }
@@ -266,10 +265,6 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
 
   private static void logNotFound() {
     log.info("No job found to recover.");
-  }
-
-  private static void lodRecovered() {
-    log.info("All export jobs successfully recovered!");
   }
 
   private static void logRerunning(List<String> jobs) {
