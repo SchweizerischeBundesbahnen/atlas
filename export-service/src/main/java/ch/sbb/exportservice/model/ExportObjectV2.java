@@ -32,7 +32,8 @@ public enum ExportObjectV2 {
     public static final List<ExportTypeV2> DEFAULT = List.of(
         ExportTypeV2.FULL,
         ExportTypeV2.ACTUAL,
-        ExportTypeV2.FUTURE_TIMETABLE
+        ExportTypeV2.FUTURE_TIMETABLE,
+        ExportTypeV2.TIMETABLE_YEARS
     );
 
     public static final List<ExportTypeV2> SWISS_WORLD = List.of(
