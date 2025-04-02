@@ -54,21 +54,21 @@ public class ExportControllerApiV2 {
       ExportServicePointJobService exportServicePointJobService,
       ExportTrafficPointElementJobService exportTrafficPointElementJobService,
       ExportLoadingPointJobService exportLoadingPointJobService) {
-    runnableMap.put("bodi/business-organisation-batch", exportBusinessOrganisationJobService::startExportJobs);
-    runnableMap.put("bodi/transport-company-batch", exportTransportCompanyJobService::startExportJobs);
-    runnableMap.put("prm/stop-point-batch", exportStopPointJobService::startExportJobs);
-    runnableMap.put("prm/platform-batch", exportPlatformJobService::startExportJobs);
-    runnableMap.put("prm/reference-point-batch", exportReferencePointJobService::startExportJobs);
-    runnableMap.put("prm/contact-point-batch", exportContactPointJobService::startExportJobs);
-    runnableMap.put("prm/toilet-batch", exportToiletJobService::startExportJobs);
-    runnableMap.put("prm/parking-lot-batch", exportParkingLotJobService::startExportJobs);
-    runnableMap.put("prm/relation-batch", exportRelationJobService::startExportJobs);
-    runnableMap.put("sepodi/service-point-batch", exportServicePointJobService::startExportJobs);
-    runnableMap.put("sepodi/traffic-point-batch", exportTrafficPointElementJobService::startExportJobs);
-    runnableMap.put("sepodi/loading-point-batch", exportLoadingPointJobService::startExportJobs);
-    runnableMap.put("lidi/line-batch", exportLineJobService::startExportJobs);
-    runnableMap.put("lidi/subline-batch", exportSublineJobService::startExportJobs);
-    runnableMap.put("lidi/ttfn-batch", exportTimetableFieldNumberJobService::startExportJobs);
+    runnableMap.put("bodi/business-organisation-batch", exportBusinessOrganisationJobService::startExportJobsAsync);
+    runnableMap.put("bodi/transport-company-batch", exportTransportCompanyJobService::startExportJobsAsync);
+    runnableMap.put("prm/stop-point-batch", exportStopPointJobService::startExportJobsAsync);
+    runnableMap.put("prm/platform-batch", exportPlatformJobService::startExportJobsAsync);
+    runnableMap.put("prm/reference-point-batch", exportReferencePointJobService::startExportJobsAsync);
+    runnableMap.put("prm/contact-point-batch", exportContactPointJobService::startExportJobsAsync);
+    runnableMap.put("prm/toilet-batch", exportToiletJobService::startExportJobsAsync);
+    runnableMap.put("prm/parking-lot-batch", exportParkingLotJobService::startExportJobsAsync);
+    runnableMap.put("prm/relation-batch", exportRelationJobService::startExportJobsAsync);
+    runnableMap.put("sepodi/service-point-batch", exportServicePointJobService::startExportJobsAsync);
+    runnableMap.put("sepodi/traffic-point-batch", exportTrafficPointElementJobService::startExportJobsAsync);
+    runnableMap.put("sepodi/loading-point-batch", exportLoadingPointJobService::startExportJobsAsync);
+    runnableMap.put("lidi/line-batch", exportLineJobService::startExportJobsAsync);
+    runnableMap.put("lidi/subline-batch", exportSublineJobService::startExportJobsAsync);
+    runnableMap.put("lidi/ttfn-batch", exportTimetableFieldNumberJobService::startExportJobsAsync);
   }
 
   @PostMapping("{businessType}/{batchName}")
