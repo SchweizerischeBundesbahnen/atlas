@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.529.0"
+version = "2.530.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
