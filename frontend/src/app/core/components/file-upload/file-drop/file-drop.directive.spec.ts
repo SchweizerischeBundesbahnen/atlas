@@ -3,7 +3,10 @@ import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { FileDropDirective } from './file-drop.directive';
 
-@Component({ template: `<div atlas-file-drop>Test Dropzone</div>` })
+@Component({
+  imports: [FileDropDirective],
+  template: ` <div atlas-file-drop>Test Dropzone</div>`,
+})
 class TestComponent {}
 
 describe('FileDropDirective', () => {
@@ -11,21 +14,29 @@ describe('FileDropDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-    imports: [FileDropDirective, TestComponent],
-}).createComponent(TestComponent);
+      imports: [FileDropDirective, TestComponent],
+    }).createComponent(TestComponent);
 
     fixture.detectChanges();
   });
 
   it('should add fileover class on drag events', () => {
-    const elementWithDirective = fixture.debugElement.query(By.directive(FileDropDirective));
+    const elementWithDirective = fixture.debugElement.query(
+      By.directive(FileDropDirective)
+    );
     expect(elementWithDirective).toBeTruthy();
 
-    elementWithDirective.triggerEventHandler('dragover', new DragEvent('dragover'));
+    elementWithDirective.triggerEventHandler(
+      'dragover',
+      new DragEvent('dragover')
+    );
     fixture.detectChanges();
     expect(elementWithDirective.classes['fileover']).toBeTrue();
 
-    elementWithDirective.triggerEventHandler('dragleave', new DragEvent('dragleave'));
+    elementWithDirective.triggerEventHandler(
+      'dragleave',
+      new DragEvent('dragleave')
+    );
     fixture.detectChanges();
     expect(elementWithDirective.classes['fileover']).toBeFalsy();
   });
