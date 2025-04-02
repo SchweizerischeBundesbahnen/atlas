@@ -48,14 +48,23 @@ public abstract class BaseExportJobService {
     return jobParametersBuilder.toJobParameters();
   }
 
-  @Async
   public void startExportJobs() {
-    log.info("Starting export CSV and JSON execution...");
+    log.info("CSV and JSON export execution (synchronous) started...");
     for (JobParams jobParams : getExportTypes()) {
       startExportJob(jobParams, exportCsvJob);
       startExportJob(jobParams, exportJsonJob);
     }
-    log.info("CSV and JSON export execution finished!");
+    log.info("CSV and JSON export execution (synchronous) finished");
+  }
+
+  @Async
+  public void startExportJobsAsync() {
+    log.info("CSV and JSON export execution (asynchronous) started...");
+    for (JobParams jobParams : getExportTypes()) {
+      startExportJob(jobParams, exportCsvJob);
+      startExportJob(jobParams, exportJsonJob);
+    }
+    log.info("CSV and JSON export execution (asynchronous) finished");
   }
 
   private void startExportJob(JobParams jobParams, Job job) {
