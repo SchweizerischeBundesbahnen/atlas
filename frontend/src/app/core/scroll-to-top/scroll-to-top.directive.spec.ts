@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { AppTestingModule } from '../../app.testing.module';
 import { ScrollToTopDirective } from './scroll-to-top.directive';
 
 @Component({
-    template: ` <div id="scrollbar-content-container" class="full-height">
+  template: ` <div id="scrollbar-content-container" class="full-height">
     <div scrollToTop id="some-child-component">Random Content</div>
   </div>`,
-    imports: [AppTestingModule]
+  imports: [ScrollToTopDirective],
 })
 class TestComponent {}
 
@@ -18,10 +17,12 @@ describe('ScrollToTopDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-    imports: [AppTestingModule, ScrollToTopDirective, TestComponent],
-}).createComponent(TestComponent);
+      imports: [ScrollToTopDirective, TestComponent],
+    }).createComponent(TestComponent);
 
-    scrollContainer = fixture.debugElement.query(By.css('#scrollbar-content-container'));
+    scrollContainer = fixture.debugElement.query(
+      By.css('#scrollbar-content-container')
+    );
   });
 
   it('should scroll to top', () => {

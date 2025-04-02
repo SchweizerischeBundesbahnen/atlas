@@ -1,28 +1,37 @@
-import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 
-import {UserAdministrationUserCreateComponent} from './user-administration-user-create.component';
-import {UserService} from '../../../service/user.service';
-import {BusinessOrganisationsService, User} from '../../../../../api';
-import {NotificationService} from '../../../../../core/notification/notification.service';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
-import {of} from 'rxjs';
-import {Router} from '@angular/router';
-import {Component, Input} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {RouterTestingModule} from '@angular/router/testing';
-import {MaterialModule} from '../../../../../core/module/material.module';
-import {FormGroup} from '@angular/forms';
-import {UserPermissionManager} from '../../../service/user-permission-manager';
-import {DetailPageContainerComponent} from '../../../../../core/components/detail-page-container/detail-page-container.component';
-import {DetailFooterComponent} from '../../../../../core/components/detail-footer/detail-footer.component';
-import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
+import { UserAdministrationUserCreateComponent } from './user-administration-user-create.component';
+import { UserService } from '../../../service/user.service';
+import { BusinessOrganisationsService, User } from '../../../../../api';
+import { NotificationService } from '../../../../../core/notification/notification.service';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslatePipe,
+} from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { Router } from '@angular/router';
+import { Component, Input } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MaterialModule } from '../../../../../core/module/material.module';
+import { FormGroup } from '@angular/forms';
+import { UserPermissionManager } from '../../../service/user-permission-manager';
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import SpyObj = jasmine.SpyObj;
 
 @Component({
-    selector: 'app-user-select',
-    template: '',
-    imports: [RouterTestingModule,
-        MaterialModule]
+  selector: 'app-user-select',
+  template: '',
+  imports: [RouterTestingModule, MaterialModule],
 })
 class MockUserSelectComponent {
   @Input() form?: FormGroup;
@@ -43,7 +52,9 @@ describe('UserAdministrationUserCreateComponent', () => {
       'getPermissionsFromUserModelAsArray',
       'createUserPermission',
     ]);
-    notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
+    notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
+      'success',
+    ]);
     userPermissionManagerSpy = jasmine.createSpyObj<UserPermissionManager>(
       'UserPermissionManager',
       [
@@ -67,46 +78,46 @@ describe('UserAdministrationUserCreateComponent', () => {
       },
     });
     await TestBed.configureTestingModule({
-    imports: [
+      imports: [
         RouterTestingModule,
         MaterialModule,
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         UserAdministrationUserCreateComponent,
         MockUserSelectComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-    ],
-    providers: [
+      ],
+      providers: [
         {
-            provide: UserService,
-            useValue: userServiceSpy,
+          provide: UserService,
+          useValue: userServiceSpy,
         },
         {
-            provide: UserPermissionManager,
-            useValue: userPermissionManagerSpy,
+          provide: UserPermissionManager,
+          useValue: userPermissionManagerSpy,
         },
         {
-            provide: NotificationService,
-            useValue: notificationServiceSpy,
+          provide: NotificationService,
+          useValue: notificationServiceSpy,
         },
         TranslatePipe,
         {
-            provide: MAT_DIALOG_DATA,
-            useValue: { user: undefined },
+          provide: MAT_DIALOG_DATA,
+          useValue: { user: undefined },
         },
         {
-            provide: MatDialogRef,
-            useValue: {
-                close: () => {
-                    // mock implementation
-                },
+          provide: MatDialogRef,
+          useValue: {
+            close: () => {
+              // mock implementation
             },
+          },
         },
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationUserCreateComponent);
     component = fixture.componentInstance;
@@ -137,8 +148,8 @@ describe('UserAdministrationUserCreateComponent', () => {
         sbbUserId: userId,
       })
     );
-    userServiceSpy.getPermissionsFromUserModelAsArray.and.callFake((user: User) =>
-      Array.from(user.permissions ?? [])
+    userServiceSpy.getPermissionsFromUserModelAsArray.and.callFake(
+      (user: User) => Array.from(user.permissions ?? [])
     );
     component.selectUser({
       sbbUserId: 'u236171',
@@ -149,7 +160,9 @@ describe('UserAdministrationUserCreateComponent', () => {
       sbbUserId: 'u236171',
     });
     expect(userServiceSpy.getUser).toHaveBeenCalledOnceWith('u236171');
-    expect(userServiceSpy.getPermissionsFromUserModelAsArray).toHaveBeenCalledOnceWith({
+    expect(
+      userServiceSpy.getPermissionsFromUserModelAsArray
+    ).toHaveBeenCalledOnceWith({
       sbbUserId: 'u236171',
     });
   });
@@ -166,7 +179,9 @@ describe('UserAdministrationUserCreateComponent', () => {
     );
     spyOn(router, 'navigate').and.resolveTo(true);
     component.createUser();
-    expect(userPermissionManagerSpy.setSbbUserId).toHaveBeenCalledOnceWith('u236171');
+    expect(userPermissionManagerSpy.setSbbUserId).toHaveBeenCalledOnceWith(
+      'u236171'
+    );
     expect(
       userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser
     ).toHaveBeenCalledOnceWith();
