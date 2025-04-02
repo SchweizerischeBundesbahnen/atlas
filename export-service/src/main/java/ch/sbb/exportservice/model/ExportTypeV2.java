@@ -8,6 +8,7 @@ public enum ExportTypeV2 {
   ACTUAL("actual-date", ""),
   FULL("full", ""),
   FUTURE_TIMETABLE("future-timetable", ""),
+  TIMETABLE_YEARS("timetable-years", ""),
 
   SWISS_ACTUAL("actual-date", "swiss"),
   SWISS_FULL("full", "swiss"),
