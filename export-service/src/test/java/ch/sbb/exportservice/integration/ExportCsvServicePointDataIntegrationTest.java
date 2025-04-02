@@ -25,7 +25,7 @@ class ExportCsvServicePointDataIntegrationTest extends BaseExportCsvDataIntegrat
     when(deleteCsvFileTasklet.execute(any(), any())).thenReturn(null);
 
     // when
-    exportServicePointJobService.startExportJobs();
+    exportServicePointJobService.startExportJobsSync();
 
     // then
     File exportedCsvFile =
