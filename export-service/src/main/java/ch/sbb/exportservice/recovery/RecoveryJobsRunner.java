@@ -254,7 +254,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private void checkJobToRecover(BaseExportJobService jobService, List<String> jobsName) {
     if (checkIfHasJobsToRecover(jobsName)) {
       log.info("Rerunning {} export jobs...", jobsName);
-      jobService.startExportJobs();
+      jobService.startExportJobsSync();
       log.info("Successfully recovered {} export jobs", jobsName);
     } else {
       log.info("No job found to recover");

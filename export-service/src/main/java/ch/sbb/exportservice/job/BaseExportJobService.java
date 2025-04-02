@@ -8,6 +8,7 @@ import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -48,28 +49,30 @@ public abstract class BaseExportJobService {
     return jobParametersBuilder.toJobParameters();
   }
 
-  public void startExportJobs() {
+  public void startExportJobsSync() {
     log.info("CSV and JSON export execution (synchronous) started...");
-    for (JobParams jobParams : getExportTypes()) {
-      startExportJob(jobParams, exportCsvJob);
-      startExportJob(jobParams, exportJsonJob);
-    }
+    startExportJobs();
     log.info("CSV and JSON export execution (synchronous) finished");
   }
 
   @Async
-  public void startExportJobsAsync() {
+  public CompletableFuture<Boolean> startExportJobsAsync() {
     log.info("CSV and JSON export execution (asynchronous) started...");
+    startExportJobs();
+    log.info("CSV and JSON export execution (asynchronous) finished");
+    return CompletableFuture.completedFuture(true);
+  }
+
+  private void startExportJobs() {
     for (JobParams jobParams : getExportTypes()) {
       startExportJob(jobParams, exportCsvJob);
       startExportJob(jobParams, exportJsonJob);
     }
-    log.info("CSV and JSON export execution (asynchronous) finished");
   }
 
   private void startExportJob(JobParams jobParams, Job job) {
     try {
-      JobExecution execution = jobLauncher.run(job, buildJobParameters(jobParams));
+      final JobExecution execution = jobLauncher.run(job, buildJobParameters(jobParams));
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
