@@ -4,6 +4,7 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TRANSPORT_
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TRANSPORT_COMPANY_JSON_JOB_NAME;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
+import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import java.util.List;
 import org.springframework.batch.core.Job;
@@ -26,6 +27,11 @@ public class ExportTransportCompanyJobService extends BaseExportJobService {
     return List.of(
         new JobParams(ExportTypeV2.FULL)
     );
+  }
+
+  @Override
+  public ExportObjectV2 getExportObject() {
+    return ExportObjectV2.TRANSPORT_COMPANY;
   }
 
 }

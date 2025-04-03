@@ -1,10 +1,8 @@
 package ch.sbb.exportservice.job;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -33,11 +31,16 @@ class BaseExportJobServiceTest {
       protected List<JobParams> getExportTypes() {
         return List.of(new JobParams(ExportTypeV2.FULL));
       }
+
+      @Override
+      public ExportObjectV2 getExportObject() {
+        return ExportObjectV2.TRANSPORT_COMPANY;
+      }
     };
   }
 
   @Test
-  void startExportJobsAsync()
+  void startExportJobs()
       throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException,
       JobRestartException {
     // given
@@ -46,10 +49,9 @@ class BaseExportJobServiceTest {
     Mockito.when(jobLauncherMock.run(Mockito.same(jobMock), Mockito.any(JobParameters.class))).thenReturn(jobExecutionMock);
 
     // when
-    final CompletableFuture<Boolean> result = baseExportJobService.startExportJobsAsync();
+    baseExportJobService.startExportJobs();
 
     // then
-    assertThat(result).isCompletedWithValue(true);
     Mockito.verify(jobLauncherMock, Mockito.times(2)).run(Mockito.same(jobMock), Mockito.any(JobParameters.class));
   }
 
