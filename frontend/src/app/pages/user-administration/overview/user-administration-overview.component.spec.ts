@@ -1,10 +1,9 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {UserAdministrationOverviewComponent} from './user-administration-overview.component';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {MaterialModule} from '../../../core/module/material.module';
-import {FormsModule} from '@angular/forms';
-import {MockAtlasButtonComponent} from '../../../app.testing.mocks';
-import {RouterModule} from "@angular/router";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { UserAdministrationOverviewComponent } from './user-administration-overview.component';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('UserAdministrationOverviewComponent', () => {
   let component: UserAdministrationOverviewComponent;
@@ -12,16 +11,17 @@ describe('UserAdministrationOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [
-        TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        RouterModule.forRoot([]),
-        MaterialModule,
-        FormsModule,
-        UserAdministrationOverviewComponent, MockAtlasButtonComponent,
-    ],
-}).compileComponents();
+      imports: [UserAdministrationOverviewComponent, TranslateModule.forRoot()],
+      providers: [
+        TranslatePipe,
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { data: { user: {} } } },
+        },
+        provideHttpClient(),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationOverviewComponent);
     component = fixture.componentInstance;
