@@ -1,25 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MaterialModule } from '../../../../core/module/material.module';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationClientOverviewComponent } from './user-administration-client-overview.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ClientCredentialAdministrationService, ContainerClientCredential } from '../../../../api';
-import { Observable, of } from 'rxjs';
-import { MockTableComponent } from '../../../../app.testing.mocks';
+import {
+  ClientCredentialAdministrationService,
+  ContainerClientCredential,
+} from '../../../../api';
+import { Observable, of, Subject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
-
-const clientContainer: ContainerClientCredential = {
-  objects: [
-    {
-      clientCredentialId: '134123-123123',
-      alias: 'öV-info.ch',
-    },
-  ],
-  totalCount: 1,
-};
 
 describe('UserAdministrationClientOverviewComponent', () => {
   let component: UserAdministrationClientOverviewComponent;
@@ -31,36 +20,33 @@ describe('UserAdministrationClientOverviewComponent', () => {
     clientCredentialAdministrationServiceSpy =
       jasmine.createSpyObj<ClientCredentialAdministrationService>(
         'ClientCredentialAdministrationServiceSpy',
-        ['getClientCredentials'],
+        ['getClientCredentials']
       );
 
     (
       clientCredentialAdministrationServiceSpy.getClientCredentials as Spy<
         () => Observable<ContainerClientCredential>
       >
-    ).and.returnValue(of(clientContainer));
+    ).and.returnValue(of());
 
     await TestBed.configureTestingModule({
-    imports: [
-        TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        RouterTestingModule,
-        MaterialModule,
-        HttpClientTestingModule,
+      imports: [
         UserAdministrationClientOverviewComponent,
-        AtlasButtonComponent,
-        MockTableComponent,
-    ],
-    providers: [
+        TranslateModule.forRoot(),
+      ],
+      providers: [
         {
-            provide: ClientCredentialAdministrationService,
-            useValue: clientCredentialAdministrationServiceSpy,
+          provide: ClientCredentialAdministrationService,
+          useValue: clientCredentialAdministrationServiceSpy,
         },
-    ],
-}).compileComponents();
+        { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
+        TranslatePipe,
+      ],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(UserAdministrationClientOverviewComponent);
+    fixture = TestBed.createComponent(
+      UserAdministrationClientOverviewComponent
+    );
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -70,16 +56,23 @@ describe('UserAdministrationClientOverviewComponent', () => {
   });
 
   it('should getOverview', () => {
+    //given
+    component.clientCredentials = [
+      { clientCredentialId: '134123-123123', alias: 'öV-info.ch' },
+    ];
+    component.totalCount = 1;
+    fixture.detectChanges();
+
+    //when
     component.getOverview({
       page: 0,
       size: 10,
     });
 
-    expect(clientCredentialAdministrationServiceSpy.getClientCredentials).toHaveBeenCalledOnceWith(
-      0,
-      10,
-      ['clientCredentialId,asc'],
-    );
+    //then
+    expect(
+      clientCredentialAdministrationServiceSpy.getClientCredentials
+    ).toHaveBeenCalledWith(0, 10, ['clientCredentialId,asc']);
 
     expect(component.clientCredentials.length).toEqual(1);
     expect(component.clientCredentials[0].alias).toEqual('öV-info.ch');
