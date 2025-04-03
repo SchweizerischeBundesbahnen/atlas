@@ -162,25 +162,42 @@ services:
       - "datestyle=iso, ymd"
 
   zookeeper:
-    image: wurstmeister/zookeeper
+    image: bitnami/zookeeper
     ports:
       - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
 
   kafka:
-    image: wurstmeister/kafka
+    image: &kafka-image bitnami/kafka
     ports:
       - "9092:9092"
     depends_on:
       - zookeeper
     restart: on-failure
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
-      KAFKA_DELETE_TOPIC_ENABLE: 'true'
-      # atlas.mail will have 1 partition and 1 replicas
-      KAFKA_CREATE_TOPICS: "atlas.mail:1:1,atlas.user.administration:1:1,atlas.business.organisation:1:1,atlas.transport.company:1:1,atlas.service.point:1:1"
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+    healthcheck:
+      test: [ "CMD", "kafka-topics.sh", "--bootstrap-server=localhost:9092", "--list" ]
+      start_period: 15s
+      interval: 10s
 
+  init-kafka:
+    image: *kafka-image
+    working_dir: /opt/bitnami/kafka/bin
+    entrypoint: /bin/bash
+    depends_on:
+      kafka:
+        condition: service_healthy
+    command: |
+      kafka-topics.sh --create --if-not-exists --topic atlas.mail --replication-factor=1 --partitions=1 --bootstrap-server kafka:9092
+      kafka-topics.sh --create --if-not-exists --topic atlas.user.administration --replication-factor=1 --partitions=1 --bootstrap-server kafka:9092
+      kafka-topics.sh --create --if-not-exists --topic atlas.business.organisation --replication-factor=1 --partitions=1 --bootstrap-server kafka:9092
+      kafka-topics.sh --create --if-not-exists --topic atlas.transport.company --replication-factor=1 --partitions=1 --bootstrap-server kafka:9092
+      kafka-topics.sh --create --if-not-exists --topic atlas.service.point --replication-factor=1 --partitions=1 --bootstrap-server kafka:9092
   minio:
     image: minio/minio
     ports:
