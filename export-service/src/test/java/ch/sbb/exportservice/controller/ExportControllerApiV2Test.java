@@ -1,40 +1,33 @@
 package ch.sbb.exportservice.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.exportservice.job.sepodi.servicepoint.service.ExportServicePointJobService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
-class ExportControllerApiV2Test {
+class ExportControllerApiV2Test extends BaseControllerApiTest {
 
-  private ExportControllerApiV2 controller;
-  private Runnable exportServiceOperationMock;
-
-  @BeforeEach
-  void setUp() {
-    exportServiceOperationMock = Mockito.mock(Runnable.class);
-    controller = new ExportControllerApiV2(
-        Map.of(
-            "prm/stop-point-batch",
-            exportServiceOperationMock
-        )
-    );
-  }
+  @MockitoSpyBean
+  private ExportServicePointJobService exportServicePointJobService;
 
   @Test
-  void startExport() {
+  void startExport() throws Exception {
     // given
+    Mockito.doNothing().when(exportServicePointJobService).startExportJobs();
 
     // when
-    final ResponseEntity<Void> response = controller.startExport("prm", "stop-point-batch");
+    mvc.perform(post("/v2/export/sepodi/service-point-batch")
+            .contentType(contentType)
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
 
     // then
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));
-    Mockito.verify(exportServiceOperationMock).run();
+    Mockito.verify(exportServicePointJobService).startExportJobs();
   }
 
 }

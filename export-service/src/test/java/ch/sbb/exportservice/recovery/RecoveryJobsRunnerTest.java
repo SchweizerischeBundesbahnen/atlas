@@ -159,7 +159,7 @@ class RecoveryJobsRunnerTest {
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
 
     //then
-    verify(exportServicePointJobService).startExportJobsSync();
+    verify(exportServicePointJobService).startExportJobs();
     verify(fileService).clearDir();
   }
 
@@ -188,7 +188,7 @@ class RecoveryJobsRunnerTest {
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
 
     //then
-    verify(exportTrafficPointElementJobService).startExportJobsSync();
+    verify(exportTrafficPointElementJobService).startExportJobs();
     verify(fileService).clearDir();
   }
 
@@ -217,7 +217,7 @@ class RecoveryJobsRunnerTest {
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
 
     //then
-    verify(exportLoadingPointJobService).startExportJobsSync();
+    verify(exportLoadingPointJobService).startExportJobs();
     verify(fileService).clearDir();
   }
 
@@ -246,7 +246,7 @@ class RecoveryJobsRunnerTest {
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
 
     //then
-    verify(exportStopPointJobService).startExportJobsSync();
+    verify(exportStopPointJobService).startExportJobs();
     verify(fileService).clearDir();
   }
 
@@ -274,7 +274,7 @@ class RecoveryJobsRunnerTest {
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
 
     //then
-    verify(exportPlatformJobService).startExportJobsSync();
+    verify(exportPlatformJobService).startExportJobs();
     verify(fileService).clearDir();
   }
 
@@ -304,7 +304,7 @@ class RecoveryJobsRunnerTest {
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
 
     //then
-    verify(exportReferencePointJobService).startExportJobsSync();
+    verify(exportReferencePointJobService).startExportJobs();
     verify(fileService).clearDir();
   }
 
@@ -334,7 +334,7 @@ class RecoveryJobsRunnerTest {
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
 
     //then
-    verify(exportContactPointJobService).startExportJobsSync();
+    verify(exportContactPointJobService).startExportJobs();
     verify(fileService).clearDir();
   }
 
@@ -363,7 +363,7 @@ class RecoveryJobsRunnerTest {
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
 
     //then
-    verify(exportRelationJobService).startExportJobsSync();
+    verify(exportRelationJobService).startExportJobs();
     verify(fileService).clearDir();
   }
 
@@ -372,9 +372,9 @@ class RecoveryJobsRunnerTest {
     //when
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
     //then
-    verify(exportServicePointJobService, never()).startExportJobsSync();
-    verify(exportTrafficPointElementJobService, never()).startExportJobsSync();
-    verify(exportLoadingPointJobService, never()).startExportJobsSync();
+    verify(exportServicePointJobService, never()).startExportJobs();
+    verify(exportTrafficPointElementJobService, never()).startExportJobs();
+    verify(exportLoadingPointJobService, never()).startExportJobs();
     verify(fileService).clearDir();
   }
 
