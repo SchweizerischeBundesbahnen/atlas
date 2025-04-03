@@ -5,10 +5,10 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TYPE_V1_JO
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.atlas.export.enumeration.ExportTypeBase;
+import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -20,7 +20,6 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.scheduling.annotation.Async;
 
 @Slf4j
 public abstract class BaseExportJobService {
@@ -37,6 +36,8 @@ public abstract class BaseExportJobService {
 
   protected abstract List<JobParams> getExportTypes();
 
+  public abstract ExportObjectV2 getExportObject();
+
   public static JobParameters buildJobParameters(JobParams jobParams) {
     final JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
         .addString(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, JobDescriptionConstant.EXECUTION_BATCH_PARAMETER)
@@ -49,25 +50,13 @@ public abstract class BaseExportJobService {
     return jobParametersBuilder.toJobParameters();
   }
 
-  public void startExportJobsSync() {
-    log.info("CSV and JSON export execution (synchronous) started...");
-    startExportJobs();
-    log.info("CSV and JSON export execution (synchronous) finished");
-  }
-
-  @Async
-  public CompletableFuture<Boolean> startExportJobsAsync() {
-    log.info("CSV and JSON export execution (asynchronous) started...");
-    startExportJobs();
-    log.info("CSV and JSON export execution (asynchronous) finished");
-    return CompletableFuture.completedFuture(true);
-  }
-
-  private void startExportJobs() {
+  public void startExportJobs() {
+    log.info("CSV and JSON export execution started...");
     for (JobParams jobParams : getExportTypes()) {
       startExportJob(jobParams, exportCsvJob);
       startExportJob(jobParams, exportJsonJob);
     }
+    log.info("CSV and JSON export execution finished");
   }
 
   private void startExportJob(JobParams jobParams, Job job) {
