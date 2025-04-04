@@ -101,6 +101,7 @@ public class SublineService {
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, currentVersions);
+    versionableService.doNotAllowGaps(versionedObjects);
 
     versionableService.applyVersioning(SublineVersion.class, versionedObjects, this::save,
         this::deleteById);

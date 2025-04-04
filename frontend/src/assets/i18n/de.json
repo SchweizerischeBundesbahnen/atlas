@@ -21,6 +21,7 @@
     "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}.",
     "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} wurde nicht gefunden.",
     "VERSIONING": "Diese Versionierungs-Änderung ist vom System nicht unterstützt. Wenden Sie sich bitte an die Fachstelle atlas.",
+    "GAPS_NOT_ALLOWED": "Eine Lücke in diesem Objekt ist nicht zulässig. Wenden Sie sich bitte an die Fachstelle atlas.",
     "CORRELATION_ID": "Bei anhaltenden Problemen wenden Sie sich mit folgender Identifikationsnummer an die Fachstelle atlas: {{correlationId}}"
   },
   "COMMON": {

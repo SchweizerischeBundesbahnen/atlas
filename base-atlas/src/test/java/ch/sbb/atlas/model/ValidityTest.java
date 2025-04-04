@@ -50,7 +50,7 @@ class ValidityTest {
 
     validity = validity.minify();
     assertThat(validity.getDateRanges()).hasSize(1);
-    DateRange firstRange = validity.getDateRanges().get(0);
+    DateRange firstRange = validity.getDateRanges().getFirst();
     assertThat(firstRange.getFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstRange.getTo()).isEqualTo(LocalDate.of(2021, 12, 31));
   }
@@ -116,7 +116,46 @@ class ValidityTest {
 
     validity = validity.minify();
     assertThat(validity.getDateRanges()).hasSize(1);
-    assertThat(validity.getDateRanges().get(0).getFrom()).isEqualTo(LocalDate.of(1993, 1, 18));
+    assertThat(validity.getDateRanges().getFirst().getFrom()).isEqualTo(LocalDate.of(1993, 1, 18));
   }
 
+  @Test
+  void shouldHaveGap() {
+    Validity validity = new Validity(new ArrayList<>(List.of(
+        DateRange.builder()
+            .from(LocalDate.of(1993, 1, 18))
+            .to(LocalDate.of(2000, 2, 15))
+            .build(),
+        DateRange.builder()
+            .from(LocalDate.of(2000, 2, 16))
+            .to(LocalDate.of(2007, 12, 30))
+            .build(),
+        DateRange.builder()
+            .from(LocalDate.of(2008, 1, 1))
+            .to(LocalDate.of(2099, 12, 31))
+            .build()
+    )));
+    boolean containsGaps = validity.containsGaps();
+    assertThat(containsGaps).isTrue();
+  }
+
+  @Test
+  void shouldNotHaveGap() {
+    Validity validity = new Validity(new ArrayList<>(List.of(
+        DateRange.builder()
+            .from(LocalDate.of(1993, 1, 18))
+            .to(LocalDate.of(2000, 2, 15))
+            .build(),
+        DateRange.builder()
+            .from(LocalDate.of(2000, 2, 16))
+            .to(LocalDate.of(2007, 12, 31))
+            .build(),
+        DateRange.builder()
+            .from(LocalDate.of(2008, 1, 1))
+            .to(LocalDate.of(2099, 12, 31))
+            .build()
+    )));
+    boolean containsGaps = validity.containsGaps();
+    assertThat(containsGaps).isFalse();
+  }
 }
