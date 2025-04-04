@@ -174,6 +174,7 @@ public class LineService {
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, currentVersions);
+    versionableService.doNotAllowGaps(versionedObjects);
     lineUpdateValidationService.validateVersioningNotAffectingReview(currentVersions, versionedObjects);
 
     List<LineVersion> preSaveVersions = currentVersions.stream().map(ReflectionHelper::copyObjectViaBuilder).toList();
