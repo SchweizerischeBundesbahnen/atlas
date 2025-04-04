@@ -84,8 +84,8 @@ public class PrmChangeRecordingVariantService {
 
   StopPointVersion stopPointChangeRecordingVariant(StopPointVersion stopPointVersion, Set<MeanOfTransport> meanOfTransports) {
     List<StopPointVersion> stopPointVersions = stopPointRepository.findAllBySloidOrderByValidFrom(stopPointVersion.getSloid());
-    LocalDate validFrom = stopPointVersions.get(0).getValidFrom();
-    LocalDate validTo = stopPointVersions.get(stopPointVersions.size() - 1).getValidTo();
+    LocalDate validFrom = stopPointVersions.getFirst().getValidFrom();
+    LocalDate validTo = stopPointVersions.getLast().getValidTo();
     StopPointVersion changedRecordingVariantStopPointVersion = StopPointVersionMapper.resetToDefaultValue(stopPointVersion,
         validFrom, validTo,
         meanOfTransports);

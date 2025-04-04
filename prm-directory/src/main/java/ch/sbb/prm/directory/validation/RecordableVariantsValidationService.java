@@ -16,8 +16,6 @@ public abstract class RecordableVariantsValidationService<T extends VariantsRedu
 
   public static final String MUST_BE_NULL_ERROR_MSG = "Must be null for Reduced Object";
   public static final String NOT_ALLOWED_FIELD_FOR_COMPLETE_VARIANT_ERROR_MSG = "Must be null for Completed Object";
-  public static final String MUST_NOT_BE_NULL_ERROR_MSG = "Must not be null for Completed Object. At least a default value "
-      + "is mandatory";
 
   protected abstract String getObjectName();
 
@@ -45,8 +43,8 @@ public abstract class RecordableVariantsValidationService<T extends VariantsRedu
       RecordingVariant recordingVariant = field.getAnnotation(PrmVariant.class).variant();
       field.setAccessible(true);
       Object value = field.get(version);
-      if (!nullable && value == null) {
-        errorConstraintMap.put(field.getName(), MUST_NOT_BE_NULL_ERROR_MSG);
+      if (!nullable && value == null && RecordingVariant.COMPLETE == recordingVariant) {
+        errorConstraintMap.put(field.getName(), "Must not be null for Completed Object.");
       }
       if(value instanceof Collection<?> collection){
         if (!collection.isEmpty() && RecordingVariant.REDUCED == recordingVariant) {
@@ -65,7 +63,11 @@ public abstract class RecordableVariantsValidationService<T extends VariantsRedu
     try {
       RecordingVariant recordingVariant = field.getAnnotation(PrmVariant.class).variant();
       field.setAccessible(true);
+      boolean nullable = field.getAnnotation(PrmVariant.class).nullable();
       Object value = field.get(version);
+      if (!nullable && value == null && RecordingVariant.REDUCED == recordingVariant) {
+        errorConstraintMap.put(field.getName(), "Must not be null for Reduced Object.");
+      }
       if (value != null && RecordingVariant.COMPLETE == recordingVariant) {
         errorConstraintMap.put(field.getName(), MUST_BE_NULL_ERROR_MSG);
       }
