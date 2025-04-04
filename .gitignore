@@ -101,6 +101,7 @@ frontend/coverage
 frontend/docker/package
 frontend/.npmrc
 /frontend/out-tsc/
+frontend/jsonZipDirectory/
 /export/
 /amazon-s3/export/
 
