@@ -6,8 +6,11 @@ import static ch.sbb.atlas.versioning.model.VersioningAction.NOT_TOUCHED;
 import static ch.sbb.atlas.versioning.model.VersioningAction.UPDATE;
 import static java.util.Collections.unmodifiableList;
 
+import ch.sbb.atlas.model.DateRange;
+import ch.sbb.atlas.model.Validity;
 import ch.sbb.atlas.versioning.annotation.AtlasAnnotationProcessor;
 import ch.sbb.atlas.versioning.engine.VersioningEngine;
+import ch.sbb.atlas.versioning.exception.GapsNotAllowedException;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -105,6 +108,18 @@ public class VersionableServiceImpl implements VersionableService {
           version.setId(null);
           save.accept(version);
         });
+  }
+
+  @Override
+  public void doNotAllowGaps(List<VersionedObject> versionedObjects) {
+    List<DateRange> dateRanges = versionedObjects.stream()
+        .filter(i -> i.getAction() != DELETE)
+        .map(i -> new DateRange(i.getValidFrom(), i.getValidTo()))
+        .toList();
+    boolean containsGaps = new Validity(dateRanges).containsGaps();
+    if (containsGaps) {
+      throw new GapsNotAllowedException();
+    }
   }
 
   private void log(VersionedObject versionedObject) {
