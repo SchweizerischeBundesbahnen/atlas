@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletOverviewModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
@@ -31,8 +32,8 @@ public class ToiletVersionMapper {
         .build();
   }
 
-  public static ToiletVersion toEntity(ToiletVersionModel model){
-    return ToiletVersion.builder()
+  public static ToiletVersion toEntity(ToiletVersionModel model) {
+    ToiletVersion entity = ToiletVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
@@ -48,6 +49,10 @@ public class ToiletVersionMapper {
         .editionDate(model.getEditionDate())
         .version(model.getEtagVersion())
         .build();
+    if (entity.getWheelchairToilet() == null) {
+      entity.setWheelchairToilet(StandardAttributeType.TO_BE_COMPLETED);
+    }
+    return entity;
   }
 
   public static ToiletOverviewModel toOverviewModel(ToiletVersion version, RecordingStatus recordingStatus) {
