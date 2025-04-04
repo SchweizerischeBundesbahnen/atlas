@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.mapper;
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
@@ -118,6 +119,9 @@ public class PlatformVersionMapper {
       }
       if (platformVersion.getVehicleAccess() == null) {
         platformVersion.setVehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED);
+      }
+      if (platformVersion.getInfoOpportunities() == null || platformVersion.getInfoOpportunities().isEmpty()) {
+        platformVersion.setInfoOpportunities(Set.of(InfoOpportunityAttributeType.TO_BE_COMPLETED));
       }
     } else {
       if (platformVersion.getContrastingAreas() == null) {
