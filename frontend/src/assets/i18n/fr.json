@@ -21,6 +21,7 @@
     "CONSTRAINT": "La demande n’a pas été réalisée dans le bon format. La valeur {{rejectedValue}} n’est pas autorisée en raison de {{cause}}.",
     "ENTITY_NOT_FOUND": "L’objet avec {{field}} {{value}} n’a pas été trouvé.",
     "VERSIONING": "Ce changement de version n’est pas pris en charge par le système. Veuillez vous adresser au service spécialisé atlas.",
+    "GAPS_NOT_ALLOWED": "Aucun espace vide n’est autorisé dans cet objet. Veuillez vous adresser au service spécialisé atlas.",
     "CORRELATION_ID": "Si les problèmes persistent, contactez le service atlas avec le numéro d'identification suivant: {{correlationId}}"
   },
   "COMMON": {
