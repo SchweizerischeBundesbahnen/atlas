@@ -1,5 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.location.SloidHelper;
@@ -33,7 +36,7 @@ public class RelationVersionMapper {
   }
 
   public static RelationVersion toEntity(RelationVersionModel model){
-    return RelationVersion.builder()
+    RelationVersion entity = RelationVersion.builder()
         .id(model.getId())
         .sloid(model.getElementSloid())
         .number(SloidHelper.getServicePointNumber(model.getParentServicePointSloid()))
@@ -51,6 +54,16 @@ public class RelationVersionMapper {
         .editionDate(model.getEditionDate())
         .version(model.getEtagVersion())
         .build();
+    if (entity.getContrastingAreas() == null) {
+      entity.setContrastingAreas(StandardAttributeType.TO_BE_COMPLETED);
+    }
+    if (entity.getStepFreeAccess() == null) {
+      entity.setStepFreeAccess(StepFreeAccessAttributeType.TO_BE_COMPLETED);
+    }
+    if (entity.getTactileVisualMarks() == null) {
+      entity.setTactileVisualMarks(TactileVisualAttributeType.TO_BE_COMPLETED);
+    }
+    return entity;
   }
 
 }
