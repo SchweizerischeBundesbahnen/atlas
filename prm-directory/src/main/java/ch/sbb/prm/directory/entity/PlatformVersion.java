@@ -65,17 +65,17 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @AtlasVersionableProperty
   private String adviceAccessInfo;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BooleanOptionalAttributeType contrastingAreas;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BasicAttributeType dynamicAudio;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BasicAttributeType dynamicVisual;
@@ -103,7 +103,7 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @Convert(converter = InfoOpportunityTypeConverter.class)
   private Set<InfoOpportunityAttributeType> infoOpportunities;
 
-  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BasicAttributeType levelAccessWheelchair;
@@ -116,12 +116,12 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @AtlasVersionableProperty
   private Double superelevation;
 
-  @PrmVariant(variant = RecordingVariant.REDUCED)
+  @PrmVariant(variant = RecordingVariant.REDUCED, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BooleanOptionalAttributeType tactileSystem;
 
-  @PrmVariant(variant = RecordingVariant.REDUCED)
+  @PrmVariant(variant = RecordingVariant.REDUCED, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private VehicleAccessAttributeType vehicleAccess;
