@@ -17,6 +17,7 @@ class PlatformRecordingStatusEvaluatorTest {
   void shouldCalculateReducedPlatformToComplete() {
     PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
     platformVersion.setTactileSystem(BooleanOptionalAttributeType.YES);
+    platformVersion.setBoardingMark(BooleanOptionalAttributeType.YES);
 
     RecordingStatus result = PlatformRecordingStatusEvaluator.getStatusForPlatform(platformVersion, true);
     assertThat(result).isEqualTo(RecordingStatus.COMPLETE);
@@ -26,6 +27,7 @@ class PlatformRecordingStatusEvaluatorTest {
   void shouldCalculateReducedPlatformToIncomplete() {
     PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
     platformVersion.setTactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+    platformVersion.setBoardingMark(BooleanOptionalAttributeType.YES);
 
     RecordingStatus result = PlatformRecordingStatusEvaluator.getStatusForPlatform(platformVersion, true);
     assertThat(result).isEqualTo(RecordingStatus.INCOMPLETE);
