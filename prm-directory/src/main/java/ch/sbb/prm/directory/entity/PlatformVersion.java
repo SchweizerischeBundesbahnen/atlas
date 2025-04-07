@@ -124,6 +124,11 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @PrmVariant(variant = RecordingVariant.REDUCED, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
+  private BooleanOptionalAttributeType boardingMark;
+
+  @PrmVariant(variant = RecordingVariant.REDUCED, nullable = false)
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private VehicleAccessAttributeType vehicleAccess;
 
   @PrmVariant(variant = RecordingVariant.REDUCED)
