@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
@@ -57,7 +58,7 @@ public class ContactPointVersionMapper {
   }
 
   public static ContactPointVersion toEntity(ContactPointVersionModel model) {
-    return ContactPointVersion.builder()
+    ContactPointVersion entity = ContactPointVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
@@ -76,6 +77,13 @@ public class ContactPointVersionMapper {
         .editionDate(model.getEditionDate())
         .version(model.getEtagVersion())
         .build();
+    if (entity.getWheelchairAccess() == null) {
+      entity.setWheelchairAccess(StandardAttributeType.TO_BE_COMPLETED);
+    }
+    if (entity.getInductionLoop() == null) {
+      entity.setInductionLoop(StandardAttributeType.TO_BE_COMPLETED);
+    }
+    return entity;
   }
 
 }
