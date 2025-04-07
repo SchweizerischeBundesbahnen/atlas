@@ -60,7 +60,7 @@ public class Validity {
       return this;
     }
     List<DateRange> minifiedRanges = new ArrayList<>();
-    minifiedRanges.add(dateRanges.get(0));
+    minifiedRanges.add(dateRanges.getFirst());
 
     Iterator<DateRange> iter = dateRanges.iterator();
     DateRange current, previous = iter.next();
@@ -68,7 +68,7 @@ public class Validity {
       current = iter.next();
       if (previous.canMergeWith(current)) {
         // Remove last element
-        DateRange removed = minifiedRanges.remove(minifiedRanges.size() - 1);
+        DateRange removed = minifiedRanges.removeLast();
         // Replace it with merged
         minifiedRanges.add(removed.mergeWith(current));
       } else {
@@ -88,6 +88,10 @@ public class Validity {
       }
     }
     return true;
+  }
+
+  public boolean containsGaps() {
+    return minify().getDateRanges().size() > 1;
   }
 
 }
