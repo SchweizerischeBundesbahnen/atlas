@@ -5,6 +5,7 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_TYPE_V1_JO
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.atlas.export.enumeration.ExportTypeBase;
+import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.util.List;
@@ -35,6 +36,8 @@ public abstract class BaseExportJobService {
 
   protected abstract List<JobParams> getExportTypes();
 
+  public abstract ExportObjectV2 getExportObject();
+
   public static JobParameters buildJobParameters(JobParams jobParams) {
     final JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
         .addString(JobDescriptionConstant.EXECUTION_TYPE_PARAMETER, JobDescriptionConstant.EXECUTION_BATCH_PARAMETER)
@@ -48,17 +51,17 @@ public abstract class BaseExportJobService {
   }
 
   public void startExportJobs() {
-    log.info("Starting export CSV and JSON execution...");
+    log.info("CSV and JSON export execution started...");
     for (JobParams jobParams : getExportTypes()) {
       startExportJob(jobParams, exportCsvJob);
       startExportJob(jobParams, exportJsonJob);
     }
-    log.info("CSV and JSON export execution finished!");
+    log.info("CSV and JSON export execution finished");
   }
 
   private void startExportJob(JobParams jobParams, Job job) {
     try {
-      JobExecution execution = jobLauncher.run(job, buildJobParameters(jobParams));
+      final JobExecution execution = jobLauncher.run(job, buildJobParameters(jobParams));
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {

@@ -212,18 +212,24 @@ services:
       - "/data"
       - "--console-address"
       - ":9001"
+    healthcheck:
+      test: curl -s http://localhost:9000/minio/health/live || exit 1
+      timeout: 5s
+      start_period: 5s
+      start_interval: 1s
 
   minio-init:
     image: minio/mc
     depends_on:
-      - minio
+      minio:
+        condition: service_healthy
     volumes:
       - ./init-minio.sh:/init-minio.sh
     environment:
       MINIO_SERVER_URL: http://minio:9000
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
-    entrypoint: /bin/sh -c "/init-minio.sh"
+    entrypoint: /bin/bash -c "/init-minio.sh"
 
   wiremock:
     build:
