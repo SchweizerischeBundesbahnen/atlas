@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.mapper;
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
@@ -109,5 +110,35 @@ public class PlatformVersionMapper {
       resettedVersion.setLevelAccessWheelchair(BasicAttributeType.TO_BE_COMPLETED);
     }
     return resettedVersion;
+  }
+
+  public static void initDefaultDropdownData(PlatformVersion platformVersion, boolean reduced) {
+    if (reduced) {
+      if (platformVersion.getTactileSystem() == null) {
+        platformVersion.setTactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+      }
+      if (platformVersion.getVehicleAccess() == null) {
+        platformVersion.setVehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED);
+      }
+      if (platformVersion.getInfoOpportunities() == null || platformVersion.getInfoOpportunities().isEmpty()) {
+        platformVersion.setInfoOpportunities(Set.of(InfoOpportunityAttributeType.TO_BE_COMPLETED));
+      }
+    } else {
+      if (platformVersion.getContrastingAreas() == null) {
+        platformVersion.setContrastingAreas(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+      }
+      if (platformVersion.getBoardingDevice() == null) {
+        platformVersion.setBoardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED);
+      }
+      if (platformVersion.getDynamicAudio() == null) {
+        platformVersion.setDynamicAudio(BasicAttributeType.TO_BE_COMPLETED);
+      }
+      if (platformVersion.getDynamicVisual() == null) {
+        platformVersion.setDynamicVisual(BasicAttributeType.TO_BE_COMPLETED);
+      }
+      if (platformVersion.getLevelAccessWheelchair() == null) {
+        platformVersion.setLevelAccessWheelchair(BasicAttributeType.TO_BE_COMPLETED);
+      }
+    }
   }
 }

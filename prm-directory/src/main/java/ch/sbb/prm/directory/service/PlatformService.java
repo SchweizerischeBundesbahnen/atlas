@@ -13,6 +13,7 @@ import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.exception.PlatformAlreadyExistsException;
+import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
@@ -65,6 +66,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   @Override
   public PlatformVersion save(PlatformVersion version) {
     boolean reduced = stopPointService.isReduced(version.getParentServicePointSloid());
+    PlatformVersionMapper.initDefaultDropdownData(version, reduced);
     platformValidationService.validateRecordingVariants(version, reduced);
     initDefaultData(version);
     return platformRepository.saveAndFlush(version);

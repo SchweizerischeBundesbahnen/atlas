@@ -82,8 +82,8 @@ class PlatformValidationServiceTest {
             + "properties population!");
     SortedSet<Detail> errorResponseDetails = errorResponse.getDetails();
     assertThat(errorResponseDetails).hasSize(1);
-    Detail detail = errorResponseDetails.stream().toList().get(0);
-    assertThat(detail.getMessage()).isEqualTo("Must not be null for Completed Object. At least a default value is mandatory");
+    Detail detail = errorResponseDetails.stream().toList().getFirst();
+    assertThat(detail.getMessage()).isEqualTo("Must not be null for Completed Object.");
     assertThat(detail.getField()).isEqualTo("boardingDevice");
   }
 
