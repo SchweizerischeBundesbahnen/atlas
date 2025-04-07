@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.job.bodi.businessorganisation.service;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
+import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.util.List;
@@ -26,6 +27,11 @@ public class ExportBusinessOrganisationJobService extends BaseExportJobService {
         new JobParams(ExportTypeV2.ACTUAL),
         new JobParams(ExportTypeV2.FUTURE_TIMETABLE)
     );
+  }
+
+  @Override
+  public ExportObjectV2 getExportObject() {
+    return ExportObjectV2.BUSINESS_ORGANISATION;
   }
 
 }

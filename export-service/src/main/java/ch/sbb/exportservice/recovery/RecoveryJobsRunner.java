@@ -117,12 +117,11 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   @Override
   @Async
   public void onApplicationEvent(@NotNull ApplicationReadyEvent event) {
-    log.info("Start checking jobs to recover...");
     cleanDownloadedFiles();
+
     checkExportServicePointJobToRecover();
     checkExportTrafficPointJobToRecover();
     checkExportLoadingPointJobToRecover();
-
     checkExportStopPointJobToRecover();
     checkExportPlatformJobToRecover();
     checkExportReferencePointJobToRecover();
@@ -130,10 +129,8 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     checkExportToiletJobToRecover();
     checkExportParkingLotJobToRecover();
     checkExportRelationJobToRecover();
-
     checkExportTransportCompanyJobToRecover();
     checkExportBusinessOrganisationJobToRecover();
-
     checkExportLineJobToRecover();
     checkExportSublineJobToRecover();
     checkExportTimetableFieldNumberJobToRecover();
@@ -147,7 +144,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
       for (JobExecution jobExecution : todayExecutedJobs) {
         if (jobExecution != null && jobExecution.getStatus().isRunning()) {
           updateLastJobExecutionStatus(jobExecution);
-          log.info("Found job to recovery: {}", jobExecution);
+          log.info("Found job to recover: {}", jobExecution);
           return true;
         }
       }
@@ -188,7 +185,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   }
 
   private void cleanDownloadedFiles() {
-    log.info("Cleaning downloaded csv files directory..");
+    log.info("Clearing export directory");
     fileService.clearDir();
   }
 
@@ -256,24 +253,12 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
 
   private void checkJobToRecover(BaseExportJobService jobService, List<String> jobsName) {
     if (checkIfHasJobsToRecover(jobsName)) {
-      logRerunning(jobsName);
+      log.info("Rerunning {} export jobs...", jobsName);
       jobService.startExportJobs();
-      lodRecovered();
+      log.info("Reran {} export jobs", jobsName);
     } else {
-      logNotFound();
+      log.info("No job found to recover");
     }
-  }
-
-  private static void logNotFound() {
-    log.info("No job found to recover.");
-  }
-
-  private static void lodRecovered() {
-    log.info("All export jobs successfully recovered!");
-  }
-
-  private static void logRerunning(List<String> jobs) {
-    log.info("Rerunning {} export jobs...", jobs);
   }
 
 }
