@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -13,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.Status;
@@ -42,7 +44,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -55,10 +57,10 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
   private final ReferencePointRepository referencePointRepository;
   private final SharedServicePointRepository sharedServicePointRepository;
 
-  @MockBean
+  @MockitoBean
   private final RelationService relationService;
 
-  @MockBean
+  @MockitoBean
   private final PrmLocationService prmLocationService;
 
   @Autowired
@@ -218,6 +220,29 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(platformVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(0)).save(any(RelationVersion.class));
+  }
+
+  @Test
+  void shouldCreateReducedPlatformWithDefaultsToBeCompleted() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.BUS));
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    PlatformVersionModel platformVersionModel = PlatformTestData.getCreateReducedPlatformVersionModel();
+    platformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformVersionModel.setVehicleAccess(null);
+
+    //when && then
+    mvc.perform(post("/v1/platforms")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(platformVersionModel)))
+        .andExpect(status().isCreated());
+    verify(relationService, times(0)).save(any(RelationVersion.class));
+
+    PlatformVersion createdPlatform = platformRepository.findAll().getFirst();
+    assertThat(createdPlatform.getVehicleAccess()).isEqualTo(VehicleAccessAttributeType.TO_BE_COMPLETED);
   }
 
   @Test

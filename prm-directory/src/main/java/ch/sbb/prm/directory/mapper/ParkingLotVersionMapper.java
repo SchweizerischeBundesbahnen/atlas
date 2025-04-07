@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.mapper;
 
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
@@ -53,7 +54,7 @@ public class ParkingLotVersionMapper {
   }
 
   public static ParkingLotVersion toEntity(ParkingLotVersionModel model) {
-    return ParkingLotVersion.builder()
+    ParkingLotVersion entity = ParkingLotVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
@@ -70,6 +71,13 @@ public class ParkingLotVersionMapper {
         .editionDate(model.getEditionDate())
         .version(model.getEtagVersion())
         .build();
+    if (entity.getPlacesAvailable() == null) {
+      entity.setPlacesAvailable(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+    }
+    if (entity.getPrmPlacesAvailable() == null) {
+      entity.setPrmPlacesAvailable(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+    }
+    return entity;
   }
 
 }
