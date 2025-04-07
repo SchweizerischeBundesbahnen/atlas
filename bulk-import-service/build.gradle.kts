@@ -27,7 +27,7 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka")
     implementation(project(":kafka"))
     implementation(project(":user-administration-security"))
-    implementation("org.apache.poi:poi-ooxml:5.4.0")
+    implementation("org.apache.poi:poi-ooxml:5.4.1")
     implementation("com.fasterxml.jackson.core:jackson-annotations")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
 
