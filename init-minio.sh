@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# wait for minio server to start
-sleep 3
-
 # connect to minio server
 mc alias set minio $MINIO_SERVER_URL $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD
 # show minio runtime infos
