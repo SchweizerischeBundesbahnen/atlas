@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="gateway:bootRun" />
+          <option value=":gateway:bootRun" />
           <option value="--args='--spring.profiles.active=local'" />
         </list>
       </option>

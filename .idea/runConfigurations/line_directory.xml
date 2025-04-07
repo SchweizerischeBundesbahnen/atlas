@@ -10,8 +10,8 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="line-directory:bootRun" />
-          <option value="--args='--spring.profiles.active=local,minio'" />
+          <option value=":line-directory:bootRun" />
+          <option value="--args='--spring.profiles.active=local'" />
         </list>
       </option>
       <option name="vmOptions" />
