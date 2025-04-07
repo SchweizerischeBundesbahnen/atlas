@@ -25,4 +25,6 @@ public interface VersionableService {
 
   <T extends Versionable> void applyVersioning(Class<T> clazz,
       List<VersionedObject> versionedObjects, Consumer<T> save, LongConsumer deleteById);
+
+  void doNotAllowGaps(List<VersionedObject> versionedObjects);
 }
