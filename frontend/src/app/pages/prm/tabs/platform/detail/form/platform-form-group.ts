@@ -25,6 +25,7 @@ export interface ReducedPlatformFormGroup extends PlatformFormGroup {
   infoOpportunities: FormControl<Array<InfoOpportunityAttributeType> | null | undefined>;
   partialElevation: FormControl<boolean | null | undefined>;
   tactileSystem: FormControl<BooleanOptionalAttributeType | null | undefined>;
+  boardingMark: FormControl<BooleanOptionalAttributeType | null | undefined>;
   vehicleAccess: FormControl<VehicleAccessAttributeType | null | undefined>;
   wheelchairAreaLength: FormControl<number | null | undefined>;
   wheelchairAreaWidth: FormControl<number | null | undefined>;
@@ -120,6 +121,10 @@ export class PlatformFormGroupBuilder {
           version?.tactileSystem ?? BooleanOptionalAttributeType.ToBeCompleted,
           [Validators.required],
         ),
+        boardingMark: new FormControl(
+          version?.boardingMark ?? BooleanOptionalAttributeType.ToBeCompleted,
+          [Validators.required],
+        ),
         vehicleAccess: new FormControl(
           version?.vehicleAccess ?? VehicleAccessAttributeType.ToBeCompleted,
           [Validators.required],
@@ -203,6 +208,7 @@ export class PlatformFormGroupBuilder {
       infoOpportunities: formValue.infoOpportunities!,
       partialElevation: formValue.partialElevation!,
       tactileSystem: formValue.tactileSystem!,
+      boardingMark: formValue.boardingMark!,
       vehicleAccess: formValue.vehicleAccess!,
       wheelchairAreaLength: formValue.wheelchairAreaLength!,
       wheelchairAreaWidth: formValue.wheelchairAreaWidth!,
