@@ -4,6 +4,7 @@ import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_
 import static ch.sbb.exportservice.util.JobDescriptionConstant.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
 
 import ch.sbb.exportservice.job.BaseExportJobService;
+import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.model.PrmExportType;
 import java.util.List;
@@ -29,6 +30,11 @@ public class ExportReferencePointJobService extends BaseExportJobService {
         new JobParams(ExportTypeV2.ACTUAL, PrmExportType.ACTUAL),
         new JobParams(ExportTypeV2.FUTURE_TIMETABLE, PrmExportType.TIMETABLE_FUTURE)
     );
+  }
+
+  @Override
+  public ExportObjectV2 getExportObject() {
+    return ExportObjectV2.REFERENCE_POINT;
   }
 
 }

@@ -10,8 +10,8 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="export-service:bootRun" />
-          <option value="--args='--spring.profiles.active=local,minio'" />
+          <option value=":export-service:bootRun" />
+          <option value="--args='--spring.profiles.active=local'" />
         </list>
       </option>
       <option name="vmOptions" />
