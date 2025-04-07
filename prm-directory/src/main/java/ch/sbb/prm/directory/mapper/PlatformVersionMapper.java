@@ -41,6 +41,7 @@ public class PlatformVersionMapper {
         .partialElevation(version.getPartialElevation())
         .superelevation(version.getSuperelevation())
         .tactileSystem(version.getTactileSystem())
+        .boardingMark(version.getBoardingMark())
         .vehicleAccess(version.getVehicleAccess())
         .wheelchairAreaLength(version.getWheelchairAreaLength())
         .wheelchairAreaWidth(version.getWheelchairAreaWidth())
@@ -74,6 +75,7 @@ public class PlatformVersionMapper {
         .partialElevation(model.getPartialElevation())
         .superelevation(model.getSuperelevation())
         .tactileSystem(model.getTactileSystem())
+        .boardingMark(model.getBoardingMark())
         .vehicleAccess(model.getVehicleAccess())
         .wheelchairAreaLength(model.getWheelchairAreaLength())
         .wheelchairAreaWidth(model.getWheelchairAreaWidth())
@@ -102,6 +104,7 @@ public class PlatformVersionMapper {
     if (reduced) {
       resettedVersion.setTactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED);
       resettedVersion.setVehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED);
+      resettedVersion.setBoardingMark(BooleanOptionalAttributeType.TO_BE_COMPLETED);
     } else {
       resettedVersion.setContrastingAreas(BooleanOptionalAttributeType.TO_BE_COMPLETED);
       resettedVersion.setBoardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED);
@@ -116,6 +119,9 @@ public class PlatformVersionMapper {
     if (reduced) {
       if (platformVersion.getTactileSystem() == null) {
         platformVersion.setTactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+      }
+      if (platformVersion.getBoardingMark() == null) {
+        platformVersion.setBoardingMark(BooleanOptionalAttributeType.TO_BE_COMPLETED);
       }
       if (platformVersion.getVehicleAccess() == null) {
         platformVersion.setVehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED);
