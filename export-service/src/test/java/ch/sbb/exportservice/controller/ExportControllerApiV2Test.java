@@ -87,7 +87,7 @@ class ExportControllerApiV2Test extends BaseControllerApiTest {
         .andExpect(status().isOk());
 
     // then
-    Mockito.verify(jobServiceBean).startExportJobs();
+    Mockito.verify(jobServiceBean, Mockito.timeout(1000)).startExportJobs();
   }
 
 }
