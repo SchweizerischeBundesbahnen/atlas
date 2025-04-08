@@ -97,7 +97,7 @@ export interface ReadPlatformVersion {
      */
     superelevation?: number;
     tactileSystem?: BooleanOptionalAttributeType;
-    boardingMark?: BooleanOptionalAttributeType;
+    attentionField?: BooleanOptionalAttributeType;
     vehicleAccess?: VehicleAccessAttributeType;
     /**
      * Wheelchair Area Length [mm]

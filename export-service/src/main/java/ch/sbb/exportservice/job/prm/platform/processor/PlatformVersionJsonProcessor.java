@@ -31,7 +31,7 @@ public class PlatformVersionJsonProcessor implements ItemProcessor<PlatformVersi
         .partialElevation(version.getPartialElevation())
         .superelevation(version.getSuperElevation())
         .tactileSystem(version.getTactileSystems())
-        .boardingMark(version.getBoardingMark())
+        .attentionField(version.getAttentionField())
         .vehicleAccess(version.getVehicleAccess())
         .wheelchairAreaLength(version.getWheelchairAreaLength())
         .wheelchairAreaWidth(version.getWheelchairAreaWidth())
