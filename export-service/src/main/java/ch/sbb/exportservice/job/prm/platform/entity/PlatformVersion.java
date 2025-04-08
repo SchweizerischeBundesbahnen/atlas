@@ -66,6 +66,8 @@ public class PlatformVersion extends BasePrmEntity {
 
     private BooleanOptionalAttributeType tactileSystems;
 
+    private BooleanOptionalAttributeType boardingMark;
+
     private VehicleAccessAttributeType vehicleAccess;
 
     private Double wheelchairAreaLength;
