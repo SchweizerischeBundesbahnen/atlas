@@ -34,7 +34,7 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 @EqualsAndHashCode
 @JsonPropertyOrder({Fields.sloid, Fields.validFrom, Fields.validTo, Fields.additionalInformation, Fields.height,
-    Fields.inclinationLongitudinal, Fields.infoOpportunities, Fields.partialElevation, Fields.tactileSystem,
+    Fields.inclinationLongitudinal, Fields.infoOpportunities, Fields.partialElevation, Fields.tactileSystem, Fields.attentionField,
     Fields.vehicleAccess, Fields.wheelchairAreaLength, Fields.wheelchairAreaWidth})
 @CopyFromCurrentVersion({
     @Mapping(target = "id", current = "id"),
@@ -76,6 +76,10 @@ public class PlatformReducedUpdateCsvModel implements Validatable<PlatformReduce
   @DefaultMapping
   @Nulling
   private BooleanOptionalAttributeType tactileSystem;
+
+  @DefaultMapping
+  @Nulling
+  private BooleanOptionalAttributeType attentionField;
 
   @DefaultMapping
   @Nulling
