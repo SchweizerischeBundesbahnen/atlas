@@ -86,7 +86,7 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
 
   private BooleanOptionalAttributeType tactileSystem;
 
-  private BooleanOptionalAttributeType boardingMark;
+  private BooleanOptionalAttributeType attentionField;
 
   private VehicleAccessAttributeType vehicleAccess;
 

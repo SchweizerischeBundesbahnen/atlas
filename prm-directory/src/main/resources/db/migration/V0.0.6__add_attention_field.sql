@@ -1,6 +1,6 @@
-ALTER TABLE platform_version ADD COLUMN boarding_mark VARCHAR(50);
+ALTER TABLE platform_version ADD COLUMN attention_field VARCHAR(50);
 
-update platform_version set boarding_mark = 'TO_BE_COMPLETED' where
+update platform_version set attention_field = 'TO_BE_COMPLETED' where
 -- is reduced
 parent_service_point_sloid in (
     select distinct(sloid) from stop_point_version

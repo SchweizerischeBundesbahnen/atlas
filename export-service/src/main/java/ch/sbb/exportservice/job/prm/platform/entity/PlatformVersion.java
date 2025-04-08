@@ -66,7 +66,7 @@ public class PlatformVersion extends BasePrmEntity {
 
     private BooleanOptionalAttributeType tactileSystems;
 
-    private BooleanOptionalAttributeType boardingMark;
+    private BooleanOptionalAttributeType attentionField;
 
     private VehicleAccessAttributeType vehicleAccess;
 
