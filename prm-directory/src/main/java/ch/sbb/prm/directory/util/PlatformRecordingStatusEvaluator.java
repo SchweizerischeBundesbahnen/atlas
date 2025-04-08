@@ -16,7 +16,7 @@ public class PlatformRecordingStatusEvaluator {
     if (reduced) {
       if (platform.getTactileSystem() == BooleanOptionalAttributeType.TO_BE_COMPLETED ||
           platform.getVehicleAccess() == VehicleAccessAttributeType.TO_BE_COMPLETED ||
-          platform.getBoardingMark() == BooleanOptionalAttributeType.TO_BE_COMPLETED ||
+          platform.getAttentionField() == BooleanOptionalAttributeType.TO_BE_COMPLETED ||
           platform.getInfoOpportunities().contains(InfoOpportunityAttributeType.TO_BE_COMPLETED)
       ) {
         return RecordingStatus.INCOMPLETE;
