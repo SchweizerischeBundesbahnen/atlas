@@ -10,14 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 public class LineSqlQueryUtil extends SqlQueryUtil {
 
   private static final String SELECT_STATEMENT = "SELECT lv.* FROM line_version as lv";
-  private static final String WHERE_CLAUSE = "where lv.swiss_line_number is not null";
   private static final String ORDER_BY_STATEMENT = "ORDER BY lv.slnid, lv.valid_from ASC";
 
   public String getSqlQuery(ExportTypeV2 exportTypeV2) {
     String sqlQuery = ExportSqlQueryBuilder.builder()
         .exportType(exportTypeV2)
         .selectStatement(SELECT_STATEMENT)
-        .whereClause(WHERE_CLAUSE)
         .groupByAndOrderByClause(ORDER_BY_STATEMENT)
         .build()
         .getQuery();
