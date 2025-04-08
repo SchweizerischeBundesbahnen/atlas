@@ -45,7 +45,7 @@ public class PlatformTestData {
         .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
-        .boardingMark(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .attentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123)
@@ -90,7 +90,7 @@ public class PlatformTestData {
         .inclinationLongitudinal(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
-        .boardingMark(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .attentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123)
@@ -189,7 +189,7 @@ public class PlatformTestData {
         .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
-        .boardingMark(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .attentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123);
@@ -306,7 +306,7 @@ public class PlatformTestData {
         .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
-        .boardingMark(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .attentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123);
@@ -324,7 +324,7 @@ public class PlatformTestData {
         .inclinationLongitudinal(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
-        .boardingMark(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .attentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123);
@@ -343,7 +343,7 @@ public class PlatformTestData {
         .inclinationLongitudinal(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
-        .boardingMark(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .attentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123);
@@ -361,7 +361,7 @@ public class PlatformTestData {
         .inclinationLongitudinal(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
-        .boardingMark(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .attentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123);
