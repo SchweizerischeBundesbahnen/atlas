@@ -56,6 +56,8 @@ public class PlatformVersionCsvModel extends BasePrmCsvModel {
 
   private String tactileSystems;
 
+  private String boardingMark;
+
   private String vehicleAccess;
 
   private Double wheelChairAreaLength;
