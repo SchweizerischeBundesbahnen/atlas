@@ -82,6 +82,7 @@ public class ImportFiles {
         .infoOpportunities(Set.of(STATIC_VISUAL_INFORMATION))
         .partialElevation(false)
         .tactileSystem(BooleanOptionalAttributeType.NO)
+        .attentionField(BooleanOptionalAttributeType.NO)
         .vehicleAccess(TO_BE_COMPLETED)
         .wheelchairAreaLength(300.000)
         .wheelchairAreaWidth(null)
