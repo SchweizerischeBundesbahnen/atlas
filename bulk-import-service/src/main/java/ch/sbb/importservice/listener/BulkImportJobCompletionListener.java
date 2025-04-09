@@ -55,8 +55,8 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
   }
 
   private void uploadLogFile(LogFile logFile, BulkImport bulkImport) {
-    URL logUrl = s3BucketService.uploadImportFile(bulkImportLogService.writeLogToFile(logFile, bulkImport), bulkImport);
-    bulkImport.setLogFileUrl(logUrl.getPath().substring(1));
+    String logUrl = s3BucketService.uploadImportFile(bulkImportLogService.writeLogToFile(logFile, bulkImport), bulkImport);
+    bulkImport.setLogFileUrl(logUrl);
     bulkImportRepository.save(bulkImport);
   }
 
