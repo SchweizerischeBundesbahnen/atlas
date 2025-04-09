@@ -4,7 +4,6 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import java.io.File;
-import java.net.URL;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +29,7 @@ public class BulkImportService {
   }
 
   private String uploadImportFile(File file, BulkImport bulkImport) {
-    URL uploadedImportFileUrl = bulkImportS3BucketService.uploadImportFile(file, bulkImport);
-    return uploadedImportFileUrl.getPath().substring(1);
+    return bulkImportS3BucketService.uploadImportFile(file, bulkImport);
   }
 
   private BulkImport saveBulkImportMetaData(BulkImport bulkImport) {
