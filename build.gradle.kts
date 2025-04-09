@@ -6,7 +6,10 @@ group = "ch.sbb.atlas"
 version = "2.546.0"
 
 extra["awsS3Version"] = "2.31.18"
-extra["swaggerCoreVersion"] = "2.2.30"
+
+// Do not change this version unless tested and confirmed that @NotNull fields are marked as required.
+extra["swaggerCoreVersion"] = "2.2.28"
+
 extra["openapiStarterCommonVersion"] = "2.8.6"
 //Geo Data Libs
 extra["proj4jVersion"] = "1.4.0"
