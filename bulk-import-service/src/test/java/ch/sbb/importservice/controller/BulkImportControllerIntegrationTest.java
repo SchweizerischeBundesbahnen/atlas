@@ -4,7 +4,6 @@ import static ch.sbb.importservice.service.bulk.BulkImportFileValidationService.
 import static ch.sbb.importservice.service.bulk.BulkImportFileValidationService.XLSX_CONTENT_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
@@ -33,7 +32,6 @@ import ch.sbb.importservice.repository.BulkImportRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -83,9 +81,6 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
   void shouldAcceptGenericBulkImportWithFile() throws Exception {
     todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
         + "/SEPODI/SERVICE_POINT/UPDATE";
-    when(amazonService.putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), anyString()))
-        .thenAnswer(i -> URI.create("https://atlas-bulk-import-dev-dev.s3.eu-central-1.amazonaws.com/" +
-            todaysDirectory + "/" + i.getArgument(1, File.class).getName()).toURL());
     when(servicePointBulkImportClient.bulkImportUpdate(any())).thenReturn(
         List.of(BulkImportItemExecutionResult.builder()
             .lineNumber(2)
@@ -127,9 +122,6 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
   void shouldAcceptTrafficPointUpdateBulkImportWithFile() throws Exception {
     todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
         + "/SEPODI/TRAFFIC_POINT/UPDATE";
-    when(amazonService.putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), anyString()))
-        .thenAnswer(i -> URI.create("https://atlas-bulk-import-dev-dev.s3.eu-central-1.amazonaws.com/" +
-            todaysDirectory + "/" + i.getArgument(1, File.class).getName()).toURL());
     when(trafficPointBulkImportClient.bulkImportUpdate(any())).thenReturn(
         List.of(BulkImportItemExecutionResult.builder()
             .lineNumber(2)
@@ -198,6 +190,8 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @Test
   void shouldImportServicePointCreate() throws IOException {
+    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+        + "/SEPODI/SERVICE_POINT/CREATE";
     File file = ImportFiles.getFileByPath("import-files/valid/create-service-point-2.xlsx");
 
     MockMultipartFile multipartFile = new MockMultipartFile("file", "create-service-point-2.xlsx", XLSX_CONTENT_TYPE,
@@ -209,10 +203,6 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
         .importType(ImportType.CREATE)
         .emails(List.of("test-cc@atlas.ch"))
         .build();
-
-    when(amazonService.putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), anyString()))
-        .thenAnswer(i -> URI.create("https://atlas-bulk-import-dev-dev.s3.eu-central-1.amazonaws.com/" +
-            todaysDirectory + "/" + i.getArgument(1, File.class).getName()).toURL());
 
     when(servicePointBulkImportClient.bulkImportCreate(any())).thenReturn(
         List.of(BulkImportItemExecutionResult.builder()
