@@ -27,4 +27,7 @@ public class ReadStopPointVersionModel extends StopPointVersionModel {
   @Schema(description = "A stop point is reduced/complete based on the means of transport selected")
   private boolean isReduced;
 
+  @Schema(description = "StopPoint PRM data recording obligated")
+  private boolean recordingObligation;
+
 }
