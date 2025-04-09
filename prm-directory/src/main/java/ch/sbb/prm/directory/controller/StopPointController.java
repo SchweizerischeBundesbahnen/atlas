@@ -89,7 +89,7 @@ public class StopPointController implements StopPointApiV1 {
 
   @Override
   public void updateRecordingObligation(String sloid, RecordingObligationUpdateRequest recordingObligationUpdateRequest) {
-    recordingObligationService.setRecordingObligation(sloid, recordingObligationUpdateRequest.getValue());
+    recordingObligationService.setRecordingObligation(sloid, recordingObligationUpdateRequest.isValue());
   }
 
 }
