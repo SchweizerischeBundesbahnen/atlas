@@ -17,6 +17,6 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "RecordingObligationUpdateRequest")
 public class RecordingObligationUpdateRequest {
 
-  private Boolean value;
+  private boolean value;
 
 }
