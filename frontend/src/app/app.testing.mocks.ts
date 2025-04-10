@@ -29,7 +29,6 @@ import { Pages } from './pages/pages';
 import { FieldExample } from './core/form-components/text-field/field-example';
 import { TargetPageType } from './core/navigation-sepodi-prm/navigation-sepodi-prm.component';
 import { Page } from './core/model/page';
-import {PrmRecordingObligationComponent} from "./core/prm-recording-obligation/prm-recording-obligation.component";
 
 @Component({
   selector: 'app-switch-version',
