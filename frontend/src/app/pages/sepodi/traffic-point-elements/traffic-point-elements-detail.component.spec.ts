@@ -28,7 +28,10 @@ import { CoordinatePairWGS84, MapService } from '../map/map.service';
 import { CoordinateTransformationService } from '../geography/coordinate-transformation.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { SloidComponent } from '../../../core/form-components/sloid/sloid.component';
-import { ServicePointsService, TrafficPointElementsService } from '../../../api';
+import {
+  ServicePointsService,
+  TrafficPointElementsService,
+} from '../../../api';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
@@ -60,33 +63,41 @@ describe('TrafficPointElementsDetailComponent', () => {
   mapService.mapInitialized = new BehaviorSubject<boolean>(true);
   mapService.clickedGeographyCoordinates = new Subject<CoordinatePairWGS84>();
 
-  const coordinateTransformationService = jasmine.createSpyObj<CoordinateTransformationService>([
-    'transform',
-  ]);
+  const coordinateTransformationService =
+    jasmine.createSpyObj<CoordinateTransformationService>(['transform']);
 
   const servicePointService = jasmine.createSpyObj(['getServicePointVersions']);
-  servicePointService.getServicePointVersions.and.returnValue(of([BERN_WYLEREGG]));
-  const trafficPointService = jasmine.createSpyObj('trafficPointElementsService', [
-    'getAreasOfServicePoint',
-    'updateTrafficPoint',
-    'createTrafficPoint',
-  ]);
-  trafficPointService.getAreasOfServicePoint.and.returnValue(
-    of({ objects: BERN_WYLEREGG_TRAFFIC_POINTS }),
+  servicePointService.getServicePointVersions.and.returnValue(
+    of([BERN_WYLEREGG])
   );
-  trafficPointService.updateTrafficPoint.and.returnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS));
-  trafficPointService.createTrafficPoint.and.returnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS[0]));
+  const trafficPointService = jasmine.createSpyObj(
+    'trafficPointElementsService',
+    ['getAreasOfServicePoint', 'updateTrafficPoint', 'createTrafficPoint']
+  );
+  trafficPointService.getAreasOfServicePoint.and.returnValue(
+    of({ objects: BERN_WYLEREGG_TRAFFIC_POINTS })
+  );
+  trafficPointService.updateTrafficPoint.and.returnValue(
+    of(BERN_WYLEREGG_TRAFFIC_POINTS)
+  );
+  trafficPointService.createTrafficPoint.and.returnValue(
+    of(BERN_WYLEREGG_TRAFFIC_POINTS[0])
+  );
 
   const dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
   dialogService.confirm.and.returnValue(of(true));
 
   describe('for existing Version', () => {
     beforeEach(async () => {
-      routerSpy = jasmine.createSpyObj('Router', ['navigate'], { events: of(null) });
+      routerSpy = jasmine.createSpyObj('Router', ['navigate'], {
+        events: of(null),
+      });
       routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
       window.history.pushState({ isTrafficPointArea: false }, '', '');
-      const activatedRouteMock = { data: of({ trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]] }) };
+      const activatedRouteMock = {
+        data: of({ trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]] }),
+      };
       await setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
       component = fixture.componentInstance;
@@ -146,11 +157,22 @@ describe('TrafficPointElementsDetailComponent', () => {
 
       expect(trafficPointService.updateTrafficPoint).toHaveBeenCalled();
     });
+
+    it('should navigate back on confirm cancel', () => {
+      component.isTrafficPointArea = true;
+      spyOn(component, 'backToTrafficPointElements');
+
+      component.confirmCancel();
+
+      expect(component.backToTrafficPointElements).toHaveBeenCalled();
+    });
   });
 
   describe('for new Version', () => {
     beforeEach(async () => {
-      routerSpy = jasmine.createSpyObj('Router', ['navigate'], { events: of(null) });
+      routerSpy = jasmine.createSpyObj('Router', ['navigate'], {
+        events: of(null),
+      });
       routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
       window.history.pushState({ isTrafficPointArea: false }, '', '');
@@ -167,7 +189,9 @@ describe('TrafficPointElementsDetailComponent', () => {
 
     it('should save version', () => {
       component.form.controls.designation.setValue('Designation');
-      component.form.controls.validFrom.setValue(moment(new Date(2000 - 10 - 1)));
+      component.form.controls.validFrom.setValue(
+        moment(new Date(2000 - 10 - 1))
+      );
       component.form.controls.validTo.setValue(moment(new Date(2099 - 10 - 1)));
 
       component.form.controls.trafficPointElementGeolocation?.disable();
@@ -209,7 +233,10 @@ describe('TrafficPointElementsDetailComponent', () => {
         { provide: TrafficPointMapService, useValue: trafficPointMapService },
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: MapService, useValue: mapService },
-        { provide: CoordinateTransformationService, useValue: coordinateTransformationService },
+        {
+          provide: CoordinateTransformationService,
+          useValue: coordinateTransformationService,
+        },
         { provide: ServicePointsService, useValue: servicePointService },
         { provide: TrafficPointElementsService, useValue: trafficPointService },
         { provide: DialogService, useValue: dialogService },
