@@ -12,12 +12,13 @@ public class ExportTypeBaseConverter implements Converter<String, ExportTypeBase
 
   @Override
   public ExportTypeBase convert(String source) {
+    String exportType = source.toUpperCase().replace("-", "_");
     try {
-      return SePoDiExportType.valueOf(source);
+      return SePoDiExportType.valueOf(exportType);
     } catch (IllegalArgumentException ignored) {
     }
 
-    return PrmExportType.valueOf(source);
+    return PrmExportType.valueOf(exportType);
   }
 
 }
