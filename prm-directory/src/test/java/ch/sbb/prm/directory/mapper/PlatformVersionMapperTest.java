@@ -7,7 +7,9 @@ import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class PlatformVersionMapperTest {
@@ -15,7 +17,7 @@ class PlatformVersionMapperTest {
   @Test
   void shouldInitToBeCompletedIfNullOnReduced() {
     PlatformVersion platformVersion = new PlatformVersion();
-    PlatformVersionMapper.initDefaultDropdownData(platformVersion, true);
+    PlatformVersionMapper.initDefaultDropdownData(platformVersion, Set.of(MeanOfTransport.BUS));
 
     assertThat(platformVersion.getTactileSystem()).isEqualTo(BooleanOptionalAttributeType.TO_BE_COMPLETED);
     assertThat(platformVersion.getVehicleAccess()).isEqualTo(VehicleAccessAttributeType.TO_BE_COMPLETED);
@@ -25,7 +27,7 @@ class PlatformVersionMapperTest {
   @Test
   void shouldInitToBeCompletedIfNullOnComplete() {
     PlatformVersion platformVersion = new PlatformVersion();
-    PlatformVersionMapper.initDefaultDropdownData(platformVersion, false);
+    PlatformVersionMapper.initDefaultDropdownData(platformVersion, Set.of(MeanOfTransport.TRAIN));
 
     assertThat(platformVersion.getTactileSystem()).isNull();
     assertThat(platformVersion.getVehicleAccess()).isNull();

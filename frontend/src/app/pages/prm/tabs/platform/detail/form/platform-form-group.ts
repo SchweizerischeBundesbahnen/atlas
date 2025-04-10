@@ -8,7 +8,7 @@ import {
   BasicAttributeType,
   BoardingDeviceAttributeType,
   BooleanOptionalAttributeType,
-  InfoOpportunityAttributeType,
+  InfoOpportunityAttributeType, MeanOfTransport,
   PlatformVersion,
   ReadPlatformVersion,
   VehicleAccessAttributeType,
@@ -155,6 +155,7 @@ export class PlatformFormGroupBuilder {
     form: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>,
     parentServicePointSloid: string,
     reduced: boolean,
+    meansOfTransport: MeanOfTransport[]
   ): PlatformVersion {
     const formValue = (form as FormGroup<ReducedPlatformFormGroup>).value;
     const platformVersion: PlatformVersion = {
@@ -169,7 +170,7 @@ export class PlatformFormGroupBuilder {
       etagVersion: formValue.etagVersion!,
     };
     if (reduced) {
-      return this.getReducedForm(form, platformVersion);
+      return this.getReducedForm(form, platformVersion, meansOfTransport);
     } else {
       return this.getCompleteForm(form, platformVersion);
     }
@@ -197,7 +198,7 @@ export class PlatformFormGroupBuilder {
 
   private static getReducedForm(
     form: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>,
-    platformVersion: PlatformVersion,
+    platformVersion: PlatformVersion, meansOfTransport: MeanOfTransport[]
   ) {
     const formValue = (form as FormGroup<ReducedPlatformFormGroup>).value;
     return {
@@ -208,7 +209,11 @@ export class PlatformFormGroupBuilder {
       infoOpportunities: formValue.infoOpportunities!,
       partialElevation: formValue.partialElevation!,
       tactileSystem: formValue.tactileSystem!,
-      attentionField: formValue.attentionField!,
+      attentionField:
+        meansOfTransport.includes(MeanOfTransport.Bus) ||
+        meansOfTransport.includes(MeanOfTransport.Tram)
+          ? formValue.attentionField!
+          : undefined,
       vehicleAccess: formValue.vehicleAccess!,
       wheelchairAreaLength: formValue.wheelchairAreaLength!,
       wheelchairAreaWidth: formValue.wheelchairAreaWidth!,

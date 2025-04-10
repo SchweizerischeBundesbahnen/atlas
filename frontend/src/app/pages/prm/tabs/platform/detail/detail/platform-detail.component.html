@@ -40,7 +40,7 @@
     </h2>
 
     <div *ngIf="reduced">
-      <app-platform-reduced-form [form]="reducedForm"></app-platform-reduced-form>
+      <app-platform-reduced-form [form]="reducedForm" [meansOfTransport]="stopPoint[0].meansOfTransport"></app-platform-reduced-form>
     </div>
     <div *ngIf="!reduced">
       <app-platform-complete-form [form]="completeForm"></app-platform-complete-form>

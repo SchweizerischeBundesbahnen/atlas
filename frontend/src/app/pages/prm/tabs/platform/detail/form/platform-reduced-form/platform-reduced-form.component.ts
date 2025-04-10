@@ -3,7 +3,7 @@ import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
 import { ReducedPlatformFormGroup } from '../platform-form-group';
 import {
   BooleanOptionalAttributeType,
-  InfoOpportunityAttributeType,
+  InfoOpportunityAttributeType, MeanOfTransport,
   VehicleAccessAttributeType,
 } from '../../../../../../../api';
 
@@ -14,6 +14,7 @@ import {
 })
 export class PlatformReducedFormComponent implements OnInit {
   @Input() form!: FormGroup<ReducedPlatformFormGroup>;
+  @Input() meansOfTransport: MeanOfTransport[] = [];
   @Input() isNew = false;
 
   booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
@@ -39,4 +40,6 @@ export class PlatformReducedFormComponent implements OnInit {
       }
     });
   }
+
+  protected readonly MeanOfTransport = MeanOfTransport;
 }
