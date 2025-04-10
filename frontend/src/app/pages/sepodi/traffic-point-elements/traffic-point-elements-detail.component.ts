@@ -227,9 +227,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
             .value as unknown as CreateTrafficPointElementVersion;
 
           if (this.isTrafficPointArea) {
-            this.trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Area;
+            this.trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.BoardingArea;
           } else {
-            this.trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Platform;
+            this.trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.BoardingPlatform;
           }
 
           this.trafficPointElementVersion.numberWithoutCheckDigit = this.servicePointNumber;
