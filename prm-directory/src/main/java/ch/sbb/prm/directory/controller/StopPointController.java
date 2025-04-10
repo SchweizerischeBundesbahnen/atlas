@@ -4,7 +4,7 @@ import static ch.sbb.prm.directory.util.PrmVariantUtil.isPrmVariantChanging;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
-import ch.sbb.atlas.api.prm.model.stoppoint.RecordingObligationUpdateRequest;
+import ch.sbb.atlas.api.prm.model.stoppoint.RecordingObligation;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.StopPointApiV1;
@@ -88,8 +88,15 @@ public class StopPointController implements StopPointApiV1 {
   }
 
   @Override
-  public void updateRecordingObligation(String sloid, RecordingObligationUpdateRequest recordingObligationUpdateRequest) {
-    recordingObligationService.setRecordingObligation(sloid, recordingObligationUpdateRequest.isValue());
+  public void updateRecordingObligation(String sloid, RecordingObligation recordingObligation) {
+    recordingObligationService.setRecordingObligation(sloid, recordingObligation.getValue());
+  }
+
+  @Override
+  public RecordingObligation getRecordingObligation(String sloid) {
+    return RecordingObligation.builder()
+        .value(recordingObligationService.getRecordingObligation(sloid))
+        .build();
   }
 
 }

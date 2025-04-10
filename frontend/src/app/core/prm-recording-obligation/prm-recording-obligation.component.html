@@ -1,0 +1,21 @@
+<div class="d-flex flex-row">
+  @if (showToggle && isPrmSupervisor) {
+    <div class="d-flex flex-column pe-3">
+      <div class="font-bold-base">
+        {{ 'PRM.STOP_POINTS.RECORDING_OBLIGATION' | translate }}
+      </div>
+      <div class="pt-1">
+        <atlas-slide-toggle
+          [toggle]="recordingObligation"
+          (toggleChange)="toggleRecordingObligation()"
+        ></atlas-slide-toggle>
+      </div>
+    </div>
+  }
+
+  @if (!recordingObligation) {
+    <div class="d-flex flex-row">
+      <span [title]="'PRM.STOP_POINTS.NO_RECORDING_OBLIGATION' | translate"><em class="bi bi-flag fs-2"></em></span>
+    </div>
+  }
+</div>
