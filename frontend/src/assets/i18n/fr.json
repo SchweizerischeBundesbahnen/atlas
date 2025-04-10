@@ -1302,6 +1302,8 @@
         "INFO_TICKET_MACHINE": "Remarques sur les distributeurs de billets"
       },
       "NO_STOP_POINT_FOUND": "Aucune donnée d'accessibilité n'a encore été saisie pour cet arrêt.",
+      "RECORDING_OBLIGATION": "Obligation de saisie",
+      "NO_RECORDING_OBLIGATION": "Conformément à la loi sur l’égalité pour les handicapés, il n’est pas nécessaire de saisir des données sur l’accessibilité pour cet arrêt.",
       "NOTIFICATION": {
         "ADD_SUCCESS": "L'arrêt a été ajouté avec succès.",
         "EDIT_SUCCESS": "L'arrêt a été enregistré avec succès."

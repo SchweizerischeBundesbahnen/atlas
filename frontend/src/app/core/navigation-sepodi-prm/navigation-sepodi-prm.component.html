@@ -1,9 +1,9 @@
-<div *ngIf="!isTargetViewSepodi && isSwissServicePoint && isStopPoint" class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigate()">
+<div *ngIf="!isTargetViewSepodi && isSwissServicePoint && isStopPoint" class="cursor-pointer d-flex flex-column align-items-center" (click)="navigate()">
   <img alt="person-wheelchair" src="assets/images/prm/person-wheelchair.svg" height="60" width="60">
   <p>{{ 'PAGES.PRM.TITLE_HEADER' | translate }}</p>
 </div>
 
-<div *ngIf="isTargetViewSepodi" class="cursor-pointer d-flex flex-column pe-3 align-items-center" (click)="navigate()">
+<div *ngIf="isTargetViewSepodi" class="cursor-pointer d-flex flex-column align-items-center" (click)="navigate()">
   <img alt="switzerland" src="assets/images/service-point-symbols/switzerland.svg" height="75" width="120">
   <p>{{ 'PAGES.SERVICE_POINTS.TITLE_HEADER' | translate }}</p>
 </div>

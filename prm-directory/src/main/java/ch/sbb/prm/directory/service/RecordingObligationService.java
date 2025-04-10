@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,16 +17,19 @@ import org.springframework.stereotype.Service;
 public class RecordingObligationService {
 
   private final RecordingObligationRepository recordingObligationRepository;
-  private final StopPointRepository stopPointRepository;
 
+  @PreAuthorize("@prmUserAdministrationService.isAtLeastPrmSupervisor()")
   public void setRecordingObligation(String sloid, boolean value) {
-    if (!stopPointRepository.existsBySloid(sloid)) {
-      throw new StopPointDoesNotExistException(sloid);
+    Optional<RecordingObligation> existingObligation = recordingObligationRepository.findById(sloid);
+    if (existingObligation.isPresent()) {
+      existingObligation.get().setRecordingObligation(value);
+      recordingObligationRepository.save(existingObligation.get());
+    } else {
+      recordingObligationRepository.save(RecordingObligation.builder()
+          .sloid(sloid)
+          .recordingObligation(value)
+          .build());
     }
-    recordingObligationRepository.save(RecordingObligation.builder()
-        .sloid(sloid)
-        .recordingObligation(value)
-        .build());
   }
 
   public boolean getRecordingObligation(String sloid) {
