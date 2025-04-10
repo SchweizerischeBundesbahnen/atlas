@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import {
   AffectedSublinesModel,
   LinesService,
@@ -63,6 +63,7 @@ class MockAppCoverageComponent {
 })
 export class MockSublineTableComponent {
   @Input() mainLineSlnid!: string;
+  @Input() eventSubject!: Observable<boolean>;
 }
 
 const lineVersion: LineVersionV2 = {
