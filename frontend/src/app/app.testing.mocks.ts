@@ -29,6 +29,7 @@ import { Pages } from './pages/pages';
 import { FieldExample } from './core/form-components/text-field/field-example';
 import { TargetPageType } from './core/navigation-sepodi-prm/navigation-sepodi-prm.component';
 import { Page } from './core/model/page';
+import {PrmRecordingObligationComponent} from "./core/prm-recording-obligation/prm-recording-obligation.component";
 
 @Component({
   selector: 'app-switch-version',
@@ -195,6 +196,15 @@ export class MockNavigationSepodiPrmComponent {
   @Input() parentSloid?: string;
 }
 
+@Component({
+  selector: 'prm-recording-obligation',
+  template: '<h1>MockPrmRecordingObligationComponent</h1>',
+})
+export class MockPrmRecordingObligationComponent {
+  @Input() sloid!: string;
+  @Input() showToggle = true;
+}
+
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export type ActivatedRouteMockType = { data: any };
 
@@ -252,6 +262,7 @@ export const authServiceSpy = jasmine.createSpyObj<AuthService>([
     MockSwitchVersionComponent,
     MockMatPaginatorComponent,
     MockNavigationSepodiPrmComponent,
+    MockPrmRecordingObligationComponent,
   ],
   exports: [MockSelectComponent],
 })
