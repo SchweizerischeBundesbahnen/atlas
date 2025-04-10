@@ -12,12 +12,13 @@ public class ExportFileNameConverter implements Converter<String, ExportFileName
 
   @Override
   public ExportFileName convert(String source) {
+    String exportFileName = source.toUpperCase().replace("-", "_");
     try {
-      return SePoDiBatchExportFileName.valueOf(source.toUpperCase().replace("-", "_"));
+      return SePoDiBatchExportFileName.valueOf(exportFileName);
     } catch (IllegalArgumentException ignored) {
     }
 
-    return PrmBatchExportFileName.valueOf(source);
+    return PrmBatchExportFileName.valueOf(exportFileName);
   }
 
 }
