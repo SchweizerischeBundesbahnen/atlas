@@ -1,13 +1,16 @@
 package ch.sbb.prm.directory.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.exception.AttentionFieldMeanOfTransportConflictException;
 import ch.sbb.prm.directory.exception.RecordingVariantException;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
 import java.util.Set;
@@ -139,6 +142,32 @@ class PlatformValidationServiceTest {
 
     //then
     assertDoesNotThrow(executable);
+  }
+
+  @Test
+  void shouldValidateAttentionFieldConflictWithMeansOfTransport() {
+    //given
+    PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
+    platformVersion.setAttentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+
+    //when
+    assertDoesNotThrow(() -> platformValidationService.validatePreconditions(platformVersion, Set.of(MeanOfTransport.BUS)));
+
+    assertThatExceptionOfType(AttentionFieldMeanOfTransportConflictException.class).isThrownBy(
+        () -> platformValidationService.validatePreconditions(platformVersion, Set.of(MeanOfTransport.TRAIN)));
+  }
+
+  @Test
+  void shouldValidateAttentionFieldNullConflictWithMeansOfTransport() {
+    //given
+    PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
+    platformVersion.setAttentionField(null);
+
+    //when
+    assertDoesNotThrow(() -> platformValidationService.validatePreconditions(platformVersion, Set.of(MeanOfTransport.TRAIN)));
+
+    assertThatExceptionOfType(AttentionFieldMeanOfTransportConflictException.class).isThrownBy(
+        () -> platformValidationService.validatePreconditions(platformVersion, Set.of(MeanOfTransport.BUS)));
   }
 
 }

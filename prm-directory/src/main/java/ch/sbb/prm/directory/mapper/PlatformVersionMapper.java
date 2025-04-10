@@ -106,7 +106,7 @@ public class PlatformVersionMapper {
     if (PrmMeansOfTransportHelper.isReduced(newMeansOfTransport)) {
       resettedVersion.setTactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED);
       resettedVersion.setVehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED);
-      if (newMeansOfTransport.contains(MeanOfTransport.BUS) || newMeansOfTransport.contains(MeanOfTransport.TRAM)) {
+      if (PrmMeansOfTransportHelper.isAttentionFieldAllowed(newMeansOfTransport)) {
         resettedVersion.setAttentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED);
       }
     } else {
@@ -124,7 +124,7 @@ public class PlatformVersionMapper {
       if (platformVersion.getTactileSystem() == null) {
         platformVersion.setTactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED);
       }
-      if (platformVersion.getAttentionField() == null) {
+      if (platformVersion.getAttentionField() == null && PrmMeansOfTransportHelper.isAttentionFieldAllowed(meansOfTransport)) {
         platformVersion.setAttentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED);
       }
       if (platformVersion.getVehicleAccess() == null) {

@@ -71,6 +71,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     Set<MeanOfTransport> meanOfTransports = stopPointService.getMeansOfTransport(version.getParentServicePointSloid());
     PlatformVersionMapper.initDefaultDropdownData(version, meanOfTransports);
     platformValidationService.validateRecordingVariants(version, PrmMeansOfTransportHelper.isReduced(meanOfTransports));
+    platformValidationService.validatePreconditions(version, meanOfTransports);
     initDefaultData(version);
     return platformRepository.saveAndFlush(version);
   }

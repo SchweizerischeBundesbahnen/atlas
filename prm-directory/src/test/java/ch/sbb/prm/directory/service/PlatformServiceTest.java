@@ -29,6 +29,7 @@ import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,11 @@ class PlatformServiceTest extends BasePrmServiceTest {
         .trafficPointSloids(Set.of("ch:1:sloid:12345:1", PLATFORM_SLOID))
         .stopPoint(true)
         .build());
+  }
+
+  @AfterEach
+  void tearDown() {
+    platformRepository.deleteAll();
   }
 
   @Test
