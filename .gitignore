@@ -7,7 +7,6 @@ target/
 !**/src/test/**/target/
 
 # Generated Files
-/apim-configuration/src/main/resources/**/spec.yaml
 /apim-configuration/src/main/resources/apis
 
 ### STS ###
