@@ -7,16 +7,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BulkImportRequest } from './bulkImportRequest';
 
 
-export type ImportType = 'CREATE' | 'UPDATE' | 'TERMINATE';
-
-export const ImportType = {
-
-    Create: 'CREATE' as ImportType,
-
-    Update: 'UPDATE' as ImportType,
-
-    Terminate: 'TERMINATE' as ImportType
-};
+export interface StartBulkImportRequest { 
+    bulkImportRequest: BulkImportRequest;
+    /**
+     * File to upload
+     */
+    file: Blob;
+}
 
