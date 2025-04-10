@@ -432,7 +432,7 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     platformRepository.saveAndFlush(platformVersionB3);
 
     //when
-    prmChangeRecordingVariantService.platformChangeRecordingVariant(platformVersionB1.getParentServicePointSloid(), false);
+    prmChangeRecordingVariantService.platformChangeRecordingVariant(platformVersionB1.getParentServicePointSloid(), Set.of(MeanOfTransport.TRAIN));
 
     //then
     List<PlatformVersion> results = platformRepository.findByParentServicePointSloid(

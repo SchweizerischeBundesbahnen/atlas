@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -12,6 +13,7 @@ import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.validation.StopPointValidationService;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -71,6 +73,11 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     StopPointVersion parentServicePoint = findAllBySloidOrderByValidFrom(servicePointSloid).stream().findFirst()
         .orElseThrow(() -> new StopPointDoesNotExistException(servicePointSloid));
     return parentServicePoint.isReduced();
+  }
+
+  public Set<MeanOfTransport> getMeansOfTransport(String servicePointSloid) {
+    return findAllBySloidOrderByValidFrom(servicePointSloid).stream().findFirst()
+        .orElseThrow(() -> new StopPointDoesNotExistException(servicePointSloid)).getMeansOfTransport();
   }
 
   void validateIsNotReduced(String servicePointSloid) {
