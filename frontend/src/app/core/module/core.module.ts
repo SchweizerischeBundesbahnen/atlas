@@ -58,6 +58,7 @@ import { DialogContentComponent } from '../components/dialog/content/dialog-cont
 import { DialogFooterComponent } from '../components/dialog/footer/dialog-footer.component';
 import { SearchServicePointPanelComponent } from '../search-service-point-panel/search-service-point-panel.component';
 import { NavigationSepodiPrmComponent } from '../navigation-sepodi-prm/navigation-sepodi-prm.component';
+import {PrmRecordingObligationComponent} from "../prm-recording-obligation/prm-recording-obligation.component";
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -106,6 +107,7 @@ const coreComponents = [
   SplitServicePointNumberPipe,
   MeansOfTransportPickerComponent,
   NavigationSepodiPrmComponent,
+  PrmRecordingObligationComponent,
 ];
 
 @NgModule({

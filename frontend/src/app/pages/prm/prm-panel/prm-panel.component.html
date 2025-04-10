@@ -24,6 +24,9 @@
         <div>{{ selectedBusinessOrganisation?.organisationNumber }} - {{ boDescription }} -
           {{ selectedBusinessOrganisation?.sboid }}</div>
       </div>
+      <div class="d-flex flex-column col ms-5">
+        <prm-recording-obligation [sloid]="selectedServicePointVersion.sloid!"></prm-recording-obligation>
+      </div>
     </div>
 
     <nav mat-tab-nav-bar class="tabs mt-5" data-cy="tabs" [tabPanel]="tabPanel">
