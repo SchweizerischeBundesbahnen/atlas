@@ -17,7 +17,7 @@ import { Record } from '../../../../core/components/base-detail/record';
 import {
   adminPermissionServiceMock,
   MockAtlasButtonComponent,
-  MockNavigationSepodiPrmComponent,
+  MockNavigationSepodiPrmComponent, MockPrmRecordingObligationComponent,
 } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { Country, ReadServicePointVersion, ServicePointsService, Status } from '../../../../api';
@@ -107,6 +107,7 @@ describe('ServicePointDetailComponent', () => {
         DetailPageContentComponent,
         DetailFooterComponent,
         MockNavigationSepodiPrmComponent,
+        MockPrmRecordingObligationComponent,
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [
