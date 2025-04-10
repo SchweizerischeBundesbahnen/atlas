@@ -84,4 +84,12 @@ div.d-flex {
 .maintenance-info {
   color: #c76118;
   align-items: center;
+  .wrap {
+    white-space: pre-wrap;
+    min-width: 300px;
+  }
+}
+
+.environment-badge{
+  width: 500px;
 }
