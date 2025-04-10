@@ -434,7 +434,7 @@
       "TYPES": {
         "ORDERLY": "Ordinaire",
         "TEMPORARY": "Temporaire",
-        "OPERATIONAL": "Lié à l’exploitation",
+        "OPERATIONAL": "Opérationelle",
         "DISPOSITION": "Disposition",
         "TECHNICAL": "Technique",
         "CONCESSION": "Concession"
@@ -464,7 +464,7 @@
       "NUMBER": "Numéro de ligne partielle",
       "MAINLINE": "Appartient à la ligne principale",
       "OVERVIEW_MAINLINE": "Appartient à\nLigne (CHLNR)",
-      "DESCRIPTION": "Description de la ligne partielle",
+      "DESCRIPTION": "Désignation de la ligne partielle",
       "NEW": "Saisir une nouvelle ligne partielle",
       "TYPES": {
         "COMPENSATION": "Compensation",
@@ -472,7 +472,7 @@
         "CONCESSION": "Concession",
         "DISPOSITION": "Disposition",
         "TEMPORARY": "Temporaire",
-        "OPERATIONAL": "Lié à l’exploitation"
+        "OPERATIONAL": "Opérationelle"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le ligne partielle a été ajoutée avec succès.",
