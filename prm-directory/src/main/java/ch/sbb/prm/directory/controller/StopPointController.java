@@ -12,6 +12,7 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointAlreadyExistsException;
 import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
+import ch.sbb.prm.directory.service.PlatformService;
 import ch.sbb.prm.directory.service.PrmChangeRecordingVariantService;
 import ch.sbb.prm.directory.service.StopPointService;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopPointController implements StopPointApiV1 {
 
   private final StopPointService stopPointService;
+  private final PlatformService platformService;
   private final PrmChangeRecordingVariantService prmChangeRecordingVariantService;
 
   @Override
@@ -67,10 +69,11 @@ public class StopPointController implements StopPointApiV1 {
     StopPointVersion stopPointVersionToUpdate =
         stopPointService.getStopPointById(id).orElseThrow(() -> new IdNotFoundException(id));
     StopPointVersion editedVersion = StopPointVersionMapper.toEntity(model);
-    if(isPrmVariantChanging(stopPointVersionToUpdate, editedVersion)){
+    if (isPrmVariantChanging(stopPointVersionToUpdate, editedVersion)) {
       prmChangeRecordingVariantService.stopPointChangeRecordingVariant(stopPointVersionToUpdate, editedVersion);
-    }else {
+    } else {
       stopPointService.updateStopPointVersion(stopPointVersionToUpdate, editedVersion);
+      platformService.updateAttentionFieldByParentSloid(stopPointVersionToUpdate.getSloid(), editedVersion.getMeansOfTransport());
     }
     return stopPointService.findAllByNumberOrderByValidFrom(stopPointVersionToUpdate.getNumber()).stream()
         .map(StopPointVersionMapper::toModel).toList();
