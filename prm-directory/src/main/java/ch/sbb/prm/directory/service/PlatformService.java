@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
@@ -156,4 +157,18 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     return platformRepository.existsBySloid(sloid);
   }
 
+  @Transactional
+  public void updateAttentionFieldByParentSloid(String parentServicePointSloid, Set<MeanOfTransport> newMeansOfTransport) {
+    boolean attentionFieldAllowed = PrmMeansOfTransportHelper.isAttentionFieldAllowed(newMeansOfTransport);
+
+    List<PlatformVersion> platformVersions = platformRepository.findAllByParentServicePointSloid(parentServicePointSloid);
+    for (PlatformVersion platformVersion : platformVersions) {
+      if (attentionFieldAllowed && platformVersion.getAttentionField() == null) {
+        platformVersion.setAttentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+      }
+      if (!attentionFieldAllowed && platformVersion.getAttentionField() != null) {
+        platformVersion.setAttentionField(null);
+      }
+    }
+  }
 }
