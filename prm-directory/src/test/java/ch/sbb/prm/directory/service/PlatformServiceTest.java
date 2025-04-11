@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -105,7 +106,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
     List<PlatformVersion> platformVersions = platformRepository
         .findByParentServicePointSloid(platformVersion.getParentServicePointSloid());
     assertThat(platformVersions).hasSize(1);
-    assertThat(platformVersions.get(0).getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
+    assertThat(platformVersions.getFirst().getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository
         .findAllByParentServicePointSloid(platformVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
@@ -131,12 +132,12 @@ class PlatformServiceTest extends BasePrmServiceTest {
     List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
         platformVersion.getParentServicePointSloid());
     assertThat(platformVersions).hasSize(1);
-    assertThat(platformVersions.get(0).getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
+    assertThat(platformVersions.getFirst().getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository
         .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions).hasSize(1);
-    assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
-    assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PLATFORM);
+    assertThat(relationVersions.getFirst().getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
+    assertThat(relationVersions.getFirst().getReferencePointElementType()).isEqualTo(PLATFORM);
   }
 
   /**
@@ -163,14 +164,14 @@ class PlatformServiceTest extends BasePrmServiceTest {
     List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
         platformVersion.getParentServicePointSloid());
     assertThat(platformVersions).hasSize(1);
-    PlatformVersion platformVersionResult = platformVersions.get(0);
+    PlatformVersion platformVersionResult = platformVersions.getFirst();
     assertThat(platformVersionResult).isEqualTo(platformVersion);
     assertThat(platformVersionResult.getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions).hasSize(1);
-    assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
-    assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PLATFORM);
+    assertThat(relationVersions.getFirst().getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
+    assertThat(relationVersions.getFirst().getReferencePointElementType()).isEqualTo(PLATFORM);
   }
 
   /**
@@ -196,7 +197,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
     List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
         platformVersion.getParentServicePointSloid());
     assertThat(platformVersions).hasSize(1);
-    PlatformVersion platformVersionResult = platformVersions.get(0);
+    PlatformVersion platformVersionResult = platformVersions.getFirst();
     assertThat(platformVersionResult).isEqualTo(platformVersion);
     assertThat(platformVersionResult.getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
     //when Stop Point is reduced no one Relation must be added even if referencePoint exists
@@ -335,5 +336,42 @@ class PlatformServiceTest extends BasePrmServiceTest {
 
     List<PlatformVersion> platform = platformService.getAllVersions(platformVersion.getSloid());
     assertThat(platform).hasSize(1);
+  }
+
+  @Test
+  void shouldUpdateAttentionFieldToToBeCompleted() {
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformVersion.setSloid(PLATFORM_SLOID);
+    PlatformVersion currentVersion = platformService.createPlatformVersion(platformVersion);
+    assertThat(currentVersion.getAttentionField()).isNull();
+
+    platformService.updateAttentionFieldByParentSloid(PARENT_SERVICE_POINT_SLOID, Set.of(MeanOfTransport.TRAM));
+    List<PlatformVersion> updatedPlatform = platformService.getAllVersions(platformVersion.getSloid());
+    assertThat(updatedPlatform).hasSize(1);
+    assertThat(updatedPlatform.getFirst().getAttentionField()).isEqualTo(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+  }
+
+  @Test
+  void shouldUpdateAttentionFieldToNull() {
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.TRAM));
+    stopPointRepository.save(stopPointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformVersion.setSloid(PLATFORM_SLOID);
+    PlatformVersion currentVersion = platformService.createPlatformVersion(platformVersion);
+    assertThat(currentVersion.getAttentionField()).isEqualTo(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+
+    platformService.updateAttentionFieldByParentSloid(PARENT_SERVICE_POINT_SLOID, Set.of(MeanOfTransport.BOAT));
+    List<PlatformVersion> updatedPlatform = platformService.getAllVersions(platformVersion.getSloid());
+    assertThat(updatedPlatform).hasSize(1);
+    assertThat(updatedPlatform.getFirst().getAttentionField()).isNull();
   }
 }
