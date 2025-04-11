@@ -15,8 +15,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "RecordingObligationUpdateRequest")
-public class RecordingObligation {
+@Schema(name = "RecordingObligation")
+public class RecordingObligationModel {
 
   @NotNull
   private Boolean value;

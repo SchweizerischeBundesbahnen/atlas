@@ -1,9 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.prm.directory.entity.RecordingObligation;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.RecordingObligationRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

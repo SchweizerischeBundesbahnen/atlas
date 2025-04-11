@@ -4,7 +4,7 @@ import static ch.sbb.prm.directory.util.PrmVariantUtil.isPrmVariantChanging;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
-import ch.sbb.atlas.api.prm.model.stoppoint.RecordingObligation;
+import ch.sbb.atlas.api.prm.model.stoppoint.RecordingObligationModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.StopPointApiV1;
@@ -19,7 +19,6 @@ import ch.sbb.prm.directory.service.RecordingObligationService;
 import ch.sbb.prm.directory.service.StopPointService;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -45,7 +44,7 @@ public class StopPointController implements StopPointApiV1 {
         .build();
     Page<StopPointVersion> stopPointVersions = stopPointService.findAll(searchRestrictions);
     Map<String, Boolean> recordingObligations = recordingObligationService.getRecordingObligations(
-        stopPointVersions.stream().map(StopPointVersion::getSloid).collect(Collectors.toList()));
+        stopPointVersions.stream().map(StopPointVersion::getSloid).toList());
 
     return Container.<ReadStopPointVersionModel>builder()
         .objects(stopPointVersions.stream().map(i -> StopPointVersionMapper.toModel(i, recordingObligations)).toList())
@@ -88,13 +87,13 @@ public class StopPointController implements StopPointApiV1 {
   }
 
   @Override
-  public void updateRecordingObligation(String sloid, RecordingObligation recordingObligation) {
+  public void updateRecordingObligation(String sloid, RecordingObligationModel recordingObligation) {
     recordingObligationService.setRecordingObligation(sloid, recordingObligation.getValue());
   }
 
   @Override
-  public RecordingObligation getRecordingObligation(String sloid) {
-    return RecordingObligation.builder()
+  public RecordingObligationModel getRecordingObligation(String sloid) {
+    return RecordingObligationModel.builder()
         .value(recordingObligationService.getRecordingObligation(sloid))
         .build();
   }
