@@ -50,6 +50,8 @@ public class StopPointVersionModel extends BasePrmVersionModel implements DatesV
 
   private StandardAttributeType alternativeTransport;
 
+  private StandardAttributeType shuttleService;
+
   @Size(max = AtlasFieldLengths.LENGTH_2000)
   @Schema(description = "Information about the shuttle service or alternative public transport options")
   private String alternativeTransportCondition;
