@@ -29,7 +29,7 @@ export class BulkImportService {
       applicationType: ApplicationType,
       objectType: BusinessObjectType,
       importType: ImportType,
-    ): Observable<any> {
+    ): Observable<Blob> {
       if (!applicationType || !objectType || !importType) {
         throw new Error('Required parameters were null or undefined when calling downloadTemplate.');
       }
@@ -48,7 +48,7 @@ export class BulkImportService {
         );
     }
 
-    public getBulkImportResults(id: number): Observable<any> {
+    public getBulkImportResults(id: number): Observable<BulkImportResult> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getBulkImportResults.');
         }
