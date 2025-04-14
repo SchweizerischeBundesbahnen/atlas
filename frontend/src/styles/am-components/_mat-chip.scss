@@ -1,0 +1,8 @@
+.mdc-evolution-chip-set__chips {
+  max-width: 100%;
+}
+
+.mat-mdc-standard-chip .mdc-evolution-chip__action--primary,
+.mat-mdc-standard-chip .mat-mdc-chip-action-label {
+  overflow: hidden !important;
+}
