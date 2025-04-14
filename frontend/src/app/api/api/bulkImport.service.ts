@@ -1,10 +1,10 @@
-import {Inject, Injectable, Optional} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, Observable, throwError} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {catchError, Observable} from 'rxjs';
 
 import {ApplicationType, BulkImportRequest, BulkImportResult, BusinessObjectType, ImportType} from '../model/models';
-import {Configuration} from "../configuration";
-import {BASE_PATH} from "../variables";
+import {environment} from "../../../environments/environment";
+import {DEFAULT_HTTP_HEADERS, handleError, validateParams} from "./util/api-helper";
 
 
 @Injectable({
@@ -12,77 +12,53 @@ import {BASE_PATH} from "../variables";
 })
 export class BulkImportService {
 
-    protected basePath = 'http://localhost';
-    public defaultHeaders = new HttpHeaders();
-    public configuration = new Configuration();
-
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, configuration: Configuration) {
-      if (configuration) {
-        this.configuration = configuration;
-      }
-      if (typeof this.configuration.basePath !== 'string') {
-        this.configuration.basePath = basePath;
-      }
-    }
-
-    public downloadTemplate(
-      applicationType: ApplicationType,
-      objectType: BusinessObjectType,
-      importType: ImportType,
-    ): Observable<Blob> {
-      if (!applicationType || !objectType || !importType) {
-        throw new Error('Required parameters were null or undefined when calling downloadTemplate.');
-      }
-
-      const url = `${this.configuration.basePath}/bulk-import-service/v1/import/bulk/template/${encodeURIComponent(applicationType)}/${encodeURIComponent(String(objectType))}/${encodeURIComponent(importType)}`;
-
-      let headers = this.defaultHeaders;
-      headers = headers.set('Accept', '*/*');
-
-      return this.httpClient.get(url, {
-          responseType: "blob",
-          withCredentials: this.configuration.withCredentials,
-          headers: headers
-      }).pipe(
-          catchError(this.handleError)
-        );
-    }
-
-    public getBulkImportResults(id: number): Observable<BulkImportResult> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getBulkImportResults.');
-        }
-        const url = `${this.configuration.basePath}/bulk-import-service/v1/import/bulk/${encodeURIComponent(id)}`;
-        let headers = this.defaultHeaders;
-        headers = headers.set('Accept', '*/*')
-
-        return this.httpClient.get<BulkImportResult>(url, {
-            withCredentials: this.configuration.withCredentials,
-            headers: headers
-        }).pipe(
-          catchError(this.handleError)
-        );
-    }
-
-  startBulkImport(bulkImportRequest: BulkImportRequest, file: Blob): Observable<any> {
-    if (!bulkImportRequest || !file) {
-      throw new Error('BulkImportRequest or File was null or undefined when calling startBulkImport.');
-    }
-    const url = `${this.configuration.basePath}/bulk-import-service/v1/import/bulk`;
-    const formData: FormData = new FormData();
-
-    formData.append('bulkImportRequest', new Blob([JSON.stringify(bulkImportRequest)], { type: 'application/json' }));
-    formData.append('file', file);
-
-    return this.httpClient.post(url, formData, {
-      withCredentials: this.configuration.withCredentials
-    }).pipe(
-        catchError(this.handleError)
-      );
+  constructor(protected httpClient: HttpClient) {
   }
 
-  private handleError() {
-    let errorMessage = 'Unexpected Error occured!';
-    return throwError(() => errorMessage);
+  public downloadTemplate(
+    applicationType: ApplicationType,
+    objectType: BusinessObjectType,
+    importType: ImportType,
+  ): Observable<Blob> {
+    validateParams({applicationType, objectType, importType});
+
+    const url = `${environment.atlasApiUrl}/bulk-import-service/v1/import/bulk/template/${encodeURIComponent(applicationType)}/${encodeURIComponent(String(objectType))}/${encodeURIComponent(importType)}`;
+
+    return this.httpClient.get(url, {
+      responseType: "blob",
+      headers: DEFAULT_HTTP_HEADERS
+    }).pipe(
+      catchError(handleError)
+    );
+  }
+
+  public getBulkImportResults(id: number): Observable<BulkImportResult> {
+    validateParams({id})
+
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling getBulkImportResults.');
+    }
+    const url = `${environment.atlasApiUrl}/bulk-import-service/v1/import/bulk/${encodeURIComponent(id)}`;
+
+    return this.httpClient.get<BulkImportResult>(url, {
+      headers: DEFAULT_HTTP_HEADERS
+    }).pipe(
+      catchError(handleError)
+    );
+  }
+
+
+  public startBulkImport(bulkImportRequest: BulkImportRequest, file: Blob): Observable<any> {
+    validateParams({bulkImportRequest, file});
+
+    const url = `${environment.atlasApiUrl}/bulk-import-service/v1/import/bulk`;
+    const formData: FormData = new FormData();
+
+    formData.append('bulkImportRequest', new Blob([JSON.stringify(bulkImportRequest)], {type: 'application/json'}));
+    formData.append('file', file);
+
+    return this.httpClient.post(url, formData).pipe(
+      catchError(handleError)
+    );
   }
 }
