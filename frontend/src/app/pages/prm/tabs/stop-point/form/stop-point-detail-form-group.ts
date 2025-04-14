@@ -21,6 +21,7 @@ export interface StopPointDetailFormGroup extends BaseDetailFormGroup {
   zipCode: FormControl<string | null | undefined>;
   city: FormControl<string | null | undefined>;
   alternativeTransport: FormControl<StandardAttributeType | null | undefined>;
+  shuttleService: FormControl<StandardAttributeType | null | undefined>;
   alternativeTransportCondition: FormControl<string | null | undefined>;
   assistanceAvailability: FormControl<StandardAttributeType | null | undefined>;
   assistanceCondition: FormControl<string | null | undefined>;
@@ -82,6 +83,7 @@ export class StopPointFormGroupBuilder {
           Validators.maxLength(75),
         ]),
         alternativeTransport: new FormControl(version.alternativeTransport, [Validators.required]),
+        shuttleService: new FormControl(version.shuttleService, [Validators.required]),
         alternativeTransportCondition: new FormControl(version.alternativeTransportCondition, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
@@ -177,6 +179,7 @@ export class StopPointFormGroupBuilder {
         zipCode: new FormControl(null),
         city: new FormControl(null),
         alternativeTransport: new FormControl(null),
+        shuttleService: new FormControl(null),
         alternativeTransportCondition: new FormControl(null),
         assistanceAvailability: new FormControl(null),
         assistanceCondition: new FormControl(null),
@@ -226,6 +229,7 @@ export class StopPointFormGroupBuilder {
       url: value.url!,
       additionalInformation: value.additionalInformation!,
       alternativeTransport: value.alternativeTransport!,
+      shuttleService: value.shuttleService!,
       alternativeTransportCondition: value.alternativeTransportCondition!,
       assistanceAvailability: value.assistanceAvailability!,
       assistanceCondition: value.assistanceCondition!,
@@ -289,6 +293,7 @@ export class StopPointFormGroupBuilder {
       Validators.maxLength(75),
     ]);
     form.controls.alternativeTransport.addValidators([Validators.required]);
+    form.controls.shuttleService.addValidators([Validators.required]);
     form.controls.alternativeTransportCondition.addValidators([
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       Validators.maxLength(2000),
@@ -326,6 +331,7 @@ export class StopPointFormGroupBuilder {
       form.controls.zipCode,
       form.controls.city,
       form.controls.alternativeTransport,
+      form.controls.shuttleService,
       form.controls.alternativeTransportCondition,
       form.controls.assistanceAvailability,
       form.controls.assistanceCondition,
@@ -364,5 +370,6 @@ export class StopPointFormGroupBuilder {
       control.setValue(StandardAttributeType.ToBeCompleted);
     });
     form.controls.alternativeTransport.setValue(StandardAttributeType.No);
+    form.controls.shuttleService.setValue(StandardAttributeType.No);
   }
 }
