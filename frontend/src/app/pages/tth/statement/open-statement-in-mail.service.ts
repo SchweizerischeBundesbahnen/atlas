@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   TimetableFieldNumber,
   TimetableFieldNumbersService,
   TimetableHearingStatementV2,
 } from '../../../api';
-import {TranslatePipe} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,10 @@ export class OpenStatementInMailService {
     private readonly timetableFieldNumbersService: TimetableFieldNumbersService
   ) {}
 
-  openAsMail(statement: TimetableHearingStatementV2, ttfnValidOn: Date | undefined) {
+  openAsMail(
+    statement: TimetableHearingStatementV2,
+    ttfnValidOn: Date | undefined
+  ) {
     if (statement?.ttfnid) {
       this.timetableFieldNumbersService
         .getOverview(
@@ -56,17 +59,24 @@ export class OpenStatementInMailService {
 
     const subject = this.buildSubject(ttfnInfo, statement.id);
     const body = `${ttfnInfo}${stopPointInfo}${statementInfo}`;
-
-    return encodeURI(`mailto:?${subject}body=${body}`);
+    return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   private buildStatementInfo(statement: TimetableHearingStatementV2) {
-    return this.translatePipe.transform('TTH.STATEMENT.STATEMENT') + ': ' + statement?.statement;
+    return (
+      this.translatePipe.transform('TTH.STATEMENT.STATEMENT') +
+      ': ' +
+      statement?.statement
+    );
   }
 
   private buildStopPointInfo(statement: TimetableHearingStatementV2) {
-    const stopPointLabel = this.translatePipe.transform('TTH.STATEMENT.STOP_POINT');
-    return statement?.stopPlace ? `${stopPointLabel}: ${statement?.stopPlace}\r\r` : '';
+    const stopPointLabel = this.translatePipe.transform(
+      'TTH.STATEMENT.STOP_POINT'
+    );
+    return statement?.stopPlace
+      ? `${stopPointLabel}: ${statement?.stopPlace}\r\r`
+      : '';
   }
 
   private buildTtfnInfo(resolvedTtfn: TimetableFieldNumber | undefined) {
