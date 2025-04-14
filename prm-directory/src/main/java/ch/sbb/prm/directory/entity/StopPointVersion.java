@@ -111,6 +111,11 @@ public class StopPointVersion extends BaseEntity implements PrmVersionable, Vari
   @AtlasVersionableProperty
   private StandardAttributeType alternativeTransport;
 
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private StandardAttributeType shuttleService;
+
   @Size(max = AtlasFieldLengths.LENGTH_2000)
   @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
