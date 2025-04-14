@@ -34,7 +34,7 @@ export class BulkImportService {
         throw new Error('Required parameters were null or undefined when calling downloadTemplate.');
       }
 
-      const url = `${this.configuration.basePath}/bulk-import-service/v1/import/bulk/template/${encodeURIComponent(String(applicationType))}/${encodeURIComponent(String(objectType))}/${encodeURIComponent(String(importType))}`;
+      const url = `${this.configuration.basePath}/bulk-import-service/v1/import/bulk/template/${encodeURIComponent(applicationType)}/${encodeURIComponent(String(objectType))}/${encodeURIComponent(importType)}`;
 
       let headers = this.defaultHeaders;
       headers = headers.set('Accept', '*/*');
@@ -52,7 +52,7 @@ export class BulkImportService {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getBulkImportResults.');
         }
-        const url = `${this.configuration.basePath}/bulk-import-service/v1/import/bulk/${encodeURIComponent(String(id))}`;
+        const url = `${this.configuration.basePath}/bulk-import-service/v1/import/bulk/${encodeURIComponent(id)}`;
         let headers = this.defaultHeaders;
         headers = headers.set('Accept', '*/*')
 
