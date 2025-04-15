@@ -1,8 +1,18 @@
-import {TestBed} from '@angular/core/testing';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
-import {OpenStatementInMailService} from './open-statement-in-mail.service';
-import {Status, SwissCanton, TimetableFieldNumber, TimetableHearingStatementV2} from '../../../api';
-import {AppTestingModule} from '../../../app.testing.module';
+import { TestBed } from '@angular/core/testing';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslatePipe,
+} from '@ngx-translate/core';
+import { OpenStatementInMailService } from './open-statement-in-mail.service';
+import {
+  Status,
+  SwissCanton,
+  TimetableFieldNumber,
+  TimetableHearingStatementV2,
+} from '../../../api';
+import { AppTestingModule } from '../../../app.testing.module';
 
 const translatePipeSpy = jasmine.createSpyObj('translatePipe', ['transform']);
 translatePipeSpy.transform
@@ -55,10 +65,13 @@ describe('OpenStatementInMailService', () => {
       businessOrganisation: 'sbb',
     };
 
-    const mailToLink = openStatementInMailService.buildMailToLink(statement, ttfn);
+    const mailToLink = openStatementInMailService.buildMailToLink(
+      statement,
+      ttfn
+    );
 
     expect(mailToLink).toBe(
-      'mailto:?subject=Anfrage%20Stellungnahme%20456%20Fahrplanfeld:%201.1%20description%0D%0D&body=Fahrplanfeld:%201.1%20description%0D%0DStellungnahme:%20Mehr%20B%C3%B6s%20pls'
+      'mailto:?subject=subject%3DAnfrage%20Stellungnahme%20456%20Fahrplanfeld%3A%201.1%20description%0D%0D%26&body=Fahrplanfeld%3A%201.1%20description%0D%0DStellungnahme%3A%20Mehr%20B%C3%B6s%20pls'
     );
   });
 
@@ -72,9 +85,14 @@ describe('OpenStatementInMailService', () => {
       },
     };
 
-    const mailToLink = openStatementInMailService.buildMailToLink(statement, undefined);
+    const mailToLink = openStatementInMailService.buildMailToLink(
+      statement,
+      undefined
+    );
 
-    expect(mailToLink).toBe('mailto:?body=Stellungnahme:%20Mehr%20B%C3%B6s%20pls');
+    expect(mailToLink).toBe(
+      'mailto:?subject=&body=Stellungnahme%3A%20Mehr%20B%C3%B6s%20pls'
+    );
   });
 
   it('should construct mailto link with stopplace', () => {
@@ -98,10 +116,13 @@ describe('OpenStatementInMailService', () => {
       businessOrganisation: 'sbb',
     };
 
-    const mailToLink = openStatementInMailService.buildMailToLink(statement, ttfn);
+    const mailToLink = openStatementInMailService.buildMailToLink(
+      statement,
+      ttfn
+    );
 
     expect(mailToLink).toBe(
-      'mailto:?subject=Anfrage%20Stellungnahme%20456%20Fahrplanfeld:%201.1%20description%0D%0D&body=Fahrplanfeld:%201.1%20description%0D%0DHaltestelle:%20Erste%20Haltestelle%20nach%20der%20Post%0D%0DStellungnahme:%20Mehr%20B%C3%B6s%20pls'
+      'mailto:?subject=subject%3DAnfrage%20Stellungnahme%20456%20Fahrplanfeld%3A%201.1%20description%0D%0D%26&body=Fahrplanfeld%3A%201.1%20description%0D%0DHaltestelle%3A%20Erste%20Haltestelle%20nach%20der%20Post%0D%0DStellungnahme%3A%20Mehr%20B%C3%B6s%20pls'
     );
   });
 });
