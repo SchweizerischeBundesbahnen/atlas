@@ -46,11 +46,11 @@ public abstract class RecordableVariantsValidationService<T extends VariantsRedu
       if (!nullable && value == null && RecordingVariant.COMPLETE == recordingVariant) {
         errorConstraintMap.put(field.getName(), "Must not be null for Completed Object.");
       }
-      if(value instanceof Collection<?> collection){
+      if (value instanceof Collection<?> collection) {
         if (!collection.isEmpty() && RecordingVariant.REDUCED == recordingVariant) {
           errorConstraintMap.put(field.getName(), NOT_ALLOWED_FIELD_FOR_COMPLETE_VARIANT_ERROR_MSG);
         }
-      }else if (value != null && RecordingVariant.REDUCED == recordingVariant) {
+      } else if (value != null && RecordingVariant.REDUCED == recordingVariant) {
         errorConstraintMap.put(field.getName(), NOT_ALLOWED_FIELD_FOR_COMPLETE_VARIANT_ERROR_MSG);
       }
     } catch (IllegalAccessException e) {

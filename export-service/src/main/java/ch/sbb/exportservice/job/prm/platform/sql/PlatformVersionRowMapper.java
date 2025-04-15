@@ -51,6 +51,8 @@ public class PlatformVersionRowMapper implements RowMapper<PlatformVersion> {
     builder.superElevation(rs.getObject("superelevation") != null ? rs.getDouble("superelevation") : null);
     builder.tactileSystems(
         rs.getObject("tactile_system") != null ? BooleanOptionalAttributeType.valueOf(rs.getString("tactile_system")) : null);
+    builder.attentionField(
+        rs.getObject("attention_field") != null ? BooleanOptionalAttributeType.valueOf(rs.getString("attention_field")) : null);
     builder.vehicleAccess(
         rs.getObject("vehicle_access") != null ? VehicleAccessAttributeType.valueOf(rs.getString("vehicle_access")) : null);
     builder.wheelchairAreaLength(

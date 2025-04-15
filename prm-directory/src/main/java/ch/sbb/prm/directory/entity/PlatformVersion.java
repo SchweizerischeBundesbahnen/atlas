@@ -121,6 +121,11 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @AtlasVersionableProperty
   private BooleanOptionalAttributeType tactileSystem;
 
+  @PrmVariant(variant = RecordingVariant.REDUCED)
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private BooleanOptionalAttributeType attentionField;
+
   @PrmVariant(variant = RecordingVariant.REDUCED, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
