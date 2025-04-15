@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ApplicationType, PersonWithReducedMobilityService } from '../../api';
+import { ApplicationType } from '../../api';
 import { PermissionService } from '../auth/permission/permission.service';
+import {PersonWithReducedMobilityService} from "../../api/service/personWithReducedMobility.service";
 
 @Component({
   selector: 'prm-recording-obligation',
