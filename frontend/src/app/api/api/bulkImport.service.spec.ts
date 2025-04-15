@@ -80,7 +80,6 @@ describe('BulkImportService', () => {
 
     const keys: string[] = [];
     formData.forEach((value, key) => {
-      console.log(key, value);
       keys.push(key);
     });
 
