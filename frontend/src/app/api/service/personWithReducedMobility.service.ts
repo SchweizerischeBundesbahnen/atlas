@@ -1,18 +1,13 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {RecordingObligation} from "../model/recordingObligation";
 import {AtlasApiService} from "./atlasApi.service";
-import {UserService} from "../../core/auth/user/user.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonWithReducedMobilityService extends AtlasApiService{
-
-  constructor(protected httpClient: HttpClient, protected userService: UserService) {
-    super(userService);
-  }
 
   public getRecordingObligation(sloid: string): Observable<RecordingObligation> {
     if (sloid === null || sloid === undefined) {
