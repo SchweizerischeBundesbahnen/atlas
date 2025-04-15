@@ -5,7 +5,7 @@ plugins {
 group = "ch.sbb.atlas"
 version = "2.553.0"
 
-extra["awsS3Version"] = "2.31.21"
+extra["awsS3Version"] = "2.31.22"
 
 // Do not change this version unless tested and confirmed that @NotNull fields are marked as required.
 extra["swaggerCoreVersion"] = "2.2.30"
