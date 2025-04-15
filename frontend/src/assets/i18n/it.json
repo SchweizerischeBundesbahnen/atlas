@@ -1302,6 +1302,8 @@
         "INFO_TICKET_MACHINE": "Osservazioni sui distributori automatici di biglietti"
       },
       "NO_STOP_POINT_FOUND": "Per questa fermata non sono ancora stati registrati dati sull'accessibilità.",
+      "RECORDING_OBLIGATION": "Obbligo di registrazione",
+      "NO_RECORDING_OBLIGATION": "Secondo la legge sui disabili, per questa fermata non è necessario registrare dati sull’accessibilità senza barriere.",
       "NOTIFICATION": {
         "ADD_SUCCESS": "La fermata è stata aggiunta con successo.",
         "EDIT_SUCCESS": "La fermata è stata salvata con successo."

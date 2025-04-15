@@ -1,4 +1,4 @@
-import {ReadStopPointVersion, StopPointVersion} from '../../../api';
+import {ReadStopPointVersion} from '../../../api';
 
 export const STOP_POINT: ReadStopPointVersion = {
   validFrom: new Date('2014-12-14'),
@@ -22,6 +22,7 @@ export const STOP_POINT: ReadStopPointVersion = {
   reduced: true,
   editionDate: '2020-01-05',
   editor: 'Nicola',
+  recordingObligation: true
 };
 export const STOP_POINT_COMPLETE: ReadStopPointVersion = {
   validFrom: new Date('2014-12-14'),
@@ -45,26 +46,5 @@ export const STOP_POINT_COMPLETE: ReadStopPointVersion = {
   reduced: false,
   editionDate: '2020-01-05',
   editor: 'Nicola',
-};
-
-export const STOP_POINT_VESION: StopPointVersion = {
-  validFrom: new Date('2014-12-14'),
-  validTo: new Date('2021-03-31'),
-  sloid: 'ch:1:sloid:89008',
-  url: 'www.sbb.ch',
-  meansOfTransport: ['TRAIN'],
-  alternativeTransport: 'TO_BE_COMPLETED',
-  assistanceAvailability: 'TO_BE_COMPLETED',
-  assistanceRequestFulfilled: 'TO_BE_COMPLETED',
-  assistanceService: 'TO_BE_COMPLETED',
-  audioTicketMachine: 'TO_BE_COMPLETED',
-  dynamicAudioSystem: 'TO_BE_COMPLETED',
-  dynamicOpticSystem: 'TO_BE_COMPLETED',
-  ticketMachine: 'TO_BE_COMPLETED',
-  visualInfo: 'TO_BE_COMPLETED',
-  wheelchairTicketMachine: 'TO_BE_COMPLETED',
-  creationDate: '2020-01-01',
-  creator: 'Cianni',
-  editionDate: '2020-01-05',
-  editor: 'Nicola',
+  recordingObligation: true
 };

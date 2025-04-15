@@ -14,6 +14,7 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.ServicePointNonSwissCountryNotAllowedException;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 @UtilityClass
 public class StopPointVersionMapper {
 
-  public static ReadStopPointVersionModel toModel(StopPointVersion version) {
+  public static ReadStopPointVersionModel toModel(StopPointVersion version, Map<String, Boolean> recordingObligations) {
+    return toModel(version, recordingObligations.getOrDefault(version.getSloid(), true));
+  }
+
+  public static ReadStopPointVersionModel toModel(StopPointVersion version, boolean recordingObligation) {
     return ReadStopPointVersionModel.builder()
         .id(version.getId())
         .status(version.getStatus())
@@ -57,6 +62,7 @@ public class StopPointVersionMapper {
         .editionDate(version.getEditionDate())
         .etagVersion(version.getVersion())
         .isReduced(version.isReduced())
+        .recordingObligation(recordingObligation)
         .build();
   }
 

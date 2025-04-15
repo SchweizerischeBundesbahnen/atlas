@@ -10,7 +10,13 @@
           [switchDisabled]="isSwitchVersionDisabled"
         ></app-switch-version>
       </div>
-      <app-navigation-sepodi-prm [number]="selectedVersion?.number!.number" [sloid]="selectedVersion?.sloid" targetPage="stop-point"></app-navigation-sepodi-prm>
+      <div class="d-flex flex-column">
+        <app-navigation-sepodi-prm [number]="selectedVersion?.number!.number" [sloid]="selectedVersion?.sloid"
+                                   targetPage="stop-point"></app-navigation-sepodi-prm>
+        <div class="align-self-center">
+          <prm-recording-obligation [showToggle]="false" [sloid]="selectedVersion?.sloid!"></prm-recording-obligation>
+        </div>
+      </div>
     </div>
   </div>
 
