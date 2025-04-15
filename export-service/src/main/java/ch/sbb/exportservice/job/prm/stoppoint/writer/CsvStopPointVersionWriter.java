@@ -18,7 +18,7 @@ public class CsvStopPointVersionWriter extends BaseCsvWriter<StopPointVersionCsv
   protected String[] getCsvHeader() {
     return new String[]{
         Fields.sloid, Fields.number, Fields.meansOfTransport, Fields.address, Fields.zipCode, Fields.city,
-        Fields.alternativeTransport, Fields.assistanceAvailability, Fields.alternativeTransportCondition,
+        Fields.alternativeTransport, Fields.shuttleService, Fields.assistanceAvailability, Fields.alternativeTransportCondition,
         Fields.assistanceCondition, Fields.assistanceService, Fields.audioTicketMachine, Fields.additionalInformation,
         Fields.dynamicAudioSystem, Fields.dynamicOpticSystem, Fields.freeText, Fields.infoTicketMachine, Fields.interoperable,
         Fields.assistanceRequestFulfilled, Fields.ticketMachine, Fields.url, Fields.visualInfo, Fields.wheelchairTicketMachine,

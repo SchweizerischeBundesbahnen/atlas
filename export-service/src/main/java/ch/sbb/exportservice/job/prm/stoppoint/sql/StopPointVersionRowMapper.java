@@ -31,6 +31,9 @@ public class StopPointVersionRowMapper implements RowMapper<StopPointVersion> {
     builder.alternativeTransport(
         rs.getObject("alternative_transport") != null ?
             StandardAttributeType.valueOf(rs.getString("alternative_transport")) : null);
+    builder.shuttleService(
+        rs.getObject("shuttle_service") != null ?
+            StandardAttributeType.valueOf(rs.getString("shuttle_service")) : null);
     builder.alternativeTransportCondition(rs.getString("alternative_transport_condition"));
     builder.assistanceAvailability(
         rs.getObject("assistance_availability") != null ?

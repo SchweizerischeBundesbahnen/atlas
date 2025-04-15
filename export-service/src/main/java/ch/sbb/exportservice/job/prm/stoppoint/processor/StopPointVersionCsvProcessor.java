@@ -22,6 +22,7 @@ public class StopPointVersionCsvProcessor implements ItemProcessor<StopPointVers
         .zipCode(version.getZipCode())
         .city(version.getCity())
         .alternativeTransport(mapStandardAttributeType(version.getAlternativeTransport()))
+        .shuttleService(mapStandardAttributeType(version.getShuttleService()))
         .alternativeTransportCondition(version.getAlternativeTransportCondition())
         .assistanceAvailability(mapStandardAttributeType(version.getAssistanceAvailability()))
         .assistanceCondition(version.getAssistanceCondition())
