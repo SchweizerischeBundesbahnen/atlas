@@ -86,6 +86,8 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
 
   private BooleanOptionalAttributeType tactileSystem;
 
+  private BooleanOptionalAttributeType attentionField;
+
   private VehicleAccessAttributeType vehicleAccess;
 
   @Schema(description = "Wheelchair Area Length [mm]")

@@ -9,7 +9,9 @@ import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.validation.PrmMeansOfTransportHelper;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -41,6 +43,7 @@ public class PlatformVersionMapper {
         .partialElevation(version.getPartialElevation())
         .superelevation(version.getSuperelevation())
         .tactileSystem(version.getTactileSystem())
+        .attentionField(version.getAttentionField())
         .vehicleAccess(version.getVehicleAccess())
         .wheelchairAreaLength(version.getWheelchairAreaLength())
         .wheelchairAreaWidth(version.getWheelchairAreaWidth())
@@ -74,6 +77,7 @@ public class PlatformVersionMapper {
         .partialElevation(model.getPartialElevation())
         .superelevation(model.getSuperelevation())
         .tactileSystem(model.getTactileSystem())
+        .attentionField(model.getAttentionField())
         .vehicleAccess(model.getVehicleAccess())
         .wheelchairAreaLength(model.getWheelchairAreaLength())
         .wheelchairAreaWidth(model.getWheelchairAreaWidth())
@@ -86,7 +90,7 @@ public class PlatformVersionMapper {
   }
 
   public static PlatformVersion resetToDefaultValue(PlatformVersion platformVersion, LocalDate validFrom, LocalDate validTo,
-      boolean reduced) {
+      Set<MeanOfTransport> newMeansOfTransport) {
     PlatformVersion resettedVersion = PlatformVersion.builder()
         .sloid(platformVersion.getSloid())
         .status(Status.VALIDATED)
@@ -99,9 +103,12 @@ public class PlatformVersionMapper {
         .editor(platformVersion.getEditor())
         .editionDate(platformVersion.getEditionDate())
         .build();
-    if (reduced) {
+    if (PrmMeansOfTransportHelper.isReduced(newMeansOfTransport)) {
       resettedVersion.setTactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED);
       resettedVersion.setVehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED);
+      if (PrmMeansOfTransportHelper.isAttentionFieldAllowed(newMeansOfTransport)) {
+        resettedVersion.setAttentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+      }
     } else {
       resettedVersion.setContrastingAreas(BooleanOptionalAttributeType.TO_BE_COMPLETED);
       resettedVersion.setBoardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED);
@@ -112,10 +119,13 @@ public class PlatformVersionMapper {
     return resettedVersion;
   }
 
-  public static void initDefaultDropdownData(PlatformVersion platformVersion, boolean reduced) {
-    if (reduced) {
+  public static void initDefaultDropdownData(PlatformVersion platformVersion, Set<MeanOfTransport> meansOfTransport) {
+    if (PrmMeansOfTransportHelper.isReduced(meansOfTransport)) {
       if (platformVersion.getTactileSystem() == null) {
         platformVersion.setTactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+      }
+      if (platformVersion.getAttentionField() == null && PrmMeansOfTransportHelper.isAttentionFieldAllowed(meansOfTransport)) {
+        platformVersion.setAttentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED);
       }
       if (platformVersion.getVehicleAccess() == null) {
         platformVersion.setVehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED);

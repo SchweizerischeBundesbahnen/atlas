@@ -1,14 +1,19 @@
 package ch.sbb.prm.directory.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.exception.AttentionFieldMeanOfTransportConflictException;
 import ch.sbb.prm.directory.exception.RecordingVariantException;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
+import java.util.Set;
 import java.util.SortedSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -116,7 +121,7 @@ class PlatformValidationServiceTest {
     //given
     PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
     PlatformVersion resettedVersion = PlatformVersionMapper.resetToDefaultValue(platformVersion, platformVersion.getValidFrom(),
-        platformVersion.getValidTo(), true);
+        platformVersion.getValidTo(), Set.of(MeanOfTransport.BUS));
 
     //when
     Executable executable = () -> platformValidationService.validateRecordingVariants(resettedVersion, true);
@@ -130,13 +135,39 @@ class PlatformValidationServiceTest {
     //given
     PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
     PlatformVersion resettedVersion = PlatformVersionMapper.resetToDefaultValue(platformVersion, platformVersion.getValidFrom(),
-        platformVersion.getValidTo(), false);
+        platformVersion.getValidTo(), Set.of(MeanOfTransport.TRAIN));
 
     //when
     Executable executable = () -> platformValidationService.validateRecordingVariants(resettedVersion, false);
 
     //then
     assertDoesNotThrow(executable);
+  }
+
+  @Test
+  void shouldValidateAttentionFieldConflictWithMeansOfTransport() {
+    //given
+    PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
+    platformVersion.setAttentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+
+    //when
+    assertDoesNotThrow(() -> platformValidationService.validatePreconditions(platformVersion, Set.of(MeanOfTransport.BUS)));
+
+    assertThatExceptionOfType(AttentionFieldMeanOfTransportConflictException.class).isThrownBy(
+        () -> platformValidationService.validatePreconditions(platformVersion, Set.of(MeanOfTransport.TRAIN)));
+  }
+
+  @Test
+  void shouldValidateAttentionFieldNullConflictWithMeansOfTransport() {
+    //given
+    PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
+    platformVersion.setAttentionField(null);
+
+    //when
+    assertDoesNotThrow(() -> platformValidationService.validatePreconditions(platformVersion, Set.of(MeanOfTransport.TRAIN)));
+
+    assertThatExceptionOfType(AttentionFieldMeanOfTransportConflictException.class).isThrownBy(
+        () -> platformValidationService.validatePreconditions(platformVersion, Set.of(MeanOfTransport.BUS)));
   }
 
 }
