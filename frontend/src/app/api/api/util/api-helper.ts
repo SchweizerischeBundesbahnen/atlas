@@ -17,3 +17,21 @@ export function validateParams(params: { [key: string]: any }): void {
     }
   });
 }
+
+export function createBlob(param: any) {
+  return new Blob([JSON.stringify(param)], {type: 'application/json'})
+}
+
+export function createFormdata(params: { [key: string]: any }){
+  let formData: FormData = new FormData();
+
+  Object.keys(params).forEach(key => {
+    if(params[key] === 'file') {
+      formData.append(key, params[key]);
+    }
+    else {
+      formData.append(key, createBlob(params[key]));
+    }
+  });
+  return formData;
+}

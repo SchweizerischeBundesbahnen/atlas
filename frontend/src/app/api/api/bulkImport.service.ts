@@ -4,7 +4,7 @@ import {catchError, Observable} from 'rxjs';
 
 import {ApplicationType, BulkImportRequest, BulkImportResult, BusinessObjectType, ImportType} from '../model/models';
 import {environment} from "../../../environments/environment";
-import {DEFAULT_HTTP_HEADERS, handleError, validateParams} from "./util/api-helper";
+import {createFormdata, DEFAULT_HTTP_HEADERS, handleError, validateParams} from "./util/api-helper";
 
 
 @Injectable({
@@ -52,12 +52,8 @@ export class BulkImportService {
     validateParams({bulkImportRequest, file});
 
     const url = `${environment.atlasApiUrl}/bulk-import-service/v1/import/bulk`;
-    const formData: FormData = new FormData();
 
-    formData.append('bulkImportRequest', new Blob([JSON.stringify(bulkImportRequest)], {type: 'application/json'}));
-    formData.append('file', file);
-
-    return this.httpClient.post(url, formData).pipe(
+    return this.httpClient.post(url, createFormdata({bulkImportRequest, file})).pipe(
       catchError(handleError)
     );
   }
