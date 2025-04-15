@@ -1,8 +1,18 @@
-import {TestBed} from '@angular/core/testing';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
-import {OpenStatementInMailService} from './open-statement-in-mail.service';
-import {Status, SwissCanton, TimetableFieldNumber, TimetableHearingStatementV2} from '../../../api';
-import {AppTestingModule} from '../../../app.testing.module';
+import { TestBed } from '@angular/core/testing';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslatePipe,
+} from '@ngx-translate/core';
+import { OpenStatementInMailService } from './open-statement-in-mail.service';
+import {
+  Status,
+  SwissCanton,
+  TimetableFieldNumber,
+  TimetableHearingStatementV2,
+} from '../../../api';
+import { AppTestingModule } from '../../../app.testing.module';
 
 const translatePipeSpy = jasmine.createSpyObj('translatePipe', ['transform']);
 translatePipeSpy.transform
@@ -55,10 +65,13 @@ describe('OpenStatementInMailService', () => {
       businessOrganisation: 'sbb',
     };
 
-    const mailToLink = openStatementInMailService.buildMailToLink(statement, ttfn);
+    const mailToLink = openStatementInMailService.buildMailToLink(
+      statement,
+      ttfn
+    );
 
     expect(mailToLink).toBe(
-      'mailto:?subject=Anfrage%20Stellungnahme%20456%20Fahrplanfeld:%201.1%20description%0D%0D&body=Fahrplanfeld:%201.1%20description%0D%0DStellungnahme:%20Mehr%20B%C3%B6s%20pls'
+      'mailto:?subject=Anfrage%20Stellungnahme%20456%20Fahrplanfeld%3A%201.1%20description%0D%0D&body=Fahrplanfeld%3A%201.1%20description%0D%0DStellungnahme%3A%20Mehr%20B%C3%B6s%20pls'
     );
   });
 
@@ -72,9 +85,45 @@ describe('OpenStatementInMailService', () => {
       },
     };
 
-    const mailToLink = openStatementInMailService.buildMailToLink(statement, undefined);
+    const mailToLink = openStatementInMailService.buildMailToLink(
+      statement,
+      undefined
+    );
 
-    expect(mailToLink).toBe('mailto:?body=Stellungnahme:%20Mehr%20B%C3%B6s%20pls');
+    expect(mailToLink).toBe(
+      'mailto:?subject=&body=Stellungnahme%3A%20Mehr%20B%C3%B6s%20pls'
+    );
+  });
+
+  it('should construct mailto link with &', () => {
+    const statement: TimetableHearingStatementV2 = {
+      id: 456,
+      swissCanton: SwissCanton.Bern,
+      statement: 'Test & Forza Juve',
+      statementSender: {
+        emails: new Set('me@sbb.ch'),
+      },
+    };
+
+    const ttfn: TimetableFieldNumber = {
+      ttfnid: 'ttfnid',
+      number: '1.1',
+      description: 'Das ist eine & Beschreibung',
+      swissTimetableFieldNumber: 'asdf',
+      status: Status.Validated,
+      validFrom: new Date('2021-06-01'),
+      validTo: new Date('2029-06-01'),
+      businessOrganisation: 'sbb',
+    };
+
+    const mailToLink = openStatementInMailService.buildMailToLink(
+      statement,
+      ttfn
+    );
+
+    expect(mailToLink).toBe(
+      'mailto:?subject=Anfrage%20Stellungnahme%20456%20Fahrplanfeld%3A%201.1%20Das%20ist%20eine%20%26%20Beschreibung%0D%0D&body=Fahrplanfeld%3A%201.1%20Das%20ist%20eine%20%26%20Beschreibung%0D%0DStellungnahme%3A%20Test%20%26%20Forza%20Juve'
+    );
   });
 
   it('should construct mailto link with stopplace', () => {
@@ -98,10 +147,13 @@ describe('OpenStatementInMailService', () => {
       businessOrganisation: 'sbb',
     };
 
-    const mailToLink = openStatementInMailService.buildMailToLink(statement, ttfn);
+    const mailToLink = openStatementInMailService.buildMailToLink(
+      statement,
+      ttfn
+    );
 
     expect(mailToLink).toBe(
-      'mailto:?subject=Anfrage%20Stellungnahme%20456%20Fahrplanfeld:%201.1%20description%0D%0D&body=Fahrplanfeld:%201.1%20description%0D%0DHaltestelle:%20Erste%20Haltestelle%20nach%20der%20Post%0D%0DStellungnahme:%20Mehr%20B%C3%B6s%20pls'
+      'mailto:?subject=Anfrage%20Stellungnahme%20456%20Fahrplanfeld%3A%201.1%20description%0D%0D&body=Fahrplanfeld%3A%201.1%20description%0D%0DHaltestelle%3A%20Erste%20Haltestelle%20nach%20der%20Post%0D%0DStellungnahme%3A%20Mehr%20B%C3%B6s%20pls'
     );
   });
 });
