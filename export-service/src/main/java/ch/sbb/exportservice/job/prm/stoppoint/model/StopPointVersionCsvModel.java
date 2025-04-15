@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.job.prm.stoppoint.model;
 
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.exportservice.job.prm.BasePrmCsvModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
