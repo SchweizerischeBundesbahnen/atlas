@@ -20,8 +20,6 @@ public class RecordingVariantException extends AtlasException {
   private final String sloid;
   private final boolean isReduced;
 
-  private static final String ERROR = "Precondition failed";
-
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
@@ -33,9 +31,9 @@ public class RecordingVariantException extends AtlasException {
 
   private String buildErrorMsg() {
     StringBuilder builder = new StringBuilder(objectName + " with sloid [" + sloid + "] cannot be save: ");
-    if(isReduced){
+    if (isReduced) {
       builder.append("Attempting to save a Reduced object with wrong properties population!");
-    }else {
+    } else {
       builder.append("Attempting to save a Complete object with wrong properties population!");
     }
     return builder.toString();
@@ -47,7 +45,12 @@ public class RecordingVariantException extends AtlasException {
       Detail detail = Detail.builder()
           .field(key)
           .message(value)
-          .displayInfo(DisplayInfo.builder().code("ERROR.PRM.RECODING_VARIANTS.BAD_REQUEST").build())
+          .displayInfo(DisplayInfo.builder()
+              .code("ERROR.PRM.RECODING_VARIANTS.BAD_REQUEST")
+              .with("field", key)
+              .with("detail", value)
+              .with("reduced", String.valueOf(isReduced))
+              .build())
           .build();
       errorsDetail.add(detail);
     });

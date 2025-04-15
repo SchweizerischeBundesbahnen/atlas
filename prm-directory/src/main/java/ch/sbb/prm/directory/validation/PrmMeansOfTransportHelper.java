@@ -34,9 +34,14 @@ public class PrmMeansOfTransportHelper {
     }
     return containsReduced;
   }
+
   private void validateDoesNotContainsUnknownMeanOfTransport(Set<MeanOfTransport> meanOfTransports){
     if(meanOfTransports.contains(MeanOfTransport.UNKNOWN)){
       throw new UnknownMeanOfTransportNotAllowedException();
     }
+  }
+
+  public boolean isAttentionFieldAllowed(Set<MeanOfTransport> meanOfTransports){
+    return meanOfTransports.contains(MeanOfTransport.BUS) || meanOfTransports.contains(MeanOfTransport.TRAM);
   }
 }
