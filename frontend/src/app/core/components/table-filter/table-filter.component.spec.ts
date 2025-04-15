@@ -1,33 +1,45 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {TableFilterComponent} from './table-filter.component';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
-import {By} from '@angular/platform-browser';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TableFilterComponent } from './table-filter.component';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { By } from '@angular/platform-browser';
 import moment from 'moment';
-import {DateIconComponent} from '../../form-components/date-icon/date-icon.component';
-import {MockAtlasFieldErrorComponent} from '../../../app.testing.mocks';
-import {AtlasSpacerComponent} from '../spacer/atlas-spacer.component';
-import {InstanceOfPipe} from './instance-of.pipe';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {MatDatepickerControl, MatDatepickerInputEvent, MatDatepickerPanel,} from '@angular/material/datepicker';
-import {Moment} from 'moment/moment';
-import {FormControl, FormGroup} from '@angular/forms';
-import {TableFilterMultiSelect} from './config/table-filter-multiselect';
-import {TableFilterDateSelect} from './config/table-filter-date-select';
-import {TableFilterChip} from './config/table-filter-chip';
-import {TableFilterSearchSelect} from './config/table-filter-search-select';
-import {TableFilterSearchType} from './config/table-filter-search-type';
-import {AtlasLabelFieldComponent} from '../../form-components/atlas-label-field/atlas-label-field.component';
-import {BusinessOrganisation, TimetableFieldNumber, TransportCompany} from '../../../api';
-import {TableFilterSingleSearch} from "./config/table-filter-single-search";
-import {AtlasSlideToggleComponent} from "../../form-components/atlas-slide-toggle/atlas-slide-toggle.component";
-import {TableFilterBoolean} from "./config/table-filter-boolean";
+import {
+  MatChipGrid,
+  MatChipInput,
+  MatChipInputEvent,
+  MatChipRow,
+} from '@angular/material/chips';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  MatDatepickerControl,
+  MatDatepickerInput,
+  MatDatepickerInputEvent,
+  MatDatepickerPanel,
+} from '@angular/material/datepicker';
+import { Moment } from 'moment/moment';
+import { FormControl, FormGroup } from '@angular/forms';
+import { TableFilterMultiSelect } from './config/table-filter-multiselect';
+import { TableFilterDateSelect } from './config/table-filter-date-select';
+import { TableFilterChip } from './config/table-filter-chip';
+import { TableFilterSearchSelect } from './config/table-filter-search-select';
+import { TableFilterSearchType } from './config/table-filter-search-type';
+import { BusinessOrganisation, TimetableFieldNumber } from '../../../api';
+import { TableFilterSingleSearch } from './config/table-filter-single-search';
+import { AtlasSlideToggleComponent } from '../../form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import { TableFilterBoolean } from './config/table-filter-boolean';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { TransportCompanySelectComponent } from '../../form-components/tu-select/transport-company-select.component';
+import { TimetableFieldNumberSelectComponent } from '../../form-components/ttfn-select/timetable-field-number-select.component';
+import { SelectComponent } from '../../form-components/select/select.component';
+import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
 @Component({
-    selector: 'input [matChipInputFor]',
-    template: ''
+  selector: 'input [matChipInputFor]',
+  template: '',
 })
 class MockMatChipInputComponent {
   @Input() matChipInputFor: any;
@@ -37,8 +49,8 @@ class MockMatChipInputComponent {
 }
 
 @Component({
-    selector: 'atlas-select',
-    template: ''
+  selector: 'atlas-select',
+  template: '',
 })
 class MockAtlasSelectComponent {
   @Output() selectChanged = new EventEmitter();
@@ -58,87 +70,28 @@ class MockAtlasSelectComponent {
 }
 
 @Component({
-    selector: 'input [matDatepicker]',
-    template: ''
+  selector: 'input [matDatepicker]',
+  template: '',
 })
 class MockMatDatepickerInputComponent {
-  @Output() dateChange: EventEmitter<Partial<MatDatepickerInputEvent<Moment | null, any>>> =
-    new EventEmitter();
+  @Output() dateChange: EventEmitter<
+    Partial<MatDatepickerInputEvent<Moment | null, any>>
+  > = new EventEmitter();
 
-  @Input() matDatepicker!: MatDatepickerPanel<MatDatepickerControl<any>, any | null, any>;
+  @Input() matDatepicker!: MatDatepickerPanel<
+    MatDatepickerControl<any>,
+    any | null,
+    any
+  >;
   @Input() formControl: FormControl = new FormControl();
 }
 
 @Component({
-    selector: 'mat-datepicker',
-    template: ''
-})
-class MockMatDatepickerComponent {}
-
-@Component({
-    selector: 'mat-icon',
-    template: ''
-})
-class MockMatIconComponent {}
-
-@Component({
-    selector: 'mat-chip-row',
-    template: ''
-})
-class MockMatChipRowComponent {
-  @Output() removed: EventEmitter<void> = new EventEmitter<void>();
-}
-
-@Component({
-    selector: 'bo-select',
-    template: ''
-})
-class MockBoSelectComponent {
-  @Output() boSelectionChanged = new EventEmitter<BusinessOrganisation>();
-
-  @Input() formModus = true;
-  @Input() formGroup!: FormGroup;
-}
-
-@Component({
-    selector: 'ttfn-select',
-    template: ''
-})
-class MockTtfnSelectComponent {
-  @Output() ttfnSelectionChanged = new EventEmitter<TimetableFieldNumber>();
-
-  @Input() formModus = true;
-  @Input() required = true;
-  @Input() formGroup!: FormGroup;
-  @Input() disabled!: boolean;
-}
-
-@Component({
-    selector: 'tu-select',
-    template: ''
-})
-class MockTuSelectComponent {
-  @Output() tuSelectionChanged = new EventEmitter<TransportCompany>();
-
-  @Input() formModus = true;
-  @Input() formGroup!: FormGroup;
-  @Input() disabled!: boolean;
-}
-
-@Component({
-    selector: 'mat-chip-grid',
-    template: '<ng-content></ng-content>'
+  selector: 'mat-chip-grid',
+  template: '<ng-content></ng-content>',
 })
 class MockMatChipGridComponent {
   @Input() disabled = false;
-}
-
-@Component({
-    selector: 'mat-datepicker-toggle',
-    template: ''
-})
-class MockMatDatepickerToggleComponent<D> {
-  @Input() for!: MatDatepickerPanel<MatDatepickerControl<any>, D>;
 }
 
 describe('TableFilterComponent', () => {
@@ -147,34 +100,33 @@ describe('TableFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [
-        TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        // Tested component
-        TableFilterComponent,
-        // Mocks
-        MockBoSelectComponent,
-        MockAtlasFieldErrorComponent,
-        MockMatChipInputComponent,
-        MockAtlasSelectComponent,
-        MockMatDatepickerInputComponent,
-        MockMatChipRowComponent,
-        MockTtfnSelectComponent,
-        MockTuSelectComponent,
-        MockMatChipGridComponent,
-        MockMatDatepickerToggleComponent,
-        MockMatDatepickerComponent,
-        MockMatIconComponent,
-        // Real dependents
-        DateIconComponent,
-        AtlasSpacerComponent,
-        AtlasLabelFieldComponent,
-        InstanceOfPipe,
-        AtlasSlideToggleComponent,
-    ],
-    providers: [TranslatePipe],
-}).compileComponents();
+      imports: [TranslateModule.forRoot(), TableFilterComponent],
+      providers: [
+        TranslatePipe,
+        provideNativeDateAdapter(),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+      ],
+    })
+      .overrideComponent(TableFilterComponent, {
+        remove: {
+          imports: [
+            MatDatepickerInput,
+            MatChipInput,
+            MatChipGrid,
+            SelectComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockMatDatepickerInputComponent,
+            MockMatChipInputComponent,
+            MockMatChipGridComponent,
+            MockAtlasSelectComponent,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -188,14 +140,21 @@ describe('TableFilterComponent', () => {
   });
 
   it('should emitSearch on multi select change', () => {
-    const multiSelectFilter = new TableFilterMultiSelect('', '', ['one', 'two'], 1, 'col-3');
+    const multiSelectFilter = new TableFilterMultiSelect(
+      '',
+      '',
+      ['one', 'two'],
+      1,
+      'col-3'
+    );
     component.filterConfigurations = [[multiSelectFilter]];
     fixture.detectChanges();
 
     spyOn(component.searchEvent, 'emit');
-    const mockAtlasSelectComponent: MockAtlasSelectComponent = fixture.debugElement.query(
-      By.directive(MockAtlasSelectComponent),
-    ).componentInstance;
+    const mockAtlasSelectComponent: MockAtlasSelectComponent =
+      fixture.debugElement.query(
+        By.directive(MockAtlasSelectComponent)
+      ).componentInstance;
     mockAtlasSelectComponent.selectChanged.emit({ value: ['one'] });
 
     expect(multiSelectFilter.getActiveSearch()).toEqual(['one']);
@@ -214,7 +173,9 @@ describe('TableFilterComponent', () => {
 
     spyOn(component.searchEvent, 'emit');
     const mockMatDatepickerInputComponent: MockMatDatepickerInputComponent =
-      fixture.debugElement.query(By.directive(MockMatDatepickerInputComponent)).componentInstance;
+      fixture.debugElement.query(
+        By.directive(MockMatDatepickerInputComponent)
+      ).componentInstance;
 
     const momentInputValue: Moment = moment('31.12.2021', 'DD.MM.yyyy');
     dateSelect.formControl.setValue(momentInputValue.toDate());
@@ -223,7 +184,9 @@ describe('TableFilterComponent', () => {
       value: momentInputValue,
     });
 
-    expect(dateSelect.getActiveSearch()).toEqual(moment('31.12.2021', 'DD.MM.yyyy').toDate());
+    expect(dateSelect.getActiveSearch()).toEqual(
+      moment('31.12.2021', 'DD.MM.yyyy').toDate()
+    );
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith();
   });
 
@@ -234,7 +197,9 @@ describe('TableFilterComponent', () => {
 
     spyOn(component.searchEvent, 'emit');
     const mockMatDatepickerInputComponent: MockMatDatepickerInputComponent =
-      fixture.debugElement.query(By.directive(MockMatDatepickerInputComponent)).componentInstance;
+      fixture.debugElement.query(
+        By.directive(MockMatDatepickerInputComponent)
+      ).componentInstance;
 
     const momentInputValue: Moment = moment('31.12.1600', 'DD.MM.yyyy');
     dateSelect.formControl.setErrors({ min: 'Date too early!' });
@@ -252,9 +217,10 @@ describe('TableFilterComponent', () => {
     component.filterConfigurations = [[chipSelect]];
     fixture.detectChanges();
 
-    const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
-      By.directive(MockMatChipInputComponent),
-    ).componentInstance;
+    const mockMatChipInputComponent: MockMatChipInputComponent =
+      fixture.debugElement.query(
+        By.directive(MockMatChipInputComponent)
+      ).componentInstance;
 
     spyOn(component.searchEvent, 'emit');
     const chipInputClearSpy = jasmine.createSpy();
@@ -277,9 +243,10 @@ describe('TableFilterComponent', () => {
     component.filterConfigurations = [[chipSelect]];
     fixture.detectChanges();
 
-    const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
-      By.directive(MockMatChipInputComponent),
-    ).componentInstance;
+    const mockMatChipInputComponent: MockMatChipInputComponent =
+      fixture.debugElement.query(
+        By.directive(MockMatChipInputComponent)
+      ).componentInstance;
 
     spyOn(component.searchEvent, 'emit');
     const chipInputClearSpy = jasmine.createSpy();
@@ -303,10 +270,10 @@ describe('TableFilterComponent', () => {
     fixture.detectChanges();
 
     spyOn(component.searchEvent, 'emit');
-    const mockMatChipRowComponent: MockMatChipRowComponent = fixture.debugElement.query(
-      By.directive(MockMatChipRowComponent),
+    const matChipRow: MatChipRow = fixture.debugElement.query(
+      By.directive(MatChipRow)
     ).componentInstance;
-    mockMatChipRowComponent.removed.emit();
+    matChipRow.removed.emit();
 
     expect(chipSelect.getActiveSearch()).toEqual([]);
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith();
@@ -319,16 +286,19 @@ describe('TableFilterComponent', () => {
       'col-3',
       new FormGroup({
         businessOrganisation: new FormControl(),
-      }),
+      })
     );
     component.filterConfigurations = [[searchSelect]];
     fixture.detectChanges();
 
     spyOn(component.searchEvent, 'emit');
-    const mockBoSelectComponent: MockBoSelectComponent = fixture.debugElement.query(
-      By.directive(MockBoSelectComponent),
-    ).componentInstance;
-    mockBoSelectComponent.boSelectionChanged.emit({ sboid: 'Test' } as BusinessOrganisation);
+    const boSelectComponent: BusinessOrganisationSelectComponent =
+      fixture.debugElement.query(
+        By.directive(BusinessOrganisationSelectComponent)
+      ).componentInstance;
+    boSelectComponent.boSelectionChanged.emit({
+      sboid: 'Test',
+    } as BusinessOrganisation);
 
     expect(searchSelect.getActiveSearch()).toEqual({ sboid: 'Test' });
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith();
@@ -341,16 +311,19 @@ describe('TableFilterComponent', () => {
       'col-3',
       new FormGroup({
         ttfnid: new FormControl(),
-      }),
+      })
     );
     component.filterConfigurations = [[searchSelect]];
     fixture.detectChanges();
 
     spyOn(component.searchEvent, 'emit');
-    const mockTtfnSelectComponent: MockTtfnSelectComponent = fixture.debugElement.query(
-      By.directive(MockTtfnSelectComponent),
-    ).componentInstance;
-    mockTtfnSelectComponent.ttfnSelectionChanged.emit({ ttfnid: 'Test' } as TimetableFieldNumber);
+    const ttfnSelectComponent: TimetableFieldNumberSelectComponent =
+      fixture.debugElement.query(
+        By.directive(TimetableFieldNumberSelectComponent)
+      ).componentInstance;
+    ttfnSelectComponent.ttfnSelectionChanged.emit({
+      ttfnid: 'Test',
+    } as TimetableFieldNumber);
 
     expect(searchSelect.getActiveSearch()).toEqual({ ttfnid: 'Test' });
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith();
@@ -363,29 +336,35 @@ describe('TableFilterComponent', () => {
       'col-3',
       new FormGroup({
         transportCompany: new FormControl(),
-      }),
+      })
     );
     component.filterConfigurations = [[searchSelect]];
     fixture.detectChanges();
 
     spyOn(component.searchEvent, 'emit');
-    const mockTuSelectComponent: MockTuSelectComponent = fixture.debugElement.query(
-      By.directive(MockTuSelectComponent),
-    ).componentInstance;
-    mockTuSelectComponent.tuSelectionChanged.emit({ number: 'Test' });
+    const tuSelectComponent: TransportCompanySelectComponent =
+      fixture.debugElement.query(
+        By.directive(TransportCompanySelectComponent)
+      ).componentInstance;
+    tuSelectComponent.tuSelectionChanged.emit({ number: 'Test' });
 
     expect(searchSelect.getActiveSearch()).toEqual({ number: 'Test' });
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith();
   });
 
   it('should set single search', () => {
-    const singleSearch = new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT','col-3');
+    const singleSearch = new TableFilterSingleSearch(
+      1,
+      'SEPODI.GEOLOCATION.DISTRICT',
+      'col-3'
+    );
     component.filterConfigurations = [[singleSearch]];
     fixture.detectChanges();
 
-    const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
-      By.directive(MockMatChipInputComponent),
-    ).componentInstance;
+    const mockMatChipInputComponent: MockMatChipInputComponent =
+      fixture.debugElement.query(
+        By.directive(MockMatChipInputComponent)
+      ).componentInstance;
 
     spyOn(component.searchEvent, 'emit');
     const chipInputClearSpy = jasmine.createSpy();
@@ -403,7 +382,11 @@ describe('TableFilterComponent', () => {
   });
 
   it('should set active search on boolean slide toggle change', () => {
-    const booleanFilter = new TableFilterBoolean(0, 'col-6 container-right-position', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE');
+    const booleanFilter = new TableFilterBoolean(
+      0,
+      'col-6 container-right-position',
+      'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'
+    );
     component.filterConfigurations = [[booleanFilter]];
     fixture.detectChanges();
 
@@ -411,9 +394,10 @@ describe('TableFilterComponent', () => {
 
     spyOn(component.searchEvent, 'emit');
 
-    const slideToggleComponent: AtlasSlideToggleComponent = fixture.debugElement.query(
-      By.directive(AtlasSlideToggleComponent)
-    ).componentInstance;
+    const slideToggleComponent: AtlasSlideToggleComponent =
+      fixture.debugElement.query(
+        By.directive(AtlasSlideToggleComponent)
+      ).componentInstance;
 
     slideToggleComponent.toggleChange.emit(true);
     fixture.detectChanges();
@@ -427,5 +411,4 @@ describe('TableFilterComponent', () => {
     expect(booleanFilter.getActiveSearch()).toBeFalse();
     expect(component.searchEvent.emit).toHaveBeenCalledTimes(2);
   });
-
 });
