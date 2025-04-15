@@ -99,6 +99,7 @@ export class PlatformDetailComponent
         this.form,
         this.servicePoint.sloid!,
         this.reduced,
+        this.stopPoint[0].meansOfTransport
       );
       if (this.isNew) {
         return this.create(platformVersion);

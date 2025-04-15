@@ -117,6 +117,7 @@ create table platform_version
     partial_elevation          varchar(50),
     superelevation             numeric(10, 3),
     tactile_system             varchar(50),
+    attention_field            varchar(50),
     vehicle_access             varchar(50),
     wheelchair_area_length     numeric(10, 3),
     wheelchair_area_width      numeric(10, 3),

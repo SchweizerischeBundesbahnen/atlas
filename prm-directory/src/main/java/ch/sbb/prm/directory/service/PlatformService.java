@@ -3,9 +3,11 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -19,11 +21,13 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
 import ch.sbb.prm.directory.util.PlatformRecordingStatusEvaluator;
 import ch.sbb.prm.directory.validation.PlatformValidationService;
+import ch.sbb.prm.directory.validation.PrmMeansOfTransportHelper;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -65,9 +69,10 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   @Override
   public PlatformVersion save(PlatformVersion version) {
-    boolean reduced = stopPointService.isReduced(version.getParentServicePointSloid());
-    PlatformVersionMapper.initDefaultDropdownData(version, reduced);
-    platformValidationService.validateRecordingVariants(version, reduced);
+    Set<MeanOfTransport> meanOfTransports = stopPointService.getMeansOfTransport(version.getParentServicePointSloid());
+    PlatformVersionMapper.initDefaultDropdownData(version, meanOfTransports);
+    platformValidationService.validateRecordingVariants(version, PrmMeansOfTransportHelper.isReduced(meanOfTransports));
+    platformValidationService.validatePreconditions(version, meanOfTransports);
     initDefaultData(version);
     return platformRepository.saveAndFlush(version);
   }
@@ -152,4 +157,18 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     return platformRepository.existsBySloid(sloid);
   }
 
+  @Transactional
+  public void updateAttentionFieldByParentSloid(String parentServicePointSloid, Set<MeanOfTransport> newMeansOfTransport) {
+    boolean attentionFieldAllowed = PrmMeansOfTransportHelper.isAttentionFieldAllowed(newMeansOfTransport);
+
+    List<PlatformVersion> platformVersions = platformRepository.findAllByParentServicePointSloid(parentServicePointSloid);
+    for (PlatformVersion platformVersion : platformVersions) {
+      if (attentionFieldAllowed && platformVersion.getAttentionField() == null) {
+        platformVersion.setAttentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+      }
+      if (!attentionFieldAllowed && platformVersion.getAttentionField() != null) {
+        platformVersion.setAttentionField(null);
+      }
+    }
+  }
 }

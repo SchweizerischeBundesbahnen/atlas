@@ -132,6 +132,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     editedVersion.setInclinationLongitudinal(321.1);
     editedVersion.setInfoOpportunities(Set.of(InfoOpportunityAttributeType.TO_BE_COMPLETED));
     editedVersion.setTactileSystem(BooleanOptionalAttributeType.YES);
+    editedVersion.setAttentionField(BooleanOptionalAttributeType.TO_BE_COMPLETED);
     editedVersion.setVehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITHOUT_ASSISTANCE);
     editedVersion.setWheelchairAreaLength(654.1);
     editedVersion.setWheelchairAreaWidth(123.1);
