@@ -6,6 +6,8 @@ import {TranslateFakeLoader, TranslateLoader, TranslateModule} from "@ngx-transl
 import {ApplicationType} from "../model/applicationType";
 import {BusinessObjectType} from "../model/businessObjectType";
 import {ImportType} from "../model/importType";
+import {BulkImportRequest} from "../model/bulkImportRequest";
+import {environment} from "../../../environments/environment";
 
 describe('BulkImportService', () => {
   let service: BulkImportService;
@@ -54,6 +56,36 @@ describe('BulkImportService', () => {
   it('should throw an error in getBulkImportResults if id is null', () => {
     expect(() => service.getBulkImportResults(null as any))
       .toThrowError(`Required parameter 'id' is null or undefined.`);
+  });
+
+  it('should call startBulkImport with correct URL, method and FormData body', () => {
+    const bulkImportRequest: BulkImportRequest = {
+      applicationType: ApplicationType.Sepodi,
+      objectType: BusinessObjectType.ServicePoint,
+      importType: ImportType.Create
+    };
+    const file = new Blob(['Test'], { type: 'text/plain' });
+
+    service.startBulkImport(bulkImportRequest, file).subscribe(response => {
+      expect(response).toBeTruthy();
+    });
+
+    const expectedUrl = `${environment.atlasApiUrl}/bulk-import-service/v1/import/bulk`;
+
+    const req = httpTestingController.expectOne(expectedUrl);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body instanceof FormData).toBeTrue();
+
+    const formData: FormData = req.request.body;
+
+    const keys: string[] = [];
+    formData.forEach((value, key) => {
+      console.log(key, value);
+      keys.push(key);
+    });
+
+    expect(keys).toContain('bulkImportRequest');
+    expect(keys).toContain('file');
   });
 
 });
