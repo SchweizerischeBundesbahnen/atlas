@@ -34,3 +34,5 @@ drop table parking_lot_version;
 drop table relation_version;
 
 drop table shared_service_point;
+
+drop table recording_obligation;
