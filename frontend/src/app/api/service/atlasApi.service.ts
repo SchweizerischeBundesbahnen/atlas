@@ -1,19 +1,18 @@
-import {Injectable} from '@angular/core';
 import {UserService} from "../../core/auth/user/user.service";
 import {environment} from "../../../environments/environment";
+import {HttpClient} from "@angular/common/http";
+import {inject} from "@angular/core";
 
-@Injectable({
-  providedIn: 'root'
-})
 export class AtlasApiService {
 
-  protected basePath!: string;
+  protected httpClient = inject(HttpClient);
+  protected userService = inject(UserService);
 
-  constructor(protected userService: UserService,) {
-    if (userService.loggedIn) {
-      this.basePath = environment.atlasApiUrl;
+  get basePath() {
+    if (this.userService.loggedIn) {
+      return environment.atlasApiUrl;
     } else {
-      this.basePath = environment.atlasUnauthApiUrl;
+      return environment.atlasUnauthApiUrl;
     }
   }
 
