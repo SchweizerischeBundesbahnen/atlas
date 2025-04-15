@@ -34,9 +34,6 @@ export class BulkImportService {
   public getBulkImportResults(id: number): Observable<BulkImportResult> {
     ApiHelper.validateParams({id})
 
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling getBulkImportResults.');
-    }
     const url = `${environment.atlasApiUrl}/bulk-import-service/v1/import/bulk/${encodeURIComponent(id)}`;
 
     return this.httpClient.get<BulkImportResult>(url, {
