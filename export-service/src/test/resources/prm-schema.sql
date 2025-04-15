@@ -42,6 +42,7 @@ create table stop_point_version
     zip_code                        varchar(50),
     city                            varchar(75),
     alternative_transport           varchar(50),
+    shuttle_service                 varchar(50),
     alternative_transport_condition varchar(2000),
     assistance_availability         varchar(50),
     assistance_condition            varchar(2000),
