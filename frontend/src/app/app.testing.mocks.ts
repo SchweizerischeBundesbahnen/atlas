@@ -195,6 +195,15 @@ export class MockNavigationSepodiPrmComponent {
   @Input() parentSloid?: string;
 }
 
+@Component({
+  selector: 'prm-recording-obligation',
+  template: '<h1>MockPrmRecordingObligationComponent</h1>',
+})
+export class MockPrmRecordingObligationComponent {
+  @Input() sloid!: string;
+  @Input() showToggle = true;
+}
+
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export type ActivatedRouteMockType = { data: any };
 
@@ -252,6 +261,7 @@ export const authServiceSpy = jasmine.createSpyObj<AuthService>([
     MockSwitchVersionComponent,
     MockMatPaginatorComponent,
     MockNavigationSepodiPrmComponent,
+    MockPrmRecordingObligationComponent,
   ],
   exports: [MockSelectComponent],
 })

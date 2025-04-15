@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PrmPanelComponent } from './prm-panel.component';
-import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
+import {MockAtlasButtonComponent, MockPrmRecordingObligationComponent} from '../../../app.testing.mocks';
 import { AppTestingModule } from '../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
@@ -28,6 +28,7 @@ describe('PrmPanelComponent', () => {
         SplitServicePointNumberPipe,
         DateRangeTextComponent,
         DisplayDatePipe,
+        MockPrmRecordingObligationComponent,
       ],
       imports: [AppTestingModule],
       providers: [

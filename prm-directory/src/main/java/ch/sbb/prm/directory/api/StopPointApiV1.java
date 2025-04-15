@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.api;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.RecordingObligationModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.prm.directory.controller.model.StopPointRequestParams;
 import ch.sbb.prm.directory.entity.StopPointVersion;
@@ -59,5 +60,13 @@ public interface StopPointApiV1 {
   @PutMapping(path = "{id}")
   List<ReadStopPointVersionModel> updateStopPoint(@PathVariable Long id,
       @RequestBody @Valid StopPointVersionModel stopPointVersionModel);
+
+  @ResponseStatus(HttpStatus.OK)
+  @PutMapping(path = "/recording-obligation/{sloid}")
+  void updateRecordingObligation(@PathVariable String sloid, @RequestBody @Valid RecordingObligationModel recordingObligation);
+
+  @ResponseStatus(HttpStatus.OK)
+  @GetMapping(path = "/recording-obligation/{sloid}")
+  RecordingObligationModel getRecordingObligation(@PathVariable String sloid);
 
 }
