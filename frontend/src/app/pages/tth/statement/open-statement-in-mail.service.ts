@@ -88,6 +88,6 @@ export class OpenStatementInMailService {
 
   private buildSubject(ttfnInfo: string | undefined, id: number | undefined) {
     const requestLabel = this.translatePipe.transform('TTH.STATEMENT.REQUEST');
-    return ttfnInfo ? `subject=${requestLabel} ${id} ${ttfnInfo}&` : '';
+    return ttfnInfo ? `${requestLabel} ${id} ${ttfnInfo}` : '';
   }
 }
