@@ -39,6 +39,11 @@ repositories {
 }
 
 dependencies {
+    constraints {
+        implementation("io.swagger.core.v3:swagger-core-jakarta:2.2.30"){
+            because("Previous version has a bug not making attributes required in spec yaml")
+        }
+    }
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testCompileOnly("org.projectlombok:lombok")
