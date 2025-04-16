@@ -31,6 +31,7 @@ public class PlatformVersionMapper {
         .contrastingAreas(version.getContrastingAreas())
         .boardingDevice(version.getBoardingDevice())
         .additionalInformation(version.getAdditionalInformation())
+        .shuttle(version.getShuttle())
         .adviceAccessInfo(version.getAdviceAccessInfo())
         .dynamicAudio(version.getDynamicAudio())
         .dynamicVisual(version.getDynamicVisual())
@@ -65,6 +66,7 @@ public class PlatformVersionMapper {
         .contrastingAreas(model.getContrastingAreas())
         .boardingDevice(model.getBoardingDevice())
         .additionalInformation(model.getAdditionalInformation())
+        .shuttle(model.getShuttle())
         .adviceAccessInfo(model.getAdviceAccessInfo())
         .dynamicAudio(model.getDynamicAudio())
         .dynamicVisual(model.getDynamicVisual())
@@ -96,6 +98,7 @@ public class PlatformVersionMapper {
         .status(Status.VALIDATED)
         .parentServicePointSloid(platformVersion.getParentServicePointSloid())
         .number(SloidHelper.getServicePointNumber(platformVersion.getParentServicePointSloid()))
+        .shuttle(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .validFrom(validFrom)
         .validTo(validTo)
         .creator(platformVersion.getCreator())
@@ -120,6 +123,9 @@ public class PlatformVersionMapper {
   }
 
   public static void initDefaultDropdownData(PlatformVersion platformVersion, Set<MeanOfTransport> meansOfTransport) {
+    if (platformVersion.getShuttle() == null) {
+      platformVersion.setShuttle(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+    }
     if (PrmMeansOfTransportHelper.isReduced(meansOfTransport)) {
       if (platformVersion.getTactileSystem() == null) {
         platformVersion.setTactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED);
