@@ -5,3 +5,8 @@ update platform_version
 set shuttle = 'YES'
 where lower(additional_information) like '%shuttle%'
    or lower(additional_information) like '%navette%';
+
+update platform_version
+set shuttle = 'YES'
+where lower(advice_access_info) like '%shuttle%'
+   or lower(advice_access_info) like '%navette%';
