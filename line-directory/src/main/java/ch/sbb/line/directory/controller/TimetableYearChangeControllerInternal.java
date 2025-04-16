@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.controller;
 
+import ch.sbb.atlas.api.lidi.TimetableYearChangeApiInternal;
 import ch.sbb.atlas.model.FutureTimetableHelper;
-import ch.sbb.atlas.api.lidi.TimetableYearChangeApiV1;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class TimetableYearChangeController implements TimetableYearChangeApiV1 {
+public class TimetableYearChangeControllerInternal implements TimetableYearChangeApiInternal {
 
   @Override
   public LocalDate getTimetableYearChange(int year) {

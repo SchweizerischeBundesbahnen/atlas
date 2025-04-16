@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearApiV1;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearApiInternal;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class TimetableHearingYearController implements TimetableHearingYearApiV1 {
+public class TimetableHearingYearControllerInternal implements TimetableHearingYearApiInternal {
 
   private final TimetableHearingYearService timetableHearingYearService;
 

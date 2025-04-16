@@ -8,16 +8,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
-import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberValidationService;
-import ch.sbb.line.directory.service.export.TimetableFieldNumberVersionExportService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.time.LocalDate;
@@ -26,16 +23,21 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
- class TimetableFieldNumberControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
+@MockitoBean(types = TimetableFieldNumberValidationService.class)
+class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
 
-  @MockBean
-  private TimetableFieldNumberValidationService timetableFieldNumberValidationService;
+  private final TimetableFieldNumberVersionRepository versionRepository;
+
+  @Autowired
+  TimetableFieldNumberControllerV1ApiTest(TimetableFieldNumberVersionRepository versionRepository) {
+    this.versionRepository = versionRepository;
+  }
 
   private TimetableFieldNumberVersion version =
       TimetableFieldNumberVersion.builder()
@@ -48,17 +50,15 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
           .validTo(LocalDate.of(2020, 12, 31))
           .businessOrganisation("sbb")
           .build();
-  @Autowired
-  private TimetableFieldNumberVersionRepository versionRepository;
-  @Autowired
-  private TimetableFieldNumberVersionExportService versionExportService;
-
-  @MockBean
-  private AmazonService amazonService;
 
   @BeforeEach
   void createDefaultVersion() {
     version = versionRepository.saveAndFlush(version);
+  }
+
+  @AfterEach
+  void cleanupDb() {
+    versionRepository.deleteAll();
   }
 
   @Test
@@ -79,23 +79,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
         .contentType(contentType)
         .content(mapper.writeValueAsString(timetableFieldNumberVersionModel))
     ).andExpect(status().isCreated());
-  }
-
-  @Test
-  void shouldRevokeTimetableFieldNumber() throws Exception {
-    mvc.perform(post("/v1/field-numbers/" + version.getTtfnid() + "/revoke"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]." + BaseVersionModel.Fields.status, is("REVOKED")));
-  }
-
-  @Test
-  void shouldReturnOneTimetableFieldNumber() throws Exception {
-    mvc.perform(get("/v1/field-numbers")
-            .queryParam("page", "0")
-            .queryParam("size", "5")
-            .queryParam("sort", "swissTimetableFieldNumber,asc"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount").value(1));
   }
 
   @Test
@@ -204,35 +187,14 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
     // When first update it is ok
     version.setValidFrom(LocalDate.of(2025, 1, 1));
     version.setValidTo(LocalDate.of(2025, 12, 31));
-    mvc.perform(createUpdateRequest(TimetableFieldNumberController.toModel(version)))
+    mvc.perform(createUpdateRequest(TimetableFieldNumberControllerV1.toModel(version)))
         .andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
     version.setValidFrom(LocalDate.of(2000, 1, 1));
     version.setValidTo(LocalDate.of(2025, 12, 31));
-    mvc.perform(createUpdateRequest(TimetableFieldNumberController.toModel(version)))
+    mvc.perform(createUpdateRequest(TimetableFieldNumberControllerV1.toModel(version)))
         .andExpect(status().isPreconditionFailed());
-  }
-
-  @Test
-  void shouldExportFullTimetableFieldNumberVersionsCsv() throws Exception {
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/full"))
-        .andExpect(status().isOk()).andReturn();
-  }
-
-  @Test
-  void shouldExportActualTimetableFieldNumberVersionsCsv() throws Exception {
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/actual"))
-        .andExpect(status().isOk()).andReturn();
-  }
-
-  @Test
-  void shouldExportTimeTableYearChangeTimetableFieldNumberVersionsCsv() throws Exception {
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/timetable-year-change"))
-        .andExpect(status().isOk()).andReturn();
   }
 
   private MockHttpServletRequestBuilder createUpdateRequest(
@@ -243,8 +205,4 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
         .content(mapper.writeValueAsString(timetableFieldNumberVersionModel));
   }
 
-  @AfterEach
-  void cleanupDb() {
-    versionRepository.deleteAll();
-  }
 }

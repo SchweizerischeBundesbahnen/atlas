@@ -1,5 +1,6 @@
 package ch.sbb.line.directory;
 
+import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
@@ -46,5 +47,15 @@ public class SublineTestData {
         .sublineType(SublineType.TECHNICAL)
         .paymentType(PaymentType.LOCAL)
         .mainlineSlnid(MAINLINE_SLNID);
+  }
+
+  public static CreateSublineVersionModelV2.CreateSublineVersionModelV2Builder<?, ?> createSublineVersionModelBuilderV2() {
+    return CreateSublineVersionModelV2.builder()
+        .validFrom(LocalDate.of(2020, 2, 1))
+        .validTo(LocalDate.of(2020, 11, 30))
+        .businessOrganisation("sbb")
+        .description("description")
+        .mainlineSlnid(MAINLINE_SLNID)
+        .sublineType(SublineType.TECHNICAL);
   }
 }

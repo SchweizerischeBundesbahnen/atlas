@@ -98,7 +98,7 @@ public class LineTestData {
         .description("description")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
-        .businessOrganisation(            "businessOrganisation")
+        .businessOrganisation("businessOrganisation")
         .comment("comment")
         .lineVersionWorkflows(Collections.emptySet())
         .swissLineNumber("swissLineNumber");
