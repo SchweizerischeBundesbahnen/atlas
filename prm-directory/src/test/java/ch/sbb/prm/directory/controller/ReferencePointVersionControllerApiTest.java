@@ -55,7 +55,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -70,10 +70,10 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   private final SharedServicePointRepository sharedServicePointRepository;
   private final PlatformRepository platformRepository;
 
-  @MockBean
+  @MockitoBean
   private final RelationService relationService;
 
-  @MockBean
+  @MockitoBean
   private final PrmLocationService prmLocationService;
 
   @Autowired
