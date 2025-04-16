@@ -97,8 +97,9 @@ describe('StopPointCompleteFormComponent', () => {
         'assistanceService',
         'assistanceAvailability',
         'alternativeTransport',
+        'shuttleService',
       ];
-      expect(atlasSelects.length).toEqual(10);
+      expect(atlasSelects.length).toEqual(11);
       expect(atlasSelects.map((value) => value.attributes['controlName'])).toEqual(
         arrayContaining(atlasSelectsControlName),
       );

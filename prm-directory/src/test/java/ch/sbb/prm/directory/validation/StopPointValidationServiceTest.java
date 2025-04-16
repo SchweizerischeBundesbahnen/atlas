@@ -45,7 +45,7 @@ class StopPointValidationServiceTest {
     assertThat(errorResponse.getStatus()).isEqualTo(400);
     assertThat(errorResponse.getMessage()).isEqualTo(
         "StopPointVersion with sloid [ch:1:sloid:12345] cannot be save: Attempting to save a Reduced object with wrong properties population!");
-    assertThat(errorResponse.getDetails()).hasSize(19);
+    assertThat(errorResponse.getDetails()).hasSize(20);
   }
 
   @Test
