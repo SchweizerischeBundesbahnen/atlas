@@ -13,6 +13,9 @@ import lombok.experimental.UtilityClass;
 public class PlatformRecordingStatusEvaluator {
 
   public static RecordingStatus getStatusForPlatform(PlatformVersion platform, boolean reduced) {
+    if (platform.getShuttle() == BooleanOptionalAttributeType.TO_BE_COMPLETED) {
+      return RecordingStatus.INCOMPLETE;
+    }
     if (reduced) {
       if (platform.getTactileSystem() == BooleanOptionalAttributeType.TO_BE_COMPLETED ||
           platform.getVehicleAccess() == VehicleAccessAttributeType.TO_BE_COMPLETED ||

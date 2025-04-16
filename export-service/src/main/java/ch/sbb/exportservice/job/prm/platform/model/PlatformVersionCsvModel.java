@@ -32,6 +32,8 @@ public class PlatformVersionCsvModel extends BasePrmCsvModel {
 
   private String additionalInformation;
 
+  private String shuttle;
+
   private String contrastingAreas;
 
   private String dynamicAudio;

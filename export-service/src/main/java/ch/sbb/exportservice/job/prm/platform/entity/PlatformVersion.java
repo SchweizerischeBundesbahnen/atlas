@@ -40,6 +40,8 @@ public class PlatformVersion extends BasePrmEntity {
 
     private String additionalInformation;
 
+    private BooleanOptionalAttributeType shuttle;
+
     private BooleanOptionalAttributeType contrastingAreas;
 
     private BasicAttributeType dynamicAudio;

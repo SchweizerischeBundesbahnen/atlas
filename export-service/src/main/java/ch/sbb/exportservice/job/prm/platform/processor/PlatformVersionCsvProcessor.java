@@ -20,6 +20,7 @@ public class PlatformVersionCsvProcessor implements ItemProcessor<PlatformVersio
         .sloid(version.getSloid())
         .parentSloidServicePoint(version.getParentServicePointSloid())
         .parentNumberServicePoint(version.getParentNumberServicePoint().getNumber())
+        .shuttle(mapBooleanOptionalAttributeType(version.getShuttle()))
         .boardingDevice(mapBoardingDeviceAttributeType(version.getBoardingDevice()))
         .adviceAccessInfo(version.getAdviceAccessInfo())
         .additionalInformation(version.getAdditionalInformation())

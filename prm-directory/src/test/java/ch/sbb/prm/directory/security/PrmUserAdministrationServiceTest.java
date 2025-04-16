@@ -33,12 +33,12 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
 class PrmUserAdministrationServiceTest {
 
-  @MockBean
+  @MockitoBean
   private UserPermissionHolder userPermissionHolder;
 
   private final SharedServicePointRepository sharedServicePointRepository;
