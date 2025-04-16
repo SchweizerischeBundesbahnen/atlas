@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
+
 import { Pages } from './pages/pages';
 import { canActivateTimetableHearing } from './core/auth/guards/timetable-hearing.guard';
 import { loggedInUsers } from './core/auth/guards/login.guard';
@@ -10,14 +10,14 @@ const routes: Routes = [
   {
     path: Pages.TTFN.path,
     loadChildren: () =>
-      import('./pages/ttfn/ttfn.module').then((m) => m.TtfnModule),
+      import('./pages/ttfn/ttfn-routing.module').then((r) => r.routes),
     data: { headerTitle: Pages.TTFN.headerTitle },
   },
   {
     path: Pages.BULK_IMPORT.path,
     loadChildren: () =>
-      import('./pages/bulk-import/bulk-import.module').then(
-        (m) => m.BulkImportModule
+      import('./pages/bulk-import/bulk-import-routing.module').then(
+        (r) => r.routes
       ),
     data: { headerTitle: Pages.BULK_IMPORT.headerTitle },
     canActivate: [loggedInUsers],
@@ -25,46 +25,47 @@ const routes: Routes = [
   {
     path: Pages.LIDI.path,
     loadChildren: () =>
-      import('./pages/lidi/lidi.module').then((m) => m.LidiModule),
+      import('./pages/lidi/lidi.routing.module').then((r) => r.routes),
     data: { headerTitle: Pages.LIDI.headerTitle },
   },
   {
     path: Pages.BODI.path,
     loadChildren: () =>
-      import('./pages/bodi/bodi.module').then((m) => m.BodiModule),
+      import('./pages/bodi/bodi-routing.module').then((r) => r.routes),
     data: { headerTitle: Pages.BODI.headerTitle },
   },
   {
     path: Pages.SEPODI.path,
     loadChildren: () =>
-      import('./pages/sepodi/sepodi.module').then((m) => m.SepodiModule),
+      import('./pages/sepodi/sepodi-routing.module').then((r) => r.routes),
     data: { headerTitle: Pages.SEPODI.headerTitle },
   },
   {
     path: Pages.TTH.path,
     loadChildren: () =>
-      import('./pages/tth/tth.module').then((m) => m.TthModule),
+      import('./pages/tth/tth-routing.module').then((r) => r.routes),
     data: { headerTitle: Pages.TTH.headerTitle },
     canActivate: [canActivateTimetableHearing],
   },
   {
     path: Pages.PRM.path,
     loadChildren: () =>
-      import('./pages/prm/prm.module').then((m) => m.PrmModule),
+      import('./pages/prm/prm-routing.module').then((r) => r.routes),
     data: { headerTitle: Pages.PRM.headerTitle },
   },
   {
     path: Pages.USER_ADMINISTRATION.path,
     loadChildren: () =>
-      import('./pages/user-administration/user-administration.module').then(
-        (m) => m.UserAdministrationModule
-      ),
+      import(
+        './pages/user-administration/user-administration-routing.module'
+      ).then((r) => r.routes),
     data: { headerTitle: Pages.USER_ADMINISTRATION.headerTitle },
     canActivate: [adminUser],
   },
   {
     path: Pages.HOME.path,
-    component: HomeComponent,
+    loadComponent: () =>
+      import('./pages/home/home.component').then((m) => m.HomeComponent),
     data: {
       headerTitle: Pages.HOME.headerTitle,
     },

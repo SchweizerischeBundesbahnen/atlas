@@ -1,18 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserAdministrationOverviewComponent } from './overview/user-administration-overview.component';
-import { userResolver } from './user/detail/user-administration.resolver';
-import { UserAdministrationUserDetailComponent } from './user/detail/user-administration/user-administration-user-detail.component';
-import { Pages } from '../pages';
-import { UserAdministrationUserOverviewComponent } from './user/overview/user-administration-overview.component';
-import { UserAdministrationClientDetailComponent } from './client-credential/detail/user-administration-client-detail.component';
-import { clientCredentialResolver } from './client-credential/detail/client-credential-administration.resolver';
-import { UserAdministrationClientOverviewComponent } from './client-credential/overview/user-administration-client-overview.component';
 
-const routes: Routes = [
+import { userResolver } from './user/detail/user-administration.resolver';
+
+import { Pages } from '../pages';
+
+import { clientCredentialResolver } from './client-credential/detail/client-credential-administration.resolver';
+
+export const routes: Routes = [
   {
     path: Pages.USERS.path + '/:sbbUserId',
-    component: UserAdministrationUserDetailComponent,
+    loadComponent: () =>
+      import(
+        './user/detail/user-administration/user-administration-user-detail.component'
+      ).then((m) => m.UserAdministrationUserDetailComponent),
     resolve: {
       user: userResolver,
     },
@@ -20,7 +21,10 @@ const routes: Routes = [
   },
   {
     path: Pages.CLIENTS.path + '/:clientId',
-    component: UserAdministrationClientDetailComponent,
+    loadComponent: () =>
+      import(
+        './client-credential/detail/user-administration-client-detail.component'
+      ).then((m) => m.UserAdministrationClientDetailComponent),
     resolve: {
       clientCredential: clientCredentialResolver,
     },
@@ -28,15 +32,24 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: UserAdministrationOverviewComponent,
+    loadComponent: () =>
+      import('./overview/user-administration-overview.component').then(
+        (m) => m.UserAdministrationOverviewComponent
+      ),
     children: [
       {
         path: Pages.USERS.path,
-        component: UserAdministrationUserOverviewComponent,
+        loadComponent: () =>
+          import('./user/overview/user-administration-overview.component').then(
+            (m) => m.UserAdministrationUserOverviewComponent
+          ),
       },
       {
         path: Pages.CLIENTS.path,
-        component: UserAdministrationClientOverviewComponent,
+        loadComponent: () =>
+          import(
+            './client-credential/overview/user-administration-client-overview.component'
+          ).then((m) => m.UserAdministrationClientOverviewComponent),
       },
       { path: '**', redirectTo: Pages.USERS.path },
     ],
