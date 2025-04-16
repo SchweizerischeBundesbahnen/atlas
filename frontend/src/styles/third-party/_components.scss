@@ -2,7 +2,7 @@
 @use 'bootstrap/scss/bootstrap';
 
 // MapLibre include
-@import 'node_modules/maplibre-gl/dist/maplibre-gl.css';
+@use 'node_modules/maplibre-gl/dist/maplibre-gl.css';
 
 // Include atlas MapLibre overrides
-@import './atlas-map';
+@use './atlas-map';
