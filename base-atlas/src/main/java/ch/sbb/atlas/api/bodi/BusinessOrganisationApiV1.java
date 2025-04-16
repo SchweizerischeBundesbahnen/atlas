@@ -41,7 +41,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("v1/business-organisations")
 public interface BusinessOrganisationApiV1 {
 
-  @Tag(name = "InternalFor:prod") // todo: remove example
   @GetMapping
   @PageableAsQueryParam
   Container<BusinessOrganisationModel> getAllBusinessOrganisations(

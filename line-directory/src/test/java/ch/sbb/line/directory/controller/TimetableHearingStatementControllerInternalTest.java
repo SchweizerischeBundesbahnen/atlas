@@ -22,37 +22,43 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Pageable;
 
-class TimetableHearingStatementControllerV2Test {
+class TimetableHearingStatementControllerInternalTest {
 
   @Mock
   private TimetableHearingStatementService timetableHearingStatementService;
+
   @Mock
   private TimetableHearingYearService timetableHearingYearService;
+
   @Mock
   private TimetableFieldNumberResolverService timetableFieldNumberResolverService;
+
   @Mock
   private ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
+
   @Mock
   private TimetableHearingStatementExportService timetableHearingStatementExportService;
+
   @Mock
   private TimetableHearingStatementAlternationService timetableHearingStatementAlternationService;
 
-  private TimetableHearingStatementControllerV2 timetableHearingStatementController;
+  private TimetableHearingStatementControllerInternal timetableHearingStatementControllerInternal;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    timetableHearingStatementController = new TimetableHearingStatementControllerV2(timetableHearingStatementService,
+    timetableHearingStatementControllerInternal = new TimetableHearingStatementControllerInternal(
+        timetableHearingStatementService,
         timetableHearingStatementAlternationService, timetableHearingYearService, timetableFieldNumberResolverService,
         responsibleTransportCompaniesResolverService, timetableHearingStatementExportService);
   }
 
   @Test
   void shouldLoadResponsibleTransportCompaniesByYear() {
-    when(responsibleTransportCompaniesResolverService.getResponsibleTransportCompanies(any(), any())).thenReturn(
-        Collections.emptyList());
+    when(responsibleTransportCompaniesResolverService.getResponsibleTransportCompanies(any(), any()))
+        .thenReturn(Collections.emptyList());
 
-    timetableHearingStatementController.getResponsibleTransportCompanies("ttfnid", 2024L);
+    timetableHearingStatementControllerInternal.getResponsibleTransportCompanies("ttfnid", 2024L);
 
     verify(responsibleTransportCompaniesResolverService).getResponsibleTransportCompanies("ttfnid", LocalDate.of(2024, 1, 1));
   }
@@ -63,7 +69,7 @@ class TimetableHearingStatementControllerV2Test {
         .build();
 
     BadRequestException exception = assertThrows(BadRequestException.class,
-        () -> timetableHearingStatementController.getStatementsAsCsv("de", params));
+        () -> timetableHearingStatementControllerInternal.getStatementsAsCsv("de", params));
 
     assertThat(exception.getErrorResponse().getMessage()).isEqualTo("timetableHearingYear is mandatory here");
   }
@@ -75,7 +81,7 @@ class TimetableHearingStatementControllerV2Test {
         .build();
 
     BadRequestException exception = assertThrows(BadRequestException.class,
-        () -> timetableHearingStatementController.getStatementsAsCsv("en", params));
+        () -> timetableHearingStatementControllerInternal.getStatementsAsCsv("en", params));
 
     assertThat(exception.getErrorResponse().getMessage()).isEqualTo("Language must be either de,fr,it");
   }
@@ -83,7 +89,7 @@ class TimetableHearingStatementControllerV2Test {
   @Test
   void shouldCalculateNextStatement() {
     TimetableHearingStatementRequestParams params = TimetableHearingStatementRequestParams.builder().build();
-    timetableHearingStatementController.getNextStatement(1L, Pageable.ofSize(1), params);
+    timetableHearingStatementControllerInternal.getNextStatement(1L, Pageable.ofSize(1), params);
 
     verify(timetableHearingStatementAlternationService).getNextStatement(1L, Pageable.ofSize(1), params);
   }
@@ -91,7 +97,7 @@ class TimetableHearingStatementControllerV2Test {
   @Test
   void shouldCalculatePreviousStatement() {
     TimetableHearingStatementRequestParams params = TimetableHearingStatementRequestParams.builder().build();
-    timetableHearingStatementController.getPreviousStatement(1L, Pageable.ofSize(1), params);
+    timetableHearingStatementControllerInternal.getPreviousStatement(1L, Pageable.ofSize(1), params);
 
     verify(timetableHearingStatementAlternationService).getPreviousStatement(1L, Pageable.ofSize(1), params);
   }

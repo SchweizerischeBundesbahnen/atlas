@@ -18,7 +18,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
- class TimetableHearingYearControllerApiTest extends BaseControllerApiTest {
+class TimetableHearingYearControllerInternalApiTest extends BaseControllerApiTest {
 
   private static final long YEAR = 2022L;
   private static final TimetableHearingYearModel TIMETABLE_HEARING_YEAR = TimetableHearingYearModel.builder()
@@ -27,11 +27,16 @@ import org.springframework.beans.factory.annotation.Autowired;
       .hearingTo(LocalDate.of(2021, 2, 1))
       .build();
 
-  @Autowired
-  private TimetableHearingYearRepository timetableHearingYearRepository;
+  private final TimetableHearingYearRepository timetableHearingYearRepository;
+  private final TimetableHearingYearControllerInternal timetableHearingYearController;
 
   @Autowired
-  private TimetableHearingYearController timetableHearingYearController;
+  TimetableHearingYearControllerInternalApiTest(
+      TimetableHearingYearRepository timetableHearingYearRepository,
+      TimetableHearingYearControllerInternal timetableHearingYearController) {
+    this.timetableHearingYearRepository = timetableHearingYearRepository;
+    this.timetableHearingYearController = timetableHearingYearController;
+  }
 
   @AfterEach
   void tearDown() {
@@ -40,7 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
   @Test
   void shouldCreateHearingYear() throws Exception {
-    mvc.perform(post("/v1/timetable-hearing/years")
+    mvc.perform(post("/internal/timetable-hearing/years")
             .contentType(contentType)
             .content(mapper.writeValueAsString(TIMETABLE_HEARING_YEAR)))
         .andExpect(status().isCreated())
@@ -51,7 +56,7 @@ import org.springframework.beans.factory.annotation.Autowired;
   void shouldGetHearingYear() throws Exception {
     timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
 
-    mvc.perform(get("/v1/timetable-hearing/years/" + YEAR))
+    mvc.perform(get("/internal/timetable-hearing/years/" + YEAR))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.hearingStatus, is(HearingStatus.PLANNED.toString())));
   }
@@ -60,11 +65,11 @@ import org.springframework.beans.factory.annotation.Autowired;
   void shouldGetHearingYearByStatus() throws Exception {
     timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
 
-    mvc.perform(get("/v1/timetable-hearing/years?statusChoices=" + HearingStatus.PLANNED))
+    mvc.perform(get("/internal/timetable-hearing/years?statusChoices=" + HearingStatus.PLANNED))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
 
-    mvc.perform(get("/v1/timetable-hearing/years?statusChoices=" + HearingStatus.ACTIVE))
+    mvc.perform(get("/internal/timetable-hearing/years?statusChoices=" + HearingStatus.ACTIVE))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(0)));
   }
@@ -73,7 +78,7 @@ import org.springframework.beans.factory.annotation.Autowired;
   void shouldStartHearingYear() throws Exception {
     timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
 
-    mvc.perform(post("/v1/timetable-hearing/years/" + YEAR + "/start"))
+    mvc.perform(post("/internal/timetable-hearing/years/" + YEAR + "/start"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.hearingStatus, is(HearingStatus.ACTIVE.toString())));
   }
@@ -83,7 +88,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     TimetableHearingYearModel hearingYear = timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
     hearingYear.setStatementCreatableExternal(false);
 
-    mvc.perform(put("/v1/timetable-hearing/years/" + YEAR)
+    mvc.perform(put("/internal/timetable-hearing/years/" + YEAR)
             .contentType(contentType)
             .content(mapper.writeValueAsString(hearingYear)))
         .andExpect(status().isOk())
@@ -96,7 +101,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
     timetableHearingYearController.startHearingYear(YEAR);
 
-    mvc.perform(post("/v1/timetable-hearing/years/" + YEAR + "/close"))
+    mvc.perform(post("/internal/timetable-hearing/years/" + YEAR + "/close"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.hearingStatus, is(HearingStatus.ARCHIVED.toString())));
   }
