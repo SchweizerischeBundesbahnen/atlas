@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -39,7 +39,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   private final SharedServicePointRepository sharedServicePointRepository;
   private final StopPointRepository stopPointRepository;
 
-  @MockBean
+  @MockitoBean
   private final PrmChangeRecordingVariantService prmChangeRecordingVariantService;
 
   @Autowired
@@ -261,6 +261,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setZipCode(version2.getZipCode());
     editedVersionModel.setCity(version2.getCity());
     editedVersionModel.setAlternativeTransport(version2.getAlternativeTransport());
+    editedVersionModel.setShuttleService(version2.getShuttleService());
     editedVersionModel.setAlternativeTransportCondition(version2.getAlternativeTransportCondition());
     editedVersionModel.setAssistanceAvailability(version2.getAssistanceAvailability());
     editedVersionModel.setAssistanceCondition(version2.getAssistanceCondition());
