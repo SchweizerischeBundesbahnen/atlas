@@ -359,6 +359,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersionModel.setBoardingDevice(version2.getBoardingDevice());
     editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
+    editedVersionModel.setShuttle(version2.getShuttle());
     editedVersionModel.setAdviceAccessInfo(version2.getAdviceAccessInfo());
     editedVersionModel.setContrastingAreas(version2.getContrastingAreas());
     editedVersionModel.setDynamicAudio(version2.getDynamicAudio());
@@ -416,6 +417,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersionModel.setBoardingDevice(version1.getBoardingDevice());
     editedVersionModel.setAdditionalInformation(version1.getAdditionalInformation());
+    editedVersionModel.setShuttle(version1.getShuttle());
     editedVersionModel.setAdviceAccessInfo(version1.getAdviceAccessInfo());
     editedVersionModel.setContrastingAreas(version1.getContrastingAreas());
     editedVersionModel.setDynamicAudio(version1.getDynamicAudio());
