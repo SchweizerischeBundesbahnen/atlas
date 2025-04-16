@@ -10,23 +10,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import org.junit.jupiter.api.Test;
 
- class TimetableYearChangeControllerApiTest extends BaseControllerApiTest {
+class TimetableYearChangeControllerInternalApiTest extends BaseControllerApiTest {
 
   @Test
-   void shouldReturnFutureTimeTable() throws Exception {
+  void shouldReturnFutureTimeTable() throws Exception {
     //given
     String year = "2022";
     //when
-    mvc.perform(get("/v1/timetable-year-change/" + year))
+    mvc.perform(get("/internal/timetable-year-change/" + year))
         .andExpect(status().isOk());
   }
 
   @Test
-   void shouldReturnErrorWhenYearBefore1700() throws Exception {
+  void shouldReturnErrorWhenYearBefore1700() throws Exception {
     //given
     String year = "1699";
     //when
-    mvc.perform(get("/v1/timetable-year-change/" + year))
+    mvc.perform(get("/internal/timetable-year-change/" + year))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
         .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
@@ -36,11 +36,11 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnErrorWhenYearAfter9999() throws Exception {
+  void shouldReturnErrorWhenYearAfter9999() throws Exception {
     //given
     String year = "10000";
     //when
-    mvc.perform(get("/v1/timetable-year-change/" + year))
+    mvc.perform(get("/internal/timetable-year-change/" + year))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
         .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
@@ -50,11 +50,11 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnErrorWhenNextFutureTimeTablesIsZero() throws Exception {
+  void shouldReturnErrorWhenNextFutureTimeTablesIsZero() throws Exception {
     //given
     String count = "0";
     //when
-    mvc.perform(get("/v1/timetable-year-change/next-years/" + count))
+    mvc.perform(get("/internal/timetable-year-change/next-years/" + count))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
         .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
@@ -64,11 +64,11 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnErrorWhenNextFutureTimeTablesIsMoreThanHundred() throws Exception {
+  void shouldReturnErrorWhenNextFutureTimeTablesIsMoreThanHundred() throws Exception {
     //given
     String count = "101";
     //when
-    mvc.perform(get("/v1/timetable-year-change/next-years/" + count))
+    mvc.perform(get("/internal/timetable-year-change/next-years/" + count))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
         .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
@@ -78,11 +78,11 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnNextFutureTimeTables() throws Exception {
+  void shouldReturnNextFutureTimeTables() throws Exception {
     //given
     String count = "10";
     //when
-    mvc.perform(get("/v1/timetable-year-change/next-years/" + count))
+    mvc.perform(get("/internal/timetable-year-change/next-years/" + count))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(10)));
   }

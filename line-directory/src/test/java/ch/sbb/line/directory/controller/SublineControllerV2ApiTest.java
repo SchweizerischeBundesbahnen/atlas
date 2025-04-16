@@ -24,21 +24,24 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-class SublineControllerApiV2Test extends BaseControllerApiTest {
+@MockitoBean(types = SharedBusinessOrganisationService.class)
+class SublineControllerV2ApiTest extends BaseControllerApiTest {
 
-  @Autowired
-  private LineVersionRepository lineVersionRepository;
-
-  @Autowired
-  private SublineVersionRepository sublineVersionRepository;
-
-  @MockBean
-  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
+  private final LineVersionRepository lineVersionRepository;
+  private final SublineVersionRepository sublineVersionRepository;
+  private final SublineControllerV2 sublineController;
 
   @Autowired
-  private SublineControllerV2 sublineController;
+  SublineControllerV2ApiTest(
+      LineVersionRepository lineVersionRepository,
+      SublineVersionRepository sublineVersionRepository,
+      SublineControllerV2 sublineController) {
+    this.lineVersionRepository = lineVersionRepository;
+    this.sublineVersionRepository = sublineVersionRepository;
+    this.sublineController = sublineController;
+  }
 
   private LineVersion mainLineVersion;
 

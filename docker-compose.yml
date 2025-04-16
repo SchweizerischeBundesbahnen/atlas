@@ -162,7 +162,7 @@ services:
       - "datestyle=iso, ymd"
 
   zookeeper:
-    image: bitnami/zookeeper
+    image: bitnami/zookeeper:3.9
     ports:
       - "2181:2181"
     environment:
@@ -198,8 +198,9 @@ services:
       kafka-topics.sh --create --if-not-exists --topic atlas.business.organisation --replication-factor=1 --partitions=1 --bootstrap-server kafka:9092
       kafka-topics.sh --create --if-not-exists --topic atlas.transport.company --replication-factor=1 --partitions=1 --bootstrap-server kafka:9092
       kafka-topics.sh --create --if-not-exists --topic atlas.service.point --replication-factor=1 --partitions=1 --bootstrap-server kafka:9092
+
   minio:
-    image: minio/minio
+    image: minio/minio:RELEASE.2025-04-08T15-41-24Z
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -219,7 +220,7 @@ services:
       start_interval: 1s
 
   minio-init:
-    image: minio/mc
+    image: minio/mc:RELEASE.2025-04-08T15-39-49Z
     depends_on:
       minio:
         condition: service_healthy
