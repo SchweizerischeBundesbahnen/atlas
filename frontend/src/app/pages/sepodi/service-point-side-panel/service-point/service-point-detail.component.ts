@@ -51,6 +51,7 @@ import { UserDetailInfoComponent } from '../../../../core/components/base-detail
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { PrmRecordingObligationComponent } from '../../../../core/prm-recording-obligation/prm-recording-obligation.component';
 
 @Component({
   selector: 'app-service-point',
@@ -71,6 +72,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     AtlasButtonComponent,
     AsyncPipe,
     TranslatePipe,
+    PrmRecordingObligationComponent,
   ],
 })
 export class ServicePointDetailComponent
