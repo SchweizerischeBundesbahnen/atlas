@@ -77,6 +77,7 @@ public class ImportFiles {
         .validTo(LocalDate.of(2099, 12, 31))
         .additionalInformation("Die Buslinie 160 Fahrtrichtung Münsingen Bahnhof Konolfingen "
             + "Dorf bedienen diese Haltekante.")
+        .shuttle(BooleanOptionalAttributeType.NO)
         .height(16.000)
         .inclinationLongitudinal(2.000)
         .infoOpportunities(Set.of(STATIC_VISUAL_INFORMATION))

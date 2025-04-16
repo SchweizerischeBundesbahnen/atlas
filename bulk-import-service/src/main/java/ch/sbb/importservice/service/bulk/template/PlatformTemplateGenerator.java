@@ -16,6 +16,7 @@ public class PlatformTemplateGenerator {
         .sloid("ch:1:sloid:88253:0:1")
         .validFrom(LocalDate.of(2021, 4, 1))
         .validTo(LocalDate.of(2099, 12, 31))
+        .shuttle(BooleanOptionalAttributeType.NO)
         .additionalInformation("Die Buslinie 160 Fahrtrichtung Münsingen Bahnhof Konolfingen Dorf bedienen diese Haltekante.")
         .height(16.0)
         .inclinationLongitudinal(2.0)

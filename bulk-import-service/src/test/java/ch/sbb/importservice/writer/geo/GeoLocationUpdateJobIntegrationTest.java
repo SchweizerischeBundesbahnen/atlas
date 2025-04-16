@@ -21,7 +21,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -34,10 +34,10 @@ class GeoLocationUpdateJobIntegrationTest {
   @Autowired
   private Job updateServicePointGeoJob;
 
-  @MockBean
+  @MockitoBean
   private ServicePointClient servicePointClient;
 
-  @MockBean
+  @MockitoBean
   private MailProducerService mailProducerService;
 
   @Test
