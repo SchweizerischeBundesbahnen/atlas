@@ -8,7 +8,7 @@ import { Record } from '../../../../core/components/base-detail/record';
 import {
   adminPermissionServiceMock,
   MockAtlasButtonComponent,
-  MockNavigationSepodiPrmComponent, MockPrmRecordingObligationComponent,
+  MockNavigationSepodiPrmComponent,
 } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import {

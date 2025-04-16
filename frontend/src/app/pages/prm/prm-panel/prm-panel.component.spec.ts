@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PrmPanelComponent } from './prm-panel.component';
-import {MockAtlasButtonComponent, MockPrmRecordingObligationComponent} from '../../../app.testing.mocks';
+import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { AppTestingModule } from '../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
@@ -10,7 +10,10 @@ import { DateRangeTextComponent } from '../../../core/versioning/date-range-text
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { PRM_REDUCED_TABS, PRM_TABS, PrmTabs } from './prm-tabs';
-import { STOP_POINT, STOP_POINT_COMPLETE } from '../util/stop-point-test-data.spec';
+import {
+  STOP_POINT,
+  STOP_POINT_COMPLETE,
+} from '../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 
 describe('PrmPanelComponent', () => {
@@ -22,17 +25,20 @@ describe('PrmPanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [AppTestingModule, PrmPanelComponent,
+      imports: [
+        AppTestingModule,
+        PrmPanelComponent,
         MockAtlasButtonComponent,
         SplitServicePointNumberPipe,
         DateRangeTextComponent,
-        DisplayDatePipe],
-    providers: [
+        DisplayDatePipe,
+      ],
+      providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         TranslatePipe,
         SplitServicePointNumberPipe,
-    ],
-});
+      ],
+    });
     fixture = TestBed.createComponent(PrmPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
