@@ -1,2 +1,2 @@
-sloid;validFrom;validTo;additionalInformation;height;inclinationLongitudinal;infoOpportunities;partialElevation;tactileSystem;attentionField;vehicleAccess;wheelchairAreaLength;wheelchairAreaWidth
-ch:1:sloid:88253:0:1;01.04.2021;31.12.2099;Die Buslinie 160 Fahrtrichtung Münsingen Bahnhof Konolfingen Dorf bedienen diese Haltekante.;16.0;2.0;STATIC_VISUAL_INFORMATION;false;NO;NO;TO_BE_COMPLETED;300.0;<null>
+sloid;validFrom;validTo;additionalInformation;shuttle;height;inclinationLongitudinal;infoOpportunities;partialElevation;tactileSystem;attentionField;vehicleAccess;wheelchairAreaLength;wheelchairAreaWidth
+ch:1:sloid:88253:0:1;01.04.2021;31.12.2099;Die Buslinie 160 Fahrtrichtung Münsingen Bahnhof Konolfingen Dorf bedienen diese Haltekante.;NO;16.0;2.0;STATIC_VISUAL_INFORMATION;false;NO;NO;TO_BE_COMPLETED;300.0;<null>
