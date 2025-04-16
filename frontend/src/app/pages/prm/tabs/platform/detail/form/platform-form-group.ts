@@ -17,6 +17,7 @@ import {
 export interface PlatformFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
   additionalInformation: FormControl<string | null | undefined>;
+  shuttle: FormControl<BooleanOptionalAttributeType | null | undefined>;
 }
 
 export interface ReducedPlatformFormGroup extends PlatformFormGroup {
@@ -52,6 +53,8 @@ export class PlatformFormGroupBuilder {
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
+        shuttle: new FormControl(version?.shuttle ?? BooleanOptionalAttributeType.ToBeCompleted,
+          [Validators.required]),
         boardingDevice: new FormControl(
           version?.boardingDevice ?? BoardingDeviceAttributeType.ToBeCompleted,
           [Validators.required],
@@ -109,6 +112,8 @@ export class PlatformFormGroupBuilder {
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
+        shuttle: new FormControl(version?.shuttle ?? BooleanOptionalAttributeType.ToBeCompleted,
+          [Validators.required]),
         height: new FormControl(version?.height, [AtlasCharsetsValidator.decimalWithDigits(7, 3), Validators.min(0)]),
         inclinationLongitudinal: new FormControl(version?.inclinationLongitudinal, [
           AtlasCharsetsValidator.decimalWithDigits(7, 3),
@@ -186,6 +191,7 @@ export class PlatformFormGroupBuilder {
       inclination: formValue.inclination!,
       inclinationWidth: formValue.inclinationWidth!,
       additionalInformation: formValue.additionalInformation!,
+      shuttle: formValue.shuttle!,
       adviceAccessInfo: formValue.adviceAccessInfo!,
       boardingDevice: formValue.boardingDevice!,
       contrastingAreas: formValue.contrastingAreas!,
@@ -205,6 +211,7 @@ export class PlatformFormGroupBuilder {
       ...platformVersion,
       inclinationLongitudinal: formValue.inclinationLongitudinal!,
       additionalInformation: formValue.additionalInformation!,
+      shuttle: formValue.shuttle!,
       height: formValue.height!,
       infoOpportunities: formValue.infoOpportunities!,
       partialElevation: formValue.partialElevation!,
