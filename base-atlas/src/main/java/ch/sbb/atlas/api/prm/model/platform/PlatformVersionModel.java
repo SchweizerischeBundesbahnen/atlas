@@ -47,6 +47,9 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
   @Schema(description = "Additional Information")
   private String additionalInformation;
 
+  @Schema(description = "Shuttle")
+  private BooleanOptionalAttributeType shuttle;
+
   @Schema(description = "Tactile-visual marking of platform surfaces")
   private BooleanOptionalAttributeType contrastingAreas;
 
