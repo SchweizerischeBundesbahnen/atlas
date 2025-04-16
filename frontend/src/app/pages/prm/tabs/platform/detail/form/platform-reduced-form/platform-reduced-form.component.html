@@ -9,6 +9,18 @@
       optionTranslateLabelPrefix="PRM.ENUMS.VEHICLE_ACCESS_TYPES."
       [options]="vehicleAccess"
       [additionalLabelspace]="0"
+      class="mb-3"
+    >
+    </atlas-select>
+    <atlas-select
+      [formGroup]="form"
+      controlName="shuttle"
+      dataCy="shuttle"
+      label="PRM.PLATFORMS.SHUTTLE"
+      infoIconTitle="PRM.PLATFORMS.SHUTTLE_INFO"
+      optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+      [options]="booleanOptionalAttributeTypes"
+      [additionalLabelspace]="0"
     >
     </atlas-select>
   </div>

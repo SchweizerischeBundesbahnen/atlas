@@ -1399,6 +1399,8 @@
         "NOT_STARTED": "non iniziato"
       },
       "DETAIL_INFORMATION": "Informazioni sul bordo di contenimento",
+      "SHUTTLE": "Servizio navetta",
+      "SHUTTLE_INFO": "A questo bordo di fermata è necessario un servizio navetta?",
       "COMPLETE": {
         "ADDITIONAL_INFORMATION": "Osservazioni sull’accesso al bordo di fermata",
         "ADDITIONAL_INFORMATION_SUBTITLE": "Campo di testo libero per (eventuali) spiegazioni di casi particolari.",
