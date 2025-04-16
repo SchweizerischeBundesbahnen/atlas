@@ -67,6 +67,7 @@ export interface ReadPlatformVersion {
      * Additional Information
      */
     additionalInformation?: string;
+    shuttle?: BooleanOptionalAttributeType;
     contrastingAreas?: BooleanOptionalAttributeType;
     dynamicAudio?: BasicAttributeType;
     dynamicVisual?: BasicAttributeType;

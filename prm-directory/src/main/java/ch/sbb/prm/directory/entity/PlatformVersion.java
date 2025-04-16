@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -60,6 +61,10 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
 
   @AtlasVersionableProperty
   private String additionalInformation;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private BooleanOptionalAttributeType shuttle;
 
   @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
