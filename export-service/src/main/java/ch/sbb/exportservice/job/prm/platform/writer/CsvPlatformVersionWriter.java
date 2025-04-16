@@ -18,11 +18,11 @@ public class CsvPlatformVersionWriter extends BaseCsvWriter<PlatformVersionCsvMo
   protected String[] getCsvHeader() {
     return new String[]{
         Fields.sloid, Fields.parentSloidServicePoint, Fields.parentNumberServicePoint, Fields.boardingDevice,
-        Fields.adviceAccessInfo, Fields.additionalInformation, Fields.contrastingAreas, Fields.dynamicAudio,
+        Fields.adviceAccessInfo, Fields.additionalInformation,  Fields.shuttle, Fields.contrastingAreas, Fields.dynamicAudio,
         Fields.dynamicVisual, Fields.height, Fields.inclination, Fields.inclinationLongitudinal, Fields.inclinationWidth,
         Fields.infoOpportunities, Fields.levelAccessWheelchair, Fields.partialElevation, Fields.superElevation,
         Fields.tactileSystems, Fields.attentionField, Fields.vehicleAccess, Fields.wheelChairAreaLength,
-        Fields.wheelChairAreaWidth, Fields.shuttle,
+        Fields.wheelChairAreaWidth,
         BasePrmCsvModel.Fields.validFrom, BasePrmCsvModel.Fields.validTo, BasePrmCsvModel.Fields.creationDate,
         BasePrmCsvModel.Fields.editionDate, BasePrmCsvModel.Fields.status
     };
