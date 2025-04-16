@@ -104,6 +104,7 @@ create table platform_version
     sloid                      varchar(500)     not null,
     number                     integer          not null,
     parent_service_point_sloid varchar(500)     not null,
+    shuttle                    varchar(50),
     boarding_device            varchar(50),
     additional_information     varchar(2000),
     advice_access_info         varchar(2000),

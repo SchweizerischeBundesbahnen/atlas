@@ -15,6 +15,7 @@ public class PlatformVersionJsonProcessor implements ItemProcessor<PlatformVersi
         .sloid(version.getSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
         .number(version.getParentNumberServicePoint())
+        .shuttle(version.getShuttle())
         .boardingDevice(version.getBoardingDevice())
         .adviceAccessInfo(version.getAdviceAccessInfo())
         .additionalInformation(version.getAdditionalInformation())
