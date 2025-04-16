@@ -1,31 +1,47 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import {
   BusinessOrganisationsService,
   BusinessOrganisationVersion,
   ReadServicePointVersion,
   ReadStopPointVersion,
 } from '../../../api';
-import {DateRange} from '../../../core/versioning/date-range';
-import {VersionsHandlingService} from '../../../core/versioning/versions-handling.service';
-import { ActivatedRoute, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
-import {map, switchMap, tap} from 'rxjs/operators';
+import { DateRange } from '../../../core/versioning/date-range';
+import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import {
-  BusinessOrganisationLanguageService
-} from '../../../core/form-components/bo-select/business-organisation-language.service';
-import {PRM_TABS} from './prm-tabs';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {PrmTabsService} from './prm-tabs.service';
+  ActivatedRoute,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
+import { PRM_TABS } from './prm-tabs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { PrmTabsService } from './prm-tabs.service';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
-import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
+import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
 import { NgFor } from '@angular/common';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
+import { PrmRecordingObligationComponent } from '../../../core/prm-recording-obligation/prm-recording-obligation.component';
 
 @Component({
-    selector: 'app-prm-panel',
-    templateUrl: './prm-panel.component.html',
-    styleUrls: ['./prm-panel.component.scss'],
-    imports: [DateRangeTextComponent, MatTabNav, NgFor, MatTabLink, RouterLinkActive, RouterLink, MatTabNavPanel, RouterOutlet, SplitServicePointNumberPipe, TranslatePipe]
+  selector: 'app-prm-panel',
+  templateUrl: './prm-panel.component.html',
+  styleUrls: ['./prm-panel.component.scss'],
+  imports: [
+    DateRangeTextComponent,
+    MatTabNav,
+    NgFor,
+    MatTabLink,
+    RouterLinkActive,
+    RouterLink,
+    MatTabNavPanel,
+    RouterOutlet,
+    SplitServicePointNumberPipe,
+    TranslatePipe,
+    PrmRecordingObligationComponent,
+  ],
 })
 export class PrmPanelComponent {
   selectedServicePointVersion!: ReadServicePointVersion;
@@ -42,7 +58,7 @@ export class PrmPanelComponent {
     private route: ActivatedRoute,
     private businessOrganisationsService: BusinessOrganisationsService,
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
-    private prmTabsService: PrmTabsService,
+    private prmTabsService: PrmTabsService
   ) {
     this.businessOrganisationLanguageService
       .languageChanged()
@@ -55,7 +71,7 @@ export class PrmPanelComponent {
           this.initTabs(data.stopPoints);
           this.initServicePointVersioning(data.servicePoints);
         }),
-        switchMap(() => this.initBusinessOrganisationHeaderPanel()),
+        switchMap(() => this.initBusinessOrganisationHeaderPanel())
       )
       .subscribe();
   }
@@ -63,7 +79,8 @@ export class PrmPanelComponent {
   initTabs(stopPointVersions: ReadStopPointVersion[]) {
     this.prmTabsService.tabs.subscribe((tabs) => (this.tabs = tabs));
     this.prmTabsService.disableTabNavigation.subscribe(
-      (disableTabNavigation) => (this.disableTabNavigation = disableTabNavigation),
+      (disableTabNavigation) =>
+        (this.disableTabNavigation = disableTabNavigation)
     );
     this.prmTabsService.initTabs(stopPointVersions);
   }
@@ -74,13 +91,20 @@ export class PrmPanelComponent {
       .pipe(tap((bo) => this.initSelectedBusinessOrganisationVersion(bo)));
   }
 
-  private initServicePointVersioning(servicePointVersions: ReadServicePointVersion[]) {
-    this.maxValidity = VersionsHandlingService.getMaxValidity(servicePointVersions);
+  private initServicePointVersioning(
+    servicePointVersions: ReadServicePointVersion[]
+  ) {
+    this.maxValidity =
+      VersionsHandlingService.getMaxValidity(servicePointVersions);
     this.selectedServicePointVersion =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+      VersionsHandlingService.determineDefaultVersionByValidity(
+        servicePointVersions
+      );
   }
 
-  private initSelectedBusinessOrganisationVersion(bos: BusinessOrganisationVersion[]) {
+  private initSelectedBusinessOrganisationVersion(
+    bos: BusinessOrganisationVersion[]
+  ) {
     this.selectedBusinessOrganisation =
       VersionsHandlingService.determineDefaultVersionByValidity(bos);
 
