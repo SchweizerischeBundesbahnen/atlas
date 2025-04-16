@@ -1399,6 +1399,8 @@
         "NOT_STARTED": "nicht begonnen"
       },
       "DETAIL_INFORMATION": "Angaben zur Haltekante",
+      "SHUTTLE": "Shuttle",
+      "SHUTTLE_INFO": "Ist an dieser Haltekante ein Shuttle nötig?",
       "COMPLETE": {
         "ADDITIONAL_INFORMATION": "Hinweise zum Zugang zur Haltekante",
         "ADDITIONAL_INFORMATION_SUBTITLE": "Freitextfeld für (freiwillige) Erläuterungen zu speziellen Fällen zum Perronzugang auf Stufe Haltekante.",

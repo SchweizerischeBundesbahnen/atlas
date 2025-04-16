@@ -110,10 +110,9 @@
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="basicAttributeType"
       [additionalLabelspace]="0"
+      class="mb-3"
     >
     </atlas-select>
-  </div>
-  <div class="d-flex flex-column col-6 pe-3">
     <atlas-select
       [formGroup]="form"
       controlName="boardingDevice"
@@ -123,11 +122,21 @@
       optionTranslateLabelPrefix="PRM.ENUMS.BOARDING_DEVICE_TYPES."
       [options]="boardingDeviceAttributeTypes"
       [additionalLabelspace]="0"
+      class="mb-3"
+    >
+    </atlas-select>
+    <atlas-select
+      [formGroup]="form"
+      controlName="shuttle"
+      dataCy="shuttle"
+      label="PRM.PLATFORMS.SHUTTLE"
+      infoIconTitle="PRM.PLATFORMS.SHUTTLE_INFO"
+      optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+      [options]="booleanOptionalAttributeTypes"
+      [additionalLabelspace]="0"
     >
     </atlas-select>
   </div>
-</div>
-<div class="col-12 d-flex mt-3">
   <div class="d-flex flex-column col-6 pe-3">
     <form-comment
       [formGroup]="form"

@@ -1399,6 +1399,8 @@
         "NOT_STARTED": "pas commencé"
       },
       "DETAIL_INFORMATION": "Données sur le bord de maintien",
+      "SHUTTLE": "Navette",
+      "SHUTTLE_INFO": "Une navette est-elle nécessaire à cette bordure d’arrêt?",
       "COMPLETE": {
         "ADDITIONAL_INFORMATION": "Remarques sur l’accès à la bordure d’arrêt",
         "ADDITIONAL_INFORMATION_SUBTITLE": "Champ de texte libre pour des explications (facultatives) sur des cas spéciaux.",
