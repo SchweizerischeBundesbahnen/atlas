@@ -45,6 +45,8 @@ public class StopPointVersion extends BasePrmEntity {
 
   private StandardAttributeType alternativeTransport;
 
+  private StandardAttributeType shuttleService;
+
   private String alternativeTransportCondition;
 
   private StandardAttributeType assistanceAvailability;

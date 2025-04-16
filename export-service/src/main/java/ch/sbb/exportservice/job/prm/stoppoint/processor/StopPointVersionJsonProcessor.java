@@ -23,6 +23,7 @@ public class StopPointVersionJsonProcessor implements ItemProcessor<StopPointVer
         .zipCode(version.getZipCode())
         .city(version.getCity())
         .alternativeTransport(version.getAlternativeTransport())
+        .shuttleService(version.getShuttleService())
         .alternativeTransportCondition(version.getAlternativeTransportCondition())
         .assistanceAvailability(version.getAssistanceAvailability())
         .assistanceCondition(version.getAssistanceCondition())

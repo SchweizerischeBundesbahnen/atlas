@@ -36,6 +36,8 @@ public class StopPointVersionCsvModel extends BasePrmCsvModel {
 
   private String alternativeTransport;
 
+  private String shuttleService;
+
   private String alternativeTransportCondition;
 
   private String assistanceAvailability;
