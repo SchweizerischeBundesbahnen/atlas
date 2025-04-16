@@ -248,21 +248,4 @@ export const authServiceSpy = jasmine.createSpyObj<AuthService>([
 ]);
 
 // Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself
-@NgModule({
-  imports: [
-    MockAppDetailWrapperComponent,
-    MockTableComponent,
-    MockBoSelectComponent,
-    MockSelectComponent,
-    MockAtlasButtonComponent,
-    MockUserDetailInfoComponent,
-    MockAtlasFieldErrorComponent,
-    MockInfoIconComponent,
-    MockSwitchVersionComponent,
-    MockMatPaginatorComponent,
-    MockNavigationSepodiPrmComponent,
-    MockPrmRecordingObligationComponent,
-  ],
-  exports: [MockSelectComponent],
-})
-export class AppMockComponents {}
+

@@ -25,8 +25,7 @@ describe('AppComponent', () => {
         LanguageSwitcherComponent,
         SideNavComponent,
         LoadingSpinnerComponent,
-        InfoIconComponent],
-    declarations: [AppComponent],
+        InfoIconComponent, AppComponent],
     providers: [
         { provide: AuthService, useValue: authServiceSpy },
         {
