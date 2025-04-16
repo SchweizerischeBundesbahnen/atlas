@@ -22,7 +22,7 @@ public class CsvPlatformVersionWriter extends BaseCsvWriter<PlatformVersionCsvMo
         Fields.dynamicVisual, Fields.height, Fields.inclination, Fields.inclinationLongitudinal, Fields.inclinationWidth,
         Fields.infoOpportunities, Fields.levelAccessWheelchair, Fields.partialElevation, Fields.superElevation,
         Fields.tactileSystems, Fields.attentionField, Fields.vehicleAccess, Fields.wheelChairAreaLength,
-        Fields.wheelChairAreaWidth,
+        Fields.wheelChairAreaWidth, Fields.shuttle,
         BasePrmCsvModel.Fields.validFrom, BasePrmCsvModel.Fields.validTo, BasePrmCsvModel.Fields.creationDate,
         BasePrmCsvModel.Fields.editionDate, BasePrmCsvModel.Fields.status
     };
