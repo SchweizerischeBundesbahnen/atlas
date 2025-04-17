@@ -1,23 +1,25 @@
-import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {StatusChangeData} from './model/status-change-data';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { StatusChangeData } from './model/status-change-data';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import {NotificationService} from '../../../../core/notification/notification.service';
-import {Subject, takeUntil} from 'rxjs';
-import {TthChangeStatusFormGroup} from './model/tth-change-status-form-group';
-import {ValidationService} from 'src/app/core/validation/validation.service';
-import {TimetableHearingStatementsService} from "../../../../api";
+import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { Subject, takeUntil } from 'rxjs';
+import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
+import { ValidationService } from 'src/app/core/validation/validation.service';
+import { TimetableHearingStatementsService } from '../../../../api';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 
 @Component({
-    selector: 'app-tth-change-status-dialog',
-    templateUrl: './tth-change-status-dialog.component.html',
-    imports: [BaseChangeDialogComponent, ReactiveFormsModule]
+  selector: 'app-tth-change-status-dialog',
+  templateUrl: './tth-change-status-dialog.component.html',
+  imports: [BaseChangeDialogComponent, ReactiveFormsModule],
 })
 export class TthChangeStatusDialogComponent {
   formGroup = new FormGroup<TthChangeStatusFormGroup>({
-    justification: new FormControl(this.data.justification, [AtlasFieldLengthValidator.statement]),
+    justification: new FormControl(this.data.justification, [
+      AtlasFieldLengthValidator.statement,
+    ]),
   });
   private ngUnsubscribe = new Subject<void>();
 
@@ -25,7 +27,7 @@ export class TthChangeStatusDialogComponent {
     public dialogRef: MatDialogRef<TthChangeStatusDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: StatusChangeData,
     private readonly notificationService: NotificationService,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
+    private readonly timetableHearingStatementsService: TimetableHearingStatementsService
   ) {}
 
   onClick(): void {
@@ -43,7 +45,9 @@ export class TthChangeStatusDialogComponent {
         })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
-          this.notificationService.success('TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS');
+          this.notificationService.success(
+            'TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS'
+          );
           this.dialogRef.close(true);
         });
     }

@@ -36,10 +36,24 @@ import { AtlasButtonComponent } from '../../../../../../core/components/button/a
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-platforms',
-    templateUrl: './platform-detail.component.html',
-    providers: [ValidityService],
-    imports: [DetailPageContentComponent, NgIf, SwitchVersionComponent, NavigationSepodiPrmComponent, DateRangeComponent, ReactiveFormsModule, PlatformReducedFormComponent, PlatformCompleteFormComponent, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
+  selector: 'app-platforms',
+  templateUrl: './platform-detail.component.html',
+  providers: [ValidityService],
+  imports: [
+    DetailPageContentComponent,
+    NgIf,
+    SwitchVersionComponent,
+    NavigationSepodiPrmComponent,
+    DateRangeComponent,
+    ReactiveFormsModule,
+    PlatformReducedFormComponent,
+    PlatformCompleteFormComponent,
+    MatDivider,
+    UserDetailInfoComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class PlatformDetailComponent
   extends PrmTabDetailBaseComponent<ReadPlatformVersion>
@@ -86,11 +100,14 @@ export class PlatformDetailComponent
       this.mayCreate = this.hasPermissionToCreateNewStopPoint();
     } else {
       VersionsHandlingService.addVersionNumbers(this.versions);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
-      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.versions,
+      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
+        this.versions
       );
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
+      this.selectedVersion =
+        VersionsHandlingService.determineDefaultVersionByValidity(
+          this.versions
+        );
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
     }
 
@@ -99,9 +116,13 @@ export class PlatformDetailComponent
 
   protected initForm() {
     if (this.reduced) {
-      this.form = PlatformFormGroupBuilder.buildReducedFormGroup(this.selectedVersion);
+      this.form = PlatformFormGroupBuilder.buildReducedFormGroup(
+        this.selectedVersion
+      );
     } else {
-      this.form = PlatformFormGroupBuilder.buildCompleteFormGroup(this.selectedVersion);
+      this.form = PlatformFormGroupBuilder.buildCompleteFormGroup(
+        this.selectedVersion
+      );
     }
     this.form.controls.sloid.setValue(this.trafficPoint.sloid);
 
@@ -110,7 +131,9 @@ export class PlatformDetailComponent
     }
   }
 
-  protected saveProcess(): Observable<ReadPlatformVersion | ReadPlatformVersion[]> {
+  protected saveProcess(): Observable<
+    ReadPlatformVersion | ReadPlatformVersion[]
+  > {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const platformVersion = PlatformFormGroupBuilder.getWritableForm(
@@ -131,7 +154,7 @@ export class PlatformDetailComponent
             } else {
               return EMPTY;
             }
-          }),
+          })
         );
       }
     } else {
@@ -143,31 +166,38 @@ export class PlatformDetailComponent
     const servicePointVersions: ReadServicePointVersion[] =
       this.route.snapshot.parent!.data.servicePoint;
     this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+      VersionsHandlingService.determineDefaultVersionByValidity(
+        servicePointVersions
+      );
     this.businessOrganisations = [
-      ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
+      ...new Set(
+        servicePointVersions.map((value) => value.businessOrganisation)
+      ),
     ];
-    this.trafficPoint = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.route.snapshot.parent!.data.trafficPoint,
-    );
+    this.trafficPoint =
+      VersionsHandlingService.determineDefaultVersionByValidity(
+        this.route.snapshot.parent!.data.trafficPoint
+      );
   }
 
   private hasPermissionToCreateNewStopPoint(): boolean {
     const sboidsPermissions = this.businessOrganisations.map((bo) =>
-      this.permissionService.hasPermissionsToWrite('PRM', bo),
+      this.permissionService.hasPermissionsToWrite('PRM', bo)
     );
     return sboidsPermissions.includes(true);
   }
 
   private create(platformVersion: PlatformVersion) {
-    return this.personWithReducedMobilityService.createPlatform(platformVersion).pipe(
-      switchMap((createdVersion) => {
-        return this.notificateAndNavigate(
-          'PRM.PLATFORMS.NOTIFICATION.ADD_SUCCESS',
-          this.trafficPoint.sloid!,
-        ).pipe(map(() => createdVersion));
-      }),
-    );
+    return this.personWithReducedMobilityService
+      .createPlatform(platformVersion)
+      .pipe(
+        switchMap((createdVersion) => {
+          return this.notificateAndNavigate(
+            'PRM.PLATFORMS.NOTIFICATION.ADD_SUCCESS',
+            this.trafficPoint.sloid!
+          ).pipe(map(() => createdVersion));
+        })
+      );
   }
 
   private update(platformVersion: PlatformVersion) {
@@ -177,9 +207,9 @@ export class PlatformDetailComponent
         switchMap((updatedVersions) => {
           return this.notificateAndNavigate(
             'PRM.PLATFORMS.NOTIFICATION.EDIT_SUCCESS',
-            this.trafficPoint.sloid!,
+            this.trafficPoint.sloid!
           ).pipe(map(() => updatedVersions));
-        }),
+        })
       );
   }
 }

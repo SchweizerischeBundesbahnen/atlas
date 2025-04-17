@@ -2,8 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { User } from '../../../../api';
 
 @Pipe({
-    name: 'userSelectFormat',
-    pure: true
+  name: 'userSelectFormat',
+  pure: true,
 })
 export class UserSelectFormatPipe implements PipeTransform {
   transform(user: User): string {

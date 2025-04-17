@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RelationComponent } from './relation.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
 import { MaterialModule } from '../../module/material.module';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,15 +17,15 @@ describe('TransportCompanyRelationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [
+      imports: [
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         MaterialModule,
         BrowserAnimationsModule,
         RelationComponent,
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RelationComponent);
     component = fixture.componentInstance;
@@ -108,7 +112,9 @@ describe('TransportCompanyRelationComponent', () => {
 
     component.editable = false;
     let selectedIndexChangedCalled = false;
-    component.selectedIndexChanged.subscribe(() => (selectedIndexChangedCalled = true));
+    component.selectedIndexChanged.subscribe(
+      () => (selectedIndexChangedCalled = true)
+    );
     component.selectRecord(component._records[0]);
     expect(selectedIndexChangedCalled).toBeFalse();
   });

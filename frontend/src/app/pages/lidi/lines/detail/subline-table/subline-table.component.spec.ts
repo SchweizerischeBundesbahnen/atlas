@@ -28,9 +28,9 @@ describe('SublineTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, SublineTableComponent, MockTableComponent],
-    providers: [{ provide: LinesService, useValue: linesService }],
-}).compileComponents();
+      imports: [AppTestingModule, SublineTableComponent, MockTableComponent],
+      providers: [{ provide: LinesService, useValue: linesService }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SublineTableComponent);
     component = fixture.componentInstance;

@@ -11,8 +11,8 @@ describe('FileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, FileComponent, FileSizePipe],
-}).compileComponents();
+      imports: [AppTestingModule, FileComponent, FileSizePipe],
+    }).compileComponents();
   });
 
   beforeEach(() => {

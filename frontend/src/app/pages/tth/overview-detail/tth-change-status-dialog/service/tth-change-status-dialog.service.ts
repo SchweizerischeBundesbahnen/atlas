@@ -3,8 +3,14 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TthChangeStatusDialogComponent } from '../tth-change-status-dialog.component';
-import { StatusChangeData, StatusChangeDataType } from '../model/status-change-data';
-import {StatementStatus, TimetableHearingStatementV2} from '../../../../../api';
+import {
+  StatusChangeData,
+  StatusChangeDataType,
+} from '../model/status-change-data';
+import {
+  StatementStatus,
+  TimetableHearingStatementV2,
+} from '../../../../../api';
 
 @Injectable({
   providedIn: 'root',

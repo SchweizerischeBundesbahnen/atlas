@@ -12,7 +12,9 @@ import {
 export interface CompleteReferencePointFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
   designation: FormControl<string | null | undefined>;
-  referencePointType: FormControl<ReferencePointAttributeType | null | undefined>;
+  referencePointType: FormControl<
+    ReferencePointAttributeType | null | undefined
+  >;
   mainReferencePoint: FormControl<boolean | null | undefined>;
   additionalInformation: FormControl<string | null | undefined>;
 }
@@ -30,27 +32,31 @@ export class ReferencePointFormGroupBuilder {
           Validators.required,
           Validators.maxLength(50),
         ]),
-        referencePointType: new FormControl(version?.referencePointType, [Validators.required]),
+        referencePointType: new FormControl(version?.referencePointType, [
+          Validators.required,
+        ]),
         mainReferencePoint: new FormControl(version?.mainReferencePoint),
-        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [
-          Validators.required,
-        ]),
-        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [
-          Validators.required,
-        ]),
+        validFrom: new FormControl(
+          version?.validFrom ? moment(version.validFrom) : null,
+          [Validators.required]
+        ),
+        validTo: new FormControl(
+          version?.validTo ? moment(version.validTo) : null,
+          [Validators.required]
+        ),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),
         editor: new FormControl(version?.editor),
         creator: new FormControl(version?.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
   static getWritableForm(
     form: FormGroup<CompleteReferencePointFormGroup>,
-    parentServicePointSloid: string,
+    parentServicePointSloid: string
   ): ReferencePointVersion {
     return {
       sloid: form.value.sloid!,

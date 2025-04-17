@@ -1,5 +1,9 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogActions } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogClose,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import { AffectedSublinesModel } from '../../../../api';
 import { Router } from '@angular/router';
 import { Pages } from '../../../pages';
@@ -8,10 +12,17 @@ import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { LinkComponent } from '../../../../core/form-components/link/link.component';
 
 @Component({
-    selector: 'app-subline-shortening-dialog',
-    templateUrl: './subline-shortening-dialog.component.html',
-    providers: [DatePipe],
-    imports: [MatDialogClose, NgIf, NgFor, LinkComponent, MatDialogActions, TranslatePipe]
+  selector: 'app-subline-shortening-dialog',
+  templateUrl: './subline-shortening-dialog.component.html',
+  providers: [DatePipe],
+  imports: [
+    MatDialogClose,
+    NgIf,
+    NgFor,
+    LinkComponent,
+    MatDialogActions,
+    TranslatePipe,
+  ],
 })
 export class SublineShorteningDialogComponent {
   get hasAllowedOnly() {

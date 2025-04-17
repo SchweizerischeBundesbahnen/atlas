@@ -11,7 +11,7 @@ import { User } from '../../../../api';
 export class UserAdministrationResolver {
   constructor(
     private readonly userService: UserService,
-    private readonly router: Router,
+    private readonly router: Router
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<User> {
@@ -27,7 +27,7 @@ export class UserAdministrationResolver {
           })
           .then();
         return of({});
-      }),
+      })
     );
   }
 }

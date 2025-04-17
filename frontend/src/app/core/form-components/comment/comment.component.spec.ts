@@ -15,14 +15,17 @@ describe('CommentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, CommentComponent,
+      imports: [
+        AppTestingModule,
+        CommentComponent,
         InfoIconComponent,
         AtlasFieldErrorComponent,
         InfoIconComponent,
         AtlasLabelFieldComponent,
-        TextFieldComponent],
-    providers: [{ provide: TranslatePipe }],
-}).compileComponents();
+        TextFieldComponent,
+      ],
+      providers: [{ provide: TranslatePipe }],
+    }).compileComponents();
   });
 
   beforeEach(() => {

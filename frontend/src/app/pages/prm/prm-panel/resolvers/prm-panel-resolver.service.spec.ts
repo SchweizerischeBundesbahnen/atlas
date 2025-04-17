@@ -2,16 +2,25 @@ import { TestBed } from '@angular/core/testing';
 
 import { Observable, of } from 'rxjs';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  convertToParamMap,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { ReadServicePointVersion, ServicePointsService } from '../../../../api';
-import { prmPanelResolver, PrmPanelResolver } from './prm-panel-resolver.service';
+import {
+  prmPanelResolver,
+  PrmPanelResolver,
+} from './prm-panel-resolver.service';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 
 describe('PrmOverviewResolver', () => {
   const servicePointsServiceSpy = jasmine.createSpyObj('servicePointsService', [
     'getServicePointVersionsBySloid',
   ]);
-  servicePointsServiceSpy.getServicePointVersionsBySloid.and.returnValue(of([BERN_WYLEREGG]));
+  servicePointsServiceSpy.getServicePointVersionsBySloid.and.returnValue(
+    of([BERN_WYLEREGG])
+  );
 
   let resolver: PrmPanelResolver;
 
@@ -39,7 +48,7 @@ describe('PrmOverviewResolver', () => {
     } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
-      prmPanelResolver(mockRoute, {} as RouterStateSnapshot),
+      prmPanelResolver(mockRoute, {} as RouterStateSnapshot)
     ) as Observable<ReadServicePointVersion[]>;
 
     result.subscribe((versions) => {

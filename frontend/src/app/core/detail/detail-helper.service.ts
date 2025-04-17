@@ -1,21 +1,19 @@
-import {Injectable, OnInit} from '@angular/core';
-import {Observable, of, take} from "rxjs";
-import {FormGroup} from "@angular/forms";
-import {DialogService} from "../components/dialog/dialog.service";
+import { Injectable, OnInit } from '@angular/core';
+import { Observable, of, take } from 'rxjs';
+import { FormGroup } from '@angular/forms';
+import { DialogService } from '../components/dialog/dialog.service';
 
-export interface DetailWithCancelEdit extends OnInit{
-  isNew: boolean,
-  back: () => void,
-  form: FormGroup,
+export interface DetailWithCancelEdit extends OnInit {
+  isNew: boolean;
+  back: () => void;
+  form: FormGroup;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class DetailHelperService {
-
-  constructor(private dialogService: DialogService) {
-  }
+  constructor(private dialogService: DialogService) {}
 
   public showCancelEditDialog(detail: DetailWithCancelEdit) {
     this.confirmLeave(detail)
@@ -46,5 +44,4 @@ export class DetailHelperService {
     }
     return of(true);
   }
-
 }

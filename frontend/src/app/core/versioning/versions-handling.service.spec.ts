@@ -26,7 +26,8 @@ describe('VersionsHandlingService', () => {
     jasmine.clock().mockDate(today);
 
     //when
-    const record: Record = VersionsHandlingService.determineDefaultVersionByValidity(records);
+    const record: Record =
+      VersionsHandlingService.determineDefaultVersionByValidity(records);
 
     //then
     expect(record.id).toBe(firstRecord.id);
@@ -39,7 +40,8 @@ describe('VersionsHandlingService', () => {
     jasmine.clock().mockDate(today);
 
     //when
-    const record: Record = VersionsHandlingService.determineDefaultVersionByValidity(records);
+    const record: Record =
+      VersionsHandlingService.determineDefaultVersionByValidity(records);
 
     //then
     expect(record.id).toBe(secondRecord.id);
@@ -52,7 +54,8 @@ describe('VersionsHandlingService', () => {
     jasmine.clock().mockDate(today);
 
     //when
-    const record: Record = VersionsHandlingService.determineDefaultVersionByValidity(records);
+    const record: Record =
+      VersionsHandlingService.determineDefaultVersionByValidity(records);
 
     //then
     expect(record.id).toBe(thirdRecord.id);
@@ -65,7 +68,8 @@ describe('VersionsHandlingService', () => {
     jasmine.clock().mockDate(today);
 
     //when
-    const record: Record = VersionsHandlingService.determineDefaultVersionByValidity(records);
+    const record: Record =
+      VersionsHandlingService.determineDefaultVersionByValidity(records);
 
     //then
     expect(record.id).toBe(firstRecord.id);
@@ -78,7 +82,8 @@ describe('VersionsHandlingService', () => {
     jasmine.clock().mockDate(today);
 
     //when
-    const record: Record = VersionsHandlingService.determineDefaultVersionByValidity(records);
+    const record: Record =
+      VersionsHandlingService.determineDefaultVersionByValidity(records);
 
     //then
     expect(record.id).toBe(thirdRecord.id);
@@ -97,7 +102,8 @@ describe('VersionsHandlingService', () => {
     jasmine.clock().mockDate(today);
 
     //when
-    const record: Record = VersionsHandlingService.determineDefaultVersionByValidity(records);
+    const record: Record =
+      VersionsHandlingService.determineDefaultVersionByValidity(records);
 
     //then
     expect(record.id).toBe(fourthRecord.id);
@@ -120,7 +126,8 @@ describe('VersionsHandlingService', () => {
     jasmine.clock().mockDate(today);
 
     //when
-    const record: Record = VersionsHandlingService.determineDefaultVersionByValidity(records);
+    const record: Record =
+      VersionsHandlingService.determineDefaultVersionByValidity(records);
 
     //then
     expect(record.id).toBe(todayRecord.id);
@@ -145,7 +152,11 @@ describe('VersionsHandlingService', () => {
     };
 
     //when
-    const result = VersionsHandlingService.getMaxValidity([first, second, third]);
+    const result = VersionsHandlingService.getMaxValidity([
+      first,
+      second,
+      third,
+    ]);
 
     //then
     expect(result.validFrom).toEqual(moment('1.1.2004', 'DD.MM.YYYY').toDate());
@@ -170,7 +181,11 @@ describe('VersionsHandlingService', () => {
     };
 
     //when
-    const result = VersionsHandlingService.getMaxValidity([first, second, third]);
+    const result = VersionsHandlingService.getMaxValidity([
+      first,
+      second,
+      third,
+    ]);
 
     //then
     expect(result.validTo).toEqual(moment('4.1.2004', 'DD.MM.YYYY').toDate());

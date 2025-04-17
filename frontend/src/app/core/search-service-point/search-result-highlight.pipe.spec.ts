@@ -1,4 +1,4 @@
-import {SearchResultHighlightPipe} from './search-result-highlight.pipe';
+import { SearchResultHighlightPipe } from './search-result-highlight.pipe';
 
 describe('SearchResultHighlightPipe', () => {
   it('create an instance', () => {
@@ -13,7 +13,9 @@ describe('SearchResultHighlightPipe', () => {
 
   it('should highlight be with escaped value', () => {
     const pipe = new SearchResultHighlightPipe();
-    expect(pipe.transform('Bern (wyler)', 'Bern (')).toBe('<b>Bern (</b>wyler)');
+    expect(pipe.transform('Bern (wyler)', 'Bern (')).toBe(
+      '<b>Bern (</b>wyler)'
+    );
   });
 
   it('should not highlight when no match', () => {

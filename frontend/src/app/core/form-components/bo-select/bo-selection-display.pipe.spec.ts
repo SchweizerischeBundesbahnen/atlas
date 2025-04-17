@@ -1,8 +1,7 @@
-import {BoSelectionDisplayPipe} from './bo-selection-display.pipe';
-import {BusinessOrganisation} from '../../../api';
+import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
+import { BusinessOrganisation } from '../../../api';
 
 describe('BoSelectionDisplayPipe', () => {
-
   let boSelectionDisplayPipe: BoSelectionDisplayPipe;
 
   const boLanguageServiveSpy = jasmine.createSpyObj('BoLanguageService', {
@@ -28,8 +27,6 @@ describe('BoSelectionDisplayPipe', () => {
   });
 
   it('should transform undefined to text', () => {
-    expect(
-      boSelectionDisplayPipe.transform()
-    ).toBe('--');
+    expect(boSelectionDisplayPipe.transform()).toBe('--');
   });
 });

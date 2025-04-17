@@ -4,6 +4,6 @@ export interface DialogData {
   messageArgs?: { [key: string]: string };
   cancelText?: string;
   confirmText?: string;
-  link?: { url: string, textLink: string, text: string };
+  link?: { url: string; textLink: string; text: string };
   isInfo?: boolean;
 }

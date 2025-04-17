@@ -2,8 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { BulkImportLogEntry, BulkImportResult, BulkImportService } from '../../../api';
-import { NgTemplateOutlet, NgClass, AsyncPipe, DatePipe } from '@angular/common';
+import {
+  BulkImportLogEntry,
+  BulkImportResult,
+  BulkImportService,
+} from '../../../api';
+import {
+  NgTemplateOutlet,
+  NgClass,
+  AsyncPipe,
+  DatePipe,
+} from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -11,10 +20,20 @@ import { UserDisplayNamePipe } from '../../../core/pipe/user-display-name.pipe';
 import { ParamsForTranslationPipe } from '../../../core/pipe/params-for-translation.pipe';
 
 @Component({
-    selector: 'bulk-import-log',
-    templateUrl: './bulk-import-log.component.html',
-    styleUrl: 'bulk-import-log.component.scss',
-    imports: [NgTemplateOutlet, NgClass, MatPaginator, LoadingSpinnerComponent, AsyncPipe, DatePipe, TranslatePipe, UserDisplayNamePipe, ParamsForTranslationPipe]
+  selector: 'bulk-import-log',
+  templateUrl: './bulk-import-log.component.html',
+  styleUrl: 'bulk-import-log.component.scss',
+  imports: [
+    NgTemplateOutlet,
+    NgClass,
+    MatPaginator,
+    LoadingSpinnerComponent,
+    AsyncPipe,
+    DatePipe,
+    TranslatePipe,
+    UserDisplayNamePipe,
+    ParamsForTranslationPipe,
+  ],
 })
 export class BulkImportLogComponent implements OnInit {
   data$?: Observable<{ importResult?: BulkImportResultTemplate; id: unknown }>;
@@ -22,7 +41,7 @@ export class BulkImportLogComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly bulkImportService: BulkImportService,
+    private readonly bulkImportService: BulkImportService
   ) {}
 
   ngOnInit() {
@@ -44,20 +63,20 @@ export class BulkImportLogComponent implements OnInit {
               (result) =>
                 (this.pagedLogEntries = this.pageChanged(
                   { pageIndex: 0, pageSize: 5 },
-                  result.importResult.logEntries,
-                )),
-            ),
+                  result.importResult.logEntries
+                ))
+            )
           );
         } else {
           return of({ id: params.id });
         }
-      }),
+      })
     );
   }
 
   pageChanged(
     e: { pageIndex: number; pageSize: number },
-    array?: Array<BulkImportLogEntryTemplate>,
+    array?: Array<BulkImportLogEntryTemplate>
   ): Array<BulkImportLogEntryTemplate> {
     if (!array || array.length === 0) {
       return [];

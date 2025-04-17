@@ -1,14 +1,15 @@
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
-import {BaseDetailFormGroup} from '../../../../../../core/components/base-detail/base-detail-form-group';
-import {WhitespaceValidator} from '../../../../../../core/validation/whitespace/whitespace-validator';
-import {AtlasCharsetsValidator} from '../../../../../../core/validation/charsets/atlas-charsets-validator';
-import {DateRangeValidator} from '../../../../../../core/validation/date-range/date-range-validator';
+import { BaseDetailFormGroup } from '../../../../../../core/components/base-detail/base-detail-form-group';
+import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
+import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
+import { DateRangeValidator } from '../../../../../../core/validation/date-range/date-range-validator';
 import {
   BasicAttributeType,
   BoardingDeviceAttributeType,
   BooleanOptionalAttributeType,
-  InfoOpportunityAttributeType, MeanOfTransport,
+  InfoOpportunityAttributeType,
+  MeanOfTransport,
   PlatformVersion,
   ReadPlatformVersion,
   VehicleAccessAttributeType,
@@ -57,23 +58,24 @@ export class PlatformFormGroupBuilder {
           [Validators.required]),
         boardingDevice: new FormControl(
           version?.boardingDevice ?? BoardingDeviceAttributeType.ToBeCompleted,
-          [Validators.required],
+          [Validators.required]
         ),
         adviceAccessInfo: new FormControl(version?.adviceAccessInfo, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
         contrastingAreas: new FormControl(
-          version?.contrastingAreas ?? BooleanOptionalAttributeType.ToBeCompleted,
-          [Validators.required],
+          version?.contrastingAreas ??
+            BooleanOptionalAttributeType.ToBeCompleted,
+          [Validators.required]
         ),
         dynamicAudio: new FormControl(
           version?.dynamicAudio ?? BooleanOptionalAttributeType.ToBeCompleted,
-          [Validators.required],
+          [Validators.required]
         ),
         dynamicVisual: new FormControl(
           version?.dynamicVisual ?? BooleanOptionalAttributeType.ToBeCompleted,
-          [Validators.required],
+          [Validators.required]
         ),
         inclination: new FormControl(version?.inclination, [
           AtlasCharsetsValidator.decimalWithDigits(7, 3),
@@ -82,25 +84,28 @@ export class PlatformFormGroupBuilder {
           AtlasCharsetsValidator.decimalWithDigits(7, 3),
         ]),
         levelAccessWheelchair: new FormControl(
-          version?.levelAccessWheelchair ?? BooleanOptionalAttributeType.ToBeCompleted,
-          [Validators.required],
+          version?.levelAccessWheelchair ??
+            BooleanOptionalAttributeType.ToBeCompleted,
+          [Validators.required]
         ),
         superelevation: new FormControl(version?.superelevation, [
           AtlasCharsetsValidator.decimalWithDigits(7, 3),
         ]),
-        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [
-          Validators.required,
-        ]),
-        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [
-          Validators.required,
-        ]),
+        validFrom: new FormControl(
+          version?.validFrom ? moment(version.validFrom) : null,
+          [Validators.required]
+        ),
+        validTo: new FormControl(
+          version?.validTo ? moment(version.validTo) : null,
+          [Validators.required]
+        ),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),
         editor: new FormControl(version?.editor),
         creator: new FormControl(version?.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
@@ -114,50 +119,62 @@ export class PlatformFormGroupBuilder {
         ]),
         shuttle: new FormControl(version?.shuttle ?? BooleanOptionalAttributeType.ToBeCompleted,
           [Validators.required]),
-        height: new FormControl(version?.height, [AtlasCharsetsValidator.decimalWithDigits(7, 3), Validators.min(0)]),
-        inclinationLongitudinal: new FormControl(version?.inclinationLongitudinal, [
+        height: new FormControl(version?.height, [
           AtlasCharsetsValidator.decimalWithDigits(7, 3),
+          Validators.min(0),
         ]),
+        inclinationLongitudinal: new FormControl(
+          version?.inclinationLongitudinal,
+          [AtlasCharsetsValidator.decimalWithDigits(7, 3)]
+        ),
         infoOpportunities: new FormControl(
-          version?.infoOpportunities ?? [InfoOpportunityAttributeType.ToBeCompleted],
+          version?.infoOpportunities ?? [
+            InfoOpportunityAttributeType.ToBeCompleted,
+          ]
         ),
         partialElevation: new FormControl(version?.partialElevation),
         tactileSystem: new FormControl(
           version?.tactileSystem ?? BooleanOptionalAttributeType.ToBeCompleted,
-          [Validators.required],
+          [Validators.required]
         ),
         attentionField: new FormControl(
           version?.attentionField ?? BooleanOptionalAttributeType.ToBeCompleted,
-          [Validators.required],
+          [Validators.required]
         ),
         vehicleAccess: new FormControl(
           version?.vehicleAccess ?? VehicleAccessAttributeType.ToBeCompleted,
-          [Validators.required],
+          [Validators.required]
         ),
         wheelchairAreaLength: new FormControl(version?.wheelchairAreaLength, [
-          AtlasCharsetsValidator.decimalWithDigits(7, 3), Validators.min(0)
+          AtlasCharsetsValidator.decimalWithDigits(7, 3),
+          Validators.min(0),
         ]),
         wheelchairAreaWidth: new FormControl(version?.wheelchairAreaWidth, [
-          AtlasCharsetsValidator.decimalWithDigits(7, 3), Validators.min(0)
+          AtlasCharsetsValidator.decimalWithDigits(7, 3),
+          Validators.min(0),
         ]),
-        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [
-          Validators.required,
-        ]),
-        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [
-          Validators.required,
-        ]),
+        validFrom: new FormControl(
+          version?.validFrom ? moment(version.validFrom) : null,
+          [Validators.required]
+        ),
+        validTo: new FormControl(
+          version?.validTo ? moment(version.validTo) : null,
+          [Validators.required]
+        ),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),
         editor: new FormControl(version?.editor),
         creator: new FormControl(version?.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
   static getWritableForm(
-    form: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>,
+    form:
+      | FormGroup<ReducedPlatformFormGroup>
+      | FormGroup<CompletePlatformFormGroup>,
     parentServicePointSloid: string,
     reduced: boolean,
     meansOfTransport: MeanOfTransport[]
@@ -182,8 +199,10 @@ export class PlatformFormGroupBuilder {
   }
 
   private static getCompleteForm(
-    form: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>,
-    platformVersion: PlatformVersion,
+    form:
+      | FormGroup<ReducedPlatformFormGroup>
+      | FormGroup<CompletePlatformFormGroup>,
+    platformVersion: PlatformVersion
   ) {
     const formValue = (form as FormGroup<CompletePlatformFormGroup>).value;
     return {
@@ -203,8 +222,11 @@ export class PlatformFormGroupBuilder {
   }
 
   private static getReducedForm(
-    form: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>,
-    platformVersion: PlatformVersion, meansOfTransport: MeanOfTransport[]
+    form:
+      | FormGroup<ReducedPlatformFormGroup>
+      | FormGroup<CompletePlatformFormGroup>,
+    platformVersion: PlatformVersion,
+    meansOfTransport: MeanOfTransport[]
   ) {
     const formValue = (form as FormGroup<ReducedPlatformFormGroup>).value;
     return {

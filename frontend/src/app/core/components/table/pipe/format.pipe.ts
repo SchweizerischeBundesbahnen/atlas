@@ -4,13 +4,16 @@ import { DateService } from '../../../date/date.service';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Pipe({
-    name: 'format',
-    pure: false
+  name: 'format',
+  pure: false,
 })
 export class FormatPipe implements PipeTransform {
   constructor(private readonly translatePipe: TranslatePipe) {}
 
-  transform<T>(value: string | Date | undefined, column: TableColumn<T>): string {
+  transform<T>(
+    value: string | Date | undefined,
+    column: TableColumn<T>
+  ): string {
     if (value === undefined || value === null) {
       return '';
     }

@@ -14,12 +14,14 @@ export class InfoLinkDirective {
 
   @HostListener('click') onClick() {
     try {
-      this.translateService.get(this.infoLinkTranslationKey).subscribe((link) => {
-        if (link === this.infoLinkTranslationKey) {
-          throw new Error('Could not evaluate translationKey correctly');
-        }
-        window.open(link, '_blank');
-      });
+      this.translateService
+        .get(this.infoLinkTranslationKey)
+        .subscribe((link) => {
+          if (link === this.infoLinkTranslationKey) {
+            throw new Error('Could not evaluate translationKey correctly');
+          }
+          window.open(link, '_blank');
+        });
     } catch (error) {
       console.error(error);
     }

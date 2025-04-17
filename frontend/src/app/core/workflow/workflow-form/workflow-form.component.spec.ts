@@ -17,14 +17,17 @@ describe('WorkflowFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, WorkflowFormComponent,
+      imports: [
+        AppTestingModule,
+        WorkflowFormComponent,
         InfoIconComponent,
         CommentComponent,
         TextFieldComponent,
         AtlasFieldErrorComponent,
-        AtlasLabelFieldComponent],
-    providers: [{ provide: TranslatePipe }],
-}).compileComponents();
+        AtlasLabelFieldComponent,
+      ],
+      providers: [{ provide: TranslatePipe }],
+    }).compileComponents();
     fixture = TestBed.createComponent(WorkflowFormComponent);
     component = fixture.componentInstance;
     component.formGroup = new FormGroup<WorkflowFormGroup>({

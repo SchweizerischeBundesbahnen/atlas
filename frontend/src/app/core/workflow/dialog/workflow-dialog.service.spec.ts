@@ -2,7 +2,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { LineVersionWorkflow, Status, WorkflowProcessingStatus } from '../../../api';
+import {
+  LineVersionWorkflow,
+  Status,
+  WorkflowProcessingStatus,
+} from '../../../api';
 import { WorkflowDialogService } from './workflow-dialog.service';
 
 describe('WorkflowDialogService', () => {

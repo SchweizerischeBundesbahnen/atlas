@@ -6,9 +6,13 @@ import { UserAdministrationClientEditComponent } from './edit/user-administratio
 import { UserAdministrationClientCreateComponent } from './create/user-administration-client-create.component';
 
 @Component({
-    selector: 'app-client-credential-administration',
-    templateUrl: './user-administration-client-detail.component.html',
-    imports: [NgIf, UserAdministrationClientEditComponent, UserAdministrationClientCreateComponent]
+  selector: 'app-client-credential-administration',
+  templateUrl: './user-administration-client-detail.component.html',
+  imports: [
+    NgIf,
+    UserAdministrationClientEditComponent,
+    UserAdministrationClientCreateComponent,
+  ],
 })
 export class UserAdministrationClientDetailComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute) {}

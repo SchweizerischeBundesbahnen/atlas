@@ -1,6 +1,9 @@
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { inject, Injectable } from '@angular/core';
-import { PersonWithReducedMobilityService, ReadStopPointVersion } from '../../../../api';
+import {
+  PersonWithReducedMobilityService,
+  ReadStopPointVersion,
+} from '../../../../api';
 import { catchError, Observable, of } from 'rxjs';
 import { Pages } from '../../../pages';
 
@@ -8,25 +11,29 @@ import { Pages } from '../../../pages';
 export class StopPointResolver {
   constructor(
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private readonly router: Router,
+    private readonly router: Router
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadStopPointVersion>> {
+  resolve(
+    route: ActivatedRouteSnapshot
+  ): Observable<Array<ReadStopPointVersion>> {
     const sloidParameter = route.paramMap.get('stopPointSloid') || '';
     return sloidParameter === 'add'
       ? of([])
-      : this.personWithReducedMobilityService.getStopPointVersions(sloidParameter).pipe(
-          catchError(() =>
-            this.router
-              .navigate([Pages.PRM.path], {
-                state: { notDismissSnackBar: true },
-              })
-              .then(() => []),
-          ),
-        );
+      : this.personWithReducedMobilityService
+          .getStopPointVersions(sloidParameter)
+          .pipe(
+            catchError(() =>
+              this.router
+                .navigate([Pages.PRM.path], {
+                  state: { notDismissSnackBar: true },
+                })
+                .then(() => [])
+            )
+          );
   }
 }
 
 export const stopPointResolver: ResolveFn<Array<ReadStopPointVersion>> = (
-  route: ActivatedRouteSnapshot,
+  route: ActivatedRouteSnapshot
 ) => inject(StopPointResolver).resolve(route);

@@ -14,14 +14,14 @@ import { of } from 'rxjs';
 
 describe('UserService', () => {
   let service: UserService;
-  const userAdministrationServiceMock = jasmine.createSpyObj('userAdministrationService', [
-    'getUsers',
-    'getUser',
-  ]);
-  const userInformationServiceMock = jasmine.createSpyObj('userInformationService', [
-    'searchUsers',
-    'searchUsersInAtlas'
-  ]);
+  const userAdministrationServiceMock = jasmine.createSpyObj(
+    'userAdministrationService',
+    ['getUsers', 'getUser']
+  );
+  const userInformationServiceMock = jasmine.createSpyObj(
+    'userInformationService',
+    ['searchUsers', 'searchUsersInAtlas']
+  );
 
   let clientCredentialAdministrationServiceSpy;
 
@@ -63,7 +63,7 @@ describe('UserService', () => {
       of<ContainerUser>({
         totalCount: 5,
         objects: [{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }],
-      }),
+      })
     );
 
     service.getUsers(10, 10).subscribe((res) => {
@@ -76,10 +76,14 @@ describe('UserService', () => {
   });
 
   it('test getUser', (done) => {
-    userAdministrationServiceMock.getUser.and.returnValue(of({ sbbUserId: 'u123456' }));
+    userAdministrationServiceMock.getUser.and.returnValue(
+      of({ sbbUserId: 'u123456' })
+    );
 
     service.getUser('u123456').subscribe((res) => {
-      expect(userAdministrationServiceMock.getUser).toHaveBeenCalledOnceWith('u123456');
+      expect(userAdministrationServiceMock.getUser).toHaveBeenCalledOnceWith(
+        'u123456'
+      );
       expect(res).toEqual({ sbbUserId: 'u123456' });
       done();
     });
@@ -87,11 +91,13 @@ describe('UserService', () => {
 
   it('test searchUsers', (done) => {
     userInformationServiceMock.searchUsers.and.returnValue(
-      of([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]),
+      of([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }])
     );
 
     service.searchUsers('test').subscribe((res) => {
-      expect(userInformationServiceMock.searchUsers).toHaveBeenCalledOnceWith('test');
+      expect(userInformationServiceMock.searchUsers).toHaveBeenCalledOnceWith(
+        'test'
+      );
       expect(res).toEqual([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]);
       done();
     });
@@ -99,24 +105,33 @@ describe('UserService', () => {
 
   it('test searchUsers in atlas', (done) => {
     userInformationServiceMock.searchUsersInAtlas.and.returnValue(
-      of([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]),
+      of([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }])
     );
 
-    service.searchUsersInAtlas('test', ApplicationType.Sepodi).subscribe((res) => {
-      expect(userInformationServiceMock.searchUsersInAtlas).toHaveBeenCalledOnceWith('test', ApplicationType.Sepodi);
-      expect(res).toEqual([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]);
-      done();
-    });
+    service
+      .searchUsersInAtlas('test', ApplicationType.Sepodi)
+      .subscribe((res) => {
+        expect(
+          userInformationServiceMock.searchUsersInAtlas
+        ).toHaveBeenCalledOnceWith('test', ApplicationType.Sepodi);
+        expect(res).toEqual([
+          { sbbUserId: 'u123456' },
+          { sbbUserId: 'u654321' },
+        ]);
+        done();
+      });
   });
 
   it('test hasUserPermissions false', (done) => {
     userAdministrationServiceMock.getUser.and.callFake((userId: string) =>
-      of({ sbbUserId: userId }),
+      of({ sbbUserId: userId })
     );
     const hasUserPermissions = service.hasUserPermissions('u123456');
     hasUserPermissions.subscribe((val) => {
       expect(val).toBe(false);
-      expect(userAdministrationServiceMock.getUser).toHaveBeenCalledOnceWith('u123456');
+      expect(userAdministrationServiceMock.getUser).toHaveBeenCalledOnceWith(
+        'u123456'
+      );
       done();
     });
   });
@@ -132,11 +147,13 @@ describe('UserService', () => {
             permissionRestrictions: [],
           },
         ],
-      } as UserPermissionCreate),
+      } as UserPermissionCreate)
     );
     const hasUserPermissions = service.hasUserPermissions('u123456');
     hasUserPermissions.subscribe((val) => {
-      expect(userAdministrationServiceMock.getUser).toHaveBeenCalledOnceWith('u123456');
+      expect(userAdministrationServiceMock.getUser).toHaveBeenCalledOnceWith(
+        'u123456'
+      );
       expect(val).toBe(true);
       done();
     });
@@ -164,17 +181,21 @@ describe('UserService', () => {
   });
 
   it('test createUserPermission', (done) => {
-    userAdministrationServiceMock.createUserPermission = jasmine.createSpy().and.returnValue(
-      of({
-        sbbUserId: 'u123456',
-      } as User),
-    );
+    userAdministrationServiceMock.createUserPermission = jasmine
+      .createSpy()
+      .and.returnValue(
+        of({
+          sbbUserId: 'u123456',
+        } as User)
+      );
     const createPermissionResult = service.createUserPermission({
       sbbUserId: 'u123456',
       permissions: [],
     });
     createPermissionResult.subscribe((val) => {
-      expect(userAdministrationServiceMock.createUserPermission).toHaveBeenCalledOnceWith({
+      expect(
+        userAdministrationServiceMock.createUserPermission
+      ).toHaveBeenCalledOnceWith({
         sbbUserId: 'u123456',
         permissions: [],
       });
