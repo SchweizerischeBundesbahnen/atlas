@@ -8,7 +8,6 @@ import {
   TranslatePipe,
 } from '@ngx-translate/core';
 import { UserPermissionManager } from '../../service/user-permission-manager';
-import { MaterialModule } from '../../../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, of } from 'rxjs';
 import {
@@ -66,7 +65,6 @@ describe('UserAdministrationApplicationConfigComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-        MaterialModule,
         BrowserAnimationsModule,
         UserAdministrationApplicationConfigComponent,
         SelectComponent,
