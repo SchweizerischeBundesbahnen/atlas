@@ -1,3 +1,5 @@
+@use 'sass:list';
+
 @mixin regular-font($font-size, $line-height) {
   font-style: normal !important;
   font-weight: normal !important;
@@ -69,9 +71,9 @@ $font-sizes: (
 
 @each $class, $value in $font-sizes {
   .font-regular-#{$class} {
-    @include regular-font(#{nth($value, 1)}, #{nth($value, 2)});
+    @include regular-font(#{list.nth($value, 1)}, #{list.nth($value, 2)});
   }
   .font-bold-#{$class} {
-    @include bold-font(#{nth($value, 1)}, #{nth($value, 2)});
+    @include bold-font(#{list.nth($value, 1)}, #{list.nth($value, 2)});
   }
 }
