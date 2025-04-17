@@ -41,10 +41,10 @@ class MockAtlasTextFieldComponent {
   @Input() customInputNgStyle!: Record<string, string | undefined | null>;
   @Input() customError!: AtlasFieldCustomError;
   @ContentChild('customChildInputPostfixTemplate')
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   customChildInputPostfixTemplate!: TemplateRef<any>;
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @ContentChild('customChildInputPrefixTemplate')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   customChildInputPrefixTemplate!: TemplateRef<any>;
   @Input() formGroup!: FormGroup;
 }
