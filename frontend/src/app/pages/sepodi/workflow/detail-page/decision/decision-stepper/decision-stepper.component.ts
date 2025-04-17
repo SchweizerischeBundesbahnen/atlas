@@ -18,9 +18,22 @@ import { AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'sepodi-wf-decision-stepper',
-    templateUrl: './decision-stepper.component.html',
-    imports: [DialogCloseComponent, DialogContentComponent, MatStepper, MatStepperIcon, MatStep, ReactiveFormsModule, TextFieldComponent, MatButton, DecisionFormComponent, LoadingSpinnerComponent, AsyncPipe, TranslatePipe]
+  selector: 'sepodi-wf-decision-stepper',
+  templateUrl: './decision-stepper.component.html',
+  imports: [
+    DialogCloseComponent,
+    DialogContentComponent,
+    MatStepper,
+    MatStepperIcon,
+    MatStep,
+    ReactiveFormsModule,
+    TextFieldComponent,
+    MatButton,
+    DecisionFormComponent,
+    LoadingSpinnerComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class DecisionStepperComponent {
   @ViewChild('stepper') readonly stepper?: MatStepper;
@@ -61,7 +74,7 @@ export class DecisionStepperComponent {
     private readonly _dialogRef: MatDialogRef<DecisionStepperComponent>,
     private readonly _spWfService: StopPointWorkflowService,
     @Inject(MAT_DIALOG_DATA) private readonly _workflowId: number,
-    private readonly cd: ChangeDetectorRef,
+    private readonly cd: ChangeDetectorRef
   ) {}
 
   completeObtainOtpStep() {
@@ -78,7 +91,7 @@ export class DecisionStepperComponent {
             this._swapLoading();
             return EMPTY;
           }),
-          shareReplay(1),
+          shareReplay(1)
         );
 
       this.isStepTwoCompl$ = this.isStepOneCompl$.pipe(
@@ -87,7 +100,7 @@ export class DecisionStepperComponent {
           this.stepper?.next();
           this._swapLoading();
           return false;
-        }),
+        })
       );
     }
   }
@@ -104,17 +117,25 @@ export class DecisionStepperComponent {
         .pipe(
           map((examinant) => {
             this._verifiedExaminant = examinant;
-            this.decision.controls.firstName.setValue(examinant.firstName ?? null);
-            this.decision.controls.lastName.setValue(examinant.lastName ?? null);
-            this.decision.controls.organisation.setValue(examinant.organisation);
-            this.decision.controls.personFunction.setValue(examinant.personFunction ?? null);
+            this.decision.controls.firstName.setValue(
+              examinant.firstName ?? null
+            );
+            this.decision.controls.lastName.setValue(
+              examinant.lastName ?? null
+            );
+            this.decision.controls.organisation.setValue(
+              examinant.organisation
+            );
+            this.decision.controls.personFunction.setValue(
+              examinant.personFunction ?? null
+            );
             return true;
           }),
           catchError(() => {
             this._swapLoading();
             return EMPTY;
           }),
-          shareReplay(1),
+          shareReplay(1)
         );
 
       this.isStepThreeCompl$ = this.isStepTwoCompl$.pipe(
@@ -123,7 +144,7 @@ export class DecisionStepperComponent {
           this.stepper?.next();
           this._swapLoading();
           return false;
-        }),
+        })
       );
     }
   }
@@ -154,7 +175,7 @@ export class DecisionStepperComponent {
           catchError(() => {
             this._swapLoading();
             return EMPTY;
-          }),
+          })
         );
     }
   }
@@ -177,7 +198,7 @@ export class DecisionStepperComponent {
         catchError(() => {
           this._swapLoading();
           return EMPTY;
-        }),
+        })
       );
   }
 

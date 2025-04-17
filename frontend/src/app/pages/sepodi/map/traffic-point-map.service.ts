@@ -1,12 +1,16 @@
-import {Injectable, OnDestroy} from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { GeoJSONSource, MapGeoJSONFeature } from 'maplibre-gl';
 import { MAP_TRAFFIC_POINT_LAYER_NAME } from './map-style';
 import { Feature } from 'geojson';
-import { CoordinatePair, TrafficPointElementsService, TrafficPointElementType } from '../../../api';
+import {
+  CoordinatePair,
+  TrafficPointElementsService,
+  TrafficPointElementType,
+} from '../../../api';
 import { Pages } from '../../pages';
 import { MapService } from './map.service';
-import {filter, takeUntil} from 'rxjs/operators';
-import {Subject, take} from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+import { Subject, take } from 'rxjs';
 
 export interface DisplayableTrafficPoint {
   type: TrafficPointElementType;
@@ -23,7 +27,7 @@ export class TrafficPointMapService implements OnDestroy {
 
   constructor(
     private mapService: MapService,
-    private trafficPointElementsService: TrafficPointElementsService,
+    private trafficPointElementsService: TrafficPointElementsService
   ) {}
 
   static buildTrafficPointPopupInformation(features: MapGeoJSONFeature[]) {
@@ -40,7 +44,6 @@ export class TrafficPointMapService implements OnDestroy {
 
     return popupHtml;
   }
-
 
   ngOnDestroy(): void {
     this.onDestroy$.next(true);
@@ -74,9 +77,9 @@ export class TrafficPointMapService implements OnDestroy {
   }
 
   setDisplayedTrafficPoints(trafficPoints: DisplayableTrafficPoint[]) {
-    const source = this.mapService.map.getSource(MAP_TRAFFIC_POINT_LAYER_NAME) as
-      | GeoJSONSource
-      | undefined;
+    const source = this.mapService.map.getSource(
+      MAP_TRAFFIC_POINT_LAYER_NAME
+    ) as GeoJSONSource | undefined;
     const trafficPointGeoInformation: Feature[] = trafficPoints.map((point) => {
       return {
         type: 'Feature',
@@ -109,8 +112,13 @@ export class TrafficPointMapService implements OnDestroy {
         takeUntil(this.onDestroy$)
       )
       .subscribe(() => {
-        const source = this.mapService.map.getSource('current_traffic_point') as GeoJSONSource;
-        const coordinatesToSet = [coordinates?.east ?? 0, coordinates?.north ?? 0];
+        const source = this.mapService.map.getSource(
+          'current_traffic_point'
+        ) as GeoJSONSource;
+        const coordinatesToSet = [
+          coordinates?.east ?? 0,
+          coordinates?.north ?? 0,
+        ];
         source.setData({
           type: 'Feature',
           geometry: {

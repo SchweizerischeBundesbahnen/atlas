@@ -1,10 +1,18 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import {Observable, of} from 'rxjs';
-import {ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot} from '@angular/router';
-import {parkingLotResolver} from './parking-lot.resolver';
-import {BooleanOptionalAttributeType, PersonWithReducedMobilityService, ReadParkingLotVersion} from '../../../../../../api';
-import {AppTestingModule} from '../../../../../../app.testing.module';
+import { Observable, of } from 'rxjs';
+import {
+  ActivatedRouteSnapshot,
+  convertToParamMap,
+  RouterStateSnapshot,
+} from '@angular/router';
+import { parkingLotResolver } from './parking-lot.resolver';
+import {
+  BooleanOptionalAttributeType,
+  PersonWithReducedMobilityService,
+  ReadParkingLotVersion,
+} from '../../../../../../api';
+import { AppTestingModule } from '../../../../../../app.testing.module';
 
 const parkingLot: ReadParkingLotVersion[] = [
   {
@@ -34,9 +42,11 @@ const parkingLot: ReadParkingLotVersion[] = [
 describe('PrmParkingLotResolver', () => {
   const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['getParkingLotVersions'],
+    ['getParkingLotVersions']
   );
-  personWithReducedMobilityServiceSpy.getParkingLotVersions.and.returnValue(of(parkingLot));
+  personWithReducedMobilityServiceSpy.getParkingLotVersions.and.returnValue(
+    of(parkingLot)
+  );
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -56,7 +66,7 @@ describe('PrmParkingLotResolver', () => {
     } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
-      parkingLotResolver(mockRoute, {} as RouterStateSnapshot),
+      parkingLotResolver(mockRoute, {} as RouterStateSnapshot)
     ) as Observable<ReadParkingLotVersion[]>;
 
     result.subscribe((versions) => {

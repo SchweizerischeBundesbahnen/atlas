@@ -3,8 +3,8 @@ import { BusinessOrganisation } from '../../../api';
 import { BusinessOrganisationLanguageService } from './business-organisation-language.service';
 
 @Pipe({
-    name: 'boSelectionDisplay',
-    pure: false
+  name: 'boSelectionDisplay',
+  pure: false,
 })
 export class BoSelectionDisplayPipe implements PipeTransform {
   constructor(
@@ -16,7 +16,9 @@ export class BoSelectionDisplayPipe implements PipeTransform {
       return '--';
     }
     return `${value.organisationNumber} - ${
-      value[this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation()]
+      value[
+        this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation()
+      ]
     } - ${value[this.businessOrganisationLanguageService.getCurrentLanguageDescription()]} - ${
       value.sboid
     }`;

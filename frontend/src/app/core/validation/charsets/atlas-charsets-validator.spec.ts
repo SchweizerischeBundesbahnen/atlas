@@ -31,7 +31,9 @@ describe('Atlas Charsets Validator', () => {
     expect(iso88591(new FormControl('àáâãäåçèéêëìíîðñòôõöö'))).toBeNull();
 
     expect(iso88591(new FormControl('a 你 好'))).toBeDefined();
-    expect(iso88591(new FormControl('\uD83D\uDE00\uD83D\uDE01\uD83D'))).toBeDefined();
+    expect(
+      iso88591(new FormControl('\uD83D\uDE00\uD83D\uDE01\uD83D'))
+    ).toBeDefined();
     expect(iso88591(new FormControl('╗'))).toBeDefined();
   });
 

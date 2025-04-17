@@ -1,10 +1,15 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {DecisionDetailDialogData} from './decision-detail-dialog.service';
-import {DecisionOverrideComponent} from './override/decision-override.component';
-import {DecisionFormGroupBuilder} from '../decision-form/decision-form-group';
-import {DecisionType, ReadDecision, StopPointWorkflowService, WorkflowStatus} from 'src/app/api';
-import {SPECIAL_DECISION_TYPES} from "../../detail-form/stop-point-workflow-detail-form-group";
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DecisionDetailDialogData } from './decision-detail-dialog.service';
+import { DecisionOverrideComponent } from './override/decision-override.component';
+import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
+import {
+  DecisionType,
+  ReadDecision,
+  StopPointWorkflowService,
+  WorkflowStatus,
+} from 'src/app/api';
+import { SPECIAL_DECISION_TYPES } from '../../detail-form/stop-point-workflow-detail-form-group';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
 import { DecisionFormComponent } from '../decision-form/decision-form.component';
@@ -13,15 +18,23 @@ import { AtlasButtonComponent } from '../../../../../../core/components/button/a
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'decision-detail-dialog',
-    templateUrl: './decision-detail-dialog.component.html',
-    imports: [DialogCloseComponent, DialogContentComponent, DecisionFormComponent, DecisionOverrideComponent, DialogFooterComponent, AtlasButtonComponent, TranslatePipe]
+  selector: 'decision-detail-dialog',
+  templateUrl: './decision-detail-dialog.component.html',
+  imports: [
+    DialogCloseComponent,
+    DialogContentComponent,
+    DecisionFormComponent,
+    DecisionOverrideComponent,
+    DialogFooterComponent,
+    AtlasButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class DecisionDetailDialogComponent implements OnInit {
-
   protected readonly WorkflowStatus = WorkflowStatus;
 
-  @ViewChild(DecisionOverrideComponent) decisionOverrideComponent!: DecisionOverrideComponent;
+  @ViewChild(DecisionOverrideComponent)
+  decisionOverrideComponent!: DecisionOverrideComponent;
 
   existingDecision!: ReadDecision;
   decisionForm = DecisionFormGroupBuilder.buildFormGroup();
@@ -31,13 +44,19 @@ export class DecisionDetailDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<DecisionDetailDialogComponent>,
     private stopPointWorkflowService: StopPointWorkflowService,
-    @Inject(MAT_DIALOG_DATA) protected decisionDetailDialogData: DecisionDetailDialogData,
+    @Inject(MAT_DIALOG_DATA)
+    protected decisionDetailDialogData: DecisionDetailDialogData
   ) {}
 
   ngOnInit() {
-    if (SPECIAL_DECISION_TYPES.includes(this.decisionDetailDialogData.examinant.value.decisionType!)) {
+    if (
+      SPECIAL_DECISION_TYPES.includes(
+        this.decisionDetailDialogData.examinant.value.decisionType!
+      )
+    ) {
       this.specialDecision = true;
-      this.title = 'WORKFLOW.STATUS.' + this.decisionDetailDialogData.workflowStatus;
+      this.title =
+        'WORKFLOW.STATUS.' + this.decisionDetailDialogData.workflowStatus;
     }
     this.decisionForm.patchValue(this.decisionDetailDialogData.examinant.value);
     if (this.decisionDetailDialogData.examinant.controls.judgement.value) {

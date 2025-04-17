@@ -1,10 +1,10 @@
-import {BaseDetailFormGroup} from '../../../../../core/components/base-detail/base-detail-form-group';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { BaseDetailFormGroup } from '../../../../../core/components/base-detail/base-detail-form-group';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
-import {WhitespaceValidator} from '../../../../../core/validation/whitespace/whitespace-validator';
-import {DateRangeValidator} from '../../../../../core/validation/date-range/date-range-validator';
-import {PrmMeanOfTransportHelper} from '../../../util/prm-mean-of-transport-helper';
-import {PrmMeanOfTransportValidator} from '../create-stop-point/prm-mean-of-transport-validator';
+import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';
+import { DateRangeValidator } from '../../../../../core/validation/date-range/date-range-validator';
+import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
+import { PrmMeanOfTransportValidator } from '../create-stop-point/prm-mean-of-transport-validator';
 import {
   BooleanOptionalAttributeType,
   MeanOfTransport,
@@ -34,8 +34,12 @@ export interface StopPointDetailFormGroup extends BaseDetailFormGroup {
   interoperable: FormControl<boolean | null | undefined>;
   url: FormControl<string | null | undefined>;
   visualInfo: FormControl<StandardAttributeType | null | undefined>;
-  wheelchairTicketMachine: FormControl<StandardAttributeType | null | undefined>;
-  assistanceRequestFulfilled: FormControl<BooleanOptionalAttributeType | null | undefined>;
+  wheelchairTicketMachine: FormControl<
+    StandardAttributeType | null | undefined
+  >;
+  assistanceRequestFulfilled: FormControl<
+    BooleanOptionalAttributeType | null | undefined
+  >;
   ticketMachine: FormControl<BooleanOptionalAttributeType | null | undefined>;
   number: FormControl<number | null | undefined>;
 }
@@ -64,8 +68,10 @@ export class StopPointFormGroupBuilder {
       {
         number: new FormControl(version.number.number),
         sloid: new FormControl(version.sloid),
-        meansOfTransport: new FormControl(version.meansOfTransport,
-          [Validators.required, PrmMeanOfTransportValidator.isReducedOrComplete]),
+        meansOfTransport: new FormControl(version.meansOfTransport, [
+          Validators.required,
+          PrmMeanOfTransportValidator.isReducedOrComplete,
+        ]),
         freeText: new FormControl(version.freeText, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
@@ -82,27 +88,43 @@ export class StopPointFormGroupBuilder {
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(75),
         ]),
-        alternativeTransport: new FormControl(version.alternativeTransport, [Validators.required]),
-        shuttleService: new FormControl(version.shuttleService, [Validators.required]),
-        alternativeTransportCondition: new FormControl(version.alternativeTransportCondition, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        assistanceAvailability: new FormControl(version.assistanceAvailability, [
+        alternativeTransport: new FormControl(version.alternativeTransport, [
           Validators.required,
         ]),
+        shuttleService: new FormControl(version.shuttleService, [
+          Validators.required,
+        ]),
+        alternativeTransportCondition: new FormControl(
+          version.alternativeTransportCondition,
+          [
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            Validators.maxLength(2000),
+          ]
+        ),
+        assistanceAvailability: new FormControl(
+          version.assistanceAvailability,
+          [Validators.required]
+        ),
         assistanceCondition: new FormControl(version.assistanceCondition, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
-        assistanceService: new FormControl(version.assistanceService, [Validators.required]),
-        audioTicketMachine: new FormControl(version.audioTicketMachine, [Validators.required]),
+        assistanceService: new FormControl(version.assistanceService, [
+          Validators.required,
+        ]),
+        audioTicketMachine: new FormControl(version.audioTicketMachine, [
+          Validators.required,
+        ]),
         additionalInformation: new FormControl(version.additionalInformation, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
-        dynamicAudioSystem: new FormControl(version.dynamicAudioSystem, [Validators.required]),
-        dynamicOpticSystem: new FormControl(version.dynamicOpticSystem, [Validators.required]),
+        dynamicAudioSystem: new FormControl(version.dynamicAudioSystem, [
+          Validators.required,
+        ]),
+        dynamicOpticSystem: new FormControl(version.dynamicOpticSystem, [
+          Validators.required,
+        ]),
         infoTicketMachine: new FormControl(version.infoTicketMachine, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
@@ -113,27 +135,32 @@ export class StopPointFormGroupBuilder {
           Validators.maxLength(500),
         ]),
         visualInfo: new FormControl(version.visualInfo, [Validators.required]),
-        wheelchairTicketMachine: new FormControl(version.wheelchairTicketMachine, [
+        wheelchairTicketMachine: new FormControl(
+          version.wheelchairTicketMachine,
+          [Validators.required]
+        ),
+        assistanceRequestFulfilled: new FormControl(
+          version.assistanceRequestFulfilled,
+          [Validators.required]
+        ),
+        ticketMachine: new FormControl(version.ticketMachine, [
           Validators.required,
         ]),
-        assistanceRequestFulfilled: new FormControl(version.assistanceRequestFulfilled, [
-          Validators.required,
-        ]),
-        ticketMachine: new FormControl(version.ticketMachine, [Validators.required]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
+          [Validators.required]
         ),
-        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
-          Validators.required,
-        ]),
+        validTo: new FormControl(
+          version.validTo ? moment(version.validTo) : version.validTo,
+          [Validators.required]
+        ),
         etagVersion: new FormControl(version.etagVersion),
         creationDate: new FormControl(version.creationDate),
         editionDate: new FormControl(version.editionDate),
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
@@ -142,26 +169,29 @@ export class StopPointFormGroupBuilder {
       {
         number: new FormControl(version.number.number),
         sloid: new FormControl(version.sloid),
-        meansOfTransport: new FormControl(version.meansOfTransport,
-          [Validators.required, PrmMeanOfTransportValidator.isReducedOrComplete]),
+        meansOfTransport: new FormControl(version.meansOfTransport, [
+          Validators.required,
+          PrmMeanOfTransportValidator.isReducedOrComplete,
+        ]),
         freeText: new FormControl(version.freeText, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
+          [Validators.required]
         ),
-        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
-          Validators.required,
-        ]),
+        validTo: new FormControl(
+          version.validTo ? moment(version.validTo) : version.validTo,
+          [Validators.required]
+        ),
         etagVersion: new FormControl(version.etagVersion),
         creationDate: new FormControl(version.creationDate),
         editionDate: new FormControl(version.editionDate),
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
@@ -203,20 +233,26 @@ export class StopPointFormGroupBuilder {
         editor: new FormControl(),
         creator: new FormControl(),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
-  static getWritableStopPoint(form: FormGroup<StopPointDetailFormGroup>): StopPointVersion {
+  static getWritableStopPoint(
+    form: FormGroup<StopPointDetailFormGroup>
+  ): StopPointVersion {
     const value = form.value;
-    const isReduced = PrmMeanOfTransportHelper.isReduced(value.meansOfTransport!);
+    const isReduced = PrmMeanOfTransportHelper.isReduced(
+      value.meansOfTransport!
+    );
     if (isReduced) {
       return this.getWritableReducedStopPoint(form);
     }
     return this.getWritableCompleteStopPoint(form);
   }
 
-  private static getWritableCompleteStopPoint(form: FormGroup<StopPointDetailFormGroup>) {
+  private static getWritableCompleteStopPoint(
+    form: FormGroup<StopPointDetailFormGroup>
+  ) {
     const value = form.value;
     return {
       sloid: value.sloid!,
@@ -253,7 +289,9 @@ export class StopPointFormGroupBuilder {
     };
   }
 
-  private static getWritableReducedStopPoint(form: FormGroup<StopPointDetailFormGroup>) {
+  private static getWritableReducedStopPoint(
+    form: FormGroup<StopPointDetailFormGroup>
+  ) {
     const value = form.value;
     return {
       sloid: value.sloid!,
@@ -274,12 +312,14 @@ export class StopPointFormGroupBuilder {
     return new FormGroup<MeanOfTransportFormGroup>({
       meansOfTransport: new FormControl(
         [],
-        [Validators.required, PrmMeanOfTransportValidator.isReducedOrComplete],
+        [Validators.required, PrmMeanOfTransportValidator.isReducedOrComplete]
       ),
     });
   }
 
-  static addCompleteRecordingValidation(form: FormGroup<StopPointDetailFormGroup>) {
+  static addCompleteRecordingValidation(
+    form: FormGroup<StopPointDetailFormGroup>
+  ) {
     form.controls.address.addValidators([
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       Validators.maxLength(2000),
@@ -321,11 +361,15 @@ export class StopPointFormGroupBuilder {
     ]);
     form.controls.visualInfo.addValidators([Validators.required]);
     form.controls.wheelchairTicketMachine.addValidators([Validators.required]);
-    form.controls.assistanceRequestFulfilled.addValidators([Validators.required]);
+    form.controls.assistanceRequestFulfilled.addValidators([
+      Validators.required,
+    ]);
     form.controls.ticketMachine.addValidators([Validators.required]);
   }
 
-  static removeCompleteRecordingValidation(form: FormGroup<StopPointDetailFormGroup>) {
+  static removeCompleteRecordingValidation(
+    form: FormGroup<StopPointDetailFormGroup>
+  ) {
     const completeRecordingValidation = [
       form.controls.address,
       form.controls.zipCode,
@@ -348,13 +392,15 @@ export class StopPointFormGroupBuilder {
       form.controls.ticketMachine,
     ];
     completeRecordingValidation.forEach((control) => {
-      if (control){
-        control.clearValidators()
+      if (control) {
+        control.clearValidators();
       }
     });
   }
 
-  static populateDropdownsForCompleteWithDefaultValue(form: FormGroup<StopPointDetailFormGroup>) {
+  static populateDropdownsForCompleteWithDefaultValue(
+    form: FormGroup<StopPointDetailFormGroup>
+  ) {
     const dropdownControlsToPopulateWithDefaultValue = [
       form.controls.assistanceAvailability,
       form.controls.assistanceAvailability,

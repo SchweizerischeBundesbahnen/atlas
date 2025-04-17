@@ -1,9 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {environment} from '../../../../environments/environment';
-import { ActivatedRouteSnapshot, NavigationEnd, Router, RouterLink } from '@angular/router';
-import {filter, map} from 'rxjs/operators';
-import {Observable} from 'rxjs';
-import {NON_PROD_STAGES, Stages} from '../../constants/stages';
+import { Component, OnInit } from '@angular/core';
+import { environment } from '../../../../environments/environment';
+import {
+  ActivatedRouteSnapshot,
+  NavigationEnd,
+  Router,
+  RouterLink,
+} from '@angular/router';
+import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { NON_PROD_STAGES, Stages } from '../../constants/stages';
 import { MatToolbar } from '@angular/material/toolbar';
 import { NgIf, NgClass, AsyncPipe } from '@angular/common';
 import { InfoIconComponent } from '../../form-components/info-icon/info-icon.component';
@@ -13,10 +18,21 @@ import { UserComponent } from '../user/user.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss'],
-    imports: [MatToolbar, RouterLink, NgIf, InfoIconComponent, MaintenanceIconComponent, NgClass, LanguageSwitcherComponent, UserComponent, AsyncPipe, TranslatePipe]
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
+  imports: [
+    MatToolbar,
+    RouterLink,
+    NgIf,
+    InfoIconComponent,
+    MaintenanceIconComponent,
+    NgClass,
+    LanguageSwitcherComponent,
+    UserComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class HeaderComponent implements OnInit {
   version: string = environment.appVersion;
@@ -30,7 +46,9 @@ export class HeaderComponent implements OnInit {
   constructor(router: Router) {
     this.headerTitle$ = router.events.pipe(
       filter((e) => e instanceof NavigationEnd),
-      map(() => this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root))
+      map(() =>
+        this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root)
+      )
     );
   }
 

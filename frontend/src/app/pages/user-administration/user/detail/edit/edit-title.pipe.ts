@@ -3,8 +3,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { User } from '../../../../../api';
 
 @Pipe({
-    name: 'editTitle',
-    pure: true
+  name: 'editTitle',
+  pure: true,
 })
 export class EditTitlePipe implements PipeTransform {
   constructor(private readonly translatePipe: TranslatePipe) {}

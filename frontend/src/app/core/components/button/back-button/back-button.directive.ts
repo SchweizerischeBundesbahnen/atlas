@@ -3,7 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Directive({ selector: '[backButton]' })
 export class BackButtonDirective {
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   @HostListener('click')
   onClick(): void {

@@ -8,12 +8,18 @@ import SpyObj = jasmine.SpyObj;
 
 describe('ValidityService', () => {
   let service: ValidityService;
-  const dialogService: SpyObj<DialogService> = jasmine.createSpyObj('dialogService', ['confirm']);
+  const dialogService: SpyObj<DialogService> = jasmine.createSpyObj(
+    'dialogService',
+    ['confirm']
+  );
   dialogService.confirm.and.returnValue(of(true));
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ValidityService, { provide: DialogService, useValue: dialogService }],
+      providers: [
+        ValidityService,
+        { provide: DialogService, useValue: dialogService },
+      ],
     });
     service = TestBed.inject(ValidityService);
   });
@@ -43,7 +49,7 @@ describe('ValidityService', () => {
       new FormGroup({
         validFrom: new FormControl(moment('2023-01-01')),
         validTo: new FormControl(moment('2023-12-31')),
-      }),
+      })
     );
 
     const updateForm = new FormGroup({

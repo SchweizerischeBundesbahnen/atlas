@@ -18,16 +18,19 @@ describe('ContactPointFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [AppTestingModule, ContactPointFormComponent,
+      imports: [
+        AppTestingModule,
+        ContactPointFormComponent,
         TextFieldComponent,
         AtlasLabelFieldComponent,
         MockAtlasFieldErrorComponent,
         AtlasSpacerComponent,
         InfoIconComponent,
         SelectComponent,
-        CommentComponent],
-    providers: [{ provide: TranslatePipe }],
-});
+        CommentComponent,
+      ],
+      providers: [{ provide: TranslatePipe }],
+    });
     fixture = TestBed.createComponent(ContactPointFormComponent);
     component = fixture.componentInstance;
     component.form = ContactPointFormGroupBuilder.buildFormGroup();

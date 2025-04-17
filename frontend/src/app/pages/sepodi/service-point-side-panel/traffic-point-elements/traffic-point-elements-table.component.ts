@@ -18,28 +18,48 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-service-point-traffic-point-elements-table',
-    templateUrl: './traffic-point-elements-table.component.html',
-    styleUrls: ['./traffic-point-elements-table.component.scss'],
-    imports: [NgIf, AtlasButtonComponent, NavigationSepodiPrmComponent, TableComponent, DetailFooterComponent, TranslatePipe]
+  selector: 'app-service-point-traffic-point-elements-table',
+  templateUrl: './traffic-point-elements-table.component.html',
+  styleUrls: ['./traffic-point-elements-table.component.scss'],
+  imports: [
+    NgIf,
+    AtlasButtonComponent,
+    NavigationSepodiPrmComponent,
+    TableComponent,
+    DetailFooterComponent,
+    TranslatePipe,
+  ],
 })
 export class TrafficPointElementsTableComponent implements OnInit {
-
   tableColumnsPlatforms: TableColumn<ReadTrafficPointElementVersion>[] = [
-    { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
+    {
+      headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION',
+      value: 'designation',
+    },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
     {
       headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION_OPERATIONAL',
       value: 'designationOperational',
     },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    {
+      headerTitle: 'COMMON.VALID_FROM',
+      value: 'validFrom',
+      formatAsDate: true,
+    },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
   tableColumnsAreas: TableColumn<ReadTrafficPointElementVersion>[] = [
-    { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
+    {
+      headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION',
+      value: 'designation',
+    },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    {
+      headerTitle: 'COMMON.VALID_FROM',
+      value: 'validFrom',
+      formatAsDate: true,
+    },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
@@ -55,7 +75,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
     private trafficPointElementService: TrafficPointElementsService,
     private tableService: TableService,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -66,9 +86,10 @@ export class TrafficPointElementsTableComponent implements OnInit {
         {},
         this.isTrafficPointArea
           ? Pages.TRAFFIC_POINT_ELEMENTS_AREA
-          : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM,
+          : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM
       );
-      const servicePoints: ReadServicePointVersion[] = this.route.parent!.snapshot.data.servicePoint;
+      const servicePoints: ReadServicePointVersion[] =
+        this.route.parent!.snapshot.data.servicePoint;
       this.servicePointVersion = servicePoints[servicePoints.length - 1];
     });
   }
@@ -79,23 +100,33 @@ export class TrafficPointElementsTableComponent implements OnInit {
 
   addNewTrafficPointElement() {
     this.router
-      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path, 'add'], {
-        state: {
-          servicePointNumber: this.servicePointNumber,
-          isTrafficPointArea: this.isTrafficPointArea,
-        },
-      })
+      .navigate(
+        [Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path, 'add'],
+        {
+          state: {
+            servicePointNumber: this.servicePointNumber,
+            isTrafficPointArea: this.isTrafficPointArea,
+          },
+        }
+      )
       .then();
   }
 
   editVersion($event: ReadTrafficPointElementVersion) {
     this.router
-      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path, $event.sloid], {
-        state: {
-          servicePointNumber: this.servicePointNumber,
-          isTrafficPointArea: this.isTrafficPointArea,
-        },
-      })
+      .navigate(
+        [
+          Pages.SEPODI.path,
+          Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
+          $event.sloid,
+        ],
+        {
+          state: {
+            servicePointNumber: this.servicePointNumber,
+            isTrafficPointArea: this.isTrafficPointArea,
+          },
+        }
+      )
       .then();
   }
 
@@ -114,13 +145,15 @@ export class TrafficPointElementsTableComponent implements OnInit {
   }
 
   getTrafficPointElements(pagination: TablePagination, isArea: boolean) {
-    const getEndpoint = isArea ? 'getAreasOfServicePoint' : 'getPlatformsOfServicePoint';
+    const getEndpoint = isArea
+      ? 'getAreasOfServicePoint'
+      : 'getPlatformsOfServicePoint';
 
     this.trafficPointElementService[getEndpoint](
       this.servicePointNumber,
       pagination.page,
       pagination.size,
-      [pagination.sort ?? 'designation,asc'],
+      [pagination.sort ?? 'designation,asc']
     ).subscribe((container) => {
       this.trafficPointElementRows = container.objects!;
       this.totalCount$ = container.totalCount!;

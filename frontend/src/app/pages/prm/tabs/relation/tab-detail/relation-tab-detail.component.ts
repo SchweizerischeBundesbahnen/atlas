@@ -12,14 +12,25 @@ import {
 } from '../../../../../api';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
 import { Pages } from '../../../../pages';
-import { catchError, EMPTY, finalize, Observable, of, switchMap, take } from 'rxjs';
+import {
+  catchError,
+  EMPTY,
+  finalize,
+  Observable,
+  of,
+  switchMap,
+  take,
+} from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { map, tap } from 'rxjs/operators';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import { RelationFormGroup, RelationFormGroupBuilder } from './relation-form-group';
+import {
+  RelationFormGroup,
+  RelationFormGroupBuilder,
+} from './relation-form-group';
 import { MatSelectChange } from '@angular/material/select';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
@@ -35,10 +46,24 @@ import { AtlasButtonComponent } from '../../../../../core/components/button/atla
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-relation-tab-detail',
-    templateUrl: './relation-tab-detail.component.html',
-    providers: [ValidityService],
-    imports: [DetailPageContentComponent, SelectComponent, AtlasSpacerComponent, NgIf, SwitchVersionComponent, DateRangeComponent, ReactiveFormsModule, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, AsyncPipe, TranslatePipe]
+  selector: 'app-relation-tab-detail',
+  templateUrl: './relation-tab-detail.component.html',
+  providers: [ValidityService],
+  imports: [
+    DetailPageContentComponent,
+    SelectComponent,
+    AtlasSpacerComponent,
+    NgIf,
+    SwitchVersionComponent,
+    DateRangeComponent,
+    ReactiveFormsModule,
+    MatDivider,
+    UserDetailInfoComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   referencePoints: ReadReferencePointVersion[] = [];
@@ -72,18 +97,20 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
     private readonly dialogService: DialogService,
     private readonly notificationService: NotificationService,
-    private readonly validityService: ValidityService,
+    private readonly validityService: ValidityService
   ) {}
 
   ngOnInit(): void {
     this.checkIfRelationsAvailable();
     this.elementSloid = this.route.parent!.snapshot.params.sloid!;
-    this.parentServicePointSloid = this.route.parent!.snapshot.params.stopPointSloid;
+    this.parentServicePointSloid =
+      this.route.parent!.snapshot.params.stopPointSloid;
     this.businessOrganisations = [
       ...new Set(
-        (this.route.parent!.snapshot.data.servicePoint as ReadServicePointVersion[]).map(
-          (version) => version.businessOrganisation,
-        ),
+        (
+          this.route.parent!.snapshot.data
+            .servicePoint as ReadServicePointVersion[]
+        ).map((version) => version.businessOrganisation)
       ),
     ];
     this.personWithReducedMobilityService
@@ -102,7 +129,10 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     this.loadRelations(this.selectedReferencePointSloid!);
   }
 
-  versionChanged(currentVersion: ReadRelationVersion, currentVersionIdx: number) {
+  versionChanged(
+    currentVersion: ReadRelationVersion,
+    currentVersionIdx: number
+  ) {
     this.form = RelationFormGroupBuilder.buildFormGroup(currentVersion);
     this.currentRelationId = currentVersion.id!;
     this.currentRelation = currentVersion;
@@ -119,14 +149,16 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
       .pipe(
         take(1),
         tap(() => {
-          this.notificationService.success('PRM.RELATIONS.NOTIFICATION.EDIT_SUCCESS');
+          this.notificationService.success(
+            'PRM.RELATIONS.NOTIFICATION.EDIT_SUCCESS'
+          );
           this.loadRelations(this.selectedReferencePointSloid!);
         }),
         catchError(() => {
           this.loadRelations(this.selectedReferencePointSloid!);
           return EMPTY;
         }),
-        finalize(() => (this.saving = false)),
+        finalize(() => (this.saving = false))
       )
       .subscribe();
   }
@@ -150,7 +182,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
           } else {
             return EMPTY;
           }
-        }),
+        })
       );
     } else {
       return EMPTY;
@@ -160,7 +192,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   private update(relationVersion: RelationVersion) {
     return this.personWithReducedMobilityService.updateRelation(
       this.currentRelationId,
-      relationVersion,
+      relationVersion
     );
   }
 
@@ -180,24 +212,34 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
       .pipe(
         map((relationVersions) => {
           const relationsOfSelectedRP = relationVersions.filter(
-            (relationVersion) => relationVersion.referencePointSloid === referencePointSloid,
+            (relationVersion) =>
+              relationVersion.referencePointSloid === referencePointSloid
           );
           VersionsHandlingService.addVersionNumbers(relationsOfSelectedRP);
           this.currentRelation =
-            VersionsHandlingService.determineDefaultVersionByValidity(relationsOfSelectedRP);
-          this.form = RelationFormGroupBuilder.buildFormGroup(this.currentRelation);
+            VersionsHandlingService.determineDefaultVersionByValidity(
+              relationsOfSelectedRP
+            );
+          this.form = RelationFormGroupBuilder.buildFormGroup(
+            this.currentRelation
+          );
           this.currentRelationId = this.currentRelation.id!;
-          this.selectedRelationVersion = relationsOfSelectedRP.indexOf(this.currentRelation) + 1;
+          this.selectedRelationVersion =
+            relationsOfSelectedRP.indexOf(this.currentRelation) + 1;
           return relationsOfSelectedRP;
-        }),
+        })
       );
   }
 
   private checkIfRelationsAvailable() {
     const stopPoint = this.route.parent!.snapshot.data.stopPoint;
-    const reduced = PrmMeanOfTransportHelper.isReduced(stopPoint[0].meansOfTransport);
+    const reduced = PrmMeanOfTransportHelper.isReduced(
+      stopPoint[0].meansOfTransport
+    );
     if (reduced) {
-      this.router.navigate([Pages.PRM.path, Pages.STOP_POINTS.path, stopPoint[0].sloid]).then();
+      this.router
+        .navigate([Pages.PRM.path, Pages.STOP_POINTS.path, stopPoint[0].sloid])
+        .then();
     }
   }
 
@@ -206,7 +248,9 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
       .pipe(take(1))
       .subscribe(async (confirmed) => {
         if (confirmed) {
-          this.form = RelationFormGroupBuilder.buildFormGroup(this.currentRelation);
+          this.form = RelationFormGroupBuilder.buildFormGroup(
+            this.currentRelation
+          );
           this.editing = false;
         }
       });

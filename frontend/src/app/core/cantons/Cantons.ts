@@ -37,9 +37,13 @@ export class Cantons {
     enumCanton: 'SWISS' as SwissCanton,
   };
 
-  public static cantonsWithSwiss: Canton[] = [Cantons.swiss].concat(Cantons.cantons);
+  public static cantonsWithSwiss: Canton[] = [Cantons.swiss].concat(
+    Cantons.cantons
+  );
 
-  public static getSwissCantonEnum(canton: string | null): SwissCanton | undefined {
+  public static getSwissCantonEnum(
+    canton: string | null
+  ): SwissCanton | undefined {
     if (!canton) {
       return undefined;
     }
@@ -52,12 +56,18 @@ export class Cantons {
     return foundCanton.enumCanton;
   }
 
-  public static fromSwissCanton(swissCanton: SwissCanton | undefined): Canton | undefined {
+  public static fromSwissCanton(
+    swissCanton: SwissCanton | undefined
+  ): Canton | undefined {
     return this.cantons.find((canton) => canton.enumCanton === swissCanton);
   }
 
-  public static getSwissCantonFromShort(cantonShort?: string): SwissCanton | undefined {
-    const foundCanton = Cantons.cantons.find((c) => c.short.toLowerCase() === cantonShort?.toLowerCase());
+  public static getSwissCantonFromShort(
+    cantonShort?: string
+  ): SwissCanton | undefined {
+    const foundCanton = Cantons.cantons.find(
+      (c) => c.short.toLowerCase() === cantonShort?.toLowerCase()
+    );
     return foundCanton?.enumCanton;
   }
 }

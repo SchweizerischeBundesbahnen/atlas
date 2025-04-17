@@ -12,9 +12,9 @@ describe('SwitchVersionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, SwitchVersionComponent],
-    providers: [TranslatePipe],
-}).compileComponents();
+      imports: [AppTestingModule, SwitchVersionComponent],
+      providers: [TranslatePipe],
+    }).compileComponents();
   });
 
   beforeEach(() => {

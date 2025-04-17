@@ -1,5 +1,12 @@
-import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import {FileUploadError} from './file-upload-error';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { FileUploadError } from './file-upload-error';
 import { FileDropDirective } from './file-drop/file-drop.directive';
 import { NgIf, NgFor, NgStyle } from '@angular/common';
 import { AtlasButtonComponent } from '../button/atlas-button.component';
@@ -10,10 +17,21 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { FileSizePipe } from './file-size/file-size.pipe';
 
 @Component({
-    selector: 'atlas-file-upload',
-    templateUrl: './file-upload.component.html',
-    styleUrls: ['./file-upload.component.scss'],
-    imports: [FileDropDirective, NgIf, AtlasButtonComponent, DownloadIconComponent, UploadIconComponent, NgFor, FileComponent, NgStyle, TranslatePipe, FileSizePipe]
+  selector: 'atlas-file-upload',
+  templateUrl: './file-upload.component.html',
+  styleUrls: ['./file-upload.component.scss'],
+  imports: [
+    FileDropDirective,
+    NgIf,
+    AtlasButtonComponent,
+    DownloadIconComponent,
+    UploadIconComponent,
+    NgFor,
+    FileComponent,
+    NgStyle,
+    TranslatePipe,
+    FileSizePipe,
+  ],
 })
 export class FileUploadComponent {
   @Input() acceptedFileExtension!: string;
@@ -66,11 +84,13 @@ export class FileUploadComponent {
   }
 
   get combinedFileSize() {
-    return this.uploadedFiles.map((file) => file.size).reduce((sum, current) => sum + current, 0);
+    return this.uploadedFiles
+      .map((file) => file.size)
+      .reduce((sum, current) => sum + current, 0);
   }
 
   private validateFile(file: File) {
-    if(!this.acceptedFileType.includes(file.type)){
+    if (!this.acceptedFileType.includes(file.type)) {
       this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.TYPE');
       return false;
     }
@@ -98,8 +118,9 @@ export class FileUploadComponent {
 
   private fileCountErrorAlreadyAdded() {
     return (
-      this.errorFiles.filter((error) => error.errorMessage === 'COMMON.FILEUPLOAD.ERROR.FILE_COUNT')
-        .length > 0
+      this.errorFiles.filter(
+        (error) => error.errorMessage === 'COMMON.FILEUPLOAD.ERROR.FILE_COUNT'
+      ).length > 0
     );
   }
 
@@ -116,7 +137,9 @@ export class FileUploadComponent {
   }
 
   fileDeleted(file: { name: string }) {
-    this.uploadedFiles = this.uploadedFiles.filter((item) => item.name !== file.name);
+    this.uploadedFiles = this.uploadedFiles.filter(
+      (item) => item.name !== file.name
+    );
     this.clearErrors();
     this.uploadedFilesChange.emit(this.uploadedFiles);
   }
@@ -124,5 +147,4 @@ export class FileUploadComponent {
   downloadExcel() {
     this.downloadExcelClick.emit();
   }
-
 }

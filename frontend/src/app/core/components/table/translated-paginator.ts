@@ -16,13 +16,15 @@ export class TranslatedPaginator extends MatPaginatorIntl {
   }
 
   translateLabels(): void {
-    this.translate.get([ITEMS_PER_PAGE, NEXT_PAGE, PREV_PAGE]).subscribe((translation) => {
-      this.itemsPerPageLabel = translation[ITEMS_PER_PAGE];
-      this.nextPageLabel = translation[NEXT_PAGE];
-      this.previousPageLabel = translation[PREV_PAGE];
-      this.getRangeLabel = this.getRangeLabel.bind(this);
-      this.changes.next();
-    });
+    this.translate
+      .get([ITEMS_PER_PAGE, NEXT_PAGE, PREV_PAGE])
+      .subscribe((translation) => {
+        this.itemsPerPageLabel = translation[ITEMS_PER_PAGE];
+        this.nextPageLabel = translation[NEXT_PAGE];
+        this.previousPageLabel = translation[PREV_PAGE];
+        this.getRangeLabel = this.getRangeLabel.bind(this);
+        this.changes.next();
+      });
   }
 
   getRangeLabel = (page: number, pageSize: number, length: number): string => {
@@ -32,7 +34,9 @@ export class TranslatedPaginator extends MatPaginatorIntl {
     length = Math.max(length, 0);
     const startIndex = page * pageSize;
     const endIndex =
-      startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
+      startIndex < length
+        ? Math.min(startIndex + pageSize, length)
+        : startIndex + pageSize;
     return this.translate.instant(RANGE_LABEL2, {
       startIndex: startIndex + 1,
       endIndex,

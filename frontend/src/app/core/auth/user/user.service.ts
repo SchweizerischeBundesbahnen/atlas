@@ -15,7 +15,7 @@ export class UserService {
 
   constructor(
     private userAdministrationService: UserAdministrationService,
-    private apiConfigService: ApiConfigService,
+    private apiConfigService: ApiConfigService
   ) {}
 
   setCurrentUserAndLoadPermissions(user: User) {
@@ -61,7 +61,7 @@ export class UserService {
         this.permissionsLoaded.next();
         this.userChanged.next();
       }),
-      map(() => this.currentUser!),
+      map(() => this.currentUser!)
     );
   }
 }

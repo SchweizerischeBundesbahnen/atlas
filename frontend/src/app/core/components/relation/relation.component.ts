@@ -1,16 +1,52 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
 import { MatSort, Sort, MatSortHeader } from '@angular/material/sort';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from '@angular/material/table';
+import {
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow,
+  MatNoDataRow,
+} from '@angular/material/table';
 import { NgIf, NgClass, NgFor } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-relation',
-    templateUrl: './relation.component.html',
-    styleUrls: ['./relation.component.scss'],
-    imports: [NgIf, MatTable, MatSort, NgClass, NgFor, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, TranslatePipe]
+  selector: 'app-relation',
+  templateUrl: './relation.component.html',
+  styleUrls: ['./relation.component.scss'],
+  imports: [
+    NgIf,
+    MatTable,
+    MatSort,
+    NgClass,
+    NgFor,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatSortHeader,
+    MatCellDef,
+    MatCell,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatNoDataRow,
+    TranslatePipe,
+  ],
 })
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export class RelationComponent<RECORD_TYPE> {
@@ -51,16 +87,22 @@ export class RelationComponent<RECORD_TYPE> {
     return DateService.getDateFormatted(date);
   }
 
-  getValue(row: RECORD_TYPE, column: TableColumn<RECORD_TYPE>): string | Date | number {
+  getValue(
+    row: RECORD_TYPE,
+    column: TableColumn<RECORD_TYPE>
+  ): string | Date | number {
     if (column.formatAsDate) {
       return this.formatDate(
-        this.readValueFromObject(row, column.value ?? column.valuePath!) as Date,
+        this.readValueFromObject(row, column.value ?? column.valuePath!) as Date
       );
     }
     return this.readValueFromObject(row, column.value ?? column.valuePath!);
   }
 
-  private readValueFromObject(obj: RECORD_TYPE, path: string): string | Date | number {
+  private readValueFromObject(
+    obj: RECORD_TYPE,
+    path: string
+  ): string | Date | number {
     const objectPath = path.split('.');
     return objectPath.reduce((prev, curr) => prev[curr], obj as any);
   }
@@ -104,7 +146,9 @@ export class RelationComponent<RECORD_TYPE> {
   }
 
   private getValuePathFromColumnName(column: string): string {
-    const filteredColumn = this.tableColumns.filter((i) => i.columnDef == column)[0];
+    const filteredColumn = this.tableColumns.filter(
+      (i) => i.columnDef == column
+    )[0];
     return filteredColumn.value ?? filteredColumn.valuePath!;
   }
 

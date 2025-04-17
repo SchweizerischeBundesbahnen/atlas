@@ -1,6 +1,6 @@
-import {BusinessOrganisationVersion} from '../../../api';
-import {BoDisplayPipe} from "./bo-display.pipe";
-import {of} from "rxjs";
+import { BusinessOrganisationVersion } from '../../../api';
+import { BoDisplayPipe } from './bo-display.pipe';
+import { of } from 'rxjs';
 
 const version: BusinessOrganisationVersion = {
   id: 1234,
@@ -20,27 +20,35 @@ const version: BusinessOrganisationVersion = {
 };
 
 describe('BoDisplayPipe', () => {
-
   let boDisplayPipe: BoDisplayPipe;
 
-  const boSelectionDisplayPipe = jasmine.createSpyObj('BoSelectionDisplayPipe', {
-    transform: '123 - 123 - 123 - sboid',
-  });
+  const boSelectionDisplayPipe = jasmine.createSpyObj(
+    'BoSelectionDisplayPipe',
+    {
+      transform: '123 - 123 - 123 - sboid',
+    }
+  );
 
-  const businessOrganisationsService = jasmine.createSpyObj('BusinessOrganisationsService', {
-    getVersions: of([version]),
-  });
+  const businessOrganisationsService = jasmine.createSpyObj(
+    'BusinessOrganisationsService',
+    {
+      getVersions: of([version]),
+    }
+  );
 
   beforeEach(() => {
-    boDisplayPipe = new BoDisplayPipe(boSelectionDisplayPipe, businessOrganisationsService);
+    boDisplayPipe = new BoDisplayPipe(
+      boSelectionDisplayPipe,
+      businessOrganisationsService
+    );
   });
 
   it('create an instance', () => {
     expect(boDisplayPipe).toBeTruthy();
   });
 
-  it('should transform given sboid', doneCallback => {
-    boDisplayPipe.transform('sboid').subscribe(result => {
+  it('should transform given sboid', (doneCallback) => {
+    boDisplayPipe.transform('sboid').subscribe((result) => {
       expect(result).toBe('123 - 123 - 123 - sboid');
 
       expect(boSelectionDisplayPipe.transform).toHaveBeenCalled();
@@ -48,5 +56,4 @@ describe('BoDisplayPipe', () => {
       doneCallback();
     });
   });
-
 });

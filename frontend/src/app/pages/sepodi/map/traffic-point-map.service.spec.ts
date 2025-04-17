@@ -51,15 +51,16 @@ describe('TrafficPointMapService', () => {
       },
     ] as unknown as MapGeoJSONFeature[];
 
-    const result = TrafficPointMapService.buildTrafficPointPopupInformation(features);
+    const result =
+      TrafficPointMapService.buildTrafficPointPopupInformation(features);
     expect(result).toEqual(
-      '<a href="service-point-directory/traffic-point-elements/ch:1:sloid:0:245">A - ch:1:sloid:0:245</a> <br/>',
+      '<a href="service-point-directory/traffic-point-elements/ch:1:sloid:0:245">A - ch:1:sloid:0:245</a> <br/>'
     );
   });
 
   it('should display TrafficPoints on map', () => {
     trafficPointElementsService.getTrafficPointsOfServicePointValidToday.and.returnValue(
-      of(BERN_WYLEREGG_TRAFFIC_POINTS),
+      of(BERN_WYLEREGG_TRAFFIC_POINTS)
     );
 
     service.displayTrafficPointsOnMap(8507000);

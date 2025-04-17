@@ -1,19 +1,20 @@
-import {Injectable} from '@angular/core';
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {StopPointRejectWorkflowDialogComponent} from "./stop-point-reject-workflow-dialog.component";
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
-import {RejectType, StopPointRejectWorkflowDialogData} from "./stop-point-reject-workflow-dialog-data";
+import { Injectable } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { StopPointRejectWorkflowDialogComponent } from './stop-point-reject-workflow-dialog.component';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import {
+  RejectType,
+  StopPointRejectWorkflowDialogData,
+} from './stop-point-reject-workflow-dialog-data';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StopPointRejectWorkflowDialogService {
-
   private dialogRef?: MatDialogRef<StopPointRejectWorkflowDialogComponent>;
 
-  constructor(private dialog: MatDialog) {
-  }
+  constructor(private dialog: MatDialog) {}
 
   openDialog(workflowId: number, rejectType: RejectType): Observable<boolean> {
     const dialogData: StopPointRejectWorkflowDialogData = {
@@ -22,19 +23,19 @@ export class StopPointRejectWorkflowDialogService {
       cancelText: 'DIALOG.CANCEL',
       confirmText: this.getTitle(rejectType),
       workflowId: workflowId,
-      rejectType: rejectType
+      rejectType: rejectType,
     };
     return this.open(dialogData);
   }
 
   getTitle(rejectType: RejectType): string {
-    if (rejectType === "REJECT") {
+    if (rejectType === 'REJECT') {
       return 'WORKFLOW.BUTTON.REJECT';
     }
-    if (rejectType === "CANCEL") {
+    if (rejectType === 'CANCEL') {
       return 'WORKFLOW.BUTTON.CANCEL';
     }
-    throw Error('The given type does not exist!')
+    throw Error('The given type does not exist!');
   }
 
   private open(dialogData: StopPointRejectWorkflowDialogData) {

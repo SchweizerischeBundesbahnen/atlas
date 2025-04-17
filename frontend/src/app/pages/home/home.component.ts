@@ -9,17 +9,17 @@ import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
-    imports: [NgFor, RouterLink, AsyncPipe, TranslatePipe]
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
+  imports: [NgFor, RouterLink, AsyncPipe, TranslatePipe],
 })
 export class HomeComponent {
   readonly enabledPages: Observable<Page[]>;
 
   constructor(private readonly pageService: PageService) {
     this.enabledPages = pageService.enabledPages.pipe(
-      map((pages) => pages.filter((page) => page !== Pages.HOME)),
+      map((pages) => pages.filter((page) => page !== Pages.HOME))
     );
   }
 }

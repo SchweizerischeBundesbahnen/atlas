@@ -6,9 +6,15 @@ import { NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-workflow-form',
-    templateUrl: './workflow-form.component.html',
-    imports: [ReactiveFormsModule, CommentComponent, TextFieldComponent, NgIf, TranslatePipe]
+  selector: 'app-workflow-form',
+  templateUrl: './workflow-form.component.html',
+  imports: [
+    ReactiveFormsModule,
+    CommentComponent,
+    TextFieldComponent,
+    NgIf,
+    TranslatePipe,
+  ],
 })
 export class WorkflowFormComponent {
   @Input() formGroup!: FormGroup;

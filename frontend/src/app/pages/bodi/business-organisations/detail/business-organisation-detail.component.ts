@@ -7,7 +7,12 @@ import {
 } from '../../../../api';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { catchError } from 'rxjs';
@@ -30,10 +35,18 @@ import { SelectComponent } from '../../../../core/form-components/select/select.
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    templateUrl: './business-organisation-detail.component.html',
-    styleUrls: ['./business-organisation-detail.component.scss'],
-    providers: [ValidityService],
-    imports: [BaseDetailComponent, ReactiveFormsModule, NgIf, TextFieldComponent, DateRangeComponent, SelectComponent, TranslatePipe]
+  templateUrl: './business-organisation-detail.component.html',
+  styleUrls: ['./business-organisation-detail.component.scss'],
+  providers: [ValidityService],
+  imports: [
+    BaseDetailComponent,
+    ReactiveFormsModule,
+    NgIf,
+    TextFieldComponent,
+    DateRangeComponent,
+    SelectComponent,
+    TranslatePipe,
+  ],
 })
 export class BusinessOrganisationDetailComponent
   extends BaseDetailController<BusinessOrganisationVersion>
@@ -49,7 +62,7 @@ export class BusinessOrganisationDetailComponent
     protected dialogService: DialogService,
     protected permissionService: PermissionService,
     protected activatedRoute: ActivatedRoute,
-    protected validityService: ValidityService,
+    protected validityService: ValidityService
   ) {
     super(
       router,
@@ -57,7 +70,7 @@ export class BusinessOrganisationDetailComponent
       notificationService,
       permissionService,
       activatedRoute,
-      validityService,
+      validityService
     );
   }
 
@@ -94,9 +107,15 @@ export class BusinessOrganisationDetailComponent
       .updateBusinessOrganisationVersion(this.getId(), this.form.value)
       .pipe(catchError(this.handleError))
       .subscribe(() => {
-        this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS');
+        this.notificationService.success(
+          'BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS'
+        );
         this.router
-          .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, this.record.sboid])
+          .navigate([
+            Pages.BODI.path,
+            Pages.BUSINESS_ORGANISATIONS.path,
+            this.record.sboid,
+          ])
           .then(() => this.ngOnInit());
       });
   }
@@ -107,9 +126,15 @@ export class BusinessOrganisationDetailComponent
       .createBusinessOrganisationVersion(this.form.value)
       .pipe(catchError(this.handleError))
       .subscribe((version) => {
-        this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS');
+        this.notificationService.success(
+          'BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS'
+        );
         this.router
-          .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, version.sboid])
+          .navigate([
+            Pages.BODI.path,
+            Pages.BUSINESS_ORGANISATIONS.path,
+            version.sboid,
+          ])
           .then(() => this.ngOnInit());
       });
   }
@@ -121,23 +146,28 @@ export class BusinessOrganisationDetailComponent
         .revokeBusinessOrganisation(selectedRecord.sboid)
         .subscribe(() => {
           this.notificationService.success(
-            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS',
+            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS'
           );
           this.router
-            .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, selectedRecord.sboid])
+            .navigate([
+              Pages.BODI.path,
+              Pages.BUSINESS_ORGANISATIONS.path,
+              selectedRecord.sboid,
+            ])
             .then(() => this.ngOnInit());
         });
     }
   }
 
   deleteRecord(): void {
-    const selectedVersion: BusinessOrganisationVersion = this.getSelectedRecord();
+    const selectedVersion: BusinessOrganisationVersion =
+      this.getSelectedRecord();
     if (selectedVersion.sboid != null) {
       this.businessOrganisationsService
         .deleteBusinessOrganisation(selectedVersion.sboid)
         .subscribe(() => {
           this.notificationService.success(
-            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS',
+            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
           );
           this.backToOverview();
         });
@@ -197,25 +227,26 @@ export class BusinessOrganisationDetailComponent
           Validators.min(0),
           Validators.max(99999),
         ]),
-        contactEnterpriseEmail: new FormControl(version.contactEnterpriseEmail, [
-          AtlasFieldLengthValidator.length_255,
-          AtlasCharsetsValidator.email,
-        ]),
+        contactEnterpriseEmail: new FormControl(
+          version.contactEnterpriseEmail,
+          [AtlasFieldLengthValidator.length_255, AtlasCharsetsValidator.email]
+        ),
         businessTypes: new FormControl(version.businessTypes),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
+          [Validators.required]
         ),
-        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
-          Validators.required,
-        ]),
+        validTo: new FormControl(
+          version.validTo ? moment(version.validTo) : version.validTo,
+          [Validators.required]
+        ),
         etagVersion: new FormControl(version.etagVersion),
         creationDate: new FormControl(version.creationDate),
         editionDate: new FormControl(version.editionDate),
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 }

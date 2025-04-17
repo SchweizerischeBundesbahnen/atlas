@@ -20,10 +20,23 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { EditTitlePipe } from './edit-title.pipe';
 
 @Component({
-    selector: 'app-user-administration-edit',
-    templateUrl: './user-administration-user-edit.component.html',
-    viewProviders: [UserPermissionManager],
-    imports: [ScrollToTopDirective, DetailPageContainerComponent, DetailPageContentComponent, NgIf, UserAdministrationReadOnlyDataComponent, NgFor, UserAdministrationApplicationConfigComponent, UserDetailInfoComponent, DetailFooterComponent, BackButtonDirective, TranslatePipe, EditTitlePipe]
+  selector: 'app-user-administration-edit',
+  templateUrl: './user-administration-user-edit.component.html',
+  viewProviders: [UserPermissionManager],
+  imports: [
+    ScrollToTopDirective,
+    DetailPageContainerComponent,
+    DetailPageContentComponent,
+    NgIf,
+    UserAdministrationReadOnlyDataComponent,
+    NgFor,
+    UserAdministrationApplicationConfigComponent,
+    UserDetailInfoComponent,
+    DetailFooterComponent,
+    BackButtonDirective,
+    TranslatePipe,
+    EditTitlePipe,
+  ],
 })
 export class UserAdministrationUserEditComponent implements OnInit {
   @Input() user?: User;
@@ -37,13 +50,12 @@ export class UserAdministrationUserEditComponent implements OnInit {
     private readonly dialogService: DialogService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    readonly userPermissionManager: UserPermissionManager,
+    readonly userPermissionManager: UserPermissionManager
   ) {}
 
   ngOnInit() {
-    const permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
-      this.user!,
-    );
+    const permissionsFromUserModelAsArray =
+      this.userService.getPermissionsFromUserModelAsArray(this.user!);
     if (permissionsFromUserModelAsArray.length === 0) {
       this.user = undefined;
       return;
@@ -58,18 +70,22 @@ export class UserAdministrationUserEditComponent implements OnInit {
     this.saveEnabled = false;
     this.userPermissionManager.emitBoFormResetEvent();
     this.userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
-    this.userService.updateUserPermission(this.userPermissionManager.userPermission).subscribe({
-      next: (user: User) => {
-        this.user = user;
-        this.editMode = false;
-        this.userPermissionManager.setPermissions(
-          this.userService.getPermissionsFromUserModelAsArray(this.user),
-        );
-        this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
-        this.convertUserPermissionToRecord();
-      },
-      error: () => (this.saveEnabled = true),
-    });
+    this.userService
+      .updateUserPermission(this.userPermissionManager.userPermission)
+      .subscribe({
+        next: (user: User) => {
+          this.user = user;
+          this.editMode = false;
+          this.userPermissionManager.setPermissions(
+            this.userService.getPermissionsFromUserModelAsArray(this.user)
+          );
+          this.notificationService.success(
+            'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
+          );
+          this.convertUserPermissionToRecord();
+        },
+        error: () => (this.saveEnabled = true),
+      });
   }
 
   cancelEdit(showDialog = true): void {
@@ -81,7 +97,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
       if (result) {
         this.editMode = false;
         this.userPermissionManager.setPermissions(
-          this.userService.getPermissionsFromUserModelAsArray(this.user!),
+          this.userService.getPermissionsFromUserModelAsArray(this.user!)
         );
         this.userPermissionManager.emitBoFormResetEvent();
       }
@@ -89,24 +105,27 @@ export class UserAdministrationUserEditComponent implements OnInit {
   }
 
   private convertUserPermissionToRecord(): void {
-    const permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
-      this.user!,
-    );
+    const permissionsFromUserModelAsArray =
+      this.userService.getPermissionsFromUserModelAsArray(this.user!);
     if (permissionsFromUserModelAsArray.length > 0) {
-      const firstCreated = permissionsFromUserModelAsArray.reduce((previousValue, currentValue) => {
-        return moment(new Date(previousValue.creationDate!)).isBefore(
-          moment(new Date(currentValue.creationDate!)),
-        )
-          ? previousValue
-          : currentValue;
-      });
-      const lastEdited = permissionsFromUserModelAsArray.reduce((previousValue, currentValue) => {
-        return moment(new Date(previousValue.editionDate!)).isAfter(
-          moment(new Date(currentValue.editionDate!)),
-        )
-          ? previousValue
-          : currentValue;
-      });
+      const firstCreated = permissionsFromUserModelAsArray.reduce(
+        (previousValue, currentValue) => {
+          return moment(new Date(previousValue.creationDate!)).isBefore(
+            moment(new Date(currentValue.creationDate!))
+          )
+            ? previousValue
+            : currentValue;
+        }
+      );
+      const lastEdited = permissionsFromUserModelAsArray.reduce(
+        (previousValue, currentValue) => {
+          return moment(new Date(previousValue.editionDate!)).isAfter(
+            moment(new Date(currentValue.editionDate!))
+          )
+            ? previousValue
+            : currentValue;
+        }
+      );
       this.userRecord = {
         editor: lastEdited.editor,
         editionDate: lastEdited.editionDate,

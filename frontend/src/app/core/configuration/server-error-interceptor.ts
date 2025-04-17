@@ -14,7 +14,10 @@ export class ServerErrorInterceptor implements HttpInterceptor {
   constructor(private notificationService: NotificationService) {}
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       retry(0),
       catchError((error: HttpErrorResponse) => {
@@ -24,7 +27,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
         }
         console.error(error);
         return EMPTY;
-      }),
+      })
     );
   }
 
@@ -35,7 +38,9 @@ export class ServerErrorInterceptor implements HttpInterceptor {
       error.name == 'HttpErrorResponse' &&
       error.statusText === 'Bad Request' &&
       error.url?.includes('https://login.microsoftonline.com/') &&
-      error.message.includes('Http failure response for https://login.microsoftonline.com/')
+      error.message.includes(
+        'Http failure response for https://login.microsoftonline.com/'
+      )
     );
   }
 }

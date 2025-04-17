@@ -8,8 +8,8 @@ describe('MaintenanceIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [MaintenanceIconComponent],
-}).compileComponents();
+      imports: [MaintenanceIconComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MaintenanceIconComponent);
     component = fixture.componentInstance;

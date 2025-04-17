@@ -1,11 +1,14 @@
-import {TestBed} from '@angular/core/testing';
-import {MatDialog} from '@angular/material/dialog';
-import {TranslateModule} from '@ngx-translate/core';
-import {of} from 'rxjs';
-import {SwissCanton} from '../../../../../api';
-import {StatementDialogService} from './statement.dialog.service';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {StatementDetailFormGroup, StatementSenderFormGroup,} from '../../statement-detail-form-group';
+import { TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { SwissCanton } from '../../../../../api';
+import { StatementDialogService } from './statement.dialog.service';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  StatementDetailFormGroup,
+  StatementSenderFormGroup,
+} from '../../statement-detail-form-group';
 
 const form = new FormGroup<StatementDetailFormGroup>({
   id: new FormControl(),

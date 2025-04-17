@@ -1,8 +1,12 @@
-import {PermissionService} from "./permission.service";
-import {ApplicationRole, ApplicationType, CantonPermissionRestrictionModel, PermissionRestrictionType} from "../../../api";
+import { PermissionService } from './permission.service';
+import {
+  ApplicationRole,
+  ApplicationType,
+  CantonPermissionRestrictionModel,
+  PermissionRestrictionType,
+} from '../../../api';
 
 describe('PermissionService', () => {
-
   describe('Permissions for create Button', () => {
     it('Permissions for create Button BODI are set up correctly', () => {
       let result = PermissionService.hasPermissionsToCreateWithPermissions(
@@ -264,7 +268,7 @@ describe('PermissionService', () => {
   describe('Permission for edit TTH Canton', () => {
     it('should be able to edit Canton if user is for canton enabled', () => {
       const cantonRestriction: CantonPermissionRestrictionModel[] = [];
-      cantonRestriction.push({type: 'CANTON', valueAsString: 'BERN'});
+      cantonRestriction.push({ type: 'CANTON', valueAsString: 'BERN' });
       const result = PermissionService.hasPermissionToWriteOnCanton(
         ApplicationType.TimetableHearing,
         'be',
@@ -282,7 +286,7 @@ describe('PermissionService', () => {
 
     it('should not be able to edit Canton if user is not for canton enabled', () => {
       const cantonRestriction: CantonPermissionRestrictionModel[] = [];
-      cantonRestriction.push({type: 'CANTON', valueAsString: 'BERN'});
+      cantonRestriction.push({ type: 'CANTON', valueAsString: 'BERN' });
       const result = PermissionService.hasPermissionToWriteOnCanton(
         ApplicationType.TimetableHearing,
         'zh',
@@ -310,88 +314,103 @@ describe('PermissionService', () => {
   });
 
   describe('Available Pages based on permissions', () => {
-
     let permissionService: PermissionService;
-    const userServiceMock = jasmine.createSpyObj({}, {isAdmin: false});
+    const userServiceMock = jasmine.createSpyObj({}, { isAdmin: false });
 
     beforeEach(() => {
       permissionService = new PermissionService(userServiceMock);
     });
 
     it('should show TTFN if supervisor', () => {
-      userServiceMock.permissions = [{
-        application: ApplicationType.Ttfn,
-        role: ApplicationRole.Supervisor,
-        permissionRestrictions: []
-      }];
+      userServiceMock.permissions = [
+        {
+          application: ApplicationType.Ttfn,
+          role: ApplicationRole.Supervisor,
+          permissionRestrictions: [],
+        },
+      ];
 
       const mayAccessTtfn = permissionService.mayAccessTtfn();
       expect(mayAccessTtfn).toBeTrue();
     });
 
     it('should not show TTFN if reader', () => {
-      userServiceMock.permissions = [{
-        application: ApplicationType.Ttfn,
-        role: ApplicationRole.Reader,
-        permissionRestrictions: []
-      }];
+      userServiceMock.permissions = [
+        {
+          application: ApplicationType.Ttfn,
+          role: ApplicationRole.Reader,
+          permissionRestrictions: [],
+        },
+      ];
 
       const mayAccessTtfn = permissionService.mayAccessTtfn();
       expect(mayAccessTtfn).toBeFalse();
     });
 
     it('should show Bulk Import if supervisor', () => {
-      userServiceMock.permissions = [{
-        application: ApplicationType.Sepodi,
-        role: ApplicationRole.Supervisor,
-        permissionRestrictions: []
-      }];
+      userServiceMock.permissions = [
+        {
+          application: ApplicationType.Sepodi,
+          role: ApplicationRole.Supervisor,
+          permissionRestrictions: [],
+        },
+      ];
 
       const mayAccessTtfn = permissionService.mayAccessBulkImport();
       expect(mayAccessTtfn).toBeTrue();
     });
 
     it('should not show Bulk Import if reader', () => {
-      userServiceMock.permissions = [{
-        application: ApplicationType.Sepodi,
-        role: ApplicationRole.Reader,
-        permissionRestrictions: []
-      }];
+      userServiceMock.permissions = [
+        {
+          application: ApplicationType.Sepodi,
+          role: ApplicationRole.Reader,
+          permissionRestrictions: [],
+        },
+      ];
 
       const mayAccessTtfn = permissionService.mayAccessBulkImport();
       expect(mayAccessTtfn).toBeFalse();
     });
 
     it('should show TTH if explicit reader', () => {
-      userServiceMock.permissions = [{
-        application: ApplicationType.TimetableHearing,
-        role: ApplicationRole.ExplicitReader,
-        permissionRestrictions: []
-      }];
+      userServiceMock.permissions = [
+        {
+          application: ApplicationType.TimetableHearing,
+          role: ApplicationRole.ExplicitReader,
+          permissionRestrictions: [],
+        },
+      ];
 
       const mayAccessTth = permissionService.mayAccessTimetableHearing();
       expect(mayAccessTth).toBeTrue();
     });
 
     it('should not show TTH if reader', () => {
-      userServiceMock.permissions = [{
-        application: ApplicationType.TimetableHearing,
-        role: ApplicationRole.Reader,
-        permissionRestrictions: []
-      }];
+      userServiceMock.permissions = [
+        {
+          application: ApplicationType.TimetableHearing,
+          role: ApplicationRole.Reader,
+          permissionRestrictions: [],
+        },
+      ];
 
       const mayAccessTth = permissionService.mayAccessTimetableHearing();
       expect(mayAccessTth).toBeFalse();
     });
 
     it('should evaluate at least supervisor', () => {
-      userServiceMock.permissions = [{
-        application: ApplicationType.Ttfn,
-        role: ApplicationRole.Supervisor,
-        permissionRestrictions: []
-      }];
+      userServiceMock.permissions = [
+        {
+          application: ApplicationType.Ttfn,
+          role: ApplicationRole.Supervisor,
+          permissionRestrictions: [],
+        },
+      ];
 
-      const ttfnSupervisor = permissionService.isAtLeastSupervisor(ApplicationType.Ttfn);
+      const ttfnSupervisor = permissionService.isAtLeastSupervisor(
+        ApplicationType.Ttfn
+      );
       expect(ttfnSupervisor).toBeTrue();
     });
   });

@@ -2,18 +2,25 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogManageTthComponent } from './dialog-manage-tth.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TimetableHearingYear, TimetableHearingYearsService } from '../../../api';
+import {
+  TimetableHearingYear,
+  TimetableHearingYearsService,
+} from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { of } from 'rxjs';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AppTestingModule } from '../../../app.testing.module';
 
 @Component({
-    selector: 'atlas-slide-toggle',
-    template: '<p>MockAtlasSlideToggleComponent</p>',
-    imports: [AppTestingModule]
+  selector: 'atlas-slide-toggle',
+  template: '<p>MockAtlasSlideToggleComponent</p>',
+  imports: [AppTestingModule],
 })
 class MockAtlasSlideToggleComponent {
   @Input() toggle = false;
@@ -26,7 +33,9 @@ describe('DialogManageTthComponent', () => {
 
   let tthYearsServiceSpy: jasmine.SpyObj<TimetableHearingYearsService>;
   let notificationServiceSpy: jasmine.SpyObj<NotificationService>;
-  let matDialogRefSpy: jasmine.SpyObj<MatDialogRef<DialogManageTthComponent, boolean>>;
+  let matDialogRefSpy: jasmine.SpyObj<
+    MatDialogRef<DialogManageTthComponent, boolean>
+  >;
 
   const matDialogDataMock = 2020;
   const tthYear: Partial<TimetableHearingYear> = {
@@ -36,49 +45,51 @@ describe('DialogManageTthComponent', () => {
   };
 
   beforeEach(async () => {
-    tthYearsServiceSpy = jasmine.createSpyObj<TimetableHearingYearsService>('TthServiceSpy', [
-      'getHearingYear',
-      'updateTimetableHearingSettings',
-      'closeTimetableHearing',
-    ]);
-    notificationServiceSpy = jasmine.createSpyObj<NotificationService>('NotificationServiceSpy', [
-      'success',
-      'error',
-    ]);
-    matDialogRefSpy = jasmine.createSpyObj<MatDialogRef<DialogManageTthComponent, boolean>>(
-      'MatDialogRefSpy',
-      ['close'],
+    tthYearsServiceSpy = jasmine.createSpyObj<TimetableHearingYearsService>(
+      'TthServiceSpy',
+      [
+        'getHearingYear',
+        'updateTimetableHearingSettings',
+        'closeTimetableHearing',
+      ]
     );
+    notificationServiceSpy = jasmine.createSpyObj<NotificationService>(
+      'NotificationServiceSpy',
+      ['success', 'error']
+    );
+    matDialogRefSpy = jasmine.createSpyObj<
+      MatDialogRef<DialogManageTthComponent, boolean>
+    >('MatDialogRefSpy', ['close']);
 
     await TestBed.configureTestingModule({
-    providers: [
+      providers: [
         {
-            provide: MAT_DIALOG_DATA,
-            useValue: matDialogDataMock,
+          provide: MAT_DIALOG_DATA,
+          useValue: matDialogDataMock,
         },
         {
-            provide: TimetableHearingYearsService,
-            useValue: tthYearsServiceSpy,
+          provide: TimetableHearingYearsService,
+          useValue: tthYearsServiceSpy,
         },
         {
-            provide: NotificationService,
-            useValue: notificationServiceSpy,
+          provide: NotificationService,
+          useValue: notificationServiceSpy,
         },
         {
-            provide: MatDialogRef<DialogManageTthComponent, boolean>,
-            useValue: matDialogRefSpy,
+          provide: MatDialogRef<DialogManageTthComponent, boolean>,
+          useValue: matDialogRefSpy,
         },
-    ],
-    imports: [
+      ],
+      imports: [
         AppTestingModule,
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         DialogManageTthComponent,
         MockAtlasButtonComponent,
         MockAtlasSlideToggleComponent,
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     tthYearsServiceSpy.getHearingYear.and.stub().and.returnValue(of(tthYear));
 
@@ -94,18 +105,22 @@ describe('DialogManageTthComponent', () => {
   });
 
   it('should handleSaveAndCloseClick', () => {
-    tthYearsServiceSpy.updateTimetableHearingSettings.and.stub().and.returnValue(of({}));
+    tthYearsServiceSpy.updateTimetableHearingSettings.and
+      .stub()
+      .and.returnValue(of({}));
 
     component.handleSaveAndCloseClick();
     expect(component.actionButtonsDisabled).toBeTrue();
-    expect(tthYearsServiceSpy.updateTimetableHearingSettings).toHaveBeenCalledOnceWith(2020, {
+    expect(
+      tthYearsServiceSpy.updateTimetableHearingSettings
+    ).toHaveBeenCalledOnceWith(2020, {
       statementEditable: true,
       statementCreatableInternal: false,
       statementCreatableExternal: true,
     } as TimetableHearingYear);
     expect(matDialogRefSpy.close).toHaveBeenCalledOnceWith(true);
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
-      'TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION',
+      'TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION'
     );
   });
 
@@ -115,10 +130,12 @@ describe('DialogManageTthComponent', () => {
     component.handleCloseViewTthCloseClick();
 
     expect(component.actionButtonsDisabled).toBeTrue();
-    expect(tthYearsServiceSpy.closeTimetableHearing).toHaveBeenCalledOnceWith(2020);
+    expect(tthYearsServiceSpy.closeTimetableHearing).toHaveBeenCalledOnceWith(
+      2020
+    );
     expect(matDialogRefSpy.close).toHaveBeenCalledOnceWith(true);
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
-      'TTH.CLOSE_TIMETABLE_HEARING.SUCCESSFUL_CLOSE_NOTIFICATION',
+      'TTH.CLOSE_TIMETABLE_HEARING.SUCCESSFUL_CLOSE_NOTIFICATION'
     );
   });
 });

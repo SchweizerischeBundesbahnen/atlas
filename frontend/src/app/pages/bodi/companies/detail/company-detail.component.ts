@@ -14,9 +14,20 @@ import { BackButtonDirective } from '../../../../core/components/button/back-but
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    templateUrl: './company-detail.component.html',
-    styleUrls: ['./company-detail.component.scss'],
-    imports: [ScrollToTopDirective, DetailPageContainerComponent, DetailPageContentComponent, ReactiveFormsModule, TextFieldComponent, LinkIconComponent, DetailFooterComponent, AtlasButtonComponent, BackButtonDirective, TranslatePipe]
+  templateUrl: './company-detail.component.html',
+  styleUrls: ['./company-detail.component.scss'],
+  imports: [
+    ScrollToTopDirective,
+    DetailPageContainerComponent,
+    DetailPageContentComponent,
+    ReactiveFormsModule,
+    TextFieldComponent,
+    LinkIconComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+    BackButtonDirective,
+    TranslatePipe,
+  ],
 })
 export class CompanyDetailComponent implements OnInit {
   company!: Company;
@@ -29,9 +40,18 @@ export class CompanyDetailComponent implements OnInit {
     this.company = this.activatedRoute.snapshot.data.companyDetail;
     if (this.company) {
       this.form = new FormGroup<CompanyFormGroup>({
-        uicCode: new FormControl({ value: this.company.uicCode, disabled: true }),
-        countryCodeIso: new FormControl({ value: this.company.countryCodeIso, disabled: true }),
-        shortName: new FormControl({ value: this.company.shortName, disabled: true }),
+        uicCode: new FormControl({
+          value: this.company.uicCode,
+          disabled: true,
+        }),
+        countryCodeIso: new FormControl({
+          value: this.company.countryCodeIso,
+          disabled: true,
+        }),
+        shortName: new FormControl({
+          value: this.company.shortName,
+          disabled: true,
+        }),
         name: new FormControl({ value: this.company.name, disabled: true }),
         url: new FormControl({ value: this.company.url, disabled: true }),
       });

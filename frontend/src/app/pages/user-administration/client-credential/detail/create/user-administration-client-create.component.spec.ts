@@ -1,4 +1,9 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 
 import { UserAdministrationClientCreateComponent } from './user-administration-client-create.component';
 import { UserService } from '../../../service/user.service';
@@ -19,7 +24,7 @@ import { UserPermissionManager } from '../../../service/user-permission-manager'
 import SpyObj = jasmine.SpyObj;
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
-import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
+import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 
 describe('UserAdministrationClientCreateComponent', () => {
   let component: UserAdministrationClientCreateComponent;
@@ -31,8 +36,12 @@ describe('UserAdministrationClientCreateComponent', () => {
   let boServiceSpy: SpyObj<BusinessOrganisationsService>;
 
   beforeEach(async () => {
-    userServiceSpy = jasmine.createSpyObj('UserService', ['createClientCredentialPermission']);
-    notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
+    userServiceSpy = jasmine.createSpyObj('UserService', [
+      'createClientCredentialPermission',
+    ]);
+    notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
+      'success',
+    ]);
     userPermissionManagerSpy = jasmine.createSpyObj<UserPermissionManager>(
       'UserPermissionManager',
       ['clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser'],
@@ -41,11 +50,11 @@ describe('UserAdministrationClientCreateComponent', () => {
           sbbUserId: '',
           permissions: [],
         },
-      },
+      }
     );
     boServiceSpy = jasmine.createSpyObj<BusinessOrganisationsService>(
       'BusinessOrganisationsService',
-      ['getAllBusinessOrganisations'],
+      ['getAllBusinessOrganisations']
     );
     TestBed.overrideComponent(UserAdministrationClientCreateComponent, {
       set: {
@@ -58,45 +67,45 @@ describe('UserAdministrationClientCreateComponent', () => {
       },
     });
     await TestBed.configureTestingModule({
-    imports: [
+      imports: [
         RouterTestingModule,
         MaterialModule,
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         UserAdministrationClientCreateComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-    ],
-    providers: [
+      ],
+      providers: [
         {
-            provide: UserService,
-            useValue: userServiceSpy,
+          provide: UserService,
+          useValue: userServiceSpy,
         },
         {
-            provide: UserPermissionManager,
-            useValue: userPermissionManagerSpy,
+          provide: UserPermissionManager,
+          useValue: userPermissionManagerSpy,
         },
         {
-            provide: NotificationService,
-            useValue: notificationServiceSpy,
+          provide: NotificationService,
+          useValue: notificationServiceSpy,
         },
         TranslatePipe,
         {
-            provide: MAT_DIALOG_DATA,
-            useValue: { user: undefined },
+          provide: MAT_DIALOG_DATA,
+          useValue: { user: undefined },
         },
         {
-            provide: MatDialogRef,
-            useValue: {
-                close: () => {
-                    // mock implementation
-                },
+          provide: MatDialogRef,
+          useValue: {
+            close: () => {
+              // mock implementation
             },
+          },
         },
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationClientCreateComponent);
     component = fixture.componentInstance;
@@ -116,19 +125,21 @@ describe('UserAdministrationClientCreateComponent', () => {
     userServiceSpy.createClientCredentialPermission.and.returnValue(
       of({
         clientCredentialId: 'client-id',
-      }),
+      })
     );
     spyOn(router, 'navigate').and.resolveTo(true);
 
     component.create();
     expect(
-      userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser,
+      userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser
     ).toHaveBeenCalledOnceWith();
-    expect(userServiceSpy.createClientCredentialPermission).toHaveBeenCalledTimes(1);
+    expect(
+      userServiceSpy.createClientCredentialPermission
+    ).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledTimes(1);
     tick();
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
-      'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS',
+      'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'
     );
   }));
 });

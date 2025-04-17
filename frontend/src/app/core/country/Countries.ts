@@ -6,9 +6,24 @@ export class Countries {
     { short: 'AZ', uicCode: 57, enumCountry: Country.Azerbaijan, path: 'az' },
     { short: 'BE', uicCode: 88, enumCountry: Country.Belgium, path: 'ag' },
     { short: 'BY', uicCode: 21, enumCountry: Country.Belarus, path: 'ag' },
-    { short: 'BA', uicCode: 44, enumCountry: Country.SerbBosniaAndHerzegovina, path: 'ba' },
-    { short: 'BA', uicCode: 49, enumCountry: Country.BosniaAndHerzegovina, path: 'ba' },
-    { short: 'BA', uicCode: 50, enumCountry: Country.CroatBosniaAndHerzegovina, path: 'ba' },
+    {
+      short: 'BA',
+      uicCode: 44,
+      enumCountry: Country.SerbBosniaAndHerzegovina,
+      path: 'ba',
+    },
+    {
+      short: 'BA',
+      uicCode: 49,
+      enumCountry: Country.BosniaAndHerzegovina,
+      path: 'ba',
+    },
+    {
+      short: 'BA',
+      uicCode: 50,
+      enumCountry: Country.CroatBosniaAndHerzegovina,
+      path: 'ba',
+    },
     { short: 'BG', uicCode: 52, enumCountry: Country.Bulgaria, path: 'bg' },
     { short: 'CA', uicCode: 0, enumCountry: Country.Canada, path: 'ca' },
     { short: 'CN', uicCode: 33, enumCountry: Country.China, path: 'cn' },
@@ -47,7 +62,12 @@ export class Countries {
     { short: 'PT', uicCode: 94, enumCountry: Country.Portugal, path: 'pt' },
     { short: 'GB', uicCode: 70, enumCountry: Country.GreatBritain, path: 'gb' },
     { short: 'CD', uicCode: 2, enumCountry: Country.Congo, path: 'cd' },
-    { short: 'CZ', uicCode: 54, enumCountry: Country.CzechRepublic, path: 'cz' },
+    {
+      short: 'CZ',
+      uicCode: 54,
+      enumCountry: Country.CzechRepublic,
+      path: 'cz',
+    },
     { short: 'RO', uicCode: 53, enumCountry: Country.Romania, path: 'ro' },
     { short: 'RU', uicCode: 20, enumCountry: Country.Russia, path: 'ru' },
     { short: 'RS', uicCode: 72, enumCountry: Country.Serbia, path: 'rs' },
@@ -71,8 +91,18 @@ export class Countries {
     { short: 'AT', uicCode: 12, enumCountry: Country.AustriaBus, path: 'at' },
     { short: 'IT', uicCode: 13, enumCountry: Country.ItalyBus, path: 'it' },
     { short: 'FR', uicCode: 14, enumCountry: Country.FranceBus, path: 'fr' },
-    { short: 'GYSEV/ROEE', uicCode: 43, enumCountry: Country.AustriaHungary, path: 'gysev/roee' },
-    { short: 'ZBH', uicCode: 89, enumCountry: Country.BosniaAndHerzegovinaRailway, path: 'zbh' },
+    {
+      short: 'GYSEV/ROEE',
+      uicCode: 43,
+      enumCountry: Country.AustriaHungary,
+      path: 'gysev/roee',
+    },
+    {
+      short: 'ZBH',
+      uicCode: 89,
+      enumCountry: Country.BosniaAndHerzegovinaRailway,
+      path: 'zbh',
+    },
     { short: 'AF', uicCode: 68, enumCountry: Country.Afghanistan, path: 'af' },
     { short: 'AL', uicCode: 41, enumCountry: Country.Albania, path: 'al' },
     { short: 'DZ', uicCode: 92, enumCountry: Country.Algeria, path: 'dz' },
@@ -91,11 +121,15 @@ export class Countries {
   ];
 
   static fromCountry(country: Country | undefined): CountryName | undefined {
-    return this.countryNames.find((countryName) => countryName.enumCountry === country);
+    return this.countryNames.find(
+      (countryName) => countryName.enumCountry === country
+    );
   }
 
   static fromUicCode(uicCountryCode: number) {
-    return this.countryNames.find((countryName) => countryName.uicCode === uicCountryCode)!;
+    return this.countryNames.find(
+      (countryName) => countryName.uicCode === uicCountryCode
+    )!;
   }
 
   static getCountryNameUicCodeFromCountry(country: Country): number {
@@ -124,12 +158,15 @@ export class Countries {
       Country.ItalyBus,
       Country.FranceBus,
     ];
-    return Object.values(Country).filter((country) => !countriesToFilterOut.includes(country));
+    return Object.values(Country).filter(
+      (country) => !countriesToFilterOut.includes(country)
+    );
   }
 
   static readonly getCountryEnum = (country: Country) =>
     Countries.fromCountry(country)?.enumCountry;
 
   public static readonly compareFn = (n1: Country, n2: Country) =>
-    Countries.getCountryNameUicCodeFromCountry(n1) - Countries.getCountryNameUicCodeFromCountry(n2);
+    Countries.getCountryNameUicCodeFromCountry(n1) -
+    Countries.getCountryNameUicCodeFromCountry(n2);
 }

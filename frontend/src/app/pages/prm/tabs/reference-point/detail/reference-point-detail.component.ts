@@ -27,10 +27,24 @@ import { AtlasButtonComponent } from '../../../../../core/components/button/atla
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-reference-point',
-    templateUrl: './reference-point-detail.component.html',
-    providers: [ValidityService],
-    imports: [DetailPageContainerComponent, NgIf, DateRangeTextComponent, DetailPageContentComponent, SloidComponent, ReactiveFormsModule, SwitchVersionComponent, ReferencePointCompleteFormComponent, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
+  selector: 'app-reference-point',
+  templateUrl: './reference-point-detail.component.html',
+  providers: [ValidityService],
+  imports: [
+    DetailPageContainerComponent,
+    NgIf,
+    DateRangeTextComponent,
+    DetailPageContentComponent,
+    SloidComponent,
+    ReactiveFormsModule,
+    SwitchVersionComponent,
+    ReferencePointCompleteFormComponent,
+    MatDivider,
+    UserDetailInfoComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class ReferencePointDetailComponent
   extends PrmTabDetailBaseComponent<ReadReferencePointVersion>
@@ -42,7 +56,9 @@ export class ReferencePointDetailComponent
   businessOrganisations: string[] = [];
   protected readonly nbrOfBackPaths = 1;
 
-  constructor(private readonly personWithReducedMobilityService: PersonWithReducedMobilityService) {
+  constructor(
+    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService
+  ) {
     super();
   }
 
@@ -55,11 +71,14 @@ export class ReferencePointDetailComponent
 
     if (!this.isNew) {
       VersionsHandlingService.addVersionNumbers(this.versions);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
-      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.versions,
+      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
+        this.versions
       );
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
+      this.selectedVersion =
+        VersionsHandlingService.determineDefaultVersionByValidity(
+          this.versions
+        );
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
     }
 
@@ -67,7 +86,9 @@ export class ReferencePointDetailComponent
   }
 
   protected initForm() {
-    this.form = ReferencePointFormGroupBuilder.buildCompleteFormGroup(this.selectedVersion);
+    this.form = ReferencePointFormGroupBuilder.buildCompleteFormGroup(
+      this.selectedVersion
+    );
 
     if (!this.isNew) {
       this.form.disable();
@@ -75,21 +96,29 @@ export class ReferencePointDetailComponent
   }
 
   private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.data.servicePoint;
+    const servicePointVersions: ReadServicePointVersion[] =
+      this.route.snapshot.data.servicePoint;
     this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+      VersionsHandlingService.determineDefaultVersionByValidity(
+        servicePointVersions
+      );
     this.businessOrganisations = [
-      ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
+      ...new Set(
+        servicePointVersions.map((value) => value.businessOrganisation)
+      ),
     ];
   }
 
-  protected saveProcess(): Observable<ReadReferencePointVersion | ReadReferencePointVersion[]> {
+  protected saveProcess(): Observable<
+    ReadReferencePointVersion | ReadReferencePointVersion[]
+  > {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      const referencePointVersion = ReferencePointFormGroupBuilder.getWritableForm(
-        this.form,
-        this.servicePoint.sloid!,
-      );
+      const referencePointVersion =
+        ReferencePointFormGroupBuilder.getWritableForm(
+          this.form,
+          this.servicePoint.sloid!
+        );
       if (this.isNew) {
         return this.create(referencePointVersion);
       } else {
@@ -102,7 +131,7 @@ export class ReferencePointDetailComponent
             } else {
               return EMPTY;
             }
-          }),
+          })
         );
       }
     } else {
@@ -111,14 +140,16 @@ export class ReferencePointDetailComponent
   }
 
   private create(referencePointVersion: ReferencePointVersion) {
-    return this.personWithReducedMobilityService.createReferencePoint(referencePointVersion).pipe(
-      switchMap((createdVersion) => {
-        return this.notificateAndNavigate(
-          'PRM.REFERENCE_POINTS.NOTIFICATION.ADD_SUCCESS',
-          createdVersion.sloid!,
-        ).pipe(map(() => createdVersion));
-      }),
-    );
+    return this.personWithReducedMobilityService
+      .createReferencePoint(referencePointVersion)
+      .pipe(
+        switchMap((createdVersion) => {
+          return this.notificateAndNavigate(
+            'PRM.REFERENCE_POINTS.NOTIFICATION.ADD_SUCCESS',
+            createdVersion.sloid!
+          ).pipe(map(() => createdVersion));
+        })
+      );
   }
 
   private update(referencePointVersion: ReferencePointVersion) {
@@ -128,9 +159,9 @@ export class ReferencePointDetailComponent
         switchMap((updatedVersions) => {
           return this.notificateAndNavigate(
             'PRM.REFERENCE_POINTS.NOTIFICATION.EDIT_SUCCESS',
-            this.selectedVersion.sloid!,
+            this.selectedVersion.sloid!
           ).pipe(map(() => updatedVersions));
-        }),
+        })
       );
   }
 }

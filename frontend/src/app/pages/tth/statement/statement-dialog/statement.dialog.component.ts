@@ -1,20 +1,33 @@
-import {Component, Inject} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogActions } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {TimetableHearingStatementsService, TimetableHearingStatementV2} from '../../../../api';
-import {Subject} from 'rxjs';
-import {NotificationService} from '../../../../core/notification/notification.service';
-import {StatementDetailFormGroup} from '../statement-detail-form-group';
-import {takeUntil} from 'rxjs/operators';
-import {ValidationService} from 'src/app/core/validation/validation.service';
+import {
+  TimetableHearingStatementsService,
+  TimetableHearingStatementV2,
+} from '../../../../api';
+import { Subject } from 'rxjs';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { StatementDetailFormGroup } from '../statement-detail-form-group';
+import { takeUntil } from 'rxjs/operators';
+import { ValidationService } from 'src/app/core/validation/validation.service';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-dialog',
-    templateUrl: './statement.dialog.component.html',
-    imports: [CommentComponent, ReactiveFormsModule, MatDialogActions, AtlasButtonComponent, TranslatePipe]
+  selector: 'app-dialog',
+  templateUrl: './statement.dialog.component.html',
+  imports: [
+    CommentComponent,
+    ReactiveFormsModule,
+    MatDialogActions,
+    AtlasButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class StatementDialogComponent {
   private ngUnsubscribe = new Subject<void>();
@@ -23,7 +36,7 @@ export class StatementDialogComponent {
     public dialogRef: MatDialogRef<StatementDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public form: FormGroup<StatementDetailFormGroup>,
     private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
-    private readonly notificationService: NotificationService,
+    private readonly notificationService: NotificationService
   ) {}
 
   changeCantonAndAddComment() {
@@ -40,7 +53,9 @@ export class StatementDialogComponent {
       .updateHearingStatement(id, statement)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
-        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
+        this.notificationService.success(
+          'TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS'
+        );
       });
   }
 

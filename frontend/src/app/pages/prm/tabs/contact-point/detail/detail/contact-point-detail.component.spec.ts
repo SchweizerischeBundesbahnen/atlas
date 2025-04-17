@@ -75,14 +75,23 @@ describe('ContactPointDetailComponent', () => {
 
   const personWithReducedMobilityService = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['createContactPoint', 'updateContactPoint'],
+    ['createContactPoint', 'updateContactPoint']
   );
 
-  personWithReducedMobilityService.createContactPoint.and.returnValue(of(contactPoint[0]));
-  personWithReducedMobilityService.updateContactPoint.and.returnValue(of(contactPoint));
+  personWithReducedMobilityService.createContactPoint.and.returnValue(
+    of(contactPoint[0])
+  );
+  personWithReducedMobilityService.updateContactPoint.and.returnValue(
+    of(contactPoint)
+  );
 
-  const notificationService = jasmine.createSpyObj('notificationService', ['success']);
-  const dialogService: SpyObj<DialogService> = jasmine.createSpyObj('dialogService', ['confirm']);
+  const notificationService = jasmine.createSpyObj('notificationService', [
+    'success',
+  ]);
+  const dialogService: SpyObj<DialogService> = jasmine.createSpyObj(
+    'dialogService',
+    ['confirm']
+  );
   dialogService.confirm.and.returnValue(of(true));
 
   const activatedRouteMock = {
@@ -98,13 +107,13 @@ describe('ContactPointDetailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [
+      imports: [
         AppTestingModule,
         RouterModule.forRoot([
-            {
-                path: ':sloid',
-                redirectTo: '',
-            },
+          {
+            path: ':sloid',
+            redirectTo: '',
+          },
         ]),
         ContactPointDetailComponent,
         SloidComponent,
@@ -127,17 +136,20 @@ describe('ContactPointDetailComponent', () => {
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
-    ],
-    providers: [
+      ],
+      providers: [
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
-        { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
+        {
+          provide: PersonWithReducedMobilityService,
+          useValue: personWithReducedMobilityService,
+        },
         { provide: DialogService, useValue: dialogService },
         TranslatePipe,
         SplitServicePointNumberPipe,
-    ],
-});
+      ],
+    });
   });
 
   describe('new contact point', () => {
@@ -159,12 +171,18 @@ describe('ContactPointDetailComponent', () => {
     it('should create on save', () => {
       component.form.controls.designation.setValue('Haupteingang A');
       component.form.controls.type.setValue(ContactPointType.InformationDesk);
-      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
-      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
+      component.form.controls.validFrom.setValue(
+        moment('31.10.2000', 'dd.MM.yyyy')
+      );
+      component.form.controls.validTo.setValue(
+        moment('31.10.2099', 'dd.MM.yyyy')
+      );
 
       component.save();
 
-      expect(personWithReducedMobilityService.createContactPoint).toHaveBeenCalled();
+      expect(
+        personWithReducedMobilityService.createContactPoint
+      ).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
@@ -223,7 +241,9 @@ describe('ContactPointDetailComponent', () => {
       component.form.controls.designation.markAsDirty();
 
       component.save();
-      expect(personWithReducedMobilityService.updateContactPoint).toHaveBeenCalled();
+      expect(
+        personWithReducedMobilityService.updateContactPoint
+      ).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });

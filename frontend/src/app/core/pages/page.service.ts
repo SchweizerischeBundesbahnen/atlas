@@ -9,16 +9,21 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PageService {
-  private _viewablePages: BehaviorSubject<Page[]> = new BehaviorSubject([...Pages.pages]);
+  private _viewablePages: BehaviorSubject<Page[]> = new BehaviorSubject([
+    ...Pages.pages,
+  ]);
   enabledPages: Observable<Page[]> = this._viewablePages.asObservable();
 
   constructor(private readonly permissionService: PermissionService) {}
 
   addPagesBasedOnPermissions() {
     const pagesToAdd: Page[] = [
-      ...(this.permissionService.mayAccessTimetableHearing() ? [Pages.TTH] : []),
+      ...(this.permissionService.mayAccessTimetableHearing()
+        ? [Pages.TTH]
+        : []),
       ...(this.permissionService.mayAccessTtfn() ? [Pages.TTFN] : []),
-      ...(this.permissionService.mayAccessBulkImport() && environment.bulkImportEnabled
+      ...(this.permissionService.mayAccessBulkImport() &&
+      environment.bulkImportEnabled
         ? [Pages.BULK_IMPORT]
         : []),
       ...(this.permissionService.isAdmin ? [...Pages.adminPages] : []),

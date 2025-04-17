@@ -2,18 +2,27 @@ import { TestBed } from '@angular/core/testing';
 
 import { stopPointResolver, StopPointResolver } from './stop-point.resolver';
 import { Observable, of } from 'rxjs';
-import { PersonWithReducedMobilityService, ReadStopPointVersion } from '../../../../api';
+import {
+  PersonWithReducedMobilityService,
+  ReadStopPointVersion,
+} from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ServicePointDetailResolver } from '../../../sepodi/service-point-side-panel/service-point-detail.resolver';
-import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  convertToParamMap,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 
 describe('stopPointResolver', () => {
   const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['getStopPointVersions'],
+    ['getStopPointVersions']
   );
-  personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
+  personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(
+    of([STOP_POINT])
+  );
 
   let resolver: StopPointResolver;
 
@@ -41,7 +50,7 @@ describe('stopPointResolver', () => {
     } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
-      stopPointResolver(mockRoute, {} as RouterStateSnapshot),
+      stopPointResolver(mockRoute, {} as RouterStateSnapshot)
     ) as Observable<ReadStopPointVersion[]>;
 
     result.subscribe((versions) => {
@@ -56,7 +65,7 @@ describe('stopPointResolver', () => {
     } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
-      stopPointResolver(mockRoute, {} as RouterStateSnapshot),
+      stopPointResolver(mockRoute, {} as RouterStateSnapshot)
     ) as Observable<ReadStopPointVersion[]>;
 
     result.subscribe((versions) => {

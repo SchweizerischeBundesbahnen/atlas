@@ -22,10 +22,10 @@ import { MatIconButton } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'atlas-map',
-    templateUrl: './map.component.html',
-    styleUrls: ['./map.component.scss'],
-    imports: [NgIf, MatIconButton, NgFor, NgClass, TranslatePipe]
+  selector: 'atlas-map',
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.scss'],
+  imports: [NgIf, MatIconButton, NgFor, NgClass, TranslatePipe],
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public isSidePanelOpen = false;
@@ -48,14 +48,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private readonly mapService: MapService,
     private readonly userService: UserService,
-    private readonly permissionService: PermissionService,
+    private readonly permissionService: PermissionService
   ) {}
 
   ngOnInit() {
     this.userService.onPermissionsLoaded().subscribe(() => {
-      this.canCreateServicePoint = this.permissionService.hasPermissionsToCreate(
-        ApplicationType.Sepodi,
-      );
+      this.canCreateServicePoint =
+        this.permissionService.hasPermissionsToCreate(ApplicationType.Sepodi);
     });
     this.mapService.servicePointsShown
       .pipe(takeUntil(this.onDestroy$))
@@ -65,7 +64,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
     this.currentMapStyle = this.mapService.currentMapStyle;
-    MapIconsService.getLegendIconsAsImages().then((icons) => (this.legend = icons));
+    MapIconsService.getLegendIconsAsImages().then(
+      (icons) => (this.legend = icons)
+    );
   }
 
   ngOnDestroy() {

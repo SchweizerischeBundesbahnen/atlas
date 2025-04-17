@@ -25,10 +25,22 @@ import { AtlasButtonComponent } from '../../../../../../core/components/button/a
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-toilet-detail',
-    templateUrl: './toilet-detail.component.html',
-    providers: [ValidityService],
-    imports: [DetailPageContentComponent, NgIf, SloidComponent, ReactiveFormsModule, SwitchVersionComponent, ToiletFormComponent, MatDivider, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
+  selector: 'app-toilet-detail',
+  templateUrl: './toilet-detail.component.html',
+  providers: [ValidityService],
+  imports: [
+    DetailPageContentComponent,
+    NgIf,
+    SloidComponent,
+    ReactiveFormsModule,
+    SwitchVersionComponent,
+    ToiletFormComponent,
+    MatDivider,
+    UserDetailInfoComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class ToiletDetailComponent
   extends PrmTabDetailBaseComponent<ReadToiletVersion>
@@ -39,7 +51,9 @@ export class ToiletDetailComponent
   showVersionSwitch = false;
   businessOrganisations: string[] = [];
 
-  constructor(private readonly personWithReducedMobilityService: PersonWithReducedMobilityService) {
+  constructor(
+    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService
+  ) {
     super();
   }
 
@@ -52,11 +66,14 @@ export class ToiletDetailComponent
 
     if (!this.isNew) {
       VersionsHandlingService.addVersionNumbers(this.versions);
-      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.versions);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
-      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.versions,
+      this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
+        this.versions
       );
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.versions);
+      this.selectedVersion =
+        VersionsHandlingService.determineDefaultVersionByValidity(
+          this.versions
+        );
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
     }
 
@@ -76,7 +93,7 @@ export class ToiletDetailComponent
     if (this.form.valid) {
       const toiletVersion = ToiletFormGroupBuilder.getWritableForm(
         this.form,
-        this.servicePoint.sloid!,
+        this.servicePoint.sloid!
       );
       if (this.isNew) {
         return this.create(toiletVersion);
@@ -90,7 +107,7 @@ export class ToiletDetailComponent
             } else {
               return EMPTY;
             }
-          }),
+          })
         );
       }
     } else {
@@ -102,21 +119,27 @@ export class ToiletDetailComponent
     const servicePointVersions: ReadServicePointVersion[] =
       this.route.snapshot.parent!.data.servicePoint;
     this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+      VersionsHandlingService.determineDefaultVersionByValidity(
+        servicePointVersions
+      );
     this.businessOrganisations = [
-      ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
+      ...new Set(
+        servicePointVersions.map((value) => value.businessOrganisation)
+      ),
     ];
   }
 
   private create(toiletVersion: ToiletVersion) {
-    return this.personWithReducedMobilityService.createToiletVersion(toiletVersion).pipe(
-      switchMap((createdVersion) => {
-        return this.notificateAndNavigate(
-          'PRM.TOILETS.NOTIFICATION.ADD_SUCCESS',
-          createdVersion.sloid!,
-        ).pipe(map(() => createdVersion));
-      }),
-    );
+    return this.personWithReducedMobilityService
+      .createToiletVersion(toiletVersion)
+      .pipe(
+        switchMap((createdVersion) => {
+          return this.notificateAndNavigate(
+            'PRM.TOILETS.NOTIFICATION.ADD_SUCCESS',
+            createdVersion.sloid!
+          ).pipe(map(() => createdVersion));
+        })
+      );
   }
 
   private update(toiletVersion: ToiletVersion) {
@@ -126,9 +149,9 @@ export class ToiletDetailComponent
         switchMap((updatedVersions) => {
           return this.notificateAndNavigate(
             'PRM.TOILETS.NOTIFICATION.EDIT_SUCCESS',
-            this.selectedVersion.sloid!,
+            this.selectedVersion.sloid!
           ).pipe(map(() => updatedVersions));
-        }),
+        })
       );
   }
 }

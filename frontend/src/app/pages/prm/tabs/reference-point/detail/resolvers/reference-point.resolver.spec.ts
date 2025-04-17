@@ -1,9 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Observable, of } from 'rxjs';
-import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  convertToParamMap,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { referencePointResolver } from './reference-point.resolver';
-import { PersonWithReducedMobilityService, ReadReferencePointVersion } from '../../../../../../api';
+import {
+  PersonWithReducedMobilityService,
+  ReadReferencePointVersion,
+} from '../../../../../../api';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 
 const referencePoint: ReadReferencePointVersion[] = [
@@ -34,9 +41,11 @@ const referencePoint: ReadReferencePointVersion[] = [
 describe('PrmReferencePointResolver', () => {
   const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['getReferencePointVersions'],
+    ['getReferencePointVersions']
   );
-  personWithReducedMobilityServiceSpy.getReferencePointVersions.and.returnValue(of(referencePoint));
+  personWithReducedMobilityServiceSpy.getReferencePointVersions.and.returnValue(
+    of(referencePoint)
+  );
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -56,7 +65,7 @@ describe('PrmReferencePointResolver', () => {
     } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
-      referencePointResolver(mockRoute, {} as RouterStateSnapshot),
+      referencePointResolver(mockRoute, {} as RouterStateSnapshot)
     ) as Observable<ReadReferencePointVersion[]>;
 
     result.subscribe((versions) => {

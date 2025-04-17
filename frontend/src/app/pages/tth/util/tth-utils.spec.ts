@@ -44,7 +44,10 @@ describe('TthUtils', () => {
       },
     ];
     //when
-    const result = TthUtils.sortByTimetableHearingYear(timetableHearingYear, false);
+    const result = TthUtils.sortByTimetableHearingYear(
+      timetableHearingYear,
+      false
+    );
     //then
     expect(result[0].timetableYear).toBe(2002);
     expect(result[1].timetableYear).toBe(2004);
@@ -71,7 +74,10 @@ describe('TthUtils', () => {
       },
     ];
     //when
-    const result = TthUtils.sortByTimetableHearingYear(timetableHearingYear, true);
+    const result = TthUtils.sortByTimetableHearingYear(
+      timetableHearingYear,
+      true
+    );
     //then
     expect(result[2].timetableYear).toBe(2002);
     expect(result[1].timetableYear).toBe(2004);

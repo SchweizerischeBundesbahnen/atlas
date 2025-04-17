@@ -1,16 +1,16 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {PlatformDetailPanelComponent} from './platform-detail-panel.component';
-import {STOP_POINT} from '../../../util/stop-point-test-data.spec';
-import {BERN_WYLEREGG} from '../../../../../../test/data/service-point';
-import {BERN_WYLEREGG_TRAFFIC_POINTS} from '../../../../../../test/data/traffic-point-element';
-import {AppTestingModule} from '../../../../../app.testing.module';
-import {ActivatedRoute} from '@angular/router';
-import {TranslatePipe} from '@ngx-translate/core';
-import {SplitServicePointNumberPipe} from '../../../../../core/search-service-point/split-service-point-number.pipe';
-import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
-import {DetailWithRelationTabComponent} from "../../relation/tab/detail-with-relation-tab.component";
-import {of} from "rxjs";
+import { PlatformDetailPanelComponent } from './platform-detail-panel.component';
+import { STOP_POINT } from '../../../util/stop-point-test-data.spec';
+import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
+import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../../test/data/traffic-point-element';
+import { AppTestingModule } from '../../../../../app.testing.module';
+import { ActivatedRoute } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailWithRelationTabComponent } from '../../relation/tab/detail-with-relation-tab.component';
+import { of } from 'rxjs';
 
 describe('PlatformDetailPanelComponent', () => {
   let component: PlatformDetailPanelComponent;
@@ -27,15 +27,18 @@ describe('PlatformDetailPanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [AppTestingModule, PlatformDetailPanelComponent,
+      imports: [
+        AppTestingModule,
+        PlatformDetailPanelComponent,
         DetailWithRelationTabComponent,
-        DetailPageContainerComponent],
-    providers: [
+        DetailPageContainerComponent,
+      ],
+      providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         TranslatePipe,
         SplitServicePointNumberPipe,
-    ],
-});
+      ],
+    });
     fixture = TestBed.createComponent(PlatformDetailPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

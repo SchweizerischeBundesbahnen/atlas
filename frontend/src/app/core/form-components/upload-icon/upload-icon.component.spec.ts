@@ -8,8 +8,8 @@ describe('UploadIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [UploadIconComponent],
-}).compileComponents();
+      imports: [UploadIconComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UploadIconComponent);
     component = fixture.componentInstance;

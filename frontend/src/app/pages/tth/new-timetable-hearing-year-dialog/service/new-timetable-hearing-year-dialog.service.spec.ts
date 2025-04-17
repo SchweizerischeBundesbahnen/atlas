@@ -7,18 +7,25 @@ import { NewTimetableHearingYearDialogService } from './new-timetable-hearing-ye
 describe('NewTimetableHearingYearDialogService', () => {
   let newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService;
 
-  const timetableHearingDialogSpy = jasmine.createSpyObj('newTimetableHearingYearDialog', ['open']);
+  const timetableHearingDialogSpy = jasmine.createSpyObj(
+    'newTimetableHearingYearDialog',
+    ['open']
+  );
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: MatDialog, useValue: timetableHearingDialogSpy }],
     });
-    newTimetableHearingYearDialogService = TestBed.inject(NewTimetableHearingYearDialogService);
+    newTimetableHearingYearDialogService = TestBed.inject(
+      NewTimetableHearingYearDialogService
+    );
   });
 
   it('should open confirmation new timetable hearing year dialog and pass success value - true', () => {
-    timetableHearingDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    timetableHearingDialogSpy.open.and.returnValue({
+      afterClosed: () => of(true),
+    });
 
     newTimetableHearingYearDialogService
       .openDialog()
@@ -28,7 +35,9 @@ describe('NewTimetableHearingYearDialogService', () => {
   });
 
   it('should open confirmation new timetable hearing year dialog and pass cancel value - false', () => {
-    timetableHearingDialogSpy.open.and.returnValue({ afterClosed: () => of(false) });
+    timetableHearingDialogSpy.open.and.returnValue({
+      afterClosed: () => of(false),
+    });
 
     newTimetableHearingYearDialogService
       .openDialog()

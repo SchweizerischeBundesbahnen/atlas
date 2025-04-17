@@ -13,9 +13,9 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-bodi-companies',
-    templateUrl: './companies.component.html',
-    imports: [TableComponent, RouterOutlet, TranslatePipe]
+  selector: 'app-bodi-companies',
+  templateUrl: './companies.component.html',
+  imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
 export class CompaniesComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<Company>[] = [

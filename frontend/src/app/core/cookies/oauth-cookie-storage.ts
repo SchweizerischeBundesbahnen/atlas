@@ -1,11 +1,10 @@
-import {Injectable} from "@angular/core";
-import {OAuthStorage} from "angular-oauth2-oidc";
-import {CookieService} from "ngx-cookie-service";
+import { Injectable } from '@angular/core';
+import { OAuthStorage } from 'angular-oauth2-oidc';
+import { CookieService } from 'ngx-cookie-service';
 
 // See https://confluence.sbb.ch/x/MpfzpQ
 @Injectable()
 export class OAuthCookieStorage extends OAuthStorage {
-
   constructor(private cookieService: CookieService) {
     super();
   }
@@ -15,11 +14,11 @@ export class OAuthCookieStorage extends OAuthStorage {
   }
 
   removeItem(key: string): void {
-    this.cookieService.set(key, "", {
+    this.cookieService.set(key, '', {
       sameSite: 'Strict',
       secure: true,
       path: '/',
-      expires: -1
+      expires: -1,
     });
   }
 
@@ -30,5 +29,4 @@ export class OAuthCookieStorage extends OAuthStorage {
       path: '/',
     });
   }
-
 }

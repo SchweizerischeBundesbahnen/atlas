@@ -1,6 +1,19 @@
-import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { TimetableHearingYear, TimetableHearingYearsService } from '../../../api';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogClose } from '@angular/material/dialog';
+import {
+  Component,
+  Inject,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import {
+  TimetableHearingYear,
+  TimetableHearingYearsService,
+} from '../../../api';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { NgTemplateOutlet } from '@angular/common';
@@ -9,10 +22,16 @@ import { AtlasButtonComponent } from '../../../core/components/button/atlas-butt
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'dialog-manage-tth',
-    templateUrl: './dialog-manage-tth.component.html',
-    styleUrls: ['./dialog-manage-tth.component.scss'],
-    imports: [MatDialogClose, NgTemplateOutlet, AtlasSlideToggleComponent, AtlasButtonComponent, TranslatePipe]
+  selector: 'dialog-manage-tth',
+  templateUrl: './dialog-manage-tth.component.html',
+  styleUrls: ['./dialog-manage-tth.component.scss'],
+  imports: [
+    MatDialogClose,
+    NgTemplateOutlet,
+    AtlasSlideToggleComponent,
+    AtlasButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class DialogManageTthComponent implements OnInit {
   @ViewChild('loadingView', { static: true }) loadingView!: TemplateRef<this>;
@@ -34,7 +53,7 @@ export class DialogManageTthComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private readonly matDialogData: number,
     private readonly timetableHearingYearsService: TimetableHearingYearsService,
     private readonly notificationService: NotificationService,
-    private readonly dialogRef: MatDialogRef<DialogManageTthComponent, boolean>,
+    private readonly dialogRef: MatDialogRef<DialogManageTthComponent, boolean>
   ) {
     this.year = matDialogData;
   }
@@ -93,7 +112,7 @@ export class DialogManageTthComponent implements OnInit {
         next: () => {
           this.dialogRef.close(true);
           this.notificationService.success(
-            'TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION',
+            'TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION'
           );
         },
         error: (err) => {
@@ -120,7 +139,7 @@ export class DialogManageTthComponent implements OnInit {
         next: () => {
           this.dialogRef.close(true);
           this.notificationService.success(
-            'TTH.CLOSE_TIMETABLE_HEARING.SUCCESSFUL_CLOSE_NOTIFICATION',
+            'TTH.CLOSE_TIMETABLE_HEARING.SUCCESSFUL_CLOSE_NOTIFICATION'
           );
         },
         error: (err) => {

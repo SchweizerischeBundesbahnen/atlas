@@ -8,8 +8,8 @@ let fixture: ComponentFixture<AtlasSpacerComponent>;
 describe('AtlasSpacerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, AtlasSpacerComponent],
-}).compileComponents();
+      imports: [AppTestingModule, AtlasSpacerComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

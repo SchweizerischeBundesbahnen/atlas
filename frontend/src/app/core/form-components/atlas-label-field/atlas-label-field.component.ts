@@ -6,9 +6,16 @@ import { InfoIconComponent } from '../info-icon/info-icon.component';
 import { InfoLinkDirective } from '../info-icon/info-link.directive';
 
 @Component({
-    selector: 'app-atlas-label-field',
-    templateUrl: './atlas-label-field.component.html',
-    imports: [NgClass, NgIf, InfoIconComponent, InfoLinkDirective, NgFor, TranslatePipe]
+  selector: 'app-atlas-label-field',
+  templateUrl: './atlas-label-field.component.html',
+  imports: [
+    NgClass,
+    NgIf,
+    InfoIconComponent,
+    InfoLinkDirective,
+    NgFor,
+    TranslatePipe,
+  ],
 })
 export class AtlasLabelFieldComponent {
   @Input() required!: boolean;

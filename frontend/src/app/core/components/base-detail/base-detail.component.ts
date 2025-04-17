@@ -1,9 +1,16 @@
-import {Component, ContentChild, Input, OnDestroy, OnInit, TemplateRef} from '@angular/core';
-import {BaseDetailController} from './base-detail-controller';
-import {KeepaliveService} from '../../keepalive/keepalive.service';
-import {Record} from './record';
-import {Subscription} from 'rxjs';
-import {PermissionService} from "../../auth/permission/permission.service";
+import {
+  Component,
+  ContentChild,
+  Input,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+} from '@angular/core';
+import { BaseDetailController } from './base-detail-controller';
+import { KeepaliveService } from '../../keepalive/keepalive.service';
+import { Record } from './record';
+import { Subscription } from 'rxjs';
+import { PermissionService } from '../../auth/permission/permission.service';
 import { ScrollToTopDirective } from '../../scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../detail-page-content/detail-page-content.component';
@@ -16,10 +23,22 @@ import { AtlasButtonComponent } from '../button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-detail-wrapper [controller][headingNew]',
-    templateUrl: './base-detail.component.html',
-    styleUrls: ['./base-detail.component.scss'],
-    imports: [ScrollToTopDirective, DetailPageContainerComponent, DetailPageContentComponent, NgIf, DateRangeTextComponent, SwitchVersionComponent, NgTemplateOutlet, UserDetailInfoComponent, DetailFooterComponent, AtlasButtonComponent, TranslatePipe]
+  selector: 'app-detail-wrapper [controller][headingNew]',
+  templateUrl: './base-detail.component.html',
+  styleUrls: ['./base-detail.component.scss'],
+  imports: [
+    ScrollToTopDirective,
+    DetailPageContainerComponent,
+    DetailPageContentComponent,
+    NgIf,
+    DateRangeTextComponent,
+    SwitchVersionComponent,
+    NgTemplateOutlet,
+    UserDetailInfoComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class BaseDetailComponent implements OnInit, OnDestroy {
   @Input() controller!: BaseDetailController<Record>;
@@ -59,7 +78,9 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   isEditButtonVisible() {
     return (
       this.selectedRecord.status !== 'IN_REVIEW' ||
-      this.permissionService.isAtLeastSupervisor(this.controller.getApplicationType())
+      this.permissionService.isAtLeastSupervisor(
+        this.controller.getApplicationType()
+      )
     );
   }
 }

@@ -7,7 +7,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpErrorResponse, HttpEventType, HttpHeaders } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEventType,
+  HttpHeaders,
+} from '@angular/common/http';
 
 describe('Server Error Interceptor', () => {
   let interceptor: ServerErrorInterceptor;

@@ -1,4 +1,4 @@
-import {LngLatBoundsLike} from 'maplibre-gl';
+import { LngLatBoundsLike } from 'maplibre-gl';
 
 export const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
   [5.7349, 45.6755],
@@ -17,4 +17,3 @@ export interface MapStyle {
   id: string;
   label: string;
 }
-

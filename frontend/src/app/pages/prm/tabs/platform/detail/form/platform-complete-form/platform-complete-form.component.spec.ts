@@ -18,16 +18,19 @@ describe('PlatformCompleteFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [AppTestingModule, PlatformCompleteFormComponent,
+      imports: [
+        AppTestingModule,
+        PlatformCompleteFormComponent,
         TextFieldComponent,
         AtlasLabelFieldComponent,
         MockAtlasFieldErrorComponent,
         AtlasSpacerComponent,
         InfoIconComponent,
         SelectComponent,
-        CommentComponent],
-    providers: [{ provide: TranslatePipe }],
-});
+        CommentComponent,
+      ],
+      providers: [{ provide: TranslatePipe }],
+    });
     fixture = TestBed.createComponent(PlatformCompleteFormComponent);
     component = fixture.componentInstance;
     component.form = PlatformFormGroupBuilder.buildCompleteFormGroup();

@@ -9,16 +9,29 @@ import {
 } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { NgSelectComponent, NgLabelTemplateDirective, NgOptionTemplateDirective } from '@ng-select/ng-select';
+import {
+  NgSelectComponent,
+  NgLabelTemplateDirective,
+  NgOptionTemplateDirective,
+} from '@ng-select/ng-select';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgTemplateOutlet, AsyncPipe } from '@angular/common';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 
 @Component({
-    selector: 'form-search-select',
-    templateUrl: './search-select.component.html',
-    styleUrls: ['./search-select.component.scss'],
-    imports: [ReactiveFormsModule, NgSelectComponent, NgLabelTemplateDirective, NgTemplateOutlet, NgOptionTemplateDirective, AtlasFieldErrorComponent, AsyncPipe, TranslatePipe]
+  selector: 'form-search-select',
+  templateUrl: './search-select.component.html',
+  styleUrls: ['./search-select.component.scss'],
+  imports: [
+    ReactiveFormsModule,
+    NgSelectComponent,
+    NgLabelTemplateDirective,
+    NgTemplateOutlet,
+    NgOptionTemplateDirective,
+    AtlasFieldErrorComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class SearchSelectComponent<TYPE> {
   @Input() items$: Observable<TYPE[]> = of([]);

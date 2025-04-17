@@ -7,7 +7,9 @@ import { LoadingPointsDetailResolver } from './loading-points-detail-resolver.se
 import { LOADING_POINT } from '../../../../test/data/loading-point';
 
 describe('LoadingPointsDetailResolver', () => {
-  const loadingPointsService = jasmine.createSpyObj('loadingPointsService', ['getLoadingPoint']);
+  const loadingPointsService = jasmine.createSpyObj('loadingPointsService', [
+    'getLoadingPoint',
+  ]);
   loadingPointsService.getLoadingPoint.and.returnValue(of(LOADING_POINT));
 
   let resolver: LoadingPointsDetailResolver;
@@ -25,7 +27,10 @@ describe('LoadingPointsDetailResolver', () => {
 
   it('should get versions from service to display', () => {
     const mockRoute = {
-      paramMap: convertToParamMap({ servicePointNumber: '8504414', number: 1231 }),
+      paramMap: convertToParamMap({
+        servicePointNumber: '8504414',
+        number: 1231,
+      }),
     } as ActivatedRouteSnapshot;
 
     const resolvedVersion = resolver.resolve(mockRoute);

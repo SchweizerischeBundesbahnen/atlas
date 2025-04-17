@@ -22,20 +22,20 @@ describe('MeansOfTransportPickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [
+      imports: [
         FormModule,
         FormsModule,
         MaterialModule,
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         MeansOfTransportPickerComponent,
         InfoIconComponent,
         AtlasLabelFieldComponent,
         AtlasSpacerComponent,
-    ],
-    providers: [{ provide: TranslatePipe }],
-}).compileComponents();
+      ],
+      providers: [{ provide: TranslatePipe }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MeansOfTransportPickerComponent);
     component = fixture.componentInstance;

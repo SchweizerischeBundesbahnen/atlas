@@ -19,7 +19,10 @@ describe('CompanyDetailResolver', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      providers: [CompanyDetailResolver, { provide: CompaniesService, useValue: companyService }],
+      providers: [
+        CompanyDetailResolver,
+        { provide: CompaniesService, useValue: companyService },
+      ],
     });
     resolver = TestBed.inject(CompanyDetailResolver);
   });
@@ -29,7 +32,9 @@ describe('CompanyDetailResolver', () => {
   });
 
   it('should get company from service to display', () => {
-    const mockRoute = { paramMap: convertToParamMap({ id: '1234' }) } as ActivatedRouteSnapshot;
+    const mockRoute = {
+      paramMap: convertToParamMap({ id: '1234' }),
+    } as ActivatedRouteSnapshot;
 
     const resolvedVersion = resolver.resolve(mockRoute);
 

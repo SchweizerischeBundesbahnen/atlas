@@ -18,14 +18,24 @@ describe('DecisionStepperComponent', () => {
   let fixture: ComponentFixture<DecisionStepperComponent>;
 
   let dialogRefSpy = jasmine.createSpyObj(['close']);
-  let spWfServiceSpy = jasmine.createSpyObj(['obtainOtp', 'verifyOtp', 'voteWorkflow']);
+  let spWfServiceSpy = jasmine.createSpyObj([
+    'obtainOtp',
+    'verifyOtp',
+    'voteWorkflow',
+  ]);
 
   beforeEach(async () => {
     dialogRefSpy = jasmine.createSpyObj(['close']);
-    spWfServiceSpy = jasmine.createSpyObj(['obtainOtp', 'verifyOtp', 'voteWorkflow']);
+    spWfServiceSpy = jasmine.createSpyObj([
+      'obtainOtp',
+      'verifyOtp',
+      'voteWorkflow',
+    ]);
 
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, DecisionStepperComponent,
+      imports: [
+        AppTestingModule,
+        DecisionStepperComponent,
         DecisionFormComponent,
         CommentComponent,
         AtlasFieldErrorComponent,
@@ -33,19 +43,20 @@ describe('DecisionStepperComponent', () => {
         AtlasLabelFieldComponent,
         LoadingSpinnerComponent,
         DialogContentComponent,
-        DialogCloseComponent],
-    providers: [
+        DialogCloseComponent,
+      ],
+      providers: [
         { provide: MatDialogRef, useValue: dialogRefSpy },
         {
-            provide: StopPointWorkflowService,
-            useValue: spWfServiceSpy,
+          provide: StopPointWorkflowService,
+          useValue: spWfServiceSpy,
         },
         {
-            provide: MAT_DIALOG_DATA,
-            useValue: 1,
+          provide: MAT_DIALOG_DATA,
+          useValue: 1,
         },
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DecisionStepperComponent);
     component = fixture.componentInstance;
@@ -81,7 +92,7 @@ describe('DecisionStepperComponent', () => {
           lastName: 'last',
           organisation: 'sbb',
           personFunction: 'chef',
-        }),
+        })
       );
 
       component.completeVerifyPinStep();
@@ -128,7 +139,9 @@ describe('DecisionStepperComponent', () => {
 
   it('should handle error on obtain otp step', () => {
     component.mail.controls.mail.setValue('techsupport@atlas.ch');
-    spWfServiceSpy.obtainOtp.and.returnValue(throwError(() => 'mail not found'));
+    spWfServiceSpy.obtainOtp.and.returnValue(
+      throwError(() => 'mail not found')
+    );
 
     component.completeObtainOtpStep();
     fixture.detectChanges();

@@ -1,14 +1,24 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {CreateStopPointComponent} from './create-stop-point.component';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {MeanOfTransport} from '../../../../../api';
-import {MatStepper, MatStepperModule} from '@angular/material/stepper';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MeanOfTransportFormGroup, StopPointFormGroupBuilder,} from '../form/stop-point-detail-form-group';
-import {DialogService} from '../../../../../core/components/dialog/dialog.service';
-import {of} from 'rxjs';
-import {STOP_POINT, STOP_POINT_COMPLETE} from '../../../util/stop-point-test-data.spec';
+import { CreateStopPointComponent } from './create-stop-point.component';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
+import { MeanOfTransport } from '../../../../../api';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { FormControl, FormGroup } from '@angular/forms';
+import {
+  MeanOfTransportFormGroup,
+  StopPointFormGroupBuilder,
+} from '../form/stop-point-detail-form-group';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { of } from 'rxjs';
+import {
+  STOP_POINT,
+  STOP_POINT_COMPLETE,
+} from '../../../util/stop-point-test-data.spec';
 import SpyObj = jasmine.SpyObj;
 
 describe('CreateStopPointComponent', () => {
@@ -20,15 +30,15 @@ describe('CreateStopPointComponent', () => {
     dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
     dialogService.confirm.and.returnValue(of(true));
     TestBed.configureTestingModule({
-    imports: [
+      imports: [
         MatStepperModule,
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         CreateStopPointComponent,
-    ],
-    providers: [{ provide: DialogService, useValue: dialogService }],
-});
+      ],
+      providers: [{ provide: DialogService, useValue: dialogService }],
+    });
     fixture = TestBed.createComponent(CreateStopPointComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -77,16 +87,17 @@ describe('CreateStopPointComponent', () => {
     component.formMeanOfTransport = new FormGroup<MeanOfTransportFormGroup>({
       meansOfTransport: new FormControl([MeanOfTransport.Train]),
     });
-    component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT_COMPLETE);
+    component.form =
+      StopPointFormGroupBuilder.buildFormGroup(STOP_POINT_COMPLETE);
     spyOn(component, 'resetDataForm');
     spyOn(component, 'initForm');
     const addCompleteRecordingValidationSpy = spyOn(
       StopPointFormGroupBuilder,
-      'addCompleteRecordingValidation',
+      'addCompleteRecordingValidation'
     ).and.callThrough();
     const removeCompleteRecordingValidationSpy = spyOn(
       StopPointFormGroupBuilder,
-      'removeCompleteRecordingValidation',
+      'removeCompleteRecordingValidation'
     ).and.callThrough();
     //when
     component.checkSelection();
@@ -111,11 +122,11 @@ describe('CreateStopPointComponent', () => {
     spyOn(component, 'initForm');
     const addCompleteRecordingValidationSpy = spyOn(
       StopPointFormGroupBuilder,
-      'addCompleteRecordingValidation',
+      'addCompleteRecordingValidation'
     ).and.callThrough();
     const removeCompleteRecordingValidationSpy = spyOn(
       StopPointFormGroupBuilder,
-      'removeCompleteRecordingValidation',
+      'removeCompleteRecordingValidation'
     ).and.callThrough();
 
     //when
@@ -143,8 +154,12 @@ describe('CreateStopPointComponent', () => {
 
     //then
     expect(component.form.reset).toHaveBeenCalled();
-    expect(component.form.controls.meansOfTransport.value).toEqual([MeanOfTransport.Metro]);
-    expect(component.form.controls.number.value).toEqual(STOP_POINT.number.number);
+    expect(component.form.controls.meansOfTransport.value).toEqual([
+      MeanOfTransport.Metro,
+    ]);
+    expect(component.form.controls.number.value).toEqual(
+      STOP_POINT.number.number
+    );
     expect(component.form.controls.sloid.value).toEqual(STOP_POINT.sloid);
   });
 });

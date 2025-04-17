@@ -35,7 +35,9 @@ export abstract class BasePrmTabComponentService {
       this.redirectToStopPoint(servicePoints);
     } else {
       this._isStopPointExisting = true;
-      const isReduced = PrmMeanOfTransportHelper.isReduced(stopPointVersions[0].meansOfTransport);
+      const isReduced = PrmMeanOfTransportHelper.isReduced(
+        stopPointVersions[0].meansOfTransport
+      );
       if (isReduced && this.canShowTab()) {
         this.redirectToStopPoint(servicePoints);
       }

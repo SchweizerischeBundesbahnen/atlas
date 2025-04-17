@@ -1,14 +1,27 @@
-import {Injectable} from '@angular/core';
-import maplibregl, {GeoJSONSource, LngLat, LngLatLike, Map, MapGeoJSONFeature, MapMouseEvent, Popup,} from 'maplibre-gl';
-import {MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_TRAFFIC_POINT_LAYER_NAME, SERVICE_POINT_MIN_ZOOM,} from './map-style';
-import {GeoJsonProperties, Point} from 'geojson';
-import {MAP_STYLES, MapStyle, SWISS_BOUNDING_BOX} from './map-options';
-import {BehaviorSubject, Subject} from 'rxjs';
-import {CoordinatePair, SpatialReference} from '../../../api';
-import {Pages} from '../../pages';
-import {MapIconsService} from './map-icons.service';
-import {Router} from '@angular/router';
-import {TrafficPointMapService} from './traffic-point-map.service';
+import { Injectable } from '@angular/core';
+import maplibregl, {
+  GeoJSONSource,
+  LngLat,
+  LngLatLike,
+  Map,
+  MapGeoJSONFeature,
+  MapMouseEvent,
+  Popup,
+} from 'maplibre-gl';
+import {
+  MAP_SOURCE_NAME,
+  MAP_STYLE_SPEC,
+  MAP_TRAFFIC_POINT_LAYER_NAME,
+  SERVICE_POINT_MIN_ZOOM,
+} from './map-style';
+import { GeoJsonProperties, Point } from 'geojson';
+import { MAP_STYLES, MapStyle, SWISS_BOUNDING_BOX } from './map-options';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { CoordinatePair, SpatialReference } from '../../../api';
+import { Pages } from '../../pages';
+import { MapIconsService } from './map-icons.service';
+import { Router } from '@angular/router';
+import { TrafficPointMapService } from './traffic-point-map.service';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
@@ -40,9 +53,7 @@ export class MapService {
   });
   private _keepPopup = false;
 
-  constructor(
-    private router: Router,
-  ) {}
+  constructor(private router: Router) {}
 
   initMap(mapContainer: HTMLElement) {
     this.map = this.createMap(mapContainer);
@@ -57,7 +68,7 @@ export class MapService {
     return this.map;
   }
 
-  createMap(mapContainer: HTMLElement){
+  createMap(mapContainer: HTMLElement) {
     return new Map({
       container: mapContainer,
       style: MAP_STYLE_SPEC,
@@ -152,7 +163,9 @@ export class MapService {
           this.showTrafficPointPopup(e);
         }
       });
-      this.map.on('click', MAP_TRAFFIC_POINT_LAYER_NAME, (e) => this.onTrafficPointClicked(e));
+      this.map.on('click', MAP_TRAFFIC_POINT_LAYER_NAME, (e) =>
+        this.onTrafficPointClicked(e)
+      );
     });
     this.map.once('load', () => {
       this.mapInitialized.next(true);
@@ -194,7 +207,9 @@ export class MapService {
   }
 
   private initStoredMapBehaviour() {
-    const initialZoom = Number(localStorage.getItem(mapZoomLocalStorageKey) ?? 7.2);
+    const initialZoom = Number(
+      localStorage.getItem(mapZoomLocalStorageKey) ?? 7.2
+    );
     this.map.setZoom(initialZoom);
     this.servicePointsShown.next(initialZoom >= SERVICE_POINT_MIN_ZOOM);
 
@@ -214,7 +229,10 @@ export class MapService {
       this.map.setCenter({ lng: 8.088542571207768, lat: 46.79229542892091 });
     }
     this.map.on('moveend', (e) => {
-      localStorage.setItem(mapLocationLocalStorageKey, JSON.stringify(e.target.getCenter()));
+      localStorage.setItem(
+        mapLocationLocalStorageKey,
+        JSON.stringify(e.target.getCenter())
+      );
     });
 
     this.initStoredMapStyle();
@@ -222,7 +240,7 @@ export class MapService {
 
   private initStoredMapStyle() {
     const storedStyle = MAP_STYLES.find(
-      (i) => i.id === localStorage.getItem(mapStyleLocalStorageKey),
+      (i) => i.id === localStorage.getItem(mapStyleLocalStorageKey)
     );
     if (storedStyle) {
       this.switchToStyle(storedStyle);
@@ -231,23 +249,35 @@ export class MapService {
     }
   }
 
-  showServicePointPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
+  showServicePointPopup(
+    event: MapMouseEvent & { features?: MapGeoJSONFeature[] }
+  ) {
     this.showPopup(event, this.buildServicePointPopupInformation);
   }
 
-  showTrafficPointPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
-    this.showPopup(event, TrafficPointMapService.buildTrafficPointPopupInformation);
+  showTrafficPointPopup(
+    event: MapMouseEvent & { features?: MapGeoJSONFeature[] }
+  ) {
+    this.showPopup(
+      event,
+      TrafficPointMapService.buildTrafficPointPopupInformation
+    );
   }
 
   private showPopup(
     event: MapMouseEvent & { features?: MapGeoJSONFeature[] },
-    htmlContentBuilder: (features: MapGeoJSONFeature[]) => string,
+    htmlContentBuilder: (features: MapGeoJSONFeature[]) => string
   ) {
     if (!event.features || this.keepPopup || this.coordinateSelectionMode) {
       return;
     }
-    const coordinates = (event.features[0].geometry as Point).coordinates.slice() as LngLatLike;
-    this.popup.setLngLat(coordinates).setHTML(htmlContentBuilder(event.features)).addTo(this.map);
+    const coordinates = (
+      event.features[0].geometry as Point
+    ).coordinates.slice() as LngLatLike;
+    this.popup
+      .setLngLat(coordinates)
+      .setHTML(htmlContentBuilder(event.features))
+      .addTo(this.map);
     this.popup.on('close', () => {
       this.keepPopup = false;
     });
@@ -308,7 +338,7 @@ export class MapService {
     this.map.on(
       'mouseleave',
       MAP_SOURCE_NAME,
-      () => (this.map.getCanvas().style.cursor = 'crosshair'),
+      () => (this.map.getCanvas().style.cursor = 'crosshair')
     );
     this.map.on('click', this.onMapClicked);
   }
@@ -318,7 +348,11 @@ export class MapService {
     this.marker.remove();
     this.map.off('click', this.onMapClicked);
     this.map.getCanvas().style.cursor = '';
-    this.map.on('mouseleave', MAP_SOURCE_NAME, () => (this.map.getCanvas().style.cursor = ''));
+    this.map.on(
+      'mouseleave',
+      MAP_SOURCE_NAME,
+      () => (this.map.getCanvas().style.cursor = '')
+    );
     this.initMapEvents();
   }
 

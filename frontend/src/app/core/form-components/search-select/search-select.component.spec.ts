@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchSelectComponent } from './search-select.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
 import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
@@ -13,15 +17,16 @@ describe('SearchSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [
+      imports: [
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         NgSelectModule,
         ReactiveFormsModule,
-        SearchSelectComponent, AtlasFieldErrorComponent,
-    ],
-}).compileComponents();
+        SearchSelectComponent,
+        AtlasFieldErrorComponent,
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SearchSelectComponent);
     component = fixture.componentInstance;
@@ -29,7 +34,9 @@ describe('SearchSelectComponent', () => {
       testControl: new FormControl(null),
     });
     component.controlName = 'testControl';
-    component.ngSelect = jasmine.createSpyObj<NgSelectComponent>([], { isOpen: undefined });
+    component.ngSelect = jasmine.createSpyObj<NgSelectComponent>([], {
+      isOpen: undefined,
+    });
     fixture.detectChanges();
   });
 

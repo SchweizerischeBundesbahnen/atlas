@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LinesService, LineVersionSnapshot, WorkflowStatus } from '../../../../api';
+import {
+  LinesService,
+  LineVersionSnapshot,
+  WorkflowStatus,
+} from '../../../../api';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -15,21 +19,28 @@ import { TableComponent } from '../../../../core/components/table/table.componen
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-lidi-workflow-overview',
-    templateUrl: './lidi-workflow-overview.component.html',
-    imports: [TableComponent, RouterOutlet, TranslatePipe]
+  selector: 'app-lidi-workflow-overview',
+  templateUrl: './lidi-workflow-overview.component.html',
+  imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
 export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   lineSnapshotsTableColumns: TableColumn<LineVersionSnapshot>[] = [
     { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.NUMBER', value: 'number' },
-    { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.DESCRIPTION', value: 'description' },
+    {
+      headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.DESCRIPTION',
+      value: 'description',
+    },
     { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.SLNID', value: 'slnid' },
     {
       headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.STATUS',
       value: 'workflowStatus',
       translate: { withPrefix: 'WORKFLOW.STATUS.' },
     },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    {
+      headerTitle: 'COMMON.VALID_FROM',
+      value: 'validFrom',
+      formatAsDate: true,
+    },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
@@ -59,9 +70,12 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
     private router: Router,
     private readonly tableService: TableService
   ) {
-    const slnidFromQueryParam: string | undefined = this.route.snapshot.queryParams.slnid;
+    const slnidFromQueryParam: string | undefined =
+      this.route.snapshot.queryParams.slnid;
     if (slnidFromQueryParam) {
-      this.tableFilterConfigIntern.chipSearch.addSearchFromString(slnidFromQueryParam);
+      this.tableFilterConfigIntern.chipSearch.addSearchFromString(
+        slnidFromQueryParam
+      );
     }
   }
 

@@ -23,7 +23,7 @@ describe('TableContentPaginationAndSorting', () => {
     const sortedObjects = TableContentPaginationAndSorting.pageAndSort(
       objectsToSort,
       { page: 0, size: 5 },
-      'designation',
+      'designation'
     );
     expect(sortedObjects.map((i) => i.designation)).toEqual(['A', 'B', 'C']);
   });
@@ -36,7 +36,7 @@ describe('TableContentPaginationAndSorting', () => {
         size: 5,
         sort: 'designation,asc',
       },
-      'number',
+      'number'
     );
     expect(sortedObjects.map((i) => i.designation)).toEqual(['A', 'B', 'C']);
   });
@@ -49,7 +49,7 @@ describe('TableContentPaginationAndSorting', () => {
         size: 5,
         sort: 'number,asc',
       },
-      'designation',
+      'designation'
     );
     expect(sortedObjects.map((i) => i.number)).toEqual([1, 2, 3]);
   });
@@ -62,7 +62,7 @@ describe('TableContentPaginationAndSorting', () => {
         size: 5,
         sort: 'number,desc',
       },
-      'designation',
+      'designation'
     );
     expect(sortedObjects.map((i) => i.number)).toEqual([3, 2, 1]);
   });
@@ -75,7 +75,7 @@ describe('TableContentPaginationAndSorting', () => {
         size: 5,
         sort: 'date,asc',
       },
-      'designation',
+      'designation'
     );
     expect(sortedObjects.map((i) => i.date.toISOString())).toEqual([
       '2022-06-01',
@@ -91,7 +91,7 @@ describe('TableContentPaginationAndSorting', () => {
         page: 0,
         size: 1,
       },
-      'designation',
+      'designation'
     );
     expect(pagedObjects.length).toBe(1);
     expect(pagedObjects[0].designation).toBe('A');
@@ -102,7 +102,7 @@ describe('TableContentPaginationAndSorting', () => {
         page: 1,
         size: 1,
       },
-      'designation',
+      'designation'
     );
     expect(pagedObjects.length).toBe(1);
     expect(pagedObjects[0].designation).toBe('B');
@@ -113,7 +113,7 @@ describe('TableContentPaginationAndSorting', () => {
         page: 0,
         size: 2,
       },
-      'designation',
+      'designation'
     );
     expect(pagedObjects.length).toBe(2);
     expect(pagedObjects[0].designation).toBe('A');

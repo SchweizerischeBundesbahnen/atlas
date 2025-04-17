@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DialogContentComponent } from './dialog-content.component';
-import {AppTestingModule} from "../../../../app.testing.module";
+import { AppTestingModule } from '../../../../app.testing.module';
 
 let component: DialogContentComponent;
 let fixture: ComponentFixture<DialogContentComponent>;
@@ -8,8 +8,8 @@ let fixture: ComponentFixture<DialogContentComponent>;
 describe('DialogContentComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, DialogContentComponent],
-}).compileComponents();
+      imports: [AppTestingModule, DialogContentComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

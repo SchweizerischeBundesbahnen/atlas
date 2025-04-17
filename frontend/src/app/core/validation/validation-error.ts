@@ -1,4 +1,4 @@
-import {ValidationErrors} from '@angular/forms';
+import { ValidationErrors } from '@angular/forms';
 
 export interface ValidationError {
   error: string;

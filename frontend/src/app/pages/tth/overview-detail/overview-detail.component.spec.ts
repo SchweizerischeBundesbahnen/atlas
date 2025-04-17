@@ -1,39 +1,41 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {OverviewDetailComponent} from './overview-detail.component';
-import {AppTestingModule} from '../../../app.testing.module';
-import {TranslatePipe} from '@ngx-translate/core';
-import {DisplayDatePipe} from '../../../core/pipe/display-date.pipe';
+import { OverviewDetailComponent } from './overview-detail.component';
+import { AppTestingModule } from '../../../app.testing.module';
+import { TranslatePipe } from '@ngx-translate/core';
+import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import {
   ContainerTimetableHearingStatementV2,
   HearingStatus,
   SwissCanton,
-  TimetableHearingStatementDocument, TimetableHearingStatementSenderV2,
-  TimetableHearingStatementsService, TimetableHearingStatementV2,
+  TimetableHearingStatementDocument,
+  TimetableHearingStatementSenderV2,
+  TimetableHearingStatementsService,
+  TimetableHearingStatementV2,
   TimetableHearingYear,
   TimetableHearingYearsService,
 } from '../../../api';
-import {ActivatedRoute, Router} from '@angular/router';
-import {of} from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
 import moment from 'moment';
-import {Pages} from '../../pages';
-import {Component, Input} from '@angular/core';
+import { Pages } from '../../pages';
+import { Component, Input } from '@angular/core';
 import {
   adminPermissionServiceMock,
   MockAtlasButtonComponent,
   MockAtlasFieldErrorComponent,
   MockTableComponent,
 } from '../../../app.testing.mocks';
-import {SelectComponent} from '../../../core/form-components/select/select.component';
-import {AtlasSpacerComponent} from '../../../core/components/spacer/atlas-spacer.component';
-import {TableService} from '../../../core/components/table/table.service';
-import {AtlasLabelFieldComponent} from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import {PermissionService} from "../../../core/auth/permission/permission.service";
+import { SelectComponent } from '../../../core/form-components/select/select.component';
+import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
+import { TableService } from '../../../core/components/table/table.service';
+import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { PermissionService } from '../../../core/auth/permission/permission.service';
 
 @Component({
-    selector: 'app-timetable-hearing-overview-tab-heading',
-    template: '<p>MockAppTthOverviewTabHeadingComponent</p>',
-    imports: [AppTestingModule]
+  selector: 'app-timetable-hearing-overview-tab-heading',
+  template: '<p>MockAppTthOverviewTabHeadingComponent</p>',
+  imports: [AppTestingModule],
 })
 class MockAppTthOverviewTabHeadingComponent {
   @Input() cantonShort!: string;
@@ -44,12 +46,13 @@ class MockAppTthOverviewTabHeadingComponent {
   @Input() noPlannedTimetableHearingYearFound!: boolean;
 }
 
-const mockTimetableHearingYearsService = jasmine.createSpyObj('timetableHearingYearsService', [
-  'getHearingYears',
-]);
+const mockTimetableHearingYearsService = jasmine.createSpyObj(
+  'timetableHearingYearsService',
+  ['getHearingYears']
+);
 const mockTimetableHearingStatementsService = jasmine.createSpyObj(
   'timetableHearingStatementsService',
-  ['getStatements'],
+  ['getStatements']
 );
 
 let router: Router;
@@ -91,45 +94,52 @@ const timetableHearingStatement: TimetableHearingStatementV2 = {
       businessRegisterName: 'BLS',
     },
   ],
-  statementSender: { emails: new Set('a@b.c')},
+  statementSender: { emails: new Set('a@b.c') },
   statement: 'Ich hätte gerne mehrere Verbindungen am Abend.',
   documents: [],
 };
-const containerTimetableHearingStatement: ContainerTimetableHearingStatementV2 = {
-  objects: [timetableHearingStatement, timetableHearingStatement],
-  totalCount: 2,
-};
+const containerTimetableHearingStatement: ContainerTimetableHearingStatementV2 =
+  {
+    objects: [timetableHearingStatement, timetableHearingStatement],
+    totalCount: 2,
+  };
 
 async function baseTestConfiguration() {
   mockTimetableHearingStatementsService.getStatements.and.returnValue(
-    of(containerTimetableHearingStatement),
+    of(containerTimetableHearingStatement)
   );
 
   mockTimetableHearingYearsService.getHearingYears.and.returnValue(
-    of([hearingYear2000, hearingYear2001]),
+    of([hearingYear2000, hearingYear2001])
   );
 
   await TestBed.configureTestingModule({
-    imports: [AppTestingModule, OverviewDetailComponent,
-        SelectComponent,
-        AtlasLabelFieldComponent,
-        MockAtlasFieldErrorComponent,
-        AtlasSpacerComponent,
-        MockAppTthOverviewTabHeadingComponent,
-        MockTableComponent,
-        MockAtlasButtonComponent],
-    providers: [
-        {
-            provide: TimetableHearingStatementsService,
-            useValue: mockTimetableHearingStatementsService,
-        },
-        { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
-        { provide: TranslatePipe },
-        { provide: DisplayDatePipe },
-        { provide: PermissionService, useValue: adminPermissionServiceMock },
-        { provide: TableService },
+    imports: [
+      AppTestingModule,
+      OverviewDetailComponent,
+      SelectComponent,
+      AtlasLabelFieldComponent,
+      MockAtlasFieldErrorComponent,
+      AtlasSpacerComponent,
+      MockAppTthOverviewTabHeadingComponent,
+      MockTableComponent,
+      MockAtlasButtonComponent,
     ],
-}).compileComponents();
+    providers: [
+      {
+        provide: TimetableHearingStatementsService,
+        useValue: mockTimetableHearingStatementsService,
+      },
+      {
+        provide: TimetableHearingYearsService,
+        useValue: mockTimetableHearingYearsService,
+      },
+      { provide: TranslatePipe },
+      { provide: DisplayDatePipe },
+      { provide: PermissionService, useValue: adminPermissionServiceMock },
+      { provide: TableService },
+    ],
+  }).compileComponents();
 
   return TestBed.createComponent(OverviewDetailComponent);
 }
@@ -199,9 +209,13 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[1].value).toEqual('swissCanton');
       expect(component.tableColumns[2].value).toEqual('id');
       expect(component.tableColumns[3].value).toEqual('statementSender');
-      expect(component.tableColumns[4].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[4].value).toEqual(
+        'responsibleTransportCompaniesDisplay'
+      );
       expect(component.tableColumns[5].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[6].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[6].value).toEqual(
+        'timetableFieldDescription'
+      );
       expect(component.tableColumns[7].value).toEqual('editionDate');
       expect(component.tableColumns[8].value).toEqual('documents');
       expect(component.tableColumns[9].value).toEqual('etagVersion');
@@ -218,9 +232,13 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[1].value).toEqual('swissCanton');
       expect(component.tableColumns[2].value).toEqual('id');
       expect(component.tableColumns[3].value).toEqual('statementSender');
-      expect(component.tableColumns[4].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[4].value).toEqual(
+        'responsibleTransportCompaniesDisplay'
+      );
       expect(component.tableColumns[5].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[6].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[6].value).toEqual(
+        'timetableFieldDescription'
+      );
       expect(component.tableColumns[7].value).toEqual('editionDate');
       expect(component.tableColumns[8].value).toEqual('documents');
       expect(component.tableColumns[9].value).toEqual('etagVersion');
@@ -236,9 +254,13 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[0].value).toEqual('statementStatus');
       expect(component.tableColumns[1].value).toEqual('id');
       expect(component.tableColumns[2].value).toEqual('statementSender');
-      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[3].value).toEqual(
+        'responsibleTransportCompaniesDisplay'
+      );
       expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[5].value).toEqual(
+        'timetableFieldDescription'
+      );
       expect(component.tableColumns[6].value).toEqual('editionDate');
       expect(component.tableColumns[7].value).toEqual('documents');
       expect(component.tableColumns[8].value).toEqual('etagVersion');
@@ -274,7 +296,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       const routerNavigateSpy = spyOn(router, 'navigate').and.returnValue(
         new Promise((resolve) => {
           resolve(true);
-        }),
+        })
       );
       route.snapshot.queryParams = { year: 2002 };
       //when
@@ -295,12 +317,18 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     });
 
     it('should return the last name of the statement sender', () => {
-      const testSender: TimetableHearingStatementSenderV2 = { firstName: 'Max', lastName: 'Mustermann', emails: new Set('muster@muster.com')};
+      const testSender: TimetableHearingStatementSenderV2 = {
+        firstName: 'Max',
+        lastName: 'Mustermann',
+        emails: new Set('muster@muster.com'),
+      };
       expect(component.mapToLastname(testSender)).toEqual('Mustermann');
     });
 
     it('should return true if the documents array is not empty', () => {
-      const testDocuments: Array<TimetableHearingStatementDocument> = [{ id: 1, fileName: 'Document 1', fileSize: 123 }];
+      const testDocuments: Array<TimetableHearingStatementDocument> = [
+        { id: 1, fileName: 'Document 1', fileSize: 123 },
+      ];
       expect(component.isDocumentExisting(testDocuments)).toBeTrue();
     });
   });
@@ -327,9 +355,13 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[2].value).toEqual('swissCanton');
       expect(component.tableColumns[3].value).toEqual('id');
       expect(component.tableColumns[4].value).toEqual('statementSender');
-      expect(component.tableColumns[5].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[5].value).toEqual(
+        'responsibleTransportCompaniesDisplay'
+      );
       expect(component.tableColumns[6].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[7].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[7].value).toEqual(
+        'timetableFieldDescription'
+      );
       expect(component.tableColumns[8].value).toEqual('editionDate');
       expect(component.tableColumns[9].value).toEqual('documents');
       expect(component.tableColumns[10].value).toEqual('etagVersion');
@@ -343,7 +375,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       hearingTo: moment().toDate(),
     };
     const hearingYears: TimetableHearingYear[] = [hearingYear, hearingYear];
-    mockTimetableHearingYearsService.getHearingYears.and.returnValue(of(hearingYears));
+    mockTimetableHearingYearsService.getHearingYears.and.returnValue(
+      of(hearingYears)
+    );
     beforeEach(async () => {
       fixture = await baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
@@ -376,9 +410,13 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[0].value).toEqual('swissCanton');
       expect(component.tableColumns[1].value).toEqual('id');
       expect(component.tableColumns[2].value).toEqual('statementSender');
-      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[3].value).toEqual(
+        'responsibleTransportCompaniesDisplay'
+      );
       expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[5].value).toEqual(
+        'timetableFieldDescription'
+      );
       expect(component.tableColumns[6].value).toEqual('documents');
     });
 
@@ -392,9 +430,13 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[0].value).toEqual('swissCanton');
       expect(component.tableColumns[1].value).toEqual('id');
       expect(component.tableColumns[2].value).toEqual('statementSender');
-      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[3].value).toEqual(
+        'responsibleTransportCompaniesDisplay'
+      );
       expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[5].value).toEqual(
+        'timetableFieldDescription'
+      );
       expect(component.tableColumns[6].value).toEqual('documents');
     });
 
@@ -407,12 +449,15 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns.length).toEqual(6);
       expect(component.tableColumns[0].value).toEqual('id');
       expect(component.tableColumns[1].value).toEqual('statementSender');
-      expect(component.tableColumns[2].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[2].value).toEqual(
+        'responsibleTransportCompaniesDisplay'
+      );
       expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[4].value).toEqual(
+        'timetableFieldDescription'
+      );
       expect(component.tableColumns[5].value).toEqual('documents');
     });
-
   });
 
   describe('HearingOverviewTab Archived', async () => {
@@ -422,7 +467,9 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       hearingTo: moment().toDate(),
     };
     const hearingYears: TimetableHearingYear[] = [hearingYear, hearingYear];
-    mockTimetableHearingYearsService.getHearingYears.and.returnValue(of(hearingYears));
+    mockTimetableHearingYearsService.getHearingYears.and.returnValue(
+      of(hearingYears)
+    );
     beforeEach(async () => {
       fixture = await baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
@@ -456,9 +503,13 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[0].value).toEqual('swissCanton');
       expect(component.tableColumns[1].value).toEqual('id');
       expect(component.tableColumns[2].value).toEqual('statementSender');
-      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[3].value).toEqual(
+        'responsibleTransportCompaniesDisplay'
+      );
       expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[5].value).toEqual(
+        'timetableFieldDescription'
+      );
       expect(component.tableColumns[6].value).toEqual('documents');
     });
 
@@ -472,9 +523,13 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[0].value).toEqual('swissCanton');
       expect(component.tableColumns[1].value).toEqual('id');
       expect(component.tableColumns[2].value).toEqual('statementSender');
-      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[3].value).toEqual(
+        'responsibleTransportCompaniesDisplay'
+      );
       expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[5].value).toEqual(
+        'timetableFieldDescription'
+      );
       expect(component.tableColumns[6].value).toEqual('documents');
     });
 
@@ -487,9 +542,13 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns.length).toEqual(6);
       expect(component.tableColumns[0].value).toEqual('id');
       expect(component.tableColumns[1].value).toEqual('statementSender');
-      expect(component.tableColumns[2].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[2].value).toEqual(
+        'responsibleTransportCompaniesDisplay'
+      );
       expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[4].value).toEqual(
+        'timetableFieldDescription'
+      );
       expect(component.tableColumns[5].value).toEqual('documents');
     });
   });

@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {AddStopPointWorkflowDialogData} from './add-stop-point-workflow-dialog-data';
-import {AddStopPointWorkflowComponent} from "./add-stop-point-workflow.component";
-import {ReadServicePointVersion} from "../../../../api";
+import { Injectable } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog-data';
+import { AddStopPointWorkflowComponent } from './add-stop-point-workflow.component';
+import { ReadServicePointVersion } from '../../../../api';
 
 @Injectable({ providedIn: 'root' })
 export class AddStopPointWorkflowDialogService {
@@ -18,7 +18,7 @@ export class AddStopPointWorkflowDialogService {
       message: '',
       cancelText: 'DIALOG.CANCEL',
       confirmText: 'WORKFLOW.BUTTON.SEND',
-      stopPoint: stopPoint
+      stopPoint: stopPoint,
     };
 
     return this.open(dialogData);

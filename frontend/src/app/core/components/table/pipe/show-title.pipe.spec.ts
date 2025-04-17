@@ -8,7 +8,9 @@ describe('ShowTitlePipe', () => {
   let showTitlePipe: ShowTitlePipe;
 
   beforeEach(() => {
-    formatPipe = jasmine.createSpyObj<FormatPipe>('FormatPipeMockSpy', ['transform']);
+    formatPipe = jasmine.createSpyObj<FormatPipe>('FormatPipeMockSpy', [
+      'transform',
+    ]);
     showTitlePipe = new ShowTitlePipe(formatPipe);
   });
 
@@ -18,8 +20,14 @@ describe('ShowTitlePipe', () => {
 
   it('should transform and hideTooltip should be false', () => {
     formatPipe.transform.and.returnValue('testContentMustBeLongerThan20');
-    const transformed = showTitlePipe.transform('test', {} as TableColumn<object>);
+    const transformed = showTitlePipe.transform(
+      'test',
+      {} as TableColumn<object>
+    );
     expect(transformed).toEqual('testContentMustBeLongerThan20');
-    expect(formatPipe.transform).toHaveBeenCalledOnceWith('test', {} as TableColumn<object>);
+    expect(formatPipe.transform).toHaveBeenCalledOnceWith(
+      'test',
+      {} as TableColumn<object>
+    );
   });
 });

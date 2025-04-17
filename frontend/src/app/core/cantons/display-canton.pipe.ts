@@ -11,7 +11,8 @@ export class DisplayCantonPipe implements PipeTransform {
     if (!value) {
       return '-';
     }
-    const translationPath = 'TTH.CANTON.' + Cantons.fromSwissCanton(value)!.short;
+    const translationPath =
+      'TTH.CANTON.' + Cantons.fromSwissCanton(value)!.short;
     return this.translatePipe.transform(translationPath);
   }
 }

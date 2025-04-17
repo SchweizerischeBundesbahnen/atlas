@@ -1,4 +1,4 @@
-import {MeanOfTransport} from '../../../api';
+import { MeanOfTransport } from '../../../api';
 
 export const reducedMeansOfTransport: MeanOfTransport[] = [
   MeanOfTransport.Elevator,
@@ -17,9 +17,15 @@ export const completeMeansOfTransport: MeanOfTransport[] = [
 ];
 
 export class PrmMeanOfTransportHelper {
-  static getReducedCompleteInstances(selectedMeansOfTransport: MeanOfTransport[]) {
-    const hasReduced = selectedMeansOfTransport.some((s) => reducedMeansOfTransport.includes(s));
-    const hasComplete = selectedMeansOfTransport.some((s) => completeMeansOfTransport.includes(s));
+  static getReducedCompleteInstances(
+    selectedMeansOfTransport: MeanOfTransport[]
+  ) {
+    const hasReduced = selectedMeansOfTransport.some((s) =>
+      reducedMeansOfTransport.includes(s)
+    );
+    const hasComplete = selectedMeansOfTransport.some((s) =>
+      completeMeansOfTransport.includes(s)
+    );
     return { hasReduced, hasComplete };
   }
 

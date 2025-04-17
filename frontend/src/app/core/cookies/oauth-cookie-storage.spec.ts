@@ -1,6 +1,6 @@
-import {TestBed} from '@angular/core/testing';
-import {OAuthCookieStorage} from "./oauth-cookie-storage";
-import {CookieService} from "ngx-cookie-service";
+import { TestBed } from '@angular/core/testing';
+import { OAuthCookieStorage } from './oauth-cookie-storage';
+import { CookieService } from 'ngx-cookie-service';
 
 describe('OAuthCookieStorage', () => {
   let oAuthCookieStorage: OAuthCookieStorage;
@@ -8,9 +8,7 @@ describe('OAuthCookieStorage', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        OAuthCookieStorage, CookieService
-      ],
+      providers: [OAuthCookieStorage, CookieService],
     });
     oAuthCookieStorage = TestBed.inject(OAuthCookieStorage);
     cookieService = TestBed.inject(CookieService);

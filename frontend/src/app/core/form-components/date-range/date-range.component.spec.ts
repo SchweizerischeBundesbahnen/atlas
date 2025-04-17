@@ -1,26 +1,29 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DateRangeComponent} from './date-range.component';
-import {AppTestingModule} from '../../../app.testing.module';
-import {FormControl, FormGroup} from '@angular/forms';
-import {DateIconComponent} from '../date-icon/date-icon.component';
-import {AtlasFieldErrorComponent} from '../atlas-field-error/atlas-field-error.component';
-import {AtlasLabelFieldComponent} from '../atlas-label-field/atlas-label-field.component';
-import {TranslatePipe} from '@ngx-translate/core';
-import {InfoIconComponent} from '../info-icon/info-icon.component';
-import {TimetableYearChangeService} from "../../../api";
-import {of} from "rxjs";
-import {
-  TodayAndFutureTimetableHeaderComponent
-} from "./today-and-future-timetable-header/today-and-future-timetable-header.component";
-import {By} from "@angular/platform-browser";
-import {DateRangeValidator} from "../../validation/date-range/date-range-validator";
-import {MatDatepicker} from "@angular/material/datepicker";
-import moment from "moment";
+import { DateRangeComponent } from './date-range.component';
+import { AppTestingModule } from '../../../app.testing.module';
+import { FormControl, FormGroup } from '@angular/forms';
+import { DateIconComponent } from '../date-icon/date-icon.component';
+import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
+import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { InfoIconComponent } from '../info-icon/info-icon.component';
+import { TimetableYearChangeService } from '../../../api';
+import { of } from 'rxjs';
+import { TodayAndFutureTimetableHeaderComponent } from './today-and-future-timetable-header/today-and-future-timetable-header.component';
+import { By } from '@angular/platform-browser';
+import { DateRangeValidator } from '../../validation/date-range/date-range-validator';
+import { MatDatepicker } from '@angular/material/datepicker';
+import moment from 'moment';
 
 const nextTimetableYearChange = new Date('2024-12-15');
-const timetableYearChangeService = jasmine.createSpyObj('TimetableYearChangeService', ['getNextTimetablesYearChange']);
-timetableYearChangeService.getNextTimetablesYearChange.and.returnValue(of([nextTimetableYearChange]))
+const timetableYearChangeService = jasmine.createSpyObj(
+  'TimetableYearChangeService',
+  ['getNextTimetablesYearChange']
+);
+timetableYearChangeService.getNextTimetablesYearChange.and.returnValue(
+  of([nextTimetableYearChange])
+);
 
 describe('DateRangeComponent', () => {
   let component: DateRangeComponent;
@@ -28,26 +31,36 @@ describe('DateRangeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, MatDatepicker, DateRangeComponent,
+      imports: [
+        AppTestingModule,
+        MatDatepicker,
+        DateRangeComponent,
         TodayAndFutureTimetableHeaderComponent,
         DateIconComponent,
         AtlasFieldErrorComponent,
         InfoIconComponent,
-        AtlasLabelFieldComponent],
-    providers: [
+        AtlasLabelFieldComponent,
+      ],
+      providers: [
         { provide: TranslatePipe },
-        { provide: TimetableYearChangeService, useValue: timetableYearChangeService }
-    ],
-}).compileComponents();
+        {
+          provide: TimetableYearChangeService,
+          useValue: timetableYearChangeService,
+        },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DateRangeComponent);
     component = fixture.componentInstance;
-    component.formGroup = new FormGroup({
-      validFrom: new FormControl(),
-      validTo: new FormControl(),
-    }, [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]);
+    component.formGroup = new FormGroup(
+      {
+        validFrom: new FormControl(),
+        validTo: new FormControl(),
+      },
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+    );
     fixture.detectChanges();
   });
 
@@ -72,7 +85,9 @@ describe('DateRangeComponent', () => {
     todayButton.nativeElement.click();
     fixture.detectChanges();
 
-    expect(component.formGroup.controls.validFrom.value).toEqual(moment().startOf('day'));
+    expect(component.formGroup.controls.validFrom.value).toEqual(
+      moment().startOf('day')
+    );
   });
 
   it('should open validFrom picker and select future timetable', () => {
@@ -82,18 +97,24 @@ describe('DateRangeComponent', () => {
     futureTimetableButton.nativeElement.click();
     fixture.detectChanges();
 
-    expect(component.formGroup.controls.validFrom.value).toEqual(moment(nextTimetableYearChange).startOf('day'));
+    expect(component.formGroup.controls.validFrom.value).toEqual(
+      moment(nextTimetableYearChange).startOf('day')
+    );
   });
 
   function openValidFromPickerAndSelectHeader() {
-    const datePickerToggles = fixture.debugElement.queryAll(By.css('mat-datepicker-toggle'));
+    const datePickerToggles = fixture.debugElement.queryAll(
+      By.css('mat-datepicker-toggle')
+    );
     expect(datePickerToggles.length).toEqual(2);
 
     const validFromToggle = datePickerToggles[0];
     validFromToggle.nativeElement.click();
     fixture.detectChanges();
 
-    return fixture.debugElement.queryAll(By.css('today-and-future-timetable-header'));
+    return fixture.debugElement.queryAll(
+      By.css('today-and-future-timetable-header')
+    );
   }
 
   it('should select validFrom today and validTo today', () => {
@@ -102,16 +123,25 @@ describe('DateRangeComponent', () => {
     todayButton.nativeElement.click();
     fixture.detectChanges();
 
-    const datePickerToggles = fixture.debugElement.queryAll(By.css('mat-datepicker-toggle'));
+    const datePickerToggles = fixture.debugElement.queryAll(
+      By.css('mat-datepicker-toggle')
+    );
     datePickerToggles[1].nativeElement.click();
     fixture.detectChanges();
 
     // click on circled today
-    fixture.debugElement.queryAll(By.css('.mat-calendar-body-today'))[1].nativeElement.click();
+    fixture.debugElement
+      .queryAll(By.css('.mat-calendar-body-today'))[1]
+      .nativeElement.click();
     fixture.detectChanges();
 
-    expect(component.formGroup.controls.validFrom.value.isSame(moment().startOf('day'))).toBeTrue();
-    expect(component.formGroup.controls.validTo.value.isSame(moment().startOf('day'))).toBeTrue();
+    expect(
+      component.formGroup.controls.validFrom.value.isSame(
+        moment().startOf('day')
+      )
+    ).toBeTrue();
+    expect(
+      component.formGroup.controls.validTo.value.isSame(moment().startOf('day'))
+    ).toBeTrue();
   });
-
 });

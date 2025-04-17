@@ -6,22 +6,29 @@ import { NgFor, NgClass, UpperCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-language-switcher',
-    templateUrl: './language-switcher.component.html',
-    styleUrls: ['./language-switcher.component.scss'],
-    imports: [NgFor, RouterLink, NgClass, UpperCasePipe]
+  selector: 'app-language-switcher',
+  templateUrl: './language-switcher.component.html',
+  styleUrls: ['./language-switcher.component.scss'],
+  imports: [NgFor, RouterLink, NgClass, UpperCasePipe],
 })
 export class LanguageSwitcherComponent {
   static readonly STORED_LANGUAGE_KEY = 'language';
   languages = [Language.DE, Language.FR, Language.IT];
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  constructor(private translateService: TranslateService, private dateAdapter: DateAdapter<any>) {
+  constructor(
+    private translateService: TranslateService,
+    private dateAdapter: DateAdapter<any>
+  ) {
     const language =
       this.languages.find(
-        (lang) => lang === localStorage.getItem(LanguageSwitcherComponent.STORED_LANGUAGE_KEY)
+        (lang) =>
+          lang ===
+          localStorage.getItem(LanguageSwitcherComponent.STORED_LANGUAGE_KEY)
       ) ||
-      this.languages.find((lang) => lang === translateService.getBrowserLang()) ||
+      this.languages.find(
+        (lang) => lang === translateService.getBrowserLang()
+      ) ||
       this.languages[0];
     this.setLanguage(language);
   }
@@ -31,7 +38,10 @@ export class LanguageSwitcherComponent {
   }
 
   setLanguage(language: string): void {
-    localStorage.setItem(LanguageSwitcherComponent.STORED_LANGUAGE_KEY, language);
+    localStorage.setItem(
+      LanguageSwitcherComponent.STORED_LANGUAGE_KEY,
+      language
+    );
     this.translateService.use(language);
     this.dateAdapter.setLocale(language);
   }

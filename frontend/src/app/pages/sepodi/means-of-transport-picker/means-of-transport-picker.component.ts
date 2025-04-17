@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {MeanOfTransport} from '../../../api';
+import { MeanOfTransport } from '../../../api';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
@@ -8,10 +8,19 @@ import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-fi
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'means-of-transport-picker',
-    templateUrl: './means-of-transport-picker.component.html',
-    styleUrls: ['./means-of-transport-picker.component.scss'],
-    imports: [ReactiveFormsModule, NgIf, AtlasLabelFieldComponent, AtlasSpacerComponent, NgFor, NgClass, AtlasFieldErrorComponent, TranslatePipe]
+  selector: 'means-of-transport-picker',
+  templateUrl: './means-of-transport-picker.component.html',
+  styleUrls: ['./means-of-transport-picker.component.scss'],
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    AtlasLabelFieldComponent,
+    AtlasSpacerComponent,
+    NgFor,
+    NgClass,
+    AtlasFieldErrorComponent,
+    TranslatePipe,
+  ],
 })
 export class MeansOfTransportPickerComponent implements OnInit {
   @Input() controlName!: string;
@@ -28,7 +37,9 @@ export class MeansOfTransportPickerComponent implements OnInit {
   }
 
   private getMeansOfTransportToShow() {
-    this.means = this.meansOfTransportToShow ? this.meansOfTransportToShow : Object.values(MeanOfTransport);
+    this.means = this.meansOfTransportToShow
+      ? this.meansOfTransportToShow
+      : Object.values(MeanOfTransport);
   }
 
   get currentlySelectedMeans() {
@@ -44,7 +55,9 @@ export class MeansOfTransportPickerComponent implements OnInit {
       return;
     }
     if (this.currentlySelectedMeans.includes(meanOfTransport)) {
-      this.formControl.setValue(this.currentlySelectedMeans.filter((i) => i != meanOfTransport));
+      this.formControl.setValue(
+        this.currentlySelectedMeans.filter((i) => i != meanOfTransport)
+      );
     } else {
       this.currentlySelectedMeans.push(meanOfTransport);
       this.formControl.setValue(this.currentlySelectedMeans);
@@ -53,7 +66,10 @@ export class MeansOfTransportPickerComponent implements OnInit {
   }
 
   getIcon(mean: MeanOfTransport) {
-    if (this.currentlySelectedMeans && this.currentlySelectedMeans.includes(mean)) {
+    if (
+      this.currentlySelectedMeans &&
+      this.currentlySelectedMeans.includes(mean)
+    ) {
       return mean;
     } else return mean + '_GRAY';
   }

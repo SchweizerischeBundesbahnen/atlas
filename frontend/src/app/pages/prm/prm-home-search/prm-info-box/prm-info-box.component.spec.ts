@@ -1,9 +1,9 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {PrmInfoBoxComponent} from './prm-info-box.component';
-import {AppTestingModule} from '../../../../app.testing.module';
-import {TranslatePipe} from '@ngx-translate/core';
-import {By} from '@angular/platform-browser';
+import { PrmInfoBoxComponent } from './prm-info-box.component';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { TranslatePipe } from '@ngx-translate/core';
+import { By } from '@angular/platform-browser';
 
 describe('PrmInfoBoxComponent', () => {
   let component: PrmInfoBoxComponent;
@@ -11,9 +11,9 @@ describe('PrmInfoBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, PrmInfoBoxComponent],
-    providers: [{ provide: TranslatePipe }],
-}).compileComponents();
+      imports: [AppTestingModule, PrmInfoBoxComponent],
+      providers: [{ provide: TranslatePipe }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PrmInfoBoxComponent);
     component = fixture.componentInstance;

@@ -48,7 +48,7 @@ describe('UserAdministrationResolver', () => {
     userServiceSpy.getUser.and.returnValue(
       of({
         sbbUserId: 'userId',
-      }),
+      })
     );
     const userModel = await firstValueFrom(resolver.resolve(routeMock));
     expect(userServiceSpy.getUser).toHaveBeenCalledOnceWith('userId');

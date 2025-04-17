@@ -1,6 +1,11 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogClose, MatDialogActions } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogClose,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import { StatusChangeData } from '../tth-change-status-dialog/model/status-change-data';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NgIf } from '@angular/common';
@@ -8,10 +13,17 @@ import { CommentComponent } from '../../../../core/form-components/comment/comme
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-base-change-dialog',
-    templateUrl: './base-change-dialog.component.html',
-    styleUrls: ['./base-change-dialog.component.scss'],
-    imports: [MatDialogClose, NgIf, CommentComponent, ReactiveFormsModule, MatDialogActions, TranslatePipe]
+  selector: 'app-base-change-dialog',
+  templateUrl: './base-change-dialog.component.html',
+  styleUrls: ['./base-change-dialog.component.scss'],
+  imports: [
+    MatDialogClose,
+    NgIf,
+    CommentComponent,
+    ReactiveFormsModule,
+    MatDialogActions,
+    TranslatePipe,
+  ],
 })
 export class BaseChangeDialogComponent {
   @Input() formGroup!: FormGroup;
@@ -23,7 +35,7 @@ export class BaseChangeDialogComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: StatusChangeData,
-    private readonly dialogService: DialogService,
+    private readonly dialogService: DialogService
   ) {}
 
   closeDialog() {

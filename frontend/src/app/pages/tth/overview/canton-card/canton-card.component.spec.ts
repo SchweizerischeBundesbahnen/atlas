@@ -1,7 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CantonCardComponent } from './canton-card.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { Canton } from '../../../../core/cantons/Canton';
 
@@ -13,13 +17,13 @@ describe('CantonCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [
+      imports: [
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         CantonCardComponent,
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CantonCardComponent);
     component = fixture.componentInstance;
@@ -36,6 +40,8 @@ describe('CantonCardComponent', () => {
     const cantonFlag = fixture.debugElement.queryAll(By.css('.flag'));
     //then
     expect(cantonFlag.length).toBe(1);
-    expect(cantonFlag[0].attributes['src']).toContain('assets/images/cantons/AG.svg');
+    expect(cantonFlag[0].attributes['src']).toContain(
+      'assets/images/cantons/AG.svg'
+    );
   });
 });

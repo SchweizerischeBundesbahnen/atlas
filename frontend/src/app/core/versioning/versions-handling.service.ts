@@ -7,7 +7,9 @@ export class VersionsHandlingService {
     versions.forEach((item, index) => (item.versionNumber = index + 1));
   }
 
-  static hasMultipleVersions<TYPE extends Record>(versions: Array<TYPE>): boolean {
+  static hasMultipleVersions<TYPE extends Record>(
+    versions: Array<TYPE>
+  ): boolean {
     return !!Array.isArray(versions);
   }
 
@@ -23,7 +25,9 @@ export class VersionsHandlingService {
     versions.sort((x, y) => +new Date(x.validFrom!) - +new Date(y.validFrom!));
   }
 
-  static determineDefaultVersionByValidity<TYPE extends Record>(records: Array<TYPE>): TYPE {
+  static determineDefaultVersionByValidity<TYPE extends Record>(
+    records: Array<TYPE>
+  ): TYPE {
     if (records.length == 1) {
       return records[0];
     }
@@ -54,12 +58,15 @@ export class VersionsHandlingService {
 
   private static findRecordByTodayDate<TYPE extends Record>(
     records: Array<TYPE>,
-    now: moment.Moment,
+    now: moment.Moment
   ) {
     return records.filter((record) => {
       const currentValidFrom = moment(record.validFrom);
       const currentValidTo = moment(record.validTo);
-      if (currentValidFrom.isSame(currentValidTo, 'day') && now.isSame(currentValidFrom, 'day')) {
+      if (
+        currentValidFrom.isSame(currentValidTo, 'day') &&
+        now.isSame(currentValidFrom, 'day')
+      ) {
         return true;
       }
       return now.isBetween(currentValidFrom, currentValidTo);
@@ -68,7 +75,7 @@ export class VersionsHandlingService {
 
   private static findRecordBetweenGap<TYPE extends Record>(
     records: Array<TYPE>,
-    now: moment.Moment,
+    now: moment.Moment
   ) {
     const startRecordsDateRange = records[0].validFrom;
     const endRecordsDateRange = records[records.length - 1].validTo;

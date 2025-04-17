@@ -6,7 +6,7 @@ describe('PrmMeanOfTransportValidator', () => {
   it('isReducedOrComplete: should validate complete', () => {
     //given & when
     const result = PrmMeanOfTransportValidator.isReducedOrComplete(
-      new FormControl([MeanOfTransport.Train]),
+      new FormControl([MeanOfTransport.Train])
     );
     //then
     expect(result).toBeNull();
@@ -15,7 +15,7 @@ describe('PrmMeanOfTransportValidator', () => {
   it('isReducedOrComplete: should validate reduced', () => {
     //given && when
     const result = PrmMeanOfTransportValidator.isReducedOrComplete(
-      new FormControl([MeanOfTransport.Bus]),
+      new FormControl([MeanOfTransport.Bus])
     );
     //then
     expect(result).toBeNull();
@@ -24,9 +24,11 @@ describe('PrmMeanOfTransportValidator', () => {
   it('isReducedOrComplete: should not validate reduced and complete', () => {
     //given && when
     const result = PrmMeanOfTransportValidator.isReducedOrComplete(
-      new FormControl([MeanOfTransport.Bus, MeanOfTransport.Train]),
+      new FormControl([MeanOfTransport.Bus, MeanOfTransport.Train])
     );
     //then
-    expect(result).toEqual({ meansOfTransportWrongCombination: ['BUS', 'TRAIN'] });
+    expect(result).toEqual({
+      meansOfTransportWrongCombination: ['BUS', 'TRAIN'],
+    });
   });
 });

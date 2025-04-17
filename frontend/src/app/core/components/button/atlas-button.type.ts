@@ -2,7 +2,8 @@ export const AtlasButtonType = {
   CREATE: 'create' as AtlasButtonType,
   CREATE_CHECKING_PERMISSION: 'createCheckingPermission' as AtlasButtonType,
   EDIT: 'edit' as AtlasButtonType,
-  EDIT_SERVICE_POINT_DEPENDENT: 'edit-service-point-dependent' as AtlasButtonType,
+  EDIT_SERVICE_POINT_DEPENDENT:
+    'edit-service-point-dependent' as AtlasButtonType,
   REVOKE: 'revoke' as AtlasButtonType,
   SKIP_WORKFLOW: 'skipworkflow' as AtlasButtonType,
   SUPERVISOR_BUTTON: 'supervisorButton' as AtlasButtonType,
