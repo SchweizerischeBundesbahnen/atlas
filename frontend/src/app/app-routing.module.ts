@@ -6,7 +6,7 @@ import { canActivateTimetableHearing } from './core/auth/guards/timetable-hearin
 import { loggedInUsers } from './core/auth/guards/login.guard';
 import { adminUser } from './core/auth/guards/admin.guard';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: Pages.TTFN.path,
     loadChildren: () =>
