@@ -6,10 +6,10 @@ import { RouterLink } from '@angular/router';
 import { NgFor } from '@angular/common';
 
 @Component({
-    selector: 'app-timetable-hearing-overview',
-    templateUrl: './timetable-hearing-overview.component.html',
-    styleUrls: ['./timetable-hearing-overview.component.scss'],
-    imports: [CantonCardComponent, RouterLink, NgFor]
+  selector: 'app-timetable-hearing-overview',
+  templateUrl: './timetable-hearing-overview.component.html',
+  styleUrls: ['./timetable-hearing-overview.component.scss'],
+  imports: [CantonCardComponent, RouterLink, NgFor],
 })
 export class TimetableHearingOverviewComponent {
   get cantons(): Canton[] {

@@ -13,11 +13,16 @@ import { SearchSelectComponent } from '../search-select/search-select.component'
 import { MaterialModule } from '../../module/material.module';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
-import {BusinessOrganisationsService} from "../../../api";
-import {of} from "rxjs";
+import { BusinessOrganisationsService } from '../../../api';
+import { of } from 'rxjs';
 
-const businessOrganisationsService = jasmine.createSpyObj('businessOrganisationsService', ['getAllBusinessOrganisations']);
-businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(of([]));
+const businessOrganisationsService = jasmine.createSpyObj(
+  'businessOrganisationsService',
+  ['getAllBusinessOrganisations']
+);
+businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(
+  of([])
+);
 
 describe('BusinessOrganisationSelectComponent', () => {
   let component: BusinessOrganisationSelectComponent;
@@ -25,9 +30,9 @@ describe('BusinessOrganisationSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [
+      imports: [
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         NgSelectModule,
         MaterialModule,
@@ -36,15 +41,15 @@ describe('BusinessOrganisationSelectComponent', () => {
         SearchSelectComponent,
         AtlasLabelFieldComponent,
         AtlasFieldErrorComponent,
-    ],
-    providers: [
+      ],
+      providers: [
         TranslatePipe,
         {
-            provide: BusinessOrganisationsService,
-            useValue: businessOrganisationsService,
+          provide: BusinessOrganisationsService,
+          useValue: businessOrganisationsService,
         },
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(BusinessOrganisationSelectComponent);
     component = fixture.componentInstance;

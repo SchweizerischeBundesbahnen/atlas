@@ -1,12 +1,20 @@
 import { Component } from '@angular/core';
-import { BusinessOrganisationsService, ClientCredentialPermissionCreate } from '../../../../../api';
+import {
+  BusinessOrganisationsService,
+  ClientCredentialPermissionCreate,
+} from '../../../../../api';
 import { UserService } from '../../../service/user.service';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ClientCredentialCreateFormGroup } from './create-form-group';
 import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
@@ -21,10 +29,20 @@ import { DetailFooterComponent } from '../../../../../core/components/detail-foo
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-client-credential-administration-create',
-    templateUrl: './user-administration-client-create.component.html',
-    viewProviders: [BusinessOrganisationsService, UserPermissionManager],
-    imports: [ScrollToTopDirective, DetailPageContainerComponent, DetailPageContentComponent, TextFieldComponent, ReactiveFormsModule, NgFor, UserAdministrationApplicationConfigComponent, DetailFooterComponent, TranslatePipe]
+  selector: 'app-client-credential-administration-create',
+  templateUrl: './user-administration-client-create.component.html',
+  viewProviders: [BusinessOrganisationsService, UserPermissionManager],
+  imports: [
+    ScrollToTopDirective,
+    DetailPageContainerComponent,
+    DetailPageContentComponent,
+    TextFieldComponent,
+    ReactiveFormsModule,
+    NgFor,
+    UserAdministrationApplicationConfigComponent,
+    DetailFooterComponent,
+    TranslatePipe,
+  ],
 })
 export class UserAdministrationClientCreateComponent {
   saveEnabled = true;
@@ -72,12 +90,20 @@ export class UserAdministrationClientCreateComponent {
         next: () => {
           this.router
             .navigate(
-              [Pages.USER_ADMINISTRATION.path, Pages.CLIENTS.path, permission.clientCredentialId],
+              [
+                Pages.USER_ADMINISTRATION.path,
+                Pages.CLIENTS.path,
+                permission.clientCredentialId,
+              ],
               {
                 relativeTo: this.route,
               }
             )
-            .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
+            .then(() =>
+              this.notificationService.success(
+                'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'
+              )
+            );
         },
         error: () => (this.saveEnabled = true),
       });

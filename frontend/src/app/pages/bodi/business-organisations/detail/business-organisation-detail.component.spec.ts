@@ -2,7 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { BusinessOrganisationsService, BusinessOrganisationVersion } from '../../../../api';
+import {
+  BusinessOrganisationsService,
+  BusinessOrganisationVersion,
+} from '../../../../api';
 import { BusinessOrganisationDetailComponent } from './business-organisation-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppTestingModule } from '../../../../app.testing.module';
@@ -43,7 +46,8 @@ const error = new HttpErrorResponse({
     message: 'Not found',
     details: [
       {
-        message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+        message:
+          'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
         field: 'number',
         displayInfo: {
           code: 'TTFN.CONFLICT.NUMBER',
@@ -76,22 +80,25 @@ let fixture: ComponentFixture<BusinessOrganisationDetailComponent>;
 let router: Router;
 
 describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationVersion', () => {
-  const mockBusinessOrganisationsService = jasmine.createSpyObj('businessOrganisationsService', [
-    'updateBusinessOrganisationVersion',
-    'deleteBusinessOrganisation',
-  ]);
+  const mockBusinessOrganisationsService = jasmine.createSpyObj(
+    'businessOrganisationsService',
+    ['updateBusinessOrganisationVersion', 'deleteBusinessOrganisation']
+  );
 
   const mockData = {
     businessOrganisationDetail: businessOrganisationVersion,
   };
 
-  const validityService = jasmine.createSpyObj<ValidityService>('validityService', [
-    'initValidity',
-    'updateValidity',
-    'validate',
-    'validateAndDisableCustom',
-    'confirmValidityDialog',
-  ]);
+  const validityService = jasmine.createSpyObj<ValidityService>(
+    'validityService',
+    [
+      'initValidity',
+      'updateValidity',
+      'validate',
+      'validateAndDisableCustom',
+      'confirmValidityDialog',
+    ]
+  );
 
   beforeEach(() => {
     setupTestBed(mockBusinessOrganisationsService, validityService, mockData);
@@ -108,17 +115,18 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
 
   it('should update BusinessOrganisationVersion successfully', () => {
     mockBusinessOrganisationsService.updateBusinessOrganisationVersion.and.returnValue(
-      of(businessOrganisationVersion),
+      of(businessOrganisationVersion)
     );
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
-    const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
+    const snackBarContainer = fixture.nativeElement.offsetParent.querySelector(
+      'mat-snack-bar-container'
+    );
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent.trim()).toEqual(
-      'BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS',
+      'BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS'
     );
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
@@ -126,7 +134,7 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
 
   it('should not update Version', () => {
     mockBusinessOrganisationsService.updateBusinessOrganisationVersion.and.returnValue(
-      throwError(() => error),
+      throwError(() => error)
     );
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
@@ -135,16 +143,19 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
   });
 
   it('should delete BusinessOrganisationVersion successfully', () => {
-    mockBusinessOrganisationsService.deleteBusinessOrganisation.and.returnValue(of({}));
+    mockBusinessOrganisationsService.deleteBusinessOrganisation.and.returnValue(
+      of({})
+    );
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 
-    const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
+    const snackBarContainer = fixture.nativeElement.offsetParent.querySelector(
+      'mat-snack-bar-container'
+    );
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent.trim()).toBe(
-      'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS',
+      'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
     );
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
@@ -152,18 +163,18 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
 });
 
 describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersion', () => {
-  const mockLinesService = jasmine.createSpyObj('businessOrganisationsService', [
-    'createBusinessOrganisationVersion',
-  ]);
+  const mockLinesService = jasmine.createSpyObj(
+    'businessOrganisationsService',
+    ['createBusinessOrganisationVersion']
+  );
   const mockData = {
     businessOrganisationDetail: 'add',
   };
 
-  const validityService = jasmine.createSpyObj<ValidityService>('validityService', [
-    'initValidity',
-    'updateValidity',
-    'validate',
-  ]);
+  const validityService = jasmine.createSpyObj<ValidityService>(
+    'validityService',
+    ['initValidity', 'updateValidity', 'validate']
+  );
   beforeEach(() => {
     setupTestBed(mockLinesService, validityService, mockData);
 
@@ -181,23 +192,27 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
     it('successfully', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
       mockLinesService.createBusinessOrganisationVersion.and.returnValue(
-        of(businessOrganisationVersion),
+        of(businessOrganisationVersion)
       );
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
       const snackBarContainer =
-        fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
+        fixture.nativeElement.offsetParent.querySelector(
+          'mat-snack-bar-container'
+        );
       expect(snackBarContainer).toBeDefined();
       expect(snackBarContainer.textContent.trim()).toBe(
-        'BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS',
+        'BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS'
       );
       expect(snackBarContainer.classList).toContain('success');
       expect(router.navigate).toHaveBeenCalled();
     });
 
     it('displaying error', () => {
-      mockLinesService.createBusinessOrganisationVersion.and.returnValue(throwError(() => error));
+      mockLinesService.createBusinessOrganisationVersion.and.returnValue(
+        throwError(() => error)
+      );
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
@@ -209,25 +224,32 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
 function setupTestBed(
   businessOrganisationsService: BusinessOrganisationsService,
   validityService: ValidityService,
-  data: { businessOrganisationDetail: string | BusinessOrganisationVersion },
+  data: { businessOrganisationDetail: string | BusinessOrganisationVersion }
 ) {
   TestBed.configureTestingModule({
-    imports: [AppTestingModule, FormModule, BusinessOrganisationDetailComponent,
-        MockAppDetailWrapperComponent,
-        MockSelectComponent,
-        ErrorNotificationComponent,
-        InfoIconComponent,
-        DetailPageContainerComponent,
-        DetailFooterComponent],
-    providers: [
-        { provide: FormBuilder },
-        { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
-        { provide: PermissionService, useValue: adminPermissionServiceMock },
-        { provide: ValidityService, useValue: validityService },
-        { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
-        { provide: TranslatePipe },
+    imports: [
+      AppTestingModule,
+      FormModule,
+      BusinessOrganisationDetailComponent,
+      MockAppDetailWrapperComponent,
+      MockSelectComponent,
+      ErrorNotificationComponent,
+      InfoIconComponent,
+      DetailPageContainerComponent,
+      DetailFooterComponent,
     ],
-})
+    providers: [
+      { provide: FormBuilder },
+      {
+        provide: BusinessOrganisationsService,
+        useValue: businessOrganisationsService,
+      },
+      { provide: PermissionService, useValue: adminPermissionServiceMock },
+      { provide: ValidityService, useValue: validityService },
+      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
+      { provide: TranslatePipe },
+    ],
+  })
     .compileComponents()
     .then();
 }

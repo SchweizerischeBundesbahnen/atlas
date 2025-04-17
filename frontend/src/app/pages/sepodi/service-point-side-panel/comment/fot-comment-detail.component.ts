@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, EMPTY, Observable, of, take } from 'rxjs';
 import { Pages } from '../../../pages';
@@ -25,10 +30,18 @@ export interface FotCommentFormGroup {
 }
 
 @Component({
-    selector: 'app-service-point-fot-comment',
-    templateUrl: './fot-comment-detail.component.html',
-    styleUrls: ['./fot-comment-detail.component.scss'],
-    imports: [ReactiveFormsModule, DetailPageContentComponent, CommentComponent, DetailFooterComponent, AtlasButtonComponent, NgIf, TranslatePipe]
+  selector: 'app-service-point-fot-comment',
+  templateUrl: './fot-comment-detail.component.html',
+  styleUrls: ['./fot-comment-detail.component.scss'],
+  imports: [
+    ReactiveFormsModule,
+    DetailPageContentComponent,
+    CommentComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+    NgIf,
+    TranslatePipe,
+  ],
 })
 export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
   form!: FormGroup<FotCommentFormGroup>;
@@ -38,7 +51,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -54,7 +67,9 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
 
   initFormGroup(fotComment?: ServicePointFotComment) {
     this.form = new FormGroup<FotCommentFormGroup>({
-      fotComment: new FormControl(fotComment?.fotComment, [Validators.maxLength(2000)]),
+      fotComment: new FormControl(fotComment?.fotComment, [
+        Validators.maxLength(2000),
+      ]),
       etagVersion: new FormControl(fotComment?.etagVersion),
       creationDate: new FormControl(fotComment?.creationDate),
       editionDate: new FormControl(fotComment?.editionDate),
@@ -103,7 +118,9 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
         .saveFotComment(this.servicePointNumber, this.currentComment)
         .pipe(catchError(this.handleError))
         .subscribe((comment) => {
-          this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.COMMENT_SAVED');
+          this.notificationService.success(
+            'SEPODI.SERVICE_POINTS.NOTIFICATION.COMMENT_SAVED'
+          );
           this.initFormGroup(comment);
         });
     }

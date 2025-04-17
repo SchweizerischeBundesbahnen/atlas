@@ -12,9 +12,15 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, switchMap, tap } from 'rxjs/operators';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ServicePointSearch, ServicePointSearchType } from './service-point-search';
+import {
+  ServicePointSearch,
+  ServicePointSearchType,
+} from './service-point-search';
 import { MatLabel } from '@angular/material/form-field';
-import { NgSelectComponent, NgOptionTemplateDirective } from '@ng-select/ng-select';
+import {
+  NgSelectComponent,
+  NgOptionTemplateDirective,
+} from '@ng-select/ng-select';
 import { NgClass, AsyncPipe } from '@angular/common';
 import { SearchResultHighlightPipe } from './search-result-highlight.pipe';
 import { SplitServicePointNumberPipe } from './split-service-point-number.pipe';
@@ -23,10 +29,19 @@ const SEARCH_SERVICE_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.SERVICE_POINT';
 const SEARCH_STOP_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.STOP_POINT';
 
 @Component({
-    selector: 'app-search-service-point',
-    templateUrl: './search-service-point.component.html',
-    styleUrls: ['./search-service-point.component.scss'],
-    imports: [MatLabel, NgSelectComponent, NgOptionTemplateDirective, NgClass, AsyncPipe, TranslatePipe, SearchResultHighlightPipe, SplitServicePointNumberPipe]
+  selector: 'app-search-service-point',
+  templateUrl: './search-service-point.component.html',
+  styleUrls: ['./search-service-point.component.scss'],
+  imports: [
+    MatLabel,
+    NgSelectComponent,
+    NgOptionTemplateDirective,
+    NgClass,
+    AsyncPipe,
+    TranslatePipe,
+    SearchResultHighlightPipe,
+    SplitServicePointNumberPipe,
+  ],
 })
 export class SearchServicePointComponent implements OnInit {
   private readonly MIN_LENGTH_TERM = 2;
@@ -50,7 +65,7 @@ export class SearchServicePointComponent implements OnInit {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly servicePointService: ServicePointsService,
-    private readonly translatePipe: TranslatePipe,
+    private readonly translatePipe: TranslatePipe
   ) {}
 
   get searchValue(): string {
@@ -65,7 +80,10 @@ export class SearchServicePointComponent implements OnInit {
   }
 
   get notFoundText(): string {
-    if (!this._searchValue || this._searchValue.length >= this.MIN_LENGTH_TERM) {
+    if (
+      !this._searchValue ||
+      this._searchValue.length >= this.MIN_LENGTH_TERM
+    ) {
       return this.getNotFoundTranslatedLabel();
     }
     return this.getTypeToSearchTranslatedLabel();
@@ -93,8 +111,8 @@ export class SearchServicePointComponent implements OnInit {
             return of([]).pipe(tap(() => (this.loading = false)));
           }
           return this.search(term);
-        }),
-      ),
+        })
+      )
     );
   }
 
@@ -119,16 +137,18 @@ export class SearchServicePointComponent implements OnInit {
   }
 
   private searchSwissOnlyServicePointAsStopPoint(term: string) {
-    return this.servicePointService.searchSwissOnlyServicePoints({ value: term }).pipe(
-      catchError(() => of([])),
-      tap(() => (this.loading = false)),
-    );
+    return this.servicePointService
+      .searchSwissOnlyServicePoints({ value: term })
+      .pipe(
+        catchError(() => of([])),
+        tap(() => (this.loading = false))
+      );
   }
 
   private searchServicePoint(term: string) {
     return this.servicePointService.searchServicePoints({ value: term }).pipe(
       catchError(() => of([])),
-      tap(() => (this.loading = false)),
+      tap(() => (this.loading = false))
     );
   }
 
@@ -146,7 +166,7 @@ export class SearchServicePointComponent implements OnInit {
             ? searchResultSelected.number
             : searchResultSelected.sloid,
         ],
-        { relativeTo: this.route },
+        { relativeTo: this.route }
       )
       .then(() => this.clearResult());
   }

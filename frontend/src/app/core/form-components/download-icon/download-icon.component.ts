@@ -1,8 +1,8 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'download-icon',
-    templateUrl: './download-icon.component.html'
+  selector: 'download-icon',
+  templateUrl: './download-icon.component.html',
 })
 export class DownloadIconComponent {
   @Input() readonly!: boolean;

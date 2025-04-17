@@ -14,7 +14,7 @@ export class ParamsForTranslationPipe implements PipeTransform {
         }
         return { ...previousValue, [currentValue.key]: currentValue.value };
       },
-      {} as { [key: string]: string | undefined },
+      {} as { [key: string]: string | undefined }
     );
   }
 }

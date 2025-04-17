@@ -1,9 +1,14 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {SloidComponent} from './sloid.component';
-import {FormModule} from '../../module/form.module';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import { SloidComponent } from './sloid.component';
+import { FormModule } from '../../module/form.module';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslatePipe,
+} from '@ngx-translate/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 describe('SloidComponent', () => {
   let component: SloidComponent;
@@ -11,21 +16,21 @@ describe('SloidComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [
+      imports: [
         FormModule,
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         SloidComponent,
-    ],
-    providers: [{ provide: TranslatePipe }],
-}).compileComponents();
+      ],
+      providers: [{ provide: TranslatePipe }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SloidComponent);
     component = fixture.componentInstance;
 
     component.formGroup = new FormGroup({
-      sloid: new FormControl()
+      sloid: new FormControl(),
     });
     component.givenPrefix = 'ch:1:sloid:851:';
     component.numberColons = 0;

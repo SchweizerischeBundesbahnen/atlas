@@ -23,6 +23,8 @@ export class NewTimetableHearingYearDialogService {
         backdropClass: 'atlas-dialog-backdrop',
       }
     );
-    return this.dialogRef.afterClosed().pipe(map((value) => (value ? value : false)));
+    return this.dialogRef
+      .afterClosed()
+      .pipe(map((value) => (value ? value : false)));
   }
 }

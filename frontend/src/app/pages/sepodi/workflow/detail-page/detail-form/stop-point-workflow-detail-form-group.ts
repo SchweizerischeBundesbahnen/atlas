@@ -1,9 +1,14 @@
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {DecisionType, JudgementType, ReadStopPointWorkflow, StopPointPerson} from 'src/app/api';
-import {AtlasCharsetsValidator} from 'src/app/core/validation/charsets/atlas-charsets-validator';
-import {AtlasFieldLengthValidator} from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
-import {WhitespaceValidator} from '../../../../../core/validation/whitespace/whitespace-validator';
-import {UniqueEmailsValidator} from "../../../../../core/validation/unique-emails-validator/unique-emails-validator";
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  DecisionType,
+  JudgementType,
+  ReadStopPointWorkflow,
+  StopPointPerson,
+} from 'src/app/api';
+import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
+import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
+import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';
+import { UniqueEmailsValidator } from '../../../../../core/validation/unique-emails-validator/unique-emails-validator';
 
 export interface StopPointWorkflowDetailFormGroup {
   ccEmails: FormControl<Array<string> | null | undefined>;
@@ -25,7 +30,11 @@ export interface ExaminantFormGroup {
   defaultExaminant: FormControl<boolean | null | undefined>;
 }
 
-export const SPECIAL_DECISION_TYPES = [DecisionType.Canceled, DecisionType.Rejected, DecisionType.Restarted];
+export const SPECIAL_DECISION_TYPES = [
+  DecisionType.Canceled,
+  DecisionType.Rejected,
+  DecisionType.Restarted,
+];
 
 export class StopPointWorkflowDetailFormGroupBuilder {
   static buildFormGroup(
@@ -53,7 +62,9 @@ export class StopPointWorkflowDetailFormGroupBuilder {
     });
   }
 
-  static buildExaminantFormGroup(examinant?: StopPointPerson): FormGroup<ExaminantFormGroup> {
+  static buildExaminantFormGroup(
+    examinant?: StopPointPerson
+  ): FormGroup<ExaminantFormGroup> {
     const formGroup = new FormGroup<ExaminantFormGroup>({
       id: new FormControl(examinant?.id),
       firstName: new FormControl(examinant?.firstName),
@@ -84,7 +95,9 @@ export class StopPointWorkflowDetailFormGroupBuilder {
     }
   }
 
-  static disableDefaultExaminantsInArray(formArray: FormArray<FormGroup<ExaminantFormGroup>>): void {
+  static disableDefaultExaminantsInArray(
+    formArray: FormArray<FormGroup<ExaminantFormGroup>>
+  ): void {
     for (let i = 0; i < formArray.length; i++) {
       this.disableDefaultExaminants(formArray.at(i));
     }

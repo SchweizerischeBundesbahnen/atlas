@@ -25,7 +25,9 @@ describe('PrmVariantInfoService', () => {
   describe('isAtLeastSupervisor', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [{ provide: PermissionService, useValue: isAtLeastSupervisorMock }],
+        providers: [
+          { provide: PermissionService, useValue: isAtLeastSupervisorMock },
+        ],
       });
       service = TestBed.inject(PrmVariantInfoService);
     });
@@ -39,7 +41,9 @@ describe('PrmVariantInfoService', () => {
       const res = service.getPrmMeansOfTransportToShow(['BUS']);
       //then
       expect(res).toEqual(
-        Object.values(MeanOfTransport).filter((value) => value !== MeanOfTransport.Unknown),
+        Object.values(MeanOfTransport).filter(
+          (value) => value !== MeanOfTransport.Unknown
+        )
       );
     });
 
@@ -48,7 +52,9 @@ describe('PrmVariantInfoService', () => {
       const res = service.getPrmMeansOfTransportToShow(['TRAIN']);
       //then
       expect(res).toEqual(
-        Object.values(MeanOfTransport).filter((value) => value !== MeanOfTransport.Unknown),
+        Object.values(MeanOfTransport).filter(
+          (value) => value !== MeanOfTransport.Unknown
+        )
       );
     });
   });
@@ -56,7 +62,9 @@ describe('PrmVariantInfoService', () => {
   describe('isNotAtLeastSupervisorMock', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [{ provide: PermissionService, useValue: isNotAtLeastSupervisorMock }],
+        providers: [
+          { provide: PermissionService, useValue: isNotAtLeastSupervisorMock },
+        ],
       });
       service = TestBed.inject(PrmVariantInfoService);
     });

@@ -10,7 +10,7 @@ describe('PrmMeanOfTransportHelper', () => {
     ];
     //when
     const result = PrmMeanOfTransportHelper.getReducedCompleteInstances(
-      completeReducedMeansOfTransport,
+      completeReducedMeansOfTransport
     );
     expect(result.hasReduced).toBeTruthy();
     expect(result.hasComplete).toBeTruthy();
@@ -18,10 +18,12 @@ describe('PrmMeanOfTransportHelper', () => {
 
   it('getReducedCompleteInstances: should get only reduced', () => {
     //given
-    const completeReducedMeansOfTransport: MeanOfTransport[] = [MeanOfTransport.Bus];
+    const completeReducedMeansOfTransport: MeanOfTransport[] = [
+      MeanOfTransport.Bus,
+    ];
     //when
     const result = PrmMeanOfTransportHelper.getReducedCompleteInstances(
-      completeReducedMeansOfTransport,
+      completeReducedMeansOfTransport
     );
     expect(result.hasReduced).toBeTruthy();
     expect(result.hasComplete).toBeFalsy();
@@ -29,10 +31,12 @@ describe('PrmMeanOfTransportHelper', () => {
 
   it('getReducedCompleteInstances: should get only complete ', () => {
     //given
-    const completeReducedMeansOfTransport: MeanOfTransport[] = [MeanOfTransport.Train];
+    const completeReducedMeansOfTransport: MeanOfTransport[] = [
+      MeanOfTransport.Train,
+    ];
     //when
     const result = PrmMeanOfTransportHelper.getReducedCompleteInstances(
-      completeReducedMeansOfTransport,
+      completeReducedMeansOfTransport
     );
     expect(result.hasReduced).toBeFalsy();
     expect(result.hasComplete).toBeTruthy();
@@ -61,8 +65,8 @@ describe('PrmMeanOfTransportHelper', () => {
       MeanOfTransport.Bus,
     ];
     //when
-    expect(() => PrmMeanOfTransportHelper.isReduced(completeReducedMeansOfTransport)).toThrow(
-      new Error('Not allowed means of' + ' transport combination!'),
-    );
+    expect(() =>
+      PrmMeanOfTransportHelper.isReduced(completeReducedMeansOfTransport)
+    ).toThrow(new Error('Not allowed means of' + ' transport combination!'));
   });
 });

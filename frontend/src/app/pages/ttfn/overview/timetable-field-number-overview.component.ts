@@ -25,11 +25,13 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-timetable-field-number-overview',
-    templateUrl: './timetable-field-number-overview.component.html',
-    imports: [AtlasButtonComponent, TableComponent, RouterOutlet, TranslatePipe]
+  selector: 'app-timetable-field-number-overview',
+  templateUrl: './timetable-field-number-overview.component.html',
+  imports: [AtlasButtonComponent, TableComponent, RouterOutlet, TranslatePipe],
 })
-export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
+export class TimetableFieldNumberOverviewComponent
+  implements OnInit, OnDestroy
+{
   private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
@@ -58,14 +60,21 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
   tableColumns: TableColumn<TimetableFieldNumber>[] = [
     { headerTitle: 'TTFN.NUMBER', value: 'number' },
     { headerTitle: 'TTFN.DESCRIPTION', value: 'description' },
-    { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
+    {
+      headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER',
+      value: 'swissTimetableFieldNumber',
+    },
     { headerTitle: 'TTFN.TTFNID', value: 'ttfnid' },
     {
       headerTitle: 'COMMON.STATUS',
       value: 'status',
       translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
     },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    {
+      headerTitle: 'COMMON.VALID_FROM',
+      value: 'validFrom',
+      formatAsDate: true,
+    },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 

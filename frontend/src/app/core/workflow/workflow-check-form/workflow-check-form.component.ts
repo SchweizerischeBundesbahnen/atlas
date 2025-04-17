@@ -1,54 +1,66 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import {AtlasFieldLengthValidator} from '../../validation/field-lengths/atlas-field-length-validator';
-import {AtlasCharsetsValidator} from '../../validation/charsets/atlas-charsets-validator';
-import {Subject} from 'rxjs';
-import {UserAdministrationService, WorkflowService} from '../../../api';
-import {takeUntil} from 'rxjs/operators';
-import {WorkflowCheckFormGroup} from './workflow-check-form-group';
-import {NotificationService} from '../../notification/notification.service';
-import {ValidationService} from '../../validation/validation.service';
-import {WhitespaceValidator} from '../../validation/whitespace/whitespace-validator';
-import {PermissionService} from "../../auth/permission/permission.service";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
+import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
+import { Subject } from 'rxjs';
+import { UserAdministrationService, WorkflowService } from '../../../api';
+import { takeUntil } from 'rxjs/operators';
+import { WorkflowCheckFormGroup } from './workflow-check-form-group';
+import { NotificationService } from '../../notification/notification.service';
+import { ValidationService } from '../../validation/validation.service';
+import { WhitespaceValidator } from '../../validation/whitespace/whitespace-validator';
+import { PermissionService } from '../../auth/permission/permission.service';
 import { NgIf } from '@angular/common';
 import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
 import { AtlasButtonComponent } from '../../components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-workflow-check-form',
-    templateUrl: './workflow-check-form.component.html',
-    imports: [NgIf, WorkflowFormComponent, ReactiveFormsModule, AtlasButtonComponent, TranslatePipe]
+  selector: 'app-workflow-check-form',
+  templateUrl: './workflow-check-form.component.html',
+  imports: [
+    NgIf,
+    WorkflowFormComponent,
+    ReactiveFormsModule,
+    AtlasButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class WorkflowCheckFormComponent implements OnInit {
   @Input() workflowId: number | undefined;
   @Output() workflowChecked = new EventEmitter<void>();
 
-  formGroup: FormGroup<WorkflowCheckFormGroup> = new FormGroup<WorkflowCheckFormGroup>({
-    comment: new FormControl('', [
-      AtlasFieldLengthValidator.comments,
-      AtlasCharsetsValidator.iso88591,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
-    firstName: new FormControl('', [
-      Validators.required,
-      AtlasFieldLengthValidator.length_50,
-      AtlasCharsetsValidator.iso88591,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
-    lastName: new FormControl('', [
-      Validators.required,
-      AtlasFieldLengthValidator.length_50,
-      AtlasCharsetsValidator.iso88591,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
-    function: new FormControl('', [
-      Validators.required,
-      AtlasFieldLengthValidator.length_50,
-      AtlasCharsetsValidator.iso88591,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
-  });
+  formGroup: FormGroup<WorkflowCheckFormGroup> =
+    new FormGroup<WorkflowCheckFormGroup>({
+      comment: new FormControl('', [
+        AtlasFieldLengthValidator.comments,
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
+      firstName: new FormControl('', [
+        Validators.required,
+        AtlasFieldLengthValidator.length_50,
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
+      lastName: new FormControl('', [
+        Validators.required,
+        AtlasFieldLengthValidator.length_50,
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
+      function: new FormControl('', [
+        Validators.required,
+        AtlasFieldLengthValidator.length_50,
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
+    });
   private ngUnsubscribe = new Subject<void>();
 
   constructor(

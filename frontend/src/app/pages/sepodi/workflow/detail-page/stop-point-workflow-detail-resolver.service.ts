@@ -20,10 +20,12 @@ export class StopPointWorkflowDetailResolver {
   constructor(
     private readonly workflowService: StopPointWorkflowService,
     private readonly servicePointService: ServicePointsService,
-    private readonly router: Router,
+    private readonly router: Router
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<StopPointWorkflowDetailData | undefined> {
+  resolve(
+    route: ActivatedRouteSnapshot
+  ): Observable<StopPointWorkflowDetailData | undefined> {
     const idParameter = parseInt(route.paramMap.get('id') || '0');
     return this.workflowService.getStopPointWorkflow(idParameter).pipe(
       catchError(() => {
@@ -36,21 +38,24 @@ export class StopPointWorkflowDetailResolver {
       }),
       mergeMap((workflow) => {
         if (workflow) {
-          return this.servicePointService.getServicePointVersionsBySloid(workflow.sloid!).pipe(
-            map((servicePoint) => {
-              return {
-                workflow: workflow,
-                servicePoint: servicePoint,
-              };
-            }),
-          );
+          return this.servicePointService
+            .getServicePointVersionsBySloid(workflow.sloid!)
+            .pipe(
+              map((servicePoint) => {
+                return {
+                  workflow: workflow,
+                  servicePoint: servicePoint,
+                };
+              })
+            );
         }
         return of();
-      }),
+      })
     );
   }
 }
 
-export const stopPointWorkflowDetailResolver: ResolveFn<StopPointWorkflowDetailData | undefined> = (
-  route: ActivatedRouteSnapshot,
-) => inject(StopPointWorkflowDetailResolver).resolve(route);
+export const stopPointWorkflowDetailResolver: ResolveFn<
+  StopPointWorkflowDetailData | undefined
+> = (route: ActivatedRouteSnapshot) =>
+  inject(StopPointWorkflowDetailResolver).resolve(route);

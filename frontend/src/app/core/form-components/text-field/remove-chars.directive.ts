@@ -1,4 +1,11 @@
-import {AfterViewInit, Directive, ElementRef, HostListener, Input, Self} from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  Self,
+} from '@angular/core';
 
 @Directive({ selector: '[removeChars]' })
 export class RemoveCharsDirective implements AfterViewInit {
@@ -7,8 +14,7 @@ export class RemoveCharsDirective implements AfterViewInit {
   private inputElement?: HTMLInputElement;
   private value?: string;
 
-  constructor(@Self() private element: ElementRef) {
-  }
+  constructor(@Self() private element: ElementRef) {}
 
   ngAfterViewInit() {
     this.inputElement = this.element.nativeElement.querySelector('input');
@@ -19,7 +25,10 @@ export class RemoveCharsDirective implements AfterViewInit {
     if (this.inputElement) {
       if (this.value !== this.inputElement.value) {
         for (const charToRemove of this.removeChars) {
-          this.inputElement.value = this.inputElement.value.replace(charToRemove, '');
+          this.inputElement.value = this.inputElement.value.replace(
+            charToRemove,
+            ''
+          );
         }
         this.inputElement.dispatchEvent(new Event('input'));
       }

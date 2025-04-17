@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
+import {
+  MatSnackBar,
+  MatSnackBarConfig,
+  MatSnackBarRef,
+} from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationParamMessage } from './notification-param-message';
 import { catchError, Subscription } from 'rxjs';
@@ -27,18 +31,18 @@ export class NotificationService {
     first(
       (event) =>
         event instanceof NavigationStart &&
-        !this.router.getCurrentNavigation()?.extras.state?.notDismissSnackBar,
+        !this.router.getCurrentNavigation()?.extras.state?.notDismissSnackBar
     ),
     catchError((err) => {
       throw err;
     }),
-    takeUntilDestroyed(),
+    takeUntilDestroyed()
   );
 
   constructor(
     private snackBar: MatSnackBar,
     private translateService: TranslateService,
-    private router: Router,
+    private router: Router
   ) {}
 
   success(msg: string, param?: NotificationParamMessage) {
@@ -63,7 +67,7 @@ export class NotificationService {
     }
     const errorSnackBar = this.snackBar.openFromComponent(
       ErrorNotificationComponent,
-      this.SNACK_BAR_CONFIG,
+      this.SNACK_BAR_CONFIG
     );
     this.dismissOnNavigation(errorSnackBar);
   }
@@ -83,7 +87,7 @@ export class NotificationService {
         catchError((err) => {
           console.log(err);
           throw err;
-        }),
+        })
       )
       .subscribe((value) => {
         this.SNACK_BAR_CONFIG['duration'] = 5000;
@@ -93,15 +97,24 @@ export class NotificationService {
   }
 
   arrayParametersToObject(displayInfo: DisplayInfo) {
-    return Object.fromEntries(displayInfo.parameters.map((e) => [e.key, e.value]));
+    return Object.fromEntries(
+      displayInfo.parameters.map((e) => [e.key, e.value])
+    );
   }
 
-  private dismissOnNavigation(errorSnackBar: MatSnackBarRef<ErrorNotificationComponent>) {
+  private dismissOnNavigation(
+    errorSnackBar: MatSnackBarRef<ErrorNotificationComponent>
+  ) {
     this.routerEventSubscription?.unsubscribe();
-    this.routerEventSubscription = this.routerEventPipe.subscribe(() => errorSnackBar.dismiss());
+    this.routerEventSubscription = this.routerEventPipe.subscribe(() =>
+      errorSnackBar.dismiss()
+    );
   }
 
-  private configureNotification(code: string | undefined, errorResponse: HttpErrorResponse) {
+  private configureNotification(
+    code: string | undefined,
+    errorResponse: HttpErrorResponse
+  ) {
     if (code) {
       this.configureErrorCodeNotification(code);
     } else if (errorResponse.error?.details) {
@@ -128,7 +141,9 @@ export class NotificationService {
     this.displayCode = code;
   }
 
-  private configureMultilineErrorNotification(errorResponse: HttpErrorResponse) {
+  private configureMultilineErrorNotification(
+    errorResponse: HttpErrorResponse
+  ) {
     this.SNACK_BAR_CONFIG['data'] = errorResponse.error;
   }
 

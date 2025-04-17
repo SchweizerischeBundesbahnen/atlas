@@ -1,21 +1,30 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ApplicationType, TimetableFieldNumbersService, TimetableFieldNumberVersion,} from '../../../api';
-import {BaseDetailController} from '../../../core/components/base-detail/base-detail-controller';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import {NotificationService} from '../../../core/notification/notification.service';
-import {catchError} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ApplicationType,
+  TimetableFieldNumbersService,
+  TimetableFieldNumberVersion,
+} from '../../../api';
+import { BaseDetailController } from '../../../core/components/base-detail/base-detail-controller';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { NotificationService } from '../../../core/notification/notification.service';
+import { catchError } from 'rxjs';
 import moment from 'moment';
-import {DateRangeValidator} from '../../../core/validation/date-range/date-range-validator';
-import {DialogService} from '../../../core/components/dialog/dialog.service';
-import {Pages} from '../../pages';
-import {Page} from '../../../core/model/page';
-import {AtlasCharsetsValidator} from '../../../core/validation/charsets/atlas-charsets-validator';
-import {WhitespaceValidator} from '../../../core/validation/whitespace/whitespace-validator';
-import {AtlasFieldLengthValidator} from '../../../core/validation/field-lengths/atlas-field-length-validator';
-import {TimetableFieldNumberDetailFormGroup} from './timetable-field-number-detail-form-group';
-import {ValidityService} from "../../sepodi/validity/validity.service";
-import {PermissionService} from "../../../core/auth/permission/permission.service";
+import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
+import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { Pages } from '../../pages';
+import { Page } from '../../../core/model/page';
+import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
+import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
+import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
+import { TimetableFieldNumberDetailFormGroup } from './timetable-field-number-detail-form-group';
+import { ValidityService } from '../../sepodi/validity/validity.service';
+import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { BaseDetailComponent } from '../../../core/components/base-detail/base-detail.component';
 import { NgIf } from '@angular/common';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
@@ -25,11 +34,20 @@ import { CommentComponent } from '../../../core/form-components/comment/comment.
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-timetable-field-number-detail',
-    templateUrl: './timetable-field-number-detail.component.html',
-    styleUrls: ['./timetable-field-number-detail.component.scss'],
-    providers: [ValidityService],
-    imports: [BaseDetailComponent, ReactiveFormsModule, NgIf, TextFieldComponent, DateRangeComponent, BusinessOrganisationSelectComponent, CommentComponent, TranslatePipe]
+  selector: 'app-timetable-field-number-detail',
+  templateUrl: './timetable-field-number-detail.component.html',
+  styleUrls: ['./timetable-field-number-detail.component.scss'],
+  providers: [ValidityService],
+  imports: [
+    BaseDetailComponent,
+    ReactiveFormsModule,
+    NgIf,
+    TextFieldComponent,
+    DateRangeComponent,
+    BusinessOrganisationSelectComponent,
+    CommentComponent,
+    TranslatePipe,
+  ],
 })
 export class TimetableFieldNumberDetailComponent
   extends BaseDetailController<TimetableFieldNumberVersion>
@@ -42,9 +60,16 @@ export class TimetableFieldNumberDetailComponent
     protected dialogService: DialogService,
     protected permissionService: PermissionService,
     protected activatedRoute: ActivatedRoute,
-    protected validityService: ValidityService,
+    protected validityService: ValidityService
   ) {
-    super(router, dialogService, notificationService, permissionService, activatedRoute, validityService);
+    super(
+      router,
+      dialogService,
+      notificationService,
+      permissionService,
+      activatedRoute,
+      validityService
+    );
   }
 
   ngOnInit() {
@@ -70,7 +95,9 @@ export class TimetableFieldNumberDetailComponent
       .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
-        this.router.navigate([Pages.TTFN.path, this.record.ttfnid]).then(() => this.ngOnInit());
+        this.router
+          .navigate([Pages.TTFN.path, this.record.ttfnid])
+          .then(() => this.ngOnInit());
       });
   }
 
@@ -80,7 +107,9 @@ export class TimetableFieldNumberDetailComponent
       .pipe(catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
-        this.router.navigate([Pages.TTFN.path, version.ttfnid]).then(() => this.ngOnInit());
+        this.router
+          .navigate([Pages.TTFN.path, version.ttfnid])
+          .then(() => this.ngOnInit());
       });
   }
 
@@ -99,30 +128,37 @@ export class TimetableFieldNumberDetailComponent
   }
 
   deleteRecord(): void {
-    const selectedRecord: TimetableFieldNumberVersion = this.getSelectedRecord();
+    const selectedRecord: TimetableFieldNumberVersion =
+      this.getSelectedRecord();
     if (selectedRecord.ttfnid != null) {
-      this.timetableFieldNumberService.deleteVersions(selectedRecord.ttfnid).subscribe(() => {
-        this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
-        this.backToOverview();
-      });
+      this.timetableFieldNumberService
+        .deleteVersions(selectedRecord.ttfnid)
+        .subscribe(() => {
+          this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
+          this.backToOverview();
+        });
     }
   }
 
   getFormGroup(version: TimetableFieldNumberVersion): FormGroup {
     return new FormGroup<TimetableFieldNumberDetailFormGroup>(
       {
-        swissTimetableFieldNumber: new FormControl(version.swissTimetableFieldNumber, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_50,
-          AtlasCharsetsValidator.sid4pt,
-        ]),
+        swissTimetableFieldNumber: new FormControl(
+          version.swissTimetableFieldNumber,
+          [
+            Validators.required,
+            AtlasFieldLengthValidator.length_50,
+            AtlasCharsetsValidator.sid4pt,
+          ]
+        ),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
+          [Validators.required]
         ),
-        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
-          Validators.required,
-        ]),
+        validTo: new FormControl(
+          version.validTo ? moment(version.validTo) : version.validTo,
+          [Validators.required]
+        ),
         ttfnid: new FormControl(version.ttfnid),
         businessOrganisation: new FormControl(version.businessOrganisation, [
           Validators.required,
@@ -151,7 +187,7 @@ export class TimetableFieldNumberDetailComponent
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 

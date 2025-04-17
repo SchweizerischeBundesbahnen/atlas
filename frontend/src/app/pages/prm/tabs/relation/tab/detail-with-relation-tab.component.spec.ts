@@ -12,14 +12,22 @@ describe('DetailWithRelationTabComponent', () => {
   let fixture: ComponentFixture<DetailWithRelationTabComponent>;
 
   const activatedRouteMock = {
-    parent: { snapshot: { data: { stopPoints: [STOP_POINT], servicePoints: [BERN_WYLEREGG] } } },
+    parent: {
+      snapshot: {
+        data: { stopPoints: [STOP_POINT], servicePoints: [BERN_WYLEREGG] },
+      },
+    },
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [AppTestingModule, DetailWithRelationTabComponent, MockAtlasButtonComponent],
-    providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
-});
+      imports: [
+        AppTestingModule,
+        DetailWithRelationTabComponent,
+        MockAtlasButtonComponent,
+      ],
+      providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
+    });
     fixture = TestBed.createComponent(DetailWithRelationTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

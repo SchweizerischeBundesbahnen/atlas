@@ -14,7 +14,10 @@ describe('PageService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PageService, { provide: PermissionService, useValue: permissionServiceMock }],
+      providers: [
+        PageService,
+        { provide: PermissionService, useValue: permissionServiceMock },
+      ],
     });
     pageService = TestBed.inject(PageService);
   });

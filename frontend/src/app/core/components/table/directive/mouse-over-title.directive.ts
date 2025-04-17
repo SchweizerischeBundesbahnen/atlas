@@ -12,7 +12,10 @@ export class MouseOverTitleDirective {
   @HostBinding('title') title = '';
 
   @HostListener('mouseover') onMouseOver(): void {
-    if (isEmpty(this.mouseOverTitleValue) || this.oldValue === this.mouseOverTitleValue) {
+    if (
+      isEmpty(this.mouseOverTitleValue) ||
+      this.oldValue === this.mouseOverTitleValue
+    ) {
       return;
     }
 

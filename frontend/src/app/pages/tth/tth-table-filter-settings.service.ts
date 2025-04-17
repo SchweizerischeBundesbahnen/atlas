@@ -1,4 +1,8 @@
-import { StatementStatus, TimetableFieldNumber, TransportCompany } from '../../api';
+import {
+  StatementStatus,
+  TimetableFieldNumber,
+  TransportCompany,
+} from '../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TableFilterMultiSelect } from '../../core/components/table-filter/config/table-filter-multiselect';
 import { TableFilterSearchSelect } from '../../core/components/table-filter/config/table-filter-search-select';

@@ -15,7 +15,10 @@ describe('LeaveDirtyFormGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [{ provide: DialogService, useValue: dialogServiceSpy }, LeaveDirtyFormGuard],
+      providers: [
+        { provide: DialogService, useValue: dialogServiceSpy },
+        LeaveDirtyFormGuard,
+      ],
     });
 
     leaveDirtyFormGuard = TestBed.inject(LeaveDirtyFormGuard);
@@ -27,13 +30,22 @@ describe('LeaveDirtyFormGuard', () => {
   });
 
   it('should allow routing if form is not dirty', () => {
-    const currentState = { url: '/line-directory/lines/add' } as RouterStateSnapshot;
-    const nextState = { url: '/line-directory/sublines' } as RouterStateSnapshot;
+    const currentState = {
+      url: '/line-directory/lines/add',
+    } as RouterStateSnapshot;
+    const nextState = {
+      url: '/line-directory/sublines',
+    } as RouterStateSnapshot;
 
     const form = new FormGroup({});
 
     expect(
-      leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState),
+      leaveDirtyFormGuard.canDeactivate(
+        { form: form },
+        route,
+        currentState,
+        nextState
+      )
     ).toBeTruthy();
   });
 
@@ -49,34 +61,59 @@ describe('LeaveDirtyFormGuard', () => {
     form.markAsDirty();
 
     expect(
-      leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState),
+      leaveDirtyFormGuard.canDeactivate(
+        { form: form },
+        route,
+        currentState,
+        nextState
+      )
     ).toBeTruthy();
   });
 
   it('should display confirmation dialog on dirty form', () => {
-    const currentState = { url: '/line-directory/lines/add' } as RouterStateSnapshot;
-    const nextState = { url: '/line-directory/sublines' } as RouterStateSnapshot;
+    const currentState = {
+      url: '/line-directory/lines/add',
+    } as RouterStateSnapshot;
+    const nextState = {
+      url: '/line-directory/sublines',
+    } as RouterStateSnapshot;
 
     const form = new FormGroup({});
     form.markAsDirty();
 
-    leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState);
+    leaveDirtyFormGuard.canDeactivate(
+      { form: form },
+      route,
+      currentState,
+      nextState
+    );
     expect(dialogServiceSpy.confirm).toHaveBeenCalled();
   });
 
   it('should display confirmation dialog when leaving dirty service point creation', () => {
-    const currentState = { url: '/service-point-directory/service-points' } as RouterStateSnapshot;
-    const nextState = { url: '/service-point-directory' } as RouterStateSnapshot;
+    const currentState = {
+      url: '/service-point-directory/service-points',
+    } as RouterStateSnapshot;
+    const nextState = {
+      url: '/service-point-directory',
+    } as RouterStateSnapshot;
 
     const form = new FormGroup({});
     form.markAsDirty();
 
-    leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState);
+    leaveDirtyFormGuard.canDeactivate(
+      { form: form },
+      route,
+      currentState,
+      nextState
+    );
     expect(dialogServiceSpy.confirm).toHaveBeenCalled();
   });
 
   it('should not display confirmation dialog when creating service point', () => {
-    const currentState = { url: '/service-point-directory/service-points' } as RouterStateSnapshot;
+    const currentState = {
+      url: '/service-point-directory/service-points',
+    } as RouterStateSnapshot;
     const nextState = {
       url: '/service-point-directory/service-points/8510159/service-point',
     } as RouterStateSnapshot;
@@ -84,7 +121,12 @@ describe('LeaveDirtyFormGuard', () => {
     const form = new FormGroup({});
     form.markAsDirty();
 
-    leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState);
+    leaveDirtyFormGuard.canDeactivate(
+      { form: form },
+      route,
+      currentState,
+      nextState
+    );
     expect(dialogServiceSpy.confirm).not.toHaveBeenCalled();
   });
 
@@ -97,7 +139,12 @@ describe('LeaveDirtyFormGuard', () => {
     const form = new FormGroup({});
     form.markAsDirty();
 
-    leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState);
+    leaveDirtyFormGuard.canDeactivate(
+      { form: form },
+      route,
+      currentState,
+      nextState
+    );
     expect(dialogServiceSpy.confirm).toHaveBeenCalled();
   });
 });

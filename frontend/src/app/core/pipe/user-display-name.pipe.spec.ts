@@ -1,9 +1,11 @@
-import {UserDisplayNamePipe} from './user-display-name.pipe';
-import {of} from 'rxjs';
+import { UserDisplayNamePipe } from './user-display-name.pipe';
+import { of } from 'rxjs';
 
 describe('UserDisplayNamePipe', () => {
-
-  const userAdministrationService = jasmine.createSpyObj('UserAdministrationService', ['getUserDisplayName']);
+  const userAdministrationService = jasmine.createSpyObj(
+    'UserAdministrationService',
+    ['getUserDisplayName']
+  );
 
   beforeEach(() => {
     userAdministrationService.getUserDisplayName.calls.reset();
@@ -18,14 +20,18 @@ describe('UserDisplayNamePipe', () => {
     const pipe = new UserDisplayNamePipe(userAdministrationService);
     pipe.transform().subscribe({
       complete: () => {
-        expect(userAdministrationService.getUserDisplayName).not.toHaveBeenCalled();
+        expect(
+          userAdministrationService.getUserDisplayName
+        ).not.toHaveBeenCalled();
         done();
-      }
+      },
     });
   });
 
   it('should return displayName over service', (done) => {
-    userAdministrationService.getUserDisplayName.and.returnValue(of({displayName: 'Atlas User'}));
+    userAdministrationService.getUserDisplayName.and.returnValue(
+      of({ displayName: 'Atlas User' })
+    );
     const pipe = new UserDisplayNamePipe(userAdministrationService);
     pipe.transform('u123456').subscribe((result) => {
       expect(result).toEqual('Atlas User');

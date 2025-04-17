@@ -1,7 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  convertToParamMap,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { BusinessOrganisationsService, BusinessOrganisationVersion, Status } from '../../../../api';
+import {
+  BusinessOrganisationsService,
+  BusinessOrganisationVersion,
+  Status,
+} from '../../../../api';
 import {
   BusinessOrganisationDetailResolver,
   businessOrganisationResolver,
@@ -26,9 +34,10 @@ const version: BusinessOrganisationVersion = {
 };
 
 describe('BusinessOrganisationDetailResolver', () => {
-  const businessOrganisationsServiceSpy = jasmine.createSpyObj('businessOrganisationsService', [
-    'getVersions',
-  ]);
+  const businessOrganisationsServiceSpy = jasmine.createSpyObj(
+    'businessOrganisationsService',
+    ['getVersions']
+  );
   businessOrganisationsServiceSpy.getVersions.and.returnValue(of([version]));
 
   let resolver: BusinessOrganisationDetailResolver;
@@ -38,7 +47,10 @@ describe('BusinessOrganisationDetailResolver', () => {
       imports: [AppTestingModule],
       providers: [
         BusinessOrganisationDetailResolver,
-        { provide: BusinessOrganisationsService, useValue: businessOrganisationsServiceSpy },
+        {
+          provide: BusinessOrganisationsService,
+          useValue: businessOrganisationsServiceSpy,
+        },
       ],
     });
     resolver = TestBed.inject(BusinessOrganisationDetailResolver);
@@ -49,10 +61,12 @@ describe('BusinessOrganisationDetailResolver', () => {
   });
 
   it('should get version from service to display', () => {
-    const mockRoute = { paramMap: convertToParamMap({ id: '1234' }) } as ActivatedRouteSnapshot;
+    const mockRoute = {
+      paramMap: convertToParamMap({ id: '1234' }),
+    } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
-      businessOrganisationResolver(mockRoute, {} as RouterStateSnapshot),
+      businessOrganisationResolver(mockRoute, {} as RouterStateSnapshot)
     ) as Observable<BusinessOrganisationVersion[]>;
 
     result.subscribe((versions) => {

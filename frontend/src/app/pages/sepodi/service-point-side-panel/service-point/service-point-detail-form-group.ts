@@ -42,7 +42,9 @@ export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   operatingPointRouteNetwork: FormControl<boolean | null | undefined>;
   operatingPointKilometer: FormControl<boolean | null | undefined>;
   operatingPointKilometerMaster: FormControl<number | null | undefined>;
-  operatingPointTrafficPointType: FormControl<OperatingPointTrafficPointType | null | undefined>;
+  operatingPointTrafficPointType: FormControl<
+    OperatingPointTrafficPointType | null | undefined
+  >;
   etagVersion: FormControl<number | null | undefined>;
   servicePointGeolocation?: FormGroup<GeographyFormGroup>;
   selectedType: FormControl<ServicePointType | null | undefined>;
@@ -58,14 +60,14 @@ export class ServicePointFormGroupBuilder {
   static addGroupToForm(
     form: FormGroup<ServicePointDetailFormGroup>,
     controlName: keyof ServicePointDetailFormGroup,
-    group: FormGroup,
+    group: FormGroup
   ) {
     form.addControl(controlName, group);
   }
 
   static removeGroupFromForm(
     form: FormGroup<ServicePointDetailFormGroup>,
-    controlName: OptionalKeysOfServicePointDetailFormGroup,
+    controlName: OptionalKeysOfServicePointDetailFormGroup
   ) {
     form.removeControl(controlName);
   }
@@ -106,7 +108,9 @@ export class ServicePointFormGroupBuilder {
           AtlasCharsetsValidator.iso88591,
         ]),
         operatingPointType: new FormControl(),
-        sortCodeOfDestinationStation: new FormControl(null, [Validators.maxLength(5)]),
+        sortCodeOfDestinationStation: new FormControl(null, [
+          Validators.maxLength(5),
+        ]),
         stopPointType: new FormControl(),
         meansOfTransport: new FormControl([]),
         categories: new FormControl([]),
@@ -123,7 +127,7 @@ export class ServicePointFormGroupBuilder {
         editor: new FormControl(),
         creator: new FormControl(),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
     this.initConditionalValidators(formGroup);
     return formGroup;
@@ -153,11 +157,12 @@ export class ServicePointFormGroupBuilder {
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
+          [Validators.required]
         ),
-        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
-          Validators.required,
-        ]),
+        validTo: new FormControl(
+          version.validTo ? moment(version.validTo) : version.validTo,
+          [Validators.required]
+        ),
         businessOrganisation: new FormControl(version.businessOrganisation, [
           Validators.required,
           AtlasFieldLengthValidator.length_50,
@@ -165,36 +170,48 @@ export class ServicePointFormGroupBuilder {
           AtlasCharsetsValidator.iso88591,
         ]),
         operatingPointType: new FormControl(
-          version.operatingPointType ?? version.operatingPointTechnicalTimetableType,
+          version.operatingPointType ??
+            version.operatingPointTechnicalTimetableType
         ),
-        sortCodeOfDestinationStation: new FormControl(version.sortCodeOfDestinationStation, [
-          Validators.maxLength(5),
-        ]),
+        sortCodeOfDestinationStation: new FormControl(
+          version.sortCodeOfDestinationStation,
+          [Validators.maxLength(5)]
+        ),
         stopPointType: new FormControl(version.stopPointType),
         meansOfTransport: new FormControl(version.meansOfTransport),
         categories: new FormControl(version.categories),
-        operatingPointRouteNetwork: new FormControl(version.operatingPointRouteNetwork),
-        operatingPointKilometer: new FormControl(version.operatingPointKilometer),
-        operatingPointKilometerMaster: new FormControl(
-          version.operatingPointKilometerMaster?.number,
+        operatingPointRouteNetwork: new FormControl(
+          version.operatingPointRouteNetwork
         ),
-        selectedType: new FormControl(this.determineType(version), { nonNullable: true }),
+        operatingPointKilometer: new FormControl(
+          version.operatingPointKilometer
+        ),
+        operatingPointKilometerMaster: new FormControl(
+          version.operatingPointKilometerMaster?.number
+        ),
+        selectedType: new FormControl(this.determineType(version), {
+          nonNullable: true,
+        }),
         freightServicePoint: new FormControl(version.freightServicePoint),
         stopPoint: new FormControl(version.stopPoint),
-        operatingPointTrafficPointType: new FormControl(version.operatingPointTrafficPointType),
+        operatingPointTrafficPointType: new FormControl(
+          version.operatingPointTrafficPointType
+        ),
         etagVersion: new FormControl(version.etagVersion),
         creationDate: new FormControl(version.creationDate),
         editionDate: new FormControl(version.editionDate),
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
 
     if (version.servicePointGeolocation?.spatialReference) {
       formGroup.addControl(
         'servicePointGeolocation',
-        GeographyFormGroupBuilder.buildFormGroup(version.servicePointGeolocation),
+        GeographyFormGroupBuilder.buildFormGroup(
+          version.servicePointGeolocation
+        )
       );
     }
 
@@ -203,7 +220,10 @@ export class ServicePointFormGroupBuilder {
   }
 
   private static determineType(version: ReadServicePointVersion) {
-    if (version.operatingPointType || version.operatingPointTechnicalTimetableType) {
+    if (
+      version.operatingPointType ||
+      version.operatingPointTechnicalTimetableType
+    ) {
       return ServicePointType.OperatingPoint;
     }
     if (version.stopPoint || version.freightServicePoint) {
@@ -215,23 +235,31 @@ export class ServicePointFormGroupBuilder {
     return ServicePointType.ServicePoint;
   }
 
-  private static initConditionalValidators(formGroup: FormGroup<ServicePointDetailFormGroup>) {
+  private static initConditionalValidators(
+    formGroup: FormGroup<ServicePointDetailFormGroup>
+  ) {
     this.initSelectedTypeValidation(formGroup);
     this.initStopPointValidation(formGroup);
     this.initFreightServicePointValidation(formGroup);
   }
 
-  private static initSelectedTypeValidation(formGroup: FormGroup<ServicePointDetailFormGroup>) {
+  private static initSelectedTypeValidation(
+    formGroup: FormGroup<ServicePointDetailFormGroup>
+  ) {
     formGroup.controls.selectedType.valueChanges.subscribe((newType) => {
       if (newType === ServicePointType.OperatingPoint) {
-        formGroup.controls.operatingPointType.setValidators([Validators.required]);
+        formGroup.controls.operatingPointType.setValidators([
+          Validators.required,
+        ]);
       } else {
         formGroup.controls.operatingPointType.clearValidators();
       }
       formGroup.controls.operatingPointType.updateValueAndValidity();
 
       if (newType === ServicePointType.StopPoint) {
-        formGroup.addValidators(AtLeastOneValidator.of('stopPoint', 'freightServicePoint'));
+        formGroup.addValidators(
+          AtLeastOneValidator.of('stopPoint', 'freightServicePoint')
+        );
       } else {
         formGroup.clearValidators();
         formGroup.controls.stopPoint.updateValueAndValidity();
@@ -241,13 +269,17 @@ export class ServicePointFormGroupBuilder {
     });
   }
 
-  private static initStopPointValidation(formGroup: FormGroup<ServicePointDetailFormGroup>) {
+  private static initStopPointValidation(
+    formGroup: FormGroup<ServicePointDetailFormGroup>
+  ) {
     if (formGroup.controls.stopPoint.value) {
       formGroup.controls.meansOfTransport.setValidators([Validators.required]);
     }
     formGroup.controls.stopPoint.valueChanges.subscribe((isStopPoint) => {
       if (isStopPoint) {
-        formGroup.controls.meansOfTransport.setValidators([Validators.required]);
+        formGroup.controls.meansOfTransport.setValidators([
+          Validators.required,
+        ]);
       } else {
         formGroup.controls.meansOfTransport.clearValidators();
       }
@@ -256,29 +288,33 @@ export class ServicePointFormGroupBuilder {
   }
 
   private static initFreightServicePointValidation(
-    formGroup: FormGroup<ServicePointDetailFormGroup>,
+    formGroup: FormGroup<ServicePointDetailFormGroup>
   ) {
-    formGroup.controls.freightServicePoint.valueChanges.subscribe((isFreightServicePoint) => {
-      if (isFreightServicePoint) {
-        formGroup.controls.sortCodeOfDestinationStation.setValidators([Validators.maxLength(5)]);
-        if (
-          String(formGroup.controls.number.value).startsWith('85') &&
-          !formGroup.controls.validFrom.value?.isAfter(moment())
-        ) {
+    formGroup.controls.freightServicePoint.valueChanges.subscribe(
+      (isFreightServicePoint) => {
+        if (isFreightServicePoint) {
           formGroup.controls.sortCodeOfDestinationStation.setValidators([
-            Validators.required,
             Validators.maxLength(5),
           ]);
+          if (
+            String(formGroup.controls.number.value).startsWith('85') &&
+            !formGroup.controls.validFrom.value?.isAfter(moment())
+          ) {
+            formGroup.controls.sortCodeOfDestinationStation.setValidators([
+              Validators.required,
+              Validators.maxLength(5),
+            ]);
+          }
+        } else {
+          formGroup.controls.sortCodeOfDestinationStation.clearValidators();
         }
-      } else {
-        formGroup.controls.sortCodeOfDestinationStation.clearValidators();
+        formGroup.controls.sortCodeOfDestinationStation.updateValueAndValidity();
       }
-      formGroup.controls.sortCodeOfDestinationStation.updateValueAndValidity();
-    });
+    );
   }
 
   static getWritableServicePoint(
-    form: FormGroup<ServicePointDetailFormGroup>,
+    form: FormGroup<ServicePointDetailFormGroup>
   ): CreateServicePointVersion {
     const value = form.value;
 
@@ -286,7 +322,9 @@ export class ServicePointFormGroupBuilder {
       country: value.country!,
       numberShort: value.number!,
       designationOfficial: value.designationOfficial!,
-      designationLong: value.designationLong ? value.designationLong : undefined,
+      designationLong: value.designationLong
+        ? value.designationLong
+        : undefined,
       abbreviation:
         value.abbreviation && value.abbreviation.trim().length !== 0
           ? value.abbreviation
@@ -318,13 +356,15 @@ export class ServicePointFormGroupBuilder {
       }
       writableForm.freightServicePoint = value.freightServicePoint!;
       if (value.freightServicePoint) {
-        writableForm.sortCodeOfDestinationStation = value.sortCodeOfDestinationStation!;
+        writableForm.sortCodeOfDestinationStation =
+          value.sortCodeOfDestinationStation!;
       }
     }
     if (value.selectedType == ServicePointType.FareStop) {
       writableForm.operatingPointKilometerMasterNumber = undefined;
       writableForm.operatingPointRouteNetwork = false;
-      writableForm.operatingPointTrafficPointType = OperatingPointTrafficPointType.TariffPoint;
+      writableForm.operatingPointTrafficPointType =
+        OperatingPointTrafficPointType.TariffPoint;
     }
     if (value.selectedType == ServicePointType.ServicePoint) {
       writableForm.operatingPointKilometerMasterNumber = undefined;
@@ -342,22 +382,25 @@ export class ServicePointFormGroupBuilder {
   }
 
   private static getOperatingPointTechnicalTimetableType(
-    form: FormGroup<ServicePointDetailFormGroup>,
+    form: FormGroup<ServicePointDetailFormGroup>
   ) {
     if (
       Object.values(OperatingPointTechnicalTimetableType).includes(
-        form.value.operatingPointType as OperatingPointTechnicalTimetableType,
+        form.value.operatingPointType as OperatingPointTechnicalTimetableType
       )
     ) {
-      return form.value.operatingPointType! as OperatingPointTechnicalTimetableType;
+      return form.value
+        .operatingPointType! as OperatingPointTechnicalTimetableType;
     }
     return undefined;
   }
 
-  private static getOperatingPointType(form: FormGroup<ServicePointDetailFormGroup>) {
+  private static getOperatingPointType(
+    form: FormGroup<ServicePointDetailFormGroup>
+  ) {
     if (
       Object.values(OperatingPointType).includes(
-        form.value.operatingPointType as OperatingPointType,
+        form.value.operatingPointType as OperatingPointType
       )
     ) {
       return form.value.operatingPointType! as OperatingPointType;
