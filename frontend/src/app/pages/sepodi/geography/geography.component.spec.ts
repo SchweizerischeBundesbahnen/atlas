@@ -10,7 +10,6 @@ import { GeographyComponent } from './geography.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinatePair, SpatialReference } from '../../../api';
-import { MaterialModule } from '../../../core/module/material.module';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
 import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
@@ -48,7 +47,6 @@ describe('GeographyComponent', () => {
       imports: [
         AppTestingModule,
         FormModule,
-        MaterialModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),

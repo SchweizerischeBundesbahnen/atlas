@@ -10,7 +10,6 @@ import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { FormModule } from '../../../core/module/form.module';
 import { MeansOfTransportPickerComponent } from './means-of-transport-picker.component';
 import { MeanOfTransport } from '../../../api';
-import { MaterialModule } from '../../../core/module/material.module';
 import { By } from '@angular/platform-browser';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
@@ -25,7 +24,6 @@ describe('MeansOfTransportPickerComponent', () => {
       imports: [
         FormModule,
         FormsModule,
-        MaterialModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),

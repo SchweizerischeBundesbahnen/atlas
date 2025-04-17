@@ -14,7 +14,6 @@ import {
 } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   TranslateFakeLoader,
@@ -126,7 +125,6 @@ describe('BaseDetailController', () => {
         RouterModule.forRoot([]),
         HttpClientTestingModule,
         ReactiveFormsModule,
-        MaterialModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
@@ -246,7 +244,6 @@ describe('Get actual versioned record', () => {
         RouterModule.forRoot([]),
         HttpClientTestingModule,
         ReactiveFormsModule,
-        MaterialModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },

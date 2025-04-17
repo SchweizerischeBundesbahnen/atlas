@@ -5,7 +5,6 @@ import {
   TranslateLoader,
   TranslateModule,
 } from '@ngx-translate/core';
-import { MaterialModule } from '../../module/material.module';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -21,7 +20,6 @@ describe('TransportCompanyRelationComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-        MaterialModule,
         BrowserAnimationsModule,
         RelationComponent,
       ],

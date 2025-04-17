@@ -16,6 +16,10 @@ import { GlobalErrorHandler } from './core/configuration/global-error-handler';
 import { ServerErrorInterceptor } from './core/configuration/server-error-interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { TranslatedPaginator } from './core/components/table/translated-paginator';
+import { MAT_CHIPS_DEFAULT_OPTIONS } from '@angular/material/chips';
+import { ENTER } from '@angular/cdk/keycodes';
 
 const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
 
@@ -48,6 +52,13 @@ export const appConfig: ApplicationConfig = {
         registrationStrategy: 'registerWhenStable:30000',
       })
     ),
+    { provide: MatPaginatorIntl, useClass: TranslatedPaginator },
+    {
+      provide: MAT_CHIPS_DEFAULT_OPTIONS,
+      useValue: {
+        separatorKeyCodes: [ENTER],
+      },
+    },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     {
       provide: HTTP_INTERCEPTORS,

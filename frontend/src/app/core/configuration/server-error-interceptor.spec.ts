@@ -5,7 +5,6 @@ import { NotificationService } from '../notification/notification.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from '../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   HttpErrorResponse,
@@ -22,7 +21,6 @@ describe('Server Error Interceptor', () => {
         MatSnackBarModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([]),
-        MaterialModule,
         BrowserAnimationsModule,
       ],
       providers: [NotificationService, ServerErrorInterceptor],

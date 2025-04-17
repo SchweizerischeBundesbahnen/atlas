@@ -20,7 +20,6 @@ import { Router } from '@angular/router';
 import { Component, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MaterialModule } from '../../../../../core/module/material.module';
 import { FormGroup } from '@angular/forms';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
@@ -31,7 +30,7 @@ import SpyObj = jasmine.SpyObj;
 @Component({
   selector: 'app-user-select',
   template: '',
-  imports: [RouterTestingModule, MaterialModule],
+  imports: [RouterTestingModule],
 })
 class MockUserSelectComponent {
   @Input() form?: FormGroup;
@@ -80,7 +79,6 @@ describe('UserAdministrationUserCreateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        MaterialModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),

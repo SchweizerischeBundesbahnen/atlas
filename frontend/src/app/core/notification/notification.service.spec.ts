@@ -4,7 +4,6 @@ import { NotificationService } from './notification.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { MaterialModule } from '../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -63,7 +62,6 @@ describe('NotificationService', () => {
         MatSnackBarModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([]),
-        MaterialModule,
         BrowserAnimationsModule,
       ],
       providers: [

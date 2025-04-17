@@ -7,7 +7,6 @@ import {
   TranslateModule,
 } from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { MaterialModule } from '../../../../../core/module/material.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { KilometerMasterSearchComponent } from './kilometer-master-search.component';
@@ -38,7 +37,6 @@ describe('KilometerMasterSearchComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         NgSelectModule,
-        MaterialModule,
         HttpClientTestingModule,
         KilometerMasterSearchComponent,
         SearchSelectComponent,

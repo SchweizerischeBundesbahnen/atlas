@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DateRangeComponent } from '../form-components/date-range/date-range.component';
-import { MaterialModule } from './material.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommentComponent } from '../form-components/comment/comment.component';
 import { DateIconComponent } from '../form-components/date-icon/date-icon.component';
@@ -32,7 +31,6 @@ import { EmptyToNullDirective } from '../text-input/empty-to-null';
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule,
     TranslateModule,
     CdkCopyToClipboard,
     BusinessOrganisationSelectComponent,
