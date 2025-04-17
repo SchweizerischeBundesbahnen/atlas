@@ -1,5 +1,5 @@
 import { ServicePointFormComponent } from './service-point-form.component';
-import {FormControl, FormGroup} from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import {
   ApplicationRole,
   ApplicationType,
@@ -13,8 +13,11 @@ import {
 import { EventEmitter } from '@angular/core';
 import { GeographyComponent } from '../../../geography/geography.component';
 import { of } from 'rxjs';
-import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder} from "../service-point-detail-form-group";
-import {AtLeastOneValidator} from "../../../../../core/validation/boolean-cross-validator/at-least-one-validator";
+import {
+  ServicePointDetailFormGroup,
+  ServicePointFormGroupBuilder,
+} from '../service-point-detail-form-group';
+import { AtLeastOneValidator } from '../../../../../core/validation/boolean-cross-validator/at-least-one-validator';
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
@@ -27,7 +30,6 @@ describe('ServicePointFormComponent', () => {
   authServiceSpy.isAdmin = true;
   let servicePointFormGroup: FormGroup<ServicePointDetailFormGroup>;
   const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
-
 
   beforeEach(() => {
     dialogServiceSpy.confirm.and.returnValue(of(true));
@@ -58,26 +60,36 @@ describe('ServicePointFormComponent', () => {
     };
 
     (
-      spyOnProperty<ServicePointFormComponent, 'form'>(component, 'form', 'get') as jasmine.Spy<
-        (this: ServicePointFormComponent) => FormGroup
-      >
+      spyOnProperty<ServicePointFormComponent, 'form'>(
+        component,
+        'form',
+        'get'
+      ) as jasmine.Spy<(this: ServicePointFormComponent) => FormGroup>
     ).and.returnValue(form);
 
     (
       spyOnProperty<ServicePointFormComponent, 'currentVersion'>(
         component,
         'currentVersion',
-        'get',
+        'get'
       ) as jasmine.Spy<(this: ServicePointFormComponent) => object>
     ).and.returnValue(currentVersion);
 
     component.setOperatingPointRouteNetwork(true);
 
-    expect(component.form?.controls.operatingPointRouteNetwork.value).toBe(true);
+    expect(component.form?.controls.operatingPointRouteNetwork.value).toBe(
+      true
+    );
     expect(component.form?.controls.operatingPointKilometer.value).toBe(true);
-    expect(component.form?.controls.operatingPointKilometer.disabled).toBe(true);
-    expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(1);
-    expect(component.form?.controls.operatingPointKilometerMaster.disabled).toBe(true);
+    expect(component.form?.controls.operatingPointKilometer.disabled).toBe(
+      true
+    );
+    expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(
+      1
+    );
+    expect(
+      component.form?.controls.operatingPointKilometerMaster.disabled
+    ).toBe(true);
   });
 
   it('should test component method setOperatingPointRouteNetwork with argument false', () => {
@@ -93,18 +105,26 @@ describe('ServicePointFormComponent', () => {
       }),
     });
     (
-      spyOnProperty<ServicePointFormComponent, 'form'>(component, 'form', 'get') as jasmine.Spy<
-        (this: ServicePointFormComponent) => FormGroup
-      >
+      spyOnProperty<ServicePointFormComponent, 'form'>(
+        component,
+        'form',
+        'get'
+      ) as jasmine.Spy<(this: ServicePointFormComponent) => FormGroup>
     ).and.returnValue(form);
 
     component.setOperatingPointRouteNetwork(false);
 
-    expect(component.form?.controls.operatingPointRouteNetwork.value).toBe(false);
+    expect(component.form?.controls.operatingPointRouteNetwork.value).toBe(
+      false
+    );
     expect(component.form?.controls.operatingPointKilometer.value).toBe(false);
     expect(component.form?.controls.operatingPointKilometer.enabled).toBe(true);
-    expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(null);
-    expect(component.form?.controls.operatingPointKilometerMaster.enabled).toBe(true);
+    expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(
+      null
+    );
+    expect(component.form?.controls.operatingPointKilometerMaster.enabled).toBe(
+      true
+    );
   });
 
   it('should test component method setOperatingPointKilometer with argument true', () => {
@@ -112,9 +132,11 @@ describe('ServicePointFormComponent', () => {
       operatingPointKilometer: new FormControl(null),
     });
     (
-      spyOnProperty<ServicePointFormComponent, 'form'>(component, 'form', 'get') as jasmine.Spy<
-        (this: ServicePointFormComponent) => FormGroup
-      >
+      spyOnProperty<ServicePointFormComponent, 'form'>(
+        component,
+        'form',
+        'get'
+      ) as jasmine.Spy<(this: ServicePointFormComponent) => FormGroup>
     ).and.returnValue(form);
 
     component.setOperatingPointKilometer(true);
@@ -128,15 +150,19 @@ describe('ServicePointFormComponent', () => {
       operatingPointKilometerMaster: new FormControl(5),
     });
     (
-      spyOnProperty<ServicePointFormComponent, 'form'>(component, 'form', 'get') as jasmine.Spy<
-        (this: ServicePointFormComponent) => FormGroup
-      >
+      spyOnProperty<ServicePointFormComponent, 'form'>(
+        component,
+        'form',
+        'get'
+      ) as jasmine.Spy<(this: ServicePointFormComponent) => FormGroup>
     ).and.returnValue(form);
 
     component.setOperatingPointKilometer(false);
 
     expect(component.form?.controls.operatingPointKilometer.value).toBe(false);
-    expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(null);
+    expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(
+      null
+    );
   });
 
   it('should update locationInformation when coordinates changed', (done) => {
@@ -151,14 +177,16 @@ describe('ServicePointFormComponent', () => {
       east: 6,
     };
 
-    geoDataServiceSpy.getLocationInformation.withArgs(coordinatePair).and.returnValue(
-      of({
-        country: Country.Cuba,
-        swissCanton: SwissCanton.Aargau,
-        swissMunicipalityName: 'Gemeinde',
-        swissLocalityName: 'Ort',
-      }),
-    );
+    geoDataServiceSpy.getLocationInformation
+      .withArgs(coordinatePair)
+      .and.returnValue(
+        of({
+          country: Country.Cuba,
+          swissCanton: SwissCanton.Aargau,
+          swissMunicipalityName: 'Gemeinde',
+          swissLocalityName: 'Ort',
+        })
+      );
 
     component.ngOnInit();
 
@@ -214,6 +242,9 @@ describe('ServicePointFormComponent', () => {
     spyOn(AtLeastOneValidator, 'of').and.callThrough();
 
     component.setStopPointValidator();
-    expect(AtLeastOneValidator.of).toHaveBeenCalledWith('stopPoint', 'freightServicePoint');
+    expect(AtLeastOneValidator.of).toHaveBeenCalledWith(
+      'stopPoint',
+      'freightServicePoint'
+    );
   });
 });

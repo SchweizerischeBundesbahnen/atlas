@@ -11,13 +11,16 @@ describe('DateRangeTextComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, DateRangeTextComponent, DisplayDatePipe],
-    providers: [{ provide: TranslatePipe }],
-}).compileComponents();
+      imports: [AppTestingModule, DateRangeTextComponent, DisplayDatePipe],
+      providers: [{ provide: TranslatePipe }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DateRangeTextComponent);
     component = fixture.componentInstance;
-    component.dateRange = { validFrom: new Date('2023-01-01'), validTo: new Date('2023-01-31') };
+    component.dateRange = {
+      validFrom: new Date('2023-01-01'),
+      validTo: new Date('2023-01-31'),
+    };
 
     fixture.detectChanges();
   });

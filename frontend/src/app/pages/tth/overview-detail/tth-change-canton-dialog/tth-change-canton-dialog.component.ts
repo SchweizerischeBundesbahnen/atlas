@@ -12,9 +12,9 @@ import { TimetableHearingStatementsService } from '../../../../api';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 
 @Component({
-    selector: 'app-tth-change-canton-dialog',
-    templateUrl: './tth-change-canton-dialog.component.html',
-    imports: [BaseChangeDialogComponent, ReactiveFormsModule]
+  selector: 'app-tth-change-canton-dialog',
+  templateUrl: './tth-change-canton-dialog.component.html',
+  imports: [BaseChangeDialogComponent, ReactiveFormsModule],
 })
 export class TthChangeCantonDialogComponent {
   formGroup = new FormGroup<TthChangeCantonFormGroup>({
@@ -27,7 +27,7 @@ export class TthChangeCantonDialogComponent {
     public dialogRef: MatDialogRef<TthChangeCantonDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ChangeCantonData,
     private readonly notificationService: NotificationService,
-    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementsService,
+    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementsService
   ) {}
 
   onClick() {
@@ -45,7 +45,9 @@ export class TthChangeCantonDialogComponent {
         })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
-          this.notificationService.success('TTH.NOTIFICATION.CANTON_CHANGE.SUCCESS');
+          this.notificationService.success(
+            'TTH.NOTIFICATION.CANTON_CHANGE.SUCCESS'
+          );
           this.dialogRef.close(true);
         });
     }

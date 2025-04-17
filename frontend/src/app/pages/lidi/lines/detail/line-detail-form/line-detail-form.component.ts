@@ -6,7 +6,10 @@ import {
   MeanOfTransport,
   OfferCategory,
 } from '../../../../../api';
-import { SelectOptionGroup, SelectComponent } from '../../../../../core/form-components/select/select.component';
+import {
+  SelectOptionGroup,
+  SelectComponent,
+} from '../../../../../core/form-components/select/select.component';
 import { ColumnDropDownEvent } from '../../../../../core/components/table/column-drop-down-event';
 import { NgIf, NgOptimizedImage } from '@angular/common';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
@@ -25,10 +28,20 @@ interface OfferCategoryGroup {
 }
 
 @Component({
-    selector: 'line-detail-form',
-    templateUrl: './line-detail-form.component.html',
-    styleUrls: ['./line-detail-form.component.scss'],
-    imports: [ReactiveFormsModule, NgIf, SelectComponent, TextFieldComponent, NgOptimizedImage, DateRangeComponent, BusinessOrganisationSelectComponent, CommentComponent, TranslatePipe]
+  selector: 'line-detail-form',
+  templateUrl: './line-detail-form.component.html',
+  styleUrls: ['./line-detail-form.component.scss'],
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    SelectComponent,
+    TextFieldComponent,
+    NgOptimizedImage,
+    DateRangeComponent,
+    BusinessOrganisationSelectComponent,
+    CommentComponent,
+    TranslatePipe,
+  ],
 })
 export class LineDetailFormComponent {
   @Input() form!: FormGroup;

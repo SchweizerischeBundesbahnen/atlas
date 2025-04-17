@@ -1,8 +1,7 @@
-import {DecisionFormGroupBuilder} from "./decision-form-group";
-import {JudgementType} from "../../../../../../api";
+import { DecisionFormGroupBuilder } from './decision-form-group';
+import { JudgementType } from '../../../../../../api';
 
 describe('DecisionFormGroupBuilder', () => {
-
   it('should formGroup with motivation validator for yes', () => {
     const formGroup = buildFormGroup();
 
@@ -25,7 +24,7 @@ describe('DecisionFormGroupBuilder', () => {
     expect(formGroup.valid).toBeTrue();
   });
 
-  function buildFormGroup(){
+  function buildFormGroup() {
     const formGroup = DecisionFormGroupBuilder.buildFormGroup();
     formGroup.patchValue({
       firstName: 'Dänu',

@@ -26,24 +26,27 @@ describe('StopPointCompleteFormComponent', () => {
     'getPrmMeansOfTransportToShow',
   ]);
   prmVariantInfoService.getPrmMeansOfTransportToShow.and.returnValue(
-    Object.values(MeanOfTransport),
+    Object.values(MeanOfTransport)
   );
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [AppTestingModule, StopPointCompleteFormComponent,
+      imports: [
+        AppTestingModule,
+        StopPointCompleteFormComponent,
         MockSelectComponent,
         TextFieldComponent,
         MockAtlasFieldErrorComponent,
         InfoIconComponent,
         AtlasLabelFieldComponent,
         MeansOfTransportPickerComponent,
-        AtlasSpacerComponent],
-    providers: [
+        AtlasSpacerComponent,
+      ],
+      providers: [
         { provide: TranslatePipe },
         { provide: PrmVariantInfoService, useValue: prmVariantInfoService },
-    ],
-});
+      ],
+    });
     fixture = TestBed.createComponent(StopPointCompleteFormComponent);
     component = fixture.componentInstance;
     fixture.componentInstance.form =
@@ -57,18 +60,28 @@ describe('StopPointCompleteFormComponent', () => {
 
   describe('should display complete fields', () => {
     it('should display meansOfTransport', () => {
-      const meansOfTransport = fixture.debugElement.query(By.css('means-of-transport-picker'));
-      expect(meansOfTransport.attributes['controlName']).toEqual('meansOfTransport');
+      const meansOfTransport = fixture.debugElement.query(
+        By.css('means-of-transport-picker')
+      );
+      expect(meansOfTransport.attributes['controlName']).toEqual(
+        'meansOfTransport'
+      );
     });
     it('should display interoperable', () => {
       const interoperable = fixture.debugElement.query(By.css('mat-checkbox'));
-      expect(interoperable.attributes['formControlName']).toEqual('interoperable');
+      expect(interoperable.attributes['formControlName']).toEqual(
+        'interoperable'
+      );
     });
     it('should display data-range', () => {
-      expect(fixture.debugElement.query(By.css('form-date-range'))).toBeDefined();
+      expect(
+        fixture.debugElement.query(By.css('form-date-range'))
+      ).toBeDefined();
     });
     it('should display formComments', () => {
-      const formComments = fixture.debugElement.queryAll(By.css('form-comment'));
+      const formComments = fixture.debugElement.queryAll(
+        By.css('form-comment')
+      );
       const formCommentsControlName: string[] = [
         'freeText',
         'additionalInformation',
@@ -77,12 +90,14 @@ describe('StopPointCompleteFormComponent', () => {
         'alternativeTransportCondition',
       ];
       expect(formComments.length).toEqual(5);
-      expect(formComments.map((value) => value.attributes['controlName'])).toEqual(
-        arrayContaining(formCommentsControlName),
-      );
+      expect(
+        formComments.map((value) => value.attributes['controlName'])
+      ).toEqual(arrayContaining(formCommentsControlName));
     });
     it('should display atlasSelects', () => {
-      const atlasSelects = fixture.debugElement.queryAll(By.css('atlas-select'));
+      const atlasSelects = fixture.debugElement.queryAll(
+        By.css('atlas-select')
+      );
       const atlasSelectsControlName: string[] = [
         'visualInfo',
         'dynamicOpticSystem',
@@ -97,17 +112,24 @@ describe('StopPointCompleteFormComponent', () => {
         'shuttleService',
       ];
       expect(atlasSelects.length).toEqual(11);
-      expect(atlasSelects.map((value) => value.attributes['controlName'])).toEqual(
-        arrayContaining(atlasSelectsControlName),
-      );
+      expect(
+        atlasSelects.map((value) => value.attributes['controlName'])
+      ).toEqual(arrayContaining(atlasSelectsControlName));
     });
     it('should display atlas-text-fields', () => {
-      const atlasTextFields = fixture.debugElement.queryAll(By.css('atlas-text-field'));
-      const atlasTextFieldsControlName: string[] = ['url', 'address', 'zipCode', 'city'];
-      expect(atlasTextFields.length).toEqual(4);
-      expect(atlasTextFields.map((value) => value.attributes['controlName'])).toEqual(
-        arrayContaining(atlasTextFieldsControlName),
+      const atlasTextFields = fixture.debugElement.queryAll(
+        By.css('atlas-text-field')
       );
+      const atlasTextFieldsControlName: string[] = [
+        'url',
+        'address',
+        'zipCode',
+        'city',
+      ];
+      expect(atlasTextFields.length).toEqual(4);
+      expect(
+        atlasTextFields.map((value) => value.attributes['controlName'])
+      ).toEqual(arrayContaining(atlasTextFieldsControlName));
     });
   });
 });

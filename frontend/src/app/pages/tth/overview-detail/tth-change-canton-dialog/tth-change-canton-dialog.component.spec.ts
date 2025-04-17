@@ -1,16 +1,23 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TthChangeCantonDialogComponent} from './tth-change-canton-dialog.component';
-import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {AppTestingModule} from '../../../../app.testing.module';
-import {FormModule} from '../../../../core/module/form.module';
-import {BaseChangeDialogComponent} from '../base-change-dialog/base-change-dialog.component';
-import {SwissCanton, TimetableHearingStatementV2, TimetableHearingStatementsService,} from '../../../../api';
-import {TranslatePipe} from '@ngx-translate/core';
-import {NotificationService} from '../../../../core/notification/notification.service';
-import {DialogService} from '../../../../core/components/dialog/dialog.service';
-import {of} from 'rxjs';
+import { TthChangeCantonDialogComponent } from './tth-change-canton-dialog.component';
+import {
+  MAT_SNACK_BAR_DATA,
+  MatSnackBarRef,
+} from '@angular/material/snack-bar';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { FormModule } from '../../../../core/module/form.module';
+import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
+import {
+  SwissCanton,
+  TimetableHearingStatementV2,
+  TimetableHearingStatementsService,
+} from '../../../../api';
+import { TranslatePipe } from '@ngx-translate/core';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { of } from 'rxjs';
 
 const statement: TimetableHearingStatementV2 = {
   id: 1,
@@ -22,33 +29,42 @@ const statement: TimetableHearingStatementV2 = {
   },
 };
 const dialogRefSpy = jasmine.createSpyObj(['close']);
-const dialogServiceSpy = jasmine.createSpyObj(DialogService, { confirmLeave: of({}) });
+const dialogServiceSpy = jasmine.createSpyObj(DialogService, {
+  confirmLeave: of({}),
+});
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
 const mockTimetableHearingStatementsService = jasmine.createSpyObj(
   'timetableHearingStatementsService',
-  ['updateHearingCanton'],
+  ['updateHearingCanton']
 );
 
 describe('TthChangeCantonDialogComponent', () => {
   let component: TthChangeCantonDialogComponent;
   let fixture: ComponentFixture<TthChangeCantonDialogComponent>;
 
-  mockTimetableHearingStatementsService.updateHearingCanton.and.returnValue(of(statement));
+  mockTimetableHearingStatementsService.updateHearingCanton.and.returnValue(
+    of(statement)
+  );
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, FormModule, TthChangeCantonDialogComponent, BaseChangeDialogComponent],
-    providers: [
+      imports: [
+        AppTestingModule,
+        FormModule,
+        TthChangeCantonDialogComponent,
+        BaseChangeDialogComponent,
+      ],
+      providers: [
         {
-            provide: MAT_DIALOG_DATA,
-            useValue: {
-                title: 'Title',
-                message: 'message',
-                tths: [statement],
-                justification: 'Forza Napoli',
-                type: 'SINGLE',
-                id: 1,
-            },
+          provide: MAT_DIALOG_DATA,
+          useValue: {
+            title: 'Title',
+            message: 'message',
+            tths: [statement],
+            justification: 'Forza Napoli',
+            type: 'SINGLE',
+            id: 1,
+          },
         },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
@@ -56,12 +72,12 @@ describe('TthChangeCantonDialogComponent', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         {
-            provide: TimetableHearingStatementsService,
-            useValue: mockTimetableHearingStatementsService,
+          provide: TimetableHearingStatementsService,
+          useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TthChangeCantonDialogComponent);
     component = fixture.componentInstance;
@@ -78,7 +94,7 @@ describe('TthChangeCantonDialogComponent', () => {
     //then
     expect(dialogRefSpy.close).toHaveBeenCalled();
     expect(notificationServiceSpy.success).toHaveBeenCalledWith(
-      'TTH.NOTIFICATION.CANTON_CHANGE.SUCCESS',
+      'TTH.NOTIFICATION.CANTON_CHANGE.SUCCESS'
     );
   });
 });

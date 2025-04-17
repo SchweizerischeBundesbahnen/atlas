@@ -1,19 +1,20 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MapComponent} from './map.component';
-import {AppTestingModule} from '../../../app.testing.module';
-import {MAP_STYLES} from './map-options';
-import {CoordinatePairWGS84, MapService} from './map.service';
-import maplibregl, {Map} from 'maplibre-gl';
-import {BehaviorSubject} from 'rxjs';
-import {PermissionService} from "../../../core/auth/permission/permission.service";
-import {adminPermissionServiceMock} from "../../../app.testing.mocks";
-import {SERVICE_POINT_MIN_ZOOM} from "./map-style";
+import { MapComponent } from './map.component';
+import { AppTestingModule } from '../../../app.testing.module';
+import { MAP_STYLES } from './map-options';
+import { CoordinatePairWGS84, MapService } from './map.service';
+import maplibregl, { Map } from 'maplibre-gl';
+import { BehaviorSubject } from 'rxjs';
+import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { adminPermissionServiceMock } from '../../../app.testing.mocks';
+import { SERVICE_POINT_MIN_ZOOM } from './map-style';
 
-const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
-  lat: 0,
-  lng: 0,
-});
+const clickedGeographyCoordinatesSubject =
+  new BehaviorSubject<CoordinatePairWGS84>({
+    lat: 0,
+    lng: 0,
+  });
 
 const mapCanvasMock = document.createElement('canvas');
 const mapSpy = jasmine.createSpyObj<Map>([
@@ -35,7 +36,11 @@ const mapService = jasmine.createSpyObj<MapService>([
   'initMapEvents',
   'placeMarkerAndFlyTo',
 ]);
-const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove']);
+const markerSpy = jasmine.createSpyObj('Marker', [
+  'addTo',
+  'setLngLat',
+  'remove',
+]);
 
 mapSpy.getCanvas.and.returnValue(mapCanvasMock);
 mapService.clickedGeographyCoordinates = clickedGeographyCoordinatesSubject; // Weise dem Spion den BehaviorSubject zu
@@ -54,12 +59,12 @@ describe('MapComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, MapComponent],
-    providers: [
+      imports: [AppTestingModule, MapComponent],
+      providers: [
         { provide: MapService, useValue: mapService },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     spyOn(maplibregl, 'Marker').and.returnValue(markerSpy);
     fixture = TestBed.createComponent(MapComponent);
@@ -101,21 +106,29 @@ describe('MapComponent', () => {
 
   it('should increase zoom when zoomIn() is called', () => {
     component.zoomIn();
-    expect(component.map.zoomTo).toHaveBeenCalledWith(component.map.getZoom() + 0.75, {
-      duration: 500,
-    });
+    expect(component.map.zoomTo).toHaveBeenCalledWith(
+      component.map.getZoom() + 0.75,
+      {
+        duration: 500,
+      }
+    );
   });
 
   it('should decrease zoom when zoomOut() is called', () => {
     component.zoomOut();
-    expect(component.map.zoomTo).toHaveBeenCalledWith(component.map.getZoom() - 0.75, {
-      duration: 500,
-    });
+    expect(component.map.zoomTo).toHaveBeenCalledWith(
+      component.map.getZoom() - 0.75,
+      {
+        duration: 500,
+      }
+    );
   });
 
   it('should zoom to SERVICE_POINT_MIN_ZOOM', () => {
     component.zoomToServicePointMin();
-    expect(component.map.zoomTo).toHaveBeenCalledWith(SERVICE_POINT_MIN_ZOOM, {duration: 500});
+    expect(component.map.zoomTo).toHaveBeenCalledWith(SERVICE_POINT_MIN_ZOOM, {
+      duration: 500,
+    });
   });
 
   it('should center into swiss country when goHome() is called', () => {

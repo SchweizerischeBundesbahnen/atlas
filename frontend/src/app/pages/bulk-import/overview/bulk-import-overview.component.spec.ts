@@ -52,10 +52,10 @@ describe('BulkImportOverviewComponent', () => {
     dialogServiceSpy = jasmine.createSpyObj('dialogService', ['showInfo']);
 
     TestBed.configureTestingModule({
-    imports: [
+      imports: [
         AppTestingModule,
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         BulkImportOverviewComponent,
         AtlasButtonComponent,
@@ -69,27 +69,27 @@ describe('BulkImportOverviewComponent', () => {
         AtlasSpacerComponent,
         TextFieldComponent,
         FileUploadComponent,
-    ],
-    providers: [
+      ],
+      providers: [
         {
-            provide: LoadingSpinnerService,
-            useValue: { loading: new BehaviorSubject(false) },
+          provide: LoadingSpinnerService,
+          useValue: { loading: new BehaviorSubject(false) },
         },
         {
-            provide: BulkImportService,
-            useValue: bulkImportServiceSpy,
+          provide: BulkImportService,
+          useValue: bulkImportServiceSpy,
         },
         {
-            provide: NotificationService,
-            useValue: notificationServiceSpy,
+          provide: NotificationService,
+          useValue: notificationServiceSpy,
         },
         {
-            provide: Router,
-            useValue: routerSpy,
+          provide: Router,
+          useValue: routerSpy,
         },
         { provide: DialogService, useValue: dialogServiceSpy },
-    ],
-});
+      ],
+    });
 
     fixture = TestBed.createComponent(BulkImportOverviewComponent);
     component = fixture.componentInstance;

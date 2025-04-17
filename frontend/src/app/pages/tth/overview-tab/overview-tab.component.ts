@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Pages } from '../../pages';
-import { ActivatedRoute, Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLinkActive,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
 import { OverviewToTabShareDataService } from './service/overview-to-tab-share-data.service';
 import { Cantons } from '../../../core/cantons/Cantons';
 import { HearingOverviewTab } from './model/hearing-overview-tab';
@@ -9,8 +15,17 @@ import { NgFor } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    templateUrl: './overview-tab.component.html',
-    imports: [MatTabNav, NgFor, RouterLinkActive, MatTabLink, RouterLink, MatTabNavPanel, RouterOutlet, TranslatePipe]
+  templateUrl: './overview-tab.component.html',
+  imports: [
+    MatTabNav,
+    NgFor,
+    RouterLinkActive,
+    MatTabLink,
+    RouterLink,
+    MatTabNavPanel,
+    RouterOutlet,
+    TranslatePipe,
+  ],
 })
 export class OverviewTabComponent implements OnInit {
   TABS: HearingOverviewTab[] = [
@@ -41,7 +56,9 @@ export class OverviewTabComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.overviewToTabService.cantonShort$.subscribe((res) => (this.cantonShort = res));
+    this.overviewToTabService.cantonShort$.subscribe(
+      (res) => (this.cantonShort = res)
+    );
     this.cantonShort = this.route.snapshot.params['canton'];
     this.overviewToTabService.changeData(this.cantonShort);
   }

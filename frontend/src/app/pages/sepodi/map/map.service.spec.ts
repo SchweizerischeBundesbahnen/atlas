@@ -1,6 +1,6 @@
-import {TestBed} from '@angular/core/testing';
-import {MapService} from './map.service';
-import {AuthService} from '../../../core/auth/auth.service';
+import { TestBed } from '@angular/core/testing';
+import { MapService } from './map.service';
+import { AuthService } from '../../../core/auth/auth.service';
 import {
   DragRotateHandler,
   GeoJSONSource,
@@ -8,14 +8,18 @@ import {
   MapGeoJSONFeature,
   MapMouseEvent,
   ScrollZoomHandler,
-  TwoFingersTouchZoomRotateHandler
+  TwoFingersTouchZoomRotateHandler,
 } from 'maplibre-gl';
-import {SpatialReference} from '../../../api';
-import {MAP_STYLES} from './map-options';
+import { SpatialReference } from '../../../api';
+import { MAP_STYLES } from './map-options';
 
 const authService: Partial<AuthService> = {};
 
-const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove']);
+const markerSpy = jasmine.createSpyObj('Marker', [
+  'addTo',
+  'setLngLat',
+  'remove',
+]);
 const mapSpy = jasmine.createSpyObj<Map>([
   'once',
   'flyTo',
@@ -51,10 +55,23 @@ describe('MapService', () => {
   });
 
   it('should init map', () => {
-    const mapSpy = jasmine.createSpyObj<Map>(['setMaxZoom', 'setMinZoom', 'resize', 'once', 'hasImage', 'addImage']);
+    const mapSpy = jasmine.createSpyObj<Map>([
+      'setMaxZoom',
+      'setMinZoom',
+      'resize',
+      'once',
+      'hasImage',
+      'addImage',
+    ]);
     mapSpy.dragRotate = jasmine.createSpyObj<DragRotateHandler>(['disable']);
-    mapSpy.touchZoomRotate = jasmine.createSpyObj<TwoFingersTouchZoomRotateHandler>(['disableRotation']);
-    mapSpy.scrollZoom = jasmine.createSpyObj<ScrollZoomHandler>(['setWheelZoomRate', 'setZoomRate']);
+    mapSpy.touchZoomRotate =
+      jasmine.createSpyObj<TwoFingersTouchZoomRotateHandler>([
+        'disableRotation',
+      ]);
+    mapSpy.scrollZoom = jasmine.createSpyObj<ScrollZoomHandler>([
+      'setWheelZoomRate',
+      'setZoomRate',
+    ]);
 
     spyOn(service, 'createMap').and.returnValue(mapSpy);
 
@@ -88,7 +105,7 @@ describe('MapService', () => {
 
     expect(service.map.getSource).toHaveBeenCalledWith('current_coordinates');
     expect(
-      (service.map.getSource('current_coordinates') as GeoJSONSource).setData,
+      (service.map.getSource('current_coordinates') as GeoJSONSource).setData
     ).toHaveBeenCalledWith({
       type: 'Feature',
       geometry: {
@@ -105,7 +122,11 @@ describe('MapService', () => {
 
     service.switchToStyle(MAP_STYLES[3]);
 
-    expect(mapSpy.setLayoutProperty).toHaveBeenCalledWith('osm', 'visibility', 'visible');
+    expect(mapSpy.setLayoutProperty).toHaveBeenCalledWith(
+      'osm',
+      'visibility',
+      'visible'
+    );
   });
 
   it('should remove map', () => {
@@ -134,7 +155,7 @@ describe('MapService', () => {
 
     const result = service.buildServicePointPopupInformation(features);
     expect(result).toEqual(
-      '<a href="service-point-directory/service-points/8507000"><b>85 07000</b> - Bern</a> <br/>',
+      '<a href="service-point-directory/service-points/8507000"><b>85 07000</b> - Bern</a> <br/>'
     );
   });
 

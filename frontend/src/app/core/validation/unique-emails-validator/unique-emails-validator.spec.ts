@@ -1,8 +1,7 @@
-import {FormArray, FormControl, FormGroup} from '@angular/forms';
-import {UniqueEmailsValidator} from './unique-emails-validator';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { UniqueEmailsValidator } from './unique-emails-validator';
 
 describe('UniqueEmailsValidator', () => {
-
   it('should return null for an empty FormArray', () => {
     const formArray = new FormArray([]);
     const result = UniqueEmailsValidator.uniqueEmails()(formArray);
@@ -78,10 +77,12 @@ describe('UniqueEmailsValidator', () => {
 
   it('should throw an error if used with something other than FormArray', () => {
     const formGroup = new FormGroup({
-      mail: new FormControl('test@example.com')
+      mail: new FormControl('test@example.com'),
     });
 
-    expect(() => UniqueEmailsValidator.uniqueEmails()(formGroup)).toThrowError('UniqueEmailsValidator must be used with a FormArray');
+    expect(() => UniqueEmailsValidator.uniqueEmails()(formGroup)).toThrowError(
+      'UniqueEmailsValidator must be used with a FormArray'
+    );
   });
 
   it('should handle multiple duplicates and clear errors when fixed', () => {
@@ -92,7 +93,7 @@ describe('UniqueEmailsValidator', () => {
     ]);
 
     UniqueEmailsValidator.uniqueEmails()(formArray);
-    formArray.controls.forEach(control => {
+    formArray.controls.forEach((control) => {
       expect(control.get('mail')?.hasError('notUniqueEmail')).toBe(true);
     });
 

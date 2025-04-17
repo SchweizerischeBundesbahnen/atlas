@@ -19,10 +19,22 @@ import { DetailFooterComponent } from '../../../../../core/components/detail-foo
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-user-administration-create',
-    templateUrl: './user-administration-user-create.component.html',
-    viewProviders: [BusinessOrganisationsService, UserPermissionManager],
-    imports: [ScrollToTopDirective, DetailPageContainerComponent, DetailPageContentComponent, MatLabel, UserSelectComponent, NgIf, UserAdministrationReadOnlyDataComponent, NgFor, UserAdministrationApplicationConfigComponent, DetailFooterComponent, TranslatePipe]
+  selector: 'app-user-administration-create',
+  templateUrl: './user-administration-user-create.component.html',
+  viewProviders: [BusinessOrganisationsService, UserPermissionManager],
+  imports: [
+    ScrollToTopDirective,
+    DetailPageContainerComponent,
+    DetailPageContentComponent,
+    MatLabel,
+    UserSelectComponent,
+    NgIf,
+    UserAdministrationReadOnlyDataComponent,
+    NgFor,
+    UserAdministrationApplicationConfigComponent,
+    DetailFooterComponent,
+    TranslatePipe,
+  ],
 })
 export class UserAdministrationUserCreateComponent {
   userLoaded?: User;
@@ -63,16 +75,28 @@ export class UserAdministrationUserCreateComponent {
     this.saveEnabled = false;
     this.userPermissionManager.setSbbUserId(this.userLoaded!.sbbUserId!);
     this.userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
-    this.userService.createUserPermission(this.userPermissionManager.userPermission).subscribe({
-      next: () => {
-        this.router
-          .navigate([Pages.USER_ADMINISTRATION.path, this.userPermissionManager.getSbbUserId()], {
-            relativeTo: this.route,
-          })
-          .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
-      },
-      error: () => (this.saveEnabled = true),
-    });
+    this.userService
+      .createUserPermission(this.userPermissionManager.userPermission)
+      .subscribe({
+        next: () => {
+          this.router
+            .navigate(
+              [
+                Pages.USER_ADMINISTRATION.path,
+                this.userPermissionManager.getSbbUserId(),
+              ],
+              {
+                relativeTo: this.route,
+              }
+            )
+            .then(() =>
+              this.notificationService.success(
+                'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'
+              )
+            );
+        },
+        error: () => (this.saveEnabled = true),
+      });
   }
 
   cancelCreation(showDialog = true): void {

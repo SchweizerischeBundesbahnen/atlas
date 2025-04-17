@@ -3,8 +3,8 @@ import { Line } from '../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Pipe({
-    name: 'mainlineDescription',
-    pure: true
+  name: 'mainlineDescription',
+  pure: true,
 })
 export class MainlineDescriptionPipe implements PipeTransform {
   constructor(private readonly translatePipe: TranslatePipe) {}

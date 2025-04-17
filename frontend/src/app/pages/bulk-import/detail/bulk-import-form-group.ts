@@ -1,5 +1,10 @@
-import { FormControl, FormGroup, Validators} from "@angular/forms";
-import {ApplicationType, BusinessObjectType, ImportType, User} from "../../../api";
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  ApplicationType,
+  BusinessObjectType,
+  ImportType,
+  User,
+} from '../../../api';
 
 export interface BulkImportFormGroup {
   applicationType: FormControl<ApplicationType | null | undefined>;
@@ -16,10 +21,10 @@ export class BulkImportFormGroupBuilder {
       objectType: new FormControl(null, [Validators.required]),
       importType: new FormControl(null, [Validators.required]),
       userSearchForm: new FormGroup({
-        userSearch: new FormControl<User | null>(null)
+        userSearch: new FormControl<User | null>(null),
       }),
       emails: new FormControl([]),
-    })
+    });
   }
 
   static buildBulkImport(formGroup: FormGroup<BulkImportFormGroup>) {
@@ -27,8 +32,9 @@ export class BulkImportFormGroupBuilder {
       applicationType: formGroup.controls.applicationType.value!,
       objectType: formGroup.controls.objectType.value!,
       importType: formGroup.controls.importType.value!,
-      inNameOf:  formGroup.controls.userSearchForm.controls.userSearch.value?.userId,
+      inNameOf:
+        formGroup.controls.userSearchForm.controls.userSearch.value?.userId,
       emails: formGroup.controls.emails.value!,
-    }
+    };
   }
 }

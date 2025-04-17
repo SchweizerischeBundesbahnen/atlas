@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { DecisionDetailDialogService } from './decision-detail-dialog.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ExaminantFormGroup } from '../../detail-form/stop-point-workflow-detail-form-group';
-import {DecisionType, WorkflowStatus} from "../../../../../../api";
+import { DecisionType, WorkflowStatus } from '../../../../../../api';
 
 describe('DecisionDetailDialogService', () => {
   let service: DecisionDetailDialogService;
@@ -35,8 +35,8 @@ describe('DecisionDetailDialogService', () => {
           judgement: new FormControl('YES'),
           id: new FormControl(1),
           decisionType: new FormControl(DecisionType.Voted),
-          defaultExaminant: new FormControl(false)
-        }),
+          defaultExaminant: new FormControl(false),
+        })
       )
       .subscribe((result) => {
         expect(result).toBeTrue();

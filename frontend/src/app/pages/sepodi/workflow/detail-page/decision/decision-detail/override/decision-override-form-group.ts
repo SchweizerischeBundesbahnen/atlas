@@ -31,16 +31,17 @@ export class DecisionOverrideFormGroupBuilder {
         [this._fotJudgement]: new FormControl(existingDecision?.fotJudgement, [
           Validators.required,
         ]),
-        [this._fotMotivation]: new FormControl(existingDecision?.fotMotivation, [
-          AtlasFieldLengthValidator.comments,
-        ]),
+        [this._fotMotivation]: new FormControl(
+          existingDecision?.fotMotivation,
+          [AtlasFieldLengthValidator.comments]
+        ),
       },
       {
         validators: DecisionFormGroupBuilder.conditionallyRequired(
           this._fotJudgement,
-          this._fotMotivation,
+          this._fotMotivation
         ),
-      },
+      }
     );
   }
 }

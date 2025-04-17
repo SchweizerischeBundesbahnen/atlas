@@ -28,16 +28,22 @@ const permissionServiceMock: Partial<PermissionService> = {
     return isAtLeastSupervisor;
   },
   getApplicationUserPermission(applicationType: ApplicationType): Permission {
-    return { application: applicationType, role: role, permissionRestrictions: [] };
+    return {
+      application: applicationType,
+      role: role,
+      permissionRestrictions: [],
+    };
   },
 };
 
 describe('AtlasButtonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [AppTestingModule, AtlasButtonComponent],
-    providers: [{ provide: PermissionService, useValue: permissionServiceMock }],
-}).compileComponents();
+      imports: [AppTestingModule, AtlasButtonComponent],
+      providers: [
+        { provide: PermissionService, useValue: permissionServiceMock },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

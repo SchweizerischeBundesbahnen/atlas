@@ -1,9 +1,14 @@
-import {TestBed} from '@angular/core/testing';
-import {ActivatedRouteSnapshot, convertToParamMap} from '@angular/router';
-import {of} from 'rxjs';
-import {ReadSublineVersionV2, Status, SublinesService, SublineType} from '../../../../api';
-import {SublineDetailResolver} from './subline-detail.resolver';
-import {AppTestingModule} from '../../../../app.testing.module';
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
+import { of } from 'rxjs';
+import {
+  ReadSublineVersionV2,
+  Status,
+  SublinesService,
+  SublineType,
+} from '../../../../api';
+import { SublineDetailResolver } from './subline-detail.resolver';
+import { AppTestingModule } from '../../../../app.testing.module';
 
 const version: ReadSublineVersionV2 = {
   id: 1234,
@@ -16,12 +21,14 @@ const version: ReadSublineVersionV2 = {
   swissSublineNumber: 'L1:2',
   sublineType: SublineType.Technical,
   mainlineSlnid: 'ch:1:slnid:1000',
-  mainLineNumber:'mainLineNumber',
-  mainSwissLineNumber:'mainSwissLineNumber',
+  mainLineNumber: 'mainLineNumber',
+  mainSwissLineNumber: 'mainSwissLineNumber',
 };
 
 describe('SublineDetailResolver', () => {
-  const sublinesServiceSpy = jasmine.createSpyObj('sublinesService', ['getSublineVersionV2']);
+  const sublinesServiceSpy = jasmine.createSpyObj('sublinesService', [
+    'getSublineVersionV2',
+  ]);
   sublinesServiceSpy.getSublineVersionV2.and.returnValue(of([version]));
 
   let resolver: SublineDetailResolver;
@@ -42,7 +49,9 @@ describe('SublineDetailResolver', () => {
   });
 
   it('should get version from service to display', () => {
-    const mockRoute = { paramMap: convertToParamMap({ id: '1234' }) } as ActivatedRouteSnapshot;
+    const mockRoute = {
+      paramMap: convertToParamMap({ id: '1234' }),
+    } as ActivatedRouteSnapshot;
 
     const resolvedVersion = resolver.resolve(mockRoute);
 

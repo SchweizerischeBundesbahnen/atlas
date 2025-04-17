@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { UserAdministrationService } from '../../../../api';
 import moment from 'moment';
-import { DATE_PATTERN, DATE_TIME_FORMAT_WITHOUT_SECONDS } from '../../../date/date.service';
+import {
+  DATE_PATTERN,
+  DATE_TIME_FORMAT_WITHOUT_SECONDS,
+} from '../../../date/date.service';
 import { catchError, forkJoin, Observable, of } from 'rxjs';
 import { CreationEditionRecord } from './creation-edition-record';
 import { map } from 'rxjs/operators';
@@ -9,19 +12,22 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-user-detail-info [record]',
-    templateUrl: './user-detail-info.component.html',
-    styleUrls: ['./user-detail-info.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgIf, AsyncPipe, TranslatePipe]
+  selector: 'app-user-detail-info [record]',
+  templateUrl: './user-detail-info.component.html',
+  styleUrls: ['./user-detail-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgIf, AsyncPipe, TranslatePipe],
 })
 export class UserDetailInfoComponent {
   @Input() short = false;
   @Input() showEditor = true;
 
-  private _record$: Observable<CreationEditionRecord | undefined> = of(undefined);
+  private _record$: Observable<CreationEditionRecord | undefined> =
+    of(undefined);
 
-  constructor(private readonly userAdministrationService: UserAdministrationService) {}
+  constructor(
+    private readonly userAdministrationService: UserAdministrationService
+  ) {}
 
   @Input()
   set record(record: CreationEditionRecord) {
@@ -33,23 +39,25 @@ export class UserDetailInfoComponent {
   }
 
   private getProcessedCreationEdition(
-    record: CreationEditionRecord,
+    record: CreationEditionRecord
   ): Observable<CreationEditionRecord | undefined> {
-    const displayNames$: Observable<string | undefined>[] = [record.editor, record.creator].map(
-      (value) => {
-        if (!value) {
-          return of(undefined);
-        }
-        return this.userAdministrationService
-          .getUserDisplayName(value)
-          .pipe(
-            map(
-              (userDisplayName) =>
-                this.formatUserDisplayInformation(userDisplayName.displayName) ?? value,
-            ),
-          );
-      },
-    );
+    const displayNames$: Observable<string | undefined>[] = [
+      record.editor,
+      record.creator,
+    ].map((value) => {
+      if (!value) {
+        return of(undefined);
+      }
+      return this.userAdministrationService
+        .getUserDisplayName(value)
+        .pipe(
+          map(
+            (userDisplayName) =>
+              this.formatUserDisplayInformation(userDisplayName.displayName) ??
+              value
+          )
+        );
+    });
 
     return forkJoin(displayNames$).pipe(
       map(([editor, creator]) => ({
@@ -59,7 +67,7 @@ export class UserDetailInfoComponent {
         editor,
         creator,
       })),
-      catchError(() => of(undefined)),
+      catchError(() => of(undefined))
     );
   }
 

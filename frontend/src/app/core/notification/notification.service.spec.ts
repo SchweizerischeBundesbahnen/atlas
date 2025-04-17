@@ -12,7 +12,10 @@ import { ErrorNotificationComponent } from './error/error-notification.component
 
 describe('NotificationService', () => {
   let service: NotificationService;
-  const matSnackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
+  const matSnackBarSpy = jasmine.createSpyObj('MatSnackBar', [
+    'open',
+    'openFromComponent',
+  ]);
 
   const errorResponse = new HttpErrorResponse({
     status: 404,
@@ -20,7 +23,8 @@ describe('NotificationService', () => {
       message: 'Not found',
       details: [
         {
-          message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+          message:
+            'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
           field: 'number',
           displayInfo: {
             code: 'TTFN.CONFLICT.NUMBER',
@@ -85,7 +89,7 @@ describe('NotificationService', () => {
         horizontalPosition: 'right',
         verticalPosition: 'top',
         panelClass: ['success', 'notification'],
-      }),
+      })
     );
   });
 
@@ -124,7 +128,7 @@ describe('NotificationService', () => {
             }),
           ],
         }),
-      }),
+      })
     );
   });
 
@@ -139,7 +143,7 @@ describe('NotificationService', () => {
         horizontalPosition: 'right',
         verticalPosition: 'top',
         panelClass: ['info', 'notification'],
-      }),
+      })
     );
   });
 });

@@ -3,8 +3,8 @@ import { TableColumn } from '../table-column';
 import { FormatPipe } from './format.pipe';
 
 @Pipe({
-    name: 'showTitle',
-    pure: false
+  name: 'showTitle',
+  pure: false,
 })
 export class ShowTitlePipe implements PipeTransform {
   private readonly SHOW_TOOLTIP_LENGTH = 15;

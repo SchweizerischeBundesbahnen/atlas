@@ -26,7 +26,10 @@ import {
   ReadStopPointVersion,
 } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import { STOP_POINT, STOP_POINT_COMPLETE } from '../../../util/stop-point-test-data.spec';
+import {
+  STOP_POINT,
+  STOP_POINT_COMPLETE,
+} from '../../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
@@ -46,7 +49,9 @@ describe('StopPointDetailComponent', () => {
   let notificationService: SpyObj<NotificationService>;
 
   const activatedRouteMock = {
-    parent: { data: of({ stopPoints: [STOP_POINT], servicePoints: [BERN_WYLEREGG] }) },
+    parent: {
+      data: of({ stopPoints: [STOP_POINT], servicePoints: [BERN_WYLEREGG] }),
+    },
   };
 
   beforeEach(() => {
@@ -60,7 +65,9 @@ describe('StopPointDetailComponent', () => {
       'updateStopPoint',
     ]);
     (
-      prmServiceSpy.createStopPoint as Spy<(...args: unknown[]) => Observable<ReadStopPointVersion>>
+      prmServiceSpy.createStopPoint as Spy<
+        (...args: unknown[]) => Observable<ReadStopPointVersion>
+      >
     ).and.returnValue(of(STOP_POINT));
 
     (
@@ -73,13 +80,17 @@ describe('StopPointDetailComponent', () => {
       'getPrmMeansOfTransportToShow',
     ]);
     prmVariantInfoService.getPrmMeansOfTransportToShow.and.returnValue(
-      Object.values(MeanOfTransport),
+      Object.values(MeanOfTransport)
     );
 
-    notificationService = jasmine.createSpyObj('notificationService', ['success']);
+    notificationService = jasmine.createSpyObj('notificationService', [
+      'success',
+    ]);
 
     TestBed.configureTestingModule({
-    imports: [AppTestingModule, StopPointDetailComponent,
+      imports: [
+        AppTestingModule,
+        StopPointDetailComponent,
         MockAtlasButtonComponent,
         SwitchVersionComponent,
         UserDetailInfoComponent,
@@ -93,8 +104,9 @@ describe('StopPointDetailComponent', () => {
         MeansOfTransportPickerComponent,
         AtlasSpacerComponent,
         DetailFooterComponent,
-        MockNavigationSepodiPrmComponent],
-    providers: [
+        MockNavigationSepodiPrmComponent,
+      ],
+      providers: [
         ValidityService,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: prmServiceSpy },
@@ -102,8 +114,8 @@ describe('StopPointDetailComponent', () => {
         { provide: NotificationService, useValue: notificationService },
         { provide: Router, useValue: routerSpy },
         TranslatePipe,
-    ],
-});
+      ],
+    });
     fixture = TestBed.createComponent(StopPointDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -263,7 +275,9 @@ describe('StopPointDetailComponent', () => {
   it('should update with prm variant change', () => {
     //given
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
-    spyOn(component, 'showPrmChangeVariantConfirmationDialog').and.returnValue(EMPTY);
+    spyOn(component, 'showPrmChangeVariantConfirmationDialog').and.returnValue(
+      EMPTY
+    );
 
     component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT);
     component.selectedVersion = STOP_POINT;
@@ -288,7 +302,9 @@ describe('StopPointDetailComponent', () => {
 
   it('should initNotExistingStopPoint when user is not authorized', () => {
     //given
-    spyOn(component, 'hasPermissionToCreateNewStopPoint').and.returnValue(false);
+    spyOn(component, 'hasPermissionToCreateNewStopPoint').and.returnValue(
+      false
+    );
     spyOn(component, 'initEmptyForm');
     //when
     component.initNotExistingStopPoint();
@@ -303,12 +319,14 @@ describe('StopPointDetailComponent', () => {
     component.servicePointVersion = BERN_WYLEREGG;
     const buildEmptyWithReducedValidationFormGroupSpy = spyOn(
       StopPointFormGroupBuilder,
-      'buildEmptyWithReducedValidationFormGroup',
+      'buildEmptyWithReducedValidationFormGroup'
     ).and.callThrough();
     //when
     component.initEmptyForm();
     //then
-    expect(component.form.controls.number.value).toEqual(BERN_WYLEREGG.number.number);
+    expect(component.form.controls.number.value).toEqual(
+      BERN_WYLEREGG.number.number
+    );
     expect(component.form.controls.sloid.value).toEqual(BERN_WYLEREGG.sloid);
     expect(buildEmptyWithReducedValidationFormGroupSpy).toHaveBeenCalled();
   });

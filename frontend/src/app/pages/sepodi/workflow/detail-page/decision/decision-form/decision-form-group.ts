@@ -1,4 +1,10 @@
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { JudgementType, ReadDecision } from 'src/app/api';
 import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
@@ -29,17 +35,25 @@ export class DecisionFormGroupBuilder {
           AtlasFieldLengthValidator.length_50,
           AtlasCharsetsValidator.iso88591,
         ]),
-        organisation: new FormControl(existingDecision?.examinant?.organisation, [
+        organisation: new FormControl(
+          existingDecision?.examinant?.organisation,
+          [
+            Validators.required,
+            AtlasFieldLengthValidator.length_255,
+            AtlasCharsetsValidator.iso88591,
+          ]
+        ),
+        personFunction: new FormControl(
+          existingDecision?.examinant?.personFunction,
+          [
+            Validators.required,
+            AtlasFieldLengthValidator.length_50,
+            AtlasCharsetsValidator.iso88591,
+          ]
+        ),
+        [this._judgement]: new FormControl(existingDecision?.judgement, [
           Validators.required,
-          AtlasFieldLengthValidator.length_255,
-          AtlasCharsetsValidator.iso88591,
         ]),
-        personFunction: new FormControl(existingDecision?.examinant?.personFunction, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_50,
-          AtlasCharsetsValidator.iso88591,
-        ]),
-        [this._judgement]: new FormControl(existingDecision?.judgement, [Validators.required]),
         [this._motivation]: new FormControl(existingDecision?.motivation, [
           AtlasFieldLengthValidator.comments,
         ]),
@@ -47,13 +61,16 @@ export class DecisionFormGroupBuilder {
       {
         validators: DecisionFormGroupBuilder.conditionallyRequired(
           this._judgement,
-          this._motivation,
+          this._motivation
         ),
-      },
+      }
     );
   }
 
-  static conditionallyRequired(judgementField: string, requiredField: string): ValidatorFn {
+  static conditionallyRequired(
+    judgementField: string,
+    requiredField: string
+  ): ValidatorFn {
     return (c: AbstractControl): { [key: string]: boolean } | null => {
       const judgement = c.get(judgementField)!;
       const required = c.get(requiredField)!;
@@ -63,7 +80,9 @@ export class DecisionFormGroupBuilder {
       } else {
         const errors = required.errors;
         delete errors?.decision_comment_required;
-        required.setErrors(errors && Object.keys(errors).length === 0 ? null : errors);
+        required.setErrors(
+          errors && Object.keys(errors).length === 0 ? null : errors
+        );
       }
 
       return null;

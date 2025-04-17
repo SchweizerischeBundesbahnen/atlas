@@ -1,16 +1,25 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {UserAdministrationApplicationConfigComponent} from './user-administration-application-config.component';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
-import {UserPermissionManager} from '../../service/user-permission-manager';
-import {MaterialModule} from '../../../../core/module/material.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {BehaviorSubject, of} from 'rxjs';
-import {ApplicationRole, ApplicationType, PermissionRestrictionType} from '../../../../api';
-import {SelectComponent} from '../../../../core/form-components/select/select.component';
-import {AtlasSpacerComponent} from '../../../../core/components/spacer/atlas-spacer.component';
-import {MockAtlasFieldErrorComponent} from '../../../../app.testing.mocks';
-import {AtlasLabelFieldComponent} from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { UserAdministrationApplicationConfigComponent } from './user-administration-application-config.component';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslatePipe,
+} from '@ngx-translate/core';
+import { UserPermissionManager } from '../../service/user-permission-manager';
+import { MaterialModule } from '../../../../core/module/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BehaviorSubject, of } from 'rxjs';
+import {
+  ApplicationRole,
+  ApplicationType,
+  PermissionRestrictionType,
+} from '../../../../api';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
+import { MockAtlasFieldErrorComponent } from '../../../../app.testing.mocks';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import SpyObj = jasmine.SpyObj;
 
 describe('UserAdministrationApplicationConfigComponent', () => {
@@ -41,19 +50,21 @@ describe('UserAdministrationApplicationConfigComponent', () => {
           PRM: [],
         }),
         boFormResetEvent$: of(),
-      },
+      }
     );
 
     userPermissionManagerSpy.getPermissionByApplication.and.returnValue({
       role: ApplicationRole.Writer,
       application: ApplicationType.Sepodi,
-      permissionRestrictions: [{type: PermissionRestrictionType.BulkImport, valueAsString: "true"}]
+      permissionRestrictions: [
+        { type: PermissionRestrictionType.BulkImport, valueAsString: 'true' },
+      ],
     });
 
     await TestBed.configureTestingModule({
-    imports: [
+      imports: [
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         MaterialModule,
         BrowserAnimationsModule,
@@ -62,17 +73,19 @@ describe('UserAdministrationApplicationConfigComponent', () => {
         AtlasLabelFieldComponent,
         AtlasSpacerComponent,
         MockAtlasFieldErrorComponent,
-    ],
-    providers: [
+      ],
+      providers: [
         {
-            provide: UserPermissionManager,
-            useValue: userPermissionManagerSpy,
+          provide: UserPermissionManager,
+          useValue: userPermissionManagerSpy,
         },
         { provide: TranslatePipe },
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(UserAdministrationApplicationConfigComponent);
+    fixture = TestBed.createComponent(
+      UserAdministrationApplicationConfigComponent
+    );
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -86,20 +99,30 @@ describe('UserAdministrationApplicationConfigComponent', () => {
 
   it('test addBusinessOrganisation', () => {
     component.add();
-    expect(userPermissionManagerSpy.addSboidToPermission).not.toHaveBeenCalled();
+    expect(
+      userPermissionManagerSpy.addSboidToPermission
+    ).not.toHaveBeenCalled();
 
-    component.businessOrganisationForm.get(component.boFormCtrlName)?.setValue('test');
+    component.businessOrganisationForm
+      .get(component.boFormCtrlName)
+      ?.setValue('test');
     component.application = 'TTFN';
     component.add();
-    expect(userPermissionManagerSpy.addSboidToPermission).toHaveBeenCalledOnceWith('TTFN', 'test');
-    expect(component.businessOrganisationForm.get(component.boFormCtrlName)?.value).toBe(null);
+    expect(
+      userPermissionManagerSpy.addSboidToPermission
+    ).toHaveBeenCalledOnceWith('TTFN', 'test');
+    expect(
+      component.businessOrganisationForm.get(component.boFormCtrlName)?.value
+    ).toBe(null);
   });
 
   it('test removeBusinessOrganisation', () => {
     component.application = 'LIDI';
     component.selectedIndex = 0;
     component.remove();
-    expect(userPermissionManagerSpy.removeSboidFromPermission).toHaveBeenCalledOnceWith('LIDI', 0);
+    expect(
+      userPermissionManagerSpy.removeSboidFromPermission
+    ).toHaveBeenCalledOnceWith('LIDI', 0);
     expect(component.selectedIndex).toBe(-1);
   });
 });

@@ -2,7 +2,12 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { WorkflowDialogData } from './workflow-dialog-data';
 import { NotificationService } from '../../notification/notification.service';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { WorkflowFormGroup } from '../workflow-form-group';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
@@ -27,10 +32,20 @@ import { DialogFooterComponent } from '../../components/dialog/footer/dialog-foo
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 
 @Component({
-    selector: 'app-workflow-dialog',
-    templateUrl: './workflow-dialog.component.html',
-    styleUrls: ['./workflow-dialog.component.scss'],
-    imports: [DialogCloseComponent, DialogContentComponent, NgIf, WorkflowFormComponent, ReactiveFormsModule, WorkflowCheckFormComponent, DialogFooterComponent, AsyncPipe, TranslatePipe]
+  selector: 'app-workflow-dialog',
+  templateUrl: './workflow-dialog.component.html',
+  styleUrls: ['./workflow-dialog.component.scss'],
+  imports: [
+    DialogCloseComponent,
+    DialogContentComponent,
+    NgIf,
+    WorkflowFormComponent,
+    ReactiveFormsModule,
+    WorkflowCheckFormComponent,
+    DialogFooterComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class WorkflowDialogComponent implements OnInit {
   workflowStartFormGroup: FormGroup<WorkflowFormGroup> =

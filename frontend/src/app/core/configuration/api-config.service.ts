@@ -1,6 +1,6 @@
-import {Injectable, Optional} from '@angular/core';
-import {Configuration} from "../../api";
-import {environment} from "../../../environments/environment";
+import { Injectable, Optional } from '@angular/core';
+import { Configuration } from '../../api';
+import { environment } from '../../../environments/environment';
 
 /**
  *  Switches from the api-auth-gateway url for unauthenticated users
@@ -10,9 +10,7 @@ import {environment} from "../../../environments/environment";
   providedIn: 'root',
 })
 export class ApiConfigService {
-
-  constructor(@Optional() private configuration: Configuration) {
-  }
+  constructor(@Optional() private configuration: Configuration) {}
 
   setToAuthenticatedUrl() {
     if (this.configuration) {
