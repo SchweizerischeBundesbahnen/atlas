@@ -8,7 +8,6 @@ import {
 } from '@ngx-translate/core';
 import { AuthService } from '../../auth/auth.service';
 import { By } from '@angular/platform-browser';
-import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   adminUserServiceMock,
@@ -23,7 +22,6 @@ describe('UserComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        MaterialModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
