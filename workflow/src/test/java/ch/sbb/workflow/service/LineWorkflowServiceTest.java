@@ -14,12 +14,12 @@ import ch.sbb.atlas.api.workflow.PersonModel;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
-import ch.sbb.workflow.entity.LineWorkflow;
+import ch.sbb.workflow.lidi.line.entity.LineWorkflow;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
-import ch.sbb.workflow.kafka.LineWorkflowNotificationService;
-import ch.sbb.workflow.repository.WorkflowRepository;
-import ch.sbb.workflow.service.lidi.LineWorkflowService;
+import ch.sbb.workflow.lidi.line.mail.LineWorkflowNotificationService;
+import ch.sbb.workflow.lidi.line.repository.WorkflowRepository;
+import ch.sbb.workflow.lidi.line.service.LineWorkflowService;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,25 +30,25 @@ import org.mockito.MockitoAnnotations;
 
 class LineWorkflowServiceTest {
 
- private LineWorkflowService service;
+  private LineWorkflowService service;
 
- @Mock
- private WorkflowRepository repository;
+  @Mock
+  private WorkflowRepository repository;
 
- @Mock
- private LineWorkflowNotificationService notificationService;
- @Mock
- private LineWorkflowClient lineWorkflowClient;
+  @Mock
+  private LineWorkflowNotificationService notificationService;
+  @Mock
+  private LineWorkflowClient lineWorkflowClient;
 
- @BeforeEach
- void setUp() {
-  MockitoAnnotations.openMocks(this);
-  service = new LineWorkflowService(repository, notificationService, lineWorkflowClient);
- }
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
+    service = new LineWorkflowService(repository, notificationService, lineWorkflowClient);
+  }
 
- @Test
- void shouldCreateWorkflow() {
-  //given
+  @Test
+  void shouldCreateWorkflow() {
+    //given
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(123L)
         .businessObjectId(123L)
@@ -70,7 +70,7 @@ class LineWorkflowServiceTest {
   }
 
   @Test
-   void shouldNotCreateDuplicateWorkflow() {
+  void shouldNotCreateDuplicateWorkflow() {
     //given
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(123L)
@@ -85,7 +85,7 @@ class LineWorkflowServiceTest {
   }
 
   @Test
-   void shouldGetWorkflow() {
+  void shouldGetWorkflow() {
     //given
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(123L)
@@ -103,7 +103,7 @@ class LineWorkflowServiceTest {
   }
 
   @Test
-   void shouldNotGetWorkflow() {
+  void shouldNotGetWorkflow() {
     //given
     when(repository.findById(1L)).thenReturn(Optional.empty());
 
@@ -113,7 +113,7 @@ class LineWorkflowServiceTest {
   }
 
   @Test
-   void shouldGetWorkflows() {
+  void shouldGetWorkflows() {
     //given
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(123L)
@@ -132,7 +132,7 @@ class LineWorkflowServiceTest {
   }
 
   @Test
-   void shouldApproveWorkflow() {
+  void shouldApproveWorkflow() {
     //given
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(1L)
@@ -164,7 +164,7 @@ class LineWorkflowServiceTest {
   }
 
   @Test
-   void shouldRejectWorkflow() {
+  void shouldRejectWorkflow() {
     //given
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(1L)
@@ -197,7 +197,7 @@ class LineWorkflowServiceTest {
   }
 
   @Test
-   void shouldFailOnRejectWorkflowWhenNotStarted() {
+  void shouldFailOnRejectWorkflowWhenNotStarted() {
     //given
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(1L)
@@ -223,7 +223,7 @@ class LineWorkflowServiceTest {
   }
 
   @Test
-   void shouldNotSendMailsOnRevokedWorkflow() {
+  void shouldNotSendMailsOnRevokedWorkflow() {
     //given
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(123L)

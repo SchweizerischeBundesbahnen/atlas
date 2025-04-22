@@ -15,10 +15,11 @@ import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.workflow.client.SePoDiAdminClient;
-import ch.sbb.workflow.client.SePoDiClient;
-import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.sepodi.client.SePoDiAdminClient;
+import ch.sbb.workflow.sepodi.client.SePoDiClient;
+import ch.sbb.workflow.sepodi.hearing.enity.StopPointWorkflow;
 import ch.sbb.workflow.exception.SePoDiClientWrongStatusReturnedException;
+import ch.sbb.workflow.sepodi.hearing.service.SePoDiClientService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,11 +38,10 @@ class SePoDiClientServiceTest {
   private SePoDiAdminClient sePoDiAdminClient;
 
   private final StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder().sloid("ch:1:sloid:8000")
-          .versionId(1L)
-          .id(1L)
-          .designationOfficial("test")
-          .build();
-
+      .versionId(1L)
+      .id(1L)
+      .designationOfficial("test")
+      .build();
 
   @BeforeEach
   void setUp() {
@@ -108,14 +108,14 @@ class SePoDiClientServiceTest {
   void shouldUpdateStatusInDraftAsAdmin() {
     //given
     ReadServicePointVersionModel updateServicePointVersionModel =
-            ReadServicePointVersionModel.builder().status(Status.DRAFT).build();
+        ReadServicePointVersionModel.builder().status(Status.DRAFT).build();
     String sloid = "ch:1:sloid:8000";
     long versionId = 1L;
     doReturn(updateServicePointVersionModel).when(sePoDiAdminClient).postServicePointsStatusUpdate(sloid, versionId,
-            Status.DRAFT);
+        Status.DRAFT);
     //when && then
     assertDoesNotThrow(
-            () -> service.updateStopPointStatusToDraft(stopPointWorkflow));
+        () -> service.updateStopPointStatusToDraft(stopPointWorkflow));
   }
 
   @ParameterizedTest
@@ -123,11 +123,12 @@ class SePoDiClientServiceTest {
   void shouldNotUpdateStatusToDraftAsAdmin(Status status) {
     //given
     ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(status)
-            .build();
+        .build();
     doReturn(updateServicePointVersionModel).when(sePoDiAdminClient).postServicePointsStatusUpdate(stopPointWorkflow.getSloid(),
-            stopPointWorkflow.getVersionId(), Status.DRAFT);
+        stopPointWorkflow.getVersionId(), Status.DRAFT);
     //when && then
-    assertThrows(SePoDiClientWrongStatusReturnedException.class, () -> service.updateStopPointStatusToDraftAsAdmin(stopPointWorkflow));
+    assertThrows(SePoDiClientWrongStatusReturnedException.class,
+        () -> service.updateStopPointStatusToDraftAsAdmin(stopPointWorkflow));
   }
 
   @Test
