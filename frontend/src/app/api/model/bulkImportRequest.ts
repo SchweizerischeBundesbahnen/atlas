@@ -16,9 +16,9 @@ import { BusinessObjectType } from './businessObjectType';
  * Bulk Import Request
  */
 export interface BulkImportRequest { 
-    applicationType: ApplicationType;
-    objectType: BusinessObjectType;
-    importType: ImportType;
+    applicationType?: ApplicationType;
+    objectType?: BusinessObjectType;
+    importType?: ImportType;
     inNameOf?: string;
     emails?: Array<string>;
 }

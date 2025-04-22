@@ -5,17 +5,11 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import {
-  TimetableHearingYear,
-  TimetableHearingYearsService,
-} from '../../../api';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import { TimetableHearingYear } from '../../../api';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/timetable-hearing-year-internal.service';
 import { NgTemplateOutlet } from '@angular/common';
 import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
@@ -51,7 +45,7 @@ export class DialogManageTthComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private readonly matDialogData: number,
-    private readonly timetableHearingYearsService: TimetableHearingYearsService,
+    private readonly timetableHearingYearsService: TimetableHearingYearInternalService,
     private readonly notificationService: NotificationService,
     private readonly dialogRef: MatDialogRef<DialogManageTthComponent, boolean>
   ) {

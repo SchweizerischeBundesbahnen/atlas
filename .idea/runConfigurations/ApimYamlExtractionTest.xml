@@ -1,0 +1,47 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ApimYamlExtractionTest" type="GradleRunConfiguration" factoryName="Gradle">
+    <ExternalSystemSettings>
+      <option name="executionName" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$" />
+      <option name="externalSystemIdString" value="GRADLE" />
+      <option name="scriptParameters" value="" />
+      <option name="taskDescriptions">
+        <list />
+      </option>
+      <option name="taskNames">
+        <list>
+          <option value=":bulk-import-service:test" />
+          <option value="--tests" />
+          <option value="ApimYamlExtractionTest" />
+          <option value=":export-service:test" />
+          <option value="--tests" />
+          <option value="ApimYamlExtractionTest" />
+          <option value=":workflow:test" />
+          <option value="--tests" />
+          <option value="ApimYamlExtractionTest" />
+          <option value=":line-directory:test" />
+          <option value="--tests" />
+          <option value="ApimYamlExtractionTest" />
+          <option value=":prm-directory:test" />
+          <option value="--tests" />
+          <option value="ApimYamlExtractionTest" />
+          <option value=":service-point-directory:test" />
+          <option value="--tests" />
+          <option value="ApimYamlExtractionTest" />
+          <option value=":business-organisation-directory:test" />
+          <option value="--tests" />
+          <option value="ApimYamlExtractionTest" />
+          <option value=":user-administration:test" />
+          <option value="--tests" />
+          <option value="ApimYamlExtractionTest" />
+        </list>
+      </option>
+      <option name="vmOptions" />
+    </ExternalSystemSettings>
+    <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+    <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+    <DebugAllEnabled>false</DebugAllEnabled>
+    <RunAsTest>true</RunAsTest>
+    <method v="2" />
+  </configuration>
+</component>
