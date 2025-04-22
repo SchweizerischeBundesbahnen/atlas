@@ -6,7 +6,7 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.workflow.entity.StopPointWorkflow.Fields;
+import ch.sbb.workflow.sepodi.hearing.enity.StopPointWorkflow.Fields;
 import java.util.List;
 import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;

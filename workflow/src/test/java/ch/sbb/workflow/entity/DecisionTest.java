@@ -2,6 +2,8 @@ package ch.sbb.workflow.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.workflow.sepodi.hearing.enity.Decision;
+import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
 import org.junit.jupiter.api.Test;
 
 class DecisionTest {

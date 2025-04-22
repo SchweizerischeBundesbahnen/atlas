@@ -2,6 +2,7 @@ package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.redact.Redacted;
+import ch.sbb.workflow.sepodi.hearing.enity.StopPointWorkflow;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
