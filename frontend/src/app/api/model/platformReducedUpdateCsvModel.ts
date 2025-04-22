@@ -17,11 +17,13 @@ export interface PlatformReducedUpdateCsvModel {
     validFrom?: Date;
     validTo?: Date;
     additionalInformation?: string;
+    shuttle?: BooleanOptionalAttributeType;
     height?: number;
     inclinationLongitudinal?: number;
     infoOpportunities?: Set<InfoOpportunityAttributeType>;
     partialElevation?: boolean;
     tactileSystem?: BooleanOptionalAttributeType;
+    attentionField?: BooleanOptionalAttributeType;
     vehicleAccess?: VehicleAccessAttributeType;
     wheelchairAreaLength?: number;
     wheelchairAreaWidth?: number;

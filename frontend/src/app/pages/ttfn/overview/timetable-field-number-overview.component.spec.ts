@@ -1,12 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TimetableFieldNumberOverviewComponent } from './timetable-field-number-overview.component';
 import { Observable, of, Subject } from 'rxjs';
-import {
-  ContainerTimetableFieldNumber,
-  TimetableFieldNumbersService,
-} from '../../../api';
+import { ContainerTimetableFieldNumber } from '../../../api';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import {
   adminPermissionServiceMock,
   MockAtlasButtonComponent,
@@ -14,9 +11,9 @@ import {
 } from '../../../app.testing.mocks';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { TimetableFieldNumberInternalService } from '../../../api/service/timetable-field-number-internal.service';
 import { ActivatedRoute } from '@angular/router';
 import { TableComponent } from '../../../core/components/table/table.component';
-import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
@@ -40,12 +37,12 @@ describe('TimetableFieldNumberOverviewComponent', () => {
   let component: TimetableFieldNumberOverviewComponent;
   let fixture: ComponentFixture<TimetableFieldNumberOverviewComponent>;
 
-  let timetableFieldNumberServiceSpy: SpyObj<TimetableFieldNumbersService>;
+  let timetableFieldNumberServiceSpy: SpyObj<TimetableFieldNumberInternalService>;
 
   beforeEach(async () => {
     timetableFieldNumberServiceSpy =
-      jasmine.createSpyObj<TimetableFieldNumbersService>(
-        'TimetableFieldNumbersServiceSpy',
+      jasmine.createSpyObj<TimetableFieldNumberInternalService>(
+        'TimetableFieldNumberInternalService',
         ['getOverview']
       );
     (
@@ -61,7 +58,7 @@ describe('TimetableFieldNumberOverviewComponent', () => {
       ],
       providers: [
         {
-          provide: TimetableFieldNumbersService,
+          provide: TimetableFieldNumberInternalService,
           useValue: timetableFieldNumberServiceSpy,
         },
         TranslatePipe,

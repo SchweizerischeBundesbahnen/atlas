@@ -13,18 +13,18 @@ export interface TransportCompanyRelation {
     /**
      * Transport Company Id
      */
-    transportCompanyId: number;
+    transportCompanyId?: number;
     /**
      * Swiss Business Organisation ID (SBOID)
      */
-    sboid: string;
+    sboid?: string;
     /**
      * Valid From
      */
-    validFrom: Date;
+    validFrom?: Date;
     /**
      * Valid To
      */
-    validTo: Date;
+    validTo?: Date;
 }
 

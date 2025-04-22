@@ -1,9 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  SwissCanton,
-  TimetableHearingStatementV2,
-  TimetableHearingStatementsService,
-} from '../../../../api';
+import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -14,9 +10,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { of } from 'rxjs';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/timetable-hearing-statement-internal.service';
 
 const mockTimetableHearingStatementsService = jasmine.createSpyObj(
-  'timetableHearingStatementsService',
+  'TimetableHearingStatementInternalService',
   ['updateHearingStatement']
 );
 const dialogRefSpy = jasmine.createSpyObj(['close']);
@@ -57,7 +54,7 @@ describe('StatementDialogComponent', () => {
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: MatDialogRef, useValue: dialogRefSpy },
         {
-          provide: TimetableHearingStatementsService,
+          provide: TimetableHearingStatementInternalService,
           useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },
