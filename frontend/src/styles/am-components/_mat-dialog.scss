@@ -4,12 +4,14 @@
 
 // Customize the entire app. Change :root to your selector if you want to scope the styles.
 :root {
-  @include mat.dialog-overrides((
-    container-max-width: 1000px,
-    container-min-width: 678px,
-    container-color: #ffffff,
-    container-elevation-shadow: 28px
-  ));
+  @include mat.dialog-overrides(
+    (
+      container-max-width: 1100px,
+      container-min-width: 678px,
+      container-color: #ffffff,
+      container-elevation-shadow: 28px,
+    )
+  );
 }
 
 .atlas-dialog-backdrop {
