@@ -8,7 +8,7 @@ import { CoreModule } from './core/module/core.module';
 import { DateModule } from './core/module/date.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRouting } from './app-routing';
 import { AtlasApiModule, Configuration } from './api';
 import { environment } from '../environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -43,7 +43,7 @@ export const appConfig: ApplicationConfig = {
           deps: [HttpClient],
         },
       }),
-      AppRoutingModule,
+      AppRouting,
       AtlasApiModule.forRoot(withBasePath(environment.atlasUnauthApiUrl)),
       ServiceWorkerModule.register('ngsw-worker.js', {
         enabled: environment.production,
