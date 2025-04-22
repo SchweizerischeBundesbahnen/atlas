@@ -3,8 +3,9 @@ package ch.sbb.workflow.model.sepodi;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.BaseValidatorTest;
-import ch.sbb.workflow.entity.JudgementType;
-import ch.sbb.workflow.model.sepodi.DecisionModel.DecisionModelBuilder;
+import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
+import ch.sbb.workflow.sepodi.hearing.model.sepodi.DecisionModel;
+import ch.sbb.workflow.sepodi.hearing.model.sepodi.DecisionModel.DecisionModelBuilder;
 import jakarta.validation.ConstraintViolation;
 import java.util.Set;
 import org.junit.jupiter.api.Test;

@@ -1,13 +1,13 @@
 package ch.sbb.workflow;
 
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.workflow.entity.Decision;
-import ch.sbb.workflow.entity.DecisionType;
-import ch.sbb.workflow.entity.JudgementType;
+import ch.sbb.workflow.sepodi.hearing.enity.Decision;
+import ch.sbb.workflow.sepodi.hearing.enity.DecisionType;
+import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.entity.StopPointWorkflow;
-import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
-import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
+import ch.sbb.workflow.sepodi.hearing.enity.StopPointWorkflow;
+import ch.sbb.workflow.sepodi.hearing.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.sepodi.hearing.model.sepodi.StopPointClientPersonModel;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.experimental.UtilityClass;

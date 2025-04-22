@@ -5,7 +5,7 @@ import static ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo.builder;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.workflow.entity.LineWorkflow.Fields;
+import ch.sbb.workflow.lidi.line.entity.LineWorkflow.Fields;
 import java.util.List;
 import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;

@@ -3,9 +3,10 @@ package ch.sbb.workflow.service.sepodi;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.workflow.entity.Decision;
-import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Person;
+import ch.sbb.workflow.sepodi.hearing.enity.Decision;
+import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
+import ch.sbb.workflow.sepodi.hearing.service.StopPointWorkflowProgressDecider;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
