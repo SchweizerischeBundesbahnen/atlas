@@ -1,13 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TthChangeStatusDialogComponent } from './tth-change-status-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
-import {
-  SwissCanton,
-  TimetableHearingStatementV2,
-  TimetableHearingStatementsService,
-} from '../../../../api';
+import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
 import { of } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import {
@@ -22,6 +17,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 import { MaintenanceIconComponent } from '../../../../core/components/header/maintenance-icon/maintenance-icon.component';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/timetable-hearing-statement-internal.service';
 
 const mockTimetableHearingStatementsService = jasmine.createSpyObj(
   'timetableHearingStatementsService',
@@ -79,7 +75,7 @@ describe('TthChangeStatusDialogComponent', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         {
-          provide: TimetableHearingStatementsService,
+          provide: TimetableHearingStatementInternalService,
           useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },

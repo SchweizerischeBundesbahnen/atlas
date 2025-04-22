@@ -1,11 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DialogManageTthComponent } from './dialog-manage-tth.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {
-  TimetableHearingYear,
-  TimetableHearingYearsService,
-} from '../../../api';
+import { TimetableHearingYear } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { of } from 'rxjs';
 import {
@@ -16,6 +12,7 @@ import {
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AppTestingModule } from '../../../app.testing.module';
+import { TimetableHearingYearInternalService } from '../../../api/service/timetable-hearing-year-internal.service';
 
 @Component({
   selector: 'atlas-slide-toggle',
@@ -31,7 +28,7 @@ describe('DialogManageTthComponent', () => {
   let component: DialogManageTthComponent;
   let fixture: ComponentFixture<DialogManageTthComponent>;
 
-  let tthYearsServiceSpy: jasmine.SpyObj<TimetableHearingYearsService>;
+  let tthYearsServiceSpy: jasmine.SpyObj<TimetableHearingYearInternalService>;
   let notificationServiceSpy: jasmine.SpyObj<NotificationService>;
   let matDialogRefSpy: jasmine.SpyObj<
     MatDialogRef<DialogManageTthComponent, boolean>
@@ -45,14 +42,15 @@ describe('DialogManageTthComponent', () => {
   };
 
   beforeEach(async () => {
-    tthYearsServiceSpy = jasmine.createSpyObj<TimetableHearingYearsService>(
-      'TthServiceSpy',
-      [
-        'getHearingYear',
-        'updateTimetableHearingSettings',
-        'closeTimetableHearing',
-      ]
-    );
+    tthYearsServiceSpy =
+      jasmine.createSpyObj<TimetableHearingYearInternalService>(
+        'TthServiceSpy',
+        [
+          'getHearingYear',
+          'updateTimetableHearingSettings',
+          'closeTimetableHearing',
+        ]
+      );
     notificationServiceSpy = jasmine.createSpyObj<NotificationService>(
       'NotificationServiceSpy',
       ['success', 'error']
@@ -68,7 +66,7 @@ describe('DialogManageTthComponent', () => {
           useValue: matDialogDataMock,
         },
         {
-          provide: TimetableHearingYearsService,
+          provide: TimetableHearingYearInternalService,
           useValue: tthYearsServiceSpy,
         },
         {

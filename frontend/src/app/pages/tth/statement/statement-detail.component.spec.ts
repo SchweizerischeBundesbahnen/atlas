@@ -4,10 +4,8 @@ import {
   SwissCanton,
   TimetableFieldNumber,
   TimetableHearingStatementAlternating,
-  TimetableHearingStatementsService,
   TimetableHearingStatementV2,
   TimetableHearingYear,
-  TimetableHearingYearsService,
   TransportCompany,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -40,6 +38,8 @@ import { LoadingSpinnerComponent } from '../../../core/components/loading-spinne
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
 import { StringListComponent } from '../../../core/form-components/string-list/string-list.component';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { TimetableHearingStatementInternalService } from '../../../api/service/timetable-hearing-statement-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/timetable-hearing-year-internal.service';
 
 const existingStatement: TimetableHearingStatementV2 = {
   id: 1,
@@ -63,18 +63,19 @@ let fixture: ComponentFixture<StatementDetailComponent>;
 let router: Router;
 
 const mockTimetableHearingYearsService = jasmine.createSpyObj(
-  'timetableHearingYearsService',
+  'TimetableHearingYearInternalService',
   ['getHearingYears']
 );
 
 const mockTimetableHearingStatementsService = jasmine.createSpyObj(
-  'timetableHearingStatementsService',
+  'TimetableHearingStatementInternalService',
   [
     'createStatement',
     'getNextStatement',
     'getPreviousStatement',
     'getResponsibleTransportCompanies',
-    'updateHearingStatement',
+    'updateHearingStatement'
+  ,
   ]
 );
 const alternation: TimetableHearingStatementAlternating = {
@@ -351,11 +352,11 @@ function setupTestBed(activatedRoute: {
     providers: [
       { provide: FormBuilder },
       {
-        provide: TimetableHearingYearsService,
+        provide: TimetableHearingYearInternalService,
         useValue: mockTimetableHearingYearsService,
       },
       {
-        provide: TimetableHearingStatementsService,
+        provide: TimetableHearingStatementInternalService,
         useValue: mockTimetableHearingStatementsService,
       },
       { provide: PermissionService, useValue: adminPermissionServiceMock },

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MatDatepicker, MatCalendarHeader } from '@angular/material/datepicker';
+import { MatCalendarHeader, MatDatepicker } from '@angular/material/datepicker';
 import moment, { Moment } from 'moment/moment';
-import { TimetableYearChangeService } from '../../../../api';
+import { TimetableYearChangeInternalService } from '../../../../api/service/timetable-year-change-internal.service';
 import { MatButton } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -13,7 +13,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class TodayAndFutureTimetableHeaderComponent {
   constructor(
-    private timetableYearChangeService: TimetableYearChangeService,
+    private timetableYearChangeService: TimetableYearChangeInternalService,
     private datepicker: MatDatepicker<Moment>
   ) {}
 

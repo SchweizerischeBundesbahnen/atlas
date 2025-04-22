@@ -1,19 +1,17 @@
 import { Component, Inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialogRef,
   MatDialogActions,
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  TimetableHearingStatementsService,
-  TimetableHearingStatementV2,
-} from '../../../../api';
+import { TimetableHearingStatementV2 } from '../../../../api';
 import { Subject } from 'rxjs';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { StatementDetailFormGroup } from '../statement-detail-form-group';
 import { takeUntil } from 'rxjs/operators';
 import { ValidationService } from 'src/app/core/validation/validation.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/timetable-hearing-statement-internal.service';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -35,7 +33,7 @@ export class StatementDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<StatementDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public form: FormGroup<StatementDetailFormGroup>,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
+    private readonly timetableHearingStatementsService: TimetableHearingStatementInternalService,
     private readonly notificationService: NotificationService
   ) {}
 

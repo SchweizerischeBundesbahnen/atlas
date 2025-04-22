@@ -8,17 +8,17 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { InfoIconComponent } from '../info-icon/info-icon.component';
-import { TimetableYearChangeService } from '../../../api';
 import { of } from 'rxjs';
 import { TodayAndFutureTimetableHeaderComponent } from './today-and-future-timetable-header/today-and-future-timetable-header.component';
 import { By } from '@angular/platform-browser';
 import { DateRangeValidator } from '../../validation/date-range/date-range-validator';
 import { MatDatepicker } from '@angular/material/datepicker';
 import moment from 'moment';
+import { TimetableYearChangeInternalService } from '../../../api/service/timetable-year-change-internal.service';
 
 const nextTimetableYearChange = new Date('2024-12-15');
 const timetableYearChangeService = jasmine.createSpyObj(
-  'TimetableYearChangeService',
+  'TimetableYearChangeInternalService',
   ['getNextTimetablesYearChange']
 );
 timetableYearChangeService.getNextTimetablesYearChange.and.returnValue(
@@ -44,7 +44,7 @@ describe('DateRangeComponent', () => {
       providers: [
         { provide: TranslatePipe },
         {
-          provide: TimetableYearChangeService,
+          provide: TimetableYearChangeInternalService,
           useValue: timetableYearChangeService,
         },
       ],

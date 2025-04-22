@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApplicationType } from '../../api';
 import { PermissionService } from '../auth/permission/permission.service';
-import { PersonWithReducedMobilityService } from '../../api/service/personWithReducedMobility.service';
+import { PersonWithReducedMobilityService } from '../../api/service/person-with-reduced-mobility.service';
 import { NotificationService } from '../notification/notification.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AtlasSlideToggleComponent } from '../form-components/atlas-slide-toggle/atlas-slide-toggle.component';

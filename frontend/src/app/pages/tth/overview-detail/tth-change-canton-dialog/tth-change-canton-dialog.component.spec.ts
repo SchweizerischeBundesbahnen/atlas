@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TthChangeCantonDialogComponent } from './tth-change-canton-dialog.component';
 import {
   MAT_SNACK_BAR_DATA,
@@ -9,15 +8,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { FormModule } from '../../../../core/module/form.module';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
-import {
-  SwissCanton,
-  TimetableHearingStatementV2,
-  TimetableHearingStatementsService,
-} from '../../../../api';
+import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { of } from 'rxjs';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/timetable-hearing-statement-internal.service';
 
 const statement: TimetableHearingStatementV2 = {
   id: 1,
@@ -72,7 +68,7 @@ describe('TthChangeCantonDialogComponent', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         {
-          provide: TimetableHearingStatementsService,
+          provide: TimetableHearingStatementInternalService,
           useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },
