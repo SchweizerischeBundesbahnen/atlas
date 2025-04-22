@@ -32,4 +32,4 @@ export const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TtfnRoutingModule {}
+export class TtfnRouting {}
