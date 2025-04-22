@@ -27,7 +27,7 @@ export class TthChangeStatusDialogComponent {
     public dialogRef: MatDialogRef<TthChangeStatusDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: StatusChangeData,
     private readonly notificationService: NotificationService,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementsService
+    private readonly timetableHearingStatementsService: TimetableHearingStatementInternalService
   ) {}
 
   onClick(): void {

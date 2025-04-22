@@ -9,8 +9,8 @@ import { BaseDetailController } from '../../../core/components/base-detail/base-
 import {
   FormControl,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { catchError } from 'rxjs';
@@ -116,6 +116,8 @@ export class TimetableFieldNumberDetailComponent
   revokeRecord(): void {
     const selectedRecord = this.getSelectedRecord();
     if (selectedRecord.ttfnid) {
+      // todo: specific internal services for frontend or not? => after that: line and subline services
+      //  and what to do with old services?
       this.timetableFieldNumberService
         .revokeTimetableFieldNumber(selectedRecord.ttfnid)
         .subscribe(() => {

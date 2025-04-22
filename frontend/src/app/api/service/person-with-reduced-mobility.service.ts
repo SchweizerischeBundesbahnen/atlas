@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
-import {HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {RecordingObligation} from "../model/recordingObligation";
-import {AtlasApiService} from "./atlasApi.service";
+import { Injectable } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { RecordingObligation } from '../model/recordingObligation';
+import { AtlasApiService } from './atlasApi.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class PersonWithReducedMobilityService extends AtlasApiService{
+export class PersonWithReducedMobilityService extends AtlasApiService {
 
   public getRecordingObligation(sloid: string): Observable<RecordingObligation> {
     if (sloid === null || sloid === undefined) {
@@ -17,11 +17,11 @@ export class PersonWithReducedMobilityService extends AtlasApiService{
     const path = `/prm-directory/v1/stop-points/recording-obligation/${encodeURIComponent(String(sloid))}`;
     return this.httpClient.request<RecordingObligation>('get', `${this.basePath}${path}`,
       {
-        responseType: "json",
+        responseType: 'json',
         headers: new HttpHeaders({
-          'Accept': '*/*'
+          'Accept': '*/*',
         }),
-      }
+      },
     );
   }
 
@@ -37,11 +37,11 @@ export class PersonWithReducedMobilityService extends AtlasApiService{
     return this.httpClient.request<any>('put', `${this.basePath}${path}`,
       {
         body: recordingObligation,
-        responseType: "json",
+        responseType: 'json',
         headers: new HttpHeaders({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         }),
-      }
+      },
     );
   }
 }
