@@ -11,9 +11,11 @@ import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.validation.StopPointValidationService;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -75,9 +77,12 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     return parentServicePoint.isReduced();
   }
 
-  public Set<MeanOfTransport> getMeansOfTransport(String servicePointSloid) {
-    return findAllBySloidOrderByValidFrom(servicePointSloid).stream().findFirst()
-        .orElseThrow(() -> new StopPointDoesNotExistException(servicePointSloid)).getMeansOfTransport();
+  public Set<MeanOfTransport> getMeansOfTransportOfAllVersions(String servicePointSloid) {
+    List<StopPointVersion> stopPoint = findAllBySloidOrderByValidFrom(servicePointSloid);
+    if (stopPoint.isEmpty()) {
+      throw new StopPointDoesNotExistException(servicePointSloid);
+    }
+    return stopPoint.stream().map(StopPointVersion::getMeansOfTransport).flatMap(Collection::stream).collect(Collectors.toSet());
   }
 
   void validateIsNotReduced(String servicePointSloid) {
