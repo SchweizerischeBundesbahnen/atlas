@@ -1,12 +1,12 @@
 package ch.sbb.workflow.sepodi.termination.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,10 +41,10 @@ public class StartTerminationStopPointWorkflowModel {
   private String sboid;
 
   @Schema(description = "Termination Date defined by Business Organisation managing the Stop Point")
-  private LocalDateTime boTerminationDate;
+  private LocalDate boTerminationDate;
 
   @Schema(description = "Info Plus Examinant")
-  private ClientPersonModel infoPlusExaminant;
+  private TerminationDecisionModel infoPlusExaminant;
 
   @Schema(description = "Object creation date", example = "01.01.2000")
   private LocalDateTime creationDate;

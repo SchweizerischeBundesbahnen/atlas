@@ -1,8 +1,6 @@
 package ch.sbb.workflow.sepodi.termination.mapper;
 
-import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
-import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import lombok.experimental.UtilityClass;
 
@@ -19,19 +17,18 @@ public class TerminationStopPointWorkflowMapper {
         .boTerminationDate(model.getBoTerminationDate())
         .infoPlusTerminationDate(model.getInfoPlusTerminationDate())
         .novaTerminationDate(model.getNovaTerminationDate())
-        .infoPlusExaminant(ClientPersonMapper.toEntity(model.getInfoPlusExaminant()))
-        .novaExaminant(ClientPersonMapper.toEntity(model.getNovaExaminant()))
+        .infoPlusDecision(TerminationDecisionMapper.toEntity(model.getInfoPlusDecision()))
         .build();
   }
 
-  public static TerminationStopPointWorkflow toEntityStart(StartTerminationStopPointWorkflowModel model) {
+  public static TerminationStopPointWorkflow toEntityStart(TerminationStopPointWorkflowModel model) {
     return TerminationStopPointWorkflow.builder()
         .versionId(model.getVersionId())
         .sloid(model.getSloid())
         .sboid(model.getSboid())
         .applicantMail(model.getApplicantMail())
         .boTerminationDate(model.getBoTerminationDate())
-        .infoPlusExaminant(ClientPersonMapper.toEntity(model.getInfoPlusExaminant()))
+        .infoPlusDecision(TerminationDecisionMapper.toEntity(model.getInfoPlusDecision()))
         .build();
   }
 
@@ -46,8 +43,9 @@ public class TerminationStopPointWorkflowMapper {
         .boTerminationDate(workflow.getBoTerminationDate())
         .infoPlusTerminationDate(workflow.getInfoPlusTerminationDate())
         .novaTerminationDate(workflow.getNovaTerminationDate())
-        .infoPlusExaminant(ClientPersonMapper.toModel(workflow.getInfoPlusExaminant()))
-        .novaExaminant(ClientPersonMapper.toModel(workflow.getNovaExaminant()))
+        .infoPlusDecision(workflow.getInfoPlusDecision() != null ?
+            TerminationDecisionMapper.toModel(workflow.getInfoPlusDecision()) : null)
+        .novaDecision(workflow.getNovaDecision() != null ? TerminationDecisionMapper.toModel(workflow.getNovaDecision()) : null)
         .creationDate(workflow.getCreationDate())
         .creator(workflow.getCreator())
         .editor(workflow.getEditor())

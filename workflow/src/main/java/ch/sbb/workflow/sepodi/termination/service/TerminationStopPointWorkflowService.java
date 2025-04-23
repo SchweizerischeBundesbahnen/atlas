@@ -5,7 +5,7 @@ import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
-import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ public class TerminationStopPointWorkflowService {
 
   private final TerminationStopPointWorkflowRepository repository;
 
-  public TerminationStopPointWorkflow startTerminationWorkflow(StartTerminationStopPointWorkflowModel model) {
-    TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflowMapper.toEntityStart(model);
+  public TerminationStopPointWorkflow startTerminationWorkflow(TerminationStopPointWorkflowModel model) {
+    TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflowMapper.toEntity(model);
     terminationStopPointWorkflow.setStatus(TerminationWorkflowStatus.STARTED);
     terminationStopPointWorkflow.setNovaTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
     terminationStopPointWorkflow.setInfoPlusTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
