@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RecordingObligation } from '../model/recordingObligation';
 import { AtlasApiService } from './atlasApi.service';
@@ -10,38 +9,14 @@ import { AtlasApiService } from './atlasApi.service';
 export class PersonWithReducedMobilityService extends AtlasApiService {
 
   public getRecordingObligation(sloid: string): Observable<RecordingObligation> {
-    if (sloid === null || sloid === undefined) {
-      throw new Error('Required parameter sloid was null or undefined when calling getRecordingObligation.');
-    }
-
+    this.validateParams({sloid});
     const path = `/prm-directory/v1/stop-points/recording-obligation/${encodeURIComponent(String(sloid))}`;
-    return this.httpClient.request<RecordingObligation>('get', `${this.basePath}${path}`,
-      {
-        responseType: 'json',
-        headers: new HttpHeaders({
-          'Accept': '*/*',
-        }),
-      },
-    );
+    return this.get(path);
   }
 
-  public updateRecordingObligation(sloid: string, recordingObligation: RecordingObligation): Observable<any> {
-    if (sloid === null || sloid === undefined) {
-      throw new Error('Required parameter sloid was null or undefined when calling updateRecordingObligation.');
-    }
-    if (recordingObligation === null || recordingObligation === undefined) {
-      throw new Error('Required parameter recordingObligation was null or undefined when calling updateRecordingObligation.');
-    }
-
+  public updateRecordingObligation(sloid: string, recordingObligation: RecordingObligation): Observable<void> {
+    this.validateParams({sloid,recordingObligation});
     const path = `/prm-directory/v1/stop-points/recording-obligation/${encodeURIComponent(String(sloid))}`;
-    return this.httpClient.request<any>('put', `${this.basePath}${path}`,
-      {
-        body: recordingObligation,
-        responseType: 'json',
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        }),
-      },
-    );
+    return this.put(path, recordingObligation);
   }
 }

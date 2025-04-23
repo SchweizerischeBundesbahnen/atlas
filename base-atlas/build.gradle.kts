@@ -32,7 +32,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.security:spring-security-oauth2-client")
 // API
-    implementation("org.springdoc:springdoc-openapi-starter-common:${property("openapiStarterCommonVersion")}")
     implementation("io.swagger.core.v3:swagger-core:${property("swaggerCoreVersion")}")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
     implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")

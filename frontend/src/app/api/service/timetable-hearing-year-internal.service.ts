@@ -3,7 +3,6 @@ import { AtlasApiService } from './atlasApi.service';
 import { Observable } from 'rxjs';
 import { TimetableHearingYear } from '../model/timetableHearingYear';
 import { HearingStatus } from '../model/hearingStatus';
-import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -11,64 +10,33 @@ import { HttpParams } from '@angular/common/http';
 export class TimetableHearingYearInternalService extends AtlasApiService {
 
   public closeTimetableHearing(year: number): Observable<TimetableHearingYear> {
-    if (year === null || year === undefined) {
-      throw new Error('Required parameter year was null or undefined when calling closeTimetableHearing.');
-    }
-    return this.httpClient.post<TimetableHearingYear>(`${this.basePath}/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}/close`,
-      null,
-    );
+    this.validateParams({ year });
+    return this.post(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}/close`, null);
   }
 
   public createHearingYear(timetableHearingYear: TimetableHearingYear): Observable<TimetableHearingYear> {
-    if (timetableHearingYear === null || timetableHearingYear === undefined) {
-      throw new Error('Required parameter timetableHearingYear was null or undefined when calling createHearingYear.');
-    }
-    return this.httpClient.post<TimetableHearingYear>(`${this.basePath}/line-directory/internal/timetable-hearing/years`,
-      timetableHearingYear,
-    );
+    this.validateParams({ timetableHearingYear });
+    return this.post(`/line-directory/internal/timetable-hearing/years`, timetableHearingYear);
   }
 
   public getHearingYear(year: number): Observable<TimetableHearingYear> {
-    if (year === null || year === undefined) {
-      throw new Error('Required parameter year was null or undefined when calling getHearingYear.');
-    }
-    return this.httpClient.get<TimetableHearingYear>(`${this.basePath}/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}`,
-    );
+    this.validateParams({ year });
+    return this.get(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}`);
   }
 
-  public getHearingYears(statusChoices?: Array<HearingStatus>): Observable<Array<TimetableHearingYear>> {
-    let queryParameters = new HttpParams();
-    if (statusChoices) {
-      statusChoices.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, element, 'statusChoices');
-      });
-    }
-    return this.httpClient.get<Array<TimetableHearingYear>>(`${this.basePath}/line-directory/internal/timetable-hearing/years`,
-      {
-        params: queryParameters,
-      },
-    );
+  public getHearingYears(statusChoices?: Array<HearingStatus>): Observable<TimetableHearingYear[]> {
+    const httpParams = this.paramsOf({ statusChoices });
+    return this.get(`/line-directory/internal/timetable-hearing/years`, httpParams);
   }
 
   public startHearingYear(year: number): Observable<TimetableHearingYear> {
-    if (year === null || year === undefined) {
-      throw new Error('Required parameter year was null or undefined when calling startHearingYear.');
-    }
-    return this.httpClient.post<TimetableHearingYear>(`${this.basePath}/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}/start`,
-      null,
-    );
+    this.validateParams({ year });
+    return this.post(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}/start`, null);
   }
 
-  public updateTimetableHearingSettings(year: number, timetableHearingYear: TimetableHearingYear): Observable<any> {
-    if (year === null || year === undefined) {
-      throw new Error('Required parameter year was null or undefined when calling updateTimetableHearingSettings.');
-    }
-    if (timetableHearingYear === null || timetableHearingYear === undefined) {
-      throw new Error('Required parameter timetableHearingYear was null or undefined when calling updateTimetableHearingSettings.');
-    }
-    return this.httpClient.put<any>(`${this.basePath}/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}`,
-      timetableHearingYear,
-    );
+  public updateTimetableHearingSettings(year: number, timetableHearingYear: TimetableHearingYear): Observable<void> {
+    this.validateParams({ year, timetableHearingYear });
+    return this.put(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}`, timetableHearingYear);
   }
 
 }

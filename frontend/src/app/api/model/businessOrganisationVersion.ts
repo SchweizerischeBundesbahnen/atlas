@@ -44,39 +44,39 @@ export interface BusinessOrganisationVersion {
     /**
      * Description German
      */
-    descriptionDe?: string;
+    descriptionDe: string;
     /**
      * Description French
      */
-    descriptionFr?: string;
+    descriptionFr: string;
     /**
      * Description Italian
      */
-    descriptionIt?: string;
+    descriptionIt: string;
     /**
      * Description English
      */
-    descriptionEn?: string;
+    descriptionEn: string;
     /**
      * Abbreviation German
      */
-    abbreviationDe?: string;
+    abbreviationDe: string;
     /**
      * Abbreviation French
      */
-    abbreviationFr?: string;
+    abbreviationFr: string;
     /**
      * Abbreviation Italian
      */
-    abbreviationIt?: string;
+    abbreviationIt: string;
     /**
      * Abbreviation English
      */
-    abbreviationEn?: string;
+    abbreviationEn: string;
     /**
      * Organisation Number
      */
-    organisationNumber?: number;
+    organisationNumber: number;
     /**
      * Enterprise E-Mail address
      */
@@ -88,11 +88,11 @@ export interface BusinessOrganisationVersion {
     /**
      * Valid from
      */
-    validFrom?: Date;
+    validFrom: Date;
     /**
      * Valid to
      */
-    validTo?: Date;
+    validTo: Date;
     /**
      * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
      */
