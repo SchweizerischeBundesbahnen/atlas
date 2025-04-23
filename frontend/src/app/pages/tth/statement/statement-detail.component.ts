@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
@@ -36,6 +36,7 @@ import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-
 import { TableService } from '../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
+import {LoadingSpinnerService} from "../../../core/components/loading-spinner/loading-spinner.service";
 
 @Component({
   selector: 'app-statement-detail',
@@ -54,9 +55,10 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   form!: FormGroup<StatementDetailFormGroup>;
   isStatementEditable: Observable<boolean | undefined> = of(true);
   uploadedFiles: File[] = [];
-  isLoading = false;
   isDuplicating = false;
   isInitializingComponent = true;
+
+  loadingSpinnerService = inject(LoadingSpinnerService);
 
   get emails(): string {
     if (this.statement?.statementSender.emails) {
@@ -266,7 +268,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     documents: Array<TimetableHearingStatementDocument> | undefined,
   ) {
     if (documents!.length > 0) {
-      this.isLoading = true;
+      this.loadingSpinnerService.loading.next(true);
       for (let i = 0; i < documents!.length!; i++) {
         this.timetableHearingStatementsService
           .getStatementDocument(id, documents![i].fileName)
@@ -274,7 +276,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
           .subscribe((response) => {
             this.uploadedFiles.push(new File([response], documents![i].fileName));
             if (i === documents!.length! - 1) {
-              this.isLoading = false;
+              this.loadingSpinnerService.loading.next(false);
             }
           });
       }
@@ -366,12 +368,12 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private createStatement(statement: TimetableHearingStatementV2) {
-    this.isLoading = true;
+    this.loadingSpinnerService.loading.next(true);
     this.timetableHearingStatementsService
       .createStatement(statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
-        this.isLoading = false;
+        this.loadingSpinnerService.loading.next(false);
         this.isDuplicating = false;
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
         this.navigateToStatementDetail(statement);
@@ -379,12 +381,12 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private updateStatement(id: number, statement: TimetableHearingStatementV2) {
-    this.isLoading = true;
+    this.loadingSpinnerService.loading.next(true);
     this.timetableHearingStatementsService
       .updateHearingStatement(id, statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
-        this.isLoading = false;
+        this.loadingSpinnerService.loading.next(false);
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
         this.navigateToStatementDetail(statement);
       });
@@ -400,7 +402,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   private handleError() {
     return () => {
-      this.isLoading = false;
+      this.loadingSpinnerService.loading.next(false);
       this.form.enable();
       return EMPTY;
     };
