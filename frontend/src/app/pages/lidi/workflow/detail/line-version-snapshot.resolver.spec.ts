@@ -6,13 +6,13 @@ import {
   LineVersionSnapshotResolver,
 } from './line-version-snapshot.resolver';
 import {
-  LinesService,
   LineType,
   LineVersionSnapshot,
   PaymentType,
   WorkflowStatus,
 } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
+import { LineInternalService } from '../../../../api/service/line-internal.service';
 
 const version: LineVersionSnapshot = {
   lineType: LineType.Operational,
@@ -35,10 +35,10 @@ const version: LineVersionSnapshot = {
 const routerStateSnapshot = jasmine.createSpyObj('RouterStateSnapshot', ['']);
 
 describe('LineVersionSnapshotResolver', () => {
-  const linesService = jasmine.createSpyObj('linesService', [
+  const lineInternalService = jasmine.createSpyObj('lineInternalService', [
     'getLineVersionSnapshotById',
   ]);
-  linesService.getLineVersionSnapshotById.and.returnValue(of(version));
+  lineInternalService.getLineVersionSnapshotById.and.returnValue(of(version));
 
   let resolver: LineVersionSnapshotResolver;
 
@@ -47,7 +47,7 @@ describe('LineVersionSnapshotResolver', () => {
       imports: [AppTestingModule],
       providers: [
         LineVersionSnapshotResolver,
-        { provide: LinesService, useValue: linesService },
+        { provide: LineInternalService, useValue: lineInternalService },
       ],
     });
     resolver = TestBed.inject(LineVersionSnapshotResolver);
@@ -69,6 +69,6 @@ describe('LineVersionSnapshotResolver', () => {
     result.subscribe((snapshot) => {
       expect(snapshot.id).toBe(1234);
     });
-    expect(linesService.getLineVersionSnapshotById).toHaveBeenCalled();
+    expect(lineInternalService.getLineVersionSnapshotById).toHaveBeenCalled();
   });
 });

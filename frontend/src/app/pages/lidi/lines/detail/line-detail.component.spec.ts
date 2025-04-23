@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
 import {
   AffectedSublinesModel,
-  LinesService,
   LineType,
   LineVersionV2,
   LineVersionWorkflow,
@@ -21,9 +20,20 @@ import { ValidityService } from '../../../sepodi/validity/validity.service';
 import moment from 'moment';
 import { Component, Input } from '@angular/core';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { LineService } from '../../../../api/service/line.service';
+import { LineInternalService } from '../../../../api/service/line-internal.service';
 import { SublineTableComponent } from './subline-table/subline-table.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+
+@Component({
+  selector: 'app-coverage',
+  template: '<p>Mock Product Editor Component</p>',
+})
+class MockAppCoverageComponent {
+  @Input() pageType!: Record;
+  @Input() currentRecord!: Page;
+}
 
 @Component({
   selector: 'app-subline-table',
@@ -110,8 +120,10 @@ const dialogService = jasmine.createSpyObj<DialogService>('DialogService', {
 });
 
 describe('LineDetailComponent for existing lineVersion', () => {
-  const mockLinesService = jasmine.createSpyObj('linesService', [
+  const mockLineService = jasmine.createSpyObj('lineService', [
     'updateLineVersion',
+  ]);
+  const mockLineInternalService = jasmine.createSpyObj('lineInternalService', [
     'deleteLines',
     'checkAffectedSublines',
   ]);
@@ -120,7 +132,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
   };
 
   beforeEach(() => {
-    setupTestBed(mockLinesService, mockData);
+    setupTestBed(mockLineService, mockLineInternalService, mockData);
     fixture = TestBed.createComponent(LineDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -156,7 +168,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
   });
 
   it('should update LineVersion successfully', () => {
-    mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
+    mockLineService.updateLineVersion.and.returnValue(of(lineVersion));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
 
     component.toggleEdit();
@@ -177,7 +189,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
   });
 
   it('should not update Version', () => {
-    mockLinesService.updateLineVersion.and.returnValue(throwError(() => error));
+    mockLineService.updateLineVersion.and.returnValue(throwError(() => error));
 
     component.toggleEdit();
     component.form.controls.description.setValue('UpdatedDescription');
@@ -189,7 +201,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
   });
 
   it('should delete LineVersion successfully', () => {
-    mockLinesService.deleteLines.and.returnValue(of({}));
+    mockLineInternalService.deleteLines.and.returnValue(of({}));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
 
     component.delete();
@@ -214,8 +226,8 @@ describe('LineDetailComponent for existing lineVersion', () => {
     spyOn(component, 'isOnlyValidityChangedToTruncation').and.returnValue(true);
     spyOn(component, 'openSublineShorteningDialog').and.returnValue(of(true));
 
-    mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
-    mockLinesService.checkAffectedSublines.and.returnValue(
+    mockLineService.updateLineVersion.and.returnValue(of(lineVersion));
+    mockLineInternalService.checkAffectedSublines.and.returnValue(
       of(affectedSublines)
     );
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
@@ -243,8 +255,8 @@ describe('LineDetailComponent for existing lineVersion', () => {
     spyOn(component, 'isOnlyValidityChangedToTruncation').and.returnValue(true);
     spyOn(component, 'openSublineShorteningDialog').and.returnValue(of(true));
 
-    mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
-    mockLinesService.checkAffectedSublines.and.returnValue(
+    mockLineService.updateLineVersion.and.returnValue(of(lineVersion));
+    mockLineInternalService.checkAffectedSublines.and.returnValue(
       of(affectedSublines)
     );
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
@@ -272,8 +284,8 @@ describe('LineDetailComponent for existing lineVersion', () => {
     spyOn(component, 'isOnlyValidityChangedToTruncation').and.returnValue(true);
     spyOn(component, 'openSublineShorteningDialog').and.returnValue(of(true));
 
-    mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
-    mockLinesService.checkAffectedSublines.and.returnValue(
+    mockLineService.updateLineVersion.and.returnValue(of(lineVersion));
+    mockLineInternalService.checkAffectedSublines.and.returnValue(
       of(affectedSublines)
     );
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
@@ -292,7 +304,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
 });
 
 describe('LineDetailComponent for new lineVersion', () => {
-  const mockLinesService = jasmine.createSpyObj('linesService', [
+  const mockLineService = jasmine.createSpyObj('lineService', [
     'createLineVersionV2',
   ]);
   const mockData = {
@@ -300,7 +312,7 @@ describe('LineDetailComponent for new lineVersion', () => {
   };
 
   beforeEach(() => {
-    setupTestBed(mockLinesService, mockData);
+    setupTestBed(mockLineService, {} as LineInternalService, mockData);
 
     fixture = TestBed.createComponent(LineDetailComponent);
     component = fixture.componentInstance;
@@ -315,7 +327,7 @@ describe('LineDetailComponent for new lineVersion', () => {
   describe('create new Version', () => {
     it('successfully', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-      mockLinesService.createLineVersionV2.and.returnValue(of(lineVersion));
+      mockLineService.createLineVersionV2.and.returnValue(of(lineVersion));
 
       component.form.patchValue({
         lineConcessionType: 'CANTONALLY_APPROVED_LINE',
@@ -345,7 +357,7 @@ describe('LineDetailComponent for new lineVersion', () => {
     });
 
     it('displaying error', () => {
-      mockLinesService.createLineVersionV2.and.returnValue(
+      mockLineService.createLineVersionV2.and.returnValue(
         throwError(() => error)
       );
       component.save();
@@ -425,7 +437,8 @@ describe('LineDetailComponent for new lineVersion', () => {
 });
 
 function setupTestBed(
-  linesService: LinesService,
+  lineService: LineService,
+  lineInternalService: LineInternalService,
   data: { lineDetail: string | LineVersionV2[] }
 ) {
   TestBed.configureTestingModule({
@@ -435,7 +448,8 @@ function setupTestBed(
       provideHttpClientTesting(),
       provideMomentDateAdapter(),
       { provide: FormBuilder },
-      { provide: LinesService, useValue: linesService },
+      { provide: LineService, useValue: lineService },
+      { provide: LineInternalService, useValue: lineInternalService },
       { provide: DialogService, useValue: dialogService },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },

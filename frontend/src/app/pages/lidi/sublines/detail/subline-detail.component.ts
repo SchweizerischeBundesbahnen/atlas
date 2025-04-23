@@ -6,7 +6,6 @@ import {
   ElementType,
   LidiElementType,
   Line,
-  LinesService,
   LineVersionV2,
   ReadSublineVersionV2,
   Status,
@@ -55,6 +54,7 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MainlineDescriptionPipe } from './mainline-description.pipe';
+import { LineService } from '../../../../api/service/line.service';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -113,7 +113,7 @@ export class SublineDetailComponent
     private sublineService: SublineService,
     private sublineInternalService: SublineInternalService,
     private notificationService: NotificationService,
-    private linesService: LinesService,
+    private lineService: LineService,
     private permissionService: PermissionService,
     private activatedRoute: ActivatedRoute,
     private validityService: ValidityService,
@@ -137,11 +137,11 @@ export class SublineDetailComponent
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
 
       this.initSelectedVersion();
-      this.mainlines$ = this.linesService
+      this.mainlines$ = this.lineService
         .getLine(this.selectedVersion.mainlineSlnid)
         .pipe(map((value) => [value]));
 
-      this.linesService
+      this.lineService
         .getLineVersionsV2(this.selectedVersion.mainlineSlnid)
         .subscribe((mainline) => {
           this.currentMainlineSelection =
@@ -309,7 +309,7 @@ export class SublineDetailComponent
   }
 
   searchMainlines(searchString: string) {
-    this.mainlines$ = this.linesService
+    this.mainlines$ = this.lineService
       .getLines(
         undefined,
         [searchString],
@@ -347,7 +347,7 @@ export class SublineDetailComponent
     if (line) {
       this.handleSublineType(line);
 
-      this.linesService.getLineVersionsV2(line.slnid!).subscribe((mainline) => {
+      this.lineService.getLineVersionsV2(line.slnid!).subscribe((mainline) => {
         this.currentMainlineSelection =
           VersionsHandlingService.determineDefaultVersionByValidity(mainline);
       });

@@ -5,7 +5,6 @@ import { of, throwError } from 'rxjs';
 import {
   LidiElementType,
   Line,
-  LinesService,
   SublineType,
   SublineVersionV2,
 } from '../../../../api';
@@ -43,6 +42,7 @@ import moment from 'moment';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { SublineInternalService } from '../../../../api/service/subline-internal.service';
 import { SublineService } from '../../../../api/service/subline.service';
+import { LineService } from '../../../../api/service/line.service';
 
 const sublineVersion: SublineVersionV2 = {
   id: 1234,
@@ -358,7 +358,7 @@ function setupTestBed(
       { provide: FormBuilder },
       { provide: SublineService, useValue: sublinesService },
       { provide: SublineInternalService, useValue: sublineInternalService },
-      { provide: LinesService, useValue: lineService },
+      { provide: LineService, useValue: lineService },
       { provide: DialogService, useValue: dialogService },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },

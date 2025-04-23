@@ -1,13 +1,14 @@
 import { inject, Injectable } from '@angular/core';
-import { LinesService, LineVersionSnapshot } from '../../../../api';
+import { LineVersionSnapshot } from '../../../../api';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable } from 'rxjs';
 import { Pages } from '../../../pages';
+import { LineInternalService } from '../../../../api/service/line-internal.service';
 
 @Injectable({ providedIn: 'root' })
 export class LineVersionSnapshotResolver {
   constructor(
-    private readonly linesService: LinesService,
+    private readonly lineInternalService: LineInternalService,
     private readonly router: Router
   ) {}
 
@@ -15,7 +16,7 @@ export class LineVersionSnapshotResolver {
     route: ActivatedRouteSnapshot
   ): Observable<LineVersionSnapshot | never[]> {
     const idParameter = route.params.id;
-    return this.linesService
+    return this.lineInternalService
       .getLineVersionSnapshotById(Number(idParameter))
       .pipe(
         catchError(() =>

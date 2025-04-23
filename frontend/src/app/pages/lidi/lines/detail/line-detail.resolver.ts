@@ -1,13 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import { LinesService, LineVersionV2 } from '../../../../api';
+import { LineVersionV2 } from '../../../../api';
 import { Pages } from '../../../pages';
+import { LineService } from '../../../../api/service/line.service';
 
 @Injectable({ providedIn: 'root' })
 export class LineDetailResolver {
   constructor(
-    private readonly linesService: LinesService,
+    private readonly lineService: LineService,
     private readonly router: Router
   ) {}
 
@@ -15,7 +16,7 @@ export class LineDetailResolver {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
-      : this.linesService.getLineVersionsV2(idParameter).pipe(
+      : this.lineService.getLineVersionsV2(idParameter).pipe(
           catchError(() =>
             this.router
               .navigate([Pages.LIDI.path], {
