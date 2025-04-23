@@ -54,7 +54,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.StringUtils;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -153,6 +152,9 @@ public class ServicePointVersion extends BaseEntity implements Versionable,
 
   @AtlasVersionableProperty
   private boolean operatingPointWithTimetable;
+
+  @AtlasVersionableProperty
+  private boolean terminationInProgress;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty

@@ -17,6 +17,10 @@ public interface SePoDiApi {
   ReadServicePointVersionModel postServicePointsStatusUpdate(@PathVariable("sloid") String sloid, @PathVariable("id") Long id,
       @RequestBody Status status);
 
+  @PutMapping(value = BASEPATH + "/termination/{sloid}/{id}")
+  ReadServicePointVersionModel postServicePointTerminationStatusUpdate(@PathVariable("sloid") String sloid,
+      @PathVariable("id") Long id);
+
   @PutMapping(value = BASEPATH + "/update-designation-official/{id}")
   ReadServicePointVersionModel updateServicePointDesignationOfficial(
       @PathVariable("id") Long id,
