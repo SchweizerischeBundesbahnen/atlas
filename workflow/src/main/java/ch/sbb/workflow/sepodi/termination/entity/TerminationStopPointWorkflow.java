@@ -6,7 +6,6 @@ import ch.sbb.atlas.redact.RedactBySboid;
 import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.workflow.entity.BaseWorkflowEntity;
-import ch.sbb.workflow.entity.Person;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +20,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -69,21 +68,22 @@ public class TerminationStopPointWorkflow extends BaseWorkflowEntity {
   @Enumerated(EnumType.STRING)
   private TerminationWorkflowStatus status;
 
+  @NotNull
   @Column(columnDefinition = "TIMESTAMP")
-  private LocalDateTime boTerminationDate;
+  private LocalDate boTerminationDate;
 
   @Column(columnDefinition = "TIMESTAMP")
-  private LocalDateTime infoPlusTerminationDate;
+  private LocalDate infoPlusTerminationDate;
 
   @Column(columnDefinition = "TIMESTAMP")
-  private LocalDateTime novaTerminationDate;
+  private LocalDate novaTerminationDate;
 
   @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "info_plus_person_id", referencedColumnName = "id")
-  private Person infoPlusExaminant;
+  @JoinColumn(name = "info_plus_decision_id", referencedColumnName = "id")
+  private TerminationDecision infoPlusDecision;
 
-  @JoinColumn(name = "nova_person_id", referencedColumnName = "id")
+  @JoinColumn(name = "nova_decision_id", referencedColumnName = "id")
   @OneToOne(cascade = CascadeType.ALL)
-  private Person novaExaminant;
+  private TerminationDecision novaDecision;
 
 }
