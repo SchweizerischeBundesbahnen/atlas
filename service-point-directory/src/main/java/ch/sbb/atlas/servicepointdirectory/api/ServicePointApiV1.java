@@ -103,6 +103,9 @@ public interface ServicePointApiV1 {
   ReadServicePointVersionModel updateServicePointStatus(@PathVariable String sloid, @PathVariable Long id,
       @RequestBody @Valid Status status);
 
+  @PutMapping(path = "/termination/{sloid}/{id}")
+  ReadServicePointVersionModel updateServicePointTerminationStatus(@PathVariable String sloid, @PathVariable Long id);
+
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("/sync-service-points")
   @Operation(description = "Write all Service Points to kafka again for redistribution")

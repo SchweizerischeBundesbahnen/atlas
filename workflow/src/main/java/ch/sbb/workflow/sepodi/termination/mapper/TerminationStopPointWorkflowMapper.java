@@ -17,7 +17,8 @@ public class TerminationStopPointWorkflowMapper {
         .boTerminationDate(model.getBoTerminationDate())
         .infoPlusTerminationDate(model.getInfoPlusTerminationDate())
         .novaTerminationDate(model.getNovaTerminationDate())
-        .infoPlusDecision(TerminationDecisionMapper.toEntity(model.getInfoPlusDecision()))
+        .infoPlusDecision(model.getInfoPlusDecision() != null ?
+            TerminationDecisionMapper.toEntity(model.getInfoPlusDecision()) : null)
         .build();
   }
 

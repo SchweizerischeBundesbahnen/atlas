@@ -10,7 +10,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ServicePointHelper {
 
-  public boolean isStoPointLocatedInSwitzerland(ServicePointVersion servicePointVersion) {
+  public boolean isStopPointLocatedInSwitzerland(ServicePointVersion servicePointVersion) {
     boolean isStopPoint = servicePointVersion.isStopPoint();
     boolean isSwissCountryCode = Objects.equals(servicePointVersion.getCountry().getUicCode(),
         Country.SWITZERLAND.getUicCode());
@@ -24,7 +24,7 @@ public class ServicePointHelper {
   }
 
   public void validateIsStopPointLocatedInSwitzerland(ServicePointVersion servicePointVersion) {
-    boolean stoPointLocatedInSwitzerland = isStoPointLocatedInSwitzerland(servicePointVersion);
+    boolean stoPointLocatedInSwitzerland = isStopPointLocatedInSwitzerland(servicePointVersion);
     if (!stoPointLocatedInSwitzerland) {
       throw new StopPointNotLocatedInSwitzerlandException(servicePointVersion.getSloid());
     }

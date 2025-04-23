@@ -158,6 +158,18 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
+  public ReadServicePointVersionModel updateServicePointTerminationStatus(String sloid, Long id) {
+    List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
+    if (servicePointVersions.isEmpty()) {
+      throw new SloidNotFoundException(sloid);
+    }
+    ServicePointVersion servicePointVersion = servicePointVersions.stream().filter(sp -> sp.getId().equals(id)).findFirst()
+        .orElseThrow(() -> new IdNotFoundException(id));
+    return ServicePointVersionMapper.toModel(
+        servicePointService.updateStopPointTerminationStatus(servicePointVersion, servicePointVersions));
+  }
+
+  @Override
   public void syncServicePoints() {
     servicePointService.publishAllServicePoints();
   }
