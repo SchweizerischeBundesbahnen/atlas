@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../../core/components/table/table-column';
-import { ElementType, Line, LinesService } from '../../../../../api';
+import { ElementType, Line } from '../../../../../api';
 import { TableFilter } from '../../../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../../../pages';
 import { Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TableComponent } from '../../../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LineService } from '../../../../../api/service/line.service';
 
 @Component({
   selector: 'app-subline-table',
@@ -34,7 +35,7 @@ export class SublineTableComponent implements OnInit, OnDestroy {
   sublines: Array<Line> = [];
 
   constructor(
-    private linesService: LinesService,
+    private lineService: LineService,
     private router: Router
   ) {}
 
@@ -65,7 +66,7 @@ export class SublineTableComponent implements OnInit, OnDestroy {
   }
 
   getOverview() {
-    this.linesService
+    this.lineService
       .getLines(
         undefined,
         [this.mainLineSlnid + ':'],
