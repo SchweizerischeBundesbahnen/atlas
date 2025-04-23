@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  MeanOfTransport,
   PersonWithReducedMobilityService,
   PlatformVersion,
   ReadPlatformVersion,
@@ -32,6 +33,7 @@ export class PlatformDetailComponent
   implements OnInit
 {
   servicePoint!: ReadServicePointVersion;
+  meansOfTransport: MeanOfTransport[] = [];
   trafficPoint!: ReadTrafficPointElementVersion;
   maxValidity!: DateRange;
   stopPoint!: ReadStopPointVersion[];
@@ -51,7 +53,7 @@ export class PlatformDetailComponent
 
   constructor(
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private readonly permissionService: PermissionService,
+    private readonly permissionService: PermissionService
   ) {
     super();
   }
@@ -61,7 +63,10 @@ export class PlatformDetailComponent
     this.stopPoint = this.route.snapshot.parent!.data.stopPoint;
     this.versions = this.route.snapshot.parent!.data.platform;
 
-    this.reduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
+    this.meansOfTransport = this.stopPoint.flatMap((i) => i.meansOfTransport);
+    this.reduced = PrmMeanOfTransportHelper.isReduced(
+      this.stopPoint[0].meansOfTransport
+    );
     this.isNew = this.versions.length === 0;
 
     if (this.isNew) {
