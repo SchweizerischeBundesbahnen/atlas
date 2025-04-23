@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
-  LinesService,
   LineVersionSnapshot,
   WorkflowStatus,
 } from '../../../../api';
@@ -15,6 +14,7 @@ import { TableFilterMultiSelect } from '../../../../core/components/table-filter
 import { TableFilterDateSelect } from '../../../../core/components/table-filter/config/table-filter-date-select';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../../pages';
+import { LineInternalService } from '../../../../api/service/line-internal.service';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -65,7 +65,7 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   private lineVersionSnapshotsSubscription?: Subscription;
 
   constructor(
-    private linesService: LinesService,
+    private lineInternalService: LineInternalService,
     private route: ActivatedRoute,
     private router: Router,
     private readonly tableService: TableService
@@ -87,7 +87,7 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   }
 
   getOverview(pagination: TablePagination) {
-    this.lineVersionSnapshotsSubscription = this.linesService
+    this.lineVersionSnapshotsSubscription = this.lineInternalService
       .getLineVersionSnapshot(
         this.tableService.filter.chipSearch.getActiveSearch(),
         this.tableService.filter.dateSelect.getActiveSearch(),

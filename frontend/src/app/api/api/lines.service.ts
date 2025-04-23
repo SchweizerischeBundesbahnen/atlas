@@ -11,35 +11,34 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
-import { CustomHttpParameterCodec }                          from '../encoder';
-import { Observable }                                        from 'rxjs';
+import { Inject, Injectable, Optional } from '@angular/core';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParameterCodec, HttpParams, HttpResponse } from '@angular/common/http';
+import { CustomHttpParameterCodec } from '../encoder';
+import { Observable } from 'rxjs';
 
-import { AffectedSublinesModel } from '../model/models';
-import { ContainerLine } from '../model/models';
-import { ContainerLineVersionSnapshot } from '../model/models';
-import { ElementType } from '../model/models';
-import { ErrorResponse } from '../model/models';
-import { LidiElementType } from '../model/models';
-import { Line } from '../model/models';
-import { LineVersion } from '../model/models';
-import { LineVersionSnapshot } from '../model/models';
-import { LineVersionV2 } from '../model/models';
-import { Status } from '../model/models';
-import { UpdateLineVersionV2 } from '../model/models';
-import { WorkflowStatus } from '../model/models';
+import {
+  AffectedSublinesModel,
+  ContainerLine,
+  ContainerLineVersionSnapshot,
+  ElementType,
+  LidiElementType,
+  Line,
+  LineVersion,
+  LineVersionSnapshot,
+  LineVersionV2,
+  Status,
+  UpdateLineVersionV2,
+  WorkflowStatus,
+} from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
-
+import { BASE_PATH } from '../variables';
+import { Configuration } from '../configuration';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class LinesService {
+class LinesService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -98,8 +97,8 @@ export class LinesService {
 
     /**
      * Returns checked Sublines to short
-     * @param id 
-     * @param updateLineVersionV2 
+     * @param id
+     * @param updateLineVersionV2
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -156,7 +155,7 @@ export class LinesService {
     }
 
     /**
-     * @param lineVersionV2 
+     * @param lineVersionV2
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -210,7 +209,7 @@ export class LinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -383,7 +382,7 @@ export class LinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -428,9 +427,9 @@ export class LinesService {
 
     /**
      * Returns all line versions with its related workflow id
-     * @param searchCriteria 
-     * @param validOn 
-     * @param statusChoices 
+     * @param searchCriteria
+     * @param validOn
+     * @param statusChoices
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -508,7 +507,7 @@ export class LinesService {
 
     /**
      * Returns a versions with its related workflow id
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -552,7 +551,7 @@ export class LinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -596,7 +595,7 @@ export class LinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -768,7 +767,7 @@ export class LinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -813,7 +812,7 @@ export class LinesService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -858,8 +857,8 @@ export class LinesService {
     }
 
     /**
-     * @param id 
-     * @param updateLineVersionV2 
+     * @param id
+     * @param updateLineVersionV2
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
