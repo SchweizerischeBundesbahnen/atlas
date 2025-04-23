@@ -14,11 +14,11 @@ export interface ErrorDetail {
     /**
      * Errormessage in english for API purposes
      */
-    message?: string;
+    message: string;
     /**
      * Field on which to display the error
      */
-    field?: string;
-    displayInfo?: DisplayInfo;
+    field: string;
+    displayInfo: DisplayInfo;
 }
 
