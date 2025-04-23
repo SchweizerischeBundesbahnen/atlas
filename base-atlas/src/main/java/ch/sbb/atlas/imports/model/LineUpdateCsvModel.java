@@ -51,19 +51,15 @@ public class LineUpdateCsvModel implements Validatable<LineUpdateCsvModel> {
   private LocalDate validTo;
 
   @DefaultMapping
-  @Nulling
   private String description;
 
   @DefaultMapping
-  @Nulling
   private String number;
 
   @DefaultMapping
-  @Nulling
   private String swissLineNumber;
 
   @DefaultMapping
-  @Nulling
   private LineConcessionType lineConcessionType;
 
   @DefaultMapping
@@ -71,7 +67,6 @@ public class LineUpdateCsvModel implements Validatable<LineUpdateCsvModel> {
   private String shortNumber;
 
   @DefaultMapping
-  @Nulling
   private OfferCategory offerCategory;
 
   @DefaultMapping
@@ -79,7 +74,6 @@ public class LineUpdateCsvModel implements Validatable<LineUpdateCsvModel> {
   private String longName;
 
   @DefaultMapping
-  @Nulling
   private String businessOrganisation;
 
   @DefaultMapping
