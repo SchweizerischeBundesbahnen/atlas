@@ -1,5 +1,4 @@
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { Routes } from '@angular/router';
 
 import { Pages } from '../pages';
 
@@ -77,9 +76,3 @@ export const routes: Routes = [
   },
   { path: '**', redirectTo: Pages.BODI.path },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class BodiRouting {}
