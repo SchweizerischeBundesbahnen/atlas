@@ -67,6 +67,15 @@ public class BulkImportTemplateGenerator {
             .build(),
         PlatformTemplateGenerator::getPlatformReducedUpdateCsvModelExample
     );
+
+    templateLookup.put(
+        BulkImportConfig.builder()
+            .application(ApplicationType.LIDI)
+            .objectType(BusinessObjectType.LINE)
+            .importType(ImportType.UPDATE)
+            .build(),
+        LineTemplateGenerator::getUpdateExample
+    );
   }
 
   public static final String CSV_EXTENSION = ".csv";
