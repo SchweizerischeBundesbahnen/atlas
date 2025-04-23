@@ -3,10 +3,10 @@ import { LinesService, LineType, WorkflowStatus } from '../../../../api';
 import { LidiWorkflowOverviewComponent } from './lidi-workflow-overview.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../../app.testing.mocks';
-import { TableComponent } from '../../../../core/components/table/table.component';
-import { ActivatedRoute } from '@angular/router';
+import { LineInternalService } from '../../../../api/service/line-internal.service';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
@@ -36,14 +36,15 @@ describe('LidiWorkflowOverviewComponent', () => {
   let component: LidiWorkflowOverviewComponent;
   let fixture: ComponentFixture<LidiWorkflowOverviewComponent>;
 
-  let linesServiceSpy: SpyObj<LinesService>;
+  let lineInternalServiceSpy: SpyObj<LineInternalService>;
 
   beforeEach(() => {
-    linesServiceSpy = jasmine.createSpyObj<LinesService>('LinesServiceSpy', [
-      'getLineVersionSnapshot',
-    ]);
+    lineInternalServiceSpy = jasmine.createSpyObj<LineInternalService>(
+      'LineInternalServiceSpy',
+      ['getLineVersionSnapshot']
+    );
     (
-      linesServiceSpy.getLineVersionSnapshot as Spy<
+      lineInternalServiceSpy.getLineVersionSnapshot as Spy<
         () => Observable<ContainerLineVersionSnapshot>
       >
     ).and.returnValue(of(versionContainer));
@@ -52,7 +53,7 @@ describe('LidiWorkflowOverviewComponent', () => {
       imports: [LidiWorkflowOverviewComponent, TranslateModule.forRoot()],
       providers: [
         TranslatePipe,
-        { provide: LinesService, useValue: linesServiceSpy },
+        { provide: LineInternalService, useValue: lineInternalServiceSpy },
         {
           provide: ActivatedRoute,
           useValue: { snapshot: { queryParams: {} } },
@@ -80,7 +81,9 @@ describe('LidiWorkflowOverviewComponent', () => {
       size: 10,
     });
 
-    expect(linesServiceSpy.getLineVersionSnapshot).toHaveBeenCalledOnceWith(
+    expect(
+      lineInternalServiceSpy.getLineVersionSnapshot
+    ).toHaveBeenCalledOnceWith(
       [],
       undefined,
       [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected],
