@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { Pages } from '../pages';
 
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
@@ -269,9 +268,3 @@ export const routes: Routes = [
   },
   { path: '**', redirectTo: Pages.PRM.path },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class PrmRouting {}

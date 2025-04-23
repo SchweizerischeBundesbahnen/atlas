@@ -1,5 +1,4 @@
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { Routes } from '@angular/router';
 import { Pages } from '../pages';
 
 import { HearingStatus } from '../../api';
@@ -106,9 +105,3 @@ export const routes: Routes = [
   },
   { path: '**', redirectTo: Pages.TTH.path },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class TthRouting {}
