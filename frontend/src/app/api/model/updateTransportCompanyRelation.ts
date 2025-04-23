@@ -17,10 +17,10 @@ export interface UpdateTransportCompanyRelation {
     /**
      * Valid From
      */
-    validFrom?: Date;
+    validFrom: Date;
     /**
      * Valid To
      */
-    validTo?: Date;
+    validTo: Date;
 }
 

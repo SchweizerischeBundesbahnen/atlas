@@ -17,7 +17,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.security:spring-security-oauth2-authorization-server")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
     implementation("com.microsoft.graph:microsoft-graph:${property("microsoftGraphSdkVersion")}")
     implementation("com.azure:azure-identity:${property("azureIdentityVersion")}")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

@@ -11,27 +11,21 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
-import { CustomHttpParameterCodec }                          from '../encoder';
-import { Observable }                                        from 'rxjs';
+import { Inject, Injectable, Optional } from '@angular/core';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParameterCodec, HttpParams, HttpResponse } from '@angular/common/http';
+import { CustomHttpParameterCodec } from '../encoder';
+import { Observable } from 'rxjs';
 
-import { CreateSublineVersionV2 } from '../model/models';
-import { ErrorResponse } from '../model/models';
-import { ReadSublineVersionV2 } from '../model/models';
-import { SublineVersion } from '../model/models';
-import { SublineVersionV2 } from '../model/models';
+import { CreateSublineVersionV2, ReadSublineVersionV2, SublineVersion, SublineVersionV2 } from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
-
+import { BASE_PATH } from '../variables';
+import { Configuration } from '../configuration';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class SublinesService {
+class SublinesService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -89,7 +83,7 @@ export class SublinesService {
     }
 
     /**
-     * @param createSublineVersionV2 
+     * @param createSublineVersionV2
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -143,7 +137,7 @@ export class SublinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -316,7 +310,7 @@ export class SublinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -360,7 +354,7 @@ export class SublinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -404,7 +398,7 @@ export class SublinesService {
     }
 
     /**
-     * @param slnid 
+     * @param slnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -449,8 +443,8 @@ export class SublinesService {
     }
 
     /**
-     * @param id 
-     * @param sublineVersionV2 
+     * @param id
+     * @param sublineVersionV2
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

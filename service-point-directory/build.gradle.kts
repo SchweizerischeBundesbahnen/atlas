@@ -30,8 +30,6 @@ dependencies {
     implementation("org.locationtech.jts:jts-core:${property("jtsVersion")}") //optional
     implementation("com.google.protobuf:protoc:4.30.2")
     implementation("com.google.protobuf:protobuf-java:4.30.2")
-    implementation("org.springdoc:springdoc-openapi-starter-common:${property("openapiStarterCommonVersion")}")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
     implementation("org.springframework.security:spring-security-oauth2-client")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 

@@ -48,6 +48,9 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testCompileOnly("org.projectlombok:lombok")
 
+    implementation("org.springdoc:springdoc-openapi-starter-common:${property("openapiStarterCommonVersion")}")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
+
     testAnnotationProcessor("org.projectlombok:lombok")
     mockitoAgent("org.mockito:mockito-core") {
         isTransitive = false

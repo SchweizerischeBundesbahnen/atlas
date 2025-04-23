@@ -1,7 +1,8 @@
 import { UserService } from '../../core/auth/user/user.service';
 import { environment } from '../../../environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Observable } from 'rxjs';
 
 export class AtlasApiService {
 
@@ -14,6 +15,82 @@ export class AtlasApiService {
     } else {
       return environment.atlasUnauthApiUrl;
     }
+  }
+
+  protected paramsOf(params: {[key: string]: any}): HttpParams {
+    let queryParameters = new HttpParams();
+
+    Object.keys(params).forEach(key => {
+      if (Array.isArray(params[key])){
+        params[key].forEach((element) => {
+          queryParameters = this.addToHttpParams(queryParameters, element, key);
+        });
+      } else {
+        if (params[key] !== undefined && params[key] !== null) {
+          queryParameters = this.addToHttpParams(queryParameters, params[key], key);
+        }
+      }
+    })
+
+    return queryParameters;
+  }
+
+  protected validateParams(params: { [key: string]: any }): void {
+    Object.keys(params).forEach(key => {
+      if (params[key] === null || params[key] === undefined) {
+        throw new Error(`Required parameter '${key}' is null or undefined.`);
+      }
+    });
+  }
+
+  protected get<T>(path: string, params?: HttpParams): Observable<T> {
+    return this.httpClient.get<T>(`${this.basePath}${path}`,
+      {
+        responseType: 'json',
+        headers: new HttpHeaders({
+          'Accept': '*/*',
+        }),
+        params
+      },
+    );
+  }
+
+  protected getBlob(path: string, params?: HttpParams): Observable<Blob> {
+    return this.httpClient.get(`${this.basePath}${path}`,
+      {
+        responseType: 'blob',
+        headers: new HttpHeaders({
+          'Accept': '*/*',
+        }),
+        params
+      },
+    );
+  }
+
+  protected put<T>(path: string, body: any): Observable<T> {
+    return this.httpClient.put<T>( `${this.basePath}${path}`, body,
+      {
+        responseType: 'json',
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      },
+    );
+  }
+
+  protected post<T>(path: string, body: any): Observable<T> {
+    return this.httpClient.post<T>( `${this.basePath}${path}`, body,
+      {
+        responseType: 'json',
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      },
+    );
+  }
+
+  protected delete<T>(path: string): Observable<T> {
+    return this.httpClient.delete<T>( `${this.basePath}${path}`);
   }
 
   // todo: simplify

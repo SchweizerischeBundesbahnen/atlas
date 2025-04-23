@@ -11,26 +11,21 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
-import { CustomHttpParameterCodec }                          from '../encoder';
-import { Observable }                                        from 'rxjs';
+import { Inject, Injectable, Optional } from '@angular/core';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParameterCodec, HttpParams, HttpResponse } from '@angular/common/http';
+import { CustomHttpParameterCodec } from '../encoder';
+import { Observable } from 'rxjs';
 
-import { ContainerTimetableFieldNumber } from '../model/models';
-import { ErrorResponse } from '../model/models';
-import { Status } from '../model/models';
-import { TimetableFieldNumberVersion } from '../model/models';
+import { ContainerTimetableFieldNumber, Status, TimetableFieldNumberVersion } from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
-
+import { BASE_PATH } from '../variables';
+import { Configuration } from '../configuration';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class TimetableFieldNumbersService {
+class TimetableFieldNumbersService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -88,7 +83,7 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param timetableFieldNumberVersion 
+     * @param timetableFieldNumberVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -142,7 +137,7 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param ttfnid 
+     * @param ttfnid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -315,7 +310,7 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param ttfnId 
+     * @param ttfnId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -359,11 +354,11 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param searchCriteria 
-     * @param number 
-     * @param businessOrganisation 
-     * @param validOn 
-     * @param statusChoices 
+     * @param searchCriteria
+     * @param number
+     * @param businessOrganisation
+     * @param validOn
+     * @param statusChoices
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -448,7 +443,7 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param ttfnId 
+     * @param ttfnId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -493,8 +488,8 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param id 
-     * @param timetableFieldNumberVersion 
+     * @param id
+     * @param timetableFieldNumberVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

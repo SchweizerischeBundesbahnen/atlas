@@ -15,7 +15,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
     implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
     implementation("org.apache.tika:tika-core:3.1.0")
 

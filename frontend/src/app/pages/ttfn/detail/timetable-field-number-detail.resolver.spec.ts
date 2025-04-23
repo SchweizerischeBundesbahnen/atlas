@@ -4,9 +4,7 @@ import {
   convertToParamMap,
   RouterStateSnapshot,
 } from '@angular/router';
-import {
-  Status,
-  TimetableFieldNumbersService,
+import { Status,
   TimetableFieldNumberVersion,
 } from '../../../api';
 import {
@@ -15,6 +13,7 @@ import {
 } from './timetable-field-number-detail.resolver';
 import { Observable, of } from 'rxjs';
 import { AppTestingModule } from '../../../app.testing.module';
+import { TimetableFieldNumberService } from '../../../api/service/timetable-field-number.service';
 
 const version: TimetableFieldNumberVersion = {
   id: 1234,
@@ -45,7 +44,7 @@ describe('TimetableFieldNumberDetailResolver', () => {
       providers: [
         TimetableFieldNumberDetailResolver,
         {
-          provide: TimetableFieldNumbersService,
+          provide: TimetableFieldNumberService,
           useValue: timetableFieldNumberServiceSpy,
         },
       ],

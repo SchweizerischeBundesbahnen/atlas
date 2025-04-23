@@ -11,25 +11,21 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
-import { CustomHttpParameterCodec }                          from '../encoder';
-import { Observable }                                        from 'rxjs';
+import { Inject, Injectable, Optional } from '@angular/core';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParameterCodec, HttpParams, HttpResponse } from '@angular/common/http';
+import { CustomHttpParameterCodec } from '../encoder';
+import { Observable } from 'rxjs';
 
-import { ErrorResponse } from '../model/models';
-import { HearingStatus } from '../model/models';
-import { TimetableHearingYear } from '../model/models';
+import { HearingStatus, TimetableHearingYear } from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
-
+import { BASE_PATH } from '../variables';
+import { Configuration } from '../configuration';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class TimetableHearingYearsService {
+class TimetableHearingYearsService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -87,7 +83,7 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param year 
+     * @param year
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -132,7 +128,7 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param timetableHearingYear 
+     * @param timetableHearingYear
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -186,7 +182,7 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param year 
+     * @param year
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -230,7 +226,7 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param statusChoices 
+     * @param statusChoices
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -280,7 +276,7 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param year 
+     * @param year
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -325,8 +321,8 @@ export class TimetableHearingYearsService {
     }
 
     /**
-     * @param year 
-     * @param timetableHearingYear 
+     * @param year
+     * @param timetableHearingYear
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

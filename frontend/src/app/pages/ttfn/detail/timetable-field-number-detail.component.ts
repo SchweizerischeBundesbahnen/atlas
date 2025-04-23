@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ApplicationType,
-  TimetableFieldNumbersService,
-  TimetableFieldNumberVersion,
-} from '../../../api';
+import { ApplicationType, TimetableFieldNumberVersion } from '../../../api';
 import { BaseDetailController } from '../../../core/components/base-detail/base-detail-controller';
 import {
   FormControl,
@@ -25,6 +21,8 @@ import { AtlasFieldLengthValidator } from '../../../core/validation/field-length
 import { TimetableFieldNumberDetailFormGroup } from './timetable-field-number-detail-form-group';
 import { ValidityService } from '../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { TimetableFieldNumberInternalService } from '../../../api/service/timetable-field-number-internal.service';
+import { TimetableFieldNumberService } from '../../../api/service/timetable-field-number.service';
 import { BaseDetailComponent } from '../../../core/components/base-detail/base-detail.component';
 import { NgIf } from '@angular/common';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
@@ -55,7 +53,8 @@ export class TimetableFieldNumberDetailComponent
 {
   constructor(
     protected router: Router,
-    private timetableFieldNumberService: TimetableFieldNumbersService,
+    private timetableFieldNumberInternalService: TimetableFieldNumberInternalService,
+    private timetableFieldNumberService: TimetableFieldNumberService,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     protected permissionService: PermissionService,
@@ -116,9 +115,7 @@ export class TimetableFieldNumberDetailComponent
   revokeRecord(): void {
     const selectedRecord = this.getSelectedRecord();
     if (selectedRecord.ttfnid) {
-      // todo: specific internal services for frontend or not? => after that: line and subline services
-      //  and what to do with old services?
-      this.timetableFieldNumberService
+      this.timetableFieldNumberInternalService
         .revokeTimetableFieldNumber(selectedRecord.ttfnid)
         .subscribe(() => {
           this.notificationService.success('TTFN.NOTIFICATION.REVOKE_SUCCESS');
@@ -133,7 +130,7 @@ export class TimetableFieldNumberDetailComponent
     const selectedRecord: TimetableFieldNumberVersion =
       this.getSelectedRecord();
     if (selectedRecord.ttfnid != null) {
-      this.timetableFieldNumberService
+      this.timetableFieldNumberInternalService
         .deleteVersions(selectedRecord.ttfnid)
         .subscribe(() => {
           this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');

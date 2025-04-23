@@ -3,10 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail.component';
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import {
-  TimetableFieldNumbersService,
-  TimetableFieldNumberVersion,
-} from '../../../api';
+import { TimetableFieldNumberVersion } from '../../../api';
 import moment from 'moment';
 import { of, throwError } from 'rxjs';
 import { HomeComponent } from '../../home/home.component';
@@ -29,6 +26,7 @@ import { TextFieldComponent } from '../../../core/form-components/text-field/tex
 import { Page } from '../../../core/model/page';
 import { Record } from '../../../core/components/base-detail/record';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { TimetableFieldNumberService } from '../../../api/service/timetable-field-number.service';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -96,9 +94,13 @@ let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
 
 describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   let router: Router;
-  const mockTimetableFieldNumbersService = jasmine.createSpyObj(
-    'timetableFieldNumbersService',
-    ['updateVersionWithVersioning', 'deleteVersions']
+  const mockTimetableFieldNumberService = jasmine.createSpyObj(
+    'timetableFieldNumberService',
+    ['updateVersionWithVersioning']
+  );
+  const mockTimetableFieldNumberInternalService = jasmine.createSpyObj(
+    'timetableFieldNumberInternalService',
+    ['deleteVersions']
   );
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -121,6 +123,14 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
           provide: TimetableFieldNumbersService,
           useValue: mockTimetableFieldNumbersService,
         },
+        {
+          provide: TimetableFieldNumberService,
+          useValue: mockTimetableFieldNumberService,
+        },
+        {
+          provide: TimetableFieldNumberInternalService,
+          useValue: mockTimetableFieldNumberInternalService,
+        },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: { snapshot: { data: mockData } } },
         { provide: TranslatePipe },
@@ -142,7 +152,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   });
 
   it('should update Version successfully', () => {
-    mockTimetableFieldNumbersService.updateVersionWithVersioning.and.returnValue(
+    mockTimetableFieldNumberService.updateVersionWithVersioning.and.returnValue(
       of(version)
     );
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
@@ -161,7 +171,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   });
 
   it('should not update Version', () => {
-    mockTimetableFieldNumbersService.updateVersionWithVersioning.and.returnValue(
+    mockTimetableFieldNumberService.updateVersionWithVersioning.and.returnValue(
       throwError(() => error)
     );
     fixture.componentInstance.updateRecord();
@@ -171,7 +181,9 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   });
 
   it('should delete Version successfully', () => {
-    mockTimetableFieldNumbersService.deleteVersions.and.returnValue(of({}));
+    mockTimetableFieldNumberInternalService.deleteVersions.and.returnValue(
+      of({})
+    );
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
@@ -213,7 +225,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
       providers: [
         { provide: FormBuilder },
         {
-          provide: TimetableFieldNumbersService,
+          provide: TimetableFieldNumberService,
           useValue: mockTimetableFieldNumbersService,
         },
         {

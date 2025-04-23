@@ -14,10 +14,10 @@ export interface DisplayInfo {
     /**
      * Errorcode for UI
      */
-    code?: string;
+    code: string;
     /**
      * Parameters for messages
      */
-    parameters?: Array<Parameter>;
+    parameters: Array<Parameter>;
 }
 
