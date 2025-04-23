@@ -1,5 +1,5 @@
 import {
-  HearingStatus,
+  HearingStatus, StatementStatus,
   SwissCanton, TimetableFieldNumber,
   TimetableHearingStatementAlternating,
   TimetableHearingStatementsService,
@@ -65,7 +65,7 @@ const mockTimetableHearingYearsService = jasmine.createSpyObj('timetableHearingY
 
 const mockTimetableHearingStatementsService = jasmine.createSpyObj(
   'timetableHearingStatementsService',
-  ['createStatement', 'getNextStatement', 'getPreviousStatement', 'getResponsibleTransportCompanies'],
+  ['createStatement', 'getNextStatement', 'getPreviousStatement', 'getResponsibleTransportCompanies', 'updateHearingStatement'],
 );
 const alternation: TimetableHearingStatementAlternating = {
   timetableHearingStatement: existingStatement,
@@ -157,6 +157,19 @@ describe('StatementDetailComponent for existing statement', () => {
 
     component.previous();
     expect(mockTimetableHearingStatementsService.getPreviousStatement).toHaveBeenCalled();
+  });
+
+  it('should update statement', () => {
+    mockTimetableHearingStatementsService.updateHearingStatement.and.returnValue(of(existingStatement));
+    component.toggleEdit();
+    expect(component.form.enabled).toBeTrue();
+
+    component.form.controls.timetableYear.setValue(2025)
+    component.form.controls.statementStatus.setValue(StatementStatus.Received)
+    component.form.controls.statement.setValue("New comment")
+    component.form.controls.statementSender.controls.emails.setValue(["test@bav.ch"])
+    component.save();
+    expect(mockTimetableHearingStatementsService.updateHearingStatement).toHaveBeenCalled();
   });
 });
 
