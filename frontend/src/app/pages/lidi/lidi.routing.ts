@@ -1,5 +1,4 @@
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { Routes } from '@angular/router';
 
 import { lineResolver } from './lines/detail/line-detail.resolver';
 import { Pages } from '../pages';
@@ -70,9 +69,3 @@ export const routes: Routes = [
   },
   { path: '**', redirectTo: Pages.LIDI.path },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class LidiRouting {}

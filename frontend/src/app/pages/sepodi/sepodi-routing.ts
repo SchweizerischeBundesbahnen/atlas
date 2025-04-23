@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { Pages } from '../pages';
 import { servicePointResolver } from './service-point-side-panel/service-point-detail.resolver';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
@@ -120,9 +119,3 @@ export const routes: Routes = [
     ],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class SepodiRouting {}
