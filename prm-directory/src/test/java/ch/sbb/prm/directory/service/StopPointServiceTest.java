@@ -130,4 +130,20 @@ class StopPointServiceTest {
     assertThrows(StopPointDoesNotExistException.class, () -> stopPointService.checkStopPointExists(sloid));
   }
 
+  @Test
+  void shouldReturnAllMeansOfTransport() {
+    //given
+    StopPointVersion firstVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAM)).build();
+    StopPointVersion secondVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.BOAT)).build();
+    Mockito.doReturn(List.of(firstVersion, secondVersion)).when(stopPointRepository)
+        .findAllBySloidOrderByValidFrom(firstVersion.getSloid());
+
+    //when
+    Set<MeanOfTransport> meanOfTransports = stopPointService.getMeansOfTransportOfAllVersions(
+        firstVersion.getSloid());
+
+    //then
+    assertThat(meanOfTransports).containsExactly(MeanOfTransport.TRAM, MeanOfTransport.BOAT);
+  }
+
 }
