@@ -1,9 +1,10 @@
 package ch.sbb.workflow.sepodi.termination.controller;
 
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson.INFO_PLUS;
+
 import ch.sbb.workflow.sepodi.termination.api.TerminationStopPointWorkflowApi;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
-import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.service.TerminationStopPointWorkflowService;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +23,11 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
 
   @Override
   public TerminationStopPointWorkflowModel startTerminationStopPointWorkflow(
-      StartTerminationStopPointWorkflowModel workflowModel) {
-    ClientPersonModel infoPlusExaminant = ClientPersonModel.builder()
-        .firstName("Info+")
-        .lastName("Examinant")
-        .personFunction("Examinant")
-        .mail("info@examinant.com")
+      TerminationStopPointWorkflowModel workflowModel) {
+    TerminationDecisionModel infoPlusDecision = TerminationDecisionModel.builder()
+        .terminationDecisionPerson(INFO_PLUS)
         .build();
-    workflowModel.setInfoPlusExaminant(infoPlusExaminant);
-
+    workflowModel.setInfoPlusDecision(infoPlusDecision);
     return TerminationStopPointWorkflowMapper.toModel(service.startTerminationWorkflow(workflowModel));
   }
 
