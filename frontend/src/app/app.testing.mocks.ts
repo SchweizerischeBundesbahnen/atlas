@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import {
   ApplicationRole,
   ApplicationType,
-  TimetableHearingStatement,
+  TimetableHearingStatementV2,
 } from './api';
 import { AtlasButtonType } from './core/components/button/atlas-button.type';
 import { TableColumn } from './core/components/table/table-column';
@@ -108,7 +108,7 @@ export class MockTableComponent<DATATYPE> {
   @Input() checkBoxModeEnabled = false;
   @Input() showPaginator = true;
 
-  @Input() checkBoxSelection = new SelectionModel<TimetableHearingStatement>(
+  @Input() checkBoxSelection = new SelectionModel<TimetableHearingStatementV2>(
     true,
     []
   );
