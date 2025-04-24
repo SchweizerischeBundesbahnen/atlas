@@ -15,4 +15,12 @@ public class LineBulkImportUpdate extends BulkImportUpdateDataMapper<LineUpdateC
         new UpdateLineVersionModelV2());
   }
 
+  @Override
+  protected void applySpecificUpdate(LineUpdateCsvModel update, LineVersion currentEntity, UpdateLineVersionModelV2 targetModel) {
+    if (update.getLineConcessionType() != null) {
+      targetModel.setLineConcessionType(update.getLineConcessionType());
+    } else {
+      targetModel.setLineConcessionType(currentEntity.getConcessionType());
+    }
+  }
 }
