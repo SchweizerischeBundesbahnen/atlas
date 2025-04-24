@@ -27,7 +27,7 @@ export class ApiHelperService {
     });
   }
 
-  public createBlob(param: any): Blob {
+  private createBlob(param: any): Blob {
     return new Blob([JSON.stringify(param)], { type: 'application/json' });
   }
 
@@ -46,7 +46,6 @@ export class ApiHelperService {
   }
 
   public getBasePath(): string {
-    console.log("this user logged in ", this.userService.loggedIn ? `${environment.atlasApiUrl}` : `${environment.atlasUnauthApiUrl}`)
     return this.userService.loggedIn ? `${environment.atlasApiUrl}` : `${environment.atlasUnauthApiUrl}`
   }
 }
