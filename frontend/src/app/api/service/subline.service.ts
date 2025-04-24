@@ -12,7 +12,7 @@ export class SublineService extends AtlasApiService {
 
   public getSublineVersionV2(slnid: string): Observable<ReadSublineVersionV2[]> {
     this.validateParams({ slnid });
-    return this.get(`/line-directory/v2/sublines/versions/${encodeURIComponent(String(slnid))}`);
+    return this.get(`/line-directory/v2/sublines/versions/${encodeURIComponent(String(slnid))}`, 'json');
   }
 
   public createSublineVersionV2(createSublineVersionV2: CreateSublineVersionV2): Observable<ReadSublineVersionV2> {
