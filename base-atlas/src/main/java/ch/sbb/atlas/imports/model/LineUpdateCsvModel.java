@@ -59,7 +59,6 @@ public class LineUpdateCsvModel implements Validatable<LineUpdateCsvModel> {
   @DefaultMapping
   private String swissLineNumber;
 
-  @DefaultMapping
   private LineConcessionType lineConcessionType;
 
   @DefaultMapping
