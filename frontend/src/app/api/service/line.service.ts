@@ -38,22 +38,22 @@ export class LineService extends AtlasApiService {
       size,
       sort,
     });
-    return this.get(`/line-directory/v1/lines`, httpParams);
+    return this.get(`/line-directory/v1/lines`, 'json', httpParams);
   }
 
   public getLine(slnid: string): Observable<Line> {
     this.validateParams({ slnid });
-    return this.get(`/line-directory/v1/lines/${encodeURIComponent(String(slnid))}`);
+    return this.get(`/line-directory/v1/lines/${encodeURIComponent(String(slnid))}`, 'json');
   }
 
   public getLineVersions(slnid: string): Observable<LineVersion[]> {
     this.validateParams({ slnid });
-    return this.get(`/line-directory/v1/lines/versions/${encodeURIComponent(String(slnid))}`);
+    return this.get(`/line-directory/v1/lines/versions/${encodeURIComponent(String(slnid))}`, 'json');
   }
 
   public getLineVersionsV2(slnid: string): Observable<LineVersionV2[]> {
     this.validateParams({ slnid });
-    return this.get(`/line-directory/v2/lines/versions/${encodeURIComponent(String(slnid))}`);
+    return this.get(`/line-directory/v2/lines/versions/${encodeURIComponent(String(slnid))}`, 'json');
   }
 
   public createLineVersionV2(lineVersionV2: LineVersionV2): Observable<LineVersionV2> {

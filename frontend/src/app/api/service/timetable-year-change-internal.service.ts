@@ -9,12 +9,12 @@ export class TimetableYearChangeInternalService extends AtlasApiService {
 
   public getNextTimetablesYearChange(count: number): Observable<Date[]> {
     this.validateParams({ count });
-    return this.get(`/line-directory/internal/timetable-year-change/next-years/${encodeURIComponent(String(count))}`);
+    return this.get(`/line-directory/internal/timetable-year-change/next-years/${encodeURIComponent(String(count))}`, 'json');
   }
 
   public getTimetableYearChange(year: number): Observable<Date> {
     this.validateParams({ year });
-    return this.get(`/line-directory/internal/timetable-year-change/${encodeURIComponent(String(year))}`);
+    return this.get(`/line-directory/internal/timetable-year-change/${encodeURIComponent(String(year))}`, 'json');
   }
 
 }

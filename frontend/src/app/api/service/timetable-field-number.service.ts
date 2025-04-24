@@ -9,17 +9,17 @@ import { Observable } from 'rxjs';
 export class TimetableFieldNumberService extends AtlasApiService {
 
   public createVersion(timetableFieldNumberVersion: TimetableFieldNumberVersion): Observable<TimetableFieldNumberVersion> {
-    this.validateParams({timetableFieldNumberVersion})
+    this.validateParams({ timetableFieldNumberVersion });
     return this.post(`/line-directory/v1/field-numbers/versions`, timetableFieldNumberVersion);
   }
 
   public getAllVersionsVersioned(ttfnId: string): Observable<TimetableFieldNumberVersion[]> {
-    this.validateParams({ttfnId});
-    return this.get(`/line-directory/v1/field-numbers/versions/${encodeURIComponent(String(ttfnId))}`)
+    this.validateParams({ ttfnId });
+    return this.get(`/line-directory/v1/field-numbers/versions/${encodeURIComponent(String(ttfnId))}`, 'json');
   }
 
   public updateVersionWithVersioning(id: number, timetableFieldNumberVersion: TimetableFieldNumberVersion): Observable<TimetableFieldNumberVersion[]> {
-    this.validateParams({id, timetableFieldNumberVersion})
+    this.validateParams({ id, timetableFieldNumberVersion });
     return this.post(`/line-directory/v1/field-numbers/versions/${encodeURIComponent(String(id))}`, timetableFieldNumberVersion);
   }
 

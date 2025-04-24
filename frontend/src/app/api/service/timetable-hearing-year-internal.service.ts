@@ -11,7 +11,7 @@ export class TimetableHearingYearInternalService extends AtlasApiService {
 
   public closeTimetableHearing(year: number): Observable<TimetableHearingYear> {
     this.validateParams({ year });
-    return this.post(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}/close`, null);
+    return this.post(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}/close`);
   }
 
   public createHearingYear(timetableHearingYear: TimetableHearingYear): Observable<TimetableHearingYear> {
@@ -21,17 +21,17 @@ export class TimetableHearingYearInternalService extends AtlasApiService {
 
   public getHearingYear(year: number): Observable<TimetableHearingYear> {
     this.validateParams({ year });
-    return this.get(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}`);
+    return this.get(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}`, 'json');
   }
 
   public getHearingYears(statusChoices?: Array<HearingStatus>): Observable<TimetableHearingYear[]> {
     const httpParams = this.paramsOf({ statusChoices });
-    return this.get(`/line-directory/internal/timetable-hearing/years`, httpParams);
+    return this.get(`/line-directory/internal/timetable-hearing/years`, 'json', httpParams);
   }
 
   public startHearingYear(year: number): Observable<TimetableHearingYear> {
     this.validateParams({ year });
-    return this.post(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}/start`, null);
+    return this.post(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}/start`);
   }
 
   public updateTimetableHearingSettings(year: number, timetableHearingYear: TimetableHearingYear): Observable<void> {
