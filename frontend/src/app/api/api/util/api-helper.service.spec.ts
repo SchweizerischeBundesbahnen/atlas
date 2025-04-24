@@ -61,7 +61,7 @@ describe('ApiHelperService', () => {
     expect(service.getBasePath()).toBe(environment.atlasApiUrl);
   });
 
-  it('should return atlasApiUrl if not loggedIn', () => {
+  it('should return atlasUnauthApiUrl if not loggedIn', () => {
     mockUserService.currentUser = null;
     expect(service.getBasePath()).toBe(environment.atlasUnauthApiUrl);
   });
