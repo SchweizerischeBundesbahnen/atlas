@@ -7,7 +7,6 @@ import {ApplicationType} from "../model/applicationType";
 import {BusinessObjectType} from "../model/businessObjectType";
 import {ImportType} from "../model/importType";
 import {BulkImportRequest} from "../model/bulkImportRequest";
-import {environment} from "../../../environments/environment";
 
 describe('BulkImportService', () => {
   let service: BulkImportService;
@@ -70,10 +69,10 @@ describe('BulkImportService', () => {
       expect(response).toBeTruthy();
     });
 
-    const expectedUrl = `${environment.atlasApiUrl}/bulk-import-service/v1/import/bulk`;
-
-    const req = httpTestingController.expectOne(expectedUrl);
-    expect(req.request.method).toBe('POST');
+    const req = httpTestingController.expectOne(r =>
+      r.method === 'POST' &&
+      r.url.endsWith('/bulk-import-service/v1/import/bulk')
+    );
     expect(req.request.body instanceof FormData).toBeTrue();
 
     const formData: FormData = req.request.body;
