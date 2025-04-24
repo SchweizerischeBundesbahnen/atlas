@@ -14,17 +14,17 @@ export class TimetableFieldNumberInternalService extends AtlasApiService {
                      businessOrganisation?: string, validOn?: Date,
                      statusChoices?: Array<Status>, page?: number, size?: number, sort?: Array<string>,
   ): Observable<ContainerTimetableFieldNumber> {
-    const httpParams = this.paramsOf({searchCriteria,number,businessOrganisation,validOn,statusChoices,page,size,sort});
-    return this.get("/line-directory/internal/field-numbers", httpParams);
+    const httpParams = this.paramsOf({ searchCriteria, number, businessOrganisation, validOn, statusChoices, page, size, sort });
+    return this.get('/line-directory/internal/field-numbers', 'json', httpParams);
   }
 
   public revokeTimetableFieldNumber(ttfnId: string): Observable<TimetableFieldNumberVersion[]> {
-    this.validateParams({ttfnId});
-    return this.post(`/line-directory/internal/field-numbers/${encodeURIComponent(String(ttfnId))}/revoke`, null);
+    this.validateParams({ ttfnId });
+    return this.post(`/line-directory/internal/field-numbers/${encodeURIComponent(String(ttfnId))}/revoke`);
   }
 
   public deleteVersions(ttfnId: string): Observable<void> {
-    this.validateParams({ttfnId});
+    this.validateParams({ ttfnId });
     return this.delete(`/line-directory/internal/field-numbers/${encodeURIComponent(String(ttfnId))}`);
   }
 

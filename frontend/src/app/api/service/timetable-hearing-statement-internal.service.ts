@@ -41,7 +41,7 @@ export class TimetableHearingStatementInternalService extends AtlasApiService {
       sort,
     });
     const path = `/line-directory/internal/timetable-hearing/statements`;
-    return this.get(path, httpParams);
+    return this.get(path, 'json', httpParams);
   }
 
   public getStatementsAsCsv(
@@ -57,12 +57,12 @@ export class TimetableHearingStatementInternalService extends AtlasApiService {
       ttfnid,
       transportCompanies,
     });
-    return this.getBlob(`/line-directory/internal/timetable-hearing/statements/csv/${encodeURIComponent(String(language))}`, httpParams);
+    return this.get(`/line-directory/internal/timetable-hearing/statements/csv/${encodeURIComponent(String(language))}`, 'blob', httpParams);
   }
 
   public getStatement(id: number): Observable<TimetableHearingStatementV2> {
     this.validateParams({ id });
-    return this.get(`/line-directory/internal/timetable-hearing/statements/${encodeURIComponent(String(id))}`);
+    return this.get(`/line-directory/internal/timetable-hearing/statements/${encodeURIComponent(String(id))}`, 'json');
   }
 
   public getPreviousStatement(
@@ -81,7 +81,7 @@ export class TimetableHearingStatementInternalService extends AtlasApiService {
       size,
       sort,
     });
-    return this.get(`/line-directory/internal/timetable-hearing/statements/${encodeURIComponent(String(id))}/previous`, httpParams);
+    return this.get(`/line-directory/internal/timetable-hearing/statements/${encodeURIComponent(String(id))}/previous`, 'json', httpParams);
   }
 
   public getNextStatement(
@@ -100,12 +100,12 @@ export class TimetableHearingStatementInternalService extends AtlasApiService {
       size,
       sort,
     });
-    return this.get(`/line-directory/internal/timetable-hearing/statements/${encodeURIComponent(String(id))}/next`, httpParams);
+    return this.get(`/line-directory/internal/timetable-hearing/statements/${encodeURIComponent(String(id))}/next`, 'json', httpParams);
   }
 
   public getStatementDocument(id: number, filename: string): Observable<Blob> {
     this.validateParams({ id, filename });
-    return this.getBlob(`/line-directory/internal/timetable-hearing/statements/${encodeURIComponent(String(id))}/documents/${encodeURIComponent(String(filename))}`);
+    return this.get(`/line-directory/internal/timetable-hearing/statements/${encodeURIComponent(String(id))}/documents/${encodeURIComponent(String(filename))}`, 'blob');
   }
 
   public deleteStatementDocument(id: number, filename: string): Observable<void> {
@@ -115,23 +115,27 @@ export class TimetableHearingStatementInternalService extends AtlasApiService {
 
   public createStatement(statement: TimetableHearingStatementV2, documents?: Array<Blob>): Observable<TimetableHearingStatementV2> {
     this.validateParams({ statement });
-
-    let formParams: { append(param: string, value: any): any; } = new FormData();
-    formParams = formParams.append('statement', new Blob([JSON.stringify(statement)], { type: 'application/json' })) || formParams;
-    if (documents) {
-      documents.forEach((element) => {
-        formParams = formParams.append('documents', element) || formParams;
-      });
-    }
-
-    return this.httpClient.post<TimetableHearingStatementV2>(`${this.basePath}/line-directory/internal/timetable-hearing/statements`,
-      formParams,
+    return this.post('/line-directory/internal/timetable-hearing/statements',
+      this.formDataForStatement(statement, documents),
+      { responseType: 'json' },
     );
-  } // todo: test
+  }
+
 
   public updateHearingStatement(id: number, statement: TimetableHearingStatementV2, documents?: Array<Blob>): Observable<TimetableHearingStatementV2> {
     this.validateParams({ statement, id });
+    return this.put(`/line-directory/internal/timetable-hearing/statements/${encodeURIComponent(String(id))}`,
+      this.formDataForStatement(statement, documents),
+      { responseType: 'json' },
+    );
+  }
 
+  public getResponsibleTransportCompanies(ttfnid: string, year: number): Observable<TransportCompany[]> {
+    this.validateParams({ year, ttfnid });
+    return this.get(`/line-directory/internal/timetable-hearing/statements/responsible-transport-companies/${encodeURIComponent(String(ttfnid))}/${encodeURIComponent(String(year))}`, 'json');
+  }
+
+  private formDataForStatement(statement: TimetableHearingStatementV2, documents?: Array<Blob>): any {
     let formParams: { append(param: string, value: any): any; } = new FormData();
     formParams = formParams.append('statement', new Blob([JSON.stringify(statement)], { type: 'application/json' })) || formParams;
     if (documents) {
@@ -139,15 +143,6 @@ export class TimetableHearingStatementInternalService extends AtlasApiService {
         formParams = formParams.append('documents', element) || formParams;
       });
     }
-
-    return this.httpClient.put<TimetableHearingStatementV2>(`${this.basePath}/line-directory/internal/timetable-hearing/statements/${encodeURIComponent(String(id))}`,
-      formParams,
-    );
-  } // todo: test
-
-  public getResponsibleTransportCompanies(ttfnid: string, year: number): Observable<TransportCompany[]> {
-    this.validateParams({ year, ttfnid });
-    return this.get(`/line-directory/internal/timetable-hearing/statements/responsible-transport-companies/${encodeURIComponent(String(ttfnid))}/${encodeURIComponent(String(year))}`);
+    return formParams;
   }
-
 }

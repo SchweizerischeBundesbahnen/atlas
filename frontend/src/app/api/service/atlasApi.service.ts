@@ -4,10 +4,20 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
+type NotBlob<T> = T extends Blob ? undefined : T;
+
 export class AtlasApiService {
 
   protected httpClient = inject(HttpClient);
   protected userService = inject(UserService);
+
+  private readonly acceptAllHeaders = new HttpHeaders({ 'Accept': '*/*' });
+  private readonly createUpdateOptions: { responseType: 'json', headers: HttpHeaders } = {
+    responseType: 'json',
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  };
 
   get basePath() {
     if (this.userService.loggedIn) {
@@ -17,11 +27,11 @@ export class AtlasApiService {
     }
   }
 
-  protected paramsOf(params: {[key: string]: any}): HttpParams {
+  protected paramsOf(params: { [key: string]: any }): HttpParams {
     let queryParameters = new HttpParams();
 
     Object.keys(params).forEach(key => {
-      if (Array.isArray(params[key])){
+      if (Array.isArray(params[key])) {
         params[key].forEach((element) => {
           queryParameters = this.addToHttpParams(queryParameters, element, key);
         });
@@ -30,7 +40,7 @@ export class AtlasApiService {
           queryParameters = this.addToHttpParams(queryParameters, params[key], key);
         }
       }
-    })
+    });
 
     return queryParameters;
   }
@@ -43,58 +53,34 @@ export class AtlasApiService {
     });
   }
 
-  protected get<T>(path: string, params?: HttpParams): Observable<T> {
-    return this.httpClient.get<T>(`${this.basePath}${path}`,
-      {
-        responseType: 'json',
-        headers: new HttpHeaders({
-          'Accept': '*/*',
-        }),
-        params
-      },
-    );
+  protected get<T>(path: string, responseType: 'json', params?: HttpParams): Observable<NotBlob<T>>;
+  protected get(path: string, responseType: 'blob', params?: HttpParams): Observable<Blob>;
+  protected get<T>(path: string, responseType: 'json' | 'blob', params?: HttpParams): Observable<NotBlob<T> | Blob> {
+    const url = `${this.basePath}${path}`;
+    const options = {
+      headers: this.acceptAllHeaders,
+      params,
+    };
+    return responseType === 'json' ? this.httpClient.get<NotBlob<T>>(url, {
+      ...options,
+      responseType,
+    }) : this.httpClient.get(url, { ...options, responseType });
   }
 
-  protected getBlob(path: string, params?: HttpParams): Observable<Blob> {
-    return this.httpClient.get(`${this.basePath}${path}`,
-      {
-        responseType: 'blob',
-        headers: new HttpHeaders({
-          'Accept': '*/*',
-        }),
-        params
-      },
-    );
+  protected put<T>(path: string, body: any, options?: { responseType?: 'json', headers?: HttpHeaders }): Observable<T> {
+    return this.httpClient.put<T>(`${this.basePath}${path}`, body, options ?? this.createUpdateOptions);
   }
 
-  protected put<T>(path: string, body: any): Observable<T> {
-    return this.httpClient.put<T>( `${this.basePath}${path}`, body,
-      {
-        responseType: 'json',
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        }),
-      },
-    );
-  }
-
-  protected post<T>(path: string, body: any): Observable<T> {
-    return this.httpClient.post<T>( `${this.basePath}${path}`, body,
-      {
-        responseType: 'json',
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        }),
-      },
-    );
+  protected post<T>(path: string, body: any = null, options?: { responseType?: 'json', headers?: HttpHeaders }): Observable<T> {
+    return this.httpClient.post<T>(`${this.basePath}${path}`, body, options ?? this.createUpdateOptions);
   }
 
   protected delete<T>(path: string): Observable<T> {
-    return this.httpClient.delete<T>( `${this.basePath}${path}`);
+    return this.httpClient.delete<T>(`${this.basePath}${path}`);
   }
 
-  // todo: simplify
-  protected addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
+  // TODO: Simplify with https://flow.sbb.ch/browse/ATLAS-2868
+  private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
     if (typeof value === 'object' && value instanceof Date === false) {
       httpParams = this.addToHttpParamsRecursive(httpParams, value);
     } else {
