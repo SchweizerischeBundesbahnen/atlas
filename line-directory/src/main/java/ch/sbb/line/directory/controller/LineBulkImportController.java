@@ -19,7 +19,7 @@ public class LineBulkImportController extends BaseBulkImportController implement
 
   @Override
   @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
   public List<BulkImportItemExecutionResult> lineUpdate(
       List<BulkImportUpdateContainer<LineUpdateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,
