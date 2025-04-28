@@ -27,4 +27,7 @@ public interface TerminationStopPointWorkflowApi {
   TerminationStopPointWorkflowModel startTerminationStopPointWorkflow(
       @RequestBody @Valid TerminationStopPointWorkflowModel workflowModel);
 
+  //TODO: addInfoPlusDecision
+  //TODO: addNovaDecision
+  //TODO: cancelTermination for each case
 }
