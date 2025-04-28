@@ -19,6 +19,7 @@ public enum ExportObjectV2 {
   SUBLINE(ExportTypes.DEFAULT, "subline"),
   TIMETABLE_FIELD_NUMBER(ExportTypes.DEFAULT, "timetable-field-number"),
   TOILET(ExportTypes.DEFAULT, "toilet"),
+  RECORDING_OBLIGATION(List.of(ExportTypeV2.FULL), "recording-obligation"),
   TRANSPORT_COMPANY(List.of(ExportTypeV2.FULL), "transport-company"),
   SERVICE_POINT(ExportTypes.SWISS_WORLD, "service-point"),
   TRAFFIC_POINT(ExportTypes.SWISS_WORLD, "traffic-point"),
