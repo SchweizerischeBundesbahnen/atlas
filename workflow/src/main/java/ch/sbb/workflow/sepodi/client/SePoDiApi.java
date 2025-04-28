@@ -2,6 +2,7 @@ package ch.sbb.workflow.sepodi.client;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
+import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.Status;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ public interface SePoDiApi {
 
   @PutMapping(value = BASEPATH + "/termination/{sloid}/{id}")
   ReadServicePointVersionModel postServicePointTerminationStatusUpdate(@PathVariable("sloid") String sloid,
-      @PathVariable("id") Long id);
+      @PathVariable("id") Long id, @RequestBody @Valid UpdateTerminationServicePointModel updateTerminationServicePointModel);
 
   @PutMapping(value = BASEPATH + "/update-designation-official/{id}")
   ReadServicePointVersionModel updateServicePointDesignationOfficial(
