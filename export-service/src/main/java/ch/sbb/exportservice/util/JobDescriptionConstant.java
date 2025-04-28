@@ -32,6 +32,8 @@ public class JobDescriptionConstant {
   public static final String EXPORT_RELATION_CSV_JOB_NAME = "exportRelationCsvJob";
   public static final String EXPORT_RELATION_JSON_JOB_NAME = "exportRelationJsonJob";
 
+  public static final String EXPORT_RECORDING_OBLIGATION_CSV_JOB_NAME = "exportRecordingObligationCsvJob";
+
   public static final String EXPORT_TYPE_JOB_PARAMETER = "exportTypeV2";
   public static final String EXPORT_TYPE_V1_JOB_PARAMETER = "exportTypeV1";
   public static final String START_AT_JOB_PARAMETER = "startAt";

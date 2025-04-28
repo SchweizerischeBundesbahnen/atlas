@@ -9,6 +9,7 @@ import ch.sbb.exportservice.model.ExportObjectV2;
 import ch.sbb.exportservice.model.ExportTypeV2;
 import ch.sbb.exportservice.util.JobDescriptionConstant;
 import java.util.List;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -25,6 +26,7 @@ import org.springframework.batch.core.repository.JobRestartException;
 public abstract class BaseExportJobService {
 
   private final JobLauncher jobLauncher;
+  @Getter
   private final Job exportCsvJob;
   private final Job exportJsonJob;
 
@@ -59,7 +61,7 @@ public abstract class BaseExportJobService {
     log.info("CSV and JSON export execution finished");
   }
 
-  private void startExportJob(JobParams jobParams, Job job) {
+  protected void startExportJob(JobParams jobParams, Job job) {
     try {
       final JobExecution execution = jobLauncher.run(job, buildJobParameters(jobParams));
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
