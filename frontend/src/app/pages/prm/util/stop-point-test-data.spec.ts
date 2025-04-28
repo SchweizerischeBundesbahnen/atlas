@@ -22,7 +22,6 @@ export const STOP_POINT: ReadStopPointVersion = {
   reduced: true,
   editionDate: '2020-01-05',
   editor: 'Nicola',
-  recordingObligation: true
 };
 export const STOP_POINT_COMPLETE: ReadStopPointVersion = {
   validFrom: new Date('2014-12-14'),
@@ -46,5 +45,4 @@ export const STOP_POINT_COMPLETE: ReadStopPointVersion = {
   reduced: false,
   editionDate: '2020-01-05',
   editor: 'Nicola',
-  recordingObligation: true
 };

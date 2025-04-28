@@ -68,10 +68,6 @@ public class StopPointVersionRowMapper implements RowMapper<StopPointVersion> {
             BooleanOptionalAttributeType.valueOf(rs.getString("ticket_machine")) : null);
     setMeansOfTransport(builder, rs.getString("list_of_transports"));
 
-    builder.recordingObligation(
-        rs.getObject("recording_obligation") == null ? true : rs.getBoolean("recording_obligation")
-    );
-
     builder.validFrom(rs.getObject("valid_from", LocalDate.class));
     builder.validTo(rs.getObject("valid_to", LocalDate.class));
     builder.creationDate(rs.getObject("creation_date", LocalDateTime.class));

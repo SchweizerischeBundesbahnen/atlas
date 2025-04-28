@@ -44,6 +44,16 @@ public abstract class BasePrmSqlIntegrationTest {
     insertMeansOfTransport();
   }
 
+  protected void insertRecordingObligation(String sloid, boolean recordingObligation) throws SQLException {
+    final String insertSql = """
+        INSERT INTO recording_obligation (sloid, recording_obligation, creation_date, creator, edition_date, editor, version)
+        VALUES ('%s', %s, '2022-02-19 09:54:38.000000', 'u123456', '2022-02-19 09:54:38.000000', 'u123456', 0);
+        """
+        .formatted(sloid, recordingObligation);
+    execute(insertSql);
+    insertMeansOfTransport();
+  }
+
   protected void insertMeansOfTransport() throws SQLException {
     final String insertSql = """
         INSERT INTO stop_point_version_means_of_transport (stop_point_version_id, means_of_transport) VALUES (1000, 'BUS');
