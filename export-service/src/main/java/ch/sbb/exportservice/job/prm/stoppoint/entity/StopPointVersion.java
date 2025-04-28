@@ -81,8 +81,6 @@ public class StopPointVersion extends BasePrmEntity {
 
   private LocalDate validTo;
 
-  private boolean recordingObligation;
-
   public Set<MeanOfTransport> getMeansOfTransport() {
     if (meansOfTransport == null) {
       return new HashSet<>();
