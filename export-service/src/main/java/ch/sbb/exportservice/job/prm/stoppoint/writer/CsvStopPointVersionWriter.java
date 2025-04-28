@@ -22,7 +22,6 @@ public class CsvStopPointVersionWriter extends BaseCsvWriter<StopPointVersionCsv
         Fields.assistanceCondition, Fields.assistanceService, Fields.audioTicketMachine, Fields.additionalInformation,
         Fields.dynamicAudioSystem, Fields.dynamicOpticSystem, Fields.freeText, Fields.infoTicketMachine, Fields.interoperable,
         Fields.assistanceRequestFulfilled, Fields.ticketMachine, Fields.url, Fields.visualInfo, Fields.wheelchairTicketMachine,
-        Fields.recordingObligation,
         BasePrmCsvModel.Fields.validFrom, BasePrmCsvModel.Fields.validTo, BasePrmCsvModel.Fields.creationDate,
         BasePrmCsvModel.Fields.editionDate, BasePrmCsvModel.Fields.status
     };
