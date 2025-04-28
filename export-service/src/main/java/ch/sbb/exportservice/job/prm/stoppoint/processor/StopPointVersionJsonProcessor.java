@@ -39,7 +39,6 @@ public class StopPointVersionJsonProcessor implements ItemProcessor<StopPointVer
         .wheelchairTicketMachine(version.getWheelchairTicketMachine())
         .assistanceRequestFulfilled(version.getAssistanceRequestFulfilled())
         .ticketMachine(version.getTicketMachine())
-        .recordingObligation(version.isRecordingObligation())
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo())
         .creationDate(version.getCreationDate())
