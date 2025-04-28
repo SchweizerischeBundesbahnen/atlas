@@ -40,10 +40,6 @@ public class TerminationStopPointWorkflowModel {
   @NotNull
   private String sloid;
 
-  @NotNull
-  @Schema(description = "Service Point version SBOID")
-  private String sboid;
-
   @Schema(description = "Termination Workflow Status", accessMode = AccessMode.READ_ONLY)
   private TerminationWorkflowStatus status;
 

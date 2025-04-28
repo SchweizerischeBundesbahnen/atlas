@@ -44,6 +44,7 @@ public class ServicePointVersionMapper {
         .editionDate(servicePointVersion.getEditionDate())
         .editor(servicePointVersion.getEditor())
         .etagVersion(servicePointVersion.getVersion())
+        .terminationInProgress(servicePointVersion.isTerminationInProgress())
         .build();
   }
 

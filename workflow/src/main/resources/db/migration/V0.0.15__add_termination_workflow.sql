@@ -21,6 +21,7 @@ CREATE TABLE termination_stop_point_workflow
     version_id                 BIGINT,
     sloid                      VARCHAR(50),
     sboid                      VARCHAR(32),
+    designation_official       VARCHAR(30) NOT NULL,
     status                     VARCHAR(50),
     applicant_mail             VARCHAR(255),
     workflow_comment           VARCHAR(1500),
@@ -40,5 +41,5 @@ CREATE TABLE termination_stop_point_workflow
 
     CONSTRAINT fk_nova_decision
         FOREIGN KEY (nova_decision_id)
-            REFERENCES termination_decision(id)
+            REFERENCES termination_decision (id)
 );
