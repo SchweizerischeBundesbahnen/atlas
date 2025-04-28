@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml' xmlns:th='http://www.thymeleaf.org'>
+<head>
+    <title th:text="${properties.get(0).get('title')}"></title>
+    <meta charset='UTF-8'>
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: 'IBM Plex Sans', sans-serif;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .logo-container {
+            width: 12%;
+            float: left;
+        }
+
+        .logo {
+            margin: 35px 35px 35px 40px;
+            top: 32px;
+            left: 47px;
+            width: 45px;
+            height: 45px;
+            background-size: 23px 23px;
+        }
+
+        .logo-title {
+            color: #06348b;
+            position: absolute;
+            top: 83px;
+            left: 47px;
+            width: 45px;
+            height: 20px;
+            line-height: 20px;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .header-title {
+            font-size: large;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header-container {
+            width: 100%;
+            height: 100%;
+            float: left;
+            text-align: justify;
+        }
+
+        .ski-color {
+            color: #06348b
+        }
+
+        .content-container {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .header-right {
+            float: left;
+            width: 79%;
+            padding-top: 132px;
+            font-weight: bold;
+            text-align: center;
+            display: inline-block;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:active {
+            text-decoration: underline;
+        }
+
+        .mb-1 {
+            margin-bottom: 48px;
+        }
+
+        .mail-container {
+            padding-bottom: 30px;
+        }
+
+        hr {
+            height: 2px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+<div class="mail-container">
+    <div class='header-container'>
+        <div class='logo-container'>
+            <div class='logo'>
+                <img src="logo-atlas.jpeg" th:src="'cid:' + ${logo}" th:width='45'/>
+                <div class='logo-title'>
+                    atlas
+                </div>
+            </div>
+        </div>
+        <div class='header-right mb-1'>
+            <span class='header-title' th:text="${properties.get(0).get('title')}"></span>
+        </div>
+    </div>
+    <div class='content-container'>
+        <div>
+            <i>Pour la version française voir ci-dessous. / Per la versione in lingua italiana vedi sotto.</i>
+            <br><br>
+            <hr>
+            <div>
+                <br><span>Sehr geehrte Damen und Herren</span><br><br>
+                <span>Für die Haltestelle <b>[[${properties.get(0).get('designationOfficial')}]],
+                    [[${properties.get(0).get('sloid')}]]</b> wurde ein Antrag zu deren Aufhebung eingereicht.
+                    Dieser Antrag befindet sich derzeit in der Prüfung.
+                    Sofern für die Haltestelle kein Fahrplan mehr existiert,
+                    erfolgt die Bearbeitung per dem von Ihnen angegebenen Datum <b>[[${properties.get(0).get('terminationDate')}]]</b> in atlas.
+                </span>
+                <br><br>
+                Bitte beachten Sie, dass gewisse Haltestellen im Tarifsystem NOVA weiterhin benötigt werden.
+                In diesen Fällen werden die Haltestellen an die Alliance SwissPass übergeben.
+                Das Transportunternehmen ist nicht mehr für die Datenpflege verantwortlich.
+                <br><br>
+                Der <a th:href="${properties.get(0).get('url')}">Antragsfortschritt</a> kann in atlas verfolgt werden.
+                <br><br>
+                Falls der Antrag abgebrochen werden soll oder Fragen auftauchen, dürfen Sie sich jederzeit bei der Fachstelle
+                atlas melden: <a href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
+                <br><br>
+
+                <div>
+                    <br>Freundliche Grüsse<br><br>
+                    Fachstelle atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>SBB AG</b><br>
+                    Infrastruktur, Fahrplan und Betrieb, Kundeninformation<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <br><span>Mesdames et Messieurs</span><br><br>
+                <span>Une demande de suppression de l'arrêt <b>[[${properties.get(0).get('designationOfficial')}]],
+                    [[${properties.get(0).get('sloid')}]]</b> a été déposée. Cette demande est actuellement en cours d'examen.
+                    Dans la situation où il n'existe plus d'horaire pour cet arrêt,
+                    le traitement aura lieu à la date <b>[[${properties.get(0).get('terminationDate')}]]</b> que vous avez indiquée dans atlas.
+                </span>
+                <br><br>
+                Veuillez noter que certains arrêts sont toujours nécessaires dans le système tarifaire NOVA.
+                Dans ces cas, les arrêts sont transmis à l'Alliance SwissPass.
+                L'entreprise de transport n'est plus responsable de la mise à jour des données.
+                <br><br>
+                <a th:href="${properties.get(0).get('url')}">L'avancement</a> de la demande peut être suivi dans atlas.
+                <br><br>
+                Si la demande doit être annulée ou si des questions se posent, vous pouvez vous adresser à tout moment au service
+                spécialisé atlas: <a href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
+                <br><br>
+                <div>
+                    <br>Meilleures Salutations<br><br>
+                    Service spécialisé atlas<br>
+                    <b>Tâches systémiques d'information à la clientele</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>CFF SA</b><br>
+                    Incrastructure – Horaire et Exploitation, Information à la clientèle<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
+            <hr>
+            <div>
+                <br><span>Gentile signore o signora </span><br><br>
+                <span>È stata presentata una domanda di soppressione della fermata <b>[[${properties.get(0).get('designationOfficial')}]],
+                    Dans la situation où il n'existe plus d'horaire pour cet arrêt,
+                    [[${properties.get(0).get('sloid')}]]</b>. La richiesta è attualmente in fase di revisione.
+                    Se non c'è più un orario per questa fermata,
+                    verrà elaborata in Atlas alla data <b>[[${properties.get(0).get('terminationDate')}]]</b> indicata dall'utente.
+                </span>
+                <br><br>
+                Si noti che alcune fermate sono ancora richieste nel sistema tariffario NOVA.
+                In questi casi, le fermate vengono trasferite all'Alliance SwissPass.
+                L'azienda di trasporto non è più responsabile della manutenzione dei dati.
+                <br><br>
+                <a th:href="${properties.get(0).get('url')}">L'avanzamento</a> della soppressione può essere seguito in atlas.
+                <br><br>
+                In caso di annullamento della domanda o di domande, è possibile contattare in qualsiasi momento il servizio
+                specializzato atlas: <a href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
+                <br><br>
+                <div>
+                    <br>Cordiali saluti<br><br>
+                    Servizio specializzato atlas<br>
+                    <b>Attività di sistema informazioni alla clientela</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>FFS SA</b><br>
+                    Infrastrutture – Orario ed Esercizio, Informazione della clientela<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
