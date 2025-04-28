@@ -68,6 +68,4 @@ public class StopPointVersionCsvModel extends BasePrmCsvModel {
 
   private String ticketMachine;
 
-  private boolean recordingObligation;
-
 }

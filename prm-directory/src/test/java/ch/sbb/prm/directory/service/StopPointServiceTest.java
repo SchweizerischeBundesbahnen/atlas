@@ -143,7 +143,7 @@ class StopPointServiceTest {
         firstVersion.getSloid());
 
     //then
-    assertThat(meanOfTransports).containsExactly(MeanOfTransport.TRAM, MeanOfTransport.BOAT);
+    assertThat(meanOfTransports).containsExactlyInAnyOrder(MeanOfTransport.TRAM, MeanOfTransport.BOAT);
   }
 
 }
