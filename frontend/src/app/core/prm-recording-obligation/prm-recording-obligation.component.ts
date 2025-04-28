@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ApplicationType } from '../../api';
 import { PermissionService } from '../auth/permission/permission.service';
 import {PersonWithReducedMobilityService} from "../../api/service/personWithReducedMobility.service";
+import { NotificationService } from '../notification/notification.service';
 
 @Component({
   selector: 'prm-recording-obligation',
@@ -16,7 +17,8 @@ export class PrmRecordingObligationComponent implements OnInit {
 
   constructor(
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private permissionService: PermissionService
+    private permissionService: PermissionService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +39,9 @@ export class PrmRecordingObligationComponent implements OnInit {
       .updateRecordingObligation(this.sloid, {
         value: !this.recordingObligation,
       })
-      .subscribe(() => (this.recordingObligation = !this.recordingObligation));
+      .subscribe(() => {
+        this.notificationService.success('PRM.STOP_POINTS.RECORDING_OBLIGATION_SAVED');
+        this.recordingObligation = !this.recordingObligation;
+      });
   }
 }

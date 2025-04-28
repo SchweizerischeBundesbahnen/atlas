@@ -50,7 +50,6 @@ class StopPointVersionJsonProcessorTest {
         .creationDate(LocalDateTime.of(2024, 2, 7, 20, 0))
         .editionDate(LocalDateTime.of(2024, 2, 7, 20, 0))
         .status(Status.VALIDATED)
-        .recordingObligation(true)
         .build();
 
     StopPointVersionJsonProcessor processor = new StopPointVersionJsonProcessor();
@@ -85,7 +84,6 @@ class StopPointVersionJsonProcessorTest {
         .creationDate(LocalDateTime.of(2024, 2, 7, 20, 0))
         .editionDate(LocalDateTime.of(2024, 2, 7, 20, 0))
         .status(Status.VALIDATED)
-        .recordingObligation(true)
         .build();
 
     ReadStopPointVersionModel result = processor.process(entity);

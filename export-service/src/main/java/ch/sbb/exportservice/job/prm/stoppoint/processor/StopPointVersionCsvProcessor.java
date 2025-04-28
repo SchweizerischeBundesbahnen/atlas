@@ -39,7 +39,6 @@ public class StopPointVersionCsvProcessor implements ItemProcessor<StopPointVers
         .assistanceRequestFulfilled(mapBooleanOptionalAttributeType(version.getAssistanceRequestFulfilled()))
         .ticketMachine(mapBooleanOptionalAttributeType(version.getTicketMachine()))
         .meansOfTransport(version.getMeansOfTransportPipeList())
-        .recordingObligation(version.isRecordingObligation())
         .checkDigit(version.getNumber().getCheckDigit())
         .validFrom(MapperUtil.DATE_FORMATTER.format(version.getValidFrom()))
         .validTo(MapperUtil.DATE_FORMATTER.format(version.getValidTo()))

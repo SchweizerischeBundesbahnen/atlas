@@ -108,10 +108,6 @@ export interface ReadStopPointVersion {
     assistanceRequestFulfilled?: BooleanOptionalAttributeType;
     ticketMachine?: BooleanOptionalAttributeType;
     number: ServicePointNumber;
-    /**
-     * StopPoint PRM data recording obligated
-     */
-    recordingObligation: boolean;
     reduced?: boolean;
 }
 export namespace ReadStopPointVersion {

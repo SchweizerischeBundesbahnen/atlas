@@ -47,7 +47,7 @@ public class StopPointController implements StopPointApiV1 {
         stopPointVersions.stream().map(StopPointVersion::getSloid).toList());
 
     return Container.<ReadStopPointVersionModel>builder()
-        .objects(stopPointVersions.stream().map(i -> StopPointVersionMapper.toModel(i, recordingObligations)).toList())
+        .objects(stopPointVersions.stream().map(StopPointVersionMapper::toModel).toList())
         .totalCount(stopPointVersions.getTotalElements())
         .build();
   }
@@ -55,7 +55,7 @@ public class StopPointController implements StopPointApiV1 {
   @Override
   public List<ReadStopPointVersionModel> getStopPointVersions(String sloid) {
     return stopPointService.findAllBySloidOrderByValidFrom(sloid).stream()
-        .map(i -> StopPointVersionMapper.toModel(i, recordingObligationService.getRecordingObligation(sloid)))
+        .map(StopPointVersionMapper::toModel)
         .toList();
   }
 
@@ -67,7 +67,7 @@ public class StopPointController implements StopPointApiV1 {
     }
     StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(model);
     StopPointVersion savedVersion = stopPointService.save(stopPointVersion);
-    return StopPointVersionMapper.toModel(savedVersion, true);
+    return StopPointVersionMapper.toModel(savedVersion);
   }
 
   @Override
@@ -82,8 +82,7 @@ public class StopPointController implements StopPointApiV1 {
       platformService.updateAttentionFieldByParentSloid(stopPointVersionToUpdate.getSloid(), editedVersion.getMeansOfTransport());
     }
     return stopPointService.findAllByNumberOrderByValidFrom(stopPointVersionToUpdate.getNumber()).stream()
-        .map(i -> StopPointVersionMapper.toModel(i,
-            recordingObligationService.getRecordingObligation(stopPointVersionToUpdate.getSloid()))).toList();
+        .map(StopPointVersionMapper::toModel).toList();
   }
 
   @Override

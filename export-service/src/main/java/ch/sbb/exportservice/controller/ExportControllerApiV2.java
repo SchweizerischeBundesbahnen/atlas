@@ -66,6 +66,7 @@ public class ExportControllerApiV2 {
         case "toilet-batch" -> ExportObjectV2.TOILET;
         case "parking-lot-batch" -> ExportObjectV2.PARKING_LOT;
         case "relation-batch" -> ExportObjectV2.RELATION;
+        case "recording-obligation-batch" -> ExportObjectV2.RECORDING_OBLIGATION;
         // sepodi
         case "service-point-batch" -> ExportObjectV2.SERVICE_POINT;
         case "traffic-point-batch" -> ExportObjectV2.TRAFFIC_POINT;

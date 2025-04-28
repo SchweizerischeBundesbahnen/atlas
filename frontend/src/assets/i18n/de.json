@@ -1304,6 +1304,7 @@
       },
       "NO_STOP_POINT_FOUND": "Für diese Haltestelle wurden noch keine Daten zur Barrierefreiheit erfasst.",
       "RECORDING_OBLIGATION": "Erfassungspflicht",
+      "RECORDING_OBLIGATION_SAVED": "Erfassungspflicht erfolgreich aktualisiert.",
       "NO_RECORDING_OBLIGATION": "Zu dieser Haltestelle müssen gemäss dem Behindertengleichstellungsgesetz keine Daten zur Barrierefreiheit erfasst werden.",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Haltestelle wurde erfolgreich hinzugefügt.",
