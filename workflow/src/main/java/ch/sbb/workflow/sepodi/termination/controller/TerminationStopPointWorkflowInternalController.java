@@ -2,6 +2,7 @@ package ch.sbb.workflow.sepodi.termination.controller;
 
 import ch.sbb.workflow.sepodi.termination.api.TerminationStopPointWorkflowApi;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
+import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.service.TerminationStopPointWorkflowService;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +22,13 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
   @Override
   public TerminationStopPointWorkflowModel startTerminationStopPointWorkflow(
       TerminationStopPointWorkflowModel workflowModel) {
-    //    TerminationDecisionModel infoPlusDecision = TerminationDecisionModel.builder()
-    //        .terminationDecisionPerson(INFO_PLUS)
-    //        .build();
-    //    workflowModel.setInfoPlusDecision(infoPlusDecision);
     return TerminationStopPointWorkflowMapper.toModel(service.startTerminationWorkflow(workflowModel));
+  }
+
+  @Override
+  public TerminationStopPointWorkflowModel decisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
+    service.addDecisionInfoPlus(decisionModel, workflowId);
+    return null;
   }
 
 }

@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
@@ -158,7 +159,8 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
-  public ReadServicePointVersionModel updateServicePointTerminationStatus(String sloid, Long id) {
+  public ReadServicePointVersionModel updateServicePointTerminationStatus(String sloid, Long id,
+      UpdateTerminationServicePointModel updateTerminationServicePointModel) {
     List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
     if (servicePointVersions.isEmpty()) {
       throw new SloidNotFoundException(sloid);
@@ -166,7 +168,8 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersion = servicePointVersions.stream().filter(sp -> sp.getId().equals(id)).findFirst()
         .orElseThrow(() -> new IdNotFoundException(id));
     return ServicePointVersionMapper.toModel(
-        servicePointService.updateStopPointTerminationStatus(servicePointVersion, servicePointVersions));
+        servicePointService.updateStopPointTerminationStatus(servicePointVersion, servicePointVersions,
+            updateTerminationServicePointModel));
   }
 
   @Override

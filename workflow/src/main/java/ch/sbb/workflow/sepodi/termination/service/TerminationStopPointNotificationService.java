@@ -6,6 +6,7 @@ import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.workflow.mail.MailProducerService;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
+import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -75,4 +76,13 @@ public class TerminationStopPointNotificationService {
     return DATE_FORMATTER.format(workflow.getBoTerminationDate());
   }
 
+  public void sendCancelNotificationToApplicationMail(TerminationStopPointWorkflow terminationWorkflow,
+      TerminationDecisionModel decisionModel) {
+
+  }
+
+  public void sendTerminationApprovedNotificationToNova(TerminationStopPointWorkflow terminationWorkflow,
+      TerminationDecisionModel decisionModel) {
+
+  }
 }

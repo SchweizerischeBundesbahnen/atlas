@@ -1,5 +1,6 @@
 package ch.sbb.workflow.sepodi.termination.api;
 
+import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -27,7 +28,11 @@ public interface TerminationStopPointWorkflowApi {
   TerminationStopPointWorkflowModel startTerminationStopPointWorkflow(
       @RequestBody @Valid TerminationStopPointWorkflowModel workflowModel);
 
-  //TODO: addInfoPlusDecision
+  @PostMapping(path = "/decision/info-plus/{workflowId}")
+  @ResponseStatus(HttpStatus.CREATED)
+  TerminationStopPointWorkflowModel decisionInfoPlus(@RequestBody @Valid TerminationDecisionModel decisionModel,
+      @PathVariable Long workflowId);
+
   //TODO: addNovaDecision
   //TODO: cancelTermination for each case
 }

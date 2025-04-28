@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
+import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -195,9 +196,9 @@ public class ServicePointService {
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#servicePointVersion,
       #servicePointVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public ServicePointVersion updateStopPointTerminationStatus(ServicePointVersion servicePointVersion,
-      List<ServicePointVersion> servicePointVersions) {
+      List<ServicePointVersion> servicePointVersions, UpdateTerminationServicePointModel updateTerminationServicePointModel) {
     ServicePointHelper.validateIsStopPointLocatedInSwitzerland(servicePointVersion);
-    servicePointVersion.setTerminationInProgress(true);
+    servicePointVersion.setTerminationInProgress(updateTerminationServicePointModel.isTerminationInProgress());
     servicePointVersionRepository.save(servicePointVersion);
     return servicePointVersion;
   }
