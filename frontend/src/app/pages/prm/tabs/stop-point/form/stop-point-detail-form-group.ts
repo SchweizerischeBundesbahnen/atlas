@@ -365,11 +365,11 @@ export class StopPointFormGroupBuilder {
       form.controls.visualInfo,
       form.controls.wheelchairTicketMachine,
       form.controls.ticketMachine,
+      form.controls.alternativeTransport,
+      form.controls.shuttleService,
     ];
     dropdownControlsToPopulateWithDefaultValue.forEach((control) => {
       control.setValue(StandardAttributeType.ToBeCompleted);
     });
-    form.controls.alternativeTransport.setValue(StandardAttributeType.No);
-    form.controls.shuttleService.setValue(StandardAttributeType.No);
   }
 }
