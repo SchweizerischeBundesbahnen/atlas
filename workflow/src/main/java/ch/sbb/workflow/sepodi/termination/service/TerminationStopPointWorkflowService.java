@@ -1,9 +1,14 @@
 package ch.sbb.workflow.sepodi.termination.service;
 
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.STARTED;
+
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.redact.Redacted;
+import ch.sbb.workflow.exception.TerminationDateBeforeException;
+import ch.sbb.workflow.exception.TerminationStopPointWorkflowAlreadyInStatusException;
+import ch.sbb.workflow.exception.TerminationStopPointWorkflowPreconditionStatusException;
 import ch.sbb.workflow.sepodi.client.SePoDiAdminClient;
 import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
@@ -26,8 +31,9 @@ public class TerminationStopPointWorkflowService {
 
   public TerminationStopPointWorkflow startTerminationWorkflow(TerminationStopPointWorkflowModel model) {
 
-    if (repository.existsTerminationStopPointWorkflowBySloid(model.getSloid())) {
-      throw new IllegalStateException("Termination Stop Point workflow already exists");
+    if (!repository.findTerminationStopPointWorkflowBySloidAndVersionIdAndStatus(model.getSloid(), model.getVersionId(), STARTED)
+        .isEmpty()) {
+      throw new TerminationStopPointWorkflowAlreadyInStatusException(STARTED);
     }
     ReadServicePointVersionModel readServicePointVersionModel = postServicePointTerminationInProgress(model.getSloid(),
         model.getVersionId());
@@ -35,7 +41,7 @@ public class TerminationStopPointWorkflowService {
     TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflowMapper.toEntity(model);
     terminationStopPointWorkflow.setDesignationOfficial(readServicePointVersionModel.getDesignationOfficial());
     terminationStopPointWorkflow.setSboid(readServicePointVersionModel.getBusinessOrganisation());
-    terminationStopPointWorkflow.setStatus(TerminationWorkflowStatus.STARTED);
+    terminationStopPointWorkflow.setStatus(STARTED);
     terminationStopPointWorkflow.setNovaTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
     terminationStopPointWorkflow.setInfoPlusTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
 
@@ -51,14 +57,11 @@ public class TerminationStopPointWorkflowService {
 
   public TerminationStopPointWorkflow addDecisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
     TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
-    if (terminationWorkflow.getStatus() != TerminationWorkflowStatus.STARTED) {
-      //TODO: create custom Exception
-      throw new IllegalStateException("TerminationWorkflow Status must be STARTED");
+    if (terminationWorkflow.getStatus() != STARTED) {
+      throw new TerminationStopPointWorkflowPreconditionStatusException(STARTED);
     }
     if (decisionModel.getTerminationDate().isBefore(terminationWorkflow.getBoTerminationDate())) {
-      //TODO: create custom Exception
-      throw new IllegalStateException("The Termination Date cannot be before the Termination Date defined by the Business "
-          + "Organisation");
+      throw new TerminationDateBeforeException(decisionModel.getTerminationDate(), terminationWorkflow.getBoTerminationDate());
     }
     terminationWorkflow.setInfoPlusDecision(TerminationDecisionMapper.toEntity(decisionModel));
     terminationWorkflow.setInfoPlusTerminationDate(decisionModel.getTerminationDate());

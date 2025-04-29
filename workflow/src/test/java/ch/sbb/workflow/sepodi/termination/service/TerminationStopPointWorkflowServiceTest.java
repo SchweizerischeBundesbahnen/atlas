@@ -16,6 +16,9 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.workflow.exception.TerminationDateBeforeException;
+import ch.sbb.workflow.exception.TerminationStopPointWorkflowAlreadyInStatusException;
+import ch.sbb.workflow.exception.TerminationStopPointWorkflowPreconditionStatusException;
 import ch.sbb.workflow.sepodi.client.SePoDiAdminClient;
 import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationDecision;
@@ -73,7 +76,7 @@ class TerminationStopPointWorkflowServiceTest {
         .build();
 
     //when and then
-    assertThrows(IllegalStateException.class, () -> service.addDecisionInfoPlus(decisionModel,
+    assertThrows(TerminationDateBeforeException.class, () -> service.addDecisionInfoPlus(decisionModel,
         stopPointWorkflow.getId()));
   }
 
@@ -100,7 +103,7 @@ class TerminationStopPointWorkflowServiceTest {
         .build();
 
     //when and then
-    assertThrows(IllegalStateException.class, () -> service.addDecisionInfoPlus(decisionModel,
+    assertThrows(TerminationStopPointWorkflowPreconditionStatusException.class, () -> service.addDecisionInfoPlus(decisionModel,
         stopPointWorkflow.getId()));
   }
 
@@ -196,7 +199,8 @@ class TerminationStopPointWorkflowServiceTest {
         UpdateTerminationServicePointModel.builder().terminationInProgress(true).build()))
         .thenReturn(readServicePointVersionModel);
     //when and then
-    assertThrows(IllegalStateException.class, () -> service.startTerminationWorkflow(stopPointWorkflowModel));
+    assertThrows(TerminationStopPointWorkflowAlreadyInStatusException.class,
+        () -> service.startTerminationWorkflow(stopPointWorkflowModel));
   }
 
   @Test

@@ -26,17 +26,18 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.StopPointWorkflowTestData;
+import ch.sbb.workflow.entity.Person;
+import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
+import ch.sbb.workflow.otp.entity.Otp;
+import ch.sbb.workflow.otp.helper.OtpHelper;
+import ch.sbb.workflow.otp.repository.OtpRepository;
+import ch.sbb.workflow.sepodi.hearing.controller.StopPointWorkflowController;
 import ch.sbb.workflow.sepodi.hearing.enity.Decision;
 import ch.sbb.workflow.sepodi.hearing.enity.DecisionType;
 import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
-import ch.sbb.workflow.otp.entity.Otp;
-import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.sepodi.hearing.enity.StopPointWorkflow;
-import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
-import ch.sbb.workflow.otp.helper.OtpHelper;
 import ch.sbb.workflow.sepodi.hearing.mail.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.sepodi.hearing.mapper.StopPointClientPersonMapper;
-import ch.sbb.workflow.sepodi.hearing.controller.StopPointWorkflowController;
 import ch.sbb.workflow.sepodi.hearing.model.sepodi.AddExaminantsModel;
 import ch.sbb.workflow.sepodi.hearing.model.sepodi.DecisionModel;
 import ch.sbb.workflow.sepodi.hearing.model.sepodi.EditStopPointWorkflowModel;
@@ -48,7 +49,6 @@ import ch.sbb.workflow.sepodi.hearing.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.sepodi.hearing.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.sepodi.hearing.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.sepodi.hearing.repository.DecisionRepository;
-import ch.sbb.workflow.otp.repository.OtpRepository;
 import ch.sbb.workflow.sepodi.hearing.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.sepodi.hearing.service.SePoDiClientService;
 import java.time.LocalDate;
@@ -658,7 +658,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         ).andExpect(status().isPreconditionRequired())
         .andExpect(jsonPath("$.status", is(428)))
         .andExpect(jsonPath("$.message", is("Workflow already in status ADDED")))
-        .andExpect(jsonPath("$.error", is("StopPoint Workflow error")))
+        .andExpect(jsonPath("$.error", is("Workflow error")))
         .andExpect(jsonPath("$.details[0].message", is("Wrong status")))
         .andExpect(jsonPath("$.details[0].field", is("status")))
         .andExpect(jsonPath("$.details[0].displayInfo.code", is("WORKFLOW.ERROR.WRONG_CHANGING_STATUS")))

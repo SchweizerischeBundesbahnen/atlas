@@ -4,11 +4,13 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class StopPointWorkflowAlreadyInAddedStatusException extends BaseWorkflowAlreadyInStatusException {
+public class StopPointWorkflowPreconditionStatusException extends BaseWorkflowPreconditionStatusException {
+
+  private final WorkflowStatus expectedWorkflowStatus;
 
   @Override
   protected String getExpectedWorkflowStatus() {
-    return WorkflowStatus.ADDED.name();
+    return expectedWorkflowStatus.name();
   }
 
 }
