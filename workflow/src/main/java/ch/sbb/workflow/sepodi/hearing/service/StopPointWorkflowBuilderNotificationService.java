@@ -1,35 +1,22 @@
 package ch.sbb.workflow.sepodi.hearing.service;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.workflow.entity.Person;
+import ch.sbb.workflow.mail.BaseNotificationService;
 import ch.sbb.workflow.sepodi.hearing.enity.StopPointWorkflow;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class StopPointWorkflowBuilderNotificationService {
-
-  private static final String WORKFLOW_URL = "service-point-directory/workflows/";
-
-  @Value("${spring.profiles.active:local}")
-  private String activeProfile;
-
-  @Value("${mail.workflow.stop-point.from}")
-  private String from;
-
-  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(
-      AtlasApiConstants.DATE_FORMAT_PATTERN_CH);
+public class StopPointWorkflowBuilderNotificationService extends BaseNotificationService {
 
   public MailNotification buildWorkflowStartedExaminantMail(StopPointWorkflow stopPointWorkflow) {
     List<String> examinantMails = stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList();
