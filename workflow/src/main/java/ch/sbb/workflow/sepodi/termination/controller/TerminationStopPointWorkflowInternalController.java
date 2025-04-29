@@ -1,5 +1,6 @@
 package ch.sbb.workflow.sepodi.termination.controller;
 
+import ch.sbb.workflow.exception.TerminationDecisionPersonException;
 import ch.sbb.workflow.sepodi.termination.api.TerminationStopPointWorkflowApi;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
@@ -29,8 +30,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
   @Override
   public TerminationStopPointWorkflowModel decisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
     if (decisionModel.getTerminationDecisionPerson() != TerminationDecisionPerson.INFO_PLUS) {
-      //TODO: create custom Exception
-      throw new IllegalStateException("TerminationDecisionPerson must be INFO_PLUS");
+      throw new TerminationDecisionPersonException(TerminationDecisionPerson.INFO_PLUS);
     }
     return TerminationStopPointWorkflowMapper.toModel(service.addDecisionInfoPlus(decisionModel, workflowId));
   }

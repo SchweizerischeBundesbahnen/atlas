@@ -5,24 +5,21 @@ import static ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo.builder;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.sepodi.hearing.enity.StopPointWorkflow.Fields;
 import java.util.List;
 import java.util.TreeSet;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@RequiredArgsConstructor
-public class StopPointWorkflowStatusException extends AtlasException {
+public abstract class BaseWorkflowAlreadyInStatusException extends AtlasException {
 
-  private final WorkflowStatus expectedWorkflowStatus;
+  protected abstract String getExpectedWorkflowStatus();
 
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.PRECONDITION_REQUIRED.value())
-        .message("Workflow status must be " + expectedWorkflowStatus)
-        .error("StopPoint Workflow error")
+        .message(getWorkflowStatusWrongMessage())
+        .error("Workflow error")
         .details(new TreeSet<>(getErrorDetails()))
         .build();
   }
@@ -32,9 +29,14 @@ public class StopPointWorkflowStatusException extends AtlasException {
         .message("Wrong status")
         .field(Fields.status)
         .displayInfo(builder()
-            .code("WORKFLOW.ERROR.WORKFLOW_STATUS_MUST_BE_" + expectedWorkflowStatus.name())
-            .with(Fields.status, expectedWorkflowStatus.name())
+            .code("WORKFLOW.ERROR.WRONG_CHANGING_STATUS")
+            .with(Fields.status, getExpectedWorkflowStatus())
             .build())
         .build());
   }
+
+  private String getWorkflowStatusWrongMessage() {
+    return "Workflow already in status " + getExpectedWorkflowStatus();
+  }
 }
+

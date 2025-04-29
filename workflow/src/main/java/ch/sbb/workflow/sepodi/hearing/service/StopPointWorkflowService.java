@@ -2,17 +2,17 @@ package ch.sbb.workflow.sepodi.hearing.service;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.redact.Redacted;
-import ch.sbb.workflow.sepodi.hearing.enity.Decision;
-import ch.sbb.workflow.sepodi.hearing.enity.DecisionType;
-import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.sepodi.hearing.enity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
 import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
 import ch.sbb.workflow.exception.StopPointWorkflowNotInHearingException;
-import ch.sbb.workflow.exception.StopPointWorkflowStatusException;
+import ch.sbb.workflow.exception.StopPointWorkflowPreconditionStatusException;
+import ch.sbb.workflow.sepodi.hearing.enity.Decision;
+import ch.sbb.workflow.sepodi.hearing.enity.DecisionType;
+import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
+import ch.sbb.workflow.sepodi.hearing.enity.StopPointWorkflow;
 import ch.sbb.workflow.sepodi.hearing.mail.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.sepodi.hearing.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.sepodi.hearing.model.search.StopPointWorkflowSearchRestrictions;
@@ -67,7 +67,7 @@ public class StopPointWorkflowService {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
 
     if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
-      throw new StopPointWorkflowStatusException(WorkflowStatus.ADDED);
+      throw new StopPointWorkflowPreconditionStatusException(WorkflowStatus.ADDED);
     }
 
     if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())) {
@@ -135,10 +135,10 @@ public class StopPointWorkflowService {
     for (StopPointClientPersonModel examinant : examinants) {
       String email = examinant.getMail().toLowerCase();
 
-      if(isAddWorkflow &&
-        (email.equals(Examinants.NON_PROD_EMAIL_ATLAS.toLowerCase()) ||
-        email.equals(Examinants.NON_PROD_EMAIL_CANTON.toLowerCase()))) {
-          throw new StopPointWorkflowExaminantEmailNotUniqueException();
+      if (isAddWorkflow &&
+          (email.equals(Examinants.NON_PROD_EMAIL_ATLAS.toLowerCase()) ||
+              email.equals(Examinants.NON_PROD_EMAIL_CANTON.toLowerCase()))) {
+        throw new StopPointWorkflowExaminantEmailNotUniqueException();
       }
 
       if (!emailSet.add(email)) {
@@ -211,7 +211,7 @@ public class StopPointWorkflowService {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
 
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
-      throw new StopPointWorkflowStatusException(WorkflowStatus.HEARING);
+      throw new StopPointWorkflowPreconditionStatusException(WorkflowStatus.HEARING);
     }
 
     List<StopPointClientPersonModel> persons = new ArrayList<>(stopPointWorkflow.getExaminants().stream()
@@ -231,7 +231,8 @@ public class StopPointWorkflowService {
         .filter(i -> stopPointWorkflow.getCcEmails().stream().noneMatch(i::equalsIgnoreCase))
         .forEach(stopPointWorkflow.getCcEmails()::add);
 
-    List<String> addedExaminantMails = addExaminantsModel.getExaminants().stream().map(StopPointClientPersonModel::getMail).toList();
+    List<String> addedExaminantMails = addExaminantsModel.getExaminants().stream().map(StopPointClientPersonModel::getMail)
+        .toList();
     notificationService.sendStartToAddedExaminant(stopPointWorkflow, addedExaminantMails);
     return save(stopPointWorkflow);
   }

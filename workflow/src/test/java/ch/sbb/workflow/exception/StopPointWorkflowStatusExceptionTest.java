@@ -9,14 +9,16 @@ class StopPointWorkflowStatusExceptionTest {
 
   @Test
   void shouldHaveCorrectErrorCodeForHearing() {
-    StopPointWorkflowStatusException exception = new StopPointWorkflowStatusException(WorkflowStatus.HEARING);
+    StopPointWorkflowPreconditionStatusException exception = new StopPointWorkflowPreconditionStatusException(
+        WorkflowStatus.HEARING);
     assertThat(exception.getErrorResponse().getDetails().getFirst().getDisplayInfo().getCode()).isEqualTo(
         "WORKFLOW.ERROR.WORKFLOW_STATUS_MUST_BE_HEARING");
   }
 
   @Test
   void shouldHaveCorrectErrorCodeForAdded() {
-    StopPointWorkflowStatusException exception = new StopPointWorkflowStatusException(WorkflowStatus.ADDED);
+    StopPointWorkflowPreconditionStatusException exception = new StopPointWorkflowPreconditionStatusException(
+        WorkflowStatus.ADDED);
     assertThat(exception.getErrorResponse().getDetails().getFirst().getDisplayInfo().getCode()).isEqualTo(
         "WORKFLOW.ERROR.WORKFLOW_STATUS_MUST_BE_ADDED");
   }
