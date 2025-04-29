@@ -180,4 +180,16 @@ public class ExportServiceBatchSchedulerService extends BaseSchedulerService {
         "Trigger Export TimetableFieldNumber Batch");
   }
 
+  @SpanTracing
+  @Retryable(label = "triggerExportRecordingObligationBatch", retryFor = SchedulingExecutionException.class, maxAttempts =
+      MAX_ATTEMPTS,
+      backoff =
+      @Backoff(delay = BACKOFF_DELAY))
+  @Scheduled(cron = "${scheduler.export-service.recording-obligation-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerExportRecordingObligationBatch", lockAtMostFor = LOCK_FOR, lockAtLeastFor = LOCK_FOR)
+  public Response postTriggerExportRecordingObligationBatch() {
+    return executeRequest(exportServiceBatchClient::exportRecordingObligationBatch,
+        "Trigger Export RecordingObligation Batch");
+  }
+
 }

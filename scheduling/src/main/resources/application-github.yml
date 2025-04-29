@@ -138,6 +138,8 @@ scheduler:
       chron: "0 22 0 * * ?" #At 00:22:00am every day
     relation-trigger-batch:
       chron: "0 25 0 * * ?" #At 00:25:00am every day
+    recording-obligation-trigger-batch:
+      chron: "0 25 0 * * ?" #At 00:25:00am every day
     transport-company-trigger-batch:
       chron: "0 26 0 * * ?" #At 00:26:00am every day
     business-organisation-trigger-batch:
