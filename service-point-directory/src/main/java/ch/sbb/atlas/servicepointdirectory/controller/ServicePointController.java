@@ -16,6 +16,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusRevokedChangeNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationDateException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInReviewException;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotOnLastVersionException;
 import ch.sbb.atlas.servicepointdirectory.mapper.CreateServicePointMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointSwissWithGeoMapper;
@@ -217,6 +218,10 @@ public class ServicePointController implements ServicePointApiV1 {
         .orElseThrow(() -> new IdNotFoundException(id));
     if (!servicePointVersions.getLast().getId().equals(id)) {
       throw new TerminationNotOnLastVersionException();
+    }
+    if (servicePointVersion.getStatus() != Status.VALIDATED) {
+      throw new TerminationNotAllowedWhenVersionInReviewException(servicePointVersion.getNumber(),
+          servicePointVersion.getStatus());
     }
     return servicePointVersion;
   }
