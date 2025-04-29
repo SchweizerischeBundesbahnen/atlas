@@ -3,7 +3,7 @@ import java.util.*
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.java-restdoc")
-    id("org.openapi.generator") version "7.12.0"
+    id("org.openapi.generator") version "7.13.0"
     id("com.google.protobuf") version "0.9.5"
 }
 
