@@ -71,7 +71,7 @@ public class ServicePointService {
     boolean hasVersionInReview = servicePointVersions.stream()
         .anyMatch(servicePointVersion -> servicePointVersion.getStatus() == Status.IN_REVIEW);
     if (hasVersionInReview) {
-      throw new TerminationNotAllowedWhenVersionInReviewException(servicePointNumber);
+      throw new TerminationNotAllowedWhenVersionInReviewException(servicePointNumber, Status.IN_REVIEW);
     }
     servicePointVersions.forEach(servicePointVersion -> servicePointVersion.setStatus(Status.REVOKED));
     return servicePointVersions;

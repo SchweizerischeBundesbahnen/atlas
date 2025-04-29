@@ -817,10 +817,11 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldStopServicePointTermination() throws Exception {
-    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-        ServicePointTestData.getAargauServicePointVersionModel());
-    Long id = servicePointVersionModel.getId();
-    String sloid = servicePointVersionModel.getSloid();
+    ServicePointVersion servicePointVersion = ServicePointTestData.createStopPointServicePointWithUnknownMeanOfTransportVersion();
+    servicePointVersion.setStatus(Status.VALIDATED);
+    ServicePointVersion version = repository.save(servicePointVersion);
+    Long id = version.getId();
+    String sloid = version.getSloid();
 
     mvc.perform(put("/v1/service-points/termination/stop/" + sloid + "/" + id))
         .andExpect(status().isOk())
@@ -849,14 +850,15 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldStartServicePointTermination() throws Exception {
-    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-        ServicePointTestData.getAargauServicePointVersionModel());
-    Long id = servicePointVersionModel.getId();
-    String sloid = servicePointVersionModel.getSloid();
+    ServicePointVersion servicePointVersion = ServicePointTestData.createStopPointServicePointWithUnknownMeanOfTransportVersion();
+    servicePointVersion.setStatus(Status.VALIDATED);
+    ServicePointVersion version = repository.save(servicePointVersion);
+    Long id = version.getId();
+    String sloid = version.getSloid();
 
     UpdateTerminationServicePointModel updateTerminationServicePointModel = UpdateTerminationServicePointModel.builder()
         .terminationInProgress(true)
-        .terminationDate(servicePointVersionModel.getValidTo().minusDays(1))
+        .terminationDate(version.getValidTo().minusDays(1))
         .build();
 
     mvc.perform(put("/v1/service-points/termination/start/" + sloid + "/" + id)
