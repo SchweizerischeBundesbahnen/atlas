@@ -53,4 +53,7 @@ public interface ExportServiceBatchClient {
 
   @PostMapping(value = "lidi/ttfn-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response exportTimetableFieldNumberBatch();
+
+  @PostMapping(value = "prm/recording-obligation-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response exportRecordingObligationBatch();
 }
