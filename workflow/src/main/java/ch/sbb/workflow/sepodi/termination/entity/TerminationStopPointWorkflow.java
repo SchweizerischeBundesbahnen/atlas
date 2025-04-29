@@ -68,6 +68,9 @@ public class TerminationStopPointWorkflow extends BaseWorkflowEntity {
   @AtlasVersionableProperty
   private String applicantMail;
 
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
+  private String workflowComment;
+
   @NotNull
   @Enumerated(EnumType.STRING)
   private TerminationWorkflowStatus status;

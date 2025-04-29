@@ -51,7 +51,7 @@ class TerminationStopPointWorkflowServiceTest {
   private TerminationStopPointWorkflowRepository repository;
 
   @MockitoBean
-  private SePoDiAdminClient sePoDiClientService;
+  private SePoDiAdminClient sePoDiAdminClient;
 
   @MockitoBean
   private TerminationStopPointNotificationService notificationService;
@@ -194,7 +194,7 @@ class TerminationStopPointWorkflowServiceTest {
     repository.save(workflow);
     TerminationStopPointWorkflowModel stopPointWorkflowModel = buildTerminationStopPointWorkflowModel();
     ReadServicePointVersionModel readServicePointVersionModel = buildReadServicePointVersionModel();
-    when(sePoDiClientService.postServicePointTerminationStatusUpdate(stopPointWorkflowModel.getSloid(),
+    when(sePoDiAdminClient.postStartServicePointTermination(stopPointWorkflowModel.getSloid(),
         stopPointWorkflowModel.getVersionId(),
         UpdateTerminationServicePointModel.builder().terminationInProgress(true).build()))
         .thenReturn(readServicePointVersionModel);
@@ -208,9 +208,14 @@ class TerminationStopPointWorkflowServiceTest {
     //given
     TerminationStopPointWorkflowModel stopPointWorkflowModel = buildTerminationStopPointWorkflowModel();
     ReadServicePointVersionModel readServicePointVersionModel = buildReadServicePointVersionModel();
-    when(sePoDiClientService.postServicePointTerminationStatusUpdate(stopPointWorkflowModel.getSloid(),
-        stopPointWorkflowModel.getVersionId(),
-        UpdateTerminationServicePointModel.builder().terminationInProgress(true).build()))
+    UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
+        .terminationInProgress(true)
+        .terminationDate(stopPointWorkflowModel.getBoTerminationDate())
+        .build();
+    when(sePoDiAdminClient.postStartServicePointTermination(
+        stopPointWorkflowModel.getSloid(),
+        stopPointWorkflowModel.getId(),
+        terminationServicePointModel))
         .thenReturn(readServicePointVersionModel);
     //when
     TerminationStopPointWorkflow result = service.startTerminationWorkflow(stopPointWorkflowModel);

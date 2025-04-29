@@ -816,16 +816,50 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldUpdateServicePointTerminationStatus() throws Exception {
+  void shouldStopServicePointTermination() throws Exception {
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        ServicePointTestData.getAargauServicePointVersionModel());
+    Long id = servicePointVersionModel.getId();
+    String sloid = servicePointVersionModel.getSloid();
+
+    mvc.perform(put("/v1/service-points/termination/stop/" + sloid + "/" + id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.terminationInProgress", is(false)));
+  }
+
+  @Test
+  void shouldNotStopServicePointTerminationWhenIdNotFound() throws Exception {
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        ServicePointTestData.getAargauServicePointVersionModel());
+    long id = 456L;
+    String sloid = servicePointVersionModel.getSloid();
+
+    mvc.perform(put("/v1/service-points/termination/stop/" + sloid + "/" + id))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void shouldNotStopServicePointTerminationWhenSloidDoesNotExists() throws Exception {
+    long id = 123L;
+    String sloid = "ch:1:sloid:753126";
+
+    mvc.perform(put("/v1/service-points/termination/stop/" + sloid + "/" + id))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void shouldStartServicePointTermination() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
     String sloid = servicePointVersionModel.getSloid();
 
     UpdateTerminationServicePointModel updateTerminationServicePointModel = UpdateTerminationServicePointModel.builder()
-        .terminationInProgress(true).build();
+        .terminationInProgress(true)
+        .terminationDate(servicePointVersionModel.getValidTo().minusDays(1))
+        .build();
 
-    mvc.perform(put("/v1/service-points/termination/" + "/" + sloid + "/" + id)
+    mvc.perform(put("/v1/service-points/termination/start/" + sloid + "/" + id)
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateTerminationServicePointModel)))
         .andExpect(status().isOk())
@@ -833,30 +867,33 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotUpdateServicePointTerminationStatusWhenIdNotFound() throws Exception {
+  void shouldNotStartServicePointTerminationWhenIdNotFound() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         ServicePointTestData.getAargauServicePointVersionModel());
     long id = 456L;
     String sloid = servicePointVersionModel.getSloid();
 
     UpdateTerminationServicePointModel updateTerminationServicePointModel = UpdateTerminationServicePointModel.builder()
-        .terminationInProgress(true).build();
-
-    mvc.perform(put("/v1/service-points/termination/" + "/" + sloid + "/" + id)
+        .terminationInProgress(true)
+        .terminationDate(servicePointVersionModel.getValidTo().minusDays(1))
+        .build();
+    mvc.perform(put("/v1/service-points/termination/start/" + sloid + "/" + id)
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateTerminationServicePointModel)))
         .andExpect(status().isNotFound());
   }
 
   @Test
-  void shouldNotUpdateServicePointTerminationStatusWhenSloidDoesNotExists() throws Exception {
+  void shouldNotStartServicePointTerminationWhenSloidDoesNotExists() throws Exception {
     long id = 123L;
     String sloid = "ch:1:sloid:753126";
 
     UpdateTerminationServicePointModel updateTerminationServicePointModel = UpdateTerminationServicePointModel.builder()
-        .terminationInProgress(true).build();
+        .terminationInProgress(true)
+        .terminationDate(LocalDate.now())
+        .build();
 
-    mvc.perform(put("/v1/service-points/termination/" + "/" + sloid + "/" + id)
+    mvc.perform(put("/v1/service-points/termination/start/" + sloid + "/" + id)
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateTerminationServicePointModel)))
         .andExpect(status().isNotFound());

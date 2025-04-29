@@ -13,21 +13,12 @@ public class TerminationStopPointWorkflowMapper {
         .sloid(model.getSloid())
         .applicantMail(model.getApplicantMail())
         .status(model.getStatus())
+        .workflowComment(model.getWorkflowComment())
         .boTerminationDate(model.getBoTerminationDate())
         .infoPlusTerminationDate(model.getInfoPlusTerminationDate())
         .novaTerminationDate(model.getNovaTerminationDate())
         .infoPlusDecision(model.getInfoPlusDecision() != null ?
             TerminationDecisionMapper.toEntity(model.getInfoPlusDecision()) : null)
-        .build();
-  }
-
-  public static TerminationStopPointWorkflow toEntityStart(TerminationStopPointWorkflowModel model) {
-    return TerminationStopPointWorkflow.builder()
-        .versionId(model.getVersionId())
-        .sloid(model.getSloid())
-        .applicantMail(model.getApplicantMail())
-        .boTerminationDate(model.getBoTerminationDate())
-        .infoPlusDecision(TerminationDecisionMapper.toEntity(model.getInfoPlusDecision()))
         .build();
   }
 
@@ -38,6 +29,7 @@ public class TerminationStopPointWorkflowMapper {
         .applicantMail(workflow.getApplicantMail())
         .sloid(workflow.getSloid())
         .status(workflow.getStatus())
+        .workflowComment(workflow.getWorkflowComment())
         .boTerminationDate(workflow.getBoTerminationDate())
         .infoPlusTerminationDate(workflow.getInfoPlusTerminationDate())
         .novaTerminationDate(workflow.getNovaTerminationDate())

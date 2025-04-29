@@ -35,8 +35,13 @@ public class TerminationStopPointWorkflowService {
         .isEmpty()) {
       throw new TerminationStopPointWorkflowAlreadyInStatusException(STARTED);
     }
-    ReadServicePointVersionModel readServicePointVersionModel = postServicePointTerminationInProgress(model.getSloid(),
-        model.getVersionId());
+    UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
+        .terminationInProgress(true)
+        .terminationDate(model.getBoTerminationDate())
+        .build();
+    
+    ReadServicePointVersionModel readServicePointVersionModel = sePoDiAdminClient.postStartServicePointTermination(
+        model.getSloid(), model.getId(), terminationServicePointModel);
 
     TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflowMapper.toEntity(model);
     terminationStopPointWorkflow.setDesignationOfficial(readServicePointVersionModel.getDesignationOfficial());
@@ -65,33 +70,21 @@ public class TerminationStopPointWorkflowService {
     }
     terminationWorkflow.setInfoPlusDecision(TerminationDecisionMapper.toEntity(decisionModel));
     terminationWorkflow.setInfoPlusTerminationDate(decisionModel.getTerminationDate());
-    if (decisionModel.getJudgement() == JudgementType.NO) {
-      postServicePointTerminationInProgress(decisionModel.getSloid(), decisionModel.getVersionId());
-      terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
-      notificationService.sendCancelNotificationToApplicationMail(terminationWorkflow, decisionModel);
-    }
+
     if (decisionModel.getJudgement() == JudgementType.YES) {
-      postServicePointTerminationNotInProgress(decisionModel.getSloid(), decisionModel.getVersionId());
       terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_APPROVED);
       notificationService.sendTerminationApprovedNotificationToNova(terminationWorkflow, decisionModel);
+    }
+    if (decisionModel.getJudgement() == JudgementType.NO) {
+      postStopServicePointTermination(decisionModel.getSloid(), decisionModel.getVersionId());
+      terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
+      notificationService.sendCancelNotificationToApplicationMail(terminationWorkflow, decisionModel);
     }
     return repository.save(terminationWorkflow);
   }
 
-  private ReadServicePointVersionModel postServicePointTerminationInProgress(String sloid,
-      Long id) {
-    return postServicePointTerminationStatusUpdate(sloid, id, true);
-  }
-
-  private ReadServicePointVersionModel postServicePointTerminationNotInProgress(String sloid,
-      Long id) {
-    return postServicePointTerminationStatusUpdate(sloid, id, false);
-  }
-
-  private ReadServicePointVersionModel postServicePointTerminationStatusUpdate(String sloid,
-      Long id, boolean terminationInProgress) {
-    return sePoDiAdminClient.postServicePointTerminationStatusUpdate(
-        sloid, id, UpdateTerminationServicePointModel.builder().terminationInProgress(terminationInProgress).build());
+  private ReadServicePointVersionModel postStopServicePointTermination(String sloid, Long id) {
+    return sePoDiAdminClient.postStopServicePointTermination(sloid, id);
   }
 
 }
