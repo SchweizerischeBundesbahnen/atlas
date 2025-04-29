@@ -49,18 +49,18 @@ public class TerminationStopPointWorkflowService {
     return repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
-  public void addDecisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
+  public TerminationStopPointWorkflow addDecisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
     TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
     if (terminationWorkflow.getStatus() != TerminationWorkflowStatus.STARTED) {
       //TODO: create custom Exception
       throw new IllegalStateException("TerminationWorkflow Status must be STARTED");
     }
-    terminationWorkflow.setInfoPlusDecision(TerminationDecisionMapper.toEntity(decisionModel));
     if (decisionModel.getTerminationDate().isBefore(terminationWorkflow.getBoTerminationDate())) {
       //TODO: create custom Exception
       throw new IllegalStateException("The Termination Date cannot be before the Termination Date defined by the Business "
           + "Organisation");
     }
+    terminationWorkflow.setInfoPlusDecision(TerminationDecisionMapper.toEntity(decisionModel));
     terminationWorkflow.setInfoPlusTerminationDate(decisionModel.getTerminationDate());
     if (decisionModel.getJudgement() == JudgementType.NO) {
       postServicePointTerminationInProgress(decisionModel.getSloid(), decisionModel.getVersionId());
@@ -72,7 +72,7 @@ public class TerminationStopPointWorkflowService {
       terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_APPROVED);
       notificationService.sendTerminationApprovedNotificationToNova(terminationWorkflow, decisionModel);
     }
-    repository.save(terminationWorkflow);
+    return repository.save(terminationWorkflow);
   }
 
   private ReadServicePointVersionModel postServicePointTerminationInProgress(String sloid,

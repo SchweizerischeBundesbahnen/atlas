@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "examinants")
 public class Examinants {
 
-  private static String PROD_PROFILE = "prod";
+  private static final String PROD_PROFILE = "prod";
   public static final String NON_PROD_EMAIL_CANTON = "TechSupport-ATLAS@sbb.ch";
   public static final String NON_PROD_EMAIL_ATLAS = "testuser-atlas@sbb.ch";
 
