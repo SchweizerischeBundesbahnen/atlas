@@ -74,6 +74,7 @@ public class BulkImport {
     return switch (application) {
       case SEPODI -> BusinessObjectType.SEPODI_BUSINESS_OBJECTS.contains(objectType);
       case PRM -> BusinessObjectType.PRM_BUSINESS_OBJECTS.contains(objectType);
+      case LIDI -> BusinessObjectType.LIDI_BUSINESS_OBJECTS.contains(objectType);
       default -> throw new IllegalStateException("Unexpected value: " + application);
     };
   }
