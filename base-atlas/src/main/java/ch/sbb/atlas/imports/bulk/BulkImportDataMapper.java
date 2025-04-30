@@ -32,7 +32,7 @@ public abstract class BulkImportDataMapper {
           setFieldValue(targetField, targetModel, updateValue);
         } else if (currentEntity.isPresent()) {
           Field defaultField = ReflectionUtils.findField(currentEntity.get().getClass(), updateField.getName());
-          ReflectionUtils.makeAccessible(Objects.requireNonNull(defaultField));
+          ReflectionUtils.makeAccessible(Objects.requireNonNull(defaultField, "Field " + updateField.getName() + " not found"));
           Object defaultValue = ReflectionUtils.getField(Objects.requireNonNull(defaultField), currentEntity.get());
 
           setFieldValue(targetField, targetModel, defaultValue);

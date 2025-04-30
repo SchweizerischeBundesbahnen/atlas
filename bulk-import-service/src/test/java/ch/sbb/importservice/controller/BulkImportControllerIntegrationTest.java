@@ -20,6 +20,7 @@ import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.ImportFiles;
+import ch.sbb.importservice.client.LineBulkImportClient;
 import ch.sbb.importservice.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.client.TrafficPointBulkImportClient;
 import ch.sbb.importservice.entity.BulkImport;
@@ -57,6 +58,9 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @MockitoBean
   private TrafficPointBulkImportClient trafficPointBulkImportClient;
+
+  @MockitoBean
+  private LineBulkImportClient lineBulkImportClient;
 
   @MockitoBean
   private AmazonService amazonService;
@@ -218,5 +222,37 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
     assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/create-service-point-2.xlsx.csv");
 
     verify(servicePointBulkImportClient, atLeastOnce()).bulkImportCreate(any());
+  }
+
+  @Test
+  void shouldImportLineUpdate() throws IOException {
+    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+        + "/LIDI/LINE/UPDATE";
+    File file = ImportFiles.getFileByPath("import-files/valid/line-update.csv");
+
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "line-update.csv", CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    BulkImportRequest bulkImportRequest = BulkImportRequest.builder()
+        .applicationType(ApplicationType.LIDI)
+        .objectType(BusinessObjectType.LINE)
+        .importType(ImportType.UPDATE)
+        .emails(List.of("test-cc@atlas.ch"))
+        .build();
+
+    when(lineBulkImportClient.lineUpdate(any())).thenReturn(
+        List.of(BulkImportItemExecutionResult.builder()
+            .lineNumber(2)
+            .build()));
+    bulkImportController.startBulkImport(bulkImportRequest, multipartFile);
+
+    List<BulkImport> bulkImports = bulkImportRepository.findAll();
+    assertThat(bulkImports).hasSize(1);
+
+    BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
+    assertThat(bulkImport.getId()).isNotNull();
+    assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/line-update.csv");
+
+    verify(lineBulkImportClient, atLeastOnce()).lineUpdate(any());
   }
 }
