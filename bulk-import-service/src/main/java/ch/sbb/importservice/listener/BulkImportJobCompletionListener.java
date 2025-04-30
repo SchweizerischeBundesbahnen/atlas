@@ -14,7 +14,6 @@ import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
 import ch.sbb.importservice.service.bulk.log.LogFile;
 import ch.sbb.importservice.service.mail.MailProducerService;
 import ch.sbb.importservice.utils.Translation;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
