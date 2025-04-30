@@ -12,7 +12,7 @@ import {
   WorkflowStatus,
 } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { LineInternalService } from '../../../../api/service/line-internal.service';
+import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 
 const version: LineVersionSnapshot = {
   lineType: LineType.Operational,

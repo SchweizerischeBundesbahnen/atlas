@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { TimetableHearingStatementV2 ,} from '../../../api';
 import { Pages } from '../../pages';
-import { TimetableHearingStatementInternalService } from '../../../api/service/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
 
 @Injectable({ providedIn: 'root' })
 export class StatementDetailResolver {

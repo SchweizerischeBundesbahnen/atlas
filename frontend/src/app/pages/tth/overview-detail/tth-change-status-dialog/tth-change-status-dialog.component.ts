@@ -7,7 +7,7 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { Subject, takeUntil } from 'rxjs';
 import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
 import { ValidationService } from 'src/app/core/validation/validation.service';
-import { TimetableHearingStatementsService } from '../../../../api';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 
 @Component({

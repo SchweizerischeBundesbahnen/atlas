@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../../app.testing.mocks';
-import { LineInternalService } from '../../../../api/service/line-internal.service';
+import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 

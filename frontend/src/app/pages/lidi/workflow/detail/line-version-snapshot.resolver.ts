@@ -3,7 +3,7 @@ import { LineVersionSnapshot } from '../../../../api';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable } from 'rxjs';
 import { Pages } from '../../../pages';
-import { LineInternalService } from '../../../../api/service/line-internal.service';
+import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 
 @Injectable({ providedIn: 'root' })
 export class LineVersionSnapshotResolver {

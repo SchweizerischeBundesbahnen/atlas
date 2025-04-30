@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { ReadSublineVersionV2, Status, SublineType ,} from '../../../../api';
 import { SublineDetailResolver } from './subline-detail.resolver';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { SublineService } from '../../../../api/service/subline.service';
+import { SublineService } from '../../../../api/service/lidi/subline.service';
 
 const version: ReadSublineVersionV2 = {
   id: 1234,

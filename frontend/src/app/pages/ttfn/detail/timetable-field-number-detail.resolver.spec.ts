@@ -13,7 +13,7 @@ import {
 } from './timetable-field-number-detail.resolver';
 import { Observable, of } from 'rxjs';
 import { AppTestingModule } from '../../../app.testing.module';
-import { TimetableFieldNumberService } from '../../../api/service/timetable-field-number.service';
+import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable-field-number.service';
 
 const version: TimetableFieldNumberVersion = {
   id: 1234,

@@ -79,7 +79,6 @@ openApiGenerate {
     )
     library.set("spring-cloud")
     generateApiTests.set(false)
-
 }
 
 sourceSets {
