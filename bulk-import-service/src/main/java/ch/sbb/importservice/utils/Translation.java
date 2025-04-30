@@ -22,7 +22,8 @@ public class Translation {
 
   private final static Map<ApplicationType, Values> applicationTranslations = Map.of(
       ApplicationType.SEPODI, new Values("Dienststellen", "points de services", "posto di servizio"),
-      ApplicationType.PRM, new Values("Barrierefreiheit", "accessibilité", "accessibilità")
+      ApplicationType.PRM, new Values("Barrierefreiheit", "accessibilité", "accessibilità"),
+      ApplicationType.LIDI, new Values("Linienverzeichnis", "liste des lignes", "elenco delle linee")
   );
 
   private final static Map<BusinessObjectType, Values> objectTypeTranslations = Map.ofEntries(
@@ -39,7 +40,8 @@ public class Translation {
       Map.entry(BusinessObjectType.REFERENCE_POINT, new Values("Referenzpunkt",
           "point de référence", "punto di riferimento")),
       Map.entry(BusinessObjectType.RELATION, new Values("Verbindungen", "relations", "collegamenti")),
-      Map.entry(BusinessObjectType.TOILET, new Values("Toilette", "toilettes", "servizi igienici"))
+      Map.entry(BusinessObjectType.TOILET, new Values("Toilette", "toilettes", "servizi igienici")),
+      Map.entry(BusinessObjectType.LINE, new Values("Linie", "ligne", "linea"))
   );
 
   private final static Map<ImportType, Values> importTypeTranslations = Map.of(

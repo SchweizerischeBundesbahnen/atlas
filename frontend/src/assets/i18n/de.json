@@ -189,6 +189,7 @@
       "APPLICATION": "Applikation",
       "SEPODI": "Dienststellen",
       "PRM": "Barrierefreiheit",
+      "LIDI": "Linienverzeichnis",
       "OBJECT": "Objekt",
       "SERVICE_POINT": "Dienststelle",
       "TRAFFIC_POINT": "Haltekante",
@@ -200,6 +201,7 @@
       "RELATION": "Verbindung",
       "PLATFORM_REDUCED": "Haltekante (reduziert)",
       "PLATFORM_COMPLETE": "Haltekante (komplett)",
+      "LINE": "Linie",
       "TOILET": "Toilette",
       "SCENARIO": "Szenario",
       "CREATE": "Erfassung",
@@ -411,7 +413,8 @@
       "CONFLICT": {
         "SWISS_NUMBER": "Die CH-Liniennummer (CHLNR) {{swissLineNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{slnid}} vergeben.",
         "DELETE": "Linie mit {{slnid}} kann nicht gelöscht werden, da sie noch von Teillinie {{SublineVersion.slnid}} referenziert wird",
-        "SUBLINE_VALIDITY": "Das angegebene Datum ist ungültig und liegt ausserhalb der Gültigkeit der übergeordneten Linie. Die übergeordneten Linie ist gültig von: {{validFrom}} bis: {{validTo}}"
+        "SUBLINE_VALIDITY": "Das angegebene Datum ist ungültig und liegt ausserhalb der Gültigkeit der übergeordneten Linie. Die übergeordneten Linie ist gültig von: {{validFrom}} bis: {{validTo}}",
+        "NON_UPDATABLE": "Das Feld {{field}} kann für den Linientyp {{lineType}} nicht aktualisiert werden."
       },
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Gültigkeit der Teillinie {{sublinie.swissSublineNumber}}. Diese ist {{sublinie.validFrom}}-{{sublinie.validTo}}."
