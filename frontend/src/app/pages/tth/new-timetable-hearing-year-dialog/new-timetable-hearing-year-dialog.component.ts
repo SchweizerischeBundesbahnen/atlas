@@ -1,13 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogClose,
   MatDialogActions,
+  MatDialogClose,
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { NewTimetableHearingYearDialogData } from './model/new-timetable-hearing-year-dialog.data';
 import { HearingStatus, TimetableHearingYear } from '../../../api';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
