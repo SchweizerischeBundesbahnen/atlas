@@ -4,7 +4,7 @@ import {
   TimetableHearingStatementV2,
 } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TimetableFieldNumberInternalService } from '../../../api/service/timetable-field-number-internal.service';
+import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
 
 @Injectable({
   providedIn: 'root',

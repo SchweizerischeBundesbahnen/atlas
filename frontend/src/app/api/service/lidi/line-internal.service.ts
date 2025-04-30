@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AtlasApiService } from './atlasApi.service';
+import { AtlasApiService } from '../atlasApi.service';
 import { Observable } from 'rxjs';
-import { WorkflowStatus } from '../model/workflowStatus';
-import { ContainerLineVersionSnapshot } from '../model/containerLineVersionSnapshot';
-import { LineVersionSnapshot } from '../model/lineVersionSnapshot';
-import { UpdateLineVersionV2 } from '../model/updateLineVersionV2';
-import { AffectedSublinesModel } from '../model/affectedSublinesModel';
+import { WorkflowStatus } from '../../model/workflowStatus';
+import { ContainerLineVersionSnapshot } from '../../model/containerLineVersionSnapshot';
+import { LineVersionSnapshot } from '../../model/lineVersionSnapshot';
+import { UpdateLineVersionV2 } from '../../model/updateLineVersionV2';
+import { AffectedSublinesModel } from '../../model/affectedSublinesModel';
 
 @Injectable({
   providedIn: 'root',

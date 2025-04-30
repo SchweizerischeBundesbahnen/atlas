@@ -8,7 +8,7 @@ import { TthChangeCantonFormGroup } from './model/tth-change-canton-form-group';
 import { ChangeCantonData } from './model/change-canton-data';
 import { takeUntil } from 'rxjs/operators';
 import { ValidationService } from 'src/app/core/validation/validation.service';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 
 @Component({

@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { LineVersionV2 } from '../../../../api';
 import { Pages } from '../../../pages';
-import { LineService } from '../../../../api/service/line.service';
+import { LineService } from '../../../../api/service/lidi/line.service';
 
 @Injectable({ providedIn: 'root' })
 export class LineDetailResolver {

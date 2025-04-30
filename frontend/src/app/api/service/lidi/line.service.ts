@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { AtlasApiService } from './atlasApi.service';
-import { Status } from '../model/status';
-import { LidiElementType } from '../model/lidiElementType';
-import { ElementType } from '../model/elementType';
+import { AtlasApiService } from '../atlasApi.service';
+import { Status } from '../../model/status';
+import { LidiElementType } from '../../model/lidiElementType';
+import { ElementType } from '../../model/elementType';
 import { Observable } from 'rxjs';
-import { ContainerLine } from '../model/containerLine';
-import { Line } from '../model/line';
-import { LineVersion } from '../model/lineVersion';
-import { LineVersionV2 } from '../model/lineVersionV2';
-import { UpdateLineVersionV2 } from '../model/updateLineVersionV2';
+import { ContainerLine } from '../../model/containerLine';
+import { Line } from '../../model/line';
+import { LineVersion } from '../../model/lineVersion';
+import { LineVersionV2 } from '../../model/lineVersionV2';
+import { UpdateLineVersionV2 } from '../../model/updateLineVersionV2';
 
 @Injectable({
   providedIn: 'root',
