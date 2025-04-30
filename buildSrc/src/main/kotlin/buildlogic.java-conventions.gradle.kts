@@ -40,7 +40,7 @@ repositories {
 
 dependencies {
     constraints {
-        implementation("io.swagger.core.v3:swagger-core-jakarta:2.2.30"){
+        implementation("io.swagger.core.v3:swagger-core-jakarta:2.2.30") {
             because("Previous version has a bug not making attributes required in spec yaml")
         }
     }
@@ -96,12 +96,16 @@ publishing {
 tasks.withType<Test> {
     failFast = true
     useJUnitPlatform()
-    testLogging{
-        events("passed", "skipped", "failed","standardOut", "standardError")
+    testLogging {
+        events("passed", "skipped", "failed", "standardOut", "standardError")
         showCauses = true
     }
-    jvmArgs = listOf("-javaagent:${mockitoAgent.asPath}","-Xshare:off")
+    jvmArgs = listOf("-javaagent:${mockitoAgent.asPath}", "-Xshare:off")
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+
+    if (project.hasProperty("onlyApim")) {
+        include("**/ApimYamlExtractionTest.class")
+    }
 }
 
 tasks.withType<JavaCompile>().configureEach {
