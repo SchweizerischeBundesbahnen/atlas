@@ -1,15 +1,16 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {SepodiMapviewComponent} from './sepodi-mapview.component';
-import {AuthService} from '../../../core/auth/auth.service';
-import {AppTestingModule} from '../../../app.testing.module';
-import {Component, Input} from '@angular/core';
-import {ServicePointSearchType} from "../../../core/search-service-point/service-point-search";
-import {AtlasButtonComponent} from "../../../core/components/button/atlas-button.component";
+import { SepodiMapviewComponent } from './sepodi-mapview.component';
+import { AuthService } from '../../../core/auth/auth.service';
+import { AppTestingModule } from '../../../app.testing.module';
+import { Component, Input } from '@angular/core';
+import { ServicePointSearchType } from '../../../core/search-service-point/service-point-search';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 
 @Component({
   selector: 'atlas-map',
   template: '',
+  imports: [AppTestingModule],
 })
 export class MockAtlasMapComponent {
   @Input() isSidePanelOpen = false;
@@ -18,11 +19,11 @@ export class MockAtlasMapComponent {
 @Component({
   selector: 'app-search-service-point-panel',
   template: '<h1>SearchServicePointMockComponent</h1>',
+  imports: [AppTestingModule],
 })
 class SearchServicePointMockComponent {
   @Input() searchType!: ServicePointSearchType;
 }
-
 
 const authService: Partial<AuthService> = {};
 
@@ -32,9 +33,14 @@ describe('SepodiMapviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SepodiMapviewComponent, MockAtlasMapComponent, SearchServicePointMockComponent, AtlasButtonComponent],
-      imports: [AppTestingModule],
-      providers: [{provide: AuthService, useValue: authService}],
+      imports: [
+        AppTestingModule,
+        SepodiMapviewComponent,
+        MockAtlasMapComponent,
+        SearchServicePointMockComponent,
+        AtlasButtonComponent,
+      ],
+      providers: [{ provide: AuthService, useValue: authService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SepodiMapviewComponent);
@@ -48,9 +54,13 @@ describe('SepodiMapviewComponent', () => {
 
   it('should style side panel to open and closed', () => {
     component.setRouteActive(true);
-    expect(component.detailContainer.nativeElement.classList).toContain('side-panel-open');
+    expect(component.detailContainer.nativeElement.classList).toContain(
+      'side-panel-open'
+    );
 
     component.setRouteActive(false);
-    expect(component.detailContainer.nativeElement.classList.value).toEqual('detail-container');
+    expect(component.detailContainer.nativeElement.classList.value).toEqual(
+      'detail-container'
+    );
   });
 });

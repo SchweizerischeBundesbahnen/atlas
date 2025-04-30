@@ -1,9 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Observable, of } from 'rxjs';
-import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  convertToParamMap,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { platformResolver } from './platform.resolver';
-import { PersonWithReducedMobilityService, ReadPlatformVersion } from '../../../../../../api';
+import {
+  PersonWithReducedMobilityService,
+  ReadPlatformVersion,
+} from '../../../../../../api';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 
 const platform: ReadPlatformVersion[] = [
@@ -48,9 +55,11 @@ const platform: ReadPlatformVersion[] = [
 describe('PrmPlatformResolver', () => {
   const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['getPlatformVersions'],
+    ['getPlatformVersions']
   );
-  personWithReducedMobilityServiceSpy.getPlatformVersions.and.returnValue(of(platform));
+  personWithReducedMobilityServiceSpy.getPlatformVersions.and.returnValue(
+    of(platform)
+  );
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -66,11 +75,13 @@ describe('PrmPlatformResolver', () => {
 
   it('should get platform from prm-directory', () => {
     const mockRoute = {
-      paramMap: convertToParamMap({ platformSloid: 'ch:1:sloid:7000:0:100000' }),
+      paramMap: convertToParamMap({
+        platformSloid: 'ch:1:sloid:7000:0:100000',
+      }),
     } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
-      platformResolver(mockRoute, {} as RouterStateSnapshot),
+      platformResolver(mockRoute, {} as RouterStateSnapshot)
     ) as Observable<ReadPlatformVersion[]>;
 
     result.subscribe((versions) => {

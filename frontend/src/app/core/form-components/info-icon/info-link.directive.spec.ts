@@ -7,7 +7,10 @@ import { of } from 'rxjs';
 import SpyObj = jasmine.SpyObj;
 
 @Component({
-  template: `<span infoLink infoLinkTranslationKey="TEST_TRANSLATION_KEY">Test</span>`,
+  imports: [InfoLinkDirective],
+  template: `<span infoLink infoLinkTranslationKey="TEST_TRANSLATION_KEY"
+    >Test</span
+  >`,
 })
 class TestComponent {}
 
@@ -16,10 +19,15 @@ describe('InfoLinkDirective', () => {
   let translateServiceSpy: SpyObj<TranslateService>;
 
   beforeEach(() => {
-    translateServiceSpy = jasmine.createSpyObj<TranslateService>('TranslateServiceMock', ['get']);
-    translateServiceSpy.get = jasmine.createSpy().and.returnValue(of('https://atlas.test.ch'));
+    translateServiceSpy = jasmine.createSpyObj<TranslateService>(
+      'TranslateServiceMock',
+      ['get']
+    );
+    translateServiceSpy.get = jasmine
+      .createSpy()
+      .and.returnValue(of('https://atlas.test.ch'));
     fixture = TestBed.configureTestingModule({
-      declarations: [InfoLinkDirective, TestComponent],
+      imports: [InfoLinkDirective, TestComponent],
       providers: [{ provide: TranslateService, useValue: translateServiceSpy }],
     }).createComponent(TestComponent);
 
@@ -31,7 +39,9 @@ describe('InfoLinkDirective', () => {
       By.directive(InfoLinkDirective)
     );
     expect(elementsWithInfoLinkDirective).toHaveSize(1);
-    expect(elementsWithInfoLinkDirective[0].classes['atlas-info-link']).toBeTrue();
+    expect(
+      elementsWithInfoLinkDirective[0].classes['atlas-info-link']
+    ).toBeTrue();
   });
 
   it('should handle click event', () => {
@@ -44,8 +54,13 @@ describe('InfoLinkDirective', () => {
     spyOn(console, 'error');
     elementsWithInfoLinkDirective[0].nativeElement.click();
     fixture.detectChanges();
-    expect(translateServiceSpy.get).toHaveBeenCalledOnceWith('TEST_TRANSLATION_KEY');
-    expect(window.open).toHaveBeenCalledOnceWith('https://atlas.test.ch', '_blank');
+    expect(translateServiceSpy.get).toHaveBeenCalledOnceWith(
+      'TEST_TRANSLATION_KEY'
+    );
+    expect(window.open).toHaveBeenCalledOnceWith(
+      'https://atlas.test.ch',
+      '_blank'
+    );
     expect(console.error).not.toHaveBeenCalled();
   });
 });

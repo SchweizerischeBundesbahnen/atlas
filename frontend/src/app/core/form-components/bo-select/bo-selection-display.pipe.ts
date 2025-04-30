@@ -16,7 +16,9 @@ export class BoSelectionDisplayPipe implements PipeTransform {
       return '--';
     }
     return `${value.organisationNumber} - ${
-      value[this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation()]
+      value[
+        this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation()
+      ]
     } - ${value[this.businessOrganisationLanguageService.getCurrentLanguageDescription()]} - ${
       value.sboid
     }`;

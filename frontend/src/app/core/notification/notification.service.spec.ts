@@ -4,7 +4,6 @@ import { NotificationService } from './notification.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { MaterialModule } from '../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -12,7 +11,10 @@ import { ErrorNotificationComponent } from './error/error-notification.component
 
 describe('NotificationService', () => {
   let service: NotificationService;
-  const matSnackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
+  const matSnackBarSpy = jasmine.createSpyObj('MatSnackBar', [
+    'open',
+    'openFromComponent',
+  ]);
 
   const errorResponse = new HttpErrorResponse({
     status: 404,
@@ -20,7 +22,8 @@ describe('NotificationService', () => {
       message: 'Not found',
       details: [
         {
-          message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+          message:
+            'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
           field: 'number',
           displayInfo: {
             code: 'TTFN.CONFLICT.NUMBER',
@@ -59,7 +62,6 @@ describe('NotificationService', () => {
         MatSnackBarModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([]),
-        MaterialModule,
         BrowserAnimationsModule,
       ],
       providers: [
@@ -85,7 +87,7 @@ describe('NotificationService', () => {
         horizontalPosition: 'right',
         verticalPosition: 'top',
         panelClass: ['success', 'notification'],
-      }),
+      })
     );
   });
 
@@ -124,7 +126,7 @@ describe('NotificationService', () => {
             }),
           ],
         }),
-      }),
+      })
     );
   });
 
@@ -139,7 +141,7 @@ describe('NotificationService', () => {
         horizontalPosition: 'right',
         verticalPosition: 'top',
         panelClass: ['info', 'notification'],
-      }),
+      })
     );
   });
 });

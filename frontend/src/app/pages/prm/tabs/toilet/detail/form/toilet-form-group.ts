@@ -1,9 +1,13 @@
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
-import {BaseDetailFormGroup} from '../../../../../../core/components/base-detail/base-detail-form-group';
-import {WhitespaceValidator} from '../../../../../../core/validation/whitespace/whitespace-validator';
-import {DateRangeValidator} from '../../../../../../core/validation/date-range/date-range-validator';
-import {ReadToiletVersion, StandardAttributeType, ToiletVersion,} from '../../../../../../api';
+import { BaseDetailFormGroup } from '../../../../../../core/components/base-detail/base-detail-form-group';
+import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
+import { DateRangeValidator } from '../../../../../../core/validation/date-range/date-range-validator';
+import {
+  ReadToiletVersion,
+  StandardAttributeType,
+  ToiletVersion,
+} from '../../../../../../api';
 
 export interface ToiletFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -22,28 +26,34 @@ export class ToiletFormGroupBuilder {
           Validators.maxLength(2000),
         ]),
         designation: new FormControl(version?.designation, [
-          Validators.maxLength(50), Validators.required, WhitespaceValidator.blankOrEmptySpaceSurrounding
-        ]),
-        wheelchairToilet: new FormControl(version?.wheelchairToilet ?? StandardAttributeType.ToBeCompleted),
-        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [
+          Validators.maxLength(50),
           Validators.required,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
         ]),
-        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [
-          Validators.required,
-        ]),
+        wheelchairToilet: new FormControl(
+          version?.wheelchairToilet ?? StandardAttributeType.ToBeCompleted
+        ),
+        validFrom: new FormControl(
+          version?.validFrom ? moment(version.validFrom) : null,
+          [Validators.required]
+        ),
+        validTo: new FormControl(
+          version?.validTo ? moment(version.validTo) : null,
+          [Validators.required]
+        ),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),
         editor: new FormControl(version?.editor),
         creator: new FormControl(version?.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
   static getWritableForm(
     form: FormGroup<ToiletFormGroup>,
-    parentServicePointSloid: string,
+    parentServicePointSloid: string
   ): ToiletVersion {
     return {
       sloid: form.value.sloid!,

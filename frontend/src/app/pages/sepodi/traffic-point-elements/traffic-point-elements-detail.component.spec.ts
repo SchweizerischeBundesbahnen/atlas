@@ -203,7 +203,8 @@ describe('TrafficPointElementsDetailComponent', () => {
 
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     return TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         TrafficPointElementsDetailComponent,
         DisplayDatePipe,
         SplitServicePointNumberPipe,
@@ -227,7 +228,6 @@ describe('TrafficPointElementsDetailComponent', () => {
         DetailFooterComponent,
         MockNavigationSepodiPrmComponent,
       ],
-      imports: [AppTestingModule],
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: TrafficPointMapService, useValue: trafficPointMapService },

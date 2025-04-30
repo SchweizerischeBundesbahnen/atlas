@@ -2,7 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SideNavComponent } from './side-nav.component';
 import { By } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
 import { Pages } from '../../../pages/pages';
 import { LidiOverviewComponent } from '../../../pages/lidi/overview/lidi-overview.component';
 import { TimetableFieldNumberOverviewComponent } from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
@@ -16,7 +20,6 @@ describe('SideNavComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SideNavComponent],
       imports: [
         RouterModule.forRoot([
           {
@@ -31,6 +34,7 @@ describe('SideNavComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
+        SideNavComponent,
       ],
       providers: [
         {
@@ -55,8 +59,12 @@ describe('SideNavComponent', () => {
   it('should show side-nav', () => {
     const result = fixture.debugElement.queryAll(By.css('a'));
     expect(result).toBeDefined();
-    expect(result[0].nativeElement.textContent.trim()).toBe(Pages.pages[0].titleMenu);
-    expect(result[1].nativeElement.textContent.trim()).toBe(Pages.pages[1].titleMenu);
+    expect(result[0].nativeElement.textContent.trim()).toBe(
+      Pages.pages[0].titleMenu
+    );
+    expect(result[1].nativeElement.textContent.trim()).toBe(
+      Pages.pages[1].titleMenu
+    );
   });
 
   it('home route should be active', () => {
@@ -72,12 +80,12 @@ describe('SideNavComponent', () => {
   const assertActiveNavItem = (pageTitle: string) => {
     const navItems = fixture.debugElement.queryAll(By.css('a'));
     const activeNavItemIndex = navItems.findIndex((item) =>
-      Object.keys(item.classes).includes('route-active'),
+      Object.keys(item.classes).includes('route-active')
     );
 
-    expect(navItems[activeNavItemIndex].nativeNode.querySelector('span').textContent).toBe(
-      pageTitle,
-    );
+    expect(
+      navItems[activeNavItemIndex].nativeNode.querySelector('span').textContent
+    ).toBe(pageTitle);
   };
 
   it('should set activePageIndex correct', () => {

@@ -1,19 +1,22 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {BaseChangeDialogComponent} from './base-change-dialog.component';
-import {DialogService} from '../../../../core/components/dialog/dialog.service';
-import {of} from 'rxjs';
-import {AppTestingModule} from '../../../../app.testing.module';
-import {FormModule} from '../../../../core/module/form.module';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
-import {TranslatePipe} from '@ngx-translate/core';
-import {SwissCanton, TimetableHearingStatementV2} from '../../../../api';
-import {FormControl, FormGroup} from '@angular/forms';
-import {TthChangeStatusFormGroup} from '../tth-change-status-dialog/model/tth-change-status-form-group';
-import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import {WhitespaceValidator} from '../../../../core/validation/whitespace/whitespace-validator';
-import {By} from '@angular/platform-browser';
+import { BaseChangeDialogComponent } from './base-change-dialog.component';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { of } from 'rxjs';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { FormModule } from '../../../../core/module/form.module';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_SNACK_BAR_DATA,
+  MatSnackBarRef,
+} from '@angular/material/snack-bar';
+import { TranslatePipe } from '@ngx-translate/core';
+import { SwissCanton, TimetableHearingStatementV2 } from '../../../../api';
+import { FormControl, FormGroup } from '@angular/forms';
+import { TthChangeStatusFormGroup } from '../tth-change-status-dialog/model/tth-change-status-form-group';
+import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
+import { By } from '@angular/platform-browser';
 
 const statement: TimetableHearingStatementV2 = {
   id: 1,
@@ -25,7 +28,9 @@ const statement: TimetableHearingStatementV2 = {
   },
 };
 
-const dialogServiceSpy = jasmine.createSpyObj(DialogService, { confirmLeave: of(true) });
+const dialogServiceSpy = jasmine.createSpyObj(DialogService, {
+  confirmLeave: of(true),
+});
 const dialogRefSpy = jasmine.createSpyObj('dialogRef', ['close']);
 describe('BaseChangeDialogComponent', () => {
   let component: BaseChangeDialogComponent;
@@ -33,8 +38,7 @@ describe('BaseChangeDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BaseChangeDialogComponent],
-      imports: [AppTestingModule, FormModule],
+      imports: [AppTestingModule, FormModule, BaseChangeDialogComponent],
       providers: [
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
@@ -91,17 +95,24 @@ describe('BaseChangeDialogComponent', () => {
   it('should render tth change status dialog', () => {
     component.formGroup.controls['justification'].setValue('Forza Napoli');
 
-    const title = fixture.debugElement.query(By.css('div.dialog > div.mb-5 > span.font-bold-4xl'));
+    const title = fixture.debugElement.query(
+      By.css('div.dialog > div.mb-5 > span.font-bold-4xl')
+    );
     expect(title.nativeElement.innerText).toBe('Title');
 
-    const content = fixture.debugElement.query(By.css('div.dialog > div > span.message'));
+    const content = fixture.debugElement.query(
+      By.css('div.dialog > div > span.message')
+    );
     expect(content.nativeElement.innerText).toBe('message');
 
     const justification = fixture.debugElement.query(By.css('form-comment'));
-    const justificationValue = justification.nativeNode.querySelector('textarea').value;
+    const justificationValue =
+      justification.nativeNode.querySelector('textarea').value;
     expect(justificationValue).toBe('Forza Napoli');
 
-    const cancelButton = fixture.debugElement.query(By.css('mat-dialog-actions button.me-3'));
+    const cancelButton = fixture.debugElement.query(
+      By.css('mat-dialog-actions button.me-3')
+    );
     expect(cancelButton.nativeElement.innerText).toBe('DIALOG.CANCEL');
 
     const confirmButton = fixture.debugElement.query(

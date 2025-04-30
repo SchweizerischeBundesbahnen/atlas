@@ -34,17 +34,19 @@ export class ContactPointFormGroupBuilder {
           Validators.required,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
         ]),
-        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [
-          Validators.required,
-        ]),
-        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [
-          Validators.required,
-        ]),
+        validFrom: new FormControl(
+          version?.validFrom ? moment(version.validFrom) : null,
+          [Validators.required]
+        ),
+        validTo: new FormControl(
+          version?.validTo ? moment(version.validTo) : null,
+          [Validators.required]
+        ),
         wheelchairAccess: new FormControl(
-          version?.wheelchairAccess ?? StandardAttributeType.ToBeCompleted,
+          version?.wheelchairAccess ?? StandardAttributeType.ToBeCompleted
         ),
         inductionLoop: new FormControl(
-          version?.inductionLoop ?? StandardAttributeType.ToBeCompleted,
+          version?.inductionLoop ?? StandardAttributeType.ToBeCompleted
         ),
         openingHours: new FormControl(version?.openingHours, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
@@ -57,13 +59,13 @@ export class ContactPointFormGroupBuilder {
         editor: new FormControl(version?.editor),
         creator: new FormControl(version?.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
   static getWritableForm(
     form: FormGroup<ContactPointFormGroup>,
-    parentServicePointSloid: string,
+    parentServicePointSloid: string
   ): ContactPointVersion {
     return {
       sloid: form.value.sloid!,

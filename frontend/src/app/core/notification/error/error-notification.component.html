@@ -15,10 +15,10 @@
     *ngIf="!notificationService.showOnlyCode()"
     class="snack-bar-error-generic-text mt-3 mb-3 ms-3 me-3"
   >
-    {{ this.notificationService.displayCode | translate }}
+    {{ notificationService.displayCode | translate }}
   </div>
   <div class="dismiss">
-    <i (click)="this.snackBarRef.dismiss()" class="bi bi-x-circle"></i>
+    <i (click)="snackBarRef.dismiss()" class="bi bi-x-circle"></i>
   </div>
 </div>
 <div *ngIf="notificationService.correlationId" class="data ms-3 me-3 mb-3">

@@ -1,9 +1,12 @@
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { SearchSelectComponent } from '../../../../../core/form-components/search-select/search-select.component';
 import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { MaterialModule } from '../../../../../core/module/material.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { KilometerMasterSearchComponent } from './kilometer-master-search.component';
@@ -17,27 +20,27 @@ describe('KilometerMasterSearchComponent', () => {
   let servicePointsServiceSpy: SpyObj<ServicePointsService>;
 
   beforeEach(async () => {
-    servicePointsServiceSpy = jasmine.createSpyObj<ServicePointsService>('servicePointsService', [
-      'searchServicePointsWithRouteNetworkTrue',
-    ]);
+    servicePointsServiceSpy = jasmine.createSpyObj<ServicePointsService>(
+      'servicePointsService',
+      ['searchServicePointsWithRouteNetworkTrue']
+    );
     servicePointsServiceSpy.searchServicePointsWithRouteNetworkTrue
       .withArgs({ value: 'be' })
       .and.returnValue(of());
 
     await TestBed.configureTestingModule({
-      declarations: [
-        KilometerMasterSearchComponent,
-        SearchSelectComponent,
-        AtlasFieldErrorComponent,
+      providers: [
+        { provide: ServicePointsService, useValue: servicePointsServiceSpy },
       ],
-      providers: [{ provide: ServicePointsService, useValue: servicePointsServiceSpy }],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         NgSelectModule,
-        MaterialModule,
         HttpClientTestingModule,
+        KilometerMasterSearchComponent,
+        SearchSelectComponent,
+        AtlasFieldErrorComponent,
       ],
     }).compileComponents();
 
@@ -58,6 +61,8 @@ describe('KilometerMasterSearchComponent', () => {
     //when
     component.searchServicePoint('be');
     //then
-    expect(servicePointsServiceSpy.searchServicePointsWithRouteNetworkTrue).toHaveBeenCalled();
+    expect(
+      servicePointsServiceSpy.searchServicePointsWithRouteNetworkTrue
+    ).toHaveBeenCalled();
   }));
 });

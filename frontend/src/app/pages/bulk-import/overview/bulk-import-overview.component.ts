@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { BulkImportFormGroup, BulkImportFormGroupBuilder } from '../detail/bulk-import-form-group';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  BulkImportFormGroup,
+  BulkImportFormGroupBuilder,
+} from '../detail/bulk-import-form-group';
 import {
   ApplicationType,
   BulkImportService,
@@ -26,22 +29,63 @@ import { FileDownloadService } from '../../../core/components/file-upload/file/f
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { LoadingSpinnerService } from '../../../core/components/loading-spinner/loading-spinner.service';
 import { tap } from 'rxjs/operators';
+import { SelectComponent } from '../../../core/form-components/select/select.component';
+import { NgIf } from '@angular/common';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { UserSelectComponent } from '../../user-administration/user/user-select/user-select.component';
+import { StringListComponent } from '../../../core/form-components/string-list/string-list.component';
+import { FileUploadComponent } from '../../../core/components/file-upload/file-upload.component';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
-const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] = [
-  [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Update],
-  [ApplicationType.Sepodi, BusinessObjectType.ServicePoint, ImportType.Create],
-  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Update],
-  [ApplicationType.Sepodi, BusinessObjectType.TrafficPoint, ImportType.Create],
-  [ApplicationType.Prm, BusinessObjectType.PlatformReduced, ImportType.Update],
-];
+const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] =
+  [
+    [
+      ApplicationType.Sepodi,
+      BusinessObjectType.ServicePoint,
+      ImportType.Update,
+    ],
+    [
+      ApplicationType.Sepodi,
+      BusinessObjectType.ServicePoint,
+      ImportType.Create,
+    ],
+    [
+      ApplicationType.Sepodi,
+      BusinessObjectType.TrafficPoint,
+      ImportType.Update,
+    ],
+    [
+      ApplicationType.Sepodi,
+      BusinessObjectType.TrafficPoint,
+      ImportType.Create,
+    ],
+    [
+      ApplicationType.Prm,
+      BusinessObjectType.PlatformReduced,
+      ImportType.Update,
+    ],
+  ];
 
 @Component({
   templateUrl: './bulk-import-overview.component.html',
+  imports: [
+    ReactiveFormsModule,
+    SelectComponent,
+    NgIf,
+    MatCheckbox,
+    UserSelectComponent,
+    StringListComponent,
+    FileUploadComponent,
+    AtlasButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class BulkImportOverviewComponent implements OnInit {
   protected readonly OPTIONS_SCENARIO = OPTIONS_SCENARIO;
   protected readonly OPTIONS_APPLICATION_TYPE = OPTIONS_APPLICATION_TYPE;
-  protected readonly ALLOWED_FILE_TYPES_BULK_IMPORT = ALLOWED_FILE_TYPES_BULK_IMPORT;
+  protected readonly ALLOWED_FILE_TYPES_BULK_IMPORT =
+    ALLOWED_FILE_TYPES_BULK_IMPORT;
   isCheckForNull: boolean = false;
   isCombinationForActiveDownloadButton: boolean = false;
   isDownloadButtonDisabled: boolean = true;
@@ -76,7 +120,7 @@ export class BulkImportOverviewComponent implements OnInit {
     private bulkImportService: BulkImportService,
     private readonly notificationService: NotificationService,
     private readonly dialogService: DialogService,
-    private readonly loadingSpinnerService: LoadingSpinnerService,
+    private readonly loadingSpinnerService: LoadingSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -87,14 +131,19 @@ export class BulkImportOverviewComponent implements OnInit {
 
     this.form.controls.applicationType.valueChanges.subscribe((value) => {
       if (value) {
-        this.isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(value);
+        this.isAtLeastSupervisor =
+          this.permissionService.isAtLeastSupervisor(value);
         this.OPTIONS_OBJECT_TYPE = this.OPTIONS_OBJECTS[value];
         this.resetConfiguration(false);
       }
     });
 
     this.form.valueChanges.subscribe((value) => {
-      if (value.importType != null && value.applicationType != null && value.objectType != null) {
+      if (
+        value.importType != null &&
+        value.applicationType != null &&
+        value.objectType != null
+      ) {
         this.isEnabledToStartImport = true;
       }
       this.updateFlags();
@@ -113,7 +162,9 @@ export class BulkImportOverviewComponent implements OnInit {
     this.saving = true;
     this.loadingSpinnerService.loading.next(true);
 
-    const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
+    const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(
+      this.form
+    );
 
     this.bulkImportService
       .startBulkImport(bulkImportRequest, this.uploadedFiles[0])
@@ -131,7 +182,7 @@ export class BulkImportOverviewComponent implements OnInit {
         finalize(() => {
           this.saving = false;
           this.loadingSpinnerService.loading.next(false);
-        }),
+        })
       )
       .subscribe();
   }
@@ -154,7 +205,10 @@ export class BulkImportOverviewComponent implements OnInit {
       onlySelf: true,
       emitEvent: false,
     });
-    this.form.controls.objectType.reset(null, { onlySelf: true, emitEvent: false });
+    this.form.controls.objectType.reset(null, {
+      onlySelf: true,
+      emitEvent: false,
+    });
 
     if (resetAll) {
       this.form = BulkImportFormGroupBuilder.initFormGroup();
@@ -163,7 +217,8 @@ export class BulkImportOverviewComponent implements OnInit {
 
   updateFlags() {
     this.isCheckForNull = this.checkForNull();
-    this.isCombinationForActiveDownloadButton = this.combinationForActiveDownloadButton();
+    this.isCombinationForActiveDownloadButton =
+      this.combinationForActiveDownloadButton();
     this.isDownloadButtonDisabled = !(
       this.isCheckForNull && this.isCombinationForActiveDownloadButton
     );
@@ -184,18 +239,22 @@ export class BulkImportOverviewComponent implements OnInit {
 
     return VALID_COMBINATIONS.some(
       ([appType, objType, impType]) =>
-        appType === applicationType && objType === objectType && impType === importType,
+        appType === applicationType &&
+        objType === objectType &&
+        impType === importType
     );
   }
 
   downloadExcel() {
-    const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(this.form);
+    const bulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(
+      this.form
+    );
     const filename = `${bulkImportRequest.importType.toLowerCase()}_${bulkImportRequest.objectType.toLowerCase()}.csv`;
     this.bulkImportService
       .downloadTemplate(
         bulkImportRequest.applicationType,
         bulkImportRequest.objectType,
-        bulkImportRequest.importType,
+        bulkImportRequest.importType
       )
       .subscribe((response) => {
         FileDownloadService.downloadFile(filename, response);

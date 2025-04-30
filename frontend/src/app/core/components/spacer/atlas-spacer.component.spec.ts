@@ -8,8 +8,7 @@ let fixture: ComponentFixture<AtlasSpacerComponent>;
 describe('AtlasSpacerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AtlasSpacerComponent],
-      imports: [AppTestingModule],
+      imports: [AppTestingModule, AtlasSpacerComponent],
     }).compileComponents();
   });
 

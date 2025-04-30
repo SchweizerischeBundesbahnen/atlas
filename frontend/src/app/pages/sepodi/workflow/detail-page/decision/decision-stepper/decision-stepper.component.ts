@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
-import { MatStepper } from '@angular/material/stepper';
+import { MatStepper, MatStepperIcon, MatStep } from '@angular/material/stepper';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { catchError, EMPTY, Observable, of, shareReplay, take } from 'rxjs';
 import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
@@ -7,11 +7,33 @@ import { StopPointPerson, StopPointWorkflowService } from 'src/app/api';
 import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
 import { DialogService } from 'src/app/core/components/dialog/dialog.service';
 import { map } from 'rxjs/operators';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
+import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
+import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
+import { MatButton } from '@angular/material/button';
+import { DecisionFormComponent } from '../decision-form/decision-form.component';
+import { LoadingSpinnerComponent } from '../../../../../../core/components/loading-spinner/loading-spinner.component';
+import { AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'sepodi-wf-decision-stepper',
   templateUrl: './decision-stepper.component.html',
+  imports: [
+    DialogCloseComponent,
+    DialogContentComponent,
+    MatStepper,
+    MatStepperIcon,
+    MatStep,
+    ReactiveFormsModule,
+    TextFieldComponent,
+    MatButton,
+    DecisionFormComponent,
+    LoadingSpinnerComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class DecisionStepperComponent {
   @ViewChild('stepper') readonly stepper?: MatStepper;
@@ -52,7 +74,7 @@ export class DecisionStepperComponent {
     private readonly _dialogRef: MatDialogRef<DecisionStepperComponent>,
     private readonly _spWfService: StopPointWorkflowService,
     @Inject(MAT_DIALOG_DATA) private readonly _workflowId: number,
-    private readonly cd: ChangeDetectorRef,
+    private readonly cd: ChangeDetectorRef
   ) {}
 
   completeObtainOtpStep() {
@@ -69,7 +91,7 @@ export class DecisionStepperComponent {
             this._swapLoading();
             return EMPTY;
           }),
-          shareReplay(1),
+          shareReplay(1)
         );
 
       this.isStepTwoCompl$ = this.isStepOneCompl$.pipe(
@@ -78,7 +100,7 @@ export class DecisionStepperComponent {
           this.stepper?.next();
           this._swapLoading();
           return false;
-        }),
+        })
       );
     }
   }
@@ -95,17 +117,25 @@ export class DecisionStepperComponent {
         .pipe(
           map((examinant) => {
             this._verifiedExaminant = examinant;
-            this.decision.controls.firstName.setValue(examinant.firstName ?? null);
-            this.decision.controls.lastName.setValue(examinant.lastName ?? null);
-            this.decision.controls.organisation.setValue(examinant.organisation);
-            this.decision.controls.personFunction.setValue(examinant.personFunction ?? null);
+            this.decision.controls.firstName.setValue(
+              examinant.firstName ?? null
+            );
+            this.decision.controls.lastName.setValue(
+              examinant.lastName ?? null
+            );
+            this.decision.controls.organisation.setValue(
+              examinant.organisation
+            );
+            this.decision.controls.personFunction.setValue(
+              examinant.personFunction ?? null
+            );
             return true;
           }),
           catchError(() => {
             this._swapLoading();
             return EMPTY;
           }),
-          shareReplay(1),
+          shareReplay(1)
         );
 
       this.isStepThreeCompl$ = this.isStepTwoCompl$.pipe(
@@ -114,7 +144,7 @@ export class DecisionStepperComponent {
           this.stepper?.next();
           this._swapLoading();
           return false;
-        }),
+        })
       );
     }
   }
@@ -145,7 +175,7 @@ export class DecisionStepperComponent {
           catchError(() => {
             this._swapLoading();
             return EMPTY;
-          }),
+          })
         );
     }
   }
@@ -168,7 +198,7 @@ export class DecisionStepperComponent {
         catchError(() => {
           this._swapLoading();
           return EMPTY;
-        }),
+        })
       );
   }
 

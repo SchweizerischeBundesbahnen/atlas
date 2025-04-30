@@ -10,7 +10,6 @@ import { GeographyComponent } from './geography.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinatePair, SpatialReference } from '../../../api';
-import { MaterialModule } from '../../../core/module/material.module';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
 import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
@@ -20,16 +19,19 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 const mapService = jasmine.createSpyObj<MapService>(
-  ['placeMarkerAndFlyTo', 'enterCoordinateSelectionMode', 'exitCoordinateSelectionMode'],
+  [
+    'placeMarkerAndFlyTo',
+    'enterCoordinateSelectionMode',
+    'exitCoordinateSelectionMode',
+  ],
   {
     mapInitialized: new BehaviorSubject(false),
-  },
+  }
 );
 mapService.clickedGeographyCoordinates = new Subject<CoordinatePairWGS84>();
 
-const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
-  'transform',
-]);
+const coordinateTransformationServiceSpy =
+  jasmine.createSpyObj<CoordinateTransformationService>(['transform']);
 coordinateTransformationServiceSpy.transform.and.returnValue({
   north: 12,
   east: 12,
@@ -42,24 +44,24 @@ describe('GeographyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
+        FormModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
         GeographyComponent,
         TextFieldComponent,
         RemoveCharsDirective,
         DecimalNumberPipe,
       ],
-      imports: [
-        AppTestingModule,
-        FormModule,
-        MaterialModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
       providers: [
         { provide: TranslatePipe },
         { provide: MapService, useValue: mapService },
-        { provide: CoordinateTransformationService, useValue: coordinateTransformationServiceSpy },
+        {
+          provide: CoordinateTransformationService,
+          useValue: coordinateTransformationServiceSpy,
+        },
       ],
     }).compileComponents();
 
@@ -89,9 +91,12 @@ describe('GeographyComponent', () => {
 
     expect(coordinateTransformationServiceSpy.transform).toHaveBeenCalledWith(
       { north: 20000, east: 10000, spatialReference: SpatialReference.Lv95 },
-      SpatialReference.Wgs84,
+      SpatialReference.Wgs84
     );
-    expect(mapService.placeMarkerAndFlyTo).toHaveBeenCalledWith({ lng: 12, lat: 12 });
+    expect(mapService.placeMarkerAndFlyTo).toHaveBeenCalledWith({
+      lng: 12,
+      lat: 12,
+    });
   });
 
   it('should set height to form', () => {
@@ -104,7 +109,10 @@ describe('GeographyComponent', () => {
 
     component.setHeightFromGeoData(coordinates, true);
 
-    expect(component.setHeightFromGeoData).toHaveBeenCalledWith(coordinates, true);
+    expect(component.setHeightFromGeoData).toHaveBeenCalledWith(
+      coordinates,
+      true
+    );
   });
 
   it('should call setHeightFromGeoData if onChangeCoordinatesManually is called', () => {

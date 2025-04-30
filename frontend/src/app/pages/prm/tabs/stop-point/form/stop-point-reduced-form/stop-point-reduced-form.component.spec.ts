@@ -24,12 +24,13 @@ describe('StopPointReducedFormComponent', () => {
     'getPrmMeansOfTransportToShow',
   ]);
   prmVariantInfoService.getPrmMeansOfTransportToShow.and.returnValue(
-    Object.values(MeanOfTransport),
+    Object.values(MeanOfTransport)
   );
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         StopPointReducedFormComponent,
         MockSelectComponent,
         MockAtlasFieldErrorComponent,
@@ -39,7 +40,6 @@ describe('StopPointReducedFormComponent', () => {
         MeansOfTransportPickerComponent,
         AtlasSpacerComponent,
       ],
-      imports: [AppTestingModule],
       providers: [
         { provide: TranslatePipe },
         { provide: PrmVariantInfoService, useValue: prmVariantInfoService },
@@ -57,7 +57,9 @@ describe('StopPointReducedFormComponent', () => {
   });
 
   it('should display reduced fields', () => {
-    expect(fixture.debugElement.query(By.css('means-of-transport-picker'))).toBeDefined();
+    expect(
+      fixture.debugElement.query(By.css('means-of-transport-picker'))
+    ).toBeDefined();
     expect(fixture.debugElement.query(By.css('form-comment'))).toBeDefined();
     expect(fixture.debugElement.query(By.css('form-date-range'))).toBeDefined();
   });

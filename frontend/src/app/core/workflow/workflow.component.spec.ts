@@ -1,16 +1,16 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {WorkflowComponent} from './workflow.component';
-import {AppTestingModule} from '../../app.testing.module';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {LineVersionWorkflow, Status,} from '../../api';
-import {AtlasButtonComponent} from '../components/button/atlas-button.component';
-import {AtlasFieldErrorComponent} from '../form-components/atlas-field-error/atlas-field-error.component';
-import {AtlasLabelFieldComponent} from '../form-components/atlas-label-field/atlas-label-field.component';
-import {TextFieldComponent} from '../form-components/text-field/text-field.component';
-import {TranslatePipe} from '@ngx-translate/core';
-import {adminPermissionServiceMock} from "../../app.testing.mocks";
-import {PermissionService} from "../auth/permission/permission.service";
+import { WorkflowComponent } from './workflow.component';
+import { AppTestingModule } from '../../app.testing.module';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { LineVersionWorkflow, Status } from '../../api';
+import { AtlasButtonComponent } from '../components/button/atlas-button.component';
+import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/atlas-field-error.component';
+import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/atlas-label-field.component';
+import { TextFieldComponent } from '../form-components/text-field/text-field.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { adminPermissionServiceMock } from '../../app.testing.mocks';
+import { PermissionService } from '../auth/permission/permission.service';
 
 describe('WorkflowComponent', () => {
   let component: WorkflowComponent;
@@ -18,15 +18,19 @@ describe('WorkflowComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppTestingModule, MatExpansionModule],
-      declarations: [
+      imports: [
+        AppTestingModule,
+        MatExpansionModule,
         WorkflowComponent,
         AtlasButtonComponent,
         AtlasFieldErrorComponent,
         AtlasLabelFieldComponent,
         TextFieldComponent,
       ],
-      providers: [{ provide: PermissionService, useValue: adminPermissionServiceMock }, { provide: TranslatePipe }],
+      providers: [
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
+        { provide: TranslatePipe },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(WorkflowComponent);

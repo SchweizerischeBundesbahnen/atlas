@@ -18,7 +18,8 @@ describe('ReferencePointCompleteFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         ReferencePointCompleteFormComponent,
         TextFieldComponent,
         AtlasLabelFieldComponent,
@@ -28,7 +29,6 @@ describe('ReferencePointCompleteFormComponent', () => {
         SelectComponent,
         CommentComponent,
       ],
-      imports: [AppTestingModule],
       providers: [{ provide: TranslatePipe }],
     });
     fixture = TestBed.createComponent(ReferencePointCompleteFormComponent);

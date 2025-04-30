@@ -8,7 +8,10 @@ describe('FormatPipe', () => {
   let formatPipe: FormatPipe;
 
   beforeEach(() => {
-    translatePipeMock = jasmine.createSpyObj<TranslatePipe>('TranslatePipeSpy', ['transform']);
+    translatePipeMock = jasmine.createSpyObj<TranslatePipe>(
+      'TranslatePipeSpy',
+      ['transform']
+    );
     formatPipe = new FormatPipe(translatePipeMock);
   });
 
@@ -18,13 +21,17 @@ describe('FormatPipe', () => {
 
   it('should format as Date', () => {
     const date = new Date(2023, 0, 1);
-    const tableColumn: TableColumn<object> = { formatAsDate: true } as TableColumn<object>;
+    const tableColumn: TableColumn<object> = {
+      formatAsDate: true,
+    } as TableColumn<object>;
     const formatted = formatPipe.transform(date, tableColumn);
     expect(formatted).toEqual('01.01.2023');
   });
 
   it('should format undefined as empty string', () => {
-    const tableColumn: TableColumn<object> = { formatAsDate: true } as TableColumn<object>;
+    const tableColumn: TableColumn<object> = {
+      formatAsDate: true,
+    } as TableColumn<object>;
     const formatted = formatPipe.transform(undefined, tableColumn);
     expect(formatted).toEqual('');
   });

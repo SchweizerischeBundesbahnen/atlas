@@ -4,7 +4,10 @@ import { UserSelectComponent } from './user-select.component';
 import { UserService } from '../../service/user.service';
 import { of } from 'rxjs';
 import { Component, Input } from '@angular/core';
-import {ApplicationType} from "../../../../api";
+import { ApplicationType } from '../../../../api';
+import { TranslatePipe } from '@ngx-translate/core';
+import { FormGroup } from '@angular/forms';
+import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 
 @Component({
   selector: 'form-search-select',
@@ -21,16 +24,28 @@ describe('UserSelectComponent', () => {
   let component: UserSelectComponent;
   let fixture: ComponentFixture<UserSelectComponent>;
 
-  const userServiceSpy = jasmine.createSpyObj('UserService', ['searchUsers', 'searchUsersInAtlas']);
+  const userServiceSpy = jasmine.createSpyObj('UserService', [
+    'searchUsers',
+    'searchUsersInAtlas',
+  ]);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserSelectComponent, MockFormSearchSelectComponent],
-      providers: [{ provide: UserService, useValue: userServiceSpy }],
-    }).compileComponents();
+      imports: [UserSelectComponent],
+      providers: [
+        TranslatePipe,
+        { provide: UserService, useValue: userServiceSpy },
+      ],
+    })
+      .overrideComponent(UserSelectComponent, {
+        remove: { imports: [SearchSelectComponent] },
+        add: { imports: [MockFormSearchSelectComponent] },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(UserSelectComponent);
     component = fixture.componentInstance;
+    component.form = new FormGroup({});
     fixture.detectChanges();
   });
 
@@ -72,7 +87,10 @@ describe('UserSelectComponent', () => {
     component.applicationType = ApplicationType.Sepodi;
     fixture.detectChanges();
     component.searchUserInAtlas('testQuery');
-    expect(userServiceSpy.searchUsersInAtlas).toHaveBeenCalledOnceWith('testQuery', ApplicationType.Sepodi);
+    expect(userServiceSpy.searchUsersInAtlas).toHaveBeenCalledOnceWith(
+      'testQuery',
+      ApplicationType.Sepodi
+    );
     component.userSearchResults$.subscribe((val) => {
       expect(val).toEqual([
         {

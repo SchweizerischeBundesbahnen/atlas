@@ -4,10 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { BulkImportResult, BulkImportService } from '../../../api';
 import { Observable, of } from 'rxjs';
 import { Pipe, PipeTransform } from '@angular/core';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import Spy = jasmine.Spy;
+import { TranslateModule } from '@ngx-translate/core';
 import { MockMatPaginatorComponent } from '../../../app.testing.mocks';
 import { By } from '@angular/platform-browser';
+import { UserDisplayNamePipe } from '../../../core/pipe/user-display-name.pipe';
+import Spy = jasmine.Spy;
 
 @Pipe({
   name: 'userDisplayName',
@@ -26,23 +27,29 @@ describe('BulkImportLogComponent', () => {
   let pageChangedFnSpy: Spy;
 
   beforeEach(async () => {
-    const bulkImportServiceSpy = jasmine.createSpyObj<BulkImportService>(['getBulkImportResults']);
-    (bulkImportServiceSpy.getBulkImportResults as Spy<(id: number) => Observable<BulkImportResult>>)
+    const bulkImportServiceSpy = jasmine.createSpyObj<BulkImportService>([
+      'getBulkImportResults',
+    ]);
+    (
+      bulkImportServiceSpy.getBulkImportResults as Spy<
+        (id: number) => Observable<BulkImportResult>
+      >
+    )
       .withArgs(10)
       .and.returnValue(of(importResult));
+
     await TestBed.configureTestingModule({
-      imports: [
-        UserDisplayNamePipeMock,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
-      declarations: [BulkImportLogComponent, MockMatPaginatorComponent],
+      imports: [BulkImportLogComponent, TranslateModule.forRoot()],
       providers: [
         { provide: BulkImportService, useValue: bulkImportServiceSpy },
         { provide: ActivatedRoute, useValue: { params: of({ id: 10 }) } },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(BulkImportLogComponent, {
+        remove: { imports: [UserDisplayNamePipe] },
+        add: { imports: [UserDisplayNamePipeMock] },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(BulkImportLogComponent);
     component = fixture.componentInstance;
@@ -106,7 +113,7 @@ describe('BulkImportLogComponent', () => {
     pageChangedFnSpy.and.callThrough();
     fixture.detectChanges();
     const paginator: MockMatPaginatorComponent = fixture.debugElement.query(
-      By.css('mat-paginator'),
+      By.css('mat-paginator')
     ).componentInstance;
     paginator.page.emit({ pageIndex: 1, pageSize: 2 });
     expect(component.pagedLogEntries).toEqual([

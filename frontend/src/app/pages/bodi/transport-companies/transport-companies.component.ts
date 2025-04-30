@@ -1,8 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { TransportCompaniesService, TransportCompany, TransportCompanyStatus } from '../../../api';
+import {
+  TransportCompaniesService,
+  TransportCompany,
+  TransportCompanyStatus,
+} from '../../../api';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TableService } from '../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
@@ -10,10 +14,13 @@ import { TableFilterChip } from '../../../core/components/table-filter/config/ta
 import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../pages';
+import { TableComponent } from '../../../core/components/table/table.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-bodi-transport-companies',
   templateUrl: './transport-companies.component.html',
+  imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
 export class TransportCompaniesComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<TransportCompany>[] = [
@@ -26,12 +33,20 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
       headerTitle: 'BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NAME',
       value: 'businessRegisterName',
     },
-    { headerTitle: 'BODI.TRANSPORT_COMPANIES.DESCRIPTION', value: 'description' },
-    { headerTitle: 'BODI.TRANSPORT_COMPANIES.ENTERPRISE_ID', value: 'enterpriseId' },
+    {
+      headerTitle: 'BODI.TRANSPORT_COMPANIES.DESCRIPTION',
+      value: 'description',
+    },
+    {
+      headerTitle: 'BODI.TRANSPORT_COMPANIES.ENTERPRISE_ID',
+      value: 'enterpriseId',
+    },
     {
       headerTitle: 'BODI.TRANSPORT_COMPANIES.STATUS',
       value: 'transportCompanyStatus',
-      translate: { withPrefix: 'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.' },
+      translate: {
+        withPrefix: 'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.',
+      },
     },
   ];
 

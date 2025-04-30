@@ -4,7 +4,10 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { of } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
-import { ActivatedRouteMockType, MockAtlasButtonComponent } from '../../../app.testing.mocks';
+import {
+  ActivatedRouteMockType,
+  MockAtlasButtonComponent,
+} from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
@@ -39,7 +42,9 @@ describe('LoadingPointsDetailComponent', () => {
   let router: Router;
 
   const servicePointService = jasmine.createSpyObj(['getServicePointVersions']);
-  servicePointService.getServicePointVersions.and.returnValue(of([BERN_WYLEREGG]));
+  servicePointService.getServicePointVersions.and.returnValue(
+    of([BERN_WYLEREGG])
+  );
   const loadingPointService = jasmine.createSpyObj('loadingPointService', [
     'createLoadingPoint',
     'updateLoadingPoint',
@@ -132,7 +137,9 @@ describe('LoadingPointsDetailComponent', () => {
       component.form.controls.number.setValue(5);
       component.form.controls.designation.setValue('456');
 
-      component.form.controls.validFrom.setValue(moment(new Date(2000 - 10 - 1)));
+      component.form.controls.validFrom.setValue(
+        moment(new Date(2000 - 10 - 1))
+      );
       component.form.controls.validTo.setValue(moment(new Date(2099 - 10 - 1)));
       component.save();
 
@@ -142,7 +149,8 @@ describe('LoadingPointsDetailComponent', () => {
 
   function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     return TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         LoadingPointsDetailComponent,
         DisplayDatePipe,
         SplitServicePointNumberPipe,
@@ -165,7 +173,6 @@ describe('LoadingPointsDetailComponent', () => {
         DetailPageContentComponent,
         DetailFooterComponent,
       ],
-      imports: [AppTestingModule],
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activatedRoute },

@@ -15,7 +15,8 @@ describe('CommentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         CommentComponent,
         InfoIconComponent,
         AtlasFieldErrorComponent,
@@ -23,7 +24,6 @@ describe('CommentComponent', () => {
         AtlasLabelFieldComponent,
         TextFieldComponent,
       ],
-      imports: [AppTestingModule],
       providers: [{ provide: TranslatePipe }],
     }).compileComponents();
   });

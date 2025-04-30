@@ -1,11 +1,15 @@
 import { Component, Input } from '@angular/core';
 import { HearingStatus, TimetableHearingYear } from '../../../../api';
 import { Pages } from '../../../pages';
+import { NgIf } from '@angular/common';
+import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
   templateUrl: './overview-tab-heading.component.html',
   styleUrls: ['./overview-tab-heading.component.scss'],
+  imports: [NgIf, DisplayDatePipe, TranslatePipe],
 })
 export class OverviewTabHeadingComponent {
   @Input() cantonShort!: string;

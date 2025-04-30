@@ -1,41 +1,47 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StopPointRestartWorkflowDialogComponent } from './stop-point-restart-workflow-dialog.component';
-import {ReadStopPointWorkflow, StopPointWorkflowService, User, UserAdministrationService} from "../../../../api";
-import {of} from "rxjs";
 import {
-  StopPointRejectWorkflowDialogData
-} from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog-data";
-import {DialogFooterComponent} from "../../../../core/components/dialog/footer/dialog-footer.component";
-import {DialogContentComponent} from "../../../../core/components/dialog/content/dialog-content.component";
-import {DialogCloseComponent} from "../../../../core/components/dialog/close/dialog-close.component";
-import {AppTestingModule} from "../../../../app.testing.module";
-import {FormModule} from "../../../../core/module/form.module";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {NotificationService} from "../../../../core/notification/notification.service";
-import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
-import {Router} from "@angular/router";
-import {TranslatePipe} from "@ngx-translate/core";
+  ReadStopPointWorkflow,
+  StopPointWorkflowService,
+  User,
+  UserAdministrationService,
+} from '../../../../api';
+import { of } from 'rxjs';
+import { StopPointRejectWorkflowDialogData } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog-data';
+import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
+import { DialogContentComponent } from '../../../../core/components/dialog/content/dialog-content.component';
+import { DialogCloseComponent } from '../../../../core/components/dialog/close/dialog-close.component';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { FormModule } from '../../../../core/module/form.module';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
+import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
   sloid: 'ch:1:sloid:8000',
-  workflowComment: "No comment",
-  designationOfficial: "test",
-  status: "HEARING",
+  workflowComment: 'No comment',
+  designationOfficial: 'test',
+  status: 'HEARING',
 };
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
 
-const stopPointWorkflowService = jasmine.createSpyObj('StopPointWorkflowService', {
-  restartStopPointWorkflow: of(workflow),
-});
+const stopPointWorkflowService = jasmine.createSpyObj(
+  'StopPointWorkflowService',
+  {
+    restartStopPointWorkflow: of(workflow),
+  }
+);
 
 const workflowDialogData: StopPointRejectWorkflowDialogData = {
   title: '',
   message: '',
   workflowId: 123,
-  rejectType: "CANCEL"
-}
+  rejectType: 'CANCEL',
+};
 
 const router = jasmine.createSpyObj({
   navigate: Promise.resolve(),
@@ -53,9 +59,12 @@ const user: User = {
   mail: 'a@b.cd',
 };
 
-const userAdministrationServiceMock = jasmine.createSpyObj(UserAdministrationService, {
-  getCurrentUser: of(user),
-});
+const userAdministrationServiceMock = jasmine.createSpyObj(
+  UserAdministrationService,
+  {
+    getCurrentUser: of(user),
+  }
+);
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 
@@ -65,8 +74,8 @@ function formGroup(component: StopPointRestartWorkflowDialogComponent) {
   formGroup.controls.lastName.setValue('lastName');
   formGroup.controls.organisation.setValue('organisation');
   formGroup.controls.motivationComment.setValue('juva merda');
-  formGroup.controls.mail.setValue("chef@chef.ch");
-  formGroup.controls.designationOfficial.setValue("NEW DESIGNATION")
+  formGroup.controls.mail.setValue('chef@chef.ch');
+  formGroup.controls.designationOfficial.setValue('NEW DESIGNATION');
 }
 
 describe('StopPointRestartWorkflowDialogComponent', () => {
@@ -75,28 +84,34 @@ describe('StopPointRestartWorkflowDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
+        FormModule,
         StopPointRestartWorkflowDialogComponent,
         DialogFooterComponent,
         DialogContentComponent,
-        DialogCloseComponent
+        DialogCloseComponent,
       ],
-      imports: [AppTestingModule, FormModule],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
           useValue: workflowDialogData,
         },
-        {provide: MatDialogRef, useValue: dialogRefSpy},
-        {provide: NotificationService, useValue: notificationServiceSpy},
-        {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
-        {provide: UserAdministrationService, useValue: userAdministrationServiceMock},
-        {provide: DetailHelperService, useValue: detailHelperService},
-        {provide: Router, useValue: router},
-        {provide: TranslatePipe}
-      ]
-    })
-    .compileComponents();
+        { provide: MatDialogRef, useValue: dialogRefSpy },
+        { provide: NotificationService, useValue: notificationServiceSpy },
+        {
+          provide: StopPointWorkflowService,
+          useValue: stopPointWorkflowService,
+        },
+        {
+          provide: UserAdministrationService,
+          useValue: userAdministrationServiceMock,
+        },
+        { provide: DetailHelperService, useValue: detailHelperService },
+        { provide: Router, useValue: router },
+        { provide: TranslatePipe },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(StopPointRestartWorkflowDialogComponent);
     component = fixture.componentInstance;
@@ -110,17 +125,21 @@ describe('StopPointRestartWorkflowDialogComponent', () => {
   it('should cancel restart workflow', () => {
     component.closeDialog();
 
-    expect(detailHelperService.confirmLeaveDirtyForm).toHaveBeenCalledWith(component.formGroup);
+    expect(detailHelperService.confirmLeaveDirtyForm).toHaveBeenCalledWith(
+      component.formGroup
+    );
     expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 
   it('should restart workflow via service', () => {
-    workflowDialogData.rejectType = "RESTART";
+    workflowDialogData.rejectType = 'RESTART';
     formGroup(component);
-    fixture.detectChanges()
-    component.restartWorkflow()
+    fixture.detectChanges();
+    component.restartWorkflow();
 
-    expect(stopPointWorkflowService.restartStopPointWorkflow).toHaveBeenCalled();
+    expect(
+      stopPointWorkflowService.restartStopPointWorkflow
+    ).toHaveBeenCalled();
     expect(notificationServiceSpy.success).toHaveBeenCalled();
     expect(dialogRefSpy.close).toHaveBeenCalled();
   });
