@@ -169,7 +169,7 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
   kafka:
-    image: &kafka-image bitnami/kafka
+    image: &kafka-image bitnami/kafka:3.9.0
     ports:
       - "9092:9092"
     depends_on:

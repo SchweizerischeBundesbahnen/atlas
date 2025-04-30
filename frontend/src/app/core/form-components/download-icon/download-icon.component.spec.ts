@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DownloadIconComponent} from './download-icon.component';
+import { DownloadIconComponent } from './download-icon.component';
 
 describe('DownloadIconComponent', () => {
   let component: DownloadIconComponent;
@@ -8,7 +8,7 @@ describe('DownloadIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DownloadIconComponent],
+      imports: [DownloadIconComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DownloadIconComponent);

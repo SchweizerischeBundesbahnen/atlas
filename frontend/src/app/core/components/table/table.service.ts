@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {SortDirection} from '@angular/material/sort';
-import {TableFilterConfig} from './table-filter-config';
-import {Page} from '../../model/page';
-import {TableFilters} from './table-filters-type';
+import { Injectable } from '@angular/core';
+import { SortDirection } from '@angular/material/sort';
+import { TableFilterConfig } from './table-filter-config';
+import { Page } from '../../model/page';
+import { TableFilters } from './table-filters-type';
 
 @Injectable({ providedIn: 'root' })
 export class TableService {
@@ -17,8 +17,11 @@ export class TableService {
 
   set filterConfig(tableFilterConfig: TableFilterConfig) {
     if (this._filterConfig) {
-      const orphanFilters : string[] =  this.getOrphanFilters(tableFilterConfig, this._filterConfig);
-      orphanFilters.forEach(key => {
+      const orphanFilters: string[] = this.getOrphanFilters(
+        tableFilterConfig,
+        this._filterConfig
+      );
+      orphanFilters.forEach((key) => {
         delete this._filterConfig.filters[key];
       });
     }
@@ -28,10 +31,13 @@ export class TableService {
     }
   }
 
-  getOrphanFilters(tableFilterConfig: TableFilterConfig, oldTableFilterConfig: TableFilterConfig) : string[] {
+  getOrphanFilters(
+    tableFilterConfig: TableFilterConfig,
+    oldTableFilterConfig: TableFilterConfig
+  ): string[] {
     const keysOld = Object.keys(oldTableFilterConfig.filters);
     const keysNew = Object.keys(tableFilterConfig.filters);
-    return  keysOld.filter(key => !keysNew.includes(key));
+    return keysOld.filter((key) => !keysNew.includes(key));
   }
 
   get filterConfig() {

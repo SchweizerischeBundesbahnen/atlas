@@ -1,37 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationClientEditComponent } from './user-administration-client-edit.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
-import { Component, Input } from '@angular/core';
-import { MaterialModule } from '../../../../../core/module/material.module';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../../service/user.service';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { BusinessOrganisationsService } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
-import { Data } from '../../../components/read-only-data/data';
-import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
+import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import SpyObj = jasmine.SpyObj;
-import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
-import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
-import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
-
-@Component({
-  selector: 'app-user-administration-read-only-data',
-  template: '',
-})
-export class MockUserAdministrationReadOnlyDataComponent<T extends Data> {
-  @Input() data!: T;
-  @Input() userModelConfig!: ReadOnlyData<T>[][];
-}
 
 describe('UserAdministrationClientEditComponent', () => {
   let component: UserAdministrationClientEditComponent;
@@ -71,7 +52,9 @@ describe('UserAdministrationClientEditComponent', () => {
         },
       }
     );
-    notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
+    notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
+      'success',
+    ]);
     boServiceSpy = jasmine.createSpyObj('BusinessOrganisationService', [
       'getAllBusinessOrganisations',
     ]);
@@ -92,20 +75,9 @@ describe('UserAdministrationClientEditComponent', () => {
       },
     });
     await TestBed.configureTestingModule({
-      declarations: [
-        UserAdministrationClientEditComponent,
-        MockUserDetailInfoComponent,
-        MockUserAdministrationReadOnlyDataComponent,
-        DetailPageContainerComponent,
-        DetailPageContentComponent,
-        DetailFooterComponent,
-      ],
       imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        MaterialModule,
-        RouterTestingModule,
+        UserAdministrationClientEditComponent,
+        TranslateModule.forRoot(),
       ],
       providers: [
         TranslatePipe,
@@ -122,12 +94,19 @@ describe('UserAdministrationClientEditComponent', () => {
           provide: DialogService,
           useValue: dialogServiceSpy,
         },
+        {
+          provide: ActivatedRoute,
+          useValue: { paramMap: new Subject() },
+        },
+        provideHttpClient(),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationClientEditComponent);
     component = fixture.componentInstance;
     component.client = {};
+    component.record = {};
     userServiceSpy.getPermissionsFromUserModelAsArray.and.returnValue([]);
     fixture.detectChanges();
   });

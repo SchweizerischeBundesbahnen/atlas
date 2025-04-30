@@ -1,36 +1,18 @@
-import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {UserService} from '../../service/user.service';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {of} from 'rxjs';
-import {Component, Input} from '@angular/core';
-import {User} from '../../../../api';
-import {MaterialModule} from '../../../../core/module/material.module';
-import {FormGroup, FormsModule} from '@angular/forms';
-import {AtlasButtonComponent} from '../../../../core/components/button/atlas-button.component';
-import {UserAdministrationUserOverviewComponent} from './user-administration-overview.component';
-import {adminPermissionServiceMock, MockTableComponent} from '../../../../app.testing.mocks';
-import {TableService} from '../../../../core/components/table/table.service';
-import {PermissionService} from "../../../../core/auth/permission/permission.service";
-import {RouterModule} from "@angular/router";
-
-@Component({
-  selector: 'form-search-select',
-  template: '',
-})
-class MockFormSearchSelectComponent {
-  @Input() items$ = of([]);
-  @Input() formGroup = null;
-  @Input() controlName = '';
-  @Input() getSelectOption = null;
-}
-
-@Component({
-  selector: 'app-user-select',
-  template: '<p>app-user-select</p>',
-})
-class MockUserSelectComponent {
-  @Input() form?: FormGroup;
-}
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
+import { UserService } from '../../service/user.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { of, Subject } from 'rxjs';
+import { User } from '../../../../api';
+import { UserAdministrationUserOverviewComponent } from './user-administration-overview.component';
+import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
+import { TableService } from '../../../../core/components/table/table.service';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { ActivatedRoute } from '@angular/router';
 
 describe('UserAdministrationUserOverviewComponent', () => {
   let component: UserAdministrationUserOverviewComponent;
@@ -41,22 +23,17 @@ describe('UserAdministrationUserOverviewComponent', () => {
 
   let tableService: TableService;
 
+  afterEach(async () => {
+    await userServiceMock.getUsers.and.returnValue(
+      of({ users: [], totalCount: 0 })
+    );
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        UserAdministrationUserOverviewComponent,
-        AtlasButtonComponent,
-        MockTableComponent,
-        MockFormSearchSelectComponent,
-        MockUserSelectComponent,
-      ],
       imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        RouterModule.forRoot([]),
-        MaterialModule,
-        FormsModule,
+        UserAdministrationUserOverviewComponent,
+        TranslateModule.forRoot(),
       ],
       providers: [
         {
@@ -66,6 +43,10 @@ describe('UserAdministrationUserOverviewComponent', () => {
         {
           provide: PermissionService,
           useValue: adminPermissionServiceMock,
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: { paramMap: new Subject() },
         },
       ],
     }).compileComponents();
@@ -91,7 +72,7 @@ describe('UserAdministrationUserOverviewComponent', () => {
       of({
         users: [{ sbbUserId: 'u123456' }, { sbbUserId: 'e654321' }] as User[],
         totalCount: 50,
-      }),
+      })
     );
     tableService.pageSize = 10;
     tableService.pageIndex = 10;
@@ -119,7 +100,10 @@ describe('UserAdministrationUserOverviewComponent', () => {
 
   it('test checkIfUserExists with undefined sbbUserId', () => {
     tableService.pageIndex = 10;
-    component.userPageResult = { users: [{ sbbUserId: 'u123456' }], totalCount: 10 };
+    component.userPageResult = {
+      users: [{ sbbUserId: 'u123456' }],
+      totalCount: 10,
+    };
     component.checkIfUserExists({ sbbUserId: undefined });
     expect(component.userPageResult).toEqual({ users: [], totalCount: 0 });
     expect(tableService.pageIndex).toBe(0);
@@ -128,9 +112,14 @@ describe('UserAdministrationUserOverviewComponent', () => {
   it('test checkIfUserExists normal', () => {
     tableService.pageIndex = 10;
 
-    userServiceMock.hasUserPermissions = jasmine.createSpy().and.returnValue(of(true));
+    userServiceMock.hasUserPermissions = jasmine
+      .createSpy()
+      .and.returnValue(of(true));
     component.checkIfUserExists({ sbbUserId: 'u123456' });
-    expect(component.userPageResult).toEqual({ users: [{ sbbUserId: 'u123456' }], totalCount: 1 });
+    expect(component.userPageResult).toEqual({
+      users: [{ sbbUserId: 'u123456' }],
+      totalCount: 1,
+    });
     expect(tableService.pageIndex).toBe(0);
   });
 
@@ -143,7 +132,9 @@ describe('UserAdministrationUserOverviewComponent', () => {
   it('test filterChanged', () => {
     userServiceMock.getUsers = jasmine
       .createSpy()
-      .and.returnValue(of({ totalCount: 1, users: [{ sbbUserId: 'u123456' }] }));
+      .and.returnValue(
+        of({ totalCount: 1, users: [{ sbbUserId: 'u123456' }] })
+      );
 
     tableService.pageSize = 10;
     tableService.pageIndex = 10;
@@ -155,9 +146,12 @@ describe('UserAdministrationUserOverviewComponent', () => {
       10,
       new Set([null]),
       'CANTON',
-      new Set([]),
+      new Set([])
     );
-    expect(component.userPageResult).toEqual({ totalCount: 1, users: [{ sbbUserId: 'u123456' }] });
+    expect(component.userPageResult).toEqual({
+      totalCount: 1,
+      users: [{ sbbUserId: 'u123456' }],
+    });
     expect(tableService.pageIndex).toBe(0);
     expect(tableService.pageSize).toBe(10);
   });

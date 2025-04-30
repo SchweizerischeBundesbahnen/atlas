@@ -1,12 +1,26 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { LineRecord } from './model/line-record';
-import { LinesService, LineVersionWorkflow, WorkflowProcessingStatus } from '../../api';
+import {
+  LinesService,
+  LineVersionWorkflow,
+  WorkflowProcessingStatus,
+} from '../../api';
 import { WorkflowDialogService } from './dialog/workflow-dialog.service';
+import { NgIf } from '@angular/common';
+import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 
 @Component({
   selector: 'app-workflow [lineRecord]',
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.scss'],
+  imports: [NgIf, AtlasButtonComponent],
 })
 export class WorkflowComponent implements OnInit, OnChanges {
   @Input() lineRecord!: LineRecord;
@@ -19,7 +33,7 @@ export class WorkflowComponent implements OnInit, OnChanges {
 
   constructor(
     private readonly lineService: LinesService,
-    private readonly workflowDialogService: WorkflowDialogService,
+    private readonly workflowDialogService: WorkflowDialogService
   ) {}
 
   ngOnInit(): void {
@@ -44,9 +58,12 @@ export class WorkflowComponent implements OnInit, OnChanges {
 
   private filterWorkflowsInProgress() {
     const lineVersionWorkflows: LineVersionWorkflow[] = [];
-    this.lineRecord.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
+    this.lineRecord.lineVersionWorkflows?.forEach((lvw) =>
+      lineVersionWorkflows.push(lvw)
+    );
     return lineVersionWorkflows.filter(
-      (lvw) => lvw.workflowProcessingStatus === WorkflowProcessingStatus.InProgress,
+      (lvw) =>
+        lvw.workflowProcessingStatus === WorkflowProcessingStatus.InProgress
     );
   }
 
@@ -71,6 +88,8 @@ export class WorkflowComponent implements OnInit, OnChanges {
   }
 
   skipWorkflow() {
-    this.lineService.skipWorkflow(this.lineRecord.id!).subscribe(() => this.workflowEvent.emit());
+    this.lineService
+      .skipWorkflow(this.lineRecord.id!)
+      .subscribe(() => this.workflowEvent.emit());
   }
 }

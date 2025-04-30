@@ -1,9 +1,18 @@
-import {TestBed} from '@angular/core/testing';
-import {ActivatedRouteSnapshot} from '@angular/router';
-import {Observable, of} from 'rxjs';
-import {lineVersionSnapshotResolver, LineVersionSnapshotResolver,} from './line-version-snapshot.resolver';
-import {LinesService, LineType, LineVersionSnapshot, PaymentType, WorkflowStatus,} from '../../../../api';
-import {AppTestingModule} from '../../../../app.testing.module';
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import {
+  lineVersionSnapshotResolver,
+  LineVersionSnapshotResolver,
+} from './line-version-snapshot.resolver';
+import {
+  LinesService,
+  LineType,
+  LineVersionSnapshot,
+  PaymentType,
+  WorkflowStatus,
+} from '../../../../api';
+import { AppTestingModule } from '../../../../app.testing.module';
 
 const version: LineVersionSnapshot = {
   lineType: LineType.Operational,
@@ -20,13 +29,15 @@ const version: LineVersionSnapshot = {
   businessOrganisation: 'sbb',
   offerCategory: 'BAT',
   lineConcessionType: 'CANTONALLY_APPROVED_LINE',
-  shortNumber: 'short'
+  shortNumber: 'short',
 };
 
 const routerStateSnapshot = jasmine.createSpyObj('RouterStateSnapshot', ['']);
 
 describe('LineVersionSnapshotResolver', () => {
-  const linesService = jasmine.createSpyObj('linesService', ['getLineVersionSnapshotById']);
+  const linesService = jasmine.createSpyObj('linesService', [
+    'getLineVersionSnapshotById',
+  ]);
   linesService.getLineVersionSnapshotById.and.returnValue(of(version));
 
   let resolver: LineVersionSnapshotResolver;
@@ -34,7 +45,10 @@ describe('LineVersionSnapshotResolver', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      providers: [LineVersionSnapshotResolver, { provide: LinesService, useValue: linesService }],
+      providers: [
+        LineVersionSnapshotResolver,
+        { provide: LinesService, useValue: linesService },
+      ],
     });
     resolver = TestBed.inject(LineVersionSnapshotResolver);
   });
@@ -44,10 +58,12 @@ describe('LineVersionSnapshotResolver', () => {
   });
 
   it('should get snapshot from service to display', () => {
-    const mockRoute = { params: { id: '1234' } } as unknown as ActivatedRouteSnapshot;
+    const mockRoute = {
+      params: { id: '1234' },
+    } as unknown as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
-      lineVersionSnapshotResolver(mockRoute, routerStateSnapshot),
+      lineVersionSnapshotResolver(mockRoute, routerStateSnapshot)
     ) as Observable<LineVersionSnapshot>;
 
     result.subscribe((snapshot) => {

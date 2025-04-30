@@ -18,7 +18,8 @@ describe('ContactPointFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         ContactPointFormComponent,
         TextFieldComponent,
         AtlasLabelFieldComponent,
@@ -28,7 +29,6 @@ describe('ContactPointFormComponent', () => {
         SelectComponent,
         CommentComponent,
       ],
-      imports: [AppTestingModule],
       providers: [{ provide: TranslatePipe }],
     });
     fixture = TestBed.createComponent(ContactPointFormComponent);

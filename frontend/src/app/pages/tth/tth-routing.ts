@@ -1,11 +1,8 @@
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { Routes } from '@angular/router';
 import { Pages } from '../pages';
-import { TimetableHearingOverviewComponent } from './overview/timetable-hearing-overview.component';
-import { OverviewTabComponent } from './overview-tab/overview-tab.component';
-import { OverviewDetailComponent } from './overview-detail/overview-detail.component';
+
 import { HearingStatus } from '../../api';
-import { StatementDetailComponent } from './statement/statement-detail.component';
+
 import { statementResolver } from './statement/statement-detail.resolver';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
@@ -13,14 +10,20 @@ const statementActiveDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH
 const statementPlannedDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH_PLANNED.path}/${Pages.TTH_STATEMENT_DETAILS.path}`;
 const statementArchivedDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH_ARCHIVED.path}/${Pages.TTH_STATEMENT_DETAILS.path}`;
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
-    component: TimetableHearingOverviewComponent,
+    loadComponent: () =>
+      import('./overview/timetable-hearing-overview.component').then(
+        (m) => m.TimetableHearingOverviewComponent
+      ),
   },
   {
     path: statementActiveDetailPath,
-    component: StatementDetailComponent,
+    loadComponent: () =>
+      import('./statement/statement-detail.component').then(
+        (m) => m.StatementDetailComponent
+      ),
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       statement: statementResolver,
@@ -32,7 +35,10 @@ const routes: Routes = [
   },
   {
     path: statementPlannedDetailPath,
-    component: StatementDetailComponent,
+    loadComponent: () =>
+      import('./statement/statement-detail.component').then(
+        (m) => m.StatementDetailComponent
+      ),
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       statement: statementResolver,
@@ -44,7 +50,10 @@ const routes: Routes = [
   },
   {
     path: statementArchivedDetailPath,
-    component: StatementDetailComponent,
+    loadComponent: () =>
+      import('./statement/statement-detail.component').then(
+        (m) => m.StatementDetailComponent
+      ),
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       statement: statementResolver,
@@ -56,25 +65,37 @@ const routes: Routes = [
   },
   {
     path: Pages.TTH_OVERVIEW_DETAIL.path,
-    component: OverviewTabComponent,
+    loadComponent: () =>
+      import('./overview-tab/overview-tab.component').then(
+        (m) => m.OverviewTabComponent
+      ),
     children: [
       {
         path: Pages.TTH_ACTIVE.path,
-        component: OverviewDetailComponent,
+        loadComponent: () =>
+          import('./overview-detail/overview-detail.component').then(
+            (m) => m.OverviewDetailComponent
+          ),
         data: {
           hearingStatus: HearingStatus.Active,
         },
       },
       {
         path: Pages.TTH_PLANNED.path,
-        component: OverviewDetailComponent,
+        loadComponent: () =>
+          import('./overview-detail/overview-detail.component').then(
+            (m) => m.OverviewDetailComponent
+          ),
         data: {
           hearingStatus: HearingStatus.Planned,
         },
       },
       {
         path: Pages.TTH_ARCHIVED.path,
-        component: OverviewDetailComponent,
+        loadComponent: () =>
+          import('./overview-detail/overview-detail.component').then(
+            (m) => m.OverviewDetailComponent
+          ),
         data: {
           hearingStatus: HearingStatus.Archived,
         },
@@ -84,9 +105,3 @@ const routes: Routes = [
   },
   { path: '**', redirectTo: Pages.TTH.path },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class TthRoutingModule {}

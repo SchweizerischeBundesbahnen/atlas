@@ -10,7 +10,6 @@ import { UserComponent } from '../components/user/user.component';
 import { TableComponent } from '../components/table/table.component';
 import { BaseDetailComponent } from '../components/base-detail/base-detail.component';
 import { SideNavComponent } from '../components/side-nav/side-nav.component';
-import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
@@ -58,7 +57,7 @@ import { DialogContentComponent } from '../components/dialog/content/dialog-cont
 import { DialogFooterComponent } from '../components/dialog/footer/dialog-footer.component';
 import { SearchServicePointPanelComponent } from '../search-service-point-panel/search-service-point-panel.component';
 import { NavigationSepodiPrmComponent } from '../navigation-sepodi-prm/navigation-sepodi-prm.component';
-import {PrmRecordingObligationComponent} from "../prm-recording-obligation/prm-recording-obligation.component";
+import { PrmRecordingObligationComponent } from '../prm-recording-obligation/prm-recording-obligation.component';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -111,16 +110,8 @@ const coreComponents = [
 ];
 
 @NgModule({
-  declarations: [
-    ...coreComponents,
-    ShowTitlePipe,
-    MouseOverTitleDirective,
-    FormatPipe,
-    InstanceOfPipe,
-  ],
   imports: [
     CommonModule,
-    MaterialModule,
     TranslateModule,
     RouterModule,
     FormModule,
@@ -135,8 +126,17 @@ const coreComponents = [
         sendAccessToken: true,
       },
     }),
+    ...coreComponents,
+    ShowTitlePipe,
+    MouseOverTitleDirective,
+    FormatPipe,
+    InstanceOfPipe,
   ],
-  exports: [...coreComponents, CommonModule, MaterialModule, TranslateModule],
-  providers: [TranslatePipe, FormatPipe, { provide: OAuthStorage, useClass: OAuthCookieStorage }],
+  exports: [...coreComponents, CommonModule, TranslateModule],
+  providers: [
+    TranslatePipe,
+    FormatPipe,
+    { provide: OAuthStorage, useClass: OAuthCookieStorage },
+  ],
 })
 export class CoreModule {}

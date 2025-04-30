@@ -113,7 +113,9 @@ function setupTestBed(
   data: { lineVersionSnapshot: string | LineVersionSnapshot }
 ) {
   TestBed.configureTestingModule({
-    declarations: [
+    imports: [
+      AppTestingModule,
+      NgOptimizedImage,
       LineVersionSnapshotDetailComponent,
       MockAppDetailWrapperComponent,
       LineDetailFormComponent,
@@ -138,7 +140,6 @@ function setupTestBed(
       DateRangeComponent,
       DateIconComponent,
     ],
-    imports: [AppTestingModule, NgOptimizedImage],
     providers: [
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },

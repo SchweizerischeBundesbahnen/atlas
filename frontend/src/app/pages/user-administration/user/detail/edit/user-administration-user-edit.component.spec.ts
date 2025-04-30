@@ -1,16 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationUserEditComponent } from './user-administration-user-edit.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
-import { Component, Input } from '@angular/core';
-import { MaterialModule } from '../../../../../core/module/material.module';
-import { RouterTestingModule } from '@angular/router/testing';
-import { EditTitlePipe } from './edit-title.pipe';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { UserService } from '../../../service/user.service';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { Observable, of } from 'rxjs';
@@ -22,22 +13,10 @@ import {
   User,
 } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
-import { Data } from '../../../components/read-only-data/data';
-import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
+import { ActivatedRoute } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import SpyObj = jasmine.SpyObj;
-import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
-import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
-
-@Component({
-  selector: 'app-user-administration-read-only-data',
-  template: '',
-})
-export class MockUserAdministrationReadOnlyDataComponent<T extends Data> {
-  @Input() data!: T;
-  @Input() userModelConfig!: ReadOnlyData<T>[][];
-}
 
 describe('UserAdministrationUserEditComponent', () => {
   let component: UserAdministrationUserEditComponent;
@@ -69,7 +48,9 @@ describe('UserAdministrationUserEditComponent', () => {
         },
       }
     );
-    notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
+    notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
+      'success',
+    ]);
     boServiceSpy = jasmine.createSpyObj('BusinessOrganisationService', [
       'getAllBusinessOrganisations',
     ]);
@@ -89,22 +70,7 @@ describe('UserAdministrationUserEditComponent', () => {
       },
     });
     await TestBed.configureTestingModule({
-      declarations: [
-        UserAdministrationUserEditComponent,
-        MockUserAdministrationReadOnlyDataComponent,
-        EditTitlePipe,
-        MockUserDetailInfoComponent,
-        DetailPageContainerComponent,
-        DetailPageContentComponent,
-        DetailFooterComponent,
-      ],
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        MaterialModule,
-        RouterTestingModule,
-      ],
+      imports: [UserAdministrationUserEditComponent, TranslateModule.forRoot()],
       providers: [
         TranslatePipe,
         {
@@ -119,6 +85,12 @@ describe('UserAdministrationUserEditComponent', () => {
           provide: DialogService,
           useValue: dialogServiceSpy,
         },
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { data: { user: {} } } },
+        },
+        provideHttpClient(),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
 
@@ -126,6 +98,7 @@ describe('UserAdministrationUserEditComponent', () => {
     component = fixture.componentInstance;
     component.user = {};
     userServiceSpy.getPermissionsFromUserModelAsArray.and.returnValue([]);
+    component.userRecord = {};
     fixture.detectChanges();
   });
 
@@ -134,7 +107,9 @@ describe('UserAdministrationUserEditComponent', () => {
   });
 
   it('test ngOnInit', () => {
-    expect(userServiceSpy.getPermissionsFromUserModelAsArray).toHaveBeenCalledOnceWith({});
+    expect(
+      userServiceSpy.getPermissionsFromUserModelAsArray
+    ).toHaveBeenCalledOnceWith({});
     expect(component.user).toBeUndefined();
     expect(userPermissionManagerSpy.setSbbUserId).not.toHaveBeenCalled();
     expect(userPermissionManagerSpy.setPermissions).not.toHaveBeenCalled();
@@ -152,7 +127,9 @@ describe('UserAdministrationUserEditComponent', () => {
     expect(
       userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser
     ).toHaveBeenCalledOnceWith();
-    expect(userPermissionManagerSpy.emitBoFormResetEvent).toHaveBeenCalledOnceWith();
+    expect(
+      userPermissionManagerSpy.emitBoFormResetEvent
+    ).toHaveBeenCalledOnceWith();
     expect(userServiceSpy.updateUserPermission).toHaveBeenCalledOnceWith({
       permissions: [],
       sbbUserId: 'u123456',
@@ -160,7 +137,9 @@ describe('UserAdministrationUserEditComponent', () => {
     expect(component.user).toEqual({ sbbUserId: 'u123456' });
     expect(component.editMode).toBeFalse();
     expect(component.saveEnabled).toBeFalse();
-    expect(userPermissionManagerSpy.setPermissions).toHaveBeenCalledOnceWith([]);
+    expect(userPermissionManagerSpy.setPermissions).toHaveBeenCalledOnceWith(
+      []
+    );
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
       'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
     );
@@ -182,8 +161,12 @@ describe('UserAdministrationUserEditComponent', () => {
     dialogServiceSpy.confirmLeave.and.returnValue(of(true));
     component.cancelEdit();
     expect(component.editMode).toBeFalse();
-    expect(userPermissionManagerSpy.setPermissions).toHaveBeenCalledOnceWith([]);
-    expect(userPermissionManagerSpy.emitBoFormResetEvent).toHaveBeenCalledOnceWith();
+    expect(userPermissionManagerSpy.setPermissions).toHaveBeenCalledOnceWith(
+      []
+    );
+    expect(
+      userPermissionManagerSpy.emitBoFormResetEvent
+    ).toHaveBeenCalledOnceWith();
   });
 
   it('test cancelEdit showDialog=true,confirmLeaveResult=false', () => {

@@ -16,7 +16,9 @@ export class PrmTabsService {
       this.tabs.next([PrmTabs.STOP_POINT]);
     } else {
       this.disableTabNavigation.next(false);
-      const isReduced = PrmMeanOfTransportHelper.isReduced(stopPointVersions[0].meansOfTransport);
+      const isReduced = PrmMeanOfTransportHelper.isReduced(
+        stopPointVersions[0].meansOfTransport
+      );
       if (isReduced) {
         this.tabs.next(PRM_REDUCED_TABS);
       } else {

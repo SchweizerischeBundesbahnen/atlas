@@ -12,9 +12,9 @@ import { SplitServicePointNumberPipe } from '../../../core/search-service-point/
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 import { ReadServicePointVersion } from '../../../api';
-import {DetailPageContainerComponent} from "../../../core/components/detail-page-container/detail-page-container.component";
-import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
-import {DetailFooterComponent} from "../../../core/components/detail-footer/detail-footer.component";
+import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
+import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
 
 const authService: Partial<AuthService> = {};
 const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
@@ -84,7 +84,8 @@ describe('ServicePointSidePanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         ServicePointSidePanelComponent,
         DisplayDatePipe,
         SplitServicePointNumberPipe,
@@ -94,7 +95,6 @@ describe('ServicePointSidePanelComponent', () => {
         DetailPageContentComponent,
         DetailFooterComponent,
       ],
-      imports: [AppTestingModule],
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -118,13 +118,17 @@ describe('ServicePointSidePanelComponent', () => {
     it('should display current designationOfficial and validity', () => {
       expect(component.selectedVersion).toBeTruthy();
 
-      expect(component.selectedVersion.designationOfficial).toEqual('Bern, Wyleregg');
+      expect(component.selectedVersion.designationOfficial).toEqual(
+        'Bern, Wyleregg'
+      );
       expect(component.maxValidity.validFrom).toEqual(new Date('2014-12-14'));
       expect(component.maxValidity.validTo).toEqual(new Date('2021-03-31'));
 
       expect(component.tabs).toHaveSize(5);
 
-      expect(trafficPointMapService.displayTrafficPointsOnMap).toHaveBeenCalled();
+      expect(
+        trafficPointMapService.displayTrafficPointsOnMap
+      ).toHaveBeenCalled();
     });
   });
 

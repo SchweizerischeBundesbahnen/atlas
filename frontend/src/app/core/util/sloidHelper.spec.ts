@@ -7,8 +7,8 @@ describe('SloidHelper', () => {
   });
 
   it('should throw error if sloid is not of service point', () => {
-    expect(() => SloidHelper.servicePointSloidToNumber('ch:1:sloid:7000:0')).toThrow(
-      new Error('Was not servicePoint sloid:' + ' ch:1:sloid:7000:0'),
-    );
+    expect(() =>
+      SloidHelper.servicePointSloidToNumber('ch:1:sloid:7000:0')
+    ).toThrow(new Error('Was not servicePoint sloid:' + ' ch:1:sloid:7000:0'));
   });
 });

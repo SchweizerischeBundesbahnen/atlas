@@ -39,7 +39,9 @@ export class KeepaliveService {
   startWatching(timeoutFunc: () => void): void {
     this.createIdleInterval(timeoutFunc);
     this.eventsSubscription?.unsubscribe();
-    this.zone.runOutsideAngular(() => this.createEventsSubscription(timeoutFunc));
+    this.zone.runOutsideAngular(() =>
+      this.createEventsSubscription(timeoutFunc)
+    );
   }
 
   stopWatching(): void {

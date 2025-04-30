@@ -7,8 +7,8 @@ import {
   PermissionRestrictionType,
   UserPermissionCreate,
 } from '../../../api';
-import {BehaviorSubject, firstValueFrom, Subject} from 'rxjs';
-import {Injectable} from '@angular/core';
+import { BehaviorSubject, firstValueFrom, Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UserPermissionManager {
@@ -61,9 +61,9 @@ export class UserPermissionManager {
 
   readonly boOfApplicationsSubject$: BehaviorSubject<{
     [application in ApplicationType]: BusinessOrganisation[];
-  }> = new BehaviorSubject<{ [application in ApplicationType]: BusinessOrganisation[] }>(
-    this.businessOrganisationsOfApplication,
-  );
+  }> = new BehaviorSubject<{
+    [application in ApplicationType]: BusinessOrganisation[];
+  }>(this.businessOrganisationsOfApplication);
 
   private readonly availableApplicationRolesConfig: {
     [application in ApplicationType]: ApplicationRole[];
@@ -110,18 +110,30 @@ export class UserPermissionManager {
     this.boFormResetEventSource.next();
   }
 
-  getAvailableApplicationRolesOfApplication(application: ApplicationType): ApplicationRole[] {
+  getAvailableApplicationRolesOfApplication(
+    application: ApplicationType
+  ): ApplicationRole[] {
     return this.availableApplicationRolesConfig[application];
   }
 
   clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser(): void {
     this.userPermission.permissions.forEach((permission) => {
-      const permissionIndex = this.getPermissionIndexFromApplication(ApplicationType.Sepodi);
-      if (permission.role === ApplicationRole.SuperUser && permission.application === ApplicationType.Sepodi) {
-        this.userPermission.permissions[permissionIndex].permissionRestrictions =
-          this.userPermission.permissions[permissionIndex].permissionRestrictions.filter(
-            (restriction) => restriction.type === PermissionRestrictionType.Country || restriction.type === PermissionRestrictionType.BulkImport,
-          );
+      const permissionIndex = this.getPermissionIndexFromApplication(
+        ApplicationType.Sepodi
+      );
+      if (
+        permission.role === ApplicationRole.SuperUser &&
+        permission.application === ApplicationType.Sepodi
+      ) {
+        this.userPermission.permissions[
+          permissionIndex
+        ].permissionRestrictions = this.userPermission.permissions[
+          permissionIndex
+        ].permissionRestrictions.filter(
+          (restriction) =>
+            restriction.type === PermissionRestrictionType.Country ||
+            restriction.type === PermissionRestrictionType.BulkImport
+        );
       } else if (permission.role !== ApplicationRole.Writer) {
         permission.permissionRestrictions = [];
       }
@@ -144,38 +156,57 @@ export class UserPermissionManager {
   setPermissions(permissions: Permission[]): void {
     permissions.forEach((permission) => {
       const application = permission.application;
-      const permissionIndex = this.getPermissionIndexFromApplication(application);
+      const permissionIndex =
+        this.getPermissionIndexFromApplication(application);
       this.userPermission.permissions[permissionIndex].role = permission.role;
-      this.userPermission.permissions[permissionIndex].permissionRestrictions = [];
+      this.userPermission.permissions[permissionIndex].permissionRestrictions =
+        [];
       this.businessOrganisationsOfApplication[application] = [];
-      this.boOfApplicationsSubject$.next(this.businessOrganisationsOfApplication);
+      this.boOfApplicationsSubject$.next(
+        this.businessOrganisationsOfApplication
+      );
       permission.permissionRestrictions
         .filter(
-          (restriction) => restriction.type === PermissionRestrictionType.BusinessOrganisation,
+          (restriction) =>
+            restriction.type === PermissionRestrictionType.BusinessOrganisation
         )
         .forEach((sboid) => {
           this.addSboidToPermission(application, sboid.valueAsString!);
         });
       permission.permissionRestrictions
-        .filter((restriction) => restriction.type === PermissionRestrictionType.Canton)
+        .filter(
+          (restriction) => restriction.type === PermissionRestrictionType.Canton
+        )
         .forEach((canton) => {
-          this.userPermission.permissions[permissionIndex].permissionRestrictions.push({
+          this.userPermission.permissions[
+            permissionIndex
+          ].permissionRestrictions.push({
             valueAsString: canton.valueAsString,
             type: PermissionRestrictionType.Canton,
           });
         });
       permission.permissionRestrictions
-        .filter((restriction) => restriction.type === PermissionRestrictionType.Country)
+        .filter(
+          (restriction) =>
+            restriction.type === PermissionRestrictionType.Country
+        )
         .forEach((country) => {
-          this.userPermission.permissions[permissionIndex].permissionRestrictions.push({
+          this.userPermission.permissions[
+            permissionIndex
+          ].permissionRestrictions.push({
             valueAsString: country.valueAsString,
             type: PermissionRestrictionType.Country,
           });
         });
       permission.permissionRestrictions
-        .filter((restriction) => restriction.type === PermissionRestrictionType.BulkImport)
+        .filter(
+          (restriction) =>
+            restriction.type === PermissionRestrictionType.BulkImport
+        )
         .forEach((bulkImport) => {
-          this.userPermission.permissions[permissionIndex].permissionRestrictions.push({
+          this.userPermission.permissions[
+            permissionIndex
+          ].permissionRestrictions.push({
             valueAsString: bulkImport.valueAsString,
             type: PermissionRestrictionType.BulkImport,
           });
@@ -183,21 +214,31 @@ export class UserPermissionManager {
     });
   }
 
-  changePermissionRole(application: ApplicationType, newRole: ApplicationRole): void {
+  changePermissionRole(
+    application: ApplicationType,
+    newRole: ApplicationRole
+  ): void {
     const permissionIndex = this.getPermissionIndexFromApplication(application);
     this.userPermission.permissions[permissionIndex].role = newRole;
   }
 
-  removeSboidFromPermission(application: ApplicationType, sboidIndex: number): void {
+  removeSboidFromPermission(
+    application: ApplicationType,
+    sboidIndex: number
+  ): void {
     const permissionIndex = this.getPermissionIndexFromApplication(application);
-    const sboidToDelete = this.businessOrganisationsOfApplication[application][sboidIndex].sboid;
+    const sboidToDelete =
+      this.businessOrganisationsOfApplication[application][sboidIndex].sboid;
     this.userPermission.permissions[permissionIndex].permissionRestrictions =
-      this.userPermission.permissions[permissionIndex].permissionRestrictions.filter(
-        (sboid) => sboid.valueAsString !== sboidToDelete,
+      this.userPermission.permissions[
+        permissionIndex
+      ].permissionRestrictions.filter(
+        (sboid) => sboid.valueAsString !== sboidToDelete
       );
-    this.businessOrganisationsOfApplication[application] = this.businessOrganisationsOfApplication[
-      application
-    ].filter((_, index) => index !== sboidIndex);
+    this.businessOrganisationsOfApplication[application] =
+      this.businessOrganisationsOfApplication[application].filter(
+        (_, index) => index !== sboidIndex
+      );
     this.boOfApplicationsSubject$.next(this.businessOrganisationsOfApplication);
   }
 
@@ -205,9 +246,15 @@ export class UserPermissionManager {
     const permission = this.getPermissionByApplication(application);
 
     firstValueFrom(
-      this.boService.getAllBusinessOrganisations([sboid], undefined, undefined, undefined, 0, 1, [
-        'sboid,ASC',
-      ]),
+      this.boService.getAllBusinessOrganisations(
+        [sboid],
+        undefined,
+        undefined,
+        undefined,
+        0,
+        1,
+        ['sboid,ASC']
+      )
     ).then((result) => {
       if (!result.objects || result.objects.length === 0) {
         console.error('Could not resolve selected bo');
@@ -225,13 +272,17 @@ export class UserPermissionManager {
         ...this.businessOrganisationsOfApplication[application],
         result.objects[0],
       ];
-      this.boOfApplicationsSubject$.next(this.businessOrganisationsOfApplication);
+      this.boOfApplicationsSubject$.next(
+        this.businessOrganisationsOfApplication
+      );
     });
   }
 
-  private getPermissionIndexFromApplication(application: ApplicationType): number {
+  private getPermissionIndexFromApplication(
+    application: ApplicationType
+  ): number {
     return this.userPermission.permissions.findIndex(
-      (permission) => permission.application === application,
+      (permission) => permission.application === application
     );
   }
 
@@ -241,6 +292,8 @@ export class UserPermissionManager {
   }
 
   getRestrictionValues(userPermission: Permission) {
-    return userPermission.permissionRestrictions.map((restriction) => restriction.valueAsString);
+    return userPermission.permissionRestrictions.map(
+      (restriction) => restriction.valueAsString
+    );
   }
 }

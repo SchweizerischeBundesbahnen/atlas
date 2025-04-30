@@ -23,6 +23,7 @@ import { PermissionService } from '../../auth/permission/permission.service';
 @Component({
   selector: 'app-coverage',
   template: '<p>Mock Product Editor Component</p>',
+  imports: [AppTestingModule],
 })
 class MockAppCoverageComponent {
   @Input() pageType!: Record;
@@ -34,11 +35,15 @@ describe('BaseDetailComponent', () => {
   let component: BaseDetailComponent;
   let fixture: ComponentFixture<BaseDetailComponent>;
 
-  const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success', 'error']);
+  const notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
+    'success',
+    'error',
+  ]);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         BaseDetailComponent,
         MockAppCoverageComponent,
         AtlasButtonComponent,
@@ -48,7 +53,6 @@ describe('BaseDetailComponent', () => {
         DetailFooterComponent,
         DateRangeTextComponent,
       ],
-      imports: [AppTestingModule],
       providers: [
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: NotificationService, useValue: notificationServiceSpy },
@@ -73,21 +77,27 @@ describe('BaseDetailComponent', () => {
     });
 
     it('should switch from disabled to enabled', () => {
-      const editButton = fixture.debugElement.query(By.css('[data-cy=edit-item]'));
+      const editButton = fixture.debugElement.query(
+        By.css('[data-cy=edit-item]')
+      );
       editButton.nativeElement.click();
 
       expect(dummyController.toggleEdit).toHaveBeenCalled();
     });
 
     it('should revoke record', () => {
-      const editButton = fixture.debugElement.query(By.css('[data-cy=revoke-item]'));
+      const editButton = fixture.debugElement.query(
+        By.css('[data-cy=revoke-item]')
+      );
       editButton.nativeElement.click();
 
       expect(dummyController.revoke).toHaveBeenCalled();
     });
 
     it('should delete record', () => {
-      const deleteButton = fixture.debugElement.query(By.css('[data-cy=delete-item]'));
+      const deleteButton = fixture.debugElement.query(
+        By.css('[data-cy=delete-item]')
+      );
       deleteButton.nativeElement.click();
 
       expect(dummyController.delete).toHaveBeenCalled();
@@ -138,11 +148,15 @@ function createDummyForm(enabledForm: boolean) {
       form: form,
       record: { id: 1, status: Status.Validated },
       selectedRecordChange: selectedRecordChange,
-    },
+    }
   );
   dummyController.getId.and.callFake(BaseDetailController.prototype.getId);
-  dummyController.isNewRecord.and.callFake(BaseDetailController.prototype.isNewRecord);
-  dummyController.isExistingRecord.and.callFake(BaseDetailController.prototype.isExistingRecord);
+  dummyController.isNewRecord.and.callFake(
+    BaseDetailController.prototype.isNewRecord
+  );
+  dummyController.isExistingRecord.and.callFake(
+    BaseDetailController.prototype.isExistingRecord
+  );
   dummyController.confirmLeave.and.returnValue(of(true));
   dummyController.confirmBoTransfer.and.returnValue(of(true));
   dummyController.getApplicationType.and.returnValue(ApplicationType.Bodi);

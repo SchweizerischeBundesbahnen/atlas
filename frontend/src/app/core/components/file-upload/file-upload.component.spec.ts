@@ -1,8 +1,8 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {FileUploadComponent} from './file-upload.component';
-import {AppTestingModule} from '../../../app.testing.module';
-import {MockAtlasButtonComponent} from '../../../app.testing.mocks';
+import { FileUploadComponent } from './file-upload.component';
+import { AppTestingModule } from '../../../app.testing.module';
+import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 
 function getMockFileList(
   fileName: string,
@@ -23,8 +23,11 @@ describe('FileUploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FileUploadComponent, MockAtlasButtonComponent],
-      imports: [AppTestingModule],
+      imports: [
+        AppTestingModule,
+        FileUploadComponent,
+        MockAtlasButtonComponent,
+      ],
     }).compileComponents();
   });
 
@@ -47,43 +50,63 @@ describe('FileUploadComponent', () => {
   });
 
   it('should add file validating type', () => {
-    component.addFileListToFile(getMockFileList('test.csv', { type: 'application/csv' }, ''));
-
-    expect(component.uploadedFiles.length).toBe(0);
-
-    expect(component.errorFiles.length).toBe(1);
-    expect(component.errorFiles[0].errorMessage).toBe('COMMON.FILEUPLOAD.ERROR.TYPE');
-  });
-
-  it('should add file validating size', () => {
     component.addFileListToFile(
-      getMockFileList('test.pdf', { type: 'application/pdf' }, 'asdfghjklertzui')
+      getMockFileList('test.csv', { type: 'application/csv' }, '')
     );
 
     expect(component.uploadedFiles.length).toBe(0);
 
     expect(component.errorFiles.length).toBe(1);
-    expect(component.errorFiles[0].errorMessage).toBe('COMMON.FILEUPLOAD.ERROR.FILE_SIZE');
+    expect(component.errorFiles[0].errorMessage).toBe(
+      'COMMON.FILEUPLOAD.ERROR.TYPE'
+    );
+  });
+
+  it('should add file validating size', () => {
+    component.addFileListToFile(
+      getMockFileList(
+        'test.pdf',
+        { type: 'application/pdf' },
+        'asdfghjklertzui'
+      )
+    );
+
+    expect(component.uploadedFiles.length).toBe(0);
+
+    expect(component.errorFiles.length).toBe(1);
+    expect(component.errorFiles[0].errorMessage).toBe(
+      'COMMON.FILEUPLOAD.ERROR.FILE_SIZE'
+    );
   });
 
   it('should add file validating file count', () => {
-    component.addFileListToFile(getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 2));
+    component.addFileListToFile(
+      getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 2)
+    );
 
     expect(component.uploadedFiles.length).toBe(1);
 
     expect(component.errorFiles.length).toBe(1);
-    expect(component.errorFiles[0].errorMessage).toBe('COMMON.FILEUPLOAD.ERROR.FILE_COUNT');
+    expect(component.errorFiles[0].errorMessage).toBe(
+      'COMMON.FILEUPLOAD.ERROR.FILE_COUNT'
+    );
   });
 
   it('should add file validating file duplication upload', () => {
     component.maxFileCount = 2;
-    component.addFileListToFile(getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1));
-    component.addFileListToFile(getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1));
+    component.addFileListToFile(
+      getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1)
+    );
+    component.addFileListToFile(
+      getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1)
+    );
 
     expect(component.uploadedFiles.length).toBe(1);
 
     expect(component.errorFiles.length).toBe(1);
-    expect(component.errorFiles[0].errorMessage).toBe('COMMON.FILEUPLOAD.ERROR.ALREADY_ADDED');
+    expect(component.errorFiles[0].errorMessage).toBe(
+      'COMMON.FILEUPLOAD.ERROR.ALREADY_ADDED'
+    );
   });
 
   it('should add file validating file duplication already saved', () => {
@@ -94,13 +117,17 @@ describe('FileUploadComponent', () => {
     expect(component.uploadedFiles.length).toBe(0);
 
     expect(component.errorFiles.length).toBe(1);
-    expect(component.errorFiles[0].errorMessage).toBe('COMMON.FILEUPLOAD.ERROR.ALREADY_SAVED');
+    expect(component.errorFiles[0].errorMessage).toBe(
+      'COMMON.FILEUPLOAD.ERROR.ALREADY_SAVED'
+    );
   });
 
   it('should add file successfully and delete it', () => {
     spyOn(component.uploadedFilesChange, 'emit');
 
-    component.addFileListToFile(getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1));
+    component.addFileListToFile(
+      getMockFileList('test.pdf', { type: 'application/pdf' }, 'as', 1)
+    );
     expect(component.uploadedFiles.length).toBe(1);
     expect(component.errorFiles.length).toBe(0);
     expect(component.uploadedFilesChange.emit).toHaveBeenCalled();
@@ -113,14 +140,18 @@ describe('FileUploadComponent', () => {
   it('should display the download button when isDownloadButtonVisible is true', () => {
     component.isDownloadButtonVisible = true;
     fixture.detectChanges();
-    const downloadButton = fixture.nativeElement.querySelector('[buttonDataCy="download-csv"]');
+    const downloadButton = fixture.nativeElement.querySelector(
+      '[buttonDataCy="download-csv"]'
+    );
     expect(downloadButton).toBeTruthy();
   });
 
   it('should not display the download button when isDownloadButtonVisible is false', () => {
     component.isDownloadButtonVisible = false;
     fixture.detectChanges();
-    const downloadButton = fixture.nativeElement.querySelector('[buttonDataCy="download-csv"]');
+    const downloadButton = fixture.nativeElement.querySelector(
+      '[buttonDataCy="download-csv"]'
+    );
     expect(downloadButton).toBeNull();
   });
 

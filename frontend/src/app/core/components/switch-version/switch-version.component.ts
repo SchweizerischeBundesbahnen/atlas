@@ -8,28 +8,60 @@ import {
   OnInit,
   Output,
   QueryList,
-  ViewChildren
+  ViewChildren,
 } from '@angular/core';
-import {Record} from '../base-detail/record';
-import {DateService} from '../../date/date.service';
-import {TableColumn} from '../table/table-column';
-import {Status} from '../../../api';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MatRow} from "@angular/material/table";
+import { Record } from '../base-detail/record';
+import { DateService } from '../../date/date.service';
+import { TableColumn } from '../table/table-column';
+import { Status } from '../../../api';
+import { TranslatePipe } from '@ngx-translate/core';
+import {
+  MatRow,
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+} from '@angular/material/table';
+import { NgFor, NgIf, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-switch-version',
   templateUrl: './switch-version.component.html',
   styleUrls: ['./switch-version.component.scss'],
+  imports: [
+    MatTable,
+    NgFor,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    NgIf,
+    MatCell,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    NgClass,
+    TranslatePipe,
+  ],
 })
-export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit {
+export class SwitchVersionComponent
+  implements OnInit, OnChanges, AfterViewInit
+{
   @Input() records!: Array<Record>;
   @Input() currentRecord!: Record;
   @Input() switchDisabled = false;
   @Input() showStatus = true;
   @Output() switchVersion = new EventEmitter<number>();
 
-  @ViewChildren(MatRow, {read: ElementRef}) versionRows!: QueryList<ElementRef<HTMLTableRowElement>>;
+  @ViewChildren(MatRow, { read: ElementRef }) versionRows!: QueryList<
+    ElementRef<HTMLTableRowElement>
+  >;
 
   currentIndex: number;
   tableColumns: TableColumn<Record>[] = [];
@@ -45,7 +77,11 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
         value: 'versionNumber',
         translate: { withKey: 'COMMON.VERSION' },
       },
-      { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+      {
+        headerTitle: 'COMMON.VALID_FROM',
+        value: 'validFrom',
+        formatAsDate: true,
+      },
       { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
     ];
     if (this.showStatus) {
@@ -76,7 +112,10 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
     return DateService.getDateFormatted(date);
   }
 
-  format(input: Date | Status | number | undefined, column: TableColumn<Record>): string | null {
+  format(
+    input: Date | Status | number | undefined,
+    column: TableColumn<Record>
+  ): string | null {
     if (column.formatAsDate) {
       return this.formatDate(input as Date);
     }
@@ -99,9 +138,9 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
 
   scrollToCurrentRow() {
     this.versionRows?.get(this.currentIndex)?.nativeElement.scrollIntoView({
-      behavior: "instant",
-      block: "nearest",
-      inline: "center"
+      behavior: 'instant',
+      block: 'nearest',
+      inline: 'center',
     });
   }
 
@@ -116,7 +155,9 @@ export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit 
   hasGapToNextRecord(record: Record): boolean {
     const nextRecord = this.records[this.getIndexOfRecord(record) + 1];
     if (nextRecord) {
-      return DateService.differenceInDays(record.validTo!, nextRecord.validFrom!) > 1;
+      return (
+        DateService.differenceInDays(record.validTo!, nextRecord.validFrom!) > 1
+      );
     }
     return false;
   }

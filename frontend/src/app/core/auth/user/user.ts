@@ -1,4 +1,4 @@
-import {Permission} from "../../../api";
+import { Permission } from '../../../api';
 
 export interface User {
   email: string;

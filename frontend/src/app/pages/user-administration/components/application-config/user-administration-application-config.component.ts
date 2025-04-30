@@ -1,5 +1,11 @@
-import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {TableColumn} from '../../../../core/components/table/table-column';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { TableColumn } from '../../../../core/components/table/table-column';
 import {
   ApplicationRole,
   ApplicationType,
@@ -10,25 +16,43 @@ import {
   SboidPermissionRestrictionModel,
   SwissCanton,
 } from '../../../../api';
-import {FormControl, FormGroup} from '@angular/forms';
-import {UserPermissionManager} from '../../service/user-permission-manager';
-import {
-  BusinessOrganisationLanguageService
-} from '../../../../core/form-components/bo-select/business-organisation-language.service';
-import {Observable, of, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Cantons} from '../../../../core/cantons/Cantons';
-import {MatSelectChange} from '@angular/material/select';
-import {Countries} from '../../../../core/country/Countries';
-import {BULK_IMPORT_APPLICATIONS} from "../../../../core/auth/permission/bulk-import-permission";
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UserPermissionManager } from '../../service/user-permission-manager';
+import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
+import { Observable, of, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Cantons } from '../../../../core/cantons/Cantons';
+import { MatSelectChange } from '@angular/material/select';
+import { Countries } from '../../../../core/country/Countries';
+import { BULK_IMPORT_APPLICATIONS } from '../../../../core/auth/permission/bulk-import-permission';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasSlideToggleComponent } from '../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { RelationComponent } from '../../../../core/components/relation/relation.component';
+import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-administration-application-config',
   templateUrl: './user-administration-application-config.component.html',
   styleUrls: ['./user-administration-application-config.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    SelectComponent,
+    AtlasLabelFieldComponent,
+    AtlasSlideToggleComponent,
+    NgIf,
+    RelationComponent,
+    BusinessOrganisationSelectComponent,
+    ReactiveFormsModule,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
-export class UserAdministrationApplicationConfigComponent implements OnInit, OnDestroy {
+export class UserAdministrationApplicationConfigComponent
+  implements OnInit, OnDestroy
+{
   @Input() application!: ApplicationType;
   @Input() readOnly = false;
   @Input() role: ApplicationRole = 'READER';
@@ -40,23 +64,25 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
   bulkImportApplications = BULK_IMPORT_APPLICATIONS;
   _bulkImportPermission = false;
 
-  get bulkImportPermission(){
+  get bulkImportPermission() {
     return this._bulkImportPermission;
   }
 
   set bulkImportPermission(value: boolean) {
-    const bulkImportPermission =
-      this.userPermissionManager.getPermissionByApplication(this.application)
-        .permissionRestrictions
-        .find(i => i.type === PermissionRestrictionType.BulkImport);
+    const bulkImportPermission = this.userPermissionManager
+      .getPermissionByApplication(this.application)
+      .permissionRestrictions.find(
+        (i) => i.type === PermissionRestrictionType.BulkImport
+      );
     if (bulkImportPermission) {
       bulkImportPermission.valueAsString = String(value);
     } else {
-      this.userPermissionManager.getPermissionByApplication(this.application)
+      this.userPermissionManager
+        .getPermissionByApplication(this.application)
         .permissionRestrictions.push({
-        type: PermissionRestrictionType.BulkImport,
-        valueAsString: String(value)
-      });
+          type: PermissionRestrictionType.BulkImport,
+          valueAsString: String(value),
+        });
     }
 
     this._bulkImportPermission = value;
@@ -98,7 +124,7 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
       Country.GermanyBus,
       Country.AustriaBus,
       Country.ItalyBus,
-      Country.FranceBus,
+      Country.FranceBus
     );
     const filteredCountries = Countries.filteredCountries();
     filteredCountries.sort(Countries.compareFn);
@@ -115,31 +141,37 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
 
   constructor(
     private readonly boLanguageService: BusinessOrganisationLanguageService,
-    readonly userPermissionManager: UserPermissionManager,
+    readonly userPermissionManager: UserPermissionManager
   ) {
-    this.boFormResetEventSubscription = userPermissionManager.boFormResetEvent$.subscribe(() =>
-      this.businessOrganisationForm.reset(),
-    );
+    this.boFormResetEventSubscription =
+      userPermissionManager.boFormResetEvent$.subscribe(() =>
+        this.businessOrganisationForm.reset()
+      );
   }
 
   resetCountries() {
     this.countrySelection = this.userPermissionManager.getRestrictionValues(
-      this.userPermissionManager.getPermissionByApplication(this.application),
+      this.userPermissionManager.getPermissionByApplication(this.application)
     ) as [Country];
   }
 
   ngOnInit() {
-    this.availableOptions = this.userPermissionManager.getAvailableApplicationRolesOfApplication(
-      this.application,
-    );
-    this.bulkImportPermission = this.userPermissionManager.getPermissionByApplication(this.application)
-      .permissionRestrictions.find(i => i.type === PermissionRestrictionType.BulkImport)?.valueAsString === "true";
+    this.availableOptions =
+      this.userPermissionManager.getAvailableApplicationRolesOfApplication(
+        this.application
+      );
+    this.bulkImportPermission =
+      this.userPermissionManager
+        .getPermissionByApplication(this.application)
+        .permissionRestrictions.find(
+          (i) => i.type === PermissionRestrictionType.BulkImport
+        )?.valueAsString === 'true';
 
     this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
-      map((bosOfApplications) => bosOfApplications[this.application]),
+      map((bosOfApplications) => bosOfApplications[this.application])
     );
     this.cantonSelection = this.userPermissionManager.getRestrictionValues(
-      this.userPermissionManager.getPermissionByApplication(this.application),
+      this.userPermissionManager.getPermissionByApplication(this.application)
     ) as [SwissCanton];
     this.resetCountries();
   }
@@ -157,11 +189,15 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
   }
 
   remove(): void {
-    this.userPermissionManager.removeSboidFromPermission(this.application, this.selectedIndex);
+    this.userPermissionManager.removeSboidFromPermission(
+      this.application,
+      this.selectedIndex
+    );
     this.selectedIndex = -1;
   }
 
-  readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
+  readonly getCantonAbbreviation = (canton: SwissCanton) =>
+    Cantons.fromSwissCanton(canton)?.short;
 
   cantonSelectionChanged($event: MatSelectChange) {
     const values = $event.value as SwissCanton[];
@@ -169,8 +205,9 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
       valueAsString: selection,
       type: PermissionRestrictionType.Canton,
     }));
-    this.userPermissionManager.getPermissionByApplication(this.application).permissionRestrictions =
-      permissionRestriction;
+    this.userPermissionManager.getPermissionByApplication(
+      this.application
+    ).permissionRestrictions = permissionRestriction;
   }
 
   countrySelectionChanged($event: MatSelectChange) {
@@ -184,14 +221,16 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     const businessPermissionRestrictions = this.userPermissionManager
       .getPermissionByApplication(this.application)
       .permissionRestrictions.filter(
-        (sboid) => sboid.type === PermissionRestrictionType.BusinessOrganisation,
+        (sboid) => sboid.type === PermissionRestrictionType.BusinessOrganisation
       );
-    const role = this.userPermissionManager.getPermissionByApplication(this.application).role;
+    const role = this.userPermissionManager.getPermissionByApplication(
+      this.application
+    ).role;
     this.setSboidAndCountryPermissions(
       businessPermissionRestrictions,
       countryPermissionRestrictions,
       role,
-      this.application,
+      this.application
     );
   }
 
@@ -199,7 +238,7 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     businessPermissionRestrictions: SboidPermissionRestrictionModel[],
     countryPermissionRestrictions: CountryPermissionRestrictionModel[],
     role: ApplicationRole,
-    application: ApplicationType,
+    application: ApplicationType
   ) {
     this.userPermissionManager.setPermissions([
       {

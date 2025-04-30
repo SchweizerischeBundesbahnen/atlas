@@ -1,53 +1,54 @@
 const js = require("@eslint/js");
 
 const {
-    FlatCompat,
+  FlatCompat,
 } = require("@eslint/eslintrc");
 
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all
 });
 
 module.exports = [{
-    ignores: ["projects/**/*", "**node_modules/**/*", "src/app/api/**/*", "cypress.config.ts"],
+  ignores: ["projects/**/*", "**node_modules/**/*", "src/app/api/**/*", "cypress.config.ts"],
 }, ...compat.extends(
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@angular-eslint/recommended",
-    "plugin:@angular-eslint/template/process-inline-templates",
-    "prettier",
+  "eslint:recommended",
+  "plugin:@typescript-eslint/recommended",
+  "plugin:@angular-eslint/recommended",
+  "plugin:@angular-eslint/template/process-inline-templates",
+  "prettier",
 ).map(config => ({
-    ...config,
-    files: ["**/*.ts"],
+  ...config,
+  files: ["**/*.ts"],
 })), {
-    files: ["**/*.ts"],
+  files: ["**/*.ts"],
 
-    languageOptions: {
-        ecmaVersion: 5,
-        sourceType: "script",
+  languageOptions: {
+    ecmaVersion: 5,
+    sourceType: "script",
 
-        parserOptions: {
-            project: ["tsconfig.json"],
-            createDefaultProgram: true,
-        },
+    parserOptions: {
+      project: ["tsconfig.json"],
+      createDefaultProgram: true,
     },
+  },
 
-    rules: {
-        "@angular-eslint/directive-selector": ["error", {
-            type: "attribute",
-            style: "camelCase",
-        }],
+  rules: {
+    "@angular-eslint/directive-selector": ["error", {
+      type: "attribute",
+      style: "camelCase"
+    }],
 
-        "@angular-eslint/component-selector": ["error", {
-            type: "element",
-            style: "kebab-case",
-        }],
+    "@angular-eslint/component-selector": ["error", {
+      type: "element",
+      style: "kebab-case"
+    }],
 
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-    },
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@angular-eslint/prefer-standalone": ["warn"]
+  },
 }, {
   files: ["cypress/**/*.ts"],
 
@@ -68,7 +69,7 @@ module.exports = [{
   ...compat.extends("plugin:@angular-eslint/template/recommended").map(config => ({
     ...config,
     files: ["**/*.html"],
-})), {
+  })), {
     files: ["**/*.html"],
     rules: {},
-}];
+  }];
