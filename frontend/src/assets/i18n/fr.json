@@ -413,7 +413,8 @@
       "CONFLICT": {
         "SWISS_NUMBER": "Le numéro de ligne CH (CHLNR) {{swissLineNumber}} est déjà attribué de {{validFrom}} à {{validTo}} par {{slnid}}.",
         "DELETE": "La ligne {{slnid}} ne peut pas être effacée, car elle est encore référencée par la ligne partielle {{SublineVersion.slnid}}.",
-        "SUBLINE_VALIDITY": "La date indiquée n'est pas valable et se situe en dehors de la validité de la ligne supérieure. La ligne supérieure est valable du : {{validFrom}} à : {{validTo}}"
+        "SUBLINE_VALIDITY": "La date indiquée n'est pas valable et se situe en dehors de la validité de la ligne supérieure. La ligne supérieure est valable du : {{validFrom}} à : {{validTo}}",
+        "NON_UPDATABLE": "Le champ {{field}} ne peut pas être actualisé pour le type de ligne {{lineType}}."
       },
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "La validité de la ligne {{validFrom}}-{{validTo}} est en dehors de la validité de la ligne partielle {{sublinie.swissSublineNumber}}. Celle-ci est {{sublinie.validFrom}}-{{sublinie.validTo}}."
