@@ -25,8 +25,8 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationDecision;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
+import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
-import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflowRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -192,7 +192,7 @@ class TerminationStopPointWorkflowServiceTest {
         .status(TerminationWorkflowStatus.STARTED)
         .build();
     repository.save(workflow);
-    TerminationStopPointWorkflowModel stopPointWorkflowModel = buildTerminationStopPointWorkflowModel();
+    StartTerminationStopPointWorkflowModel stopPointWorkflowModel = buildTerminationStopPointWorkflowModel();
     ReadServicePointVersionModel readServicePointVersionModel = buildReadServicePointVersionModel();
     when(sePoDiAdminClient.postStartServicePointTermination(stopPointWorkflowModel.getSloid(),
         stopPointWorkflowModel.getVersionId(),
@@ -206,7 +206,7 @@ class TerminationStopPointWorkflowServiceTest {
   @Test
   void shouldStartTerminationWorkflow() {
     //given
-    TerminationStopPointWorkflowModel stopPointWorkflowModel = buildTerminationStopPointWorkflowModel();
+    StartTerminationStopPointWorkflowModel stopPointWorkflowModel = buildTerminationStopPointWorkflowModel();
     ReadServicePointVersionModel readServicePointVersionModel = buildReadServicePointVersionModel();
     UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
         .terminationInProgress(true)
@@ -214,7 +214,7 @@ class TerminationStopPointWorkflowServiceTest {
         .build();
     when(sePoDiAdminClient.postStartServicePointTermination(
         stopPointWorkflowModel.getSloid(),
-        stopPointWorkflowModel.getId(),
+        stopPointWorkflowModel.getVersionId(),
         terminationServicePointModel))
         .thenReturn(readServicePointVersionModel);
     //when
@@ -243,8 +243,8 @@ class TerminationStopPointWorkflowServiceTest {
     return repository.save(workflow);
   }
 
-  private static TerminationStopPointWorkflowModel buildTerminationStopPointWorkflowModel() {
-    return TerminationStopPointWorkflowModel.builder()
+  private static StartTerminationStopPointWorkflowModel buildTerminationStopPointWorkflowModel() {
+    return StartTerminationStopPointWorkflowModel.builder()
         .sloid(SLOID)
         .versionId(VERSION_ID)
         .boTerminationDate(LocalDate.of(2000, 1, 1))

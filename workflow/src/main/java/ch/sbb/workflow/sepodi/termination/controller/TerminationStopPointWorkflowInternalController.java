@@ -4,6 +4,7 @@ import ch.sbb.workflow.exception.TerminationDecisionPersonException;
 import ch.sbb.workflow.sepodi.termination.api.TerminationStopPointWorkflowApi;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
+import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.service.TerminationStopPointWorkflowService;
@@ -23,7 +24,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
 
   @Override
   public TerminationStopPointWorkflowModel startTerminationStopPointWorkflow(
-      TerminationStopPointWorkflowModel workflowModel) {
+      StartTerminationStopPointWorkflowModel workflowModel) {
     return TerminationStopPointWorkflowMapper.toModel(service.startTerminationWorkflow(workflowModel));
   }
 

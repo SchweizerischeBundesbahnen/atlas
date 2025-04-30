@@ -1,5 +1,6 @@
 package ch.sbb.workflow.sepodi.termination.api;
 
+import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,7 +27,7 @@ public interface TerminationStopPointWorkflowApi {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201")})
   TerminationStopPointWorkflowModel startTerminationStopPointWorkflow(
-      @RequestBody @Valid TerminationStopPointWorkflowModel workflowModel);
+      @RequestBody @Valid StartTerminationStopPointWorkflowModel workflowModel);
 
   @PostMapping(path = "/decision/info-plus/{workflowId}")
   @ResponseStatus(HttpStatus.CREATED)
