@@ -40,6 +40,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 @RequiredArgsConstructor
 public class RecordingObligationExportBatchConfig {
 
+  private static final int CHUNK_SIZE = 5;
+
   private final JobRepository jobRepository;
   private final PlatformTransactionManager transactionManager;
   private final JobCompletionListener jobCompletionListener;
@@ -78,7 +80,7 @@ public class RecordingObligationExportBatchConfig {
   public Step exportRecordingObligationCsvStep(ItemReader<RecordingObligation> itemReader) {
     final String stepName = "exportRecordingObligationCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<RecordingObligation, RecordingObligationCsvModel>chunk(5, transactionManager)
+        .<RecordingObligation, RecordingObligationCsvModel>chunk(CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(recordingObligationCsvProcessor())
         .writer(recordingObligationCsvWriter(null))
