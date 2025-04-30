@@ -78,7 +78,7 @@ public class RecordingObligationExportBatchConfig {
   public Step exportRecordingObligationCsvStep(ItemReader<RecordingObligation> itemReader) {
     final String stepName = "exportRecordingObligationCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<RecordingObligation, RecordingObligationCsvModel>chunk(StepUtil.CHUNK_SIZE, transactionManager)
+        .<RecordingObligation, RecordingObligationCsvModel>chunk(5, transactionManager)
         .reader(itemReader)
         .processor(recordingObligationCsvProcessor())
         .writer(recordingObligationCsvWriter(null))
