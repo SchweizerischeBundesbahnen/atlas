@@ -4,6 +4,7 @@ export interface Environment {
   production: boolean;
   sepodiWorkflowBavActionEnabled: boolean;
   bulkImportEnabled: boolean;
+  terminationWorkflowEnabled: boolean;
   label: string;
   appVersion: string;
   atlasApiUrl: string;
