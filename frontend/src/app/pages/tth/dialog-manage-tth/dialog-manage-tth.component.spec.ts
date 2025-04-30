@@ -12,7 +12,7 @@ import {
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AppTestingModule } from '../../../app.testing.module';
-import { TimetableHearingYearInternalService } from '../../../api/service/timetable-hearing-year-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 
 @Component({
   selector: 'atlas-slide-toggle',

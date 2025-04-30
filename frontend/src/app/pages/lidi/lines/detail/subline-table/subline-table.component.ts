@@ -8,7 +8,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TableComponent } from '../../../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { LineService } from '../../../../../api/service/line.service';
+import { LineService } from '../../../../../api/service/lidi/line.service';
 
 @Component({
   selector: 'app-subline-table',

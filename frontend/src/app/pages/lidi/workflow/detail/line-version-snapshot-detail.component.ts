@@ -12,7 +12,7 @@ import { Pages } from '../../../pages';
 import { LineVersionSnapshotDetailFormGroup } from './line-version-snapshot-detail-form-group';
 import { WorkflowFormGroup } from '../../../../core/workflow/workflow-form-group';
 import { WorkflowCheckFormGroup } from '../../../../core/workflow/workflow-check-form/workflow-check-form-group';
-import { LineService } from '../../../../api/service/line.service';
+import { LineService } from '../../../../api/service/lidi/line.service';
 import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';

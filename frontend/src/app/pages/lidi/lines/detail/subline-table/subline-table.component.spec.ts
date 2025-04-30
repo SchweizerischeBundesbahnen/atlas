@@ -4,7 +4,7 @@ import { Line } from '../../../../../api';
 import { of, Subject } from 'rxjs';
 import { MockTableComponent } from '../../../../../app.testing.mocks';
 import { AppTestingModule } from '../../../../../app.testing.module';
-import { LineService } from '../../../../../api/service/line.service';
+import { LineService } from '../../../../../api/service/lidi/line.service';
 
 const subline: Line = {
   swissLineNumber: 'IC6',

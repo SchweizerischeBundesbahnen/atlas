@@ -19,7 +19,7 @@ import { TableFilterDateSelect } from '../../../core/components/table-filter/con
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../pages';
 import { TableService } from '../../../core/components/table/table.service';
-import { TimetableFieldNumberInternalService } from '../../../api/service/timetable-field-number-internal.service';
+import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';

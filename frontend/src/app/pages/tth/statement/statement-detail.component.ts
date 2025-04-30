@@ -42,9 +42,9 @@ import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-
 import { TableService } from '../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
-import { TimetableHearingStatementInternalService } from '../../../api/service/timetable-hearing-statement-internal.service';
-import { TimetableYearChangeInternalService } from '../../../api/service/timetable-year-change-internal.service';
-import { TimetableHearingYearInternalService } from '../../../api/service/timetable-hearing-year-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableYearChangeInternalService } from '../../../api/service/lidi/timetable-year-change-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { LoadingSpinnerService } from '../../../core/components/loading-spinner/loading-spinner.service';
 import { ScrollToTopDirective } from '../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';

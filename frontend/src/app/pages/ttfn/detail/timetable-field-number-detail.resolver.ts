@@ -5,7 +5,7 @@ import {
   TimetableFieldNumberVersion,
 } from '../../../api';
 import { Pages } from '../../pages';
-import { TimetableFieldNumberService } from '../../../api/service/timetable-field-number.service';
+import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable-field-number.service';
 
 @Injectable({ providedIn: 'root' })
 export class TimetableFieldNumberDetailResolver {

@@ -14,7 +14,7 @@ import { By } from '@angular/platform-browser';
 import { DateRangeValidator } from '../../validation/date-range/date-range-validator';
 import { MatDatepicker } from '@angular/material/datepicker';
 import moment from 'moment';
-import { TimetableYearChangeInternalService } from '../../../api/service/timetable-year-change-internal.service';
+import { TimetableYearChangeInternalService } from '../../../api/service/lidi/timetable-year-change-internal.service';
 
 const nextTimetableYearChange = new Date('2024-12-15');
 const timetableYearChangeService = jasmine.createSpyObj(

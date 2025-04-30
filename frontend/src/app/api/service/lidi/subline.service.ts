@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AtlasApiService } from './atlasApi.service';
+import { AtlasApiService } from '../atlasApi.service';
 import { Observable } from 'rxjs';
-import { ReadSublineVersionV2 } from '../model/readSublineVersionV2';
-import { CreateSublineVersionV2 } from '../model/createSublineVersionV2';
-import { SublineVersionV2 } from '../model/sublineVersionV2';
+import { ReadSublineVersionV2 } from '../../model/readSublineVersionV2';
+import { CreateSublineVersionV2 } from '../../model/createSublineVersionV2';
+import { SublineVersionV2 } from '../../model/sublineVersionV2';
 
 @Injectable({
   providedIn: 'root',

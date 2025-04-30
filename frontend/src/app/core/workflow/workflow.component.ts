@@ -12,7 +12,7 @@ import {
   WorkflowProcessingStatus,
 } from '../../api';
 import { WorkflowDialogService } from './dialog/workflow-dialog.service';
-import { LineInternalService } from '../../api/service/line-internal.service';
+import { LineInternalService } from '../../api/service/lidi/line-internal.service';
 import { NgIf } from '@angular/common';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 

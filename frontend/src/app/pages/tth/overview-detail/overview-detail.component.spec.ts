@@ -29,8 +29,8 @@ import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spac
 import { TableService } from '../../../core/components/table/table.service';
 import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
-import { TimetableHearingStatementInternalService } from '../../../api/service/timetable-hearing-statement-internal.service';
-import { TimetableHearingYearInternalService } from '../../../api/service/timetable-hearing-year-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',

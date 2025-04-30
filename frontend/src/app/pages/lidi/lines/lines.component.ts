@@ -20,7 +20,7 @@ import { TableFilterMultiSelect } from '../../../core/components/table-filter/co
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
 import { Pages } from '../../pages';
-import { LineService } from '../../../api/service/line.service';
+import { LineService } from '../../../api/service/lidi/line.service';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
 

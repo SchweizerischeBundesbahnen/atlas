@@ -11,7 +11,7 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { StatementDetailFormGroup } from '../statement-detail-form-group';
 import { takeUntil } from 'rxjs/operators';
 import { ValidationService } from 'src/app/core/validation/validation.service';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';

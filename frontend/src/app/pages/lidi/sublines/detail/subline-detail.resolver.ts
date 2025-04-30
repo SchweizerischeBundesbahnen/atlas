@@ -4,7 +4,7 @@ import { catchError, Observable, of } from 'rxjs';
 import { ReadSublineVersionV2, SublineVersion ,
 } from '../../../../api';
 import { Pages } from '../../../pages';
-import { SublineService } from '../../../../api/service/subline.service';
+import { SublineService } from '../../../../api/service/lidi/subline.service';
 
 @Injectable({ providedIn: 'root' })
 export class SublineDetailResolver {

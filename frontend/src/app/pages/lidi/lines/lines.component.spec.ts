@@ -12,7 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { Router } from '@angular/router';
 import { Pages } from '../../pages';
-import { LineService } from '../../../api/service/line.service';
+import { LineService } from '../../../api/service/lidi/line.service';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 

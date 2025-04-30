@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AtlasApiService } from './atlasApi.service';
-import { TimetableFieldNumberVersion } from '../model/timetableFieldNumberVersion';
+import { AtlasApiService } from '../atlasApi.service';
+import { TimetableFieldNumberVersion } from '../../model/timetableFieldNumberVersion';
 import { Observable } from 'rxjs';
 
 @Injectable({

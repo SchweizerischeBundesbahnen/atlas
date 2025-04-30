@@ -38,8 +38,8 @@ import { PermissionService } from '../../../../core/auth/permission/permission.s
 import { NgOptimizedImage } from '@angular/common';
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
 import { DateIconComponent } from '../../../../core/form-components/date-icon/date-icon.component';
-import { LineService } from '../../../../api/service/line.service';
-import { LineInternalService } from '../../../../api/service/line-internal.service';
+import { LineService } from '../../../../api/service/lidi/line.service';
+import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,

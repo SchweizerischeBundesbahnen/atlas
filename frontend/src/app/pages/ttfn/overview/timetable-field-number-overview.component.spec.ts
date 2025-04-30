@@ -11,7 +11,7 @@ import {
 } from '../../../app.testing.mocks';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
-import { TimetableFieldNumberInternalService } from '../../../api/service/timetable-field-number-internal.service';
+import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
 import { ActivatedRoute } from '@angular/router';
 import { TableComponent } from '../../../core/components/table/table.component';
 import SpyObj = jasmine.SpyObj;

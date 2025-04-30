@@ -38,8 +38,8 @@ import { LoadingSpinnerComponent } from '../../../core/components/loading-spinne
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
 import { StringListComponent } from '../../../core/form-components/string-list/string-list.component';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
-import { TimetableHearingStatementInternalService } from '../../../api/service/timetable-hearing-statement-internal.service';
-import { TimetableHearingYearInternalService } from '../../../api/service/timetable-hearing-year-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 
 const existingStatement: TimetableHearingStatementV2 = {
   id: 1,
