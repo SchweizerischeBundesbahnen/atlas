@@ -26,7 +26,7 @@ import { Page } from '../../../core/model/page';
 import { Record } from '../../../core/components/base-detail/record';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
-import { TimetableFieldNumberService } from '../../../api/service/timetable-field-number.service';
+import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable-field-number.service';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -120,8 +120,8 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
       providers: [
         { provide: FormBuilder },
         {
-          provide: TimetableFieldNumbersService,
-          useValue: mockTimetableFieldNumbersService,
+          provide: TimetableFieldNumberInternalService,
+          useValue: mockTimetableFieldNumberInternalService,
         },
         {
           provide: TimetableFieldNumberService,

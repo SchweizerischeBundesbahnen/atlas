@@ -6,7 +6,7 @@ import { LineVersionV2 } from '../../model/lineVersionV2';
 import { UpdateLineVersionV2 } from '../../model/updateLineVersionV2';
 import SpyObj = jasmine.SpyObj;
 
-fdescribe('LineService', () => {
+describe('LineService', () => {
 
   let service: LineService;
 

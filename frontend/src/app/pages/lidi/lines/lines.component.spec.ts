@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { LinesComponent } from './lines.component';
 import {
   ContainerLine,
@@ -8,11 +8,12 @@ import {
   Line,
   Status,
 } from '../../../api';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../pages';
 import { LineService } from '../../../api/service/lidi/line.service';
+import { TableComponent } from '../../../core/components/table/table.component';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
@@ -52,7 +53,7 @@ describe('LinesComponent', () => {
   let lineServiceSpy: SpyObj<LineService>;
 
   beforeEach(() => {
-    lineServiceSpy = jasmine.createSpyObj<LinesService>('LinesServiceSpy', [
+    lineServiceSpy = jasmine.createSpyObj<LineService>('LineServiceSpy', [
       'getLines',
     ]);
     (
@@ -60,7 +61,6 @@ describe('LinesComponent', () => {
     ).and.returnValue(of(versionContainer));
 
     TestBed.configureTestingModule({
-      declarations: [LinesComponent],
       imports: [LinesComponent, TranslateModule.forRoot()],
       providers: [
         TranslatePipe,

@@ -6,7 +6,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TimetableHearingYear } from '../../../api';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogClose,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
