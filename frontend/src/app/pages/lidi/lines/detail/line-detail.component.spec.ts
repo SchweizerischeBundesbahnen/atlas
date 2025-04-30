@@ -27,15 +27,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 @Component({
-  selector: 'app-coverage',
-  template: '<p>Mock Product Editor Component</p>',
-})
-class MockAppCoverageComponent {
-  @Input() pageType!: Record;
-  @Input() currentRecord!: Page;
-}
-
-@Component({
   selector: 'app-subline-table',
   template: '<p>Mock subline table Component</p>',
   imports: [FormModule],
