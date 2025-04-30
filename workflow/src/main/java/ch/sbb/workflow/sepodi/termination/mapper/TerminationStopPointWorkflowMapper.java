@@ -1,6 +1,7 @@
 package ch.sbb.workflow.sepodi.termination.mapper;
 
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
+import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import lombok.experimental.UtilityClass;
 
@@ -19,6 +20,15 @@ public class TerminationStopPointWorkflowMapper {
         .novaTerminationDate(model.getNovaTerminationDate())
         .infoPlusDecision(model.getInfoPlusDecision() != null ?
             TerminationDecisionMapper.toEntity(model.getInfoPlusDecision()) : null)
+        .build();
+  }
+
+  public static TerminationStopPointWorkflow toEntityStart(StartTerminationStopPointWorkflowModel model) {
+    return TerminationStopPointWorkflow.builder()
+        .versionId(model.getVersionId())
+        .sloid(model.getSloid())
+        .applicantMail(model.getApplicantMail())
+        .boTerminationDate(model.getBoTerminationDate())
         .build();
   }
 

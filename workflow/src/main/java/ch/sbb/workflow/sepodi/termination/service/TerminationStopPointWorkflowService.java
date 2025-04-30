@@ -15,8 +15,8 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationDecisionMapper;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
+import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
-import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class TerminationStopPointWorkflowService {
   private final SePoDiAdminClient sePoDiAdminClient;
   private final TerminationStopPointNotificationService notificationService;
 
-  public TerminationStopPointWorkflow startTerminationWorkflow(TerminationStopPointWorkflowModel model) {
+  public TerminationStopPointWorkflow startTerminationWorkflow(StartTerminationStopPointWorkflowModel model) {
 
     if (!repository.findTerminationStopPointWorkflowBySloidAndVersionIdAndStatus(model.getSloid(), model.getVersionId(), STARTED)
         .isEmpty()) {
@@ -39,11 +39,11 @@ public class TerminationStopPointWorkflowService {
         .terminationInProgress(true)
         .terminationDate(model.getBoTerminationDate())
         .build();
-    
-    ReadServicePointVersionModel readServicePointVersionModel = sePoDiAdminClient.postStartServicePointTermination(
-        model.getSloid(), model.getId(), terminationServicePointModel);
 
-    TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflowMapper.toEntity(model);
+    ReadServicePointVersionModel readServicePointVersionModel = sePoDiAdminClient.postStartServicePointTermination(
+        model.getSloid(), model.getVersionId(), terminationServicePointModel);
+
+    TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflowMapper.toEntityStart(model);
     terminationStopPointWorkflow.setDesignationOfficial(readServicePointVersionModel.getDesignationOfficial());
     terminationStopPointWorkflow.setSboid(readServicePointVersionModel.getBusinessOrganisation());
     terminationStopPointWorkflow.setStatus(STARTED);
