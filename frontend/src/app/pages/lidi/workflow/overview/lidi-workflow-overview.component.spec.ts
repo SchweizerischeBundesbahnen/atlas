@@ -1,12 +1,13 @@
 import { ContainerLineVersionSnapshot } from 'src/app/api/model/containerLineVersionSnapshot';
-import { LinesService, LineType, WorkflowStatus } from '../../../../api';
+import { LineType, WorkflowStatus } from '../../../../api';
 import { LidiWorkflowOverviewComponent } from './lidi-workflow-overview.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
-import { AppTestingModule } from '../../../../app.testing.module';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../../app.testing.mocks';
 import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
+import { ActivatedRoute } from '@angular/router';
+import { TableComponent } from '../../../../core/components/table/table.component';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
