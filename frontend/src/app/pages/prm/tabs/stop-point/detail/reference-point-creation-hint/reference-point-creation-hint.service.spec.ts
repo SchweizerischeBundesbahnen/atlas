@@ -1,9 +1,9 @@
-import {TestBed} from '@angular/core/testing';
-import {TranslateModule} from '@ngx-translate/core';
-import {ReferencePointCreationHintService} from "./reference-point-creation-hint.service";
-import {DialogService} from "../../../../../../core/components/dialog/dialog.service";
-import {of} from "rxjs";
-import {Router} from "@angular/router";
+import { TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { ReferencePointCreationHintService } from './reference-point-creation-hint.service';
+import { DialogService } from '../../../../../../core/components/dialog/dialog.service';
+import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 const dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
 
@@ -14,11 +14,11 @@ describe('ReferencePointCreationHintService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      providers: [
-        {provide: DialogService, useValue: dialogService},
-      ]
+      providers: [{ provide: DialogService, useValue: dialogService }],
     });
-    referencePointCreationHintService = TestBed.inject(ReferencePointCreationHintService);
+    referencePointCreationHintService = TestBed.inject(
+      ReferencePointCreationHintService
+    );
     router = TestBed.inject(Router);
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
   });
@@ -36,5 +36,4 @@ describe('ReferencePointCreationHintService', () => {
     referencePointCreationHintService.showHint();
     expect(router.navigate).not.toHaveBeenCalled();
   });
-
 });

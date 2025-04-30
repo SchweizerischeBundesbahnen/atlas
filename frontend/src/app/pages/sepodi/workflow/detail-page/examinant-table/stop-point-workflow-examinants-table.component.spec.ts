@@ -21,13 +21,14 @@ describe('StopPointWorkflowExaminantsTableComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
+        FormModule,
         StopPointWorkflowExaminantsTableComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
         AtlasSpacerComponent,
       ],
-      imports: [AppTestingModule, FormModule],
       providers: [{ provide: TranslatePipe }],
     })
       .compileComponents()
@@ -40,7 +41,9 @@ describe('StopPointWorkflowExaminantsTableComponent', () => {
 
     component.form =
       StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
-    component.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
+    component.examinants.push(
+      StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup()
+    );
     fixture.detectChanges();
   });
 

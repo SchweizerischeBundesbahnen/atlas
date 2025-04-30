@@ -1,4 +1,4 @@
-import {SwissCanton} from '../../../../api';
+import { SwissCanton } from '../../../../api';
 
 export interface LocationInformation {
   isoCountryCode?: string;

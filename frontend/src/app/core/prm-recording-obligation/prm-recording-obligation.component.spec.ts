@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PrmRecordingObligationComponent } from './prm-recording-obligation.component';
-import { AppTestingModule } from '../../app.testing.module';
-import {PersonWithReducedMobilityService} from "../../api/service/personWithReducedMobility.service";
+import { PersonWithReducedMobilityService } from '../../api/service/personWithReducedMobility.service';
 import { EMPTY, of } from 'rxjs';
 import { PermissionService } from '../auth/permission/permission.service';
 import { adminPermissionServiceMock } from '../../app.testing.mocks';
-import {AtlasSlideToggleComponent} from "../form-components/atlas-slide-toggle/atlas-slide-toggle.component";
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 
 describe('PrmRecordingObligationComponent', () => {
   let component: PrmRecordingObligationComponent;
@@ -25,9 +24,9 @@ describe('PrmRecordingObligationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PrmRecordingObligationComponent, AtlasSlideToggleComponent],
-      imports: [AppTestingModule],
+      imports: [PrmRecordingObligationComponent, TranslateModule.forRoot()],
       providers: [
+        TranslatePipe,
         {
           provide: PersonWithReducedMobilityService,
           useValue: personWithReducedMobilityServiceSpy,

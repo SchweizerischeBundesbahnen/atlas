@@ -18,7 +18,8 @@ describe('PlatformCompleteFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         PlatformCompleteFormComponent,
         TextFieldComponent,
         AtlasLabelFieldComponent,
@@ -28,7 +29,6 @@ describe('PlatformCompleteFormComponent', () => {
         SelectComponent,
         CommentComponent,
       ],
-      imports: [AppTestingModule],
       providers: [{ provide: TranslatePipe }],
     });
     fixture = TestBed.createComponent(PlatformCompleteFormComponent);

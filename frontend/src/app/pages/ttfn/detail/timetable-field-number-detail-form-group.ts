@@ -2,7 +2,8 @@ import { BaseDetailFormGroup } from '../../../core/components/base-detail/base-d
 import { FormControl } from '@angular/forms';
 import { Status } from '../../../api';
 
-export interface TimetableFieldNumberDetailFormGroup extends BaseDetailFormGroup {
+export interface TimetableFieldNumberDetailFormGroup
+  extends BaseDetailFormGroup {
   swissTimetableFieldNumber: FormControl<string | null>;
   ttfnid: FormControl<string | null | undefined>;
   businessOrganisation: FormControl<string | null>;

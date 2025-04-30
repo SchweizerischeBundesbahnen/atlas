@@ -1,12 +1,21 @@
 import { BulkImportOverviewComponent } from './bulk-import-overview.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ApplicationType, BulkImportService, BusinessObjectType, ImportType } from '../../../api';
+import {
+  ApplicationType,
+  BulkImportService,
+  BusinessObjectType,
+  ImportType,
+} from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { BulkImportFormGroupBuilder } from '../detail/bulk-import-form-group';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Router } from '@angular/router';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
 import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
@@ -20,8 +29,8 @@ import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-fi
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
-import SpyObj = jasmine.SpyObj;
 import { LoadingSpinnerService } from '../../../core/components/loading-spinner/loading-spinner.service';
+import SpyObj = jasmine.SpyObj;
 
 describe('BulkImportOverviewComponent', () => {
   let component: BulkImportOverviewComponent;
@@ -29,7 +38,6 @@ describe('BulkImportOverviewComponent', () => {
   let bulkImportServiceSpy: SpyObj<any>;
   let notificationServiceSpy: SpyObj<NotificationService>;
   let routerSpy: SpyObj<Router>;
-  let activatedRouteStub: ActivatedRoute;
   let fixture: ComponentFixture<BulkImportOverviewComponent>;
   let dialogServiceSpy: SpyObj<DialogService>;
 
@@ -49,6 +57,18 @@ describe('BulkImportOverviewComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
+        BulkImportOverviewComponent,
+        AtlasButtonComponent,
+        DetailFooterComponent,
+        UploadIconComponent,
+        DownloadIconComponent,
+        AtlasFieldErrorComponent,
+        AtlasLabelFieldComponent,
+        StringListComponent,
+        SelectComponent,
+        AtlasSpacerComponent,
+        TextFieldComponent,
+        FileUploadComponent,
       ],
       providers: [
         {
@@ -68,21 +88,6 @@ describe('BulkImportOverviewComponent', () => {
           useValue: routerSpy,
         },
         { provide: DialogService, useValue: dialogServiceSpy },
-        { provide: ActivatedRoute, useValue: activatedRouteStub },
-      ],
-      declarations: [
-        BulkImportOverviewComponent,
-        AtlasButtonComponent,
-        DetailFooterComponent,
-        UploadIconComponent,
-        DownloadIconComponent,
-        AtlasFieldErrorComponent,
-        AtlasLabelFieldComponent,
-        StringListComponent,
-        SelectComponent,
-        AtlasSpacerComponent,
-        TextFieldComponent,
-        FileUploadComponent,
       ],
     });
 
@@ -112,7 +117,9 @@ describe('BulkImportOverviewComponent', () => {
 
   it('should start bulk import', () => {
     component.form = BulkImportFormGroupBuilder.initFormGroup();
-    const mockBulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(component.form);
+    const mockBulkImportRequest = BulkImportFormGroupBuilder.buildBulkImport(
+      component.form
+    );
 
     const mockFile = new File([''], 'test.csv', { type: 'text/csv' });
 
@@ -124,9 +131,11 @@ describe('BulkImportOverviewComponent', () => {
 
     expect(bulkImportServiceSpy.startBulkImport).toHaveBeenCalledWith(
       mockBulkImportRequest,
-      mockFile,
+      mockFile
     );
-    expect(notificationServiceSpy.success).toHaveBeenCalledWith('PAGES.BULK_IMPORT.SUCCESS');
+    expect(notificationServiceSpy.success).toHaveBeenCalledWith(
+      'PAGES.BULK_IMPORT.SUCCESS'
+    );
   });
 
   it('should enable User select', () => {
@@ -151,7 +160,9 @@ describe('BulkImportOverviewComponent', () => {
     expect(component.isEnabledToStartImport).toBeFalse();
     expect(component.enableUserSelect).toHaveBeenCalledWith(false);
     expect(component.uploadedFiles).toEqual([]);
-    expect(component.form.controls.userSearchForm.controls.userSearch.value).toBeNull();
+    expect(
+      component.form.controls.userSearchForm.controls.userSearch.value
+    ).toBeNull();
     expect(component.form.controls.objectType.value).toBeNull();
 
     expect(component.form.controls.applicationType.value).toBeNull();
@@ -164,7 +175,7 @@ describe('BulkImportOverviewComponent', () => {
     component.form = BulkImportFormGroupBuilder.initFormGroup();
 
     bulkImportServiceSpy.startBulkImport.and.returnValue(
-      throwError(() => errorResponse),
+      throwError(() => errorResponse)
     );
     spyOn(component, 'resetConfiguration');
     spyOn(component, 'ngOnInit');
@@ -182,7 +193,7 @@ describe('BulkImportOverviewComponent', () => {
     fixture.detectChanges();
 
     expect(component.OPTIONS_OBJECT_TYPE).toEqual(
-      component.OPTIONS_OBJECTS[ApplicationType.Sepodi],
+      component.OPTIONS_OBJECTS[ApplicationType.Sepodi]
     );
   });
 
@@ -202,7 +213,9 @@ describe('BulkImportOverviewComponent', () => {
     component.form = BulkImportFormGroupBuilder.initFormGroup();
 
     component.form.controls.applicationType.setValue(ApplicationType.Sepodi);
-    component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
+    component.form.controls.objectType.setValue(
+      BusinessObjectType.ServicePoint
+    );
     component.form.controls.importType.setValue(ImportType.Create);
 
     expect(component.checkForNull()).toBeTrue();
@@ -212,7 +225,9 @@ describe('BulkImportOverviewComponent', () => {
     component.form = BulkImportFormGroupBuilder.initFormGroup();
 
     component.form.controls.applicationType.setValue(null);
-    component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
+    component.form.controls.objectType.setValue(
+      BusinessObjectType.ServicePoint
+    );
     component.form.controls.importType.setValue(ImportType.Create);
 
     expect(component.checkForNull()).toBeFalse();
@@ -227,7 +242,9 @@ describe('BulkImportOverviewComponent', () => {
       importType: ImportType.Update,
     };
 
-    component.form.controls.applicationType.setValue(validCombination.applicationType);
+    component.form.controls.applicationType.setValue(
+      validCombination.applicationType
+    );
     component.form.controls.objectType.setValue(validCombination.objectType);
     component.form.controls.importType.setValue(validCombination.importType);
 
@@ -238,7 +255,9 @@ describe('BulkImportOverviewComponent', () => {
     component.form = BulkImportFormGroupBuilder.initFormGroup();
 
     component.form.controls.applicationType.setValue(ApplicationType.Prm);
-    component.form.controls.objectType.setValue(BusinessObjectType.TrafficPoint);
+    component.form.controls.objectType.setValue(
+      BusinessObjectType.TrafficPoint
+    );
     component.form.controls.importType.setValue(ImportType.Terminate);
 
     expect(component.combinationForActiveDownloadButton()).toBeFalse();
@@ -247,7 +266,9 @@ describe('BulkImportOverviewComponent', () => {
   it('should download the Excel file', () => {
     component.form = BulkImportFormGroupBuilder.initFormGroup();
     component.form.controls.applicationType.setValue(ApplicationType.Sepodi);
-    component.form.controls.objectType.setValue(BusinessObjectType.ServicePoint);
+    component.form.controls.objectType.setValue(
+      BusinessObjectType.ServicePoint
+    );
     component.form.controls.importType.setValue(ImportType.Create);
 
     const blob = new Blob(['test'], { type: 'text/csv' });
@@ -259,9 +280,12 @@ describe('BulkImportOverviewComponent', () => {
     expect(bulkImportServiceSpy.downloadTemplate).toHaveBeenCalledWith(
       ApplicationType.Sepodi,
       BusinessObjectType.ServicePoint,
-      ImportType.Create,
+      ImportType.Create
     );
     expect(dialogServiceSpy.showInfo).toHaveBeenCalled();
-    expect(fileDownloadSpy).toHaveBeenCalledWith('create_service_point.csv', blob);
+    expect(fileDownloadSpy).toHaveBeenCalledWith(
+      'create_service_point.csv',
+      blob
+    );
   });
 });

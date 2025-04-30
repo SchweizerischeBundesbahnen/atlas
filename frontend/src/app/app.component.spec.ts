@@ -19,9 +19,8 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppTestingModule],
-      declarations: [
-        AppComponent,
+      imports: [
+        AppTestingModule,
         HeaderComponent,
         MaintenanceIconComponent,
         UserComponent,
@@ -29,6 +28,7 @@ describe('AppComponent', () => {
         SideNavComponent,
         LoadingSpinnerComponent,
         InfoIconComponent,
+        AppComponent,
       ],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },

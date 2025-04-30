@@ -13,8 +13,7 @@ describe('TimetableHearingOverviewTabHeadingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OverviewTabHeadingComponent, DisplayDatePipe],
-      imports: [AppTestingModule],
+      imports: [AppTestingModule, OverviewTabHeadingComponent, DisplayDatePipe],
       providers: [{ provide: TranslatePipe }],
     }).compileComponents();
 

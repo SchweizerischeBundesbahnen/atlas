@@ -1,15 +1,15 @@
-import {TableService} from './table.service';
-import {TableFilterSingleSearch} from "../table-filter/config/table-filter-single-search";
-import {TableFilterChip} from "../table-filter/config/table-filter-chip";
-import {TableFilterBoolean} from "../table-filter/config/table-filter-boolean";
-import {TableFilterConfig} from "./table-filter-config";
-import {TableFilterMultiSelect} from "../table-filter/config/table-filter-multiselect";
-import {TableFilterSearchSelect} from "../table-filter/config/table-filter-search-select";
-import {AtlasCharsetsValidator} from "../../validation/charsets/atlas-charsets-validator";
-import {BusinessOrganisation, WorkflowStatus} from "../../../api";
-import {TableFilterSearchType} from "../table-filter/config/table-filter-search-type";
-import {FormControl, FormGroup} from "@angular/forms";
-import {Pages} from "../../../pages/pages";
+import { TableService } from './table.service';
+import { TableFilterSingleSearch } from '../table-filter/config/table-filter-single-search';
+import { TableFilterChip } from '../table-filter/config/table-filter-chip';
+import { TableFilterBoolean } from '../table-filter/config/table-filter-boolean';
+import { TableFilterConfig } from './table-filter-config';
+import { TableFilterMultiSelect } from '../table-filter/config/table-filter-multiselect';
+import { TableFilterSearchSelect } from '../table-filter/config/table-filter-search-select';
+import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
+import { BusinessOrganisation, WorkflowStatus } from '../../../api';
+import { TableFilterSearchType } from '../table-filter/config/table-filter-search-type';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Pages } from '../../../pages/pages';
 
 describe('TableService', () => {
   let service: TableService;
@@ -44,15 +44,36 @@ describe('TableService', () => {
 
   it('should test getOrphanFilters', () => {
     const sharedFilterConfig = {
-      search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
-      workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID', 'col-3', AtlasCharsetsValidator.numeric),
+      search: new TableFilterChip(
+        0,
+        'col-6',
+        'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'
+      ),
+      workflowIds: new TableFilterSingleSearch(
+        1,
+        'SEPODI.SERVICE_POINTS.WORKFLOW.ID',
+        'col-3',
+        AtlasCharsetsValidator.numeric
+      ),
       workflowStatus: new TableFilterMultiSelect(
         'WORKFLOW.STATUS.',
         'WORKFLOW.STATUS_DETAIL',
-        [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled],
+        [
+          WorkflowStatus.Added,
+          WorkflowStatus.Hearing,
+          WorkflowStatus.Approved,
+          WorkflowStatus.Rejected,
+          WorkflowStatus.Canceled,
+        ],
         1,
         'col-3',
-        [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled]
+        [
+          WorkflowStatus.Added,
+          WorkflowStatus.Hearing,
+          WorkflowStatus.Approved,
+          WorkflowStatus.Rejected,
+          WorkflowStatus.Canceled,
+        ]
       ),
       sboid: new TableFilterSearchSelect<BusinessOrganisation>(
         TableFilterSearchType.BUSINESS_ORGANISATION,
@@ -62,23 +83,39 @@ describe('TableService', () => {
           businessOrganisation: new FormControl(),
         })
       ),
-      locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT', 'col-3 pb-5')
+      locality: new TableFilterSingleSearch(
+        1,
+        'SEPODI.GEOLOCATION.DISTRICT',
+        'col-3 pb-5'
+      ),
     };
 
     const tableFilterConfigIntern = {
-      ...sharedFilterConfig
+      ...sharedFilterConfig,
     };
 
     const tableFilterConfigIntern2 = {
       ...sharedFilterConfig,
-      filterByNoDecision: new TableFilterBoolean(0, 'col-6 container-right-position', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE')
+      filterByNoDecision: new TableFilterBoolean(
+        0,
+        'col-6 container-right-position',
+        'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'
+      ),
     };
 
-    const newFilterConfig = new TableFilterConfig(tableFilterConfigIntern, Pages.SERVICE_POINT_WORKFLOWS);
-    const oldFilterConfig = new TableFilterConfig(tableFilterConfigIntern2, Pages.SERVICE_POINT_WORKFLOWS);
+    const newFilterConfig = new TableFilterConfig(
+      tableFilterConfigIntern,
+      Pages.SERVICE_POINT_WORKFLOWS
+    );
+    const oldFilterConfig = new TableFilterConfig(
+      tableFilterConfigIntern2,
+      Pages.SERVICE_POINT_WORKFLOWS
+    );
 
-    const orphanFilters : string[] = service.getOrphanFilters(newFilterConfig, oldFilterConfig);
-    expect(orphanFilters).toEqual([ 'filterByNoDecision' ]);
+    const orphanFilters: string[] = service.getOrphanFilters(
+      newFilterConfig,
+      oldFilterConfig
+    );
+    expect(orphanFilters).toEqual(['filterByNoDecision']);
   });
-
 });

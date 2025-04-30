@@ -1,11 +1,27 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AtlasCharsetsValidator} from '../../validation/charsets/atlas-charsets-validator';
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
+import { AtlasSlideToggleComponent } from '../atlas-slide-toggle/atlas-slide-toggle.component';
+import { NgIf } from '@angular/common';
+import { TextFieldComponent } from '../text-field/text-field.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'atlas-sloid',
   templateUrl: './sloid.component.html',
   styleUrls: ['./sloid.component.scss'],
+  imports: [
+    AtlasSlideToggleComponent,
+    NgIf,
+    TextFieldComponent,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
 })
 export class SloidComponent implements OnInit {
   @Input() formGroup!: FormGroup;
@@ -39,7 +55,7 @@ export class SloidComponent implements OnInit {
   }
 
   private patchSloidValue(sloid?: string) {
-    this.formGroup.patchValue({sloid: sloid ? sloid : undefined});
+    this.formGroup.patchValue({ sloid: sloid ? sloid : undefined });
   }
 
   private initFormgroup() {
@@ -56,7 +72,10 @@ export class SloidComponent implements OnInit {
     this.formGroup.controls.sloid.setValidators([Validators.required]);
     this.formGroup.controls.sloid.updateValueAndValidity();
 
-    this.sloidControl.setValidators([Validators.required, AtlasCharsetsValidator.colonSeperatedSid4pt(this.numberColons)]);
+    this.sloidControl.setValidators([
+      Validators.required,
+      AtlasCharsetsValidator.colonSeperatedSid4pt(this.numberColons),
+    ]);
     this.sloidControl.markAsTouched();
     this.sloidControl.updateValueAndValidity();
   }

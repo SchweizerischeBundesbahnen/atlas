@@ -21,7 +21,7 @@ export class UserService {
   constructor(
     private readonly userAdministrationService: UserAdministrationService,
     private readonly userInformationService: UserInformationService,
-    private readonly clientCredentialAdministrationService: ClientCredentialAdministrationService,
+    private readonly clientCredentialAdministrationService: ClientCredentialAdministrationService
   ) {}
 
   getUsers(
@@ -29,13 +29,15 @@ export class UserService {
     size: number,
     sboids: Set<string> | undefined = undefined,
     type: PermissionRestrictionType | undefined = undefined,
-    applicationTypes: Set<ApplicationType> | undefined = undefined,
+    applicationTypes: Set<ApplicationType> | undefined = undefined
   ): Observable<{ users: User[]; totalCount: number }> {
-    return this.userAdministrationService.getUsers(sboids, type, applicationTypes, page, size).pipe(
-      map((value) => {
-        return { users: value.objects!, totalCount: value.totalCount! };
-      }),
-    );
+    return this.userAdministrationService
+      .getUsers(sboids, type, applicationTypes, page, size)
+      .pipe(
+        map((value) => {
+          return { users: value.objects!, totalCount: value.totalCount! };
+        })
+      );
   }
 
   getUser(userId: string): Observable<User> {
@@ -46,19 +48,27 @@ export class UserService {
     return this.userInformationService.searchUsers(searchQuery);
   }
 
-  searchUsersInAtlas(searchQuery: string, applicationType: ApplicationType): Observable<User[]> {
-    return this.userInformationService.searchUsersInAtlas(searchQuery, applicationType);
+  searchUsersInAtlas(
+    searchQuery: string,
+    applicationType: ApplicationType
+  ): Observable<User[]> {
+    return this.userInformationService.searchUsersInAtlas(
+      searchQuery,
+      applicationType
+    );
   }
 
   hasUserPermissions(userId: string): Observable<boolean> {
     return this.getUser(userId).pipe(
       map((user) => {
         return this.getPermissionsFromUserModelAsArray(user).length > 0;
-      }),
+      })
     );
   }
 
-  getPermissionsFromUserModelAsArray(user: User | ClientCredential): Permission[] {
+  getPermissionsFromUserModelAsArray(
+    user: User | ClientCredential
+  ): Permission[] {
     return Array.from(user.permissions ?? []);
   }
 
@@ -71,18 +81,24 @@ export class UserService {
   }
 
   getClientCredential(clientId: string): Observable<ClientCredential> {
-    return this.clientCredentialAdministrationService.getClientCredential(clientId);
+    return this.clientCredentialAdministrationService.getClientCredential(
+      clientId
+    );
   }
 
   createClientCredentialPermission(
-    permission: ClientCredentialPermissionCreate,
+    permission: ClientCredentialPermissionCreate
   ): Observable<ClientCredential> {
-    return this.clientCredentialAdministrationService.createClientCredential(permission);
+    return this.clientCredentialAdministrationService.createClientCredential(
+      permission
+    );
   }
 
   updateClientPermissions(
-    permissions: ClientCredentialPermissionCreate,
+    permissions: ClientCredentialPermissionCreate
   ): Observable<ClientCredential> {
-    return this.clientCredentialAdministrationService.updateClientCredential(permissions);
+    return this.clientCredentialAdministrationService.updateClientCredential(
+      permissions
+    );
   }
 }

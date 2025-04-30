@@ -1,7 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Observable, of } from 'rxjs';
-import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  convertToParamMap,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { contactPointResolver } from './contact-point.resolver';
 import {
   ContactPointType,
@@ -41,9 +45,11 @@ const contactPoint: ReadContactPointVersion[] = [
 describe('PrmContactPointResolver', () => {
   const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['getContactPointVersions'],
+    ['getContactPointVersions']
   );
-  personWithReducedMobilityServiceSpy.getContactPointVersions.and.returnValue(of(contactPoint));
+  personWithReducedMobilityServiceSpy.getContactPointVersions.and.returnValue(
+    of(contactPoint)
+  );
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -63,7 +69,7 @@ describe('PrmContactPointResolver', () => {
     } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
-      contactPointResolver(mockRoute, {} as RouterStateSnapshot),
+      contactPointResolver(mockRoute, {} as RouterStateSnapshot)
     ) as Observable<ReadContactPointVersion[]>;
 
     result.subscribe((versions) => {

@@ -1,19 +1,19 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {WorkflowCheckFormComponent} from './workflow-check-form.component';
-import {AppTestingModule} from '../../../app.testing.module';
-import {InfoIconComponent} from '../../form-components/info-icon/info-icon.component';
-import {CommentComponent} from '../../form-components/comment/comment.component';
-import {By} from '@angular/platform-browser';
-import {WorkflowFormComponent} from '../workflow-form/workflow-form.component';
-import {AtlasButtonComponent} from '../../components/button/atlas-button.component';
-import {WorkflowService} from '../../../api';
-import {of} from 'rxjs';
-import {AtlasFieldErrorComponent} from '../../form-components/atlas-field-error/atlas-field-error.component';
-import {AtlasLabelFieldComponent} from '../../form-components/atlas-label-field/atlas-label-field.component';
-import {TextFieldComponent} from '../../form-components/text-field/text-field.component';
-import {TranslatePipe} from '@ngx-translate/core';
-import {PermissionService} from "../../auth/permission/permission.service";
+import { WorkflowCheckFormComponent } from './workflow-check-form.component';
+import { AppTestingModule } from '../../../app.testing.module';
+import { InfoIconComponent } from '../../form-components/info-icon/info-icon.component';
+import { CommentComponent } from '../../form-components/comment/comment.component';
+import { By } from '@angular/platform-browser';
+import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
+import { AtlasButtonComponent } from '../../components/button/atlas-button.component';
+import { WorkflowService } from '../../../api';
+import { of } from 'rxjs';
+import { AtlasFieldErrorComponent } from '../../form-components/atlas-field-error/atlas-field-error.component';
+import { AtlasLabelFieldComponent } from '../../form-components/atlas-label-field/atlas-label-field.component';
+import { TextFieldComponent } from '../../form-components/text-field/text-field.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { PermissionService } from '../../auth/permission/permission.service';
 
 let isAtLeastSupervisor = true;
 const permissionServiceMock: Partial<PermissionService> = {
@@ -32,7 +32,13 @@ describe('WorkflowCheckFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+      providers: [
+        { provide: PermissionService, useValue: permissionServiceMock },
+        { provide: WorkflowService, useValue: workflowServiceSpy },
+        { provide: TranslatePipe },
+      ],
+      imports: [
+        AppTestingModule,
         WorkflowCheckFormComponent,
         WorkflowFormComponent,
         AtlasButtonComponent,
@@ -42,12 +48,6 @@ describe('WorkflowCheckFormComponent', () => {
         AtlasLabelFieldComponent,
         TextFieldComponent,
       ],
-      providers: [
-        { provide: PermissionService, useValue: permissionServiceMock },
-        { provide: WorkflowService, useValue: workflowServiceSpy },
-        { provide: TranslatePipe },
-      ],
-      imports: [AppTestingModule],
     }).compileComponents();
     fixture = TestBed.createComponent(WorkflowCheckFormComponent);
     component = fixture.componentInstance;
@@ -60,7 +60,9 @@ describe('WorkflowCheckFormComponent', () => {
     isAtLeastSupervisor = true;
 
     expect(component).toBeTruthy();
-    expect(fixture.debugElement.query(By.css('app-workflow-form'))).toBeTruthy();
+    expect(
+      fixture.debugElement.query(By.css('app-workflow-form'))
+    ).toBeTruthy();
   });
 
   it('should not show component for reader/writer', () => {

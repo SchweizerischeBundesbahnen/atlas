@@ -8,17 +8,33 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { ServicePointSearchResult, ServicePointsService } from '../../../../../api';
+import {
+  ServicePointSearchResult,
+  ServicePointsService,
+} from '../../../../../api';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { SearchSelectComponent } from '../../../../../core/form-components/search-select/search-select.component';
+import { MatLabel } from '@angular/material/form-field';
+import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'kilometer-master-search',
   templateUrl: './kilometer-master-search.component.html',
   styleUrls: ['./kilometer-master-search.component.scss'],
+  imports: [
+    SearchSelectComponent,
+    ReactiveFormsModule,
+    MatLabel,
+    SplitServicePointNumberPipe,
+    TranslatePipe,
+  ],
 })
-export class KilometerMasterSearchComponent implements OnInit, OnDestroy, OnChanges {
+export class KilometerMasterSearchComponent
+  implements OnInit, OnDestroy, OnChanges
+{
   @Input() valueExtraction = 'number';
   @Input() controlName!: string;
   @Input() formModus = true;

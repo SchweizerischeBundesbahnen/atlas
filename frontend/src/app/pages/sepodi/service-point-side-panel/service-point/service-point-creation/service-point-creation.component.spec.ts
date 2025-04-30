@@ -1,4 +1,4 @@
-import {ServicePointCreationComponent} from './service-point-creation.component';
+import { ServicePointCreationComponent } from './service-point-creation.component';
 import {
   ApplicationRole,
   ApplicationType,
@@ -8,15 +8,15 @@ import {
   ServicePointsService,
   SwissCanton,
 } from '../../../../../api';
-import {FormControl, FormGroup} from '@angular/forms';
-import {of} from 'rxjs';
-import {NotificationService} from '../../../../../core/notification/notification.service';
-import {ServicePointFormGroupBuilder} from '../service-point-detail-form-group';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Countries} from '../../../../../core/country/Countries';
-import {TestBed} from '@angular/core/testing';
-import {MapService} from '../../../map/map.service';
-import {PermissionService} from "../../../../../core/auth/permission/permission.service";
+import { FormControl, FormGroup } from '@angular/forms';
+import { of } from 'rxjs';
+import { NotificationService } from '../../../../../core/notification/notification.service';
+import { ServicePointFormGroupBuilder } from '../service-point-detail-form-group';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Countries } from '../../../../../core/country/Countries';
+import { TestBed } from '@angular/core/testing';
+import { MapService } from '../../../map/map.service';
+import { PermissionService } from '../../../../../core/auth/permission/permission.service';
 import SpyObj = jasmine.SpyObj;
 import anything = jasmine.anything;
 import Spy = jasmine.Spy;
@@ -88,7 +88,7 @@ describe('ServicePointCreationComponent', () => {
         number: {
           number: 8557385,
         },
-      }),
+      })
     );
 
     (
@@ -107,17 +107,19 @@ describe('ServicePointCreationComponent', () => {
       numberShort: 57385,
     });
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
-      'SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS',
+      'SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS'
     );
     expect(routerSpy.navigate).toHaveBeenCalledOnceWith([8557385], anything());
   });
 
   it('should get country options role supervisor', () => {
-    permissionServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
-      role: ApplicationRole.Supervisor,
-      application: ApplicationType.Sepodi,
-      permissionRestrictions: [],
-    });
+    permissionServiceMock.getApplicationUserPermission
+      .withArgs(ApplicationType.Sepodi)
+      .and.returnValue({
+        role: ApplicationRole.Supervisor,
+        application: ApplicationType.Sepodi,
+        permissionRestrictions: [],
+      });
 
     const countries = component['getCountryOptions']();
 
@@ -132,11 +134,13 @@ describe('ServicePointCreationComponent', () => {
   });
 
   it('should get country options role admin', () => {
-    permissionServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
-      role: ApplicationRole.Reader,
-      application: ApplicationType.Sepodi,
-      permissionRestrictions: [],
-    });
+    permissionServiceMock.getApplicationUserPermission
+      .withArgs(ApplicationType.Sepodi)
+      .and.returnValue({
+        role: ApplicationRole.Reader,
+        application: ApplicationType.Sepodi,
+        permissionRestrictions: [],
+      });
     permissionServiceMock.isAdmin = true;
 
     const countries = component['getCountryOptions']();
@@ -152,15 +156,26 @@ describe('ServicePointCreationComponent', () => {
   });
 
   it('should get country options role super user', () => {
-    permissionServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
-      role: ApplicationRole.SuperUser,
-      application: ApplicationType.Sepodi,
-      permissionRestrictions: [
-        { type: PermissionRestrictionType.Country, valueAsString: Country.Cuba },
-        { type: PermissionRestrictionType.Country, valueAsString: Country.FranceBus },
-        { type: PermissionRestrictionType.Canton, valueAsString: SwissCanton.Uri },
-      ],
-    });
+    permissionServiceMock.getApplicationUserPermission
+      .withArgs(ApplicationType.Sepodi)
+      .and.returnValue({
+        role: ApplicationRole.SuperUser,
+        application: ApplicationType.Sepodi,
+        permissionRestrictions: [
+          {
+            type: PermissionRestrictionType.Country,
+            valueAsString: Country.Cuba,
+          },
+          {
+            type: PermissionRestrictionType.Country,
+            valueAsString: Country.FranceBus,
+          },
+          {
+            type: PermissionRestrictionType.Canton,
+            valueAsString: SwissCanton.Uri,
+          },
+        ],
+      });
 
     const countries = component['getCountryOptions']();
 
@@ -168,15 +183,26 @@ describe('ServicePointCreationComponent', () => {
   });
 
   it('should get country options role writer', () => {
-    permissionServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
-      role: ApplicationRole.Writer,
-      application: ApplicationType.Sepodi,
-      permissionRestrictions: [
-        { type: PermissionRestrictionType.Country, valueAsString: Country.Cuba },
-        { type: PermissionRestrictionType.Country, valueAsString: Country.FranceBus },
-        { type: PermissionRestrictionType.Canton, valueAsString: SwissCanton.Uri },
-      ],
-    });
+    permissionServiceMock.getApplicationUserPermission
+      .withArgs(ApplicationType.Sepodi)
+      .and.returnValue({
+        role: ApplicationRole.Writer,
+        application: ApplicationType.Sepodi,
+        permissionRestrictions: [
+          {
+            type: PermissionRestrictionType.Country,
+            valueAsString: Country.Cuba,
+          },
+          {
+            type: PermissionRestrictionType.Country,
+            valueAsString: Country.FranceBus,
+          },
+          {
+            type: PermissionRestrictionType.Canton,
+            valueAsString: SwissCanton.Uri,
+          },
+        ],
+      });
 
     const countries = component['getCountryOptions']();
 

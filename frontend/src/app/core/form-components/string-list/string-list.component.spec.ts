@@ -1,13 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { StringListComponent } from './string-list.component';
-import { TextFieldComponent } from '../text-field/text-field.component';
-import { MatChipsModule } from '@angular/material/chips';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import {
-  MockAtlasFieldErrorComponent,
-  MockAtlasLabelFieldComponent,
-} from '../../../app.testing.mocks';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 
 describe('StringListComponent', () => {
   let component: StringListComponent;
@@ -15,19 +9,8 @@ describe('StringListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        StringListComponent,
-        TextFieldComponent,
-        MockAtlasFieldErrorComponent,
-        MockAtlasLabelFieldComponent,
-      ],
-      imports: [
-        ReactiveFormsModule,
-        MatChipsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [StringListComponent, TranslateModule.forRoot()],
+      providers: [TranslatePipe],
     }).compileComponents();
 
     fixture = TestBed.createComponent(StringListComponent);
@@ -73,7 +56,9 @@ describe('StringListComponent', () => {
       input: 'a@a.ch',
     });
     component.addItem();
-    expect(component.formGroup.get(component.controlName)?.value).toEqual(['a@a.ch']);
+    expect(component.formGroup.get(component.controlName)?.value).toEqual([
+      'a@a.ch',
+    ]);
     expect(component.formGroup.dirty).toBeFalse();
     expect(component.strListFormGroup.get('input')?.value).toEqual('');
   });
@@ -88,7 +73,10 @@ describe('StringListComponent', () => {
       input: 'b@b.ch',
     });
     component.addItem();
-    expect(component.formGroup.get(component.controlName)?.value).toEqual(['a@a.ch', 'b@b.ch']);
+    expect(component.formGroup.get(component.controlName)?.value).toEqual([
+      'a@a.ch',
+      'b@b.ch',
+    ]);
     expect(component.formGroup.dirty).toBeTrue();
     expect(component.strListFormGroup.get('input')?.value).toEqual('');
   });
@@ -103,7 +91,9 @@ describe('StringListComponent', () => {
       input: null,
     });
     component.addItem();
-    expect(component.formGroup.get(component.controlName)?.value).toEqual(['a@a.ch']);
+    expect(component.formGroup.get(component.controlName)?.value).toEqual([
+      'a@a.ch',
+    ]);
     expect(component.formGroup.dirty).toBeFalse();
     expect(component.strListFormGroup.get('input')?.value).toEqual(null);
   });

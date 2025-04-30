@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  NgModule,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   ApplicationRole,
@@ -248,21 +242,3 @@ export const authServiceSpy = jasmine.createSpyObj<AuthService>([
 ]);
 
 // Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself
-@NgModule({
-  declarations: [
-    MockAppDetailWrapperComponent,
-    MockTableComponent,
-    MockBoSelectComponent,
-    MockSelectComponent,
-    MockAtlasButtonComponent,
-    MockUserDetailInfoComponent,
-    MockAtlasFieldErrorComponent,
-    MockInfoIconComponent,
-    MockSwitchVersionComponent,
-    MockMatPaginatorComponent,
-    MockNavigationSepodiPrmComponent,
-    MockPrmRecordingObligationComponent,
-  ],
-  exports: [MockSelectComponent],
-})
-export class AppMockComponents {}

@@ -5,7 +5,8 @@ import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
 import {
   PersonWithReducedMobilityService,
-  PlatformOverview, ReadServicePointVersion,
+  PlatformOverview,
+  ReadServicePointVersion,
   ReadTrafficPointElementVersion,
   TrafficPointElementsService,
 } from '../../../../api';
@@ -19,25 +20,44 @@ import { mergeMap } from 'rxjs';
 import { SloidHelper } from '../../../../core/util/sloidHelper';
 import { tap } from 'rxjs/operators';
 import { TableContentPaginationAndSorting } from '../../../../core/components/table/table-content-pagination-and-sorting';
+import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 
 @Component({
   selector: 'app-platform',
   templateUrl: './platform-table.component.html',
+  imports: [
+    NavigationSepodiPrmComponent,
+    TableComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+  ],
 })
-export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {
-
+export class PlatformTableComponent
+  extends BasePrmTabComponentService
+  implements OnInit
+{
   platforms: PlatformOverviewRow[] = [];
   totalCount = 0;
   trafficPointElements: ReadTrafficPointElementVersion[] = [];
 
   tableColumns: TableColumn<PlatformOverviewRow>[] = [
-    { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
+    {
+      headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION',
+      value: 'designation',
+    },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
     {
       headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION_OPERATIONAL',
       value: 'designationOperational',
     },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    {
+      headerTitle: 'COMMON.VALID_FROM',
+      value: 'validFrom',
+      formatAsDate: true,
+    },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
     {
       headerTitle: 'PRM.PLATFORMS.RECORDING_STATUS',
@@ -53,7 +73,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     private route: ActivatedRoute,
     private tableService: TableService,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private trafficPointElementsService: TrafficPointElementsService,
+    private trafficPointElementsService: TrafficPointElementsService
   ) {
     super(router);
   }
@@ -61,8 +81,12 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);
 
-    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.PLATFORMS);
-    this.servicePointVersion = this.route.parent!.snapshot.data.servicePoints[0];
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(
+      {},
+      Pages.PLATFORMS
+    );
+    this.servicePointVersion =
+      this.route.parent!.snapshot.data.servicePoints[0];
   }
 
   getTab(): Tab {
@@ -83,28 +107,34 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
           this.trafficPointElements = sepodiPlatforms.objects!;
           this.totalCount = sepodiPlatforms.totalCount!;
         }),
-        mergeMap(() => this.personWithReducedMobilityService.getPlatformOverview(sloid)),
+        mergeMap(() =>
+          this.personWithReducedMobilityService.getPlatformOverview(sloid)
+        )
       )
       .subscribe((platforms) => {
-        const mergedPlatformInfos = this.mergeTrafficPointAndPlatformDataForOverview(platforms);
+        const mergedPlatformInfos =
+          this.mergeTrafficPointAndPlatformDataForOverview(platforms);
         this.platforms = TableContentPaginationAndSorting.pageAndSort(
           mergedPlatformInfos,
           pagination,
-          'designation',
+          'designation'
         );
         this.totalCount = mergedPlatformInfos.length;
       });
   }
 
-  mergeTrafficPointAndPlatformDataForOverview(prmPlatformOverview: PlatformOverview[]) {
+  mergeTrafficPointAndPlatformDataForOverview(
+    prmPlatformOverview: PlatformOverview[]
+  ) {
     const mergedOverview: PlatformOverviewRow[] = [];
     this.trafficPointElements.forEach((trafficPointElementInSePoDi) => {
       const correspondingPrmPlatform = prmPlatformOverview.find(
-        (i) => i.sloid === trafficPointElementInSePoDi.sloid!,
+        (i) => i.sloid === trafficPointElementInSePoDi.sloid!
       );
       mergedOverview.push({
         designation: trafficPointElementInSePoDi.designation,
-        designationOperational: trafficPointElementInSePoDi.designationOperational,
+        designationOperational:
+          trafficPointElementInSePoDi.designationOperational,
         sloid: trafficPointElementInSePoDi.sloid!,
         validFrom: correspondingPrmPlatform?.validFrom,
         validTo: correspondingPrmPlatform?.validTo,

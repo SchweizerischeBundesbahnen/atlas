@@ -5,14 +5,17 @@ import { Country, PermissionRestrictionType, SwissCanton } from '../../../api';
 
 describe('UserPermissionManager', () => {
   let userPermissionManager: UserPermissionManager;
-  const businessOrganisationMockService = jasmine.createSpyObj('BusinessOrganisationService', [
-    'getAllBusinessOrganisations',
-  ]);
+  const businessOrganisationMockService = jasmine.createSpyObj(
+    'BusinessOrganisationService',
+    ['getAllBusinessOrganisations']
+  );
 
   beforeEach(() => {
-    userPermissionManager = new UserPermissionManager(businessOrganisationMockService);
+    userPermissionManager = new UserPermissionManager(
+      businessOrganisationMockService
+    );
     businessOrganisationMockService.getAllBusinessOrganisations.and.returnValue(
-      of({ objects: [{ sboid: 'ch:1:sboid:test' }] }),
+      of({ objects: [{ sboid: 'ch:1:sboid:test' }] })
     );
   });
 
@@ -75,18 +78,40 @@ describe('UserPermissionManager', () => {
     ]);
     tick();
     userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
-    expect(userPermissionManager.userPermission.permissions[0].permissionRestrictions).toEqual([
-      { valueAsString: 'ch:1:sboid:writer', type: PermissionRestrictionType.BusinessOrganisation },
+    expect(
+      userPermissionManager.userPermission.permissions[0].permissionRestrictions
+    ).toEqual([
+      {
+        valueAsString: 'ch:1:sboid:writer',
+        type: PermissionRestrictionType.BusinessOrganisation,
+      },
     ]);
-    expect(userPermissionManager.userPermission.permissions[1].permissionRestrictions).toEqual([]);
-    expect(userPermissionManager.userPermission.permissions[3].permissionRestrictions).toEqual([
-      { valueAsString: SwissCanton.Aargau, type: PermissionRestrictionType.Canton },
+    expect(
+      userPermissionManager.userPermission.permissions[1].permissionRestrictions
+    ).toEqual([]);
+    expect(
+      userPermissionManager.userPermission.permissions[3].permissionRestrictions
+    ).toEqual([
+      {
+        valueAsString: SwissCanton.Aargau,
+        type: PermissionRestrictionType.Canton,
+      },
     ]);
-    expect(userPermissionManager.userPermission.permissions[4].permissionRestrictions).toEqual([
-      { valueAsString: Country.Canada, type: PermissionRestrictionType.Country },
+    expect(
+      userPermissionManager.userPermission.permissions[4].permissionRestrictions
+    ).toEqual([
+      {
+        valueAsString: Country.Canada,
+        type: PermissionRestrictionType.Country,
+      },
     ]);
-    expect(userPermissionManager.userPermission.permissions[5].permissionRestrictions).toEqual([
-      { valueAsString: 'ch:5:sboid:writer', type: PermissionRestrictionType.BusinessOrganisation },
+    expect(
+      userPermissionManager.userPermission.permissions[5].permissionRestrictions
+    ).toEqual([
+      {
+        valueAsString: 'ch:5:sboid:writer',
+        type: PermissionRestrictionType.BusinessOrganisation,
+      },
     ]);
   }));
 
@@ -120,14 +145,21 @@ describe('UserPermissionManager', () => {
     ]);
     tick();
     userPermissionManager.removeSboidFromPermission('TTFN', 0);
-    expect(userPermissionManager.userPermission.permissions[0].permissionRestrictions).toEqual([]);
+    expect(
+      userPermissionManager.userPermission.permissions[0].permissionRestrictions
+    ).toEqual([]);
   }));
 
   it('test addSboidToPermission', fakeAsync(() => {
     userPermissionManager.addSboidToPermission('TTFN', 'ch:1:sboid:100000');
     tick();
-    expect(userPermissionManager.userPermission.permissions[0].permissionRestrictions).toEqual([
-      { valueAsString: 'ch:1:sboid:100000', type: PermissionRestrictionType.BusinessOrganisation },
+    expect(
+      userPermissionManager.userPermission.permissions[0].permissionRestrictions
+    ).toEqual([
+      {
+        valueAsString: 'ch:1:sboid:100000',
+        type: PermissionRestrictionType.BusinessOrganisation,
+      },
     ]);
   }));
 });

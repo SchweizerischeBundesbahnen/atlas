@@ -17,7 +17,8 @@ describe('WorkflowFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         WorkflowFormComponent,
         InfoIconComponent,
         CommentComponent,
@@ -25,7 +26,6 @@ describe('WorkflowFormComponent', () => {
         AtlasFieldErrorComponent,
         AtlasLabelFieldComponent,
       ],
-      imports: [AppTestingModule],
       providers: [{ provide: TranslatePipe }],
     }).compileComponents();
     fixture = TestBed.createComponent(WorkflowFormComponent);

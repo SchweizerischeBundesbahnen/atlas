@@ -1,22 +1,19 @@
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { BodiOverviewComponent } from './overview/bodi-overview.component';
-import { BusinessOrganisationDetailComponent } from './business-organisations/detail/business-organisation-detail.component';
+import { Routes } from '@angular/router';
+
 import { Pages } from '../pages';
-import { BusinessOrganisationComponent } from './business-organisations/business-organisation.component';
-import { TransportCompaniesComponent } from './transport-companies/transport-companies.component';
-import { TransportCompanyDetailComponent } from './transport-companies/detail/transport-company-detail.component';
+
 import { transportCompanyResolver } from './transport-companies/detail/transport-company-detail-resolver.service';
-import { CompaniesComponent } from './companies/companies.component';
-import { CompanyDetailComponent } from './companies/detail/company-detail.component';
 import { companyResolver } from './companies/detail/company-detail-resolver.service';
 import { businessOrganisationResolver } from './business-organisations/detail/business-organisation-detail-resolver.service';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: Pages.BUSINESS_ORGANISATIONS.path + '/:id',
-    component: BusinessOrganisationDetailComponent,
+    loadComponent: () =>
+      import(
+        './business-organisations/detail/business-organisation-detail.component'
+      ).then((m) => m.BusinessOrganisationDetailComponent),
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       businessOrganisationDetail: businessOrganisationResolver,
@@ -25,7 +22,10 @@ const routes: Routes = [
   },
   {
     path: Pages.TRANSPORT_COMPANIES.path + '/:id',
-    component: TransportCompanyDetailComponent,
+    loadComponent: () =>
+      import(
+        './transport-companies/detail/transport-company-detail.component'
+      ).then((m) => m.TransportCompanyDetailComponent),
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       transportCompanyDetail: transportCompanyResolver,
@@ -34,7 +34,10 @@ const routes: Routes = [
   },
   {
     path: Pages.COMPANIES.path + '/:id',
-    component: CompanyDetailComponent,
+    loadComponent: () =>
+      import('./companies/detail/company-detail.component').then(
+        (m) => m.CompanyDetailComponent
+      ),
     resolve: {
       companyDetail: companyResolver,
     },
@@ -42,28 +45,34 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: BodiOverviewComponent,
+    loadComponent: () =>
+      import('./overview/bodi-overview.component').then(
+        (m) => m.BodiOverviewComponent
+      ),
     children: [
       {
         path: Pages.BUSINESS_ORGANISATIONS.path,
-        component: BusinessOrganisationComponent,
+        loadComponent: () =>
+          import(
+            './business-organisations/business-organisation.component'
+          ).then((m) => m.BusinessOrganisationComponent),
       },
       {
         path: Pages.TRANSPORT_COMPANIES.path,
-        component: TransportCompaniesComponent,
+        loadComponent: () =>
+          import('./transport-companies/transport-companies.component').then(
+            (m) => m.TransportCompaniesComponent
+          ),
       },
       {
         path: Pages.COMPANIES.path,
-        component: CompaniesComponent,
+        loadComponent: () =>
+          import('./companies/companies.component').then(
+            (m) => m.CompaniesComponent
+          ),
       },
       { path: '**', redirectTo: Pages.BUSINESS_ORGANISATIONS.path },
     ],
   },
   { path: '**', redirectTo: Pages.BODI.path },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class BodiRoutingModule {}

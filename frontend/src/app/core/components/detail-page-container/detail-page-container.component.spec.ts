@@ -8,8 +8,7 @@ let fixture: ComponentFixture<DetailPageContainerComponent>;
 describe('DetailPageContainerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DetailPageContainerComponent],
-      imports: [AppTestingModule],
+      imports: [AppTestingModule, DetailPageContainerComponent],
     }).compileComponents();
   });
 

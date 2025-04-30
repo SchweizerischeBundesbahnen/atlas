@@ -1,9 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ServicePointNumber } from '../../api';
 
-@Pipe({
-  name: 'splitServicePointNumber',
-})
+@Pipe({ name: 'splitServicePointNumber' })
 export class SplitServicePointNumberPipe implements PipeTransform {
   transform(number: string | ServicePointNumber): string {
     if (typeof number === 'string') {

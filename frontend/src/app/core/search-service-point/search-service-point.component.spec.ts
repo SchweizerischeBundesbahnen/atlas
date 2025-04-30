@@ -1,4 +1,9 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 
 import { SearchServicePointComponent } from './search-service-point.component';
 import { AppTestingModule } from '../../app.testing.module';
@@ -20,14 +25,20 @@ describe('SearchServicePointComponent', () => {
   const activatedRouteMock = { data: of({ servicePoint: [BERN_WYLEREGG] }) };
 
   beforeEach(() => {
-    servicePointsServiceSpy = jasmine.createSpyObj<ServicePointsService>('servicePointsService', [
-      'searchServicePoints',
-    ]);
-    servicePointsServiceSpy.searchServicePoints.withArgs({ value: 'be' }).and.returnValue(of());
+    servicePointsServiceSpy = jasmine.createSpyObj<ServicePointsService>(
+      'servicePointsService',
+      ['searchServicePoints']
+    );
+    servicePointsServiceSpy.searchServicePoints
+      .withArgs({ value: 'be' })
+      .and.returnValue(of());
 
     TestBed.configureTestingModule({
-      declarations: [SearchServicePointComponent, SearchSelectComponent],
-      imports: [AppTestingModule],
+      imports: [
+        AppTestingModule,
+        SearchServicePointComponent,
+        SearchSelectComponent,
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ServicePointsService, useValue: servicePointsServiceSpy },
@@ -48,7 +59,10 @@ describe('SearchServicePointComponent', () => {
   it('should navigate to servicePoint details', () => {
     //given
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-    const searchResult: ServicePointSearchResult = { number: 8507000, designationOfficial: 'Bern' };
+    const searchResult: ServicePointSearchResult = {
+      number: 8507000,
+      designationOfficial: 'Bern',
+    };
     //when
     component.navigateTo(searchResult);
     //then

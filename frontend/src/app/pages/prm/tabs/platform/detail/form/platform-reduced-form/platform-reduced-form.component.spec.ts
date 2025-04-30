@@ -18,7 +18,8 @@ describe('PlatformReducedFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         PlatformReducedFormComponent,
         SelectComponent,
         InfoIconComponent,
@@ -27,7 +28,6 @@ describe('PlatformReducedFormComponent', () => {
         AtlasLabelFieldComponent,
         AtlasSpacerComponent,
       ],
-      imports: [AppTestingModule],
       providers: [{ provide: TranslatePipe }],
     });
     fixture = TestBed.createComponent(PlatformReducedFormComponent);

@@ -1,4 +1,4 @@
-import {Page} from '../core/model/page';
+import { Page } from '../core/model/page';
 
 export class Pages {
   public static HOME: Page = {
@@ -139,7 +139,7 @@ export class Pages {
     path: 'workflows',
     pathText: 'PAGES.WORKFLOW.TITLE_HEADER',
     description: 'PAGES.WORKFLOW.TITLE_HEADER',
-  }
+  };
 
   public static SEPODI: Page = {
     title: 'PAGES.SERVICE_POINTS.TITLE',
@@ -148,9 +148,7 @@ export class Pages {
     path: 'service-point-directory',
     pathText: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
-    subpages: [
-      Pages.SERVICE_POINT_WORKFLOWS
-    ]
+    subpages: [Pages.SERVICE_POINT_WORKFLOWS],
   };
 
   public static SERVICE_POINTS: Page = {
@@ -243,7 +241,7 @@ export class Pages {
     description: 'PAGES.CONTACT_POINT.DESCRIPTION',
   };
 
-   public static TOILET: Page = {
+  public static TOILET: Page = {
     title: 'PRM.TOILET.TITLE',
     titleMenu: 'PAGES.TOILET.TITLE_HEADER',
     headerTitle: 'PAGES.TOILET.TITLE_HEADER',
@@ -270,5 +268,4 @@ export class Pages {
     Pages.PRM,
   ];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
-
 }

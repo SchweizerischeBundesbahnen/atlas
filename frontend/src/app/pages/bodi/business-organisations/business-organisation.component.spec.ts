@@ -1,11 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { BusinessOrganisationComponent } from './business-organisation.component';
-import { BusinessOrganisationsService, ContainerBusinessOrganisation } from '../../../api';
-import { AppTestingModule } from '../../../app.testing.module';
-import { TranslatePipe } from '@ngx-translate/core';
+import {
+  BusinessOrganisationsService,
+  ContainerBusinessOrganisation,
+} from '../../../api';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { TableComponent } from '../../../core/components/table/table.component';
 import Spy = jasmine.Spy;
 
 const businessOrganisation: ContainerBusinessOrganisation = {
@@ -35,10 +39,11 @@ describe('BusinessOrganisationComponent', () => {
   let businessOrganisationsServiceSpy: jasmine.SpyObj<BusinessOrganisationsService>;
 
   beforeEach(() => {
-    businessOrganisationsServiceSpy = jasmine.createSpyObj<BusinessOrganisationsService>(
-      'BusinessOrganisationsServiceSpy',
-      ['getAllBusinessOrganisations']
-    );
+    businessOrganisationsServiceSpy =
+      jasmine.createSpyObj<BusinessOrganisationsService>(
+        'BusinessOrganisationsServiceSpy',
+        ['getAllBusinessOrganisations']
+      );
 
     (
       businessOrganisationsServiceSpy.getAllBusinessOrganisations as Spy<
@@ -47,13 +52,22 @@ describe('BusinessOrganisationComponent', () => {
     ).and.returnValue(of(businessOrganisation));
 
     TestBed.configureTestingModule({
-      declarations: [BusinessOrganisationComponent, MockTableComponent],
-      imports: [AppTestingModule],
+      imports: [BusinessOrganisationComponent, TranslateModule.forRoot()],
       providers: [
-        { provide: BusinessOrganisationsService, useValue: businessOrganisationsServiceSpy },
         TranslatePipe,
+        RouterOutlet,
+        {
+          provide: BusinessOrganisationsService,
+          useValue: businessOrganisationsServiceSpy,
+        },
+        { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(BusinessOrganisationComponent, {
+        remove: { imports: [TableComponent] },
+        add: { imports: [MockTableComponent] },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(BusinessOrganisationComponent);
     component = fixture.componentInstance;
@@ -70,7 +84,9 @@ describe('BusinessOrganisationComponent', () => {
       size: 10,
     });
 
-    expect(businessOrganisationsServiceSpy.getAllBusinessOrganisations).toHaveBeenCalledOnceWith(
+    expect(
+      businessOrganisationsServiceSpy.getAllBusinessOrganisations
+    ).toHaveBeenCalledOnceWith(
       [],
       undefined,
       undefined,

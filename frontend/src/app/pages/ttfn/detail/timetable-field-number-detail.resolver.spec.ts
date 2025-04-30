@@ -1,6 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
-import { Status, TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
+import {
+  ActivatedRouteSnapshot,
+  convertToParamMap,
+  RouterStateSnapshot,
+} from '@angular/router';
+import {
+  Status,
+  TimetableFieldNumbersService,
+  TimetableFieldNumberVersion,
+} from '../../../api';
 import {
   TimetableFieldNumberDetailResolver,
   timetableFieldNumberResolver,
@@ -21,10 +29,13 @@ const version: TimetableFieldNumberVersion = {
 };
 
 describe('TimetableFieldNumberDetailResolver', () => {
-  const timetableFieldNumberServiceSpy = jasmine.createSpyObj('timetableFieldNumbersService', [
-    'getAllVersionsVersioned',
-  ]);
-  timetableFieldNumberServiceSpy.getAllVersionsVersioned.and.returnValue(of([version]));
+  const timetableFieldNumberServiceSpy = jasmine.createSpyObj(
+    'timetableFieldNumbersService',
+    ['getAllVersionsVersioned']
+  );
+  timetableFieldNumberServiceSpy.getAllVersionsVersioned.and.returnValue(
+    of([version])
+  );
 
   let resolver: TimetableFieldNumberDetailResolver;
 
@@ -33,7 +44,10 @@ describe('TimetableFieldNumberDetailResolver', () => {
       imports: [AppTestingModule],
       providers: [
         TimetableFieldNumberDetailResolver,
-        { provide: TimetableFieldNumbersService, useValue: timetableFieldNumberServiceSpy },
+        {
+          provide: TimetableFieldNumbersService,
+          useValue: timetableFieldNumberServiceSpy,
+        },
       ],
     });
     resolver = TestBed.inject(TimetableFieldNumberDetailResolver);
@@ -44,10 +58,12 @@ describe('TimetableFieldNumberDetailResolver', () => {
   });
 
   it('should get version from service to display', () => {
-    const mockRoute = { paramMap: convertToParamMap({ id: '1234' }) } as ActivatedRouteSnapshot;
+    const mockRoute = {
+      paramMap: convertToParamMap({ id: '1234' }),
+    } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
-      timetableFieldNumberResolver(mockRoute, {} as RouterStateSnapshot),
+      timetableFieldNumberResolver(mockRoute, {} as RouterStateSnapshot)
     ) as Observable<TimetableFieldNumberVersion[]>;
 
     result.subscribe((versions) => {

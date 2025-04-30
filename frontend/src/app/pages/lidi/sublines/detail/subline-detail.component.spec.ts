@@ -327,7 +327,8 @@ function setupTestBed(
   data: { sublineDetail: string | SublineVersionV2[] }
 ) {
   TestBed.configureTestingModule({
-    declarations: [
+    imports: [
+      AppTestingModule,
       SublineDetailComponent,
       MockAppDetailWrapperComponent,
       MockBoSelectComponent,
@@ -351,7 +352,6 @@ function setupTestBed(
       DateIconComponent,
       DisplayDatePipe,
     ],
-    imports: [AppTestingModule],
     providers: [
       { provide: FormBuilder },
       { provide: SublinesService, useValue: sublinesService },

@@ -7,7 +7,6 @@ import {
   TranslatePipe,
 } from '@ngx-translate/core';
 import { DateModule } from './core/module/date.module';
-import { MaterialModule } from './core/module/material.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -24,7 +23,6 @@ const dialogMock = {
     BrowserAnimationsModule,
     DateModule.forRoot(),
     HttpClientTestingModule,
-    MaterialModule,
     ReactiveFormsModule,
     RouterModule.forRoot([]),
     TranslateModule.forRoot({
@@ -35,7 +33,6 @@ const dialogMock = {
     BrowserAnimationsModule,
     DateModule,
     HttpClientTestingModule,
-    MaterialModule,
     ReactiveFormsModule,
     RouterModule,
     TranslateModule,

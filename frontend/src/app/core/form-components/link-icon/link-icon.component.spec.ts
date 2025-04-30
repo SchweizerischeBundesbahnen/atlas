@@ -8,7 +8,7 @@ describe('LinkIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LinkIconComponent],
+      imports: [LinkIconComponent],
     }).compileComponents();
   });
 

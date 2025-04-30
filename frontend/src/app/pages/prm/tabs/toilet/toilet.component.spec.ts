@@ -1,17 +1,22 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ToiletComponent} from './toilet.component';
-import {MockAtlasButtonComponent, MockTableComponent} from '../../../../app.testing.mocks';
-import {AppTestingModule} from '../../../../app.testing.module';
-import {ActivatedRoute} from '@angular/router';
-import {STOP_POINT} from '../../util/stop-point-test-data.spec';
-import {BERN_WYLEREGG} from '../../../../../test/data/service-point';
-import {PersonWithReducedMobilityService, StandardAttributeType, ToiletOverview} from "../../../../api";
-import {of} from "rxjs";
-import {TablePagination} from "../../../../core/components/table/table-pagination";
-import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
-import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
-import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
+import { ToiletComponent } from './toilet.component';
+import {
+  MockAtlasButtonComponent,
+  MockTableComponent,
+} from '../../../../app.testing.mocks';
+import { ActivatedRoute } from '@angular/router';
+import { STOP_POINT } from '../../util/stop-point-test-data.spec';
+import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
+import {
+  PersonWithReducedMobilityService,
+  StandardAttributeType,
+  ToiletOverview,
+} from '../../../../api';
+import { of } from 'rxjs';
+import { TablePagination } from '../../../../core/components/table/table-pagination';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { TableComponent } from '../../../../core/components/table/table.component';
 
 const toiletOverview: ToiletOverview[] = [
   {
@@ -28,8 +33,8 @@ const toiletOverview: ToiletOverview[] = [
     designation: 'designation',
     additionalInformation: 'additional',
     wheelchairToilet: StandardAttributeType.Yes,
-    recordingStatus: "COMPLETE"
-  }
+    recordingStatus: 'COMPLETE',
+  },
 ];
 
 describe('Toilet Component', () => {
@@ -38,38 +43,39 @@ describe('Toilet Component', () => {
   const activatedRouteMock = {
     parent: {
       snapshot: {
-        data : {
+        data: {
           stopPoints: [STOP_POINT],
-          servicePoints: [BERN_WYLEREGG]
+          servicePoints: [BERN_WYLEREGG],
         },
         params: {
           stopPointSloid: STOP_POINT.sloid,
-        }
-      }
+        },
+      },
     },
   };
 
   const personWithReducedMobilityService = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['getToiletOverview'],
+    ['getToiletOverview']
   );
 
-  personWithReducedMobilityService.getToiletOverview.and.returnValue(of(toiletOverview));
+  personWithReducedMobilityService.getToiletOverview.and.returnValue(
+    of(toiletOverview)
+  );
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ToiletComponent,
-        MockAtlasButtonComponent,
-        MockTableComponent,
-        DetailPageContainerComponent,
-        DetailPageContentComponent,
-        DetailFooterComponent
-      ],
-      imports: [AppTestingModule],
+      imports: [ToiletComponent],
       providers: [
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
-        {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService}
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        {
+          provide: PersonWithReducedMobilityService,
+          useValue: personWithReducedMobilityService,
+        },
       ],
+    }).overrideComponent(ToiletComponent, {
+      remove: { imports: [AtlasButtonComponent, TableComponent] },
+      add: { imports: [MockAtlasButtonComponent, MockTableComponent] },
     });
     fixture = TestBed.createComponent(ToiletComponent);
     component = fixture.componentInstance;
@@ -84,10 +90,10 @@ describe('Toilet Component', () => {
     const tablePagination: TablePagination = {
       page: 1,
       size: 10,
-      sort: 'designation,asc'
-    }
+      sort: 'designation,asc',
+    };
     component.getOverview(tablePagination);
 
-    expect(component.totalCount).toBe(1)
+    expect(component.totalCount).toBe(1);
   });
 });

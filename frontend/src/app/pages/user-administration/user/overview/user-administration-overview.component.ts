@@ -1,23 +1,59 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { tap } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ApplicationType, PermissionRestrictionType, SwissCanton, User } from '../../../../api';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import {
+  ApplicationType,
+  PermissionRestrictionType,
+  SwissCanton,
+  User,
+} from '../../../../api';
 import { tableColumns } from './table-column-definition';
 import { SearchType, SearchTypes } from './search-type';
 import { Cantons } from '../../../../core/cantons/Cantons';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { MatSelectChange } from '@angular/material/select';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { MatLabel } from '@angular/material/form-field';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { NgFor, NgIf } from '@angular/common';
+import { UserSelectComponent } from '../user-select/user-select.component';
+import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-administration-overview',
   templateUrl: './user-administration-overview.component.html',
   styleUrls: ['./user-administration-overview.component.scss'],
+  imports: [
+    TableComponent,
+    MatLabel,
+    MatRadioGroup,
+    ReactiveFormsModule,
+    FormsModule,
+    NgFor,
+    MatRadioButton,
+    NgIf,
+    UserSelectComponent,
+    BusinessOrganisationSelectComponent,
+    SelectComponent,
+    RouterOutlet,
+    TranslatePipe,
+  ],
 })
 export class UserAdministrationUserOverviewComponent {
-  userPageResult: { users: User[]; totalCount: number } = { users: [], totalCount: 0 };
+  userPageResult: { users: User[]; totalCount: number } = {
+    users: [],
+    totalCount: 0,
+  };
   selectedSearch: SearchType = 'USER';
   readonly searchOptions = SearchTypes;
 
@@ -29,7 +65,9 @@ export class UserAdministrationUserOverviewComponent {
     ApplicationType.Sepodi,
     ApplicationType.Prm,
   ];
-  readonly applicationCantonOptions: ApplicationType[] = [ApplicationType.TimetableHearing];
+  readonly applicationCantonOptions: ApplicationType[] = [
+    ApplicationType.TimetableHearing,
+  ];
   readonly cantonOptions: SwissCanton[] = Object.values(SwissCanton);
   selectedCantonOptions: SwissCanton[] = [];
 
@@ -135,7 +173,8 @@ export class UserAdministrationUserOverviewComponent {
     this.loadUsers({ page: 0, size: 10 });
   }
 
-  readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
+  readonly getCantonAbbreviation = (canton: SwissCanton) =>
+    Cantons.fromSwissCanton(canton)?.short;
 
   applicationChanged($event: MatSelectChange) {
     this.selectedApplicationOptions = $event.value;

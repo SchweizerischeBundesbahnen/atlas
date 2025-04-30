@@ -1,9 +1,14 @@
-import {ReadStopPointVersion} from '../../../api';
+import { ReadStopPointVersion } from '../../../api';
 
 export const STOP_POINT: ReadStopPointVersion = {
   validFrom: new Date('2014-12-14'),
   validTo: new Date('2021-03-31'),
-  number: { number: 8589008, checkDigit: 7, uicCountryCode: 85, numberShort: 89008 },
+  number: {
+    number: 8589008,
+    checkDigit: 7,
+    uicCountryCode: 85,
+    numberShort: 89008,
+  },
   sloid: 'ch:1:sloid:89008',
   url: 'www.sbb.ch',
   meansOfTransport: ['BUS'],
@@ -23,10 +28,16 @@ export const STOP_POINT: ReadStopPointVersion = {
   editionDate: '2020-01-05',
   editor: 'Nicola',
 };
+
 export const STOP_POINT_COMPLETE: ReadStopPointVersion = {
   validFrom: new Date('2014-12-14'),
   validTo: new Date('2021-03-31'),
-  number: { number: 8589008, checkDigit: 7, uicCountryCode: 85, numberShort: 89008 },
+  number: {
+    number: 8589008,
+    checkDigit: 7,
+    uicCountryCode: 85,
+    numberShort: 89008,
+  },
   sloid: 'ch:1:sloid:89008',
   url: 'www.sbb.ch',
   meansOfTransport: ['TRAIN'],

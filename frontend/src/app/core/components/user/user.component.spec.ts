@@ -1,13 +1,19 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {UserComponent} from './user.component';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {AuthService} from '../../auth/auth.service';
-import {By} from '@angular/platform-browser';
-import {MaterialModule} from '../../module/material.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {adminUserServiceMock, authServiceSpy} from "../../../app.testing.mocks";
-import {UserService} from "../../auth/user/user.service";
+import { UserComponent } from './user.component';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
+import { AuthService } from '../../auth/auth.service';
+import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  adminUserServiceMock,
+  authServiceSpy,
+} from '../../../app.testing.mocks';
+import { UserService } from '../../auth/user/user.service';
 
 describe('UserComponent', () => {
   let component: UserComponent;
@@ -15,13 +21,12 @@ describe('UserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserComponent],
       imports: [
-        MaterialModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
+        UserComponent,
       ],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
@@ -44,25 +49,33 @@ describe('UserComponent', () => {
     });
 
     it('should render username on the title', () => {
-      expect(fixture.nativeElement.querySelector('button').title).toContain('Test');
+      expect(fixture.nativeElement.querySelector('button').title).toContain(
+        'Test'
+      );
     });
 
     it('should show user menu', () => {
       adminUserServiceMock.userChanged?.next();
       fixture.detectChanges();
 
-      const usernameModal = fixture.debugElement.query(By.css('.user-name')).nativeElement;
+      const usernameModal = fixture.debugElement.query(
+        By.css('.user-name')
+      ).nativeElement;
       expect(usernameModal.textContent).toContain('Test');
       fixture.detectChanges();
 
-      const userMenuOpenButton = fixture.debugElement.query(By.css('#user-menu-button'));
+      const userMenuOpenButton = fixture.debugElement.query(
+        By.css('#user-menu-button')
+      );
       userMenuOpenButton.nativeElement.click();
       fixture.detectChanges();
 
-      const userRolesModal = fixture.debugElement.query(By.css('#user-roles-modal')).nativeElement;
-      expect(userRolesModal.querySelector('.user-info-modal').textContent).toContain(
-        'PROFILE.YOUR_ROLES'
-      );
+      const userRolesModal = fixture.debugElement.query(
+        By.css('#user-roles-modal')
+      ).nativeElement;
+      expect(
+        userRolesModal.querySelector('.user-info-modal').textContent
+      ).toContain('PROFILE.YOUR_ROLES');
       fixture.detectChanges();
 
       const userRoles = userRolesModal.querySelectorAll('.user-role-item');
@@ -115,7 +128,9 @@ describe('UserComponent', () => {
 
     it('should return user name if no (', () => {
       //when
-      const result = component.removeDepartment('ATLAS / LIDI / FPFN Admin User');
+      const result = component.removeDepartment(
+        'ATLAS / LIDI / FPFN Admin User'
+      );
 
       //then
       expect(result).toBe('ATLAS / LIDI / FPFN Admin User');
@@ -123,11 +138,12 @@ describe('UserComponent', () => {
 
     it('should return part before (', () => {
       //when
-      const result = component.removeDepartment('Ammann Luca (IT-PTR-CEN1-YPT1)');
+      const result = component.removeDepartment(
+        'Ammann Luca (IT-PTR-CEN1-YPT1)'
+      );
 
       //then
       expect(result).toBe('Ammann Luca');
     });
-
   });
 });

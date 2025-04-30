@@ -11,7 +11,7 @@ export class LoginGuard {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private router: Router,
+    private router: Router
   ) {}
 
   canActivate() {
@@ -22,7 +22,7 @@ export class LoginGuard {
         }
         this.authService.login();
         return this.router.parseUrl('/');
-      }),
+      })
     );
   }
 }

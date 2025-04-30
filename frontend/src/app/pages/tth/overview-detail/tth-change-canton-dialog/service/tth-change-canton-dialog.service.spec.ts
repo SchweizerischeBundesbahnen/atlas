@@ -24,7 +24,9 @@ describe('TthChangeCantonDialogService', () => {
   it('should open confirmation dialog', () => {
     dialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-    service.onClick(SwissCanton.Bern, []).subscribe((result) => expect(result).toBeTrue());
+    service
+      .onClick(SwissCanton.Bern, [])
+      .subscribe((result) => expect(result).toBeTrue());
 
     expect(dialogSpy.open).toHaveBeenCalled();
   });

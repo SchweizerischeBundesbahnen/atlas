@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {Observable, of, throwError} from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import {
   AffectedSublinesModel,
   LinesService,
@@ -12,59 +12,36 @@ import {
   WorkflowProcessingStatus,
 } from '../../../../api';
 import { LineDetailComponent } from './line-detail.component';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AppTestingModule } from '../../../../app.testing.module';
-import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
-import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
+import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
-import { LineDetailFormComponent } from './line-detail-form/line-detail-form.component';
-import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
-import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 import { FormModule } from '../../../../core/module/form.module';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { SublineDetailComponent } from '../../sublines/detail/subline-detail.component';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import moment from 'moment';
-import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
-import { SelectComponent } from '../../../../core/form-components/select/select.component';
-import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
-import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
-import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
-import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
-import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
-import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
-import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
-import { DateIconComponent } from '../../../../core/form-components/date-icon/date-icon.component';
-import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
 import { Component, Input } from '@angular/core';
-import { Record } from '../../../../core/components/base-detail/record';
-import { Page } from '../../../../core/model/page';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { WorkflowComponent } from '../../../../core/workflow/workflow.component';
-import { NgOptimizedImage } from '@angular/common';
-
-@Component({
-  selector: 'app-coverage',
-  template: '<p>Mock Product Editor Component</p>',
-})
-class MockAppCoverageComponent {
-  @Input() pageType!: Record;
-  @Input() currentRecord!: Page;
-}
+import { SublineTableComponent } from './subline-table/subline-table.component';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 @Component({
   selector: 'app-subline-table',
   template: '<p>Mock subline table Component</p>',
+  imports: [FormModule],
 })
 export class MockSublineTableComponent {
   @Input() mainLineSlnid!: string;
   @Input() eventSubject!: Observable<boolean>;
 }
+
+@Component({
+  selector: 'app-subline-detail',
+  template: '<p>Mock subline table Component</p>',
+  providers: [ValidityService],
+  imports: [ReactiveFormsModule],
+})
+export class MockSublineDetailComponent {}
 
 const lineVersion: LineVersionV2 = {
   lineConcessionType: 'CANTONALLY_APPROVED_LINE',
@@ -452,34 +429,11 @@ function setupTestBed(
   data: { lineDetail: string | LineVersionV2[] }
 ) {
   TestBed.configureTestingModule({
-    declarations: [
-      LineDetailComponent,
-      LineDetailFormComponent,
-      ErrorNotificationComponent,
-      InfoIconComponent,
-      CommentComponent,
-      LinkIconComponent,
-      AtlasLabelFieldComponent,
-      AtlasFieldErrorComponent,
-      TextFieldComponent,
-      SelectComponent,
-      AtlasSpacerComponent,
-      DetailPageContainerComponent,
-      DetailPageContentComponent,
-      DetailFooterComponent,
-      AtlasButtonComponent,
-      UserDetailInfoComponent,
-      SwitchVersionComponent,
-      MockAppCoverageComponent,
-      DateRangeComponent,
-      DateRangeTextComponent,
-      DateIconComponent,
-      DisplayDatePipe,
-      WorkflowComponent,
-      MockSublineTableComponent,
-    ],
-    imports: [AppTestingModule, FormModule, NgOptimizedImage],
+    imports: [LineDetailComponent, TranslateModule.forRoot()],
     providers: [
+      provideHttpClient(),
+      provideHttpClientTesting(),
+      provideMomentDateAdapter(),
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
       { provide: DialogService, useValue: dialogService },
@@ -488,10 +442,9 @@ function setupTestBed(
       { provide: TranslatePipe },
     ],
   })
-    .overrideComponent(SublineDetailComponent, {
-      set: {
-        providers: [{ provide: ValidityService, useValue: validityService }],
-      },
+    .overrideComponent(LineDetailComponent, {
+      remove: { imports: [SublineTableComponent] },
+      add: { imports: [MockSublineTableComponent] },
     })
     .compileComponents()
     .then();

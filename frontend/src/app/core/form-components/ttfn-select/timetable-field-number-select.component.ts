@@ -9,16 +9,35 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
-import { FormGroup } from '@angular/forms';
-import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  TimetableFieldNumber,
+  TimetableFieldNumbersService,
+} from '../../../api';
 import { map } from 'rxjs/operators';
+import { SearchSelectComponent } from '../search-select/search-select.component';
+import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { NgIf, NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
+import { TimetableFieldNumberSelectOptionPipe } from './ttfn-select-option.pipe';
 
 @Component({
   selector: 'ttfn-select',
   templateUrl: './timetable-field-number-select.component.html',
   styleUrls: ['./timetable-field-number-select.component.scss'],
+  imports: [
+    SearchSelectComponent,
+    ReactiveFormsModule,
+    AtlasLabelFieldComponent,
+    NgIf,
+    NgClass,
+    TranslatePipe,
+    TimetableFieldNumberSelectOptionPipe,
+  ],
 })
-export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, OnChanges {
+export class TimetableFieldNumberSelectComponent
+  implements OnInit, OnDestroy, OnChanges
+{
   @Input() valueExtraction = 'ttfnid';
   @Input() controlName!: string;
   @Input() formModus = true;
@@ -33,7 +52,9 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
   timetableFieldNumbers: Observable<TimetableFieldNumber[]> = of([]);
   private formSubscription?: Subscription;
 
-  constructor(private timetableFieldNumbersService: TimetableFieldNumbersService) {}
+  constructor(
+    private timetableFieldNumbersService: TimetableFieldNumbersService
+  ) {}
 
   ngOnInit(): void {
     this.init();

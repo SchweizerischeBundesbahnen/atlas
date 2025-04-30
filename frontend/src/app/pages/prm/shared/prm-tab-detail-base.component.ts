@@ -17,10 +17,12 @@ import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-
 export abstract class PrmTabDetailBaseComponent<T>
   implements OnInit, DetailFormComponent, DetailWithCancelEdit
 {
-  protected readonly notificationService: NotificationService = inject(NotificationService);
+  protected readonly notificationService: NotificationService =
+    inject(NotificationService);
   protected readonly router: Router = inject(Router);
   protected readonly route: ActivatedRoute = inject(ActivatedRoute);
-  protected readonly detailHelperService: DetailHelperService = inject(DetailHelperService);
+  protected readonly detailHelperService: DetailHelperService =
+    inject(DetailHelperService);
   protected readonly validityService: ValidityService = inject(ValidityService);
 
   form: FormGroup = new FormGroup({});
@@ -66,7 +68,7 @@ export abstract class PrmTabDetailBaseComponent<T>
           this.ngOnInit();
           return EMPTY;
         }),
-        finalize(() => (this.saving = false)),
+        finalize(() => (this.saving = false))
       )
       .subscribe();
   }
@@ -77,13 +79,11 @@ export abstract class PrmTabDetailBaseComponent<T>
   }
 
   private routeToParent(routeParam: string = '') {
-    const navigation = Array<string>(this.nbrOfBackPaths).fill('../').join('') + routeParam;
-    const navigationWithoutTrailingSlash = navigation.replace(/\/$/, "");
-    return this.router.navigate(
-      [navigationWithoutTrailingSlash],
-      {
-        relativeTo: this.route,
-      },
-    );
+    const navigation =
+      Array<string>(this.nbrOfBackPaths).fill('../').join('') + routeParam;
+    const navigationWithoutTrailingSlash = navigation.replace(/\/$/, '');
+    return this.router.navigate([navigationWithoutTrailingSlash], {
+      relativeTo: this.route,
+    });
   }
 }

@@ -1,9 +1,9 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import {StopPointRejectWorkflowDialogService} from './stop-point-reject-workflow-dialog.service';
-import {TranslateModule} from "@ngx-translate/core";
-import {MatDialog} from "@angular/material/dialog";
-import {of} from "rxjs";
+import { StopPointRejectWorkflowDialogService } from './stop-point-reject-workflow-dialog.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
 
 describe('StopPointRejectWorkflowDialogService', () => {
   let service: StopPointRejectWorkflowDialogService;
@@ -13,7 +13,7 @@ describe('StopPointRejectWorkflowDialogService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      providers: [{provide: MatDialog, useValue: dialogSpy}],
+      providers: [{ provide: MatDialog, useValue: dialogSpy }],
     });
     service = TestBed.inject(StopPointRejectWorkflowDialogService);
   });
@@ -23,7 +23,7 @@ describe('StopPointRejectWorkflowDialogService', () => {
   });
 
   it('should open new Cancel workflow', () => {
-    dialogSpy.open.and.returnValue({afterClosed: () => of(true)});
+    dialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     service
       .openDialog(123, 'CANCEL')
@@ -33,7 +33,7 @@ describe('StopPointRejectWorkflowDialogService', () => {
   });
 
   it('should open new Reject workflow', () => {
-    dialogSpy.open.and.returnValue({afterClosed: () => of(true)});
+    dialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     service
       .openDialog(123, 'REJECT')
@@ -43,13 +43,12 @@ describe('StopPointRejectWorkflowDialogService', () => {
   });
 
   it('should return Cancel Title', () => {
-    const result = service.getTitle("CANCEL");
+    const result = service.getTitle('CANCEL');
     expect(result).toBe('WORKFLOW.BUTTON.CANCEL');
   });
 
   it('should return new Reject Title', () => {
-    const result = service.getTitle("REJECT");
+    const result = service.getTitle('REJECT');
     expect(result).toBe('WORKFLOW.BUTTON.REJECT');
   });
-
 });

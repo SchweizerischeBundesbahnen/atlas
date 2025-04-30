@@ -1,19 +1,19 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {SearchServicePointPanelComponent} from './search-service-point-panel.component';
-import {AtlasButtonComponent} from "../components/button/atlas-button.component";
-import {Component, Input} from "@angular/core";
-import {ServicePointSearchType} from "../search-service-point/service-point-search";
-import {AppTestingModule} from "../../app.testing.module";
+import { SearchServicePointPanelComponent } from './search-service-point-panel.component';
+import { AtlasButtonComponent } from '../components/button/atlas-button.component';
+import { Component, Input } from '@angular/core';
+import { ServicePointSearchType } from '../search-service-point/service-point-search';
+import { AppTestingModule } from '../../app.testing.module';
 
 @Component({
   selector: 'app-search-service-point',
   template: '<h1>SearchServicePointComponent</h1>',
+  imports: [AppTestingModule],
 })
 class SearchServicePointMockComponent {
   @Input() searchType!: ServicePointSearchType;
 }
-
 
 describe('SearchServicePointPanelComponent', () => {
   let component: SearchServicePointPanelComponent;
@@ -21,10 +21,13 @@ describe('SearchServicePointPanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SearchServicePointPanelComponent, AtlasButtonComponent, SearchServicePointMockComponent],
-      imports: [AppTestingModule]
-    })
-      .compileComponents();
+      imports: [
+        AppTestingModule,
+        SearchServicePointPanelComponent,
+        AtlasButtonComponent,
+        SearchServicePointMockComponent,
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SearchServicePointPanelComponent);
     component = fixture.componentInstance;

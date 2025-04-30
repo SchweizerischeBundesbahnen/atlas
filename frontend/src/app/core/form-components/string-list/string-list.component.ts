@@ -1,12 +1,36 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
-import {FieldExample} from '../text-field/field-example';
-import {concat, Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { FieldExample } from '../text-field/field-example';
+import { concat, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { TextFieldComponent } from '../text-field/text-field.component';
+import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
+import { NgClass, NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { MatChipSet, MatChip, MatChipRemove } from '@angular/material/chips';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'atlas-text-list',
   templateUrl: './string-list.component.html',
+  imports: [
+    TextFieldComponent,
+    ReactiveFormsModule,
+    AtlasFieldErrorComponent,
+    NgClass,
+    MatChipSet,
+    NgFor,
+    MatChip,
+    NgIf,
+    MatChipRemove,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class StringListComponent implements OnChanges {
   @Input() formGroup?: FormGroup;
@@ -43,7 +67,8 @@ export class StringListComponent implements OnChanges {
   }
 
   get strListCtrl(): AbstractControl {
-    if (!this.controlName) throw new Error('string list control is not defined');
+    if (!this.controlName)
+      throw new Error('string list control is not defined');
     const ctrl = this.formGroup?.get(this.controlName);
     if (!ctrl) throw new Error('string list control is not defined');
     return ctrl;
@@ -67,7 +92,8 @@ export class StringListComponent implements OnChanges {
   }
 
   private _checkInitialValue() {
-    if (!this.strListCtrl.value) throw new Error('initial value should be present for list');
+    if (!this.strListCtrl.value)
+      throw new Error('initial value should be present for list');
   }
 
   private _handleFormStateChange() {
@@ -91,8 +117,8 @@ export class StringListComponent implements OnChanges {
             this._inputCtrl?.enable();
             return false;
           }
-        }),
-      ),
+        })
+      )
     );
   }
 }

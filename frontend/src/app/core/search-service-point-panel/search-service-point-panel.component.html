@@ -1,7 +1,7 @@
 <div [ngClass]="showSearchPanel? 'search-container-opened' : 'search-container-closed'" class="search-container">
   <span *ngIf="!showSearchPanel" class="ps-4 pt-2 search-plaintext">{{"COMMON.SEARCH.SEARCH_CRITERIA" | translate}}...</span>
   <div class="container-sp-create-and-search" *ngIf="showSearchPanel">
-    <app-search-service-point [searchType]="this.searchType"></app-search-service-point>
+    <app-search-service-point [searchType]="searchType"></app-search-service-point>
     <ng-content></ng-content>
   </div>
   <div class="button-container">

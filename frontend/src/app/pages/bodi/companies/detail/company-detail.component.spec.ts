@@ -16,7 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
-import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 
 const company: Company = {
   uicCode: 1234,
@@ -29,6 +29,7 @@ let fixture: ComponentFixture<CompanyDetailComponent>;
 @Component({
   selector: 'atlas-text-field',
   template: '<p>Mock Table Component</p>',
+  imports: [AppTestingModule],
 })
 class MockAtlasTextFieldComponent {
   @Input() controlName!: string;
@@ -40,10 +41,11 @@ class MockAtlasTextFieldComponent {
   @Input() customInputNgStyle!: Record<string, string | undefined | null>;
   @Input() customError!: AtlasFieldCustomError;
   @ContentChild('customChildInputPostfixTemplate')
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   customChildInputPostfixTemplate!: TemplateRef<any>;
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  @ContentChild('customChildInputPrefixTemplate') customChildInputPrefixTemplate!: TemplateRef<any>;
+  @ContentChild('customChildInputPrefixTemplate')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  customChildInputPrefixTemplate!: TemplateRef<any>;
   @Input() formGroup!: FormGroup;
 }
 
@@ -66,21 +68,28 @@ describe('CompanyDetailComponent', () => {
 
   it('should prepare url for link opening', () => {
     expect(component.prependHttp(undefined)).toBeUndefined();
-    expect(component.prependHttp('www.betonplus-al.com')).toBe('https://www.betonplus-al.com');
-    expect(component.prependHttp(' www.betonplus-al.com ')).toBe('https://www.betonplus-al.com');
-    expect(component.prependHttp('betonplus-al.com ')).toBe('https://betonplus-al.com');
+    expect(component.prependHttp('www.betonplus-al.com')).toBe(
+      'https://www.betonplus-al.com'
+    );
+    expect(component.prependHttp(' www.betonplus-al.com ')).toBe(
+      'https://www.betonplus-al.com'
+    );
+    expect(component.prependHttp('betonplus-al.com ')).toBe(
+      'https://betonplus-al.com'
+    );
     expect(component.prependHttp('http://www.betonplus-al.com')).toBe(
-      'http://www.betonplus-al.com',
+      'http://www.betonplus-al.com'
     );
     expect(component.prependHttp('https://www.betonplus-al.com')).toBe(
-      'https://www.betonplus-al.com',
+      'https://www.betonplus-al.com'
     );
   });
 });
 
 function setupTestBed(data: { companyDetail: string | Company }) {
   TestBed.configureTestingModule({
-    declarations: [
+    imports: [
+      AppTestingModule,
       CompanyDetailComponent,
       ErrorNotificationComponent,
       InfoIconComponent,
@@ -93,7 +102,6 @@ function setupTestBed(data: { companyDetail: string | Company }) {
       DetailFooterComponent,
       MockAtlasButtonComponent,
     ],
-    imports: [AppTestingModule],
     providers: [
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },

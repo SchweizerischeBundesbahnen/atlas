@@ -1,9 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { TableColumn } from '../../../core/components/table/table-column';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { BusinessOrganisation, BusinessOrganisationsService, Status } from '../../../api';
+import {
+  BusinessOrganisation,
+  BusinessOrganisationsService,
+  Status,
+} from '../../../api';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
@@ -14,10 +18,13 @@ import { TableFilterMultiSelect } from '../../../core/components/table-filter/co
 import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../pages';
+import { TableComponent } from '../../../core/components/table/table.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-bodi-business-organisations',
   templateUrl: './business-organisation.component.html',
+  imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
 export class BusinessOrganisationComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<BusinessOrganisation>[] = this.getColumns();
@@ -71,7 +78,10 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
         this.tableService.filter.multiSelectStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
-        addElementsToArrayWhenNotUndefined(pagination.sort, this.getDefaultSort())
+        addElementsToArrayWhenNotUndefined(
+          pagination.sort,
+          this.getDefaultSort()
+        )
       )
       .subscribe((container) => {
         this.businessOrganisations = container.objects!;
@@ -119,7 +129,11 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
         headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
         value: 'organisationNumber',
       },
-      { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+      {
+        headerTitle: 'COMMON.VALID_FROM',
+        value: 'validFrom',
+        formatAsDate: true,
+      },
       { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
     ];
   }

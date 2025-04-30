@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CompaniesService, Company } from '../../../api';
 import { TableService } from '../../../core/components/table/table.service';
@@ -9,10 +9,13 @@ import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../pages';
+import { TableComponent } from '../../../core/components/table/table.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-bodi-companies',
   templateUrl: './companies.component.html',
+  imports: [TableComponent, RouterOutlet, TranslatePipe],
 })
 export class CompaniesComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<Company>[] = [

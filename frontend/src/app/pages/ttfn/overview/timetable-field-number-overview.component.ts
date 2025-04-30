@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
 import {
@@ -20,12 +20,18 @@ import { TableFilterDateSelect } from '../../../core/components/table-filter/con
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../pages';
 import { TableService } from '../../../core/components/table/table.service';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { TableComponent } from '../../../core/components/table/table.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
   templateUrl: './timetable-field-number-overview.component.html',
+  imports: [AtlasButtonComponent, TableComponent, RouterOutlet, TranslatePipe],
 })
-export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
+export class TimetableFieldNumberOverviewComponent
+  implements OnInit, OnDestroy
+{
   private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip(0, 'col-6'),
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
@@ -54,14 +60,21 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
   tableColumns: TableColumn<TimetableFieldNumber>[] = [
     { headerTitle: 'TTFN.NUMBER', value: 'number' },
     { headerTitle: 'TTFN.DESCRIPTION', value: 'description' },
-    { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
+    {
+      headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER',
+      value: 'swissTimetableFieldNumber',
+    },
     { headerTitle: 'TTFN.TTFNID', value: 'ttfnid' },
     {
       headerTitle: 'COMMON.STATUS',
       value: 'status',
       translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
     },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    {
+      headerTitle: 'COMMON.VALID_FROM',
+      value: 'validFrom',
+      formatAsDate: true,
+    },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 

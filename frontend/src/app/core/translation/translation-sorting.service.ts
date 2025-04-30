@@ -7,7 +7,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 export class TranslationSortingService {
   constructor(
     private translatePipe: TranslatePipe,
-    public translateService: TranslateService,
+    public translateService: TranslateService
   ) {}
 
   sort(enumsValues: string[], translationPrefix: string): string[] {

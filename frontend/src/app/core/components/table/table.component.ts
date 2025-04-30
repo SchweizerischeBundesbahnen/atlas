@@ -1,18 +1,75 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Sort, SortDirection } from '@angular/material/sort';
-import { PageEvent } from '@angular/material/paginator';
+import {
+  Sort,
+  SortDirection,
+  MatSort,
+  MatSortHeader,
+} from '@angular/material/sort';
+import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
 import { TableService } from './table.service';
 import { TablePagination } from './table-pagination';
 import { ColumnDropDownEvent } from './column-drop-down-event';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatCheckboxChange, MatCheckbox } from '@angular/material/checkbox';
 import { TableFilter } from '../table-filter/config/table-filter';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { NgIf, NgClass, NgFor, NgSwitch, NgSwitchCase } from '@angular/common';
+import { TableFilterComponent } from '../table-filter/table-filter.component';
+import {
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow,
+  MatNoDataRow,
+} from '@angular/material/table';
+import { MouseOverTitleDirective } from './directive/mouse-over-title.directive';
+import { SelectComponent } from '../../form-components/select/select.component';
+import { AtlasButtonComponent } from '../button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ShowTitlePipe } from './pipe/show-title.pipe';
+import { FormatPipe } from './pipe/format.pipe';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][editElementEvent]',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
+  imports: [
+    LoadingSpinnerComponent,
+    NgIf,
+    TableFilterComponent,
+    MatTable,
+    MatSort,
+    NgClass,
+    NgFor,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatSortHeader,
+    MatCheckbox,
+    NgSwitch,
+    NgSwitchCase,
+    MatCellDef,
+    MatCell,
+    MouseOverTitleDirective,
+    SelectComponent,
+    AtlasButtonComponent,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatNoDataRow,
+    MatPaginator,
+    TranslatePipe,
+    ShowTitlePipe,
+    FormatPipe,
+  ],
 })
 export class TableComponent<DATATYPE> implements OnInit {
   @Input() checkBoxSelection = new SelectionModel<DATATYPE>(true, []);
@@ -29,7 +86,8 @@ export class TableComponent<DATATYPE> implements OnInit {
 
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
   @Output() tableChanged = new EventEmitter<TablePagination>();
-  @Output() tableInitialized: EventEmitter<TablePagination> = new EventEmitter<TablePagination>();
+  @Output() tableInitialized: EventEmitter<TablePagination> =
+    new EventEmitter<TablePagination>();
   @Output() changeDropdownEvent = new EventEmitter<ColumnDropDownEvent>();
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Output() buttonClickEvent = new EventEmitter<any>();

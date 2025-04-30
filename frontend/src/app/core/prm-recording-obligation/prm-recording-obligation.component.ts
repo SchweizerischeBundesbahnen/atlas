@@ -1,12 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApplicationType } from '../../api';
 import { PermissionService } from '../auth/permission/permission.service';
-import {PersonWithReducedMobilityService} from "../../api/service/personWithReducedMobility.service";
+import { PersonWithReducedMobilityService } from '../../api/service/personWithReducedMobility.service';
 import { NotificationService } from '../notification/notification.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { AtlasSlideToggleComponent } from '../form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 
 @Component({
   selector: 'prm-recording-obligation',
   templateUrl: './prm-recording-obligation.component.html',
+  imports: [TranslatePipe, AtlasSlideToggleComponent],
 })
 export class PrmRecordingObligationComponent implements OnInit {
   recordingObligation = true;
@@ -40,7 +43,9 @@ export class PrmRecordingObligationComponent implements OnInit {
         value: !this.recordingObligation,
       })
       .subscribe(() => {
-        this.notificationService.success('PRM.STOP_POINTS.RECORDING_OBLIGATION_SAVED');
+        this.notificationService.success(
+          'PRM.STOP_POINTS.RECORDING_OBLIGATION_SAVED'
+        );
         this.recordingObligation = !this.recordingObligation;
       });
   }

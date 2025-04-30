@@ -1,8 +1,12 @@
-import { Directive, EventEmitter, HostBinding, HostListener, Output } from '@angular/core';
+import {
+  Directive,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Output,
+} from '@angular/core';
 
-@Directive({
-  selector: '[atlas-file-drop]',
-})
+@Directive({ selector: '[atlas-file-drop]' })
 export class FileDropDirective {
   @HostBinding('class.fileover') fileOver!: boolean;
   @Output() filesDropped = new EventEmitter<FileList>();

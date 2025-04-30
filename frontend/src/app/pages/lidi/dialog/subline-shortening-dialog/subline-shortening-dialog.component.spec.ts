@@ -19,8 +19,7 @@ describe('SublineShorteningDialogComponent', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      declarations: [SublineShorteningDialogComponent],
-      imports: [AppTestingModule],
+      imports: [AppTestingModule, SublineShorteningDialogComponent],
       providers: [
         {
           provide: MAT_DIALOG_DATA,

@@ -2,7 +2,12 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { WorkflowDialogData } from './workflow-dialog-data';
 import { NotificationService } from '../../notification/notification.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { WorkflowFormGroup } from '../workflow-form-group';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
@@ -15,15 +20,32 @@ import {
   WorkflowService,
   WorkflowStart,
 } from '../../../api';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { ValidationService } from '../../validation/validation.service';
 import { Observable } from 'rxjs';
+import { DialogCloseComponent } from '../../components/dialog/close/dialog-close.component';
+import { DialogContentComponent } from '../../components/dialog/content/dialog-content.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
+import { WorkflowCheckFormComponent } from '../workflow-check-form/workflow-check-form.component';
+import { DialogFooterComponent } from '../../components/dialog/footer/dialog-footer.component';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 
 @Component({
   selector: 'app-workflow-dialog',
   templateUrl: './workflow-dialog.component.html',
   styleUrls: ['./workflow-dialog.component.scss'],
+  imports: [
+    DialogCloseComponent,
+    DialogContentComponent,
+    NgIf,
+    WorkflowFormComponent,
+    ReactiveFormsModule,
+    WorkflowCheckFormComponent,
+    DialogFooterComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class WorkflowDialogComponent implements OnInit {
   workflowStartFormGroup: FormGroup<WorkflowFormGroup> =

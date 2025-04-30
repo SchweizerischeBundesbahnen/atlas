@@ -1,8 +1,22 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogClose,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import { NewTimetableHearingYearDialogData } from './model/new-timetable-hearing-year-dialog.data';
-import { HearingStatus, TimetableHearingYear, TimetableHearingYearsService } from '../../../api';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  HearingStatus,
+  TimetableHearingYear,
+  TimetableHearingYearsService,
+} from '../../../api';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
@@ -15,10 +29,23 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NewHearingYearValidator } from './new-hearing-year-validator';
 import { TthUtils } from '../util/tth-utils';
+import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { SelectComponent } from '../../../core/form-components/select/select.component';
+import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tthdialog',
   templateUrl: './new-timetable-hearing-year-dialog.component.html',
+  imports: [
+    ReactiveFormsModule,
+    MatDialogClose,
+    AtlasLabelFieldComponent,
+    SelectComponent,
+    DateRangeComponent,
+    MatDialogActions,
+    TranslatePipe,
+  ],
 })
 export class NewTimetableHearingYearDialogComponent implements OnInit {
   form: FormGroup = new FormGroup<NewTimetableHearingYearFormGroup>(
@@ -33,8 +60,12 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
     },
     [
       DateRangeValidator.fromGreaterThenTo('hearingFrom', 'hearingTo'),
-      NewHearingYearValidator.fromAndToOneYearBefore('timetableYear', 'hearingFrom', 'hearingTo'),
-    ],
+      NewHearingYearValidator.fromAndToOneYearBefore(
+        'timetableYear',
+        'hearingFrom',
+        'hearingTo'
+      ),
+    ]
   );
   YEAR_OPTIONS: number[] = [];
   defaultYearSelection = this.YEAR_OPTIONS[0];
@@ -47,7 +78,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: NewTimetableHearingYearDialogData,
     private readonly timetableHearingYearsService: TimetableHearingYearsService,
     protected notificationService: NotificationService,
-    private readonly dialogService: DialogService,
+    private readonly dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -56,19 +87,26 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
 
   initOverviewOfferedYears() {
     this.timetableHearingYearsService
-      .getHearingYears([HearingStatus.Active, HearingStatus.Planned, HearingStatus.Archived])
+      .getHearingYears([
+        HearingStatus.Active,
+        HearingStatus.Planned,
+        HearingStatus.Archived,
+      ])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYears) => {
         const sortedTimetableHearingYears = TthUtils.sortByTimetableHearingYear(
           timetableHearingYears,
-          false,
+          false
         );
         if (sortedTimetableHearingYears) {
           const activeYear = this.getActiveYear(sortedTimetableHearingYears);
           const plannedAndArchivedYears = this.getAllPlanedAndArchivedYears(
-            sortedTimetableHearingYears,
+            sortedTimetableHearingYears
           );
-          this.YEAR_OPTIONS = this.calculateProposedYears(activeYear, plannedAndArchivedYears);
+          this.YEAR_OPTIONS = this.calculateProposedYears(
+            activeYear,
+            plannedAndArchivedYears
+          );
           this.defaultYearSelection = this.YEAR_OPTIONS[0];
         }
       });
@@ -84,7 +122,9 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe({
           next: () => {
-            this.notificationService.success('TTH.NEW_YEAR.DIALOG.NOTIFICATION_SUCCESS');
+            this.notificationService.success(
+              'TTH.NEW_YEAR.DIALOG.NOTIFICATION_SUCCESS'
+            );
             this.dialogRef.close(true);
           },
           error: () => (this.saveEnabled = true),
@@ -105,24 +145,29 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   }
 
   getAllPlanedAndArchivedYears(
-    timetableHearingYears: Array<TimetableHearingYear>,
+    timetableHearingYears: Array<TimetableHearingYear>
   ): Array<TimetableHearingYear> {
     return timetableHearingYears.filter(
       (year) =>
         year.hearingStatus === HearingStatus.Planned ||
-        year.hearingStatus === HearingStatus.Archived,
+        year.hearingStatus === HearingStatus.Archived
     );
   }
 
   calculateProposedYears(
     activeYear: number,
-    plannedAndArchivedHearingYears: Array<TimetableHearingYear>,
+    plannedAndArchivedHearingYears: Array<TimetableHearingYear>
   ): Array<number> {
     const proposedYears: number[] = [];
     let counter = 1;
     while (proposedYears.length < 5) {
       const proposedYear = activeYear + counter;
-      if (!this.isYearAlreadyPlannedOrArchived(proposedYear, plannedAndArchivedHearingYears)) {
+      if (
+        !this.isYearAlreadyPlannedOrArchived(
+          proposedYear,
+          plannedAndArchivedHearingYears
+        )
+      ) {
         proposedYears.push(proposedYear);
       }
       counter++;
@@ -132,9 +177,13 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
 
   isYearAlreadyPlannedOrArchived(
     proposedYear: number,
-    timetableHearingYears: Array<TimetableHearingYear>,
+    timetableHearingYears: Array<TimetableHearingYear>
   ): boolean {
-    return timetableHearingYears.filter((year) => year.timetableYear === proposedYear).length > 0;
+    return (
+      timetableHearingYears.filter(
+        (year) => year.timetableYear === proposedYear
+      ).length > 0
+    );
   }
 
   closeDialog() {

@@ -1,13 +1,22 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   LineConcessionType,
   LineType,
   MeanOfTransport,
   OfferCategory,
 } from '../../../../../api';
-import { SelectOptionGroup } from '../../../../../core/form-components/select/select.component';
+import {
+  SelectOptionGroup,
+  SelectComponent,
+} from '../../../../../core/form-components/select/select.component';
 import { ColumnDropDownEvent } from '../../../../../core/components/table/column-drop-down-event';
+import { NgIf, NgOptimizedImage } from '@angular/common';
+import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
+import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
+import { BusinessOrganisationSelectComponent } from '../../../../../core/form-components/bo-select/business-organisation-select.component';
+import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 interface Category {
   value: OfferCategory;
@@ -22,6 +31,17 @@ interface OfferCategoryGroup {
   selector: 'line-detail-form',
   templateUrl: './line-detail-form.component.html',
   styleUrls: ['./line-detail-form.component.scss'],
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    SelectComponent,
+    TextFieldComponent,
+    NgOptimizedImage,
+    DateRangeComponent,
+    BusinessOrganisationSelectComponent,
+    CommentComponent,
+    TranslatePipe,
+  ],
 })
 export class LineDetailFormComponent {
   @Input() form!: FormGroup;

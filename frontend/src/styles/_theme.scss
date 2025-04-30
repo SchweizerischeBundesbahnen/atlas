@@ -1,41 +1,47 @@
 @use '@angular/material' as mat;
 @use './palette/atlas-palette' as palette;
 
-$theme: mat.define-theme((
-  color: (
-    theme-type: light,
-    primary: palette.$atlas-primary,
-  ),
-  typography: (
-    brand-family: 'IBM Plex Sans',
-    plain-family: 'IBM Plex Sans'
-  ),
-  density: (
-    scale: -1
+$theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: palette.$atlas-primary,
+    ),
+    typography: (
+      brand-family: 'IBM Plex Sans',
+      plain-family: 'IBM Plex Sans',
+    ),
+    density: (
+      scale: -1,
+    ),
   )
-));
+);
 
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 html {
   @include mat.all-component-themes($theme);
 
   body {
-    font-family: 'IBM Plex Sans', sans-serif
+    font-family: 'IBM Plex Sans', sans-serif;
   }
 
   // SideNav
-  --mat-list-active-indicator-shape: unset;
-  --mat-sidenav-container-shape: unset;
-  --mat-sidenav-container-width: 239px;
+  & {
+    --mat-list-active-indicator-shape: unset;
+    --mat-sidenav-container-shape: unset;
+    --mat-sidenav-container-width: 239px;
 
-  // Tabs
-  --mat-tab-header-divider-height: 0;
+    // Tabs
+    --mat-tab-header-divider-height: 0;
 
-  // Calendar
-  --mat-datepicker-calendar-container-elevation-shadow: 0px 2px 4px -1px rgba(0, 0, 0, .2), 0px 4px 5px 0px rgba(0, 0, 0, .14), 0px 1px 10px 0px rgba(0, 0, 0, .12);
+    // Calendar
+    --mat-datepicker-calendar-container-elevation-shadow:
+      0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+      0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 
-  // Dialog
-  --mat-dialog-container-max-width: unset;
+    // Dialog
+    --mat-dialog-container-max-width: unset;
+  }
 }
-

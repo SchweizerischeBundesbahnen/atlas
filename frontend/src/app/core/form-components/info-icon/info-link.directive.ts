@@ -1,9 +1,7 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-@Directive({
-  selector: '[infoLink]',
-})
+@Directive({ selector: '[infoLink]' })
 export class InfoLinkDirective {
   @Input() infoLinkTranslationKey = '';
 
@@ -16,12 +14,14 @@ export class InfoLinkDirective {
 
   @HostListener('click') onClick() {
     try {
-      this.translateService.get(this.infoLinkTranslationKey).subscribe((link) => {
-        if (link === this.infoLinkTranslationKey) {
-          throw new Error('Could not evaluate translationKey correctly');
-        }
-        window.open(link, '_blank');
-      });
+      this.translateService
+        .get(this.infoLinkTranslationKey)
+        .subscribe((link) => {
+          if (link === this.infoLinkTranslationKey) {
+            throw new Error('Could not evaluate translationKey correctly');
+          }
+          window.open(link, '_blank');
+        });
     } catch (error) {
       console.error(error);
     }

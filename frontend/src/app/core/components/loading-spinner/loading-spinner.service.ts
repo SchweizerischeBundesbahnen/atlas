@@ -18,7 +18,7 @@ export class LoadingSpinnerService {
   constructor(private readonly router: Router) {
     const navigationStart$ = this.router.events.pipe(
       filter((event) => event instanceof NavigationStart),
-      map(() => true),
+      map(() => true)
     );
 
     const navigationEnd$ = this.router.events.pipe(
@@ -26,9 +26,9 @@ export class LoadingSpinnerService {
         (event) =>
           event instanceof NavigationEnd ||
           event instanceof NavigationCancel ||
-          event instanceof NavigationError,
+          event instanceof NavigationError
       ),
-      map(() => false),
+      map(() => false)
     );
 
     merge(navigationStart$, navigationEnd$).subscribe((loading) => {

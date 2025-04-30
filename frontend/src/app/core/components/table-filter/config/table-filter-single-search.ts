@@ -1,13 +1,18 @@
-import {TableFilter} from './table-filter';
-import {MatChipInputEvent} from "@angular/material/chips";
-import {FormControl, ValidatorFn} from "@angular/forms";
+import { TableFilter } from './table-filter';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { FormControl, ValidatorFn } from '@angular/forms';
 
 export class TableFilterSingleSearch extends TableFilter<string | undefined> {
   protected activeSearch: string | undefined;
-  formControl : FormControl;
+  formControl: FormControl;
   label: string;
 
-  constructor(row: number, label:string, elementWidthCssClass: string, validator?: ValidatorFn) {
+  constructor(
+    row: number,
+    label: string,
+    elementWidthCssClass: string,
+    validator?: ValidatorFn
+  ) {
     super(row, elementWidthCssClass);
     this.label = label;
     this.formControl = new FormControl();
@@ -35,5 +40,4 @@ export class TableFilterSingleSearch extends TableFilter<string | undefined> {
       this.formControl.reset();
     }
   }
-
 }

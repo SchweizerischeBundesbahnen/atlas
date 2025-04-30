@@ -1,13 +1,13 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {HeaderComponent} from './header.component';
-import {UserComponent} from '../user/user.component';
-import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
-import {AppTestingModule} from '../../../app.testing.module';
-import {MaintenanceIconComponent} from './maintenance-icon/maintenance-icon.component';
-import {InfoIconComponent} from "../../form-components/info-icon/info-icon.component";
-import {AuthService} from "../../auth/auth.service";
-import {authServiceSpy} from "../../../app.testing.mocks";
+import { HeaderComponent } from './header.component';
+import { UserComponent } from '../user/user.component';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
+import { AppTestingModule } from '../../../app.testing.module';
+import { MaintenanceIconComponent } from './maintenance-icon/maintenance-icon.component';
+import { InfoIconComponent } from '../../form-components/info-icon/info-icon.component';
+import { AuthService } from '../../auth/auth.service';
+import { authServiceSpy } from '../../../app.testing.mocks';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -15,17 +15,15 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
         HeaderComponent,
         UserComponent,
         LanguageSwitcherComponent,
         MaintenanceIconComponent,
         InfoIconComponent,
       ],
-      imports: [AppTestingModule],
-      providers: [
-        { provide: AuthService, useValue: authServiceSpy },
-      ],
+      providers: [{ provide: AuthService, useValue: authServiceSpy }],
     }).compileComponents();
   });
 

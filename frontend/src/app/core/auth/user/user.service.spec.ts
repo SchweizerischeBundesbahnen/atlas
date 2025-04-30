@@ -1,33 +1,37 @@
-import {UserAdministrationService,} from '../../../api';
-import {TestBed} from "@angular/core/testing";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {RouterModule} from "@angular/router";
-import {UserService} from "./user.service";
-import {of} from "rxjs";
-import {ApiConfigService} from "../../configuration/api-config.service";
+import { UserAdministrationService } from '../../../api';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterModule } from '@angular/router';
+import { UserService } from './user.service';
+import { of } from 'rxjs';
+import { ApiConfigService } from '../../configuration/api-config.service';
 
 describe('UserService', () => {
-
   let userService: UserService;
   const userAdministrationService = jasmine.createSpyObj(['getCurrentUser']);
-  userAdministrationService.getCurrentUser.and.returnValue(of({
-    displayName: 'Test (ITC)',
-    mail: 'test@test.ch',
-    sbbUserId: 'e123456',
-    permissions: []
-  }));
-  const apiConfigService = jasmine.createSpyObj<ApiConfigService>(['setToAuthenticatedUrl', 'setToUnauthenticatedUrl']);
+  userAdministrationService.getCurrentUser.and.returnValue(
+    of({
+      displayName: 'Test (ITC)',
+      mail: 'test@test.ch',
+      sbbUserId: 'e123456',
+      permissions: [],
+    })
+  );
+  const apiConfigService = jasmine.createSpyObj<ApiConfigService>([
+    'setToAuthenticatedUrl',
+    'setToUnauthenticatedUrl',
+  ]);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        RouterModule.forRoot([]),
-      ],
+      imports: [HttpClientTestingModule, RouterModule.forRoot([])],
       providers: [
         UserService,
-        {provide: UserAdministrationService, useValue: userAdministrationService},
-        {provide: ApiConfigService, useValue: apiConfigService},
+        {
+          provide: UserAdministrationService,
+          useValue: userAdministrationService,
+        },
+        { provide: ApiConfigService, useValue: apiConfigService },
       ],
     });
     userService = TestBed.inject(UserService);
@@ -39,7 +43,7 @@ describe('UserService', () => {
       email: 'test@test.ch',
       sbbuid: 'e123456',
       isAdmin: true,
-      permissions: []
+      permissions: [],
     });
 
     expect(userService.loggedIn).toBeTrue();
@@ -56,7 +60,7 @@ describe('UserService', () => {
       email: 'test@test.ch',
       sbbuid: 'e123456',
       isAdmin: true,
-      permissions: []
+      permissions: [],
     });
 
     expect(userService.loggedIn).toBeTrue();
@@ -67,5 +71,4 @@ describe('UserService', () => {
     expect(userService.isAdmin).toBeFalse();
     expect(userService.permissions).toEqual([]);
   });
-
 });

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-loading-spinner',
@@ -15,6 +16,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
       transition(':leave', [animate('300ms ease-out', style({ opacity: 0 }))]),
     ]),
   ],
+  imports: [NgIf],
 })
 export class LoadingSpinnerComponent {
   @Input() isLoading = false;

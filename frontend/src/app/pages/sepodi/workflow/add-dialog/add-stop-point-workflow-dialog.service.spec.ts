@@ -1,9 +1,9 @@
-import {MatDialog} from '@angular/material/dialog';
-import {of} from 'rxjs';
-import {TestBed} from '@angular/core/testing';
-import {TranslateModule} from '@ngx-translate/core';
-import {AddStopPointWorkflowDialogService,} from './add-stop-point-workflow-dialog.service';
-import {BERN_WYLEREGG} from "../../../../../test/data/service-point";
+import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { AddStopPointWorkflowDialogService } from './add-stop-point-workflow-dialog.service';
+import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 
 describe('AddStopPointWorkflowDialogService', () => {
   let service: AddStopPointWorkflowDialogService;
@@ -27,5 +27,4 @@ describe('AddStopPointWorkflowDialogService', () => {
 
     expect(dialogSpy.open).toHaveBeenCalled();
   });
-
 });

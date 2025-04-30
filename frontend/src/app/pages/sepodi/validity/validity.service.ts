@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Validity } from '../../model/validity';
 import { FormGroup } from '@angular/forms';
 import { of, take } from 'rxjs';
@@ -44,7 +44,10 @@ export class ValidityService {
     return this.confirmValidityDialog().pipe(take(1));
   }
 
-  validateAndDisableCustom(updateFunction: () => void, disableFunction: () => void) {
+  validateAndDisableCustom(
+    updateFunction: () => void,
+    disableFunction: () => void
+  ) {
     this.confirmValidityDialog()
       .pipe(take(1))
       .subscribe((confirmed) => {

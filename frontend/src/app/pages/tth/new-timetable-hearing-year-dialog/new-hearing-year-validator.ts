@@ -11,7 +11,11 @@ export class NewHearingYearValidator {
       const timetableYearForm = c.get(timetableYear);
       const validFromForm = c.get(hearingFrom);
       const validToForm = c.get(hearingTo);
-      NewHearingYearValidator.validate(timetableYearForm, validFromForm, validToForm);
+      NewHearingYearValidator.validate(
+        timetableYearForm,
+        validFromForm,
+        validToForm
+      );
       return null;
     };
   }
@@ -35,7 +39,10 @@ export class NewHearingYearValidator {
           number: timetableYearFormValue - 1,
         },
       };
-      NewHearingYearValidator.populateWithValidationErrors(validFromForm, error);
+      NewHearingYearValidator.populateWithValidationErrors(
+        validFromForm,
+        error
+      );
     } else {
       NewHearingYearValidator.clearValidationError(validFromForm);
     }

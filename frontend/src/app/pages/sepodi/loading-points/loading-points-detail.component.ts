@@ -11,7 +11,7 @@ import { VersionsHandlingService } from '../../../core/versioning/versions-handl
 import { DateRange } from '../../../core/versioning/date-range';
 import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { Pages } from '../../pages';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   LoadingPointDetailFormGroup,
   LoadingPointFormGroupBuilder,
@@ -24,12 +24,49 @@ import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validity } from '../../model/validity';
 import { ValidityService } from '../validity/validity.service';
+import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
+import { NgIf, NgFor } from '@angular/common';
+import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
+import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
+import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
+import { SwitchVersionComponent } from '../../../core/components/switch-version/switch-version.component';
+import { MatLabel } from '@angular/material/form-field';
+import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
+import { MatDivider } from '@angular/material/divider';
+import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-loading-points',
   templateUrl: './loading-points-detail.component.html',
   styleUrls: ['./loading-points-detail.component.scss'],
   providers: [ValidityService],
+  imports: [
+    DetailPageContainerComponent,
+    NgIf,
+    DateRangeTextComponent,
+    DetailPageContentComponent,
+    TextFieldComponent,
+    ReactiveFormsModule,
+    SwitchVersionComponent,
+    MatLabel,
+    AtlasSpacerComponent,
+    MatRadioGroup,
+    NgFor,
+    MatRadioButton,
+    AtlasFieldErrorComponent,
+    DateRangeComponent,
+    MatDivider,
+    UserDetailInfoComponent,
+    DetailFooterComponent,
+    AtlasButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class LoadingPointsDetailComponent implements DetailFormComponent {
   loadingPointVersions!: ReadLoadingPointVersion[];
@@ -57,7 +94,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
     private dialogService: DialogService,
     private validityConfirmationService: ValidityConfirmationService,
     private notificationService: NotificationService,
-    private validityService: ValidityService,
+    private validityService: ValidityService
   ) {
     this.route.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.loadingPointVersions = next.loadingPoint;
@@ -72,11 +109,16 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
     } else {
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.loadingPointVersions);
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.loadingPointVersions);
-      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.loadingPointVersions,
+      this.maxValidity = VersionsHandlingService.getMaxValidity(
+        this.loadingPointVersions
       );
-      this.selectedVersionIndex = this.loadingPointVersions.indexOf(this.selectedVersion);
+      this.selectedVersion =
+        VersionsHandlingService.determineDefaultVersionByValidity(
+          this.loadingPointVersions
+        );
+      this.selectedVersionIndex = this.loadingPointVersions.indexOf(
+        this.selectedVersion
+      );
 
       this.initSelectedVersion();
     }
@@ -95,11 +137,13 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
           this.servicePoint = servicePoint;
           this.servicePointName =
             VersionsHandlingService.determineDefaultVersionByValidity(
-              servicePoint,
+              servicePoint
             ).designationOfficial;
-          this.servicePointBusinessOrganisations = this.servicePoint.map((i) => {
-            return i.businessOrganisation;
-          });
+          this.servicePointBusinessOrganisations = this.servicePoint.map(
+            (i) => {
+              return i.businessOrganisation;
+            }
+          );
         });
     }
   }
@@ -122,8 +166,12 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   }
 
   private initSelectedVersion() {
-    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.loadingPointVersions);
-    this.form = LoadingPointFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(
+      this.loadingPointVersions
+    );
+    this.form = LoadingPointFormGroupBuilder.buildFormGroup(
+      this.selectedVersion
+    );
     if (!this.isNew) {
       this.form.disable();
     }
@@ -168,20 +216,26 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
         .confirmValidityOverServicePoint(
           this.servicePoint,
           this.form.controls.validFrom.value!,
-          this.form.controls.validTo.value!,
+          this.form.controls.validTo.value!
         )
         .subscribe((confirmed) => {
           if (confirmed) {
-            this.loadingPointVersion = this.form.value as unknown as CreateLoadingPointVersion;
-            this.loadingPointVersion.servicePointNumber = this.servicePointNumber;
+            this.loadingPointVersion = this.form
+              .value as unknown as CreateLoadingPointVersion;
+            this.loadingPointVersion.servicePointNumber =
+              this.servicePointNumber;
             if (this.isNew) {
               this.create(this.loadingPointVersion);
               this.form.disable();
             } else {
               this.validityService.updateValidity(this.form);
               this.validityService.validateAndDisableCustom(
-                () => this.update(this.selectedVersion.id!, this.loadingPointVersion),
-                () => this.form.disable(),
+                () =>
+                  this.update(
+                    this.selectedVersion.id!,
+                    this.loadingPointVersion
+                  ),
+                () => this.form.disable()
               );
             }
           }
@@ -194,7 +248,9 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
       .createLoadingPoint(loadingPointVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((loadingPointVersion) => {
-        this.notificationService.success('SEPODI.LOADING_POINTS.NOTIFICATION.ADD_SUCCESS');
+        this.notificationService.success(
+          'SEPODI.LOADING_POINTS.NOTIFICATION.ADD_SUCCESS'
+        );
         this.router
           .navigate([
             Pages.SEPODI.path,
@@ -211,7 +267,9 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
       .updateLoadingPoint(id, loadingPointVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success('SEPODI.LOADING_POINTS.NOTIFICATION.EDIT_SUCCESS');
+        this.notificationService.success(
+          'SEPODI.LOADING_POINTS.NOTIFICATION.EDIT_SUCCESS'
+        );
         this.router
           .navigate([
             Pages.SEPODI.path,

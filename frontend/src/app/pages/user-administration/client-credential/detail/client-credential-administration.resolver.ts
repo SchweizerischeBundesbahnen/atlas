@@ -11,7 +11,7 @@ import { ClientCredential } from '../../../../api';
 export class ClientCredentialAdministrationResolver {
   constructor(
     private readonly userService: UserService,
-    private readonly router: Router,
+    private readonly router: Router
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ClientCredential> {
@@ -27,11 +27,11 @@ export class ClientCredentialAdministrationResolver {
           })
           .then();
         return of({});
-      }),
+      })
     );
   }
 }
 
 export const clientCredentialResolver: ResolveFn<ClientCredential> = (
-  route: ActivatedRouteSnapshot,
+  route: ActivatedRouteSnapshot
 ) => inject(ClientCredentialAdministrationResolver).resolve(route);

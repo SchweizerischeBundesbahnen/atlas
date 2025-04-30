@@ -8,12 +8,18 @@ import { of } from 'rxjs';
 import moment from 'moment';
 import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import {
+  MAT_SNACK_BAR_DATA,
+  MatSnackBarRef,
+} from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ApplicationType } from 'src/app/api';
 import { ValidityService } from '../../../pages/sepodi/validity/validity.service';
@@ -39,7 +45,10 @@ describe('BaseDetailController', () => {
   ]);
   let record: Record;
 
-  class DummyBaseDetailController extends BaseDetailController<Record> implements OnInit {
+  class DummyBaseDetailController
+    extends BaseDetailController<Record>
+    implements OnInit
+  {
     constructor() {
       super(
         router,
@@ -47,7 +56,7 @@ describe('BaseDetailController', () => {
         notificationService,
         permissionService,
         activatedRoute,
-        validityService,
+        validityService
       );
     }
 
@@ -116,7 +125,6 @@ describe('BaseDetailController', () => {
         RouterModule.forRoot([]),
         HttpClientTestingModule,
         ReactiveFormsModule,
-        MaterialModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
@@ -236,7 +244,6 @@ describe('Get actual versioned record', () => {
         RouterModule.forRoot([]),
         HttpClientTestingModule,
         ReactiveFormsModule,
-        MaterialModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },

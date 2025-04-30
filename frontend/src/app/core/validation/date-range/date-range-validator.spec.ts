@@ -95,7 +95,8 @@ describe('Date Validator', () => {
     expect(dateRangeErrorValidFrom.date).toBeDefined();
     expect(dateRangeErrorValidFrom.date.validFrom).toBe(validFrom);
     expect(dateRangeErrorValidFrom.date.validTo).toBe(validTo);
-    const datePickerMinErrorValidFrom = validFromForm.errors?.['matDatepickerMin'];
+    const datePickerMinErrorValidFrom =
+      validFromForm.errors?.['matDatepickerMin'];
     expect(datePickerMinErrorValidFrom).toBeDefined();
 
     expect(validToForm.errors).toBeDefined();
@@ -104,7 +105,8 @@ describe('Date Validator', () => {
     expect(dateRangeErrorValidTo.date).toBeDefined();
     expect(dateRangeErrorValidTo.date.validFrom).toBe(validFrom);
     expect(dateRangeErrorValidTo.date.validTo).toBe(validTo);
-    const datePickerMinErrorValidTo = validFromForm.errors?.['matDatepickerMin'];
+    const datePickerMinErrorValidTo =
+      validFromForm.errors?.['matDatepickerMin'];
     expect(datePickerMinErrorValidTo).toBeDefined();
   });
 

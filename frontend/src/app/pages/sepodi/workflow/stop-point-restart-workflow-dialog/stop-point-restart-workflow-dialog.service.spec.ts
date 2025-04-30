@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import { StopPointRestartWorkflowDialogService } from './stop-point-restart-workflow-dialog.service';
-import {TranslateModule} from "@ngx-translate/core";
-import {MatDialog} from "@angular/material/dialog";
-import {of} from "rxjs";
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
 
 describe('StopPointRestartWorkflowDialogService', () => {
   let service: StopPointRestartWorkflowDialogService;
@@ -13,7 +13,7 @@ describe('StopPointRestartWorkflowDialogService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      providers: [{provide: MatDialog, useValue: dialogSpy}],
+      providers: [{ provide: MatDialog, useValue: dialogSpy }],
     });
     service = TestBed.inject(StopPointRestartWorkflowDialogService);
   });
@@ -23,7 +23,7 @@ describe('StopPointRestartWorkflowDialogService', () => {
   });
 
   it('should open new resart workflow', () => {
-    dialogSpy.open.and.returnValue({afterClosed: () => of(true)});
+    dialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     service
       .openDialog(123, 'RESTART')

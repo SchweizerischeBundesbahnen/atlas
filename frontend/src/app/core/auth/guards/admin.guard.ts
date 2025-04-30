@@ -11,7 +11,7 @@ export class AdminGuard {
   constructor(
     private readonly userService: UserService,
     private readonly router: Router,
-    private readonly loginGuard: LoginGuard,
+    private readonly loginGuard: LoginGuard
   ) {}
 
   canActivate() {
@@ -21,7 +21,7 @@ export class AdminGuard {
           return true;
         }
         return this.router.parseUrl('/');
-      }),
+      })
     );
   }
 }

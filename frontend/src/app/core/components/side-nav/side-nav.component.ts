@@ -1,14 +1,26 @@
 import { Component } from '@angular/core';
 import { Page } from '../../model/page';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PageService } from '../../pages/page.service';
+import { NgFor, NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { MatListItem } from '@angular/material/list';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.component.html',
   styleUrls: ['./side-nav.component.scss'],
+  imports: [
+    NgFor,
+    MatListItem,
+    RouterLink,
+    NgClass,
+    NgIf,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class SideNavComponent {
   activePageIndex: number | null = 0;
@@ -17,7 +29,7 @@ export class SideNavComponent {
 
   constructor(
     private readonly router: Router,
-    protected readonly pageService: PageService,
+    protected readonly pageService: PageService
   ) {
     this.router.events
       .pipe(
@@ -25,9 +37,9 @@ export class SideNavComponent {
         filter((event) => event instanceof NavigationEnd),
         switchMap((event) => {
           return pageService.enabledPages.pipe(
-            map((pages) => [event, pages] as [NavigationEnd, Page[]]),
+            map((pages) => [event, pages] as [NavigationEnd, Page[]])
           );
-        }),
+        })
       )
       .subscribe(([event, pages]) => {
         this.setActivePage(event.url, pages);

@@ -6,7 +6,7 @@ export class TableContentPaginationAndSorting {
   static pageAndSort<TYPE>(
     content: Array<TYPE>,
     settings: TablePagination,
-    defaultSort: string,
+    defaultSort: string
   ): Array<TYPE> {
     TableContentPaginationAndSorting.sort(content, settings, defaultSort);
 
@@ -16,14 +16,23 @@ export class TableContentPaginationAndSorting {
     return content.slice(start, end);
   }
 
-  static sort<TYPE>(content: Array<TYPE>, settings: TablePagination, defaultSort: string) {
+  static sort<TYPE>(
+    content: Array<TYPE>,
+    settings: TablePagination,
+    defaultSort: string
+  ) {
     content.sort((a: any, b: any) => {
-      const sort = settings.sort?.substring(0, settings.sort?.indexOf(',')) || defaultSort;
-      const direction = (settings.sort?.substring(settings.sort?.indexOf(',') + 1) || 'asc') as
-        | 'asc'
-        | 'desc';
+      const sort =
+        settings.sort?.substring(0, settings.sort?.indexOf(',')) || defaultSort;
+      const direction = (settings.sort?.substring(
+        settings.sort?.indexOf(',') + 1
+      ) || 'asc') as 'asc' | 'desc';
 
-      return TableContentPaginationAndSorting.naturalCompare(a[sort], b[sort], direction);
+      return TableContentPaginationAndSorting.naturalCompare(
+        a[sort],
+        b[sort],
+        direction
+      );
     });
   }
 
@@ -45,7 +54,10 @@ export class TableContentPaginationAndSorting {
 
   static valueCompare(a: any, b: any): number {
     let result;
-    if (moment(a, 'yyyy-MM-DD', true).isValid() && moment(b, 'yyyy-MM-DD', true).isValid()) {
+    if (
+      moment(a, 'yyyy-MM-DD', true).isValid() &&
+      moment(b, 'yyyy-MM-DD', true).isValid()
+    ) {
       result = moment(a).isAfter(moment(b)) ? 1 : -1;
     } else if (typeof a === 'string' && typeof b === 'string') {
       result = a.localeCompare(b);

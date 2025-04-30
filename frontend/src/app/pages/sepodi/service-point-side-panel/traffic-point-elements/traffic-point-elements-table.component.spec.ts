@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TrafficPointElementsTableComponent } from './traffic-point-elements-table.component';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { AppTestingModule } from '../../../../app.testing.module';
 import {
   MockAtlasButtonComponent,
   MockNavigationSepodiPrmComponent,
@@ -11,11 +10,14 @@ import { TrafficPointElementsService } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER } from '../../../../../test/data/traffic-point-element';
-import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
-import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
-import SpyObj = jasmine.SpyObj;
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import SpyObj = jasmine.SpyObj;
 
 describe('TrafficPointElementsTableComponent', () => {
   let component: TrafficPointElementsTableComponent;
@@ -23,11 +25,12 @@ describe('TrafficPointElementsTableComponent', () => {
   let routerSpy: SpyObj<Router>;
 
   const authService: Partial<AuthService> = {};
-  const trafficPointElementsService = jasmine.createSpyObj('TrafficPointElementsService', [
-    'getPlatformsOfServicePoint',
-  ]);
+  const trafficPointElementsService = jasmine.createSpyObj(
+    'TrafficPointElementsService',
+    ['getPlatformsOfServicePoint']
+  );
   trafficPointElementsService.getPlatformsOfServicePoint.and.returnValue(
-    of(BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER),
+    of(BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER)
   );
   const activatedRouteMock = {
     parent: {
@@ -49,23 +52,36 @@ describe('TrafficPointElementsTableComponent', () => {
     routerSpy = jasmine.createSpyObj(['navigate']);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        TrafficPointElementsTableComponent,
-        MockAtlasButtonComponent,
-        MockTableComponent,
-        DetailPageContainerComponent,
-        DetailPageContentComponent,
-        DetailFooterComponent,
-        MockNavigationSepodiPrmComponent,
-      ],
-      imports: [AppTestingModule],
+      imports: [TrafficPointElementsTableComponent, TranslateModule.forRoot()],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: AuthService, useValue: authService },
-        { provide: TrafficPointElementsService, useValue: trafficPointElementsService },
+        {
+          provide: TrafficPointElementsService,
+          useValue: trafficPointElementsService,
+        },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: routerSpy },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(TrafficPointElementsTableComponent, {
+        remove: {
+          imports: [
+            AtlasButtonComponent,
+            TableComponent,
+            NavigationSepodiPrmComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockAtlasButtonComponent,
+            MockTableComponent,
+            MockNavigationSepodiPrmComponent,
+          ],
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(TrafficPointElementsTableComponent);
     component = fixture.componentInstance;
@@ -82,11 +98,8 @@ describe('TrafficPointElementsTableComponent', () => {
       size: 10,
     });
 
-    expect(trafficPointElementsService.getPlatformsOfServicePoint).toHaveBeenCalledOnceWith(
-      8507000,
-      0,
-      10,
-      ['designation,asc'],
-    );
+    expect(
+      trafficPointElementsService.getPlatformsOfServicePoint
+    ).toHaveBeenCalledOnceWith(8507000, 0, 10, ['designation,asc']);
   });
 });

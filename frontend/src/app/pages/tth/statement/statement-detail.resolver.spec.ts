@@ -1,9 +1,14 @@
-import {TestBed} from '@angular/core/testing';
-import {ActivatedRouteSnapshot, convertToParamMap} from '@angular/router';
-import {HearingStatus, SwissCanton, TimetableHearingStatementV2, TimetableHearingStatementsService,} from '../../../api';
-import {StatementDetailResolver} from './statement-detail.resolver';
-import {AppTestingModule} from '../../../app.testing.module';
-import {of} from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
+import {
+  HearingStatus,
+  SwissCanton,
+  TimetableHearingStatementV2,
+  TimetableHearingStatementsService,
+} from '../../../api';
+import { StatementDetailResolver } from './statement-detail.resolver';
+import { AppTestingModule } from '../../../app.testing.module';
+import { of } from 'rxjs';
 
 const statement: TimetableHearingStatementV2 = {
   id: 1234,
@@ -17,9 +22,11 @@ const statement: TimetableHearingStatementV2 = {
 describe('StatementDetailResolver', () => {
   const timetableHearingStatementsServiceSpy = jasmine.createSpyObj(
     'timetableHearingStatementsService',
-    ['getStatement'],
+    ['getStatement']
   );
-  timetableHearingStatementsServiceSpy.getStatement.and.returnValue(of(statement));
+  timetableHearingStatementsServiceSpy.getStatement.and.returnValue(
+    of(statement)
+  );
 
   let resolver: StatementDetailResolver;
 

@@ -1,4 +1,9 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { StopPointWorkflowDetailComponent } from './stop-point-workflow-detail.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { FormModule } from '../../../../core/module/form.module';
@@ -33,9 +38,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { DecisionStepperComponent } from './decision/decision-stepper/decision-stepper.component';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import {StopPointWorkflowExaminantsTableComponent} from "./examinant-table/stop-point-workflow-examinants-table.component";
-import {StopPointWorkflowDetailFormGroupBuilder} from "./detail-form/stop-point-workflow-detail-form-group";
-import {AddExaminantsDialogService} from "./add-examinants-dialog/add-examinants-dialog.service";
+import { StopPointWorkflowExaminantsTableComponent } from './examinant-table/stop-point-workflow-examinants-table.component';
+import { StopPointWorkflowDetailFormGroupBuilder } from './detail-form/stop-point-workflow-detail-form-group';
+import { AddExaminantsDialogService } from './add-examinants-dialog/add-examinants-dialog.service';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1000,
@@ -80,29 +85,36 @@ function getStopPointRejectWorkflowDialogServiceSpy() {
   return jasmine.createSpyObj(['openDialog']);
 }
 
-const addExaminantsDialogService = jasmine.createSpyObj('addExaminantsDialogService', {
-  openDialog: of(true)
-});
+const addExaminantsDialogService = jasmine.createSpyObj(
+  'addExaminantsDialogService',
+  {
+    openDialog: of(true),
+  }
+);
 
 describe('StopPointWorkflowDetailComponent', () => {
   let component: StopPointWorkflowDetailComponent;
   let fixture: ComponentFixture<StopPointWorkflowDetailComponent>;
 
-  let stopPointRejectWorkflowDialogServiceSpy = getStopPointRejectWorkflowDialogServiceSpy();
+  let stopPointRejectWorkflowDialogServiceSpy =
+    getStopPointRejectWorkflowDialogServiceSpy();
   let dialogSpy = getDialogSpy();
   let spWfServiceSpy = getSpWfServiceSpy();
   let notificationServiceSpy = getNotificationServiceSpy();
   let dialogServiceSpy = getDialogServiceSpy();
 
   beforeEach(async () => {
-    stopPointRejectWorkflowDialogServiceSpy = getStopPointRejectWorkflowDialogServiceSpy();
+    stopPointRejectWorkflowDialogServiceSpy =
+      getStopPointRejectWorkflowDialogServiceSpy();
     dialogSpy = getDialogSpy();
     spWfServiceSpy = getSpWfServiceSpy();
     notificationServiceSpy = getNotificationServiceSpy();
     dialogServiceSpy = getDialogServiceSpy();
 
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
+        FormModule,
         StopPointWorkflowDetailComponent,
         StopPointWorkflowDetailFormComponent,
         StopPointWorkflowExaminantsTableComponent,
@@ -116,7 +128,6 @@ describe('StopPointWorkflowDetailComponent', () => {
         AtlasSpacerComponent,
         UserDetailInfoComponent,
       ],
-      imports: [AppTestingModule, FormModule],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: TranslatePipe },
@@ -124,7 +135,10 @@ describe('StopPointWorkflowDetailComponent', () => {
         { provide: StopPointWorkflowService, useValue: spWfServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: ValidationService, useClass: ValidationService },
-        { provide: AddExaminantsDialogService, useValue: addExaminantsDialogService },
+        {
+          provide: AddExaminantsDialogService,
+          useValue: addExaminantsDialogService,
+        },
         {
           provide: StopPointRejectWorkflowDialogService,
           useValue: stopPointRejectWorkflowDialogServiceSpy,
@@ -157,7 +171,12 @@ describe('StopPointWorkflowDetailComponent', () => {
         status: Status.Validated,
         validFrom: new Date('2014-12-14'),
         validTo: new Date('2021-03-31'),
-        number: { number: 8589008, checkDigit: 7, uicCountryCode: 85, numberShort: 89008 },
+        number: {
+          number: 8589008,
+          checkDigit: 7,
+          uicCountryCode: 85,
+          numberShort: 89008,
+        },
         country: Country.Switzerland,
         stopPoint: true,
       },
@@ -169,7 +188,12 @@ describe('StopPointWorkflowDetailComponent', () => {
         status: Status.Draft,
         validFrom: new Date('2021-04-01'),
         validTo: new Date('2021-06-31'),
-        number: { number: 8589008, checkDigit: 7, uicCountryCode: 85, numberShort: 89008 },
+        number: {
+          number: 8589008,
+          checkDigit: 7,
+          uicCountryCode: 85,
+          numberShort: 89008,
+        },
         country: Country.Switzerland,
         stopPoint: true,
       },
@@ -189,7 +213,12 @@ describe('StopPointWorkflowDetailComponent', () => {
         status: Status.Validated,
         validFrom: new Date('2014-12-14'),
         validTo: new Date('2021-03-31'),
-        number: { number: 8589008, checkDigit: 7, uicCountryCode: 85, numberShort: 89008 },
+        number: {
+          number: 8589008,
+          checkDigit: 7,
+          uicCountryCode: 85,
+          numberShort: 89008,
+        },
         country: Country.Switzerland,
         stopPoint: false,
       },
@@ -201,7 +230,12 @@ describe('StopPointWorkflowDetailComponent', () => {
         status: Status.Draft,
         validFrom: new Date('2021-04-01'),
         validTo: new Date('2021-06-31'),
-        number: { number: 8589008, checkDigit: 7, uicCountryCode: 85, numberShort: 89008 },
+        number: {
+          number: 8589008,
+          checkDigit: 7,
+          uicCountryCode: 85,
+          numberShort: 89008,
+        },
         country: Country.Switzerland,
         stopPoint: true,
       },
@@ -238,10 +272,12 @@ describe('StopPointWorkflowDetailComponent', () => {
     spyOn(ValidationService, 'validateForm').and.callThrough();
 
     component.toggleEdit();
-    component.form.controls['designationOfficial'].setValue('Official Designation');
+    component.form.controls['designationOfficial'].setValue(
+      'Official Designation'
+    );
     component.form.controls['workflowComment'].setValue('Some comment');
-    component.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(
-      {
+    component.form.controls.examinants.push(
+      StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup({
         firstName: 'DIDOK',
         lastName: 'MASTER',
         personFunction: 'Chef',
@@ -250,36 +286,39 @@ describe('StopPointWorkflowDetailComponent', () => {
         id: 1,
         judgement: JudgementType.Yes,
         decisionType: DecisionType.Voted,
-        defaultExaminant: false
-      }
-    ));
+        defaultExaminant: false,
+      })
+    );
     component.form.controls['ccEmails'].setValue(['test@atlas.ch']);
 
     spWfServiceSpy.editStopPointWorkflow.and.returnValue(of({ id: 1 }));
 
     component.save();
 
-    expect(spWfServiceSpy.editStopPointWorkflow).toHaveBeenCalledWith(component.workflow.id, {
-      ccEmails: ['test@atlas.ch'],
-      designationOfficial: 'Official Designation',
-      workflowComment: 'Some comment',
-      examinants: [
-        {
-          firstName: 'DIDOK',
-          lastName: 'MASTER',
-          personFunction: 'Chef',
-          mail: 'didok@chef.com',
-          organisation: 'SBB',
-          id: 1,
-          judgementIcon: 'bi-check-lg',
-          judgement: JudgementType.Yes,
-          decisionType: DecisionType.Voted,
-          defaultExaminant: false
-        },
-      ],
-    });
+    expect(spWfServiceSpy.editStopPointWorkflow).toHaveBeenCalledWith(
+      component.workflow.id,
+      {
+        ccEmails: ['test@atlas.ch'],
+        designationOfficial: 'Official Designation',
+        workflowComment: 'Some comment',
+        examinants: [
+          {
+            firstName: 'DIDOK',
+            lastName: 'MASTER',
+            personFunction: 'Chef',
+            mail: 'didok@chef.com',
+            organisation: 'SBB',
+            id: 1,
+            judgementIcon: 'bi-check-lg',
+            judgement: JudgementType.Yes,
+            decisionType: DecisionType.Voted,
+            defaultExaminant: false,
+          },
+        ],
+      }
+    );
     expect(notificationServiceSpy.success).toHaveBeenCalledWith(
-      'WORKFLOW.NOTIFICATION.EDIT.SUCCESS',
+      'WORKFLOW.NOTIFICATION.EDIT.SUCCESS'
     );
   });
 
@@ -288,14 +327,16 @@ describe('StopPointWorkflowDetailComponent', () => {
     tick();
     expect(spWfServiceSpy.startStopPointWorkflow).toHaveBeenCalledOnceWith(1);
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
-      'WORKFLOW.NOTIFICATION.START.SUCCESS',
+      'WORKFLOW.NOTIFICATION.START.SUCCESS'
     );
   }));
 
   it('should reject workflow', () => {
     component.rejectWorkflow();
 
-    expect(stopPointRejectWorkflowDialogServiceSpy.openDialog).toHaveBeenCalledTimes(1);
+    expect(
+      stopPointRejectWorkflowDialogServiceSpy.openDialog
+    ).toHaveBeenCalledTimes(1);
   });
 
   it('should open add examinants dialog for workflow in hearing', () => {
@@ -307,7 +348,9 @@ describe('StopPointWorkflowDetailComponent', () => {
   it('should cancel workflow', () => {
     component.cancelWorkflow();
 
-    expect(stopPointRejectWorkflowDialogServiceSpy.openDialog).toHaveBeenCalledTimes(1);
+    expect(
+      stopPointRejectWorkflowDialogServiceSpy.openDialog
+    ).toHaveBeenCalledTimes(1);
   });
 
   it('should open decision dialog and cancel', () => {
@@ -333,7 +376,7 @@ describe('StopPointWorkflowDetailComponent', () => {
     component.openDecisionDialog();
     tick();
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
-      'WORKFLOW.NOTIFICATION.VOTE.SUCCESS',
+      'WORKFLOW.NOTIFICATION.VOTE.SUCCESS'
     );
   }));
 });

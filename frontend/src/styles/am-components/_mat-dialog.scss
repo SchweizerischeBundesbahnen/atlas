@@ -1,20 +1,25 @@
 @use 'src/styles/variables' as variables;
 
+@use '@angular/material' as mat;
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+:root {
+  @include mat.dialog-overrides(
+    (
+      container-max-width: 1100px,
+      container-min-width: 678px,
+      container-color: #ffffff,
+      container-elevation-shadow: 28px,
+    )
+  );
+}
+
 .atlas-dialog-backdrop {
   background: rgba(0, 0, 0, 0.5);
 }
 
 .atlas-dialog-panel {
   overflow-y: auto;
-}
-
-.atlas-dialog-panel mat-dialog-container {
-  .mat-mdc-dialog-surface {
-    //uses internal Angular Material design API!
-    background-color: #ffffff;
-    border-radius: 28px;
-    box-shadow: unset;
-  }
 }
 
 .dialog-close-panel button span {

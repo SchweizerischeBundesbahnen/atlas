@@ -1,13 +1,13 @@
-import {TestBed} from '@angular/core/testing';
-import {ActivatedRouteSnapshot, convertToParamMap} from '@angular/router';
-import {of} from 'rxjs';
-import {LinesService, LineType, LineVersionV2, Status} from '../../../../api';
-import {LineDetailResolver} from './line-detail.resolver';
-import {AppTestingModule} from '../../../../app.testing.module';
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
+import { of } from 'rxjs';
+import { LinesService, LineType, LineVersionV2, Status } from '../../../../api';
+import { LineDetailResolver } from './line-detail.resolver';
+import { AppTestingModule } from '../../../../app.testing.module';
 
 const version: LineVersionV2 = {
-  lineConcessionType: "CANTONALLY_APPROVED_LINE",
-  offerCategory: "BAT",
+  lineConcessionType: 'CANTONALLY_APPROVED_LINE',
+  offerCategory: 'BAT',
   id: 1234,
   slnid: 'slnid',
   number: 'name',
@@ -17,11 +17,13 @@ const version: LineVersionV2 = {
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
   swissLineNumber: 'L1',
-  lineType: LineType.Orderly
+  lineType: LineType.Orderly,
 };
 
 describe('LineDetailResolver', () => {
-  const linesServiceSpy = jasmine.createSpyObj('linesService', ['getLineVersionsV2']);
+  const linesServiceSpy = jasmine.createSpyObj('linesService', [
+    'getLineVersionsV2',
+  ]);
   linesServiceSpy.getLineVersionsV2.and.returnValue(of([version]));
 
   let resolver: LineDetailResolver;
@@ -29,7 +31,10 @@ describe('LineDetailResolver', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      providers: [LineDetailResolver, {provide: LinesService, useValue: linesServiceSpy}],
+      providers: [
+        LineDetailResolver,
+        { provide: LinesService, useValue: linesServiceSpy },
+      ],
     });
     resolver = TestBed.inject(LineDetailResolver);
   });
@@ -39,7 +44,9 @@ describe('LineDetailResolver', () => {
   });
 
   it('should get version from service to display', () => {
-    const mockRoute = { paramMap: convertToParamMap({ id: '1234' }) } as ActivatedRouteSnapshot;
+    const mockRoute = {
+      paramMap: convertToParamMap({ id: '1234' }),
+    } as ActivatedRouteSnapshot;
 
     const resolvedVersion = resolver.resolve(mockRoute);
 
