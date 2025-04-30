@@ -1,6 +1,11 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MatStepper } from '@angular/material/stepper';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  MatStepper,
+  MatStep,
+  MatStepLabel,
+  MatStepperIcon,
+} from '@angular/material/stepper';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
 import { MeanOfTransport } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
@@ -10,11 +15,30 @@ import {
 } from '../form/stop-point-detail-form-group';
 import { prmMeansOfTransport } from '../prm-variant-info.service';
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { NgIf } from '@angular/common';
+import { MeansOfTransportPickerComponent } from '../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
+import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
+import { StopPointReducedFormComponent } from '../form/stop-point-reduced-form/stop-point-reduced-form.component';
+import { StopPointCompleteFormComponent } from '../form/stop-point-complete-form/stop-point-complete-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-stop-point',
   templateUrl: './create-stop-point.component.html',
   styleUrls: ['./create-stop-point.component.scss'],
+  imports: [
+    NgIf,
+    MatStepper,
+    MatStep,
+    MatStepLabel,
+    MeansOfTransportPickerComponent,
+    ReactiveFormsModule,
+    AtlasButtonComponent,
+    StopPointReducedFormComponent,
+    StopPointCompleteFormComponent,
+    MatStepperIcon,
+    TranslatePipe,
+  ],
 })
 export class CreateStopPointComponent implements DetailFormComponent {
   @ViewChild('stepper') stepper!: MatStepper;
@@ -33,7 +57,7 @@ export class CreateStopPointComponent implements DetailFormComponent {
 
   backSelection() {
     this.isPreviousSelectionReduced = PrmMeanOfTransportHelper.isReduced(
-      this.selectedMeansOfTransport,
+      this.selectedMeansOfTransport
     );
     this.isMeanOfTransportSelected = true;
     this.isDataEditable = false;
@@ -43,11 +67,17 @@ export class CreateStopPointComponent implements DetailFormComponent {
   checkSelection() {
     this.formMeanOfTransport.markAllAsTouched();
     if (this.formMeanOfTransport.valid) {
-      const selectedMeansOfTransport = this.formMeanOfTransport.controls.meansOfTransport.value;
+      const selectedMeansOfTransport =
+        this.formMeanOfTransport.controls.meansOfTransport.value;
       if (selectedMeansOfTransport && selectedMeansOfTransport.length > 0) {
-        this.isReduced = PrmMeanOfTransportHelper.isReduced(selectedMeansOfTransport);
+        this.isReduced = PrmMeanOfTransportHelper.isReduced(
+          selectedMeansOfTransport
+        );
         this.selectedMeansOfTransport = selectedMeansOfTransport;
-        if (!this.isMeanOfTransportSelected || this.isReduced === this.isPreviousSelectionReduced) {
+        if (
+          !this.isMeanOfTransportSelected ||
+          this.isReduced === this.isPreviousSelectionReduced
+        ) {
           this.initForm();
         } else if (this.isReduced !== this.isPreviousSelectionReduced) {
           this.confirmChangingRecodingVariant();
@@ -74,7 +104,9 @@ export class CreateStopPointComponent implements DetailFormComponent {
           if (!this.isReduced) {
             StopPointFormGroupBuilder.addCompleteRecordingValidation(this.form);
           } else {
-            StopPointFormGroupBuilder.removeCompleteRecordingValidation(this.form);
+            StopPointFormGroupBuilder.removeCompleteRecordingValidation(
+              this.form
+            );
           }
           this.initForm();
         }

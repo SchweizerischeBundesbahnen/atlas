@@ -11,17 +11,20 @@ export class TimetableHearingGuard {
   constructor(
     private permissionService: PermissionService,
     private userService: UserService,
-    private router: Router,
+    private router: Router
   ) {}
 
   canActivate() {
     return this.userService.onPermissionsLoaded().pipe(
       map(() => {
-        if (!this.userService.loggedIn || !this.permissionService.mayAccessTimetableHearing()) {
+        if (
+          !this.userService.loggedIn ||
+          !this.permissionService.mayAccessTimetableHearing()
+        ) {
           return this.router.parseUrl('/');
         }
         return true;
-      }),
+      })
     );
   }
 }

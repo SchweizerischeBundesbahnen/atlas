@@ -11,19 +11,23 @@ export class ServicePointDetailResolver {
     private readonly router: Router
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadServicePointVersion>> {
+  resolve(
+    route: ActivatedRouteSnapshot
+  ): Observable<Array<ReadServicePointVersion>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
-      : this.servicePointsService.getServicePointVersions(Number(idParameter)).pipe(
-          catchError(() =>
-            this.router
-              .navigate([Pages.SEPODI.path], {
-                state: { notDismissSnackBar: true },
-              })
-              .then(() => [])
-          )
-        );
+      : this.servicePointsService
+          .getServicePointVersions(Number(idParameter))
+          .pipe(
+            catchError(() =>
+              this.router
+                .navigate([Pages.SEPODI.path], {
+                  state: { notDismissSnackBar: true },
+                })
+                .then(() => [])
+            )
+          );
   }
 }
 

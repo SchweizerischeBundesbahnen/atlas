@@ -10,7 +10,9 @@ describe('ServicePointDetailResolver', () => {
   const servicePointsServiceSpy = jasmine.createSpyObj('servicePointsService', [
     'getServicePointVersions',
   ]);
-  servicePointsServiceSpy.getServicePointVersions.and.returnValue(of([BERN_WYLEREGG]));
+  servicePointsServiceSpy.getServicePointVersions.and.returnValue(
+    of([BERN_WYLEREGG])
+  );
 
   let resolver: ServicePointDetailResolver;
 
@@ -30,7 +32,9 @@ describe('ServicePointDetailResolver', () => {
   });
 
   it('should get version from service to display', () => {
-    const mockRoute = { paramMap: convertToParamMap({ id: '1000' }) } as ActivatedRouteSnapshot;
+    const mockRoute = {
+      paramMap: convertToParamMap({ id: '1000' }),
+    } as ActivatedRouteSnapshot;
 
     const resolvedVersion = resolver.resolve(mockRoute);
 

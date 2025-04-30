@@ -5,7 +5,10 @@ import { Data } from '@angular/router';
 import { AppTestingModule } from '../../../app.testing.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StopPointDetailComponent } from './stop-point/detail/stop-point-detail.component';
-import { STOP_POINT, STOP_POINT_COMPLETE } from '../util/stop-point-test-data.spec';
+import {
+  STOP_POINT,
+  STOP_POINT_COMPLETE,
+} from '../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 
 describe('BasePrmTabComponentService', () => {
@@ -45,7 +48,10 @@ describe('BasePrmTabComponentService', () => {
     //given
     spyOn(service, 'redirectToStopPoint');
     spyOn(service, 'canShowTab').and.returnValue(true);
-    const data: Data = { servicePoints: [BERN_WYLEREGG], stopPoints: [STOP_POINT] };
+    const data: Data = {
+      servicePoints: [BERN_WYLEREGG],
+      stopPoints: [STOP_POINT],
+    };
     //when
     service.showCurrentTab(data);
     // then
@@ -56,7 +62,10 @@ describe('BasePrmTabComponentService', () => {
   it('should showCurrentTab when stopPoint is Complete', () => {
     //given
     spyOn(service, 'redirectToStopPoint');
-    const data: Data = { servicePoints: [BERN_WYLEREGG], stopPoints: [STOP_POINT_COMPLETE] };
+    const data: Data = {
+      servicePoints: [BERN_WYLEREGG],
+      stopPoints: [STOP_POINT_COMPLETE],
+    };
     //when
     service.showCurrentTab(data);
     // then

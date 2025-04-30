@@ -1,11 +1,14 @@
 import {
-  HearingStatus, StatementStatus,
-  SwissCanton, TimetableFieldNumber,
+  HearingStatus,
+  StatementStatus,
+  SwissCanton,
+  TimetableFieldNumber,
   TimetableHearingStatementAlternating,
   TimetableHearingStatementsService,
   TimetableHearingStatementV2,
   TimetableHearingYear,
-  TimetableHearingYearsService, TransportCompany,
+  TimetableHearingYearsService,
+  TransportCompany,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
@@ -59,13 +62,20 @@ let component: StatementDetailComponent;
 let fixture: ComponentFixture<StatementDetailComponent>;
 let router: Router;
 
-const mockTimetableHearingYearsService = jasmine.createSpyObj('timetableHearingYearsService', [
-  'getHearingYears',
-]);
+const mockTimetableHearingYearsService = jasmine.createSpyObj(
+  'timetableHearingYearsService',
+  ['getHearingYears']
+);
 
 const mockTimetableHearingStatementsService = jasmine.createSpyObj(
   'timetableHearingStatementsService',
-  ['createStatement', 'getNextStatement', 'getPreviousStatement', 'getResponsibleTransportCompanies', 'updateHearingStatement'],
+  [
+    'createStatement',
+    'getNextStatement',
+    'getPreviousStatement',
+    'getResponsibleTransportCompanies',
+    'updateHearingStatement',
+  ]
 );
 const alternation: TimetableHearingStatementAlternating = {
   timetableHearingStatement: existingStatement,
@@ -77,13 +87,20 @@ const transportCompany: TransportCompany = {
   number: '#0001',
   businessRegisterName: 'Schweizerische Bundesbahnen SBB',
 };
-mockTimetableHearingStatementsService.getNextStatement.and.returnValue(of(alternation));
-mockTimetableHearingStatementsService.getPreviousStatement.and.returnValue(of(alternation));
-mockTimetableHearingStatementsService.getResponsibleTransportCompanies.and.returnValue(of([transportCompany]));
+mockTimetableHearingStatementsService.getNextStatement.and.returnValue(
+  of(alternation)
+);
+mockTimetableHearingStatementsService.getPreviousStatement.and.returnValue(
+  of(alternation)
+);
+mockTimetableHearingStatementsService.getResponsibleTransportCompanies.and.returnValue(
+  of([transportCompany])
+);
 
 @Component({
   selector: 'app-user-detail-info',
   template: '<p>MockUserDetailInfoComponent</p>',
+  imports: [AppTestingModule, FormModule],
 })
 class MockUserDetailInfoComponent {
   @Input() short = false;
@@ -149,27 +166,37 @@ describe('StatementDetailComponent for existing statement', () => {
     component.hearingStatus = HearingStatus.Archived;
 
     component.next();
-    expect(mockTimetableHearingStatementsService.getNextStatement).toHaveBeenCalled();
+    expect(
+      mockTimetableHearingStatementsService.getNextStatement
+    ).toHaveBeenCalled();
   });
 
   it('should go to previous statement', () => {
     component.hearingStatus = HearingStatus.Archived;
 
     component.previous();
-    expect(mockTimetableHearingStatementsService.getPreviousStatement).toHaveBeenCalled();
+    expect(
+      mockTimetableHearingStatementsService.getPreviousStatement
+    ).toHaveBeenCalled();
   });
 
   it('should update statement', () => {
-    mockTimetableHearingStatementsService.updateHearingStatement.and.returnValue(of(existingStatement));
+    mockTimetableHearingStatementsService.updateHearingStatement.and.returnValue(
+      of(existingStatement)
+    );
     component.toggleEdit();
     expect(component.form.enabled).toBeTrue();
 
-    component.form.controls.timetableYear.setValue(2025)
-    component.form.controls.statementStatus.setValue(StatementStatus.Received)
-    component.form.controls.statement.setValue("New comment")
-    component.form.controls.statementSender.controls.emails.setValue(["test@bav.ch"])
+    component.form.controls.timetableYear.setValue(2025);
+    component.form.controls.statementStatus.setValue(StatementStatus.Received);
+    component.form.controls.statement.setValue('New comment');
+    component.form.controls.statementSender.controls.emails.setValue([
+      'test@bav.ch',
+    ]);
     component.save();
-    expect(mockTimetableHearingStatementsService.updateHearingStatement).toHaveBeenCalled();
+    expect(
+      mockTimetableHearingStatementsService.updateHearingStatement
+    ).toHaveBeenCalled();
   });
 });
 
@@ -194,7 +221,7 @@ describe('test editButton', () => {
           ...years[0],
           statementEditable: true,
         },
-      ]),
+      ])
     );
 
     fixture = TestBed.createComponent(StatementDetailComponent);
@@ -211,7 +238,7 @@ describe('test editButton', () => {
     //then
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
     const buttonsText = buttons.map(
-      (button) => button.nativeElement.attributes['buttontext']?.value,
+      (button) => button.nativeElement.attributes['buttontext']?.value
     );
     expect(buttonsText).not.toContain('COMMON.EDIT');
   });
@@ -219,7 +246,7 @@ describe('test editButton', () => {
   it('should show edit button when HearingStatus is not Archived and statement is editable', () => {
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
     const buttonsText = buttons.map(
-      (button) => button.nativeElement.attributes['buttontext']?.value,
+      (button) => button.nativeElement.attributes['buttontext']?.value
     );
     expect(buttonsText).toContain('COMMON.EDIT');
   });
@@ -253,30 +280,44 @@ describe('StatementDetailComponent for new statement', () => {
   describe('create new statement', () => {
     it('successfully', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-      mockTimetableHearingStatementsService.createStatement.and.returnValue(of(existingStatement));
+      mockTimetableHearingStatementsService.createStatement.and.returnValue(
+        of(existingStatement)
+      );
 
       component.form.controls.swissCanton.setValue(SwissCanton.Bern);
       component.form.controls.statement.setValue('my yb busses');
-      component.form.controls.statementSender.controls.emails.setValue(['luca@yb.ch']);
+      component.form.controls.statementSender.controls.emails.setValue([
+        'luca@yb.ch',
+      ]);
       fixture.detectChanges();
 
       component.save();
-      expect(mockTimetableHearingStatementsService.createStatement).toHaveBeenCalled();
+      expect(
+        mockTimetableHearingStatementsService.createStatement
+      ).toHaveBeenCalled();
 
       fixture.detectChanges();
 
       const snackBarContainer =
-        fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
+        fixture.nativeElement.offsetParent.querySelector(
+          'mat-snack-bar-container'
+        );
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent.trim()).toBe('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
+      expect(snackBarContainer.textContent.trim()).toBe(
+        'TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS'
+      );
       expect(snackBarContainer.classList).toContain('success');
       expect(router.navigate).toHaveBeenCalled();
     });
   });
 
   it('should fill responsible transport companies on ttfn change', () => {
-    component.ttfnSelectionChanged({ttfnid: 'ch:1:ttfnid:123'} as TimetableFieldNumber);
-    expect(mockTimetableHearingStatementsService.getResponsibleTransportCompanies).toHaveBeenCalled();
+    component.ttfnSelectionChanged({
+      ttfnid: 'ch:1:ttfnid:123',
+    } as TimetableFieldNumber);
+    expect(
+      mockTimetableHearingStatementsService.getResponsibleTransportCompanies
+    ).toHaveBeenCalled();
   });
 });
 
@@ -286,7 +327,9 @@ function setupTestBed(activatedRoute: {
   mockTimetableHearingYearsService.getHearingYears.and.returnValue(of(years));
 
   TestBed.configureTestingModule({
-    declarations: [
+    imports: [
+      AppTestingModule,
+      FormModule,
       LoadingSpinnerComponent,
       StatementDetailComponent,
       ErrorNotificationComponent,
@@ -305,10 +348,12 @@ function setupTestBed(activatedRoute: {
       FileComponent,
       StringListComponent,
     ],
-    imports: [AppTestingModule, FormModule],
     providers: [
       { provide: FormBuilder },
-      { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
+      {
+        provide: TimetableHearingYearsService,
+        useValue: mockTimetableHearingYearsService,
+      },
       {
         provide: TimetableHearingStatementsService,
         useValue: mockTimetableHearingStatementsService,

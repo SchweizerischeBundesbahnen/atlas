@@ -1,4 +1,7 @@
-import {CreateLoadingPointVersion, ReadLoadingPointVersion} from '../../app/api';
+import {
+  CreateLoadingPointVersion,
+  ReadLoadingPointVersion,
+} from '../../app/api';
 
 export const LOADING_POINT: ReadLoadingPointVersion[] = [
   {
@@ -45,7 +48,6 @@ export const LOADING_POINT: ReadLoadingPointVersion[] = [
   },
 ];
 
-
 export const LOADING_POINT_CREATE: CreateLoadingPointVersion = {
   creationDate: '2023-11-10T10:38:38.715492',
   creator: 'e524381',
@@ -59,5 +61,5 @@ export const LOADING_POINT_CREATE: CreateLoadingPointVersion = {
   validFrom: new Date('2023-11-02'),
   validTo: new Date('2099-11-07'),
   etagVersion: 7,
-  servicePointNumber: 1234567
-}
+  servicePointNumber: 1234567,
+};

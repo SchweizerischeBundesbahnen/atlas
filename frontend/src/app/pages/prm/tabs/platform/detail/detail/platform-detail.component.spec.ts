@@ -7,7 +7,10 @@ import {
 } from '../../../../../../api';
 import { of } from 'rxjs';
 import { DialogService } from '../../../../../../core/components/dialog/dialog.service';
-import { STOP_POINT, STOP_POINT_COMPLETE } from '../../../../util/stop-point-test-data.spec';
+import {
+  STOP_POINT,
+  STOP_POINT_COMPLETE,
+} from '../../../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../../../test/data/service-point';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../../../test/data/traffic-point-element';
 import {
@@ -123,14 +126,23 @@ describe('PlatformDetailComponent', () => {
 
   const personWithReducedMobilityService = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['createPlatform', 'updatePlatform'],
+    ['createPlatform', 'updatePlatform']
   );
-  personWithReducedMobilityService.createPlatform.and.returnValue(of(reducedPlatform[0]));
-  personWithReducedMobilityService.updatePlatform.and.returnValue(of(reducedPlatform));
+  personWithReducedMobilityService.createPlatform.and.returnValue(
+    of(reducedPlatform[0])
+  );
+  personWithReducedMobilityService.updatePlatform.and.returnValue(
+    of(reducedPlatform)
+  );
   let routerSpy: SpyObj<Router>;
 
-  const notificationService = jasmine.createSpyObj('notificationService', ['success']);
-  const dialogService: SpyObj<DialogService> = jasmine.createSpyObj('dialogService', ['confirm']);
+  const notificationService = jasmine.createSpyObj('notificationService', [
+    'success',
+  ]);
+  const dialogService: SpyObj<DialogService> = jasmine.createSpyObj(
+    'dialogService',
+    ['confirm']
+  );
   dialogService.confirm.and.returnValue(of(true));
 
   const activatedRouteMock = {
@@ -151,7 +163,14 @@ describe('PlatformDetailComponent', () => {
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
+        AppTestingModule,
+        RouterModule.forRoot([
+          {
+            path: ':sloid',
+            redirectTo: '',
+          },
+        ]),
         PlatformDetailComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
@@ -174,20 +193,14 @@ describe('PlatformDetailComponent', () => {
         DetailFooterComponent,
         MockNavigationSepodiPrmComponent,
       ],
-      imports: [
-        AppTestingModule,
-        RouterModule.forRoot([
-          {
-            path: ':sloid',
-            redirectTo: '',
-          },
-        ]),
-      ],
       providers: [
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
-        { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
+        {
+          provide: PersonWithReducedMobilityService,
+          useValue: personWithReducedMobilityService,
+        },
         { provide: DialogService, useValue: dialogService },
         { provide: Router, useValue: routerSpy },
         TranslatePipe,
@@ -214,12 +227,18 @@ describe('PlatformDetailComponent', () => {
     });
 
     it('should create on save', () => {
-      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
-      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
+      component.form.controls.validFrom.setValue(
+        moment('31.10.2000', 'dd.MM.yyyy')
+      );
+      component.form.controls.validTo.setValue(
+        moment('31.10.2099', 'dd.MM.yyyy')
+      );
 
       component.save();
 
-      expect(personWithReducedMobilityService.createPlatform).toHaveBeenCalled();
+      expect(
+        personWithReducedMobilityService.createPlatform
+      ).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
@@ -267,7 +286,7 @@ describe('PlatformDetailComponent', () => {
       expect(component.form.dirty).toBeFalse();
 
       component.reducedForm.controls.vehicleAccess.setValue(
-        VehicleAccessAttributeType.PlatformAccessWithAssistanceWhenNotified,
+        VehicleAccessAttributeType.PlatformAccessWithAssistanceWhenNotified
       );
       component.reducedForm.controls.vehicleAccess.markAsDirty();
       component.reducedForm.markAsDirty();
@@ -282,12 +301,14 @@ describe('PlatformDetailComponent', () => {
       component.toggleEdit();
 
       component.reducedForm.controls.vehicleAccess.setValue(
-        VehicleAccessAttributeType.PlatformAccessWithAssistanceWhenNotified,
+        VehicleAccessAttributeType.PlatformAccessWithAssistanceWhenNotified
       );
       component.reducedForm.controls.vehicleAccess.markAsDirty();
 
       component.save();
-      expect(personWithReducedMobilityService.updatePlatform).toHaveBeenCalled();
+      expect(
+        personWithReducedMobilityService.updatePlatform
+      ).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
@@ -323,11 +344,17 @@ describe('PlatformDetailComponent', () => {
     });
 
     it('should create complete platform', () => {
-      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
-      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
+      component.form.controls.validFrom.setValue(
+        moment('31.10.2000', 'dd.MM.yyyy')
+      );
+      component.form.controls.validTo.setValue(
+        moment('31.10.2099', 'dd.MM.yyyy')
+      );
 
       component.save();
-      expect(personWithReducedMobilityService.createPlatform).toHaveBeenCalled();
+      expect(
+        personWithReducedMobilityService.createPlatform
+      ).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });

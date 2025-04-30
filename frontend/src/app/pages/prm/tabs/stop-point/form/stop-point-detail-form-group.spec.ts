@@ -4,7 +4,7 @@ import {
 } from './stop-point-detail-form-group';
 import { MeanOfTransport } from '../../../../../api';
 import { FormGroup } from '@angular/forms';
-import moment from "moment";
+import moment from 'moment';
 
 describe('StopPointFormGroupBuilder', () => {
   describe('complete stop point form', () => {

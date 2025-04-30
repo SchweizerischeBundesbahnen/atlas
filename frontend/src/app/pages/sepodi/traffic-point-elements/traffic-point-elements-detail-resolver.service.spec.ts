@@ -7,11 +7,12 @@ import { TrafficPointElementsDetailResolver } from './traffic-point-elements-det
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
 
 describe('TrafficPointElementsDetailResolver', () => {
-  const trafficPointServiceSpy = jasmine.createSpyObj('trafficPointElementsService', [
-    'getTrafficPointElement',
-  ]);
+  const trafficPointServiceSpy = jasmine.createSpyObj(
+    'trafficPointElementsService',
+    ['getTrafficPointElement']
+  );
   trafficPointServiceSpy.getTrafficPointElement.and.returnValue(
-    of([BERN_WYLEREGG_TRAFFIC_POINTS[0]]),
+    of([BERN_WYLEREGG_TRAFFIC_POINTS[0]])
   );
 
   let resolver: TrafficPointElementsDetailResolver;
@@ -21,7 +22,10 @@ describe('TrafficPointElementsDetailResolver', () => {
       imports: [AppTestingModule],
       providers: [
         TrafficPointElementsDetailResolver,
-        { provide: TrafficPointElementsService, useValue: trafficPointServiceSpy },
+        {
+          provide: TrafficPointElementsService,
+          useValue: trafficPointServiceSpy,
+        },
       ],
     });
     resolver = TestBed.inject(TrafficPointElementsDetailResolver);
@@ -32,7 +36,9 @@ describe('TrafficPointElementsDetailResolver', () => {
   });
 
   it('should get versions from service to display', () => {
-    const mockRoute = { paramMap: convertToParamMap({ id: '1000' }) } as ActivatedRouteSnapshot;
+    const mockRoute = {
+      paramMap: convertToParamMap({ id: '1000' }),
+    } as ActivatedRouteSnapshot;
 
     const resolvedVersion = resolver.resolve(mockRoute);
 

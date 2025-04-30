@@ -12,11 +12,32 @@ import { DialogService } from '../../../../../core/components/dialog/dialog.serv
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
+import { UserAdministrationReadOnlyDataComponent } from '../../../components/read-only-data/user-administration-read-only-data.component';
+import { NgFor, NgIf } from '@angular/common';
+import { UserAdministrationApplicationConfigComponent } from '../../../components/application-config/user-administration-application-config.component';
+import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-client-credential-administration-edit',
   templateUrl: './user-administration-client-edit.component.html',
   viewProviders: [BusinessOrganisationsService, UserPermissionManager],
+  imports: [
+    ScrollToTopDirective,
+    DetailPageContainerComponent,
+    DetailPageContentComponent,
+    UserAdministrationReadOnlyDataComponent,
+    NgFor,
+    UserAdministrationApplicationConfigComponent,
+    UserDetailInfoComponent,
+    DetailFooterComponent,
+    NgIf,
+    TranslatePipe,
+  ],
 })
 export class UserAdministrationClientEditComponent implements OnInit {
   @Input() client!: ClientCredential;
@@ -26,7 +47,10 @@ export class UserAdministrationClientEditComponent implements OnInit {
 
   readonly readOnlyConfig: ReadOnlyData<ClientCredential>[][] = [
     [
-      { translationKey: 'USER_ADMIN.CLIENT_CREDENTIAL.CLIENT_ID', value: 'clientCredentialId' },
+      {
+        translationKey: 'USER_ADMIN.CLIENT_CREDENTIAL.CLIENT_ID',
+        value: 'clientCredentialId',
+      },
       { translationKey: 'USER_ADMIN.CLIENT_CREDENTIAL.ALIAS', value: 'alias' },
     ],
   ];
@@ -41,9 +65,8 @@ export class UserAdministrationClientEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
-      this.client
-    );
+    const permissionsFromUserModelAsArray =
+      this.userService.getPermissionsFromUserModelAsArray(this.client);
     this.userPermissionManager.setPermissions(permissionsFromUserModelAsArray);
     this.convertPermissionToRecord(permissionsFromUserModelAsArray);
   }
@@ -64,7 +87,9 @@ export class UserAdministrationClientEditComponent implements OnInit {
         this.userPermissionManager.setPermissions(
           this.userService.getPermissionsFromUserModelAsArray(this.client)
         );
-        this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
+        this.notificationService.success(
+          'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
+        );
       },
       error: () => (this.saveEnabled = true),
     });

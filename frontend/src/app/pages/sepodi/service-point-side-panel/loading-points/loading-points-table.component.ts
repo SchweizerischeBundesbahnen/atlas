@@ -8,23 +8,42 @@ import { TablePagination } from '../../../../core/components/table/table-paginat
 import { takeUntil } from 'rxjs/operators';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-service-point-loading-points',
   templateUrl: './loading-points-table.component.html',
   styleUrls: ['./loading-points-table.component.scss'],
+  imports: [
+    AtlasButtonComponent,
+    TableComponent,
+    DetailFooterComponent,
+    TranslatePipe,
+  ],
 })
 export class LoadingPointsTableComponent implements OnInit {
   tableColumns: TableColumn<ReadLoadingPointVersion>[] = [
     { headerTitle: 'SEPODI.LOADING_POINTS.NUMBER', value: 'number' },
     { headerTitle: 'SEPODI.LOADING_POINTS.DESIGNATION', value: 'designation' },
-    { headerTitle: 'SEPODI.LOADING_POINTS.DESIGNATION_LONG', value: 'designationLong' },
+    {
+      headerTitle: 'SEPODI.LOADING_POINTS.DESIGNATION_LONG',
+      value: 'designationLong',
+    },
     {
       headerTitle: 'SEPODI.LOADING_POINTS.CONNECTION_POINT',
       value: 'connectionPoint',
-      translate: { withPrefix: 'SEPODI.LOADING_POINTS.CONNECTION_POINT_VALUE.' },
+      translate: {
+        withPrefix: 'SEPODI.LOADING_POINTS.CONNECTION_POINT_VALUE.',
+      },
     },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    {
+      headerTitle: 'COMMON.VALID_FROM',
+      value: 'validFrom',
+      formatAsDate: true,
+    },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
   tableFilterConfig!: TableFilter<unknown>[][];
@@ -36,18 +55,24 @@ export class LoadingPointsTableComponent implements OnInit {
     private loadingPointsService: LoadingPointsService,
     private tableService: TableService,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.LOADING_POINTS);
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(
+      {},
+      Pages.LOADING_POINTS
+    );
   }
 
   getOverview(pagination: TablePagination) {
     this.loadingPointsService
-      .getLoadingPointOverview(this.servicePointNumber, pagination.page, pagination.size, [
-        pagination.sort ?? 'designation,asc',
-      ])
+      .getLoadingPointOverview(
+        this.servicePointNumber,
+        pagination.page,
+        pagination.size,
+        [pagination.sort ?? 'designation,asc']
+      )
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((container) => {
         this.elements = container.objects!;
@@ -57,7 +82,12 @@ export class LoadingPointsTableComponent implements OnInit {
 
   newLoadingPoint() {
     this.router
-      .navigate([Pages.SEPODI.path, Pages.LOADING_POINTS.path, this.servicePointNumber, 'add'])
+      .navigate([
+        Pages.SEPODI.path,
+        Pages.LOADING_POINTS.path,
+        this.servicePointNumber,
+        'add',
+      ])
       .then();
   }
 

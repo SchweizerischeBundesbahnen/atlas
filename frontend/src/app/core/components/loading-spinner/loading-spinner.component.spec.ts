@@ -10,8 +10,7 @@ describe('LoadingSpinnerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LoadingSpinnerComponent],
-      imports: [BrowserAnimationsModule],
+      imports: [BrowserAnimationsModule, LoadingSpinnerComponent],
     })
       .overrideComponent(LoadingSpinnerComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -29,7 +28,9 @@ describe('LoadingSpinnerComponent', () => {
 
     expect(component).toBeTruthy();
 
-    const loadingSpinnerDiv = fixture.debugElement.query(By.css('.loading-spinner'));
+    const loadingSpinnerDiv = fixture.debugElement.query(
+      By.css('.loading-spinner')
+    );
     expect(loadingSpinnerDiv).toBeTruthy();
   });
 
@@ -39,7 +40,9 @@ describe('LoadingSpinnerComponent', () => {
 
     expect(component).toBeTruthy();
 
-    const loadingSpinnerDiv = fixture.debugElement.query(By.css('.loading-spinner'));
+    const loadingSpinnerDiv = fixture.debugElement.query(
+      By.css('.loading-spinner')
+    );
     expect(loadingSpinnerDiv).toBeFalsy();
   });
 });

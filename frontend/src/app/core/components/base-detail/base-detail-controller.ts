@@ -16,7 +16,8 @@ import { PermissionService } from '../../auth/permission/permission.service';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record>
-  implements OnInit, DetailFormComponent {
+  implements OnInit, DetailFormComponent
+{
   record!: TYPE;
   selectedRecordChange = new Subject<Record>();
   records!: Array<TYPE>;
@@ -32,9 +33,8 @@ export abstract class BaseDetailController<TYPE extends Record>
     protected notificationService: NotificationService,
     protected permissionService: PermissionService,
     protected activatedRoute: ActivatedRoute,
-    protected validityService: ValidityService,
-  ) {
-  }
+    protected validityService: ValidityService
+  ) {}
 
   get versionNumberOfCurrentRecord(): number {
     return this.record.versionNumber!;
@@ -50,11 +50,15 @@ export abstract class BaseDetailController<TYPE extends Record>
   }
 
   evaluateSelectedRecord(records: Array<TYPE>) {
-    const preferredSelectionId = Number(this.activatedRoute.snapshot.queryParams.id);
+    const preferredSelectionId = Number(
+      this.activatedRoute.snapshot.queryParams.id
+    );
     if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
       return records[this.switchedIndex];
     } else if (preferredSelectionId) {
-      const preferredRecord = records.filter((record) => record.id === preferredSelectionId);
+      const preferredRecord = records.filter(
+        (record) => record.id === preferredSelectionId
+      );
       if (preferredRecord.length == 1) {
         return preferredRecord[0];
       } else {
@@ -122,7 +126,7 @@ export abstract class BaseDetailController<TYPE extends Record>
             this.validityService.updateValidity(this.form);
             this.validityService.validateAndDisableCustom(
               () => this.updateRecord(),
-              () => this.form.disable(),
+              () => this.form.disable()
             );
           } else {
             this.form.enable();
@@ -206,7 +210,7 @@ export abstract class BaseDetailController<TYPE extends Record>
 
   backToOverview(): void {
     this.form.reset();
-    this.router.navigate(['..'], {relativeTo: this.activatedRoute}).then();
+    this.router.navigate(['..'], { relativeTo: this.activatedRoute }).then();
   }
 
   closeConfirmDialog(): void {
@@ -218,7 +222,7 @@ export abstract class BaseDetailController<TYPE extends Record>
       return [];
     }
     const permission = this.permissionService.getApplicationUserPermission(
-      this.getApplicationType(),
+      this.getApplicationType()
     );
     if (permission.role === ApplicationRole.Writer) {
       return PermissionService.getSboidRestrictions(permission);
@@ -304,13 +308,15 @@ export abstract class BaseDetailController<TYPE extends Record>
   confirmBoTransfer(): Observable<boolean> {
     const currentlySelectedBo = this.form.value.businessOrganisation;
     const permission = this.permissionService.getApplicationUserPermission(
-      this.getApplicationType(),
+      this.getApplicationType()
     );
     if (
       !this.permissionService.isAdmin &&
       permission.role == ApplicationRole.Writer &&
       currentlySelectedBo &&
-      !PermissionService.getSboidRestrictions(permission).includes(currentlySelectedBo)
+      !PermissionService.getSboidRestrictions(permission).includes(
+        currentlySelectedBo
+      )
     ) {
       return this.dialogService.confirm({
         title: 'DIALOG.CONFIRM_BO_TRANSFER_TITLE',

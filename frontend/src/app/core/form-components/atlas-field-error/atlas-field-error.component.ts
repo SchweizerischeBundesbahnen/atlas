@@ -2,11 +2,14 @@ import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AtlasFieldCustomError } from './atlas-field-custom-error';
 import { ValidationService } from '../../validation/validation.service';
+import { NgIf, NgFor } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-atlas-field-error',
   templateUrl: './atlas-field-error.component.html',
   styleUrls: ['./atlas-field-error.component.scss'],
+  imports: [NgIf, NgFor, TranslatePipe],
 })
 export class AtlasFieldErrorComponent {
   @Input() controlName!: string;
@@ -24,7 +27,10 @@ export class AtlasFieldErrorComponent {
         const formField = this.form.get(this.controlName);
         const validationErrors = this.getValidationErrors();
         if (validationErrors) {
-          if ((validationErrors['required'] && formField?.touched) || !validationErrors['required']) {
+          if (
+            (validationErrors['required'] && formField?.touched) ||
+            !validationErrors['required']
+          ) {
             return this.validationService.getValidation(validationErrors);
           }
         }

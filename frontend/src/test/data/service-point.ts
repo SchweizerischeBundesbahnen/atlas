@@ -1,4 +1,8 @@
-import { Country, ReadServicePointVersion, SpatialReference } from '../../app/api';
+import {
+  Country,
+  ReadServicePointVersion,
+  SpatialReference,
+} from '../../app/api';
 
 export const BERN_WYLEREGG: ReadServicePointVersion = {
   creationDate: '2021-03-22T09:26:29',
@@ -44,7 +48,11 @@ export const BERN_WYLEREGG: ReadServicePointVersion = {
       canton: 'BERN',
       cantonInformation: { fsoNumber: 2, name: 'Bern', abbreviation: 'BE' },
       district: { fsoNumber: 246, districtName: 'Bern-Mittelland' },
-      localityMunicipality: { fsoNumber: 351, municipalityName: 'Bern', localityName: 'Bern' },
+      localityMunicipality: {
+        fsoNumber: 351,
+        municipalityName: 'Bern',
+        localityName: 'Bern',
+      },
     },
     isoCountryCode: 'CH',
   },
@@ -52,7 +60,12 @@ export const BERN_WYLEREGG: ReadServicePointVersion = {
   validFrom: new Date('2014-12-14'),
   validTo: new Date('2021-03-31'),
   etagVersion: 0,
-  number: { number: 8589008, checkDigit: 7, uicCountryCode: 85, numberShort: 89008 },
+  number: {
+    number: 8589008,
+    checkDigit: 7,
+    uicCountryCode: 85,
+    numberShort: 89008,
+  },
   country: Country.Switzerland,
   operatingPointKilometerMaster: undefined,
   operatingPointKilometer: false,

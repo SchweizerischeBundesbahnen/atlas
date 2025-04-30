@@ -8,7 +8,7 @@ describe('AtlasFieldErrorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AtlasFieldErrorComponent],
+      imports: [AtlasFieldErrorComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AtlasFieldErrorComponent);

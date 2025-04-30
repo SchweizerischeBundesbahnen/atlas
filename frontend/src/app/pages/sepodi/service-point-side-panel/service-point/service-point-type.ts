@@ -1,4 +1,8 @@
-export type ServicePointType = 'SERVICE_POINT' | 'OPERATING_POINT' | 'STOP_POINT' | 'FARE_STOP';
+export type ServicePointType =
+  | 'SERVICE_POINT'
+  | 'OPERATING_POINT'
+  | 'STOP_POINT'
+  | 'FARE_STOP';
 
 export const ServicePointType = {
   ServicePoint: 'SERVICE_POINT' as ServicePointType,

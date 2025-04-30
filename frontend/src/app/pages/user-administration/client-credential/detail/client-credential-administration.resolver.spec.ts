@@ -16,7 +16,9 @@ const clientCredential: ClientCredential = {
 const routerStateSnapshot = jasmine.createSpyObj('RouterStateSnapshot', ['']);
 
 describe('ClientCredentialAdministrationResolver', () => {
-  const userService = jasmine.createSpyObj('userService', ['getClientCredential']);
+  const userService = jasmine.createSpyObj('userService', [
+    'getClientCredential',
+  ]);
   userService.getClientCredential.and.returnValue(of(clientCredential));
 
   let resolver: ClientCredentialAdministrationResolver;
@@ -42,7 +44,7 @@ describe('ClientCredentialAdministrationResolver', () => {
     } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
-      clientCredentialResolver(mockRoute, routerStateSnapshot),
+      clientCredentialResolver(mockRoute, routerStateSnapshot)
     ) as Observable<ClientCredential>;
 
     result.subscribe((snapshot) => {

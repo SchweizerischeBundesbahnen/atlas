@@ -17,11 +17,11 @@ describe('UserAdministrationReadOnlyDataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserAdministrationReadOnlyDataComponent],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
+        UserAdministrationReadOnlyDataComponent,
       ],
       providers: [TranslatePipe],
     }).compileComponents();

@@ -1,38 +1,36 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ServicePointDetailComponent } from './service-point-detail.component';
-import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
-import { FormGroup, FormsModule } from '@angular/forms';
-import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
-import { MeansOfTransportPickerComponent } from '../../means-of-transport-picker/means-of-transport-picker.component';
-import { SelectComponent } from '../../../../core/form-components/select/select.component';
-import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
-import { AtlasSlideToggleComponent } from '../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
+import { FormGroup } from '@angular/forms';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { Record } from '../../../../core/components/base-detail/record';
 import {
   adminPermissionServiceMock,
   MockAtlasButtonComponent,
-  MockNavigationSepodiPrmComponent, MockPrmRecordingObligationComponent,
+  MockNavigationSepodiPrmComponent,
 } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { Country, ReadServicePointVersion, ServicePointsService, Status } from '../../../../api';
+import {
+  Country,
+  ReadServicePointVersion,
+  ServicePointsService,
+  Status,
+} from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
 import { MapService } from '../../map/map.service';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BERN } from '../../../../../test/data/service-point';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
-import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
-import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { ValidityService } from '../../validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { AddStopPointWorkflowDialogService } from '../../workflow/add-dialog/add-stop-point-workflow-dialog.service';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { GeographyComponent } from '../../geography/geography.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { ServicePointFormComponent } from './service-point-form/service-point-form.component';
 import SpyObj = jasmine.SpyObj;
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
@@ -41,7 +39,9 @@ const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
   'validateServicePoint',
   'revokeServicePoint',
 ]);
-const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
+const notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
+  'success',
+]);
 const mapServiceSpy = jasmine.createSpyObj('MapService', [
   'placeMarkerAndFlyTo',
   'deselectServicePoint',
@@ -51,12 +51,13 @@ mapServiceSpy.mapInitialized = new BehaviorSubject<boolean>(false);
 
 const addStopPointWorkflowDialogService = jasmine.createSpyObj(
   'addStopPointWorkflowDialogService',
-  ['openDialog'],
+  ['openDialog']
 );
 
 @Component({
   selector: 'service-point-form',
   template: '<h1>ServicePointFormMockComponent</h1>',
+  standalone: true,
 })
 class ServicePointFormMockComponent {
   @Input() form?: FormGroup;
@@ -67,6 +68,7 @@ class ServicePointFormMockComponent {
 @Component({
   selector: 'sepodi-geography',
   template: '<h1>ServicePointGeographyMockComponent</h1>',
+  standalone: true,
 })
 class ServicePointGeographyMockComponent {
   @Input() form?: FormGroup;
@@ -88,29 +90,11 @@ describe('ServicePointDetailComponent', () => {
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        ServicePointDetailComponent,
-        TextFieldComponent,
-        AtlasLabelFieldComponent,
-        AtlasFieldErrorComponent,
-        AtlasSpacerComponent,
-        MeansOfTransportPickerComponent,
-        SelectComponent,
-        SwitchVersionComponent,
-        AtlasSlideToggleComponent,
-        MockAtlasButtonComponent,
-        DisplayCantonPipe,
-        ServicePointFormMockComponent,
-        ServicePointGeographyMockComponent,
-        UserDetailInfoComponent,
-        DetailPageContainerComponent,
-        DetailPageContentComponent,
-        DetailFooterComponent,
-        MockNavigationSepodiPrmComponent,
-        MockPrmRecordingObligationComponent,
-      ],
-      imports: [AppTestingModule, FormsModule],
+      imports: [ServicePointDetailComponent, TranslateModule.forRoot()],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideMomentDateAdapter(),
         ValidityService,
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -119,10 +103,32 @@ describe('ServicePointDetailComponent', () => {
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: TranslatePipe },
         { provide: MapService, useValue: mapServiceSpy },
-        { provide: AddStopPointWorkflowDialogService, useValue: addStopPointWorkflowDialogService },
+        {
+          provide: AddStopPointWorkflowDialogService,
+          useValue: addStopPointWorkflowDialogService,
+        },
         { provide: Router, useValue: routerSpy },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ServicePointDetailComponent, {
+        remove: {
+          imports: [
+            AtlasButtonComponent,
+            NavigationSepodiPrmComponent,
+            GeographyComponent,
+            ServicePointFormComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockAtlasButtonComponent,
+            MockNavigationSepodiPrmComponent,
+            ServicePointGeographyMockComponent,
+            ServicePointFormMockComponent,
+          ],
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ServicePointDetailComponent);
     component = fixture.componentInstance;
@@ -138,7 +144,9 @@ describe('ServicePointDetailComponent', () => {
     expect(component.showVersionSwitch).toBeTrue();
     expect(component.selectedVersion).toBeTruthy();
 
-    expect((component.servicePointVersions[0] as Record).versionNumber).toBeTruthy();
+    expect(
+      (component.servicePointVersions[0] as Record).versionNumber
+    ).toBeTruthy();
   });
 
   it('should initialize form correctly', () => {
@@ -325,7 +333,12 @@ describe('ServicePointDetailComponent', () => {
         designationOfficial: 'efgh',
         validFrom: new Date(1999, 0, 1),
         validTo: new Date(2002, 0, 1),
-        number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
+        number: {
+          number: 123457,
+          numberShort: 32,
+          uicCountryCode: 0,
+          checkDigit: 0,
+        },
         status: Status.Validated,
         country: Country.Switzerland,
       },
@@ -359,7 +372,12 @@ describe('ServicePointDetailComponent', () => {
         designationOfficial: 'efgh',
         validFrom: new Date(2020, 0, 1),
         validTo: new Date(2099, 0, 1),
-        number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
+        number: {
+          number: 123457,
+          numberShort: 32,
+          uicCountryCode: 0,
+          checkDigit: 0,
+        },
         status: Status.Validated,
         country: Country.Switzerland,
       },

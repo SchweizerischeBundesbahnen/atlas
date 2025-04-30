@@ -23,14 +23,22 @@ describe('ValidityConfirmationService', () => {
 
   it('should confirm', () => {
     //when
-    service.confirmValidityOverServicePoint(BERN, moment('1900-01-01'), moment('2020-01-01'));
+    service.confirmValidityOverServicePoint(
+      BERN,
+      moment('1900-01-01'),
+      moment('2020-01-01')
+    );
     //then
     expect(dialogService.confirm).toHaveBeenCalled();
   });
 
   it('should not need confirmation', () => {
     //when
-    service.confirmValidityOverServicePoint(BERN, moment('2000-01-01'), moment('2020-01-01'));
+    service.confirmValidityOverServicePoint(
+      BERN,
+      moment('2000-01-01'),
+      moment('2020-01-01')
+    );
     //then
     expect(dialogService.confirm).not.toHaveBeenCalled();
   });

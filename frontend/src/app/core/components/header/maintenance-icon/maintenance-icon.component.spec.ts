@@ -8,7 +8,7 @@ describe('MaintenanceIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MaintenanceIconComponent],
+      imports: [MaintenanceIconComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MaintenanceIconComponent);

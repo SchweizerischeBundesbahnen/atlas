@@ -8,8 +8,10 @@ export interface MapIcon {
 
 export class MapIconsService {
   private static IMAGES_BASE_PATH = '../../../../assets/images/';
-  private static SERVICE_POINT_ICONS_BASE_PATH = this.IMAGES_BASE_PATH + 'service-point-symbols/';
-  private static TRAFFIC_POINT_ICONS_BASE_PATH = this.IMAGES_BASE_PATH + 'traffic-point-symbols/';
+  private static SERVICE_POINT_ICONS_BASE_PATH =
+    this.IMAGES_BASE_PATH + 'service-point-symbols/';
+  private static TRAFFIC_POINT_ICONS_BASE_PATH =
+    this.IMAGES_BASE_PATH + 'traffic-point-symbols/';
 
   static addTrafficPointIconToMap(map: Map) {
     MapIconsService.getTrafficPointIconsAsImages().then((icons) => {
@@ -22,20 +24,29 @@ export class MapIconsService {
   }
 
   static getTrafficPointIconsAsImages() {
-    const types = ['BOARDING_PLATFORM', 'BOARDING_AREA', 'SELECTED_TP_INDICATOR'].map((type) =>
-      this.getIconAsImage(this.TRAFFIC_POINT_ICONS_BASE_PATH, type),
+    const types = [
+      'BOARDING_PLATFORM',
+      'BOARDING_AREA',
+      'SELECTED_TP_INDICATOR',
+    ].map((type) =>
+      this.getIconAsImage(this.TRAFFIC_POINT_ICONS_BASE_PATH, type)
     );
     return Promise.all(types);
   }
 
   static getLegendIconsAsImages() {
-    const servicePointIconsForLegend = Object.keys(ServicePointIconType).map((type) =>
-      this.getIconAsImage(this.SERVICE_POINT_ICONS_BASE_PATH, type),
+    const servicePointIconsForLegend = Object.keys(ServicePointIconType).map(
+      (type) => this.getIconAsImage(this.SERVICE_POINT_ICONS_BASE_PATH, type)
     );
-    const trafficPointIconsForLegend = ['BOARDING_PLATFORM', 'BOARDING_AREA'].map((type) =>
-      this.getIconAsImage(this.TRAFFIC_POINT_ICONS_BASE_PATH, type),
+    const trafficPointIconsForLegend = [
+      'BOARDING_PLATFORM',
+      'BOARDING_AREA',
+    ].map((type) =>
+      this.getIconAsImage(this.TRAFFIC_POINT_ICONS_BASE_PATH, type)
     );
-    const allLegendIcons = servicePointIconsForLegend.concat(trafficPointIconsForLegend);
+    const allLegendIcons = servicePointIconsForLegend.concat(
+      trafficPointIconsForLegend
+    );
     return Promise.all(allLegendIcons);
   }
 

@@ -17,12 +17,13 @@ describe('TextFieldComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TextFieldComponent, InfoIconComponent],
       imports: [
         FormModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
+        TextFieldComponent,
+        InfoIconComponent,
       ],
       providers: [{ provide: TranslatePipe }],
     }).compileComponents();

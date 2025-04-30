@@ -1,4 +1,4 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   BusinessOrganisation,
   BusinessOrganisationsService,
@@ -7,23 +7,26 @@ import {
   TransportCompanyBoRelation,
   TransportCompanyRelationsService,
 } from '../../../../api';
-import {TransportCompanyDetailComponent} from './transport-company-detail.component';
-import {AppTestingModule} from '../../../../app.testing.module';
-import {RelationComponent} from '../../../../core/components/relation/relation.component';
+import { TransportCompanyDetailComponent } from './transport-company-detail.component';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { RelationComponent } from '../../../../core/components/relation/relation.component';
 import moment from 'moment';
-import {Observable, of} from 'rxjs';
-import {CommentComponent} from '../../../../core/form-components/comment/comment.component';
-import {adminPermissionServiceMock, MockAtlasButtonComponent} from '../../../../app.testing.mocks';
-import {TextFieldComponent} from '../../../../core/form-components/text-field/text-field.component';
-import {AtlasLabelFieldComponent} from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import {AtlasFieldErrorComponent} from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import {TranslatePipe} from '@ngx-translate/core';
-import {SearchSelectComponent} from '../../../../core/form-components/search-select/search-select.component';
-import {ActivatedRoute} from '@angular/router';
-import {DetailPageContainerComponent} from '../../../../core/components/detail-page-container/detail-page-container.component';
-import {DetailFooterComponent} from '../../../../core/components/detail-footer/detail-footer.component';
-import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
-import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import { Observable, of } from 'rxjs';
+import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
+import {
+  adminPermissionServiceMock,
+  MockAtlasButtonComponent,
+} from '../../../../app.testing.mocks';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
+import { ActivatedRoute } from '@angular/router';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -94,7 +97,9 @@ describe('TransportCompanyDetailComponent', () => {
       id: 1234,
       description: 'SBB',
     });
-    expect(component.transportCompanyRelations).toEqual(transportCompanyRelations);
+    expect(component.transportCompanyRelations).toEqual(
+      transportCompanyRelations
+    );
   });
 
   it('test selectOption function', () => {
@@ -103,7 +108,7 @@ describe('TransportCompanyDetailComponent', () => {
         organisationNumber: 5,
         abbreviationDe: 'testAbbreviation',
         descriptionDe: 'testDescription',
-      } as BusinessOrganisation),
+      } as BusinessOrganisation)
     ).toBe('5 - testAbbreviation - testDescription');
   });
 
@@ -112,13 +117,13 @@ describe('TransportCompanyDetailComponent', () => {
       jasmine
         .createSpy(
           'getAllBusinessOrganisations',
-          boService.getAllBusinessOrganisations as () => Observable<ContainerBusinessOrganisation>,
+          boService.getAllBusinessOrganisations as () => Observable<ContainerBusinessOrganisation>
         )
         .and.returnValue(
           of({
             objects: [],
             totalCount: 0,
-          }),
+          })
         );
     component.getBusinessOrganisations('testSearchString');
     expect(boService.getAllBusinessOrganisations).toHaveBeenCalledOnceWith(
@@ -127,7 +132,7 @@ describe('TransportCompanyDetailComponent', () => {
       undefined,
       undefined,
       undefined,
-      100,
+      100
     );
   });
 
@@ -135,7 +140,9 @@ describe('TransportCompanyDetailComponent', () => {
     component.editMode = true;
 
     component.form.setValue({
-      businessOrganisation: { sboid: 'ch:1:sboid:100500' } as BusinessOrganisation,
+      businessOrganisation: {
+        sboid: 'ch:1:sboid:100500',
+      } as BusinessOrganisation,
       validFrom: moment('2020-05-05'),
       validTo: moment('2021-05-05'),
     });
@@ -147,7 +154,7 @@ describe('TransportCompanyDetailComponent', () => {
     expect(component.form.untouched).toBeTrue();
     expect(component.editMode).toBeFalse();
     expect(
-      transportCompanyRelationsServiceSpy.createTransportCompanyRelation,
+      transportCompanyRelationsServiceSpy.createTransportCompanyRelation
     ).toHaveBeenCalledOnceWith({
       transportCompanyId: 1234,
       sboid: 'ch:1:sboid:100500',
@@ -155,7 +162,7 @@ describe('TransportCompanyDetailComponent', () => {
       validTo: moment('2021-05-05').toDate(),
     });
     expect(
-      transportCompanyRelationsServiceSpy.getTransportCompanyRelations,
+      transportCompanyRelationsServiceSpy.getTransportCompanyRelations
     ).toHaveBeenCalledOnceWith(1234);
   });
 
@@ -165,7 +172,9 @@ describe('TransportCompanyDetailComponent', () => {
     component.relationId = 1;
 
     component.form.setValue({
-      businessOrganisation: { sboid: 'ch:1:sboid:100500' } as BusinessOrganisation,
+      businessOrganisation: {
+        sboid: 'ch:1:sboid:100500',
+      } as BusinessOrganisation,
       validFrom: moment('2020-05-05'),
       validTo: moment('2021-05-05'),
     });
@@ -178,14 +187,14 @@ describe('TransportCompanyDetailComponent', () => {
     expect(component.editMode).toBeFalse();
     expect(component.isUpdateRelationSelected).toBeFalse();
     expect(
-      transportCompanyRelationsServiceSpy.updateTransportCompanyRelation,
+      transportCompanyRelationsServiceSpy.updateTransportCompanyRelation
     ).toHaveBeenCalledOnceWith({
       id: 1,
       validFrom: moment('2020-05-05').toDate(),
       validTo: moment('2021-05-05').toDate(),
     });
     expect(
-      transportCompanyRelationsServiceSpy.getTransportCompanyRelations,
+      transportCompanyRelationsServiceSpy.getTransportCompanyRelations
     ).toHaveBeenCalledOnceWith(1234);
   });
 
@@ -193,10 +202,10 @@ describe('TransportCompanyDetailComponent', () => {
     component.selectedTransportCompanyRelationIndex = 0;
     component.deleteRelation();
     expect(
-      transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation,
+      transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation
     ).toHaveBeenCalledOnceWith(1);
     expect(
-      transportCompanyRelationsServiceSpy.getTransportCompanyRelations,
+      transportCompanyRelationsServiceSpy.getTransportCompanyRelations
     ).toHaveBeenCalledOnceWith(1234);
   });
 });
@@ -208,14 +217,24 @@ const transportCompanyRelationsServiceSpy = jasmine.createSpyObj(
     'getTransportCompanyRelations',
     'updateTransportCompanyRelation',
     'deleteTransportCompanyRelation',
-  ],
+  ]
 );
 
-function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[]) {
-  transportCompanyRelationsServiceSpy.createTransportCompanyRelation.and.returnValue(of({}));
-  transportCompanyRelationsServiceSpy.getTransportCompanyRelations.and.returnValue(of([]));
-  transportCompanyRelationsServiceSpy.updateTransportCompanyRelation.and.returnValue(of({}));
-  transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation.and.returnValue(of({}));
+function setupTestBed(
+  data: (TransportCompany | TransportCompanyBoRelation[])[]
+) {
+  transportCompanyRelationsServiceSpy.createTransportCompanyRelation.and.returnValue(
+    of({})
+  );
+  transportCompanyRelationsServiceSpy.getTransportCompanyRelations.and.returnValue(
+    of([])
+  );
+  transportCompanyRelationsServiceSpy.updateTransportCompanyRelation.and.returnValue(
+    of({})
+  );
+  transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation.and.returnValue(
+    of({})
+  );
 
   transportCompanyRelationsServiceSpy.createTransportCompanyRelation.calls.reset();
   transportCompanyRelationsServiceSpy.getTransportCompanyRelations.calls.reset();
@@ -223,7 +242,8 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
   transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation.calls.reset();
 
   TestBed.configureTestingModule({
-    declarations: [
+    imports: [
+      AppTestingModule,
       TransportCompanyDetailComponent,
       RelationComponent,
       SearchSelectComponent,
@@ -236,7 +256,6 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
       DetailPageContentComponent,
       DetailFooterComponent,
     ],
-    imports: [AppTestingModule],
     providers: [
       {
         provide: ActivatedRoute,

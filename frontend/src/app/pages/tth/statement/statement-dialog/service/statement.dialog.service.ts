@@ -21,6 +21,8 @@ export class StatementDialogService {
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
     });
-    return this.dialogRef.afterClosed().pipe(map((value) => (value ? value : false)));
+    return this.dialogRef
+      .afterClosed()
+      .pipe(map((value) => (value ? value : false)));
   }
 }
