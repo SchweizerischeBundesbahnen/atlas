@@ -23,4 +23,11 @@ public final class StringPredicates {
     return criteriaBuilder.like(criteriaBuilder.lower(path),
         PERCENT + escapedSearchString.toLowerCase() + PERCENT, '\\');
   }
+
+  public static Predicate equalIgnoreCase(CriteriaBuilder criteriaBuilder, Expression<String> path, String searchString) {
+    return criteriaBuilder.equal(
+        criteriaBuilder.lower(path),
+        searchString.toLowerCase()
+    );
+  }
 }
