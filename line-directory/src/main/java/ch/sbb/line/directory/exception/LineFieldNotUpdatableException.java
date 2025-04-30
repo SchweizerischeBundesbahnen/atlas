@@ -38,7 +38,7 @@ public class LineFieldNotUpdatableException extends AtlasException {
         .message("Field {0} cannot be update to {1} when LineType is {2}")
         .displayInfo(builder()
             .code(ERROR_CODE)
-            .with(fieldName, fieldName)
+            .with("field", fieldName)
             .with(fieldName, newVersion)
             .with(Fields.lineType, lineType.toString())
             .build()).build());
