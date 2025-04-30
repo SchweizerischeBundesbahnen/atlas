@@ -14,7 +14,7 @@ import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-la
 import { DateIconComponent } from '../../../core/form-components/date-icon/date-icon.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
-import { TimetableHearingYearInternalService } from '../../../api/service/timetable-hearing-year-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 
 const mockTimetableHearingYearsService = jasmine.createSpyObj(
   'timetableHearingService',

@@ -21,8 +21,8 @@ import { AtlasFieldLengthValidator } from '../../../core/validation/field-length
 import { TimetableFieldNumberDetailFormGroup } from './timetable-field-number-detail-form-group';
 import { ValidityService } from '../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
-import { TimetableFieldNumberInternalService } from '../../../api/service/timetable-field-number-internal.service';
-import { TimetableFieldNumberService } from '../../../api/service/timetable-field-number.service';
+import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
+import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable-field-number.service';
 import { BaseDetailComponent } from '../../../core/components/base-detail/base-detail.component';
 import { NgIf } from '@angular/common';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';

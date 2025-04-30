@@ -40,9 +40,9 @@ import { DateIconComponent } from '../../../../core/form-components/date-icon/da
 import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
 import moment from 'moment';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { SublineInternalService } from '../../../../api/service/subline-internal.service';
-import { SublineService } from '../../../../api/service/subline.service';
-import { LineService } from '../../../../api/service/line.service';
+import { SublineInternalService } from '../../../../api/service/lidi/subline-internal.service';
+import { SublineService } from '../../../../api/service/lidi/subline.service';
+import { LineService } from '../../../../api/service/lidi/line.service';
 
 const sublineVersion: SublineVersionV2 = {
   id: 1234,

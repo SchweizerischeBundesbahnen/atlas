@@ -42,8 +42,8 @@ import { UserDetailInfoComponent } from '../../../../core/components/base-detail
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { LineService } from '../../../../api/service/line.service';
-import { LineInternalService } from '../../../../api/service/line-internal.service';
+import { LineService } from '../../../../api/service/lidi/line.service';
+import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 
 @Component({
   templateUrl: './line-detail.component.html',

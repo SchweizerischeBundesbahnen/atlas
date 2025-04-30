@@ -14,7 +14,7 @@ import { TableFilterMultiSelect } from '../../../../core/components/table-filter
 import { TableFilterDateSelect } from '../../../../core/components/table-filter/config/table-filter-date-select';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { Pages } from '../../../pages';
-import { LineInternalService } from '../../../../api/service/line-internal.service';
+import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
 

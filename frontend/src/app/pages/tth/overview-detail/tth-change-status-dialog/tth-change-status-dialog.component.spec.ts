@@ -17,7 +17,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 import { MaintenanceIconComponent } from '../../../../core/components/header/maintenance-icon/maintenance-icon.component';
-import { TimetableHearingStatementInternalService } from '../../../../api/service/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 
 const mockTimetableHearingStatementsService = jasmine.createSpyObj(
   'timetableHearingStatementsService',

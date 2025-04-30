@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { LineType, LineVersionV2, Status } from '../../../../api';
 import { LineDetailResolver } from './line-detail.resolver';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { LineService } from '../../../../api/service/line.service';
+import { LineService } from '../../../../api/service/lidi/line.service';
 
 const version: LineVersionV2 = {
   lineConcessionType: 'CANTONALLY_APPROVED_LINE',

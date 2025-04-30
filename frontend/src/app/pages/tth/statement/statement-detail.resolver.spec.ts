@@ -8,7 +8,7 @@ import {
 import { StatementDetailResolver } from './statement-detail.resolver';
 import { AppTestingModule } from '../../../app.testing.module';
 import { of } from 'rxjs';
-import { TimetableHearingStatementInternalService } from '../../../api/service/timetable-hearing-statement-internal.service';
+import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
 
 const statement: TimetableHearingStatementV2 = {
   id: 1234,

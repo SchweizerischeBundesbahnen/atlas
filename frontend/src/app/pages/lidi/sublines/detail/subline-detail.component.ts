@@ -34,8 +34,8 @@ import {
   DetailWithCancelEdit,
 } from '../../../../core/detail/detail-helper.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { SublineService } from '../../../../api/service/subline.service';
-import { SublineInternalService } from '../../../../api/service/subline-internal.service';
+import { SublineService } from '../../../../api/service/lidi/subline.service';
+import { SublineInternalService } from '../../../../api/service/lidi/subline-internal.service';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
@@ -54,7 +54,7 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MainlineDescriptionPipe } from './mainline-description.pipe';
-import { LineService } from '../../../../api/service/line.service';
+import { LineService } from '../../../../api/service/lidi/line.service';
 
 @Component({
   templateUrl: './subline-detail.component.html',
