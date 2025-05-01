@@ -29,6 +29,7 @@ public class TerminationStopPointWorkflowMapper {
         .sloid(model.getSloid())
         .applicantMail(model.getApplicantMail())
         .boTerminationDate(model.getBoTerminationDate())
+        .workflowComment(model.getWorkflowComment())
         .build();
   }
 
