@@ -49,7 +49,7 @@ class ExactMatchStringSpecificationTest {
   }
 
   @Test
-  void testToPredicateWithEmptyStrings() {
+  void shouldReturnExpectedPredicateWhenPathOptionalIsEmpty() {
     ExactMatchStringSpecification<Object> specification = new ExactMatchStringSpecification<>(Optional.empty(), "test"
     );
     when(criteriaBuilder.and()).thenReturn(expectedPredicate);
@@ -60,7 +60,7 @@ class ExactMatchStringSpecificationTest {
   }
 
   @Test
-  void testToPredicateWithNonEmptyString() {
+  void shouldReturnExpectedPredicateWhenOptionalValueIsPresent() {
     when(root.<String>get("test")).thenReturn(path);
 
     stringPredicatesMock
