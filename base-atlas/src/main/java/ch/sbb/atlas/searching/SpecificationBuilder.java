@@ -2,6 +2,7 @@ package ch.sbb.atlas.searching;
 
 import ch.sbb.atlas.searching.specification.BooleanSpecification;
 import ch.sbb.atlas.searching.specification.EnumSpecification;
+import ch.sbb.atlas.searching.specification.ExactMatchStringSpecification;
 import ch.sbb.atlas.searching.specification.InSpecification;
 import ch.sbb.atlas.searching.specification.SearchCriteriaSpecification;
 import ch.sbb.atlas.searching.specification.SingleStringSpecification;
@@ -34,12 +35,12 @@ public class SpecificationBuilder<T> {
     return new ValidOnSpecification<>(validOn, validFromAttribute, validToAttribute);
   }
 
-  public Specification<T> singleStringSpecification(Optional<String> searchString) {
-    return new SingleStringSpecification<>(searchString, singleStringAttribute.getName());
-  }
-
   public Specification<T> singleStringSpecification(Optional<String> searchString, String column) {
     return new SingleStringSpecification<>(searchString, column);
+  }
+
+  public Specification<T> exactMatchStringSpecification(Optional<String> searchString) {
+    return new ExactMatchStringSpecification<>(searchString, singleStringAttribute.getName());
   }
 
   public Specification<T> stringInSpecification(List<String> searchStrings, SingularAttribute<T, String> column) {
