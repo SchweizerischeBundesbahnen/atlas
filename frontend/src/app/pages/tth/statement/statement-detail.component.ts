@@ -21,8 +21,8 @@ import {
   FormArray,
   FormControl,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
@@ -50,7 +50,7 @@ import { LoadingSpinnerService } from '../../../core/components/loading-spinner/
 import { ScrollToTopDirective } from '../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { TimetableFieldNumberSelectComponent } from '../../../core/form-components/ttfn-select/timetable-field-number-select.component';
