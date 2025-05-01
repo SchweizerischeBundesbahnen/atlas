@@ -1,5 +1,6 @@
 package ch.sbb.business.organisation.directory.service;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.exception.BusinessOrganisationConflictException;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
@@ -30,21 +31,22 @@ public class BusinessOrganisationValidationService {
   List<BusinessOrganisationVersion> findAbbreviationAndOrganisationNumberOverlaps(
       BusinessOrganisationVersion version) {
     return Stream.of(
-                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationDe(
-                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationDe()),
-                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationFr(
-                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationFr()),
-                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationIt(
-                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationIt()),
-                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationEn(
-                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationEn()),
-                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndOrganisationNumber(
-                         version.getValidFrom(), version.getValidTo(), version.getOrganisationNumber())
-                 )
-                 .flatMap(Collection::stream)
-                 .filter(i -> !i.getSboid().equals(version.getSboid()))
-                 .distinct()
-                 .toList();
+            versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationDe(
+                version.getValidFrom(), version.getValidTo(), version.getAbbreviationDe()),
+            versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationFr(
+                version.getValidFrom(), version.getValidTo(), version.getAbbreviationFr()),
+            versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationIt(
+                version.getValidFrom(), version.getValidTo(), version.getAbbreviationIt()),
+            versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationEn(
+                version.getValidFrom(), version.getValidTo(), version.getAbbreviationEn()),
+            versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndOrganisationNumber(
+                version.getValidFrom(), version.getValidTo(), version.getOrganisationNumber())
+        )
+        .flatMap(Collection::stream)
+        .filter(i -> !i.getSboid().equals(version.getSboid()))
+        .filter(v -> v.getStatus() != Status.REVOKED)
+        .distinct()
+        .toList();
   }
 
 }
