@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class StopPointWorkflowBuilderNotificationService extends BaseNotificationService {
 
+  public static final String WORKFLOW_URL = "service-point-directory/workflows/";
+
   public MailNotification buildWorkflowStartedExaminantMail(StopPointWorkflow stopPointWorkflow) {
     List<String> examinantMails = stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList();
     return buildWorkflowStartedExaminantMail(stopPointWorkflow, examinantMails);
