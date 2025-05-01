@@ -1,20 +1,24 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AtlasApiService } from '../atlasApi.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TimetableYearChangeInternalService extends AtlasApiService {
+export class TimetableYearChangeInternalService {
+
+  private readonly TTY_CHANGE = '/line-directory/internal/timetable-year-change';
+
+  private readonly atlasApiService = inject(AtlasApiService);
 
   public getNextTimetablesYearChange(count: number): Observable<Date[]> {
-    this.validateParams({ count });
-    return this.get(`/line-directory/internal/timetable-year-change/next-years/${encodeURIComponent(String(count))}`, 'json');
+    this.atlasApiService.validateParams({ count });
+    return this.atlasApiService.get(`${this.TTY_CHANGE}/next-years/${encodeURIComponent(String(count))}`);
   }
 
   public getTimetableYearChange(year: number): Observable<Date> {
-    this.validateParams({ year });
-    return this.get(`/line-directory/internal/timetable-year-change/${encodeURIComponent(String(year))}`, 'json');
+    this.atlasApiService.validateParams({ year });
+    return this.atlasApiService.get(`${this.TTY_CHANGE}/${encodeURIComponent(String(year))}`);
   }
 
 }

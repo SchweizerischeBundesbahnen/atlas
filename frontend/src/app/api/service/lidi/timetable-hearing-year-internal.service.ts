@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AtlasApiService } from '../atlasApi.service';
 import { Observable } from 'rxjs';
 import { TimetableHearingYear } from '../../model/timetableHearingYear';
@@ -7,36 +7,40 @@ import { HearingStatus } from '../../model/hearingStatus';
 @Injectable({
   providedIn: 'root',
 })
-export class TimetableHearingYearInternalService extends AtlasApiService {
+export class TimetableHearingYearInternalService {
+
+  private readonly YEARS = '/line-directory/internal/timetable-hearing/years';
+
+  private readonly atlasApiService = inject(AtlasApiService);
 
   public closeTimetableHearing(year: number): Observable<TimetableHearingYear> {
-    this.validateParams({ year });
-    return this.post(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}/close`);
+    this.atlasApiService.validateParams({ year });
+    return this.atlasApiService.post(`${this.YEARS}/${encodeURIComponent(String(year))}/close`);
   }
 
   public createHearingYear(timetableHearingYear: TimetableHearingYear): Observable<TimetableHearingYear> {
-    this.validateParams({ timetableHearingYear });
-    return this.post(`/line-directory/internal/timetable-hearing/years`, timetableHearingYear);
+    this.atlasApiService.validateParams({ timetableHearingYear });
+    return this.atlasApiService.post(this.YEARS, timetableHearingYear);
   }
 
   public getHearingYear(year: number): Observable<TimetableHearingYear> {
-    this.validateParams({ year });
-    return this.get(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}`, 'json');
+    this.atlasApiService.validateParams({ year });
+    return this.atlasApiService.get(`${this.YEARS}/${encodeURIComponent(String(year))}`);
   }
 
   public getHearingYears(statusChoices?: Array<HearingStatus>): Observable<TimetableHearingYear[]> {
-    const httpParams = this.paramsOf({ statusChoices });
-    return this.get(`/line-directory/internal/timetable-hearing/years`, 'json', httpParams);
+    const httpParams = this.atlasApiService.paramsOf({ statusChoices });
+    return this.atlasApiService.get(this.YEARS, httpParams);
   }
 
   public startHearingYear(year: number): Observable<TimetableHearingYear> {
-    this.validateParams({ year });
-    return this.post(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}/start`);
+    this.atlasApiService.validateParams({ year });
+    return this.atlasApiService.post(`${this.YEARS}/${encodeURIComponent(String(year))}/start`);
   }
 
   public updateTimetableHearingSettings(year: number, timetableHearingYear: TimetableHearingYear): Observable<void> {
-    this.validateParams({ year, timetableHearingYear });
-    return this.put(`/line-directory/internal/timetable-hearing/years/${encodeURIComponent(String(year))}`, timetableHearingYear);
+    this.atlasApiService.validateParams({ year, timetableHearingYear });
+    return this.atlasApiService.put(`${this.YEARS}/${encodeURIComponent(String(year))}`, timetableHearingYear);
   }
 
 }
