@@ -8,11 +8,12 @@ describe('StopPointTerminationWorkflowOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StopPointTerminationWorkflowOverviewComponent]
-    })
-    .compileComponents();
+      imports: [StopPointTerminationWorkflowOverviewComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(StopPointTerminationWorkflowOverviewComponent);
+    fixture = TestBed.createComponent(
+      StopPointTerminationWorkflowOverviewComponent
+    );
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
