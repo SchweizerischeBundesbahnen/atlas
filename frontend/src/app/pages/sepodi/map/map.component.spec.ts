@@ -49,10 +49,6 @@ mapService.mapInitialized = new BehaviorSubject(false);
 
 mapService.initMap.and.returnValue(mapSpy);
 
-mapSpy.on.and.callFake(() => {
-  return mapSpy;
-});
-
 describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;

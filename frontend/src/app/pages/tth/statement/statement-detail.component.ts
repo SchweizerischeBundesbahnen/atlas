@@ -48,7 +48,6 @@ import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { LoadingSpinnerService } from '../../../core/components/loading-spinner/loading-spinner.service';
 import { ScrollToTopDirective } from '../../../core/scroll-to-top/scroll-to-top.directive';
-import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
@@ -75,7 +74,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./statement-detail.component.scss'],
   imports: [
     ScrollToTopDirective,
-    LoadingSpinnerComponent,
     DetailPageContainerComponent,
     DetailPageContentComponent,
     ReactiveFormsModule,
