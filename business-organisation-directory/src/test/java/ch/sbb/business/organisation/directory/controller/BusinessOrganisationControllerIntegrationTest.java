@@ -463,6 +463,34 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerWithAm
   }
 
   @Test
+  void shouldNotReturnConflictErrorResponse() throws Exception {
+    //given
+    BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
+        .builder()
+        .abbreviationDe("de1")
+        .abbreviationFr("fr1")
+        .abbreviationIt("it1")
+        .abbreviationEn("en1")
+        .descriptionDe("desc-de1")
+        .descriptionFr("desc-fr1")
+        .descriptionIt("desc-it1")
+        .descriptionEn("desc-en1")
+        .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
+        .contactEnterpriseEmail("mail1@mail.ch")
+        .organisationNumber(1234)
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .build();
+    BusinessOrganisationVersionModel savedVersion = controller.createBusinessOrganisationVersion(model);
+    controller.revokeBusinessOrganisation(savedVersion.getSboid());
+
+    //when and then
+    mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
+            .content(mapper.writeValueAsString(model)))
+        .andExpect(status().isCreated());
+  }
+
+  @Test
   void shouldReturnOptimisticLockingOnBusinessObjectChanges() throws Exception {
     //given
     BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
