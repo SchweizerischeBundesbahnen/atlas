@@ -28,8 +28,7 @@ public class TimetableFieldNumberSearchRestrictions extends
 
   @Override
   public Specification<TimetableFieldNumber> getSpecification() {
-    return getBaseSpecification().and(
-        specificationBuilder().singleStringSpecification(Optional.ofNullable(number)));
+    return getBaseSpecification().and(specificationBuilder().exactMatchStringSpecification(Optional.ofNullable(number)));
   }
 
   @Override
