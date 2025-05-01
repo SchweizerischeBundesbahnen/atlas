@@ -81,7 +81,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
     this.lineVersionSnapshot = this.readRecord();
     this.initLineVersionSnapshotForm();
     this.initWorkflowForms();
-    this.checkLineVersionSNapshottedAlreadyExists();
+    this.checkLineVersionSnapshottedAlreadyExists();
   }
 
   readRecord(): LineVersionSnapshot {
@@ -134,9 +134,9 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
     });
   }
 
-  private checkLineVersionSNapshottedAlreadyExists() {
+  private checkLineVersionSnapshottedAlreadyExists() {
     this.lineService
-      .getLineVersions(this.lineVersionSnapshot!.slnid!)
+      .getLineVersions(this.lineVersionSnapshot.slnid!)
       .subscribe({
         next: (lineVersions) => {
           const lineVersionsFiltered: LineVersion[] = lineVersions.filter(
