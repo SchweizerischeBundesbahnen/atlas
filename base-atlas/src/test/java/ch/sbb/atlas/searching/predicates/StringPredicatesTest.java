@@ -35,7 +35,7 @@ class StringPredicatesTest {
   }
 
   @Test
-  void testEqualIgnoreCase() {
+  void shouldReturnExpectedPredicateWhenEqualIgnoreCase() {
     String searchString = "TestString";
 
     when(criteriaBuilder.lower(path)).thenReturn(lowerPath);
