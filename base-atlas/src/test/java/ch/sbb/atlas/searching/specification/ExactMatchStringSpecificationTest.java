@@ -10,6 +10,7 @@ import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.Optional;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -40,6 +41,11 @@ class ExactMatchStringSpecificationTest {
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     stringPredicatesMock = Mockito.mockStatic(StringPredicates.class);
+  }
+
+  @AfterEach
+  public void tearDown() {
+    stringPredicatesMock.close();
   }
 
   @Test
