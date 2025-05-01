@@ -20,5 +20,8 @@ export class ServicePointAbbreviationAllowList {
     'ch:1:sboid:100866',
     'ch:1:sboid:100042',
     'ch:1:sboid:100053',
+    'ch:1:sboid:100064',
+    'ch:1:sboid:100029',
+    'ch:1:sboid:100070',
   ];
 }
