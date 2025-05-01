@@ -37,9 +37,7 @@ const mapSpy = jasmine.createSpyObj<Map>([
 mapSpy.getSource = jasmine.createSpy('getSource').and.returnValue({
   setData: jasmine.createSpy('setData'),
 });
-mapSpy.on.and.callFake(() => {
-  return mapSpy;
-});
+
 describe('MapService', () => {
   let service: MapService;
 
