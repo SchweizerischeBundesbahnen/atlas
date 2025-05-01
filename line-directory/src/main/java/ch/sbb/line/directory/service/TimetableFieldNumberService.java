@@ -1,12 +1,10 @@
 package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.searching.specification.ExactMatchStringSpecification;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.entity.TimetableFieldNumber_;
 import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
@@ -18,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,19 +75,6 @@ public class TimetableFieldNumberService {
   public Page<TimetableFieldNumber> getVersionsSearched(
       TimetableFieldNumberSearchRestrictions searchRestrictions) {
     log.info("Loading TimetableFieldNumbers with searchRestrictions={}", searchRestrictions);
-
-    Optional<String> searchTerm = Optional.ofNullable(searchRestrictions.getNumber());
-
-    if (searchTerm.isPresent() && !searchTerm.get().isBlank()) {
-      Specification<TimetableFieldNumber> exactString =
-          new ExactMatchStringSpecification<>(searchTerm, TimetableFieldNumber_.number.getName());
-
-      List<TimetableFieldNumber> exactResults = timetableFieldNumberRepository.findAll(exactString);
-
-      if (exactResults.size() == 1) {
-        return new PageImpl<>(exactResults, searchRestrictions.getPageable(), exactResults.size());
-      }
-    }
 
     return timetableFieldNumberRepository.findAll(searchRestrictions.getSpecification(),
         searchRestrictions.getPageable());

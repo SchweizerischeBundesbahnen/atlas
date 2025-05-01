@@ -80,7 +80,7 @@ class TimetableFieldNumberResolverServiceTest {
         .build();
     when(timetableFieldNumberService.getVersionsValidAt(any(), any())).thenReturn(Collections.singletonList(version));
 
-    TimetableHearingStatementModelV2 statementModel =TimetableHearingStatementModelV2.builder()
+    TimetableHearingStatementModelV2 statementModel = TimetableHearingStatementModelV2.builder()
         .timetableYear(2023L)
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:12341241")
