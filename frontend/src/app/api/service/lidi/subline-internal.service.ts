@@ -1,20 +1,26 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AtlasApiService } from '../atlasApi.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SublineInternalService extends AtlasApiService {
+export class SublineInternalService {
+
+  private readonly INTERNAL_SUBLINES = '/line-directory/internal/sublines';
+
+  private readonly atlasApiService = inject(AtlasApiService);
 
   public revokeSubline(slnid: string): Observable<void> {
-    this.validateParams({ slnid });
-    return this.post(`/line-directory/internal/sublines/${encodeURIComponent(String(slnid))}/revoke`);
+    this.atlasApiService.validateParams({ slnid });
+    return this.atlasApiService.post(
+      `${this.INTERNAL_SUBLINES}/${encodeURIComponent(String(slnid))}/revoke`);
   }
 
   public deleteSublines(slnid: string): Observable<void> {
-    this.validateParams({ slnid });
-    return this.delete(`/line-directory/internal/sublines/${encodeURIComponent(String(slnid))}`);
+    this.atlasApiService.validateParams({ slnid });
+    return this.atlasApiService.delete(
+      `${this.INTERNAL_SUBLINES}/${encodeURIComponent(String(slnid))}`);
   }
 
 }
