@@ -30,12 +30,12 @@ class StringPredicatesTest {
   Expression<String> lowerPath;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
   }
 
   @Test
-  public void testEqualIgnoreCase() {
+  void testEqualIgnoreCase() {
     String searchString = "TestString";
 
     when(criteriaBuilder.lower(path)).thenReturn(lowerPath);
