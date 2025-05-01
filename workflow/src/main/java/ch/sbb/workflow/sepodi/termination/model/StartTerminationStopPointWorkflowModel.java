@@ -1,9 +1,11 @@
 package ch.sbb.workflow.sepodi.termination.model;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -36,5 +38,10 @@ public class StartTerminationStopPointWorkflowModel {
 
   @Schema(description = "Termination Date defined by Business Organisation managing the Stop Point")
   private LocalDate boTerminationDate;
+
+  @Schema(description = "Workflow comment")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
+  private String workflowComment;
 
 }
