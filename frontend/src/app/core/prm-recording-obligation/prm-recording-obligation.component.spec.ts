@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PrmRecordingObligationComponent } from './prm-recording-obligation.component';
-import { PersonWithReducedMobilityService } from '../../api/service/person-with-reduced-mobility.service';
+import { PersonWithReducedMobilityService } from '../../api/service/prm/person-with-reduced-mobility.service';
 import { EMPTY, of } from 'rxjs';
 import { PermissionService } from '../auth/permission/permission.service';
 import { adminPermissionServiceMock } from '../../app.testing.mocks';

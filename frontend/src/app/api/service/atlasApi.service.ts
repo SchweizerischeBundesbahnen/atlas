@@ -1,15 +1,18 @@
 import { UserService } from '../../core/auth/user/user.service';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-type NotBlob<T> = T extends Blob ? undefined : T;
+type NotBlob<T> = T extends Blob ? unknown : T;
 
+@Injectable({
+  providedIn: "root"
+})
 export class AtlasApiService {
 
-  protected httpClient = inject(HttpClient);
-  protected userService = inject(UserService);
+  private readonly httpClient = inject(HttpClient);
+  private readonly userService = inject(UserService);
 
   private readonly acceptAllHeaders = new HttpHeaders({ 'Accept': '*/*' });
   private readonly createUpdateOptions: { responseType: 'json', headers: HttpHeaders } = {
@@ -19,15 +22,7 @@ export class AtlasApiService {
     }),
   };
 
-  get basePath() {
-    if (this.userService.loggedIn) {
-      return environment.atlasApiUrl;
-    } else {
-      return environment.atlasUnauthApiUrl;
-    }
-  }
-
-  protected paramsOf(params: { [key: string]: any }): HttpParams {
+  paramsOf(params: { [key: string]: any }): HttpParams {
     let queryParameters = new HttpParams();
 
     Object.keys(params).forEach(key => {
@@ -45,7 +40,7 @@ export class AtlasApiService {
     return queryParameters;
   }
 
-  protected validateParams(params: { [key: string]: any }): void {
+  validateParams(params: { [key: string]: any }): void {
     Object.keys(params).forEach(key => {
       if (params[key] === null || params[key] === undefined) {
         throw new Error(`Required parameter '${key}' is null or undefined.`);
@@ -53,30 +48,42 @@ export class AtlasApiService {
     });
   }
 
-  protected get<T>(path: string, responseType: 'json', params?: HttpParams): Observable<NotBlob<T>>;
-  protected get(path: string, responseType: 'blob', params?: HttpParams): Observable<Blob>;
-  protected get<T>(path: string, responseType: 'json' | 'blob', params?: HttpParams): Observable<NotBlob<T> | Blob> {
+  get<T>(path: string, params?: HttpParams): Observable<NotBlob<T>> {
     const url = `${this.basePath}${path}`;
-    const options = {
+    return this.httpClient.get<NotBlob<T>>(url, {
       headers: this.acceptAllHeaders,
       params,
-    };
-    return responseType === 'json' ? this.httpClient.get<NotBlob<T>>(url, {
-      ...options,
-      responseType,
-    }) : this.httpClient.get(url, { ...options, responseType });
+      responseType: 'json'
+    });
   }
 
-  protected put<T>(path: string, body: any, options?: { responseType?: 'json', headers?: HttpHeaders }): Observable<T> {
+  getBlob(path: string, params?: HttpParams): Observable<Blob> {
+    const url = `${this.basePath}${path}`;
+    return this.httpClient.get(url, {
+      headers: this.acceptAllHeaders,
+      params,
+      responseType: 'blob'
+    });
+  }
+
+  put<T>(path: string, body: any, options?: { responseType?: 'json', headers?: HttpHeaders }): Observable<T> {
     return this.httpClient.put<T>(`${this.basePath}${path}`, body, options ?? this.createUpdateOptions);
   }
 
-  protected post<T>(path: string, body: any = null, options?: { responseType?: 'json', headers?: HttpHeaders }): Observable<T> {
+  post<T>(path: string, body: any = null, options?: { responseType?: 'json', headers?: HttpHeaders }): Observable<T> {
     return this.httpClient.post<T>(`${this.basePath}${path}`, body, options ?? this.createUpdateOptions);
   }
 
-  protected delete<T>(path: string): Observable<T> {
+  delete<T>(path: string): Observable<T> {
     return this.httpClient.delete<T>(`${this.basePath}${path}`);
+  }
+
+  private get basePath() {
+    if (this.userService.loggedIn) {
+      return environment.atlasApiUrl;
+    } else {
+      return environment.atlasUnauthApiUrl;
+    }
   }
 
   // TODO: Simplify with https://flow.sbb.ch/browse/ATLAS-2868
