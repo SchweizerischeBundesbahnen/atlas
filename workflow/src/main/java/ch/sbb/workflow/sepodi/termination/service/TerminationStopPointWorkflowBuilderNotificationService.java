@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TerminationStopPointWorkflowBuilderNotificationService extends BaseNotificationService {
 
+  public static final String TERMINATION_WORKFLOW_URL = "service-point-directory/termination-workflows/";
+
   private final TerminationExaminants terminationExaminants;
 
   public MailNotification buildStartTerminationNotificationMailForInfoPlus(TerminationStopPointWorkflow workflow) {
@@ -43,7 +45,7 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
   }
 
   private String getUrl(TerminationStopPointWorkflow workflow) {
-    return AtlasFrontendBaseUrl.getUrl(activeProfile) + WORKFLOW_URL + workflow.getId();
+    return AtlasFrontendBaseUrl.getUrl(activeProfile) + TERMINATION_WORKFLOW_URL + workflow.getId();
   }
 
   private String calculateTerminationDate(TerminationStopPointWorkflow workflow) {

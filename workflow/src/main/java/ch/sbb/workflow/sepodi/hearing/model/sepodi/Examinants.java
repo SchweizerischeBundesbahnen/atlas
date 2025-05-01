@@ -1,13 +1,13 @@
 package ch.sbb.workflow.sepodi.hearing.model.sepodi;
 
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.workflow.sepodi.BaseExaminants;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -17,15 +17,10 @@ import org.springframework.stereotype.Component;
 @Setter
 @Configuration
 @ConfigurationProperties(prefix = "examinants")
-public class Examinants {
+public class Examinants extends BaseExaminants {
 
-  private static final String PROD_PROFILE = "prod";
   public static final String NON_PROD_EMAIL_CANTON = "TechSupport-ATLAS@sbb.ch";
   public static final String NON_PROD_EMAIL_ATLAS = "testuser-atlas@sbb.ch";
-
-  @Value("${spring.profiles.active:local}")
-  @Setter
-  private String activeProfile;
 
   private SpecialistOffice specialistOffice;
 

@@ -18,7 +18,7 @@ public class TerminationDateException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-        .status(HttpStatus.EXPECTATION_FAILED.value())
+        .status(HttpStatus.PRECONDITION_FAILED.value())
         .message(getFormattedMsg())
         .error("StopPoint Termination date error")
         .build();
