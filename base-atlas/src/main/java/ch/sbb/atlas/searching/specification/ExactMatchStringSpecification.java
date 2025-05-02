@@ -5,12 +5,11 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 import org.springframework.data.jpa.domain.Specification;
 
-public class ExactMatchStringSpecification<T> implements Specification<T>, Serializable {
+public class ExactMatchStringSpecification<T> implements Specification<T> {
 
   private static final long serialVersionUID = 1;
 
