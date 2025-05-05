@@ -15,14 +15,21 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
 @Slf4j
-class PDDocumentCatalogBleach {
+class PDDocumentCatalogBleach extends PdfCdrReporter {
 
   private final PDAnnotationBleach annotationBleach;
 
-  PDDocumentCatalogBleach() {
-    this.annotationBleach = new PDAnnotationBleach();
+  PDDocumentCatalogBleach(PdfCdrResult result) {
+    super(result);
+    this.annotationBleach = new PDAnnotationBleach(result);
   }
 
+  void sanitize(PDDocumentCatalog docCatalog) throws IOException {
+    sanitizeOpenAction(docCatalog);
+    sanitizeDocumentActions(docCatalog.getActions());
+    sanitizePageActions(docCatalog.getPages());
+    sanitizeAcroFormActions(docCatalog.getAcroForm());
+  }
 
   private void sanitizeAcroFormActions(PDAcroForm acroForm) {
     if (acroForm == null) {
@@ -62,19 +69,21 @@ class PDDocumentCatalogBleach {
     }
   }
 
-  void sanitizePageActions(PDPageAdditionalActions pageActions) {
+  private void sanitizePageActions(PDPageAdditionalActions pageActions) {
     if (pageActions.getC() != null) {
       log.debug("Found&removed action when page is closed, was ({})", pageActions.getC());
       pageActions.setC(null);
+      reportPerformedAction("Removed Page Action on close from PDPageAdditionalActions");
     }
 
     if (pageActions.getO() != null) {
       log.debug("Found&removed action when page is opened, was ({})", pageActions.getO());
       pageActions.setO(null);
+      reportPerformedAction("Removed Page Action on open from PDPageAdditionalActions");
     }
   }
 
-  void sanitizeOpenAction(PDDocumentCatalog docCatalog)
+  private void sanitizeOpenAction(PDDocumentCatalog docCatalog)
       throws IOException {
     log.trace("Checking OpenAction...");
     PDDestinationOrAction openAction = docCatalog.getOpenAction();
@@ -85,59 +94,65 @@ class PDDocumentCatalogBleach {
 
     log.debug("Found a JavaScript OpenAction, removed. Was {}", openAction);
     docCatalog.setOpenAction(null);
+    reportPerformedAction("Removed OpenAction from PDDocumentCatalog");
   }
 
-  void sanitizeDocumentActions(PDDocumentCatalogAdditionalActions documentActions) {
+  private void sanitizeDocumentActions(PDDocumentCatalogAdditionalActions documentActions) {
     log.trace("Checking additional actions...");
     if (documentActions.getDP() != null) {
       log.debug("Found&removed action after printing (was {})", documentActions.getDP());
       documentActions.setDP(null);
+      reportPerformedAction("Removed after printing action from PDDocumentCatalogAdditionalActions");
     }
     if (documentActions.getDS() != null) {
       log.debug("Found&removed action after saving (was {})", documentActions.getDS());
       documentActions.setDS(null);
+      reportPerformedAction("Removed after saving action from PDDocumentCatalogAdditionalActions");
     }
     if (documentActions.getWC() != null) {
       log.debug("Found&removed action before closing (was {}", documentActions.getWC());
       documentActions.setWC(null);
+      reportPerformedAction("Removed before closing action from PDDocumentCatalogAdditionalActions");
     }
     if (documentActions.getWP() != null) {
       log.debug("Found&removed action before printing (was {})", documentActions.getWP());
       documentActions.setWP(null);
+      reportPerformedAction("Removed before printing action from PDDocumentCatalogAdditionalActions");
     }
     if (documentActions.getWS() != null) {
       log.debug("Found&removed action before saving (was {})", documentActions.getWS());
       documentActions.setWS(null);
+      reportPerformedAction("Removed before saving action from PDDocumentCatalogAdditionalActions");
     }
   }
 
-  void sanitizeFieldAdditionalActions(PDFormFieldAdditionalActions fieldActions) {
+  private void sanitizeFieldAdditionalActions(PDFormFieldAdditionalActions fieldActions) {
     if (fieldActions.getC() != null) {
       log.debug(
-          "Found&removed an action to be performed in order to recalculate the value of this field when that of another field changes.");
+          "Found&removed an action to be performed in order to recalculate the value of this field when that of another field "
+              + "changes.");
       fieldActions.setC(null);
+      reportPerformedAction("Removed recalculate action from PDFormFieldAdditionalActions");
     }
     if (fieldActions.getF() != null) {
       log.debug(
           "Found&removed an action to be performed before the field is formatted to display its current value.");
       fieldActions.setF(null);
+      reportPerformedAction("Removed before format action from PDFormFieldAdditionalActions");
     }
     if (fieldActions.getK() != null) {
       log.debug(
-          "Found&removed an action to be performed when the user types a keystroke into a text field or combo box or modifies the selection in a scrollable list box.");
+          "Found&removed an action to be performed when the user types a keystroke into a text field or combo box or modifies "
+              + "the selection in a scrollable list box.");
       fieldActions.setK(null);
+      reportPerformedAction("Removed keystroke action from PDFormFieldAdditionalActions");
     }
     if (fieldActions.getV() != null) {
       log.debug(
           "Found&removed an action to be action to be performed when the field's value is changed.");
       fieldActions.setV(null);
+      reportPerformedAction("Removed field value change action from PDFormFieldAdditionalActions");
     }
   }
 
-  void sanitize(PDDocumentCatalog docCatalog) throws IOException {
-    sanitizeOpenAction(docCatalog);
-    sanitizeDocumentActions(docCatalog.getActions());
-    sanitizePageActions(docCatalog.getPages());
-    sanitizeAcroFormActions(docCatalog.getAcroForm());
-  }
 }
