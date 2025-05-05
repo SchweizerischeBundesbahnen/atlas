@@ -5,15 +5,15 @@ plugins {
 group = "ch.sbb.atlas"
 version = "2.589.0"
 
-extra["awsS3Version"] = "2.31.34"
+extra["awsS3Version"] = "2.31.35"
 
 extra["swaggerCoreVersion"] = "2.2.30"
-extra["openapiStarterCommonVersion"] = "2.8.6"
+extra["openapiStarterCommonVersion"] = "2.8.8"
 
 //Geo Data Libs
 extra["proj4jVersion"] = "1.4.0"
 extra["jtsVersion"] = "1.20.0"
-extra["springOpenapiUiVersion"] = "2.8.6"
+extra["springOpenapiUiVersion"] = "2.8.8"
 extra["springCloudVersion"] = "2024.0.1"
 
 subprojects {
