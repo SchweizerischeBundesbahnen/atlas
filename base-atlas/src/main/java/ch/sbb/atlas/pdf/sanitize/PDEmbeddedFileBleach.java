@@ -23,6 +23,10 @@ class PDEmbeddedFileBleach {
     this.doc = doc;
   }
 
+  void sanitize(PDEmbeddedFilesNameTreeNode embeddedFiles) {
+    sanitizeRecursiveNameTree(embeddedFiles, this::sanitizeEmbeddedFile);
+  }
+
   private void sanitizeEmbeddedFile(PDComplexFileSpecification fileSpec) {
     log.trace("Embedded file found: {}", fileSpec.getFilename());
 
@@ -47,9 +51,9 @@ class PDEmbeddedFileBleach {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
 
     try {
-      PdfBleach.sanitize(is, os);
+      PdfCdr.sanitize(is, os);
     } catch (Exception e) {
-      log.error("Error during the bleach process", e);
+      log.error("Error during the embedded file processing", e);
       return null;
     }
 
@@ -86,7 +90,6 @@ class PDEmbeddedFileBleach {
     return ef;
   }
 
-
   private <T extends COSObjectable> void sanitizeRecursiveNameTree(PDNameTreeNode<T> efTree,
       Consumer<T> callback) {
     if (efTree == null) {
@@ -112,8 +115,4 @@ class PDEmbeddedFileBleach {
     }
   }
 
-
-  void sanitize(PDEmbeddedFilesNameTreeNode embeddedFiles) {
-    sanitizeRecursiveNameTree(embeddedFiles, this::sanitizeEmbeddedFile);
-  }
 }
