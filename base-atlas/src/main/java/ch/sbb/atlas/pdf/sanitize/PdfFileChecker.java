@@ -2,23 +2,19 @@ package ch.sbb.atlas.pdf.sanitize;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pdfbox.io.RandomAccessReadBuffer;
 
-/**
- * PDF parsing is a bit tricky: everything may or may not be linked to additional actions, so we
- * need to treat each and every elements.
- */
 @Slf4j
-public class PdfBleach {
+class PdfFileChecker {
 
-  private static final byte[] PDF_MAGIC = new byte[]{37, 80, 68, 70};
+  // PDFs start with 0x25 0x50 0x44 0x46 (in hex format, in ASCII it's %PDF)
+  // This file marker is in dec format.
+  private static final byte[] PDF_FILE_MARKER = new byte[]{37, 80, 68, 70};
 
-  public boolean handlesMagic(InputStream stream) {
-    return hasHeader(stream, PDF_MAGIC);
+  static boolean hasPdfFileMarker(InputStream stream) {
+    return hasHeader(stream, PDF_FILE_MARKER);
   }
 
   private static boolean hasHeader(InputStream stream, byte[] header) {
@@ -41,14 +37,6 @@ public class PdfBleach {
     }
 
     return length == header.length && Arrays.equals(fileMagic, header);
-  }
-
-  public static void sanitize(InputStream inputStream, OutputStream outputStream) {
-    try {
-      new PdfBleachSession().sanitize(new RandomAccessReadBuffer(inputStream), outputStream);
-    } catch (IOException e) {
-      throw new IllegalStateException(e);
-    }
   }
 
 }
