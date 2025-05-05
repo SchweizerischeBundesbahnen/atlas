@@ -3,31 +3,29 @@ package ch.sbb.atlas.pdf.sanitize;
 import java.io.IOException;
 import java.io.OutputStream;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.io.RandomAccessRead;
-import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDDocumentNameDictionary;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDDocumentOutline;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineItem;
 
 @Slf4j
-class PdfBleachSession {
+class PdfCdrRun {
 
-  void sanitize(RandomAccessRead source, OutputStream outputStream) throws IOException {
-    final PDDocument doc = getDocument(source);
+  private final PdfCdrResult result = new PdfCdrResult();
 
-    final PDDocumentCatalog docCatalog = doc.getDocumentCatalog();
+  PdfCdrResult sanitize(RandomAccessRead inputStream, OutputStream outputStream) throws IOException {
+    PDDocument doc = Loader.loadPDF(inputStream);
 
-    sanitizeNamed(doc, docCatalog.getNames());
-    PDDocumentCatalogBleach catalogBleach = new PDDocumentCatalogBleach();
-    catalogBleach.sanitize(docCatalog);
+    sanitizeNamed(doc, doc.getDocumentCatalog().getNames());
+    new PDDocumentCatalogBleach(result).sanitize(doc.getDocumentCatalog());
+
     sanitizeDocumentOutline(doc.getDocumentCatalog().getDocumentOutline());
-
-    new COSObjectBleach().sanitizeObjects(doc.getDocument());
 
     doc.save(outputStream);
     doc.close();
+    return result;
   }
 
   private void sanitizeDocumentOutline(PDDocumentOutline documentOutline) {
@@ -43,6 +41,7 @@ class PdfBleachSession {
     }
     log.debug("Found&removed action on outline item (was {})", item.getAction());
     item.setAction(null);
+    result.addPerformedAction("Removed action from PDOutlineItem");
   }
 
   private void sanitizeNamed(PDDocument doc, PDDocumentNameDictionary names) {
@@ -54,13 +53,7 @@ class PdfBleachSession {
 
     if (names.getJavaScript() != null) {
       names.setJavascript(null);
-    }
-  }
-
-  private PDDocument getDocument(RandomAccessRead source) throws IOException {
-    PDFParser parser = new PDFParser(source);
-    try (PDDocument document = parser.parse()) {
-      return document;
+      result.addPerformedAction("Removed Named JavaScriptAction");
     }
   }
 
