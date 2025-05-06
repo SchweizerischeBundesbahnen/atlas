@@ -36,4 +36,28 @@ class PdfCdrTest {
     }
   }
 
+  @Test
+  void shouldSanitizeEmbeddedSimpleFormCaluclationsPdf() throws IOException {
+    // given
+    String filePathToSanitize = "src/test/resources/pdf/cdr/EmbeddedSimpleFormCaluclations.pdf";
+    String sanitizedFilePath = "src/test/resources/pdf/cdr/EmbeddedSimpleFormCaluclationsSanitized.pdf";
+
+    try (InputStream inputStream = new FileInputStream(filePathToSanitize)) {
+      String beforeSanitationMd5Checksum = DigestUtils.md5Hex(inputStream);
+      assertThat(beforeSanitationMd5Checksum).isEqualTo("bc333b0eae3f4e9d5ac44364bdc63201");
+    }
+
+    // when
+    try (InputStream inputStream = getClass().getResourceAsStream("/pdf/cdr/EmbeddedSimpleFormCaluclations.pdf");
+        OutputStream outputStream = new FileOutputStream(sanitizedFilePath)) {
+      PdfCdr.sanitize(inputStream, outputStream);
+    }
+
+    // then
+    try (InputStream inputStream = new FileInputStream(sanitizedFilePath)) {
+      String afterSanitationMd5Checksum = DigestUtils.md5Hex(inputStream);
+      assertThat(afterSanitationMd5Checksum).isEqualTo("89fbc46e20716c4fabb32e646cea6918");
+    }
+  }
+
 }
