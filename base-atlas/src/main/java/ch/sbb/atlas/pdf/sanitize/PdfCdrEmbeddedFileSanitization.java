@@ -15,11 +15,11 @@ import org.apache.pdfbox.pdmodel.common.filespecification.PDComplexFileSpecifica
 import org.apache.pdfbox.pdmodel.common.filespecification.PDEmbeddedFile;
 
 @Slf4j
-class PDEmbeddedFileBleach {
+class PdfCdrEmbeddedFileSanitization {
 
   private final PDDocument doc;
 
-  PDEmbeddedFileBleach(PDDocument doc) {
+  PdfCdrEmbeddedFileSanitization(PDDocument doc) {
     this.doc = doc;
   }
 

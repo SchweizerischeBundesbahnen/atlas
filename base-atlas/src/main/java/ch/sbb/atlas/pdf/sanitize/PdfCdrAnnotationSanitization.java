@@ -7,9 +7,9 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
 
 @Slf4j
-class PDAnnotationBleach extends PdfCdrReporter {
+class PdfCdrAnnotationSanitization extends PdfCdrReporter {
 
-  public PDAnnotationBleach(PdfCdrResult result) {
+  PdfCdrAnnotationSanitization(PdfCdrResult result) {
     super(result);
   }
 

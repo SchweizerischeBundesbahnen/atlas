@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PdfCdrResult {
+class PdfCdrResult {
 
   private final List<String> performedActions = new ArrayList<>();
-  private Exception occurredException;
 
   public void addPerformedAction(String action) {
     performedActions.add(action);
