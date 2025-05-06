@@ -1,5 +1,9 @@
 package ch.sbb.atlas.pdf.sanitize;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.github.dockerjava.zerodep.shaded.org.apache.commons.codec.digest.DigestUtils;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,13 +13,27 @@ import org.junit.jupiter.api.Test;
 class PdfCdrTest {
 
   @Test
-  void shouldCompressAndDecompressS3ObjectInputStream() throws IOException {
-    try (InputStream inputStream = getClass().getResourceAsStream("/JavaScriptClock.pdf");
-        OutputStream outputStream = new FileOutputStream("JavaScriptClockSanitized.pdf")) {
+  void shouldSanitizeJavaScriptClockPdf() throws IOException {
+    // given
+    String filePathToSanitize = "src/test/resources/pdf/cdr/JavaScriptClock.pdf";
+    String sanitizedFilePath = "src/test/resources/pdf/cdr/JavaScriptClockSanitized.pdf";
 
+    try (InputStream inputStream = new FileInputStream(filePathToSanitize)) {
+      String beforeSanitationMd5Checksum = DigestUtils.md5Hex(inputStream);
+      assertThat(beforeSanitationMd5Checksum).isEqualTo("e2f4f2b39db7318e5d2e6a65f9fe3877");
+    }
+
+    // when
+    try (InputStream inputStream = getClass().getResourceAsStream("/pdf/cdr/JavaScriptClock.pdf");
+        OutputStream outputStream = new FileOutputStream(sanitizedFilePath)) {
       PdfCdr.sanitize(inputStream, outputStream);
     }
 
+    // then
+    try (InputStream inputStream = new FileInputStream(sanitizedFilePath)) {
+      String afterSanitationMd5Checksum = DigestUtils.md5Hex(inputStream);
+      assertThat(afterSanitationMd5Checksum).isEqualTo("5ebf875f3ecfcabeb3d57c7d6c6b7e6a");
+    }
   }
 
 }
