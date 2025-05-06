@@ -11,7 +11,7 @@ import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { AppRouting } from './app-routing';
 import { AtlasApiModule, Configuration } from './api';
 import { environment } from '../environments/environment';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { provideServiceWorker } from '@angular/service-worker';
 import { GlobalErrorHandler } from './core/configuration/global-error-handler';
 import { ServerErrorInterceptor } from './core/configuration/server-error-interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -44,13 +44,7 @@ export const appConfig: ApplicationConfig = {
         },
       }),
       AppRouting,
-      AtlasApiModule.forRoot(withBasePath(environment.atlasUnauthApiUrl)),
-      ServiceWorkerModule.register('ngsw-worker.js', {
-        enabled: environment.production,
-        // Register the ServiceWorker as soon as the application is stable
-        // or after 30 seconds (whichever comes first).
-        registrationStrategy: 'registerWhenStable:30000',
-      })
+      AtlasApiModule.forRoot(withBasePath(environment.atlasUnauthApiUrl))
     ),
     { provide: MatPaginatorIntl, useClass: TranslatedPaginator },
     {
@@ -66,5 +60,11 @@ export const appConfig: ApplicationConfig = {
       multi: true,
     },
     provideAnimations(),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
 };
