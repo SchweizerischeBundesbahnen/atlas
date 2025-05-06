@@ -3,6 +3,7 @@ package ch.sbb.importservice.service.bulk.template;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.ServicePointTerminateCsvModel;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -17,6 +18,7 @@ import lombok.experimental.UtilityClass;
 public class ServicePointTemplateGenerator {
 
   private static final String DEFAULT_SLOID = "ch:1:sloid:7000";
+  private static final Integer DEFAULT_NUMBER = 8512345;
   private static final Integer DEFAULT_NUMBERSHORT = 7000;
   private static final Integer DEFAULT_UIC_COUNTRYCODE = 85;
   private static final LocalDate DEFAULT_VALID_FROM = LocalDate.of(2021, 4, 1);
@@ -73,6 +75,15 @@ public class ServicePointTemplateGenerator {
         .north(DEFAULT_NORTH)
         .height(DEFAULT_HEIGHT)
         .spatialReference(SpatialReference.LV95)
+        .build();
+
+  }
+
+  public static ServicePointTerminateCsvModel getServicePointTerminateCsvModelExample() {
+    return ServicePointTerminateCsvModel.builder()
+        .sloid(DEFAULT_SLOID)
+        .number(DEFAULT_NUMBER)
+        .validTo(DEFAULT_VALID_TO)
         .build();
 
   }
