@@ -22,7 +22,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 public class PdfCdr {
 
   /**
-   * Sanitizes a file and replaces its content with the sanitized content
+   * Sanitizes a file and replaces its content with the sanitized content.
+   * File has to be a PDF. This will not be checked explicitly.
    */
   public static void sanitize(File file) {
     try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
@@ -39,16 +40,13 @@ public class PdfCdr {
 
   /**
    * Sanitizes a stream and fills the OutputStream with the sanitized content
+   * InputStream has to be a PDF. This will not be checked explicitly.
    */
   public static void sanitize(InputStream inputStream, OutputStream outputStream) {
-    if (PdfFileChecker.hasPdfFileMarker(inputStream)) {
-      try {
-        performSanitize(Loader.loadPDF(new RandomAccessReadBuffer(inputStream)), outputStream);
-      } catch (IOException e) {
-        throw new IllegalStateException(e);
-      }
-    } else {
-      throw new IllegalStateException("Pdf file marker not found on input stream, file is not a pdf file");
+    try {
+      performSanitize(Loader.loadPDF(new RandomAccessReadBuffer(inputStream)), outputStream);
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
     }
   }
 
