@@ -20,7 +20,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-batch")
     implementation("org.springframework.batch:spring-batch-integration")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
     implementation("io.micrometer:micrometer-tracing")
     implementation(project(":base-atlas"))
     implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")

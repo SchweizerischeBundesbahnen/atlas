@@ -2,15 +2,15 @@ import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import {
-  TimetableFieldNumbersService,
   TimetableFieldNumberVersion,
 } from '../../../api';
 import { Pages } from '../../pages';
+import { TimetableFieldNumberService } from '../../../api/service/lidi/timetable-field-number.service';
 
 @Injectable({ providedIn: 'root' })
 export class TimetableFieldNumberDetailResolver {
   constructor(
-    private readonly timetableFieldNumbersService: TimetableFieldNumbersService,
+    private readonly timetableFieldNumbersService: TimetableFieldNumberService,
     private readonly router: Router
   ) {}
 

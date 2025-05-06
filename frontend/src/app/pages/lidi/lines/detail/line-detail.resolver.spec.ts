@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { LinesService, LineType, LineVersionV2, Status } from '../../../../api';
+import { LineType, LineVersionV2, Status } from '../../../../api';
 import { LineDetailResolver } from './line-detail.resolver';
 import { AppTestingModule } from '../../../../app.testing.module';
+import { LineService } from '../../../../api/service/lidi/line.service';
 
 const version: LineVersionV2 = {
   lineConcessionType: 'CANTONALLY_APPROVED_LINE',
@@ -21,10 +22,10 @@ const version: LineVersionV2 = {
 };
 
 describe('LineDetailResolver', () => {
-  const linesServiceSpy = jasmine.createSpyObj('linesService', [
+  const lineServiceSpy = jasmine.createSpyObj('lineService', [
     'getLineVersionsV2',
   ]);
-  linesServiceSpy.getLineVersionsV2.and.returnValue(of([version]));
+  lineServiceSpy.getLineVersionsV2.and.returnValue(of([version]));
 
   let resolver: LineDetailResolver;
 
@@ -33,7 +34,7 @@ describe('LineDetailResolver', () => {
       imports: [AppTestingModule],
       providers: [
         LineDetailResolver,
-        { provide: LinesService, useValue: linesServiceSpy },
+        { provide: LineService, useValue: lineServiceSpy },
       ],
     });
     resolver = TestBed.inject(LineDetailResolver);

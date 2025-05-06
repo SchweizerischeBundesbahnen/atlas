@@ -3,7 +3,6 @@ import {
   AffectedSublinesModel,
   ApplicationRole,
   ApplicationType,
-  LinesService,
   LineType,
   LineVersionV2,
   LineVersionWorkflow,
@@ -43,6 +42,8 @@ import { UserDetailInfoComponent } from '../../../../core/components/base-detail
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LineService } from '../../../../api/service/lidi/line.service';
+import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -111,7 +112,8 @@ export class LineDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private linesService: LinesService,
+    private lineService: LineService,
+    private lineInternalService: LineInternalService,
     private notificationService: NotificationService,
     private dialogService: DialogService,
     private permissionService: PermissionService,
@@ -268,7 +270,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
 
   createLine(lineVersion: LineVersionV2): void {
     this.form.disable();
-    this.linesService
+    this.lineService
       .createLineVersionV2(lineVersion)
       .pipe(takeUntil(this.onDestroy$), catchError(this.handleError()))
       .subscribe((version) => {
@@ -287,7 +289,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.linesService
+    this.lineInternalService
       .checkAffectedSublines(id, lineVersion)
       .pipe(
         switchMap((affectedSublines) => {
@@ -332,7 +334,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
     lineVersion: UpdateLineVersionV2,
     success: string
   ) {
-    this.linesService
+    this.lineService
       .updateLineVersion(id, lineVersion)
       .pipe(takeUntil(this.onDestroy$), catchError(this.handleError()))
       .subscribe(() => {
@@ -383,7 +385,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
       .subscribe((confirmed) => {
         if (confirmed) {
           if (this.selectedVersion.slnid) {
-            this.linesService
+            this.lineInternalService
               .revokeLine(this.selectedVersion.slnid)
               .subscribe(() => {
                 this.notificationService.success(
@@ -414,7 +416,7 @@ export class LineDetailComponent implements OnInit, OnDestroy {
       .subscribe((confirmed) => {
         if (confirmed) {
           if (this.selectedVersion.slnid) {
-            this.linesService
+            this.lineInternalService
               .deleteLines(this.selectedVersion.slnid)
               .subscribe(() => {
                 this.notificationService.success(
