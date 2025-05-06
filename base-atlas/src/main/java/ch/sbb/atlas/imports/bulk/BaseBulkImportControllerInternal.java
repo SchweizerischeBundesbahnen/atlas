@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class BaseBulkImportController {
+public class BaseBulkImportControllerInternal {
 
   protected <T> List<BulkImportItemExecutionResult> executeBulkImport(
       List<BulkImportUpdateContainer<T>> bulkImportContainers,
