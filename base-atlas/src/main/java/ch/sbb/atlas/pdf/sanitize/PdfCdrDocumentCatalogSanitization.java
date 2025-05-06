@@ -69,7 +69,7 @@ class PdfCdrDocumentCatalogSanitization extends PdfCdrReporter {
     }
   }
 
-  private void sanitizePageActions(PDPageAdditionalActions pageActions) {
+  void sanitizePageActions(PDPageAdditionalActions pageActions) {
     if (pageActions.getC() != null) {
       log.debug("Found&removed action when page is closed, was ({})", pageActions.getC());
       pageActions.setC(null);
@@ -83,7 +83,7 @@ class PdfCdrDocumentCatalogSanitization extends PdfCdrReporter {
     }
   }
 
-  private void sanitizeOpenAction(PDDocumentCatalog docCatalog)
+  void sanitizeOpenAction(PDDocumentCatalog docCatalog)
       throws IOException {
     log.trace("Checking OpenAction...");
     PDDestinationOrAction openAction = docCatalog.getOpenAction();
@@ -97,7 +97,7 @@ class PdfCdrDocumentCatalogSanitization extends PdfCdrReporter {
     reportPerformedAction("Removed OpenAction from PDDocumentCatalog");
   }
 
-  private void sanitizeDocumentActions(PDDocumentCatalogAdditionalActions documentActions) {
+  void sanitizeDocumentActions(PDDocumentCatalogAdditionalActions documentActions) {
     log.trace("Checking additional actions...");
     if (documentActions.getDP() != null) {
       log.debug("Found&removed action after printing (was {})", documentActions.getDP());
@@ -126,7 +126,7 @@ class PdfCdrDocumentCatalogSanitization extends PdfCdrReporter {
     }
   }
 
-  private void sanitizeFieldAdditionalActions(PDFormFieldAdditionalActions fieldActions) {
+  void sanitizeFieldAdditionalActions(PDFormFieldAdditionalActions fieldActions) {
     if (fieldActions.getC() != null) {
       log.debug(
           "Found&removed an action to be performed in order to recalculate the value of this field when that of another field "

@@ -8,8 +8,8 @@ import org.apache.pdfbox.io.RandomAccessReadBuffer;
 
 /**
  * PDF CDR
- * CDR = Content Disarm & Reconstruction (https://en.wikipedia.org/wiki/Content_Disarm_%26_Reconstruction)
- * Code based on archived https://github.com/docbleach/DocBleach
+ * Content Disarm & Reconstruction (<a href="https://en.wikipedia.org/wiki/Content_Disarm_%26_Reconstruction">see Wikipedia</a>)
+ * Code based on archived <a href="https://github.com/docbleach/DocBleach">DocBleach on GitHub</a>
  */
 @Slf4j
 public class PdfCdr {
@@ -23,7 +23,7 @@ public class PdfCdr {
         throw new IllegalStateException(e);
       }
     } else {
-      throw new IllegalStateException("Pdf file marker not found on input stream");
+      throw new IllegalStateException("Pdf file marker not found on input stream, file is not a pdf file");
     }
   }
 
