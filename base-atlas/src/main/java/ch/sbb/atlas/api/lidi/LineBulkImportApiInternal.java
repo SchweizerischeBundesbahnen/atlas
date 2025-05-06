@@ -8,8 +8,8 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "Line Bulk Import")
-public interface LineBulkImportApiV1 {
+@Tag(name = "[INTERNAL] Line Bulk Import")
+public interface LineBulkImportApiInternal {
 
   String BASEPATH = "internal/line/bulk-import";
 

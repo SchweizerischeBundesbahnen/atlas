@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "Timetable Field Numbers")
+@Tag(name = "[INTERNAL] Timetable Field Numbers")
 @RequestMapping("internal/field-numbers")
 public interface TimetableFieldNumberApiInternal {
 
@@ -58,5 +58,5 @@ public interface TimetableFieldNumberApiInternal {
       + "file to the ATLAS Amazon S3 Bucket")
   @PostMapping(path = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportTimetableYearChangeTimetableFieldNumberVersions();
-  
+
 }

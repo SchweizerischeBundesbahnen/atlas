@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "Timetable Hearing Statements")
+@Tag(name = "[INTERNAL] Timetable Hearing Statements")
 @RequestMapping("internal/timetable-hearing/statements")
 public interface TimetableHearingStatementApiInternal {
 
