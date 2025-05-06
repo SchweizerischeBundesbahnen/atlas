@@ -1,7 +1,6 @@
 package ch.sbb.importservice.service.sepodi.service.point.terminate;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.terminate.ServicePointTerminateCsvModel;
 import ch.sbb.importservice.service.bulk.reader.BulkImportItemReader;
 import ch.sbb.importservice.service.bulk.reader.ReaderUtil;
@@ -19,16 +18,17 @@ public class ServicePointTerminateReader extends ServicePointTerminate implement
 
   @Override
   public List<BulkImportUpdateContainer<?>> apply(File file) {
-    List<BulkImportUpdateContainer<ServicePointTerminateCsvModel>> servicePointUpdateCsvModels = ReaderUtil.readAndValidate(file,
-        ServicePointTerminateCsvModel.class);
+    List<BulkImportUpdateContainer<ServicePointTerminateCsvModel>> servicePointTerminateCsvModel =
+        ReaderUtil.readAndValidate(file,
+            ServicePointTerminateCsvModel.class);
 
-    log.info("Read {} lines to import", servicePointUpdateCsvModels.size());
-    return new ArrayList<>(servicePointUpdateCsvModels);
+    log.info("Read {} lines to import", servicePointTerminateCsvModel.size());
+    return new ArrayList<>(servicePointTerminateCsvModel);
   }
 
   @Override
   public Class<?> getCsvModelClass() {
-    return ServicePointUpdateCsvModel.class;
+    return ServicePointTerminateCsvModel.class;
   }
 
 }
