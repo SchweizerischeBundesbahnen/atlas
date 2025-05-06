@@ -66,7 +66,7 @@ public class ServicePointBulkImportService {
   @RunAsUser
   public void terminateServicePointByUserName(@RunAsUserParameter String userName,
       BulkImportUpdateContainer<ServicePointTerminateCsvModel> bulkImportContainer) {
-    log.info("Update versions in name of the user: {}", userName);
+    log.info("Terminate versions in name of the user: {}", userName);
     terminateServicePoint(bulkImportContainer);
   }
 
