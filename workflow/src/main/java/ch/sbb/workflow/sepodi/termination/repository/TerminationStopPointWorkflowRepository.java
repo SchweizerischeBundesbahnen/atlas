@@ -9,19 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Redacted
 public interface TerminationStopPointWorkflowRepository extends JpaRepository<TerminationStopPointWorkflow, Long> {
 
-  //
-  //  @Query(value = """
-  //      select tspw.* from termination_stop_point_workflow tspw
-  //      where tspw.sloid = :sloid
-  //            and tspw.version_id = :version_id
-  //            and tspw.status = :workflowStatus
-  //      """, nativeQuery = true)
-  //  Optional<TerminationStopPointWorkflow> findTerminationStopPointWorkflowBySloidVersionIdAndStatus(String sloid, Long
-  //  versionId
-  //      , TerminationWorkflowStatus workflowStatus);
-  //
-  List<TerminationStopPointWorkflow> findTerminationStopPointWorkflowBySloidAndVersionIdAndStatus(String sloid, Long versionId
-      , TerminationWorkflowStatus workflowStatus);
+  List<TerminationStopPointWorkflow> findTerminationStopPointWorkflowBySloidAndVersionIdAndStatus(String sloid, Long versionId,
+      TerminationWorkflowStatus workflowStatus);
 
-  boolean existsTerminationStopPointWorkflowBySloid(String sloid);
 }
