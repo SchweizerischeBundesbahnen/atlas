@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 import java.util.Arrays;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@UtilityClass
 class PdfFileChecker {
 
   // PDFs start with 0x25 0x50 0x44 0x46 (in hex format, in ASCII it's %PDF)

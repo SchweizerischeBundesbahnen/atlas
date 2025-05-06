@@ -14,12 +14,12 @@ class PdfCdrAnnotationSanitization extends PdfCdrReporter {
   }
 
   void sanitizeAnnotation(PDAnnotation annotation) {
-    if (annotation instanceof PDAnnotationLink) {
-      sanitizeLinkAnnotation((PDAnnotationLink) annotation);
+    if (annotation instanceof PDAnnotationLink annotationLink) {
+      sanitizeLinkAnnotation(annotationLink);
     }
 
-    if (annotation instanceof PDAnnotationWidget) {
-      sanitizeWidgetAnnotation((PDAnnotationWidget) annotation);
+    if (annotation instanceof PDAnnotationWidget annotationWidget) {
+      sanitizeWidgetAnnotation(annotationWidget);
     }
   }
 

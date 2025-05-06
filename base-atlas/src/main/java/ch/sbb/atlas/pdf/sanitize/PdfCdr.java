@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.io.RandomAccessReadBuffer;
@@ -17,6 +18,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
  * Code based on archived <a href="https://github.com/docbleach/DocBleach">DocBleach on GitHub</a>
  */
 @Slf4j
+@UtilityClass
 public class PdfCdr {
 
   /**
