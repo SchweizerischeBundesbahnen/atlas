@@ -4,6 +4,7 @@ import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.ServicePointTerminateCsvModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,5 +22,9 @@ public interface ServicePointBulkImportApiV1 {
   @PostMapping(value = BASEPATH + "/create")
   List<BulkImportItemExecutionResult> bulkImportCreate(
       @RequestBody List<BulkImportUpdateContainer<ServicePointCreateCsvModel>> bulkImportContainers);
+
+  @PostMapping(value = BASEPATH + "/terminate")
+  List<BulkImportItemExecutionResult> bulkImportTerminate(
+      @RequestBody List<BulkImportUpdateContainer<ServicePointTerminateCsvModel>> bulkImportContainers);
 
 }

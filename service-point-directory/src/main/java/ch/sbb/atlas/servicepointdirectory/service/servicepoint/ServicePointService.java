@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.Status;
@@ -174,6 +175,24 @@ public class ServicePointService {
         .findFirst()
         .orElseThrow(() -> new NotFoundException.IdNotFoundException(servicePointVersionToUpdate.getId()))
         .toBuilder().designationOfficial(updateDesignationOfficialServicePointModel.getDesignationOfficial())
+        .build();
+
+    return ServicePointVersionMapper.toModel(
+        updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions));
+  }
+
+  public ReadServicePointVersionModel terminateServicePoint(Long id,
+      TerminateServicePointModel terminateServicePointModel) {
+    ServicePointVersion servicePointVersionToUpdate = findById(id).orElseThrow(
+        () -> new NotFoundException.IdNotFoundException(id));
+
+    List<ServicePointVersion> currentVersions = findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber());
+
+    ServicePointVersion editedVersion = currentVersions.stream()
+        .filter(version -> servicePointVersionToUpdate.getId().equals(version.getId()))
+        .findFirst()
+        .orElseThrow(() -> new NotFoundException.IdNotFoundException(servicePointVersionToUpdate.getId()))
+        .toBuilder().validTo(terminateServicePointModel.getValidTo())
         .build();
 
     return ServicePointVersionMapper.toModel(
