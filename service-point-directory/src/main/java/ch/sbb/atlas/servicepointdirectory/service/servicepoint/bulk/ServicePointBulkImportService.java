@@ -13,9 +13,11 @@ import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedValidToNotWithinLastVersionRangeException;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUser;
 import ch.sbb.atlas.user.administration.security.aspect.RunAsUserParameter;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,12 +76,26 @@ public class ServicePointBulkImportService {
     List<ServicePointVersion> currentVersions = getCurrentVersions(servicePointTerminate.getSloid(),
         servicePointTerminate.getNumber());
 
-    ServicePointVersion currentVersion = ImportUtils.getCurrentVersion(currentVersions, servicePointTerminate.getValidFrom(),
-        servicePointTerminate.getValidTo());
+    TerminateServicePointModel updateModel = ServicePointBulkImportTerminate.apply(bulkImportContainer,
+        currentVersions.getLast());
 
-    TerminateServicePointModel updateModel = ServicePointBulkImportTerminate.apply(bulkImportContainer, currentVersion);
+    validateTerminateValidToInRange(servicePointTerminate, currentVersions.getLast());
+    servicePointApiClient.terminateServicePoint(currentVersions.getLast().getId(), updateModel);
+  }
 
-    servicePointApiClient.terminateServicePoint(currentVersion.getId(), updateModel);
+  private void validateTerminateValidToInRange(ServicePointTerminateCsvModel servicePointTerminateCsvModel,
+      ServicePointVersion currentVersion) {
+    LocalDate terminateValidTo = servicePointTerminateCsvModel.getValidTo();
+    LocalDate currentValidFrom = currentVersion.getValidFrom();
+    LocalDate currentValidTo = currentVersion.getValidTo();
+
+    if (!currentValidTo.isAfter(terminateValidTo) || terminateValidTo.isBefore(currentValidFrom)) {
+      throw new TerminationNotAllowedValidToNotWithinLastVersionRangeException(
+          servicePointTerminateCsvModel.getSloid(),
+          terminateValidTo,
+          currentValidFrom,
+          currentValidTo);
+    }
   }
 
   private List<ServicePointVersion> getCurrentVersions(String sloid,
