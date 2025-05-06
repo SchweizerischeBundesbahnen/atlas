@@ -23,7 +23,7 @@ class PdfCdrAnnotationSanitization extends PdfCdrReporter {
     }
   }
 
-  private void sanitizeLinkAnnotation(PDAnnotationLink annotationLink) {
+  void sanitizeLinkAnnotation(PDAnnotationLink annotationLink) {
     if (annotationLink.getAction() == null) {
       return;
     }
@@ -32,7 +32,7 @@ class PdfCdrAnnotationSanitization extends PdfCdrReporter {
     reportPerformedAction("Removed annotation link");
   }
 
-  private void sanitizeWidgetAnnotation(PDAnnotationWidget annotationWidget) {
+  void sanitizeWidgetAnnotation(PDAnnotationWidget annotationWidget) {
     if (annotationWidget.getAction() != null) {
       log.debug(
           "Found&Removed action on annotation widget, was {}", annotationWidget.getAction());
@@ -42,7 +42,7 @@ class PdfCdrAnnotationSanitization extends PdfCdrReporter {
     sanitizeAnnotationActions(annotationWidget.getActions());
   }
 
-  private void sanitizeAnnotationActions(PDAnnotationAdditionalActions annotationAdditionalActions) {
+  void sanitizeAnnotationActions(PDAnnotationAdditionalActions annotationAdditionalActions) {
     if (annotationAdditionalActions == null) {
       return;
     }
