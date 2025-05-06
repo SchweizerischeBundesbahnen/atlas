@@ -15,13 +15,13 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
 @Slf4j
-class PDDocumentCatalogBleach extends PdfCdrReporter {
+class PdfCdrDocumentCatalogSanitization extends PdfCdrReporter {
 
-  private final PDAnnotationBleach annotationBleach;
+  private final PdfCdrAnnotationSanitization annotationBleach;
 
-  PDDocumentCatalogBleach(PdfCdrResult result) {
+  PdfCdrDocumentCatalogSanitization(PdfCdrResult result) {
     super(result);
-    this.annotationBleach = new PDAnnotationBleach(result);
+    this.annotationBleach = new PdfCdrAnnotationSanitization(result);
   }
 
   void sanitize(PDDocumentCatalog docCatalog) throws IOException {
