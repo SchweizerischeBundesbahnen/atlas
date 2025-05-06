@@ -1,10 +1,15 @@
 package ch.sbb.atlas.pdf.sanitize;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.io.RandomAccessReadBuffer;
+import org.apache.pdfbox.pdmodel.PDDocument;
 
 /**
  * PDF CDR
@@ -14,11 +19,29 @@ import org.apache.pdfbox.io.RandomAccessReadBuffer;
 @Slf4j
 public class PdfCdr {
 
+  /**
+   * Sanitizes a file and replaces its content with the sanitized content
+   */
+  public static void sanitize(File file) {
+    try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+
+      performSanitize(Loader.loadPDF(file), byteArrayOutputStream);
+
+      try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+        byteArrayOutputStream.writeTo(fileOutputStream);
+      }
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  /**
+   * Sanitizes a stream and fills the OutputStream with the sanitized content
+   */
   public static void sanitize(InputStream inputStream, OutputStream outputStream) {
     if (PdfFileChecker.hasPdfFileMarker(inputStream)) {
       try {
-        PdfCdrResult result = new PdfCdrRun().sanitize(new RandomAccessReadBuffer(inputStream), outputStream);
-        log.info("Removed {} actions from PDF", result.getPerformedActions().size());
+        performSanitize(Loader.loadPDF(new RandomAccessReadBuffer(inputStream)), outputStream);
       } catch (IOException e) {
         throw new IllegalStateException(e);
       }
@@ -27,4 +50,8 @@ public class PdfCdr {
     }
   }
 
+  private static void performSanitize(PDDocument document, OutputStream outputStream) throws IOException {
+    PdfCdrResult result = new PdfCdrRun().sanitize(document, outputStream);
+    log.info("Removed {} actions from PDF", result.getPerformedActions().size());
+  }
 }
