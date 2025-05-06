@@ -19,12 +19,12 @@ class LineBulkImportControllerTest {
   @Mock
   private LineBulkImportService lineBulkImportService;
 
-  private LineBulkImportController lineBulkImportController;
+  private LineBulkImportControllerInternal lineBulkImportController;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.initMocks(this);
-    lineBulkImportController = new LineBulkImportController(lineBulkImportService);
+    lineBulkImportController = new LineBulkImportControllerInternal(lineBulkImportService);
   }
 
   @Test

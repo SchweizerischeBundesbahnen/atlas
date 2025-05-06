@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.atlas.api.lidi.LineBulkImportApiV1;
+import ch.sbb.atlas.api.lidi.LineBulkImportApiInternal;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
-import ch.sbb.atlas.imports.bulk.BaseBulkImportController;
+import ch.sbb.atlas.imports.bulk.BaseBulkImportControllerInternal;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.LineUpdateCsvModel;
 import ch.sbb.line.directory.service.bulk.LineBulkImportService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class LineBulkImportController extends BaseBulkImportController implements LineBulkImportApiV1 {
+public class LineBulkImportControllerInternal extends BaseBulkImportControllerInternal implements LineBulkImportApiInternal {
 
   private final LineBulkImportService lineBulkImportService;
 
