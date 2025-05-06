@@ -1,14 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import {
-  ReadSublineVersionV2,
-  Status,
-  SublinesService,
-  SublineType,
-} from '../../../../api';
+import { ReadSublineVersionV2, Status, SublineType ,} from '../../../../api';
 import { SublineDetailResolver } from './subline-detail.resolver';
 import { AppTestingModule } from '../../../../app.testing.module';
+import { SublineService } from '../../../../api/service/lidi/subline.service';
 
 const version: ReadSublineVersionV2 = {
   id: 1234,
@@ -26,10 +22,10 @@ const version: ReadSublineVersionV2 = {
 };
 
 describe('SublineDetailResolver', () => {
-  const sublinesServiceSpy = jasmine.createSpyObj('sublinesService', [
+  const sublineServiceSpy = jasmine.createSpyObj('sublineService', [
     'getSublineVersionV2',
   ]);
-  sublinesServiceSpy.getSublineVersionV2.and.returnValue(of([version]));
+  sublineServiceSpy.getSublineVersionV2.and.returnValue(of([version]));
 
   let resolver: SublineDetailResolver;
 
@@ -38,7 +34,7 @@ describe('SublineDetailResolver', () => {
       imports: [AppTestingModule],
       providers: [
         SublineDetailResolver,
-        { provide: SublinesService, useValue: sublinesServiceSpy },
+        { provide: SublineService, useValue: sublineServiceSpy },
       ],
     });
     resolver = TestBed.inject(SublineDetailResolver);

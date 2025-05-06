@@ -5,8 +5,6 @@ import { of, throwError } from 'rxjs';
 import {
   LidiElementType,
   Line,
-  LinesService,
-  SublinesService,
   SublineType,
   SublineVersionV2,
 } from '../../../../api';
@@ -42,6 +40,9 @@ import { DateIconComponent } from '../../../../core/form-components/date-icon/da
 import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
 import moment from 'moment';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { SublineInternalService } from '../../../../api/service/lidi/subline-internal.service';
+import { SublineService } from '../../../../api/service/lidi/subline.service';
+import { LineService } from '../../../../api/service/lidi/line.service';
 
 const sublineVersion: SublineVersionV2 = {
   id: 1234,
@@ -114,17 +115,19 @@ const dialogService = jasmine.createSpyObj<DialogService>('DialogService', {
 });
 
 describe('SublineDetailComponent for existing sublineVersion', () => {
-  const sublinesService = jasmine.createSpyObj('sublinesService', [
+  const sublineService = jasmine.createSpyObj('sublineService', [
     'updateSublineVersionV2',
-    'deleteSublines',
-    'revokeSubline',
   ]);
+  const sublineInternalService = jasmine.createSpyObj(
+    'sublineInternalService',
+    ['deleteSublines', 'revokeSubline']
+  );
   const mockData = {
     sublineDetail: [sublineVersion],
   };
 
   beforeEach(() => {
-    setupTestBed(sublinesService, mockData);
+    setupTestBed(sublineService, sublineInternalService, mockData);
     fixture = TestBed.createComponent(SublineDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -136,7 +139,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should update SublineVersion successfully', () => {
-    sublinesService.updateSublineVersionV2.and.returnValue(of(sublineVersion));
+    sublineService.updateSublineVersionV2.and.returnValue(of(sublineVersion));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
 
     component.toggleEdit();
@@ -144,7 +147,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     component.save();
     fixture.detectChanges();
 
-    expect(sublinesService.updateSublineVersionV2).toHaveBeenCalled();
+    expect(sublineService.updateSublineVersionV2).toHaveBeenCalled();
 
     const snackBarContainer = fixture.nativeElement.offsetParent.querySelector(
       'mat-snack-bar-container'
@@ -158,7 +161,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should not update Version', () => {
-    sublinesService.updateSublineVersionV2.and.returnValue(
+    sublineService.updateSublineVersionV2.and.returnValue(
       throwError(() => error)
     );
     component.toggleEdit();
@@ -171,7 +174,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should delete SublineVersion successfully', () => {
-    sublinesService.deleteSublines.and.returnValue(of({}));
+    sublineInternalService.deleteSublines.and.returnValue(of({}));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
 
     component.delete();
@@ -189,7 +192,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should revoke SublineVersion successfully', () => {
-    sublinesService.revokeSubline.and.returnValue(of({}));
+    sublineInternalService.revokeSubline.and.returnValue(of({}));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
 
     component.revoke();
@@ -208,7 +211,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
 });
 
 describe('SublineDetailComponent for new sublineVersion', () => {
-  const sublinesService = jasmine.createSpyObj('sublinesService', [
+  const sublineService = jasmine.createSpyObj('sublineService', [
     'createSublineVersionV2',
   ]);
   const mockData = {
@@ -216,7 +219,7 @@ describe('SublineDetailComponent for new sublineVersion', () => {
   };
 
   beforeEach(() => {
-    setupTestBed(sublinesService, mockData);
+    setupTestBed(sublineService, {} as SublineInternalService, mockData);
 
     fixture = TestBed.createComponent(SublineDetailComponent);
     component = fixture.componentInstance;
@@ -231,9 +234,7 @@ describe('SublineDetailComponent for new sublineVersion', () => {
   describe('create new Version', () => {
     it('successfully', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-      sublinesService.createSublineVersionV2.and.returnValue(
-        of(sublineVersion)
-      );
+      sublineService.createSublineVersionV2.and.returnValue(of(sublineVersion));
 
       component.form.patchValue({
         mainlineSlnid: 'mainlineSlnid',
@@ -248,7 +249,7 @@ describe('SublineDetailComponent for new sublineVersion', () => {
       component.save();
       fixture.detectChanges();
 
-      expect(sublinesService.createSublineVersionV2).toHaveBeenCalled();
+      expect(sublineService.createSublineVersionV2).toHaveBeenCalled();
 
       const snackBarContainer =
         fixture.nativeElement.offsetParent.querySelector(
@@ -323,7 +324,8 @@ describe('SublineDetailComponent for new sublineVersion', () => {
 });
 
 function setupTestBed(
-  sublinesService: SublinesService,
+  sublinesService: SublineService,
+  sublineInternalService: SublineInternalService,
   data: { sublineDetail: string | SublineVersionV2[] }
 ) {
   TestBed.configureTestingModule({
@@ -354,8 +356,9 @@ function setupTestBed(
     ],
     providers: [
       { provide: FormBuilder },
-      { provide: SublinesService, useValue: sublinesService },
-      { provide: LinesService, useValue: lineService },
+      { provide: SublineService, useValue: sublinesService },
+      { provide: SublineInternalService, useValue: sublineInternalService },
+      { provide: LineService, useValue: lineService },
       { provide: DialogService, useValue: dialogService },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },

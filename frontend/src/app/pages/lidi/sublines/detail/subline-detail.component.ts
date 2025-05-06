@@ -6,12 +6,10 @@ import {
   ElementType,
   LidiElementType,
   Line,
-  LinesService,
   LineVersionV2,
   ReadSublineVersionV2,
   Status,
   SublineConcessionType,
-  SublinesService,
   SublineType,
   SublineVersionV2,
 } from '../../../../api';
@@ -36,6 +34,8 @@ import {
   DetailWithCancelEdit,
 } from '../../../../core/detail/detail-helper.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { SublineService } from '../../../../api/service/lidi/subline.service';
+import { SublineInternalService } from '../../../../api/service/lidi/subline-internal.service';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
@@ -54,6 +54,7 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MainlineDescriptionPipe } from './mainline-description.pipe';
+import { LineService } from '../../../../api/service/lidi/line.service';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -109,9 +110,10 @@ export class SublineDetailComponent
 
   constructor(
     private router: Router,
-    private sublinesService: SublinesService,
+    private sublineService: SublineService,
+    private sublineInternalService: SublineInternalService,
     private notificationService: NotificationService,
-    private linesService: LinesService,
+    private lineService: LineService,
     private permissionService: PermissionService,
     private activatedRoute: ActivatedRoute,
     private validityService: ValidityService,
@@ -135,11 +137,11 @@ export class SublineDetailComponent
       this.selectedVersionIndex = this.versions.indexOf(this.selectedVersion);
 
       this.initSelectedVersion();
-      this.mainlines$ = this.linesService
+      this.mainlines$ = this.lineService
         .getLine(this.selectedVersion.mainlineSlnid)
         .pipe(map((value) => [value]));
 
-      this.linesService
+      this.lineService
         .getLineVersionsV2(this.selectedVersion.mainlineSlnid)
         .subscribe((mainline) => {
           this.currentMainlineSelection =
@@ -217,7 +219,7 @@ export class SublineDetailComponent
   }
 
   createSubline(sublineVersion: CreateSublineVersionV2): void {
-    this.sublinesService
+    this.sublineService
       .createSublineVersionV2(sublineVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((version) => {
@@ -231,7 +233,7 @@ export class SublineDetailComponent
   }
 
   updateSubline(id: number, sublineVersion: SublineVersionV2): void {
-    this.sublinesService
+    this.sublineService
       .updateSublineVersionV2(id, sublineVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
@@ -259,7 +261,7 @@ export class SublineDetailComponent
       .subscribe((confirmed) => {
         if (confirmed) {
           if (this.selectedVersion.slnid) {
-            this.sublinesService
+            this.sublineInternalService
               .revokeSubline(this.selectedVersion.slnid)
               .subscribe(() => {
                 this.notificationService.success(
@@ -289,7 +291,7 @@ export class SublineDetailComponent
       .subscribe((confirmed) => {
         if (confirmed) {
           if (this.selectedVersion.slnid) {
-            this.sublinesService
+            this.sublineInternalService
               .deleteSublines(this.selectedVersion.slnid)
               .subscribe(() => {
                 this.notificationService.success(
@@ -307,7 +309,7 @@ export class SublineDetailComponent
   }
 
   searchMainlines(searchString: string) {
-    this.mainlines$ = this.linesService
+    this.mainlines$ = this.lineService
       .getLines(
         undefined,
         [searchString],
@@ -345,7 +347,7 @@ export class SublineDetailComponent
     if (line) {
       this.handleSublineType(line);
 
-      this.linesService.getLineVersionsV2(line.slnid!).subscribe((mainline) => {
+      this.lineService.getLineVersionsV2(line.slnid!).subscribe((mainline) => {
         this.currentMainlineSelection =
           VersionsHandlingService.determineDefaultVersionByValidity(mainline);
       });

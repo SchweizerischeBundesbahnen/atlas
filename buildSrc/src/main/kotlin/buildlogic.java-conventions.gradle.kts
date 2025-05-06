@@ -40,13 +40,16 @@ repositories {
 
 dependencies {
     constraints {
-        implementation("io.swagger.core.v3:swagger-core-jakarta:2.2.30"){
+        implementation("io.swagger.core.v3:swagger-core-jakarta:2.2.30") {
             because("Previous version has a bug not making attributes required in spec yaml")
         }
     }
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testCompileOnly("org.projectlombok:lombok")
+
+    implementation("org.springdoc:springdoc-openapi-starter-common:${property("openapiStarterCommonVersion")}")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
 
     testAnnotationProcessor("org.projectlombok:lombok")
     mockitoAgent("org.mockito:mockito-core") {
@@ -93,12 +96,16 @@ publishing {
 tasks.withType<Test> {
     failFast = true
     useJUnitPlatform()
-    testLogging{
-        events("passed", "skipped", "failed","standardOut", "standardError")
+    testLogging {
+        events("passed", "skipped", "failed", "standardOut", "standardError")
         showCauses = true
     }
-    jvmArgs = listOf("-javaagent:${mockitoAgent.asPath}","-Xshare:off")
+    jvmArgs = listOf("-javaagent:${mockitoAgent.asPath}", "-Xshare:off")
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+
+    if (project.hasProperty("onlyApim")) {
+        include("**/ApimYamlExtractionTest.class")
+    }
 }
 
 tasks.withType<JavaCompile>().configureEach {
