@@ -17,7 +17,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
 
     annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.13.Final")

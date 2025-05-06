@@ -6,13 +6,13 @@ import {
   ElementType,
   LidiElementType,
   Line,
-  LinesService,
   Status,
 } from '../../../api';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../pages';
+import { LineService } from '../../../api/service/lidi/line.service';
 import { TableComponent } from '../../../core/components/table/table.component';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
@@ -50,21 +50,21 @@ describe('LinesComponent', () => {
   let fixture: ComponentFixture<LinesComponent>;
   let router: Router;
 
-  let linesServiceSpy: SpyObj<LinesService>;
+  let lineServiceSpy: SpyObj<LineService>;
 
   beforeEach(() => {
-    linesServiceSpy = jasmine.createSpyObj<LinesService>('LinesServiceSpy', [
+    lineServiceSpy = jasmine.createSpyObj<LineService>('LineServiceSpy', [
       'getLines',
     ]);
     (
-      linesServiceSpy.getLines as Spy<() => Observable<ContainerLine>>
+      lineServiceSpy.getLines as Spy<() => Observable<ContainerLine>>
     ).and.returnValue(of(versionContainer));
 
     TestBed.configureTestingModule({
       imports: [LinesComponent, TranslateModule.forRoot()],
       providers: [
         TranslatePipe,
-        { provide: LinesService, useValue: linesServiceSpy },
+        { provide: LineService, useValue: lineServiceSpy },
         {
           provide: ActivatedRoute,
           useValue: { paramMap: new Subject() },
@@ -121,7 +121,7 @@ describe('LinesComponent', () => {
       size: 10,
     });
 
-    expect(linesServiceSpy.getLines).toHaveBeenCalledOnceWith(
+    expect(lineServiceSpy.getLines).toHaveBeenCalledOnceWith(
       undefined,
       [],
       [Status.Draft, Status.Validated, Status.InReview, Status.Withdrawn],

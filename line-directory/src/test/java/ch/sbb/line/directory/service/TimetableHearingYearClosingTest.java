@@ -11,8 +11,8 @@ import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.transport.company.SharedTransportCompanyModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.line.directory.controller.TimetableHearingStatementControllerV2;
-import ch.sbb.line.directory.controller.TimetableHearingYearController;
+import ch.sbb.line.directory.controller.TimetableHearingStatementControllerInternal;
+import ch.sbb.line.directory.controller.TimetableHearingYearControllerInternal;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.repository.SharedTransportCompanyRepository;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
@@ -32,18 +32,25 @@ class TimetableHearingYearClosingTest {
   private static final long YEAR = 2023L;
   private static final long TRANSPORT_COMPANY_ID = 7L;
 
-  @Autowired
-  private TimetableHearingYearRepository timetableHearingYearRepository;
-  @Autowired
-  private TimetableHearingYearController timetableHearingYearController;
+  private final TimetableHearingYearRepository timetableHearingYearRepository;
+  private final TimetableHearingYearControllerInternal timetableHearingYearController;
+  private final TimetableHearingStatementRepository timetableHearingStatementRepository;
+  private final TimetableHearingStatementControllerInternal timetableHearingStatementControllerInternal;
+  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
 
   @Autowired
-  private TimetableHearingStatementRepository timetableHearingStatementRepository;
-  @Autowired
-  private TimetableHearingStatementControllerV2 timetableHearingStatementControllerV2;
-
-  @Autowired
-  private SharedTransportCompanyRepository sharedTransportCompanyRepository;
+  TimetableHearingYearClosingTest(
+      TimetableHearingYearRepository timetableHearingYearRepository,
+      TimetableHearingYearControllerInternal timetableHearingYearController,
+      TimetableHearingStatementRepository timetableHearingStatementRepository,
+      TimetableHearingStatementControllerInternal timetableHearingStatementControllerInternal,
+      SharedTransportCompanyRepository sharedTransportCompanyRepository) {
+    this.timetableHearingYearRepository = timetableHearingYearRepository;
+    this.timetableHearingYearController = timetableHearingYearController;
+    this.timetableHearingStatementRepository = timetableHearingStatementRepository;
+    this.timetableHearingStatementControllerInternal = timetableHearingStatementControllerInternal;
+    this.sharedTransportCompanyRepository = sharedTransportCompanyRepository;
+  }
 
   @AfterEach
   void tearDown() {
@@ -82,12 +89,12 @@ class TimetableHearingYearClosingTest {
                 .id(TRANSPORT_COMPANY_ID)
                 .build()))
         .build();
-    TimetableHearingStatementModelV2 junkStatement = timetableHearingStatementControllerV2.createStatement(statementModel,
+    TimetableHearingStatementModelV2 junkStatement = timetableHearingStatementControllerInternal.createStatement(statementModel,
         Collections.emptyList());
 
     // Update to Junk
     statementModel.setStatementStatus(StatementStatus.JUNK);
-    junkStatement = timetableHearingStatementControllerV2.updateHearingStatement(junkStatement.getId(), statementModel,
+    junkStatement = timetableHearingStatementControllerInternal.updateHearingStatement(junkStatement.getId(), statementModel,
         Collections.emptyList());
     assertThat(junkStatement).isNotNull();
     assertThat(junkStatement.getStatementStatus()).isEqualTo(StatementStatus.JUNK);
@@ -106,7 +113,8 @@ class TimetableHearingYearClosingTest {
                 .id(TRANSPORT_COMPANY_ID)
                 .build()))
         .build();
-    TimetableHearingStatementModelV2 secondStatement = timetableHearingStatementControllerV2.createStatement(statementModel2,
+    TimetableHearingStatementModelV2 secondStatement = timetableHearingStatementControllerInternal.createStatement(
+        statementModel2,
         Collections.emptyList());
 
     // when closing

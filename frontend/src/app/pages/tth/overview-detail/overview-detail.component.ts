@@ -7,10 +7,8 @@ import {
   SwissCanton,
   TimetableHearingStatementDocument,
   TimetableHearingStatementSenderV2,
-  TimetableHearingStatementsService,
   TimetableHearingStatementV2,
   TimetableHearingYear,
-  TimetableHearingYearsService,
   TransportCompany,
 } from '../../../api';
 import { Cantons } from '../../../core/cantons/Cantons';
@@ -39,6 +37,8 @@ import { TableService } from '../../../core/components/table/table.service';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { TthTableFilterSettingsService } from '../tth-table-filter-settings.service';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { OverviewTabHeadingComponent } from '../overview-tab/overview-tab-heading/overview-tab-heading.component';
 import { NgIf } from '@angular/common';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
@@ -119,8 +119,8 @@ export class OverviewDetailComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
-    private readonly timetableHearingYearsService: TimetableHearingYearsService,
+    private readonly timetableHearingStatementsService: TimetableHearingStatementInternalService,
+    private readonly timetableHearingYearsService: TimetableHearingYearInternalService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthStatusChangeDialogService: TthChangeStatusDialogService,
     private readonly tthChangeCantonDialogService: TthChangeCantonDialogService,

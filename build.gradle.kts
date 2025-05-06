@@ -10,26 +10,26 @@ extra["awsS3Version"] = "2.31.36"
 extra["swaggerCoreVersion"] = "2.2.30"
 extra["openapiStarterCommonVersion"] = "2.8.8"
 
-//Geo Data Libs
+// Geo Data Libs
 extra["proj4jVersion"] = "1.4.0"
 extra["jtsVersion"] = "1.20.0"
 extra["springOpenapiUiVersion"] = "2.8.8"
 extra["springCloudVersion"] = "2024.0.1"
 
 subprojects {
-        sonar {
-            properties {
-                property("sonar.projectKey", "ch.sbb.atlas:atlas")
-                property("sonar.projectVersion", project.version)
-                property("sonar.dynamicAnalysis", "reuseReports")
-                property("sonar.java.coveragePlugin", "jacoco")
-                property(
-                    "sonar.exclusions",
-                    "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js," +
-                            "**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*,**/*.kts"
-                )
-            }
+    sonar {
+        properties {
+            property("sonar.projectKey", "ch.sbb.atlas:atlas")
+            property("sonar.projectVersion", project.version)
+            property("sonar.dynamicAnalysis", "reuseReports")
+            property("sonar.java.coveragePlugin", "jacoco")
+            property(
+                "sonar.exclusions",
+                "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js," +
+                        "**/instana.js,**/polyfills.ts,**/cypress/**,**/db/migration/**/*,**/*.kts"
+            )
         }
+    }
     if (project.name == "frontend") {
         sonar {
             properties {

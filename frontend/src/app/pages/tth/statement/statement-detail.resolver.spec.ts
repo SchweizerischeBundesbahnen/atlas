@@ -4,11 +4,11 @@ import {
   HearingStatus,
   SwissCanton,
   TimetableHearingStatementV2,
-  TimetableHearingStatementsService,
 } from '../../../api';
 import { StatementDetailResolver } from './statement-detail.resolver';
 import { AppTestingModule } from '../../../app.testing.module';
 import { of } from 'rxjs';
+import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
 
 const statement: TimetableHearingStatementV2 = {
   id: 1234,
@@ -21,7 +21,7 @@ const statement: TimetableHearingStatementV2 = {
 
 describe('StatementDetailResolver', () => {
   const timetableHearingStatementsServiceSpy = jasmine.createSpyObj(
-    'timetableHearingStatementsService',
+    'TimetableHearingStatementInternalService',
     ['getStatement']
   );
   timetableHearingStatementsServiceSpy.getStatement.and.returnValue(
@@ -36,7 +36,7 @@ describe('StatementDetailResolver', () => {
       providers: [
         StatementDetailResolver,
         {
-          provide: TimetableHearingStatementsService,
+          provide: TimetableHearingStatementInternalService,
           useValue: timetableHearingStatementsServiceSpy,
         },
       ],

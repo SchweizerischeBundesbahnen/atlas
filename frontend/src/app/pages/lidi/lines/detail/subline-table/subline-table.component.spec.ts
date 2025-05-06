@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SublineTableComponent } from './subline-table.component';
-import { Line, LinesService } from '../../../../../api';
+import { Line } from '../../../../../api';
 import { of, Subject } from 'rxjs';
 import { MockTableComponent } from '../../../../../app.testing.mocks';
 import { AppTestingModule } from '../../../../../app.testing.module';
+import { LineService } from '../../../../../api/service/lidi/line.service';
 
 const subline: Line = {
   swissLineNumber: 'IC6',
@@ -18,8 +18,8 @@ const subline: Line = {
   validTo: new Date('2099-12-31'),
 };
 
-const linesService = jasmine.createSpyObj('LinesService', ['getLines']);
-linesService.getLines.and.returnValue(of({ objects: subline }));
+const lineService = jasmine.createSpyObj('LineService', ['getLines']);
+lineService.getLines.and.returnValue(of({ objects: subline }));
 
 describe('SublineTableComponent', () => {
   let component: SublineTableComponent;
@@ -29,7 +29,7 @@ describe('SublineTableComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule, SublineTableComponent, MockTableComponent],
-      providers: [{ provide: LinesService, useValue: linesService }],
+      providers: [{ provide: LineService, useValue: lineService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SublineTableComponent);
@@ -45,7 +45,7 @@ describe('SublineTableComponent', () => {
 
   it('should load sublines from backend', () => {
     component.getOverview();
-    expect(linesService.getLines).toHaveBeenCalled();
+    expect(lineService.getLines).toHaveBeenCalled();
   });
 
   it('should navigate to subline in new tab', () => {

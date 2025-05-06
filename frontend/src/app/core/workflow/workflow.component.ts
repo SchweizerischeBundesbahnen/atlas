@@ -8,11 +8,11 @@ import {
 } from '@angular/core';
 import { LineRecord } from './model/line-record';
 import {
-  LinesService,
   LineVersionWorkflow,
   WorkflowProcessingStatus,
 } from '../../api';
 import { WorkflowDialogService } from './dialog/workflow-dialog.service';
+import { LineInternalService } from '../../api/service/lidi/line-internal.service';
 import { NgIf } from '@angular/common';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 
@@ -32,7 +32,7 @@ export class WorkflowComponent implements OnInit, OnChanges {
   workflowId: number | undefined;
 
   constructor(
-    private readonly lineService: LinesService,
+    private readonly lineInternalService: LineInternalService,
     private readonly workflowDialogService: WorkflowDialogService
   ) {}
 
@@ -88,7 +88,7 @@ export class WorkflowComponent implements OnInit, OnChanges {
   }
 
   skipWorkflow() {
-    this.lineService
+    this.lineInternalService
       .skipWorkflow(this.lineRecord.id!)
       .subscribe(() => this.workflowEvent.emit());
   }

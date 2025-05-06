@@ -26,7 +26,7 @@ import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-class BusinessOrganisationControllerIntegrationTest extends BaseControllerWithAmazonS3ApiTest {
+class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTest {
 
   private final BusinessOrganisationVersion version = BusinessOrganisationVersion
       .builder()

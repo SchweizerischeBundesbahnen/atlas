@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
-  LinesService,
   LineType,
   LineVersion,
   LineVersionSnapshot,
@@ -39,6 +38,8 @@ import { PermissionService } from '../../../../core/auth/permission/permission.s
 import { NgOptimizedImage } from '@angular/common';
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
 import { DateIconComponent } from '../../../../core/form-components/date-icon/date-icon.component';
+import { LineService } from '../../../../api/service/lidi/line.service';
+import { LineInternalService } from '../../../../api/service/lidi/line-internal.service';
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -81,17 +82,21 @@ let component: LineVersionSnapshotDetailComponent;
 let fixture: ComponentFixture<LineVersionSnapshotDetailComponent>;
 
 describe('LineVersionSnapshotDetailComponent', () => {
-  const mockLinesService = jasmine.createSpyObj('linesService', [
-    'getLineVersionSnapshotById',
+  const mockLineService = jasmine.createSpyObj('lineService', [
     'getLineVersions',
   ]);
-  mockLinesService.getLineVersions.and.returnValue(of([lineVersion]));
+  mockLineService.getLineVersions.and.returnValue(of([lineVersion]));
+
+  const mockLineInternalService = jasmine.createSpyObj('lineInternalService', [
+    'getLineVersionSnapshotById',
+  ]);
+
   const mockData = {
     lineVersionSnapshot: lineVersionSnapsot,
   };
 
   beforeEach(() => {
-    setupTestBed(mockLinesService, mockData);
+    setupTestBed(mockLineService, mockLineInternalService, mockData);
 
     fixture = TestBed.createComponent(LineVersionSnapshotDetailComponent);
     component = fixture.componentInstance;
@@ -109,7 +114,8 @@ describe('LineVersionSnapshotDetailComponent', () => {
 });
 
 function setupTestBed(
-  linesService: LinesService,
+  lineService: LineService,
+  lineInternalService: LineInternalService,
   data: { lineVersionSnapshot: string | LineVersionSnapshot }
 ) {
   TestBed.configureTestingModule({
@@ -142,7 +148,8 @@ function setupTestBed(
     ],
     providers: [
       { provide: FormBuilder },
-      { provide: LinesService, useValue: linesService },
+      { provide: LineService, useValue: lineService },
+      { provide: LineInternalService, useValue: lineInternalService },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },

@@ -1,21 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogClose,
   MatDialogActions,
+  MatDialogClose,
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { NewTimetableHearingYearDialogData } from './model/new-timetable-hearing-year-dialog.data';
-import {
-  HearingStatus,
-  TimetableHearingYear,
-  TimetableHearingYearsService,
-} from '../../../api';
+import { HearingStatus, TimetableHearingYear } from '../../../api';
 import {
   FormControl,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
@@ -29,6 +25,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NewHearingYearValidator } from './new-hearing-year-validator';
 import { TthUtils } from '../util/tth-utils';
+import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
@@ -76,7 +73,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<NewTimetableHearingYearDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: NewTimetableHearingYearDialogData,
-    private readonly timetableHearingYearsService: TimetableHearingYearsService,
+    private readonly timetableHearingYearsService: TimetableHearingYearInternalService,
     protected notificationService: NotificationService,
     private readonly dialogService: DialogService
   ) {}

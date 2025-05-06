@@ -3,10 +3,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { NewTimetableHearingYearDialogComponent } from './new-timetable-hearing-year-dialog.component';
-import {
-  TimetableHearingYear,
-  TimetableHearingYearsService,
-} from '../../../api';
+import { TimetableHearingYear } from '../../../api';
 import moment from 'moment/moment';
 import { of } from 'rxjs';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
@@ -17,6 +14,7 @@ import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-la
 import { DateIconComponent } from '../../../core/form-components/date-icon/date-icon.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
+import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 
 const mockTimetableHearingYearsService = jasmine.createSpyObj(
   'timetableHearingService',
@@ -82,7 +80,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: { title: 'Title' } },
         { provide: MatDialogRef, useValue: {} },
         {
-          provide: TimetableHearingYearsService,
+          provide: TimetableHearingYearInternalService,
           useValue: mockTimetableHearingYearsService,
         },
         TranslatePipe,
