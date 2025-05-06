@@ -5,7 +5,6 @@ import ch.sbb.atlas.imports.annotation.DefaultMapping;
 import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.Validatable;
-import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -35,8 +34,6 @@ public class ServicePointTerminateCsvModel implements Validatable<ServicePointTe
 
   private Integer number;
 
-  private LocalDate validFrom;
-
   @DefaultMapping
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validTo;
@@ -44,10 +41,6 @@ public class ServicePointTerminateCsvModel implements Validatable<ServicePointTe
   @Override
   public List<BulkImportError> validate() {
     List<BulkImportError> errors = new ArrayList<>();
-
-    if ((sloid == null) == (number == null)) {
-      errors.add(BulkImportErrors.sloidXorNumber());
-    }
 
     if (number != null) {
       try {
@@ -58,12 +51,11 @@ public class ServicePointTerminateCsvModel implements Validatable<ServicePointTe
     }
 
     if (validTo == null) {
-      errors.add(BulkImportErrors.notNull(ServicePointUpdateCsvModel.Fields.validTo));
+      errors.add(BulkImportErrors.notNull(ServicePointTerminateCsvModel.Fields.validTo));
     }
     return errors;
   }
 
-  //TODO Check what do to here
   @Override
   public List<UniqueField<ServicePointTerminateCsvModel>> uniqueFields() {
     return List.of(new UniqueField<>(ServicePointTerminateCsvModel.Fields.sloid, ServicePointTerminateCsvModel::getSloid),
