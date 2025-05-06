@@ -96,16 +96,16 @@ class PdfCdrEmbeddedFileSanitization {
       return;
     }
 
-    Map<String, T> _names;
+    Map<String, T> names;
     try {
-      _names = efTree.getNames();
+      names = efTree.getNames();
     } catch (IOException e) {
       log.error("Error in sanitizeRecursiveNameTree", e);
       return;
     }
 
-    if (_names != null) {
-      _names.values().forEach(callback);
+    if (names != null) {
+      names.values().forEach(callback);
     }
     if (efTree.getKids() == null) {
       return;
