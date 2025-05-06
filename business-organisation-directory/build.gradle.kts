@@ -20,7 +20,6 @@ dependencies {
     implementation("com.sun.xml.messaging.saaj:saaj-impl")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
 
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
     annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.13.Final")

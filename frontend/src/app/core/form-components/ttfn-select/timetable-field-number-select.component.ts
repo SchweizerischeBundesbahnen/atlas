@@ -10,14 +10,12 @@ import {
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  TimetableFieldNumber,
-  TimetableFieldNumbersService,
-} from '../../../api';
+import { TimetableFieldNumber } from '../../../api';
 import { map } from 'rxjs/operators';
+import { TimetableFieldNumberInternalService } from '../../../api/service/lidi/timetable-field-number-internal.service';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TimetableFieldNumberSelectOptionPipe } from './ttfn-select-option.pipe';
 
@@ -53,7 +51,7 @@ export class TimetableFieldNumberSelectComponent
   private formSubscription?: Subscription;
 
   constructor(
-    private timetableFieldNumbersService: TimetableFieldNumbersService
+    private timetableFieldNumbersService: TimetableFieldNumberInternalService
   ) {}
 
   ngOnInit(): void {

@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.servicepoint.ServicePointBulkImportApiV1;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
-import ch.sbb.atlas.imports.bulk.BaseBulkImportController;
+import ch.sbb.atlas.imports.bulk.BaseBulkImportControllerInternal;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class ServicePointBulkImportController extends BaseBulkImportController implements ServicePointBulkImportApiV1 {
+public class ServicePointBulkImportController extends BaseBulkImportControllerInternal implements ServicePointBulkImportApiV1 {
 
   private final ServicePointBulkImportService servicePointBulkImportService;
 

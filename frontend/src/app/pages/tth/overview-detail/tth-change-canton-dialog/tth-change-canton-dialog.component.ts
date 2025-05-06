@@ -8,7 +8,7 @@ import { TthChangeCantonFormGroup } from './model/tth-change-canton-form-group';
 import { ChangeCantonData } from './model/change-canton-data';
 import { takeUntil } from 'rxjs/operators';
 import { ValidationService } from 'src/app/core/validation/validation.service';
-import { TimetableHearingStatementsService } from '../../../../api';
+import { TimetableHearingStatementInternalService } from '../../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 
 @Component({
@@ -27,7 +27,7 @@ export class TthChangeCantonDialogComponent {
     public dialogRef: MatDialogRef<TthChangeCantonDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ChangeCantonData,
     private readonly notificationService: NotificationService,
-    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementsService
+    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementInternalService
   ) {}
 
   onClick() {

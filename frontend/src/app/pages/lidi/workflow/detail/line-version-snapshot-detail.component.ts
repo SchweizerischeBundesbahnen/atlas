@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  LinesService,
   LineVersion,
   LineVersionSnapshot,
   Workflow,
@@ -13,6 +12,7 @@ import { Pages } from '../../../pages';
 import { LineVersionSnapshotDetailFormGroup } from './line-version-snapshot-detail-form-group';
 import { WorkflowFormGroup } from '../../../../core/workflow/workflow-form-group';
 import { WorkflowCheckFormGroup } from '../../../../core/workflow/workflow-check-form/workflow-check-form-group';
+import { LineService } from '../../../../api/service/lidi/line.service';
 import { ScrollToTopDirective } from '../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
@@ -74,14 +74,14 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private workflowService: WorkflowService,
-    private lineService: LinesService
+    private lineService: LineService
   ) {}
 
   ngOnInit() {
     this.lineVersionSnapshot = this.readRecord();
     this.initLineVersionSnapshotForm();
     this.initWorkflowForms();
-    this.checkLineVersionSNapshottedAlreadyExists();
+    this.checkLineVersionSnapshottedAlreadyExists();
   }
 
   readRecord(): LineVersionSnapshot {
@@ -134,9 +134,9 @@ export class LineVersionSnapshotDetailComponent implements OnInit {
     });
   }
 
-  private checkLineVersionSNapshottedAlreadyExists() {
+  private checkLineVersionSnapshottedAlreadyExists() {
     this.lineService
-      .getLineVersions(this.lineVersionSnapshot!.slnid!)
+      .getLineVersions(this.lineVersionSnapshot.slnid!)
       .subscribe({
         next: (lineVersions) => {
           const lineVersionsFiltered: LineVersion[] = lineVersions.filter(

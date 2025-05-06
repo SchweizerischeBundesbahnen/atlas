@@ -20,7 +20,6 @@ dependencies {
     implementation("io.micrometer:micrometer-tracing")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springOpenapiUiVersion")}")
     implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
 

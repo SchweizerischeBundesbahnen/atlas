@@ -159,7 +159,7 @@ describe('RelationTabDetailComponent', () => {
       of(referencePointOverview)
     );
     personWithReducedMobilityService.getRelationsBySloid.and.returnValue(
-      of(relations)
+      of([relations[1]])
     );
     fixture.detectChanges();
 
@@ -176,7 +176,7 @@ describe('RelationTabDetailComponent', () => {
     expect(component.businessOrganisations).toEqual(['ch:1:sboid:100626']);
     expect(component.form).toBeDefined();
     expect(component.currentRelationId).toBe(1001);
-    expect(component.selectedRelationVersion).toBe(2);
+    expect(component.selectedRelationVersion).toBe(1);
   });
 
   it('should init relation tab for complete variant without reference points', () => {

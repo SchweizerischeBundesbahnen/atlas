@@ -6,12 +6,8 @@ import {
   StatementStatus,
   SwissCanton,
   TimetableFieldNumber,
-  TimetableHearingStatement,
   TimetableHearingStatementDocument,
-  TimetableHearingStatementsService,
   TimetableHearingStatementV2,
-  TimetableHearingYearsService,
-  TimetableYearChangeService,
   TransportCompany,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,8 +17,8 @@ import {
   FormArray,
   FormControl,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
@@ -46,11 +42,14 @@ import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-
 import { TableService } from '../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
+import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
+import { TimetableYearChangeInternalService } from '../../../api/service/lidi/timetable-year-change-internal.service';
+import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
 import { LoadingSpinnerService } from '../../../core/components/loading-spinner/loading-spinner.service';
 import { ScrollToTopDirective } from '../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { TimetableFieldNumberSelectComponent } from '../../../core/form-components/ttfn-select/timetable-field-number-select.component';
@@ -133,11 +132,11 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: DialogService,
-    private timetableHearingYearsService: TimetableHearingYearsService,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
+    private timetableHearingYearsService: TimetableHearingYearInternalService,
+    private readonly timetableHearingStatementsService: TimetableHearingStatementInternalService,
     private notificationService: NotificationService,
     private permissionService: PermissionService,
-    private timetableYearChangeService: TimetableYearChangeService,
+    private timetableYearChangeService: TimetableYearChangeInternalService,
     private readonly statementDialogService: StatementDialogService,
     private readonly openStatementInMailService: OpenStatementInMailService,
     private readonly statementShareService: StatementShareService,
@@ -197,7 +196,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     this.form.controls.oldSwissCanton.setValue(this.initialValueForCanton);
     this.statementDialogService.openDialog(this.form).subscribe((result) => {
       if (result) {
-        const hearingStatement = this.form.value as TimetableHearingStatement;
+        const hearingStatement = this.form.value as TimetableHearingStatementV2;
         this.navigateToStatementDetail(hearingStatement);
       } else {
         this.form.controls.comment.setValue(this.statement?.comment);
@@ -214,7 +213,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     } else {
       ValidationService.validateForm(this.form);
       if (this.form.valid) {
-        const hearingStatement = this.form.value as TimetableHearingStatement;
+        const hearingStatement = this.form.value as TimetableHearingStatementV2;
         this.form.disable();
         if (this.isNew) {
           this.createStatement(hearingStatement);

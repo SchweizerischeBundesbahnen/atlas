@@ -9,7 +9,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")//need it?
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springdoc:springdoc-openapi-starter-common:${property("openapiStarterCommonVersion")}")
     implementation("io.swagger.core.v3:swagger-core:${property("swaggerCoreVersion")}")
     implementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 
