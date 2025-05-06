@@ -16,9 +16,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.junit.jupiter.api.Test;
 
-class BaseBulkImportControllerTest {
+class BaseBulkImportControllerInternalTest {
 
-  private final BaseBulkImportController bulkImportController = new BaseBulkImportController();
+  private final BaseBulkImportControllerInternal bulkImportController = new BaseBulkImportControllerInternal();
 
   @Test
   void shouldUpdateWithInNameOf() {

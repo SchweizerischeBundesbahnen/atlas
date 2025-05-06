@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Sublines")
+@Tag(name = "[INTERNAL] Sublines")
 @RequestMapping("internal/sublines")
 public interface SublineApiInternal {
 
