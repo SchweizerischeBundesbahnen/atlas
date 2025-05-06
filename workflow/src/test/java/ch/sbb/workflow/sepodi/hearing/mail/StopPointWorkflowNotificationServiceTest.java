@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.workflow.mail.MailProducerService;
 import ch.sbb.workflow.sepodi.hearing.enity.StopPointWorkflow;
 import ch.sbb.workflow.sepodi.hearing.service.StopPointWorkflowBuilderNotificationService;
 import org.junit.jupiter.api.BeforeEach;
