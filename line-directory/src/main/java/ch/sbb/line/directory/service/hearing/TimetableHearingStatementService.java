@@ -12,6 +12,7 @@ import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.pdf.sanitize.PdfCdr;
 import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
@@ -38,7 +39,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -83,14 +83,8 @@ public class TimetableHearingStatementService {
 
     statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
 
-    List<File> files = new ArrayList<>();
-
-    if (!CollectionUtils.isEmpty(documents)) {
-      files = getFilesFromMultipartFiles(documents);
-      filesValidation(files, Collections.emptySet());
-
-      addFilesToStatement(documents, statementToCreate);
-    }
+    List<File> files = getFilesFromMultipartFiles(documents, Collections.emptySet());
+    addFilesToStatement(files, statementToCreate);
 
     TimetableHearingStatement timetableHearingStatement = timetableHearingStatementRepository.saveAndFlush(statementToCreate);
 
@@ -129,14 +123,10 @@ public class TimetableHearingStatementService {
       pdfsUploadAmazonService.deletePdfFile(timetableHearingStatementModel.getId().toString(), document.getFileName());
     });
 
-    List<File> files = new ArrayList<>();
-    if (documents != null && !documents.isEmpty()) {
-      files = getFilesFromMultipartFiles(documents);
-      filesValidation(files, timetableHearingStatementInDb.getDocuments());
-    }
+    List<File> files = getFilesFromMultipartFiles(documents, timetableHearingStatementInDb.getDocuments());
 
     TimetableHearingStatement updatedObject = updateObject(timetableHearingStatementModel, timetableHearingStatementInDb);
-    addFilesToStatement(documents, updatedObject);
+    addFilesToStatement(files, updatedObject);
     checkThatTimetableFieldNumberExists(updatedObject);
 
 
@@ -193,10 +183,16 @@ public class TimetableHearingStatementService {
     pdfsUploadAmazonService.deletePdfFile(timetableHearingStatement.getId().toString(), documentFilename);
   }
 
-  private List<File> getFilesFromMultipartFiles(List<MultipartFile> documents) {
-      return documents.stream()
-        .map(fileService::getFileFromMultipart)
-        .toList();
+  private List<File> getFilesFromMultipartFiles(List<MultipartFile> documents, Set<StatementDocument> alreadySavedDocuments) {
+    List<File> files = new ArrayList<>();
+    if (documents != null && !documents.isEmpty()) {
+      files = documents.stream()
+          .map(fileService::getFileFromMultipart)
+          .toList();
+      filesValidation(files, alreadySavedDocuments);
+    }
+    files.forEach(PdfCdr::sanitize);
+    return files;
   }
 
   private TimetableHearingStatement updateObject(TimetableHearingStatementModelV2 timetableHearingStatementModel,
@@ -257,14 +253,12 @@ public class TimetableHearingStatementService {
 
   }
 
-  private void addFilesToStatement(List<MultipartFile> documents, TimetableHearingStatement statement) {
-    if (documents != null) {
-      log.info("Statement {}, adding {} documents", statement.getId() == null ? "new" : statement.getId(), documents.size());
-      documents.forEach(multipartFile -> statement.addDocument(StatementDocument.builder()
-        .fileName(multipartFile.getOriginalFilename())
-        .fileSize(multipartFile.getSize())
+  private void addFilesToStatement(List<File> documents, TimetableHearingStatement statement) {
+    log.info("Statement {}, adding {} documents", statement.getId() == null ? "new" : statement.getId(), documents.size());
+    documents.forEach(file -> statement.addDocument(StatementDocument.builder()
+        .fileName(file.getName())
+        .fileSize(file.length())
         .build()));
-    }
   }
 
   public List<TimetableHearingStatement> getTimetableHearingStatementsByIds(List<Long> ids) {
