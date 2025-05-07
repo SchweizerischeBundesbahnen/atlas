@@ -6,7 +6,6 @@ import {
 } from '../detail/bulk-import-form-group';
 import {
   ApplicationType,
-  BulkImportService,
   BusinessObjectType,
   ImportType,
   UserAdministrationService,
@@ -37,6 +36,7 @@ import { StringListComponent } from '../../../core/form-components/string-list/s
 import { FileUploadComponent } from '../../../core/components/file-upload/file-upload.component';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { BulkImportService } from '../../../api/service/bulk/bulkImport.service';
 
 const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] =
   [
@@ -257,7 +257,7 @@ export class BulkImportOverviewComponent implements OnInit {
         bulkImportRequest.objectType,
         bulkImportRequest.importType
       )
-      .subscribe((response) => {
+      .subscribe((response: Blob) => {
         FileDownloadService.downloadFile(filename, response);
         this.dialogService.showInfo({
           title: 'PAGES.BULK_IMPORT.DIALOG_TEMPLATE_TO_EXCEL',
