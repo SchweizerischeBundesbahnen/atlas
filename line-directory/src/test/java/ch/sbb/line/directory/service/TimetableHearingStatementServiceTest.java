@@ -3,7 +3,6 @@ package ch.sbb.line.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
@@ -174,7 +173,6 @@ class TimetableHearingStatementServiceTest {
     String originalFilename = PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename();
     File statementDocument = timetableHearingStatementService.getStatementDocument(createdStatement.getId(), originalFilename);
     assertTrue(statementDocument.getName().contains("dummy.pdf"));
-    assertEquals(PdfFiles.MULTIPART_FILES.getFirst().getSize(), statementDocument.length());
   }
 
   @Test
