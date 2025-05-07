@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BulkImportLogComponent } from './bulk-import-log.component';
 import { ActivatedRoute } from '@angular/router';
-import { BulkImportResult, BulkImportService } from '../../../api';
+import { BulkImportResult } from '../../../api';
 import { Observable, of } from 'rxjs';
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockMatPaginatorComponent } from '../../../app.testing.mocks';
 import { By } from '@angular/platform-browser';
 import { UserDisplayNamePipe } from '../../../core/pipe/user-display-name.pipe';
+import { BulkImportService } from '../../../api/service/bulk/bulkImport.service';
 import Spy = jasmine.Spy;
 
 @Pipe({

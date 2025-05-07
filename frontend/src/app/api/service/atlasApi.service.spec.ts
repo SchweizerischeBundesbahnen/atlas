@@ -1,7 +1,7 @@
-import { AtlasApiService } from './atlasApi.service';
-import { TestBed } from '@angular/core/testing';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { UserService } from '../../core/auth/user/user.service';
+import {AtlasApiService} from './atlasApi.service';
+import {TestBed} from '@angular/core/testing';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {UserService} from '../../core/auth/user/user.service';
 import SpyObj = jasmine.SpyObj;
 
 describe('AtlasApiService', () => {
@@ -86,5 +86,15 @@ describe('AtlasApiService', () => {
 
     const callArgs = httpClient.delete.calls.argsFor(0);
     expect(callArgs[0]).toEqual('http://localhost:8888/path');
+  });
+
+  it('should createFormData', async () => {
+    const file = new File(['test'], 'test.txt');
+    const data = service.createFormData({ file, object: { attribute: 1 } });
+    expect(data.get('file')).toBe(file);
+
+    const blob = data.get('object') as Blob;
+    const text = await new Response(blob).text();
+    expect(JSON.parse(text)).toEqual({ attribute: 1 });
   });
 });
