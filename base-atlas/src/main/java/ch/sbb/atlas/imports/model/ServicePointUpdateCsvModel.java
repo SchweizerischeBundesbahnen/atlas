@@ -11,7 +11,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.UpdateGeolocationModel;
 import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.imports.model.base.BulkImportValidationHelper;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -126,13 +126,8 @@ public class ServicePointUpdateCsvModel implements Validatable<ServicePointUpdat
     if ((sloid == null) == (number == null)) {
       errors.add(BulkImportErrors.sloidXorNumber());
     }
-    if (number != null) {
-      try {
-        ServicePointNumber.ofNumberWithoutCheckDigit(number);
-      } catch (Exception e) {
-        errors.add(BulkImportErrors.invalidServicePointNumber());
-      }
-    }
+    BulkImportValidationHelper.validateServicePointNumber(number, errors);
+
     if (validFrom == null) {
       errors.add(BulkImportErrors.notNull(Fields.validFrom));
     }

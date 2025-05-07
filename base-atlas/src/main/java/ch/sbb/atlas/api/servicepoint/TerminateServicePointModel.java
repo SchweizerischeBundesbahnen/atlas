@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "TerminateServicePointModel")
+@Schema(name = "TerminateServicePoint")
 public class TerminateServicePointModel {
 
   @NotNull

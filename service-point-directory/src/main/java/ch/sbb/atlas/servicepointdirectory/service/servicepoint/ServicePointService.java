@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException;
@@ -185,6 +186,10 @@ public class ServicePointService {
       TerminateServicePointModel terminateServicePointModel) {
     ServicePointVersion servicePointVersionToUpdate = findById(id).orElseThrow(
         () -> new NotFoundException.IdNotFoundException(id));
+    DateRange dateRange = new DateRange(servicePointVersionToUpdate.getValidFrom(), servicePointVersionToUpdate.getValidTo());
+
+    servicePointTerminationService.isValidToInLastVersionRange(
+        servicePointVersionToUpdate.getSloid(), dateRange, terminateServicePointModel.getValidTo());
 
     List<ServicePointVersion> currentVersions = findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber());
 
