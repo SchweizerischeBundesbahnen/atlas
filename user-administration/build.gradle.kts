@@ -10,7 +10,7 @@ version = "2.594.0"
 
 description = "Atlas User Administration"
 extra["microsoftGraphSdkVersion"] = "6.36.0"
-extra["azureIdentityVersion"] = "1.15.4"
+extra["azureIdentityVersion"] = "1.16.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
