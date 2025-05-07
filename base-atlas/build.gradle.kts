@@ -36,6 +36,7 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
     implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
     implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
+    implementation("org.apache.pdfbox:pdfbox:3.0.4")
 
     implementation("org.springframework.kafka:spring-kafka")//get this dependency from :kafka use as api does not work
     implementation(project(":kafka"))
