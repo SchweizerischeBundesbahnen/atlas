@@ -1,12 +1,12 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {TestBed} from "@angular/core/testing";
 import {BulkImportService} from "./bulkImport.service";
-import {AppTestingModule} from "../../app.testing.module";
+import {AppTestingModule} from "../../../app.testing.module";
 import {TranslateFakeLoader, TranslateLoader, TranslateModule} from "@ngx-translate/core";
-import {ApplicationType} from "../model/applicationType";
-import {BusinessObjectType} from "../model/businessObjectType";
-import {ImportType} from "../model/importType";
-import {BulkImportRequest} from "../model/bulkImportRequest";
+import {ApplicationType} from "../../model/applicationType";
+import {BusinessObjectType} from "../../model/businessObjectType";
+import {ImportType} from "../../model/importType";
+import {BulkImportRequest} from "../../model/bulkImportRequest";
 
 describe('BulkImportService', () => {
   let service: BulkImportService;

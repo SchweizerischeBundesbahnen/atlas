@@ -1,8 +1,8 @@
-import { UserService } from '../../core/auth/user/user.service';
-import { environment } from '../../../environments/environment';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {UserService} from '../../core/auth/user/user.service';
+import {environment} from '../../../environments/environment';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 
 type NotBlob<T> = T extends Blob ? unknown : T;
 
@@ -78,6 +78,33 @@ export class AtlasApiService {
     return this.httpClient.delete<T>(`${this.basePath}${path}`);
   }
 
+  createFormData(params: { [key: string]: any }): FormData {
+    let formData: FormData = new FormData();
+
+    Object.keys(params).forEach(key => {
+
+      if(Array.isArray(params[key])){
+        params[key].forEach((element) => {
+          formData.append(key, element)
+        })
+      }
+
+      else if(params[key] instanceof Blob) {
+        formData.append(key, params[key]);
+      }
+
+      else {
+        formData.append(key, this.createBlob(params[key]));
+      }
+    });
+
+    return formData;
+  }
+
+  private createBlob(param: any): Blob {
+    return new Blob([JSON.stringify(param)], { type: 'application/json' });
+  }
+
   private get basePath() {
     if (this.userService.loggedIn) {
       return environment.atlasApiUrl;
@@ -86,41 +113,11 @@ export class AtlasApiService {
     }
   }
 
-  // TODO: Simplify with https://flow.sbb.ch/browse/ATLAS-2868
-  private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
-    if (typeof value === 'object' && value instanceof Date === false) {
-      httpParams = this.addToHttpParamsRecursive(httpParams, value);
+  private addToHttpParams(httpParams: HttpParams, value: any, key: string): HttpParams {
+    if (value instanceof Date) {
+      return httpParams.append(key, (value as Date).toISOString().substr(0, 10));
     } else {
-      httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
+      return httpParams.append(key, value);
     }
-    return httpParams;
   }
-
-  private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
-    if (value == null) {
-      return httpParams;
-    }
-
-    if (typeof value === 'object') {
-      if (Array.isArray(value)) {
-        (value as any[]).forEach(elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
-      } else if (value instanceof Date) {
-        if (key != null) {
-          httpParams = httpParams.append(key,
-            (value as Date).toISOString().substr(0, 10));
-        } else {
-          throw Error('key may not be null if value is Date');
-        }
-      } else {
-        Object.keys(value).forEach(k => httpParams = this.addToHttpParamsRecursive(
-          httpParams, value[k], key != null ? `${key}.${k}` : k));
-      }
-    } else if (key != null) {
-      httpParams = httpParams.append(key, value);
-    } else {
-      throw Error('key may not be null if value is not object or array');
-    }
-    return httpParams;
-  }
-
 }
