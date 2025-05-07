@@ -6,7 +6,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportErrors;
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry.BulkImportError;
 import ch.sbb.atlas.imports.bulk.Validatable;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.imports.model.base.BulkImportValidationHelper;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDate;
@@ -50,13 +50,7 @@ public class ServicePointTerminateCsvModel implements Validatable<ServicePointTe
       errors.add(BulkImportErrors.notNull(Fields.sloid));
     }
 
-    if (number != null) {
-      try {
-        ServicePointNumber.ofNumberWithoutCheckDigit(number);
-      } catch (Exception e) {
-        errors.add(BulkImportErrors.invalidServicePointNumber());
-      }
-    }
+    BulkImportValidationHelper.validateServicePointNumber(number, errors);
 
     if (validTo == null) {
       errors.add(BulkImportErrors.notNull(ServicePointTerminateCsvModel.Fields.validTo));

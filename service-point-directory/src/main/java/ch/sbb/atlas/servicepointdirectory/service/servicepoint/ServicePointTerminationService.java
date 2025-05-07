@@ -6,7 +6,9 @@ import ch.sbb.atlas.model.Validity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedValidToNotWithinLastVersionRangeException;
 import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,13 @@ public class ServicePointTerminationService {
     Validity preUpdateStopPointValidity = getValidityOfStopPoint(currentVersions);
     Validity afterUpdateStopPointValidity = getValidityOfStopPoint(afterUpdateVersions);
     return !afterUpdateStopPointValidity.containsEveryDateOf(preUpdateStopPointValidity);
+  }
+
+  public void isValidToInLastVersionRange(String sloid, DateRange dateRange, LocalDate validTo) {
+    if (!dateRange.contains(validTo)) {
+      throw new TerminationNotAllowedValidToNotWithinLastVersionRangeException(sloid, validTo, dateRange.getFrom(),
+          dateRange.getTo());
+    }
   }
 
   private static Validity getValidityOfStopPoint(List<ServicePointVersion> servicePoint) {
