@@ -120,4 +120,12 @@ class MailTemplateConfigTest {
     assertThat(result).isEqualTo(MailTemplateConfig.LINE_REJECTED_WORKFLOW_NOTIFICATION_TEMPLATE);
   }
 
+  @Test
+  void shouldReturnStartTerminationStopPointWorkflowNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE);
+  }
+
 }

@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
@@ -14,6 +15,9 @@ import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusRevokedChangeNotAllowedException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationDateException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInReviewException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotOnLastVersionException;
 import ch.sbb.atlas.servicepointdirectory.mapper.CreateServicePointMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointSwissWithGeoMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
@@ -158,6 +162,35 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
+  public ReadServicePointVersionModel startServicePointTermination(String sloid, Long id,
+      UpdateTerminationServicePointModel updateTerminationServicePointModel) {
+
+    List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
+    ServicePointVersion servicePointVersion = validateTermination(sloid, id, servicePointVersions);
+
+    if (updateTerminationServicePointModel.getTerminationDate().isAfter(servicePointVersion.getValidTo())
+        || updateTerminationServicePointModel.getTerminationDate().isEqual(servicePointVersion.getValidTo())) {
+      throw new TerminationDateException(updateTerminationServicePointModel.getTerminationDate(),
+          servicePointVersion.getValidTo());
+    }
+    return ServicePointVersionMapper.toModel(
+        servicePointService.updateStopPointTerminationStatus(servicePointVersion, servicePointVersions,
+            updateTerminationServicePointModel));
+  }
+
+  @Override
+  public ReadServicePointVersionModel stopServicePointTermination(String sloid, Long id) {
+    List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
+    ServicePointVersion servicePointVersion = validateTermination(sloid, id, servicePointVersions);
+    UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
+        .terminationInProgress(false)
+        .build();
+    return ServicePointVersionMapper.toModel(
+        servicePointService.updateStopPointTerminationStatus(servicePointVersion, servicePointVersions,
+            terminationServicePointModel));
+  }
+
+  @Override
   public void syncServicePoints() {
     servicePointService.publishAllServicePoints();
   }
@@ -174,5 +207,22 @@ public class ServicePointController implements ServicePointApiV1 {
             swissWithGeoModels.add(ServicePointSwissWithGeoMapper.toModel(sloid, swissWithGeoTransfers)));
 
     return swissWithGeoModels;
+  }
+
+  private static ServicePointVersion validateTermination(String sloid, Long id,
+      List<ServicePointVersion> servicePointVersions) {
+    if (servicePointVersions.isEmpty()) {
+      throw new SloidNotFoundException(sloid);
+    }
+    ServicePointVersion servicePointVersion = servicePointVersions.stream().filter(sp -> sp.getId().equals(id)).findFirst()
+        .orElseThrow(() -> new IdNotFoundException(id));
+    if (!servicePointVersions.getLast().getId().equals(id)) {
+      throw new TerminationNotOnLastVersionException();
+    }
+    if (servicePointVersion.getStatus() != Status.VALIDATED) {
+      throw new TerminationNotAllowedWhenVersionInReviewException(servicePointVersion.getNumber(),
+          servicePointVersion.getStatus());
+    }
+    return servicePointVersion;
   }
 }

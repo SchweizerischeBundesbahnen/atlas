@@ -99,7 +99,7 @@ class ServicePointVersionTest {
   }
 
   @Test
-   void servicePointSharedEntityIntegrityTest(){
+  void servicePointSharedEntityIntegrityTest() {
     //given
 
     //when
@@ -108,8 +108,9 @@ class ServicePointVersionTest {
 
     //then
     String errorDescription = String.format("\n The %s is used in ServicePointDirectory project. " +
-            "If this test fail please make sure the entire ATLAS application works properly: import, export, ...\n", ServicePointVersion.class);
-    assertThat(result.get()).as(errorDescription).isEqualTo(55);
+            "If this test fail please make sure the entire ATLAS application works properly: import, export, ...\n",
+        ServicePointVersion.class);
+    assertThat(result.get()).as(errorDescription).isEqualTo(57);
   }
 
   @Test
