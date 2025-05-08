@@ -126,7 +126,8 @@ public class ServicePointUpdateCsvModel implements Validatable<ServicePointUpdat
     if ((sloid == null) == (number == null)) {
       errors.add(BulkImportErrors.sloidXorNumber());
     }
-    BulkImportValidationHelper.validateServicePointNumber(number, errors);
+    
+    errors.addAll(BulkImportValidationHelper.validateServicePointNumber(number));
 
     if (validFrom == null) {
       errors.add(BulkImportErrors.notNull(Fields.validFrom));
