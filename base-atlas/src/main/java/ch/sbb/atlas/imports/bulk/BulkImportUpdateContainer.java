@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 @Data
 public class BulkImportUpdateContainer<T> implements BulkImportContainer {
 
+  private Long bulkImportId;
+
   private int lineNumber;
 
   @Valid
