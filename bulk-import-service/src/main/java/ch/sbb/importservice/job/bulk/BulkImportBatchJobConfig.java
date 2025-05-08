@@ -91,7 +91,8 @@ public class BulkImportBatchJobConfig {
       @Value("#{jobParameters[fullPathFileName]}") String pathToFile,
       @Value("#{jobParameters[application]}") String application,
       @Value("#{jobParameters[objectType]}") String objectType,
-      @Value("#{jobParameters[importType]}") String importType
+      @Value("#{jobParameters[importType]}") String importType,
+      @Value("#{jobParameters[bulkImportId]}") Long bulkImportId
   ) {
 
     BulkImportConfig config = BulkImportConfig.builder()
@@ -103,6 +104,7 @@ public class BulkImportBatchJobConfig {
 
     File file = new File(Objects.requireNonNull(pathToFile));
     List<BulkImportUpdateContainer<?>> items = new ArrayList<>(readerFunction.apply(file));
+    items.forEach(item -> item.setBulkImportId(bulkImportId));
     return new ThreadSafeListItemReader<>(items);
   }
 
