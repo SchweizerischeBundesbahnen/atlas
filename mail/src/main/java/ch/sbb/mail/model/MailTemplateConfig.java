@@ -12,6 +12,7 @@ import static ch.sbb.atlas.kafka.model.mail.MailType.REJECT_STOP_POINT_WORKFLOW_
 import static ch.sbb.atlas.kafka.model.mail.MailType.SCHEDULING_ERROR_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION;
@@ -55,6 +56,8 @@ public enum MailTemplateConfig {
   STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION_TEMPLATE("stop_point_workflow_restart_cc_notification", null, null, true, false,
       true),
   BULK_IMPORT_RESULT_TEMPLATE("bulk-import-result-template", null, null, true, false, true),
+  START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("termination_stop_point_workflow_notification", null, null, true,
+      false, true),
 
   ;
 
@@ -86,6 +89,7 @@ public enum MailTemplateConfig {
     CONFIG.put(STOP_POINT_WORKFLOW_RESTART_NOTIFICATION, STOP_POINT_WORKFLOW_RESTART_NOTIFICATION_TEMPLATE);
     CONFIG.put(STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION, STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION_TEMPLATE);
     CONFIG.put(BULK_IMPORT_RESULT_NOTIFICATION, BULK_IMPORT_RESULT_TEMPLATE);
+    CONFIG.put(START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION, START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE);
   }
 
   public static MailTemplateConfig getMailTemplateConfig(MailType mailType) {

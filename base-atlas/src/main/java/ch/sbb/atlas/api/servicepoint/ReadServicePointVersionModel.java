@@ -52,6 +52,9 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
   @Schema(description = "Indicates if this a operatingPoint including Timetables.")
   private boolean operatingPointWithTimetable;
 
+  @Schema(description = "Indicates if a StopPoint is in a termination hearing. Only for internal development usage!")
+  private boolean terminationInProgress;
+
   private ServicePointGeolocationReadModel servicePointGeolocation;
 
   @JsonInclude

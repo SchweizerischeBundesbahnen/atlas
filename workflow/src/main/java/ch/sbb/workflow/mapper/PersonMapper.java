@@ -2,8 +2,8 @@ package ch.sbb.workflow.mapper;
 
 import ch.sbb.atlas.api.workflow.PersonModel;
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
-import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
+import ch.sbb.workflow.sepodi.hearing.model.sepodi.StopPointRejectWorkflowModel;
+import ch.sbb.workflow.sepodi.hearing.model.sepodi.StopPointRestartWorkflowModel;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
