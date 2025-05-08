@@ -14,6 +14,7 @@ export class ServiceWorkerService {
     private readonly swUpdate: SwUpdate,
     private readonly dialog: MatDialog
   ) {
+    console.log('SW isEnabled: ', swUpdate.isEnabled);
     if (swUpdate.isEnabled) {
       const appIsStable$ = appRef.isStable.pipe(first((isStable) => isStable));
       const checkForUpdateInterval$ = interval(300000); // all 5 minutes
@@ -23,19 +24,22 @@ export class ServiceWorkerService {
 
       swUpdate.versionUpdates
         .pipe(filter((versionEvent) => versionEvent.type === 'VERSION_READY'))
-        .subscribe(() =>
+        .subscribe((value) => {
+          console.log('Latest version:', value.latestVersion);
+          console.log('Current version:', value.currentVersion);
           this.openSWDialog(
             'SW_DIALOG.UPDATE_TITLE',
             'SW_DIALOG.UPDATE_MESSAGE'
-          )
-        );
+          );
+        });
 
-      swUpdate.unrecoverable.subscribe(() =>
+      swUpdate.unrecoverable.subscribe((value) => {
+        console.log('Something went wrong: unrecoverable ->', value.reason);
         this.openSWDialog(
           'SW_DIALOG.UNRECOVERABLE_TITLE',
           'SW_DIALOG.UNRECOVERABLE_MESSAGE'
-        )
-      );
+        );
+      });
     }
   }
 
