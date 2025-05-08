@@ -1,5 +1,5 @@
 import { ApplicationRef, Injectable } from '@angular/core';
-import { filter, first } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { concat, interval } from 'rxjs';
 import { DialogComponent } from './core/components/dialog/dialog.component';
 import { SwUpdate } from '@angular/service-worker';
@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 @Injectable()
 export class ServiceWorkerService {
   environmentReleaseNotesUrl: string = environment.atlasReleaseNotes;
+
   constructor(
     private readonly appRef: ApplicationRef,
     private readonly swUpdate: SwUpdate,
@@ -22,16 +23,19 @@ export class ServiceWorkerService {
 
       checkForUpdate$.subscribe(() => swUpdate.checkForUpdate());
 
-      swUpdate.versionUpdates
-        .pipe(filter((versionEvent) => versionEvent.type === 'VERSION_READY'))
-        .subscribe((value) => {
-          console.log('Latest version:', value.latestVersion);
-          console.log('Current version:', value.currentVersion);
+      swUpdate.checkForUpdate().then((value) => {
+        console.log('Check For Update value:', value);
+      });
+
+      swUpdate.versionUpdates.pipe().subscribe((versionEvent) => {
+        console.log('Update version type:', versionEvent.type);
+        if (versionEvent.type === 'VERSION_READY') {
           this.openSWDialog(
             'SW_DIALOG.UPDATE_TITLE',
             'SW_DIALOG.UPDATE_MESSAGE'
           );
-        });
+        }
+      });
 
       swUpdate.unrecoverable.subscribe((value) => {
         console.log('Something went wrong: unrecoverable');
