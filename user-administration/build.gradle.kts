@@ -9,7 +9,7 @@ group = "ch.sbb.atlas"
 version = "2.602.0"
 
 description = "Atlas User Administration"
-extra["microsoftGraphSdkVersion"] = "6.36.0"
+extra["microsoftGraphSdkVersion"] = "6.37.0"
 extra["azureIdentityVersion"] = "1.16.0"
 
 dependencies {
