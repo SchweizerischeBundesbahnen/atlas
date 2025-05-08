@@ -70,6 +70,7 @@ export class AtlasApiService {
     return this.httpClient.put<T>(`${this.basePath}${path}`, body, options ?? this.createUpdateOptions);
   }
 
+  //Overwrite default options when using form data
   post<T>(path: string, body: any = null, options?: { responseType?: 'json', headers?: HttpHeaders }): Observable<T> {
     return this.httpClient.post<T>(`${this.basePath}${path}`, body, options ?? this.createUpdateOptions);
   }
