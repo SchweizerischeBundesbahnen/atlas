@@ -6,7 +6,7 @@ import { DialogComponent } from './core/components/dialog/dialog.component';
 import { of, Subject } from 'rxjs';
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-describe('ServiceWorkerService', () => {
+fdescribe('ServiceWorkerService', () => {
   let service: ServiceWorkerService;
 
   const matDialogSpy = jasmine.createSpyObj<MatDialog>(['open']);

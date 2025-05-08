@@ -34,7 +34,10 @@ export class ServiceWorkerService {
         });
 
       swUpdate.unrecoverable.subscribe((value) => {
-        console.log('Something went wrong: unrecoverable ->', value.reason);
+        console.log('Something went wrong: unrecoverable');
+        if (value?.reason) {
+          console.log('Unrecoverable: ' + value.reason);
+        }
         this.openSWDialog(
           'SW_DIALOG.UNRECOVERABLE_TITLE',
           'SW_DIALOG.UNRECOVERABLE_MESSAGE'
