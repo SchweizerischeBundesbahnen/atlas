@@ -79,7 +79,7 @@ export class AtlasApiService {
   }
 
   createFormData(params: { [key: string]: any }): FormData {
-    let formData: FormData = new FormData();
+    const formData: FormData = new FormData();
 
     Object.keys(params).forEach(key => {
 
