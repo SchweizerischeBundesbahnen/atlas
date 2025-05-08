@@ -7,22 +7,22 @@ link:rest-api.html[*< Back to main*]
 
 == Get Subline with not found error
 
-include::{snippets}/subline-controller-api-test/should-return-not-found-error-response-when-no-found-lines/atlas-doc.adoc[]
+include::{snippets}/subline-controller-v1-api-test/should-return-not-found-error-response-when-no-found-lines/atlas-doc.adoc[]
 
 == Get Subline Version Get Subline V2
 
-include::{snippets}/subline-controller-api-v2-test/should-get-subline-version/atlas-doc.adoc[]
+include::{snippets}/subline-controller-v2-api-test/should-get-subline-version/atlas-doc.adoc[]
 
 == Get Subline Version Get Subline V2 Not Found
 
-include::{snippets}/subline-controller-api-v2-test/should-return-not-found/atlas-doc.adoc[]
+include::{snippets}/subline-controller-v2-api-test/should-return-not-found/atlas-doc.adoc[]
 
 == Create Subline Version V2
 
-include::{snippets}/subline-controller-api-v2-test/should-create-subline-v2/atlas-doc.adoc[]
+include::{snippets}/subline-controller-v2-api-test/should-create-subline-v2/atlas-doc.adoc[]
 
 == Update Subline Version V2
 
-include::{snippets}/subline-controller-api-v2-test/should-update-subline/atlas-doc.adoc[]
+include::{snippets}/subline-controller-v2-api-test/should-update-subline/atlas-doc.adoc[]
 
 link:rest-api.html[*< Back to main*]
