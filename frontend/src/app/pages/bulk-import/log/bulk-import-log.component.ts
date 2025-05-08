@@ -2,22 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { BulkImportLogEntry, BulkImportResult } from '../../../api';
 import {
-  BulkImportLogEntry,
-  BulkImportResult,
-  BulkImportService,
-} from '../../../api';
-import {
-  NgTemplateOutlet,
-  NgClass,
   AsyncPipe,
   DatePipe,
+  NgClass,
+  NgTemplateOutlet,
 } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserDisplayNamePipe } from '../../../core/pipe/user-display-name.pipe';
 import { ParamsForTranslationPipe } from '../../../core/pipe/params-for-translation.pipe';
+import { BulkImportService } from '../../../api/service/bulk/bulkImport.service';
 
 @Component({
   selector: 'bulk-import-log',

@@ -1,14 +1,14 @@
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AtlasApiService } from '../atlasApi.service';
-import { UpdateHearingStatementStatus } from '../../model/updateHearingStatementStatus';
-import { UpdateHearingCanton } from '../../model/updateHearingCanton';
-import { ContainerTimetableHearingStatementV2 } from '../../model/containerTimetableHearingStatementV2';
-import { SwissCanton } from '../../model/swissCanton';
-import { StatementStatus } from '../../model/statementStatus';
-import { TimetableHearingStatementV2 } from '../../model/timetableHearingStatementV2';
-import { TimetableHearingStatementAlternating } from '../../model/timetableHearingStatementAlternating';
-import { TransportCompany } from '../../model/transportCompany';
+import {inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {AtlasApiService} from '../atlasApi.service';
+import {UpdateHearingStatementStatus} from '../../model/updateHearingStatementStatus';
+import {UpdateHearingCanton} from '../../model/updateHearingCanton';
+import {ContainerTimetableHearingStatementV2} from '../../model/containerTimetableHearingStatementV2';
+import {SwissCanton} from '../../model/swissCanton';
+import {StatementStatus} from '../../model/statementStatus';
+import {TimetableHearingStatementV2} from '../../model/timetableHearingStatementV2';
+import {TimetableHearingStatementAlternating} from '../../model/timetableHearingStatementAlternating';
+import {TransportCompany} from '../../model/transportCompany';
 
 @Injectable({
   providedIn: 'root',
@@ -112,7 +112,7 @@ export class TimetableHearingStatementInternalService {
   public createStatement(statement: TimetableHearingStatementV2, documents?: Array<Blob>): Observable<TimetableHearingStatementV2> {
     this.atlasApiService.validateParams({ statement });
     return this.atlasApiService.post(this.STATEMENTS,
-      this.formDataForStatement(statement, documents),
+      this.atlasApiService.createFormData({statement, documents}),
       { responseType: 'json' },
     );
   }
@@ -120,7 +120,7 @@ export class TimetableHearingStatementInternalService {
   public updateHearingStatement(id: number, statement: TimetableHearingStatementV2, documents?: Array<Blob>): Observable<TimetableHearingStatementV2> {
     this.atlasApiService.validateParams({ statement, id });
     return this.atlasApiService.put(`${this.STATEMENTS}/${encodeURIComponent(String(id))}`,
-      this.formDataForStatement(statement, documents),
+      this.atlasApiService.createFormData({statement, documents}),
       { responseType: 'json' },
     );
   }
@@ -128,16 +128,5 @@ export class TimetableHearingStatementInternalService {
   public getResponsibleTransportCompanies(ttfnid: string, year: number): Observable<TransportCompany[]> {
     this.atlasApiService.validateParams({ year, ttfnid });
     return this.atlasApiService.get(`${this.STATEMENTS}/responsible-transport-companies/${encodeURIComponent(String(ttfnid))}/${encodeURIComponent(String(year))}`);
-  }
-
-  private formDataForStatement(statement: TimetableHearingStatementV2, documents?: Array<Blob>): FormData {
-    const formParams = new FormData();
-    formParams.append('statement', new Blob([JSON.stringify(statement)], { type: 'application/json' }));
-    if (documents) {
-      documents.forEach((element) => {
-        formParams.append('documents', element);
-      });
-    }
-    return formParams;
   }
 }

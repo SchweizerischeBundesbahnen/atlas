@@ -1,11 +1,6 @@
 import { BulkImportOverviewComponent } from './bulk-import-overview.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  ApplicationType,
-  BulkImportService,
-  BusinessObjectType,
-  ImportType,
-} from '../../../api';
+import { ApplicationType, BusinessObjectType, ImportType } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { BulkImportFormGroupBuilder } from '../detail/bulk-import-form-group';
 import { BehaviorSubject, of, throwError } from 'rxjs';
@@ -30,6 +25,7 @@ import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spac
 import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { LoadingSpinnerService } from '../../../core/components/loading-spinner/loading-spinner.service';
+import { BulkImportService } from '../../../api/service/bulk/bulkImport.service';
 import SpyObj = jasmine.SpyObj;
 
 describe('BulkImportOverviewComponent', () => {

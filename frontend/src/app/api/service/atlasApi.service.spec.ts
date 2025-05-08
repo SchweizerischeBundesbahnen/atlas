@@ -1,7 +1,11 @@
-import { AtlasApiService } from './atlasApi.service';
-import { TestBed } from '@angular/core/testing';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { UserService } from '../../core/auth/user/user.service';
+import {AtlasApiService} from './atlasApi.service';
+import {TestBed} from '@angular/core/testing';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {UserService} from '../../core/auth/user/user.service';
+import {BulkImportRequest} from "../model/bulkImportRequest";
+import {ImportType} from "../model/importType";
+import {BusinessObjectType} from "../model/businessObjectType";
+import {ApplicationType} from "../model/applicationType";
 import SpyObj = jasmine.SpyObj;
 
 describe('AtlasApiService', () => {
@@ -86,5 +90,39 @@ describe('AtlasApiService', () => {
 
     const callArgs = httpClient.delete.calls.argsFor(0);
     expect(callArgs[0]).toEqual('http://localhost:8888/path');
+  });
+
+  it('should createFormData with blob', async () => {
+    const file = new File(['test'], 'test.txt');
+    const data = service.createFormData({ file, object: { attribute: 1 } });
+    expect(data.get('file')).toBe(file);
+
+    const blob = data.get('object') as Blob;
+    const text = await new Response(blob).text();
+    expect(JSON.parse(text)).toEqual({ attribute: 1 });
+  });
+
+  it('should createFormData with array', async () => {
+    const array = ['a', 'b'];
+    const data = service.createFormData({ array });
+
+    expect(data.getAll('array')).toEqual(array)
+  });
+
+  it('should createFormData without blob', async () => {
+    const bulkImportRequest: BulkImportRequest = {
+      importType: ImportType.Terminate,
+      objectType: BusinessObjectType.ServicePoint,
+      applicationType: ApplicationType.Sepodi
+    };
+
+    const data = service.createFormData({ bulkImportRequest });
+
+    const values = data.getAll('bulkImportRequest') as Blob[];
+    const blob = values[0];
+
+    const text = await blob.text();
+
+    expect(JSON.parse(text)).toEqual(bulkImportRequest);
   });
 });
