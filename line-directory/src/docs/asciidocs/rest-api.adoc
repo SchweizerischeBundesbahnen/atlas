@@ -13,13 +13,4 @@ Below are the links to the REST API Documentations:
 * link:line.html[*Line REST API Documentation*]
 * link:subline.html[*Subline REST API Documentation*]
 * link:timetable-field-number.html[*Timetable field number REST API Documentation*]
-* link:future-timetable.html[*Future Timetable REST API Documentation*]
-* link:timetable-hearing-year.html[*Timetable hearing year REST API Documentation*]
 * link:timetable-hearing-statement.html[*Timetable hearing statement REST API Documentation*]
-
-== LiDi Line Directory Export REST API Documentation [DEPRECATED]
-
-Below are the links to the Export REST API Documentations:
-
-* link:line-export.html[*Line Export REST API Documentation*]
-* link:subline-export.html[*Subline Export REST API Documentation*]

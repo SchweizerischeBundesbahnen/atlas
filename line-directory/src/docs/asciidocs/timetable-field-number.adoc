@@ -5,32 +5,20 @@ image::logo-atlas.svg[50,50,align=left,role=left]
 
 link:rest-api.html[*< Back to main*]
 
-== Search versions - Successfully
-
-include::{snippets}/timetable-field-number-controller-api-test/should-return-one-timetable-field-number/atlas-doc.adoc[]
-
 == Create version - Successfully
 
-include::{snippets}/timetable-field-number-controller-api-test/should-create-timetable-field-number/atlas-doc.adoc[]
+include::{snippets}/timetable-field-number-controller-v1-api-test/should-create-timetable-field-number/atlas-doc.adoc[]
 
 == Update version with rest optimistic locking error
 
-include::{snippets}/timetable-field-number-controller-api-test/should-return-optimistic-locking-error-response/atlas-doc.adoc[]
+include::{snippets}/timetable-field-number-controller-v1-api-test/should-return-optimistic-locking-error-response/atlas-doc.adoc[]
 
 == Update version with no changes after versioning error
 
-include::{snippets}/timetable-field-number-controller-api-test/should-return-validation-no-changes-error-response/atlas-doc.adoc[]
+include::{snippets}/timetable-field-number-controller-v1-api-test/should-return-validation-no-changes-error-response/atlas-doc.adoc[]
 
 == Get versions with not found error
 
-include::{snippets}/timetable-field-number-controller-api-test/should-return-not-found-error-response-when-search-item-not-found/atlas-doc.adoc[]
-
-== Get Line Snapshot Workflow Overview - Successfully
-
-include::{snippets}/line-controller-api-test/should-get-line-version-snaphots/atlas-doc.adoc[]
-
-== Get search versions with Invalid Sort Param
-
-include::{snippets}/timetable-field-number-controller-exception-handling-test/should-return-bad-request-exception-on-invalid-sort-param/atlas-doc.adoc[]
+include::{snippets}/timetable-field-number-controller-v1-api-test/should-return-not-found-error-response-when-search-item-not-found/atlas-doc.adoc[]
 
 link:rest-api.html[*< Back to main*]
