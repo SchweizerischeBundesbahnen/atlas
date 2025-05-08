@@ -30,7 +30,9 @@
       "matchUpdateTypes": [
         "patch",
         "minor"
-      ]
+      ],
+      "automerge": true,
+      "automergeType": "pr"
     },
     {
       "groupName": "NPM Major Upgrades",
