@@ -42,12 +42,8 @@ public class ServicePointTerminateCsvModel implements Validatable<ServicePointTe
   public List<BulkImportError> validate() {
     List<BulkImportError> errors = new ArrayList<>();
 
-    if (number == null) {
-      errors.add(BulkImportErrors.notNull(Fields.number));
-    }
-
-    if (sloid == null) {
-      errors.add(BulkImportErrors.notNull(Fields.sloid));
+    if ((sloid == null) == (number == null)) {
+      errors.add(BulkImportErrors.sloidXorNumber());
     }
 
     errors.addAll(BulkImportValidationHelper.validateServicePointNumber(number));
