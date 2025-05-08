@@ -11,6 +11,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInReviewException;
+import ch.sbb.atlas.servicepointdirectory.helper.TerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSwissWithGeoTransfer;
@@ -188,7 +189,7 @@ public class ServicePointService {
         () -> new NotFoundException.IdNotFoundException(id));
     DateRange dateRange = new DateRange(servicePointVersionToUpdate.getValidFrom(), servicePointVersionToUpdate.getValidTo());
 
-    servicePointTerminationService.isValidToInLastVersionRange(
+    TerminationHelper.isValidToInLastVersionRange(
         servicePointVersionToUpdate.getSloid(), dateRange, terminateServicePointModel.getValidTo());
 
     List<ServicePointVersion> currentVersions = findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber());
