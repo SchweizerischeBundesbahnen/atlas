@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ApplicationType } from '../../api';
 import { PermissionService } from '../auth/permission/permission.service';
 import { PersonWithReducedMobilityService } from '../../api/service/prm/person-with-reduced-mobility.service';
@@ -32,8 +38,10 @@ export class PrmRecordingObligationComponent implements OnInit, OnChanges {
     this.initCurrentRecordingObligation();
   }
 
-  ngOnChanges() {
-    this.initCurrentRecordingObligation();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.sloid) {
+      this.initCurrentRecordingObligation();
+    }
   }
 
   private initCurrentRecordingObligation() {
