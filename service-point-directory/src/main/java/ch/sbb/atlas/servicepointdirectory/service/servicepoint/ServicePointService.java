@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
+import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -70,7 +71,7 @@ public class ServicePointService {
     boolean hasVersionInReview = servicePointVersions.stream()
         .anyMatch(servicePointVersion -> servicePointVersion.getStatus() == Status.IN_REVIEW);
     if (hasVersionInReview) {
-      throw new TerminationNotAllowedWhenVersionInReviewException(servicePointNumber);
+      throw new TerminationNotAllowedWhenVersionInReviewException(servicePointNumber, Status.IN_REVIEW);
     }
     servicePointVersions.forEach(servicePointVersion -> servicePointVersion.setStatus(Status.REVOKED));
     return servicePointVersions;
@@ -84,7 +85,8 @@ public class ServicePointService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion,
       T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
-  public ServicePointVersion createAndPublish(ServicePointVersion servicePointVersion, Optional<ServicePointVersion> currentVersion,
+  public ServicePointVersion createAndPublish(ServicePointVersion servicePointVersion,
+      Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
     ServicePointVersion createdVersion = save(servicePointVersion, currentVersion, currentVersions);
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
@@ -160,19 +162,22 @@ public class ServicePointService {
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
   }
 
-  public ReadServicePointVersionModel updateDesignationOfficial(Long id, UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
-    ServicePointVersion servicePointVersionToUpdate = findById(id).orElseThrow(() -> new NotFoundException.IdNotFoundException(id));
+  public ReadServicePointVersionModel updateDesignationOfficial(Long id,
+      UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
+    ServicePointVersion servicePointVersionToUpdate = findById(id).orElseThrow(
+        () -> new NotFoundException.IdNotFoundException(id));
 
     List<ServicePointVersion> currentVersions = findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber());
 
     ServicePointVersion editedVersion = currentVersions.stream()
-            .filter(version -> servicePointVersionToUpdate.getId().equals(version.getId()))
-            .findFirst()
-            .orElseThrow(() -> new NotFoundException.IdNotFoundException(servicePointVersionToUpdate.getId()))
-            .toBuilder().designationOfficial(updateDesignationOfficialServicePointModel.getDesignationOfficial())
-            .build();
+        .filter(version -> servicePointVersionToUpdate.getId().equals(version.getId()))
+        .findFirst()
+        .orElseThrow(() -> new NotFoundException.IdNotFoundException(servicePointVersionToUpdate.getId()))
+        .toBuilder().designationOfficial(updateDesignationOfficialServicePointModel.getDesignationOfficial())
+        .build();
 
-    return ServicePointVersionMapper.toModel(updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions));
+    return ServicePointVersionMapper.toModel(
+        updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions));
   }
 
   @PreAuthorize("""
@@ -183,6 +188,17 @@ public class ServicePointService {
     ServicePointHelper.validateIsStopPointLocatedInSwitzerland(servicePointVersion);
     StatusTransitionDecider.validateWorkflowStatusTransition(servicePointVersion.getStatus(), statusToChange);
     servicePointVersion.setStatus(statusToChange);
+    servicePointVersionRepository.save(servicePointVersion);
+    return servicePointVersion;
+  }
+
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#servicePointVersion,
+      #servicePointVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  public ServicePointVersion updateStopPointTerminationStatus(ServicePointVersion servicePointVersion,
+      List<ServicePointVersion> servicePointVersions, UpdateTerminationServicePointModel updateTerminationServicePointModel) {
+    ServicePointHelper.validateIsStopPointLocatedInSwitzerland(servicePointVersion);
+    servicePointVersion.setTerminationInProgress(updateTerminationServicePointModel.isTerminationInProgress());
     servicePointVersionRepository.save(servicePointVersion);
     return servicePointVersion;
   }
