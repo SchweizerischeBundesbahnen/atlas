@@ -1,4 +1,5 @@
 import { Page } from '../core/model/page';
+import { environment } from '../../environments/environment';
 
 export class Pages {
   public static HOME: Page = {
@@ -141,6 +142,15 @@ export class Pages {
     description: 'PAGES.WORKFLOW.TITLE_HEADER',
   };
 
+  public static TERMINATION_STOP_POINT_WORKFLOWS: Page = {
+    title: 'PAGES.TERMINATION_STOP_WORKFLOW.TITLE_HEADER',
+    titleMenu: 'PAGES.TERMINATION_STOP_WORKFLOW.TITLE_HEADER',
+    headerTitle: 'PAGES.TERMINATION_STOP_WORKFLOW.TITLE_HEADER',
+    path: 'termination-workflows',
+    pathText: 'PAGES.TERMINATION_STOP_WORKFLOW.TITLE_HEADER',
+    description: 'PAGES.TERMINATION_STOP_WORKFLOW.TITLE_HEADER',
+  };
+
   public static SEPODI: Page = {
     title: 'PAGES.SERVICE_POINTS.TITLE',
     titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
@@ -148,7 +158,9 @@ export class Pages {
     path: 'service-point-directory',
     pathText: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
-    subpages: [Pages.SERVICE_POINT_WORKFLOWS],
+    subpages: environment.terminationWorkflowEnabled
+      ? [Pages.SERVICE_POINT_WORKFLOWS, Pages.TERMINATION_STOP_POINT_WORKFLOWS]
+      : [Pages.SERVICE_POINT_WORKFLOWS],
   };
 
   public static SERVICE_POINTS: Page = {

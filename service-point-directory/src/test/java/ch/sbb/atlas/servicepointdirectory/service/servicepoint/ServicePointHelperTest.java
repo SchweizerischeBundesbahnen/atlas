@@ -12,27 +12,27 @@ import org.junit.jupiter.api.Test;
 class ServicePointHelperTest {
 
   @Test
-  void shouldBeLocatedInSwitzerland(){
+  void shouldBeLocatedInSwitzerland() {
     //given
     ServicePointVersion servicePointVersion = ServicePointTestData.getBern();
     //when
-    boolean result = ServicePointHelper.isStoPointLocatedInSwitzerland(servicePointVersion);
+    boolean result = ServicePointHelper.isStopPointLocatedInSwitzerland(servicePointVersion);
     //then
     assertThat(result).isTrue();
   }
 
   @Test
-  void shouldNotBeLocatedInSwitzerland(){
+  void shouldNotBeLocatedInSwitzerland() {
     //given
     ServicePointVersion servicePointVersion = ServicePointTestData.createServicePointVersionWithoutServicePointGeolocation();
     //when
-    boolean result = ServicePointHelper.isStoPointLocatedInSwitzerland(servicePointVersion);
+    boolean result = ServicePointHelper.isStopPointLocatedInSwitzerland(servicePointVersion);
     //then
     assertThat(result).isFalse();
   }
 
   @Test
-  void shouldBeGeolocationNull(){
+  void shouldBeGeolocationNull() {
     //given
     ServicePointVersion servicePointVersion = ServicePointTestData.createServicePointVersionWithoutServicePointGeolocation();
     //when
@@ -42,7 +42,7 @@ class ServicePointHelperTest {
   }
 
   @Test
-  void shouldBeGeolocationCountryNull(){
+  void shouldBeGeolocationCountryNull() {
     //given
     ServicePointVersion servicePointVersion = ServicePointTestData.getBern();
     servicePointVersion.getServicePointGeolocation().setCountry(null);
@@ -53,7 +53,7 @@ class ServicePointHelperTest {
   }
 
   @Test
-  void shouldValidateIsStopPointLocatedInSwitzerland(){
+  void shouldValidateIsStopPointLocatedInSwitzerland() {
     //given
     ServicePointVersion servicePointVersion = ServicePointTestData.getBern();
     //when & then
@@ -61,7 +61,7 @@ class ServicePointHelperTest {
   }
 
   @Test
-  void shouldNotValidateIsStopPointLocatedInSwitzerland(){
+  void shouldNotValidateIsStopPointLocatedInSwitzerland() {
     //given
     ServicePointVersion servicePointVersion = ServicePointTestData.createServicePointVersionWithoutServicePointGeolocation();
     //when & then

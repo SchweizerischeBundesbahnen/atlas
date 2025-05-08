@@ -1,6 +1,6 @@
 package ch.sbb.workflow.aop;
 
-import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.sepodi.hearing.model.sepodi.StopPointAddWorkflowModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;

@@ -11,6 +11,7 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -102,6 +103,13 @@ public interface ServicePointApiV1 {
   @PutMapping(path = "/status/{sloid}/{id}")
   ReadServicePointVersionModel updateServicePointStatus(@PathVariable String sloid, @PathVariable Long id,
       @RequestBody @Valid Status status);
+
+  @PutMapping(path = "/termination/start/{sloid}/{id}")
+  ReadServicePointVersionModel startServicePointTermination(@PathVariable String sloid, @PathVariable Long id,
+      @RequestBody @Valid UpdateTerminationServicePointModel updateTerminationServicePointModel);
+
+  @PutMapping(path = "/termination/stop/{sloid}/{id}")
+  ReadServicePointVersionModel stopServicePointTermination(@PathVariable String sloid, @PathVariable Long id);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("/sync-service-points")
