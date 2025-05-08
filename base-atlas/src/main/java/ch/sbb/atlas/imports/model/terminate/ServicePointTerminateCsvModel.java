@@ -50,7 +50,7 @@ public class ServicePointTerminateCsvModel implements Validatable<ServicePointTe
       errors.add(BulkImportErrors.notNull(Fields.sloid));
     }
 
-    BulkImportValidationHelper.validateServicePointNumber(number, errors);
+    errors.addAll(BulkImportValidationHelper.validateServicePointNumber(number));
 
     if (validTo == null) {
       errors.add(BulkImportErrors.notNull(ServicePointTerminateCsvModel.Fields.validTo));

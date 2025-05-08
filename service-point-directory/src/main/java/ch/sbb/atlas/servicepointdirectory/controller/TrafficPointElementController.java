@@ -12,6 +12,7 @@ import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
+import ch.sbb.atlas.servicepointdirectory.helper.TerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
@@ -174,7 +175,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
     List<ServicePointVersion> allServicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
     DateRange dateRange = new DateRange(currentVersion.getValidFrom(), currentVersion.getValidTo());
 
-    servicePointTerminationService.isValidToInLastVersionRange(currentVersion.getSloid(), dateRange, editedVersion.getValidTo());
+    TerminationHelper.isValidToInLastVersionRange(currentVersion.getSloid(), dateRange, editedVersion.getValidTo());
     trafficPointElementService.update(currentVersion, editedVersion, allServicePointVersions);
   }
 }
