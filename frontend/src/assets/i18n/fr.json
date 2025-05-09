@@ -524,6 +524,9 @@
         "CLICK_NOTICE_ACTION": "Suivant",
         "CLICK_NOTICE_SUFFIX": "toutes les lignes partielles possibles sont automatiquement raccourcies."
       }
+    },
+    "ERROR": {
+      "REVOKED": "Le statut de la ligne associée au SLNID {{slnid}} est défini sur la saisie des erreurs. La mutation n’est pas autorisée."
     }
   },
   "BODI": {

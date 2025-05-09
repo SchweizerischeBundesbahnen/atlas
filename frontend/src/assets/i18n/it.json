@@ -524,6 +524,9 @@
         "CLICK_NOTICE_ACTION": "Avanti",
         "CLICK_NOTICE_SUFFIX": "per accorciare automaticamente tutte le linee parziali possibili."
       }
+    },
+    "ERROR": {
+      "REVOKED": "La linea con SLNID {{slnid}} è in stato revocato. La modifica non è consentita."
     }
   },
   "BODI": {

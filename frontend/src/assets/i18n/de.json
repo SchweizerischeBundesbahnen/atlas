@@ -524,6 +524,9 @@
         "CLICK_NOTICE_ACTION": "Weiter",
         "CLICK_NOTICE_SUFFIX": "werden alle möglichen Teillinien automatisch gekürzt."
       }
+    },
+    "ERROR": {
+      "REVOKED": "Die Linie mit SLNID {{slnid}} ist im Status Fehlerfassung. Die Mutation ist nicht erlaubt."
     }
   },
   "BODI": {

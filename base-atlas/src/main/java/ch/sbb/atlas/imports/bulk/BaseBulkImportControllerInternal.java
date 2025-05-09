@@ -30,7 +30,8 @@ public class BaseBulkImportControllerInternal {
             .lineNumber(bulkImportContainer.getLineNumber())
             .build());
       } catch (Exception exception) {
-        log.error("Data Execution Error! lineNumber={} Mapping Exception", bulkImportContainer.getLineNumber(), exception);
+        log.error("Data Execution Error! bulkImportId={} lineNumber={} Mapping Exception",
+            bulkImportContainer.getBulkImportId(), bulkImportContainer.getLineNumber(), exception);
         results.add(BulkImportItemExecutionResult.builder()
             .lineNumber(bulkImportContainer.getLineNumber())
             .errorResponse(ErrorResponseMapper.mapToErrorResponse(exception))
