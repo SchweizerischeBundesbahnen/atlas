@@ -48,4 +48,13 @@ describe('EmptyToNullDirective', () => {
 
     expect(component.form.value).toBe('cool ');
   });
+
+  it('should do nothing on number value', () => {
+    component.form.setValue(5.2);
+
+    inputField.nativeElement.dispatchEvent(keyUpEvent);
+    fixture.detectChanges();
+
+    expect(component.form.value).toBe(5.2);
+  });
 });
