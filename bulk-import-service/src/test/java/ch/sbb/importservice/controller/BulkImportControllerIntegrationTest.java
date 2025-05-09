@@ -225,6 +225,38 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldImportServicePointTerminate() throws IOException {
+    todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
+        + "/SEPODI/SERVICE_POINT/TERMINATE";
+    File file = ImportFiles.getFileByPath("import-files/valid/terminate_service_point.csv");
+
+    MockMultipartFile multipartFile = new MockMultipartFile("file", "terminate_service_point.csv", CSV_CONTENT_TYPE,
+        Files.readAllBytes(file.toPath()));
+
+    BulkImportRequest bulkImportRequest = BulkImportRequest.builder()
+        .applicationType(ApplicationType.SEPODI)
+        .objectType(BusinessObjectType.SERVICE_POINT)
+        .importType(ImportType.TERMINATE)
+        .emails(List.of("test-cc@atlas.ch"))
+        .build();
+
+    when(servicePointBulkImportClient.bulkImportTerminate(any())).thenReturn(
+        List.of(BulkImportItemExecutionResult.builder()
+            .lineNumber(2)
+            .build()));
+    bulkImportController.startBulkImport(bulkImportRequest, multipartFile);
+
+    List<BulkImport> bulkImports = bulkImportRepository.findAll();
+    assertThat(bulkImports).hasSize(1);
+
+    BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
+    assertThat(bulkImport.getId()).isNotNull();
+    assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/terminate_service_point.csv");
+
+    verify(servicePointBulkImportClient, atLeastOnce()).bulkImportTerminate(any());
+  }
+
+  @Test
   void shouldImportLineUpdate() throws IOException {
     todaysDirectory = "e123456/" + DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN).format(LocalDate.now())
         + "/LIDI/LINE/UPDATE";
