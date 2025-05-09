@@ -37,7 +37,6 @@ export class BulkImportService {
     this.atlasApiService.validateParams({bulkImportRequest, file});
 
     const url = `/bulk-import-service/v1/import/bulk`;
-
-    return this.atlasApiService.post(url, this.atlasApiService.createFormData({bulkImportRequest, file}));
+    return this.atlasApiService.post(url, this.atlasApiService.createFormData({bulkImportRequest, file}), {responseType: 'json'});
   }
 }
