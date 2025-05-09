@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
+import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
@@ -49,8 +50,8 @@ public interface ServicePointApiV1 {
   @GetMapping
   @PageableAsQueryParam
   Container<ReadServicePointVersionModel> getServicePoints(@Parameter(hidden = true) @PageableDefault(sort =
-          {ServicePointVersion.Fields.number,
-              ServicePointVersion.Fields.validFrom}) Pageable pageable,
+      {ServicePointVersion.Fields.number,
+          ServicePointVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject ServicePointRequestParams servicePointRequestParams);
 
   @GetMapping("{servicePointNumber}")
@@ -90,6 +91,14 @@ public interface ServicePointApiV1 {
   List<ReadServicePointVersionModel> updateServicePoint(
       @PathVariable Long id,
       @RequestBody @Valid UpdateServicePointVersionModel servicePointVersionModel
+  );
+
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).SEPODI)")
+  @PutMapping(path = "/terminate/{id}")
+  ReadServicePointVersionModel terminateServicePoint(
+      @PathVariable Long id,
+      @RequestBody @Valid TerminateServicePointModel terminateServicePointModel
   );
 
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"

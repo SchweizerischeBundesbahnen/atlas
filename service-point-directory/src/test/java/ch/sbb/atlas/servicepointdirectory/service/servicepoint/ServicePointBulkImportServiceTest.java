@@ -14,6 +14,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel.Fields;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.ServicePointTerminateCsvModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
@@ -25,6 +26,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundEx
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.ServicePointBulkImportService;
+import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import ch.sbb.atlas.user.administration.security.service.CountryAndBusinessOrganisationBasedUserAdministrationService;
 import java.time.LocalDate;
 import java.util.List;
@@ -41,6 +43,9 @@ class ServicePointBulkImportServiceTest {
 
   @MockitoBean
   private CountryAndBusinessOrganisationBasedUserAdministrationService administrationService;
+
+  @MockitoBean
+  private BusinessOrganisationBasedUserAdministrationService businessOrganisationBasedUserAdministrationService;
 
   @MockitoBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -62,6 +67,7 @@ class ServicePointBulkImportServiceTest {
   @BeforeEach
   void setUp() {
     doReturn(true).when(administrationService).hasUserPermissionsToUpdateCountryBased(any(), any(), any());
+    doReturn(true).when(businessOrganisationBasedUserAdministrationService).isAtLeastSupervisor(any());
     doReturn(true).when(administrationService).hasUserPermissionsToCreate(any(), any());
 
     bernWyleregg = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
@@ -322,4 +328,33 @@ class ServicePointBulkImportServiceTest {
     assertThat(bulkUpdateResult.getDesignationOfficial()).isEqualTo("createBulkImport2");
   }
 
+  @Test
+  void shouldTerminateBulk() {
+
+    servicePointBulkImportService.terminateServicePoint(BulkImportUpdateContainer.<ServicePointTerminateCsvModel>builder()
+        .object(ServicePointTerminateCsvModel.builder()
+            .sloid(bernWyleregg.getSloid())
+            .validTo(bernWyleregg.getValidTo().minusDays(1))
+            .build())
+        .build());
+
+    ServicePointVersion bulkTerminateResult = servicePointVersionRepository.findById(bernWyleregg.getId()).orElseThrow();
+    assertThat(bulkTerminateResult.getValidTo()).isEqualTo(bernWyleregg.getValidTo().minusDays(1));
+  }
+
+  @Test
+  void shouldTerminateBulkWithUserInNameOf() {
+
+    //when
+    servicePointBulkImportService.terminateServicePointByUserName("e123456",
+        BulkImportUpdateContainer.<ServicePointTerminateCsvModel>builder()
+            .object(ServicePointTerminateCsvModel.builder()
+                .sloid(bernWyleregg.getSloid())
+                .validTo(LocalDate.of(2020, 1, 1))
+                .build())
+            .build());
+    //then
+    ServicePointVersion bulkTerminateResult = servicePointVersionRepository.findById(bernWyleregg.getId()).orElseThrow();
+    assertThat(bulkTerminateResult.getValidTo()).isEqualTo(LocalDate.of(2020, 1, 1));
+  }
 }
