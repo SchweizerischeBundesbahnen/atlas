@@ -18,7 +18,8 @@ public class BulkImportTemplateArgumentsData {
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.CREATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.UPDATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.PRM, BusinessObjectType.PLATFORM_REDUCED, ImportType.UPDATE)),
-      Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.LINE, ImportType.UPDATE))
+      Arguments.of(new BulkImportConfig(ApplicationType.LIDI, BusinessObjectType.LINE, ImportType.UPDATE)),
+      Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.TERMINATE))
   );
 
   public static Stream<Arguments> implementedTemplates() {
@@ -26,7 +27,6 @@ public class BulkImportTemplateArgumentsData {
   }
 
   private static final List<Arguments> NOT_IMPLEMENTED_TEMPLATES_LIST = List.of(
-      Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.SERVICE_POINT, ImportType.TERMINATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.TRAFFIC_POINT, ImportType.TERMINATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.CREATE)),
       Arguments.of(new BulkImportConfig(ApplicationType.SEPODI, BusinessObjectType.LOADING_POINT, ImportType.UPDATE)),

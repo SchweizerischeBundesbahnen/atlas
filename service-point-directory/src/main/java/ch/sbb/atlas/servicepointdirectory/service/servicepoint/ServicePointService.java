@@ -1,7 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException;
@@ -9,6 +11,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInReviewException;
+import ch.sbb.atlas.servicepointdirectory.helper.TerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSwissWithGeoTransfer;
@@ -174,6 +177,28 @@ public class ServicePointService {
         .findFirst()
         .orElseThrow(() -> new NotFoundException.IdNotFoundException(servicePointVersionToUpdate.getId()))
         .toBuilder().designationOfficial(updateDesignationOfficialServicePointModel.getDesignationOfficial())
+        .build();
+
+    return ServicePointVersionMapper.toModel(
+        updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions));
+  }
+
+  public ReadServicePointVersionModel terminateServicePoint(Long id,
+      TerminateServicePointModel terminateServicePointModel) {
+    ServicePointVersion servicePointVersionToUpdate = findById(id).orElseThrow(
+        () -> new NotFoundException.IdNotFoundException(id));
+    DateRange dateRange = new DateRange(servicePointVersionToUpdate.getValidFrom(), servicePointVersionToUpdate.getValidTo());
+
+    TerminationHelper.isValidToInLastVersionRange(
+        servicePointVersionToUpdate.getSloid(), dateRange, terminateServicePointModel.getValidTo());
+
+    List<ServicePointVersion> currentVersions = findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber());
+
+    ServicePointVersion editedVersion = currentVersions.stream()
+        .filter(version -> servicePointVersionToUpdate.getId().equals(version.getId()))
+        .findFirst()
+        .orElseThrow(() -> new NotFoundException.IdNotFoundException(servicePointVersionToUpdate.getId()))
+        .toBuilder().validTo(terminateServicePointModel.getValidTo())
         .build();
 
     return ServicePointVersionMapper.toModel(

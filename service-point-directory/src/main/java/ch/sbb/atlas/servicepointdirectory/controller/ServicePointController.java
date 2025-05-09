@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
+import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
@@ -137,6 +138,11 @@ public class ServicePointController implements ServicePointApiV1 {
     geoReferenceService.addGeoReferenceInformation(editedVersion);
 
     return servicePointService.updateAndPublish(servicePointVersionToUpdate, editedVersion, currentVersions);
+  }
+
+  @Override
+  public ReadServicePointVersionModel terminateServicePoint(Long id, TerminateServicePointModel terminateServicePointModel) {
+    return servicePointService.terminateServicePoint(id, terminateServicePointModel);
   }
 
   @Override

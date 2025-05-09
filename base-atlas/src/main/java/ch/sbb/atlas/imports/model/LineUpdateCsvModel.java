@@ -83,7 +83,7 @@ public class LineUpdateCsvModel implements Validatable<LineUpdateCsvModel> {
   public List<BulkImportError> validate() {
     List<BulkImportError> errors = new ArrayList<>();
     if (slnid == null) {
-      errors.add(BulkImportErrors.notNull(Fields.validFrom));
+      errors.add(BulkImportErrors.notNull(Fields.slnid));
     }
     if (validFrom == null) {
       errors.add(BulkImportErrors.notNull(Fields.validFrom));

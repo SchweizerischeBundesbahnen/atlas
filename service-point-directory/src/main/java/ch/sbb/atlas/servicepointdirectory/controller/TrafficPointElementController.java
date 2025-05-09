@@ -12,13 +12,14 @@ import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
-import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedValidToNotWithinLastVersionRangeException;
+import ch.sbb.atlas.servicepointdirectory.helper.TerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointTerminationService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
 import java.time.LocalDate;
@@ -36,6 +37,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
 
   private final TrafficPointElementService trafficPointElementService;
   private final ServicePointService servicePointService;
+  private final ServicePointTerminationService servicePointTerminationService;
   private final CrossValidationService crossValidationService;
   private final ServicePointDistributor servicePointDistributor;
   private final GeoReferenceService geoReferenceService;
@@ -172,11 +174,8 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
     ServicePointNumber servicePointNumber = currentVersion.getServicePointNumber();
     List<ServicePointVersion> allServicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
     DateRange dateRange = new DateRange(currentVersion.getValidFrom(), currentVersion.getValidTo());
-    if (dateRange.contains(editedVersion.getValidTo())) {
-      trafficPointElementService.update(currentVersion, editedVersion, allServicePointVersions);
-    } else {
-      throw new TerminationNotAllowedValidToNotWithinLastVersionRangeException(editedVersion.getSloid(),
-          editedVersion.getValidTo(), currentVersion.getValidFrom(), currentVersion.getValidTo());
-    }
+
+    TerminationHelper.isValidToInLastVersionRange(currentVersion.getSloid(), dateRange, editedVersion.getValidTo());
+    trafficPointElementService.update(currentVersion, editedVersion, allServicePointVersions);
   }
 }

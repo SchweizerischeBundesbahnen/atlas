@@ -6,6 +6,7 @@ import ch.sbb.atlas.imports.bulk.BaseBulkImportControllerInternal;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
 import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
+import ch.sbb.atlas.imports.model.terminate.ServicePointTerminateCsvModel;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.bulk.ServicePointBulkImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,15 @@ public class ServicePointBulkImportController extends BaseBulkImportControllerIn
     return executeBulkImport(bulkImportContainers,
         servicePointBulkImportService::createServicePointByUserName,
         servicePointBulkImportService::createServicePoint);
+  }
+
+  @Override
+  @PreAuthorize("""
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  public List<BulkImportItemExecutionResult> bulkImportTerminate(
+      List<BulkImportUpdateContainer<ServicePointTerminateCsvModel>> bulkImportContainers) {
+    return executeBulkImport(bulkImportContainers,
+        servicePointBulkImportService::terminateServicePointByUserName,
+        servicePointBulkImportService::terminateServicePoint);
   }
 }
