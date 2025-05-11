@@ -22,7 +22,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.13.Final")
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.14.Final")
 
     runtimeOnly("org.postgresql:postgresql")
 
