@@ -6,6 +6,7 @@ import static org.mockito.Mockito.doReturn;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -141,7 +142,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
         .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
-        .businessOrganisation("ch:1:sboid:5846489645")
+        .businessOrganisation(ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID)
         .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))

@@ -18,4 +18,5 @@ public class ServicePointConstants {
   public static final long LOADING_POINT_NUMBER_MIN = 0;
   public static final long LOADING_POINT_NUMBER_MAX = 9999;
 
+  public static final String ALLIANCE_SWISS_PASS_SBOID = "ch:1:sboid:101704";
 }
