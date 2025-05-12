@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
@@ -9,6 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.AbbreviationUpdateNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.exception.ForbiddenDueToChosenServicePointVersionValidationPeriodException;
 import ch.sbb.atlas.servicepointdirectory.exception.InvalidAbbreviationException;
+import ch.sbb.atlas.servicepointdirectory.exception.InvalidFareStopException;
 import ch.sbb.atlas.servicepointdirectory.exception.InvalidFreightServicePointException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
@@ -40,7 +42,19 @@ public class ServicePointValidationService {
     validateDesignationOfficialUniqueness(servicePointVersion);
     validateDesignationLongUniqueness(servicePointVersion);
     validateSortCodeOfDestinationStationOnFreightServicePoint(servicePointVersion);
+    validateFareStop(servicePointVersion);
     sharedBusinessOrganisationService.validateSboidExists(servicePointVersion.getBusinessOrganisation());
+  }
+
+  private void validateFareStop(ServicePointVersion servicePointVersion) {
+    if (servicePointVersion.isFareStop()) {
+      if (!ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID.equals(servicePointVersion.getBusinessOrganisation())) {
+        throw new InvalidFareStopException();
+      }
+      if (servicePointVersion.hasGeolocation()) {
+        throw new InvalidFareStopException();
+      }
+    }
   }
 
   public void checkIfKilometerMasterNumberCanBeAssigned(ServicePointNumber kilometerMasterNumber,
@@ -132,7 +146,7 @@ public class ServicePointValidationService {
             editedVersion.getAbbreviation()));
   }
 
-  public void checkNotAffectingInReviewVersions(List<ServicePointVersion> existingVersions,      ServicePointVersion editedVersion) {
+  public void checkNotAffectingInReviewVersions(List<ServicePointVersion> existingVersions, ServicePointVersion editedVersion) {
     List<ServicePointVersion> affectedVersions =
         existingVersions.stream()
             .filter(version -> version.getStatus() == Status.IN_REVIEW && new AffectingVersionValidator(editedVersion,
