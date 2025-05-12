@@ -1122,7 +1122,8 @@
       },
       "ERROR": {
         "STATUS_CHANGE_NOT_POSSIBLE": "Der Dienststellen Status kann für den Status REVOKED nicht geändert werden und kann nur von DRAFT auf VALIDATED aktualisiert werden!",
-        "INVALID_FREIGHT_SERVICE_POINT": "Die Angabe eines Richtpunktcodes ist für Bedienpunkte in der Schweiz Pflicht."
+        "INVALID_FREIGHT_SERVICE_POINT": "Die Angabe eines Richtpunktcodes ist für Bedienpunkte in der Schweiz Pflicht.",
+        "INVALID_FARE_STOP": "Eine Tarifhaltestelle muss ASP zugeordnet sein und darf keine Koordinaten besitzen."
       },
       "TERMINATION_FORBIDDEN": "Sie sind nicht berechtigt die Haltestelle zu terminieren. Benutzen Sie hierzu bitte das Formular auf https://www.oev-info.ch/de/aufhebung-haltestelle.",
       "TERMINATION_NOT_ALLOWED_WITH_VERSION_IN_REVIEW": "Die Terminierung ist nicht möglich, da sich eine Version in einer Anhörung befindet.",
