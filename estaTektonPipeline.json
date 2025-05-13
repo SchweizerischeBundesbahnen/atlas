@@ -1,0 +1,84 @@
+{
+  "$schema": "https://clew-resources.sbb-cloud.net/tekton-schema.json",
+  "productName": "atlas",
+  "advancedBuildSettings": {
+    "buildWorkspaceSize": "12Gi",
+    "buildCacheSize": "10Gi",
+    "taggingWorkspaceSize": "2Gi",
+    "pipelineTimeout": "1h30m0s"
+  },
+  "builder": {
+    "java": "21",
+    "node": "20"
+  },
+  "gradle": {
+    "artifactoryMavenRepo": "atlas.mvn",
+    "buildTaskName": "atlas-gradle-build"
+  },
+  "pipelines": [
+    {
+      "name": "push-to-github-playground",
+      "triggerType": [
+        "USER",
+        "GITEVENT"
+      ],
+      "branchNamePrefixes": [
+        "master"
+      ],
+      "tasks": [
+        {
+          "name": "push-atlas-to-github",
+          "taskRef": "esta-custom-exec",
+          "params": {
+            "SCRIPT": "chmod +x push_atlas_to_github.sh && ./push_atlas_to_github.sh"
+          },
+          "runAfter": "quality-gate-check"
+        }
+      ],
+      "build": {
+        "testcontainers": {
+          "enabled": false
+        },
+        "buildDockerImage": false,
+        "sonarScan": {
+          "enabled": true
+        },
+        "additionalBuildParams": "--parallel",
+        "failOnQualityGateFailure": true
+      }
+    },
+    {
+      "name": "continuous",
+      "triggerType": [
+        "GITEVENT",
+        "USER"
+      ],
+      "branchNamePrefixes": [
+        "feature"
+      ],
+      "build": {
+        "testcontainers": {
+          "enabled": false
+        },
+        "buildDockerImage": false,
+        "sonarScan": {
+          "enabled": true
+        },
+        "additionalBuildParams": "--parallel",
+        "failOnQualityGateFailure": true
+      }
+    }
+  ],
+  "notifications": [
+    {
+      "type": "TEAMS",
+      "enabled": true,
+      "eventTypes": [
+        "SUCCESS",
+        "FAILURE",
+        "ABORTED"
+      ],
+      "webhookSecretName": "esta-tekton-pipeline-env"
+    }
+  ]
+}
