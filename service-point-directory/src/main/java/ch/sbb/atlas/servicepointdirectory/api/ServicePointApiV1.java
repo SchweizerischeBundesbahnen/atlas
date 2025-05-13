@@ -129,4 +129,9 @@ public interface ServicePointApiV1 {
   @GetMapping("/actual-swiss-service-point-with-geo")
   List<ServicePointSwissWithGeoLocationModel> getActualServicePointWithGeolocation();
 
+  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @PostMapping("/cleanup-fare-stops")
+  @Deprecated
+  void cleanupFareStops();
+
 }
