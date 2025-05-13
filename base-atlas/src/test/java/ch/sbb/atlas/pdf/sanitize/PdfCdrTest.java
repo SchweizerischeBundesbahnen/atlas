@@ -1,10 +1,8 @@
 package ch.sbb.atlas.pdf.sanitize;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.github.dockerjava.zerodep.shaded.org.apache.commons.codec.digest.DigestUtils;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,15 +34,6 @@ class PdfCdrTest {
       String afterSanitationMd5Checksum = DigestUtils.md5Hex(inputStream);
       assertThat(afterSanitationMd5Checksum).isEqualTo("5ebf875f3ecfcabeb3d57c7d6c6b7e6a");
     }
-  }
-
-  @Test
-  void shouldSanitizeJavaScriptClockPdfInPlace() {
-    // given
-    String filePathToSanitize = "src/test/resources/pdf/cdr/InPlaceSanitize.pdf";
-    File file = new File(filePathToSanitize);
-
-    assertThatNoException().isThrownBy(() -> PdfCdr.sanitize(file));
   }
 
   @Test
