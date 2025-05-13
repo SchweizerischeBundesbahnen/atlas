@@ -1,21 +1,31 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.InvalidFareStopException;
 import ch.sbb.atlas.servicepointdirectory.exception.InvalidFreightServicePointException;
 import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 class ServicePointValidationServiceTest {
 
@@ -28,8 +38,11 @@ class ServicePointValidationServiceTest {
 
   @BeforeEach
   void setUp() {
+    MockitoAnnotations.initMocks(this);
     servicePointValidationService = new ServicePointValidationService(sharedBusinessOrganisationService,
         servicePointVersionRepository);
+    when(servicePointVersionRepository.findDesignationLongOverlaps(any())).thenReturn(Collections.emptyList());
+    when(servicePointVersionRepository.findDesignationOfficialOverlaps(any())).thenReturn(Collections.emptyList());
   }
 
   @Test
@@ -239,6 +252,42 @@ class ServicePointValidationServiceTest {
     bern.setSortCodeOfDestinationStation("code");
 
     assertDoesNotThrow(() -> servicePointValidationService.validateSortCodeOfDestinationStationOnFreightServicePoint(bern));
+  }
+
+  @Test
+  void shouldThrowExceptionOnFareStopNotBelongingToASP() {
+    ServicePointVersion servicePointVersion = ServicePointVersion
+        .builder()
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8589108))
+        .sloid("ch:1:sloid:89108")
+        .numberShort(89108)
+        .country(Country.SWITZERLAND)
+        .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
+        .designationOfficial("Tarifhaltestelle")
+        .businessOrganisation("ch:1:sboid:100626")
+        .validFrom(LocalDate.of(2025, 12, 14))
+        .validTo(LocalDate.of(2026, 3, 31))
+        .build();
+    assertThrows(InvalidFareStopException.class,
+        () -> servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion));
+  }
+
+  @Test
+  void shouldNotThrowExceptionOnFareStopNotBelongingToAspBeforeAtlasMigration() {
+    ServicePointVersion servicePointVersion = ServicePointVersion
+        .builder()
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8589108))
+        .sloid("ch:1:sloid:89108")
+        .numberShort(89108)
+        .country(Country.SWITZERLAND)
+        .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
+        .designationOfficial("Tarifhaltestelle")
+        .businessOrganisation("ch:1:sboid:100626")
+        .validFrom(ServicePointConstants.ATLAS_MIGRATION_DATE.minusDays(5))
+        .validTo(ServicePointConstants.ATLAS_MIGRATION_DATE.minusDays(1))
+        .build();
+    assertThatNoException().isThrownBy(
+        () -> servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion));
   }
 
 }
