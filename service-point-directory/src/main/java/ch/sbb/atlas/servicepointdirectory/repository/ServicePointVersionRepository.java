@@ -95,4 +95,15 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
       """)
   List<ServicePointSwissWithGeoTransfer> findActualServicePointWithGeolocation();
 
+  @EntityGraph(attributePaths = {ServicePointVersion.Fields.servicePointGeolocation, ServicePointVersion.Fields.categories,
+      ServicePointVersion.Fields.meansOfTransport})
+  @Query(value = """
+      select spv
+      from service_point_version spv
+      where spv.operatingPointTrafficPointType = 'TARIFF_POINT' and
+            spv.validTo >= :localDate and
+             (spv.servicePointGeolocation is not null or spv.businessOrganisation != 'ch:1:sboid:101704')
+      """)
+  List<ServicePointVersion> findFareStopsToCleanup(LocalDate localDate);
+
 }
