@@ -211,6 +211,33 @@ export class UserPermissionManager {
             type: PermissionRestrictionType.BulkImport,
           });
         });
+      permission.permissionRestrictions
+        .filter(
+          (restriction) =>
+            restriction.type === PermissionRestrictionType.NOVA_TERMINATION_VOTE
+        )
+        .forEach((nova) => {
+          this.userPermission.permissions[
+            permissionIndex
+          ].permissionRestrictions.push({
+            valueAsString: nova.valueAsString,
+            type: PermissionRestrictionType.NOVA_TERMINATION_VOTE,
+          });
+        });
+      permission.permissionRestrictions
+        .filter(
+          (restriction) =>
+            restriction.type ===
+            PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE
+        )
+        .forEach((infoPlus) => {
+          this.userPermission.permissions[
+            permissionIndex
+          ].permissionRestrictions.push({
+            valueAsString: infoPlus.valueAsString,
+            type: PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE,
+          });
+        });
     });
   }
 

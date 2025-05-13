@@ -28,7 +28,7 @@ import { BULK_IMPORT_APPLICATIONS } from '../../../../core/auth/permission/bulk-
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { AtlasSlideToggleComponent } from '../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { RelationComponent } from '../../../../core/components/relation/relation.component';
 import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -63,6 +63,8 @@ export class UserAdministrationApplicationConfigComponent
 
   bulkImportApplications = BULK_IMPORT_APPLICATIONS;
   _bulkImportPermission = false;
+  _infoPlusTerminationVotePermission = false;
+  _novaTerminationVotePermission = false;
 
   get bulkImportPermission() {
     return this._bulkImportPermission;
@@ -86,6 +88,53 @@ export class UserAdministrationApplicationConfigComponent
     }
 
     this._bulkImportPermission = value;
+  }
+
+  get infoPlusTerminationVotePermission() {
+    return this._infoPlusTerminationVotePermission;
+  }
+
+  set infoPlusTerminationVotePermission(value: boolean) {
+    const infoPlusTerminationPermission = this.userPermissionManager
+      .getPermissionByApplication(this.application)
+      .permissionRestrictions.find(
+        (i) => i.type === PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE
+      );
+    if (infoPlusTerminationPermission) {
+      infoPlusTerminationPermission.valueAsString = String(value);
+    } else {
+      this.userPermissionManager
+        .getPermissionByApplication(this.application)
+        .permissionRestrictions.push({
+          type: PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE,
+          valueAsString: String(value),
+        });
+    }
+
+    this._infoPlusTerminationVotePermission = value;
+  }
+
+  get novaTerminationVotePermission() {
+    return this._novaTerminationVotePermission;
+  }
+
+  set novaTerminationVotePermission(value: boolean) {
+    const novaTerminationVotePermission = this.userPermissionManager
+      .getPermissionByApplication(this.application)
+      .permissionRestrictions.find(
+        (i) => i.type === PermissionRestrictionType.NOVA_TERMINATION_VOTE
+      );
+    if (novaTerminationVotePermission) {
+      novaTerminationVotePermission.valueAsString = String(value);
+    } else {
+      this.userPermissionManager
+        .getPermissionByApplication(this.application)
+        .permissionRestrictions.push({
+          type: PermissionRestrictionType.NOVA_TERMINATION_VOTE,
+          valueAsString: String(value),
+        });
+    }
+    this._novaTerminationVotePermission = value;
   }
 
   public readonly getCountryEnum = Countries.getCountryEnum;
@@ -165,6 +214,20 @@ export class UserAdministrationApplicationConfigComponent
         .getPermissionByApplication(this.application)
         .permissionRestrictions.find(
           (i) => i.type === PermissionRestrictionType.BulkImport
+        )?.valueAsString === 'true';
+
+    this.infoPlusTerminationVotePermission =
+      this.userPermissionManager
+        .getPermissionByApplication(this.application)
+        .permissionRestrictions.find(
+          (i) => i.type === PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE
+        )?.valueAsString === 'true';
+
+    this.novaTerminationVotePermission =
+      this.userPermissionManager
+        .getPermissionByApplication(this.application)
+        .permissionRestrictions.find(
+          (i) => i.type === PermissionRestrictionType.NOVA_TERMINATION_VOTE
         )?.valueAsString === 'true';
 
     this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
@@ -253,4 +316,6 @@ export class UserAdministrationApplicationConfigComponent
       },
     ]);
   }
+
+  protected readonly ApplicationType = ApplicationType;
 }
