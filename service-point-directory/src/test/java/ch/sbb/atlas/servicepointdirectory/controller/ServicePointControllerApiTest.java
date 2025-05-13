@@ -22,6 +22,7 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
@@ -37,6 +38,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
@@ -1508,6 +1510,38 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             jsonPath("$.error",
                 is("Update affects one or more versions that have status: IN_REVIEW.")));
 
+  }
+
+  @Test
+  void shouldUpdateFareStopPointCorrectly() throws Exception {
+    //given
+    repository.deleteAll();
+    ServicePointVersion servicePointVersion = ServicePointVersion
+        .builder()
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8589108))
+        .sloid("ch:1:sloid:89108")
+        .status(Status.VALIDATED)
+        .numberShort(89108)
+        .country(Country.SWITZERLAND)
+        .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
+        .designationOfficial("Tarifhaltestelle")
+        .businessOrganisation("ch:1:sboid:100626")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .build();
+    repository.save(servicePointVersion);
+
+    //when
+    mvc.perform(post("/v1/service-points/cleanup-fare-stops")
+            .contentType(contentType))
+        .andExpect(status().isOk());
+
+    //then
+    List<ServicePointVersion> allVersions = repository.findBySloidOrderByValidFrom(servicePointVersion.getSloid());
+    assertThat(allVersions).hasSize(2);
+    assertThat(allVersions.getFirst().getBusinessOrganisation()).isNotEqualTo(ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID);
+    assertThat(allVersions.getLast().getValidFrom()).isEqualTo(ServicePointConstants.ATLAS_MIGRATION_DATE);
+    assertThat(allVersions.getLast().getBusinessOrganisation()).isEqualTo(ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID);
   }
 
 }
