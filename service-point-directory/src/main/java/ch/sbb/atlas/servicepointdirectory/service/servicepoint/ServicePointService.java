@@ -20,6 +20,7 @@ import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -235,5 +236,9 @@ public class ServicePointService {
   public void publishAllServicePoints() {
     log.info("Syncing all Service Points");
     servicePointDistributor.syncServicePoints();
+  }
+
+  public List<ServicePointVersion> findFareStopsToCleanup(LocalDate localDate){
+   return servicePointVersionRepository.findFareStopsToCleanup(localDate);
   }
 }

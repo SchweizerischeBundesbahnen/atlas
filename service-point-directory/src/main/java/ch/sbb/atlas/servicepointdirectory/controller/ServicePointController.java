@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
@@ -230,5 +231,25 @@ public class ServicePointController implements ServicePointApiV1 {
           servicePointVersion.getStatus());
     }
     return servicePointVersion;
+  }
+
+  public void cleanupFareStops() {
+    log.info("Cleaning up fareStops");
+
+    List<ServicePointVersion> fareStopsToCleanup = servicePointService.findFareStopsToCleanup(ServicePointConstants.ATLAS_MIGRATION_DATE);
+    for (int i = 0; i < fareStopsToCleanup.size(); i++) {
+      ServicePointVersion servicePointVersion = fareStopsToCleanup.get(i);
+      List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
+          servicePointVersion.getNumber());
+
+      ServicePointVersion editedVersion = servicePointVersion.toBuilder()
+          .validFrom(ServicePointConstants.ATLAS_MIGRATION_DATE)
+          .servicePointGeolocation(null)
+          .businessOrganisation(ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID)
+          .build();
+      servicePointService.updateAndPublish(servicePointVersion, editedVersion, currentVersions);
+      log.info("Processed {}/{}", i + 1, fareStopsToCleanup.size());
+    }
+    log.info("Cleaning up fareStops done.");
   }
 }

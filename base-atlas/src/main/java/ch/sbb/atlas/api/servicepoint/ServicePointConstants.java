@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.servicepoint.Country;
+import java.time.LocalDate;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
 
@@ -19,4 +20,5 @@ public class ServicePointConstants {
   public static final long LOADING_POINT_NUMBER_MAX = 9999;
 
   public static final String ALLIANCE_SWISS_PASS_SBOID = "ch:1:sboid:101704";
+  public static final LocalDate ATLAS_MIGRATION_DATE = LocalDate.of(2024, 4, 15);
 }

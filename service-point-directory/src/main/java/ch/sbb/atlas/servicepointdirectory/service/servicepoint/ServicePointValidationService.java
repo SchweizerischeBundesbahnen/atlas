@@ -47,7 +47,7 @@ public class ServicePointValidationService {
   }
 
   private void validateFareStop(ServicePointVersion servicePointVersion) {
-    if (servicePointVersion.isFareStop()) {
+    if (servicePointVersion.isFareStop() && ServicePointConstants.ATLAS_MIGRATION_DATE.isBefore(servicePointVersion.getValidFrom())) {
       if (!ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID.equals(servicePointVersion.getBusinessOrganisation())) {
         throw new InvalidFareStopException();
       }
