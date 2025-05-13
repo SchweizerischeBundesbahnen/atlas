@@ -19,6 +19,9 @@ export const PermissionRestrictionType = {
 
     Country: 'COUNTRY' as PermissionRestrictionType,
 
-    BulkImport: 'BULK_IMPORT' as PermissionRestrictionType
-};
+    BulkImport: 'BULK_IMPORT' as PermissionRestrictionType,
 
+    INFO_PLUS_TERMINATION_VOTE: 'INFO_PLUS_TERMINATION_VOTE' as PermissionRestrictionType,
+
+    NOVA_TERMINATION_VOTE: 'NOVA_TERMINATION_VOTE' as PermissionRestrictionType
+};
