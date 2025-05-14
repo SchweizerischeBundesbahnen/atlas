@@ -5,9 +5,9 @@ plugins {
 group = "ch.sbb.atlas"
 version = "2.623.0"
 
-extra["awsS3Version"] = "2.31.40"
+extra["awsS3Version"] = "2.31.42"
 
-extra["swaggerCoreVersion"] = "2.2.30"
+extra["swaggerCoreVersion"] = "2.2.31"
 extra["openapiStarterCommonVersion"] = "2.8.8"
 
 // Geo Data Libs
