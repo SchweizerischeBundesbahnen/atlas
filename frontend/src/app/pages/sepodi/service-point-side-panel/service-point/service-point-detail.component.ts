@@ -52,6 +52,8 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PrmRecordingObligationComponent } from '../../../../core/prm-recording-obligation/prm-recording-obligation.component';
+import { StopPointTerminationDialogService } from './stop-point-termination-dialog/stop-point-termination-dialog.service';
+import { TerminationHelper } from './termination-helper';
 
 @Component({
   selector: 'app-service-point',
@@ -88,6 +90,7 @@ export class ServicePointDetailComponent
   showVersionSwitch = false;
   selectedVersionIndex!: number;
   form?: FormGroup<ServicePointDetailFormGroup>;
+  initialFromValues: any;
   hasAbbreviation = false;
   isAbbreviationAllowed = false;
 
@@ -120,6 +123,7 @@ export class ServicePointDetailComponent
     private permissionService: PermissionService,
     private validityService: ValidityService,
     private addStopPointWorkflowDialogService: AddStopPointWorkflowDialogService,
+    private terminationDialogService: StopPointTerminationDialogService,
     protected activatedRoute: ActivatedRoute
   ) {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
@@ -206,6 +210,9 @@ export class ServicePointDetailComponent
     this.isSelectedVersionHighDate(this.servicePointVersions, version);
     this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
+    this.initialFromValues = TerminationHelper.reduceFormGroupToValues(
+      this.form
+    );
   }
 
   initShowRevokeButton(version: ReadServicePointVersion) {
@@ -305,11 +312,33 @@ export class ServicePointDetailComponent
     ValidationService.validateForm(this.form!);
     if (this.form?.valid) {
       this.validityService.updateValidity(this.form);
-      this.validityService.validateAndDisableCustom(
-        () => this.updateVersion(),
-        () => this.disableForm()
+      if (this.isStartingTermination()) {
+        this.terminationDialogService.openDialog(this.selectedVersion!);
+      } else {
+        this.validityService.validateAndDisableCustom(
+          () => this.updateVersion(),
+          () => this.disableForm()
+        );
+      }
+    }
+  }
+
+  private isStartingTermination() {
+    return !this.validityService.isValidityNotChanged() && this.isTermination();
+  }
+
+  private isTermination() {
+    const lastServicePointVersion = this.servicePointVersions.at(-1);
+    if (this.selectedVersion?.id === lastServicePointVersion?.id) {
+      return (
+        this.validityService.isFormValidToBeforeInitValidTo() &&
+        TerminationHelper.excludeValidToAndCheckIfValuesAreEquals(
+          this.form!,
+          this.initialFromValues
+        )
       );
     }
+    return false;
   }
 
   update(id: number, servicePointVersion: CreateServicePointVersion) {
