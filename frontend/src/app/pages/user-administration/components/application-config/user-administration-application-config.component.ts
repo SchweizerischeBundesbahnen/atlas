@@ -98,7 +98,7 @@ export class UserAdministrationApplicationConfigComponent
     const infoPlusTerminationPermission = this.userPermissionManager
       .getPermissionByApplication(this.application)
       .permissionRestrictions.find(
-        (i) => i.type === PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE
+        (i) => i.type === PermissionRestrictionType.InfoPlusTerminationVote
       );
     if (infoPlusTerminationPermission) {
       infoPlusTerminationPermission.valueAsString = String(value);
@@ -106,7 +106,7 @@ export class UserAdministrationApplicationConfigComponent
       this.userPermissionManager
         .getPermissionByApplication(this.application)
         .permissionRestrictions.push({
-          type: PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE,
+          type: PermissionRestrictionType.InfoPlusTerminationVote,
           valueAsString: String(value),
         });
     }
@@ -122,7 +122,7 @@ export class UserAdministrationApplicationConfigComponent
     const novaTerminationVotePermission = this.userPermissionManager
       .getPermissionByApplication(this.application)
       .permissionRestrictions.find(
-        (i) => i.type === PermissionRestrictionType.NOVA_TERMINATION_VOTE
+        (i) => i.type === PermissionRestrictionType.NovaTerminationVote
       );
     if (novaTerminationVotePermission) {
       novaTerminationVotePermission.valueAsString = String(value);
@@ -130,7 +130,7 @@ export class UserAdministrationApplicationConfigComponent
       this.userPermissionManager
         .getPermissionByApplication(this.application)
         .permissionRestrictions.push({
-          type: PermissionRestrictionType.NOVA_TERMINATION_VOTE,
+          type: PermissionRestrictionType.NovaTerminationVote,
           valueAsString: String(value),
         });
     }
@@ -220,14 +220,14 @@ export class UserAdministrationApplicationConfigComponent
       this.userPermissionManager
         .getPermissionByApplication(this.application)
         .permissionRestrictions.find(
-          (i) => i.type === PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE
+          (i) => i.type === PermissionRestrictionType.InfoPlusTerminationVote
         )?.valueAsString === 'true';
 
     this.novaTerminationVotePermission =
       this.userPermissionManager
         .getPermissionByApplication(this.application)
         .permissionRestrictions.find(
-          (i) => i.type === PermissionRestrictionType.NOVA_TERMINATION_VOTE
+          (i) => i.type === PermissionRestrictionType.NovaTerminationVote
         )?.valueAsString === 'true';
 
     this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(

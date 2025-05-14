@@ -6,15 +6,14 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
-import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
 import ch.sbb.atlas.redact.RedactBySboidDecider;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
-
+import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -23,14 +22,14 @@ public class BusinessOrganisationBasedUserAdministrationService extends BaseUser
     RedactBySboidDecider {
 
   private static final Predicate<UserAdministrationPermissionRestrictionModel> IS_BUSINESS_ORGANISATION_RESTRICTION =
-          i -> i.getRestrictionType() == PermissionRestrictionType.BUSINESS_ORGANISATION;
+      i -> i.getRestrictionType() == PermissionRestrictionType.BUSINESS_ORGANISATION;
 
   public BusinessOrganisationBasedUserAdministrationService(UserPermissionHolder userPermissionHolder) {
     super(userPermissionHolder);
   }
 
   public boolean hasUserPermissionsToCreate(BusinessOrganisationAssociated businessObject,
-                                            ApplicationType applicationType) {
+      ApplicationType applicationType) {
     return hasUserPermissionsForBusinessOrganisation(businessObject.getBusinessOrganisation(), applicationType);
   }
 
@@ -42,10 +41,10 @@ public class BusinessOrganisationBasedUserAdministrationService extends BaseUser
         sboid);
 
     boolean permissionsToCreate = hasUserPermissions(applicationType,
-            permissions -> permissions.getRestrictions().stream()
-                    .filter(IS_BUSINESS_ORGANISATION_RESTRICTION)
-                    .map(UserAdministrationPermissionRestrictionModel::getValue).collect(Collectors.toSet())
-                    .contains(sboid));
+        permissions -> permissions.getRestrictions().stream()
+            .filter(IS_BUSINESS_ORGANISATION_RESTRICTION)
+            .map(UserAdministrationPermissionRestrictionModel::getValue).collect(Collectors.toSet())
+            .contains(sboid));
 
     log.debug("User {} has permissions: {}", getCurrentUserSbbUid(), permissionsToCreate);
     return permissionsToCreate;
@@ -68,6 +67,26 @@ public class BusinessOrganisationBasedUserAdministrationService extends BaseUser
     log.debug("User {} has permissions: {}", getCurrentUserSbbUid(), permissionsToUpdate);
 
     return permissionsToUpdate;
+  }
+
+  public boolean hasUserInfoPlusTerminationVotePermission(ApplicationType applicationType) {
+    log.debug("Checking if user {} has permission to vote for info plus", getCurrentUserSbbUid());
+
+    UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(
+        applicationType);
+
+    return userPermissionsForApplication.getRestrictions().stream()
+        .anyMatch(r -> PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE.equals(r.getRestrictionType()));
+  }
+
+  public boolean hasUserNovaTerminationVotePermission(ApplicationType applicationType) {
+    log.debug("Checking if user {} has permission to vote for nova", getCurrentUserSbbUid());
+
+    UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(
+        applicationType);
+
+    return userPermissionsForApplication.getRestrictions().stream()
+        .anyMatch(r -> PermissionRestrictionType.NOVA_TERMINATION_VOTE.equals(r.getRestrictionType()));
   }
 
   public boolean isAtLeastSupervisor(ApplicationType applicationType) {
