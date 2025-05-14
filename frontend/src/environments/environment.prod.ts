@@ -1,7 +1,6 @@
 import { AuthConfig } from 'angular-oauth2-oidc';
 import 'angular-server-side-configuration/process';
 import { Environment } from './environment.model';
-import { issuer, logoutUrl } from './environment';
 
 /**
  * How to use angular-server-side-configuration:
@@ -17,6 +16,10 @@ import { issuer, logoutUrl } from './environment';
  *   booleanValueInverted: process.env.BOOLEAN_VALUE_INVERTED !== 'false',
  * };
  */
+
+export const issuer =
+  'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0';
+export const logoutUrl = `${issuer}/logout`;
 
 // See https://confluence.sbb.ch/display/CLEW/Azure+AD
 const authConfig: AuthConfig = {
