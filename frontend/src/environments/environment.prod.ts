@@ -1,5 +1,6 @@
 import { AuthConfig } from 'angular-oauth2-oidc';
 import 'angular-server-side-configuration/process';
+import { atlasReleaseNotes, issuer, logoutUrl } from './environment.common';
 import { Environment } from './environment.model';
 
 /**
@@ -16,10 +17,6 @@ import { Environment } from './environment.model';
  *   booleanValueInverted: process.env.BOOLEAN_VALUE_INVERTED !== 'false',
  * };
  */
-
-export const issuer =
-  'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0';
-export const logoutUrl = `${issuer}/logout`;
 
 // See https://confluence.sbb.ch/display/CLEW/Azure+AD
 const authConfig: AuthConfig = {
@@ -46,8 +43,7 @@ export const environment: Environment = {
   appVersion: process.env.APP_VERSION!,
   atlasApiUrl: process.env.ATLAS_API_URL!,
   atlasUnauthApiUrl: process.env.ATLAS_UNAUTH_API_URL!,
-  atlasReleaseNotes:
-    'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
+  atlasReleaseNotes,
   authConfig,
   journeyMapsApiKey: process.env.JOURNEY_MAPS_API_KEY!,
 };
