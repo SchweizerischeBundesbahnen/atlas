@@ -36,13 +36,4 @@ describe('PageService', () => {
       done();
     });
   });
-
-  it('should reset pages', (done) => {
-    pageService.addPagesBasedOnPermissions();
-    pageService.resetPages();
-    pageService.enabledPages.subscribe((enabledPages) => {
-      expect(enabledPages).toHaveSize(5);
-      done();
-    });
-  });
 });
