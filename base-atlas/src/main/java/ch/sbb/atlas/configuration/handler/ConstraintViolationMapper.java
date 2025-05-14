@@ -17,6 +17,10 @@ import org.hibernate.validator.internal.engine.path.PathImpl;
 @RequiredArgsConstructor
 public class ConstraintViolationMapper {
 
+  private static final String VALUE = "value";
+  private static final ErrorInfo defaultErrorInfo = new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.DEFAULT");
+  private static final Map<String, ErrorInfo> ERROR_CODE_MAP = new HashMap<>();
+
   private static final class ErrorInfo {
 
     private final String code;
@@ -32,9 +36,6 @@ public class ConstraintViolationMapper {
     }
   }
 
-  private static final ErrorInfo defaultErrorInfo = new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.DEFAULT");
-  private static final Map<String, ErrorInfo> ERROR_CODE_MAP = new HashMap<>();
-
   static {
     ERROR_CODE_MAP.put("{jakarta.validation.constraints.Size.message}", new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.SIZE"));
     ERROR_CODE_MAP.put("{jakarta.validation.constraints.Pattern.message}", new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.PATTERN"));
@@ -42,6 +43,8 @@ public class ConstraintViolationMapper {
         new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.NOT_BLANK"));
     ERROR_CODE_MAP.put("{jakarta.validation.constraints.NotNull.message}", new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.NOT_NULL"));
     ERROR_CODE_MAP.put("{jakarta.validation.constraints.Digits.message}", new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.DIGITS"));
+    ERROR_CODE_MAP.put("{jakarta.validation.constraints.Max.message}", new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.MAX"));
+    ERROR_CODE_MAP.put("{jakarta.validation.constraints.Min.message}", new ErrorInfo("ERROR.CONSTRAINT_VIOLATION.MIN"));
     ERROR_CODE_MAP.put("{atlas.constraint.validSpatialReferenceFraction}", new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_SPATIAL_REFERENCE_FRACTION",
         cv -> "Max decimal places exceeded. LV03 and LV95 max. 5. WGS84 and WGS84WEB max. 11."));
@@ -66,11 +69,12 @@ public class ConstraintViolationMapper {
       DisplayInfoBuilder displayInfoBuilder = DisplayInfo.builder()
           .code(errorInfo(constraintViolation).code)
           .with("propertyPath", propertyName(constraintViolation))
-          .with("value", String.valueOf(constraintViolation.getInvalidValue()));
+          .with(VALUE, String.valueOf(constraintViolation.getInvalidValue()));
       constraintViolation.getConstraintDescriptor().getAttributes()
           .forEach((key, value) -> {
             if (!value.toString().contains("java.lang.Class")) {
-              displayInfoBuilder.with(key, value.toString());
+              final String paramKey = VALUE.equals(key) ? "attributeValue" : key;
+              displayInfoBuilder.with(paramKey, value.toString());
             }
           });
 

@@ -7,42 +7,26 @@ link:rest-api.html[*< Back to main*]
 
 == Get Line Overview - Successfully
 
-include::{snippets}/line-controller-api-test/should-get-line-overview/atlas-doc.adoc[]
-
-== Covered Line - Successfully
-
-include::{snippets}/line-controller-api-test/should-get-covered-lines/atlas-doc.adoc[]
-
-== Covered LineVersion - Successfully
-
-include::{snippets}/line-controller-api-test/should-get-covered-line-versions/atlas-doc.adoc[]
-
-== Skip Workflow on LineVersion - Successfully
-
-include::{snippets}/line-controller-api-test/should-skip-workflow-on-line-version/atlas-doc.adoc[]
-
-== Delete Line with related subline
-
-include::{snippets}/line-controller-api-test/should-return-line-delete-conflict-error-response/atlas-doc.adoc[]
+include::{snippets}/line-controller-v1-api-test/should-get-line-overview/atlas-doc.adoc[]
 
 == Get Line with not found error
 
-include::{snippets}/line-controller-api-test/should-return-not-found-error-response-when-no-found-lines/atlas-doc.adoc[]
+include::{snippets}/line-controller-v1-api-test/should-return-not-found-error-response-when-no-found-lines/atlas-doc.adoc[]
 
 == Get LineVersion Get Line V2
 
-include::{snippets}/line-controller-api-v2-test/should-get-line-version/atlas-doc.adoc[]
+include::{snippets}/line-controller-v2-api-test/should-get-line-version/atlas-doc.adoc[]
 
 == Get LineVersion V2 Get Line Not Found
 
-include::{snippets}/line-controller-api-v2-test/should-get-line-versions-not-found/atlas-doc.adoc[]
+include::{snippets}/line-controller-v2-api-test/should-get-line-versions-not-found/atlas-doc.adoc[]
 
 == Create LineVersion V2
 
-include::{snippets}/line-controller-api-v2-test/should-create-line-version/atlas-doc.adoc[]
+include::{snippets}/line-controller-v2-api-test/should-create-line-version/atlas-doc.adoc[]
 
 == Update LineVersion V2
 
-include::{snippets}/line-controller-api-v2-test/should-update-line-version/atlas-doc.adoc[]
+include::{snippets}/line-controller-v2-api-test/should-update-line-version/atlas-doc.adoc[]
 
 link:rest-api.html[*< Back to main*]

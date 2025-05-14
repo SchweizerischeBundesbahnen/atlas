@@ -1,6 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-task<Exec>("execNpmCi") {
+tasks.register<Exec>("execNpmCi", fun Exec.() {
   doFirst {
     println("[Angular] Run atlas npm ci")
   }
@@ -11,9 +11,9 @@ task<Exec>("execNpmCi") {
   }
   commandLine(execNpmByPlatform, "ci")
   outputs.files(project.files("package-lock.json"))
-}
+})
 
-task<Exec>("execNpmLint") {
+tasks.register<Exec>("execNpmLint", fun Exec.() {
   doFirst {
     println("[Angular] Run atlas npm lint")
   }
@@ -23,9 +23,9 @@ task<Exec>("execNpmLint") {
   }
   commandLine(execNpmByPlatform, "run", "lint")
   mustRunAfter(tasks.getByName("execNpmCi"))
-}
+})
 
-task<Exec>("execNpmBuild") {
+tasks.register<Exec>("execNpmBuild", fun Exec.() {
   doFirst {
     println("[Angular] Run atlas npm Build")
   }
@@ -38,9 +38,9 @@ task<Exec>("execNpmBuild") {
   commandLine(execNpmByPlatform, "run", "build-prod")
   mustRunAfter(tasks.getByName("execNpmLint"))
   outputs.dir("dist")
-}
+})
 
-task<Exec>("execNpmTest") {
+tasks.register<Exec>("execNpmTest", fun Exec.() {
   doFirst {
     println("[Angular] Run atlas npm Test")
   }
@@ -50,20 +50,20 @@ task<Exec>("execNpmTest") {
   }
   commandLine(execNpmByPlatform, "run", "test")
   mustRunAfter(tasks.getByName("execNpmBuild"))
-}
+})
 
 gradle.projectsEvaluated {
-  task("build") {
-    dependsOn(tasks.getByName("execNpmBuild")).
-    dependsOn(tasks.getByName("execNpmLint")).
-    dependsOn(tasks.getByName("execNpmCi")).
-    dependsOn(tasks.getByName("execNpmTest"))
-  }
+  tasks.register("build", fun Task.() {
+    dependsOn(tasks.getByName("execNpmBuild"))
+      .dependsOn(tasks.getByName("execNpmLint"))
+      .dependsOn(tasks.getByName("execNpmCi"))
+      .dependsOn(tasks.getByName("execNpmTest"))
+  })
 }
 
-task<Exec>("clean") {
+tasks.register<Exec>("clean", fun Exec.() {
   doFirst {
     println("[Angular] clean build dir")
   }
   commandLine("rm", "-rf", "dist")
-}
+})
