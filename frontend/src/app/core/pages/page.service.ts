@@ -31,8 +31,4 @@ export class PageService {
 
     this._viewablePages.next([...this._viewablePages.value, ...pagesToAdd]);
   }
-
-  resetPages() {
-    this._viewablePages.next([...Pages.pages]);
-  }
 }
