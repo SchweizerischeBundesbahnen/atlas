@@ -16,6 +16,10 @@ tasks.named<AsciidoctorTask>("asciidoctor") {
         )
     )
 
+    asciidoctorj {
+        fatalWarnings(missingIncludes())
+    }
+
     attributes(
         mapOf(
             "buildTime" to SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date()),
@@ -30,6 +34,7 @@ tasks.named<AsciidoctorTask>("asciidoctor") {
 
     // For .adoc files to be able to use relative includes we need to set the baseDir to the sourceFile
     baseDirFollowsSourceFile()
+
     doLast {
         copy {
             println("Coping RestDoc atlas layout...")
@@ -45,7 +50,7 @@ tasks.named<Jar>("jar") {
     enabled = false
 }
 
-if(hasProperty("generateAsciidoc")) {
+if (hasProperty("generateAsciidoc")) {
     println("Generate Asciidoc on bootJar enabled....")
     tasks.named("bootJar") {
         println("Generating Asciidoc....")
@@ -55,7 +60,7 @@ if(hasProperty("generateAsciidoc")) {
 
 // to run application with --configuration-cache you need to comment the following snippet
 // (e.g. ./gradlew :line-directory:bootRun --args='--spring.profiles.active=local' --configuration-cache )
-if(hasProperty("generateAsciidoc")) {
+if (hasProperty("generateAsciidoc")) {
     println("Generate Asciidoc on bootRun enabled....")
     tasks.named("bootRun") {
         println("Generating Asciidoc....")
@@ -63,6 +68,6 @@ if(hasProperty("generateAsciidoc")) {
     }
 }
 
-if(!hasProperty("generateAsciidoc")){
+if (!hasProperty("generateAsciidoc")) {
     println("Generate Asciidoc disabled...")
 }

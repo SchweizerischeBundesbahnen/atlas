@@ -1,14 +1,16 @@
 {
   "ERROR": {
     "CONSTRAINT_VIOLATION": {
-      "DEFAULT": "Una condizione per il campo {{propertyPath}} non è stata soddisfatta con il valore {{value}}.",
-      "SIZE": "Valore non valido per il campo \"{{propertyPath}}\". Il valore deve essere compreso tra {{min}} e {{max}} caratteri.",
-      "PATTERN": "La condizione per la struttura del valore del campo {{propertyPath}} non è stata soddisfatta con il valore {{value}}.",
-      "NOT_BLANK": "La condizione \"non deve essere vuoto\" per il campo {{propertyPath}} non è stata soddisfatta con il valore {{value}}.",
-      "NOT_NULL": "La condizione \"deve essere definita\" per il campo {{propertyPath}} non è stata soddisfatta con il valore {{value}}.",
-      "DIGITS": "Valore non valido per il campo \"{{propertyPath}}\". Il numero massimo di cifre prima e dopo la virgola per il valore è {{integer}} e {{fraction}}.",
+      "DEFAULT": "Una condizione per il campo <{{propertyPath}}> non è stata soddisfatta con il valore \"{{value}}\".",
+      "SIZE": "Valore non valido per il campo <{{propertyPath}}>. Il valore deve essere compreso tra {{min}} e {{max}} caratteri.",
+      "PATTERN": "La condizione per la struttura del valore del campo <{{propertyPath}}> non è stata soddisfatta con il valore \"{{value}}\".",
+      "NOT_BLANK": "La condizione \"non deve essere vuoto\" per il campo <{{propertyPath}}> non è stata soddisfatta con il valore \"{{value}}\".",
+      "NOT_NULL": "La condizione \"deve essere definita\" per il campo <{{propertyPath}}> non è stata soddisfatta con il valore \"{{value}}\".",
+      "DIGITS": "Valore non valido per il campo <{{propertyPath}}>. Il numero massimo di cifre prima e dopo la virgola per il valore è {{integer}} e {{fraction}}.",
+      "MIN": "Il valore del campo <{{propertyPath}}> non deve essere inferiore a {{attributeValue}}.",
+      "MAX": "Il valore del campo <{{propertyPath}}> non deve superare {{attributeValue}}.",
       "VALID_SPATIAL_REFERENCE_FRACTION": "Il numero massimo di decimali è stato superato. LV03 e LV95 max. 5. WGS84 e WGS84WEB max. 11.",
-      "VALID_SERVICE_POINT_NUMBER": "\"numberShort\" deve essere presente solo se il paese non è in (85,11,12,13,14)."
+      "VALID_SERVICE_POINT_NUMBER": "<numberShort> deve essere presente solo se il paese non è in (85,11,12,13,14)."
     },
     "CLIENT": {
       "GENERIC": "Si è verificato un errore nella pagina web, ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato atlas."
@@ -1551,17 +1553,17 @@
   },
   "BULK_IMPORT": {
     "VALIDATION": {
-      "DATA_MAPPING_ERROR": "Per l'attributo {{field}} era previsto il tipo {{expectedType}}, ma il valore specificato era {{errorValue}}.",
-      "SLOID_XOR_NUMBER": "Deve essere specificato o lo sloide o il numero (non entrambi).",
-      "STOPPOINTSLOID_XOR_NUMBER": "Deve essere specificato o lo stopPointSloid o il numero (non entrambi).",
+      "DATA_MAPPING_ERROR": "Per l'attributo <{{field}}> era previsto il tipo {{expectedType}}, ma il valore specificato era \"{{errorValue}}\".",
+      "SLOID_XOR_NUMBER": "Deve essere specificato o lo <sloid> o il <number> (non entrambi).",
+      "STOPPOINTSLOID_XOR_NUMBER": "Deve essere specificato o lo <stopPointSloid> o il <number> (non entrambi).",
       "INVALID_SERVICE_POINT_NUMBER": "Il numero del centro di assistenza non è valido.",
-      "FIELD_MANDATORY": "L'attributo {{field}} non deve essere vuoto.",
-      "DUPLICATE_FIELD": "L'attributo {{field}} con il valore {{value}} ricorre più volte.",
-      "COUNTRY_CODE_NOT_VALID": "L'attributo uicCountryCode non è valido.",
-      "NUMBER_SHORT_NOT_VALID": "L'attributo numberShort non è valido. Il numero deve essere compreso tra 1 e 99999.",
+      "FIELD_MANDATORY": "L'attributo <{{field}}> non deve essere vuoto.",
+      "DUPLICATE_FIELD": "L'attributo <{{field}}> con il valore \"{{value}}\" ricorre più volte.",
+      "COUNTRY_CODE_NOT_VALID": "L'attributo <uicCountryCode> non è valido.",
+      "NUMBER_SHORT_NOT_VALID": "L'attributo <numberShort> non è valido. Il numero deve essere compreso tra 1 e 99999.",
       "HEIGHT_TO_HIGH": "L'altezza deve essere inferiore a 100.000.",
-      "INVALID_GEOGRAPHY": "La geografia inserita non è valida. O “north”, “east” e “spatialReference” rimangono vuoti, oppure tutti e tre i campi devono essere compilati.",
-      "MEANS_OF_TRANSPORT_IS_MISSING": "L'attributo MeansOfTransport non deve essere vuoto se l'attributo stopPointType è stato riempito e viceversa."
+      "INVALID_GEOGRAPHY": "La geografia inserita non è valida. O <north>, <east> e <spatialReference> rimangono vuoti, oppure tutti e tre i campi devono essere compilati.",
+      "MEANS_OF_TRANSPORT_IS_MISSING": "L'attributo <meansOfTransport> non deve essere vuoto se l'attributo <stopPointType> è stato riempito e viceversa."
     },
     "STATUS": {
       "INFO": "informazione",
