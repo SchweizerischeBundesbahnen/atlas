@@ -5,12 +5,9 @@
 import { AuthConfig } from 'angular-oauth2-oidc';
 import { Environment } from './environment.model';
 import packageJson from '../../package.json';
+import { issuer, logoutUrl } from './environment.prod';
 
 // See https://confluence.sbb.ch/display/CLEW/Azure+AD
-export const issuer =
-  'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0';
-export const logoutUrl = `${issuer}/logout`;
-
 const authConfig: AuthConfig = {
   // This is the issuer URL for the SBB Azure AD organization
   issuer,
