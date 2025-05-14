@@ -8,13 +8,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
@@ -36,6 +35,7 @@ public abstract class PermissionCreateModel {
     return applicationTypesInPermissions.size() == permissions.size();
   }
 
+  //TODO discuss how to set restrictions for reader
   @Schema(hidden = true)
   @JsonIgnore
   @AssertTrue(message = "Restrictions must be empty when not WRITER or SUPERUSER role or BODI ApplicationType")
@@ -45,7 +45,7 @@ public abstract class PermissionCreateModel {
             ((permission.getRole() != ApplicationRole.WRITER
                 || permission.getApplication() == ApplicationType.BODI)
                 && (permission.getApplication() != ApplicationType.SEPODI ||
-                    permission.getRole() != ApplicationRole.SUPER_USER))
+                permission.getRole() != ApplicationRole.SUPER_USER))
                 && permission.getPermissionRestrictions().size() > 0
     );
   }
