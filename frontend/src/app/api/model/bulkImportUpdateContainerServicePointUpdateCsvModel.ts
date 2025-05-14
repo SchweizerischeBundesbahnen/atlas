@@ -12,6 +12,7 @@ import { BulkImportLogEntry } from './bulkImportLogEntry';
 
 
 export interface BulkImportUpdateContainerServicePointUpdateCsvModel { 
+    bulkImportId?: number;
     lineNumber?: number;
     object?: ServicePointUpdateCsvModel;
     attributesToNull?: Array<string>;

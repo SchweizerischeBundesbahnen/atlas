@@ -98,12 +98,22 @@ export class ServicePointDetailComponent
 
   _showRevokeButton = false;
 
+  _showDecisionButton = false;
+
   get showRevokeButton(): boolean {
     return this._showRevokeButton;
   }
 
   set showRevokeButton(show: boolean) {
     this._showRevokeButton = show;
+  }
+
+  get showDecisionButton(): boolean {
+    return this._showDecisionButton;
+  }
+
+  set showDecisionButton(show: boolean) {
+    this._showDecisionButton = show;
   }
 
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
@@ -198,6 +208,7 @@ export class ServicePointDetailComponent
 
   public initSelectedVersion(version: ReadServicePointVersion) {
     this.initShowRevokeButton(version);
+    this.initShowDecisionButton(version);
     this.form = ServicePointFormGroupBuilder.buildFormGroup(version);
     this.disableForm();
     this.isSwitchVersionDisabled = false;
@@ -214,6 +225,18 @@ export class ServicePointDetailComponent
         .map((value) => value.status)
         .includes('IN_REVIEW') || version.status === 'REVOKED'
     );
+  }
+
+  initShowDecisionButton(version: ReadServicePointVersion) {
+    return (this.showDecisionButton =
+      version.terminationInProgress === true &&
+      this.permissionService
+        .getApplicationUserPermission(ApplicationType.Sepodi)
+        .permissionRestrictions.find(
+          (i) =>
+            i.type === 'NOVA_TERMINATION_VOTE' ||
+            i.type === 'INFO_PLUS_TERMINATION_VOTE'
+        )?.valueAsString === 'true');
   }
 
   private displayAndSelectServicePointOnMap() {
@@ -414,6 +437,10 @@ export class ServicePointDetailComponent
             });
         }
       });
+  }
+
+  test() {
+    console.log('test');
   }
 
   updateVersion() {

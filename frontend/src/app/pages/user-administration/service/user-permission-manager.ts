@@ -214,28 +214,28 @@ export class UserPermissionManager {
       permission.permissionRestrictions
         .filter(
           (restriction) =>
-            restriction.type === PermissionRestrictionType.NOVA_TERMINATION_VOTE
+            restriction.type === PermissionRestrictionType.NovaTerminationVote
         )
         .forEach((nova) => {
           this.userPermission.permissions[
             permissionIndex
           ].permissionRestrictions.push({
             valueAsString: nova.valueAsString,
-            type: PermissionRestrictionType.NOVA_TERMINATION_VOTE,
+            type: PermissionRestrictionType.NovaTerminationVote,
           });
         });
       permission.permissionRestrictions
         .filter(
           (restriction) =>
             restriction.type ===
-            PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE
+            PermissionRestrictionType.InfoPlusTerminationVote
         )
         .forEach((infoPlus) => {
           this.userPermission.permissions[
             permissionIndex
           ].permissionRestrictions.push({
             valueAsString: infoPlus.valueAsString,
-            type: PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE,
+            type: PermissionRestrictionType.InfoPlusTerminationVote,
           });
         });
     });

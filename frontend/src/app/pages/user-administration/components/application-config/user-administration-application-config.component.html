@@ -33,7 +33,10 @@
           ></atlas-slide-toggle>
         </div>
       }
-      @if (application === ApplicationType.Sepodi) {
+      @if (
+        application === ApplicationType.Sepodi &&
+        (role === 'WRITER' || role === 'SUPER_USER')
+      ) {
         <div class="bulk-import-toggle my-3">
           <app-atlas-label-field fieldLabel="NOVA"></app-atlas-label-field>
           <atlas-slide-toggle
