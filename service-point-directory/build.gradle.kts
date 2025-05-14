@@ -37,7 +37,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
 
     implementation("com.google.protobuf:protobuf-java:4.30.2")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.14.Final")
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.15.Final")
 
     runtimeOnly("org.postgresql:postgresql")
 
