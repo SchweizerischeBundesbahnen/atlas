@@ -5,7 +5,7 @@
 import { AuthConfig } from 'angular-oauth2-oidc';
 import { Environment } from './environment.model';
 import packageJson from '../../package.json';
-import { issuer, logoutUrl } from './environment.prod';
+import { atlasReleaseNotes, issuer, logoutUrl } from './environment.common';
 
 // See https://confluence.sbb.ch/display/CLEW/Azure+AD
 const authConfig: AuthConfig = {
@@ -30,8 +30,7 @@ export const environment: Environment = {
   appVersion: packageJson.version,
   atlasApiUrl: 'http://localhost:8888',
   atlasUnauthApiUrl: 'http://localhost:6969',
-  atlasReleaseNotes:
-    'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
+  atlasReleaseNotes,
   authConfig,
   journeyMapsApiKey: '6e28a0f7559988d0acf14d450ca29cf9',
 };
