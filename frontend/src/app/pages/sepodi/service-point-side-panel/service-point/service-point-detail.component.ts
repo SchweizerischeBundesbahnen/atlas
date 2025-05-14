@@ -108,14 +108,6 @@ export class ServicePointDetailComponent
     this._showRevokeButton = show;
   }
 
-  get showDecisionButton(): boolean {
-    return this._showDecisionButton;
-  }
-
-  set showDecisionButton(show: boolean) {
-    this._showDecisionButton = show;
-  }
-
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
@@ -208,7 +200,6 @@ export class ServicePointDetailComponent
 
   public initSelectedVersion(version: ReadServicePointVersion) {
     this.initShowRevokeButton(version);
-    this.initShowDecisionButton(version);
     this.form = ServicePointFormGroupBuilder.buildFormGroup(version);
     this.disableForm();
     this.isSwitchVersionDisabled = false;
@@ -225,18 +216,6 @@ export class ServicePointDetailComponent
         .map((value) => value.status)
         .includes('IN_REVIEW') || version.status === 'REVOKED'
     );
-  }
-
-  initShowDecisionButton(version: ReadServicePointVersion) {
-    return (this.showDecisionButton =
-      version.terminationInProgress === true &&
-      this.permissionService
-        .getApplicationUserPermission(ApplicationType.Sepodi)
-        .permissionRestrictions.find(
-          (i) =>
-            i.type === 'NOVA_TERMINATION_VOTE' ||
-            i.type === 'INFO_PLUS_TERMINATION_VOTE'
-        )?.valueAsString === 'true');
   }
 
   private displayAndSelectServicePointOnMap() {
@@ -437,10 +416,6 @@ export class ServicePointDetailComponent
             });
         }
       });
-  }
-
-  test() {
-    console.log('test');
   }
 
   updateVersion() {

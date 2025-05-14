@@ -53,6 +53,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class UserAdministrationApplicationConfigComponent
   implements OnInit, OnDestroy
 {
+  protected readonly ApplicationType = ApplicationType;
+
   @Input() application!: ApplicationType;
   @Input() readOnly = false;
   @Input() role: ApplicationRole = 'READER';
@@ -316,6 +318,4 @@ export class UserAdministrationApplicationConfigComponent
       },
     ]);
   }
-
-  protected readonly ApplicationType = ApplicationType;
 }
