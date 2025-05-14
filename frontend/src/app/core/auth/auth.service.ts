@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   logout() {
-    this.oauthService.logOut(true);
+    this.oauthService.logOut();
     this.removeLoginTokenFromStorage();
 
     this.userService.setToUnauthenticatedUser();
