@@ -1,13 +1,13 @@
 plugins {
-    id("org.sonarqube") version "6.1.0.5360"
+    id("org.sonarqube") version "6.2.0.5505"
 }
 
 group = "ch.sbb.atlas"
 version = "2.627.0"
 
-extra["awsS3Version"] = "2.31.42"
+extra["awsS3Version"] = "2.31.44"
 
-extra["swaggerCoreVersion"] = "2.2.31"
+extra["swaggerCoreVersion"] = "2.2.32"
 extra["openapiStarterCommonVersion"] = "2.8.8"
 
 // Geo Data Libs
