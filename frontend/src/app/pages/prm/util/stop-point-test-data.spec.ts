@@ -26,6 +26,7 @@ export const STOP_POINT: ReadStopPointVersion = {
   creator: 'Cianni',
   reduced: true,
   editionDate: '2020-01-05',
+  recordingObligation: false,
   editor: 'Nicola',
 };
 
@@ -55,5 +56,6 @@ export const STOP_POINT_COMPLETE: ReadStopPointVersion = {
   creator: 'Cianni',
   reduced: false,
   editionDate: '2020-01-05',
+  recordingObligation: false,
   editor: 'Nicola',
 };
