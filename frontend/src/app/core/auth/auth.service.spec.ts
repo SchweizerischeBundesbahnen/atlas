@@ -122,8 +122,6 @@ describe('AuthService', () => {
   it('logs out with oauthService', () => {
     authService.logout();
     expect(oauthService.logOut).toHaveBeenCalled();
-    expect(userService.setToUnauthenticatedUser).toHaveBeenCalled();
-    expect(pageService.resetPages).toHaveBeenCalled();
   });
 
   it('removes access token from storage if not valid', fakeAsync(() => {

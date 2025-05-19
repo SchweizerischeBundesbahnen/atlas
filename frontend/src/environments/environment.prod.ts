@@ -1,6 +1,6 @@
 import { AuthConfig } from 'angular-oauth2-oidc';
 import 'angular-server-side-configuration/process';
-
+import { atlasReleaseNotes, issuer, logoutUrl } from './environment.common';
 import { Environment } from './environment.model';
 
 /**
@@ -21,8 +21,7 @@ import { Environment } from './environment.model';
 // See https://confluence.sbb.ch/display/CLEW/Azure+AD
 const authConfig: AuthConfig = {
   // This is the issuer URL for the SBB Azure AD organization
-  issuer:
-    'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0',
+  issuer,
   // This is required, since Azure AD uses different domains in their issuer configuration
   strictDiscoveryDocumentValidation: false,
   clientId: process.env.API_CLIENT_ID!,
@@ -30,6 +29,7 @@ const authConfig: AuthConfig = {
   responseType: 'code',
   scope: process.env.API_SCOPE!,
   preserveRequestedRoute: true,
+  logoutUrl,
 };
 
 export const environment: Environment = {
@@ -43,8 +43,7 @@ export const environment: Environment = {
   appVersion: process.env.APP_VERSION!,
   atlasApiUrl: process.env.ATLAS_API_URL!,
   atlasUnauthApiUrl: process.env.ATLAS_UNAUTH_API_URL!,
-  atlasReleaseNotes:
-    'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
+  atlasReleaseNotes,
   authConfig,
   journeyMapsApiKey: process.env.JOURNEY_MAPS_API_KEY!,
 };
