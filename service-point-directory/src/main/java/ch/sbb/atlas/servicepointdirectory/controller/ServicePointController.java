@@ -36,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -233,17 +234,17 @@ public class ServicePointController implements ServicePointApiV1 {
     return servicePointVersion;
   }
 
+  @Async
   public void cleanupFareStops() {
     log.info("Cleaning up fareStops");
 
-    List<ServicePointVersion> fareStopsToCleanup = servicePointService.findFareStopsToCleanup(ServicePointConstants.ATLAS_MIGRATION_DATE);
+    List<ServicePointVersion> fareStopsToCleanup = servicePointService.findFareStopsToCleanup();
     for (int i = 0; i < fareStopsToCleanup.size(); i++) {
       ServicePointVersion servicePointVersion = fareStopsToCleanup.get(i);
       List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
           servicePointVersion.getNumber());
 
       ServicePointVersion editedVersion = servicePointVersion.toBuilder()
-          .validFrom(ServicePointConstants.ATLAS_MIGRATION_DATE)
           .servicePointGeolocation(null)
           .businessOrganisation(ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID)
           .build();
