@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService, OAuthStorage } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
-import { Pages } from '../../pages/pages';
 import { jwtDecode } from 'jwt-decode';
 import { Role } from './role';
 import { UserService } from './user/user.service';
@@ -80,13 +79,7 @@ export class AuthService {
   }
 
   logout() {
-    this.oauthService.logOut(true);
-    this.removeLoginTokenFromStorage();
-
-    this.userService.setToUnauthenticatedUser();
-    this.pageService.resetPages();
-
-    this.router.navigate([Pages.HOME.path]).then();
+    this.oauthService.logOut();
   }
 
   userFromAccessToken(): User {
