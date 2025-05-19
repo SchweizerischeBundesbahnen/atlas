@@ -134,6 +134,14 @@ export class UserPermissionManager {
             restriction.type === PermissionRestrictionType.Country ||
             restriction.type === PermissionRestrictionType.BulkImport
         );
+      } else if (permission.role === ApplicationRole.Reader) {
+        permission.permissionRestrictions =
+          permission.permissionRestrictions.filter(
+            (restriction) =>
+              restriction.type ===
+                PermissionRestrictionType.InfoPlusTerminationVote ||
+              restriction.type === PermissionRestrictionType.NovaTerminationVote
+          );
       } else if (permission.role !== ApplicationRole.Writer) {
         permission.permissionRestrictions = [];
       }
