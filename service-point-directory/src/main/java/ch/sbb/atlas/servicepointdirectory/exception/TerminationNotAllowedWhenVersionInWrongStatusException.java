@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class TerminationNotAllowedWhenVersionInReviewException extends AtlasException {
+public class TerminationNotAllowedWhenVersionInWrongStatusException extends AtlasException {
 
   public static final String CODE_TERMINATION_IN_REVIEW = "SEPODI.SERVICE_POINTS.TERMINATION_NOT_ALLOWED_WITH_VERSION_IN_REVIEW";
   public static final String CODE_TERMINATION_NOT_IN_VALIDATE = "SEPODI.SERVICE_POINTS"

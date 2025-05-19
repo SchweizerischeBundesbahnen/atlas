@@ -636,6 +636,12 @@
     "UPDATE_SUCCESS_MSG": "Die gewünschte Verknüpfung wurde erfolgreich aktualisiert.",
     "DELETE_SUCCESS_MSG": "Das Löschen der ausgewählten Verknüpfung war erfolgreich."
   },
+  "TERMINATION_WORKFLOW": {
+    "DIALOG": {
+      "START_TERMINATION_TITLE": "Achtung: Wenn Sie Speichern klicken, starten Sie eine Anhörung zur Terminierung der Haltestelle",
+      "COMMENT": "Anmerkungen"
+    }
+  },
   "WORKFLOW": {
     "TITLE": "Anhörung",
     "BUTTON": {

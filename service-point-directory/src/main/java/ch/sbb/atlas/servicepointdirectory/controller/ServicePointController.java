@@ -17,8 +17,9 @@ import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusRevokedChangeNotAllowedException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationAlreadyInProgressException;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationDateException;
-import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInReviewException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInWrongStatusException;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotOnLastVersionException;
 import ch.sbb.atlas.servicepointdirectory.mapper.CreateServicePointMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointSwissWithGeoMapper;
@@ -228,9 +229,12 @@ public class ServicePointController implements ServicePointApiV1 {
       throw new TerminationNotOnLastVersionException();
     }
     if (servicePointVersion.getStatus() != Status.VALIDATED) {
-      throw new TerminationNotAllowedWhenVersionInReviewException(servicePointVersion.getNumber(),
+      throw new TerminationNotAllowedWhenVersionInWrongStatusException(servicePointVersion.getNumber(),
           servicePointVersion.getStatus());
     }
+    servicePointVersions.stream().filter(ServicePointVersion::isTerminationInProgress).findAny().ifPresent(sp -> {
+      throw new TerminationAlreadyInProgressException();
+    });
     return servicePointVersion;
   }
 

@@ -41,7 +41,7 @@ public class StartTerminationStopPointWorkflowModel {
 
   @Schema(description = "Workflow comment")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String workflowComment;
 
 }
