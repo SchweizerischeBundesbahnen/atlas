@@ -323,6 +323,8 @@
       "DELETED": "Gelöscht"
     },
     "ROLE": "Rolle",
+    "NOVA": "Berechtigt für NOVA Terminierungsabstimmungen",
+    "INFO_PLUS": "Berechtigt für Info Plus Terminierungsabstimmungen",
     "ADD_BUSINESS_ORGANISATION": "Geschäftsorganisation hinzufügen",
     "DELETE_BUSINESS_ORGANISATION": "Geschäftsorganisation entfernen",
     "SELECTED_USER_HAS_ALREADY_PERMISSIONS": "Gewählter Benutzer ist bereits hinterlegt",
@@ -1133,8 +1135,6 @@
       "ABBREVIATION_NOT_UNIQUE": "Die Abkürzung wird bereits verwendet oder die gewählte Dienststellen Version ist nicht die aktuellste.",
       "HEIGHT_SERVICE_UNAVAILABLE": "Der Höhenservice ist nicht erreichbar. Bitte versuchen Sie es in 30 Minuten erneut. Sollte das Problem weiterhin bestehen wenden Sie sich an die Fachtstelle atlas.",
       "UPDATE_AFFECTS_VERSION_IN_REVIEW": "Das Editieren ist aufgrund einer laufenden Anhörung der Version vom {{validFrom}} bis {{validTo}} zum Haltestellennamen nicht möglich. Mutationen können erst nach Abschluss der Anhörung wieder erfasst werden.",
-      "NOVA": "Nova",
-      "INFO_PLUS": "Info +",
       "WORKFLOW": {
         "WORKFLOW": "Anhörung",
         "WORKFLOWS": "Anhörungen",
