@@ -90,7 +90,7 @@ export class ServicePointDetailComponent
   showVersionSwitch = false;
   selectedVersionIndex!: number;
   form?: FormGroup<ServicePointDetailFormGroup>;
-  initialFromValues: any;
+
   hasAbbreviation = false;
   isAbbreviationAllowed = false;
 
@@ -109,9 +109,20 @@ export class ServicePointDetailComponent
     this._showRevokeButton = show;
   }
 
+  private _terminationInProgress = false;
+  get isTerminationInProgress(): boolean {
+    return this._terminationInProgress;
+  }
+
+  set terminationInProgress(terminationInProgress: boolean) {
+    this._terminationInProgress = terminationInProgress;
+  }
+
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  initialFromValues: any;
 
   constructor(
     private router: Router,
@@ -201,6 +212,7 @@ export class ServicePointDetailComponent
   }
 
   public initSelectedVersion(version: ReadServicePointVersion) {
+    this.terminationInProgress = version.terminationInProgress!;
     this.initShowRevokeButton(version);
     this.form = ServicePointFormGroupBuilder.buildFormGroup(version);
     this.disableForm();
@@ -313,7 +325,17 @@ export class ServicePointDetailComponent
     if (this.form?.valid) {
       this.validityService.updateValidity(this.form);
       if (this.isStartingTermination()) {
-        this.terminationDialogService.openDialog(this.selectedVersion!);
+        this.terminationDialogService
+          .openDialog(this.selectedVersion!, this.form.controls.validTo.value!)
+          .subscribe((saved) => {
+            if (saved) {
+              this.router
+                .navigate(['..', this.selectedVersion!.number.number], {
+                  relativeTo: this.route,
+                })
+                .then();
+            }
+          });
       } else {
         this.validityService.validateAndDisableCustom(
           () => this.updateVersion(),
@@ -324,7 +346,12 @@ export class ServicePointDetailComponent
   }
 
   private isStartingTermination() {
-    return !this.validityService.isValidityNotChanged() && this.isTermination();
+    const isStopPoint = this.form?.controls.stopPoint.value;
+    return (
+      !this.validityService.isValidityNotChanged() &&
+      isStopPoint &&
+      this.isTermination()
+    );
   }
 
   private isTermination() {

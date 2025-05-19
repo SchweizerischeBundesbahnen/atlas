@@ -636,6 +636,12 @@
     "UPDATE_SUCCESS_MSG": "Il collegamento desiderato è stato aggiornato con successo.",
     "DELETE_SUCCESS_MSG": "L'eliminazione del collegamento selezionato è avvenuta con successo."
   },
+  "TERMINATION_WORKFLOW": {
+    "DIALOG": {
+      "START_TERMINATION_TITLE": "Attenzione: cliccando su Salva, si avvierà un'audizione per terminare la fermata",
+      "COMMENT": "Osservazioni"
+    }
+  },
   "WORKFLOW": {
     "TITLE": "Audizione",
     "BUTTON": {
