@@ -18,8 +18,6 @@ import { DetailFooterComponent } from '../../../../../core/components/detail-foo
 import { BackButtonDirective } from '../../../../../core/components/button/back-button/back-button.directive';
 import { TranslatePipe } from '@ngx-translate/core';
 import { EditTitlePipe } from './edit-title.pipe';
-import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import { AtlasSlideToggleComponent } from '../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 
 @Component({
   selector: 'app-user-administration-edit',
@@ -38,8 +36,6 @@ import { AtlasSlideToggleComponent } from '../../../../../core/form-components/a
     BackButtonDirective,
     TranslatePipe,
     EditTitlePipe,
-    AtlasLabelFieldComponent,
-    AtlasSlideToggleComponent,
   ],
 })
 export class UserAdministrationUserEditComponent implements OnInit {
@@ -73,8 +69,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
   saveEdits(): void {
     this.saveEnabled = false;
     this.userPermissionManager.emitBoFormResetEvent();
-    //this.userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
-    console.log('user permission ', this.userPermissionManager.userPermission);
+    this.userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
     this.userService
       .updateUserPermission(this.userPermissionManager.userPermission)
       .subscribe({
