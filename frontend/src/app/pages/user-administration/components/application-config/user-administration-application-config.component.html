@@ -33,6 +33,26 @@
           ></atlas-slide-toggle>
         </div>
       }
+      @if (ApplicationType.Sepodi == application) {
+        <div class="bulk-import-toggle my-3 text-nowrap">
+          <app-atlas-label-field
+            fieldLabel="USER_ADMIN.NOVA"
+          ></app-atlas-label-field>
+          <atlas-slide-toggle
+            [(toggle)]="novaTerminationVotePermission"
+            [disabled]="readOnly"
+          ></atlas-slide-toggle>
+        </div>
+        <div class="bulk-import-toggle my-3 text-nowrap">
+          <app-atlas-label-field
+            fieldLabel="USER_ADMIN.INFO_PLUS"
+          ></app-atlas-label-field>
+          <atlas-slide-toggle
+            [(toggle)]="infoPlusTerminationVotePermission"
+            [disabled]="readOnly"
+          ></atlas-slide-toggle>
+        </div>
+      }
     </div>
 
     <div class="d-flex flex-column col-9 pe-3">
