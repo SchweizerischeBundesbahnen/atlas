@@ -15,15 +15,13 @@
           [number]="(selectedVersion?.number)!.number"
           [sloid]="selectedVersion?.sloid"
           targetPage="stop-point"
-        ></app-navigation-sepodi-prm>
-        @if (selectedVersion?.sloid) {
-          <div class="align-self-center">
-            <prm-recording-obligation
-              [showToggle]="false"
-              [sloid]="selectedVersion?.sloid!"
-            ></prm-recording-obligation>
-          </div>
-        }
+        ></app-navigation-sepodi-prm>@if (selectedVersion?.sloid) {
+        <div class="align-self-center">
+          <prm-recording-obligation
+            [showToggle]="false"
+            [sloid]="selectedVersion?.sloid!"
+          ></prm-recording-obligation>
+        </div>}
       </div>
     </div>
   </div>
@@ -110,7 +108,9 @@
   >
   </atlas-button>
   <atlas-button
-    *ngIf="(isFormEnabled$ | async) === false && form"
+    *ngIf="
+      (isFormEnabled$ | async) === false && form && !isTerminationInProgress
+    "
     (buttonClicked)="toggleEdit()"
     applicationType="SEPODI"
     [businessOrganisation]="form.controls.businessOrganisation.value!"
@@ -136,7 +136,8 @@
     *ngIf="
       (isFormEnabled$ | async) === false &&
       form &&
-      selectedVersion?.status === servicePointStatus.Draft
+      selectedVersion?.status === servicePointStatus.Draft &&
+      !isTerminationInProgress
     "
     (buttonClicked)="addWorkflow()"
     applicationType="SEPODI"
@@ -163,6 +164,7 @@
   >
   </atlas-button>
   <atlas-button
+    *ngIf="!isTerminationInProgress"
     (buttonClicked)="revoke()"
     [applicationType]="'SEPODI'"
     [hidden]="!showRevokeButton"
@@ -174,6 +176,7 @@
   >
   </atlas-button>
   <atlas-button
+    *ngIf="!isTerminationInProgress"
     (buttonClicked)="validate()"
     [applicationType]="'SEPODI'"
     [hidden]="selectedVersion?.status !== 'DRAFT'"

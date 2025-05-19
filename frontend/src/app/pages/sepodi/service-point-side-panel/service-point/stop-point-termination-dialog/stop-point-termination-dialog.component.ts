@@ -9,6 +9,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
 import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
 import { StopPointTerminationDialogData } from './stop-point-termination-dialog-data';
+import { WorkflowService } from '../../../../../api/service/workflow/workflow.service';
+import { TerminationStopPointAddWorkflow } from '../../../../../api/model/terminationStopPointAddWorkflow';
+import { NotificationService } from '../../../../../core/notification/notification.service';
+import { UserService } from '../../../../../core/auth/user/user.service';
+import { catchError } from 'rxjs';
 
 @Component({
   selector: 'app-stop-point-termination-dialog',
@@ -25,16 +30,20 @@ export class StopPointTerminationDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<StopPointTerminationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: StopPointTerminationDialogData,
-    private detailHelperService: DetailHelperService
+    private detailHelperService: DetailHelperService,
+    private workflowService: WorkflowService,
+    private notificationService: NotificationService,
+    private userService: UserService
   ) {}
 
   form!: FormGroup<StartTerminationStopPointAddWorkflowFormGroup>;
+
   ngOnInit(): void {
     this.form = new FormGroup<StartTerminationStopPointAddWorkflowFormGroup>({
       versionId: new FormControl(undefined, [Validators.required]),
       sloid: new FormControl('', [Validators.required]),
+      applicantMail: new FormControl('', [Validators.required]),
       workflowComment: new FormControl('', [
-        Validators.required,
         Validators.maxLength(1500),
         AtlasCharsetsValidator.iso88591,
       ]),
@@ -43,10 +52,33 @@ export class StopPointTerminationDialogComponent implements OnInit {
   }
 
   startTermination() {
-    //TODO: validate form
-    this.form.controls.sloid.setValue(this.data.sloid);
-    this.form.controls.versionId.setValue(this.data.versionId);
+    const startTerminationValue = this.getStartTermination();
+    if (this.form.valid) {
+      this.form.disable();
+      this.workflowService
+        .startTermination(startTerminationValue)
+        .pipe(
+          //we need to catchError to be able to close the dialog
+          catchError((err) => {
+            this.dialogRef.close(true);
+            throw err;
+          })
+        )
+        .subscribe(() => {
+          this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
+          this.dialogRef.close(true);
+        });
+    }
+  }
+
+  private getStartTermination() {
+    this.form.controls.sloid.setValue(this.data.sloid!);
+    this.form.controls.versionId.setValue(this.data.versionId!);
     this.form.controls.boTerminationDate.setValue(this.data.boTerminationDate);
+    this.form.controls.applicantMail.setValue(
+      this.userService.currentUser!.email
+    );
+    return this.form.getRawValue() as unknown as TerminationStopPointAddWorkflow;
   }
 
   cancel() {
@@ -54,7 +86,7 @@ export class StopPointTerminationDialogComponent implements OnInit {
       .confirmLeaveDirtyForm(this.form)
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.dialogRef.close(true);
+          this.dialogRef.close(false);
         }
       });
   }
@@ -65,4 +97,5 @@ export interface StartTerminationStopPointAddWorkflowFormGroup {
   sloid: FormControl<string | null | undefined>;
   workflowComment: FormControl<string | null | undefined>;
   boTerminationDate: FormControl<Date | null | undefined>;
+  applicantMail: FormControl<string | null | undefined>;
 }
