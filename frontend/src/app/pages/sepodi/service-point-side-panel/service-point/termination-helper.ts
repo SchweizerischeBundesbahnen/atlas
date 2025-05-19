@@ -20,6 +20,7 @@ export class TerminationHelper {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   public static reduceFormGroupToValues(formGroup: FormGroup): any {
     return Object.keys(formGroup.controls).reduce(
+      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
       (property: any, controlName) => {
         property[controlName] = formGroup.get(controlName)?.value;
         return property;

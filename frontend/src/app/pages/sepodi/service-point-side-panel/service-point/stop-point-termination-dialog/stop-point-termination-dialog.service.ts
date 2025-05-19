@@ -5,6 +5,7 @@ import { ReadServicePointVersion } from '../../../../../api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { StopPointTerminationDialogData } from './stop-point-termination-dialog-data';
+import { Moment } from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -14,15 +15,18 @@ export class StopPointTerminationDialogService {
 
   constructor(private dialog: MatDialog) {}
 
-  openDialog(stopPoint: ReadServicePointVersion): Observable<boolean> {
+  openDialog(
+    stopPoint: ReadServicePointVersion,
+    boTerminationDate: Moment
+  ): Observable<boolean> {
     const dialogData: StopPointTerminationDialogData = {
-      title: 'TERMINATION.BUTTON.ADD',
+      title: 'TERMINATION_WORKFLOW.DIALOG.START_TERMINATION_TITLE',
       message: '',
       cancelText: 'DIALOG.CANCEL',
-      confirmText: 'TERMINATION.BUTTON.SEND',
+      confirmText: 'COMMON.SAVE',
       versionId: stopPoint.id,
       sloid: stopPoint.sloid,
-      boTerminationDate: stopPoint.validTo,
+      boTerminationDate: boTerminationDate.toDate(),
     };
 
     return this.open(dialogData);
