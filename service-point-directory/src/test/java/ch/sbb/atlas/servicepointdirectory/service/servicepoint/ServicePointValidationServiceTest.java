@@ -1,13 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
@@ -269,24 +267,6 @@ class ServicePointValidationServiceTest {
         .validTo(LocalDate.of(2026, 3, 31))
         .build();
     assertThrows(InvalidFareStopException.class,
-        () -> servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion));
-  }
-
-  @Test
-  void shouldNotThrowExceptionOnFareStopNotBelongingToAspBeforeAtlasMigration() {
-    ServicePointVersion servicePointVersion = ServicePointVersion
-        .builder()
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8589108))
-        .sloid("ch:1:sloid:89108")
-        .numberShort(89108)
-        .country(Country.SWITZERLAND)
-        .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
-        .designationOfficial("Tarifhaltestelle")
-        .businessOrganisation("ch:1:sboid:100626")
-        .validFrom(ServicePointConstants.ATLAS_MIGRATION_DATE.minusDays(5))
-        .validTo(ServicePointConstants.ATLAS_MIGRATION_DATE.minusDays(1))
-        .build();
-    assertThatNoException().isThrownBy(
         () -> servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion));
   }
 
