@@ -98,8 +98,6 @@ export class ServicePointDetailComponent
 
   _showRevokeButton = false;
 
-  _showDecisionButton = false;
-
   get showRevokeButton(): boolean {
     return this._showRevokeButton;
   }
