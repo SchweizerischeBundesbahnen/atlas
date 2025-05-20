@@ -3,7 +3,6 @@ package ch.sbb.importservice.listener;
 import static ch.sbb.importservice.service.bulk.BulkImportJobService.EMAILS_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_ID_JOB_PARAMETER;
 
-import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
@@ -12,6 +11,7 @@ import ch.sbb.importservice.repository.BulkImportRepository;
 import ch.sbb.importservice.service.bulk.BulkImportS3BucketService;
 import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
 import ch.sbb.importservice.service.bulk.log.LogFile;
+import ch.sbb.importservice.service.mail.BulkImporterMailService;
 import ch.sbb.importservice.service.mail.MailProducerService;
 import ch.sbb.importservice.utils.Translation;
 import java.util.List;
@@ -34,7 +34,7 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
   private final BulkImportS3BucketService s3BucketService;
   private final BulkImportRepository bulkImportRepository;
   private final MailProducerService mailProducerService;
-  private final UserAdministrationClient userAdministrationClient;
+  private final BulkImporterMailService bulkImporterMailService;
 
   @Value("${spring.profiles.active:local}")
   private String activeProfile;
@@ -61,7 +61,7 @@ public class BulkImportJobCompletionListener implements JobExecutionListener {
 
   private void sendMailToImporter(BulkImport bulkImport, List<String> emails) {
     MailNotification mailNotification = MailNotification.builder()
-        .to(List.of(userAdministrationClient.getCurrentUser().getMail()))
+        .to(List.of(bulkImporterMailService.getMailOfCurrentUser()))
         .cc(emails)
         .subject("Import Result " + bulkImport.getId())
         .mailType(MailType.BULK_IMPORT_RESULT_NOTIFICATION)

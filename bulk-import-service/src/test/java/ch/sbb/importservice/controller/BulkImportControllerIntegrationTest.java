@@ -30,6 +30,7 @@ import ch.sbb.importservice.model.BulkImportRequest;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.repository.BulkImportRepository;
+import ch.sbb.importservice.service.mail.BulkImporterMailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
@@ -67,6 +68,9 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @MockitoBean
   private BulkImportJobCompletionListener bulkImportJobCompletionListener;
+  
+  @MockitoBean
+  private BulkImporterMailService bulkImporterMailService;
 
   private String todaysDirectory;
 
