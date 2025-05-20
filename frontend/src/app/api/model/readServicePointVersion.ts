@@ -112,10 +112,6 @@ export interface ReadServicePointVersion {
      */
     operatingPointKilometer?: boolean;
     /**
-     * ServicePoint is StopPoint
-     */
-    stopPoint?: boolean;
-    /**
      * ServicePoint is FareStop
      */
     fareStop?: boolean;
@@ -127,6 +123,10 @@ export interface ReadServicePointVersion {
      * ServicePoint is BorderPoint
      */
     borderPoint?: boolean;
+    /**
+     * ServicePoint is StopPoint
+     */
+    stopPoint?: boolean;
     /**
      * ServicePoint has a Geolocation
      */
