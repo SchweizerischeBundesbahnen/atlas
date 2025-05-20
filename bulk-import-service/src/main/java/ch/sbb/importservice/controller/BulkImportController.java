@@ -14,6 +14,7 @@ import ch.sbb.importservice.service.bulk.BulkImportService;
 import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
 import ch.sbb.importservice.service.bulk.log.LogFile;
 import ch.sbb.importservice.service.bulk.template.BulkImportTemplateGenerator;
+import ch.sbb.importservice.service.mail.BulkImporterMailService;
 import jakarta.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,6 +43,7 @@ public class BulkImportController implements BulkImportApiV1 {
   private final BulkImportLogService bulkImportLogService;
   private final BulkImportFileValidationService bulkImportFileValidationService;
   private final BulkImportTemplateGenerator bulkImportTemplateGenerator;
+  private final BulkImporterMailService bulkImporterMailService;
 
   @Override
   public void startBulkImport(BulkImportRequest bulkImportRequest, MultipartFile file) {
@@ -52,6 +54,8 @@ public class BulkImportController implements BulkImportApiV1 {
         FileUtils.byteCountToDisplaySize(file.getSize()),
         file.getOriginalFilename(),
         file.getContentType());
+
+    bulkImporterMailService.checkImporterHasMail();
 
     BulkImport bulkImport = BulkImport.builder()
         .application(bulkImportRequest.getApplicationType())
