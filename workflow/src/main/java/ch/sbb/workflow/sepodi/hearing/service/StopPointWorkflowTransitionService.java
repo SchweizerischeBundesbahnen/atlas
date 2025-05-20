@@ -8,6 +8,7 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.LoggingAspect;
 import ch.sbb.workflow.aop.MethodLogged;
 import ch.sbb.workflow.entity.Person;
+import ch.sbb.workflow.exception.TerminationStopPointWorkflowConflictException;
 import ch.sbb.workflow.mapper.PersonMapper;
 import ch.sbb.workflow.sepodi.hearing.enity.Decision;
 import ch.sbb.workflow.sepodi.hearing.enity.StopPointWorkflow;
@@ -56,6 +57,9 @@ public class StopPointWorkflowTransitionService {
     }
     ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.updateStopPointStatusToInReview(
         stopPointAddWorkflowModel.getSloid(), stopPointAddWorkflowModel.getVersionId());
+    if (servicePointVersionModel.isTerminationInProgress()) {
+      throw new TerminationStopPointWorkflowConflictException();
+    }
     StopPointWorkflow stopPointWorkflow = createStopPointAddWorkflow(stopPointAddWorkflowModel, servicePointVersionModel);
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
     return stopPointWorkflowService.save(stopPointWorkflow);
