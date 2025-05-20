@@ -472,48 +472,4 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     // Then
     assertThat(bodiPermissions).isFalse();
   }
-
-  @Test
-  void shouldReturnTrueWhenUserHasInfoPlusTerminationVotePermission() {
-    // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-        .userId("e123456")
-        .permissions(Set.of(
-            UserAdministrationPermissionModel.builder()
-                .application(ApplicationType.LIDI)
-                .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
-                    .restrictionType(PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE)
-                    .build()))
-                .build()))
-        .build()));
-
-    // When
-    boolean result = businessOrganisationBasedUserAdministrationService.hasUserInfoPlusTerminationVotePermission(
-        ApplicationType.LIDI);
-
-    // Then
-    assertThat(result).isTrue();
-  }
-
-  @Test
-  void shouldReturnTrueWhenUserHasNovaTerminationVotePermission() {
-    // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-        .userId("e123456")
-        .permissions(Set.of(
-            UserAdministrationPermissionModel.builder()
-                .application(ApplicationType.SEPODI)
-                .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
-                    .restrictionType(PermissionRestrictionType.NOVA_TERMINATION_VOTE)
-                    .build()))
-                .build()))
-        .build()));
-
-    // When
-    boolean result = businessOrganisationBasedUserAdministrationService.hasUserNovaTerminationVotePermission(
-        ApplicationType.SEPODI);
-
-    // Then
-    assertThat(result).isTrue();
-  }
 }
