@@ -1,7 +1,6 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.servicepoint.Country;
-import java.time.LocalDate;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
 
