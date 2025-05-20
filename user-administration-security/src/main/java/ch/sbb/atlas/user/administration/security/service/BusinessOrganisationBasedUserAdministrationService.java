@@ -69,26 +69,6 @@ public class BusinessOrganisationBasedUserAdministrationService extends BaseUser
     return permissionsToUpdate;
   }
 
-  public boolean hasUserInfoPlusTerminationVotePermission(ApplicationType applicationType) {
-    log.debug("Checking if user {} has permission to vote for info plus", getCurrentUserSbbUid());
-
-    UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(
-        applicationType);
-
-    return userPermissionsForApplication.getRestrictions().stream()
-        .anyMatch(r -> PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE.equals(r.getRestrictionType()));
-  }
-
-  public boolean hasUserNovaTerminationVotePermission(ApplicationType applicationType) {
-    log.debug("Checking if user {} has permission to vote for nova", getCurrentUserSbbUid());
-
-    UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(
-        applicationType);
-
-    return userPermissionsForApplication.getRestrictions().stream()
-        .anyMatch(r -> PermissionRestrictionType.NOVA_TERMINATION_VOTE.equals(r.getRestrictionType()));
-  }
-
   public boolean isAtLeastSupervisor(ApplicationType applicationType) {
     log.debug("Checking if user {} is at least supervisor for {}", getCurrentUserSbbUid(), applicationType);
 
