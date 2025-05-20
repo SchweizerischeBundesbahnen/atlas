@@ -15,13 +15,21 @@
           [number]="(selectedVersion?.number)!.number"
           [sloid]="selectedVersion?.sloid"
           targetPage="stop-point"
-        ></app-navigation-sepodi-prm>@if (selectedVersion?.sloid) {
-        <div class="align-self-center">
-          <prm-recording-obligation
-            [showToggle]="false"
-            [sloid]="selectedVersion?.sloid!"
-          ></prm-recording-obligation>
-        </div>}
+        ></app-navigation-sepodi-prm>
+        @if (selectedVersion?.sloid) {
+          <div class="align-self-center">
+            <prm-recording-obligation
+              [showToggle]="false"
+              [sloid]="selectedVersion?.sloid!"
+            ></prm-recording-obligation>
+          </div>
+        }
+        </div>
+        @if (isTerminationInProgress) {
+          <div class="align-self-center">
+            <app-stop-point-termination-info />
+          </div>
+        }
       </div>
     </div>
   </div>

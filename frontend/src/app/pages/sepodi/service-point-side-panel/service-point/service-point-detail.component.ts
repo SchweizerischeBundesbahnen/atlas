@@ -54,6 +54,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { PrmRecordingObligationComponent } from '../../../../core/prm-recording-obligation/prm-recording-obligation.component';
 import { StopPointTerminationDialogService } from './stop-point-termination-dialog/stop-point-termination-dialog.service';
 import { TerminationHelper } from './termination-helper';
+import { StopPointTerminationInfoComponent } from './stop-point-termination-info/stop-point-termination-info.component';
 
 @Component({
   selector: 'app-service-point',
@@ -75,6 +76,7 @@ import { TerminationHelper } from './termination-helper';
     AsyncPipe,
     TranslatePipe,
     PrmRecordingObligationComponent,
+    StopPointTerminationInfoComponent,
   ],
 })
 export class ServicePointDetailComponent
