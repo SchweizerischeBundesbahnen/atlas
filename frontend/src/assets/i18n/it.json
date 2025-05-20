@@ -1124,7 +1124,8 @@
       },
       "ERROR": {
         "STATUS_CHANGE_NOT_POSSIBLE": "Lo stato del servizio non può essere modificato per lo stato REVOKED e può essere aggiornato solo da DRAFT a VALIDATED!",
-        "INVALID_FREIGHT_SERVICE_POINT": "L'indicazione di un codice punto di riferimento è obbligatoria per i punti di servizio operativi in Svizzera."
+        "INVALID_FREIGHT_SERVICE_POINT": "L'indicazione di un codice punto di riferimento è obbligatoria per i punti di servizio operativi in Svizzera.",
+        "INVALID_FARE_STOP": "Una fermata tariffaria deve essere assegnata all’ASP e non può avere coordinate."
       },
       "TERMINATION_FORBIDDEN": "Non siete autorizzati a terminare la fermata. Utilizzate il modulo all'indirizzo https://www.tp-info.ch/it/soppressione-fermata.",
       "TERMINATION_NOT_ALLOWED_WITH_VERSION_IN_REVIEW": "La terminazione della fermata non è possibile in quanto una versione è attualmente in fase di udienza.",
