@@ -1,9 +1,7 @@
 package ch.sbb.mail.service;
 
-import static java.lang.String.format;
-
-import ch.sbb.mail.exception.MailSendException;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.mail.exception.MailSendException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
@@ -28,7 +26,7 @@ public class MailService {
         mailContentBuilder.prepareMessageHelper(mailNotification, mimeMessage);
     try {
       emailMailSender.send(mimeMessagePreparator);
-      log.info("Mail with subject {} sent to {}", mailNotification.getSubject(), mailNotification.getTo());
+      log.info("Mail with subject {} sent to {}, mail={} ", mailNotification.getSubject(), mailNotification.getTo(), mailNotification);
     } catch (MailException e) {
       log.error("Mail {} not sent.", mailNotification, e);
     }
