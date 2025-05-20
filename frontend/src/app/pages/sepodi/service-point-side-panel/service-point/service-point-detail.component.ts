@@ -53,8 +53,8 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { TranslatePipe } from '@ngx-translate/core';
 import { PrmRecordingObligationComponent } from '../../../../core/prm-recording-obligation/prm-recording-obligation.component';
 import { StopPointTerminationDialogService } from './stop-point-termination-dialog/stop-point-termination-dialog.service';
-import { TerminationHelper } from './termination-helper';
 import { StopPointTerminationInfoComponent } from './stop-point-termination-info/stop-point-termination-info.component';
+import { TerminationService } from './termination.service';
 
 @Component({
   selector: 'app-service-point',
@@ -112,6 +112,7 @@ export class ServicePointDetailComponent
   }
 
   private _terminationInProgress = false;
+
   get isTerminationInProgress(): boolean {
     return this._terminationInProgress;
   }
@@ -123,8 +124,6 @@ export class ServicePointDetailComponent
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  initialFromValues: any;
 
   constructor(
     private router: Router,
@@ -137,6 +136,7 @@ export class ServicePointDetailComponent
     private validityService: ValidityService,
     private addStopPointWorkflowDialogService: AddStopPointWorkflowDialogService,
     private terminationDialogService: StopPointTerminationDialogService,
+    private terminationService: TerminationService,
     protected activatedRoute: ActivatedRoute
   ) {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
@@ -224,9 +224,7 @@ export class ServicePointDetailComponent
     this.isSelectedVersionHighDate(this.servicePointVersions, version);
     this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
-    this.initialFromValues = TerminationHelper.reduceFormGroupToValues(
-      this.form
-    );
+    this.terminationService.initTermination(this.form);
   }
 
   initShowRevokeButton(version: ReadServicePointVersion) {
@@ -326,18 +324,8 @@ export class ServicePointDetailComponent
     ValidationService.validateForm(this.form!);
     if (this.form?.valid) {
       this.validityService.updateValidity(this.form);
-      if (this.isStartingTermination()) {
-        this.terminationDialogService
-          .openDialog(this.selectedVersion!, this.form.controls.validTo.value!)
-          .subscribe((saved) => {
-            if (saved) {
-              this.router
-                .navigate(['..', this.selectedVersion!.number.number], {
-                  relativeTo: this.route,
-                })
-                .then();
-            }
-          });
+      if (this.isStartingTermination(this.form)) {
+        this.startTermination();
       } else {
         this.validityService.validateAndDisableCustom(
           () => this.updateVersion(),
@@ -347,28 +335,25 @@ export class ServicePointDetailComponent
     }
   }
 
-  private isStartingTermination() {
-    const isStopPoint = this.form?.controls.stopPoint.value;
-    return (
-      !this.validityService.isValidityNotChanged() &&
-      isStopPoint &&
-      this.form?.controls.status.value === 'VALIDATED' &&
-      this.isValidToGoingInTermination()
-    );
+  private startTermination() {
+    this.terminationDialogService
+      .openDialog(this.selectedVersion!, this.form!.controls.validTo.value!)
+      .subscribe((saved) => {
+        if (saved) {
+          this.router
+            .navigate(['..', this.selectedVersion!.number.number], {
+              relativeTo: this.route,
+            })
+            .then();
+        }
+      });
   }
 
-  private isValidToGoingInTermination() {
-    const lastServicePointVersion = this.servicePointVersions.at(-1);
-    if (this.selectedVersion?.id === lastServicePointVersion?.id) {
-      return (
-        this.validityService.isFormValidToBeforeInitValidTo() &&
-        TerminationHelper.excludeValidToAndCheckIfValuesAreEquals(
-          this.form!,
-          this.initialFromValues
-        )
-      );
-    }
-    return false;
+  private isStartingTermination(form: FormGroup<ServicePointDetailFormGroup>) {
+    return (
+      this.isLatestVersionSelected &&
+      this.terminationService.isStartingTermination(form)
+    );
   }
 
   update(id: number, servicePointVersion: CreateServicePointVersion) {

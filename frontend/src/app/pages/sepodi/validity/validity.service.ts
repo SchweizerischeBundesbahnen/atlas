@@ -44,10 +44,6 @@ export class ValidityService {
     );
   }
 
-  isFormValidToBeforeInitValidTo() {
-    return this.validity.formValidTo!.isBefore(this.validity.initValidTo);
-  }
-
   validate() {
     return this.confirmValidityDialog().pipe(take(1));
   }
