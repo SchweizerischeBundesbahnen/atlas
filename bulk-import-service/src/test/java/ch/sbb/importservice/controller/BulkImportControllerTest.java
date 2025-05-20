@@ -15,27 +15,38 @@ import ch.sbb.importservice.service.bulk.BulkImportService;
 import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
 import ch.sbb.importservice.service.bulk.log.LogFile;
 import ch.sbb.importservice.service.bulk.template.BulkImportTemplateGenerator;
+import ch.sbb.importservice.service.mail.BulkImporterMailService;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 class BulkImportControllerTest {
 
   private BulkImportController controller;
 
+  @Mock
   private BulkImportService service;
+
+  @Mock
   private BulkImportLogService bulkImportLogService;
+
+  @Mock
+  private BulkImportFileValidationService bulkImportFileValidationService;
+
+  @Mock
+  private BulkImportTemplateGenerator bulkImportTemplateGenerator;
+
+  @Mock
+  private BulkImporterMailService bulkImporterMailService;
 
   @BeforeEach
   void setUp() {
-    service = Mockito.mock(BulkImportService.class);
-    bulkImportLogService = Mockito.mock(BulkImportLogService.class);
-    BulkImportFileValidationService bulkImportFileValidationService = Mockito.mock(BulkImportFileValidationService.class);
-    BulkImportTemplateGenerator bulkImportTemplateGenerator = Mockito.mock(BulkImportTemplateGenerator.class);
+    MockitoAnnotations.initMocks(this);
     controller = new BulkImportController(service, bulkImportLogService, bulkImportFileValidationService,
-        bulkImportTemplateGenerator);
+        bulkImportTemplateGenerator, bulkImporterMailService);
   }
 
   @Test
