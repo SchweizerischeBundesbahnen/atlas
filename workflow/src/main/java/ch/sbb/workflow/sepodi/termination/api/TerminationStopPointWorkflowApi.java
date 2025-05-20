@@ -31,18 +31,14 @@ public interface TerminationStopPointWorkflowApi {
       @RequestBody @Valid StartTerminationStopPointWorkflowModel workflowModel);
 
   @PreAuthorize(
-      "@businessOrganisationBasedUserAdministrationService.hasUserInfoPlusTerminationVotePermission(T(ch.sbb.atlas.kafka.model"
-          + ".user.admin"
-          + ".ApplicationType).SEPODI)")
+      "@servicePointTerminationBasedUserAdministrationService.hasUserInfoPlusTerminationVotePermission()")
   @PostMapping(path = "/decision/info-plus/{workflowId}")
   @ResponseStatus(HttpStatus.CREATED)
   TerminationStopPointWorkflowModel decisionInfoPlus(@RequestBody @Valid TerminationDecisionModel decisionModel,
       @PathVariable Long workflowId);
 
   @PreAuthorize(
-      "@businessOrganisationBasedUserAdministrationService.hasUserNovaTerminationVotePermission(T(ch.sbb.atlas.kafka.model"
-          + ".user.admin"
-          + ".ApplicationType).SEPODI)")
+      "@servicePointTerminationBasedUserAdministrationService.hasUserNovaTerminationVotePermission()")
   @PostMapping(path = "/decision/nova/{workflowId}")
   @ResponseStatus(HttpStatus.CREATED)
   TerminationStopPointWorkflowModel decisionNova(@RequestBody @Valid TerminationDecisionModel decisionModel,
