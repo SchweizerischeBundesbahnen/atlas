@@ -352,11 +352,12 @@ export class ServicePointDetailComponent
     return (
       !this.validityService.isValidityNotChanged() &&
       isStopPoint &&
-      this.isTermination()
+      this.form?.controls.status.value === 'VALIDATED' &&
+      this.isValidToGoingInTermination()
     );
   }
 
-  private isTermination() {
+  private isValidToGoingInTermination() {
     const lastServicePointVersion = this.servicePointVersions.at(-1);
     if (this.selectedVersion?.id === lastServicePointVersion?.id) {
       return (

@@ -76,13 +76,13 @@ public class TerminationStopPointWorkflow extends BaseWorkflowEntity {
   private TerminationWorkflowStatus status;
 
   @NotNull
-  @Column(columnDefinition = "TIMESTAMP")
+  @Column(columnDefinition = "DATE")
   private LocalDate boTerminationDate;
 
-  @Column(columnDefinition = "TIMESTAMP")
+  @Column(columnDefinition = "DATE")
   private LocalDate infoPlusTerminationDate;
 
-  @Column(columnDefinition = "TIMESTAMP")
+  @Column(columnDefinition = "DATE")
   private LocalDate novaTerminationDate;
 
   @OneToOne(cascade = CascadeType.ALL)
