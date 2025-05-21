@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ServicePointDetailFormGroup } from './service-point-detail-form-group';
+import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
 
 @Injectable({
   providedIn: 'root',

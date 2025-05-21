@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { StopPointTerminationDialogComponent } from './stop-point-termination-dialog.component';
-import { ReadServicePointVersion } from '../../../../../api';
+import { ReadServicePointVersion } from '../../../../../../api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { StopPointTerminationDialogData } from './stop-point-termination-dialog-data';

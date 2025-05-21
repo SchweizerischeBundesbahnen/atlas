@@ -52,9 +52,9 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PrmRecordingObligationComponent } from '../../../../core/prm-recording-obligation/prm-recording-obligation.component';
-import { StopPointTerminationDialogService } from './stop-point-termination-dialog/stop-point-termination-dialog.service';
-import { StopPointTerminationInfoComponent } from './stop-point-termination-info/stop-point-termination-info.component';
-import { TerminationService } from './termination.service';
+import { StopPointTerminationDialogService } from './stop-point-termination/stop-point-termination-dialog/stop-point-termination-dialog.service';
+import { StopPointTerminationInfoComponent } from './stop-point-termination/stop-point-termination-info/stop-point-termination-info.component';
+import { TerminationService } from './stop-point-termination/termination.service';
 
 @Component({
   selector: 'app-service-point',
