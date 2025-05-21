@@ -9,8 +9,10 @@
  */
 import { CantonPermissionRestrictionModel } from './cantonPermissionRestrictionModel';
 import { BulkImportPermissionRestrictionModel } from './bulkImportPermissionRestrictionModel';
+import { InfoPlusTerminationVotePermissionRestrictionModel } from './infoPlusTerminationVotePermissionRestrictionModel';
 import { CountryPermissionRestrictionModel } from './countryPermissionRestrictionModel';
 import { SboidPermissionRestrictionModel } from './sboidPermissionRestrictionModel';
+import { NovaTerminationVotePermissionRestrictionModel } from './novaTerminationVotePermissionRestrictionModel';
 import { PermissionRestrictionType } from './permissionRestrictionType';
 
 
@@ -18,5 +20,5 @@ import { PermissionRestrictionType } from './permissionRestrictionType';
  * @type PermissionPermissionRestrictionsInner
  * @export
  */
-export type PermissionPermissionRestrictionsInner = BulkImportPermissionRestrictionModel | CantonPermissionRestrictionModel | CountryPermissionRestrictionModel | SboidPermissionRestrictionModel;
+export type PermissionPermissionRestrictionsInner = BulkImportPermissionRestrictionModel | CantonPermissionRestrictionModel | CountryPermissionRestrictionModel | InfoPlusTerminationVotePermissionRestrictionModel | NovaTerminationVotePermissionRestrictionModel | SboidPermissionRestrictionModel;
 
