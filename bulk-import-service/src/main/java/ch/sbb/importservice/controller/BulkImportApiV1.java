@@ -1,10 +1,10 @@
 package ch.sbb.importservice.controller;
 
+import ch.sbb.atlas.imports.bulk.BulkImportRequest;
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.model.BulkImportResult;
-import ch.sbb.importservice.model.BulkImportRequest;
-import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.importservice.model.ImportType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,7 +35,7 @@ public interface BulkImportApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "202"),
   })
-  @PreAuthorize("@bulkImportUserAdministrationService.hasPermissionsForBulkImport(#bulkImportRequest.applicationType)")
+  @PreAuthorize("@bulkImportUserAdministrationService.hasPermissionsForBulkImport(#bulkImportRequest)")
   void startBulkImport(
       @Parameter(description = "Bulk Import Request")
       @RequestPart("bulkImportRequest") @Valid BulkImportRequest bulkImportRequest,

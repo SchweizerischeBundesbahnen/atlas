@@ -5,11 +5,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.exception.LogFileNotFoundException;
 import ch.sbb.importservice.model.BulkImportResult;
-import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.service.bulk.BulkImportFileValidationService;
 import ch.sbb.importservice.service.bulk.BulkImportService;
 import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
