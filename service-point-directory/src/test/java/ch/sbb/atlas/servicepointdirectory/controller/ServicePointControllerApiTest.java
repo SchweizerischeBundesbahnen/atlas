@@ -1539,7 +1539,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     //then
     List<ServicePointVersion> allVersions = repository.findBySloidOrderByValidFrom(servicePointVersion.getSloid());
     assertThat(allVersions).hasSize(1);
-    assertThat(allVersions.getFirst().getBusinessOrganisation()).isNotEqualTo(ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID);
+    assertThat(allVersions.getFirst().getBusinessOrganisation()).isEqualTo(ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID);
   }
 
 }
