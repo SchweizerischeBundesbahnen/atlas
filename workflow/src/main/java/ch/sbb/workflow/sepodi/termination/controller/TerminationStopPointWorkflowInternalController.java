@@ -36,4 +36,12 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
     return TerminationStopPointWorkflowMapper.toModel(service.addDecisionInfoPlus(decisionModel, workflowId));
   }
 
+  @Override
+  public TerminationStopPointWorkflowModel decisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
+    if (decisionModel.getTerminationDecisionPerson() != TerminationDecisionPerson.NOVA) {
+      throw new TerminationDecisionPersonException(TerminationDecisionPerson.NOVA);
+    }
+    return TerminationStopPointWorkflowMapper.toModel(service.addDecisionNova(decisionModel, workflowId));
+
+  }
 }
