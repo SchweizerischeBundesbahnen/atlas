@@ -9,7 +9,7 @@
  */
 
 
-export type PermissionRestrictionType = 'BUSINESS_ORGANISATION' | 'CANTON' | 'COUNTRY' | 'BULK_IMPORT';
+export type PermissionRestrictionType = 'BUSINESS_ORGANISATION' | 'CANTON' | 'COUNTRY' | 'BULK_IMPORT' | 'INFO_PLUS_TERMINATION_VOTE' | 'NOVA_TERMINATION_VOTE';
 
 export const PermissionRestrictionType = {
 
@@ -19,6 +19,10 @@ export const PermissionRestrictionType = {
 
     Country: 'COUNTRY' as PermissionRestrictionType,
 
-    BulkImport: 'BULK_IMPORT' as PermissionRestrictionType
+    BulkImport: 'BULK_IMPORT' as PermissionRestrictionType,
+
+    InfoPlusTerminationVote: 'INFO_PLUS_TERMINATION_VOTE' as PermissionRestrictionType,
+
+    NovaTerminationVote: 'NOVA_TERMINATION_VOTE' as PermissionRestrictionType
 };
 
