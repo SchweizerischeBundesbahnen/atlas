@@ -2,6 +2,8 @@ package ch.sbb.importservice.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import org.junit.jupiter.api.Test;
 

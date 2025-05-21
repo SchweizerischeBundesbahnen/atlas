@@ -2,10 +2,10 @@ package ch.sbb.importservice.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.model.BulkImportConfig;
-import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.importservice.model.ImportType;
 import org.junit.jupiter.api.Test;
 
 class BulkImportNotImplementedExceptionTest {

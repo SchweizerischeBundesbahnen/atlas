@@ -2,6 +2,8 @@ package ch.sbb.importservice.model;
 
 import static ch.sbb.importservice.service.bulk.template.BulkImportTemplateGenerator.CSV_EXTENSION;
 
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import lombok.Builder;
 import lombok.Data;
