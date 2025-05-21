@@ -21,6 +21,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.TerminationAlreadyInProgress
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationDateException;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInWrongStatusException;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotOnLastVersionException;
+import ch.sbb.atlas.servicepointdirectory.helper.TerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.mapper.CreateServicePointMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointSwissWithGeoMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
@@ -175,7 +176,7 @@ public class ServicePointController implements ServicePointApiV1 {
       UpdateTerminationServicePointModel updateTerminationServicePointModel) {
 
     List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
-    ServicePointVersion servicePointVersion = validateTermination(sloid, id, servicePointVersions);
+    ServicePointVersion servicePointVersion = TerminationHelper.validateStopPointTermination(sloid, id, servicePointVersions);
 
     if (updateTerminationServicePointModel.getTerminationDate().isAfter(servicePointVersion.getValidTo())
         || updateTerminationServicePointModel.getTerminationDate().isEqual(servicePointVersion.getValidTo())) {
@@ -190,7 +191,7 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public ReadServicePointVersionModel stopServicePointTermination(String sloid, Long id) {
     List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
-    ServicePointVersion servicePointVersion = validateTermination(sloid, id, servicePointVersions);
+    ServicePointVersion servicePointVersion = TerminationHelper.validateStopPointTermination(sloid, id, servicePointVersions);
     UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
         .terminationInProgress(false)
         .build();
@@ -216,26 +217,6 @@ public class ServicePointController implements ServicePointApiV1 {
             swissWithGeoModels.add(ServicePointSwissWithGeoMapper.toModel(sloid, swissWithGeoTransfers)));
 
     return swissWithGeoModels;
-  }
-
-  private static ServicePointVersion validateTermination(String sloid, Long id,
-      List<ServicePointVersion> servicePointVersions) {
-    if (servicePointVersions.isEmpty()) {
-      throw new SloidNotFoundException(sloid);
-    }
-    ServicePointVersion servicePointVersion = servicePointVersions.stream().filter(sp -> sp.getId().equals(id)).findFirst()
-        .orElseThrow(() -> new IdNotFoundException(id));
-    if (!servicePointVersions.getLast().getId().equals(id)) {
-      throw new TerminationNotOnLastVersionException();
-    }
-    if (servicePointVersion.getStatus() != Status.VALIDATED) {
-      throw new TerminationNotAllowedWhenVersionInWrongStatusException(servicePointVersion.getNumber(),
-          servicePointVersion.getStatus());
-    }
-    servicePointVersions.stream().filter(ServicePointVersion::isTerminationInProgress).findAny().ifPresent(sp -> {
-      throw new TerminationAlreadyInProgressException();
-    });
-    return servicePointVersion;
   }
 
   @Async
