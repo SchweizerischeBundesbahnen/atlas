@@ -323,6 +323,8 @@
       "DELETED": "Soppresso"
     },
     "ROLE": "Rotolo",
+    "NOVA": "Autorizzato per le riconciliazioni della programmazione NOVA",
+    "INFO_PLUS": "Autorizzato per le riconciliazioni della pianificazione Info Plus",
     "ADD_BUSINESS_ORGANISATION": "Aggiungere l'organizzazione aziendale",
     "DELETE_BUSINESS_ORGANISATION": "Rimuovere l'organizzazione aziendale",
     "SELECTED_USER_HAS_ALREADY_PERMISSIONS": "L'utente selezionato è già memorizzato",
