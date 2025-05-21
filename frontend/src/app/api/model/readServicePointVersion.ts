@@ -101,32 +101,36 @@ export interface ReadServicePointVersion {
      * Indicates if this a operatingPoint including Timetables.
      */
     operatingPointWithTimetable?: boolean;
-    servicePointGeolocation?: ServicePointGeolocation;
     /**
-     * ServicePoint has a Geolocation
+     * Indicates if a StopPoint is in a termination hearing. Only for internal development usage!
      */
-    hasGeolocation?: boolean;
+    terminationInProgress?: boolean;
+    servicePointGeolocation?: ServicePointGeolocation;
     country: Country;
     /**
-     * ServicePoint is StopPoint
+     * ServicePoint is OperatingPointKilometer
      */
-    stopPoint?: boolean;
+    operatingPointKilometer?: boolean;
     /**
      * ServicePoint is FareStop
      */
     fareStop?: boolean;
     /**
-     * ServicePoint is BorderPoint
-     */
-    borderPoint?: boolean;
-    /**
      * ServicePoint is TrafficPoint
      */
     trafficPoint?: boolean;
     /**
-     * ServicePoint is OperatingPointKilometer
+     * ServicePoint is BorderPoint
      */
-    operatingPointKilometer?: boolean;
+    borderPoint?: boolean;
+    /**
+     * ServicePoint is StopPoint
+     */
+    stopPoint?: boolean;
+    /**
+     * ServicePoint has a Geolocation
+     */
+    hasGeolocation?: boolean;
 }
 export namespace ReadServicePointVersion {
 }
