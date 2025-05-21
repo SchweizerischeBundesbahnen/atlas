@@ -83,6 +83,12 @@ public class TerminationStopPointWorkflowService {
     return repository.save(terminationWorkflow);
   }
 
+  public TerminationStopPointWorkflow addDecisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
+    TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
+    //TODO add business logic
+    throw new TerminationStopPointWorkflowPreconditionStatusException(STARTED);
+  }
+
   private ReadServicePointVersionModel postStopServicePointTermination(String sloid, Long id) {
     return sePoDiAdminClient.postStopServicePointTermination(sloid, id);
   }

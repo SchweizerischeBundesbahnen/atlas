@@ -10,7 +10,7 @@ import { User } from '../../../../../api';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
-import { NgIf, NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { UserAdministrationReadOnlyDataComponent } from '../../../components/read-only-data/user-administration-read-only-data.component';
 import { UserAdministrationApplicationConfigComponent } from '../../../components/application-config/user-administration-application-config.component';
 import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
