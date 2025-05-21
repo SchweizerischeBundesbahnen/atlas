@@ -12,6 +12,7 @@ import { TrafficPointCreateCsvModel } from './trafficPointCreateCsvModel';
 
 
 export interface BulkImportUpdateContainerTrafficPointCreateCsvModel { 
+    bulkImportId?: number;
     lineNumber?: number;
     object?: TrafficPointCreateCsvModel;
     attributesToNull?: Array<string>;

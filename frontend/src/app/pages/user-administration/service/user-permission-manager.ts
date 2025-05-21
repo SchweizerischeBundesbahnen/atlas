@@ -134,6 +134,14 @@ export class UserPermissionManager {
             restriction.type === PermissionRestrictionType.Country ||
             restriction.type === PermissionRestrictionType.BulkImport
         );
+      } else if (permission.role === ApplicationRole.Reader) {
+        permission.permissionRestrictions =
+          permission.permissionRestrictions.filter(
+            (restriction) =>
+              restriction.type ===
+                PermissionRestrictionType.InfoPlusTerminationVote ||
+              restriction.type === PermissionRestrictionType.NovaTerminationVote
+          );
       } else if (permission.role !== ApplicationRole.Writer) {
         permission.permissionRestrictions = [];
       }
@@ -209,6 +217,33 @@ export class UserPermissionManager {
           ].permissionRestrictions.push({
             valueAsString: bulkImport.valueAsString,
             type: PermissionRestrictionType.BulkImport,
+          });
+        });
+      permission.permissionRestrictions
+        .filter(
+          (restriction) =>
+            restriction.type === PermissionRestrictionType.NovaTerminationVote
+        )
+        .forEach((nova) => {
+          this.userPermission.permissions[
+            permissionIndex
+          ].permissionRestrictions.push({
+            valueAsString: nova.valueAsString,
+            type: PermissionRestrictionType.NovaTerminationVote,
+          });
+        });
+      permission.permissionRestrictions
+        .filter(
+          (restriction) =>
+            restriction.type ===
+            PermissionRestrictionType.InfoPlusTerminationVote
+        )
+        .forEach((infoPlus) => {
+          this.userPermission.permissions[
+            permissionIndex
+          ].permissionRestrictions.push({
+            valueAsString: infoPlus.valueAsString,
+            type: PermissionRestrictionType.InfoPlusTerminationVote,
           });
         });
     });
