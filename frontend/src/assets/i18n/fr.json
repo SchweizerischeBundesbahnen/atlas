@@ -323,8 +323,8 @@
       "DELETED": "Supprimé"
     },
     "ROLE": "Rouleau",
-    "NOVA": "Autorisé à effectuer des rapprochements d'ordonnancement NOVA",
-    "INFO_PLUS": "Autorisé à effectuer des rapprochements d'ordonnancement Info Plus",
+    "NOVA": "Terminaison Nova",
+    "INFO_PLUS": "Terminaison Info+",
     "ADD_BUSINESS_ORGANISATION": "Ajouter une organisation commerciale",
     "DELETE_BUSINESS_ORGANISATION": "Supprimer l'organisation commerciale",
     "SELECTED_USER_HAS_ALREADY_PERMISSIONS": "L'utilisateur sélectionné est déjà enregistré",

@@ -134,7 +134,10 @@ export class UserPermissionManager {
             restriction.type === PermissionRestrictionType.Country ||
             restriction.type === PermissionRestrictionType.BulkImport
         );
-      } else if (permission.role === ApplicationRole.Reader) {
+      } else if (
+        permission.role === ApplicationRole.Reader &&
+        permission.application === ApplicationType.Sepodi
+      ) {
         permission.permissionRestrictions =
           permission.permissionRestrictions.filter(
             (restriction) =>
