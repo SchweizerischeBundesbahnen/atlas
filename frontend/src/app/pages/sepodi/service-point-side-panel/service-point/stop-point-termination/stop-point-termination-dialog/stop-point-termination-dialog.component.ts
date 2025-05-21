@@ -1,18 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DetailHelperService } from '../../../../../core/detail/detail-helper.service';
+import { DetailHelperService } from '../../../../../../core/detail/detail-helper.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DialogCloseComponent } from '../../../../../core/components/dialog/close/dialog-close.component';
-import { DialogContentComponent } from '../../../../../core/components/dialog/content/dialog-content.component';
-import { DialogFooterComponent } from '../../../../../core/components/dialog/footer/dialog-footer.component';
+import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
+import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
+import { DialogFooterComponent } from '../../../../../../core/components/dialog/footer/dialog-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
-import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
+import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
+import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
 import { StopPointTerminationDialogData } from './stop-point-termination-dialog-data';
-import { WorkflowService } from '../../../../../api/service/workflow/workflow.service';
-import { TerminationStopPointAddWorkflow } from '../../../../../api/model/terminationStopPointAddWorkflow';
-import { NotificationService } from '../../../../../core/notification/notification.service';
-import { UserService } from '../../../../../core/auth/user/user.service';
+import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { TerminationStopPointAddWorkflow } from '../../../../../../api/model/terminationStopPointAddWorkflow';
+import { NotificationService } from '../../../../../../core/notification/notification.service';
+import { UserService } from '../../../../../../core/auth/user/user.service';
 import { catchError } from 'rxjs';
 
 @Component({
