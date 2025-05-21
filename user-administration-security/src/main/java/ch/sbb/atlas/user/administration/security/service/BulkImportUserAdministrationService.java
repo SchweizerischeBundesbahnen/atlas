@@ -1,11 +1,12 @@
 package ch.sbb.atlas.user.administration.security.service;
 
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.exception.BulkImportTerminateForbiddenException;
+import ch.sbb.atlas.imports.bulk.BulkImportRequest;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
-
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,13 @@ public class BulkImportUserAdministrationService extends BusinessOrganisationBas
     super(userPermissionHolder);
   }
 
-  public boolean hasPermissionsForBulkImport(ApplicationType applicationType) {
+  public boolean hasPermissionsForBulkImport(BulkImportRequest request) {
+    if (request.getImportType() == ImportType.TERMINATE && !isAtLeastSupervisor(request.getApplicationType())) {
+      throw new BulkImportTerminateForbiddenException();
+    }
+
     UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(
-        applicationType);
+        request.getApplicationType());
 
     boolean hasExplicitBulkImportPermission = false;
     Optional<UserAdministrationPermissionRestrictionModel> bulkImportPermission = userPermissionsForApplication.getRestrictions()
@@ -31,7 +36,7 @@ public class BulkImportUserAdministrationService extends BusinessOrganisationBas
       hasExplicitBulkImportPermission = Boolean.parseBoolean(bulkImportPermission.get().getValue());
     }
 
-    boolean hasPermissionsForBulkImport = hasExplicitBulkImportPermission || isAtLeastSupervisor(applicationType);
+    boolean hasPermissionsForBulkImport = hasExplicitBulkImportPermission || isAtLeastSupervisor(request.getApplicationType());
     log.debug("User {} hasPermissionsForBulkImport={}", getCurrentUserSbbUid(), hasPermissionsForBulkImport);
     return hasPermissionsForBulkImport;
   }
