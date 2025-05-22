@@ -238,7 +238,7 @@ public class ServicePointService {
     servicePointDistributor.syncServicePoints();
   }
 
-  public List<ServicePointVersion> findFareStopsToCleanup(){
-   return servicePointVersionRepository.findFareStopsToCleanup();
+  public List<ServicePointVersion> findFareStopsToCleanup() {
+    return servicePointVersionRepository.findFareStopsToCleanup();
   }
 }
