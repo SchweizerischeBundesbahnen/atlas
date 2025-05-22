@@ -323,8 +323,8 @@
       "DELETED": "Soppresso"
     },
     "ROLE": "Rotolo",
-    "NOVA": "Nova Termination",
-    "INFO_PLUS": "Info+ Termination",
+    "NOVA": "Nova Terminazione",
+    "INFO_PLUS": "Info+ Terminazione",
     "ADD_BUSINESS_ORGANISATION": "Aggiungere l'organizzazione aziendale",
     "DELETE_BUSINESS_ORGANISATION": "Rimuovere l'organizzazione aziendale",
     "SELECTED_USER_HAS_ALREADY_PERMISSIONS": "L'utente selezionato è già memorizzato",
