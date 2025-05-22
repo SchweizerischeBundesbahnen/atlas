@@ -2,10 +2,10 @@ package ch.sbb.importservice.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.BaseValidatorTest;
-import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.importservice.model.ImportType;
 import jakarta.validation.ConstraintViolation;
 import java.util.Set;
 import org.junit.jupiter.api.Test;

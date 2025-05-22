@@ -17,6 +17,9 @@ import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
+import ch.sbb.atlas.imports.bulk.BulkImportRequest;
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.ImportFiles;
@@ -26,9 +29,6 @@ import ch.sbb.importservice.client.TrafficPointBulkImportClient;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.listener.BulkImportJobCompletionListener;
 import ch.sbb.importservice.model.BulkImportConfig;
-import ch.sbb.importservice.model.BulkImportRequest;
-import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import ch.sbb.importservice.service.mail.BulkImporterMailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,7 +68,7 @@ class BulkImportControllerIntegrationTest extends BaseControllerApiTest {
 
   @MockitoBean
   private BulkImportJobCompletionListener bulkImportJobCompletionListener;
-  
+
   @MockitoBean
   private BulkImporterMailService bulkImporterMailService;
 
