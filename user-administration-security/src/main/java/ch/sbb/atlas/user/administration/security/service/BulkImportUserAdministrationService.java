@@ -20,9 +20,7 @@ public class BulkImportUserAdministrationService extends BusinessOrganisationBas
   }
 
   public boolean hasPermissionsForBulkImport(BulkImportRequest request) {
-    if (request.getImportType() == ImportType.TERMINATE && !isAtLeastSupervisor(request.getApplicationType())) {
-      throw new BulkImportTerminateForbiddenException();
-    }
+    verifyIsAtLeastSupervisorForBulkImportTerminate(request);
 
     UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(
         request.getApplicationType());
@@ -41,4 +39,9 @@ public class BulkImportUserAdministrationService extends BusinessOrganisationBas
     return hasPermissionsForBulkImport;
   }
 
+  private void verifyIsAtLeastSupervisorForBulkImportTerminate(BulkImportRequest request) {
+    if (request.getImportType() == ImportType.TERMINATE && !isAtLeastSupervisor(request.getApplicationType())) {
+      throw new BulkImportTerminateForbiddenException();
+    }
+  }
 }
