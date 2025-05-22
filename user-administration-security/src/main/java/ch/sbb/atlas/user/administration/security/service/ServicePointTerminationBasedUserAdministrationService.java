@@ -21,7 +21,9 @@ public class ServicePointTerminationBasedUserAdministrationService extends BaseU
     UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(ApplicationType.SEPODI);
 
     return userPermissionsForApplication.getRestrictions().stream()
-        .anyMatch(r -> PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE.equals(r.getRestrictionType()));
+        .anyMatch(
+            r -> PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE.equals(r.getRestrictionType()) && Boolean.parseBoolean(
+                r.getValue()));
   }
 
   public boolean hasUserNovaTerminationVotePermission() {
@@ -30,7 +32,8 @@ public class ServicePointTerminationBasedUserAdministrationService extends BaseU
     UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(ApplicationType.SEPODI);
 
     return userPermissionsForApplication.getRestrictions().stream()
-        .anyMatch(r -> PermissionRestrictionType.NOVA_TERMINATION_VOTE.equals(r.getRestrictionType()));
+        .anyMatch(r -> PermissionRestrictionType.NOVA_TERMINATION_VOTE.equals(r.getRestrictionType()) && Boolean.parseBoolean(
+            r.getValue()));
   }
 
 }
