@@ -1,6 +1,8 @@
 package ch.sbb.importservice.model;
 
 import ch.sbb.atlas.imports.bulk.BulkImportLogEntry;
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;

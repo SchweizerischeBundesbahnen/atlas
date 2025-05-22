@@ -1,14 +1,14 @@
 package ch.sbb.importservice.controller;
 
+import ch.sbb.atlas.imports.bulk.BulkImportRequest;
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.exception.LogFileNotFoundException;
 import ch.sbb.importservice.model.BulkImportConfig;
-import ch.sbb.importservice.model.BulkImportRequest;
 import ch.sbb.importservice.model.BulkImportResult;
-import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.service.bulk.BulkImportFileValidationService;
 import ch.sbb.importservice.service.bulk.BulkImportService;
 import ch.sbb.importservice.service.bulk.log.BulkImportLogService;
