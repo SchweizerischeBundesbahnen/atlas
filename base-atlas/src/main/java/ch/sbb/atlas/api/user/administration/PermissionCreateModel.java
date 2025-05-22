@@ -86,7 +86,7 @@ public abstract class PermissionCreateModel {
       }
     }
 
-    return !(hasInfoPlus && hasNova);
+    return !(hasInfoPlus && hasNova) && permission.getApplication() == ApplicationType.SEPODI;
   }
 
 }
