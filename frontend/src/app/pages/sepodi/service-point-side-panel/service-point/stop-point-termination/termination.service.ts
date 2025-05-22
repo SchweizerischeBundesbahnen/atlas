@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
+import { environment } from '../../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,15 @@ export class TerminationService {
   }
 
   isStartingTermination(editedForm: FormGroup<ServicePointDetailFormGroup>) {
+    if (environment.terminationWorkflowEnabled) {
+      return this.checkStartingTermination(editedForm);
+    }
+    return false;
+  }
+
+  private checkStartingTermination(
+    editedForm: FormGroup<ServicePointDetailFormGroup>
+  ) {
     const isStopPoint = this.reducedInitialFromValues.stopPoint;
     const isValidated = this.reducedInitialFromValues.status === 'VALIDATED';
     return (
