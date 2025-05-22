@@ -1601,7 +1601,7 @@
       "ATTRIBUTE_NULLING_NOT_SUPPORTED": "L'attributo {{field}} non deve essere cancellato.",
       "LOGFILE_NOT_FOUND": "Non è stato possibile trovare il log desiderato per l'importazione.",
       "IMPORTER_MAIL_NOT_FOUND": "Il suo utente non ha un indirizzo e-mail.",
-      "TERMINATE_FORBIDDEN": "Non si dispone delle autorizzazioni necessarie per avviare la terminazione dell'importazione massiva."
+      "TERMINATE_FORBIDDEN": "Non si dispone delle autorizzazioni necessarie per avviare la terminazione dell'importazione di massa."
     }
   }
 }
