@@ -41,7 +41,7 @@ public class ServicePointBulkImportController extends BaseBulkImportControllerIn
 
   @Override
   @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+      @businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportTerminate(
       List<BulkImportUpdateContainer<ServicePointTerminateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,

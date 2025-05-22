@@ -2,11 +2,11 @@ package ch.sbb.importservice.service.bulk.template;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.CsvExportWriter;
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.exception.BulkImportNotImplementedException;
 import ch.sbb.importservice.model.BulkImportConfig;
-import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.importservice.model.ImportType;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.File;
 import java.util.HashMap;
