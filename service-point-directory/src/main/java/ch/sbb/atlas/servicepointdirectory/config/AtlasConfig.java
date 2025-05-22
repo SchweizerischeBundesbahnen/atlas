@@ -6,6 +6,7 @@ import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.servicepointdirectory.client.LocationClient;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.versioning.service.VersionableServiceImpl;
+import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,11 @@ public class AtlasConfig {
   @Bean
   public LocationService locationService(LocationClient locationClient) {
     return new LocationService(locationClient);
+  }
+
+  @Bean
+  public TerminationStopPointFeatureTogglingService terminationStopPointFeatureTogglingService() {
+    return new TerminationStopPointFeatureTogglingService();
   }
 
 }
