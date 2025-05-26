@@ -38,55 +38,53 @@ public abstract class PermissionCreateModel {
 
   @Schema(hidden = true)
   @JsonIgnore
-  @AssertTrue(message = "Restrictions must be empty unless role is WRITER on a non-BODI application, SUPERUSER on SEPODI, or "
-      + "READER with at most one of INFO_PLUS or NOVA restriction")
+  @AssertTrue(message = "Only one restriction is allowed, and its only for SEPODI.")
+  public boolean isNovaOrInfoPlusPermissionAllowed() {
+    return permissions.stream().allMatch(permission -> {
+
+      boolean hasInfoPlus = permission.getPermissionRestrictions().stream()
+          .anyMatch(r -> r.getType() == PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE
+              && Boolean.TRUE.equals(r.getValue()));
+
+      boolean hasNova = permission.getPermissionRestrictions().stream()
+          .anyMatch(r -> r.getType() == PermissionRestrictionType.NOVA_TERMINATION_VOTE
+              && Boolean.TRUE.equals(r.getValue()));
+
+      if (permission.getApplication() == ApplicationType.SEPODI) {
+        return !(hasInfoPlus && hasNova);
+      } else {
+        return !(hasInfoPlus || hasNova);
+      }
+    });
+  }
+
+  @Schema(hidden = true)
+  @JsonIgnore
+  @AssertTrue(message = "Restrictions must be empty unless WRITER on non-BODI, SUPER_USER on SEPODI, or READER with only "
+      + "NOVA/INFO_PLUS")
   public boolean isSboidsEmptyWhenNotWriterOrSuperUserOrBodi() {
-    for (PermissionModel permission : permissions) {
-      if (!isPermissionValid(permission)) {
-        return false;
+    return permissions.stream().allMatch(permission -> {
+      ApplicationRole role = permission.getRole();
+      ApplicationType application = permission.getApplication();
+
+      if (role == ApplicationRole.WRITER && application != ApplicationType.BODI) {
+        return true;
       }
-    }
-    return true;
-  }
 
-  private boolean isPermissionValid(PermissionModel permission) {
-    ApplicationRole role = permission.getRole();
-    ApplicationType application = permission.getApplication();
-
-    boolean hasRestrictions = !permission.getPermissionRestrictions().isEmpty();
-    boolean hasAtMostOneTerminationVoteRestriction = hasAtMostOneTerminationVoteRestriction(permission);
-
-    boolean writerIsValid = role == ApplicationRole.WRITER
-        && application != ApplicationType.BODI
-        && hasAtMostOneTerminationVoteRestriction;
-
-    boolean superUserIsValid = role == ApplicationRole.SUPER_USER
-        && application == ApplicationType.SEPODI
-        && hasAtMostOneTerminationVoteRestriction;
-
-    boolean readerIsValid = role == ApplicationRole.READER
-        && hasAtMostOneTerminationVoteRestriction;
-
-    return writerIsValid || superUserIsValid || readerIsValid || !hasRestrictions;
-  }
-
-  private boolean hasAtMostOneTerminationVoteRestriction(PermissionModel permission) {
-    boolean hasInfoPlus = false;
-    boolean hasNova = false;
-
-    for (PermissionRestrictionModel<?> restriction : permission.getPermissionRestrictions()) {
-      if (!Boolean.TRUE.equals(restriction.getValue())) {
-        continue;
+      if (role == ApplicationRole.SUPER_USER && application == ApplicationType.SEPODI) {
+        return true;
       }
-      if (restriction.getType() == PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE) {
-        hasInfoPlus = true;
-      }
-      if (restriction.getType() == PermissionRestrictionType.NOVA_TERMINATION_VOTE) {
-        hasNova = true;
-      }
-    }
 
-    return !(hasInfoPlus && hasNova) && permission.getApplication() == ApplicationType.SEPODI;
+      if (role == ApplicationRole.READER) {
+        return permission.getPermissionRestrictions().stream()
+            .allMatch(r ->
+                r.getType() == PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE
+                    || r.getType() == PermissionRestrictionType.NOVA_TERMINATION_VOTE
+            );
+      }
+
+      return permission.getPermissionRestrictions().isEmpty();
+    });
   }
 
 }

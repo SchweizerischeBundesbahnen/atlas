@@ -318,4 +318,18 @@ export class UserAdministrationApplicationConfigComponent
       },
     ]);
   }
+
+  onNovaToggle(value: boolean): void {
+    this.novaTerminationVotePermission = value;
+    if (value) {
+      this.infoPlusTerminationVotePermission = false;
+    }
+  }
+
+  onInfoPlusToggle(value: boolean): void {
+    this.infoPlusTerminationVotePermission = value;
+    if (value) {
+      this.novaTerminationVotePermission = false;
+    }
+  }
 }
