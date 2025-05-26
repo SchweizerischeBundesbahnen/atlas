@@ -31,9 +31,10 @@ public class StartTerminationStopPointWorkflowModel {
   @NotNull
   private String sloid;
 
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
-  @NotEmpty
   @Schema(description = "Applicant mail", example = "me@you.ch")
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
+  @NotEmpty
   private String applicantMail;
 
   @Schema(description = "Termination Date defined by Business Organisation managing the Stop Point")
@@ -41,7 +42,7 @@ public class StartTerminationStopPointWorkflowModel {
 
   @Schema(description = "Workflow comment")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String workflowComment;
 
 }

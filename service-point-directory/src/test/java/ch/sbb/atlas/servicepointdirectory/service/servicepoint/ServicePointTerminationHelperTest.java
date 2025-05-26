@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class ServicePointTerminationServiceTest {
+class ServicePointTerminationHelperTest {
 
   @Mock
   private BusinessOrganisationBasedUserAdministrationService userAdministrationService;
