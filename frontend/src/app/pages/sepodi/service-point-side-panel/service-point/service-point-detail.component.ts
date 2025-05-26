@@ -345,6 +345,9 @@ export class ServicePointDetailComponent
               relativeTo: this.route,
             })
             .then();
+        } else {
+          this.initServicePoint();
+          this.disableForm();
         }
       });
   }
