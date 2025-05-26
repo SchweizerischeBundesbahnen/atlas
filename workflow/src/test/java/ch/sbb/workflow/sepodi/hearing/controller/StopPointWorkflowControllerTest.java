@@ -527,6 +527,37 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldNotAddWorkflowWhenTerminationInProgress() throws Exception {
+    //given
+    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .organisation("BAV")
+        .mail(MAIL_ADDRESS).build();
+    long versionId = 123456L;
+    String sloid = "ch:1:sloid:1234";
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+        .sloid(sloid)
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .examinants(List.of(person))
+        .applicantMail("a@b.ch")
+        .versionId(versionId)
+        .build();
+    ReadServicePointVersionModel updateServicePointVersionModel = getUpdateServicePointVersionModel(Status.IN_REVIEW);
+    updateServicePointVersionModel.setTerminationInProgress(true);
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
+        .thenReturn(updateServicePointVersionModel);
+
+    //when && then
+    mvc.perform(post("/v1/stop-point/workflows")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(workflowModel))
+    ).andExpect(status().isConflict());
+  }
+
+  @Test
   void shouldThrowErrorWhenAddingWorkflowWithExaminantsWithTheSameEmailAddress() throws Exception {
     //when
     StopPointClientPersonModel person = StopPointClientPersonModel.builder()

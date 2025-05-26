@@ -31,6 +31,9 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { ServicePointFormComponent } from './service-point-form/service-point-form.component';
+import { TerminationService } from './stop-point-termination/termination.service';
+import moment from 'moment';
+import { StopPointTerminationDialogService } from './stop-point-termination/stop-point-termination-dialog/stop-point-termination-dialog.service';
 import SpyObj = jasmine.SpyObj;
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
@@ -39,6 +42,7 @@ const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
   'validateServicePoint',
   'revokeServicePoint',
 ]);
+
 const notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
   'success',
 ]);
@@ -84,6 +88,8 @@ describe('ServicePointDetailComponent', () => {
   const activatedRouteMock = { parent: { data: of({ servicePoint: BERN }) } };
 
   let validityService: ValidityService;
+  let terminationService: TerminationService;
+  let stopPointTerminationDialogService: StopPointTerminationDialogService;
 
   beforeEach(async () => {
     routerSpy = jasmine.createSpyObj(['navigate']);
@@ -96,6 +102,7 @@ describe('ServicePointDetailComponent', () => {
         provideHttpClientTesting(),
         provideMomentDateAdapter(),
         ValidityService,
+        TerminationService,
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: DialogService, useValue: dialogServiceSpy },
@@ -133,6 +140,10 @@ describe('ServicePointDetailComponent', () => {
     fixture = TestBed.createComponent(ServicePointDetailComponent);
     component = fixture.componentInstance;
     validityService = TestBed.inject(ValidityService);
+    terminationService = TestBed.inject(TerminationService);
+    stopPointTerminationDialogService = TestBed.inject(
+      StopPointTerminationDialogService
+    );
     fixture.detectChanges();
   });
 
@@ -420,6 +431,25 @@ describe('ServicePointDetailComponent', () => {
     component.save();
 
     expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
+  });
+
+  it('should start termination on save', () => {
+    //given
+    spyOn(validityService, 'initValidity').and.callThrough();
+    spyOn(terminationService, 'isStartingTermination').and.returnValue(true);
+    spyOn(stopPointTerminationDialogService, 'openDialog').and.returnValue(
+      of(true)
+    );
+
+    component.isLatestVersionSelected = true;
+
+    component.toggleEdit();
+    component.form?.controls.validTo.setValue(moment('2099-12-30'));
+    fixture.detectChanges();
+    //when
+    component.save();
+    //then
+    expect(stopPointTerminationDialogService.openDialog).toHaveBeenCalled();
   });
 
   it('should open add workflow dialog', () => {
