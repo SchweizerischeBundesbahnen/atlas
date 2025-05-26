@@ -346,8 +346,10 @@ export class ServicePointDetailComponent
             })
             .then();
         } else {
-          this.initServicePoint();
-          this.disableForm();
+          const notEditedForm = ServicePointFormGroupBuilder.buildFormGroup(
+            this.selectedVersion!
+          );
+          this.terminationService.initTermination(notEditedForm);
         }
       });
   }
