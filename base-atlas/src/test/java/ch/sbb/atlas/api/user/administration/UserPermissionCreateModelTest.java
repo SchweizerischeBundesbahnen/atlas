@@ -121,7 +121,7 @@ class UserPermissionCreateModelTest {
                     new NovaTerminationVotePermissionRestrictionModel(true)
                 ))
                 .role(ApplicationRole.READER)
-                .application(ApplicationType.TTFN)
+                .application(ApplicationType.SEPODI)
                 .build()
         ))
         .build();
@@ -134,7 +134,7 @@ class UserPermissionCreateModelTest {
   }
 
   @Test
-  void shouldAllowOnlyInfoPlusRestrictionForReader() {
+  void shouldAllowOnlyInfoPlusRestrictionForReaderSepodi() {
     // Given
     UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
         .sbbUserId("u123456")
@@ -144,7 +144,7 @@ class UserPermissionCreateModelTest {
                     new InfoPlusTerminationVotePermissionRestrictionModel(true)
                 ))
                 .role(ApplicationRole.READER)
-                .application(ApplicationType.TTFN)
+                .application(ApplicationType.SEPODI)
                 .build()
         ))
         .build();
