@@ -40,6 +40,7 @@
           ></app-atlas-label-field>
           <atlas-slide-toggle
             [(toggle)]="novaTerminationVotePermission"
+            (toggleChange)="onNovaToggle($event)"
             [disabled]="readOnly"
           ></atlas-slide-toggle>
         </div>
@@ -49,6 +50,7 @@
           ></app-atlas-label-field>
           <atlas-slide-toggle
             [(toggle)]="infoPlusTerminationVotePermission"
+            (toggleChange)="onInfoPlusToggle($event)"
             [disabled]="readOnly"
           ></atlas-slide-toggle>
         </div>
