@@ -3,14 +3,14 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
-import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInReviewException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInWrongStatusException;
 import ch.sbb.atlas.servicepointdirectory.helper.TerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
@@ -74,7 +74,7 @@ public class ServicePointService {
     boolean hasVersionInReview = servicePointVersions.stream()
         .anyMatch(servicePointVersion -> servicePointVersion.getStatus() == Status.IN_REVIEW);
     if (hasVersionInReview) {
-      throw new TerminationNotAllowedWhenVersionInReviewException(servicePointNumber, Status.IN_REVIEW);
+      throw new TerminationNotAllowedWhenVersionInWrongStatusException(servicePointNumber, Status.IN_REVIEW);
     }
     servicePointVersions.forEach(servicePointVersion -> servicePointVersion.setStatus(Status.REVOKED));
     return servicePointVersions;
@@ -223,8 +223,9 @@ public class ServicePointService {
   public ServicePointVersion updateStopPointTerminationStatus(ServicePointVersion servicePointVersion,
       List<ServicePointVersion> servicePointVersions, UpdateTerminationServicePointModel updateTerminationServicePointModel) {
     ServicePointHelper.validateIsStopPointLocatedInSwitzerland(servicePointVersion);
-    servicePointVersion.setTerminationInProgress(updateTerminationServicePointModel.isTerminationInProgress());
-    servicePointVersionRepository.save(servicePointVersion);
+    servicePointVersions.forEach(
+        spv -> spv.setTerminationInProgress(updateTerminationServicePointModel.isTerminationInProgress()));
+    servicePointVersionRepository.saveAll(servicePointVersions);
     return servicePointVersion;
   }
 
@@ -237,7 +238,7 @@ public class ServicePointService {
     servicePointDistributor.syncServicePoints();
   }
 
-  public List<ServicePointVersion> findFareStopsToCleanup(){
-   return servicePointVersionRepository.findFareStopsToCleanup();
+  public List<ServicePointVersion> findFareStopsToCleanup() {
+    return servicePointVersionRepository.findFareStopsToCleanup();
   }
 }

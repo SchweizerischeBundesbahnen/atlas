@@ -636,6 +636,14 @@
     "UPDATE_SUCCESS_MSG": "Il collegamento desiderato è stato aggiornato con successo.",
     "DELETE_SUCCESS_MSG": "L'eliminazione del collegamento selezionato è avvenuta con successo."
   },
+  "TERMINATION_WORKFLOW": {
+    "SEPODI_INFO": "In caso di domande sulla presente richiesta di terminazione si prega di contattare atlas@sbb.ch",
+    "SEPODI_TERMINATION_IN_PROGRESS_INFO": "Terminazione richiesta",
+    "DIALOG": {
+      "START_TERMINATION_TITLE": "Attenzione: cliccando su Salva, si avvierà un'audizione per terminare la fermata",
+      "COMMENT": "Osservazioni"
+    }
+  },
   "WORKFLOW": {
     "TITLE": "Audizione",
     "BUTTON": {
