@@ -36,6 +36,7 @@ subprojects {
             properties {
                 property("sonar.projectKey", "ch.sbb.atlas:atlas")
                 property("sonar.projectVersion", project.version)
+                property("sonar.findbugs.allowuncompiledcode","true")
                 property(
                     "sonar.exclusions",
                     "**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/*.kts"
