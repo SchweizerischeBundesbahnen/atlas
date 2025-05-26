@@ -28,16 +28,20 @@ export class ValidityService {
   }
 
   confirmValidityDialog() {
-    if (
-      this.validity.formValidTo!.isSame(this.validity.initValidTo) &&
-      this.validity.formValidFrom!.isSame(this.validity.initValidFrom)
-    ) {
+    if (this.isValidityNotChanged()) {
       return this.dialogService.confirm({
         title: 'DIALOG.CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE',
         message: 'DIALOG.CONFIRM_VALIDITY_HAS_NOT_CHANGED',
       });
     }
     return of(true);
+  }
+
+  isValidityNotChanged() {
+    return (
+      this.validity.formValidTo!.isSame(this.validity.initValidTo) &&
+      this.validity.formValidFrom!.isSame(this.validity.initValidFrom)
+    );
   }
 
   validate() {

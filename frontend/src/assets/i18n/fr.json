@@ -636,6 +636,14 @@
     "UPDATE_SUCCESS_MSG": "Le lien souhaité a été mis à jour avec succès.",
     "DELETE_SUCCESS_MSG": "La suppression du raccourci sélectionné a réussi."
   },
+  "TERMINATION_WORKFLOW": {
+    "SEPODI_INFO": "Si vous avez des questions concernant cette demande d'annulation, veuillez contacter atlas@sbb.ch",
+    "SEPODI_TERMINATION_IN_PROGRESS_INFO": "Ordonnancement demandé",
+    "DIALOG": {
+      "START_TERMINATION_TITLE": "Attention : Si vous cliquez sur Enregistrer, vous démarrez une audience pour planifier l'arrêt",
+      "COMMENT": "Remarques"
+    }
+  },
   "WORKFLOW": {
     "TITLE": "Audition",
     "BUTTON": {

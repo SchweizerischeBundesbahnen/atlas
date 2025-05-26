@@ -30,9 +30,10 @@ public class TerminationStopPointWorkflowModel {
   @NotNull
   private Long versionId;
 
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
-  @NotEmpty
   @Schema(description = "Applicant mail", example = "me@you.ch")
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
+  @NotEmpty
   private String applicantMail;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)

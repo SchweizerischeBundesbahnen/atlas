@@ -52,6 +52,9 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PrmRecordingObligationComponent } from '../../../../core/prm-recording-obligation/prm-recording-obligation.component';
+import { StopPointTerminationDialogService } from './stop-point-termination/stop-point-termination-dialog/stop-point-termination-dialog.service';
+import { StopPointTerminationInfoComponent } from './stop-point-termination/stop-point-termination-info/stop-point-termination-info.component';
+import { TerminationService } from './stop-point-termination/termination.service';
 
 @Component({
   selector: 'app-service-point',
@@ -73,6 +76,7 @@ import { PrmRecordingObligationComponent } from '../../../../core/prm-recording-
     AsyncPipe,
     TranslatePipe,
     PrmRecordingObligationComponent,
+    StopPointTerminationInfoComponent,
   ],
 })
 export class ServicePointDetailComponent
@@ -88,6 +92,7 @@ export class ServicePointDetailComponent
   showVersionSwitch = false;
   selectedVersionIndex!: number;
   form?: FormGroup<ServicePointDetailFormGroup>;
+
   hasAbbreviation = false;
   isAbbreviationAllowed = false;
 
@@ -106,6 +111,16 @@ export class ServicePointDetailComponent
     this._showRevokeButton = show;
   }
 
+  private _terminationInProgress = false;
+
+  get isTerminationInProgress(): boolean {
+    return this._terminationInProgress;
+  }
+
+  set terminationInProgress(terminationInProgress: boolean) {
+    this._terminationInProgress = terminationInProgress;
+  }
+
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
@@ -120,6 +135,8 @@ export class ServicePointDetailComponent
     private permissionService: PermissionService,
     private validityService: ValidityService,
     private addStopPointWorkflowDialogService: AddStopPointWorkflowDialogService,
+    private terminationDialogService: StopPointTerminationDialogService,
+    private terminationService: TerminationService,
     protected activatedRoute: ActivatedRoute
   ) {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
@@ -197,6 +214,7 @@ export class ServicePointDetailComponent
   }
 
   public initSelectedVersion(version: ReadServicePointVersion) {
+    this.terminationInProgress = version.terminationInProgress!;
     this.initShowRevokeButton(version);
     this.form = ServicePointFormGroupBuilder.buildFormGroup(version);
     this.disableForm();
@@ -206,6 +224,7 @@ export class ServicePointDetailComponent
     this.isSelectedVersionHighDate(this.servicePointVersions, version);
     this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
+    this.terminationService.initTermination(this.form);
   }
 
   initShowRevokeButton(version: ReadServicePointVersion) {
@@ -305,11 +324,41 @@ export class ServicePointDetailComponent
     ValidationService.validateForm(this.form!);
     if (this.form?.valid) {
       this.validityService.updateValidity(this.form);
-      this.validityService.validateAndDisableCustom(
-        () => this.updateVersion(),
-        () => this.disableForm()
-      );
+      if (this.isStartingTermination(this.form)) {
+        this.startTermination();
+      } else {
+        this.validityService.validateAndDisableCustom(
+          () => this.updateVersion(),
+          () => this.disableForm()
+        );
+      }
     }
+  }
+
+  private startTermination() {
+    this.terminationDialogService
+      .openDialog(this.selectedVersion!, this.form!.controls.validTo.value!)
+      .subscribe((saved) => {
+        if (saved) {
+          this.router
+            .navigate(['..', this.selectedVersion!.number.number], {
+              relativeTo: this.route,
+            })
+            .then();
+        } else {
+          const notEditedForm = ServicePointFormGroupBuilder.buildFormGroup(
+            this.selectedVersion!
+          );
+          this.terminationService.initTermination(notEditedForm);
+        }
+      });
+  }
+
+  private isStartingTermination(form: FormGroup<ServicePointDetailFormGroup>) {
+    return (
+      this.isLatestVersionSelected &&
+      this.terminationService.isStartingTermination(form)
+    );
   }
 
   update(id: number, servicePointVersion: CreateServicePointVersion) {

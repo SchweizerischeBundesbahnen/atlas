@@ -1,0 +1,33 @@
+<atlas-dialog-close (clicked)="cancel()"></atlas-dialog-close>
+
+<atlas-dialog-content>
+  <div class="mb-2">
+    <span class="font-bold-4xl">{{ data.title | translate }}</span>
+  </div>
+  <div class="d-flex flex-column col-12 mb-5">
+    <form-comment
+      [formGroup]="form"
+      [required]="false"
+      label="TERMINATION_WORKFLOW.DIALOG.COMMENT"
+      controlName="workflowComment"
+      maxChars="1500"
+    ></form-comment>
+  </div>
+</atlas-dialog-content>
+
+<atlas-dialog-footer>
+  <button
+    (click)="cancel()"
+    class="atlas-primary-btn me-3"
+    data-cy="dialog-cancel-button"
+  >
+    {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
+  </button>
+  <button
+    (click)="startTermination()"
+    class="atlas-primary-btn"
+    data-cy="dialog-start-termination-button"
+  >
+    {{ data.confirmText ?? 'DIALOG.OK' | translate }}
+  </button>
+</atlas-dialog-footer>

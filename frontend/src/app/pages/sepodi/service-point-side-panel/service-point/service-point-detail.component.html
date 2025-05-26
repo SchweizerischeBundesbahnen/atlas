@@ -24,6 +24,11 @@
             ></prm-recording-obligation>
           </div>
         }
+        @if (isTerminationInProgress) {
+          <div class="align-self-center">
+            <app-stop-point-termination-info />
+          </div>
+        }
       </div>
     </div>
   </div>
@@ -110,7 +115,9 @@
   >
   </atlas-button>
   <atlas-button
-    *ngIf="(isFormEnabled$ | async) === false && form"
+    *ngIf="
+      (isFormEnabled$ | async) === false && form && !isTerminationInProgress
+    "
     (buttonClicked)="toggleEdit()"
     applicationType="SEPODI"
     [businessOrganisation]="form.controls.businessOrganisation.value!"
@@ -136,7 +143,8 @@
     *ngIf="
       (isFormEnabled$ | async) === false &&
       form &&
-      selectedVersion?.status === servicePointStatus.Draft
+      selectedVersion?.status === servicePointStatus.Draft &&
+      !isTerminationInProgress
     "
     (buttonClicked)="addWorkflow()"
     applicationType="SEPODI"
@@ -163,6 +171,7 @@
   >
   </atlas-button>
   <atlas-button
+    *ngIf="!isTerminationInProgress"
     (buttonClicked)="revoke()"
     [applicationType]="'SEPODI'"
     [hidden]="!showRevokeButton"
@@ -174,6 +183,7 @@
   >
   </atlas-button>
   <atlas-button
+    *ngIf="!isTerminationInProgress"
     (buttonClicked)="validate()"
     [applicationType]="'SEPODI'"
     [hidden]="selectedVersion?.status !== 'DRAFT'"
