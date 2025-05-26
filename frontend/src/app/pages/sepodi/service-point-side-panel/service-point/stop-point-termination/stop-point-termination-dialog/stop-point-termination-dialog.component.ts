@@ -14,6 +14,8 @@ import { TerminationStopPointAddWorkflow } from '../../../../../../api/model/ter
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { UserService } from '../../../../../../core/auth/user/user.service';
 import { catchError } from 'rxjs';
+import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
+import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
 
 @Component({
   selector: 'app-stop-point-termination-dialog',
@@ -39,16 +41,7 @@ export class StopPointTerminationDialogComponent implements OnInit {
   form!: FormGroup<StartTerminationStopPointAddWorkflowFormGroup>;
 
   ngOnInit(): void {
-    this.form = new FormGroup<StartTerminationStopPointAddWorkflowFormGroup>({
-      versionId: new FormControl(undefined, [Validators.required]),
-      sloid: new FormControl('', [Validators.required]),
-      applicantMail: new FormControl('', [Validators.required]),
-      workflowComment: new FormControl('', [
-        Validators.maxLength(1500),
-        AtlasCharsetsValidator.iso88591,
-      ]),
-      boTerminationDate: new FormControl(undefined, [Validators.required]),
-    });
+    this.initForm();
   }
 
   startTermination() {
@@ -89,6 +82,20 @@ export class StopPointTerminationDialogComponent implements OnInit {
           this.dialogRef.close(false);
         }
       });
+  }
+
+  private initForm() {
+    this.form = new FormGroup<StartTerminationStopPointAddWorkflowFormGroup>({
+      versionId: new FormControl(undefined, [Validators.required]),
+      sloid: new FormControl('', [Validators.required]),
+      applicantMail: new FormControl('', [Validators.required]),
+      workflowComment: new FormControl('', [
+        AtlasFieldLengthValidator.comments,
+        AtlasCharsetsValidator.iso88591,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
+      boTerminationDate: new FormControl(undefined, [Validators.required]),
+    });
   }
 }
 

@@ -436,9 +436,7 @@ describe('ServicePointDetailComponent', () => {
   it('should start termination on save', () => {
     //given
     spyOn(validityService, 'initValidity').and.callThrough();
-    spyOn(terminationService, 'isStartingTermination').and.returnValue(
-      of(true)
-    );
+    spyOn(terminationService, 'isStartingTermination').and.returnValue(true);
     spyOn(stopPointTerminationDialogService, 'openDialog').and.returnValue(
       of(true)
     );
