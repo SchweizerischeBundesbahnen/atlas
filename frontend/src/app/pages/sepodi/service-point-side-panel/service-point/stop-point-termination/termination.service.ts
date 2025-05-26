@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
 import { environment } from '../../../../../../environments/environment';
+import { ReadServicePointVersion } from '../../../../../api';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TerminationService {
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  private reducedInitialFromValues: any;
+  private reducedInitialFromValues!: Partial<ReadServicePointVersion>;
 
   constructor() {}
 
@@ -40,32 +41,41 @@ export class TerminationService {
   ) {
     const reduceEditedFormToValues = this.reduceFormGroupToValues(editedForm);
     if (
-      reduceEditedFormToValues.validTo.isBefore(
+      moment(reduceEditedFormToValues.validTo).isBefore(
         this.reducedInitialFromValues.validTo
       )
     ) {
       //remove validTo property to compare all form values
-      delete reduceEditedFormToValues['validTo'];
-      delete this.reducedInitialFromValues['validTo'];
-      return (
-        JSON.stringify(Object.entries(reduceEditedFormToValues).sort()) ===
-        JSON.stringify(Object.entries(this.reducedInitialFromValues).sort())
+      this.deleteValidToProperty(reduceEditedFormToValues);
+      return this.areValuesEquals(
+        this.reducedInitialFromValues,
+        reduceEditedFormToValues
       );
     }
     return false;
   }
 
+  private areValuesEquals(
+    reduceEditedFormToValues: Partial<ReadServicePointVersion>,
+    reducedInitialFromValues: Partial<ReadServicePointVersion>
+  ) {
+    return (
+      JSON.stringify(Object.entries(reduceEditedFormToValues).sort()) ===
+      JSON.stringify(Object.entries(reducedInitialFromValues).sort())
+    );
+  }
+
+  private deleteValidToProperty(
+    reduceEditedFormToValues: Partial<ReadServicePointVersion>
+  ) {
+    const validToProperty = 'validTo';
+    delete reduceEditedFormToValues[validToProperty];
+    delete this.reducedInitialFromValues[validToProperty];
+  }
+
   private reduceFormGroupToValues(
     form: FormGroup<ServicePointDetailFormGroup>
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  ): any {
-    return Object.keys(form.controls).reduce(
-      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-      (property: any, controlName) => {
-        property[controlName] = form.get(controlName)?.value;
-        return property;
-      },
-      {}
-    );
+  ): Partial<ReadServicePointVersion> {
+    return form.getRawValue() as unknown as ReadServicePointVersion;
   }
 }
