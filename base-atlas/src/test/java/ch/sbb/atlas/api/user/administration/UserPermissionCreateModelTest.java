@@ -121,7 +121,7 @@ class UserPermissionCreateModelTest {
                     new NovaTerminationVotePermissionRestrictionModel(true)
                 ))
                 .role(ApplicationRole.READER)
-                .application(ApplicationType.TTFN)
+                .application(ApplicationType.SEPODI)
                 .build()
         ))
         .build();
@@ -134,7 +134,7 @@ class UserPermissionCreateModelTest {
   }
 
   @Test
-  void shouldAllowOnlyInfoPlusRestrictionForReader() {
+  void shouldAllowOnlyInfoPlusRestrictionForReaderSepodi() {
     // Given
     UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
         .sbbUserId("u123456")
@@ -144,7 +144,7 @@ class UserPermissionCreateModelTest {
                     new InfoPlusTerminationVotePermissionRestrictionModel(true)
                 ))
                 .role(ApplicationRole.READER)
-                .application(ApplicationType.TTFN)
+                .application(ApplicationType.SEPODI)
                 .build()
         ))
         .build();
@@ -168,7 +168,7 @@ class UserPermissionCreateModelTest {
                     new NovaTerminationVotePermissionRestrictionModel(true)
                 ))
                 .role(ApplicationRole.READER)
-                .application(ApplicationType.TTFN)
+                .application(ApplicationType.SEPODI)
                 .build()
         ))
         .build();
@@ -192,6 +192,29 @@ class UserPermissionCreateModelTest {
                     new NovaTerminationVotePermissionRestrictionModel(true)
                 ))
                 .role(ApplicationRole.WRITER)
+                .application(ApplicationType.SEPODI)
+                .build()
+        ))
+        .build();
+
+    // When
+    Set<ConstraintViolation<UserPermissionCreateModel>> constraintViolations = validator.validate(createModel);
+
+    // Then
+    assertThat(constraintViolations).hasSize(1);
+  }
+
+  @Test
+  void shouldNotAllowRestrictionForOtherApplicationExceptSepodi() {
+    // Given
+    UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
+        .sbbUserId("u123456")
+        .permissions(List.of(
+            PermissionModel.builder()
+                .permissionRestrictions(List.of(
+                    new InfoPlusTerminationVotePermissionRestrictionModel(true)
+                ))
+                .role(ApplicationRole.READER)
                 .application(ApplicationType.TTFN)
                 .build()
         ))
@@ -204,4 +227,26 @@ class UserPermissionCreateModelTest {
     assertThat(constraintViolations).hasSize(1);
   }
 
+  @Test
+  void shouldNotAllowRestrictionBulkImportForReader() {
+    // Given
+    UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
+        .sbbUserId("u123456")
+        .permissions(List.of(
+            PermissionModel.builder()
+                .permissionRestrictions(List.of(
+                    new BulkImportPermissionRestrictionModel(true)
+                ))
+                .role(ApplicationRole.READER)
+                .application(ApplicationType.SEPODI)
+                .build()
+        ))
+        .build();
+
+    // When
+    Set<ConstraintViolation<UserPermissionCreateModel>> constraintViolations = validator.validate(createModel);
+
+    // Then
+    assertThat(constraintViolations).hasSize(1);
+  }
 }
