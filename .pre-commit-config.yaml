@@ -5,4 +5,4 @@ repos:
       - id: ggshield
         name: checking for secrets
         language_version: python3
-        args: ["-c", "ggshield.yaml", "secret", "scan", "pre-commit"]
+        args: ["-c", "ggshield.yaml", "secret", "scan", "pre-commit", "--all-secrets"]
