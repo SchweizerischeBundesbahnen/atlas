@@ -323,8 +323,8 @@
       "DELETED": "Soppresso"
     },
     "ROLE": "Rotolo",
-    "NOVA": "Autorizzato per le riconciliazioni della programmazione NOVA",
-    "INFO_PLUS": "Autorizzato per le riconciliazioni della pianificazione Info Plus",
+    "NOVA": "Nova Terminazione",
+    "INFO_PLUS": "Info+ Terminazione",
     "ADD_BUSINESS_ORGANISATION": "Aggiungere l'organizzazione aziendale",
     "DELETE_BUSINESS_ORGANISATION": "Rimuovere l'organizzazione aziendale",
     "SELECTED_USER_HAS_ALREADY_PERMISSIONS": "L'utente selezionato è già memorizzato",
@@ -1609,7 +1609,7 @@
       "ATTRIBUTE_NULLING_NOT_SUPPORTED": "L'attributo {{field}} non deve essere cancellato.",
       "LOGFILE_NOT_FOUND": "Non è stato possibile trovare il log desiderato per l'importazione.",
       "IMPORTER_MAIL_NOT_FOUND": "Il suo utente non ha un indirizzo e-mail.",
-      "TERMINATE_FORBIDDEN": "Non si dispone delle autorizzazioni necessarie per avviare la terminazione dell'importazione di massa."
+      "TERMINATE_FORBIDDEN": "Lei non dispone dei diritti necessari per eseguire un’importazione di massa di terminazioni."
     }
   }
 }

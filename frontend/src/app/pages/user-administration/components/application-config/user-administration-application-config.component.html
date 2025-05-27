@@ -34,21 +34,23 @@
         </div>
       }
       @if (ApplicationType.Sepodi === application) {
-        <div class="bulk-import-toggle my-3 text-nowrap">
+        <div class="bulk-import-toggle my-3">
           <app-atlas-label-field
             fieldLabel="USER_ADMIN.NOVA"
           ></app-atlas-label-field>
           <atlas-slide-toggle
             [(toggle)]="novaTerminationVotePermission"
+            (toggleChange)="onNovaToggle($event)"
             [disabled]="readOnly"
           ></atlas-slide-toggle>
         </div>
-        <div class="bulk-import-toggle my-3 text-nowrap">
+        <div class="bulk-import-toggle my-3">
           <app-atlas-label-field
             fieldLabel="USER_ADMIN.INFO_PLUS"
           ></app-atlas-label-field>
           <atlas-slide-toggle
             [(toggle)]="infoPlusTerminationVotePermission"
+            (toggleChange)="onInfoPlusToggle($event)"
             [disabled]="readOnly"
           ></atlas-slide-toggle>
         </div>

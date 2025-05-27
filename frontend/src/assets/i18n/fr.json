@@ -323,8 +323,8 @@
       "DELETED": "Supprimé"
     },
     "ROLE": "Rouleau",
-    "NOVA": "Autorisé à effectuer des rapprochements d'ordonnancement NOVA",
-    "INFO_PLUS": "Autorisé à effectuer des rapprochements d'ordonnancement Info Plus",
+    "NOVA": "Terminaison Nova",
+    "INFO_PLUS": "Terminaison Info+",
     "ADD_BUSINESS_ORGANISATION": "Ajouter une organisation commerciale",
     "DELETE_BUSINESS_ORGANISATION": "Supprimer l'organisation commerciale",
     "SELECTED_USER_HAS_ALREADY_PERMISSIONS": "L'utilisateur sélectionné est déjà enregistré",
@@ -1609,7 +1609,7 @@
       "ATTRIBUTE_NULLING_NOT_SUPPORTED": "L'attribut {{field}} ne doit pas être supprimé.",
       "LOGFILE_NOT_FOUND": "Le log souhaité pour l'importation n'a pas pu être trouvé.",
       "IMPORTER_MAIL_NOT_FOUND": "Votre utilisateur n’a pas enregistré d’adresse e-mail.",
-      "TERMINATE_FORBIDDEN": "Tu n'as pas les autorisations nécessaires pour lancer Bulk Import Termination."
+      "TERMINATE_FORBIDDEN": "Vous n'avez pas les droits nécessaires pour effectuer une importation en masse de terminaisons."
     }
   }
 }
