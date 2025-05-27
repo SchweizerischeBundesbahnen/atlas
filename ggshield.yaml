@@ -1,0 +1,3 @@
+version: 2
+
+instance: https://gitguardian.sbb.ch # default: https://dashboard.gitguardian.com
