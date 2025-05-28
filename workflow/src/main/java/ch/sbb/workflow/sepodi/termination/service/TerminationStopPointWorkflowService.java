@@ -5,6 +5,7 @@ import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatu
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.workflow.exception.TerminationDateBeforeException;
 import ch.sbb.workflow.exception.TerminationStopPointWorkflowAlreadyInStatusException;
@@ -58,6 +59,11 @@ public class TerminationStopPointWorkflowService {
   @Redacted
   public TerminationStopPointWorkflow getTerminationWorkflow(Long id) {
     return repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  }
+
+  @Redacted
+  public TerminationStopPointWorkflow getTerminationWorkflowBySloid(String sloid) {
+    return repository.findTerminationStopPointWorkflowBySloid(sloid).orElseThrow(() -> new SloidNotFoundException(sloid));
   }
 
   public TerminationStopPointWorkflow addDecisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
