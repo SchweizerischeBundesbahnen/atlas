@@ -8,7 +8,15 @@
  * Do not edit the class manually.
  */
 
-export interface TerminateServicePoint {
-    validTo: Date;
+
+export interface TerminationInfo { 
+    /**
+     * Workflow id
+     */
+    readonly workflowId?: number;
+    /**
+     * Termination Date defined for the Stop Point
+     */
+    terminationDate?: Date;
 }
 
