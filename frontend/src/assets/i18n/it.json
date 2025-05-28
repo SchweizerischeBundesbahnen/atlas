@@ -638,7 +638,7 @@
   },
   "TERMINATION_WORKFLOW": {
     "SEPODI_INFO": "In caso di domande sulla presente richiesta di terminazione si prega di contattare atlas@sbb.ch",
-    "SEPODI_TERMINATION_IN_PROGRESS_INFO": "Terminazione richiesta",
+    "SEPODI_TERMINATION_IN_PROGRESS_INFO": "Terminazione richiesta per il {{terminationDate}}",
     "DIALOG": {
       "START_TERMINATION_TITLE": "Attenzione: cliccando su Salva, si avvierà un'audizione per terminare la fermata",
       "COMMENT": "Osservazioni"

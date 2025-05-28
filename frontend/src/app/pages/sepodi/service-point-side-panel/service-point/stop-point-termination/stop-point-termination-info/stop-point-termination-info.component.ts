@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
+import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { DateService } from '../../../../../../core/date/date.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stop-point-termination-info',
@@ -7,4 +10,48 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./stop-point-termination-info.component.scss'],
   templateUrl: './stop-point-termination-info.component.html',
 })
-export class StopPointTerminationInfoComponent {}
+export class StopPointTerminationInfoComponent implements OnInit {
+  private workflowService = inject(WorkflowService);
+  private router = inject(Router);
+  @Input() sloid!: string | undefined;
+
+  _terminationDate!: string;
+  _workflowId!: number;
+
+  get terminationDate() {
+    return this._terminationDate;
+  }
+
+  set terminationDate(terminationDate: string) {
+    this._terminationDate = terminationDate;
+  }
+
+  get workflowId() {
+    return this._workflowId;
+  }
+
+  set workflowId(value: number) {
+    this._workflowId = value;
+  }
+
+  ngOnInit(): void {
+    this.workflowService
+      .getTerminationInfoBySloid(this.sloid!)
+      .subscribe((terminationInfo) => {
+        this.terminationDate = DateService.getDateFormatted(
+          terminationInfo.terminationDate
+        );
+        if (terminationInfo.workflowId != null) {
+          this.workflowId = terminationInfo.workflowId;
+        }
+      });
+  }
+
+  navigate() {
+    this.router
+      .navigateByUrl(
+        `/service-point-directory/termination-workflows/${this.terminationDate}`
+      )
+      .then();
+  }
+}
