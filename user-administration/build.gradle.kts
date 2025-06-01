@@ -25,7 +25,7 @@ dependencies {
     implementation(project(":kafka"))
     implementation("org.springframework.kafka:spring-kafka")
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.15.Final")
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.17.Final")
 
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
