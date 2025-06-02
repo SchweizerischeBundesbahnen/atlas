@@ -79,7 +79,7 @@ public abstract class PermissionCreateModel {
         return true;
       }
 
-      if (role == ApplicationRole.READER) {
+      if (role == ApplicationRole.READER || role == ApplicationRole.SUPERVISOR) {
         return permission.getPermissionRestrictions().stream()
             .allMatch(r ->
                 r.getType() == PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE

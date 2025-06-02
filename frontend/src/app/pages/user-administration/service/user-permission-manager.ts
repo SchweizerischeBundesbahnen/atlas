@@ -133,10 +133,24 @@ export class UserPermissionManager {
         ].permissionRestrictions.filter(
           (restriction) =>
             restriction.type === PermissionRestrictionType.Country ||
-            restriction.type === PermissionRestrictionType.BulkImport
+            restriction.type === PermissionRestrictionType.BulkImport ||
+            restriction.type ===
+              PermissionRestrictionType.InfoPlusTerminationVote ||
+            restriction.type === PermissionRestrictionType.NovaTerminationVote
         );
       } else if (
         permission.role === ApplicationRole.Reader &&
+        permission.application === ApplicationType.Sepodi
+      ) {
+        permission.permissionRestrictions =
+          permission.permissionRestrictions.filter(
+            (restriction) =>
+              restriction.type ===
+                PermissionRestrictionType.InfoPlusTerminationVote ||
+              restriction.type === PermissionRestrictionType.NovaTerminationVote
+          );
+      } else if (
+        permission.role === ApplicationRole.Supervisor &&
         permission.application === ApplicationType.Sepodi
       ) {
         permission.permissionRestrictions =
@@ -247,7 +261,7 @@ export class UserPermissionManager {
     });
   }
 
-  private replaceRestrictions(
+  replaceRestrictions(
     restrictions: PermissionPermissionRestrictionsInner[],
     type: PermissionRestrictionType,
     valueAsString: string
