@@ -53,7 +53,11 @@ public abstract class PermissionCreateModel {
       if (permission.getApplication() == ApplicationType.SEPODI) {
         return !(hasInfoPlus && hasNova);
       } else {
-        return !(hasInfoPlus || hasNova);
+        return permission.getPermissionRestrictions().stream()
+            .noneMatch(r ->
+                r.getType() == PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE
+                    || r.getType() == PermissionRestrictionType.NOVA_TERMINATION_VOTE
+            );
       }
     });
   }
