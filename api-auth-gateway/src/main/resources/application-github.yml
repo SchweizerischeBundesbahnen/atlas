@@ -5,25 +5,27 @@ spring:
     name: api-auth-gateway
   cloud:
     gateway:
-      routes:
-        - id: api
-          uri: http://localhost:8888
-          predicates:
-            - Path=/**
-      default-filters:
-        - AssureAuthorizationFilter
-        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
-      httpclient:
-        connect-timeout: 2000
-        response-timeout: 20000
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowed-origins: http://localhost:4200,https://developer-int.sbb.ch
-            allowed-methods: GET,PUT,POST,DELETE
-            allowed-headers: "*"
-            exposed-headers:
-              - "Correlation-Id"
+      server:
+        webflux:
+          routes:
+            - id: api
+              uri: http://localhost:8888
+              predicates:
+                - Path=/**
+          default-filters:
+            - AssureAuthorizationFilter
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+          httpclient:
+            connect-timeout: 2000
+            response-timeout: 20000
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowed-origins: http://localhost:4200,https://developer-int.sbb.ch
+                allowed-methods: GET,PUT,POST,DELETE
+                allowed-headers: "*"
+                exposed-headers:
+                  - "Correlation-Id"
   # Client Credentials for Unauthenticated Requests
   security:
     oauth2:
