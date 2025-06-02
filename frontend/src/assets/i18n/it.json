@@ -150,7 +150,7 @@
     "CANCEL_EDITMODE": "All’uscita dalla modalità di modifica tutti i dati modificati andranno perduti.",
     "CONFIRM_BO_TRANSFER_TITLE": "Nota",
     "CONFIRM_BO_TRANSFER": "Modificando l'organizzazione aziendale, si perde l'autorizzazione a modificare l'oggetto a partire dalla data di mutazione.",
-    "CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE": "Attenzione: La validità non è stata modificata!",
+    "CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE": "Attenzione: La versione verrà sovrascritta. Non verrà creata una nuova versione!",
     "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Siete sicuri di voler apportare la modifica senza regolare la validità? Se la modifica non si applica all'intero periodo di questa versione, modificare la data \"valida da\" o \"valida fino al\".",
     "CANCEL_DECISION_TITLE": "Annullare la decisione?",
     "CANCEL_DECISION": "L'avanzamento attuale sarà perso e bisognerà iniziare l'intero processo."
@@ -433,7 +433,7 @@
       "NUMBER": "Numero di linea",
       "NUMBER_INFO": "Si tratta dell’informazione (cifre, lettere o combinazione di cifre e lettere) con cui la linea viene comunicata al viaggiatore. L’informazione viene comunicata nella sua interezza e non comprende informazioni diverse.",
       "DESCRIPTION": "Denominazione linea",
-      "DESCRIPTION_INFO": "Di norma, si tratta delle fermate iniziali e finali, nonché delle fermate più importanti servite dalla linea.",
+      "DESCRIPTION_INFO": "Conformemente alla concessione, se del caso. Di norma, si tratta delle fermate iniziali e finali, nonché delle fermate più importanti servite dalla linea.",
       "LONG_NAME_INFO": "Designazione della linea con designazione aggiuntiva in base al modello di linea",
       "SWISS_LINE_NUMBER_INFO": "L' attribuzione viene effettuata in conformità alla Direttiva 582 e può non essere finalizzata al momento dell'iscrizione iniziale.",
       "FONT_RGB": "Colore dei caratteri RGB",
