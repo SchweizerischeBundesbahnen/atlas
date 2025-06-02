@@ -433,7 +433,7 @@
       "NUMBER": "Numero di linea",
       "NUMBER_INFO": "Si tratta dell’informazione (cifre, lettere o combinazione di cifre e lettere) con cui la linea viene comunicata al viaggiatore. L’informazione viene comunicata nella sua interezza e non comprende informazioni diverse.",
       "DESCRIPTION": "Denominazione linea",
-      "DESCRIPTION_INFO": "Conformemente alla concessione, se del caso. Di norma, si tratta delle fermate iniziali e finali, nonché delle fermate più importanti servite dalla linea.",
+      "DESCRIPTION_INFO": "Conformemente alla concessione, se presente. Di norma, si tratta delle fermate iniziali e finali, nonché delle fermate più importanti servite dalla linea.",
       "LONG_NAME_INFO": "Designazione della linea con designazione aggiuntiva in base al modello di linea",
       "SWISS_LINE_NUMBER_INFO": "L' attribuzione viene effettuata in conformità alla Direttiva 582 e può non essere finalizzata al momento dell'iscrizione iniziale.",
       "FONT_RGB": "Colore dei caratteri RGB",
