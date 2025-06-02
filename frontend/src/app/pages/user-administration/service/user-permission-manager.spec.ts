@@ -2,6 +2,7 @@ import { UserPermissionManager } from './user-permission-manager';
 import { of } from 'rxjs';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { Country, PermissionRestrictionType, SwissCanton } from '../../../api';
+import { PermissionPermissionRestrictionsInner } from '../../../api/model/permissionPermissionRestrictionsInner';
 
 describe('UserPermissionManager', () => {
   let userPermissionManager: UserPermissionManager;
@@ -63,6 +64,14 @@ describe('UserPermissionManager', () => {
             valueAsString: Country.Canada,
             type: PermissionRestrictionType.Country,
           },
+          {
+            valueAsString: 'true',
+            type: PermissionRestrictionType.BulkImport,
+          },
+          {
+            valueAsString: 'true',
+            type: PermissionRestrictionType.NovaTerminationVote,
+          },
         ],
       },
       {
@@ -103,6 +112,14 @@ describe('UserPermissionManager', () => {
       {
         valueAsString: Country.Canada,
         type: PermissionRestrictionType.Country,
+      },
+      {
+        valueAsString: 'true',
+        type: PermissionRestrictionType.BulkImport,
+      },
+      {
+        valueAsString: 'true',
+        type: PermissionRestrictionType.NovaTerminationVote,
       },
     ]);
     expect(
@@ -162,4 +179,17 @@ describe('UserPermissionManager', () => {
       },
     ]);
   }));
+
+  it('test should add a new restriction when none exists', () => {
+    const restrictions: PermissionPermissionRestrictionsInner[] = [];
+    userPermissionManager.replaceRestrictions(
+      restrictions,
+      PermissionRestrictionType.Country,
+      'SWITZERLAND'
+    );
+
+    expect(restrictions.length).toBe(1);
+    expect(restrictions[0].type).toBe(PermissionRestrictionType.Country);
+    expect(restrictions[0].valueAsString).toBe('SWITZERLAND');
+  });
 });
