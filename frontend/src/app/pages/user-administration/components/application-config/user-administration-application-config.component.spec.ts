@@ -85,6 +85,11 @@ describe('UserAdministrationApplicationConfigComponent', () => {
       UserAdministrationApplicationConfigComponent
     );
     component = fixture.componentInstance;
+    component.application = ApplicationType.Sepodi;
+
+    component.novaTerminationVotePermission = false;
+    component.infoPlusTerminationVotePermission = false;
+
     fixture.detectChanges();
   });
 
@@ -122,5 +127,45 @@ describe('UserAdministrationApplicationConfigComponent', () => {
       userPermissionManagerSpy.removeSboidFromPermission
     ).toHaveBeenCalledOnceWith('LIDI', 0);
     expect(component.selectedIndex).toBe(-1);
+  });
+
+  it('test toggleNova', () => {
+    component.infoPlusTerminationVotePermission = true;
+    expect(component.infoPlusTerminationVotePermission).toBeTrue();
+    expect(component.novaTerminationVotePermission).toBeFalse();
+
+    component.onNovaToggle(true);
+
+    expect(component.novaTerminationVotePermission).toBeTrue();
+    expect(component.infoPlusTerminationVotePermission).toBeFalse();
+
+    const permission = userPermissionManagerSpy.getPermissionByApplication(
+      ApplicationType.Sepodi
+    );
+    const restriction = permission.permissionRestrictions.find(
+      (r) => r.type === PermissionRestrictionType.NovaTerminationVote
+    );
+    expect(restriction).toBeDefined();
+    expect(restriction?.valueAsString).toBe('true');
+  });
+
+  it('test toggleInfoPlus', () => {
+    component.novaTerminationVotePermission = true;
+    expect(component.novaTerminationVotePermission).toBeTrue();
+    expect(component.infoPlusTerminationVotePermission).toBeFalse();
+
+    component.onInfoPlusToggle(true);
+
+    expect(component.infoPlusTerminationVotePermission).toBeTrue();
+    expect(component.novaTerminationVotePermission).toBeFalse();
+
+    const permission = userPermissionManagerSpy.getPermissionByApplication(
+      ApplicationType.Sepodi
+    );
+    const restriction = permission.permissionRestrictions.find(
+      (r) => r.type === PermissionRestrictionType.InfoPlusTerminationVote
+    );
+    expect(restriction).toBeDefined();
+    expect(restriction?.valueAsString).toBe('true');
   });
 });
