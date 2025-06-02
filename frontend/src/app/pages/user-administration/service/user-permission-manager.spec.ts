@@ -132,6 +132,31 @@ describe('UserPermissionManager', () => {
     ]);
   }));
 
+  it('test clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser', fakeAsync(() => {
+    userPermissionManager.setPermissions([
+      {
+        application: 'SEPODI',
+        role: 'SUPERVISOR',
+        permissionRestrictions: [
+          {
+            valueAsString: 'true',
+            type: PermissionRestrictionType.InfoPlusTerminationVote,
+          },
+        ],
+      },
+    ]);
+    tick();
+    userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
+    expect(
+      userPermissionManager.userPermission.permissions[4].permissionRestrictions
+    ).toEqual([
+      {
+        valueAsString: 'true',
+        type: PermissionRestrictionType.InfoPlusTerminationVote,
+      },
+    ]);
+  }));
+
   it('test getSbbUserId, setSbbUserId', () => {
     userPermissionManager.setSbbUserId('u236171');
     expect(userPermissionManager.getSbbUserId()).toEqual('u236171');
