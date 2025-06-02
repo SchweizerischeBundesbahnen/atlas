@@ -171,7 +171,6 @@ export class UserPermissionManager {
       const permissionIndex =
         this.getPermissionIndexFromApplication(application);
       this.userPermission.permissions[permissionIndex].role = permission.role;
-      this.businessOrganisationsOfApplication[application] = [];
       this.boOfApplicationsSubject$.next(
         this.businessOrganisationsOfApplication
       );
