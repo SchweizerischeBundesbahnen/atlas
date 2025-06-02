@@ -36,6 +36,7 @@ describe('UserAdministrationApplicationConfigComponent', () => {
         'getAvailableApplicationRolesOfApplication',
         'getPermissionByApplication',
         'getRestrictionValues',
+        'setPermissions',
       ],
       {
         boOfApplicationsSubject$: new BehaviorSubject<{
@@ -167,5 +168,63 @@ describe('UserAdministrationApplicationConfigComponent', () => {
     );
     expect(restriction).toBeDefined();
     expect(restriction?.valueAsString).toBe('true');
+  });
+
+  it('test setSboidAndCountryPermissions', () => {
+    const returnedObj = {
+      role: ApplicationRole.Writer,
+      application: ApplicationType.Sepodi,
+      permissionRestrictions: [
+        { type: PermissionRestrictionType.Country, value: 'SWITZERLAND' },
+        {
+          type: PermissionRestrictionType.BusinessOrganisation,
+          value: 'ch:1:sboid:abc',
+        },
+      ],
+    };
+
+    userPermissionManagerSpy.getPermissionByApplication.and.returnValue(
+      returnedObj
+    );
+
+    const newBusinessRestrictions = [
+      {
+        type: PermissionRestrictionType.BusinessOrganisation,
+        value: 'ch:1:sboid:123',
+      },
+    ];
+    const newCountryRestrictions = [
+      { type: PermissionRestrictionType.Country, value: 'SWITZERLAND' },
+      { type: PermissionRestrictionType.Country, value: 'FRANCE' },
+    ];
+    const role = ApplicationRole.Writer;
+    const application = ApplicationType.Sepodi;
+
+    component.setSboidAndCountryPermissions(
+      newBusinessRestrictions,
+      newCountryRestrictions,
+      role,
+      application
+    );
+
+    expect(returnedObj.permissionRestrictions).toEqual([
+      {
+        type: PermissionRestrictionType.BusinessOrganisation,
+        value: 'ch:1:sboid:abc',
+      },
+    ]);
+
+    expect(userPermissionManagerSpy.setPermissions).toHaveBeenCalledWith([
+      {
+        application: application,
+        role: role,
+        permissionRestrictions: newBusinessRestrictions,
+      },
+      {
+        application: application,
+        role: role,
+        permissionRestrictions: newCountryRestrictions,
+      },
+    ]);
   });
 });
