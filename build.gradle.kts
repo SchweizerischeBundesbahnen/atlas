@@ -14,7 +14,7 @@ extra["openapiStarterCommonVersion"] = "2.8.8"
 extra["proj4jVersion"] = "1.4.0"
 extra["jtsVersion"] = "1.20.0"
 extra["springOpenapiUiVersion"] = "2.8.8"
-extra["springCloudVersion"] = "2024.0.1"
+extra["springCloudVersion"] = "2025.0.0"
 
 subprojects {
     sonar {
