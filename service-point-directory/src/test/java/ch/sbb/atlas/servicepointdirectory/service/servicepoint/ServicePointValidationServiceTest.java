@@ -15,6 +15,7 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.InvalidFareStopException;
 import ch.sbb.atlas.servicepointdirectory.exception.InvalidFreightServicePointException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationInProgressException;
 import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.time.LocalDate;
@@ -268,6 +269,15 @@ class ServicePointValidationServiceTest {
         .build();
     assertThrows(InvalidFareStopException.class,
         () -> servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenIsTerminationInProgress() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setTerminationInProgress(true);
+
+    assertThrows(TerminationInProgressException.class,
+        () -> servicePointValidationService.checkIfServicePointIsTerminationInProgress(bern));
   }
 
 }

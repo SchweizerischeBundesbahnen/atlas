@@ -106,6 +106,7 @@ public class ServicePointService {
 
   private List<ReadServicePointVersionModel> updateAndPublishInternal(ServicePointVersion servicePointVersionToUpdate,
       ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
+    servicePointValidationService.checkIfServicePointIsTerminationInProgress(servicePointVersionToUpdate);
     servicePointValidationService.checkIfServicePointStatusRevoked(servicePointVersionToUpdate);
     servicePointValidationService.checkIfServicePointStatusInReview(servicePointVersionToUpdate, editedVersion);
     servicePointValidationService.checkNotAffectingInReviewVersions(currentVersions, editedVersion);

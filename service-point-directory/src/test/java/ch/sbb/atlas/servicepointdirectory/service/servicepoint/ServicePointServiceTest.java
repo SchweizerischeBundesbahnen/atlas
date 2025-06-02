@@ -1,12 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,6 +15,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationInProgressException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -27,7 +26,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.hibernate.StaleObjectStateException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -56,7 +54,7 @@ class ServicePointServiceTest {
   private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
 
   @Mock
-   private ServicePointDistributor servicePointDistributor;
+  private ServicePointDistributor servicePointDistributor;
 
   @BeforeEach
   void initMocksAndService() {
@@ -149,30 +147,52 @@ class ServicePointServiceTest {
         .build();
     version2.setVersion(2);
     // when then
-    Assertions.assertThrows(StaleObjectStateException.class,
+    assertThrows(StaleObjectStateException.class,
         () -> servicePointService.updateServicePointVersion(version1, version2, Collections.emptyList()));
+  }
+
+  @Test
+  void shouldNotUpdateServicePointVersionWhenTerminationInProgress() {
+    //given
+    ServicePointVersion version1 = ServicePointVersion.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 6, 1))
+        .terminationInProgress(true)
+        .build();
+    ServicePointVersion version2 = ServicePointVersion.builder()
+        .validFrom(LocalDate.of(2000, 6, 2))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .terminationInProgress(true)
+        .build();
+    doCallRealMethod().when(servicePointValidationService).checkIfServicePointIsTerminationInProgress(version1);
+    // when then
+    assertThrows(TerminationInProgressException.class,
+        () -> servicePointService.updateAndPublish(version1, version2, Collections.emptyList()));
   }
 
   @Test
   void shouldUpdateServicePointDesignationOfficial() {
     ServicePointVersion version1 = ServicePointVersion.builder()
-            .id(1000L)
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 6, 1))
-            .designationOfficial("Alt")
-            .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
-            .version(0)
-            .build();
+        .id(1000L)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 6, 1))
+        .designationOfficial("Alt")
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
+        .version(0)
+        .build();
 
-    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel =
+        UpdateDesignationOfficialServicePointModel
             .builder()
             .designationOfficial("test")
             .build();
 
     when(servicePointVersionRepositoryMock.findById(1000L)).thenReturn(Optional.of(version1));
-    when(servicePointVersionRepositoryMock.findAllByNumberOrderByValidFrom(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))).thenReturn(List.of(version1));
+    when(servicePointVersionRepositoryMock.findAllByNumberOrderByValidFrom(
+        ServicePointNumber.ofNumberWithoutCheckDigit(1234567))).thenReturn(List.of(version1));
 
-    ReadServicePointVersionModel result = servicePointService.updateDesignationOfficial(1000L, updateDesignationOfficialServicePointModel);
+    ReadServicePointVersionModel result = servicePointService.updateDesignationOfficial(1000L,
+        updateDesignationOfficialServicePointModel);
 
     assertThat(result).isNotNull();
     assertThat(result.getDesignationOfficial()).isEqualTo("test");
@@ -181,33 +201,34 @@ class ServicePointServiceTest {
   @Test
   void shouldNotUpdateServicePointDesignationOfficial() {
     ServicePointVersion version1 = ServicePointVersion.builder()
-            .id(1000L)
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 6, 1))
-            .designationOfficial("Alt")
-            .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
-            .version(0)
-            .build();
+        .id(1000L)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 6, 1))
+        .designationOfficial("Alt")
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
+        .version(0)
+        .build();
 
     ServicePointVersion updated = ServicePointVersion.builder()
-            .id(1000L)
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(2000, 6, 1))
-            .designationOfficial("test")
-            .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
-            .version(0)
-            .build();
+        .id(1000L)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 6, 1))
+        .designationOfficial("test")
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
+        .version(0)
+        .build();
 
-    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel =
+        UpdateDesignationOfficialServicePointModel
             .builder()
             .designationOfficial("test")
             .build();
 
     when(servicePointVersionRepositoryMock.findById(1000L)).thenReturn(Optional.of(version1));
-    when(servicePointVersionRepositoryMock.findAllByNumberOrderByValidFrom(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))).thenReturn(List.of(version1), List.of(updated));
+    when(servicePointVersionRepositoryMock.findAllByNumberOrderByValidFrom(
+        ServicePointNumber.ofNumberWithoutCheckDigit(1234567))).thenReturn(List.of(version1), List.of(updated));
 
-
-    Assertions.assertThrows(IdNotFoundException.class,
-            () -> servicePointService.updateDesignationOfficial(1L, updateDesignationOfficialServicePointModel));
+    assertThrows(IdNotFoundException.class,
+        () -> servicePointService.updateDesignationOfficial(1L, updateDesignationOfficialServicePointModel));
   }
 }

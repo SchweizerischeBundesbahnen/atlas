@@ -36,6 +36,9 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
     return calculateTerminationDate(terminationWorkflow);
   }
 
+  /**
+   * Permission check on ServicePointVersion#updateStopPointTerminationStatus
+   */
   @Override
   public TerminationStopPointWorkflowModel startTerminationStopPointWorkflow(
       StartTerminationStopPointWorkflowModel workflowModel) {
