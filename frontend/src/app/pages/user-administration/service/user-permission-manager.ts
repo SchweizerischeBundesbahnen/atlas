@@ -9,6 +9,7 @@ import {
 } from '../../../api';
 import { BehaviorSubject, firstValueFrom, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { PermissionPermissionRestrictionsInner } from '../../../api/model/permissionPermissionRestrictionsInner';
 
 @Injectable()
 export class UserPermissionManager {
@@ -170,8 +171,6 @@ export class UserPermissionManager {
       const permissionIndex =
         this.getPermissionIndexFromApplication(application);
       this.userPermission.permissions[permissionIndex].role = permission.role;
-      this.userPermission.permissions[permissionIndex].permissionRestrictions =
-        [];
       this.businessOrganisationsOfApplication[application] = [];
       this.boOfApplicationsSubject$.next(
         this.businessOrganisationsOfApplication
@@ -196,6 +195,7 @@ export class UserPermissionManager {
             type: PermissionRestrictionType.Canton,
           });
         });
+
       permission.permissionRestrictions
         .filter(
           (restriction) =>
@@ -209,47 +209,56 @@ export class UserPermissionManager {
             type: PermissionRestrictionType.Country,
           });
         });
-      permission.permissionRestrictions
-        .filter(
-          (restriction) =>
-            restriction.type === PermissionRestrictionType.BulkImport
-        )
-        .forEach((bulkImport) => {
-          this.userPermission.permissions[
-            permissionIndex
-          ].permissionRestrictions.push({
-            valueAsString: bulkImport.valueAsString,
-            type: PermissionRestrictionType.BulkImport,
-          });
-        });
-      permission.permissionRestrictions
-        .filter(
-          (restriction) =>
-            restriction.type === PermissionRestrictionType.NovaTerminationVote
-        )
-        .forEach((nova) => {
-          this.userPermission.permissions[
-            permissionIndex
-          ].permissionRestrictions.push({
-            valueAsString: nova.valueAsString,
-            type: PermissionRestrictionType.NovaTerminationVote,
-          });
-        });
-      permission.permissionRestrictions
-        .filter(
-          (restriction) =>
-            restriction.type ===
-            PermissionRestrictionType.InfoPlusTerminationVote
-        )
-        .forEach((infoPlus) => {
-          this.userPermission.permissions[
-            permissionIndex
-          ].permissionRestrictions.push({
-            valueAsString: infoPlus.valueAsString,
-            type: PermissionRestrictionType.InfoPlusTerminationVote,
-          });
-        });
+
+      const bulkImport = permission.permissionRestrictions.find(
+        (r) => r.type === PermissionRestrictionType.BulkImport
+      );
+      if (bulkImport?.valueAsString != null) {
+        this.replaceRestrictions(
+          this.userPermission.permissions[permissionIndex]
+            .permissionRestrictions,
+          PermissionRestrictionType.BulkImport,
+          bulkImport.valueAsString
+        );
+      }
+
+      const nova = permission.permissionRestrictions.find(
+        (r) => r.type === PermissionRestrictionType.NovaTerminationVote
+      );
+      if (nova?.valueAsString != null) {
+        this.replaceRestrictions(
+          this.userPermission.permissions[permissionIndex]
+            .permissionRestrictions,
+          PermissionRestrictionType.NovaTerminationVote,
+          nova.valueAsString
+        );
+      }
+
+      const infoPlus = permission.permissionRestrictions.find(
+        (r) => r.type === PermissionRestrictionType.InfoPlusTerminationVote
+      );
+      if (infoPlus?.valueAsString != null) {
+        this.replaceRestrictions(
+          this.userPermission.permissions[permissionIndex]
+            .permissionRestrictions,
+          PermissionRestrictionType.InfoPlusTerminationVote,
+          infoPlus.valueAsString
+        );
+      }
     });
+  }
+
+  private replaceRestrictions(
+    restrictions: PermissionPermissionRestrictionsInner[],
+    type: PermissionRestrictionType,
+    valueAsString: string
+  ): void {
+    const existing = restrictions.find((r) => r.type === type);
+    if (existing) {
+      existing.valueAsString = valueAsString;
+    } else {
+      restrictions.push({ type, valueAsString });
+    }
   }
 
   changePermissionRole(
