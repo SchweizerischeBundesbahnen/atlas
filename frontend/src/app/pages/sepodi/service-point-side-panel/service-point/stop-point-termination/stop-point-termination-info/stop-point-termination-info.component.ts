@@ -11,12 +11,12 @@ import { Router } from '@angular/router';
   templateUrl: './stop-point-termination-info.component.html',
 })
 export class StopPointTerminationInfoComponent implements OnInit {
-  private workflowService = inject(WorkflowService);
-  private router = inject(Router);
+  private readonly workflowService = inject(WorkflowService);
+  private readonly router = inject(Router);
   @Input() sloid!: string | undefined;
 
-  _terminationDate!: string;
-  _workflowId!: number;
+  private _terminationDate!: string;
+  private _workflowId!: number;
 
   get terminationDate() {
     return this._terminationDate;
