@@ -2,6 +2,7 @@ import { UserPermissionManager } from './user-permission-manager';
 import { of } from 'rxjs';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { Country, PermissionRestrictionType, SwissCanton } from '../../../api';
+import { PermissionPermissionRestrictionsInner } from '../../../api/model/permissionPermissionRestrictionsInner';
 
 describe('UserPermissionManager', () => {
   let userPermissionManager: UserPermissionManager;
@@ -63,6 +64,14 @@ describe('UserPermissionManager', () => {
             valueAsString: Country.Canada,
             type: PermissionRestrictionType.Country,
           },
+          {
+            valueAsString: 'true',
+            type: PermissionRestrictionType.BulkImport,
+          },
+          {
+            valueAsString: 'true',
+            type: PermissionRestrictionType.NovaTerminationVote,
+          },
         ],
       },
       {
@@ -104,6 +113,14 @@ describe('UserPermissionManager', () => {
         valueAsString: Country.Canada,
         type: PermissionRestrictionType.Country,
       },
+      {
+        valueAsString: 'true',
+        type: PermissionRestrictionType.BulkImport,
+      },
+      {
+        valueAsString: 'true',
+        type: PermissionRestrictionType.NovaTerminationVote,
+      },
     ]);
     expect(
       userPermissionManager.userPermission.permissions[5].permissionRestrictions
@@ -111,6 +128,31 @@ describe('UserPermissionManager', () => {
       {
         valueAsString: 'ch:5:sboid:writer',
         type: PermissionRestrictionType.BusinessOrganisation,
+      },
+    ]);
+  }));
+
+  it('test clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser', fakeAsync(() => {
+    userPermissionManager.setPermissions([
+      {
+        application: 'SEPODI',
+        role: 'SUPERVISOR',
+        permissionRestrictions: [
+          {
+            valueAsString: 'true',
+            type: PermissionRestrictionType.InfoPlusTerminationVote,
+          },
+        ],
+      },
+    ]);
+    tick();
+    userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
+    expect(
+      userPermissionManager.userPermission.permissions[4].permissionRestrictions
+    ).toEqual([
+      {
+        valueAsString: 'true',
+        type: PermissionRestrictionType.InfoPlusTerminationVote,
       },
     ]);
   }));
@@ -162,4 +204,17 @@ describe('UserPermissionManager', () => {
       },
     ]);
   }));
+
+  it('test should add a new restriction when none exists', () => {
+    const restrictions: PermissionPermissionRestrictionsInner[] = [];
+    userPermissionManager.replaceRestrictions(
+      restrictions,
+      PermissionRestrictionType.Country,
+      'SWITZERLAND'
+    );
+
+    expect(restrictions.length).toBe(1);
+    expect(restrictions[0].type).toBe(PermissionRestrictionType.Country);
+    expect(restrictions[0].valueAsString).toBe('SWITZERLAND');
+  });
 });
