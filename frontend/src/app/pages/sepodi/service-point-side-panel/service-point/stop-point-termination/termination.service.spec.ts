@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { TerminationService } from './termination.service';
 import { ServicePointFormGroupBuilder } from '../service-point-detail-form-group';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
-import { ReadServicePointVersion } from '../../../../../api';
+import { Country, ReadServicePointVersion } from '../../../../../api';
 import { environment } from '../../../../../../environments/environment';
 
 let editedServicePoint!: ReadServicePointVersion;
@@ -40,6 +40,22 @@ describe('TerminationService', () => {
       const result = service.isStartingTermination(editedForm);
       //then
       expect(result).toBeTrue();
+    });
+
+    it('should not start termination when Country is not Switzerland', () => {
+      //given
+      const initialForm =
+        ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG);
+      service.initTermination(initialForm);
+
+      editedServicePoint.validTo = new Date('2020-03-31');
+      editedServicePoint.country = Country.Albania;
+      const editedForm =
+        ServicePointFormGroupBuilder.buildFormGroup(editedServicePoint);
+      //when
+      const result = service.isStartingTermination(editedForm);
+      //then
+      expect(result).toBeFalse();
     });
 
     it('should not start termination when edited validTo is in the past and other attributes are changed', () => {

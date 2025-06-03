@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
 import { environment } from '../../../../../../environments/environment';
-import { ReadServicePointVersion } from '../../../../../api';
+import { Country, ReadServicePointVersion } from '../../../../../api';
 import moment from 'moment';
 
 @Injectable({
@@ -28,12 +28,19 @@ export class TerminationService {
     editedForm: FormGroup<ServicePointDetailFormGroup>
   ) {
     const isStopPoint = this.reducedInitialFromValues.stopPoint;
+    const isStopPointLocatesInSwitzerland =
+      this.isStopPointLocatesInSwitzerland();
     const isValidated = this.reducedInitialFromValues.status === 'VALIDATED';
     return (
       isStopPoint &&
       isValidated &&
+      isStopPointLocatesInSwitzerland &&
       this.isOnlyValidToChangedInThePast(editedForm)
     );
+  }
+
+  private isStopPointLocatesInSwitzerland() {
+    return this.reducedInitialFromValues.country === Country.Switzerland;
   }
 
   private isOnlyValidToChangedInThePast(
