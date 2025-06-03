@@ -314,13 +314,13 @@ export class UserAdministrationApplicationConfigComponent
         this.application
       ).permissionRestrictions;
 
-    const cleaned = permissionRestrictions.filter(
+    const withoutCountries = permissionRestrictions.filter(
       (pr) => pr.type !== PermissionRestrictionType.Country
     );
 
     this.userPermissionManager.getPermissionByApplication(
       this.application
-    ).permissionRestrictions = cleaned;
+    ).permissionRestrictions = withoutCountries;
 
     this.userPermissionManager.setPermissions([
       {
