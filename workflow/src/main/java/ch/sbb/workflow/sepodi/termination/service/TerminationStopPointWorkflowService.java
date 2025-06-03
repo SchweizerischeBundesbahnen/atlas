@@ -18,8 +18,10 @@ import ch.sbb.workflow.sepodi.termination.mapper.TerminationDecisionMapper;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflowRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -64,6 +66,12 @@ public class TerminationStopPointWorkflowService {
   @Redacted
   public TerminationStopPointWorkflow getTerminationWorkflowBySloid(String sloid) {
     return repository.findTerminationStopPointWorkflowBySloid(sloid).orElseThrow(() -> new SloidNotFoundException(sloid));
+  }
+
+  @Redacted
+  public Page<TerminationStopPointWorkflow> getTerminationWorkflows(
+      TerminationStopPointWorkflowSearchRestrictions searchRestrictions) {
+    return repository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
   public TerminationStopPointWorkflow addDecisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
