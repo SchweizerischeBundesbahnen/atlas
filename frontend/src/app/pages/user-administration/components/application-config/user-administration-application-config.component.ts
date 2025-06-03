@@ -97,23 +97,25 @@ export class UserAdministrationApplicationConfigComponent
   }
 
   set infoPlusTerminationVotePermission(value: boolean) {
-    const infoPlusTerminationPermission = this.userPermissionManager
-      .getPermissionByApplication(this.application)
-      .permissionRestrictions.find(
-        (i) => i.type === PermissionRestrictionType.InfoPlusTerminationVote
-      );
-    if (infoPlusTerminationPermission) {
-      infoPlusTerminationPermission.valueAsString = String(value);
-    } else {
-      this.userPermissionManager
+    if (this.application == ApplicationType.Sepodi) {
+      const infoPlusTerminationPermission = this.userPermissionManager
         .getPermissionByApplication(this.application)
-        .permissionRestrictions.push({
-          type: PermissionRestrictionType.InfoPlusTerminationVote,
-          valueAsString: String(value),
-        });
-    }
+        .permissionRestrictions.find(
+          (i) => i.type === PermissionRestrictionType.InfoPlusTerminationVote
+        );
+      if (infoPlusTerminationPermission) {
+        infoPlusTerminationPermission.valueAsString = String(value);
+      } else {
+        this.userPermissionManager
+          .getPermissionByApplication(this.application)
+          .permissionRestrictions.push({
+            type: PermissionRestrictionType.InfoPlusTerminationVote,
+            valueAsString: String(value),
+          });
+      }
 
-    this._infoPlusTerminationVotePermission = value;
+      this._infoPlusTerminationVotePermission = value;
+    }
   }
 
   get novaTerminationVotePermission() {
@@ -121,22 +123,24 @@ export class UserAdministrationApplicationConfigComponent
   }
 
   set novaTerminationVotePermission(value: boolean) {
-    const novaTerminationVotePermission = this.userPermissionManager
-      .getPermissionByApplication(this.application)
-      .permissionRestrictions.find(
-        (i) => i.type === PermissionRestrictionType.NovaTerminationVote
-      );
-    if (novaTerminationVotePermission) {
-      novaTerminationVotePermission.valueAsString = String(value);
-    } else {
-      this.userPermissionManager
-        .getPermissionByApplication(this.application)
-        .permissionRestrictions.push({
-          type: PermissionRestrictionType.NovaTerminationVote,
-          valueAsString: String(value),
-        });
+    if (this.application == ApplicationType.Sepodi) {
+      const novaTerminationVotePermission = this.userPermissionManager
+        .getPermissionByApplication(ApplicationType.Sepodi)
+        .permissionRestrictions.find(
+          (i) => i.type === PermissionRestrictionType.NovaTerminationVote
+        );
+      if (novaTerminationVotePermission) {
+        novaTerminationVotePermission.valueAsString = String(value);
+      } else {
+        this.userPermissionManager
+          .getPermissionByApplication(ApplicationType.Sepodi)
+          .permissionRestrictions.push({
+            type: PermissionRestrictionType.NovaTerminationVote,
+            valueAsString: String(value),
+          });
+      }
+      this._novaTerminationVotePermission = value;
     }
-    this._novaTerminationVotePermission = value;
   }
 
   public readonly getCountryEnum = Countries.getCountryEnum;
@@ -305,6 +309,19 @@ export class UserAdministrationApplicationConfigComponent
     role: ApplicationRole,
     application: ApplicationType
   ) {
+    const permissionRestrictions =
+      this.userPermissionManager.getPermissionByApplication(
+        this.application
+      ).permissionRestrictions;
+
+    const withoutCountries = permissionRestrictions.filter(
+      (pr) => pr.type !== PermissionRestrictionType.Country
+    );
+
+    this.userPermissionManager.getPermissionByApplication(
+      this.application
+    ).permissionRestrictions = withoutCountries;
+
     this.userPermissionManager.setPermissions([
       {
         application: application,
