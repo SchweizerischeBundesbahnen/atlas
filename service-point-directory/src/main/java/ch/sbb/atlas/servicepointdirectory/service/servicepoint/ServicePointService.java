@@ -17,6 +17,8 @@ import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestric
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSwissWithGeoTransfer;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
+import ch.sbb.atlas.servicepointdirectory.termination.TerminationCheck;
+import ch.sbb.atlas.servicepointdirectory.termination.TerminationCheckParameter;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -80,7 +82,8 @@ public class ServicePointService {
     return servicePointVersions;
   }
 
-  public ServicePointVersion validate(ServicePointVersion servicePointVersion) {
+  @TerminationCheck
+  public ServicePointVersion validate(@TerminationCheckParameter ServicePointVersion servicePointVersion) {
     servicePointVersion.setStatus(Status.VALIDATED);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
@@ -99,14 +102,15 @@ public class ServicePointService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#editedVersion,
       #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
-  public List<ReadServicePointVersionModel> updateAndPublish(ServicePointVersion servicePointVersionToUpdate,
+  @TerminationCheck
+  public List<ReadServicePointVersionModel> updateAndPublish(
+      @TerminationCheckParameter ServicePointVersion servicePointVersionToUpdate,
       ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
     return updateAndPublishInternal(servicePointVersionToUpdate, editedVersion, currentVersions);
   }
 
   private List<ReadServicePointVersionModel> updateAndPublishInternal(ServicePointVersion servicePointVersionToUpdate,
       ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
-    servicePointValidationService.checkIfServicePointIsTerminationInProgress(servicePointVersionToUpdate);
     servicePointValidationService.checkIfServicePointStatusRevoked(servicePointVersionToUpdate);
     servicePointValidationService.checkIfServicePointStatusInReview(servicePointVersionToUpdate, editedVersion);
     servicePointValidationService.checkNotAffectingInReviewVersions(currentVersions, editedVersion);
@@ -124,7 +128,9 @@ public class ServicePointService {
         .toList();
   }
 
-  public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion,
+  @TerminationCheck
+  public ServicePointVersion updateServicePointVersion(@TerminationCheckParameter ServicePointVersion currentVersion,
+      ServicePointVersion editedVersion,
       List<ServicePointVersion> currentVersions) {
     servicePointVersionRepository.incrementVersion(currentVersion.getNumber());
     if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
@@ -158,8 +164,10 @@ public class ServicePointService {
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
-  private void preSaveChecks(ServicePointVersion servicePointVersion, Optional<ServicePointVersion> currentVersion,
+  private void preSaveChecks(@TerminationCheckParameter ServicePointVersion servicePointVersion,
+      Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
+
     Status status = ServicePointStatusDecider.getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions);
     servicePointVersion.setStatus(status);
     servicePointValidationService.validateAndSetAbbreviation(servicePointVersion);
@@ -209,7 +217,8 @@ public class ServicePointService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#servicePointVersion,
       #servicePointVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
-  public ServicePointVersion updateStopPointStatusForWorkflow(ServicePointVersion servicePointVersion,
+  @TerminationCheck
+  public ServicePointVersion updateStopPointStatusForWorkflow(@TerminationCheckParameter ServicePointVersion servicePointVersion,
       List<ServicePointVersion> servicePointVersions, Status statusToChange) {
     ServicePointHelper.validateIsStopPointLocatedInSwitzerland(servicePointVersion);
     StatusTransitionDecider.validateWorkflowStatusTransition(servicePointVersion.getStatus(), statusToChange);
