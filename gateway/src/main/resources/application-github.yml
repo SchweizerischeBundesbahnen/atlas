@@ -10,11 +10,11 @@ spring:
           globalcors:
             cors-configurations:
               '[/**]':
-                          allowed-origins: http://localhost:4200,https://developer-int.sbb.ch
-                          allowed-methods: GET,PUT,POST,DELETE
-                          allowed-headers: "*"
-                          exposed-headers:
-                            - "Correlation-Id"
+                allowed-origins: http://localhost:4200,https://developer-int.sbb.ch
+                allowed-methods: GET,PUT,POST,DELETE
+                allowed-headers: "*"
+                exposed-headers:
+                  - "Correlation-Id"
           observability:
             enabled: true
 management:
