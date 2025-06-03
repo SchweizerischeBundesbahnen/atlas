@@ -1173,7 +1173,8 @@
         "PREVIOUS_WORKFLOW": "Ersetzt vorhergehende Anhörung {{number}}",
         "FOLLOW_UP_WORKFLOW": "Nachfolgende Anhörung {{number}}",
         "COMMENT_SUB_LABEL": "Il faut justifier de façon compréhensible POURQUOI l'arrêt doit être nommé comme demandé. S'agit-il par ex. d'un nom de rue ou de lieu-dit?"
-      }
+      },
+      "TERMINATION_IN_PROGRESS": "L’arrêt ne peut pas être modifié, car une ordonnancement est en cours de traitement."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordures d’arrêts",

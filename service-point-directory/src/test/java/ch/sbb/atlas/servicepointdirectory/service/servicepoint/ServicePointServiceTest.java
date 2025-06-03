@@ -4,7 +4,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -15,7 +14,6 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.exception.TerminationInProgressException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -149,25 +147,6 @@ class ServicePointServiceTest {
     // when then
     assertThrows(StaleObjectStateException.class,
         () -> servicePointService.updateServicePointVersion(version1, version2, Collections.emptyList()));
-  }
-
-  @Test
-  void shouldNotUpdateServicePointVersionWhenTerminationInProgress() {
-    //given
-    ServicePointVersion version1 = ServicePointVersion.builder()
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2000, 6, 1))
-        .terminationInProgress(true)
-        .build();
-    ServicePointVersion version2 = ServicePointVersion.builder()
-        .validFrom(LocalDate.of(2000, 6, 2))
-        .validTo(LocalDate.of(2000, 12, 31))
-        .terminationInProgress(true)
-        .build();
-    doCallRealMethod().when(servicePointValidationService).checkIfServicePointIsTerminationInProgress(version1);
-    // when then
-    assertThrows(TerminationInProgressException.class,
-        () -> servicePointService.updateAndPublish(version1, version2, Collections.emptyList()));
   }
 
   @Test

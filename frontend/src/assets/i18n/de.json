@@ -1173,7 +1173,8 @@
         "PREVIOUS_WORKFLOW": "Ersetzt vorhergehende Anhörung {{number}}",
         "FOLLOW_UP_WORKFLOW": "Nachfolgende Anhörung {{number}}",
         "COMMENT_SUB_LABEL": "Es ist nachvollziehbar zu begründen, WARUM die Haltestelle wie beantragt benannt werden soll. Handelt es sich z.B. um eine Strassen- oder Flurnamen?"
-      }
+      },
+      "TERMINATION_IN_PROGRESS": "Die Haltestelle kann nicht bearbeitet werden, da eine Terminierung in Bearbeitung ist."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Haltekanten",
