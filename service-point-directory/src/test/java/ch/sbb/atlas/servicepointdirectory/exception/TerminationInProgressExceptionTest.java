@@ -11,7 +11,7 @@ class TerminationInProgressExceptionTest {
     TerminationInProgressException exception = new TerminationInProgressException();
 
     assertThat(exception.getErrorResponse().getMessage()).isEqualTo(
-        "StopPoint cannot be edited because a termination is already in progress");
+        "StopPoint cannot be edited because a termination is in progress");
   }
 
 }
