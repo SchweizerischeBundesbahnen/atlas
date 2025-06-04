@@ -163,10 +163,13 @@
     "UNRECOVERABLE_MESSAGE": "Bitte laden Sie die Seite neu."
   },
   "PROFILE": {
-    "HELLO": "Hallo",
-    "YOUR_ROLES": "Ihre Rollen:",
     "LOGIN": "Login",
-    "LOGOUT": "Logout"
+    "LOGOUT": "Logout",
+    "USER_PROFILE": "Profil",
+    "PROFILE_HEADER": "Ihr Profil",
+    "NAME": "Name",
+    "SBBUID": "SBB-User-ID",
+    "EMAIL": "E-Mail"
   },
   "MENU": {
     "TITLE": "Menü",
@@ -174,6 +177,7 @@
   },
   "PAGES": {
     "HOME": "Home",
+    "USER_PROFILE": "Profil",
     "HOME_MENU": "Start",
     "HOME_BUSINESS_PLATFORM": "Die SKI Business Plattform",
     "TERMINATION_STOP_WORKFLOW": {
