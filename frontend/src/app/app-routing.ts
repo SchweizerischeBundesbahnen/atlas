@@ -66,6 +66,17 @@ export const routes: Routes = [
       headerTitle: Pages.HOME.headerTitle,
     },
   },
+  {
+    path: Pages.USER_PROFILE.path,
+    loadComponent: () =>
+      import('./pages/user-profile/user-profile.component').then(
+        (m) => m.UserProfileComponent
+      ),
+    data: {
+      headerTitle: Pages.USER_PROFILE.headerTitle,
+    },
+    canActivate: [loggedInUsers],
+  },
   { path: '**', redirectTo: Pages.HOME.path },
 ];
 

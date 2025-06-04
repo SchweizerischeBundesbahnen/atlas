@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { ApplicationRole, ApplicationType, Permission } from '../../../api';
 import { UserService } from '../../auth/user/user.service';
 import { User } from '../../auth/user/user';
-import { NgIf, NgFor } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { MatButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu } from '@angular/material/menu';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Router } from '@angular/router';
+import { Pages } from '../../../pages/pages';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
-  imports: [NgIf, MatButton, MatMenuTrigger, MatMenu, NgFor, TranslatePipe],
+  imports: [NgIf, MatButton, MatMenuTrigger, MatMenu, TranslatePipe],
 })
 export class UserComponent implements OnInit {
   user: User | undefined;
@@ -21,10 +23,9 @@ export class UserComponent implements OnInit {
   isAdmin = false;
   permissions: Permission[] | undefined;
 
-  constructor(
-    private userService: UserService,
-    private authService: AuthService
-  ) {}
+  router = inject(Router);
+  userService = inject(UserService);
+  authService = inject(AuthService);
 
   ngOnInit(): void {
     this.userService.userChanged.subscribe(() => this.init());
@@ -68,5 +69,9 @@ export class UserComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  goToProfile() {
+    this.router.navigate([Pages.USER_PROFILE.path]).then();
   }
 }

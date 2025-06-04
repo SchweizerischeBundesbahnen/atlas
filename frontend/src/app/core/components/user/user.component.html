@@ -1,32 +1,33 @@
 <ng-template [ngIf]="isLoggedIn">
-  <button [matMenuTriggerFor]="profile" id="user-menu-button" mat-button title="{{ userName }}">
+  <button
+    [matMenuTriggerFor]="profile"
+    id="user-menu-button"
+    mat-button
+    title="{{ userName }}"
+  >
     <div class="user-presentation d-inline-flex">
       <div class="user-icon bg-color-primary-500">
         <em class="bi bi-person" style="font-size: 16px"></em>
       </div>
-      <div class="user-name color-primary-400" data-cy="user-name">{{ userName }}</div>
+      <div class="user-name color-primary-400" data-cy="user-name">
+        {{ userName }}
+      </div>
     </div>
   </button>
   <mat-menu #profile="matMenu" class="user-menu">
     <div class="font-regular-base">
       <div class="ps-1 pe-1 flex-column">
-        <div *ngIf="isAdmin || permissions" id="user-roles-modal">
+        <button mat-button (click)="goToProfile()">
           <div class="d-inline-block ps-2">
             <em class="bi bi-people-fill"></em>
           </div>
           <div class="d-inline-block">
-            <span class="mb-0 user-info-modal">{{ 'PROFILE.YOUR_ROLES' | translate }}</span>
+            <span class="mb-0 user-info-modal">{{
+              'PROFILE.USER_PROFILE' | translate
+            }}</span>
           </div>
-          <div *ngIf="isAdmin" class="user-role-item d-flex flex-row">
-            <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
-            <b>{{ 'COMMON.ROLES.atlas-admin' | translate }}</b>
-          </div>
-          <div *ngFor="let permission of permissions" class="user-role-item d-flex flex-row">
-            <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
-            <b>{{ 'USER_ADMIN.APPLICATION.' + permission.application | translate }}</b
-            >: {{ 'COMMON.ROLES.' + permission.role | translate }}
-          </div>
-        </div>
+        </button>
+
         <hr />
         <button (click)="logout()" class="w-100" id="logout" mat-button>
           <em class="bi bi-box-arrow-right"></em>
