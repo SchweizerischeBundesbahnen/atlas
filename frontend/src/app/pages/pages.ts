@@ -9,6 +9,13 @@ export class Pages {
     path: '',
   };
 
+  public static USER_PROFILE: Page = {
+    title: 'PAGES.USER_PROFILE',
+    titleMenu: 'PAGES.USER_PROFILE',
+    headerTitle: 'PAGES.USER_PROFILE',
+    path: 'profile',
+  };
+
   public static TTFN: Page = {
     title: 'PAGES.TTFN.TITLE',
     titleMenu: 'PAGES.TTFN.TITLE_MENU',
