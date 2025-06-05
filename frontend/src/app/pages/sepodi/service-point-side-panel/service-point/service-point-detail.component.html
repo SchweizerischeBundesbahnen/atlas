@@ -27,7 +27,7 @@
         @if (isTerminationInProgress) {
           <div class="align-self-center">
             <app-stop-point-termination-info
-              [sloid]="selectedVersion?.sloid"
+              [sloid]="selectedVersion?.sloid!"
             ></app-stop-point-termination-info>
           </div>
         }

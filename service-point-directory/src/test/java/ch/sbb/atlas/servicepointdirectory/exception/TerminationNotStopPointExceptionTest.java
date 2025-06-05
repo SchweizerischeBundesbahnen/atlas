@@ -5,17 +5,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import org.junit.jupiter.api.Test;
 
-class TerminationNotOnLastVersionExceptionTest {
+class TerminationNotStopPointExceptionTest {
 
   @Test
   void shouldDisplayErrorMessage() {
     // given
-    TerminationNotOnLastVersionException exception = new TerminationNotOnLastVersionException();
+    TerminationNotStopPointException exception = new TerminationNotStopPointException();
     // when & then
     ErrorResponse errorResponse = exception.getErrorResponse();
-    assertThat(errorResponse.getStatus()).isEqualTo(417);
+    assertThat(errorResponse.getStatus()).isEqualTo(412);
     assertThat(errorResponse.getMessage()).isEqualTo(
-        "The StopPoint version is not the oldest version: termination is only possible on the oldest of StopPoint version");
+        "A termination workflow is not allowed when the service point version is not a stop point");
+    assertThat(errorResponse.getError()).isEqualTo(
+        "Termination workflow not allowed");
   }
 
 }

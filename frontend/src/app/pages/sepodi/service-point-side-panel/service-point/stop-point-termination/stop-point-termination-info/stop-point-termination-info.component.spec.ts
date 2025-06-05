@@ -29,9 +29,9 @@ describe('StopPointTerminationInfoComponent', () => {
         { provide: WorkflowService, useValue: workflowService },
       ],
     }).compileComponents();
-
     fixture = TestBed.createComponent(StopPointTerminationInfoComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('sloid', 'ch:1:sloid:7000');
     fixture.detectChanges();
   });
 

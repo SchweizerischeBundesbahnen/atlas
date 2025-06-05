@@ -26,26 +26,15 @@ public class TerminationHelper {
     if (infoPlusDecision == null && novaDecision == null) {
       infoModel.setTerminationDate(terminationWorkflow.getBoTerminationDate());
     }
-    if (infoPlusDecision != null && novaDecision == null) {
-      getInfoPlusDecision(terminationWorkflow, infoPlusDecision, infoModel);
-    }
-    if (novaDecision != null && infoPlusDecision != null) {
-      if (novaDecision.getJudgement() == JudgementType.YES) {
-        infoModel.setTerminationDate(terminationWorkflow.getNovaTerminationDate());
+    if ((infoPlusDecision != null && novaDecision == null) ||
+        (novaDecision != null && infoPlusDecision != null)) {
+      if (infoPlusDecision.getJudgement() == JudgementType.YES) {
+        infoModel.setTerminationDate(terminationWorkflow.getInfoPlusTerminationDate());
       } else {
-        getInfoPlusDecision(terminationWorkflow, infoPlusDecision, infoModel);
+        throw new IllegalStateException("When InfoPlus vote No, the termination process is done!");
       }
     }
     return infoModel;
-  }
-
-  private static void getInfoPlusDecision(TerminationStopPointWorkflow terminationWorkflow, TerminationDecision infoPlusDecision,
-      TerminationInfoModel infoModel) {
-    if (infoPlusDecision.getJudgement() == JudgementType.YES) {
-      infoModel.setTerminationDate(terminationWorkflow.getInfoPlusTerminationDate());
-    } else {
-      throw new IllegalStateException("When InfoPlus vote No, the termination process is done!");
-    }
   }
 
 }

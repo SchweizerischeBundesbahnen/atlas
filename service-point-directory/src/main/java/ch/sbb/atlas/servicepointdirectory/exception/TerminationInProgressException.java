@@ -1,30 +1,33 @@
 package ch.sbb.atlas.servicepointdirectory.exception;
 
-import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
-import ch.sbb.atlas.model.exception.AtlasException;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class TerminationInProgressException extends AtlasException {
+public class TerminationInProgressException extends BaseException {
 
   public static final String MESSAGE = "StopPoint cannot be edited because a termination is in progress";
 
   @Override
-  public ErrorResponse getErrorResponse() {
-    return ErrorResponse.builder()
-        .status(HttpStatus.PRECONDITION_FAILED.value())
-        .message(MESSAGE)
-        .error(MESSAGE)
-        .details(getErrorDetails())
-        .build();
+  protected int getHttpStatus() {
+    return HttpStatus.PRECONDITION_FAILED.value();
   }
 
-  private SortedSet<Detail> getErrorDetails() {
+  @Override
+  protected String getCustomMessage() {
+    return MESSAGE;
+  }
+
+  @Override
+  protected String getCustomError() {
+    return MESSAGE;
+  }
+
+  protected SortedSet<Detail> getPreconditionErrorDetails() {
     TreeSet<Detail> errorDetails = new TreeSet<>();
     errorDetails.add(Detail.builder()
         .field("termination")
