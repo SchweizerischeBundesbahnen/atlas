@@ -19,7 +19,8 @@ public class PlatformBulkImportController extends BaseBulkImportControllerIntern
 
   @Override
   @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public List<BulkImportItemExecutionResult> bulkImportPlatformReducedUpdate(
       List<BulkImportUpdateContainer<PlatformReducedUpdateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,

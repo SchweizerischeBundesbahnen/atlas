@@ -1,8 +1,8 @@
 package ch.sbb.atlas.user.administration.security.service;
 
 import ch.sbb.atlas.exception.BulkImportTerminateForbiddenException;
-import ch.sbb.atlas.imports.bulk.BulkImportRequest;
 import ch.sbb.atlas.imports.bulk.model.ImportType;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
@@ -19,11 +19,11 @@ public class BulkImportUserAdministrationService extends BusinessOrganisationBas
     super(userPermissionHolder);
   }
 
-  public boolean hasPermissionsForBulkImport(BulkImportRequest request) {
-    verifyIsAtLeastSupervisorForBulkImportTerminate(request);
+  public boolean hasPermissionsForBulkImport(ImportType importType, ApplicationType applicationType) {
+    verifyIsAtLeastSupervisorForBulkImportTerminate(importType, applicationType);
 
     UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(
-        request.getApplicationType());
+        applicationType);
 
     boolean hasExplicitBulkImportPermission = false;
     Optional<UserAdministrationPermissionRestrictionModel> bulkImportPermission = userPermissionsForApplication.getRestrictions()
@@ -34,13 +34,13 @@ public class BulkImportUserAdministrationService extends BusinessOrganisationBas
       hasExplicitBulkImportPermission = Boolean.parseBoolean(bulkImportPermission.get().getValue());
     }
 
-    boolean hasPermissionsForBulkImport = hasExplicitBulkImportPermission || isAtLeastSupervisor(request.getApplicationType());
+    boolean hasPermissionsForBulkImport = hasExplicitBulkImportPermission || isAtLeastSupervisor(applicationType);
     log.debug("User {} hasPermissionsForBulkImport={}", getCurrentUserSbbUid(), hasPermissionsForBulkImport);
     return hasPermissionsForBulkImport;
   }
 
-  private void verifyIsAtLeastSupervisorForBulkImportTerminate(BulkImportRequest request) {
-    if (request.getImportType() == ImportType.TERMINATE && !isAtLeastSupervisor(request.getApplicationType())) {
+  private void verifyIsAtLeastSupervisorForBulkImportTerminate(ImportType importType, ApplicationType applicationType) {
+    if (importType == ImportType.TERMINATE && !isAtLeastSupervisor(applicationType)) {
       throw new BulkImportTerminateForbiddenException();
     }
   }
