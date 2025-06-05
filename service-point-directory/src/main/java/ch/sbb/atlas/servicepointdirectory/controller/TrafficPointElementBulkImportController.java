@@ -21,7 +21,8 @@ public class TrafficPointElementBulkImportController extends BaseBulkImportContr
 
   @Override
   @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).CREATE,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportCreate(
       List<BulkImportUpdateContainer<TrafficPointCreateCsvModel>> bulkImportCreateContainers) {
     return executeBulkImport(bulkImportCreateContainers,
@@ -31,7 +32,8 @@ public class TrafficPointElementBulkImportController extends BaseBulkImportContr
 
   @Override
   @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportUpdate(
       List<BulkImportUpdateContainer<TrafficPointUpdateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,
