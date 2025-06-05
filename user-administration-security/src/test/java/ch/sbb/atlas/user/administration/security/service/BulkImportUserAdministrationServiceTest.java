@@ -49,7 +49,9 @@ class BulkImportUserAdministrationServiceTest {
     when(userPermissionHolder.isAdmin()).thenReturn(true);
 
     // When
-    boolean permissionsForBulkImport = bulkImportUserAdministrationService.hasPermissionsForBulkImport(importRequest);
+    boolean permissionsForBulkImport =
+        bulkImportUserAdministrationService.hasPermissionsForBulkImport(importRequest.getImportType(),
+            importRequest.getApplicationType());
 
     // Then
     assertThat(permissionsForBulkImport).isTrue();
@@ -73,7 +75,8 @@ class BulkImportUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsForBulkImport = bulkImportUserAdministrationService.hasPermissionsForBulkImport(importRequest);
+    boolean permissionsForBulkImport = bulkImportUserAdministrationService.hasPermissionsForBulkImport(
+        importRequest.getImportType(), importRequest.getApplicationType());
 
     // Then
     assertThat(permissionsForBulkImport).isTrue();
@@ -97,7 +100,8 @@ class BulkImportUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsForBulkImport = bulkImportUserAdministrationService.hasPermissionsForBulkImport(importRequest);
+    boolean permissionsForBulkImport = bulkImportUserAdministrationService.hasPermissionsForBulkImport(
+        importRequest.getImportType(), importRequest.getApplicationType());
 
     // Then
     assertThat(permissionsForBulkImport).isFalse();
@@ -122,7 +126,8 @@ class BulkImportUserAdministrationServiceTest {
 
     // Then
     assertThatExceptionOfType(BulkImportTerminateForbiddenException.class).isThrownBy(
-        () -> bulkImportUserAdministrationService.hasPermissionsForBulkImport(importRequest));
+        () -> bulkImportUserAdministrationService.hasPermissionsForBulkImport(importRequest.getImportType(),
+            importRequest.getApplicationType()));
   }
 
   @Test
@@ -143,7 +148,8 @@ class BulkImportUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsForBulkImport = bulkImportUserAdministrationService.hasPermissionsForBulkImport(importRequest);
+    boolean permissionsForBulkImport = bulkImportUserAdministrationService.hasPermissionsForBulkImport(
+        importRequest.getImportType(), importRequest.getApplicationType());
 
     // Then
     assertThat(permissionsForBulkImport).isTrue();
@@ -171,7 +177,9 @@ class BulkImportUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsForBulkImport = bulkImportUserAdministrationService.hasPermissionsForBulkImport(importRequest);
+    boolean permissionsForBulkImport =
+        bulkImportUserAdministrationService.hasPermissionsForBulkImport(importRequest.getImportType(),
+            importRequest.getApplicationType());
 
     // Then
     assertThat(permissionsForBulkImport).isTrue();
