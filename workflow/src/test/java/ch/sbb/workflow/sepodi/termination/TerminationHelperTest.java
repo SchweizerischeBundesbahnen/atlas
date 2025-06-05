@@ -63,6 +63,34 @@ class TerminationHelperTest {
   }
 
   @Test
+  void shouldGetInfoPlusTerminationDateWhenInfoPlusAndNovaVoted() {
+    //given
+    TerminationStopPointWorkflow workflow = buildWorkflow();
+    TerminationDecision infoPlusDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
+        .judgement(JudgementType.YES)
+        .build();
+    workflow.setInfoPlusDecision(infoPlusDecision);
+    TerminationDecision novaDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+        .judgement(JudgementType.YES)
+        .build();
+    workflow.setNovaDecision(novaDecision);
+    workflow.setBoTerminationDate(LocalDate.of(2000, 1, 1));
+    LocalDate infoPlusTerminationDate = LocalDate.of(2001, 1, 1);
+    workflow.setInfoPlusTerminationDate(infoPlusTerminationDate);
+    LocalDate novaTerminationDate = LocalDate.of(2002, 1, 1);
+    workflow.setNovaTerminationDate(novaTerminationDate);
+
+    //when
+    TerminationInfoModel result = TerminationHelper.calculateTerminationDate(workflow);
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getTerminationDate()).isNotNull().isEqualTo(workflow.getInfoPlusTerminationDate());
+  }
+
+  @Test
   void shouldReturnBoTerminationDateWhenNotOneVoted() {
     //given
     TerminationStopPointWorkflow workflow = buildWorkflow();
@@ -103,7 +131,7 @@ class TerminationHelperTest {
   }
 
   @Test
-  void shouldReturnNovaTerminationDateWhenNovaVotedYes() {
+  void shouldReturnInfoPlusTerminationDateWhenNovaVotedYes() {
     //given
     TerminationStopPointWorkflow workflow = buildWorkflow();
     TerminationDecision infoPlusDecision = TerminationDecision.builder()
@@ -120,7 +148,7 @@ class TerminationHelperTest {
     TerminationInfoModel result = TerminationHelper.calculateTerminationDate(workflow);
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getTerminationDate()).isNotNull().isEqualTo(workflow.getNovaTerminationDate());
+    assertThat(result.getTerminationDate()).isNotNull().isEqualTo(workflow.getInfoPlusTerminationDate());
   }
 
   @Test
