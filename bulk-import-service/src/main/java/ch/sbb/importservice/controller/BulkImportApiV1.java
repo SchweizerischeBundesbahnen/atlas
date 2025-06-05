@@ -35,7 +35,8 @@ public interface BulkImportApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "202"),
   })
-  @PreAuthorize("@bulkImportUserAdministrationService.hasPermissionsForBulkImport(#bulkImportRequest)")
+  @PreAuthorize("@bulkImportUserAdministrationService.hasPermissionsForBulkImport(#bulkImportRequest.importType, "
+      + "#bulkImportRequest.applicationType)")
   void startBulkImport(
       @Parameter(description = "Bulk Import Request")
       @RequestPart("bulkImportRequest") @Valid BulkImportRequest bulkImportRequest,
