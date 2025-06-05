@@ -232,7 +232,6 @@ public class ServicePointService {
       #servicePointVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public ServicePointVersion updateStopPointTerminationStatus(ServicePointVersion servicePointVersion,
       List<ServicePointVersion> servicePointVersions, UpdateTerminationServicePointModel updateTerminationServicePointModel) {
-    ServicePointHelper.validateIsStopPointLocatedInSwitzerland(servicePointVersion);
     servicePointVersions.forEach(
         spv -> spv.setTerminationInProgress(updateTerminationServicePointModel.isTerminationInProgress()));
     servicePointVersionRepository.saveAll(servicePointVersions);

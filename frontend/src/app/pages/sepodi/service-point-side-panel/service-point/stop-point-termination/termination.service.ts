@@ -5,6 +5,14 @@ import { environment } from '../../../../../../environments/environment';
 import { Country, ReadServicePointVersion } from '../../../../../api';
 import moment from 'moment';
 
+export const ALLOWED_TERMINATION_COUNTRIES: Country[] = [
+  Country.Switzerland,
+  Country.GermanyBus,
+  Country.AustriaBus,
+  Country.ItalyBus,
+  Country.FranceBus,
+];
+
 @Injectable({
   providedIn: 'root',
 })
@@ -28,19 +36,19 @@ export class TerminationService {
     editedForm: FormGroup<ServicePointDetailFormGroup>
   ) {
     const isStopPoint = this.reducedInitialFromValues.stopPoint;
-    const isStopPointLocatesInSwitzerland =
-      this.isStopPointLocatesInSwitzerland();
+    const isStopPointCountryAllowed =
+      this.isStopPointCountryTerminationAllowed();
     const isValidated = this.reducedInitialFromValues.status === 'VALIDATED';
+    const isInThePast = this.isOnlyValidToChangedInThePast(editedForm);
     return (
-      isStopPoint &&
-      isValidated &&
-      isStopPointLocatesInSwitzerland &&
-      this.isOnlyValidToChangedInThePast(editedForm)
+      isStopPoint && isValidated && isStopPointCountryAllowed && isInThePast
     );
   }
 
-  private isStopPointLocatesInSwitzerland() {
-    return this.reducedInitialFromValues.country === Country.Switzerland;
+  private isStopPointCountryTerminationAllowed() {
+    return ALLOWED_TERMINATION_COUNTRIES.some(
+      (country) => this.reducedInitialFromValues.country === country
+    );
   }
 
   private isOnlyValidToChangedInThePast(
