@@ -21,7 +21,8 @@ public class ServicePointBulkImportController extends BaseBulkImportControllerIn
 
   @Override
   @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).UPDATE,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportUpdate(
       List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,
@@ -31,7 +32,8 @@ public class ServicePointBulkImportController extends BaseBulkImportControllerIn
 
   @Override
   @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).CREATE,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportCreate(
       List<BulkImportUpdateContainer<ServicePointCreateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,
@@ -41,7 +43,8 @@ public class ServicePointBulkImportController extends BaseBulkImportControllerIn
 
   @Override
   @PreAuthorize("""
-      @businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(T(ch.sbb.atlas.imports.bulk.model.ImportType).TERMINATE,
+      T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public List<BulkImportItemExecutionResult> bulkImportTerminate(
       List<BulkImportUpdateContainer<ServicePointTerminateCsvModel>> bulkImportContainers) {
     return executeBulkImport(bulkImportContainers,
