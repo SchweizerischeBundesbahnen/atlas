@@ -136,3 +136,5 @@ frontend/jsonZipDirectory/
 /buildSrc/.gradle/
 /buildSrc/.kotlin/
 /buildSrc/.build/
+
+.cache_ggshield
