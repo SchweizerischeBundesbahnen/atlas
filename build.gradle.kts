@@ -5,7 +5,7 @@ plugins {
 group = "ch.sbb.atlas"
 version = "2.655.0"
 
-extra["awsS3Version"] = "2.31.47"
+extra["awsS3Version"] = "2.31.54"
 
 extra["swaggerCoreVersion"] = "2.2.32"
 extra["openapiStarterCommonVersion"] = "2.8.8"
@@ -14,7 +14,7 @@ extra["openapiStarterCommonVersion"] = "2.8.8"
 extra["proj4jVersion"] = "1.4.0"
 extra["jtsVersion"] = "1.20.0"
 extra["springOpenapiUiVersion"] = "2.8.8"
-extra["springCloudVersion"] = "2024.0.1"
+extra["springCloudVersion"] = "2025.0.0"
 
 subprojects {
     sonar {

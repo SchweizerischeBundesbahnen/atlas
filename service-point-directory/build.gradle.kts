@@ -28,16 +28,16 @@ dependencies {
     implementation("org.locationtech.proj4j:proj4j:${property("proj4jVersion")}") //optional
     implementation("org.locationtech.proj4j:proj4j-epsg:${property("proj4jVersion")}") //optional
     implementation("org.locationtech.jts:jts-core:${property("jtsVersion")}") //optional
-    implementation("com.google.protobuf:protoc:4.31.0")
-    implementation("com.google.protobuf:protobuf-java:4.31.0")
+    implementation("com.google.protobuf:protoc:4.31.1")
+    implementation("com.google.protobuf:protobuf-java:4.31.1")
     implementation("org.springframework.security:spring-security-oauth2-client")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.flywaydb:flyway-core")
 
-    implementation("com.google.protobuf:protobuf-java:4.31.0")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.6.15.Final")
+    implementation("com.google.protobuf:protobuf-java:4.31.1")
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
 
     runtimeOnly("org.postgresql:postgresql")
 
@@ -55,7 +55,7 @@ dependencies {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.31.0"
+        artifact = "com.google.protobuf:protoc:4.31.1"
     }
     generateProtoTasks {
         ofSourceSet("main")
