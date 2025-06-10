@@ -27,6 +27,7 @@ public class TerminationInProgressException extends BaseException {
     return MESSAGE;
   }
 
+  @Override
   protected SortedSet<Detail> getPreconditionErrorDetails() {
     TreeSet<Detail> errorDetails = new TreeSet<>();
     errorDetails.add(Detail.builder()
