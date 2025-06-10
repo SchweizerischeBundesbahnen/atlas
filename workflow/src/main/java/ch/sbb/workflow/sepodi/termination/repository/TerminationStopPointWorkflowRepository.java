@@ -4,6 +4,7 @@ import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Redacted
@@ -11,5 +12,7 @@ public interface TerminationStopPointWorkflowRepository extends JpaRepository<Te
 
   List<TerminationStopPointWorkflow> findTerminationStopPointWorkflowBySloidAndVersionIdAndStatus(String sloid, Long versionId,
       TerminationWorkflowStatus workflowStatus);
+
+  Optional<TerminationStopPointWorkflow> findTerminationStopPointWorkflowBySloid(String sloid);
 
 }

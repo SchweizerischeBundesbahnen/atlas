@@ -2,6 +2,7 @@ package ch.sbb.workflow.sepodi.termination.api;
 
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationInfoModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,6 +23,9 @@ public interface TerminationStopPointWorkflowApi {
 
   @GetMapping("{id}")
   TerminationStopPointWorkflowModel getTerminationStopPointWorkflow(@PathVariable Long id);
+
+  @GetMapping("/termination-info/{sloid}")
+  TerminationInfoModel getTerminationInfoBySloid(@PathVariable String sloid);
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)

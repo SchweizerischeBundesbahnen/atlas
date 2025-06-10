@@ -2,8 +2,16 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
 import { environment } from '../../../../../../environments/environment';
-import { ReadServicePointVersion } from '../../../../../api';
+import { Country, ReadServicePointVersion } from '../../../../../api';
 import moment from 'moment';
+
+export const ALLOWED_TERMINATION_COUNTRIES: Country[] = [
+  Country.Switzerland,
+  Country.GermanyBus,
+  Country.AustriaBus,
+  Country.ItalyBus,
+  Country.FranceBus,
+];
 
 @Injectable({
   providedIn: 'root',
@@ -28,11 +36,18 @@ export class TerminationService {
     editedForm: FormGroup<ServicePointDetailFormGroup>
   ) {
     const isStopPoint = this.reducedInitialFromValues.stopPoint;
+    const isStopPointCountryAllowed =
+      this.isStopPointCountryTerminationAllowed();
     const isValidated = this.reducedInitialFromValues.status === 'VALIDATED';
+    const isInThePast = this.isOnlyValidToChangedInThePast(editedForm);
     return (
-      isStopPoint &&
-      isValidated &&
-      this.isOnlyValidToChangedInThePast(editedForm)
+      isStopPoint && isValidated && isStopPointCountryAllowed && isInThePast
+    );
+  }
+
+  private isStopPointCountryTerminationAllowed() {
+    return ALLOWED_TERMINATION_COUNTRIES.some(
+      (country) => this.reducedInitialFromValues.country === country
     );
   }
 

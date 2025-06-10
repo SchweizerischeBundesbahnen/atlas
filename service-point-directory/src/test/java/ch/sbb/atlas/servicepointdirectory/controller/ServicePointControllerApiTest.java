@@ -1214,6 +1214,62 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldNotUpdateServicePointIfTerminationInProgress() throws Exception {
+    CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
+
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
+    Long id = servicePointVersionModel.getId();
+    repository.findById(id).ifPresent(servicePoint -> {
+      servicePoint.setTerminationInProgress(true);
+      repository.save(servicePoint);
+    });
+
+    testData.setBusinessOrganisation("dasisteineungueltigebusinessorganisation");
+    testData.setId(id);
+    testData.setEtagVersion(servicePointVersionModel.getEtagVersion());
+
+    mvc.perform(put("/v1/service-points/" + testData.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(testData)))
+        .andExpect(status().isPreconditionFailed());
+  }
+
+  @Test
+  void shouldNotValidateServicePointIfTerminationInProgress() throws Exception {
+    //given
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+    repository.findById(id).ifPresent(servicePoint -> {
+      servicePoint.setTerminationInProgress(true);
+      repository.save(servicePoint);
+    });
+    //when & then
+    mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow"))
+        .andExpect(status().isPreconditionFailed());
+  }
+
+  @Test
+  void shouldNotUpdateServicePointStatusIfTerminationInProgess() throws Exception {
+    //given
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+    repository.findById(id).ifPresent(servicePoint -> {
+      servicePoint.setTerminationInProgress(true);
+      repository.save(servicePoint);
+    });
+
+    //when & then
+    mvc.perform(put("/v1/service-points/status/" + servicePointVersion.getSloid() + "/" + servicePointVersion.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(Status.IN_REVIEW)))
+        .andExpect(status().isPreconditionFailed());
+  }
+
+  @Test
   void shouldNotUpdateServicePointAbbreviationIfBusinessOrganisationNotAllowed() throws Exception {
     CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
     testData.setAbbreviation(null);

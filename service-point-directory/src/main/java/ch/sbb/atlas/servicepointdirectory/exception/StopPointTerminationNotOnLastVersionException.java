@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class TerminationNotOnLastVersionException extends AtlasException {
+public class StopPointTerminationNotOnLastVersionException extends AtlasException {
 
   @Override
   public ErrorResponse getErrorResponse() {

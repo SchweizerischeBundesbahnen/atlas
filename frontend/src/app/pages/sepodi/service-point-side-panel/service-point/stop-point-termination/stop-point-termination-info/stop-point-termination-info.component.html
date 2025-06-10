@@ -1,4 +1,4 @@
-<div class="container">
+<div class="cursor-pointer" (click)="navigate()">
   <div class="row justify-content-md-center">
     <div class="col-md-auto">
       <span [title]="'TERMINATION_WORKFLOW.SEPODI_INFO' | translate"
@@ -8,9 +8,12 @@
   </div>
   <div class="row justify-content-md-center text-align">
     <div class="col-md-auto">
-      <span>{{
-        'TERMINATION_WORKFLOW.SEPODI_TERMINATION_IN_PROGRESS_INFO' | translate
-      }}</span>
+      @if (terminationDate) {
+        <span>{{
+          'TERMINATION_WORKFLOW.SEPODI_TERMINATION_IN_PROGRESS_INFO'
+            | translate: { terminationDate: terminationDate }
+        }}</span>
+      }
     </div>
   </div>
 </div>

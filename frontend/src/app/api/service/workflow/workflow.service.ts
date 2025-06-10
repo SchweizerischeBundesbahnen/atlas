@@ -2,6 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {AtlasApiService} from "../atlasApi.service";
 import {TerminationStopPointAddWorkflow} from "../../model/terminationStopPointAddWorkflow";
 import {Observable} from "rxjs";
+import {TerminationInfo} from "../../model/terminationInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,11 @@ export class WorkflowService {
 
   public startTermination( terminationStopPointAddWorkflow:TerminationStopPointAddWorkflow): Observable<TerminationStopPointAddWorkflow> {
     return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION}`,terminationStopPointAddWorkflow);
+  }
+
+  public getTerminationInfoBySloid(sloid: string): Observable<TerminationInfo> {
+    this.atlasApiService.validateParams({ sloid });
+    return this.atlasApiService.get(`${this.STOP_POINT_TERMINATION}/termination-info/${encodeURIComponent(String(sloid))}`);
   }
 
 }
