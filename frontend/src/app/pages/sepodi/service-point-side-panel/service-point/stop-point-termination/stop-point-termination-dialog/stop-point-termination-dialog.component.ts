@@ -13,7 +13,6 @@ import { WorkflowService } from '../../../../../../api/service/workflow/workflow
 import { TerminationStopPointAddWorkflow } from '../../../../../../api/model/terminationStopPointAddWorkflow';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
 import { UserService } from '../../../../../../core/auth/user/user.service';
-import { catchError } from 'rxjs';
 import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
 
@@ -50,13 +49,6 @@ export class StopPointTerminationDialogComponent implements OnInit {
       this.form.disable();
       this.workflowService
         .startTermination(startTerminationValue)
-        .pipe(
-          //we need to catchError to be able to close the dialog
-          catchError((err) => {
-            this.dialogRef.close(true);
-            throw err;
-          })
-        )
         .subscribe(() => {
           this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
           this.dialogRef.close(true);
