@@ -9,8 +9,8 @@ group = "ch.sbb.atlas"
 version = "2.657.0"
 
 description = "Atlas User Administration"
-extra["microsoftGraphSdkVersion"] = "6.39.0"
-extra["azureIdentityVersion"] = "1.16.1"
+extra["microsoftGraphSdkVersion"] = "6.40.0"
+extra["azureIdentityVersion"] = "1.16.2"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
