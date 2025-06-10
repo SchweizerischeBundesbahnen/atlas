@@ -27,7 +27,8 @@ public class StopPointTerminationController implements StopPointTerminationApiV1
       UpdateTerminationServicePointModel updateTerminationServicePointModel) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
-    ServicePointVersion servicePointVersion = TerminationHelper.validateStopPointTermination(sloid, id, servicePointVersions);
+    ServicePointVersion servicePointVersion = TerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id,
+        servicePointVersions);
 
     if (updateTerminationServicePointModel.getTerminationDate().isAfter(servicePointVersion.getValidTo())
         || updateTerminationServicePointModel.getTerminationDate().isEqual(servicePointVersion.getValidTo())) {
@@ -43,7 +44,8 @@ public class StopPointTerminationController implements StopPointTerminationApiV1
   public ReadServicePointVersionModel stopServicePointTermination(String sloid, Long id) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
-    ServicePointVersion servicePointVersion = TerminationHelper.validateStopPointTermination(sloid, id, servicePointVersions);
+    ServicePointVersion servicePointVersion = TerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id,
+        servicePointVersions);
     UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
         .terminationInProgress(false)
         .build();
