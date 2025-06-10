@@ -15,6 +15,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.InvalidFreightServicePointEx
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusRevokedChangeNotAllowedException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationInProgressException;
 import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.versioning.model.Versionable;
@@ -169,6 +170,12 @@ public class ServicePointValidationService {
     }
   }
 
+  public void checkIfServicePointIsTerminationInProgress(ServicePointVersion servicePointVersion) {
+    if (servicePointVersion.isTerminationInProgress()) {
+      throw new TerminationInProgressException();
+    }
+  }
+
   public void checkIfServicePointStatusInReview(ServicePointVersion currentVersion, ServicePointVersion editedVersion) {
     if (currentVersion.getStatus().equals(Status.IN_REVIEW)) {
       throw new UpdateAffectsInReviewVersionException(
@@ -187,7 +194,7 @@ public class ServicePointValidationService {
     List<ServicePointVersion> afterUpdateServicePointInReview = servicePointVersionRepository.findAllByNumberOrderByValidFrom(
             currentVersion.getNumber()).stream()
         .filter(servicePointVersion -> Status.IN_REVIEW == servicePointVersion.getStatus()).toList();
-    
+
     if (!existingDbVersionInReview.isEmpty()) {
       if (existingDbVersionInReview.size() != afterUpdateServicePointInReview.size()) {
         throw new UpdateAffectsInReviewVersionException(
