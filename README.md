@@ -2,7 +2,6 @@
 
 This is the repository for business relevant services for ATLAS.
 
-
 <!-- toc -->
 
 - [CI/CD Status](#cicd-status)
