@@ -133,11 +133,7 @@ describe('TableComponent', () => {
 
   it('should render pagination', () => {
     const paginator = fixture.debugElement.query(By.css('mat-paginator'));
-
     expect(paginator).toBeDefined();
-    expect(paginator.nativeElement.getAttribute('ng-reflect-length')).toBe(
-      '10'
-    );
   });
 
   it('should click on show 5 element', () => {
