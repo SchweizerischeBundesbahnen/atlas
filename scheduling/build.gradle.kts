@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.670.0"
+version = "2.671.0"
 
 description = "Atlas Scheduling Service"
 extra["shedlockVersion"] = "6.9.0"
