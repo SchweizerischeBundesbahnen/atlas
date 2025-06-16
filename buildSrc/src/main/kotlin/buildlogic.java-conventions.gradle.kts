@@ -41,7 +41,7 @@ repositories {
 
 dependencies {
     constraints {
-        implementation("io.swagger.core.v3:swagger-core-jakarta:2.2.32") {
+        implementation("io.swagger.core.v3:swagger-core-jakarta:2.2.33") {
             because("Previous version has a bug not making attributes required in spec yaml")
         }
     }
