@@ -7,11 +7,11 @@ version = "2.669.0"
 
 extra["awsS3Version"] = "2.31.63"
 
-extra["swaggerCoreVersion"] = "2.2.32"
+extra["swaggerCoreVersion"] = "2.2.33"
 extra["openapiStarterCommonVersion"] = "2.8.9"
 
 // Geo Data Libs
-extra["proj4jVersion"] = "1.4.0"
+extra["proj4jVersion"] = "1.4.1"
 extra["jtsVersion"] = "1.20.0"
 extra["springOpenapiUiVersion"] = "2.8.9"
 extra["springCloudVersion"] = "2025.0.0"
