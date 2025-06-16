@@ -45,3 +45,18 @@ a[mat-list-item]:focus::before {
 .subpage {
   padding-left: 20px;
 }
+
+.github {
+  position: absolute;
+  right: 0;
+  padding-right: 0.5rem;
+  padding-bottom: 0.3rem;
+  bottom: 0;
+  a,
+  a:hover,
+  a:focus,
+  a:active {
+    text-decoration: none;
+    color: inherit;
+  }
+}
