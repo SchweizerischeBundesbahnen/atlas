@@ -5,7 +5,9 @@ import { By } from '@angular/platform-browser';
 import { TableService } from './table.service';
 import { StatementStatus } from '../../../api';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { TableFilterComponent } from '../table-filter/table-filter.component';
+import { FormatPipe } from './pipe/format.pipe';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 export interface Obj {
   prop: string;
@@ -17,14 +19,21 @@ describe('TableComponent', () => {
   let fixture: ComponentFixture<TableComponent<any>>;
   /*eslint-enable */
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [TableComponent, TranslateModule.forRoot()],
-      providers: [TranslatePipe, TableService, provideAnimationsAsync()],
-    }).compileComponents();
-  });
-
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        TableComponent,
+        TranslateModule.forRoot(),
+        TableFilterComponent,
+      ],
+      providers: [
+        TranslatePipe,
+        FormatPipe,
+        TableService,
+        provideNoopAnimations(),
+      ],
+    });
+
     fixture = TestBed.createComponent(TableComponent);
     component = fixture.componentInstance;
 
@@ -94,6 +103,7 @@ describe('TableComponent', () => {
       },
     ];
     component.totalCount = 10;
+    component.isLoading = false;
     fixture.detectChanges();
   });
 
@@ -101,7 +111,7 @@ describe('TableComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should get relations comma separated', () => {
+  it('should get relations comma separated', () => {
     const tableCells = fixture.debugElement.queryAll(By.css('td'));
     expect(tableCells).toBeDefined();
     expect(tableCells[3].nativeElement.innerText).toEqual('a, b, c');
@@ -109,7 +119,7 @@ describe('TableComponent', () => {
     expect(tableCells[13].nativeElement.innerText).toEqual('');
   });
 
-  xit('should get dropdown', () => {
+  it('should get dropdown', () => {
     const tableCells = fixture.debugElement.queryAll(
       By.css('td .atlas-select')
     );
@@ -122,7 +132,7 @@ describe('TableComponent', () => {
     });
   });
 
-  xit('should output edit event', () => {
+  it('should output edit event', () => {
     spyOn(component.editElementEvent, 'emit');
 
     const firstTableCell = fixture.debugElement.query(By.css('td'));
