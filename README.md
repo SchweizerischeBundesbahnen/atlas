@@ -6,12 +6,14 @@ This is the repository for business relevant services for ATLAS.
 
 - [CI/CD Status](#cicd-status)
 - [SonarQube Static Code Analysis](#sonarqube-static-code-analysis)
+- [Opensource](#opensource)
 - [Big Picture](#big-picture)
 - [Links](#links)
 - [ATLAS CI/CD with Tekton](#atlas-cicd-with-tekton)
   * [Gradle build automation](#gradle-build-automation)
   * [Continuous Deployment Pipeline](#continuous-deployment-pipeline)
   * [E2E Videos Results](#e2e-videos-results)
+  * [Opengrep Results](#opengrep-results)
 - [Stages and their purpose](#stages-and-their-purpose)
 - [Monitoring and Logging](#monitoring-and-logging)
 - [Hotfix Build and Deployment](#hotfix-build-and-deployment)
@@ -57,6 +59,10 @@ This is the repository for business relevant services for ATLAS.
 * [![Vulnerabilities](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=vulnerabilities&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
 * [![Technical Debt](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=sqale_index&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
 * [![Coverage](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=coverage&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+
+## Opensource
+
+**atlas** is opensource and published on [GitHub](https://github.com/SchweizerischeBundesbahnen/atlas) 
 
 ## Big Picture
 
@@ -129,6 +135,14 @@ The Cypress Videos results are stored to the following Amazon S3 Bucket:
 
 * Bucket name: **atlas-cypress-ci-dev**
 * [Credentials](https://vault-nonprod.sbb.ch/ui/vault/secrets/kv/show/SKI/ATLAS/amazon_s3/cypress-ci)
+
+### Opengrep Results
+
+The [opengrep](https://github.com/opengrep/opengrep) scan result is stored to the following Amazon S3 Bucket:
+
+* Bucket name: **atlas-cypress-ci-dev**
+* Directory: continuous/{date-time}/
+* [Credentials](https://vault-nonprod.sbb.ch/ui/vault/secrets/kv/show/SKI/ATLAS/amazon_s3/cypress-ci)  
 
 ## Stages and their purpose
 
