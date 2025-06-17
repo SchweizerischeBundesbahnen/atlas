@@ -19,15 +19,7 @@ import { ApplicationPermissionComponent } from './application-permission/applica
   selector: 'atlas-permission',
   templateUrl: './permission.component.html',
   styleUrls: ['./permission.component.scss'],
-  imports: [
-    NgIf,
-    MatButton,
-    MatMenuTrigger,
-    MatMenu,
-    TranslatePipe,
-    ApplicationPermissionComponent,
-    JsonPipe,
-  ],
+  imports: [ApplicationPermissionComponent, JsonPipe],
 })
 export class PermissionComponent implements OnInit {
   editable = input(false);
