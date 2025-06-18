@@ -47,14 +47,14 @@ class TerminationStopPointWorkflowApiTest extends BaseControllerApiTest {
         .status(TerminationWorkflowStatus.TERMINATION_APPROVED)
         .build();
 
-    repository.save(workflowOne);
+    final TerminationStopPointWorkflow savedWorkflowOne = repository.save(workflowOne);
     repository.save(workflowTwo);
 
-    // when
+    // when & then
     mvc.perform(get("/internal/termination-stop-point/workflows"
             + "?searchCriterias=bern"
             + "&searchCriterias=ch:1:sloid:1"
-            //+ "&workflowIds=50" // todo: check if it works this way, else get dynamic from save operation
+            + "&workflowIds=" + savedWorkflowOne.getId()
             + "&status=TERMINATION_APPROVED"
             + "&status=STARTED"
             + "&sboids=ch:1:sboid:1"
@@ -63,7 +63,5 @@ class TerminationStopPointWorkflowApiTest extends BaseControllerApiTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)))
         .andExpect(jsonPath("$.objects", hasSize(1)));
-
-    // then
   }
 }
