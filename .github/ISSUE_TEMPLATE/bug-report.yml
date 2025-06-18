@@ -49,7 +49,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: Which version of Lyne Components are you using
+      label: Which version of atlas are you using
       description: e.g. 26.2
     validations:
       required: false

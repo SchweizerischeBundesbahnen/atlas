@@ -1,6 +1,7 @@
 # Contributing to Project
 
-Thank you for considering contributing to this project! Your help is greatly appreciated. Please take a moment to review this document to make the contribution process easy and effective for everyone involved.
+Thank you for considering contributing to this project! Your help is greatly appreciated. Please take a moment to review this
+document to make the contribution process easy and effective for everyone involved.
 
 ## Table of Contents
 
@@ -17,13 +18,15 @@ Thank you for considering contributing to this project! Your help is greatly app
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [email@example.com](mailto:email@example.com).
+This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are
+expected to uphold this code. Please report unacceptable behavior to [TechSupport-ATLAS@sbb.ch](mailto:TechSupport-ATLAS@sbb.ch).
 
 ## How Can I Contribute?
 
 ### Reporting Bugs
 
-If you encounter a bug, please open an issue on GitHub. Include as much detail as possible to help us understand and reproduce the problem.
+If you encounter a bug, please open an issue on GitHub. Include as much detail as possible to help us understand and reproduce the
+problem.
 
 ### Suggesting Enhancements
 
@@ -38,6 +41,7 @@ We welcome suggestions for improvements! Please open an issue to discuss your id
 5. Open a pull request against the `main` branch of this repository.
 
 Please ensure that your pull request adheres to the following guidelines:
+
 - Include a clear description of your changes.
 - Reference any related issues in the pull request description.
 - Ensure that your code follows the project's coding standards and style guides.
@@ -47,7 +51,7 @@ Please ensure that your pull request adheres to the following guidelines:
 To set up your development environment, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/SchweizerischeBundesbahnen/atlas.git`
-2. See the main [README.md](README.md) to set up your development environment.  
+2. See the main [README.md](README.md) to set up your development environment.
 
 ## Style Guides
 
