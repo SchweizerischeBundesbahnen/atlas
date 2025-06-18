@@ -27,25 +27,7 @@ Changes in this pull request:
 
 I tested the build on the following browsers:
 
-- [ ] Firefox Desktop
-- [ ] Chrome Desktop
 - [ ] Edge Desktop
-- [ ] Safari Desktop
-- [ ] Chrome Mobile
-- [ ] Safari Mobile
-
-## Screen readers
-
-I tested the build on the following browsers:
-
-- [ ] JAWS Firefox Desktop
-- [ ] JAWS Chrome Desktop
-- [ ] NVDA Firefox Desktop
-- [ ] NVDA Chrome Desktop
-- [ ] VoiceOver Safari Desktop
-- [ ] VoiceOver Chrome Desktop
-- [ ] VoiceOver Safari Mobile
-- [ ] Android Accessibility Suite Chrome Mobile
 
 ## Pull request type
 
