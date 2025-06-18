@@ -1,0 +1,15 @@
+wiremock/Dockerfile
+docker-compose.yml
+renovate.json
+frontend/src/index.html
+frontend/src/environments/environment.ts
+frontend/src/app/core/search-service-point/search-result-highlight.pipe.ts
+frontend/src/app/core/components/relation/relation.component.ts
+frontend/src/app/core/auth/auth.service.spec.ts
+base-atlas/src/main/java/ch/sbb/atlas/versioning/service/ToVersionableMapper.java
+auto-rest-doc/src/main/java/ch/sbb/atlas/auto/rest/doc/descriptor/ParameterWrapper.java
+java.lang.security.audit.unsafe-reflection.unsafe-reflection
+gradle
+gradlew
+gradlew.bat
+*.csv
