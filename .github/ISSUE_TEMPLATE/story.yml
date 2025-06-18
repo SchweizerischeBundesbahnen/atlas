@@ -1,5 +1,5 @@
 name: '[Internal] Story'
-description: An internal story for lyne-components
+description: An internal story for atlas
 title: 'story(COMPONENT): TITLE'
 labels: [story, to-refine]
 body:
