@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.680.0"
+version = "2.681.0"
 
 description = "Atlas Mail Service"
 
