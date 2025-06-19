@@ -1,33 +1,33 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  Sort,
-  SortDirection,
   MatSort,
   MatSortHeader,
+  Sort,
+  SortDirection,
 } from '@angular/material/sort';
-import { PageEvent, MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
 import { TableService } from './table.service';
 import { TablePagination } from './table-pagination';
 import { ColumnDropDownEvent } from './column-drop-down-event';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckboxChange, MatCheckbox } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { TableFilter } from '../table-filter/config/table-filter';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
-import { NgIf, NgClass, NgFor, NgSwitch, NgSwitchCase } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { TableFilterComponent } from '../table-filter/table-filter.component';
 import {
-  MatTable,
-  MatColumnDef,
-  MatHeaderCellDef,
-  MatHeaderCell,
-  MatCellDef,
   MatCell,
-  MatHeaderRowDef,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
-  MatRowDef,
-  MatRow,
+  MatHeaderRowDef,
   MatNoDataRow,
+  MatRow,
+  MatRowDef,
+  MatTable,
 } from '@angular/material/table';
 import { MouseOverTitleDirective } from './directive/mouse-over-title.directive';
 import { SelectComponent } from '../../form-components/select/select.component';
@@ -42,19 +42,15 @@ import { FormatPipe } from './pipe/format.pipe';
   styleUrls: ['./table.component.scss'],
   imports: [
     LoadingSpinnerComponent,
-    NgIf,
     TableFilterComponent,
     MatTable,
     MatSort,
     NgClass,
-    NgFor,
     MatColumnDef,
     MatHeaderCellDef,
     MatHeaderCell,
     MatSortHeader,
     MatCheckbox,
-    NgSwitch,
-    NgSwitchCase,
     MatCellDef,
     MatCell,
     MouseOverTitleDirective,
