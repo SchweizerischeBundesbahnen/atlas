@@ -26,6 +26,10 @@
   </div>
 
   <div class="white-table-container-no-tabs mt-4">
-    <atlas-permission></atlas-permission>
+    <atlas-permission
+      [form]="form"
+      (applicationChanged)="onApplicationChanged($event)"
+    ></atlas-permission>
+    {{ form.value | json }}
   </div>
 </div>

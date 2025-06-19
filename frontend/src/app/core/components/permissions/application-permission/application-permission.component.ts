@@ -1,10 +1,18 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
   BusinessOrganisation,
   BusinessOrganisationsService,
   Country,
+  PermissionRestrictionType,
   SwissCanton,
 } from '../../../../api';
 import {
@@ -16,21 +24,24 @@ import {
 import {
   ApplicationPermission,
   PermissionRestriction,
-  PermissionsForm,
-} from '../form/permission-form-group';
-import { AsyncPipe } from '@angular/common';
+} from '../form/application-permission-form-group';
 import { AtlasLabelFieldComponent } from '../../../form-components/atlas-label-field/atlas-label-field.component';
 import { AtlasSlideToggleComponent } from '../../../form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { BusinessOrganisationSelectComponent } from '../../../form-components/bo-select/business-organisation-select.component';
-import { BULK_IMPORT_APPLICATIONS } from '../../../auth/permission/bulk-import-permission';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SelectComponent } from '../../../form-components/select/select.component';
 import { Countries } from '../../../country/Countries';
 import { Cantons } from '../../../cantons/Cantons';
 import { TableColumn } from '../../table/table-column';
 import { BusinessOrganisationLanguageService } from '../../../form-components/bo-select/business-organisation-language.service';
-import { BehaviorSubject, firstValueFrom, Observable, of } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { RelationComponent } from '../../relation/relation.component';
+import { AtlasSpacerComponent } from '../../spacer/atlas-spacer.component';
+import {
+  ApplicationConfig,
+  ApplicationPermissionConfig,
+  RoleConfig,
+} from './application-permission.config';
 
 @Component({
   selector: 'atlas-application-permission',
@@ -44,16 +55,17 @@ import { RelationComponent } from '../../relation/relation.component';
     TranslatePipe,
     SelectComponent,
     RelationComponent,
+    AtlasSpacerComponent,
   ],
 })
-export class ApplicationPermissionComponent implements OnInit {
-  readonly bulkImportApplications = BULK_IMPORT_APPLICATIONS;
+export class ApplicationPermissionComponent implements OnInit, OnChanges {
   readonly ApplicationType = ApplicationType;
 
   readonly getCountryEnum = Countries.getCountryEnum;
   readonly SWISS_COUNTRIES_PREFIX_LABEL = 'TTH.COUNTRY.';
 
   readonly COUNTRIES = this.filterAndSortCountries();
+
   private filterAndSortCountries(): Country[] {
     const sortedCountryArray: Country[] = [];
     sortedCountryArray.push(
@@ -104,54 +116,31 @@ export class ApplicationPermissionComponent implements OnInit {
     },
   ];
 
-  private readonly availableApplicationRolesConfig: {
-    [application in ApplicationType]: ApplicationRole[];
-  } = {
-    TTFN: [
-      ApplicationRole.Reader,
-      ApplicationRole.Writer,
-      ApplicationRole.SuperUser,
-      ApplicationRole.Supervisor,
-    ],
-    LIDI: [
-      ApplicationRole.Reader,
-      ApplicationRole.Writer,
-      ApplicationRole.SuperUser,
-      ApplicationRole.Supervisor,
-    ],
-    BODI: [ApplicationRole.Reader, ApplicationRole.Supervisor],
-    TIMETABLE_HEARING: [
-      ApplicationRole.Reader,
-      ApplicationRole.ExplicitReader,
-      ApplicationRole.Writer,
-      ApplicationRole.Supervisor,
-    ],
-    SEPODI: [
-      ApplicationRole.Reader,
-      ApplicationRole.Writer,
-      ApplicationRole.SuperUser,
-      ApplicationRole.Supervisor,
-    ],
-    PRM: [
-      ApplicationRole.Reader,
-      ApplicationRole.Writer,
-      ApplicationRole.SuperUser,
-      ApplicationRole.Supervisor,
-    ],
-  };
-
   application = input.required<ApplicationType>();
-  form = input.required<PermissionsForm>();
+  form = input.required<FormGroup<ApplicationPermission>>();
 
+  availableRoles: ApplicationRole[] = [];
+  applicationConfig: ApplicationConfig = ApplicationPermissionConfig.get(
+    ApplicationType.Ttfn
+  );
   applicationForm!: FormGroup<ApplicationPermission>;
   permissionsForm!: FormGroup<PermissionRestriction>;
-  availableRoles: ApplicationRole[] = [];
 
   ngOnInit(): void {
-    this.applicationForm = this.form().byApplication(this.application());
+    this.applicationForm = this.form();
     this.permissionsForm = this.applicationForm.controls.permissions;
-    this.availableRoles =
-      this.availableApplicationRolesConfig[this.application()];
+    this.availableRoles = ApplicationPermissionConfig.getRoles(
+      this.application()
+    );
+    this.applicationConfig = ApplicationPermissionConfig.get(
+      this.application()
+    );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.application) {
+      this.ngOnInit();
+    }
   }
 
   toggleBulkImport(value: boolean) {
@@ -170,10 +159,6 @@ export class ApplicationPermissionComponent implements OnInit {
     this.applicationForm.controls.permissions.controls.infoPlusTerminationVote!.setValue(
       value
     );
-  }
-
-  get role() {
-    return this.applicationForm.controls.role.value!;
   }
 
   remove(): void {
@@ -218,5 +203,61 @@ export class ApplicationPermissionComponent implements OnInit {
       sboids.setValue(updatedSboids);
       this.businessOrganisationForm.reset();
     }
+  }
+
+  get currentRole(): ApplicationRole {
+    return this.applicationForm.controls.role.value ?? ApplicationRole.Reader;
+  }
+
+  get currentRoleConfig(): RoleConfig {
+    return (
+      this.applicationConfig.roles.find((i) => i.role === this.currentRole) ?? {
+        role: ApplicationRole.Reader,
+        permissions: {
+          restrictions: [],
+          specialPermissions: [],
+        },
+      }
+    );
+  }
+
+  get currentRestrictions() {
+    return this.currentRoleConfig.permissions.restrictions;
+  }
+
+  get showBusinessOrganisationRestriction() {
+    return this.currentRestrictions.includes(
+      PermissionRestrictionType.BusinessOrganisation
+    );
+  }
+
+  get showCountryRestriction() {
+    return this.currentRestrictions.includes(PermissionRestrictionType.Country);
+  }
+
+  get showCantonRestriction() {
+    return this.currentRestrictions.includes(PermissionRestrictionType.Canton);
+  }
+
+  get currentSpecialPermissions() {
+    return this.currentRoleConfig.permissions.specialPermissions;
+  }
+
+  get showBulkImport() {
+    return this.currentSpecialPermissions.includes(
+      PermissionRestrictionType.BulkImport
+    );
+  }
+
+  get showInfoPlusTerminationVote() {
+    return this.currentSpecialPermissions.includes(
+      PermissionRestrictionType.InfoPlusTerminationVote
+    );
+  }
+
+  get showNovaTerminationVote() {
+    return this.currentSpecialPermissions.includes(
+      PermissionRestrictionType.NovaTerminationVote
+    );
   }
 }

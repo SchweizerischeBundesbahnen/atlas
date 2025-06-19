@@ -1,37 +1,40 @@
-import { Component, input, OnInit } from '@angular/core';
-import { AuthService } from '../../auth/auth.service';
-import { ApplicationRole, ApplicationType, Permission } from '../../../api';
-import { UserService } from '../../auth/user/user.service';
-import { User } from '../../auth/user/user';
-import { JsonPipe, NgIf } from '@angular/common';
-import { MatButton } from '@angular/material/button';
-import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { Component, input, OnInit, output } from '@angular/core';
+import { ApplicationType } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Router } from '@angular/router';
-import { Pages } from '../../../pages/pages';
-import {
-  ApplicationPermissionFormGroupBuilder,
-  PermissionsForm,
-} from './form/permission-form-group';
 import { ApplicationPermissionComponent } from './application-permission/application-permission.component';
+import {
+  MatTab,
+  MatTabChangeEvent,
+  MatTabGroup,
+  MatTabLabel,
+} from '@angular/material/tabs';
+import { FormGroup } from '@angular/forms';
+import { ApplicationPermission } from './form/application-permission-form-group';
 
 @Component({
   selector: 'atlas-permission',
   templateUrl: './permission.component.html',
   styleUrls: ['./permission.component.scss'],
-  imports: [ApplicationPermissionComponent, JsonPipe],
+  imports: [
+    ApplicationPermissionComponent,
+    TranslatePipe,
+    MatTabGroup,
+    MatTab,
+    MatTabLabel,
+  ],
 })
 export class PermissionComponent implements OnInit {
-  editable = input(false);
+  form = input.required<FormGroup<ApplicationPermission>>();
+  applicationChanged = output<ApplicationType>();
 
   protected readonly applications: ApplicationType[] =
     Object.values(ApplicationType);
 
-  form!: PermissionsForm;
-
-  ngOnInit(): void {
-    this.form = ApplicationPermissionFormGroupBuilder.buildFormGroup();
-  }
+  ngOnInit(): void {}
 
   protected readonly ApplicationType = ApplicationType;
+
+  onSelectedTabChange($event: MatTabChangeEvent) {
+    this.applicationChanged.emit(this.applications[$event.index]);
+  }
 }
