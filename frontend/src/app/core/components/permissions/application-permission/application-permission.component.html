@@ -1,10 +1,6 @@
 <div class="application-wrapper">
-  <h2 class="font-bold-xl mt-4">
-    {{ 'USER_ADMIN.APPLICATION.' + application() | translate }}
-  </h2>
-
-  <div class="col-12 d-flex">
-    <div class="d-flex flex-column col-3 ps-1 pe-5">
+  <div class="application-role d-flex mb-3">
+    <div class="role d-flex flex-column col-3 me-3">
       <atlas-select
         [formGroup]="applicationForm"
         label="USER_ADMIN.ROLE"
@@ -14,101 +10,116 @@
         optionTranslateLabelPrefix="COMMON.ROLES."
       >
       </atlas-select>
-
-      @if (
-        bulkImportApplications.includes(application()) &&
-        (role === 'WRITER' || role === 'SUPER_USER')
-      ) {
-        <div class="bulk-import-toggle my-3">
-          <app-atlas-label-field
-            fieldLabel="PAGES.BULK_IMPORT.TITLE_MENU"
-          ></app-atlas-label-field>
-          <atlas-slide-toggle
-            (toggleChange)="toggleBulkImport($event)"
-            [disabled]="applicationForm.disabled"
-          ></atlas-slide-toggle>
-        </div>
-      }
-      @if (ApplicationType.Sepodi === application()) {
-        <div class="bulk-import-toggle my-3">
-          <app-atlas-label-field
-            fieldLabel="USER_ADMIN.NOVA"
-          ></app-atlas-label-field>
-          <atlas-slide-toggle
-            (toggleChange)="toggleNovaTermination($event)"
-            [disabled]="applicationForm.disabled"
-          ></atlas-slide-toggle>
-        </div>
-        <div class="bulk-import-toggle my-3">
-          <app-atlas-label-field
-            fieldLabel="USER_ADMIN.INFO_PLUS"
-          ></app-atlas-label-field>
-          <atlas-slide-toggle
-            (toggleChange)="toggleInfoPlusTermination($event)"
-            [disabled]="applicationForm.disabled"
-          ></atlas-slide-toggle>
-        </div>
-      }
     </div>
-
-    <div class="d-flex flex-column col-9 pe-3">
-      @if (
-        application() === 'SEPODI' &&
-        (role === 'WRITER' || role === 'SUPER_USER')
-      ) {
-        <atlas-select
-          label="COMMON.COUNTRIES"
-          [additionalLabelspace]="0"
-          [optionTranslateLabelPrefix]="SWISS_COUNTRIES_PREFIX_LABEL"
-          [displayExtractor]="getCountryEnum"
-          [options]="COUNTRIES"
-          [multiple]="true"
-          [isSelectAllEnabled]="true"
-          controlName="countryRestrictions"
-          [formGroup]="permissionsForm"
-        >
-        </atlas-select>
-        <br />
-      }
-      @if (application() !== 'TIMETABLE_HEARING' && role === 'WRITER') {
-        <span class="font-bold-lg">
-          {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate }}
-        </span>
-        <app-relation
-          (deleteRelation)="remove()"
-          (editModeChanged)="add()"
-          (selectedIndexChanged)="selectedIndex = $event"
-          addBtnNameTranslationKey="USER_ADMIN.ADD_BUSINESS_ORGANISATION"
-          deleteBtnNameTranslationKey="USER_ADMIN.DELETE_BUSINESS_ORGANISATION"
-          [editable]="applicationForm.enabled"
-          [records]="currentBusinessOrganisations"
-          [selectedIndex]="selectedIndex"
-          [tableColumns]="tableColumnDef"
-          [relationEditable]="false"
-        >
-          @if (applicationForm.enabled) {
-            <div class="mb-3 bo-select-wrapper" table-button-between>
-              <bo-select
-                [controlName]="boFormCtrlName"
-                [formGroup]="businessOrganisationForm"
-              ></bo-select>
-            </div>
-          }
-        </app-relation>
-      }
-      @if (application() === 'TIMETABLE_HEARING' && role === 'WRITER') {
-        <atlas-select
-          controlName="cantonRestrictions"
-          [formGroup]="permissionsForm"
-          label="COMMON.CANTONS"
-          [additionalLabelspace]="0"
-          [optionTranslateLabelPrefix]="SWISS_CANTONS_PREFIX_LABEL"
-          [displayExtractor]="getCantonAbbreviation"
-          [options]="SWISS_CANTONS"
-          [multiple]="true"
-        >
-        </atlas-select>
-      }
+    <div class="role d-flex flex-column justify-content-center font-regular-sm">
+      {{ 'PROFILE.ROLE_DESCRIPTION.' + currentRole | translate }}
     </div>
   </div>
+
+  @if (currentRestrictions.length > 0) {
+    <atlas-spacer height="15px" [divider]="true"></atlas-spacer>
+    <div class="restrictions col-12 d-flex flex-column mb-3">
+      <div class="d-flex font-bold-xl">Einschränkungen</div>
+      <div class="d-flex flex-column">
+        @if (showCountryRestriction) {
+          <atlas-select
+            label="COMMON.COUNTRIES"
+            [additionalLabelspace]="0"
+            [optionTranslateLabelPrefix]="SWISS_COUNTRIES_PREFIX_LABEL"
+            [displayExtractor]="getCountryEnum"
+            [options]="COUNTRIES"
+            [multiple]="true"
+            [isSelectAllEnabled]="true"
+            controlName="countryRestrictions"
+            [formGroup]="permissionsForm"
+          >
+          </atlas-select>
+          <br />
+        }
+        @if (showBusinessOrganisationRestriction) {
+          <span class="font-bold-lg">
+            {{
+              'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate
+            }}
+          </span>
+          <app-relation
+            (deleteRelation)="remove()"
+            (editModeChanged)="add()"
+            (selectedIndexChanged)="selectedIndex = $event"
+            addBtnNameTranslationKey="USER_ADMIN.ADD_BUSINESS_ORGANISATION"
+            deleteBtnNameTranslationKey="USER_ADMIN.DELETE_BUSINESS_ORGANISATION"
+            [editable]="applicationForm.enabled"
+            [records]="currentBusinessOrganisations"
+            [selectedIndex]="selectedIndex"
+            [tableColumns]="tableColumnDef"
+            [relationEditable]="false"
+          >
+            @if (applicationForm.enabled) {
+              <div class="mb-3 bo-select-wrapper" table-button-between>
+                <bo-select
+                  [controlName]="boFormCtrlName"
+                  [formGroup]="businessOrganisationForm"
+                ></bo-select>
+              </div>
+            }
+          </app-relation>
+        }
+        @if (showCantonRestriction) {
+          <atlas-select
+            controlName="cantonRestrictions"
+            [formGroup]="permissionsForm"
+            label="COMMON.CANTONS"
+            [additionalLabelspace]="0"
+            [optionTranslateLabelPrefix]="SWISS_CANTONS_PREFIX_LABEL"
+            [displayExtractor]="getCantonAbbreviation"
+            [options]="SWISS_CANTONS"
+            [multiple]="true"
+          >
+          </atlas-select>
+        }
+      </div>
+    </div>
+  }
+
+  @if (currentSpecialPermissions.length > 0) {
+    <atlas-spacer height="15px" [divider]="true"></atlas-spacer>
+    <div class="special-permissions">
+      <div class="d-flex font-bold-xl">Spezialberechtigungen</div>
+      <div class="special-permissions d-flex flex-row">
+        @if (showBulkImport) {
+          <div class="me-5">
+            <app-atlas-label-field
+              fieldLabel="PAGES.BULK_IMPORT.TITLE_MENU"
+            ></app-atlas-label-field>
+            <atlas-slide-toggle
+              (toggleChange)="toggleBulkImport($event)"
+              [disabled]="applicationForm.disabled"
+            ></atlas-slide-toggle>
+          </div>
+        }
+        @if (showNovaTerminationVote) {
+          <div class="me-5">
+            <app-atlas-label-field
+              fieldLabel="USER_ADMIN.NOVA"
+            ></app-atlas-label-field>
+            <atlas-slide-toggle
+              (toggleChange)="toggleNovaTermination($event)"
+              [disabled]="applicationForm.disabled"
+            ></atlas-slide-toggle>
+          </div>
+        }
+        @if (showInfoPlusTerminationVote) {
+          <div class="me-5">
+            <app-atlas-label-field
+              fieldLabel="USER_ADMIN.INFO_PLUS"
+            ></app-atlas-label-field>
+            <atlas-slide-toggle
+              (toggleChange)="toggleInfoPlusTermination($event)"
+              [disabled]="applicationForm.disabled"
+            ></atlas-slide-toggle>
+          </div>
+        }
+      </div>
+    </div>
+  }
 </div>
