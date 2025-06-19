@@ -1,11 +1,12 @@
 <div class="overview-table pb-xl-5">
   <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
 
-  <app-table-filter
-    (searchEvent)="searchData()"
-    *ngIf="showTableFilter"
-    [filterConfigurations]="tableFilterConfig"
-  ></app-table-filter>
+  @if (showTableFilter) {
+    <app-table-filter
+      (searchEvent)="searchData()"
+      [filterConfigurations]="tableFilterConfig"
+    ></app-table-filter>
+  }
 
   <ng-content></ng-content>
 
@@ -21,7 +22,7 @@
     mat-table
     matSort
   >
-    <ng-container *ngFor="let column of tableColumns">
+    @for (column of tableColumns; track column) {
       <ng-container matColumnDef="{{ column.columnDef ?? column.value }}">
         <th
           *matHeaderCellDef
@@ -32,23 +33,22 @@
           mat-sort-header
           scope="col"
         >
-          <div *ngIf="!column.checkbox">
-            {{ column.headerTitle | translate }}
-          </div>
-          <div *ngIf="column.checkbox">
+          @if (column.checkbox) {
             <mat-checkbox
               (change)="toggleAll()"
               (click)="$event.stopPropagation()"
               [checked]="isAllSelected()"
               data-cy="tableCheckboxAll"
             ></mat-checkbox>
-          </div>
+          } @else {
+            {{ column.headerTitle | translate }}
+          }
         </th>
-        <div
-          *ngIf="!column.checkbox && !column.dropdown && !column.button && !column.icon"
-          [ngSwitch]="!!column.getTitle"
-        >
-          <ng-template [ngSwitchCase]="true">
+
+        @if (
+          !column.checkbox && !column.dropdown && !column.button && !column.icon
+        ) {
+          @if (column.getTitle) {
             <td
               *matCellDef="let value"
               [mouseOverTitleValue]="value[column.value]"
@@ -58,9 +58,7 @@
             >
               {{ value[column.value] | format: column }}
             </td>
-          </ng-template>
-
-          <ng-template [ngSwitchCase]="false">
+          } @else {
             <td
               *matCellDef="let value"
               [title]="value[column.value] | showTitle: column"
@@ -69,22 +67,24 @@
             >
               {{ value[column.value] | format: column }}
             </td>
-          </ng-template>
-        </div>
-        <div *ngIf="column.dropdown">
+          }
+        }
+        @if (column.dropdown) {
           <td *matCellDef="let value" class="table-cell bordered-cell" mat-cell>
             <atlas-select
               (click)="stopPropagation($event)"
               (selectChanged)="changeDropdownEvent.emit({ $event, value })"
               [additionalLabelspace]="0"
               [disabled]="column.dropdown.disabled"
-              [optionTranslateLabelPrefix]="column.dropdown.translate.withPrefix"
+              [optionTranslateLabelPrefix]="
+                column.dropdown.translate.withPrefix
+              "
               [options]="column.dropdown.options"
               [value]="value[column.value]"
             ></atlas-select>
           </td>
-        </div>
-        <div *ngIf="column.checkbox">
+        }
+        @if (column.checkbox) {
           <td *matCellDef="let row" class="table-cell bordered-cell" mat-cell>
             <mat-checkbox
               (change)="toggleCheckBox($event, row)"
@@ -92,8 +92,8 @@
               [checked]="checkBoxSelection.isSelected(row)"
             ></mat-checkbox>
           </td>
-        </div>
-        <div *ngIf="column.button">
+        }
+        @if (column.button) {
           <td
             (click)="stopPropagation($event)"
             *matCellDef="let row"
@@ -117,15 +117,17 @@
               </ng-template>
             </atlas-button>
           </td>
-        </div>
+        }
 
-        <div *ngIf="column.icon">
+        @if (column.icon) {
           <td *matCellDef="let value" class="table-cell bordered-cell" mat-cell>
-              <i *ngIf="column.icon.callback(value[column.value])" [class]="'icon ' + column.icon.icon"></i>
+            @if (column.icon.callback(value[column.value])) {
+              <i [class]="'icon ' + column.icon.icon"></i>
+            }
           </td>
-        </div>
+        }
       </ng-container>
-    </ng-container>
+    }
 
     <tr *matHeaderRowDef="getColumnDefs()" mat-header-row></tr>
     <tr
@@ -137,7 +139,9 @@
 
     <!-- Row shown when there is no matching data. -->
     <tr *matNoDataRow class="mat-row">
-      <td class="mat-cell" colspan="100">{{ 'COMMON.NODATAFOUND' | translate }}</td>
+      <td class="mat-cell" colspan="100">
+        {{ 'COMMON.NODATAFOUND' | translate }}
+      </td>
     </tr>
   </table>
 
