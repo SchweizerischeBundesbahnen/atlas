@@ -11,19 +11,19 @@
 .success {
   @extend %snack-bar-container;
   background-color: variables.$successColor;
-  --mdc-snackbar-container-color: #{variables.$successColor};
+  --mat-snack-bar-container-color: #{variables.$successColor};
 }
 
 .error {
   @extend %snack-bar-container;
   background-color: variables.$errorColor;
-  --mdc-snackbar-container-color: #{variables.$errorColor};
+  --mat-snack-bar-container-color: #{variables.$errorColor};
   white-space: unset !important;
 }
 
 .warning {
   @extend %snack-bar-container;
   background-color: variables.$warnColor;
-  --mdc-snackbar-container-color: #{variables.$warnColor};
+  --mat-snack-bar-container-color: #{variables.$warnColor};
   white-space: unset !important;
 }

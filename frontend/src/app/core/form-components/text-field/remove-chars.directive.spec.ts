@@ -12,13 +12,14 @@ import { By } from '@angular/platform-browser';
     [required]="true"
     controlName="east"
     fieldLabel="SEPODI.GEOLOCATION.LV95.EAST"
-    [removeChars]="['\\'']"
+    [removeChars]="charsToRemove"
   >
   </atlas-text-field>`,
   imports: [TextFieldComponent, RemoveCharsDirective],
 })
 class TestComponent {
   formGroup = new FormGroup({ east: new FormControl('1') });
+  charsToRemove = ["'"];
 }
 
 const keyUpEvent = new KeyboardEvent('keyup');
