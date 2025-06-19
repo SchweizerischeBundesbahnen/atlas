@@ -1,8 +1,8 @@
-import {UserService} from '../../core/auth/user/user.service';
-import {environment} from '../../../environments/environment';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import { UserService } from '../../core/auth/user/user.service';
+import { environment } from '../../../environments/environment';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 type NotBlob<T> = T extends Blob ? unknown : T;
 
@@ -95,7 +95,9 @@ export class AtlasApiService {
       }
 
       else {
-        formData.append(key, this.createBlob(params[key]));
+        if(params[key]){
+          formData.append(key, this.createBlob(params[key]));
+        }
       }
     });
 
