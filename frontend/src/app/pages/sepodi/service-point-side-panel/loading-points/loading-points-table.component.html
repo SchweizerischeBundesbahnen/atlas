@@ -17,7 +17,6 @@
     [tableData]="elements"
     [totalCount]="totalCount$"
     [tableColumns]="tableColumns"
-    [canEdit]="true"
     [tableFilterConfig]="tableFilterConfig"
     (editElementEvent)="editVersion($event)"
     (tableChanged)="getOverview($event)"
@@ -26,11 +25,11 @@
 </div>
 
 <atlas-detail-footer>
-    <atlas-button
-      buttonDataCy="close-detail"
-      buttonText="SEPODI.BACK_TO_MAP"
-      buttonType="whiteFooterNonEdit"
-      (buttonClicked)="closeSidePanel()"
-    >
-    </atlas-button>
+  <atlas-button
+    buttonDataCy="close-detail"
+    buttonText="SEPODI.BACK_TO_MAP"
+    buttonType="whiteFooterNonEdit"
+    (buttonClicked)="closeSidePanel()"
+  >
+  </atlas-button>
 </atlas-detail-footer>

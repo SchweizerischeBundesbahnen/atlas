@@ -642,6 +642,12 @@
     "DIALOG": {
       "START_TERMINATION_TITLE": "Achtung: Wenn Sie Speichern klicken, starten Sie eine Anhörung zur Terminierung der Haltestelle",
       "COMMENT": "Anmerkungen"
+    },
+    "OVERVIEW_TITLE": "Anhörungen zur Terminierung von Haltestellen",
+    "OVERVIEW_TABLE_COLUMNS": {
+      "TRANSPORT_COMPANY_DATE": "TU Aufhebung per",
+      "INFO+_DATE": "Info+ Aufhebung per",
+      "NOVA_DATE": "NOVA Aufhebung per"
     }
   },
   "WORKFLOW": {

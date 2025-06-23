@@ -3,7 +3,6 @@
   <app-table
     [tableData]="sublines"
     [tableColumns]="tableColumns"
-    [canEdit]="true"
     (editElementEvent)="rowClicked($event)"
     (tableChanged)="getOverview()"
     (tableInitialized)="getOverview()"

@@ -1,16 +1,14 @@
-import { Component, Signal } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
-import { of, Subject, switchMap } from 'rxjs';
+import { Subject, switchMap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
-
-type test = {
-  elements: any[];
-  totalCount: number;
-};
+import { ContainerTerminationStopPointWorkflowModel } from '../../../../api/model/containerTerminationStopPointWorkflowModel';
+import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
+import { WorkflowService } from '../../../../api/service/workflow/workflow.service';
 
 @Component({
   selector: 'stop-point-termination-workflow-overview',
@@ -18,68 +16,56 @@ type test = {
   imports: [TableComponent, TranslatePipe],
 })
 export class StopPointTerminationWorkflowOverviewComponent {
-  private trigger$ = new Subject<{
+  private readonly workflowService = inject(WorkflowService);
+
+  private readonly trigger$ = new Subject<{
     searchCriteria: string[];
   }>();
 
-  readonly workflows: Signal<test> = toSignal(
+  protected readonly workflows: Signal<
+    ContainerTerminationStopPointWorkflowModel | undefined
+  > = toSignal(
     this.trigger$.pipe(
-      switchMap((triggerEvent) => {
-        console.log(triggerEvent); // todo: use for filter request
-        return of({
-          elements: [],
-          totalCount: 0,
-        } as test);
+      switchMap(({ searchCriteria }) => {
+        return this.workflowService.getTerminationStopPointWorkflows(
+          searchCriteria
+        );
       })
-    ),
-    {
-      initialValue: {
-        elements: [],
-        totalCount: 0,
-      },
-    }
+    )
   );
 
-  readonly tableColumns: TableColumn<any>[] = // todo: generate model
+  protected readonly tableColumns: TableColumn<TerminationStopPointWorkflowModel>[] =
     [
       { headerTitle: 'SEPODI.SERVICE_POINTS.WORKFLOW.ID', value: 'id' },
       {
         headerTitle: 'COMMON.STATUS',
         value: 'status',
-        translate: { withPrefix: 'WORKFLOW.STATUS.' },
+        translate: { withPrefix: '' }, // todo
       },
       { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
       {
-        headerTitle: 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL',
-        value: 'designationOfficial',
-      },
-      {
-        headerTitle: 'SEPODI.SERVICE_POINTS.WORKFLOW.VERSION_VALID_FROM',
-        value: 'versionValidFrom',
+        headerTitle:
+          'TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.TRANSPORT_COMPANY_DATE',
+        value: 'boTerminationDate',
         formatAsDate: true,
       },
       {
-        headerTitle: 'SEPODI.SERVICE_POINTS.WORKFLOW.CREATION',
-        value: 'creationDate',
+        headerTitle: 'TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.INFO+_DATE',
+        value: 'infoPlusTerminationDate',
         formatAsDate: true,
       },
       {
-        headerTitle: 'SEPODI.SERVICE_POINTS.WORKFLOW.START',
-        value: 'startDate',
-        formatAsDate: true,
-      },
-      {
-        headerTitle: 'SEPODI.SERVICE_POINTS.WORKFLOW.END',
-        value: 'endDate',
+        headerTitle: 'TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.NOVA_DATE',
+        value: 'novaTerminationDate',
         formatAsDate: true,
       },
     ];
 
-  readonly tableFilterConfig: TableFilter<unknown>[][] = [];
+  protected readonly tableFilterConfig: TableFilter<unknown>[][] = [];
 
-  onRowClick(element: any) {} // todo: use model type
+  protected onRowClick(element: TerminationStopPointWorkflowModel) {}
 
-  loadWorkflows(pagination: TablePagination) {
+  protected loadWorkflows(pagination: TablePagination) {
     this.trigger$.next({
       searchCriteria: ['test'],
     });

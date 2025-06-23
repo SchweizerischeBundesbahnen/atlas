@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-@Schema(name = "TerminationStopPointAddWorkflow")
+@Schema(name = "TerminationStopPointWorkflowModel")
 public class TerminationStopPointWorkflowModel {
 
   @Schema(description = "Workflow id", accessMode = AccessMode.READ_ONLY)

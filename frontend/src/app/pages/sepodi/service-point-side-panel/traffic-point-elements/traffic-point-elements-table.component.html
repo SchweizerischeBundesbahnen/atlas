@@ -6,16 +6,20 @@
       applicationType="SEPODI"
       buttonDataCy="new-traffic-point-element"
       buttonText="{{
-      isTrafficPointArea
-        ? ('SEPODI.BOARDING_AREAS.NEW' | translate)
-        : ('SEPODI.TRAFFIC_POINT_ELEMENTS.NEW' | translate)
-    }}"
+        isTrafficPointArea
+          ? ('SEPODI.BOARDING_AREAS.NEW' | translate)
+          : ('SEPODI.TRAFFIC_POINT_ELEMENTS.NEW' | translate)
+      }}"
       buttonType="createCheckingPermission"
       wrapperStyleClass="mb-3"
     ></atlas-button>
-    <app-navigation-sepodi-prm *ngIf="!isTrafficPointArea" targetPage="platform-table" [number]="servicePointVersion.number!.number" [sloid]="servicePointVersion.sloid!"></app-navigation-sepodi-prm>
+    <app-navigation-sepodi-prm
+      *ngIf="!isTrafficPointArea"
+      targetPage="platform-table"
+      [number]="servicePointVersion.number!.number"
+      [sloid]="servicePointVersion.sloid!"
+    ></app-navigation-sepodi-prm>
   </div>
-
 
   <div class="font-bold-2xl mt-5">
     {{
@@ -28,8 +32,9 @@
     data-cy="traffic-point-elements-table"
     [tableData]="trafficPointElementRows"
     [totalCount]="totalCount$"
-    [tableColumns]="isTrafficPointArea ? tableColumnsAreas : tableColumnsPlatforms"
-    [canEdit]="true"
+    [tableColumns]="
+      isTrafficPointArea ? tableColumnsAreas : tableColumnsPlatforms
+    "
     [tableFilterConfig]="tableFilterConfig"
     (editElementEvent)="editVersion($event)"
     (tableChanged)="getOverview($event)"
@@ -38,11 +43,11 @@
 </div>
 
 <atlas-detail-footer>
-    <atlas-button
-      buttonDataCy="close-detail"
-      buttonText="SEPODI.BACK_TO_MAP"
-      buttonType="whiteFooterNonEdit"
-      (buttonClicked)="closeSidePanel()"
-    >
-    </atlas-button>
+  <atlas-button
+    buttonDataCy="close-detail"
+    buttonText="SEPODI.BACK_TO_MAP"
+    buttonType="whiteFooterNonEdit"
+    (buttonClicked)="closeSidePanel()"
+  >
+  </atlas-button>
 </atlas-detail-footer>
