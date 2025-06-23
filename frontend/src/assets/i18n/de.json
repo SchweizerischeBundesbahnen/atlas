@@ -648,6 +648,15 @@
       "TRANSPORT_COMPANY_DATE": "TU Aufhebung per",
       "INFO+_DATE": "Info+ Aufhebung per",
       "NOVA_DATE": "NOVA Aufhebung per"
+    },
+    "STATUS": {
+      "STARTED": "In Anhörung",
+      "TARIFF_STOP_APPROVED": "In Prüfung",
+      "TARIFF_STOP_NOT_APPROVED": "Abgelehnt",
+      "TERMINATION_APPROVED": "Genehmigt",
+      "TERMINATION_NOT_APPROVED": "Haltestelle aufgehoben",
+      "TERMINATION_NOT_APPROVED_CLOSED": "Geschlossen",
+      "CANCELED": "Abgebrochen"
     }
   },
   "WORKFLOW": {

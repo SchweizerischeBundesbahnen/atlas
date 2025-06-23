@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockMatPaginatorComponent } from '../../../app.testing.mocks';
 import { By } from '@angular/platform-browser';
 import { UserDisplayNamePipe } from '../../../core/pipe/user-display-name.pipe';
-import { BulkImportService } from '../../../api/service/bulk/bulkImport.service';
+import { BulkImportService } from '../../../api/service/bulk/bulk-import.service';
 import Spy = jasmine.Spy;
 
 @Pipe({

@@ -25,6 +25,10 @@ export interface TerminationStopPointWorkflowModel {
      */
     applicantMail: string;
     /**
+     * Official designation
+     */
+    designationOfficial: string;
+    /**
      * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. https://transportdatamanagement.ch/standards/
      */
     sloid: string;

@@ -1,9 +1,7 @@
-import {inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-
-import {ApplicationType, BulkImportRequest, BulkImportResult, BusinessObjectType, ImportType} from '../../model/models';
-import {AtlasApiService} from "../atlasApi.service";
-
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ApplicationType, BulkImportRequest, BulkImportResult, BusinessObjectType, ImportType } from '../../model/models';
+import { AtlasApiService } from '../atlas-api.service';
 
 @Injectable({
   providedIn: 'root'

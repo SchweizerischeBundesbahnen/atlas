@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AtlasApiService } from '../atlasApi.service';
+import { AtlasApiService } from '../atlas-api.service';
 import { Status } from '../../model/status';
 import { LidiElementType } from '../../model/lidiElementType';
 import { ElementType } from '../../model/elementType';

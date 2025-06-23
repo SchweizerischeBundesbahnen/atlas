@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AtlasApiService } from '../atlasApi.service';
+import { AtlasApiService } from '../atlas-api.service';
 import { Observable } from 'rxjs';
 import { ReadSublineVersionV2 } from '../../model/readSublineVersionV2';
 import { CreateSublineVersionV2 } from '../../model/createSublineVersionV2';

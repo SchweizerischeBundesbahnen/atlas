@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AtlasApiService } from '../atlasApi.service';
+import { AtlasApiService } from '../atlas-api.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserService } from '../../../core/auth/user/user.service';
 import { TimetableHearingStatementInternalService } from './timetable-hearing-statement-internal.service';

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AtlasApiService } from '../atlasApi.service';
+import { AtlasApiService } from '../atlas-api.service';
 import { Observable } from 'rxjs';
 import { TimetableHearingYear } from '../../model/timetableHearingYear';
 import { HearingStatus } from '../../model/hearingStatus';

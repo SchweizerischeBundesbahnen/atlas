@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AtlasApiService } from '../atlasApi.service';
+import { AtlasApiService } from '../atlas-api.service';
 import { LineInternalService } from './line-internal.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UpdateLineVersionV2 } from '../../model/updateLineVersionV2';

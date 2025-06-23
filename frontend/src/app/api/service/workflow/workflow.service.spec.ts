@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { WorkflowService } from './workflow.service';
-import { AtlasApiService } from '../atlasApi.service';
+import { AtlasApiService } from '../atlas-api.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserService } from '../../../core/auth/user/user.service';
 import { TerminationStopPointAddWorkflow } from '../../model/terminationStopPointAddWorkflow';
@@ -44,19 +44,19 @@ describe('WorkflowService', () => {
     expect(apiService.post).toHaveBeenCalledOnceWith('/workflow/internal/termination-stop-point/workflows', terminationStopPointAddWorkflow);
   });
 
-  it('test getTerminationInfoBySloid', (done) => {
+  it('test getTerminationInfoBySloid', () => {
     // when
     service.getTerminationInfoBySloid('ch:1:sloid:1');
 
     // then
     expect(apiService.validateParams).toHaveBeenCalledOnceWith({ sloid: 'ch:1:sloid:1' });
     expect(apiService.get).toHaveBeenCalledOnceWith(
-      '/workflow/internal/termination-stop-point/workflows/termination-info/ch:1:sloid:1',
+      '/workflow/internal/termination-stop-point/workflows/termination-info/ch%3A1%3Asloid%3A1',
     );
   });
 
   it('test getTerminationStopPointWorkflows', () => {
-    // whem
+    // when
     service.getTerminationStopPointWorkflows(undefined, undefined, [1, 2]);
 
     // then

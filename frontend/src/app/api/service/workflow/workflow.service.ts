@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AtlasApiService } from '../atlasApi.service';
+import { AtlasApiService } from '../atlas-api.service';
 import { TerminationStopPointAddWorkflow } from '../../model/terminationStopPointAddWorkflow';
 import { Observable } from 'rxjs';
 import { TerminationInfo } from '../../model/terminationInfo';
@@ -25,7 +25,7 @@ export class WorkflowService {
   }
 
   getTerminationStopPointWorkflows(searchCriterias?: string[], sboids?: string[], workflowIds?: number[],
-                                   status?: TerminationWorkflowStatus[], page?: number, size?: number, sort?: string[],
+                                   status?: TerminationWorkflowStatus[], page?: number, size?: number, sort?: string[]
   ): Observable<ContainerTerminationStopPointWorkflowModel> {
     const httpParams = this.atlasApiService.paramsOf({
       searchCriterias,

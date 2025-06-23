@@ -36,6 +36,11 @@ public class TerminationStopPointWorkflowModel {
   @NotEmpty
   private String applicantMail;
 
+  @Schema(description = "Official designation", example = "Homburg, Jagdhaus")
+  @Size(max = AtlasFieldLengths.LENGTH_30)
+  @NotEmpty
+  private String designationOfficial;
+
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
       + "“Swiss Location ID” specification, chapter 4.2. The document is available here. "
