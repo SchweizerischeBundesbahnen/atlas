@@ -94,6 +94,9 @@ class TerminationHelperTest {
   void shouldReturnBoTerminationDateWhenNotOneVoted() {
     //given
     TerminationStopPointWorkflow workflow = buildWorkflow();
+    workflow.setInfoPlusDecision(
+        TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).build());
+    workflow.setNovaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build());
     //when
     TerminationInfoModel result = TerminationHelper.calculateTerminationDate(workflow);
     //then
@@ -110,6 +113,7 @@ class TerminationHelperTest {
         .judgement(JudgementType.NO)
         .build();
     workflow.setInfoPlusDecision(infoPlusDecision);
+    workflow.setNovaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build());
     //when & then
     assertThrows(IllegalStateException.class, () -> TerminationHelper.calculateTerminationDate(workflow));
   }
@@ -123,6 +127,7 @@ class TerminationHelperTest {
         .judgement(JudgementType.YES)
         .build();
     workflow.setInfoPlusDecision(infoPlusDecision);
+    workflow.setNovaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build());
     //when
     TerminationInfoModel result = TerminationHelper.calculateTerminationDate(workflow);
     //then

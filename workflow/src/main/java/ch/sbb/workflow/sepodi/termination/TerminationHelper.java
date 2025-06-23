@@ -23,11 +23,11 @@ public class TerminationHelper {
     infoModel.setWorkflowId(terminationWorkflow.getId());
     TerminationDecision infoPlusDecision = terminationWorkflow.getInfoPlusDecision();
     TerminationDecision novaDecision = terminationWorkflow.getNovaDecision();
-    if (infoPlusDecision == null && novaDecision == null) {
+    if (infoPlusDecision.getJudgement() == null && novaDecision.getJudgement() == null) {
       infoModel.setTerminationDate(terminationWorkflow.getBoTerminationDate());
     }
-    if ((infoPlusDecision != null && novaDecision == null) ||
-        (novaDecision != null && infoPlusDecision != null)) {
+    if ((infoPlusDecision.getJudgement() != null && novaDecision.getJudgement() == null) ||
+        (novaDecision.getJudgement() != null && infoPlusDecision.getJudgement() != null)) {
       if (infoPlusDecision.getJudgement() == JudgementType.YES) {
         infoModel.setTerminationDate(terminationWorkflow.getInfoPlusTerminationDate());
       } else {
