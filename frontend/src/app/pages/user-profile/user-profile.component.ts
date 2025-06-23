@@ -8,7 +8,7 @@ import {
   ApplicationPermission,
   ApplicationPermissionFormGroupBuilder,
 } from '../../core/components/permissions/form/application-permission-form-group';
-import { ApplicationType } from '../../api';
+import { ApplicationType, Permission } from '../../api';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -33,5 +33,10 @@ export class UserProfileComponent implements OnInit {
   onApplicationChanged(application: ApplicationType) {
     this.form =
       ApplicationPermissionFormGroupBuilder.buildFormGroup(application);
+
+    const permissions: Permission = this.currentUser.permissions.find(
+      (i) => i.application === application
+    )!;
+    this.form.controls.role.setValue(permissions.role);
   }
 }
