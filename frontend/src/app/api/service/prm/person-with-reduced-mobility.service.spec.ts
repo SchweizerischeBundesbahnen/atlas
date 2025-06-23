@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AtlasApiService } from '../atlasApi.service';
+import { AtlasApiService } from '../atlas-api.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../../../core/auth/user/user.service';
 import { PersonWithReducedMobilityService } from './person-with-reduced-mobility.service';

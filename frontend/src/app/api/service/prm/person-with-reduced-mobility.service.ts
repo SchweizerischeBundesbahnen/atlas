@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RecordingObligation } from '../../model/recordingObligation';
-import { AtlasApiService } from '../atlasApi.service';
+import { AtlasApiService } from '../atlas-api.service';
 
 @Injectable({
   providedIn: 'root',

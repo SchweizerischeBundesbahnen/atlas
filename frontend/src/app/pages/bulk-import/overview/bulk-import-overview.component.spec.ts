@@ -25,7 +25,7 @@ import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spac
 import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { LoadingSpinnerService } from '../../../core/components/loading-spinner/loading-spinner.service';
-import { BulkImportService } from '../../../api/service/bulk/bulkImport.service';
+import { BulkImportService } from '../../../api/service/bulk/bulk-import.service';
 import SpyObj = jasmine.SpyObj;
 
 describe('BulkImportOverviewComponent', () => {
