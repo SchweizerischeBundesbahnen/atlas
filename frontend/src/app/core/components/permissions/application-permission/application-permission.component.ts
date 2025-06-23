@@ -42,6 +42,7 @@ import {
   ApplicationPermissionConfig,
   RoleConfig,
 } from './application-permission.config';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'atlas-application-permission',
@@ -56,6 +57,7 @@ import {
     SelectComponent,
     RelationComponent,
     AtlasSpacerComponent,
+    JsonPipe,
   ],
 })
 export class ApplicationPermissionComponent implements OnInit, OnChanges {
@@ -125,20 +127,27 @@ export class ApplicationPermissionComponent implements OnInit, OnChanges {
   );
   applicationForm!: FormGroup<ApplicationPermission>;
   permissionsForm!: FormGroup<PermissionRestriction>;
+  currentRole!: ApplicationRole;
+  currentRoleConfig!: RoleConfig;
 
   ngOnInit(): void {
     this.applicationForm = this.form();
     this.permissionsForm = this.applicationForm.controls.permissions;
+
     this.availableRoles = ApplicationPermissionConfig.getRoles(
       this.application()
     );
     this.applicationConfig = ApplicationPermissionConfig.get(
       this.application()
     );
+
+    this.onRoleChanged(
+      this.applicationForm.controls.role.value ?? ApplicationRole.Reader
+    );
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.application) {
+    if (changes.application || changes.form) {
       this.ngOnInit();
     }
   }
@@ -205,58 +214,49 @@ export class ApplicationPermissionComponent implements OnInit, OnChanges {
     }
   }
 
-  get currentRole(): ApplicationRole {
-    return this.applicationForm.controls.role.value ?? ApplicationRole.Reader;
-  }
-
-  get currentRoleConfig(): RoleConfig {
-    return (
-      this.applicationConfig.roles.find((i) => i.role === this.currentRole) ?? {
-        role: ApplicationRole.Reader,
-        permissions: {
-          restrictions: [],
-          specialPermissions: [],
-        },
-      }
+  onRoleChanged(applicationRole: ApplicationRole) {
+    this.currentRole = applicationRole;
+    const availableConfig = this.applicationConfig.roles.find(
+      (i) => i.role === applicationRole
     );
-  }
-
-  get currentRestrictions() {
-    return this.currentRoleConfig.permissions.restrictions;
+    if (!availableConfig) {
+      throw new Error('Available Config not found');
+    }
+    this.currentRoleConfig = availableConfig!;
   }
 
   get showBusinessOrganisationRestriction() {
-    return this.currentRestrictions.includes(
+    return this.currentRoleConfig.permissions.restrictions.includes(
       PermissionRestrictionType.BusinessOrganisation
     );
   }
 
   get showCountryRestriction() {
-    return this.currentRestrictions.includes(PermissionRestrictionType.Country);
+    return this.currentRoleConfig.permissions.restrictions.includes(
+      PermissionRestrictionType.Country
+    );
   }
 
   get showCantonRestriction() {
-    return this.currentRestrictions.includes(PermissionRestrictionType.Canton);
-  }
-
-  get currentSpecialPermissions() {
-    return this.currentRoleConfig.permissions.specialPermissions;
+    return this.currentRoleConfig.permissions.restrictions.includes(
+      PermissionRestrictionType.Canton
+    );
   }
 
   get showBulkImport() {
-    return this.currentSpecialPermissions.includes(
+    return this.currentRoleConfig.permissions.specialPermissions.includes(
       PermissionRestrictionType.BulkImport
     );
   }
 
   get showInfoPlusTerminationVote() {
-    return this.currentSpecialPermissions.includes(
+    return this.currentRoleConfig.permissions.specialPermissions.includes(
       PermissionRestrictionType.InfoPlusTerminationVote
     );
   }
 
   get showNovaTerminationVote() {
-    return this.currentSpecialPermissions.includes(
+    return this.currentRoleConfig.permissions.specialPermissions.includes(
       PermissionRestrictionType.NovaTerminationVote
     );
   }

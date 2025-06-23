@@ -5,6 +5,7 @@ import { ApplicationPermissionComponent } from './application-permission/applica
 import {
   MatTab,
   MatTabChangeEvent,
+  MatTabContent,
   MatTabGroup,
   MatTabLabel,
 } from '@angular/material/tabs';
@@ -21,6 +22,7 @@ import { ApplicationPermission } from './form/application-permission-form-group'
     MatTabGroup,
     MatTab,
     MatTabLabel,
+    MatTabContent,
   ],
 })
 export class PermissionComponent implements OnInit {
