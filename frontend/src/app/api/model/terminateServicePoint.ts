@@ -8,7 +8,8 @@
  * Do not edit the class manually.
  */
 
-export interface TerminateServicePoint {
+
+export interface TerminateServicePoint { 
     validTo: Date;
 }
 
