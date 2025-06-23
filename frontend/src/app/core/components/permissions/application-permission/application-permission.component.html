@@ -2,6 +2,7 @@
   <div class="application-role d-flex mb-3">
     <div class="role d-flex flex-column col-3 me-3">
       <atlas-select
+        (selectChanged)="onRoleChanged($event.value)"
         [formGroup]="applicationForm"
         label="USER_ADMIN.ROLE"
         controlName="role"
@@ -16,7 +17,7 @@
     </div>
   </div>
 
-  @if (currentRestrictions.length > 0) {
+  @if (currentRoleConfig.permissions.restrictions.length > 0) {
     <atlas-spacer height="15px" [divider]="true"></atlas-spacer>
     <div class="restrictions col-12 d-flex flex-column mb-3">
       <div class="d-flex font-bold-xl">Einschränkungen</div>
@@ -34,7 +35,6 @@
             [formGroup]="permissionsForm"
           >
           </atlas-select>
-          <br />
         }
         @if (showBusinessOrganisationRestriction) {
           <span class="font-bold-lg">
@@ -81,7 +81,7 @@
     </div>
   }
 
-  @if (currentSpecialPermissions.length > 0) {
+  @if (currentRoleConfig.permissions.specialPermissions.length > 0) {
     <atlas-spacer height="15px" [divider]="true"></atlas-spacer>
     <div class="special-permissions">
       <div class="d-flex font-bold-xl">Spezialberechtigungen</div>
@@ -123,3 +123,4 @@
     </div>
   }
 </div>
+{{ currentRoleConfig | json }}
