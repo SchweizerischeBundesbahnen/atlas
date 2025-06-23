@@ -1,6 +1,8 @@
 package ch.sbb.workflow.sepodi.termination.model;
 
 import ch.sbb.workflow.sepodi.BaseExaminants;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -16,16 +18,37 @@ public class TerminationExaminants extends BaseExaminants {
 
   public static final String NON_PROD_EMAIL = "TechSupport-ATLAS@sbb.ch";
 
-  private String infoPlus;
+  private InfoPlus infoPlus;
 
-  private String nova;
+  private Nova nova;
 
-  public String getInfoPlus() {
-    return PROD_PROFILE.equals(activeProfile) ? infoPlus : NON_PROD_EMAIL;
+  public String getInfoPlusMail() {
+    return PROD_PROFILE.equals(activeProfile) ? infoPlus.getEmail() : NON_PROD_EMAIL;
   }
 
-  public String getNova() {
-    return PROD_PROFILE.equals(activeProfile) ? nova : NON_PROD_EMAIL;
+  public String getNovaMail() {
+    return PROD_PROFILE.equals(activeProfile) ? nova.getEmail() : NON_PROD_EMAIL;
+  }
+
+  @Data
+  @Builder
+  public static class InfoPlus {
+
+    private String email;
+    private String lastname;
+    private String firstname;
+    private String organisation;
+
+  }
+
+  @Data
+  @Builder
+  public static class Nova {
+
+    private String email;
+    private String lastname;
+    private String firstname;
+    private String organisation;
   }
 
 }

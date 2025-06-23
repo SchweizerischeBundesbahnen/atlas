@@ -8,6 +8,7 @@ import { canCreateServicePoint } from './service-point-creation-guard';
 import { stopPointWorkflowDetailResolver } from './workflow/detail-page/stop-point-workflow-detail-resolver.service';
 import { permissionsLoaded } from '../../core/auth/guards/permissions-loaded.guard';
 import { featureToggleGuard } from '../feature-toggle.guard';
+import { stopPointTerminationWorkflowResolver } from './termination-workflow/stop-point-termination-workflow-detail/stop-point-termination-workflow-resolver';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,16 @@ export const routes: Routes = [
       import('./workflow/overview/stop-point-workflow-overview.component').then(
         (m) => m.StopPointWorkflowOverviewComponent
       ),
+  },
+  {
+    path: Pages.TERMINATION_STOP_POINT_WORKFLOWS.path + '/:id',
+    loadComponent: () =>
+      import(
+        './termination-workflow/stop-point-termination-workflow-detail/stop-point-termination-workflow-detail'
+      ).then((m) => m.StopPointTerminationWorkflowDetail),
+    canActivate: [featureToggleGuard],
+    resolve: { workflow: stopPointTerminationWorkflowResolver },
+    runGuardsAndResolvers: 'always',
   },
   {
     path: Pages.TERMINATION_STOP_POINT_WORKFLOWS.path,

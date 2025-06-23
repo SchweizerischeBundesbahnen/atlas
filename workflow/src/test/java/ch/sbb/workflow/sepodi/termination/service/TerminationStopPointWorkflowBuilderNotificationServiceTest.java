@@ -42,7 +42,7 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
         .sboid("ch:sboid:1")
         .status(TerminationWorkflowStatus.STARTED)
         .build();
-    when(terminationExaminants.getInfoPlus()).thenReturn(mail);
+    when(terminationExaminants.getInfoPlusMail()).thenReturn(mail);
     //when
     MailNotification result = builderNotificationService.buildStartTerminationNotificationMailForInfoPlus(
         terminationStopPointWorkflow);

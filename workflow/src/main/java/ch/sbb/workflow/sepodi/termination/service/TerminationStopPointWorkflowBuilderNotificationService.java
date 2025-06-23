@@ -27,7 +27,7 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
         .from(from)
         .mailType(MailType.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION)
         .subject(TerminationWorkflowSubject.START_TERMINATION_WORKFLOW_SUBJECT)
-        .to(List.of(terminationExaminants.getInfoPlus()))
+        .to(List.of(terminationExaminants.getInfoPlusMail()))
         .templateProperties(buildMailProperties(workflow, TerminationWorkflowSubject.START_TERMINATION_WORKFLOW_SUBJECT))
         .build();
   }
