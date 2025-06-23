@@ -15,6 +15,8 @@ import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
 import ch.sbb.workflow.sepodi.client.SePoDiAdminClient;
+import ch.sbb.workflow.sepodi.termination.entity.TerminationDecision;
+import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
@@ -98,7 +100,9 @@ class TerminationStopPointWorkflowInternalControllerTest extends BaseControllerA
     TerminationStopPointWorkflow workflow = TerminationStopPointWorkflow.builder()
         .boTerminationDate(LocalDate.of(2000, 12, 1))
         .infoPlusTerminationDate(LocalDate.of(2000, 12, 1))
+        .infoPlusDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).build())
         .novaTerminationDate(LocalDate.of(2000, 12, 1))
+        .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .applicantMail("applicant@example.com")
         .sloid("ch:1:sloid:7000")
         .versionId(13L)

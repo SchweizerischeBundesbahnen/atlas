@@ -1,11 +1,13 @@
 package ch.sbb.workflow.sepodi.termination.model;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,6 +49,24 @@ public class TerminationDecisionModel {
   @NotNull
   @Schema(description = "Termination Date ")
   private LocalDate terminationDate;
+
+  @Schema(description = "Firstname", example = "John")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  private String firstName;
+
+  @Schema(description = "Second", example = "Doe")
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String lastName;
+
+  @Schema(description = "Organisation", example = "ZVV Zürcher Verkehrsverbund")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
+  private String organisation;
+
+  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
+  private String examinantMail;
 
   @Schema(description = "Object creation date", example = "01.01.2000")
   private LocalDateTime creationDate;

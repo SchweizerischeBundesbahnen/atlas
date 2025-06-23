@@ -12,6 +12,8 @@ import ch.sbb.workflow.exception.TerminationStopPointWorkflowAlreadyInStatusExce
 import ch.sbb.workflow.exception.TerminationStopPointWorkflowPreconditionStatusException;
 import ch.sbb.workflow.sepodi.client.SePoDiAdminClient;
 import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
+import ch.sbb.workflow.sepodi.termination.entity.TerminationDecision;
+import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationDecisionMapper;
@@ -52,6 +54,18 @@ public class TerminationStopPointWorkflowService {
     terminationStopPointWorkflow.setStatus(STARTED);
     terminationStopPointWorkflow.setNovaTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
     terminationStopPointWorkflow.setInfoPlusTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
+
+    //init infoPlus and Nova decision
+
+    TerminationDecision infoPlusEmptyDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
+        .build();
+
+    TerminationDecision novaEmptyDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+        .build();
+    terminationStopPointWorkflow.setInfoPlusDecision(infoPlusEmptyDecision);
+    terminationStopPointWorkflow.setNovaDecision(novaEmptyDecision);
 
     notificationService.sendStartTerminationNotificationToInfoPlus(terminationStopPointWorkflow);
     notificationService.sendStartConfirmationTerminationNotificationToApplicantMail(terminationStopPointWorkflow);

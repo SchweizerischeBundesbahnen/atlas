@@ -11,6 +11,9 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
+import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.InfoPlus;
+import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.Nova;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowFilterParams;
 import ch.sbb.workflow.sepodi.termination.model.TerminationInfoModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
@@ -27,6 +30,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
 
   private final TerminationStopPointWorkflowService service;
   private final TerminationStopPointFeatureTogglingService terminationStopPointFeatureTogglingService;
+  private final TerminationExaminants terminationExaminants;
 
   @Override
   public Container<TerminationStopPointWorkflowModel> getTerminationStopPointWorkflows(Pageable pageable,
@@ -48,7 +52,9 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
   @Override
   public TerminationStopPointWorkflowModel getTerminationStopPointWorkflow(Long id) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
-    return TerminationStopPointWorkflowMapper.toModel(service.getTerminationWorkflow(id));
+    InfoPlus infoPlus = terminationExaminants.getInfoPlus();
+    Nova nova = terminationExaminants.getNova();
+    return TerminationStopPointWorkflowMapper.toModel(service.getTerminationWorkflow(id), infoPlus, nova);
   }
 
   @Override

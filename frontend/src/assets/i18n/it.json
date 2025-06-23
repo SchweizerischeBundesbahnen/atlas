@@ -657,7 +657,11 @@
       "TERMINATION_NOT_APPROVED": "Fermata soppressa",
       "TERMINATION_NOT_APPROVED_CLOSED": "Chiuso",
       "CANCELED": "Cancellato"
-    }
+    },
+    "PROPOSAL": "Data di scadenza desiderata IT",
+    "BO_TERMINATION_DATE": "Data desiderata IT",
+    "INFO_PLUS_TERMINATION_DATE": "Confermato da Info+",
+    "NOVA_TERMINATION_DATE": "Confermato da Nova"
   },
   "WORKFLOW": {
     "TITLE": "Audizione",
