@@ -1,16 +1,15 @@
 <div class="ps-5 pt-5">
   <div class="white-table-container-no-tabs">
     <div class="table-heading font-bold-4xl color-gray-900 mb-5">
-      {{ 'REPLACE' | translate }}
+      {{ 'TERMINATION_WORKFLOW.OVERVIEW_TITLE' | translate }}
     </div>
 
     <!--    todo: canEdit unused? -->
     <app-table
       data-cy="sp-termination-workflow-table"
-      [tableData]="workflows().elements"
-      [totalCount]="workflows().totalCount"
+      [tableData]="workflows()?.objects ?? []"
+      [totalCount]="workflows()?.totalCount ?? 0"
       [tableColumns]="tableColumns"
-      [canEdit]="true"
       [tableFilterConfig]="tableFilterConfig"
       (editElementEvent)="onRowClick($event)"
       (tableChanged)="loadWorkflows($event)"

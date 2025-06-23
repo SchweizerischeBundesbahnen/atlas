@@ -71,7 +71,6 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Input() checkBoxSelection = new SelectionModel<DATATYPE>(true, []);
   @Input() tableFilterConfig: TableFilter<unknown>[][] = [];
   @Input() tableColumns!: TableColumn<DATATYPE>[];
-  @Input() canEdit = true;
   @Input() totalCount!: number;
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input() sortingDisabled = false;

@@ -21,4 +21,6 @@ describe('StopPointTerminationWorkflowOverviewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // todo: test event handling over app-table mock child component (interaction/view-based)
 });
