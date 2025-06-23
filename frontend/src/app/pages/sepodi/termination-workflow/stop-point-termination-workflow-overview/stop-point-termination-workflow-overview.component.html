@@ -4,11 +4,12 @@
       {{ 'TERMINATION_WORKFLOW.OVERVIEW_TITLE' | translate }}
     </div>
 
-    <!--    todo: canEdit unused? -->
+    @let workflows = workflows$ | async;
+
     <app-table
       data-cy="sp-termination-workflow-table"
-      [tableData]="workflows()?.objects ?? []"
-      [totalCount]="workflows()?.totalCount ?? 0"
+      [tableData]="workflows?.objects ?? []"
+      [totalCount]="workflows?.totalCount ?? 0"
       [tableColumns]="tableColumns"
       [tableFilterConfig]="tableFilterConfig"
       (editElementEvent)="onRowClick($event)"

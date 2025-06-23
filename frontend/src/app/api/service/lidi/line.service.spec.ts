@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { LineVersionV2 } from '../../model/lineVersionV2';
 import { UpdateLineVersionV2 } from '../../model/updateLineVersionV2';
-import { AtlasApiService } from '../atlasApi.service';
+import { AtlasApiService } from '../atlas-api.service';
 import { UserService } from '../../../core/auth/user/user.service';
 import any = jasmine.any;
 

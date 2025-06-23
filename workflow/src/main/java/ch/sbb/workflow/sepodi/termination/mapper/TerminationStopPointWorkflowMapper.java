@@ -38,6 +38,7 @@ public class TerminationStopPointWorkflowMapper {
         .id(workflow.getId())
         .versionId(workflow.getVersionId())
         .applicantMail(workflow.getApplicantMail())
+        .designationOfficial(workflow.getDesignationOfficial())
         .sloid(workflow.getSloid())
         .status(workflow.getStatus())
         .workflowComment(workflow.getWorkflowComment())
@@ -53,5 +54,4 @@ public class TerminationStopPointWorkflowMapper {
         .editionDate(workflow.getEditionDate())
         .build();
   }
-
 }
