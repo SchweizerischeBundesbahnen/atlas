@@ -642,6 +642,21 @@
     "DIALOG": {
       "START_TERMINATION_TITLE": "Attenzione: cliccando su Salva, si avvierà un'audizione per terminare la fermata",
       "COMMENT": "Osservazioni"
+    },
+    "OVERVIEW_TITLE": "Audizioni sulla terminazione delle fermate",
+    "OVERVIEW_TABLE_COLUMNS": {
+      "TRANSPORT_COMPANY_DATE": "AT terminazione dal",
+      "INFO+_DATE": "Info+ terminazione dal",
+      "NOVA_DATE": "NOVA terminazione dal"
+    },
+    "STATUS": {
+      "STARTED": "In audizione",
+      "TARIFF_STOP_APPROVED": "In verifica",
+      "TARIFF_STOP_NOT_APPROVED": "Respinto",
+      "TERMINATION_APPROVED": "Approvato",
+      "TERMINATION_NOT_APPROVED": "Fermata soppressa",
+      "TERMINATION_NOT_APPROVED_CLOSED": "Chiuso",
+      "CANCELED": "Cancellato"
     }
   },
   "WORKFLOW": {

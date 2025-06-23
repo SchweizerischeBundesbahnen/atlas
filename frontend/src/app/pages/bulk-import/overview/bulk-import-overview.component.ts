@@ -36,7 +36,7 @@ import { StringListComponent } from '../../../core/form-components/string-list/s
 import { FileUploadComponent } from '../../../core/components/file-upload/file-upload.component';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BulkImportService } from '../../../api/service/bulk/bulkImport.service';
+import { BulkImportService } from '../../../api/service/bulk/bulk-import.service';
 
 const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] =
   [
