@@ -39,4 +39,9 @@ export class WorkflowService {
     return this.atlasApiService.get(this.STOP_POINT_TERMINATION, httpParams);
   }
 
+  public getTerminationById(id: number): Observable<TerminationStopPointAddWorkflow> {
+    this.atlasApiService.validateParams({ id });
+    return this.atlasApiService.get(`${this.STOP_POINT_TERMINATION}/${encodeURIComponent(String(id))}`);
+  }
+
 }

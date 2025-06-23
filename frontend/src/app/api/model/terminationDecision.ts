@@ -33,6 +33,19 @@ export interface TerminationDecision {
      */
     terminationDate: Date;
     /**
+     * Firstname
+     */
+    firstName?: string;
+    /**
+     * Second
+     */
+    lastName?: string;
+    /**
+     * Organisation
+     */
+    organisation?: string;
+    examinantMail?: string;
+    /**
      * Object creation date
      */
     creationDate?: string;
