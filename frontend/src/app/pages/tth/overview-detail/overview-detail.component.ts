@@ -235,14 +235,14 @@ export class OverviewDetailComponent implements OnInit {
     this.removeCheckBoxViewMode();
     const canton = selectedCanton.value.toLowerCase();
     this.overviewToTabService.changeData(canton);
-    this.tableService.resetPaginator();
     this.navigateTo(canton, this.foundTimetableHearingYear.timetableYear);
+    this.tableService.resetTableSettings();
   }
 
   changeSelectedYearFromDropdown(selectedYear: MatSelectChange) {
     this.foundTimetableHearingYear.timetableYear = selectedYear.value;
     this.navigateTo(this.cantonShort.toLowerCase(), selectedYear.value);
-    this.tableService.resetPaginator();
+    this.tableService.resetTableSettings();
   }
 
   editStatement(statement: TimetableHearingStatementV2) {

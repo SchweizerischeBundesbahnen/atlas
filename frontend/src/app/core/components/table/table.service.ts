@@ -95,14 +95,10 @@ export class TableService {
     }
   }
 
-  protected resetTableSettings(): void {
-    this.resetPaginator();
-    this._sortActive = '';
-    this._sortDirection = 'asc';
-  }
-
-  resetPaginator(): void {
+  resetTableSettings(): void {
     this._pageSize = 10;
     this._pageIndex = 0;
+    this._sortActive = '';
+    this._sortDirection = 'asc';
   }
 }

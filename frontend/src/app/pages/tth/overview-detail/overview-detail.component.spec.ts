@@ -31,6 +31,7 @@ import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-la
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -45,6 +46,11 @@ class MockAppTthOverviewTabHeadingComponent {
   @Input() noTimetableHearingYearFound!: boolean;
   @Input() noPlannedTimetableHearingYearFound!: boolean;
 }
+
+const mockTableService = jasmine.createSpyObj('tableService', [
+  'initializeFilterConfig',
+  'resetTableSettings',
+]);
 
 const mockTimetableHearingYearsService = jasmine.createSpyObj(
   'timetableHearingYearInternalService',
@@ -134,10 +140,13 @@ async function baseTestConfiguration() {
         provide: TimetableHearingYearInternalService,
         useValue: mockTimetableHearingYearsService,
       },
+      {
+        provide: TableService,
+        useValue: mockTableService,
+      },
       { provide: TranslatePipe },
       { provide: DisplayDatePipe },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
-      { provide: TableService },
     ],
   }).compileComponents();
 
@@ -314,6 +323,20 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     it('should return the short form of the Swiss canton', () => {
       const testCanton: SwissCanton = SwissCanton.Bern;
       expect(component.mapToShortCanton(testCanton)).toEqual('BE');
+    });
+
+    it('should call resetTableSettings when changeSelectedCanton is called', () => {
+      component.foundTimetableHearingYear = { timetableYear: 2025 } as any;
+      const change = new MatSelectChange({} as MatSelect, 'ZH');
+      component.changeSelectedCantonFromDropdown(change);
+      expect(mockTableService.resetTableSettings).toHaveBeenCalled();
+    });
+
+    it('should call resetTableSettings when changeSelectedYear is called', () => {
+      component.foundTimetableHearingYear = { timetableYear: 2025 } as any;
+      const change = new MatSelectChange({} as MatSelect, '2027');
+      component.changeSelectedYearFromDropdown(change);
+      expect(mockTableService.resetTableSettings).toHaveBeenCalled();
     });
 
     it('should return the last name of the statement sender', () => {
