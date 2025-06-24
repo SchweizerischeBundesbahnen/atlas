@@ -21,6 +21,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TerminationWorkflowStatus } from '../../../../api/model/terminationWorkflowStatus';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 import { AsyncPipe } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'stop-point-termination-workflow-overview',
@@ -30,6 +31,8 @@ import { AsyncPipe } from '@angular/common';
 export class StopPointTerminationWorkflowOverviewComponent {
   private readonly workflowService = inject(WorkflowService);
   private readonly tableService = inject(TableService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   protected workflows$: Observable<ContainerTerminationStopPointWorkflowModel> =
     of();
@@ -108,9 +111,8 @@ export class StopPointTerminationWorkflowOverviewComponent {
       Pages.TERMINATION_STOP_POINT_WORKFLOWS
     );
 
-  protected onRowClick(element: TerminationStopPointWorkflowModel) {
-    // todo: route to
-    console.log(element);
+  protected onRowClick(workflow: TerminationStopPointWorkflowModel) {
+    this.router.navigate([workflow.id], { relativeTo: this.route }).then();
   }
 
   protected loadWorkflows(pagination: TablePagination) {

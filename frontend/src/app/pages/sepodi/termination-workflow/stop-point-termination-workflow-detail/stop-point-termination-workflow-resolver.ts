@@ -23,7 +23,7 @@ export class StopPointTerminationWorkflowResolver {
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<StopPointTerminationWorkflowDetailData | undefined> {
-    const idParameter = parseInt(route.paramMap.get('id') || '0');
+    const idParameter = parseInt(route.paramMap.get('id') ?? '0');
     return this.workflowService.getTerminationById(idParameter).pipe(
       catchError(() => {
         this.router
@@ -38,7 +38,7 @@ export class StopPointTerminationWorkflowResolver {
       mergeMap((workflow) => {
         if (workflow) {
           return this.servicePointService
-            .getServicePointVersionsBySloid(workflow.sloid!)
+            .getServicePointVersionsBySloid(workflow.sloid)
             .pipe(
               map((servicePoint) => {
                 return {
