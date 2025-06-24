@@ -186,6 +186,7 @@
   },
   "PAGES": {
     "HOME": "Home",
+    "USER_PROFILE": "Profil",
     "HOME_MENU": "Démarrer",
     "HOME_BUSINESS_PLATFORM": "La plateforme SKI Business",
     "TERMINATION_STOP_WORKFLOW": {
