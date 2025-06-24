@@ -154,7 +154,7 @@ export class ApplicationPermissionComponent implements OnInit {
   removeBusinessOrganisation(): void {
     const sboids =
       this.applicationForm.controls.permissions.controls.sboidsRestrictions!;
-    let updatedSboids = sboids.value!;
+    const updatedSboids = sboids.value!;
     updatedSboids.splice(this.selectedIndex, 1);
     sboids.setValue(updatedSboids);
 
