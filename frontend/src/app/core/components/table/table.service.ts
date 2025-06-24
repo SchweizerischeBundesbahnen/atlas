@@ -95,7 +95,7 @@ export class TableService {
     }
   }
 
-  protected resetTableSettings(): void {
+  resetTableSettings(): void {
     this._pageSize = 10;
     this._pageIndex = 0;
     this._sortActive = '';

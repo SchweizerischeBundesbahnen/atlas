@@ -25,7 +25,7 @@ import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
 import { SelectionModel } from '@angular/cdk/collections';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TthChangeCantonDialogService } from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -236,11 +236,13 @@ export class OverviewDetailComponent implements OnInit {
     const canton = selectedCanton.value.toLowerCase();
     this.overviewToTabService.changeData(canton);
     this.navigateTo(canton, this.foundTimetableHearingYear.timetableYear);
+    this.tableService.resetTableSettings();
   }
 
   changeSelectedYearFromDropdown(selectedYear: MatSelectChange) {
     this.foundTimetableHearingYear.timetableYear = selectedYear.value;
     this.navigateTo(this.cantonShort.toLowerCase(), selectedYear.value);
+    this.tableService.resetTableSettings();
   }
 
   editStatement(statement: TimetableHearingStatementV2) {
