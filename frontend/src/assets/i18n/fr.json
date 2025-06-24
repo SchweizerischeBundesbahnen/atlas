@@ -163,10 +163,22 @@
     "UNRECOVERABLE_MESSAGE": "Veuillez recharger la page."
   },
   "PROFILE": {
-    "HELLO": "Bonjour,",
-    "YOUR_ROLES": "Vos rôles:",
     "LOGIN": "Connexion",
-    "LOGOUT": "Déconnexion"
+    "LOGOUT": "Déconnexion",
+    "USER_PROFILE": "Profil",
+    "PROFILE_HEADER": "Votre profil",
+    "NAME": "Nom",
+    "SBBUID": "SBB-User-ID",
+    "EMAIL": "E-Mail",
+    "ROLE_DESCRIPTION": {
+      "READER": "Accès en lecture aux données d’atlas (standard)",
+      "EXPLICIT_READER": "Lecteur L’accès aux données atlas du module correspondant est explicitement garanti.",
+      "WRITER": "Accès en écriture aux données d’une ou de plusieurs organisations commerciales. Le traitement des données est limité aux catégories énumérées ci-dessous.",
+      "SUPER_USER": "Droits d’écriture inter-organisations commerciales. Le traitement des données est limité aux catégories indiquées ci-dessous.",
+      "SUPERVISOR": "Service spécialisé atlas et OFT avec droits spéciaux"
+    },
+    "PERMISSIONS": "Autorisations",
+    "SPECIAL_PERMISSIONS": "Autorisations spéciales"
   },
   "MENU": {
     "TITLE": "Menu",
@@ -315,7 +327,7 @@
       "BODI": "Organisations commerciales",
       "TIMETABLE_HEARING": "Consultations sur les horaires",
       "SEPODI": "Départements",
-      "PRM": "LHand"
+      "PRM": "Accessibilité"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Actif",
@@ -323,7 +335,7 @@
       "DELETED": "Supprimé"
     },
     "ROLE": "Rouleau",
-    "NOVA": "Terminaison Nova",
+    "NOVA": "Terminaison NOVA",
     "INFO_PLUS": "Terminaison Info+",
     "ADD_BUSINESS_ORGANISATION": "Ajouter une organisation commerciale",
     "DELETE_BUSINESS_ORGANISATION": "Supprimer l'organisation commerciale",
