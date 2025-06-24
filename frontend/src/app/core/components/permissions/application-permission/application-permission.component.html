@@ -43,8 +43,8 @@
             }}
           </span>
           <app-relation
-            (deleteRelation)="remove()"
-            (editModeChanged)="add()"
+            (deleteRelation)="removeBusinessOrganisation()"
+            (editModeChanged)="addBusinessOrganisation()"
             (selectedIndexChanged)="selectedIndex = $event"
             addBtnNameTranslationKey="USER_ADMIN.ADD_BUSINESS_ORGANISATION"
             deleteBtnNameTranslationKey="USER_ADMIN.DELETE_BUSINESS_ORGANISATION"
@@ -123,4 +123,6 @@
     </div>
   }
 </div>
+{{ applicationForm.value | json }}
+<br />
 {{ currentRoleConfig | json }}

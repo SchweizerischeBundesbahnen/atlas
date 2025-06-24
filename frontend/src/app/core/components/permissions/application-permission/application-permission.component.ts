@@ -1,11 +1,4 @@
-import {
-  Component,
-  inject,
-  input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
@@ -43,6 +36,7 @@ import {
   RoleConfig,
 } from './application-permission.config';
 import { JsonPipe } from '@angular/common';
+import { UserPermissionProviderService } from '../../../../pages/user-profile/user-permission-provider-service';
 
 @Component({
   selector: 'atlas-application-permission',
@@ -60,7 +54,7 @@ import { JsonPipe } from '@angular/common';
     JsonPipe,
   ],
 })
-export class ApplicationPermissionComponent implements OnInit, OnChanges {
+export class ApplicationPermissionComponent implements OnInit {
   readonly ApplicationType = ApplicationType;
 
   readonly getCountryEnum = Countries.getCountryEnum;
@@ -119,7 +113,7 @@ export class ApplicationPermissionComponent implements OnInit, OnChanges {
   ];
 
   application = input.required<ApplicationType>();
-  form = input.required<FormGroup<ApplicationPermission>>();
+  form!: FormGroup<ApplicationPermission>;
 
   availableRoles: ApplicationRole[] = [];
   applicationConfig: ApplicationConfig = ApplicationPermissionConfig.get(
@@ -130,8 +124,12 @@ export class ApplicationPermissionComponent implements OnInit, OnChanges {
   currentRole!: ApplicationRole;
   currentRoleConfig!: RoleConfig;
 
+  userPermissionProviderService = inject(UserPermissionProviderService);
+
   ngOnInit(): void {
-    this.applicationForm = this.form();
+    this.applicationForm = this.userPermissionProviderService.loadFormGroup(
+      this.application()
+    );
     this.permissionsForm = this.applicationForm.controls.permissions;
 
     this.availableRoles = ApplicationPermissionConfig.getRoles(
@@ -144,12 +142,10 @@ export class ApplicationPermissionComponent implements OnInit, OnChanges {
     this.onRoleChanged(
       this.applicationForm.controls.role.value ?? ApplicationRole.Reader
     );
-  }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.application || changes.form) {
-      this.ngOnInit();
-    }
+    this.permissionsForm.controls.sboidsRestrictions?.value?.forEach((sboid) =>
+      this.addBusinessOrganisationToCurrentTable(sboid)
+    );
   }
 
   toggleBulkImport(value: boolean) {
@@ -170,7 +166,7 @@ export class ApplicationPermissionComponent implements OnInit, OnChanges {
     );
   }
 
-  remove(): void {
+  removeBusinessOrganisation(): void {
     const sboids =
       this.applicationForm.controls.permissions.controls.sboidsRestrictions!;
     let updatedSboids = sboids.value!;
@@ -185,33 +181,37 @@ export class ApplicationPermissionComponent implements OnInit, OnChanges {
     this.selectedIndex = -1;
   }
 
-  add(): void {
-    const value = this.businessOrganisationForm.get(this.boFormCtrlName)?.value;
-    if (value) {
-      firstValueFrom(
-        this.boService.getAllBusinessOrganisations(
-          undefined,
-          [value],
-          undefined,
-          undefined,
-          0,
-          1,
-          ['sboid,ASC']
-        )
-      ).then((result) => {
-        this.currentBusinessOrganisations = [
-          ...this.currentBusinessOrganisations,
-          result.objects![0],
-        ];
-      });
+  addBusinessOrganisation(): void {
+    const sboid = this.businessOrganisationForm.get(this.boFormCtrlName)?.value;
+    if (sboid) {
+      this.addBusinessOrganisationToCurrentTable(sboid);
 
       const sboids =
         this.applicationForm.controls.permissions.controls.sboidsRestrictions!;
       const updatedSboids = sboids.value!;
-      updatedSboids.push(value);
+      updatedSboids.push(sboid);
       sboids.setValue(updatedSboids);
       this.businessOrganisationForm.reset();
     }
+  }
+
+  private addBusinessOrganisationToCurrentTable(sboid: string) {
+    firstValueFrom(
+      this.boService.getAllBusinessOrganisations(
+        undefined,
+        [sboid],
+        undefined,
+        undefined,
+        0,
+        1,
+        ['sboid,ASC']
+      )
+    ).then((result) => {
+      this.currentBusinessOrganisations = [
+        ...this.currentBusinessOrganisations,
+        result.objects![0],
+      ];
+    });
   }
 
   onRoleChanged(applicationRole: ApplicationRole) {

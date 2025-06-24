@@ -1,16 +1,13 @@
-import { Component, input, OnInit, output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ApplicationType } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ApplicationPermissionComponent } from './application-permission/application-permission.component';
 import {
   MatTab,
-  MatTabChangeEvent,
   MatTabContent,
   MatTabGroup,
   MatTabLabel,
 } from '@angular/material/tabs';
-import { FormGroup } from '@angular/forms';
-import { ApplicationPermission } from './form/application-permission-form-group';
 
 @Component({
   selector: 'atlas-permission',
@@ -25,18 +22,9 @@ import { ApplicationPermission } from './form/application-permission-form-group'
     MatTabContent,
   ],
 })
-export class PermissionComponent implements OnInit {
-  form = input.required<FormGroup<ApplicationPermission>>();
-  applicationChanged = output<ApplicationType>();
-
+export class PermissionComponent {
   protected readonly applications: ApplicationType[] =
     Object.values(ApplicationType);
 
-  ngOnInit(): void {}
-
   protected readonly ApplicationType = ApplicationType;
-
-  onSelectedTabChange($event: MatTabChangeEvent) {
-    this.applicationChanged.emit(this.applications[$event.index]);
-  }
 }
