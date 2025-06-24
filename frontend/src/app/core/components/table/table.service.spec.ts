@@ -42,6 +42,12 @@ describe('TableService', () => {
     expect(service.sortString).toBeUndefined();
   });
 
+  it('should reset paginator', () => {
+    service.resetPaginator();
+    expect(service.pageIndex).toEqual(0);
+    expect(service.pageSize).toEqual(10);
+  });
+
   it('should test getOrphanFilters', () => {
     const sharedFilterConfig = {
       search: new TableFilterChip(
