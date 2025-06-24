@@ -1,1 +1,20 @@
-<p>stop-point-termination-workflow-overview works!</p>
+<div class="ps-5 pt-5">
+  <div class="white-table-container-no-tabs">
+    <div class="table-heading font-bold-4xl color-gray-900 mb-5">
+      {{ 'TERMINATION_WORKFLOW.OVERVIEW_TITLE' | translate }}
+    </div>
+
+    @let workflows = workflows$ | async;
+
+    <app-table
+      data-cy="sp-termination-workflow-table"
+      [tableData]="workflows?.objects ?? []"
+      [totalCount]="workflows?.totalCount ?? 0"
+      [tableColumns]="tableColumns"
+      [tableFilterConfig]="tableFilterConfig"
+      (editElementEvent)="onRowClick($event)"
+      (tableChanged)="loadWorkflows($event)"
+      (tableInitialized)="loadWorkflows($event)"
+    ></app-table>
+  </div>
+</div>

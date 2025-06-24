@@ -22,7 +22,10 @@
         >
         </atlas-select>
       </div>
-      <div *ngIf="!noTimetableHearingYearFound" class="d-flex flex-column col-3 pe-3 pb-2 mb-2">
+      <div
+        *ngIf="!noTimetableHearingYearFound"
+        class="d-flex flex-column col-3 pe-3 pb-2 mb-2"
+      >
         <atlas-select
           (selectChanged)="changeSelectedCantonFromDropdown($event)"
           [additionalLabelspace]="0"
@@ -59,7 +62,10 @@
           buttonType="cantonWritePermission"
         >
           <ng-template #rightIcon>
-            <download-icon [readonly]="!isCheckBoxModeActive" class="ps-2"></download-icon>
+            <download-icon
+              [readonly]="!isCheckBoxModeActive"
+              class="ps-2"
+            ></download-icon>
           </ng-template>
         </atlas-button>
       </div>
@@ -115,7 +121,10 @@
         >
         </atlas-button>
       </div>
-      <div *ngIf="showAddNewTimetableHearingButton" class="d-flex flex-column col-3 left-position">
+      <div
+        *ngIf="showAddNewTimetableHearingButton"
+        class="d-flex flex-column col-3 left-position"
+      >
         <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="addNewTimetableHearing()"
@@ -137,7 +146,6 @@
       (checkedBoxEvent)="checkedBoxEvent($event)"
       (editElementEvent)="editStatement($event)"
       (tableChanged)="getOverview($event)"
-      [canEdit]="true"
       [checkBoxModeEnabled]="isCheckBoxModeActive"
       [checkBoxSelection]="selectedCheckBox"
       [tableColumns]="tableColumns"
@@ -146,17 +154,26 @@
       [tableFilterConfig]="tableFilterConfig"
       data-cy="tthTable"
     >
-      <div *ngIf="!noTimetableHearingYearFound" class="d-flex flex-row col-12 mb-3 mt-5">
+      <div
+        *ngIf="!noTimetableHearingYearFound"
+        class="d-flex flex-row col-12 mb-3 mt-5"
+      >
         <div class="d-flex flex-column col-6 pt-2">
           <div>
-            <span *ngIf="isHearingYearActive && isSwissCanton" class="font-bold-lg">
+            <span
+              *ngIf="isHearingYearActive && isSwissCanton"
+              class="font-bold-lg"
+            >
               {{
                 'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
                   | translate: { totalCount: totalCount$ }
               }}
               {{ 'TTH.WHOLE_SWISS' | translate }}
             </span>
-            <span *ngIf="isHearingYearActive && !isSwissCanton" class="font-bold-lg">
+            <span
+              *ngIf="isHearingYearActive && !isSwissCanton"
+              class="font-bold-lg"
+            >
               {{
                 'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
                   | translate: { totalCount: totalCount$ }
@@ -167,7 +184,10 @@
             <span *ngIf="!isHearingYearActive" class="font-bold-lg">{{
               'TTH.TABLE_RESULT_HEADING'
                 | translate
-                  : { totalCount: totalCount$, year: foundTimetableHearingYear.timetableYear }
+                  : {
+                      totalCount: totalCount$,
+                      year: foundTimetableHearingYear.timetableYear,
+                    }
             }}</span>
           </div>
           <div *ngIf="showHearingDetail">
@@ -202,14 +222,19 @@
                 alt="{{ action }}"
                 class="pe-2"
                 height="24"
-                src="assets/images/collecting_action/{{ action.toUpperCase() }}.svg"
+                src="assets/images/collecting_action/{{
+                  action.toUpperCase()
+                }}.svg"
                 width="24"
               />
             </ng-template>
           </atlas-select>
         </div>
         <div
-          *ngIf="statusChangeCollectingActionsEnabled || cantonDeliveryCollectingActionsEnabled"
+          *ngIf="
+            statusChangeCollectingActionsEnabled ||
+            cantonDeliveryCollectingActionsEnabled
+          "
           class="d-flex flex-row col-5 left-position"
         >
           <div class="d-flex flex-column col-6">
@@ -225,7 +250,10 @@
               </ng-template>
             </atlas-button>
           </div>
-          <div *ngIf="statusChangeCollectingActionsEnabled" class="d-flex flex-column col-6 mt-2">
+          <div
+            *ngIf="statusChangeCollectingActionsEnabled"
+            class="d-flex flex-column col-6 mt-2"
+          >
             <atlas-select
               (selectChanged)="collectingStatusChangeAction($event)"
               [additionalLabelspace]="0"
@@ -237,7 +265,10 @@
             >
             </atlas-select>
           </div>
-          <div *ngIf="cantonDeliveryCollectingActionsEnabled" class="d-flex flex-column col-6 mt-2">
+          <div
+            *ngIf="cantonDeliveryCollectingActionsEnabled"
+            class="d-flex flex-column col-6 mt-2"
+          >
             <atlas-select
               (selectChanged)="collectingCantonDeliveryAction($event)"
               [additionalLabelspace]="0"

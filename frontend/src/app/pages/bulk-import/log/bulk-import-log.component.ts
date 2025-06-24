@@ -14,7 +14,7 @@ import { LoadingSpinnerComponent } from '../../../core/components/loading-spinne
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserDisplayNamePipe } from '../../../core/pipe/user-display-name.pipe';
 import { ParamsForTranslationPipe } from '../../../core/pipe/params-for-translation.pipe';
-import { BulkImportService } from '../../../api/service/bulk/bulkImport.service';
+import { BulkImportService } from '../../../api/service/bulk/bulk-import.service';
 
 @Component({
   selector: 'bulk-import-log',

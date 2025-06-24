@@ -2,7 +2,7 @@
 README.md
 api.module.ts
 api/api.ts
-api/bulkImport.service.ts
+api/bulk-import.service.ts
 api/businessOrganisations.service.ts
 api/clientCredentialAdministration.service.ts
 api/companies.service.ts
