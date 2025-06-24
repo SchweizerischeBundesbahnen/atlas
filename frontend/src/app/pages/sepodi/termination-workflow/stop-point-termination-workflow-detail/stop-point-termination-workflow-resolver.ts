@@ -30,9 +30,7 @@ export class StopPointTerminationWorkflowResolver {
           .navigate([Pages.TERMINATION_STOP_POINT_WORKFLOWS.path], {
             state: { notDismissSnackBar: true },
           })
-          .then((value) => {
-            console.log(value);
-          });
+          .then();
         return of(undefined);
       }),
       mergeMap((workflow) => {
