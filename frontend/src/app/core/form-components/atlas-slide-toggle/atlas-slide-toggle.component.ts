@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'atlas-slide-toggle',
   templateUrl: './atlas-slide-toggle.component.html',
   styleUrls: ['./atlas-slide-toggle.component.scss'],
+  imports: [NgClass],
 })
 export class AtlasSlideToggleComponent implements OnInit {
   @Input() toggle = false;
@@ -16,9 +18,9 @@ export class AtlasSlideToggleComponent implements OnInit {
   @Output() toggleChange = new EventEmitter<boolean>();
 
   ngOnInit() {
-    if (this.formGroup && this.controlName) {
-      this.toggle = this.formControl?.value;
-      this.formControl?.valueChanges.subscribe(
+    if (this.formControl) {
+      this.toggle = this.formControl.value;
+      this.formControl.valueChanges.subscribe(
         (newValue) => (this.toggle = newValue)
       );
     }
