@@ -6,10 +6,14 @@ import {
 import { inject } from '@angular/core';
 import { UserService } from '../../core/auth/user/user.service';
 import { ApplicationType, Permission } from '../../api';
-import { UserPermissionProviderService } from './user-permission-provider-service';
+import { UserPermissionProviderService } from '../../core/components/permissions/application-permission/user-permission-provider-service';
 
 export class UserProfileService implements UserPermissionProviderService {
   userService = inject(UserService);
+
+  showAllSpecialPermissions(): boolean {
+    return false;
+  }
 
   loadFormGroup(
     application: ApplicationType
@@ -23,7 +27,7 @@ export class UserProfileService implements UserPermissionProviderService {
         application,
         permissions
       );
-    // applicationPermissionFormGroup.disable();
+    applicationPermissionFormGroup.disable();
     return applicationPermissionFormGroup;
   }
 }
