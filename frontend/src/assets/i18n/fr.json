@@ -642,6 +642,21 @@
     "DIALOG": {
       "START_TERMINATION_TITLE": "Attention : Si vous cliquez sur Enregistrer, vous démarrez une audience pour planifier l'arrêt",
       "COMMENT": "Remarques"
+    },
+    "OVERVIEW_TITLE": "Auditions relatives à l'annulation d’arrêts",
+    "OVERVIEW_TABLE_COLUMNS": {
+      "TRANSPORT_COMPANY_DATE": "ET annulation au",
+      "INFO+_DATE": "Info+ annulation au",
+      "NOVA_DATE": "NOVA annulation au"
+    },
+    "STATUS": {
+      "STARTED": "en audition",
+      "TARIFF_STOP_APPROVED": "en train de vérifier",
+      "TARIFF_STOP_NOT_APPROVED": "refusée",
+      "TERMINATION_APPROVED": "approuvée",
+      "TERMINATION_NOT_APPROVED": "arrêt supprimé",
+      "TERMINATION_NOT_APPROVED_CLOSED": "fermé",
+      "CANCELED": "annulé"
     }
   },
   "WORKFLOW": {

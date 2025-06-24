@@ -13,7 +13,6 @@
       [tableData]="parkingLots"
       [totalCount]="totalCount"
       [tableColumns]="tableColumns"
-      [canEdit]="true"
       [tableFilterConfig]="tableFilterConfig"
       (editElementEvent)="rowClicked($event)"
       (tableChanged)="getOverview($event)"
@@ -21,13 +20,13 @@
     ></app-table>
   </div>
   <atlas-detail-footer>
-      <atlas-button
-        buttonDataCy="close-detail"
-        buttonText="SEPODI.BACK_TO_MAP"
-        buttonType="whiteFooterNonEdit"
-        (buttonClicked)="closeSidePanel()"
-        [footerEdit]="false"
-      >
-      </atlas-button>
+    <atlas-button
+      buttonDataCy="close-detail"
+      buttonText="SEPODI.BACK_TO_MAP"
+      buttonType="whiteFooterNonEdit"
+      (buttonClicked)="closeSidePanel()"
+      [footerEdit]="false"
+    >
+    </atlas-button>
   </atlas-detail-footer>
 </ng-container>

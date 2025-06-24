@@ -1,13 +1,15 @@
 <div class="tab-detail-container">
   <div class="d-flex flex-row pe-3 col-12 justify-content-end">
-    <app-navigation-sepodi-prm targetPage="traffic-point-table" [number]="servicePointVersion.number.number" ></app-navigation-sepodi-prm>
+    <app-navigation-sepodi-prm
+      targetPage="traffic-point-table"
+      [number]="servicePointVersion.number.number"
+    ></app-navigation-sepodi-prm>
   </div>
   <app-table
     data-cy="platform-overview-table"
     [tableData]="platforms"
     [totalCount]="totalCount"
     [tableColumns]="tableColumns"
-    [canEdit]="true"
     [tableFilterConfig]="tableFilterConfig"
     (editElementEvent)="rowClicked($event)"
     (tableChanged)="getOverview($event)"
@@ -15,12 +17,12 @@
   ></app-table>
 </div>
 <atlas-detail-footer>
-    <atlas-button
-      buttonDataCy="close-detail"
-      buttonText="SEPODI.BACK_TO_MAP"
-      buttonType="whiteFooterNonEdit"
-      (buttonClicked)="closeSidePanel()"
-      [footerEdit]="false"
-    >
-    </atlas-button>
+  <atlas-button
+    buttonDataCy="close-detail"
+    buttonText="SEPODI.BACK_TO_MAP"
+    buttonType="whiteFooterNonEdit"
+    (buttonClicked)="closeSidePanel()"
+    [footerEdit]="false"
+  >
+  </atlas-button>
 </atlas-detail-footer>

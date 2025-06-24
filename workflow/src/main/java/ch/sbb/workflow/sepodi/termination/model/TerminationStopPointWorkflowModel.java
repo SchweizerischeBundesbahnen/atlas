@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-@Schema(name = "TerminationStopPointAddWorkflow")
+@Schema(name = "TerminationStopPointWorkflowModel")
 public class TerminationStopPointWorkflowModel {
 
   @Schema(description = "Workflow id", accessMode = AccessMode.READ_ONLY)
@@ -35,6 +35,11 @@ public class TerminationStopPointWorkflowModel {
   @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
   @NotEmpty
   private String applicantMail;
+
+  @Schema(description = "Official designation", example = "Homburg, Jagdhaus")
+  @Size(max = AtlasFieldLengths.LENGTH_30)
+  @NotEmpty
+  private String designationOfficial;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
