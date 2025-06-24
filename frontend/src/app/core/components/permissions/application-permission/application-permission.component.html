@@ -20,21 +20,25 @@
   @if (currentRoleConfig.permissions.restrictions.length > 0) {
     <atlas-spacer height="15px" [divider]="true"></atlas-spacer>
     <div class="restrictions col-12 d-flex flex-column mb-3">
-      <div class="d-flex font-bold-xl">Einschränkungen</div>
+      <div class="d-flex font-bold-xl">
+        {{ 'PROFILE.PERMISSIONS' | translate }}
+      </div>
       <div class="d-flex flex-column">
         @if (showCountryRestriction) {
-          <atlas-select
-            label="COMMON.COUNTRIES"
-            [additionalLabelspace]="0"
-            [optionTranslateLabelPrefix]="SWISS_COUNTRIES_PREFIX_LABEL"
-            [displayExtractor]="getCountryEnum"
-            [options]="COUNTRIES"
-            [multiple]="true"
-            [isSelectAllEnabled]="true"
-            controlName="countryRestrictions"
-            [formGroup]="permissionsForm"
-          >
-          </atlas-select>
+          <div class="mb-3">
+            <atlas-select
+              label="COMMON.COUNTRIES"
+              [additionalLabelspace]="0"
+              [optionTranslateLabelPrefix]="SWISS_COUNTRIES_PREFIX_LABEL"
+              [displayExtractor]="getCountryEnum"
+              [options]="COUNTRIES"
+              [multiple]="true"
+              [isSelectAllEnabled]="true"
+              controlName="countryRestrictions"
+              [formGroup]="permissionsForm"
+            >
+            </atlas-select>
+          </div>
         }
         @if (showBusinessOrganisationRestriction) {
           <span class="font-bold-lg">
@@ -81,10 +85,12 @@
     </div>
   }
 
-  @if (currentRoleConfig.permissions.specialPermissions.length > 0) {
+  @if (showSpecialPermissions) {
     <atlas-spacer height="15px" [divider]="true"></atlas-spacer>
     <div class="special-permissions">
-      <div class="d-flex font-bold-xl">Spezialberechtigungen</div>
+      <div class="d-flex font-bold-xl">
+        {{ 'PROFILE.SPECIAL_PERMISSIONS' | translate }}
+      </div>
       <div class="special-permissions d-flex flex-row">
         @if (showBulkImport) {
           <div class="me-5">

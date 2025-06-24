@@ -1,5 +1,16 @@
-<button type="button" class="slide-btn" (click)="handleToggleClick()" [disabled]="disabled">
-  <div [class]="toggle ? 'slide-track-on' : 'slide-track-off'">
+<button
+  type="button"
+  class="slide-btn"
+  (click)="handleToggleClick()"
+  [disabled]="disabled"
+>
+  <div
+    [ngClass]="{
+      'slide-track-on': toggle,
+      'slide-track-off': !toggle,
+      'slide-disabled': disabled,
+    }"
+  >
     <div class="slide-toggle"></div>
   </div>
 </button>
