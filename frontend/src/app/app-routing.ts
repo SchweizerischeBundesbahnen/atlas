@@ -5,6 +5,8 @@ import { Pages } from './pages/pages';
 import { canActivateTimetableHearing } from './core/auth/guards/timetable-hearing.guard';
 import { loggedInUsers } from './core/auth/guards/login.guard';
 import { adminUser } from './core/auth/guards/admin.guard';
+import { UserPermissionProviderService } from './pages/user-profile/user-permission-provider-service';
+import { UserProfileService } from './pages/user-profile/user-profile-service';
 
 export const routes: Routes = [
   {
@@ -75,6 +77,9 @@ export const routes: Routes = [
     data: {
       headerTitle: Pages.USER_PROFILE.headerTitle,
     },
+    providers: [
+      { provide: UserPermissionProviderService, useClass: UserProfileService },
+    ],
     canActivate: [loggedInUsers],
   },
   { path: '**', redirectTo: Pages.HOME.path },

@@ -2,11 +2,7 @@
   {{ 'PROFILE.PERMISSIONS' | translate }}
 </div>
 
-<mat-tab-group
-  class="tabs"
-  animationDuration="0ms"
-  (selectedTabChange)="onSelectedTabChange($event)"
->
+<mat-tab-group class="tabs" animationDuration="0ms">
   @for (application of applications; track application) {
     <mat-tab>
       <ng-template mat-tab-label>
@@ -16,10 +12,7 @@
       </ng-template>
       <ng-template matTabContent>
         <div class="py-3">
-          <atlas-application-permission
-            [application]="application"
-            [form]="form()"
-          >
+          <atlas-application-permission [application]="application">
           </atlas-application-permission>
         </div>
       </ng-template>
