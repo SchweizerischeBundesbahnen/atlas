@@ -69,6 +69,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
   /**
    * Permission check on ServicePointVersion#updateStopPointTerminationStatus
    */
+  @Redacted
   @Override
   public TerminationStopPointWorkflowModel startTerminationStopPointWorkflow(
       StartTerminationStopPointWorkflowModel workflowModel) {
@@ -76,6 +77,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
     return TerminationStopPointWorkflowMapper.toModel(service.startTerminationWorkflow(workflowModel));
   }
 
+  @Redacted
   @Override
   public TerminationStopPointWorkflowModel decisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
@@ -85,6 +87,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
     return TerminationStopPointWorkflowMapper.toModel(service.addDecisionInfoPlus(decisionModel, workflowId));
   }
 
+  @Redacted
   @Override
   public TerminationStopPointWorkflowModel decisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
