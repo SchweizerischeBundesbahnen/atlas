@@ -48,24 +48,8 @@ public class TerminationStopPointWorkflowService {
     ReadServicePointVersionModel readServicePointVersionModel = sePoDiAdminClient.postStartServicePointTermination(
         model.getSloid(), model.getVersionId(), terminationServicePointModel);
 
-    TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflowMapper.toEntityStart(model);
-    terminationStopPointWorkflow.setDesignationOfficial(readServicePointVersionModel.getDesignationOfficial());
-    terminationStopPointWorkflow.setSboid(readServicePointVersionModel.getBusinessOrganisation());
-    terminationStopPointWorkflow.setStatus(STARTED);
-    terminationStopPointWorkflow.setNovaTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
-    terminationStopPointWorkflow.setInfoPlusTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
-
-    //init infoPlus and Nova decision
-
-    TerminationDecision infoPlusEmptyDecision = TerminationDecision.builder()
-        .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
-        .build();
-
-    TerminationDecision novaEmptyDecision = TerminationDecision.builder()
-        .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
-        .build();
-    terminationStopPointWorkflow.setInfoPlusDecision(infoPlusEmptyDecision);
-    terminationStopPointWorkflow.setNovaDecision(novaEmptyDecision);
+    TerminationStopPointWorkflow terminationStopPointWorkflow = populateWorkflow(
+        model, readServicePointVersionModel);
 
     notificationService.sendStartTerminationNotificationToInfoPlus(terminationStopPointWorkflow);
     notificationService.sendStartConfirmationTerminationNotificationToApplicantMail(terminationStopPointWorkflow);
@@ -119,6 +103,27 @@ public class TerminationStopPointWorkflowService {
 
   private ReadServicePointVersionModel postStopServicePointTermination(String sloid, Long id) {
     return sePoDiAdminClient.postStopServicePointTermination(sloid, id);
+  }
+
+  private TerminationStopPointWorkflow populateWorkflow(StartTerminationStopPointWorkflowModel model,
+      ReadServicePointVersionModel readServicePointVersionModel) {
+    TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflowMapper.toEntityStart(model);
+    terminationStopPointWorkflow.setDesignationOfficial(readServicePointVersionModel.getDesignationOfficial());
+    terminationStopPointWorkflow.setSboid(readServicePointVersionModel.getBusinessOrganisation());
+    terminationStopPointWorkflow.setStatus(STARTED);
+    terminationStopPointWorkflow.setNovaTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
+    terminationStopPointWorkflow.setInfoPlusTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
+
+    TerminationDecision infoPlusEmptyDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
+        .build();
+    terminationStopPointWorkflow.setInfoPlusDecision(infoPlusEmptyDecision);
+
+    TerminationDecision novaEmptyDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+        .build();
+    terminationStopPointWorkflow.setNovaDecision(novaEmptyDecision);
+    return terminationStopPointWorkflow;
   }
 
 }

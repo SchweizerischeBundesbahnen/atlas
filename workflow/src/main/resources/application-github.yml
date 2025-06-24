@@ -101,9 +101,18 @@ atlas:
   client:
     gateway:
       url: "http://localhost:8888"
+
 termination-examinant-mails:
-  info-plus: "a@b.ch"
-  nova: "a@b.ch"
+  info-plus:
+    firstname: "Info"
+    lastname: "Plus"
+    organisation: "SBB Info+"
+    email: "TechSupport-ATLAS@sbb.ch"
+  nova:
+    firstname: "Nova"
+    lastname: "Nova"
+    organisation: "SBB Alliance Swiss Pass"
+    email: "TechSupport-ATLAS@sbb.ch"
 
 examinants:
   specialistOffice:
