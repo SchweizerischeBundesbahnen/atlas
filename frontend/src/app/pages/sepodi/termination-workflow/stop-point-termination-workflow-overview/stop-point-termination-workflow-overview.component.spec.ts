@@ -4,10 +4,11 @@ import { Component, input, output } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
 import { WorkflowService } from '../../../../api/service/workflow/workflow.service';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
 import SpyObj = jasmine.SpyObj;
 
 @Component({
@@ -46,7 +47,10 @@ describe('StopPointTerminationWorkflowOverviewComponent', () => {
         StopPointTerminationWorkflowOverviewComponent,
         TranslateModule.forRoot(),
       ],
-      providers: [{ provide: WorkflowService, useValue: wfServiceSpy }],
+      providers: [
+        { provide: WorkflowService, useValue: wfServiceSpy },
+        { provide: ActivatedRoute, useValue: { queryParam: new Subject() } },
+      ],
     })
       .overrideComponent(StopPointTerminationWorkflowOverviewComponent, {
         remove: { imports: [TableComponent] },

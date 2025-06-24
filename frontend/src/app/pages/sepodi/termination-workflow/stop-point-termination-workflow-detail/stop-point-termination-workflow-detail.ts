@@ -56,7 +56,7 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
 
     const indexOfVersionInReview = workflowData.servicePoint.findIndex(
       (i) => i.id === this.workflow.versionId
-    )!;
+    );
     this.stopPoint = workflowData.servicePoint[indexOfVersionInReview];
 
     this.form =
