@@ -321,7 +321,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       const change = new MatSelectChange({} as MatSelect, 'ZH');
 
       component.changeSelectedCantonFromDropdown(change);
-      expect(resetTableSettingsSpy).toHaveBeenCalled();
+      expect(resetTableSettingsSpy).toHaveBeenCalledOnceWith();
       expect(resetTableSettingsSpy.calls.count()).toEqual(1);
     });
 
@@ -337,7 +337,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       const change = new MatSelectChange({} as MatSelect, hearingYear2001);
 
       component.changeSelectedYearFromDropdown(change);
-      expect(resetTableSettingsSpy).toHaveBeenCalled();
+      expect(resetTableSettingsSpy).toHaveBeenCalledOnceWith();
       expect(resetTableSettingsSpy.calls.count()).toEqual(1);
     });
 
