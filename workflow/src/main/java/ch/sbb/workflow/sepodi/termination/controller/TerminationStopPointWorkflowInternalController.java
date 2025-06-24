@@ -1,8 +1,9 @@
 package ch.sbb.workflow.sepodi.termination.controller;
 
-import ch.sbb.atlas.api.model.Container;
 import static ch.sbb.workflow.sepodi.termination.TerminationHelper.calculateTerminationDate;
 
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
 import ch.sbb.workflow.exception.TerminationDecisionPersonException;
 import ch.sbb.workflow.sepodi.termination.api.TerminationStopPointWorkflowApi;
@@ -14,8 +15,8 @@ import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.InfoPlus;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.Nova;
-import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowFilterParams;
 import ch.sbb.workflow.sepodi.termination.model.TerminationInfoModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowFilterParams;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.sepodi.termination.service.TerminationStopPointWorkflowService;
@@ -49,6 +50,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
         .build();
   }
 
+  @Redacted
   @Override
   public TerminationStopPointWorkflowModel getTerminationStopPointWorkflow(Long id) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
