@@ -92,7 +92,8 @@
               fieldLabel="PAGES.BULK_IMPORT.TITLE_MENU"
             ></app-atlas-label-field>
             <atlas-slide-toggle
-              (toggleChange)="toggleBulkImport($event)"
+              [formGroup]="permissionsForm"
+              controlName="bulkImportRestriction"
               [disabled]="applicationForm.disabled"
             ></atlas-slide-toggle>
           </div>
@@ -103,7 +104,8 @@
               fieldLabel="USER_ADMIN.NOVA"
             ></app-atlas-label-field>
             <atlas-slide-toggle
-              (toggleChange)="toggleNovaTermination($event)"
+              [formGroup]="permissionsForm"
+              controlName="novaTerminationVote"
               [disabled]="applicationForm.disabled"
             ></atlas-slide-toggle>
           </div>
@@ -114,7 +116,8 @@
               fieldLabel="USER_ADMIN.INFO_PLUS"
             ></app-atlas-label-field>
             <atlas-slide-toggle
-              (toggleChange)="toggleInfoPlusTermination($event)"
+              [formGroup]="permissionsForm"
+              controlName="infoPlusTerminationVote"
               [disabled]="applicationForm.disabled"
             ></atlas-slide-toggle>
           </div>

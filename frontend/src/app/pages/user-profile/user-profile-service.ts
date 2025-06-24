@@ -23,7 +23,7 @@ export class UserProfileService implements UserPermissionProviderService {
         application,
         permissions
       );
-    applicationPermissionFormGroup.disable();
+    // applicationPermissionFormGroup.disable();
     return applicationPermissionFormGroup;
   }
 }
