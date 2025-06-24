@@ -36,7 +36,7 @@ import {
   RoleConfig,
 } from './application-permission.config';
 import { JsonPipe } from '@angular/common';
-import { UserPermissionProviderService } from '../../../../pages/user-profile/user-permission-provider-service';
+import { UserPermissionProviderService } from './user-permission-provider-service';
 
 @Component({
   selector: 'atlas-application-permission',
@@ -123,6 +123,7 @@ export class ApplicationPermissionComponent implements OnInit {
   permissionsForm!: FormGroup<PermissionRestriction>;
   currentRole!: ApplicationRole;
   currentRoleConfig!: RoleConfig;
+  showAllSpecialPermissions = false;
 
   userPermissionProviderService = inject(UserPermissionProviderService);
 
@@ -138,6 +139,8 @@ export class ApplicationPermissionComponent implements OnInit {
     this.applicationConfig = ApplicationPermissionConfig.get(
       this.application()
     );
+    this.showAllSpecialPermissions =
+      this.userPermissionProviderService.showAllSpecialPermissions();
 
     this.onRoleChanged(
       this.applicationForm.controls.role.value ?? ApplicationRole.Reader
@@ -226,20 +229,42 @@ export class ApplicationPermissionComponent implements OnInit {
   }
 
   get showBulkImport() {
-    return this.currentRoleConfig.permissions.specialPermissions.includes(
-      PermissionRestrictionType.BulkImport
+    return (
+      this.currentRoleConfig.permissions.specialPermissions.includes(
+        PermissionRestrictionType.BulkImport
+      ) &&
+      (this.showAllSpecialPermissions ||
+        this.permissionsForm.controls.bulkImportRestriction?.value)
     );
   }
 
   get showInfoPlusTerminationVote() {
-    return this.currentRoleConfig.permissions.specialPermissions.includes(
-      PermissionRestrictionType.InfoPlusTerminationVote
+    return (
+      this.currentRoleConfig.permissions.specialPermissions.includes(
+        PermissionRestrictionType.InfoPlusTerminationVote
+      ) &&
+      (this.showAllSpecialPermissions ||
+        this.permissionsForm.controls.infoPlusTerminationVote?.value)
     );
   }
 
   get showNovaTerminationVote() {
-    return this.currentRoleConfig.permissions.specialPermissions.includes(
-      PermissionRestrictionType.NovaTerminationVote
+    return (
+      this.currentRoleConfig.permissions.specialPermissions.includes(
+        PermissionRestrictionType.NovaTerminationVote
+      ) &&
+      (this.showAllSpecialPermissions ||
+        this.permissionsForm.controls.novaTerminationVote?.value)
+    );
+  }
+
+  get showSpecialPermissions() {
+    return (
+      this.currentRoleConfig.permissions.specialPermissions.length > 0 &&
+      (this.showAllSpecialPermissions ||
+        this.showBulkImport ||
+        this.showNovaTerminationVote ||
+        this.showInfoPlusTerminationVote)
     );
   }
 }

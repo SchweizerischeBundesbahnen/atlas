@@ -177,7 +177,8 @@
       "SUPER_USER": "Geschäftsorganisationsübergreifende Schreibrechte. Die Bearbeitung von Daten ist auf die unten aufgeührten Kategorien beschränkt.",
       "SUPERVISOR": "Fachstelle atlas und BAV mit Spezialrechten"
     },
-    "PERMISSIONS": "Berechtigungen"
+    "PERMISSIONS": "Berechtigungen",
+    "SPECIAL_PERMISSIONS": "Spezialberechtigungen"
   },
   "MENU": {
     "TITLE": "Menü",
@@ -327,7 +328,7 @@
       "BODI": "Geschäftsorganisationen",
       "TIMETABLE_HEARING": "Fahrplananhörungen",
       "SEPODI": "Dienststellen",
-      "PRM": "BehiG"
+      "PRM": "Barrierefreiheit"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Aktiv",
@@ -335,7 +336,7 @@
       "DELETED": "Gelöscht"
     },
     "ROLE": "Rolle",
-    "NOVA": "Nova Termination",
+    "NOVA": "NOVA Termination",
     "INFO_PLUS": "Info+ Termination",
     "ADD_BUSINESS_ORGANISATION": "Geschäftsorganisation hinzufügen",
     "DELETE_BUSINESS_ORGANISATION": "Geschäftsorganisation entfernen",
