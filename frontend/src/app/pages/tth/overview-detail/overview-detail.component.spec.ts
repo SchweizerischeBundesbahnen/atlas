@@ -322,6 +322,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
 
       component.changeSelectedCantonFromDropdown(change);
       expect(resetTableSettingsSpy).toHaveBeenCalled();
+      resetTableSettingsSpy.calls.reset();
     });
 
     it('should return the short form of the Swiss canton', () => {
@@ -337,6 +338,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
 
       component.changeSelectedYearFromDropdown(change);
       expect(resetTableSettingsSpy).toHaveBeenCalled();
+      resetTableSettingsSpy.calls.reset();
     });
 
     it('should return the last name of the statement sender', () => {
