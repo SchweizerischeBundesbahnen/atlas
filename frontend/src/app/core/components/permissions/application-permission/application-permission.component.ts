@@ -148,24 +148,6 @@ export class ApplicationPermissionComponent implements OnInit {
     );
   }
 
-  toggleBulkImport(value: boolean) {
-    this.applicationForm.controls.permissions.controls.bulkImportRestriction!.setValue(
-      value
-    );
-  }
-
-  toggleNovaTermination(value: boolean) {
-    this.applicationForm.controls.permissions.controls.novaTerminationVote!.setValue(
-      value
-    );
-  }
-
-  toggleInfoPlusTermination(value: boolean) {
-    this.applicationForm.controls.permissions.controls.infoPlusTerminationVote!.setValue(
-      value
-    );
-  }
-
   removeBusinessOrganisation(): void {
     const sboids =
       this.applicationForm.controls.permissions.controls.sboidsRestrictions!;
