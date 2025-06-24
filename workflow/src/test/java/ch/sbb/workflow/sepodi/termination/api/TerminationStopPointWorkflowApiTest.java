@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.workflow.sepodi.termination.entity.TerminationDecision;
+import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflowRepository;
@@ -32,7 +34,9 @@ class TerminationStopPointWorkflowApiTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1")
         .boTerminationDate(LocalDate.of(2000, 1, 1))
         .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
+        .infoPlusDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).build())
         .novaTerminationDate(LocalDate.of(2000, 1, 3))
+        .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .designationOfficial("Bern")
         .status(TerminationWorkflowStatus.STARTED)
         .build();
@@ -41,8 +45,10 @@ class TerminationStopPointWorkflowApiTest extends BaseControllerApiTest {
         .versionId(55L)
         .sloid("ch:1:sloid:2")
         .boTerminationDate(LocalDate.of(2000, 1, 1))
+        .infoPlusDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).build())
         .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
         .novaTerminationDate(LocalDate.of(2000, 1, 3))
+        .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .designationOfficial("Züri")
         .status(TerminationWorkflowStatus.TERMINATION_APPROVED)
         .build();

@@ -32,8 +32,8 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
     workflow: TerminationStopPointAddWorkflow
   ): FormGroup<StopPointTerminationWorkflowDetailFormGroup> {
     const terminationDecisions: TerminationDecision[] = [];
-    terminationDecisions.push(<TerminationDecision>workflow!.infoPlusDecision);
-    terminationDecisions.push(<TerminationDecision>workflow!.novaDecision);
+    terminationDecisions.push(<TerminationDecision>workflow.infoPlusDecision);
+    terminationDecisions.push(<TerminationDecision>workflow.novaDecision);
     return new FormGroup<StopPointTerminationWorkflowDetailFormGroup>({
       boTerminationDate: new FormControl(
         workflow.boTerminationDate
