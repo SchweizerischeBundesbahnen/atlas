@@ -1,11 +1,11 @@
-import {AtlasApiService} from './atlasApi.service';
-import {TestBed} from '@angular/core/testing';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {UserService} from '../../core/auth/user/user.service';
-import {BulkImportRequest} from "../model/bulkImportRequest";
-import {ImportType} from "../model/importType";
-import {BusinessObjectType} from "../model/businessObjectType";
-import {ApplicationType} from "../model/applicationType";
+import { AtlasApiService } from './atlas-api.service';
+import { TestBed } from '@angular/core/testing';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { UserService } from '../../core/auth/user/user.service';
+import { BulkImportRequest } from '../model/bulkImportRequest';
+import { ImportType } from '../model/importType';
+import { BusinessObjectType } from '../model/businessObjectType';
+import { ApplicationType } from '../model/applicationType';
 import SpyObj = jasmine.SpyObj;
 
 describe('AtlasApiService', () => {

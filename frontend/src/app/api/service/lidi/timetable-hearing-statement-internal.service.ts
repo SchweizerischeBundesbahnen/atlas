@@ -1,14 +1,14 @@
-import {inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {AtlasApiService} from '../atlasApi.service';
-import {UpdateHearingStatementStatus} from '../../model/updateHearingStatementStatus';
-import {UpdateHearingCanton} from '../../model/updateHearingCanton';
-import {ContainerTimetableHearingStatementV2} from '../../model/containerTimetableHearingStatementV2';
-import {SwissCanton} from '../../model/swissCanton';
-import {StatementStatus} from '../../model/statementStatus';
-import {TimetableHearingStatementV2} from '../../model/timetableHearingStatementV2';
-import {TimetableHearingStatementAlternating} from '../../model/timetableHearingStatementAlternating';
-import {TransportCompany} from '../../model/transportCompany';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AtlasApiService } from '../atlas-api.service';
+import { UpdateHearingStatementStatus } from '../../model/updateHearingStatementStatus';
+import { UpdateHearingCanton } from '../../model/updateHearingCanton';
+import { ContainerTimetableHearingStatementV2 } from '../../model/containerTimetableHearingStatementV2';
+import { SwissCanton } from '../../model/swissCanton';
+import { StatementStatus } from '../../model/statementStatus';
+import { TimetableHearingStatementV2 } from '../../model/timetableHearingStatementV2';
+import { TimetableHearingStatementAlternating } from '../../model/timetableHearingStatementAlternating';
+import { TransportCompany } from '../../model/transportCompany';
 
 @Injectable({
   providedIn: 'root',

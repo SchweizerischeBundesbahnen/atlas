@@ -7,11 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TerminationStopPointAddWorkflow } from './terminationStopPointAddWorkflow';
 
 
-export interface SortObject { 
-    empty?: boolean;
-    sorted?: boolean;
-    unsorted?: boolean;
+export interface ContainerTerminationStopPointAddWorkflow { 
+    objects?: Array<TerminationStopPointAddWorkflow>;
+    totalCount?: number;
 }
 

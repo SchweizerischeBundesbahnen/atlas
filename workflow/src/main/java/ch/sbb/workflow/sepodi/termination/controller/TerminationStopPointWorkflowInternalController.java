@@ -1,5 +1,6 @@
 package ch.sbb.workflow.sepodi.termination.controller;
 
+import ch.sbb.atlas.api.model.Container;
 import static ch.sbb.workflow.sepodi.termination.TerminationHelper.calculateTerminationDate;
 
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
@@ -10,10 +11,14 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowFilterParams;
 import ch.sbb.workflow.sepodi.termination.model.TerminationInfoModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.sepodi.termination.service.TerminationStopPointWorkflowService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,6 +27,23 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
 
   private final TerminationStopPointWorkflowService service;
   private final TerminationStopPointFeatureTogglingService terminationStopPointFeatureTogglingService;
+
+  @Override
+  public Container<TerminationStopPointWorkflowModel> getTerminationStopPointWorkflows(Pageable pageable,
+      TerminationStopPointWorkflowFilterParams filterParams) {
+    TerminationStopPointWorkflowSearchRestrictions terminationStopPointWorkflowSearchRestrictions =
+        TerminationStopPointWorkflowSearchRestrictions.builder()
+            .pageable(pageable)
+            .filterParams(filterParams)
+            .build();
+    Page<TerminationStopPointWorkflow> workflows = service.getTerminationWorkflows(
+        terminationStopPointWorkflowSearchRestrictions);
+
+    return Container.<TerminationStopPointWorkflowModel>builder()
+        .objects(workflows.stream().map(TerminationStopPointWorkflowMapper::toModel).toList())
+        .totalCount(workflows.getTotalElements())
+        .build();
+  }
 
   @Override
   public TerminationStopPointWorkflowModel getTerminationStopPointWorkflow(Long id) {
@@ -62,6 +84,5 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
       throw new TerminationDecisionPersonException(TerminationDecisionPerson.NOVA);
     }
     return TerminationStopPointWorkflowMapper.toModel(service.addDecisionNova(decisionModel, workflowId));
-
   }
 }
