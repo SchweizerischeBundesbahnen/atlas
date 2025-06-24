@@ -164,6 +164,7 @@ export class ApplicationPermissionConfig {
               PermissionRestrictionType.BusinessOrganisation,
             ],
             specialPermissions: [
+              PermissionRestrictionType.BulkImport,
               PermissionRestrictionType.NovaTerminationVote,
               PermissionRestrictionType.InfoPlusTerminationVote,
             ],
@@ -174,6 +175,7 @@ export class ApplicationPermissionConfig {
           permissions: {
             restrictions: [PermissionRestrictionType.Country],
             specialPermissions: [
+              PermissionRestrictionType.BulkImport,
               PermissionRestrictionType.NovaTerminationVote,
               PermissionRestrictionType.InfoPlusTerminationVote,
             ],
