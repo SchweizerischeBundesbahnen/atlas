@@ -2,6 +2,7 @@ package ch.sbb.workflow.sepodi.termination.model;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,8 +19,9 @@ import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @Data
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
+@Redacted
 @Schema(name = "TerminationDecision")
 public class TerminationDecisionModel {
 
@@ -50,11 +52,13 @@ public class TerminationDecisionModel {
   @Schema(description = "Termination Date ")
   private LocalDate terminationDate;
 
+  @Redacted
   @Schema(description = "Firstname", example = "John")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   private String firstName;
 
+  @Redacted
   @Schema(description = "Second", example = "Doe")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
@@ -65,6 +69,7 @@ public class TerminationDecisionModel {
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
   private String organisation;
 
+  @Redacted(showFirstChar = true)
   @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
   private String examinantMail;
 

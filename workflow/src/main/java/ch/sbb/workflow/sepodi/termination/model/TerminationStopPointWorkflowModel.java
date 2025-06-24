@@ -2,6 +2,7 @@ package ch.sbb.workflow.sepodi.termination.model;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
@@ -16,9 +17,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+@Redacted
 @AllArgsConstructor
 @Data
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @Schema(name = "TerminationStopPointWorkflowModel")
 public class TerminationStopPointWorkflowModel {
@@ -30,6 +32,7 @@ public class TerminationStopPointWorkflowModel {
   @NotNull
   private Long versionId;
 
+  @Redacted(showFirstChar = true)
   @Schema(description = "Applicant mail", example = "me@you.ch")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
@@ -65,9 +68,11 @@ public class TerminationStopPointWorkflowModel {
   @Schema(description = "Termination Date defined by NOVA")
   private LocalDate novaTerminationDate;
 
+  @Redacted
   @Schema(description = "Info Plus Decision")
   private TerminationDecisionModel infoPlusDecision;
 
+  @Redacted
   @Schema(description = "Nova Decision")
   private TerminationDecisionModel novaDecision;
 
