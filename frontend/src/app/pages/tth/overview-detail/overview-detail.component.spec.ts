@@ -316,13 +316,13 @@ describe('TimetableHearingOverviewDetailComponent', () => {
 
     it('should call resetTableSettings when changeSelectedCanton is called', () => {
       component.foundTimetableHearingYear = hearingYear2000;
-
       const resetTableSettingsSpy = spyOn(tableService, 'resetTableSettings');
+
       const change = new MatSelectChange({} as MatSelect, 'ZH');
 
       component.changeSelectedCantonFromDropdown(change);
       expect(resetTableSettingsSpy).toHaveBeenCalled();
-      resetTableSettingsSpy.calls.reset();
+      expect(resetTableSettingsSpy.calls.count()).toEqual(1);
     });
 
     it('should return the short form of the Swiss canton', () => {
@@ -338,7 +338,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
 
       component.changeSelectedYearFromDropdown(change);
       expect(resetTableSettingsSpy).toHaveBeenCalled();
-      resetTableSettingsSpy.calls.reset();
+      expect(resetTableSettingsSpy.calls.count()).toEqual(1);
     });
 
     it('should return the last name of the statement sender', () => {
