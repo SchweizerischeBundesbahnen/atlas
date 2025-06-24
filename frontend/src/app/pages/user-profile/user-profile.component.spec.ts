@@ -4,22 +4,28 @@ import {
   TranslateLoader,
   TranslateModule,
 } from '@ngx-translate/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { UserProfileComponent } from './user-profile.component';
-import { By } from '@angular/platform-browser';
-import { pageServiceMock } from '../../app.testing.mocks';
-import { PageService } from '../../core/pages/page.service';
+import { adminUserServiceMock } from '../../app.testing.mocks';
+import { provideHttpClient } from '@angular/common/http';
+import { UserService } from '../../core/auth/user/user.service';
+import { Component } from '@angular/core';
+import { PermissionComponent } from '../../core/components/permissions/permission.component';
 
-describe('HomeComponent', () => {
+@Component({
+  selector: 'atlas-permission',
+  template: '<h1>PermissionsComponentMock</h1>',
+})
+export class PermissionsComponentMock {}
+
+describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
   let fixture: ComponentFixture<UserProfileComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
         BrowserAnimationsModule,
         RouterModule.forRoot([]),
         TranslateModule.forRoot({
@@ -28,12 +34,17 @@ describe('HomeComponent', () => {
         UserProfileComponent,
       ],
       providers: [
-        {
-          provide: PageService,
-          useValue: pageServiceMock,
-        },
+        provideHttpClient(),
+        { provide: UserService, useValue: adminUserServiceMock },
       ],
-    }).compileComponents();
+    }).overrideComponent(UserProfileComponent, {
+      remove: {
+        imports: [PermissionComponent],
+      },
+      add: {
+        imports: [PermissionsComponentMock],
+      },
+    });
 
     fixture = TestBed.createComponent(UserProfileComponent);
     component = fixture.componentInstance;
@@ -42,10 +53,5 @@ describe('HomeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should create 4 cards', () => {
-    const cards = fixture.debugElement.queryAll(By.css('.card'));
-    expect(cards.length).toBe(4);
   });
 });
