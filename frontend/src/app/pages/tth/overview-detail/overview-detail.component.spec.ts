@@ -47,11 +47,6 @@ class MockAppTthOverviewTabHeadingComponent {
   @Input() noPlannedTimetableHearingYearFound!: boolean;
 }
 
-const mockTableService = jasmine.createSpyObj('tableService', [
-  'initializeFilterConfig',
-  'resetTableSettings',
-]);
-
 const mockTimetableHearingYearsService = jasmine.createSpyObj(
   'timetableHearingYearInternalService',
   ['getHearingYears']
@@ -140,13 +135,10 @@ async function baseTestConfiguration() {
         provide: TimetableHearingYearInternalService,
         useValue: mockTimetableHearingYearsService,
       },
-      {
-        provide: TableService,
-        useValue: mockTableService,
-      },
       { provide: TranslatePipe },
       { provide: DisplayDatePipe },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
+      TableService,
     ],
   }).compileComponents();
 
@@ -157,6 +149,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
   let component: OverviewDetailComponent;
   let route: ActivatedRoute;
   let fixture: ComponentFixture<OverviewDetailComponent>;
+  let tableService: TableService;
 
   describe('HearingOverviewTab Active', async () => {
     beforeEach(async () => {
@@ -165,6 +158,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       router = TestBed.inject(Router);
       route.snapshot.data = { hearingStatus: HearingStatus.Active };
       component = fixture.componentInstance;
+      tableService = TestBed.inject(TableService);
       fixture.detectChanges();
     });
 
@@ -320,23 +314,29 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       ]);
     });
 
+    it('should call resetTableSettings when changeSelectedCanton is called', () => {
+      component.foundTimetableHearingYear = hearingYear2000;
+
+      const resetTableSettingsSpy = spyOn(tableService, 'resetTableSettings');
+      const change = new MatSelectChange({} as MatSelect, 'ZH');
+
+      component.changeSelectedCantonFromDropdown(change);
+      expect(resetTableSettingsSpy).toHaveBeenCalled();
+    });
+
     it('should return the short form of the Swiss canton', () => {
       const testCanton: SwissCanton = SwissCanton.Bern;
       expect(component.mapToShortCanton(testCanton)).toEqual('BE');
     });
 
-    it('should call resetTableSettings when changeSelectedCanton is called', () => {
-      component.foundTimetableHearingYear = { timetableYear: 2025 } as any;
-      const change = new MatSelectChange({} as MatSelect, 'ZH');
-      component.changeSelectedCantonFromDropdown(change);
-      expect(mockTableService.resetTableSettings).toHaveBeenCalled();
-    });
-
     it('should call resetTableSettings when changeSelectedYear is called', () => {
-      component.foundTimetableHearingYear = { timetableYear: 2025 } as any;
-      const change = new MatSelectChange({} as MatSelect, '2027');
+      component.foundTimetableHearingYear = hearingYear2000;
+      const resetTableSettingsSpy = spyOn(tableService, 'resetTableSettings');
+
+      const change = new MatSelectChange({} as MatSelect, hearingYear2001);
+
       component.changeSelectedYearFromDropdown(change);
-      expect(mockTableService.resetTableSettings).toHaveBeenCalled();
+      expect(resetTableSettingsSpy).toHaveBeenCalled();
     });
 
     it('should return the last name of the statement sender', () => {
