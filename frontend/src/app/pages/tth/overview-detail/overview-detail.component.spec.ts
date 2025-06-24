@@ -31,6 +31,7 @@ import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-la
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { TimetableHearingStatementInternalService } from '../../../api/service/lidi/timetable-hearing-statement-internal.service';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -137,7 +138,7 @@ async function baseTestConfiguration() {
       { provide: TranslatePipe },
       { provide: DisplayDatePipe },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
-      { provide: TableService },
+      TableService,
     ],
   }).compileComponents();
 
@@ -148,6 +149,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
   let component: OverviewDetailComponent;
   let route: ActivatedRoute;
   let fixture: ComponentFixture<OverviewDetailComponent>;
+  let tableService: TableService;
 
   describe('HearingOverviewTab Active', async () => {
     beforeEach(async () => {
@@ -156,6 +158,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       router = TestBed.inject(Router);
       route.snapshot.data = { hearingStatus: HearingStatus.Active };
       component = fixture.componentInstance;
+      tableService = TestBed.inject(TableService);
       fixture.detectChanges();
     });
 
@@ -311,9 +314,29 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       ]);
     });
 
+    it('should call resetTableSettings when changeSelectedCanton is called', () => {
+      component.foundTimetableHearingYear = hearingYear2000;
+      const resetTableSettingsSpy = spyOn(tableService, 'resetTableSettings');
+
+      const change = new MatSelectChange({} as MatSelect, 'ZH');
+
+      component.changeSelectedCantonFromDropdown(change);
+      expect(resetTableSettingsSpy).toHaveBeenCalledOnceWith();
+    });
+
     it('should return the short form of the Swiss canton', () => {
       const testCanton: SwissCanton = SwissCanton.Bern;
       expect(component.mapToShortCanton(testCanton)).toEqual('BE');
+    });
+
+    it('should call resetTableSettings when changeSelectedYear is called', () => {
+      component.foundTimetableHearingYear = hearingYear2000;
+      const resetTableSettingsSpy = spyOn(tableService, 'resetTableSettings');
+
+      const change = new MatSelectChange({} as MatSelect, hearingYear2001);
+
+      component.changeSelectedYearFromDropdown(change);
+      expect(resetTableSettingsSpy).toHaveBeenCalledOnceWith();
     });
 
     it('should return the last name of the statement sender', () => {
