@@ -163,10 +163,22 @@
     "UNRECOVERABLE_MESSAGE": "Ricaricare la pagina."
   },
   "PROFILE": {
-    "HELLO": "Ciao,",
-    "YOUR_ROLES": "I tuoi ruoli:",
     "LOGIN": "Login",
-    "LOGOUT": "Logout"
+    "LOGOUT": "Logout",
+    "USER_PROFILE": "Profilo",
+    "PROFILE_HEADER": "Il suo profilo",
+    "NAME": "Nome",
+    "SBBUID": "SBB-User-ID",
+    "EMAIL": "E-Mail",
+    "ROLE_DESCRIPTION": {
+      "READER": "Accesso in sola lettura ai dati atlas (standard)",
+      "EXPLICIT_READER": "Accesso in lettura ai dati atlas per il modulo corrispondente.",
+      "WRITER": "Accesso in scrittura ai dati di una o più organizzazioni aziendali. Il trattamento dei dati è limitato alle categorie elencate di seguito.",
+      "SUPER_USER": "Diritti di accesso in scrittura per l’intera organizzazione aziendale. Il trattamento dei dati è limitato alle categorie elencate di seguito.",
+      "SUPERVISOR": "Servizio specializzato atlas e UFT con diritti speciali"
+    },
+    "PERMISSIONS": "Autorizzazioni",
+    "SPECIAL_PERMISSIONS": "Autorizzazioni speciali"
   },
   "MENU": {
     "TITLE": "Menu",
@@ -174,6 +186,7 @@
   },
   "PAGES": {
     "HOME": "Home",
+    "USER_PROFILE": "Profil",
     "HOME_MENU": "Inizio",
     "HOME_BUSINESS_PLATFORM": "La piattaforma commerciale SKI",
     "TERMINATION_STOP_WORKFLOW": {
@@ -315,7 +328,7 @@
       "BODI": "Organizzazioni imprenditoriali",
       "TIMETABLE_HEARING": "Audizione dell'orario",
       "SEPODI": "Dipartimenti",
-      "PRM": "LDis"
+      "PRM": "Accessibilità"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Attivo",
@@ -323,7 +336,7 @@
       "DELETED": "Soppresso"
     },
     "ROLE": "Rotolo",
-    "NOVA": "Nova Terminazione",
+    "NOVA": "NOVA Terminazione",
     "INFO_PLUS": "Info+ Terminazione",
     "ADD_BUSINESS_ORGANISATION": "Aggiungere l'organizzazione aziendale",
     "DELETE_BUSINESS_ORGANISATION": "Rimuovere l'organizzazione aziendale",
