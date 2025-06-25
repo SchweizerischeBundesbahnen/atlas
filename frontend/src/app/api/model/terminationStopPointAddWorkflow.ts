@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { TerminationDecision } from './terminationDecision';
+import { TerminationWorkflowStatus } from './terminationWorkflowStatus';
 
 
 export interface TerminationStopPointAddWorkflow { 
@@ -27,10 +28,7 @@ export interface TerminationStopPointAddWorkflow {
      * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. https://transportdatamanagement.ch/standards/
      */
     sloid: string;
-    /**
-     * Termination Workflow Status
-     */
-    readonly status?: TerminationStopPointAddWorkflow.StatusEnum;
+    status?: TerminationWorkflowStatus;
     /**
      * Workflow comment
      */
@@ -67,16 +65,6 @@ export interface TerminationStopPointAddWorkflow {
     readonly editor?: string;
 }
 export namespace TerminationStopPointAddWorkflow {
-    export type StatusEnum = 'STARTED' | 'TARIFF_STOP_APPROVED' | 'TARIFF_STOP_NOT_APPROVED' | 'TERMINATION_APPROVED' | 'TERMINATION_NOT_APPROVED' | 'TERMINATION_NOT_APPROVED_CLOSED' | 'CANCELED';
-    export const StatusEnum = {
-        Started: 'STARTED' as StatusEnum,
-        TariffStopApproved: 'TARIFF_STOP_APPROVED' as StatusEnum,
-        TariffStopNotApproved: 'TARIFF_STOP_NOT_APPROVED' as StatusEnum,
-        TerminationApproved: 'TERMINATION_APPROVED' as StatusEnum,
-        TerminationNotApproved: 'TERMINATION_NOT_APPROVED' as StatusEnum,
-        TerminationNotApprovedClosed: 'TERMINATION_NOT_APPROVED_CLOSED' as StatusEnum,
-        Canceled: 'CANCELED' as StatusEnum
-    };
 }
 
 

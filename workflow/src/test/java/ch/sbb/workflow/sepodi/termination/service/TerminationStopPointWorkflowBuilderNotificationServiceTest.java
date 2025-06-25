@@ -5,6 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
+import ch.sbb.workflow.sepodi.termination.entity.TerminationDecision;
+import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
@@ -36,13 +39,17 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
         .versionId(1234L)
         .boTerminationDate(LocalDate.of(2000, 1, 1))
         .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
+        .infoPlusDecision(TerminationDecision.builder()
+            .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).judgement(JudgementType.YES).build())
         .novaTerminationDate(LocalDate.of(2000, 1, 3))
+        .novaDecision(TerminationDecision.builder()
+            .terminationDecisionPerson(TerminationDecisionPerson.NOVA).judgement(JudgementType.YES).build())
         .applicantMail("a@b.com")
         .designationOfficial("Heimsiswil Zentrum")
         .sboid("ch:sboid:1")
         .status(TerminationWorkflowStatus.STARTED)
         .build();
-    when(terminationExaminants.getInfoPlus()).thenReturn(mail);
+    when(terminationExaminants.getInfoPlusMail()).thenReturn(mail);
     //when
     MailNotification result = builderNotificationService.buildStartTerminationNotificationMailForInfoPlus(
         terminationStopPointWorkflow);

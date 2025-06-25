@@ -657,7 +657,8 @@
       "TERMINATION_NOT_APPROVED": "Haltestelle aufgehoben",
       "TERMINATION_NOT_APPROVED_CLOSED": "Geschlossen",
       "CANCELED": "Abgebrochen"
-    }
+    },
+    "PROPOSAL": "Antrag zur Terminierung"
   },
   "WORKFLOW": {
     "TITLE": "Anhörung",

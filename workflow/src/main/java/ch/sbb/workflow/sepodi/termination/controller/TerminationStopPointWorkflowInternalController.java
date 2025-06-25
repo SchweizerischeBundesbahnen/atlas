@@ -1,8 +1,9 @@
 package ch.sbb.workflow.sepodi.termination.controller;
 
-import ch.sbb.atlas.api.model.Container;
 import static ch.sbb.workflow.sepodi.termination.TerminationHelper.calculateTerminationDate;
 
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
 import ch.sbb.workflow.exception.TerminationDecisionPersonException;
 import ch.sbb.workflow.sepodi.termination.api.TerminationStopPointWorkflowApi;
@@ -11,8 +12,11 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
-import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowFilterParams;
+import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
+import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.InfoPlus;
+import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.Nova;
 import ch.sbb.workflow.sepodi.termination.model.TerminationInfoModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowFilterParams;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.sepodi.termination.service.TerminationStopPointWorkflowService;
@@ -27,6 +31,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
 
   private final TerminationStopPointWorkflowService service;
   private final TerminationStopPointFeatureTogglingService terminationStopPointFeatureTogglingService;
+  private final TerminationExaminants terminationExaminants;
 
   @Override
   public Container<TerminationStopPointWorkflowModel> getTerminationStopPointWorkflows(Pageable pageable,
@@ -45,10 +50,13 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
         .build();
   }
 
+  @Redacted
   @Override
   public TerminationStopPointWorkflowModel getTerminationStopPointWorkflow(Long id) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
-    return TerminationStopPointWorkflowMapper.toModel(service.getTerminationWorkflow(id));
+    InfoPlus infoPlus = terminationExaminants.getInfoPlus();
+    Nova nova = terminationExaminants.getNova();
+    return TerminationStopPointWorkflowMapper.toModel(service.getTerminationWorkflow(id), infoPlus, nova);
   }
 
   @Override
@@ -61,6 +69,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
   /**
    * Permission check on ServicePointVersion#updateStopPointTerminationStatus
    */
+  @Redacted
   @Override
   public TerminationStopPointWorkflowModel startTerminationStopPointWorkflow(
       StartTerminationStopPointWorkflowModel workflowModel) {
@@ -68,6 +77,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
     return TerminationStopPointWorkflowMapper.toModel(service.startTerminationWorkflow(workflowModel));
   }
 
+  @Redacted
   @Override
   public TerminationStopPointWorkflowModel decisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
@@ -77,6 +87,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
     return TerminationStopPointWorkflowMapper.toModel(service.addDecisionInfoPlus(decisionModel, workflowId));
   }
 
+  @Redacted
   @Override
   public TerminationStopPointWorkflowModel decisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();

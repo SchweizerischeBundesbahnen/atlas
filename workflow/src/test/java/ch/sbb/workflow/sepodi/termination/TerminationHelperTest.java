@@ -18,6 +18,12 @@ class TerminationHelperTest {
   void shouldGetTerminationDateWhenAllTerminationDatesAreEqual() {
     //given
     TerminationStopPointWorkflow workflow = buildWorkflow();
+    TerminationDecision infoPlusTerminationDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).judgement(JudgementType.YES).build();
+    workflow.setInfoPlusDecision(infoPlusTerminationDecision);
+    TerminationDecision novaTerminationDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.NOVA).judgement(JudgementType.YES).build();
+    workflow.setNovaDecision(novaTerminationDecision);
     LocalDate terminationDate = LocalDate.of(2000, 1, 1);
     workflow.setBoTerminationDate(terminationDate);
     workflow.setInfoPlusTerminationDate(terminationDate);
@@ -33,6 +39,12 @@ class TerminationHelperTest {
   void shouldGetTerminationDateWhenNovaHasDifferentTerminationDate() {
     //given
     TerminationStopPointWorkflow workflow = buildWorkflow();
+    TerminationDecision infoPlusTerminationDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).judgement(JudgementType.YES).build();
+    workflow.setInfoPlusDecision(infoPlusTerminationDecision);
+    TerminationDecision novaTerminationDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.NOVA).judgement(JudgementType.YES).build();
+    workflow.setNovaDecision(novaTerminationDecision);
     LocalDate terminationDate = LocalDate.of(2000, 1, 1);
     workflow.setBoTerminationDate(terminationDate);
     workflow.setInfoPlusTerminationDate(terminationDate);
@@ -43,15 +55,22 @@ class TerminationHelperTest {
     LocalDate result = TerminationHelper.getTerminationDate(workflow);
 
     //then
-    assertThat(result).isNotNull().isEqualTo(novaTerminationDate);
+    assertThat(result).isNotNull().isEqualTo(terminationDate);
   }
 
   @Test
   void shouldGetTerminationDateWhenAllTerminationDatesAreNotEqual() {
     //given
     TerminationStopPointWorkflow workflow = buildWorkflow();
+    TerminationDecision infoPlusTerminationDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).judgement(JudgementType.YES).build();
+    workflow.setInfoPlusDecision(infoPlusTerminationDecision);
+    TerminationDecision novaTerminationDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.NOVA).judgement(JudgementType.YES).build();
+    workflow.setNovaDecision(novaTerminationDecision);
     workflow.setBoTerminationDate(LocalDate.of(2000, 1, 1));
-    workflow.setInfoPlusTerminationDate(LocalDate.of(2001, 1, 1));
+    LocalDate infoPlusTerminationDate = LocalDate.of(2001, 1, 1);
+    workflow.setInfoPlusTerminationDate(infoPlusTerminationDate);
     LocalDate novaTerminationDate = LocalDate.of(2002, 1, 1);
     workflow.setNovaTerminationDate(novaTerminationDate);
 
@@ -59,7 +78,7 @@ class TerminationHelperTest {
     LocalDate result = TerminationHelper.getTerminationDate(workflow);
 
     //then
-    assertThat(result).isNotNull().isEqualTo(novaTerminationDate);
+    assertThat(result).isNotNull().isEqualTo(infoPlusTerminationDate);
   }
 
   @Test
@@ -94,6 +113,9 @@ class TerminationHelperTest {
   void shouldReturnBoTerminationDateWhenNotOneVoted() {
     //given
     TerminationStopPointWorkflow workflow = buildWorkflow();
+    workflow.setInfoPlusDecision(
+        TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).build());
+    workflow.setNovaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build());
     //when
     TerminationInfoModel result = TerminationHelper.calculateTerminationDate(workflow);
     //then
@@ -110,6 +132,7 @@ class TerminationHelperTest {
         .judgement(JudgementType.NO)
         .build();
     workflow.setInfoPlusDecision(infoPlusDecision);
+    workflow.setNovaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build());
     //when & then
     assertThrows(IllegalStateException.class, () -> TerminationHelper.calculateTerminationDate(workflow));
   }
@@ -123,6 +146,7 @@ class TerminationHelperTest {
         .judgement(JudgementType.YES)
         .build();
     workflow.setInfoPlusDecision(infoPlusDecision);
+    workflow.setNovaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build());
     //when
     TerminationInfoModel result = TerminationHelper.calculateTerminationDate(workflow);
     //then

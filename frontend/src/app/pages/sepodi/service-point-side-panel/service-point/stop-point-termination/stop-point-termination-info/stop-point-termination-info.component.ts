@@ -3,6 +3,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
 import { DateService } from '../../../../../../core/date/date.service';
 import { Router } from '@angular/router';
+import { Pages } from '../../../../../pages';
 
 @Component({
   selector: 'app-stop-point-termination-info',
@@ -48,10 +49,13 @@ export class StopPointTerminationInfoComponent implements OnInit {
   }
 
   navigate() {
-    this.router
-      .navigateByUrl(
-        `/service-point-directory/termination-workflows/${this.terminationDate}`
-      )
-      .then();
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree([
+        Pages.SEPODI.path,
+        Pages.TERMINATION_STOP_POINT_WORKFLOWS.path,
+        this.workflowId,
+      ])
+    );
+    window.open(url, '_blank');
   }
 }

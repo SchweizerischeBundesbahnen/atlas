@@ -1,0 +1,37 @@
+<h1 class="font-bold-2xl pt-5">
+  {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.STOP_POINT_INFO' | translate }}
+
+  <atlas-spacer [divider]="true" height="0"></atlas-spacer>
+</h1>
+
+@if (stopPoint().validFrom && stopPoint().validTo) {
+<div class="mb-3">
+  <span data-cy="version-range">
+    {{ 'COMMON.VERSION_VALIDITY' | translate }} {{ 'COMMON.FROM' | translate }}
+    {{ stopPoint().validFrom | displayDate }} {{ 'COMMON.TO' | translate }} {{
+    stopPoint().validTo | displayDate }}
+  </span>
+</div>
+}
+<div class="stop-point-info">
+  <div class="row mb-3">
+    <div class="col" data-cy="sloid">
+      <div class="font-bold-base">
+        {{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}
+      </div>
+      <div>{{ stopPoint().sloid }}</div>
+    </div>
+    <div class="col" data-cy="number">
+      <div class="font-bold-base">
+        {{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE' | translate }}
+      </div>
+      <div>{{ stopPoint().number | splitServicePointNumber }}</div>
+    </div>
+    <div class="col" data-cy="business-organisation">
+      <div class="font-bold-base">
+        {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate }}
+      </div>
+      <div>{{ stopPoint().businessOrganisation | boDisplay | async }}</div>
+    </div>
+  </div>
+</div>

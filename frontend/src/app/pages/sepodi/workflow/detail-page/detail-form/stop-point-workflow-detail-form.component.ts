@@ -33,11 +33,8 @@ import { CommentComponent } from '../../../../../core/form-components/comment/co
 import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
 import { StopPointWorkflowExaminantsTableComponent } from '../examinant-table/stop-point-workflow-examinants-table.component';
 import { StringListComponent } from '../../../../../core/form-components/string-list/string-list.component';
-import { DisplayDatePipe } from '../../../../../core/pipe/display-date.pipe';
-import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
-import { AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BoDisplayPipe } from '../../../../../core/form-components/bo-select/bo-display.pipe';
+import { StopPointWorkflowBasicInfo } from '../../stop-point-workflow-basic-info/stop-point-workflow-basic-info';
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
@@ -53,11 +50,8 @@ import { BoDisplayPipe } from '../../../../../core/form-components/bo-select/bo-
     InfoIconComponent,
     StopPointWorkflowExaminantsTableComponent,
     StringListComponent,
-    DisplayDatePipe,
-    SplitServicePointNumberPipe,
-    AsyncPipe,
     TranslatePipe,
-    BoDisplayPipe,
+    StopPointWorkflowBasicInfo,
   ],
 })
 export class StopPointWorkflowDetailFormComponent implements OnInit {
