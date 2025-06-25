@@ -8,19 +8,27 @@
     <app-stop-point-workflow-basic-info [stopPoint]="stopPoint" />
 
     <div>
-      <h1 class="font-bold-2xl pt-5">
+      <h1 class="font-bold-2xl pt-4">
         {{ 'TERMINATION_WORKFLOW.PROPOSAL' | translate }}
         <atlas-spacer [divider]="true" height="0"></atlas-spacer>
       </h1>
 
       <div class="row mb-3">
-        <div class="col" data-cy="workflow-status">
+        <div class="col-4" data-cy="workflow-status">
           <div class="font-bold-base">
             {{ 'WORKFLOW.STATUS_DETAIL' | translate }}
           </div>
-          <div>{{ 'WORKFLOW.STATUS.' + workflow.status | translate }}</div>
+          <div>
+            {{ 'TERMINATION_WORKFLOW.STATUS.' + workflow.status | translate }}
+          </div>
         </div>
-        <div class="col-10" data-cy="links">
+        <div class="col-4" data-cy="designation-official">
+          <div class="font-bold-base">
+            {{ 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL' | translate }}
+          </div>
+          <div>{{ stopPoint.designationOfficial }}</div>
+        </div>
+        <div class="col-4" data-cy="links">
           <span class="font-bold-base">
             <em class="bi bi-geo-alt-fill"></em>{{
             'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
@@ -32,27 +40,27 @@
         </div>
       </div>
 
-      <div>
+      <div class="mt-5">
         <div class="d-flex">
           <atlas-text-field
             class="col-3"
             [formGroup]="form"
             controlName="boTerminationDate"
-            fieldLabel="TERMINATION_WORKFLOW.BO_TERMINATION_DATE"
+            fieldLabel="TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.TRANSPORT_COMPANY_DATE"
           ></atlas-text-field>
 
           <atlas-text-field
             class="ms-5 col-3"
             [formGroup]="form"
             controlName="infoPlusTerminationDate"
-            fieldLabel="TERMINATION_WORKFLOW.INFO_PLUS_TERMINATION_DATE"
+            fieldLabel="TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.INFO+_DATE"
           ></atlas-text-field>
 
           <atlas-text-field
             class="ms-5 col-3"
             [formGroup]="form"
             controlName="novaTerminationDate"
-            fieldLabel="TERMINATION_WORKFLOW.NOVA_TERMINATION_DATE"
+            fieldLabel="TERMINATION_WORKFLOW.OVERVIEW_TABLE_COLUMNS.NOVA_DATE"
           ></atlas-text-field>
         </div>
         <div class="d-flex flex-column col-12 mb-5">
