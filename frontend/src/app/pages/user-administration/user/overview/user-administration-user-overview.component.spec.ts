@@ -8,7 +8,7 @@ import { UserService } from '../../service/user.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, Subject } from 'rxjs';
 import { User } from '../../../../api';
-import { UserAdministrationUserOverviewComponent } from './user-administration-overview.component';
+import { UserAdministrationUserOverviewComponent } from './user-administration-user-overview.component';
 import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
 import { TableService } from '../../../../core/components/table/table.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';

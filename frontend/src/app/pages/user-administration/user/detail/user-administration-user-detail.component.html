@@ -1,7 +1,5 @@
-<ng-container *ngIf="user.sbbUserId; else create">
+@if (user.sbbUserId) {
   <app-user-administration-edit [user]="user"></app-user-administration-edit>
-</ng-container>
-
-<ng-template #create>
+} @else {
   <app-user-administration-create></app-user-administration-create>
-</ng-template>
+}

@@ -31,8 +31,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-administration-overview',
-  templateUrl: './user-administration-overview.component.html',
-  styleUrls: ['./user-administration-overview.component.scss'],
+  templateUrl: './user-administration-user-overview.component.html',
+  styleUrls: ['./user-administration-user-overview.component.scss'],
   imports: [
     TableComponent,
     MatLabel,

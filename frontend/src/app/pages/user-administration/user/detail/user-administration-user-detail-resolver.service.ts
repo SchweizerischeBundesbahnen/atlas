@@ -8,7 +8,7 @@ import { User } from '../../../../api';
 @Injectable({
   providedIn: 'root',
 })
-export class UserAdministrationResolver {
+export class UserAdministrationUserDetailResolver {
   constructor(
     private readonly userService: UserService,
     private readonly router: Router
@@ -33,4 +33,4 @@ export class UserAdministrationResolver {
 }
 
 export const userResolver: ResolveFn<User> = (route: ActivatedRouteSnapshot) =>
-  inject(UserAdministrationResolver).resolve(route);
+  inject(UserAdministrationUserDetailResolver).resolve(route);
