@@ -97,7 +97,6 @@ public class TerminationStopPointWorkflowService {
   }
 
   public TerminationStopPointWorkflow addDecisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
-    TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
     //TODO add business logic
     throw new NotImplementedException("Method not implemented");
   }
