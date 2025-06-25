@@ -23,6 +23,13 @@ export class ApplicationPermissionConfig {
     return this.CONFIG[application];
   }
 
+  public static getByRole(
+    application: ApplicationType,
+    role: ApplicationRole
+  ): RoleConfig {
+    return this.get(application).roles.find((i) => i.role === role)!;
+  }
+
   public static getRoles(application: ApplicationType): ApplicationRole[] {
     return this.CONFIG[application].roles.map((i) => i.role);
   }

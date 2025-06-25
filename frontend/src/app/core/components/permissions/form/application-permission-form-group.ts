@@ -2,11 +2,23 @@ import { FormControl, FormGroup } from '@angular/forms';
 import {
   ApplicationRole,
   ApplicationType,
+  BulkImportPermissionRestrictionModel,
+  CantonPermissionRestrictionModel,
+  CountryPermissionRestrictionModel,
   Permission,
   PermissionRestrictionType,
+  SboidPermissionRestrictionModel,
 } from 'src/app/api';
+import { InfoPlusTerminationVotePermissionRestrictionModel } from '../../../../api/model/infoPlusTerminationVotePermissionRestrictionModel';
+import { NovaTerminationVotePermissionRestrictionModel } from '../../../../api/model/novaTerminationVotePermissionRestrictionModel';
+import {
+  ApplicationPermissionConfig,
+  RoleConfig,
+} from '../application-permission/application-permission.config';
+import { PermissionPermissionRestrictionsInner } from '../../../../api/model/permissionPermissionRestrictionsInner';
 
 export interface ApplicationPermission {
+  application: FormControl<ApplicationType | null | undefined>;
   role: FormControl<ApplicationRole | null | undefined>;
   permissions: FormGroup<PermissionRestriction>;
 }
@@ -28,6 +40,7 @@ export class ApplicationPermissionFormGroupBuilder {
     const formGroup: FormGroup<ApplicationPermission> =
       this.buildFormGroup(application);
     formGroup.controls.role.setValue(permission.role);
+    formGroup.controls.application.setValue(application);
 
     formGroup.controls.permissions.controls.cantonRestrictions?.setValue(
       permission.permissionRestrictions
@@ -76,10 +89,12 @@ export class ApplicationPermissionFormGroupBuilder {
     return this.APPLICATION_FORM_GROUPS[application];
   }
 
-  private static APPLICATION_FORM_GROUPS: {
+  // Necessary? Or just one formgroup for all ... with all controls should also work
+  private static readonly APPLICATION_FORM_GROUPS: {
     [application in ApplicationType]: FormGroup<ApplicationPermission>;
   } = {
     TTFN: new FormGroup({
+      application: new FormControl(),
       role: new FormControl(),
       permissions: new FormGroup<PermissionRestriction>({
         sboidsRestrictions: new FormControl([]),
@@ -87,6 +102,7 @@ export class ApplicationPermissionFormGroupBuilder {
       }),
     }),
     LIDI: new FormGroup({
+      application: new FormControl(),
       role: new FormControl(),
       permissions: new FormGroup<PermissionRestriction>({
         sboidsRestrictions: new FormControl([]),
@@ -94,16 +110,19 @@ export class ApplicationPermissionFormGroupBuilder {
       }),
     }),
     BODI: new FormGroup({
+      application: new FormControl(),
       role: new FormControl(),
       permissions: new FormGroup<PermissionRestriction>({}),
     }),
     TIMETABLE_HEARING: new FormGroup({
+      application: new FormControl(),
       role: new FormControl(),
       permissions: new FormGroup<PermissionRestriction>({
         cantonRestrictions: new FormControl([]),
       }),
     }),
     SEPODI: new FormGroup({
+      application: new FormControl(),
       role: new FormControl(),
       permissions: new FormGroup<PermissionRestriction>({
         countryRestrictions: new FormControl([]),
@@ -114,6 +133,7 @@ export class ApplicationPermissionFormGroupBuilder {
       }),
     }),
     PRM: new FormGroup({
+      application: new FormControl(),
       role: new FormControl(),
       permissions: new FormGroup<PermissionRestriction>({
         sboidsRestrictions: new FormControl([]),
@@ -121,4 +141,138 @@ export class ApplicationPermissionFormGroupBuilder {
       }),
     }),
   };
+
+  static formToModel(form: FormGroup<ApplicationPermission>): Permission {
+    const application = form.controls.application.value!;
+    const role = form.controls.role.value!;
+
+    const roleConfig = ApplicationPermissionConfig.getByRole(application, role);
+    const sboidRestrictions = this.getSboidRestrictions(form, roleConfig);
+    const countryRestrictions = this.getCountryRestrictions(form, roleConfig);
+
+    const cantons =
+      form.controls.permissions.controls.cantonRestrictions?.value ?? [];
+    const cantonRestrictions: CantonPermissionRestrictionModel[] = cantons.map(
+      (canton) => ({
+        type: PermissionRestrictionType.Canton,
+        valueAsString: canton,
+      })
+    );
+
+    const bulkImport =
+      form.controls.permissions.controls.bulkImportRestriction?.value ?? false;
+    const bulkImportRestriction: BulkImportPermissionRestrictionModel = {
+      type: PermissionRestrictionType.BulkImport,
+      valueAsString: bulkImport.toString(),
+    };
+
+    const infoPlusTerminationVoteRestriction =
+      this.getInfoPlusTerminationRestriction(form, roleConfig);
+
+    const novaTerminationVoteRestriction = this.getNovaTerminationRestriction(
+      form,
+      roleConfig
+    );
+
+    const permissionRestrictions: PermissionPermissionRestrictionsInner[] = [];
+    permissionRestrictions.push(...sboidRestrictions);
+    permissionRestrictions.push(...countryRestrictions);
+    if (infoPlusTerminationVoteRestriction) {
+      permissionRestrictions.push(infoPlusTerminationVoteRestriction);
+    }
+    if (novaTerminationVoteRestriction) {
+      permissionRestrictions.push(novaTerminationVoteRestriction);
+    }
+    return {
+      role: role,
+      application: application,
+      permissionRestrictions: permissionRestrictions,
+    };
+  }
+
+  private static getNovaTerminationRestriction(
+    form: FormGroup<ApplicationPermission>,
+    roleConfig: RoleConfig
+  ) {
+    if (
+      roleConfig.permissions.restrictions.includes(
+        PermissionRestrictionType.NovaTerminationVote
+      )
+    ) {
+      const novaTerminationVote =
+        form.controls.permissions.controls.novaTerminationVote?.value ?? false;
+      const novaTerminationVoteRestriction: NovaTerminationVotePermissionRestrictionModel =
+        {
+          type: PermissionRestrictionType.NovaTerminationVote,
+          valueAsString: novaTerminationVote.toString(),
+        };
+      return novaTerminationVoteRestriction;
+    }
+    return undefined;
+  }
+
+  private static getInfoPlusTerminationRestriction(
+    form: FormGroup<ApplicationPermission>,
+    roleConfig: RoleConfig
+  ) {
+    if (
+      roleConfig.permissions.restrictions.includes(
+        PermissionRestrictionType.InfoPlusTerminationVote
+      )
+    ) {
+      const infoPlusTerminationVote =
+        form.controls.permissions.controls.infoPlusTerminationVote?.value ??
+        false;
+      const infoPlusTerminationVoteRestriction: InfoPlusTerminationVotePermissionRestrictionModel =
+        {
+          type: PermissionRestrictionType.InfoPlusTerminationVote,
+          valueAsString: infoPlusTerminationVote.toString(),
+        };
+      return infoPlusTerminationVoteRestriction;
+    }
+    return undefined;
+  }
+
+  private static getCountryRestrictions(
+    form: FormGroup<ApplicationPermission>,
+    roleConfig: RoleConfig
+  ) {
+    if (
+      roleConfig.permissions.restrictions.includes(
+        PermissionRestrictionType.Country
+      )
+    ) {
+      const countries =
+        form.controls.permissions.controls.countryRestrictions?.value ?? [];
+      const countryRestrictions: CountryPermissionRestrictionModel[] =
+        countries.map((country) => ({
+          type: PermissionRestrictionType.Country,
+          valueAsString: country,
+        }));
+      return countryRestrictions;
+    }
+    return [];
+  }
+
+  private static getSboidRestrictions(
+    form: FormGroup<ApplicationPermission>,
+    roleConfig: RoleConfig
+  ) {
+    if (
+      roleConfig.permissions.restrictions.includes(
+        PermissionRestrictionType.BusinessOrganisation
+      )
+    ) {
+      const sboids =
+        form.controls.permissions.controls.sboidsRestrictions?.value ?? [];
+      const sboidRestrictions: SboidPermissionRestrictionModel[] = sboids.map(
+        (sboid) => ({
+          type: PermissionRestrictionType.BusinessOrganisation,
+          valueAsString: sboid,
+        })
+      );
+      return sboidRestrictions;
+    }
+    return [];
+  }
 }
