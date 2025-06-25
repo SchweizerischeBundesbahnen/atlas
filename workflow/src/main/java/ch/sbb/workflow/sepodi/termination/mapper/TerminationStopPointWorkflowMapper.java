@@ -2,6 +2,9 @@ package ch.sbb.workflow.sepodi.termination.mapper;
 
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.InfoPlus;
+import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.Nova;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import lombok.experimental.UtilityClass;
 
@@ -31,6 +34,26 @@ public class TerminationStopPointWorkflowMapper {
         .boTerminationDate(model.getBoTerminationDate())
         .workflowComment(model.getWorkflowComment())
         .build();
+  }
+
+  public static TerminationStopPointWorkflowModel toModel(TerminationStopPointWorkflow workflow, InfoPlus infoPlus, Nova nova) {
+    TerminationStopPointWorkflowModel model = toModel(workflow);
+    TerminationDecisionModel infoPlusDecision = model.getInfoPlusDecision();
+    infoPlusDecision.setExaminantMail(infoPlus.getEmail());
+    infoPlusDecision.setFirstName(infoPlus.getFirstname());
+    infoPlusDecision.setLastName(infoPlus.getLastname());
+    infoPlusDecision.setOrganisation(infoPlus.getOrganisation());
+
+    TerminationDecisionModel novaDecision = model.getNovaDecision();
+    novaDecision.setExaminantMail(nova.getEmail());
+    novaDecision.setFirstName(nova.getFirstname());
+    novaDecision.setLastName(nova.getLastname());
+    novaDecision.setOrganisation(nova.getOrganisation());
+
+    model.setInfoPlusDecision(infoPlusDecision);
+    model.setNovaDecision(novaDecision);
+
+    return model;
   }
 
   public static TerminationStopPointWorkflowModel toModel(TerminationStopPointWorkflow workflow) {

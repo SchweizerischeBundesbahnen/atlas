@@ -86,10 +86,12 @@ public class TerminationStopPointWorkflow extends BaseWorkflowEntity {
   private LocalDate novaTerminationDate;
 
   @OneToOne(cascade = CascadeType.ALL)
+  @NotNull
   @JoinColumn(name = "info_plus_decision_id", referencedColumnName = "id")
   private TerminationDecision infoPlusDecision;
 
   @JoinColumn(name = "nova_decision_id", referencedColumnName = "id")
+  @NotNull
   @OneToOne(cascade = CascadeType.ALL)
   private TerminationDecision novaDecision;
 

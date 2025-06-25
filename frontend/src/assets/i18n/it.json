@@ -657,7 +657,8 @@
       "TERMINATION_NOT_APPROVED": "Fermata soppressa",
       "TERMINATION_NOT_APPROVED_CLOSED": "Chiuso",
       "CANCELED": "Cancellato"
-    }
+    },
+    "PROPOSAL": "Data di scadenza desiderata IT"
   },
   "WORKFLOW": {
     "TITLE": "Audizione",

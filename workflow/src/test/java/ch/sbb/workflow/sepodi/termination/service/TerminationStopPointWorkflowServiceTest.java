@@ -127,7 +127,7 @@ class TerminationStopPointWorkflowServiceTest {
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_APPROVED);
+    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
     assertThat(result.getBoTerminationDate()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.getInfoPlusTerminationDate()).isEqualTo(LocalDate.of(2001, 1, 1));
 
@@ -162,7 +162,7 @@ class TerminationStopPointWorkflowServiceTest {
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
+    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_NOT_APPROVED);
     assertThat(result.getBoTerminationDate()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.getInfoPlusTerminationDate()).isEqualTo(LocalDate.of(2001, 1, 1));
 
@@ -185,7 +185,9 @@ class TerminationStopPointWorkflowServiceTest {
         .versionId(VERSION_ID)
         .boTerminationDate(LocalDate.of(2000, 1, 1))
         .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
+        .infoPlusDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).build())
         .novaTerminationDate(LocalDate.of(2000, 1, 3))
+        .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .applicantMail("a@b.com")
         .designationOfficial("Heimsiswil Zentrum")
         .sboid("ch:sboid:1")
@@ -234,7 +236,9 @@ class TerminationStopPointWorkflowServiceTest {
         .versionId(VERSION_ID)
         .boTerminationDate(LocalDate.of(2000, 1, 1))
         .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
+        .infoPlusDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).build())
         .novaTerminationDate(LocalDate.of(2000, 1, 3))
+        .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .applicantMail("a@b.com")
         .designationOfficial("Heimsiswil Zentrum")
         .sboid("ch:sboid:1")
