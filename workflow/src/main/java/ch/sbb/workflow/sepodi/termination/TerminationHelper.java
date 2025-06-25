@@ -11,11 +11,7 @@ import lombok.experimental.UtilityClass;
 public class TerminationHelper {
 
   public static LocalDate getTerminationDate(TerminationStopPointWorkflow workflow) {
-    if (workflow.getBoTerminationDate().isEqual(workflow.getInfoPlusTerminationDate())
-        && workflow.getBoTerminationDate().isEqual(workflow.getNovaTerminationDate())) {
-      return workflow.getBoTerminationDate();
-    }
-    return workflow.getNovaTerminationDate();
+    return calculateTerminationDate(workflow).getTerminationDate();
   }
 
   public static TerminationInfoModel calculateTerminationDate(TerminationStopPointWorkflow terminationWorkflow) {

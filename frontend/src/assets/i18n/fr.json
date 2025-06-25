@@ -658,10 +658,7 @@
       "TERMINATION_NOT_APPROVED_CLOSED": "fermé",
       "CANCELED": "annulé"
     },
-    "PROPOSAL": "Demande d’ordonnancement",
-    "BO_TERMINATION_DATE": "Date d’ordonnancement souhaitée ET",
-    "INFO_PLUS_TERMINATION_DATE": "Confirmé par INFO+",
-    "NOVA_TERMINATION_DATE": "Confirmé par NOVA"
+    "PROPOSAL": "Demande d’ordonnancement"
   },
   "WORKFLOW": {
     "TITLE": "Audition",

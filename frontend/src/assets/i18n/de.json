@@ -658,10 +658,7 @@
       "TERMINATION_NOT_APPROVED_CLOSED": "Geschlossen",
       "CANCELED": "Abgebrochen"
     },
-    "PROPOSAL": "Antrag zur Terminierung",
-    "BO_TERMINATION_DATE": "Gewünschtes Terminierungsdatum TU",
-    "INFO_PLUS_TERMINATION_DATE": "Bestätigt von Info+",
-    "NOVA_TERMINATION_DATE": "Bestätigt von NOVA"
+    "PROPOSAL": "Antrag zur Terminierung"
   },
   "WORKFLOW": {
     "TITLE": "Anhörung",

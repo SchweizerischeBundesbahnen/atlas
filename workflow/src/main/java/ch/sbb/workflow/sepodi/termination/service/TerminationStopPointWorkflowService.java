@@ -23,6 +23,7 @@ import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflowRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -84,12 +85,12 @@ public class TerminationStopPointWorkflowService {
     terminationWorkflow.setInfoPlusTerminationDate(decisionModel.getTerminationDate());
 
     if (decisionModel.getJudgement() == JudgementType.YES) {
-      terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_APPROVED);
+      terminationWorkflow.setStatus(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
       notificationService.sendTerminationApprovedNotificationToNova(terminationWorkflow, decisionModel);
     }
     if (decisionModel.getJudgement() == JudgementType.NO) {
       postStopServicePointTermination(decisionModel.getSloid(), decisionModel.getVersionId());
-      terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
+      terminationWorkflow.setStatus(TerminationWorkflowStatus.TARIFF_STOP_NOT_APPROVED);
       notificationService.sendCancelNotificationToApplicationMail(terminationWorkflow, decisionModel);
     }
     return repository.save(terminationWorkflow);
@@ -98,7 +99,7 @@ public class TerminationStopPointWorkflowService {
   public TerminationStopPointWorkflow addDecisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
     TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
     //TODO add business logic
-    throw new TerminationStopPointWorkflowPreconditionStatusException(STARTED);
+    throw new NotImplementedException("Method not implemented");
   }
 
   private ReadServicePointVersionModel postStopServicePointTermination(String sloid, Long id) {
@@ -111,8 +112,6 @@ public class TerminationStopPointWorkflowService {
     terminationStopPointWorkflow.setDesignationOfficial(readServicePointVersionModel.getDesignationOfficial());
     terminationStopPointWorkflow.setSboid(readServicePointVersionModel.getBusinessOrganisation());
     terminationStopPointWorkflow.setStatus(STARTED);
-    terminationStopPointWorkflow.setNovaTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
-    terminationStopPointWorkflow.setInfoPlusTerminationDate(terminationStopPointWorkflow.getBoTerminationDate());
 
     TerminationDecision infoPlusEmptyDecision = TerminationDecision.builder()
         .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
