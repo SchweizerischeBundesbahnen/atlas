@@ -3,14 +3,12 @@ package ch.sbb.workflow.sepodi.termination.model;
 import ch.sbb.workflow.sepodi.BaseExaminants;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component
-@Getter
 @Setter
 @Configuration
 @ConfigurationProperties(prefix = "termination-examinant-mails")
@@ -22,12 +20,18 @@ public class TerminationExaminants extends BaseExaminants {
 
   private Nova nova;
 
-  public String getInfoPlusMail() {
-    return PROD_PROFILE.equals(activeProfile) ? infoPlus.getEmail() : NON_PROD_EMAIL;
+  public InfoPlus getInfoPlus() {
+    if (infoPlus != null) {
+      infoPlus.setEmail(PROD_PROFILE.equals(activeProfile) ? infoPlus.getEmail() : NON_PROD_EMAIL);
+    }
+    return infoPlus;
   }
 
-  public String getNovaMail() {
-    return PROD_PROFILE.equals(activeProfile) ? nova.getEmail() : NON_PROD_EMAIL;
+  public Nova getNova() {
+    if (nova != null) {
+      nova.setEmail(PROD_PROFILE.equals(activeProfile) ? nova.getEmail() : NON_PROD_EMAIL);
+    }
+    return nova;
   }
 
   @Data
