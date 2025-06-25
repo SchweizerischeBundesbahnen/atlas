@@ -11,6 +11,7 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
+import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.InfoPlus;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,8 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
         .sboid("ch:sboid:1")
         .status(TerminationWorkflowStatus.STARTED)
         .build();
-    when(terminationExaminants.getInfoPlusMail()).thenReturn(mail);
+    when(terminationExaminants.getInfoPlus()).thenReturn(InfoPlus.builder().email(mail).build());
+    //    when(terminationExaminants.getInfoPlusByProfile().getEmail()).thenReturn(mail);
     //when
     MailNotification result = builderNotificationService.buildStartTerminationNotificationMailForInfoPlus(
         terminationStopPointWorkflow);
