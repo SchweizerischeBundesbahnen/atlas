@@ -657,7 +657,8 @@
       "TERMINATION_NOT_APPROVED": "arrêt supprimé",
       "TERMINATION_NOT_APPROVED_CLOSED": "fermé",
       "CANCELED": "annulé"
-    }
+    },
+    "PROPOSAL": "Demande d’ordonnancement"
   },
   "WORKFLOW": {
     "TITLE": "Audition",
