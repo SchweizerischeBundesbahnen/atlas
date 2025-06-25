@@ -37,9 +37,6 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
       Set<String> permissionRestrictions, PermissionRestrictionType type) {
     EnumSpecification<UserPermission> applicationTypesSpec = new EnumSpecification<>(applicationTypes.stream().toList(),
         BasePermission_.application);
-    EnumSpecification<UserPermission> applicationRoleSpec = new EnumSpecification<>(List.of(ApplicationRole.READER),
-        BasePermission.Fields.role, true);
-    Specification<UserPermission> specification = applicationTypesSpec.and(applicationRoleSpec);
 
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
@@ -48,7 +45,7 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
     Predicate permissionRestrictionPredicate = getPermissionRestrictionPredicate(permissionRestrictions, type,
         criteriaBuilder, root);
 
-    Predicate restriction = specification.toPredicate(root, query, criteriaBuilder);
+    Predicate restriction = applicationTypesSpec.toPredicate(root, query, criteriaBuilder);
     query.where(criteriaBuilder.and(restriction, permissionRestrictionPredicate));
     query.groupBy(root.get(UserPermission_.sbbUserId));
     Expression<Long> count = criteriaBuilder.count(root.get(UserPermission_.sbbUserId));

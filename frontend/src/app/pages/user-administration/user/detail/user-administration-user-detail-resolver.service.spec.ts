@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UserAdministrationResolver } from './user-administration.resolver';
+import { UserAdministrationUserDetailResolver } from './user-administration-user-detail-resolver.service';
 import { UserService } from '../../service/user.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { firstValueFrom, of } from 'rxjs';
 import SpyObj = jasmine.SpyObj;
 
-describe('UserAdministrationResolver', () => {
-  let resolver: UserAdministrationResolver;
+describe('UserAdministrationUserDetailResolver', () => {
+  let resolver: UserAdministrationUserDetailResolver;
 
   let userServiceSpy: SpyObj<UserService>;
 
@@ -23,7 +23,7 @@ describe('UserAdministrationResolver', () => {
         },
       ],
     });
-    resolver = TestBed.inject(UserAdministrationResolver);
+    resolver = TestBed.inject(UserAdministrationUserDetailResolver);
   });
 
   it('should be created', () => {
