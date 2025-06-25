@@ -1,4 +1,4 @@
-CREATE TABLE sector_group
+CREATE TABLE sector_group_version
 (
     id                           BIGINT PRIMARY KEY,
     sloid                        VARCHAR(128) NOT NULL,
@@ -12,12 +12,12 @@ CREATE TABLE sector_group
     edition_date                 TIMESTAMP    NOT NULL,
     editor                       VARCHAR(50)  NOT NULL,
     version                      BIGINT       NOT NULL DEFAULT 0,
-    CONSTRAINT sector_group_sloid_unique UNIQUE (sloid, valid_from)
+    CONSTRAINT sector_group_version_sloid_unique UNIQUE (sloid, valid_from)
 );
 
-CREATE SEQUENCE sector_group_seq START WITH 1000 INCREMENT BY 1;
+CREATE SEQUENCE sector_group_version_seq START WITH 1000 INCREMENT BY 1;
 
-CREATE TABLE sector
+CREATE TABLE sector_version
 (
     id                           BIGINT PRIMARY KEY,
     sloid                        VARCHAR(128) NOT NULL,
@@ -36,19 +36,19 @@ CREATE TABLE sector
     edition_date                 TIMESTAMP    NOT NULL,
     editor                       VARCHAR(50)  NOT NULL,
     version                      BIGINT       NOT NULL DEFAULT 0,
-    CONSTRAINT sector_sloid_unique
+    CONSTRAINT sector_version_sloid_unique
         UNIQUE (sloid, valid_from)
 );
 
-CREATE SEQUENCE sector_seq START WITH 1000 INCREMENT BY 1;
+CREATE SEQUENCE sector_version_seq START WITH 1000 INCREMENT BY 1;
 
 
-CREATE TABLE sector_group_rel
+CREATE TABLE sector_group_relations
 (
     sector_sloid                 VARCHAR(128) NOT NULL,
     sector_group_sloid           VARCHAR(128) NOT NULL,
 
-    CONSTRAINT pk_sector_group_rel
-        PRIMARY KEY (sector_sloid, sector_group_sloid),
+    CONSTRAINT pk_sector_group_relations
+        PRIMARY KEY (sector_sloid, sector_group_sloid)
 
 );
