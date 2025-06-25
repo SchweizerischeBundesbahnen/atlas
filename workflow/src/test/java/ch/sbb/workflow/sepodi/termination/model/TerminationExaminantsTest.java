@@ -20,8 +20,8 @@ class TerminationExaminantsTest {
     terminationExaminants.setActiveProfile("prod");
 
     //when and then
-    assertThat(terminationExaminants.getNovaMail()).isNotNull().isEqualTo("nova@sbb.ch");
-    assertThat(terminationExaminants.getInfoPlusMail()).isNotNull().isEqualTo("info@sbb.ch");
+    assertThat(terminationExaminants.getNova().getEmail()).isNotNull().isEqualTo("nova@sbb.ch");
+    assertThat(terminationExaminants.getInfoPlus().getEmail()).isNotNull().isEqualTo("info@sbb.ch");
   }
 
   @Test
@@ -30,8 +30,8 @@ class TerminationExaminantsTest {
     terminationExaminants.setActiveProfile("int");
 
     //when and then
-    assertThat(terminationExaminants.getNovaMail()).isNotNull().isEqualTo("TechSupport-ATLAS@sbb.ch");
-    assertThat(terminationExaminants.getInfoPlusMail()).isNotNull().isEqualTo("TechSupport-ATLAS@sbb.ch");
+    assertThat(terminationExaminants.getNova().getEmail()).isNotNull().isEqualTo("TechSupport-ATLAS@sbb.ch");
+    assertThat(terminationExaminants.getInfoPlus().getEmail()).isNotNull().isEqualTo("TechSupport-ATLAS@sbb.ch");
   }
 
 }
