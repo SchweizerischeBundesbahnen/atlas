@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -228,6 +229,15 @@ class TerminationStopPointWorkflowServiceTest {
     verify(notificationService, times(1)).sendStartTerminationNotificationToInfoPlus(any(TerminationStopPointWorkflow.class));
     verify(notificationService, times(1)).sendStartConfirmationTerminationNotificationToApplicantMail(
         any(TerminationStopPointWorkflow.class));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenAddDecisionNova() {
+    //given
+    // Test added because of Sonar...
+    //when and then
+    assertThrows(NotImplementedException.class,
+        () -> service.addDecisionNova(TerminationDecisionModel.builder().build(), 123L));
   }
 
   private @NotNull TerminationStopPointWorkflow saveTerminationStopPointWorkflow() {
