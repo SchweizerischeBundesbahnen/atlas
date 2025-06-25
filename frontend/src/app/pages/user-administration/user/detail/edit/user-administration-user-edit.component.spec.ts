@@ -122,7 +122,7 @@ describe('UserAdministrationUserEditComponent', () => {
       })
     );
 
-    component.saveEdits();
+    component.save();
 
     expect(
       userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser
@@ -147,7 +147,7 @@ describe('UserAdministrationUserEditComponent', () => {
     userServiceSpy.updateUserPermission.and.returnValue(
       new Observable<User>((subscriber) => subscriber.error('error'))
     );
-    component.saveEdits();
+    component.save();
     expect(component.saveEnabled).toBeTrue();
   });
 

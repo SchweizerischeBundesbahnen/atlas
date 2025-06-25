@@ -13,6 +13,7 @@ import {
   FormControl,
   FormGroup,
   NgForm,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import {
   ApplicationPermission,
@@ -52,6 +53,7 @@ import { UserPermissionProviderService } from './user-permission-provider-servic
     RelationComponent,
     AtlasSpacerComponent,
     JsonPipe,
+    ReactiveFormsModule,
   ],
 })
 export class ApplicationPermissionComponent implements OnInit {

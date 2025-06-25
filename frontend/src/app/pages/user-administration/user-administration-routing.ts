@@ -1,21 +1,29 @@
 import { Routes } from '@angular/router';
 
-import { userResolver } from './user/detail/user-administration.resolver';
+import { userResolver } from './user/detail/user-administration-user-detail-resolver.service';
 
 import { Pages } from '../pages';
 
 import { clientCredentialResolver } from './client-credential/detail/client-credential-administration.resolver';
+import { UserPermissionProviderService } from '../../core/components/permissions/application-permission/user-permission-provider-service';
+import { UserPermissionGivenUserService } from './user/detail/edit/user-permission-given-user.service';
 
 export const routes: Routes = [
   {
     path: Pages.USERS.path + '/:sbbUserId',
     loadComponent: () =>
-      import(
-        './user/detail/user-administration/user-administration-user-detail.component'
-      ).then((m) => m.UserAdministrationUserDetailComponent),
+      import('./user/detail/user-administration-user-detail.component').then(
+        (m) => m.UserAdministrationUserDetailComponent
+      ),
     resolve: {
       user: userResolver,
     },
+    providers: [
+      {
+        provide: UserPermissionProviderService,
+        useExisting: UserPermissionGivenUserService,
+      },
+    ],
     runGuardsAndResolvers: 'always',
   },
   {
@@ -39,9 +47,9 @@ export const routes: Routes = [
       {
         path: Pages.USERS.path,
         loadComponent: () =>
-          import('./user/overview/user-administration-overview.component').then(
-            (m) => m.UserAdministrationUserOverviewComponent
-          ),
+          import(
+            './user/overview/user-administration-user-overview.component'
+          ).then((m) => m.UserAdministrationUserOverviewComponent),
       },
       {
         path: Pages.CLIENTS.path,

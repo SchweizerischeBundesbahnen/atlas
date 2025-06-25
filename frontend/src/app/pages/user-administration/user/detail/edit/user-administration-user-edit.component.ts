@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { UserService } from '../../../service/user.service';
@@ -6,18 +6,21 @@ import { DialogService } from '../../../../../core/components/dialog/dialog.serv
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '../../../../../api';
+import {
+  ApplicationType,
+  User,
+  UserPermissionCreate,
+} from '../../../../../api';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
-import { NgFor, NgIf } from '@angular/common';
-import { UserAdministrationReadOnlyDataComponent } from '../../../components/read-only-data/user-administration-read-only-data.component';
-import { UserAdministrationApplicationConfigComponent } from '../../../components/application-config/user-administration-application-config.component';
 import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { BackButtonDirective } from '../../../../../core/components/button/back-button/back-button.directive';
 import { TranslatePipe } from '@ngx-translate/core';
-import { EditTitlePipe } from './edit-title.pipe';
+import { PermissionComponent } from '../../../../../core/components/permissions/permission.component';
+import { UserPermissionGivenUserService } from './user-permission-given-user.service';
+import { ApplicationPermissionFormGroupBuilder } from '../../../../../core/components/permissions/form/application-permission-form-group';
 
 @Component({
   selector: 'app-user-administration-edit',
@@ -27,21 +30,15 @@ import { EditTitlePipe } from './edit-title.pipe';
     ScrollToTopDirective,
     DetailPageContainerComponent,
     DetailPageContentComponent,
-    NgIf,
-    UserAdministrationReadOnlyDataComponent,
-    NgFor,
-    UserAdministrationApplicationConfigComponent,
     UserDetailInfoComponent,
     DetailFooterComponent,
     BackButtonDirective,
     TranslatePipe,
-    EditTitlePipe,
+    PermissionComponent,
   ],
 })
 export class UserAdministrationUserEditComponent implements OnInit {
-  @Input() user?: User;
-  editMode = false;
-  saveEnabled = true;
+  @Input() user!: User;
   userRecord?: CreationEditionRecord;
 
   constructor(
@@ -53,54 +50,32 @@ export class UserAdministrationUserEditComponent implements OnInit {
     readonly userPermissionManager: UserPermissionManager
   ) {}
 
+  userPermissionGivenUserService = inject(UserPermissionGivenUserService);
+
   ngOnInit() {
-    const permissionsFromUserModelAsArray =
-      this.userService.getPermissionsFromUserModelAsArray(this.user!);
-    if (permissionsFromUserModelAsArray.length === 0) {
-      this.user = undefined;
-      return;
-    }
+    this.userPermissionGivenUserService.user = this.user!;
     this.convertUserPermissionToRecord();
-
-    this.userPermissionManager.setSbbUserId(this.user!.sbbUserId!);
-    this.userPermissionManager.setPermissions(permissionsFromUserModelAsArray);
   }
 
-  saveEdits(): void {
-    this.saveEnabled = false;
-    this.userPermissionManager.emitBoFormResetEvent();
-    this.userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
-    this.userService
-      .updateUserPermission(this.userPermissionManager.userPermission)
-      .subscribe({
-        next: (user: User) => {
-          this.user = user;
-          this.editMode = false;
-          this.userPermissionManager.setPermissions(
-            this.userService.getPermissionsFromUserModelAsArray(this.user)
-          );
-          this.notificationService.success(
-            'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
-          );
-          this.convertUserPermissionToRecord();
-        },
-        error: () => (this.saveEnabled = true),
-      });
-  }
-
-  cancelEdit(showDialog = true): void {
-    if (!showDialog) {
-      this.router.navigate(['..'], { relativeTo: this.route }).then();
-      return;
-    }
-    this.dialogService.confirmLeave().subscribe((result) => {
-      if (result) {
-        this.editMode = false;
+  save(): void {
+    const userPermission: UserPermissionCreate = {
+      sbbUserId: this.user.userId!,
+      permissions: [
+        ApplicationPermissionFormGroupBuilder.formToModel(this.formGroup!),
+      ],
+    };
+    this.userService.updateUserPermission(userPermission).subscribe({
+      next: (user: User) => {
+        this.user = user;
         this.userPermissionManager.setPermissions(
-          this.userService.getPermissionsFromUserModelAsArray(this.user!)
+          this.userService.getPermissionsFromUserModelAsArray(this.user)
         );
-        this.userPermissionManager.emitBoFormResetEvent();
-      }
+        this.notificationService.success(
+          'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
+        );
+        this.convertUserPermissionToRecord();
+      },
+      error: () => this.formGroup?.enable(),
     });
   }
 
@@ -133,5 +108,17 @@ export class UserAdministrationUserEditComponent implements OnInit {
         creationDate: firstCreated.creationDate,
       };
     }
+  }
+
+  toggleEdit() {
+    if (this.formGroup?.disabled) {
+      this.formGroup?.enable();
+    } else {
+      this.formGroup?.disable();
+    }
+  }
+
+  get formGroup() {
+    return this.userPermissionGivenUserService.applicationPermissionFormGroup;
   }
 }

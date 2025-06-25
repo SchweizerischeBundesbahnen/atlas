@@ -8,7 +8,9 @@ import { UserService } from '../../core/auth/user/user.service';
 import { ApplicationType, Permission } from '../../api';
 import { UserPermissionProviderService } from '../../core/components/permissions/application-permission/user-permission-provider-service';
 
-export class UserProfileService implements UserPermissionProviderService {
+export class UserPermissionCurrentUserService
+  implements UserPermissionProviderService
+{
   userService = inject(UserService);
 
   showAllSpecialPermissions(): boolean {
@@ -18,14 +20,14 @@ export class UserProfileService implements UserPermissionProviderService {
   loadFormGroup(
     application: ApplicationType
   ): FormGroup<ApplicationPermission> {
-    const permissions: Permission =
+    const permission: Permission =
       this.userService.currentUser!.permissions.find(
         (i) => i.application === application
       )!;
     const applicationPermissionFormGroup =
       ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
         application,
-        permissions
+        permission
       );
     applicationPermissionFormGroup.disable();
     return applicationPermissionFormGroup;

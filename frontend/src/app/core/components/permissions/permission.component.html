@@ -10,10 +10,15 @@
           {{ 'USER_ADMIN.APPLICATION.' + application | translate }}
         </div>
       </ng-template>
-      <div class="py-3">
-        <atlas-application-permission [application]="application">
-        </atlas-application-permission>
-      </div>
+      <ng-template matTabContent>
+        <div class="py-3">
+          <atlas-application-permission
+            #applicationPermissionComponent
+            [application]="application"
+          >
+          </atlas-application-permission>
+        </div>
+      </ng-template>
     </mat-tab>
   }
 </mat-tab-group>
