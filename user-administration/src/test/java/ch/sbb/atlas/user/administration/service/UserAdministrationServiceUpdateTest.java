@@ -74,7 +74,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         .build();
 
     // When
-    userAdministrationService.updateUser(editedPermissions);
+    userAdministrationService.updatePermission(editedPermissions);
 
     // Then
     UserPermission ttfnPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
@@ -101,7 +101,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         .build();
 
     // When
-    userAdministrationService.updateUser(editedPermissions);
+    userAdministrationService.updatePermission(editedPermissions);
 
     // Then
     UserPermission ttfnPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
@@ -123,7 +123,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         .build();
 
     // When
-    userAdministrationService.updateUser(editedPermissions);
+    userAdministrationService.updatePermission(editedPermissions);
 
     // Then
     UserPermission lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
@@ -149,7 +149,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         .build();
 
     // When
-    userAdministrationService.updateUser(editedPermissions);
+    userAdministrationService.updatePermission(editedPermissions);
 
     // Then
     UserPermission lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
@@ -183,7 +183,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         .build();
 
     // When
-    userAdministrationService.updateUser(editedPermissions);
+    userAdministrationService.updatePermission(editedPermissions);
 
     // Then
     UserPermission lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
