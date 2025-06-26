@@ -1,19 +1,18 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
@@ -35,11 +34,11 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder(toBuilder = true)
 @FieldNameConstants
-@Entity(name = "sector_version")
+@Entity(name = "sector_group_version")
 @AtlasVersionable
-public class SectorVersion extends BaseEntity {
+public class SectorGroupVersion extends BaseEntity {
 
-  private static final String VERSION_SEQ = "sector_version_seq";
+  private static final String VERSION_SEQ = "sector_group_version_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -69,28 +68,13 @@ public class SectorVersion extends BaseEntity {
   @NotNull
   private String designation;
 
-  @AtlasVersionableProperty
-  @NotNull
-  private Double north;
-
-  @AtlasVersionableProperty
-  @NotNull
-  private Double east;
-
-  @AtlasVersionableProperty
-  private Double height;
-
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  @AtlasVersionableProperty
-  private SpatialReference spatialReference;
-
   @Schema(description = "Length of the Sector", example = "18.000")
   private Double length;
 
-  @Schema(description = "Edge Height of the Sector", example = "TODO")
-  private Double edgeHeight;
-
-  @ManyToMany(mappedBy = "sectorVersions", fetch = FetchType.EAGER)
-  private List<SectorGroupVersion> sectorGroupVersions;
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "sector_group_relations",
+      joinColumns = @JoinColumn(name = "sector_sloid"),
+      inverseJoinColumns = @JoinColumn(name = "sector_group_sloid"))
+  private List<SectorVersion> sectorVersions;
 }
