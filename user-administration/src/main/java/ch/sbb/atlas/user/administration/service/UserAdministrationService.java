@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.service;
 
+import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
@@ -64,27 +65,25 @@ public class UserAdministrationService {
     userPermissionRepository.saveAll(toSave);
   }
 
-  public void updateUser(UserPermissionCreateModel editedPermissions) {
-    editedPermissions.getPermissions().forEach(editedPermission -> {
-      Optional<UserPermission> existingPermissions = getCurrentUserPermission(editedPermissions.getSbbUserId(),
-          editedPermission.getApplication());
+  public void updatePermission(String userId, ApplicationType application, PermissionModel editedPermission) {
+    Optional<UserPermission> existingPermissions = getCurrentUserPermission(userId,
+        application);
 
-      if (existingPermissions.isPresent()) {
-        UserPermission updateableUserPermission = existingPermissions.get();
-        updateableUserPermission.setRole(editedPermission.getRole());
+    if (existingPermissions.isPresent()) {
+      UserPermission updateableUserPermission = existingPermissions.get();
+      updateableUserPermission.setRole(editedPermission.getRole());
 
-        updateableUserPermission.getPermissionRestrictions().clear();
-        Set<PermissionRestriction> permissionRestrictions = editedPermission.getPermissionRestrictions().stream().map(
-                restriction -> PermissionRestrictionMapper.toEntity(updateableUserPermission, restriction))
-            .collect(Collectors.toSet());
-        updateableUserPermission.getPermissionRestrictions().addAll(permissionRestrictions);
-        updateableUserPermission.setEditionDate(LocalDateTime.now());
-      } else {
-        UserPermission additionalUserPermission = UserPermissionMapper.toEntity(editedPermissions.getSbbUserId(),
-            editedPermission);
-        userPermissionRepository.save(additionalUserPermission);
-      }
-    });
+      updateableUserPermission.getPermissionRestrictions().clear();
+      Set<PermissionRestriction> permissionRestrictions = editedPermission.getPermissionRestrictions().stream().map(
+              restriction -> PermissionRestrictionMapper.toEntity(updateableUserPermission, restriction))
+          .collect(Collectors.toSet());
+      updateableUserPermission.getPermissionRestrictions().addAll(permissionRestrictions);
+      updateableUserPermission.setEditionDate(LocalDateTime.now());
+    } else {
+      UserPermission additionalUserPermission = UserPermissionMapper.toEntity(userId,
+          editedPermission);
+      userPermissionRepository.save(additionalUserPermission);
+    }
   }
 
   Optional<UserPermission> getCurrentUserPermission(String sbbuid, ApplicationType applicationType) {
