@@ -51,7 +51,6 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
         .status(TerminationWorkflowStatus.STARTED)
         .build();
     when(terminationExaminants.getInfoPlus()).thenReturn(InfoPlus.builder().email(mail).build());
-    //    when(terminationExaminants.getInfoPlusByProfile().getEmail()).thenReturn(mail);
     //when
     MailNotification result = builderNotificationService.buildStartTerminationNotificationMailForInfoPlus(
         terminationStopPointWorkflow);
