@@ -33,15 +33,6 @@
   </div>
 
   <atlas-detail-page-container>
-    <atlas-detail-page-content>
-      <div>
-        <atlas-permission></atlas-permission>
-      </div>
-      <div class="mt-5">
-        <app-user-detail-info [record]="userRecord!"></app-user-detail-info>
-      </div>
-    </atlas-detail-page-content>
-
     <atlas-detail-footer>
       @if (formGroup?.enabled) {
         <button
@@ -72,5 +63,13 @@
         </button>
       }
     </atlas-detail-footer>
+    <atlas-detail-page-content>
+      <div>
+        <atlas-permission></atlas-permission>
+      </div>
+      <div class="mt-5">
+        <app-user-detail-info [record]="userRecord!"></app-user-detail-info>
+      </div>
+    </atlas-detail-page-content>
   </atlas-detail-page-container>
 </div>
