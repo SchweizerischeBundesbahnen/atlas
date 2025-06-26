@@ -1,16 +1,9 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import { UserPermissionManager } from '../../../service/user-permission-manager';
-import { UserService } from '../../../service/user.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import moment from 'moment';
-import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ApplicationType,
-  User,
-  UserPermissionCreate,
-} from '../../../../../api';
+import { User } from '../../../../../api';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
@@ -24,9 +17,9 @@ import { ApplicationPermissionFormGroupBuilder } from '../../../../../core/compo
 import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
 
 @Component({
-  selector: 'app-user-administration-edit',
+  selector: 'app-user-administration-user-edit',
   templateUrl: './user-administration-user-edit.component.html',
-  viewProviders: [UserPermissionManager],
+  styleUrls: ['./user-administration-user-edit.component.scss'],
   imports: [
     ScrollToTopDirective,
     DetailPageContainerComponent,
@@ -39,53 +32,66 @@ import { UserAdministrationService } from '../../../../../api/service/user-admin
   ],
 })
 export class UserAdministrationUserEditComponent implements OnInit {
-  @Input() user!: User;
-  userRecord?: CreationEditionRecord;
+  user = input.required<User>();
 
-  constructor(
-    private readonly notificationService: NotificationService,
-    private readonly userService: UserService,
-    private readonly dialogService: DialogService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    readonly userPermissionManager: UserPermissionManager
-  ) {}
+  userRecord?: CreationEditionRecord;
+  editMode = false;
 
   userPermissionGivenUserService = inject(UserPermissionGivenUserService);
   userAdministrationService = inject(UserAdministrationService);
+  notificationService = inject(NotificationService);
+  dialogService = inject(DialogService);
 
   ngOnInit() {
-    this.userPermissionGivenUserService.user = this.user!;
+    this.userPermissionGivenUserService.user = this.user();
     this.convertUserPermissionToRecord();
   }
 
   save(): void {
-    this.userPermissionGivenUserService.applicationPermissionFormGroup?.disable();
+    this.formGroup.disable();
 
     const userPermission = ApplicationPermissionFormGroupBuilder.formToModel(
-      this.formGroup!
+      this.formGroup
     );
     this.userAdministrationService
       .updateUserPermission(
-        this.user.userId!,
+        this.user().userId!,
         userPermission.application,
         userPermission
       )
       .subscribe({
-        next: (user: User) => {
-          this.user = user;
+        next: () => {
           this.ngOnInit();
           this.notificationService.success(
             'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
           );
         },
-        error: () => this.formGroup?.enable(),
+        error: () => this.formGroup.enable(),
       });
   }
 
+  toggleEdit() {
+    if (this.formGroup.disabled) {
+      this.formGroup.enable();
+      this.editMode = true;
+    } else {
+      this.dialogService.confirmLeave().subscribe((result) => {
+        if (result) {
+          this.editMode = false;
+          this.formGroup.disable();
+        }
+      });
+    }
+  }
+
+  get formGroup() {
+    return this.userPermissionGivenUserService.applicationPermissionFormGroup!;
+  }
+
   private convertUserPermissionToRecord(): void {
-    const permissionsFromUserModelAsArray =
-      this.userService.getPermissionsFromUserModelAsArray(this.user!);
+    const permissionsFromUserModelAsArray = Array.from(
+      this.user().permissions!
+    );
     if (permissionsFromUserModelAsArray.length > 0) {
       const firstCreated = permissionsFromUserModelAsArray.reduce(
         (previousValue, currentValue) => {
@@ -112,17 +118,5 @@ export class UserAdministrationUserEditComponent implements OnInit {
         creationDate: firstCreated.creationDate,
       };
     }
-  }
-
-  toggleEdit() {
-    if (this.formGroup?.disabled) {
-      this.formGroup?.enable();
-    } else {
-      this.formGroup?.disable();
-    }
-  }
-
-  get formGroup() {
-    return this.userPermissionGivenUserService.applicationPermissionFormGroup;
   }
 }
