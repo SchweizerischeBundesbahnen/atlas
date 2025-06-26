@@ -36,7 +36,6 @@ import {
   ApplicationPermissionConfig,
   RoleConfig,
 } from './application-permission.config';
-import { JsonPipe } from '@angular/common';
 import { UserPermissionProviderService } from './user-permission-provider-service';
 
 @Component({
@@ -52,7 +51,6 @@ import { UserPermissionProviderService } from './user-permission-provider-servic
     SelectComponent,
     RelationComponent,
     AtlasSpacerComponent,
-    JsonPipe,
     ReactiveFormsModule,
   ],
 })
@@ -115,13 +113,12 @@ export class ApplicationPermissionComponent implements OnInit {
   ];
 
   application = input.required<ApplicationType>();
-  form!: FormGroup<ApplicationPermission>;
 
   availableRoles: ApplicationRole[] = [];
   applicationConfig: ApplicationConfig = ApplicationPermissionConfig.get(
     ApplicationType.Ttfn
   );
-  applicationForm!: FormGroup<ApplicationPermission>;
+  form!: FormGroup<ApplicationPermission>;
   permissionsForm!: FormGroup<PermissionRestriction>;
   currentRole!: ApplicationRole;
   currentRoleConfig!: RoleConfig;
@@ -130,10 +127,10 @@ export class ApplicationPermissionComponent implements OnInit {
   userPermissionProviderService = inject(UserPermissionProviderService);
 
   ngOnInit(): void {
-    this.applicationForm = this.userPermissionProviderService.loadFormGroup(
+    this.form = this.userPermissionProviderService.loadFormGroup(
       this.application()
     );
-    this.permissionsForm = this.applicationForm.controls.permissions;
+    this.permissionsForm = this.form.controls.permissions;
 
     this.availableRoles = ApplicationPermissionConfig.getRoles(
       this.application()
@@ -144,9 +141,7 @@ export class ApplicationPermissionComponent implements OnInit {
     this.showAllSpecialPermissions =
       this.userPermissionProviderService.showAllSpecialPermissions();
 
-    this.onRoleChanged(
-      this.applicationForm.controls.role.value ?? ApplicationRole.Reader
-    );
+    this.onRoleChanged(this.form.controls.role.value ?? ApplicationRole.Reader);
 
     this.permissionsForm.controls.sboidsRestrictions?.value?.forEach((sboid) =>
       this.addBusinessOrganisationToCurrentTable(sboid)
@@ -154,8 +149,7 @@ export class ApplicationPermissionComponent implements OnInit {
   }
 
   removeBusinessOrganisation(): void {
-    const sboids =
-      this.applicationForm.controls.permissions.controls.sboidsRestrictions!;
+    const sboids = this.form.controls.permissions.controls.sboidsRestrictions!;
     const updatedSboids = sboids.value!;
     updatedSboids.splice(this.selectedIndex, 1);
     sboids.setValue(updatedSboids);
@@ -174,7 +168,7 @@ export class ApplicationPermissionComponent implements OnInit {
       this.addBusinessOrganisationToCurrentTable(sboid);
 
       const sboids =
-        this.applicationForm.controls.permissions.controls.sboidsRestrictions!;
+        this.form.controls.permissions.controls.sboidsRestrictions!;
       const updatedSboids = sboids.value!;
       updatedSboids.push(sboid);
       sboids.setValue(updatedSboids);

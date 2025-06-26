@@ -3,7 +3,7 @@
     <div class="role d-flex flex-column col-3 me-3">
       <atlas-select
         (selectChanged)="onRoleChanged($event.value)"
-        [formGroup]="applicationForm"
+        [formGroup]="form"
         label="USER_ADMIN.ROLE"
         controlName="role"
         [additionalLabelspace]="0"
@@ -52,13 +52,13 @@
             (selectedIndexChanged)="selectedIndex = $event"
             addBtnNameTranslationKey="USER_ADMIN.ADD_BUSINESS_ORGANISATION"
             deleteBtnNameTranslationKey="USER_ADMIN.DELETE_BUSINESS_ORGANISATION"
-            [editable]="applicationForm.enabled"
+            [editable]="form.enabled"
             [records]="currentBusinessOrganisations"
             [selectedIndex]="selectedIndex"
             [tableColumns]="tableColumnDef"
             [relationEditable]="false"
           >
-            @if (applicationForm.enabled) {
+            @if (form.enabled) {
               <div class="mb-3 bo-select-wrapper" table-button-between>
                 <bo-select
                   [controlName]="boFormCtrlName"
@@ -100,7 +100,7 @@
             <atlas-slide-toggle
               [formGroup]="permissionsForm"
               controlName="bulkImportRestriction"
-              [disabled]="applicationForm.disabled"
+              [disabled]="form.disabled"
             ></atlas-slide-toggle>
           </div>
         }
@@ -112,7 +112,7 @@
             <atlas-slide-toggle
               [formGroup]="permissionsForm"
               controlName="novaTerminationVote"
-              [disabled]="applicationForm.disabled"
+              [disabled]="form.disabled"
             ></atlas-slide-toggle>
           </div>
         }
@@ -124,7 +124,7 @@
             <atlas-slide-toggle
               [formGroup]="permissionsForm"
               controlName="infoPlusTerminationVote"
-              [disabled]="applicationForm.disabled"
+              [disabled]="form.disabled"
             ></atlas-slide-toggle>
           </div>
         }
@@ -132,6 +132,3 @@
     </div>
   }
 </div>
-{{ applicationForm.value | json }}
-<br />
-{{ currentRoleConfig | json }}
