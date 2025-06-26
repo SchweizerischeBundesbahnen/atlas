@@ -147,28 +147,17 @@ export class ApplicationPermissionFormGroupBuilder {
     const role = form.controls.role.value!;
 
     const roleConfig = ApplicationPermissionConfig.getByRole(application, role);
+
     const sboidRestrictions = this.getSboidRestrictions(form, roleConfig);
     const countryRestrictions = this.getCountryRestrictions(form, roleConfig);
+    const cantonRestrictions = this.getCantonRestrictions(form, roleConfig);
 
-    const cantons =
-      form.controls.permissions.controls.cantonRestrictions?.value ?? [];
-    const cantonRestrictions: CantonPermissionRestrictionModel[] = cantons.map(
-      (canton) => ({
-        type: PermissionRestrictionType.Canton,
-        valueAsString: canton,
-      })
+    const bulkImportRestriction = this.getBulkImportRestriction(
+      form,
+      roleConfig
     );
-
-    const bulkImport =
-      form.controls.permissions.controls.bulkImportRestriction?.value ?? false;
-    const bulkImportRestriction: BulkImportPermissionRestrictionModel = {
-      type: PermissionRestrictionType.BulkImport,
-      valueAsString: bulkImport.toString(),
-    };
-
     const infoPlusTerminationVoteRestriction =
       this.getInfoPlusTerminationRestriction(form, roleConfig);
-
     const novaTerminationVoteRestriction = this.getNovaTerminationRestriction(
       form,
       roleConfig
@@ -177,6 +166,10 @@ export class ApplicationPermissionFormGroupBuilder {
     const permissionRestrictions: PermissionPermissionRestrictionsInner[] = [];
     permissionRestrictions.push(...sboidRestrictions);
     permissionRestrictions.push(...countryRestrictions);
+    permissionRestrictions.push(...cantonRestrictions);
+    if (bulkImportRestriction) {
+      permissionRestrictions.push(bulkImportRestriction);
+    }
     if (infoPlusTerminationVoteRestriction) {
       permissionRestrictions.push(infoPlusTerminationVoteRestriction);
     }
@@ -188,6 +181,91 @@ export class ApplicationPermissionFormGroupBuilder {
       application: application,
       permissionRestrictions: permissionRestrictions,
     };
+  }
+
+  private static getSboidRestrictions(
+    form: FormGroup<ApplicationPermission>,
+    roleConfig: RoleConfig
+  ) {
+    if (
+      roleConfig.permissions.restrictions.includes(
+        PermissionRestrictionType.BusinessOrganisation
+      )
+    ) {
+      const sboids =
+        form.controls.permissions.controls.sboidsRestrictions?.value ?? [];
+      const sboidRestrictions: SboidPermissionRestrictionModel[] = sboids.map(
+        (sboid) => ({
+          type: PermissionRestrictionType.BusinessOrganisation,
+          valueAsString: sboid,
+        })
+      );
+      return sboidRestrictions;
+    }
+    return [];
+  }
+
+  private static getCountryRestrictions(
+    form: FormGroup<ApplicationPermission>,
+    roleConfig: RoleConfig
+  ) {
+    if (
+      roleConfig.permissions.restrictions.includes(
+        PermissionRestrictionType.Country
+      )
+    ) {
+      const countries =
+        form.controls.permissions.controls.countryRestrictions?.value ?? [];
+      const countryRestrictions: CountryPermissionRestrictionModel[] =
+        countries.map((country) => ({
+          type: PermissionRestrictionType.Country,
+          valueAsString: country,
+        }));
+      return countryRestrictions;
+    }
+    return [];
+  }
+
+  private static getCantonRestrictions(
+    form: FormGroup<ApplicationPermission>,
+    roleConfig: RoleConfig
+  ) {
+    if (
+      roleConfig.permissions.restrictions.includes(
+        PermissionRestrictionType.Canton
+      )
+    ) {
+      const cantons =
+        form.controls.permissions.controls.cantonRestrictions?.value ?? [];
+      const cantonRestrictions: CantonPermissionRestrictionModel[] =
+        cantons.map((canton) => ({
+          type: PermissionRestrictionType.Canton,
+          valueAsString: canton,
+        }));
+      return cantonRestrictions;
+    }
+    return [];
+  }
+
+  private static getBulkImportRestriction(
+    form: FormGroup<ApplicationPermission>,
+    roleConfig: RoleConfig
+  ) {
+    if (
+      roleConfig.permissions.restrictions.includes(
+        PermissionRestrictionType.BulkImport
+      )
+    ) {
+      const bulkImport =
+        form.controls.permissions.controls.bulkImportRestriction?.value ??
+        false;
+      const bulkImportRestriction: BulkImportPermissionRestrictionModel = {
+        type: PermissionRestrictionType.BulkImport,
+        valueAsString: bulkImport.toString(),
+      };
+      return bulkImportRestriction;
+    }
+    return undefined;
   }
 
   private static getNovaTerminationRestriction(
@@ -231,48 +309,5 @@ export class ApplicationPermissionFormGroupBuilder {
       return infoPlusTerminationVoteRestriction;
     }
     return undefined;
-  }
-
-  private static getCountryRestrictions(
-    form: FormGroup<ApplicationPermission>,
-    roleConfig: RoleConfig
-  ) {
-    if (
-      roleConfig.permissions.restrictions.includes(
-        PermissionRestrictionType.Country
-      )
-    ) {
-      const countries =
-        form.controls.permissions.controls.countryRestrictions?.value ?? [];
-      const countryRestrictions: CountryPermissionRestrictionModel[] =
-        countries.map((country) => ({
-          type: PermissionRestrictionType.Country,
-          valueAsString: country,
-        }));
-      return countryRestrictions;
-    }
-    return [];
-  }
-
-  private static getSboidRestrictions(
-    form: FormGroup<ApplicationPermission>,
-    roleConfig: RoleConfig
-  ) {
-    if (
-      roleConfig.permissions.restrictions.includes(
-        PermissionRestrictionType.BusinessOrganisation
-      )
-    ) {
-      const sboids =
-        form.controls.permissions.controls.sboidsRestrictions?.value ?? [];
-      const sboidRestrictions: SboidPermissionRestrictionModel[] = sboids.map(
-        (sboid) => ({
-          type: PermissionRestrictionType.BusinessOrganisation,
-          valueAsString: sboid,
-        })
-      );
-      return sboidRestrictions;
-    }
-    return [];
   }
 }

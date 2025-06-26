@@ -21,6 +21,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { PermissionComponent } from '../../../../../core/components/permissions/permission.component';
 import { UserPermissionGivenUserService } from './user-permission-given-user.service';
 import { ApplicationPermissionFormGroupBuilder } from '../../../../../core/components/permissions/form/application-permission-form-group';
+import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
 
 @Component({
   selector: 'app-user-administration-edit',
@@ -51,6 +52,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
   ) {}
 
   userPermissionGivenUserService = inject(UserPermissionGivenUserService);
+  userAdministrationService = inject(UserAdministrationService);
 
   ngOnInit() {
     this.userPermissionGivenUserService.user = this.user!;
@@ -58,25 +60,27 @@ export class UserAdministrationUserEditComponent implements OnInit {
   }
 
   save(): void {
-    const userPermission: UserPermissionCreate = {
-      sbbUserId: this.user.userId!,
-      permissions: [
-        ApplicationPermissionFormGroupBuilder.formToModel(this.formGroup!),
-      ],
-    };
-    this.userService.updateUserPermission(userPermission).subscribe({
-      next: (user: User) => {
-        this.user = user;
-        this.userPermissionManager.setPermissions(
-          this.userService.getPermissionsFromUserModelAsArray(this.user)
-        );
-        this.notificationService.success(
-          'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
-        );
-        this.convertUserPermissionToRecord();
-      },
-      error: () => this.formGroup?.enable(),
-    });
+    this.userPermissionGivenUserService.applicationPermissionFormGroup?.disable();
+
+    const userPermission = ApplicationPermissionFormGroupBuilder.formToModel(
+      this.formGroup!
+    );
+    this.userAdministrationService
+      .updateUserPermission(
+        this.user.userId!,
+        userPermission.application,
+        userPermission
+      )
+      .subscribe({
+        next: (user: User) => {
+          this.user = user;
+          this.ngOnInit();
+          this.notificationService.success(
+            'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
+          );
+        },
+        error: () => this.formGroup?.enable(),
+      });
   }
 
   private convertUserPermissionToRecord(): void {
