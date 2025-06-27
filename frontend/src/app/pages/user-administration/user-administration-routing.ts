@@ -7,6 +7,7 @@ import { Pages } from '../pages';
 import { clientCredentialResolver } from './client-credential/detail/client-credential-administration.resolver';
 import { UserPermissionProviderService } from '../../core/components/permissions/application-permission/user-permission-provider-service';
 import { UserPermissionGivenUserService } from './user/detail/edit/user-permission-given-user.service';
+import { UserPermissionGivenClientService } from './client-credential/detail/edit/user-permission-given-client.service';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,12 @@ export const routes: Routes = [
     resolve: {
       clientCredential: clientCredentialResolver,
     },
+    providers: [
+      {
+        provide: UserPermissionProviderService,
+        useExisting: UserPermissionGivenClientService,
+      },
+    ],
     runGuardsAndResolvers: 'always',
   },
   {
