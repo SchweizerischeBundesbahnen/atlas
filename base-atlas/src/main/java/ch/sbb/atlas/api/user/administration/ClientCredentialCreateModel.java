@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @SuperBuilder
 @NoArgsConstructor
-@Schema(name = "ClientCredentialPermissionCreate")
-public class ClientCredentialPermissionCreateModel extends PermissionCreateModel {
+@Schema(name = "ClientCredentialCreate")
+public class ClientCredentialCreateModel {
 
   @NotNull
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)

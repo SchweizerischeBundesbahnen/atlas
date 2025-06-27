@@ -11,8 +11,8 @@
           >{{ 'USER_ADMIN.TABLE_HEADER' | translate }}
         </mat-label>
         <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} u123456</mat-label
-        >
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} u123456
+        </mat-label>
       </div>
       <div class="pe-1 pb-1">
         <app-user-select
@@ -20,18 +20,22 @@
           [form]="userSearchForm"
         ></app-user-select>
       </div>
-      <p *ngIf="userHasAlreadyPermissions" class="color-error">
-        {{ 'USER_ADMIN.SELECTED_USER_HAS_ALREADY_PERMISSIONS' | translate }}
-      </p>
-      <p *ngIf="selectedUserHasNoUserId" class="color-error">
-        {{ 'USER_ADMIN.SELECTED_USER_HAS_NO_USER_ID' | translate }}
-      </p>
+      @if (userHasAlreadyPermissions) {
+        <p class="color-error">
+          {{ 'USER_ADMIN.SELECTED_USER_HAS_ALREADY_PERMISSIONS' | translate }}
+        </p>
+      }
+      @if (selectedUserHasNoUserId) {
+        <p class="color-error">
+          {{ 'USER_ADMIN.SELECTED_USER_HAS_NO_USER_ID' | translate }}
+        </p>
+      }
     </atlas-detail-page-content>
 
     <atlas-detail-footer>
       <button
         (click)="
-          cancelCreation((userLoaded ?? false) && !userHasAlreadyPermissions)
+          cancelCreation((selectedUser ?? false) && !userHasAlreadyPermissions)
         "
         class="atlas-primary-btn"
         data-cy="cancel"
@@ -40,7 +44,7 @@
       </button>
       <button
         (click)="createUser()"
-        [disabled]="!userLoaded || userHasAlreadyPermissions || !saveEnabled"
+        [disabled]="!selectedUser || userHasAlreadyPermissions || !saveEnabled"
         class="atlas-primary-btn ms-3"
         data-cy="save"
         type="submit"

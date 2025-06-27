@@ -3,7 +3,7 @@ package ch.sbb.atlas.user.administration.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.user.administration.CantonPermissionRestrictionModel;
-import ch.sbb.atlas.api.user.administration.ClientCredentialPermissionCreateModel;
+import ch.sbb.atlas.api.user.administration.ClientCredentialCreateModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -33,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
   @Test
   void shouldCreateClientCredentials() {
-    ClientCredentialPermissionCreateModel client = ClientCredentialPermissionCreateModel.builder()
+    ClientCredentialCreateModel client = ClientCredentialCreateModel.builder()
         .clientCredentialId("18746f30-7978-48b5-b19b-0f871fb12e67")
         .alias("Atlas Frontend Dev")
         .permissions(List.of(PermissionModel.builder()
@@ -51,7 +51,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
   @Test
   void shouldCreateClientCredentialsWithRestrictions() {
-    ClientCredentialPermissionCreateModel client = ClientCredentialPermissionCreateModel.builder()
+    ClientCredentialCreateModel client = ClientCredentialCreateModel.builder()
         .clientCredentialId("18746f30-7978-48b5-b19b-0f871fb12e67")
         .alias("Atlas Frontend Dev")
         .permissions(List.of(PermissionModel.builder()
@@ -72,7 +72,7 @@ import org.springframework.beans.factory.annotation.Autowired;
   @Test
   void shouldUpdateClientCredentialsWithRestrictions() {
     // Given
-    ClientCredentialPermissionCreateModel client = ClientCredentialPermissionCreateModel.builder()
+    ClientCredentialCreateModel client = ClientCredentialCreateModel.builder()
         .clientCredentialId("18746f30-7978-48b5-b19b-0f871fb12e67")
         .alias("Atlas Frontend Dev")
         .permissions(List.of(PermissionModel.builder()
@@ -83,7 +83,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         .build();
     clientCredentialAdministrationService.create(client);
 
-    ClientCredentialPermissionCreateModel clientUpdate = ClientCredentialPermissionCreateModel.builder()
+    ClientCredentialCreateModel clientUpdate = ClientCredentialCreateModel.builder()
         .clientCredentialId("18746f30-7978-48b5-b19b-0f871fb12e67")
         .alias("Atlas Frontend Dev")
         .permissions(List.of(PermissionModel.builder()
@@ -108,7 +108,7 @@ import org.springframework.beans.factory.annotation.Autowired;
   @Test
   void shouldUpdateClientCredentialsWithAdditionalRestrictions() {
     // Given
-    ClientCredentialPermissionCreateModel client = ClientCredentialPermissionCreateModel.builder()
+    ClientCredentialCreateModel client = ClientCredentialCreateModel.builder()
         .clientCredentialId("18746f30-7978-48b5-b19b-0f871fb12e67")
         .alias("Atlas Frontend Dev")
         .permissions(List.of(PermissionModel.builder()
@@ -119,7 +119,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         .build();
     clientCredentialAdministrationService.create(client);
 
-    ClientCredentialPermissionCreateModel clientUpdate = ClientCredentialPermissionCreateModel.builder()
+    ClientCredentialCreateModel clientUpdate = ClientCredentialCreateModel.builder()
         .clientCredentialId("18746f30-7978-48b5-b19b-0f871fb12e67")
         .alias("Atlas Frontend Dev")
         .permissions(List.of(PermissionModel.builder()

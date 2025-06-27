@@ -10,11 +10,10 @@
 import { Permission } from './permission';
 
 
-export interface ClientCredentialPermissionCreate { 
+export interface ClientCredentialPermissionCreate {
     /**
      * User permissions
      */
-    permissions: Array<Permission>;
     /**
      * Client Id
      */

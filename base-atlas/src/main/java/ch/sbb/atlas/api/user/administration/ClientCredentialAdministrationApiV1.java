@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.user.administration;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,11 +32,13 @@ public interface ClientCredentialAdministrationApiV1 {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @Operation(description = "Register a client with given permissions")
-  ClientCredentialModel createClientCredential(@RequestBody @Valid ClientCredentialPermissionCreateModel client);
+  @Operation(description = "Register a client")
+  ClientCredentialModel createClientCredential(@RequestBody @Valid ClientCredentialCreateModel client);
 
-  @PutMapping
-  @Operation(description = "Update the user permissions of a user")
-  ClientCredentialModel updateClientCredential(@RequestBody @Valid ClientCredentialPermissionCreateModel editedPermissions);
+  @PutMapping("/{clientId}/{application}")
+  @Operation(description = "Update the permissions of a client")
+  ClientCredentialModel updateClientCredential(@PathVariable String clientId,
+      @PathVariable ApplicationType application,
+      @RequestBody @Valid PermissionModel editedPermissions);
 
 }
