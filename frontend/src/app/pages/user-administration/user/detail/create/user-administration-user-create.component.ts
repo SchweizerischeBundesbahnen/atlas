@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { BusinessOrganisationsService, User } from '../../../../../api';
 import { UserService } from '../../../service/user.service';
-import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
@@ -12,32 +11,25 @@ import { DetailPageContainerComponent } from '../../../../../core/components/det
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import { MatLabel } from '@angular/material/form-field';
 import { UserSelectComponent } from '../../user-select/user-select.component';
-import { NgIf, NgFor } from '@angular/common';
-import { UserAdministrationReadOnlyDataComponent } from '../../../components/read-only-data/user-administration-read-only-data.component';
-import { UserAdministrationApplicationConfigComponent } from '../../../components/application-config/user-administration-application-config.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-administration-create',
   templateUrl: './user-administration-user-create.component.html',
-  viewProviders: [BusinessOrganisationsService, UserPermissionManager],
+  viewProviders: [BusinessOrganisationsService],
   imports: [
     ScrollToTopDirective,
     DetailPageContainerComponent,
     DetailPageContentComponent,
     MatLabel,
     UserSelectComponent,
-    NgIf,
-    UserAdministrationReadOnlyDataComponent,
-    NgFor,
-    UserAdministrationApplicationConfigComponent,
     DetailFooterComponent,
     TranslatePipe,
   ],
 })
 export class UserAdministrationUserCreateComponent {
-  userLoaded?: User;
+  selectedUser?: User;
   userHasAlreadyPermissions = false;
   selectedUserHasNoUserId = false;
   saveEnabled = true;
@@ -50,22 +42,21 @@ export class UserAdministrationUserCreateComponent {
     private readonly notificationService: NotificationService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly dialogService: DialogService,
-    readonly userPermissionManager: UserPermissionManager
+    private readonly dialogService: DialogService
   ) {}
 
   selectUser(user: User | undefined): void {
     this.selectedUserHasNoUserId = false;
     if (!user?.sbbUserId) {
       this.userHasAlreadyPermissions = false;
-      this.userLoaded = undefined;
+      this.selectedUser = undefined;
       if (user) {
         this.selectedUserHasNoUserId = true;
       }
       return;
     }
     this.userService.getUser(user.sbbUserId).subscribe((user) => {
-      this.userLoaded = user;
+      this.selectedUser = user;
       this.userHasAlreadyPermissions =
         this.userService.getPermissionsFromUserModelAsArray(user).length > 0;
     });
@@ -73,18 +64,13 @@ export class UserAdministrationUserCreateComponent {
 
   createUser(): void {
     this.saveEnabled = false;
-    this.userPermissionManager.setSbbUserId(this.userLoaded!.sbbUserId!);
-    this.userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
     this.userService
-      .createUserPermission(this.userPermissionManager.userPermission)
+      .createUserPermission({ sbbUserId: this.selectedUser!.userId! })
       .subscribe({
         next: () => {
           this.router
             .navigate(
-              [
-                Pages.USER_ADMINISTRATION.path,
-                this.userPermissionManager.getSbbUserId(),
-              ],
+              [Pages.USER_ADMINISTRATION.path, this.selectedUser!.userId!],
               {
                 relativeTo: this.route,
               }

@@ -10,11 +10,10 @@
 import { Permission } from './permission';
 
 
-export interface UserPermissionCreate { 
+export interface UserPermissionCreate {
     /**
      * User permissions
      */
-    permissions: Array<Permission>;
     /**
      * SBB User-ID
      */

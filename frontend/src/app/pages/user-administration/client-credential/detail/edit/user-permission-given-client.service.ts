@@ -1,7 +1,13 @@
 import { FormGroup } from '@angular/forms';
 import { UserPermissionProviderService } from '../../../../../core/components/permissions/application-permission/user-permission-provider-service';
-import { Injectable } from '@angular/core';
-import { ApplicationType, Permission, User } from '../../../../../api';
+import { inject, Injectable } from '@angular/core';
+import {
+  ApplicationType,
+  ClientCredential,
+  Permission,
+  User,
+  UserAdministrationService,
+} from '../../../../../api';
 import {
   ApplicationPermission,
   ApplicationPermissionFormGroupBuilder,
@@ -10,10 +16,10 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class UserPermissionGivenUserService
+export class UserPermissionGivenClientService
   implements UserPermissionProviderService
 {
-  user!: User;
+  clientCredential!: ClientCredential;
   applicationPermissionFormGroup?: FormGroup<ApplicationPermission>;
 
   showAllSpecialPermissions(): boolean {
@@ -23,9 +29,9 @@ export class UserPermissionGivenUserService
   loadFormGroup(
     application: ApplicationType
   ): FormGroup<ApplicationPermission> {
-    const permissions: Permission = Array.from(this.user.permissions!).find(
-      (i) => i.application === application
-    )!;
+    const permissions: Permission = Array.from(
+      this.clientCredential.permissions!
+    ).find((i) => i.application === application)!;
 
     const applicationPermissionFormGroup =
       ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(

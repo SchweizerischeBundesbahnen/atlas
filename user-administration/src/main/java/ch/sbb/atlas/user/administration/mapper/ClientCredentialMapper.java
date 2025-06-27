@@ -1,7 +1,7 @@
 package ch.sbb.atlas.user.administration.mapper;
 
 import ch.sbb.atlas.api.user.administration.ClientCredentialModel;
-import ch.sbb.atlas.api.user.administration.ClientCredentialPermissionCreateModel;
+import ch.sbb.atlas.api.user.administration.ClientCredentialCreateModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
 import java.util.List;
@@ -43,7 +43,7 @@ public class ClientCredentialMapper {
   }
 
   public static ClientCredentialPermission toEntity(PermissionModel permissionModel,
-      ClientCredentialPermissionCreateModel editedPermissions) {
+      ClientCredentialPermission editedPermissions) {
     ClientCredentialPermission clientCredentialPermission = ClientCredentialPermission.builder()
         .clientCredentialId(editedPermissions.getClientCredentialId())
         .alias(editedPermissions.getAlias())

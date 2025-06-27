@@ -9,7 +9,6 @@ import { UserAdministrationClientCreateComponent } from './create/user-administr
   selector: 'app-client-credential-administration',
   templateUrl: './user-administration-client-detail.component.html',
   imports: [
-    NgIf,
     UserAdministrationClientEditComponent,
     UserAdministrationClientCreateComponent,
   ],
