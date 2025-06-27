@@ -124,7 +124,7 @@ describe('UserAdministrationUserCreateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.userLoaded).toBeUndefined();
+    expect(component.selectedUser).toBeUndefined();
     expect(component.userHasAlreadyPermissions).toBe(false);
     expect(component.selectedUserHasNoUserId).toBe(false);
     expect(component.userPermissionManager).toBe(userPermissionManagerSpy);
@@ -136,7 +136,7 @@ describe('UserAdministrationUserCreateComponent', () => {
     });
     expect(component.selectedUserHasNoUserId).toBe(true);
     expect(component.userHasAlreadyPermissions).toBe(false);
-    expect(component.userLoaded).toBeUndefined();
+    expect(component.selectedUser).toBeUndefined();
     expect(userServiceSpy.getUser).not.toHaveBeenCalled();
   });
 
@@ -154,7 +154,7 @@ describe('UserAdministrationUserCreateComponent', () => {
     });
     expect(component.selectedUserHasNoUserId).toBe(false);
     expect(component.userHasAlreadyPermissions).toBe(false);
-    expect(component.userLoaded).toEqual({
+    expect(component.selectedUser).toEqual({
       sbbUserId: '***REMOVED***',
     });
     expect(userServiceSpy.getUser).toHaveBeenCalledOnceWith('***REMOVED***');
@@ -167,7 +167,7 @@ describe('UserAdministrationUserCreateComponent', () => {
 
   it('test createUser', fakeAsync(() => {
     const router = TestBed.inject(Router);
-    component.userLoaded = {
+    component.selectedUser = {
       sbbUserId: '***REMOVED***',
     };
     userServiceSpy.createUserPermission.and.returnValue(
