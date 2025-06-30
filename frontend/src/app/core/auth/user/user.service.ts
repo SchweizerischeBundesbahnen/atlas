@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, Subject, take } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ApiConfigService } from '../../configuration/api-config.service';
-import { Permission, UserAdministrationService } from '../../../api';
+import { Permission } from '../../../api';
 import { User } from './user';
+import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 
 @Injectable({
   providedIn: 'root',
