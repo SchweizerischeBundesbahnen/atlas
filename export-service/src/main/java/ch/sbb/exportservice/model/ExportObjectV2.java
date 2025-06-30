@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.model;
 
+import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,25 +9,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ExportObjectV2 {
 
-  BUSINESS_ORGANISATION(ExportTypes.DEFAULT, "business-organisation"),
-  CONTACT_POINT(ExportTypes.DEFAULT, "contact-point"),
-  LINE(ExportTypes.DEFAULT, "line"),
-  PARKING_LOT(ExportTypes.DEFAULT, "parking-lot"),
-  PLATFORM(ExportTypes.DEFAULT, "platform"),
-  REFERENCE_POINT(ExportTypes.DEFAULT, "reference-point"),
-  RELATION(ExportTypes.DEFAULT, "relation"),
-  STOP_POINT(ExportTypes.DEFAULT, "stop-point"),
-  SUBLINE(ExportTypes.DEFAULT, "subline"),
-  TIMETABLE_FIELD_NUMBER(ExportTypes.DEFAULT, "timetable-field-number"),
-  TOILET(ExportTypes.DEFAULT, "toilet"),
-  RECORDING_OBLIGATION(List.of(ExportTypeV2.FULL), "recording-obligation"),
-  TRANSPORT_COMPANY(List.of(ExportTypeV2.FULL), "transport-company"),
-  SERVICE_POINT(ExportTypes.SWISS_WORLD, "service-point"),
-  TRAFFIC_POINT(ExportTypes.SWISS_WORLD, "traffic-point"),
-  LOADING_POINT(ExportTypes.SWISS_WORLD, "loading-point");
+  BUSINESS_ORGANISATION(ExportTypes.DEFAULT, "business-organisation", "business-organisation-batch"),
+  CONTACT_POINT(ExportTypes.DEFAULT, "contact-point", "contact-point-batch"),
+  LINE(ExportTypes.DEFAULT, "line", "line-batch"),
+  PARKING_LOT(ExportTypes.DEFAULT, "parking-lot", "parking-lot-batch"),
+  PLATFORM(ExportTypes.DEFAULT, "platform", "platform-batch"),
+  REFERENCE_POINT(ExportTypes.DEFAULT, "reference-point", "reference-point-batch"),
+  RELATION(ExportTypes.DEFAULT, "relation", "relation-batch"),
+  STOP_POINT(ExportTypes.DEFAULT, "stop-point", "stop-point-batch"),
+  SUBLINE(ExportTypes.DEFAULT, "subline", "subline-batch"),
+  TIMETABLE_FIELD_NUMBER(ExportTypes.DEFAULT, "timetable-field-number", "ttfn-batch"),
+  TOILET(ExportTypes.DEFAULT, "toilet", "toilet-batch"),
+  RECORDING_OBLIGATION(List.of(ExportTypeV2.FULL), "recording-obligation", "recording-obligation-batch"),
+  TRANSPORT_COMPANY(List.of(ExportTypeV2.FULL), "transport-company", "transport-company-batch"),
+  SERVICE_POINT(ExportTypes.SWISS_WORLD, "service-point", "service-point-batch"),
+  TRAFFIC_POINT(ExportTypes.SWISS_WORLD, "traffic-point", "traffic-point-batch"),
+  LOADING_POINT(ExportTypes.SWISS_WORLD, "loading-point", "loading-point-batch"),
+  ;
 
   private final List<ExportTypeV2> supportedExportTypes;
   private final String name;
+  private final String batchServiceName;
 
   private static class ExportTypes {
 
@@ -50,6 +53,13 @@ public enum ExportObjectV2 {
 
   public boolean isSupportedExportType(ExportTypeV2 exportType) {
     return supportedExportTypes.contains(exportType);
+  }
+
+  public static ExportObjectV2 getExportTypeForBatchServiceName(String batchServiceName) {
+    return Arrays.stream(ExportObjectV2.values())
+        .filter(exportType -> exportType.getBatchServiceName().equals(batchServiceName))
+        .findFirst()
+        .orElseThrow(() -> new IllegalArgumentException("Batch service " + batchServiceName + " not found"));
   }
 
 }

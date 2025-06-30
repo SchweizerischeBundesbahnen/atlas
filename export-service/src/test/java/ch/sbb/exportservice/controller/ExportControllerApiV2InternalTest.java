@@ -48,7 +48,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
     ExportSublineJobService.class,
     ExportTimetableFieldNumberJobService.class
 })
-class ExportControllerApiV2Test extends BaseControllerApiTest {
+class ExportControllerApiV2InternalTest extends BaseControllerApiTest {
 
   private static Stream<Arguments> provideArguments() {
     return Stream.of(
@@ -81,7 +81,7 @@ class ExportControllerApiV2Test extends BaseControllerApiTest {
     Mockito.doNothing().when(jobServiceBean).startExportJobs();
 
     // when
-    mvc.perform(post("/v2/export/" + url)
+    mvc.perform(post("/v2/export/internal/" + url)
             .contentType(contentType)
             .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
