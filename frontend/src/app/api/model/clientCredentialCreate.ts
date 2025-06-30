@@ -9,10 +9,18 @@
  */
 
 
-export interface UserPermissionCreate { 
+export interface ClientCredentialCreate { 
     /**
-     * SBB User-ID
+     * Client Id
      */
-    sbbUserId: string;
+    clientCredentialId: string;
+    /**
+     * Alias for the Client
+     */
+    alias: string;
+    /**
+     * Additional information about the client
+     */
+    comment?: string;
 }
 
