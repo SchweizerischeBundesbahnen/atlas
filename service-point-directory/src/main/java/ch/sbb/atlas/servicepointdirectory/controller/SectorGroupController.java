@@ -26,4 +26,9 @@ public class SectorGroupController implements SectorGroupApiV1 {
   public ReadSectorGroupVersionModel createSectorVersion(CreateSectorGroupVersionModel createSectorGroupVersionModel) {
     return sectorGroupService.createSectorGroup(createSectorGroupVersionModel);
   }
+
+  @Override
+  public ReadSectorGroupVersionModel updateSectorVersion() {
+    return null;
+  }
 }
