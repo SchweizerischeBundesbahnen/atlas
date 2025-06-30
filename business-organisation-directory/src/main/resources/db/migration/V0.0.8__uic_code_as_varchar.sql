@@ -1,0 +1,2 @@
+ALTER TABLE company
+    ALTER COLUMN uic_code TYPE VARCHAR(10);

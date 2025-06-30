@@ -14,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
- class CompanyControllerApiTest extends BaseControllerApiTest {
+class CompanyControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private CompanyRepository repository;
@@ -22,11 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
   @BeforeEach
   void createDefaultVersion() {
     repository.save(Company.builder()
-                           .uicCode(5L)
-                           .name("Beste Company")
-                           .shortName("ShortName")
-                           .countryCodeIso("CH")
-                           .build());
+        .uicCode("5")
+        .name("Beste Company")
+        .shortName("ShortName")
+        .countryCodeIso("CH")
+        .build());
   }
 
   @AfterEach
@@ -37,14 +37,14 @@ import org.springframework.beans.factory.annotation.Autowired;
   @Test
   void shouldGetCompanies() throws Exception {
     mvc.perform(get("/v1/companies")).andExpect(status().isOk())
-       .andExpect(jsonPath("$.objects[0]." + Fields.uicCode, is(5)))
-       .andExpect(jsonPath("$.objects[0]." + Fields.name, is("Beste Company")));
+        .andExpect(jsonPath("$.objects[0]." + Fields.uicCode, is("5")))
+        .andExpect(jsonPath("$.objects[0]." + Fields.name, is("Beste Company")));
   }
 
   @Test
   void shouldGetCompany() throws Exception {
     mvc.perform(get("/v1/companies/5")).andExpect(status().isOk())
-       .andExpect(jsonPath("$." + Fields.uicCode, is(5)))
-       .andExpect(jsonPath("$." + Fields.name, is("Beste Company")));
+        .andExpect(jsonPath("$." + Fields.uicCode, is("5")))
+        .andExpect(jsonPath("$." + Fields.name, is("Beste Company")));
   }
 }
