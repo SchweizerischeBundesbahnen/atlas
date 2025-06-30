@@ -1,10 +1,10 @@
 package ch.sbb.business.organisation.directory.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class Company {
 
   @Id
-  private Long uicCode;
+  private String uicCode;
 
   private String name;
 

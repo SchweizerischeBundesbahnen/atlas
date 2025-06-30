@@ -17,7 +17,7 @@ import lombok.experimental.FieldNameConstants;
 public class CompanyModel {
 
   @Schema(description = "Company UIC Code")
-  private Long uicCode;
+  private String uicCode;
 
   @Schema(description = "Company Name")
   private String name;

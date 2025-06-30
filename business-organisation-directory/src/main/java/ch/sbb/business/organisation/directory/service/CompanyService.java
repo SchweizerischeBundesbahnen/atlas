@@ -46,24 +46,24 @@ public class CompanyService {
 
   Company toEntity(ch.sbb.business.organisation.directory.service.crd.Company csvCompany) {
     return Company.builder()
-                  .uicCode(Long.parseLong(csvCompany.getCompanyUICCode()))
-                  .name(csvCompany.getCompanyName())
-                  .nameAscii(csvCompany.getCompanyNameASCII().getValue())
-                  .url(csvCompany.getCompanyURL().getValue())
-                  .startValidity(toLocalDate(csvCompany.getStartValidity()))
-                  .endValidity(toLocalDate(csvCompany.getEndValidity().getValue()))
-                  .shortName(csvCompany.getCompanyShortName())
-                  .freeText(csvCompany.getFreeText().getValue())
-                  .countryCodeIso(csvCompany.getCountry().getCountryCodeISO().getValue())
-                  .passengerFlag(csvCompany.isPassengerFlag())
-                  .freightFlag(csvCompany.isFreightFlag())
-                  .infrastructureFlag(csvCompany.isInfrastructureFlag())
-                  .otherCompanyFlag(csvCompany.isOtherCompanyFlag())
-                  .neEntityFlag(csvCompany.isNEEntityFlag())
-                  .ceEntityFlag(csvCompany.isCEEntityFlag())
-                  .addDate(toLocalDateTime(csvCompany.getAddDate()))
-                  .modifiedDate(toLocalDateTime(csvCompany.getModifiedDate().getValue()))
-                  .build();
+        .uicCode(csvCompany.getCompanyUICCode())
+        .name(csvCompany.getCompanyName())
+        .nameAscii(csvCompany.getCompanyNameASCII().getValue())
+        .url(csvCompany.getCompanyURL().getValue())
+        .startValidity(toLocalDate(csvCompany.getStartValidity()))
+        .endValidity(toLocalDate(csvCompany.getEndValidity().getValue()))
+        .shortName(csvCompany.getCompanyShortName())
+        .freeText(csvCompany.getFreeText().getValue())
+        .countryCodeIso(csvCompany.getCountry().getCountryCodeISO().getValue())
+        .passengerFlag(csvCompany.isPassengerFlag())
+        .freightFlag(csvCompany.isFreightFlag())
+        .infrastructureFlag(csvCompany.isInfrastructureFlag())
+        .otherCompanyFlag(csvCompany.isOtherCompanyFlag())
+        .neEntityFlag(csvCompany.isNEEntityFlag())
+        .ceEntityFlag(csvCompany.isCEEntityFlag())
+        .addDate(toLocalDateTime(csvCompany.getAddDate()))
+        .modifiedDate(toLocalDateTime(csvCompany.getModifiedDate().getValue()))
+        .build();
   }
 
   private static LocalDateTime toLocalDateTime(XMLGregorianCalendar xmlGregorianCalendar) {
