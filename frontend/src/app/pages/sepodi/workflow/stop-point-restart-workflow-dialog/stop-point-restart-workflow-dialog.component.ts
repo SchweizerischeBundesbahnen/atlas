@@ -10,7 +10,6 @@ import { ValidationService } from '../../../../core/validation/validation.servic
 import {
   StopPointRestartWorkflow,
   StopPointWorkflowService,
-  UserAdministrationService,
 } from '../../../../api';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../../core/notification/notification.service';
@@ -22,6 +21,7 @@ import { TextFieldComponent } from '../../../../core/form-components/text-field/
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
 
 @Component({
   selector: 'app-stop-point-restart-workflow-dialog',

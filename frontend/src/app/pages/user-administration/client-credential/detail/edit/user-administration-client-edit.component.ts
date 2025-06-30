@@ -3,10 +3,8 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import {
   BusinessOrganisationsService,
   ClientCredential,
-  ClientCredentialPermissionCreate,
   Permission,
 } from '../../../../../api';
-import { UserService } from '../../../service/user.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +17,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { PermissionComponent } from '../../../../../core/components/permissions/permission.component';
 import { BackButtonDirective } from '../../../../../core/components/button/back-button/back-button.directive';
 import { UserPermissionGivenClientService } from './user-permission-given-client.service';
+import { ApplicationPermissionFormGroupBuilder } from '../../../../../core/components/permissions/form/application-permission-form-group';
+import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
 
 @Component({
   selector: 'app-client-credential-administration-edit',
@@ -47,7 +47,7 @@ export class UserAdministrationClientEditComponent implements OnInit {
 
   constructor(
     private readonly notificationService: NotificationService,
-    private readonly userService: UserService,
+    private readonly clientCredentialAdministrationService: ClientCredentialAdministrationService,
     private readonly dialogService: DialogService,
     private router: Router,
     private route: ActivatedRoute
@@ -63,18 +63,26 @@ export class UserAdministrationClientEditComponent implements OnInit {
 
   save(): void {
     this.saveEnabled = false;
-    const permissions = {
-      ...this.client(),
-    } as ClientCredentialPermissionCreate;
-    this.userService.updateClientPermissions(permissions).subscribe({
-      next: (client: ClientCredential) => {
-        this.editMode = false;
-        this.notificationService.success(
-          'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
-        );
-      },
-      error: () => (this.saveEnabled = true),
-    });
+    this.formGroup.disable();
+
+    const permission = ApplicationPermissionFormGroupBuilder.formToModel(
+      this.formGroup
+    );
+    this.clientCredentialAdministrationService
+      .updateClientCredentialPermissions(
+        this.client().clientCredentialId!,
+        permission.application,
+        permission
+      )
+      .subscribe({
+        next: () => {
+          this.editMode = false;
+          this.notificationService.success(
+            'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
+          );
+        },
+        error: () => (this.saveEnabled = true),
+      });
   }
 
   cancel(showDialog = true): void {

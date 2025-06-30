@@ -3,7 +3,6 @@ import {
   BusinessOrganisationsService,
   ClientCredentialPermissionCreate,
 } from '../../../../../api';
-import { UserService } from '../../../service/user.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
@@ -24,6 +23,7 @@ import { DetailPageContentComponent } from '../../../../../core/components/detai
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
 
 @Component({
   selector: 'app-client-credential-administration-create',
@@ -63,7 +63,7 @@ export class UserAdministrationClientCreateComponent {
   });
 
   constructor(
-    private readonly userService: UserService,
+    private readonly clientCredentialAdministrationService: ClientCredentialAdministrationService,
     private readonly notificationService: NotificationService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
@@ -77,22 +77,24 @@ export class UserAdministrationClientCreateComponent {
       const permission = {
         ...this.form.value,
       } as ClientCredentialPermissionCreate;
-      this.userService.createClientCredentialPermission(permission).subscribe({
-        next: () => {
-          this.router
-            .navigate([
-              Pages.USER_ADMINISTRATION.path,
-              Pages.CLIENTS.path,
-              permission.clientCredentialId,
-            ])
-            .then(() =>
-              this.notificationService.success(
-                'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'
-              )
-            );
-        },
-        error: () => (this.saveEnabled = true),
-      });
+      this.clientCredentialAdministrationService
+        .createClientCredential(permission)
+        .subscribe({
+          next: () => {
+            this.router
+              .navigate([
+                Pages.USER_ADMINISTRATION.path,
+                Pages.CLIENTS.path,
+                permission.clientCredentialId,
+              ])
+              .then(() =>
+                this.notificationService.success(
+                  'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'
+                )
+              );
+          },
+          error: () => (this.saveEnabled = true),
+        });
     }
   }
 

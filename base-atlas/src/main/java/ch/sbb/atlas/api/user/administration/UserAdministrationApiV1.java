@@ -50,7 +50,7 @@ public interface UserAdministrationApiV1 {
 
   @PostMapping(BASE_PATH)
   @ResponseStatus(HttpStatus.CREATED)
-  @Operation(description = "Register a user with given permissions")
+  @Operation(description = "Register a user")
   UserModel createUserPermission(@RequestBody @Valid UserPermissionCreateModel user);
 
   @PutMapping(BASE_PATH+"/{userId}/{application}")

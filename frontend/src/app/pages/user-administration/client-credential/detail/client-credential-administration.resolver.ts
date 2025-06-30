@@ -1,16 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import { UserService } from '../../service/user.service';
 import { Pages } from '../../../pages';
 import { ClientCredential } from '../../../../api';
+import { ClientCredentialAdministrationService } from '../../../../api/service/user-administration/client-credential-administration.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientCredentialAdministrationResolver {
   constructor(
-    private readonly userService: UserService,
+    private readonly clientCredentialAdministrationService: ClientCredentialAdministrationService,
     private readonly router: Router
   ) {}
 
@@ -19,16 +19,18 @@ export class ClientCredentialAdministrationResolver {
     if (clientIdParam === 'add') {
       return of({});
     }
-    return this.userService.getClientCredential(clientIdParam!).pipe(
-      catchError(() => {
-        this.router
-          .navigate([Pages.USER_ADMINISTRATION.path], {
-            state: { notDismissSnackBar: true },
-          })
-          .then();
-        return of({});
-      })
-    );
+    return this.clientCredentialAdministrationService
+      .getClientCredential(clientIdParam!)
+      .pipe(
+        catchError(() => {
+          this.router
+            .navigate([Pages.USER_ADMINISTRATION.path], {
+              state: { notDismissSnackBar: true },
+            })
+            .then();
+          return of({});
+        })
+      );
   }
 }
 

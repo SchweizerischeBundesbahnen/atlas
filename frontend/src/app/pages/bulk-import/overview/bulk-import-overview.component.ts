@@ -4,12 +4,7 @@ import {
   BulkImportFormGroup,
   BulkImportFormGroupBuilder,
 } from '../detail/bulk-import-form-group';
-import {
-  ApplicationType,
-  BusinessObjectType,
-  ImportType,
-  UserAdministrationService,
-} from '../../../api';
+import { ApplicationType, BusinessObjectType, ImportType } from '../../../api';
 import { PermissionService } from '../../../core/auth/permission/permission.service';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import {
@@ -36,6 +31,7 @@ import { StringListComponent } from '../../../core/form-components/string-list/s
 import { FileUploadComponent } from '../../../core/components/file-upload/file-upload.component';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 import { BulkImportService } from '../../../api/service/bulk/bulk-import.service';
 
 const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] =

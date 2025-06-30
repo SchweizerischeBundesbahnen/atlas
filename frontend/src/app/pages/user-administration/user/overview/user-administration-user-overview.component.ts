@@ -5,7 +5,6 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { UserService } from '../../service/user.service';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import {
@@ -28,6 +27,7 @@ import { UserSelectComponent } from '../user-select/user-select.component';
 import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
 
 @Component({
   selector: 'app-user-administration-overview',
@@ -84,7 +84,7 @@ export class UserAdministrationUserOverviewComponent {
   SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
 
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UserAdministrationService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly tableService: TableService
@@ -131,20 +131,6 @@ export class UserAdministrationUserOverviewComponent {
     } else if (!selectedUser.sbbUserId) {
       this.userPageResult = { users: [], totalCount: 0 };
       this.tableService.pageIndex = 0;
-    } else {
-      this.userService
-        .hasUserPermissions(selectedUser.sbbUserId)
-        .pipe(
-          tap((hasPermission) => {
-            if (hasPermission) {
-              this.userPageResult = { users: [selectedUser], totalCount: 1 };
-            } else {
-              this.userPageResult = { users: [], totalCount: 0 };
-            }
-            this.tableService.pageIndex = 0;
-          })
-        )
-        .subscribe();
     }
   }
 

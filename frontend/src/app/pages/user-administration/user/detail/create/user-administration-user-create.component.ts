@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { BusinessOrganisationsService, User } from '../../../../../api';
-import { UserService } from '../../../service/user.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
@@ -13,6 +12,7 @@ import { MatLabel } from '@angular/material/form-field';
 import { UserSelectComponent } from '../../user-select/user-select.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
 
 @Component({
   selector: 'app-user-administration-create',
@@ -38,7 +38,7 @@ export class UserAdministrationUserCreateComponent {
   });
 
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UserAdministrationService,
     private readonly notificationService: NotificationService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
@@ -57,8 +57,7 @@ export class UserAdministrationUserCreateComponent {
     }
     this.userService.getUser(user.sbbUserId).subscribe((user) => {
       this.selectedUser = user;
-      this.userHasAlreadyPermissions =
-        this.userService.getPermissionsFromUserModelAsArray(user).length > 0;
+      this.userHasAlreadyPermissions = true;
     });
   }
 
