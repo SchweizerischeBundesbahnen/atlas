@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "CreateSectorGroupVersion")
 public class CreateSectorGroupVersionModel extends SectorGroupVersionModel {
 
-  @Size(min = 0)
+  @Size(min = 2)
   private List<String> sectorSloids = new ArrayList<>();
 
 }

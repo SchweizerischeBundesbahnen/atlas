@@ -24,4 +24,7 @@ public interface SectorVersionRepository extends
           LEFT JOIN FETCH s.sectorGroupVersions
       """)
   List<SectorVersion> findAllWithGroups();
+
+  List<SectorVersion> findAllBySloidIn(List<String> sloids);
+
 }

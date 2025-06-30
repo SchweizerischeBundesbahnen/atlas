@@ -23,4 +23,6 @@ public interface SectorGroupApiV1 {
   ReadSectorGroupVersionModel createSectorVersion(
       @Valid @RequestBody CreateSectorGroupVersionModel createSectorGroupVersionModel);
 
+  @PostMapping
+  ReadSectorGroupVersionModel updateSectorVersion();
 }
