@@ -1,12 +1,10 @@
 import { FormGroup } from '@angular/forms';
 import { UserPermissionProviderService } from '../../../../../core/components/permissions/application-permission/user-permission-provider-service';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   ApplicationType,
   ClientCredential,
   Permission,
-  User,
-  UserAdministrationService,
 } from '../../../../../api';
 import {
   ApplicationPermission,
