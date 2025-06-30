@@ -25,19 +25,19 @@ public class CompanyController implements CompanyApiV1 {
   public Container<CompanyModel> getCompanies(Pageable pageable, List<String> searchCriteria) {
     Page<Company> companies = companyService.getCompanies(
         CompanySearchRestrictions.builder()
-                                 .searchCriterias(searchCriteria)
-                                 .pageable(pageable)
-                                 .build());
+            .searchCriterias(searchCriteria)
+            .pageable(pageable)
+            .build());
     return Container.<CompanyModel>builder()
-                    .objects(companies.stream()
-                                      .map(CompanyMapper::fromEntity)
-                                      .collect(Collectors.toList()))
-                    .totalCount(companies.getTotalElements())
-                    .build();
+        .objects(companies.stream()
+            .map(CompanyMapper::fromEntity)
+            .collect(Collectors.toList()))
+        .totalCount(companies.getTotalElements())
+        .build();
   }
 
   @Override
-  public CompanyModel getCompany(Long uic) {
+  public CompanyModel getCompany(String uic) {
     return CompanyMapper.fromEntity(companyService.getCompany(uic));
   }
 

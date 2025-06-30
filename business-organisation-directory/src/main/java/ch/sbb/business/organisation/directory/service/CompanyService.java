@@ -1,6 +1,6 @@
 package ch.sbb.business.organisation.directory.service;
 
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.CountryCodeNotFoundException;
 import ch.sbb.business.organisation.directory.controller.CompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.Company;
 import ch.sbb.business.organisation.directory.repository.CompanyRepository;
@@ -31,8 +31,8 @@ public class CompanyService {
         searchRestrictions.getPageable());
   }
 
-  public Company getCompany(Long uic) {
-    return companyRepository.findById(uic).orElseThrow(() -> new IdNotFoundException(uic));
+  public Company getCompany(String uic) {
+    return companyRepository.findById(uic).orElseThrow(() -> new CountryCodeNotFoundException(uic));
   }
 
   public void saveCompaniesFromCrd() {
