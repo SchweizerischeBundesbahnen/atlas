@@ -6,7 +6,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(name = "exportServicePointBatch", url = "${atlas.client.gateway.url}/export-service/v2/export", configuration = OAuthFeignConfig.class)
+@FeignClient(name = "exportServicePointBatch", url = "${atlas.client.gateway.url}/export-service/v2/export/internal",
+    configuration = OAuthFeignConfig.class)
 public interface ExportServiceBatchClient {
 
   @PostMapping(value = "sepodi/service-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)

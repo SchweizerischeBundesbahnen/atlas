@@ -24,19 +24,19 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Export")
 @RequestMapping("v2/export")
 @RestController
-public class ExportControllerApiV2 {
+public class ExportControllerApiV2Internal {
 
   private final Map<ExportObjectV2, BaseExportJobService> jobServices;
 
-  ExportControllerApiV2(List<BaseExportJobService> jobServices) {
+  ExportControllerApiV2Internal(List<BaseExportJobService> jobServices) {
     this.jobServices = jobServices.stream().collect(Collectors.toMap(BaseExportJobService::getExportObject, Function.identity()));
   }
 
   @PostMapping({
-      "bodi/{exportObject}",
-      "prm/{exportObject}",
-      "sepodi/{exportObject}",
-      "lidi/{exportObject}"
+      "internal/bodi/{exportObject}",
+      "internal/prm/{exportObject}",
+      "internal/sepodi/{exportObject}",
+      "internal/lidi/{exportObject}"
   })
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Export started successfully"),
@@ -54,29 +54,7 @@ public class ExportControllerApiV2 {
 
     @Override
     public ExportObjectV2 convert(String source) {
-      return switch (source) {
-        // bodi
-        case "business-organisation-batch" -> ExportObjectV2.BUSINESS_ORGANISATION;
-        case "transport-company-batch" -> ExportObjectV2.TRANSPORT_COMPANY;
-        // prm
-        case "stop-point-batch" -> ExportObjectV2.STOP_POINT;
-        case "platform-batch" -> ExportObjectV2.PLATFORM;
-        case "reference-point-batch" -> ExportObjectV2.REFERENCE_POINT;
-        case "contact-point-batch" -> ExportObjectV2.CONTACT_POINT;
-        case "toilet-batch" -> ExportObjectV2.TOILET;
-        case "parking-lot-batch" -> ExportObjectV2.PARKING_LOT;
-        case "relation-batch" -> ExportObjectV2.RELATION;
-        case "recording-obligation-batch" -> ExportObjectV2.RECORDING_OBLIGATION;
-        // sepodi
-        case "service-point-batch" -> ExportObjectV2.SERVICE_POINT;
-        case "traffic-point-batch" -> ExportObjectV2.TRAFFIC_POINT;
-        case "loading-point-batch" -> ExportObjectV2.LOADING_POINT;
-        // lidi
-        case "line-batch" -> ExportObjectV2.LINE;
-        case "subline-batch" -> ExportObjectV2.SUBLINE;
-        case "ttfn-batch" -> ExportObjectV2.TIMETABLE_FIELD_NUMBER;
-        default -> throw new IllegalArgumentException("Invalid export object: " + source);
-      };
+      return ExportObjectV2.getExportTypeForBatchServiceName(source);
     }
   }
 
