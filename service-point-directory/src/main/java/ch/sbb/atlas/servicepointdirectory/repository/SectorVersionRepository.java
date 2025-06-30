@@ -18,4 +18,10 @@ public interface SectorVersionRepository extends
           + "where sv.id = :sectorId"
   )
   List<SectorVersion> findAllBySectorId(Long sectorId);
+
+  @Query("""
+        SELECT s FROM sector_version s
+          LEFT JOIN FETCH s.sectorGroupVersions
+      """)
+  List<SectorVersion> findAllWithGroups();
 }
