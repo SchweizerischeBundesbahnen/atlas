@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { AtlasApiService } from '../atlasApi.service';
+import { AtlasApiService } from '../atlas-api.service';
 import { Observable } from 'rxjs';
-import { ReadSublineVersionV2 } from '../../model/readSublineVersionV2';
 import { ApplicationType } from '../../model/applicationType';
 import { Permission } from '../../model/permission';
 import { User } from '../../model/user';
