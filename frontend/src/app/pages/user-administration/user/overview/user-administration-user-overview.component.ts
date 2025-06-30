@@ -117,7 +117,10 @@ export class UserAdministrationUserOverviewComponent {
       .getUsers(pagination.page, pagination.size)
       .pipe(
         tap((result) => {
-          this.userPageResult = result;
+          this.userPageResult = {
+            users: result.objects!,
+            totalCount: result.totalCount!,
+          };
           this.tableService.pageIndex = pagination.page;
           this.tableService.pageSize = pagination.size;
         })
@@ -148,7 +151,10 @@ export class UserAdministrationUserOverviewComponent {
       )
       .pipe(
         tap((result) => {
-          this.userPageResult = result;
+          this.userPageResult = {
+            users: result.objects!,
+            totalCount: result.totalCount!,
+          };
           this.tableService.pageIndex = pageIndex;
         })
       )
