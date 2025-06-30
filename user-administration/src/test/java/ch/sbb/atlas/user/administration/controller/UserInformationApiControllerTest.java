@@ -1,18 +1,5 @@
 package ch.sbb.atlas.user.administration.controller;
 
-import ch.sbb.atlas.api.user.administration.UserModel;
-import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.user.administration.service.GraphApiService;
-import ch.sbb.atlas.user.administration.service.UserAdministrationService;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -21,13 +8,25 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.user.administration.UserModel;
+import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.user.administration.service.GraphApiService;
+import ch.sbb.atlas.user.administration.service.UserAdministrationService;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
 
 class UserInformationApiControllerTest extends BaseControllerApiTest {
 
-    @MockBean
+    @MockitoBean
     private GraphApiService graphApiService;
 
-    @MockBean
+    @MockitoBean
     private UserAdministrationService userAdministrationService;
 
     @Test
