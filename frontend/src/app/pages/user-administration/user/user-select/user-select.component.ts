@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { UserService } from '../../service/user.service';
 import { ApplicationType, User } from '../../../../api';
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import { UserSelectFormatPipe } from './user-select-format.pipe';
+import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
 
 @Component({
   selector: 'app-user-select',
@@ -12,7 +12,7 @@ import { UserSelectFormatPipe } from './user-select-format.pipe';
   imports: [SearchSelectComponent, ReactiveFormsModule, UserSelectFormatPipe],
 })
 export class UserSelectComponent {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserAdministrationService) {}
 
   @Input() form!: FormGroup;
   @Input() searchInAtlas?: boolean;

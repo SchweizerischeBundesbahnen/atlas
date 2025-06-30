@@ -8,7 +8,7 @@ import {
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
 import { Subject } from 'rxjs';
-import { UserAdministrationService, WorkflowService } from '../../../api';
+import { WorkflowService } from '../../../api';
 import { takeUntil } from 'rxjs/operators';
 import { WorkflowCheckFormGroup } from './workflow-check-form-group';
 import { NotificationService } from '../../notification/notification.service';
@@ -19,6 +19,7 @@ import { NgIf } from '@angular/common';
 import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
 import { AtlasButtonComponent } from '../../components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 
 @Component({
   selector: 'app-workflow-check-form',

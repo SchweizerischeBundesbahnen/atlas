@@ -15,7 +15,7 @@ import { UserAdministrationUserEditComponent } from './edit/user-administration-
 export class UserAdministrationUserDetailComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute) {}
 
-  user: User = {};
+  user?: User;
 
   ngOnInit(): void {
     this.user = this.activatedRoute.snapshot.data.user;
