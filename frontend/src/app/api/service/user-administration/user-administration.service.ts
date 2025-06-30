@@ -7,6 +7,7 @@ import { User } from '../../model/user';
 import { PermissionRestrictionType } from '../../model/permissionRestrictionType';
 import { UserPermissionCreate } from '../../model/userPermissionCreate';
 import { UserDisplayName } from '../../model/userDisplayName';
+import { ContainerUser } from '../../model/containerUser';
 
 @Injectable({
   providedIn: 'root',
@@ -41,7 +42,7 @@ export class UserAdministrationService {
     sboids: Set<string> | undefined = undefined,
     type: PermissionRestrictionType | undefined = undefined,
     applicationTypes: Set<ApplicationType> | undefined = undefined,
-  ): Observable<{ users: User[]; totalCount: number }> {
+  ): Observable<ContainerUser> {
     const httpParams = this.atlasApiService.paramsOf({
       sboids,
       type,
