@@ -62,4 +62,6 @@ public class SectorGroupVersionModel extends BaseVersionModel implements DatesVa
   @Min(0)
   private Double length;
 
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  private Integer etagVersion;
 }
