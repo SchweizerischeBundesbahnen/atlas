@@ -6,7 +6,7 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { CompanyDetailResolver } from './company-detail-resolver.service';
 
 const company: Company = {
-  uicCode: 1234,
+  uicCode: '1234',
   name: 'SBB',
 };
 
@@ -39,7 +39,7 @@ describe('CompanyDetailResolver', () => {
     const resolvedVersion = resolver.resolve(mockRoute);
 
     resolvedVersion.subscribe((tranyportCompany) => {
-      expect(tranyportCompany.uicCode).toBe(1234);
+      expect(tranyportCompany.uicCode).toBe('1234');
       expect(tranyportCompany.name).toBe('SBB');
     });
   });
