@@ -17,9 +17,7 @@ import {
   ApplicationPermissionFormGroupBuilder,
 } from '../form/application-permission-form-group';
 
-export class MockUserPermissionProviderService
-  implements UserPermissionProviderService
-{
+export class MockUserPermissionProviderService extends UserPermissionProviderService {
   showAllSpecialPermissions(): boolean {
     return false;
   }

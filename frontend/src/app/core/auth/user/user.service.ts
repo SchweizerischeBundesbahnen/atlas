@@ -4,7 +4,6 @@ import { map, tap } from 'rxjs/operators';
 import { ApiConfigService } from '../../configuration/api-config.service';
 import { Permission } from '../../../api';
 import { User } from './user';
-import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
