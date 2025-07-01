@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientCredential } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
-import { NgIf } from '@angular/common';
 import { UserAdministrationClientEditComponent } from './edit/user-administration-client-edit.component';
 import { UserAdministrationClientCreateComponent } from './create/user-administration-client-create.component';
 
