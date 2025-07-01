@@ -12,7 +12,7 @@ import Spy = jasmine.Spy;
 const company: ContainerCompany = {
   objects: [
     {
-      uicCode: 1,
+      uicCode: '1',
       name: 'Geilste Company',
     },
   ],
@@ -77,7 +77,7 @@ describe('CompaniesComponent', () => {
     );
 
     expect(component.companies.length).toEqual(1);
-    expect(component.companies[0].uicCode).toEqual(1);
+    expect(component.companies[0].uicCode).toEqual('1');
     expect(component.totalCount).toEqual(1);
   });
 });
