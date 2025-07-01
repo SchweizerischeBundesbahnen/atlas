@@ -14,7 +14,7 @@ import { ContainerClientCredential } from '../../model/containerClientCredential
 })
 export class ClientCredentialAdministrationService {
 
-  private readonly CLIENT_CREDENTIAL_BASE_PATH = '/user-administration/v1/client-credentials/';
+  private readonly CLIENT_CREDENTIAL_BASE_PATH = '/user-administration/v1/client-credentials';
 
   private readonly atlasApiService = inject(AtlasApiService);
 

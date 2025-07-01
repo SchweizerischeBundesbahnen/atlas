@@ -19,6 +19,8 @@ export class UserAdministrationClientDetailComponent implements OnInit {
   clientCredential: ClientCredential = {};
 
   ngOnInit(): void {
-    this.clientCredential = this.activatedRoute.snapshot.data.clientCredential;
+    this.activatedRoute.data.subscribe((data) => {
+      this.clientCredential = data.clientCredential;
+    });
   }
 }
