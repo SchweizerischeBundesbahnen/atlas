@@ -1,26 +1,24 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.CreateSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateSectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.SectorVersion;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class SectorMapper {
 
-  public static ReadSectorVersionModel toModel(SectorVersion sectorVersion) {
-    return ReadSectorVersionModel.builder()
+  public static SectorVersionModel toModel(SectorVersion sectorVersion) {
+    return SectorVersionModel.builder()
         .id(sectorVersion.getId())
         .sloid(sectorVersion.getSloid())
         .trafficPointSloid(sectorVersion.getTrafficPointSloid())
         .designation(sectorVersion.getDesignation())
         .validFrom(sectorVersion.getValidFrom())
         .validTo(sectorVersion.getValidTo())
-        .designation(sectorVersion.getDesignation())
         .north(sectorVersion.getNorth())
         .east(sectorVersion.getEast())
         .height(sectorVersion.getHeight())
@@ -34,8 +32,11 @@ public class SectorMapper {
         .build();
   }
 
-  public static ReadSectorVersionModel toModelWithGroups(SectorVersion sectorVersion,
-      List<SectorGroupVersionModel> sectorGroupVersions) {
+  public static ReadSectorVersionModel toReadModel(SectorVersion sectorVersion) {
+    List<SectorGroupVersionModel> groups = sectorVersion.getSectorGroupVersions().stream()
+        .map(SectorGroupMapper::toModel)
+        .toList();
+
     return ReadSectorVersionModel.builder()
         .id(sectorVersion.getId())
         .sloid(sectorVersion.getSloid())
@@ -43,7 +44,6 @@ public class SectorMapper {
         .designation(sectorVersion.getDesignation())
         .validFrom(sectorVersion.getValidFrom())
         .validTo(sectorVersion.getValidTo())
-        .designation(sectorVersion.getDesignation())
         .north(sectorVersion.getNorth())
         .east(sectorVersion.getEast())
         .height(sectorVersion.getHeight())
@@ -54,17 +54,11 @@ public class SectorMapper {
         .creationDate(sectorVersion.getCreationDate())
         .editor(sectorVersion.getEditor())
         .editionDate(sectorVersion.getEditionDate())
-        .sectorGroupVersions(sectorGroupVersions)
+        .sectorGroupVersions(groups)
         .build();
   }
 
-  public static List<SectorVersionModel> toModelFromList(List<SectorVersion> sectorVersions) {
-    return sectorVersions.stream()
-        .map(SectorMapper::toModel)
-        .collect(Collectors.toList());
-  }
-
-  public static SectorVersion toEntity(CreateSectorVersionModel createSectorVersionModel) {
+  public static SectorVersion toEntity(SectorVersionModel createSectorVersionModel) {
     return SectorVersion.builder()
         .id(createSectorVersionModel.getId())
         .sloid(createSectorVersionModel.getSloid())
@@ -83,8 +77,22 @@ public class SectorMapper {
         .creationDate(createSectorVersionModel.getCreationDate())
         .editor(createSectorVersionModel.getEditor())
         .editionDate(createSectorVersionModel.getEditionDate())
-        //.status(sectorVersion.getStatus)
-        //.sectorGroupVersions(sectorVersion.getSectorGroupVersions())
+        .build();
+  }
+
+  public static SectorVersion toEntity(UpdateSectorVersionModel updateSectorVersionModel) {
+    return SectorVersion.builder()
+        .designation(updateSectorVersionModel.getDesignation())
+        .validFrom(updateSectorVersionModel.getValidFrom())
+        .validTo(updateSectorVersionModel.getValidTo())
+        .designation(updateSectorVersionModel.getDesignation())
+        .north(updateSectorVersionModel.getNorth())
+        .east(updateSectorVersionModel.getEast())
+        .height(updateSectorVersionModel.getHeight())
+        .spatialReference(updateSectorVersionModel.getSpatialReference())
+        .length(updateSectorVersionModel.getLength())
+        .edgeHeight(updateSectorVersionModel.getEdgeHeight())
+        .version(updateSectorVersionModel.getEtagVersion())
         .build();
   }
 }

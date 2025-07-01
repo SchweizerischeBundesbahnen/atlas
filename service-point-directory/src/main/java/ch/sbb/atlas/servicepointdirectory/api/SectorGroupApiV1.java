@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface SectorGroupApiV1 {
 
   @GetMapping
-  List<ReadSectorGroupVersionModel> getSectorVersions();
+  List<ReadSectorGroupVersionModel> getSectorGroupVersions();
 
   @PostMapping
-  ReadSectorGroupVersionModel createSectorVersion(
+  ReadSectorGroupVersionModel createSectorGroupVersion(
       @Valid @RequestBody CreateSectorGroupVersionModel createSectorGroupVersionModel);
 
   @PutMapping(path = "{id}")
-  List<ReadSectorGroupVersionModel> updateSectorVersion(
+  List<ReadSectorGroupVersionModel> updateSectorGroupVersion(
       @PathVariable Long id,
       @Valid @RequestBody UpdateSectorGroupVersionModel updateSectorGroupVersionModel
   );
