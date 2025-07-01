@@ -13,7 +13,7 @@ export interface Company {
     /**
      * Company UIC Code
      */
-    uicCode?: number;
+    uicCode?: string;
     /**
      * Company Name
      */
