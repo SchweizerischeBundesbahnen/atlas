@@ -38,7 +38,9 @@
 
   <atlas-detail-page-container>
     <atlas-detail-page-content>
-      <atlas-permission></atlas-permission>
+      <atlas-permission
+        (applicationChanged)="editMode = false"
+      ></atlas-permission>
       <div class="mt-3">
         <app-user-detail-info [record]="userRecord!"></app-user-detail-info>
       </div>
