@@ -19,7 +19,7 @@ import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 
 const company: Company = {
-  uicCode: 1234,
+  uicCode: '1234',
   name: 'SBB',
 };
 
