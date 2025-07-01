@@ -2,8 +2,12 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.servicepoint.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateSectorGroupVersionModel;
 import ch.sbb.atlas.servicepointdirectory.api.SectorGroupApiV1;
+import ch.sbb.atlas.servicepointdirectory.entity.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorGroupMapper;
+import ch.sbb.atlas.servicepointdirectory.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.service.SectorGroupService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +23,12 @@ public class SectorGroupController implements SectorGroupApiV1 {
 
   @Override
   public List<ReadSectorGroupVersionModel> getSectorVersions() {
-    return sectorGroupService.getSectorGroups().stream().map(SectorGroupMapper::toModel).toList();
+    return sectorGroupService.getSectorGroups().stream()
+        .map(g -> {
+          List<SectorVersionModel> versionModels =
+              SectorMapper.toModelFromList(g.getSectorVersions());
+          return SectorGroupMapper.toModelWithSectorVersions(g, versionModels);
+        }).toList();
   }
 
   @Override
@@ -28,7 +37,18 @@ public class SectorGroupController implements SectorGroupApiV1 {
   }
 
   @Override
-  public ReadSectorGroupVersionModel updateSectorVersion() {
-    return null;
+  public List<ReadSectorGroupVersionModel> updateSectorVersion(Long id,
+      UpdateSectorGroupVersionModel updateSectorGroupVersionModel) {
+    SectorGroupVersion sectorGroupVersionToUpdate = sectorGroupService.getSectorGroupVersionById(id);
+
+    SectorGroupVersion editedVersion = SectorGroupMapper.toEntity(updateSectorGroupVersionModel);
+    sectorGroupService.updateSectorGroup(sectorGroupVersionToUpdate, editedVersion);
+    List<SectorGroupVersion> updatedSectorGroup = sectorGroupService.findAllBySloidOrderByValidFrom(
+        sectorGroupVersionToUpdate.getSloid());
+
+    return updatedSectorGroup
+        .stream()
+        .map(SectorGroupMapper::toModel)
+        .toList();
   }
 }

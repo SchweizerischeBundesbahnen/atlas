@@ -2,7 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.mapper;
 
 import ch.sbb.atlas.api.servicepoint.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateSectorGroupVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.SectorGroupVersion;
+import java.util.List;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -22,6 +25,27 @@ public class SectorGroupMapper {
         .creationDate(sectorGroupVersion.getCreationDate())
         .editor(sectorGroupVersion.getEditor())
         .editionDate(sectorGroupVersion.getEditionDate())
+        .etagVersion(sectorGroupVersion.getVersion())
+        .build();
+  }
+
+  public static ReadSectorGroupVersionModel toModelWithSectorVersions(SectorGroupVersion sectorGroupVersion,
+      List<SectorVersionModel> sectorVersionList) {
+    return ReadSectorGroupVersionModel.builder()
+        .id(sectorGroupVersion.getId())
+        .sloid(sectorGroupVersion.getSloid())
+        .trafficPointSloid(sectorGroupVersion.getTrafficPointSloid())
+        .designation(sectorGroupVersion.getDesignation())
+        .validFrom(sectorGroupVersion.getValidFrom())
+        .validTo(sectorGroupVersion.getValidTo())
+        .designation(sectorGroupVersion.getDesignation())
+        .length(sectorGroupVersion.getLength())
+        .creator(sectorGroupVersion.getCreator())
+        .creationDate(sectorGroupVersion.getCreationDate())
+        .editor(sectorGroupVersion.getEditor())
+        .editionDate(sectorGroupVersion.getEditionDate())
+        .etagVersion(sectorGroupVersion.getVersion())
+        .sectorVersions(sectorVersionList)
         .build();
   }
 
@@ -30,7 +54,6 @@ public class SectorGroupMapper {
         .id(createSectorGroupVersionModel.getId())
         .sloid(createSectorGroupVersionModel.getSloid())
         .trafficPointSloid(createSectorGroupVersionModel.getTrafficPointSloid())
-        .designation(createSectorGroupVersionModel.getDesignation())
         .validFrom(createSectorGroupVersionModel.getValidFrom())
         .validTo(createSectorGroupVersionModel.getValidTo())
         .designation(createSectorGroupVersionModel.getDesignation())
@@ -39,6 +62,19 @@ public class SectorGroupMapper {
         .creationDate(createSectorGroupVersionModel.getCreationDate())
         .editor(createSectorGroupVersionModel.getEditor())
         .editionDate(createSectorGroupVersionModel.getEditionDate())
+        .version(createSectorGroupVersionModel.getEtagVersion())
+        .build();
+  }
+
+  public static SectorGroupVersion toEntity(UpdateSectorGroupVersionModel updateSectorGroupVersionModel) {
+
+    return SectorGroupVersion.builder()
+        .designation(updateSectorGroupVersionModel.getDesignation())
+        .validFrom(updateSectorGroupVersionModel.getValidFrom())
+        .validTo(updateSectorGroupVersionModel.getValidTo())
+        .designation(updateSectorGroupVersionModel.getDesignation())
+        .length(updateSectorGroupVersionModel.getLength())
+        .version(updateSectorGroupVersionModel.getEtagVersion())
         .build();
   }
 

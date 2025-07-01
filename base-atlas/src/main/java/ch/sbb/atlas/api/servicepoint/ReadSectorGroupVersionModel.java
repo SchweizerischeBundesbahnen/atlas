@@ -1,7 +1,6 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +18,6 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "ReadSectorGroupVersion")
 public class ReadSectorGroupVersionModel extends SectorGroupVersionModel {
 
-  @Size(min = 0)
   List<SectorVersionModel> sectorVersions;
 
 }

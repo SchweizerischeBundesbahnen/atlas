@@ -2,8 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.entity.BaseEntity;
+import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versioning.model.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,7 +40,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "sector_group_version")
 @AtlasVersionable
-public class SectorGroupVersion extends BaseEntity {
+public class SectorGroupVersion extends BaseEntity implements Versionable, DatesValidator {
 
   private static final String VERSION_SEQ = "sector_group_version_seq";
 
@@ -71,6 +73,7 @@ public class SectorGroupVersion extends BaseEntity {
   private String designation;
 
   @Schema(description = "Length of the Sector", example = "18.000")
+  @AtlasVersionableProperty
   private Double length;
 
   @ManyToMany(fetch = FetchType.EAGER)
@@ -80,5 +83,7 @@ public class SectorGroupVersion extends BaseEntity {
       inverseJoinColumns = @JoinColumn(name = "sector_sloid", referencedColumnName = "sloid"))
   @Size(min = 2)
   @Builder.Default
+  @ToString.Exclude
+  @AtlasVersionableProperty
   private List<SectorVersion> sectorVersions = new ArrayList<>();
 }
