@@ -57,7 +57,7 @@ export class UserAdministrationUserCreateComponent {
     }
     this.userService.getUser(user.sbbUserId).subscribe((user) => {
       this.selectedUser = user;
-      this.userHasAlreadyPermissions = true;
+      this.userHasAlreadyPermissions = Array.from(user.permissions).length > 0;
     });
   }
 
@@ -68,12 +68,11 @@ export class UserAdministrationUserCreateComponent {
       .subscribe({
         next: () => {
           this.router
-            .navigate(
-              [Pages.USER_ADMINISTRATION.path, this.selectedUser!.userId!],
-              {
-                relativeTo: this.route,
-              }
-            )
+            .navigate([
+              Pages.USER_ADMINISTRATION.path,
+              Pages.USERS.path,
+              this.selectedUser!.userId!,
+            ])
             .then(() =>
               this.notificationService.success(
                 'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'

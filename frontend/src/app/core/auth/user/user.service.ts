@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, ReplaySubject, Subject, take } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ApiConfigService } from '../../configuration/api-config.service';
 import { Permission } from '../../../api';
 import { User } from './user';
 import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -14,10 +16,9 @@ export class UserService {
   readonly userChanged = new Subject<void>();
   private readonly permissionsLoaded = new ReplaySubject<void>(1);
 
-  constructor(
-    private userAdministrationService: UserAdministrationService,
-    private apiConfigService: ApiConfigService
-  ) {}
+  private readonly httpClient = inject(HttpClient);
+
+  constructor(private apiConfigService: ApiConfigService) {}
 
   setCurrentUserAndLoadPermissions(user: User) {
     this.currentUser = user;
@@ -54,15 +55,23 @@ export class UserService {
     if (!this.loggedIn) {
       throw new Error('Can not load Permissions if not logged in');
     }
-    return this.userAdministrationService.getCurrentUser().pipe(
-      tap((response) => {
-        this.currentUser!.permissions = response.permissions
-          ? Array.from(response.permissions)
-          : [];
-        this.permissionsLoaded.next();
-        this.userChanged.next();
-      }),
-      map(() => this.currentUser!)
-    );
+    return this.httpClient
+      .get<User>(
+        `${environment.atlasApiUrl}/user-administration/v1/users/current`,
+        {
+          headers: new HttpHeaders({ Accept: '*/*' }),
+          responseType: 'json',
+        }
+      )
+      .pipe(
+        tap((response) => {
+          this.currentUser!.permissions = response.permissions
+            ? Array.from(response.permissions)
+            : [];
+          this.permissionsLoaded.next();
+          this.userChanged.next();
+        }),
+        map(() => this.currentUser!)
+      );
   }
 }
