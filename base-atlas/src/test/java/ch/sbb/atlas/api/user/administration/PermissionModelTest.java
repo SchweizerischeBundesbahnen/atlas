@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 class PermissionModelTest {
 
+  private static final String ALL_RESTRICTION_TYPES_ALLOWED = "allRestrictionTypesAllowed";
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
@@ -31,7 +32,8 @@ class PermissionModelTest {
 
     // Then
     assertThat(constraintViolations).hasSize(1);
-    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("sboidsEmptyWhenNotWriterOrSuperUserOrBodi");
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(
+        ALL_RESTRICTION_TYPES_ALLOWED);
   }
 
   @Test
@@ -48,7 +50,8 @@ class PermissionModelTest {
 
     // Then
     assertThat(constraintViolations).hasSize(1);
-    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("sboidsEmptyWhenNotWriterOrSuperUserOrBodi");
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(
+        ALL_RESTRICTION_TYPES_ALLOWED);
   }
 
   @Test
@@ -65,7 +68,8 @@ class PermissionModelTest {
 
     // Then
     assertThat(constraintViolations).hasSize(1);
-    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("sboidsEmptyWhenNotWriterOrSuperUserOrBodi");
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(
+        ALL_RESTRICTION_TYPES_ALLOWED);
   }
 
   @Test
@@ -157,7 +161,7 @@ class PermissionModelTest {
     Set<ConstraintViolation<PermissionModel>> constraintViolations = validator.validate(permission);
 
     // Then
-    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations).hasSize(2);
   }
 
   @Test

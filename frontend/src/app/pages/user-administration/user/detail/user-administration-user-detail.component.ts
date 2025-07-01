@@ -18,6 +18,8 @@ export class UserAdministrationUserDetailComponent implements OnInit {
   user?: User;
 
   ngOnInit(): void {
-    this.user = this.activatedRoute.snapshot.data.user;
+    this.activatedRoute.data.subscribe((data) => {
+      this.user = data.user;
+    });
   }
 }

@@ -263,4 +263,20 @@ export class ApplicationPermissionComponent implements OnInit {
         this.showInfoPlusTerminationVote)
     );
   }
+
+  onNovaToggle(value: boolean) {
+    if (value) {
+      this.form.controls.permissions.controls.infoPlusTerminationVote?.setValue(
+        false
+      );
+    }
+  }
+
+  onInfoPlusToggle(value: boolean) {
+    if (value) {
+      this.form.controls.permissions.controls.novaTerminationVote?.setValue(
+        false
+      );
+    }
+  }
 }
