@@ -10,9 +10,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class UserPermissionGivenUserService
-  implements UserPermissionProviderService
-{
+export class UserPermissionGivenUserService extends UserPermissionProviderService {
   user!: User;
   applicationPermissionFormGroup?: FormGroup<ApplicationPermission>;
 
@@ -23,14 +21,15 @@ export class UserPermissionGivenUserService
   loadFormGroup(
     application: ApplicationType
   ): FormGroup<ApplicationPermission> {
-    const permissions: Permission = Array.from(this.user.permissions!).find(
-      (i) => i.application === application
-    )!;
+    const permission: Permission = super.getPermission(
+      this.user.permissions,
+      application
+    );
 
     const applicationPermissionFormGroup =
       ApplicationPermissionFormGroupBuilder.buildAndFillFormGroup(
         application,
-        permissions
+        permission
       );
     applicationPermissionFormGroup.disable();
     this.applicationPermissionFormGroup = applicationPermissionFormGroup;
