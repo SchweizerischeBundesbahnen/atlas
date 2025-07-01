@@ -1815,7 +1815,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint1.setValidTo(LocalDate.of(2021, 3, 31));
     stopPoint1.setDesignationOfficial("A Hausen");
     stopPoint1.setDesignationLong("designation long 1");
-    stopPoint1.setStopPointType(null);
+    stopPoint1.setStopPointType(StopPointType.TEMPORARY);
     stopPoint1.setServicePointGeolocation(servicePointGeolocationCreateModel);
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         stopPoint1);
@@ -1905,7 +1905,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint1.setValidTo(LocalDate.of(2021, 3, 31));
     stopPoint1.setDesignationOfficial("A Hausen");
     stopPoint1.setDesignationLong("designation long 1");
-    stopPoint1.setStopPointType(null);
+    stopPoint1.setStopPointType(StopPointType.TEMPORARY);
     stopPoint1.setServicePointGeolocation(servicePointGeolocationCreateModel);
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         stopPoint1);

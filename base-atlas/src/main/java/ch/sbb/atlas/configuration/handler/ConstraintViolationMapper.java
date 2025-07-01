@@ -48,12 +48,19 @@ public class ConstraintViolationMapper {
     ERROR_CODE_MAP.put("{atlas.constraint.validSpatialReferenceFraction}", new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_SPATIAL_REFERENCE_FRACTION",
         cv -> "Max decimal places exceeded. LV03 and LV95 max. 5. WGS84 and WGS84WEB max. 11."));
+    ERROR_CODE_MAP.put("{atlas.constraint.validStopPointType}", new ErrorInfo(
+        "ERROR.CONSTRAINT_VIOLATION.VALID_STOP_POINT_TYPE",
+        cv -> "Stop Point type not valid...")); // todo
     ERROR_CODE_MAP.put("{atlas.constraint.validServicePointNumber}", new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_SERVICE_POINT_NUMBER",
         cv -> "numberShort must be present only if country not in (85,11,12,13,14)"));
   }
 
   private static String propertyName(ConstraintViolation<?> cv) {
+    if (cv.getPropertyPath().toString().isEmpty()) {
+      // is type constraint -> return constraint name
+      return cv.getMessageTemplate();
+    }
     return ((PathImpl) cv.getPropertyPath()).getLeafNode().getName();
   }
 
@@ -69,7 +76,7 @@ public class ConstraintViolationMapper {
       DisplayInfoBuilder displayInfoBuilder = DisplayInfo.builder()
           .code(errorInfo(constraintViolation).code)
           .with("propertyPath", propertyName(constraintViolation))
-          .with(VALUE, String.valueOf(constraintViolation.getInvalidValue()));
+          .with(VALUE, String.valueOf(constraintViolation.getInvalidValue())); // todo: makes not sense for full type
       constraintViolation.getConstraintDescriptor().getAttributes()
           .forEach((key, value) -> {
             if (!value.toString().contains("java.lang.Class")) {
@@ -89,13 +96,23 @@ public class ConstraintViolationMapper {
   }
 
   public String getMessage() {
-    final Function<ConstraintViolation<?>, String> cvToString = cv -> String.format(
-        "Path parameter '%s' value '%s' %s",
-        propertyName(cv),
-        cv.getInvalidValue(),
-        errorInfo(cv).message.apply(cv)
-    );
-    return "Constraint for Path parameter was violated: " + new HashSet<>(constraintViolations.stream().map(cvToString).toList());
+    final Function<ConstraintViolation<?>, String> cvToString = cv -> {
+      if (cv.getPropertyPath().toString().isEmpty()) {
+        return String.format(
+            "Constraint '%s' was violated, info: %s",
+            propertyName(cv),
+            errorInfo(cv).message.apply(cv)
+        );
+      } else {
+        return String.format(
+            "Property/Parameter '%s' has invalid value: '%s', info: %s",
+            propertyName(cv),
+            cv.getInvalidValue(),
+            errorInfo(cv).message.apply(cv)
+        );
+      }
+    };
+    return "Following constraints were violated: " + new HashSet<>(constraintViolations.stream().map(cvToString).toList());
   }
 
 }

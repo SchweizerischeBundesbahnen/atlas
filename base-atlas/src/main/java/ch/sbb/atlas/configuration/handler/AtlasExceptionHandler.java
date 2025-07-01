@@ -5,10 +5,13 @@ import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.ClientAbortException;
 import org.hibernate.StaleObjectStateException;
@@ -66,7 +69,16 @@ public class AtlasExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException exception) {
-    return ResponseEntity.badRequest().body(ErrorResponseMapper.map(exception));
+    final Set<ConstraintViolation<?>> constraintViolations = exception.getBindingResult().getAllErrors().stream()
+        .filter(objectError -> objectError.contains(ConstraintViolation.class))
+        .map(objectError -> (ConstraintViolation<?>) objectError.unwrap(ConstraintViolation.class))
+        .collect(Collectors.toSet());
+
+    if (constraintViolations.isEmpty()) {
+      return ResponseEntity.badRequest().body(ErrorResponseMapper.map(exception));
+    } else {
+      return ResponseEntity.badRequest().body(ErrorResponseMapper.map(constraintViolations));
+    }
   }
 
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -77,7 +89,7 @@ public class AtlasExceptionHandler {
   @ExceptionHandler(ConstraintViolationException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
-    return ResponseEntity.badRequest().body(ErrorResponseMapper.map(e));
+    return ResponseEntity.badRequest().body(ErrorResponseMapper.map(e.getConstraintViolations()));
   }
 
   @ExceptionHandler(value = FeignException.class)

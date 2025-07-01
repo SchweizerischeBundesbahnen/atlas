@@ -37,6 +37,7 @@ import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
@@ -49,8 +50,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,6 +62,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -1491,4 +1495,111 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     assertThat(allVersions.getFirst().getBusinessOrganisation()).isEqualTo(ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID);
   }
 
+  @Test
+  void shouldCreateNotStopPointWithoutStopPointType() throws Exception {
+    // given
+    final CreateServicePointVersionModel notStopPoint = getNotStopPointCreateModel();
+
+    // when & then
+    performPost(notStopPoint)
+        .andExpect(status().isCreated());
+  }
+
+  private static @NotNull CreateServicePointVersionModel getNotStopPointCreateModel() {
+    CreateServicePointVersionModel notStopPoint = ServicePointTestData.getAargauServicePointVersionModel();
+    notStopPoint.setMeansOfTransport(Collections.emptyList());
+    notStopPoint.setStopPointType(null);
+    notStopPoint.setOperatingPointRouteNetwork(false);
+    return notStopPoint;
+  }
+
+  private static @NotNull CreateServicePointVersionModel getStopPointWithoutStopPointTypeCreateModel() {
+    final CreateServicePointVersionModel notStopPointCreateModel = getNotStopPointCreateModel();
+    notStopPointCreateModel.setMeansOfTransport(List.of(MeanOfTransport.TRAIN));
+    return notStopPointCreateModel;
+  }
+
+  private static @NotNull CreateServicePointVersionModel getStopPointWithStopPointTypeUnknownCreateModel() {
+    final CreateServicePointVersionModel stopPoint = getStopPointWithoutStopPointTypeCreateModel();
+    stopPoint.setStopPointType(StopPointType.UNKNOWN);
+    return stopPoint;
+  }
+
+  private @NotNull ResultActions performPost(CreateServicePointVersionModel notStopPoint) throws Exception {
+    return mvc.perform(post("/v1/service-points")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(notStopPoint)));
+  }
+
+  private @NotNull ResultActions performPut(CreateServicePointVersionModel createModel, Long id) throws Exception {
+    return mvc.perform(put("/v1/service-points/" + id)
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(createModel)));
+  }
+
+  @Test
+  void shouldUpdateNotStopPointWithoutStopPointType() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getNotStopPointCreateModel();
+
+    // when & then
+    performPut(createModel, 15L)
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldNotCreateStopPointWithoutStopPointType() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getStopPointWithoutStopPointTypeCreateModel();
+
+    // when & then
+    performPost(createModel)
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void shouldNotUpdateStopPointWithoutStopPointType() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getStopPointWithoutStopPointTypeCreateModel();
+
+    // when & then
+    performPut(createModel, 15L)
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void shouldNotCreateStopPointWithStopPointTypeUnknown() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getStopPointWithStopPointTypeUnknownCreateModel();
+
+    // when & then
+    performPost(createModel)
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void shouldNotUpdateStopPointWithStopPointTypeUnknown() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getStopPointWithStopPointTypeUnknownCreateModel();
+
+    // when & then
+    final ResultActions resultActions = performPut(createModel, 15L);
+    resultActions.andExpect(status().isBadRequest());
+    resultActions.andExpect(
+        result -> {
+          final ErrorResponse errorResponse = mapper.readValue(result.getResponse().getContentAsByteArray(), ErrorResponse.class);
+          assertThat(errorResponse.getDetails()).hasSize(1);
+          assertThat(errorResponse.getDetails().first().getField()).isEqualTo("{atlas.constraint.validStopPointType}");
+        });
+  }
+
+  @Test
+  void shouldCreateStopPointWithValidStopPointType() {
+
+  }
+
+  @Test
+  void shouldUpdateStopPointWithValidStopPointType() {
+
+  }
 }
