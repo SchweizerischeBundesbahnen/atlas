@@ -110,6 +110,7 @@
               fieldLabel="USER_ADMIN.NOVA"
             ></app-atlas-label-field>
             <atlas-slide-toggle
+              (toggleChange)="onNovaToggle($event)"
               [formGroup]="permissionsForm"
               controlName="novaTerminationVote"
               [disabled]="form.disabled"
@@ -122,6 +123,7 @@
               fieldLabel="USER_ADMIN.INFO_PLUS"
             ></app-atlas-label-field>
             <atlas-slide-toggle
+              (toggleChange)="onInfoPlusToggle($event)"
               [formGroup]="permissionsForm"
               controlName="infoPlusTerminationVote"
               [disabled]="form.disabled"

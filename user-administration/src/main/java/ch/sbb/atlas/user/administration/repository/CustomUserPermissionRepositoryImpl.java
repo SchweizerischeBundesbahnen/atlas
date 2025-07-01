@@ -35,11 +35,8 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
   @Override
   public Page<String> getFilteredUsers(Pageable pageable, Set<ApplicationType> applicationTypes,
       Set<String> permissionRestrictions, PermissionRestrictionType type) {
-    EnumSpecification<UserPermission> applicationTypesSpec = new EnumSpecification<>(applicationTypes.stream().toList(),
+    EnumSpecification<UserPermission> specification = new EnumSpecification<>(applicationTypes.stream().toList(),
         BasePermission_.application);
-    EnumSpecification<UserPermission> applicationRoleSpec = new EnumSpecification<>(List.of(ApplicationRole.READER),
-        BasePermission.Fields.role, true);
-    Specification<UserPermission> specification = applicationTypesSpec.and(applicationRoleSpec);
 
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);

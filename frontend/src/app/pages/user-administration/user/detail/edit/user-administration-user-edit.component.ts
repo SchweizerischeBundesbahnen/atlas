@@ -48,11 +48,10 @@ export class UserAdministrationUserEditComponent implements OnInit {
   }
 
   save(): void {
-    this.formGroup.disable();
-
     const userPermission = ApplicationPermissionFormGroupBuilder.formToModel(
       this.formGroup
     );
+    this.formGroup.disable();
     this.userAdministrationService
       .updateUserPermission(
         this.user().userId!,
@@ -62,6 +61,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
       .subscribe({
         next: () => {
           this.ngOnInit();
+          this.editMode = false;
           this.notificationService.success(
             'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
           );
