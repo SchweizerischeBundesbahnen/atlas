@@ -252,7 +252,7 @@ export class ApplicationPermissionFormGroupBuilder {
     roleConfig: RoleConfig
   ) {
     if (
-      roleConfig.permissions.restrictions.includes(
+      roleConfig.permissions.specialPermissions.includes(
         PermissionRestrictionType.BulkImport
       )
     ) {
@@ -273,7 +273,7 @@ export class ApplicationPermissionFormGroupBuilder {
     roleConfig: RoleConfig
   ) {
     if (
-      roleConfig.permissions.restrictions.includes(
+      roleConfig.permissions.specialPermissions.includes(
         PermissionRestrictionType.NovaTerminationVote
       )
     ) {
@@ -294,7 +294,7 @@ export class ApplicationPermissionFormGroupBuilder {
     roleConfig: RoleConfig
   ) {
     if (
-      roleConfig.permissions.restrictions.includes(
+      roleConfig.permissions.specialPermissions.includes(
         PermissionRestrictionType.InfoPlusTerminationVote
       )
     ) {

@@ -10,6 +10,8 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -62,26 +64,14 @@ public class PermissionModel extends BaseVersionModel {
 
   @Schema(hidden = true)
   @JsonIgnore
-  @AssertTrue(message = "Restrictions must be empty unless WRITER on non-BODI, SUPER_USER on SEPODI, or READER with only "
-      + "NOVA/INFO_PLUS")
-  public boolean isSboidsEmptyWhenNotWriterOrSuperUserOrBodi() {
-    if (getRole() == ApplicationRole.WRITER && application != ApplicationType.BODI) {
-      return true;
-    }
+  @AssertTrue(message = "Restrictions must be allowed")
+  public boolean isAllRestrictionTypesAllowed() {
+    Set<PermissionRestrictionType> allowedRestrictionTypes = AllowedPermissionRestrictions.get(application, role);
+    Set<PermissionRestrictionType> permissionRestrictionTypes = permissionRestrictions.stream()
+        .map(PermissionRestrictionModel::getType)
+        .collect(Collectors.toSet());
 
-    if (getRole() == ApplicationRole.SUPER_USER && application == ApplicationType.SEPODI) {
-      return true;
-    }
-
-    if (getRole() == ApplicationRole.READER || getRole() == ApplicationRole.SUPERVISOR) {
-      return getPermissionRestrictions().stream()
-          .allMatch(r ->
-              r.getType() == PermissionRestrictionType.INFO_PLUS_TERMINATION_VOTE
-                  || r.getType() == PermissionRestrictionType.NOVA_TERMINATION_VOTE
-          );
-    }
-
-    return getPermissionRestrictions().isEmpty();
+    return allowedRestrictionTypes.containsAll(permissionRestrictionTypes);
   }
 
 }
