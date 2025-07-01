@@ -69,13 +69,13 @@ public class ErrorResponseMapper {
         .build();
   }
 
-  public static ErrorResponse map(ConstraintViolationException exception) {
-    Set<ConstraintViolation<?>> constraintViolations = exception.getConstraintViolations();
+  public static ErrorResponse map(Set<ConstraintViolation<?>> constraintViolations) {
     ConstraintViolationMapper constraintViolationMapper = new ConstraintViolationMapper(constraintViolations);
     return ErrorResponse.builder()
         .status(HttpStatus.BAD_REQUEST.value())
         .error(
             "Param argument not valid on: " + constraintViolations.stream().findFirst().map(ConstraintViolation::getLeafBean))
+        // todo: think of better approach
         .message(constraintViolationMapper.getMessage())
         .details(constraintViolationMapper.getDetails())
         .build();
@@ -181,7 +181,7 @@ public class ErrorResponseMapper {
       return map(methodArgumentNotValidException);
     }
     if (exception instanceof ConstraintViolationException constraintViolationException) {
-      return map(constraintViolationException);
+      return map(constraintViolationException.getConstraintViolations());
     }
     return map(exception);
   }
