@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { ApplicationType } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ApplicationPermissionComponent } from './application-permission/application-permission.component';
@@ -23,8 +23,14 @@ import {
   ],
 })
 export class PermissionComponent {
+  applicationChanged = output<ApplicationType>();
+
   protected readonly applications: ApplicationType[] =
     Object.values(ApplicationType);
 
   protected readonly ApplicationType = ApplicationType;
+
+  onSelectedTabChange(index: number) {
+    this.applicationChanged.emit(this.applications[index]);
+  }
 }
