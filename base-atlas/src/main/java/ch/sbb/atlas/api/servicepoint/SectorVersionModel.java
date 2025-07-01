@@ -2,8 +2,6 @@ package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
-import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.atlas.versioning.model.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Digits;
@@ -25,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "SectorVersionModel")
-public class SectorVersionModel extends BaseVersionModel implements DatesValidator, Versionable {
+public class SectorVersionModel extends BaseVersionModel {
 
   @Schema(description = """
       This ID helps identify versions of a traffic point element in the use case front end and/or update.
@@ -35,6 +33,7 @@ public class SectorVersionModel extends BaseVersionModel implements DatesValidat
       accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
+  //TODO remove after ATLAS-2963 is implemented. SLOID must be generated and cannot be set manually.
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
   @Schema(description = "Unique code for sctor that is used in customer information.\n" +
       "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:16161:1")
