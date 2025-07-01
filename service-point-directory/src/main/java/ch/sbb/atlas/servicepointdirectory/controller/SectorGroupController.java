@@ -2,12 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.servicepoint.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.SectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateSectorGroupVersionModel;
 import ch.sbb.atlas.servicepointdirectory.api.SectorGroupApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorGroupMapper;
-import ch.sbb.atlas.servicepointdirectory.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.service.SectorGroupService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,22 +20,19 @@ public class SectorGroupController implements SectorGroupApiV1 {
   private final SectorGroupService sectorGroupService;
 
   @Override
-  public List<ReadSectorGroupVersionModel> getSectorVersions() {
+  public List<ReadSectorGroupVersionModel> getSectorGroupVersions() {
     return sectorGroupService.getSectorGroups().stream()
-        .map(g -> {
-          List<SectorVersionModel> versionModels =
-              SectorMapper.toModelFromList(g.getSectorVersions());
-          return SectorGroupMapper.toModelWithSectorVersions(g, versionModels);
-        }).toList();
+        .map(SectorGroupMapper::toReadModelWithSectors)
+        .toList();
   }
 
   @Override
-  public ReadSectorGroupVersionModel createSectorVersion(CreateSectorGroupVersionModel createSectorGroupVersionModel) {
+  public ReadSectorGroupVersionModel createSectorGroupVersion(CreateSectorGroupVersionModel createSectorGroupVersionModel) {
     return sectorGroupService.createSectorGroup(createSectorGroupVersionModel);
   }
 
   @Override
-  public List<ReadSectorGroupVersionModel> updateSectorVersion(Long id,
+  public List<ReadSectorGroupVersionModel> updateSectorGroupVersion(Long id,
       UpdateSectorGroupVersionModel updateSectorGroupVersionModel) {
     SectorGroupVersion sectorGroupVersionToUpdate = sectorGroupService.getSectorGroupVersionById(id);
 
@@ -48,7 +43,7 @@ public class SectorGroupController implements SectorGroupApiV1 {
 
     return updatedSectorGroup
         .stream()
-        .map(SectorGroupMapper::toModel)
+        .map(SectorGroupMapper::toReadModel)
         .toList();
   }
 }

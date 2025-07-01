@@ -18,8 +18,8 @@ import lombok.experimental.FieldNameConstants;
 @Data
 @Builder
 @FieldNameConstants
-@Schema(name = "UpdateSectorGroupVersion")
-public class UpdateSectorGroupVersionModel {
+@Schema(name = "UpdateSectorVersion")
+public class UpdateSectorVersionModel {
 
   @NotNull
   private LocalDate validFrom;
@@ -31,10 +31,33 @@ public class UpdateSectorGroupVersionModel {
   @Size(max = AtlasFieldLengths.LENGTH_40)
   private String designation;
 
+  @NotNull
+  @Digits(integer = 8, fraction = 11)
+  @Schema(description = "North longitude", example = "225738.00000000000")
+  private Double north;
+
+  @NotNull
+  @Digits(integer = 8, fraction = 11)
+  @Schema(description = "Eastern longitude", example = "681821.00000000000")
+  private Double east;
+
+  @Schema(description = "Height of the coordinate point", example = "540.20000")
+  @Digits(integer = 5, fraction = 4)
+  private Double height;
+
+  @Schema(description = "Coordinate system spatial reference", example = "LV95")
+  @NotNull
+  private SpatialReference spatialReference;
+
   @Schema(description = "", example = "18.000")
   @Digits(integer = 13, fraction = 3)
   @Min(0)
   private Double length;
+
+  @Schema(description = "", example = "18.000")
+  @Digits(integer = 13, fraction = 3)
+  @Min(0)
+  private Double edgeHeight;
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
