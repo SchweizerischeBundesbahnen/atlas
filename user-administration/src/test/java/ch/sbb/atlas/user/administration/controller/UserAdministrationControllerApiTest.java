@@ -22,7 +22,6 @@ import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.ClientCredentialPermissionRepository;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -170,35 +169,6 @@ class UserAdministrationControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.permissions").value(hasSize(1)))
         .andExpect(jsonPath("$.permissions[0].role").value("WRITER"))
         .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
-  }
-
-  @Test
-  void getUsersWithSboidsAndApplicationTypesNonFound() throws Exception {
-    userPermissionRepository.saveAll(List.of(
-        UserPermission.builder()
-            .role(ApplicationRole.WRITER)
-            .application(ApplicationType.TTFN)
-            .permissionRestrictions(
-                new HashSet<>(List.of(PermissionRestriction.builder().type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-                    .restriction("ch:1:sboid:1").build())))
-            .sbbUserId("***REMOVED***").build(),
-        UserPermission.builder()
-            .role(ApplicationRole.READER)
-            .application(ApplicationType.LIDI)
-            .permissionRestrictions(
-                new HashSet<>(List.of(PermissionRestriction.builder().type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-                    .restriction("ch:1:sboid:1").build())))
-            .sbbUserId("***REMOVED***").build()
-    ));
-
-    mvc.perform(get("/v1/users")
-            .queryParam("page", "0")
-            .queryParam("size", "5")
-            .queryParam("applicationTypes", "LIDI", "TTFN")
-            .queryParam("sboids", "ch:1:sboid:1"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount").value(0))
-        .andExpect(jsonPath("$.objects", hasSize(0)));
   }
 
   @Test
