@@ -2,13 +2,11 @@ package ch.sbb.atlas.servicepointdirectory.service;
 
 import ch.sbb.atlas.api.servicepoint.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.SectorVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.entity.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorGroupMapper;
-import ch.sbb.atlas.servicepointdirectory.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
@@ -50,6 +48,8 @@ public class SectorGroupService {
     List<SectorVersion> validSectorVersions = new ArrayList<>();
     existTrafficPointElement(createSectorGroupVersionModel.getTrafficPointSloid());
 
+    //TODO locationService.claimSloid waiting for -> ATLAS-2963 (LocationService erweiterung)
+
     List<SectorVersion> sectorVersions =
         sectorVersionRepository.findAllBySloidIn(createSectorGroupVersionModel.getSectorSloids());
 
@@ -60,9 +60,7 @@ public class SectorGroupService {
     sectorGroupVersion.setSectorVersions(sectorVersions);
 
     SectorGroupVersion savedSectorGroupVersion = save(sectorGroupVersion);
-    List<SectorVersionModel> sectorVersionModelList =
-        SectorMapper.toModelFromList(savedSectorGroupVersion.getSectorVersions());
-    return SectorGroupMapper.toModelWithSectorVersions(savedSectorGroupVersion, sectorVersionModelList);
+    return SectorGroupMapper.toReadModelWithSectors(savedSectorGroupVersion);
   }
 
   private void existTrafficPointElement(String sloid) {
@@ -100,11 +98,11 @@ public class SectorGroupService {
   }
 
   SectorGroupVersion save(SectorGroupVersion sectorGroupVersion) {
+    System.out.println("test ");
     return sectorGroupVersionRepository.saveAndFlush(sectorGroupVersion);
   }
 
   public void updateSectorGroup(SectorGroupVersion currentVersion, SectorGroupVersion editedVersion) {
-    System.out.println("test");
     sectorGroupVersionRepository.incrementVersion(currentVersion.getSloid());
 
     if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
