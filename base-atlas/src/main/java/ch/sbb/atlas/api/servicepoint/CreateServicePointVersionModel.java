@@ -49,5 +49,4 @@ public class CreateServicePointVersionModel extends UpdateServicePointVersionMod
 
     return (getNumberShort() == null) == shouldGenerateServicePointNumber();
   }
-
 }

@@ -1,11 +1,11 @@
 package ch.sbb.atlas.servicepoint.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 @Schema(enumAsRef = true, example = "ORDERLY")
 @Getter
@@ -36,6 +36,10 @@ public enum StopPointType {
   public static StopPointType from(Integer id) {
     return Arrays.stream(StopPointType.values()).filter(stopPointType -> Objects.equals(stopPointType.getId(), id)).findFirst()
         .orElse(null);
+  }
+
+  public static List<StopPointType> validOnInput() {
+    return List.of(ORDERLY, ON_REQUEST, ZONE_ON_REQUEST, TEMPORARY, OUT_OF_ORDER);
   }
 
 }
