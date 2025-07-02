@@ -3,11 +3,11 @@ import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { ClientCredential } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { UserService } from '../../service/user.service';
 import {
   ClientCredentialAdministrationResolver,
   clientCredentialResolver,
 } from './client-credential-administration.resolver';
+import { ClientCredentialAdministrationService } from '../../../../api/service/user-administration/client-credential-administration.service';
 
 const clientCredential: ClientCredential = {
   clientCredentialId: '23456789',
@@ -16,10 +16,13 @@ const clientCredential: ClientCredential = {
 const routerStateSnapshot = jasmine.createSpyObj('RouterStateSnapshot', ['']);
 
 describe('ClientCredentialAdministrationResolver', () => {
-  const userService = jasmine.createSpyObj('userService', [
-    'getClientCredential',
-  ]);
-  userService.getClientCredential.and.returnValue(of(clientCredential));
+  const clientCredentialAdministrationService = jasmine.createSpyObj(
+    'ClientCredentialAdministrationService',
+    ['getClientCredential']
+  );
+  clientCredentialAdministrationService.getClientCredential.and.returnValue(
+    of(clientCredential)
+  );
 
   let resolver: ClientCredentialAdministrationResolver;
 
@@ -28,7 +31,10 @@ describe('ClientCredentialAdministrationResolver', () => {
       imports: [AppTestingModule],
       providers: [
         ClientCredentialAdministrationResolver,
-        { provide: UserService, useValue: userService },
+        {
+          provide: ClientCredentialAdministrationService,
+          useValue: clientCredentialAdministrationService,
+        },
       ],
     });
     resolver = TestBed.inject(ClientCredentialAdministrationResolver);
@@ -50,6 +56,8 @@ describe('ClientCredentialAdministrationResolver', () => {
     result.subscribe((snapshot) => {
       expect(snapshot.clientCredentialId).toBe('23456789');
     });
-    expect(userService.getClientCredential).toHaveBeenCalled();
+    expect(
+      clientCredentialAdministrationService.getClientCredential
+    ).toHaveBeenCalled();
   });
 });

@@ -9,10 +9,10 @@ import { ClientCredentialAdministrationService } from '../../../../api/service/u
   providedIn: 'root',
 })
 export class ClientCredentialAdministrationResolver {
-  constructor(
-    private readonly clientCredentialAdministrationService: ClientCredentialAdministrationService,
-    private readonly router: Router
-  ) {}
+  clientCredentialAdministrationService = inject(
+    ClientCredentialAdministrationService
+  );
+  router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<ClientCredential> {
     const clientIdParam = route.paramMap.get('clientId');

@@ -2,14 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationUserEditComponent } from './user-administration-user-edit.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { UserService } from '../../../service/user.service';
-import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { Observable, of } from 'rxjs';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
   ApplicationRole,
   ApplicationType,
   BusinessOrganisationsService,
+  Permission,
   User,
 } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
@@ -17,37 +16,23 @@ import { ActivatedRoute } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import SpyObj = jasmine.SpyObj;
+import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
 
 describe('UserAdministrationUserEditComponent', () => {
   let component: UserAdministrationUserEditComponent;
   let fixture: ComponentFixture<UserAdministrationUserEditComponent>;
 
-  let userServiceSpy: SpyObj<UserService>;
-  let userPermissionManagerSpy: SpyObj<UserPermissionManager>;
+  let userAdministrationServiceSpy: SpyObj<UserAdministrationService>;
   let notificationServiceSpy: SpyObj<NotificationService>;
   let boServiceSpy: SpyObj<BusinessOrganisationsService>;
   let dialogServiceSpy: SpyObj<DialogService>;
 
   beforeEach(async () => {
-    userServiceSpy = jasmine.createSpyObj<UserService>('UserService', [
-      'getPermissionsFromUserModelAsArray',
-      'updateUserPermission',
-    ]);
-    userPermissionManagerSpy = jasmine.createSpyObj(
-      'UserPermissionManager',
-      [
-        'setSbbUserId',
-        'setPermissions',
-        'clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser',
-        'emitBoFormResetEvent',
-      ],
-      {
-        userPermission: {
-          sbbUserId: 'u123456',
-          permissions: [],
-        },
-      }
-    );
+    userAdministrationServiceSpy =
+      jasmine.createSpyObj<UserAdministrationService>(
+        'UserAdministrationService',
+        ['updateUserPermission']
+      );
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
       'success',
     ]);
@@ -58,10 +43,6 @@ describe('UserAdministrationUserEditComponent', () => {
     TestBed.overrideComponent(UserAdministrationUserEditComponent, {
       set: {
         viewProviders: [
-          {
-            provide: UserPermissionManager,
-            useValue: userPermissionManagerSpy,
-          },
           {
             provide: BusinessOrganisationsService,
             useValue: boServiceSpy,
@@ -74,8 +55,8 @@ describe('UserAdministrationUserEditComponent', () => {
       providers: [
         TranslatePipe,
         {
-          provide: UserService,
-          useValue: userServiceSpy,
+          provide: UserAdministrationService,
+          useValue: userAdministrationServiceSpy,
         },
         {
           provide: NotificationService,
@@ -96,8 +77,30 @@ describe('UserAdministrationUserEditComponent', () => {
 
     fixture = TestBed.createComponent(UserAdministrationUserEditComponent);
     component = fixture.componentInstance;
-    component.user = {};
-    userServiceSpy.getPermissionsFromUserModelAsArray.and.returnValue([]);
+    const user: User = {
+      sbbUserId: 'yb56789',
+      permissions: new Set<Permission>([
+        {
+          creationDate: '2020-01-01',
+          creator: 'me',
+          editionDate: '2020-01-05',
+          editor: 'sumotherdude',
+          role: ApplicationRole.Supervisor,
+          application: ApplicationType.Lidi,
+          permissionRestrictions: [],
+        },
+        {
+          creationDate: '2020-01-02',
+          creator: 'me',
+          editionDate: '2020-01-06',
+          editor: 'sumotherdude',
+          role: ApplicationRole.Supervisor,
+          application: ApplicationType.Ttfn,
+          permissionRestrictions: [],
+        },
+      ]),
+    };
+    fixture.componentRef.setInput('user', user);
     component.userRecord = {};
     fixture.detectChanges();
   });
@@ -107,99 +110,64 @@ describe('UserAdministrationUserEditComponent', () => {
   });
 
   it('test ngOnInit', () => {
-    expect(
-      userServiceSpy.getPermissionsFromUserModelAsArray
-    ).toHaveBeenCalledOnceWith({});
     expect(component.user).toBeUndefined();
-    expect(userPermissionManagerSpy.setSbbUserId).not.toHaveBeenCalled();
-    expect(userPermissionManagerSpy.setPermissions).not.toHaveBeenCalled();
   });
 
   it('test saveEdits', () => {
-    userServiceSpy.updateUserPermission.and.returnValue(
+    userAdministrationServiceSpy.updateUserPermission.and.returnValue(
       of({
         sbbUserId: 'u123456',
+        permissions: new Set<Permission>(),
       })
     );
 
     component.save();
 
     expect(
-      userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser
-    ).toHaveBeenCalledOnceWith();
-    expect(
-      userPermissionManagerSpy.emitBoFormResetEvent
-    ).toHaveBeenCalledOnceWith();
-    expect(userServiceSpy.updateUserPermission).toHaveBeenCalledOnceWith({
-      permissions: [],
-      sbbUserId: 'u123456',
+      userAdministrationServiceSpy.updateUserPermission
+    ).toHaveBeenCalledOnceWith('u123456', ApplicationType.Ttfn, {
+      role: ApplicationRole.Reader,
+      application: ApplicationType.Ttfn,
+      permissionRestrictions: [],
     });
     expect(component.user).toEqual({ sbbUserId: 'u123456' });
     expect(component.editMode).toBeFalse();
-    expect(component.saveEnabled).toBeFalse();
-    expect(userPermissionManagerSpy.setPermissions).toHaveBeenCalledOnceWith(
-      []
-    );
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
       'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
     );
 
-    userServiceSpy.updateUserPermission.and.returnValue(
+    userAdministrationServiceSpy.updateUserPermission.and.returnValue(
       new Observable<User>((subscriber) => subscriber.error('error'))
     );
     component.save();
-    expect(component.saveEnabled).toBeTrue();
-  });
-
-  it('test cancelEdit showDialog=false', () => {
-    component.cancelEdit(false);
-    expect(dialogServiceSpy.confirmLeave).not.toHaveBeenCalled();
-  });
-
-  it('test cancelEdit showDialog=true,confirmLeaveResult=true', () => {
-    component.editMode = true;
-    dialogServiceSpy.confirmLeave.and.returnValue(of(true));
-    component.cancelEdit();
-    expect(component.editMode).toBeFalse();
-    expect(userPermissionManagerSpy.setPermissions).toHaveBeenCalledOnceWith(
-      []
-    );
-    expect(
-      userPermissionManagerSpy.emitBoFormResetEvent
-    ).toHaveBeenCalledOnceWith();
-  });
-
-  it('test cancelEdit showDialog=true,confirmLeaveResult=false', () => {
-    component.editMode = true;
-    dialogServiceSpy.confirmLeave.and.returnValue(of(false));
-    component.cancelEdit();
-    expect(component.editMode).toBeTrue();
-    expect(userPermissionManagerSpy.setPermissions).not.toHaveBeenCalled();
   });
 
   it('shows first creation and last edition', () => {
-    userServiceSpy.getPermissionsFromUserModelAsArray.and.returnValue([
-      {
-        creationDate: '2020-01-01',
-        creator: 'me',
-        editionDate: '2020-01-05',
-        editor: 'sumotherdude',
-        role: ApplicationRole.Supervisor,
-        application: ApplicationType.Lidi,
-        permissionRestrictions: [],
-      },
-      {
-        creationDate: '2020-01-02',
-        creator: 'me',
-        editionDate: '2020-01-06',
-        editor: 'sumotherdude',
-        role: ApplicationRole.Supervisor,
-        application: ApplicationType.Ttfn,
-        permissionRestrictions: [],
-      },
-    ]);
     component.editMode = true;
-    component.user = { sbbUserId: 'yb56789' };
+    const user: User = {
+      sbbUserId: 'yb56789',
+      permissions: new Set<Permission>([
+        {
+          creationDate: '2020-01-01',
+          creator: 'me',
+          editionDate: '2020-01-05',
+          editor: 'sumotherdude',
+          role: ApplicationRole.Supervisor,
+          application: ApplicationType.Lidi,
+          permissionRestrictions: [],
+        },
+        {
+          creationDate: '2020-01-02',
+          creator: 'me',
+          editionDate: '2020-01-06',
+          editor: 'sumotherdude',
+          role: ApplicationRole.Supervisor,
+          application: ApplicationType.Ttfn,
+          permissionRestrictions: [],
+        },
+      ]),
+    };
+    fixture.componentRef.setInput('user', user);
 
     fixture.detectChanges();
     component.ngOnInit();

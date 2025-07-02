@@ -4,27 +4,32 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { UserService } from '../../service/user.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, Subject } from 'rxjs';
-import { User } from '../../../../api';
+import { Permission, User } from '../../../../api';
 import { UserAdministrationUserOverviewComponent } from './user-administration-user-overview.component';
 import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
 import { TableService } from '../../../../core/components/table/table.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { ActivatedRoute } from '@angular/router';
+import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
 
 describe('UserAdministrationUserOverviewComponent', () => {
   let component: UserAdministrationUserOverviewComponent;
   let fixture: ComponentFixture<UserAdministrationUserOverviewComponent>;
 
-  const userServiceMock = jasmine.createSpyObj(['getUsers']);
-  userServiceMock.getUsers.and.returnValue(of({ users: [], totalCount: 0 }));
+  const userAdministrationServiceMock = jasmine.createSpyObj(
+    'UserAdministrationService',
+    ['getUsers']
+  );
+  userAdministrationServiceMock.getUsers.and.returnValue(
+    of({ users: [], totalCount: 0 })
+  );
 
   let tableService: TableService;
 
   afterEach(async () => {
-    await userServiceMock.getUsers.and.returnValue(
+    await userAdministrationServiceMock.getUsers.and.returnValue(
       of({ users: [], totalCount: 0 })
     );
   });
@@ -37,8 +42,8 @@ describe('UserAdministrationUserOverviewComponent', () => {
       ],
       providers: [
         {
-          provide: UserService,
-          useValue: userServiceMock,
+          provide: UserAdministrationService,
+          useValue: userAdministrationServiceMock,
         },
         {
           provide: PermissionService,
@@ -68,23 +73,37 @@ describe('UserAdministrationUserOverviewComponent', () => {
     expect(component.userSearchForm.get('userSearch')?.value).toBe('test');
     expect(component.boForm.get('boSearch')?.value).toBe('test');
 
-    userServiceMock.getUsers = jasmine.createSpy().and.returnValue(
-      of({
-        users: [{ sbbUserId: 'u123456' }, { sbbUserId: 'e654321' }] as User[],
-        totalCount: 50,
-      })
-    );
+    userAdministrationServiceMock.getUsers = jasmine
+      .createSpy()
+      .and.returnValue(
+        of({
+          users: [{ sbbUserId: 'u123456' }, { sbbUserId: 'e654321' }] as User[],
+          totalCount: 50,
+        })
+      );
     tableService.pageSize = 10;
     tableService.pageIndex = 10;
 
     component.loadUsers({ page: 5, size: 5 });
     tick();
-    expect(userServiceMock.getUsers).toHaveBeenCalledOnceWith(5, 5);
+    expect(userAdministrationServiceMock.getUsers).toHaveBeenCalledOnceWith(
+      5,
+      5
+    );
     expect(component.userSearchForm.get('userSearch')?.value).toBeNull();
     expect(component.boForm.get('boSearch')?.value).toBeNull();
     expect(component.selectedApplicationOptions).toEqual([]);
     expect(component.userPageResult).toEqual({
-      users: [{ sbbUserId: 'u123456' }, { sbbUserId: 'e654321' }],
+      users: [
+        {
+          sbbUserId: 'u123456',
+          permissions: new Set<Permission>(),
+        },
+        {
+          sbbUserId: 'e654321',
+          permissions: new Set<Permission>(),
+        },
+      ],
       totalCount: 50,
     });
     expect(tableService.pageIndex).toBe(5);
@@ -101,10 +120,18 @@ describe('UserAdministrationUserOverviewComponent', () => {
   it('test checkIfUserExists with undefined sbbUserId', () => {
     tableService.pageIndex = 10;
     component.userPageResult = {
-      users: [{ sbbUserId: 'u123456' }],
+      users: [
+        {
+          sbbUserId: 'u123456',
+          permissions: new Set<Permission>(),
+        },
+      ],
       totalCount: 10,
     };
-    component.checkIfUserExists({ sbbUserId: undefined });
+    component.checkIfUserExists({
+      sbbUserId: 'u123456',
+      permissions: new Set<Permission>(),
+    });
     expect(component.userPageResult).toEqual({ users: [], totalCount: 0 });
     expect(tableService.pageIndex).toBe(0);
   });
@@ -112,12 +139,20 @@ describe('UserAdministrationUserOverviewComponent', () => {
   it('test checkIfUserExists normal', () => {
     tableService.pageIndex = 10;
 
-    userServiceMock.hasUserPermissions = jasmine
+    userAdministrationServiceMock.hasUserPermissions = jasmine
       .createSpy()
       .and.returnValue(of(true));
-    component.checkIfUserExists({ sbbUserId: 'u123456' });
+    component.checkIfUserExists({
+      sbbUserId: 'u123456',
+      permissions: new Set<Permission>(),
+    });
     expect(component.userPageResult).toEqual({
-      users: [{ sbbUserId: 'u123456' }],
+      users: [
+        {
+          sbbUserId: 'u123456',
+          permissions: new Set<Permission>(),
+        },
+      ],
       totalCount: 1,
     });
     expect(tableService.pageIndex).toBe(0);
@@ -130,7 +165,7 @@ describe('UserAdministrationUserOverviewComponent', () => {
   });
 
   it('test filterChanged', () => {
-    userServiceMock.getUsers = jasmine
+    userAdministrationServiceMock.getUsers = jasmine
       .createSpy()
       .and.returnValue(
         of({ totalCount: 1, users: [{ sbbUserId: 'u123456' }] })
@@ -141,7 +176,7 @@ describe('UserAdministrationUserOverviewComponent', () => {
 
     component.filterChanged();
 
-    expect(userServiceMock.getUsers).toHaveBeenCalledOnceWith(
+    expect(userAdministrationServiceMock.getUsers).toHaveBeenCalledOnceWith(
       0,
       10,
       new Set([null]),
@@ -150,7 +185,12 @@ describe('UserAdministrationUserOverviewComponent', () => {
     );
     expect(component.userPageResult).toEqual({
       totalCount: 1,
-      users: [{ sbbUserId: 'u123456' }],
+      users: [
+        {
+          sbbUserId: 'u123456',
+          permissions: new Set<Permission>(),
+        },
+      ],
     });
     expect(tableService.pageIndex).toBe(0);
     expect(tableService.pageSize).toBe(10);

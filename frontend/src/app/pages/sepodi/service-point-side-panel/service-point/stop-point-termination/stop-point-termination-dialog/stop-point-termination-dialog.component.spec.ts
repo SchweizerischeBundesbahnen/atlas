@@ -11,7 +11,9 @@ import { StopPointTerminationDialogData } from './stop-point-termination-dialog-
 import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
 import { of } from 'rxjs';
 import { NotificationService } from '../../../../../../core/notification/notification.service';
-import { User, UserAdministrationService } from '../../../../../../api';
+import { Permission, User } from '../../../../../../api';
+import { UserAdministrationService } from '../../../../../../api/service/user-administration/user-administration.service';
+import { provideHttpClient } from '@angular/common/http';
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
@@ -23,6 +25,7 @@ const user: User = {
   lastName: 'Marek',
   firstName: 'Hamsik',
   mail: 'a@b.cd',
+  permissions: new Set<Permission>(),
 };
 const userAdministrationServiceMock = jasmine.createSpyObj(
   UserAdministrationService,
@@ -68,6 +71,7 @@ describe('StopPointTerminationDialogComponent', () => {
           useValue: userAdministrationServiceMock,
         },
         { provide: TranslatePipe },
+        provideHttpClient(),
       ],
     }).compileComponents();
 
