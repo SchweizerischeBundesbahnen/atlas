@@ -1,11 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import ch.sbb.atlas.api.servicepoint.SectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.UpdateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.api.SectorApiV1;
-import ch.sbb.atlas.servicepointdirectory.entity.SectorVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorMapper;
-import ch.sbb.atlas.servicepointdirectory.service.SectorService;
+import ch.sbb.atlas.servicepointdirectory.service.sector.SectorService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
