@@ -1,10 +1,10 @@
-import { UserAdministrationService } from '../../../api';
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule } from '@angular/router';
 import { UserService } from './user.service';
 import { of } from 'rxjs';
 import { ApiConfigService } from '../../configuration/api-config.service';
+import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -24,8 +24,9 @@ describe('UserService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterModule.forRoot([])],
+      imports: [RouterModule.forRoot([])],
       providers: [
+        provideHttpClient(),
         UserService,
         {
           provide: UserAdministrationService,

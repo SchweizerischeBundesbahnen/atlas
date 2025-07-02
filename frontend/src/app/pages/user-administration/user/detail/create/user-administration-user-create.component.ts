@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { BusinessOrganisationsService, User } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,21 +29,20 @@ import { UserAdministrationService } from '../../../../../api/service/user-admin
   ],
 })
 export class UserAdministrationUserCreateComponent {
-  selectedUser?: User;
-  userHasAlreadyPermissions = false;
-  selectedUserHasNoUserId = false;
-  saveEnabled = true;
   readonly userSearchForm: FormGroup = new FormGroup({
     userSearch: new FormControl<string | null>(null),
   });
 
-  constructor(
-    private readonly userService: UserAdministrationService,
-    private readonly notificationService: NotificationService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly dialogService: DialogService
-  ) {}
+  userService = inject(UserAdministrationService);
+  notificationService = inject(NotificationService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
+  dialogService = inject(DialogService);
+
+  selectedUser?: User;
+  userHasAlreadyPermissions = false;
+  selectedUserHasNoUserId = false;
+  saveEnabled = true;
 
   selectUser(user: User | undefined): void {
     this.selectedUserHasNoUserId = false;

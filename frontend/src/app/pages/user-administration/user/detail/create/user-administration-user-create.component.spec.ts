@@ -6,8 +6,7 @@ import {
 } from '@angular/core/testing';
 
 import { UserAdministrationUserCreateComponent } from './user-administration-user-create.component';
-import { UserService } from '../../../service/user.service';
-import { BusinessOrganisationsService, User } from '../../../../../api';
+import { BusinessOrganisationsService, Permission } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
   TranslateFakeLoader,
@@ -16,21 +15,19 @@ import {
   TranslatePipe,
 } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Component, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FormGroup } from '@angular/forms';
-import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
+import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
 import SpyObj = jasmine.SpyObj;
 
 @Component({
   selector: 'app-user-select',
   template: '',
-  imports: [RouterTestingModule],
 })
 class MockUserSelectComponent {
   @Input() form?: FormGroup;
@@ -40,13 +37,12 @@ describe('UserAdministrationUserCreateComponent', () => {
   let component: UserAdministrationUserCreateComponent;
   let fixture: ComponentFixture<UserAdministrationUserCreateComponent>;
 
-  let userServiceSpy: SpyObj<UserService>;
+  let userAdministrationServiceSpy: SpyObj<UserAdministrationService>;
   let notificationServiceSpy: SpyObj<NotificationService>;
-  let userPermissionManagerSpy: SpyObj<UserPermissionManager>;
   let boServiceSpy: SpyObj<BusinessOrganisationsService>;
 
   beforeEach(async () => {
-    userServiceSpy = jasmine.createSpyObj('UserService', [
+    userAdministrationServiceSpy = jasmine.createSpyObj('UserService', [
       'getUser',
       'getPermissionsFromUserModelAsArray',
       'createUserPermission',
@@ -54,14 +50,6 @@ describe('UserAdministrationUserCreateComponent', () => {
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
       'success',
     ]);
-    userPermissionManagerSpy = jasmine.createSpyObj<UserPermissionManager>(
-      'UserPermissionManager',
-      [
-        'setSbbUserId',
-        'clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser',
-        'getSbbUserId',
-      ]
-    );
     boServiceSpy = jasmine.createSpyObj<BusinessOrganisationsService>(
       'BusinessOrganisationsService',
       ['getAllBusinessOrganisations']
@@ -78,7 +66,7 @@ describe('UserAdministrationUserCreateComponent', () => {
     });
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
+        RouterModule.forRoot([]),
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
@@ -90,12 +78,8 @@ describe('UserAdministrationUserCreateComponent', () => {
       ],
       providers: [
         {
-          provide: UserService,
-          useValue: userServiceSpy,
-        },
-        {
-          provide: UserPermissionManager,
-          useValue: userPermissionManagerSpy,
+          provide: UserAdministrationService,
+          useValue: userAdministrationServiceSpy,
         },
         {
           provide: NotificationService,
@@ -127,63 +111,59 @@ describe('UserAdministrationUserCreateComponent', () => {
     expect(component.selectedUser).toBeUndefined();
     expect(component.userHasAlreadyPermissions).toBe(false);
     expect(component.selectedUserHasNoUserId).toBe(false);
-    expect(component.userPermissionManager).toBe(userPermissionManagerSpy);
   });
 
   it('test selectUser without userId', () => {
     component.selectUser({
+      sbbUserId: 'uid',
       lastName: 'test',
+      permissions: new Set(),
     });
     expect(component.selectedUserHasNoUserId).toBe(true);
     expect(component.userHasAlreadyPermissions).toBe(false);
     expect(component.selectedUser).toBeUndefined();
-    expect(userServiceSpy.getUser).not.toHaveBeenCalled();
+    expect(userAdministrationServiceSpy.getUser).not.toHaveBeenCalled();
   });
 
   it('test selectUser with valid user', () => {
-    userServiceSpy.getUser.and.callFake((userId) =>
+    userAdministrationServiceSpy.getUser.and.callFake((userId) =>
       of({
         sbbUserId: userId,
+        permissions: new Set<Permission>(),
       })
-    );
-    userServiceSpy.getPermissionsFromUserModelAsArray.and.callFake(
-      (user: User) => Array.from(user.permissions ?? [])
     );
     component.selectUser({
       sbbUserId: '***REMOVED***',
+      permissions: new Set(),
     });
     expect(component.selectedUserHasNoUserId).toBe(false);
     expect(component.userHasAlreadyPermissions).toBe(false);
     expect(component.selectedUser).toEqual({
       sbbUserId: '***REMOVED***',
+      permissions: new Set(),
     });
-    expect(userServiceSpy.getUser).toHaveBeenCalledOnceWith('***REMOVED***');
-    expect(
-      userServiceSpy.getPermissionsFromUserModelAsArray
-    ).toHaveBeenCalledOnceWith({
-      sbbUserId: '***REMOVED***',
-    });
+    expect(userAdministrationServiceSpy.getUser).toHaveBeenCalledOnceWith(
+      '***REMOVED***'
+    );
   });
 
   it('test createUser', fakeAsync(() => {
     const router = TestBed.inject(Router);
     component.selectedUser = {
       sbbUserId: '***REMOVED***',
+      permissions: new Set(),
     };
-    userServiceSpy.createUserPermission.and.returnValue(
+    userAdministrationServiceSpy.createUserPermission.and.returnValue(
       of({
         sbbUserId: '***REMOVED***',
+        permissions: new Set<Permission>(),
       })
     );
     spyOn(router, 'navigate').and.resolveTo(true);
     component.createUser();
-    expect(userPermissionManagerSpy.setSbbUserId).toHaveBeenCalledOnceWith(
-      '***REMOVED***'
-    );
     expect(
-      userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser
-    ).toHaveBeenCalledOnceWith();
-    expect(userServiceSpy.createUserPermission).toHaveBeenCalledTimes(1);
+      userAdministrationServiceSpy.createUserPermission
+    ).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledTimes(1);
     tick();
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(

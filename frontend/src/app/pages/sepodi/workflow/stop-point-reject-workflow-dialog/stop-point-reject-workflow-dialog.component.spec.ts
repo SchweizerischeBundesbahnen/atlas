@@ -6,10 +6,10 @@ import { FormModule } from '../../../../core/module/form.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import {
+  Permission,
   ReadStopPointWorkflow,
   StopPointWorkflowService,
   User,
-  UserAdministrationService,
 } from '../../../../api';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -19,6 +19,7 @@ import { DetailHelperService } from '../../../../core/detail/detail-helper.servi
 import { DialogFooterComponent } from '../../../../core/components/dialog/footer/dialog-footer.component';
 import { DialogContentComponent } from '../../../../core/components/dialog/content/dialog-content.component';
 import { DialogCloseComponent } from '../../../../core/components/dialog/close/dialog-close.component';
+import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -51,6 +52,7 @@ const user: User = {
   lastName: 'Marek',
   firstName: 'Hamsik',
   mail: 'a@b.cd',
+  permissions: new Set<Permission>(),
 };
 
 const userAdministrationServiceMock = jasmine.createSpyObj(

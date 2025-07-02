@@ -6,9 +6,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { WorkflowDialogData } from './workflow-dialog-data';
 import {
   LineVersionWorkflow,
+  Permission,
   Status,
   User,
-  UserAdministrationService,
   Workflow,
   WorkflowProcessingStatus,
   WorkflowService,
@@ -31,6 +31,7 @@ import WorkflowTypeEnum = WorkflowStart.WorkflowTypeEnum;
 import { DialogFooterComponent } from '../../components/dialog/footer/dialog-footer.component';
 import { DialogContentComponent } from '../../components/dialog/content/dialog-content.component';
 import { DialogCloseComponent } from '../../components/dialog/close/dialog-close.component';
+import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
@@ -40,6 +41,7 @@ const user: User = {
   lastName: 'Marek',
   firstName: 'Hamsik',
   mail: 'a@b.cd',
+  permissions: new Set<Permission>(),
 };
 const userAdministrationServiceMock = jasmine.createSpyObj(
   UserAdministrationService,

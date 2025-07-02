@@ -16,8 +16,7 @@ export class UserService {
   private readonly permissionsLoaded = new ReplaySubject<void>(1);
 
   private readonly httpClient = inject(HttpClient);
-
-  constructor(private apiConfigService: ApiConfigService) {}
+  private readonly apiConfigService = inject(ApiConfigService);
 
   setCurrentUserAndLoadPermissions(user: User) {
     this.currentUser = user;

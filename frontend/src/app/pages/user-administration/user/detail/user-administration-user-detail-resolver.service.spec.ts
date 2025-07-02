@@ -1,25 +1,32 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UserAdministrationUserDetailResolver } from './user-administration-user-detail-resolver.service';
-import { UserService } from '../../service/user.service';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  convertToParamMap,
+  RouterModule,
+} from '@angular/router';
 import { firstValueFrom, of } from 'rxjs';
 import SpyObj = jasmine.SpyObj;
+import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
+import { Permission } from '../../../../api';
 
 describe('UserAdministrationUserDetailResolver', () => {
   let resolver: UserAdministrationUserDetailResolver;
 
-  let userServiceSpy: SpyObj<UserService>;
+  let userAdministrationServiceSpy: SpyObj<UserAdministrationService>;
 
   beforeEach(() => {
-    userServiceSpy = jasmine.createSpyObj('UserService', ['getUser']);
+    userAdministrationServiceSpy = jasmine.createSpyObj(
+      'UserAdministrationService',
+      ['getUser']
+    );
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterModule.forRoot([])],
       providers: [
         {
-          provide: UserService,
-          useValue: userServiceSpy,
+          provide: UserAdministrationService,
+          useValue: userAdministrationServiceSpy,
         },
       ],
     });
@@ -36,8 +43,11 @@ describe('UserAdministrationUserDetailResolver', () => {
     } as ActivatedRouteSnapshot;
 
     const userModel = await firstValueFrom(resolver.resolve(routeMock));
-    expect(userServiceSpy.getUser).not.toHaveBeenCalled();
-    expect(userModel).toEqual({});
+    expect(userAdministrationServiceSpy.getUser).not.toHaveBeenCalled();
+    expect(userModel).toEqual({
+      sbbUserId: 'add',
+      permissions: new Set(),
+    });
   });
 
   it('test sbbUserIdParam=userId', async () => {
@@ -45,15 +55,19 @@ describe('UserAdministrationUserDetailResolver', () => {
       paramMap: convertToParamMap({ sbbUserId: 'userId' }),
     } as ActivatedRouteSnapshot;
 
-    userServiceSpy.getUser.and.returnValue(
+    userAdministrationServiceSpy.getUser.and.returnValue(
       of({
         sbbUserId: 'userId',
+        permissions: new Set<Permission>(),
       })
     );
     const userModel = await firstValueFrom(resolver.resolve(routeMock));
-    expect(userServiceSpy.getUser).toHaveBeenCalledOnceWith('userId');
+    expect(userAdministrationServiceSpy.getUser).toHaveBeenCalledOnceWith(
+      'userId'
+    );
     expect(userModel).toEqual({
       sbbUserId: 'userId',
+      permissions: new Set<Permission>(),
     });
   });
 });

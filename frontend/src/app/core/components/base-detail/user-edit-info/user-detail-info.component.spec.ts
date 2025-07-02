@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserDetailInfoComponent } from './user-detail-info.component';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { UserAdministrationService } from '../../../../api';
 import {
   TranslateFakeLoader,
   TranslateLoader,
   TranslateModule,
 } from '@ngx-translate/core';
 import { of } from 'rxjs';
+import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
 
 describe('UserDetailComponent', () => {
   let component: UserDetailInfoComponent;

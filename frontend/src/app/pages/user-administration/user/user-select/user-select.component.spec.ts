@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserSelectComponent } from './user-select.component';
-import { UserService } from '../../service/user.service';
 import { of } from 'rxjs';
 import { Component, Input } from '@angular/core';
-import { ApplicationType } from '../../../../api';
+import { ApplicationType, Permission } from '../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormGroup } from '@angular/forms';
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
+import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
 
 @Component({
   selector: 'form-search-select',
@@ -24,17 +24,20 @@ describe('UserSelectComponent', () => {
   let component: UserSelectComponent;
   let fixture: ComponentFixture<UserSelectComponent>;
 
-  const userServiceSpy = jasmine.createSpyObj('UserService', [
-    'searchUsers',
-    'searchUsersInAtlas',
-  ]);
+  const userAdministrationServiceSpy = jasmine.createSpyObj(
+    'UserAdministrationService',
+    ['searchUsers', 'searchUsersInAtlas']
+  );
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UserSelectComponent],
       providers: [
         TranslatePipe,
-        { provide: UserService, useValue: userServiceSpy },
+        {
+          provide: UserAdministrationService,
+          useValue: userAdministrationServiceSpy,
+        },
       ],
     })
       .overrideComponent(UserSelectComponent, {
@@ -54,7 +57,7 @@ describe('UserSelectComponent', () => {
   });
 
   it('test searchUser', (done) => {
-    userServiceSpy.searchUsers.and.returnValue(
+    userAdministrationServiceSpy.searchUsers.and.returnValue(
       of([
         {
           sbbUserId: '***REMOVED***',
@@ -64,11 +67,14 @@ describe('UserSelectComponent', () => {
     component.searchUser('testQuery');
     component.searchInAtlas = false;
     fixture.detectChanges();
-    expect(userServiceSpy.searchUsers).toHaveBeenCalledOnceWith('testQuery');
+    expect(userAdministrationServiceSpy.searchUsers).toHaveBeenCalledOnceWith(
+      'testQuery'
+    );
     component.userSearchResults$.subscribe((val) => {
       expect(val).toEqual([
         {
           sbbUserId: '***REMOVED***',
+          permissions: new Set<Permission>(),
         },
       ]);
       done();
@@ -76,7 +82,7 @@ describe('UserSelectComponent', () => {
   });
 
   it('test searchUser in atlas', (done) => {
-    userServiceSpy.searchUsersInAtlas.and.returnValue(
+    userAdministrationServiceSpy.searchUsersInAtlas.and.returnValue(
       of([
         {
           sbbUserId: '***REMOVED***',
@@ -87,14 +93,14 @@ describe('UserSelectComponent', () => {
     component.applicationType = ApplicationType.Sepodi;
     fixture.detectChanges();
     component.searchUserInAtlas('testQuery');
-    expect(userServiceSpy.searchUsersInAtlas).toHaveBeenCalledOnceWith(
-      'testQuery',
-      ApplicationType.Sepodi
-    );
+    expect(
+      userAdministrationServiceSpy.searchUsersInAtlas
+    ).toHaveBeenCalledOnceWith('testQuery', ApplicationType.Sepodi);
     component.userSearchResults$.subscribe((val) => {
       expect(val).toEqual([
         {
           sbbUserId: '***REMOVED***',
+          permissions: new Set<Permission>(),
         },
       ]);
       done();
