@@ -2,8 +2,8 @@ package ch.sbb.atlas.user.administration.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.user.administration.ClientCredentialAdministrationApiV1;
-import ch.sbb.atlas.api.user.administration.ClientCredentialModel;
 import ch.sbb.atlas.api.user.administration.ClientCredentialCreateModel;
+import ch.sbb.atlas.api.user.administration.ClientCredentialModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
@@ -12,12 +12,9 @@ import ch.sbb.atlas.user.administration.mapper.ClientCredentialMapper;
 import ch.sbb.atlas.user.administration.mapper.KafkaModelMapper;
 import ch.sbb.atlas.user.administration.service.ClientCredentialAdministrationService;
 import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
-import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

@@ -61,7 +61,7 @@ export class UserAdministrationClientEditComponent implements OnInit {
     this.convertPermissionToRecord(permissionsFromUserModelAsArray);
   }
 
-  save(): void {
+  saveClientCredential(): void {
     this.saveEnabled = false;
     this.formGroup.disable();
 
