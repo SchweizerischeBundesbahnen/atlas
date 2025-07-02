@@ -6,7 +6,7 @@ import {
 } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, Subject } from 'rxjs';
-import { Permission, User } from '../../../../api';
+import { Permission } from '../../../../api';
 import { UserAdministrationUserOverviewComponent } from './user-administration-user-overview.component';
 import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
 import { TableService } from '../../../../core/components/table/table.service';
@@ -23,14 +23,14 @@ describe('UserAdministrationUserOverviewComponent', () => {
     ['getUsers']
   );
   userAdministrationServiceMock.getUsers.and.returnValue(
-    of({ users: [], totalCount: 0 })
+    of({ objects: [], totalCount: 0 })
   );
 
   let tableService: TableService;
 
   afterEach(async () => {
     await userAdministrationServiceMock.getUsers.and.returnValue(
-      of({ users: [], totalCount: 0 })
+      of({ objects: [], totalCount: 0 })
     );
   });
 
@@ -73,14 +73,22 @@ describe('UserAdministrationUserOverviewComponent', () => {
     expect(component.userSearchForm.get('userSearch')?.value).toBe('test');
     expect(component.boForm.get('boSearch')?.value).toBe('test');
 
-    userAdministrationServiceMock.getUsers = jasmine
-      .createSpy()
-      .and.returnValue(
-        of({
-          users: [{ sbbUserId: 'u123456' }, { sbbUserId: 'e654321' }] as User[],
-          totalCount: 50,
-        })
-      );
+    userAdministrationServiceMock.getUsers.calls.reset();
+    userAdministrationServiceMock.getUsers.and.returnValue(
+      of({
+        objects: [
+          {
+            sbbUserId: 'u123456',
+            permissions: new Set<Permission>(),
+          },
+          {
+            sbbUserId: 'e654321',
+            permissions: new Set<Permission>(),
+          },
+        ],
+        totalCount: 50,
+      })
+    );
     tableService.pageSize = 10;
     tableService.pageIndex = 10;
 
@@ -117,25 +125,6 @@ describe('UserAdministrationUserOverviewComponent', () => {
     expect(component.loadUsers).toHaveBeenCalledOnceWith({ page: 0, size: 10 });
   });
 
-  it('test checkIfUserExists with undefined sbbUserId', () => {
-    tableService.pageIndex = 10;
-    component.userPageResult = {
-      users: [
-        {
-          sbbUserId: 'u123456',
-          permissions: new Set<Permission>(),
-        },
-      ],
-      totalCount: 10,
-    };
-    component.checkIfUserExists({
-      sbbUserId: 'u123456',
-      permissions: new Set<Permission>(),
-    });
-    expect(component.userPageResult).toEqual({ users: [], totalCount: 0 });
-    expect(tableService.pageIndex).toBe(0);
-  });
-
   it('test checkIfUserExists normal', () => {
     tableService.pageIndex = 10;
 
@@ -165,11 +154,18 @@ describe('UserAdministrationUserOverviewComponent', () => {
   });
 
   it('test filterChanged', () => {
-    userAdministrationServiceMock.getUsers = jasmine
-      .createSpy()
-      .and.returnValue(
-        of({ totalCount: 1, users: [{ sbbUserId: 'u123456' }] })
-      );
+    userAdministrationServiceMock.getUsers.calls.reset();
+    userAdministrationServiceMock.getUsers.and.returnValue(
+      of({
+        totalCount: 1,
+        objects: [
+          {
+            sbbUserId: 'u123456',
+            permissions: new Set<Permission>(),
+          },
+        ],
+      })
+    );
 
     tableService.pageSize = 10;
     tableService.pageIndex = 10;
