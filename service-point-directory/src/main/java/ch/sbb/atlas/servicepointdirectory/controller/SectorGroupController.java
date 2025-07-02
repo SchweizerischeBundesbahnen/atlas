@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.servicepoint.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateSectorGroupVersionModel;
 import ch.sbb.atlas.servicepointdirectory.api.SectorGroupApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.SectorGroupVersion;
@@ -20,10 +21,18 @@ public class SectorGroupController implements SectorGroupApiV1 {
   private final SectorGroupService sectorGroupService;
 
   @Override
-  public List<ReadSectorGroupVersionModel> getSectorGroupVersions() {
-    return sectorGroupService.getSectorGroups().stream()
-        .map(SectorGroupMapper::toReadModelWithSectors)
-        .toList();
+  public List<SectorGroupVersionModel> getSectorGroups() {
+    return sectorGroupService.getSectorGroups();
+  }
+
+  @Override
+  public List<SectorGroupVersionModel> getSectorGroup(String sloid) {
+    return sectorGroupService.getSectorGroup(sloid);
+  }
+
+  @Override
+  public ReadSectorGroupVersionModel getSectorGroupVersion(Long id) {
+    return sectorGroupService.getSectorGroupVersion(id);
   }
 
   @Override
@@ -32,7 +41,7 @@ public class SectorGroupController implements SectorGroupApiV1 {
   }
 
   @Override
-  public List<ReadSectorGroupVersionModel> updateSectorGroupVersion(Long id,
+  public List<SectorGroupVersionModel> updateSectorGroupVersion(Long id,
       UpdateSectorGroupVersionModel updateSectorGroupVersionModel) {
     SectorGroupVersion sectorGroupVersionToUpdate = sectorGroupService.getSectorGroupVersionById(id);
 
@@ -43,7 +52,7 @@ public class SectorGroupController implements SectorGroupApiV1 {
 
     return updatedSectorGroup
         .stream()
-        .map(SectorGroupMapper::toReadModel)
+        .map(SectorGroupMapper::toModel)
         .toList();
   }
 }
