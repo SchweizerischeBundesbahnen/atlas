@@ -7,6 +7,6 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @Schema(name = "SectorGroupVersionModel")
-public class SectorGroupVersionModel extends AbstractSectorVersion {
+public class SectorGroupVersionModel extends AbstractSectorCore {
 
 }
