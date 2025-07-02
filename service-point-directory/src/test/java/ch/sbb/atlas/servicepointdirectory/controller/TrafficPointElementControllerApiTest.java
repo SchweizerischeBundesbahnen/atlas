@@ -323,8 +323,8 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
     MvcResult mvcResult =
         mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/" +
                     firstSaved.getSloid() + "/" + validTo)
-            .contentType(contentType))
-        .andExpect(status().isForbidden()).andReturn();
+                .contentType(contentType))
+            .andExpect(status().isForbidden()).andReturn();
 
     // then
     ErrorResponse errorResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
@@ -381,8 +381,9 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
     repository.deleteAll();
     CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
     platformToCreate.setSloid(null);
-    doReturn("ch:1:sloid:1400015:0:123").when(locationService).generateTrafficPointSloid(TrafficPointElementType.BOARDING_PLATFORM,
-        ServicePointNumber.ofNumberWithoutCheckDigit(1400015));
+    doReturn("ch:1:sloid:1400015:0:123").when(locationService)
+        .generateTrafficPointSloid(TrafficPointElementType.BOARDING_PLATFORM,
+            ServicePointNumber.ofNumberWithoutCheckDigit(1400015));
     mvc.perform(post("/v1/traffic-point-elements")
             .contentType(contentType)
             .content(mapper.writeValueAsString(platformToCreate)))
@@ -579,9 +580,9 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
   void shouldFailOnFindWithInvalidServicePointNumber() throws Exception {
     mvc.perform(get("/v1/traffic-point-elements?servicePointNumbers=12345678"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details", hasSize(1)))
         .andExpect(jsonPath("$.details[0].message",
-            is("Value 12345678 rejected due to must be less than or equal to 9999999")));
+            is("must be less than or equal to 9999999")));
   }
 
 }

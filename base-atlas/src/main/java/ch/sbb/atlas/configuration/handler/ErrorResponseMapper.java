@@ -73,9 +73,7 @@ public class ErrorResponseMapper {
     ConstraintViolationMapper constraintViolationMapper = new ConstraintViolationMapper(constraintViolations);
     return ErrorResponse.builder()
         .status(HttpStatus.BAD_REQUEST.value())
-        .error(
-            "Param argument not valid on: " + constraintViolations.stream().findFirst().map(ConstraintViolation::getLeafBean))
-        // todo: think of better approach
+        .error("Constraint violation")
         .message(constraintViolationMapper.getMessage())
         .details(constraintViolationMapper.getDetails())
         .build();

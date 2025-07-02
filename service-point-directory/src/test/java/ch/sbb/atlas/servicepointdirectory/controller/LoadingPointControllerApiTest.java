@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
@@ -299,9 +300,9 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
   void shouldFailOnFindWithInvalidServicePointNumber() throws Exception {
     mvc.perform(get("/v1/loading-points?servicePointNumbers=12345678"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details", hasSize(1)))
         .andExpect(jsonPath("$.details[0].message",
-            is("Value 12345678 rejected due to must be less than or equal to 9999999")));
+            is("must be less than or equal to 9999999")));
   }
 
   @Test
