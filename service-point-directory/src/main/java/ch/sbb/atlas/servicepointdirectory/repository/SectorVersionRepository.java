@@ -13,20 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface SectorVersionRepository extends
     JpaRepository<SectorVersion, Long>, JpaSpecificationExecutor<SectorVersion> {
 
-  @Query(nativeQuery = true,
-      value = "select sv.* from sector_version sv "
-          + "join sector_group_relations sgr on sv.sloid= sgr.sector_group_sloid "
-          + "join sector_group_version sgv on sgv.sloid = sgr.sector_sloid "
-          + "where sv.id = :sectorId"
-  )
-  List<SectorVersion> findAllBySectorId(Long sectorId);
-
-  @Query("""
-        SELECT s FROM sector_version s
-          LEFT JOIN FETCH s.sectorGroupVersions
-      """)
-  List<SectorVersion> findAllWithGroups();
-
   List<SectorVersion> findAllBySloidIn(List<String> sloids);
 
   List<SectorVersion> findAllBySloidOrderByValidFrom(String sloid);

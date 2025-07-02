@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import ch.sbb.atlas.api.servicepoint.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.SectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateSectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.api.SectorApiV1;
@@ -20,17 +19,27 @@ public class SectorController implements SectorApiV1 {
   private final SectorService sectorService;
 
   @Override
-  public List<ReadSectorVersionModel> getSectorVersions() {
-    return sectorService.getAllSectorVersions().stream().map(SectorMapper::toReadModel).toList();
+  public List<SectorVersionModel> getSectors() {
+    return sectorService.getSectors();
   }
 
   @Override
-  public ReadSectorVersionModel createSectorVersion(SectorVersionModel createSectorVersionModel) {
+  public List<SectorVersionModel> getSector(String sloid) {
+    return sectorService.getSector(sloid);
+  }
+
+  @Override
+  public SectorVersionModel getSectorVersion(Long id) {
+    return SectorMapper.toModel(sectorService.getSectorVersionById(id));
+  }
+
+  @Override
+  public SectorVersionModel createSectorVersion(SectorVersionModel createSectorVersionModel) {
     return sectorService.createSector(createSectorVersionModel);
   }
 
   @Override
-  public List<ReadSectorVersionModel> updateSectorVersion(Long id, UpdateSectorVersionModel updateSectorVersionModel) {
+  public List<SectorVersionModel> updateSectorVersion(Long id, UpdateSectorVersionModel updateSectorVersionModel) {
     SectorVersion sectorVersionToUpdate = sectorService.getSectorVersionById(id);
     SectorVersion editedVersion = SectorMapper.toEntity(updateSectorVersionModel);
     sectorService.updateSector(sectorVersionToUpdate, editedVersion);
@@ -40,7 +49,7 @@ public class SectorController implements SectorApiV1 {
 
     return updatedSector
         .stream()
-        .map(SectorMapper::toReadModel)
+        .map(SectorMapper::toModel)
         .toList();
   }
 }

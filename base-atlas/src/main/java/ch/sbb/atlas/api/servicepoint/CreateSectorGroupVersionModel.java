@@ -2,8 +2,8 @@ package ch.sbb.atlas.api.servicepoint;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +21,6 @@ import lombok.experimental.SuperBuilder;
 public class CreateSectorGroupVersionModel extends SectorGroupVersionModel {
 
   @Size(min = 2)
-  private List<String> sectorSloids = new ArrayList<>();
+  private Set<String> sectorSloids = new HashSet<>();
 
 }

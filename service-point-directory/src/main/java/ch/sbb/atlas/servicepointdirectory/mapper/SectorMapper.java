@@ -1,11 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.ReadSectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.SectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateSectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.SectorVersion;
-import java.util.List;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -29,32 +26,6 @@ public class SectorMapper {
         .creationDate(sectorVersion.getCreationDate())
         .editor(sectorVersion.getEditor())
         .editionDate(sectorVersion.getEditionDate())
-        .build();
-  }
-
-  public static ReadSectorVersionModel toReadModel(SectorVersion sectorVersion) {
-    List<SectorGroupVersionModel> groups = sectorVersion.getSectorGroupVersions().stream()
-        .map(SectorGroupMapper::toModel)
-        .toList();
-
-    return ReadSectorVersionModel.builder()
-        .id(sectorVersion.getId())
-        .sloid(sectorVersion.getSloid())
-        .trafficPointSloid(sectorVersion.getTrafficPointSloid())
-        .designation(sectorVersion.getDesignation())
-        .validFrom(sectorVersion.getValidFrom())
-        .validTo(sectorVersion.getValidTo())
-        .north(sectorVersion.getNorth())
-        .east(sectorVersion.getEast())
-        .height(sectorVersion.getHeight())
-        .spatialReference(sectorVersion.getSpatialReference())
-        .length(sectorVersion.getLength())
-        .edgeHeight(sectorVersion.getEdgeHeight())
-        .creator(sectorVersion.getCreator())
-        .creationDate(sectorVersion.getCreationDate())
-        .editor(sectorVersion.getEditor())
-        .editionDate(sectorVersion.getEditionDate())
-        .sectorGroupVersions(groups)
         .build();
   }
 
