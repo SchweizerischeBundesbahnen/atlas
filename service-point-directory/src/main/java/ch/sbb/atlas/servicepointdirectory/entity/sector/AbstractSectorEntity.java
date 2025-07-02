@@ -1,46 +1,27 @@
-package ch.sbb.atlas.servicepointdirectory.entity;
+package ch.sbb.atlas.servicepointdirectory.entity.sector;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.entity.BaseEntity;
-import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.versioning.model.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
 @SuperBuilder(toBuilder = true)
-@FieldNameConstants
-@Entity(name = "sector_group_version")
-@AtlasVersionable
-public class SectorGroupVersion extends BaseEntity implements Versionable, DatesValidator {
-
-  private static final String VERSION_SEQ = "sector_group_version_seq";
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
-  @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
-  private Long id;
+@MappedSuperclass
+public abstract class AbstractSectorEntity extends BaseEntity {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
   @AtlasVersionableProperty
@@ -68,4 +49,5 @@ public class SectorGroupVersion extends BaseEntity implements Versionable, Dates
   @Schema(description = "Length of the Sector", example = "18.000")
   @AtlasVersionableProperty
   private Double length;
+
 }
