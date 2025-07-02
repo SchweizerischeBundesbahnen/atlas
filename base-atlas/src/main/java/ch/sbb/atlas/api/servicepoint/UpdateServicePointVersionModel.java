@@ -54,15 +54,6 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
     return !getMeansOfTransport().isEmpty();
   }
 
-  /*@JsonIgnore
-  @AssertTrue(message = "StopPointType only allowed for StopPoint")
-  // todo: check if message is ok on bulk import and frontend/api
-  public boolean isValidStopPointWithType() {
-    return (isStopPoint() || getStopPointType() == null) && (!isStopPoint() || (getStopPointType() != null
-        && StopPointType.validOnInput()
-        .contains(getStopPointType())));
-  }*/
-
   @JsonIgnore
   @AssertTrue(message = "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same "
       + "value as numberWithoutCheckDigit and it should not be sent in the request")

@@ -1,4 +1,9 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import {
   Category,
@@ -55,6 +60,17 @@ type OptionalKeysOfServicePointDetailFormGroup = {
     ? K
     : never;
 }[keyof ServicePointDetailFormGroup];
+
+const stopPointTypeRequiredValidator = (
+  control: AbstractControl<StopPointType | null | undefined>
+) => {
+  if (!control.value || control.value === 'UNKNOWN') {
+    return {
+      requiredAndNotUnknown: true,
+    };
+  }
+  return null;
+};
 
 export class ServicePointFormGroupBuilder {
   static addGroupToForm(
@@ -248,6 +264,8 @@ export class ServicePointFormGroupBuilder {
   ) {
     formGroup.controls.selectedType.valueChanges.subscribe((newType) => {
       if (newType === ServicePointType.OperatingPoint) {
+        // todo: bug when switching from stopPoint to this (validators of other types not cleared) and check if bulkimport
+        //  logs work with new feature
         formGroup.controls.operatingPointType.setValidators([
           Validators.required,
         ]);
@@ -273,17 +291,23 @@ export class ServicePointFormGroupBuilder {
     formGroup: FormGroup<ServicePointDetailFormGroup>
   ) {
     if (formGroup.controls.stopPoint.value) {
-      formGroup.controls.meansOfTransport.setValidators([Validators.required]);
+      formGroup.controls.meansOfTransport.setValidators(Validators.required);
+      formGroup.controls.stopPointType.setValidators(
+        stopPointTypeRequiredValidator
+      );
     }
     formGroup.controls.stopPoint.valueChanges.subscribe((isStopPoint) => {
       if (isStopPoint) {
-        formGroup.controls.meansOfTransport.setValidators([
-          Validators.required,
-        ]);
+        formGroup.controls.meansOfTransport.setValidators(Validators.required);
+        formGroup.controls.stopPointType.setValidators(
+          stopPointTypeRequiredValidator
+        );
       } else {
         formGroup.controls.meansOfTransport.clearValidators();
+        formGroup.controls.stopPointType.clearValidators();
       }
       formGroup.controls.meansOfTransport.updateValueAndValidity();
+      formGroup.controls.stopPointType.updateValueAndValidity();
     });
   }
 

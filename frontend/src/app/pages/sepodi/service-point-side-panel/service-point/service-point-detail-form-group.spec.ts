@@ -36,19 +36,24 @@ describe('ServicePointFormGroup', () => {
     servicePointFormGroup.controls.operatingPointKilometerMaster.setValue(7000);
   });
 
-  it('should add validators to include one of stopPoint, freightServicePoint. stopPoints needs meansOfTransport', () => {
-    servicePointFormGroup.controls.selectedType.setValue(
-      ServicePointType.StopPoint
-    );
+  it(
+    'should add validators to include one of stopPoint, freightServicePoint. stopPoints needs meansOfTransport and' +
+      ' stopPointType',
+    () => {
+      servicePointFormGroup.controls.selectedType.setValue(
+        ServicePointType.StopPoint
+      );
 
-    expect(servicePointFormGroup.valid).toBeFalse();
+      expect(servicePointFormGroup.valid).toBeFalse();
 
-    servicePointFormGroup.controls.stopPoint.setValue(true);
-    servicePointFormGroup.controls.meansOfTransport.setValue([
-      MeanOfTransport.Bus,
-    ]);
-    expect(servicePointFormGroup.valid).toBeTrue();
-  });
+      servicePointFormGroup.controls.stopPoint.setValue(true);
+      servicePointFormGroup.controls.meansOfTransport.setValue([
+        MeanOfTransport.Bus,
+      ]);
+      servicePointFormGroup.controls.stopPointType.setValue('ON_REQUEST');
+      expect(servicePointFormGroup.valid).toBeTrue();
+    }
+  );
 
   it('should add validators to include one of stopPoint, freightServicePoint. freightServicePoint needs nothing', () => {
     servicePointFormGroup.controls.selectedType.setValue(
