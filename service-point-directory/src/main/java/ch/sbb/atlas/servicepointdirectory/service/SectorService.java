@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
-import ch.sbb.atlas.api.servicepoint.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.SectorVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.entity.SectorVersion;
@@ -33,18 +32,17 @@ public class SectorService {
     this.versionableService = versionableService;
   }
 
-  public List<SectorVersion> getAllSectorVersions() {
-    return sectorVersionRepository.findAllWithGroups();
+  public List<SectorVersionModel> getSectors() {
+    return sectorVersionRepository.findAll().stream().map(SectorMapper::toModel).toList();
   }
 
-  public ReadSectorVersionModel createSector(SectorVersionModel createSectorVersionModel) {
+  public SectorVersionModel createSector(SectorVersionModel createSectorVersionModel) {
     SectorVersion sectorVersion = SectorMapper.toEntity(createSectorVersionModel);
     existTrafficPointElement(createSectorVersionModel.getTrafficPointSloid());
-
     //TODO locationService.claimSloid waiting for -> ATLAS-2963 (LocationService erweiterung)
 
     SectorVersion saved = save(sectorVersion);
-    return SectorMapper.toReadModel(saved);
+    return SectorMapper.toModel(saved);
   }
 
   public void updateSector(SectorVersion currentVersion, SectorVersion editedVersion) {
@@ -69,6 +67,11 @@ public class SectorService {
 
   public SectorVersion getSectorVersionById(Long id) {
     return sectorVersionRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  }
+
+  public List<SectorVersionModel> getSector(String sectorSloid) {
+    List<SectorVersion> sectorVersions = findAllBySloidOrderByValidFrom(sectorSloid);
+    return sectorVersions.stream().map(SectorMapper::toModel).toList();
   }
 
   public List<SectorVersion> findAllBySloidOrderByValidFrom(String sectorSloid) {

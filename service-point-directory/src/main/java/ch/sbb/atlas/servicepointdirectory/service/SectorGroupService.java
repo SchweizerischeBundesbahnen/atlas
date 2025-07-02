@@ -2,11 +2,15 @@ package ch.sbb.atlas.servicepointdirectory.service;
 
 import ch.sbb.atlas.api.servicepoint.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.SectorGroupRelationModel;
+import ch.sbb.atlas.api.servicepoint.SectorGroupVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.entity.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorGroupMapper;
+import ch.sbb.atlas.servicepointdirectory.mapper.SectorGroupRelationMapper;
+import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupRelationRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
@@ -15,6 +19,7 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.stereotype.Service;
@@ -22,45 +27,77 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-@Transactional
 public class SectorGroupService {
 
   private final SectorGroupVersionRepository sectorGroupVersionRepository;
-  private final SectorVersionRepository sectorVersionRepository;
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
+  private final SectorGroupRelationRepository sectorGroupRelationRepository;
+  private final SectorVersionRepository sectorVersionRepository;
 
   public SectorGroupService(SectorGroupVersionRepository sectorGroupVersionRepository,
-      SectorVersionRepository sectorVersionRepository, TrafficPointElementService trafficPointElementService,
-      VersionableService versionableService) {
+      TrafficPointElementService trafficPointElementService,
+      VersionableService versionableService, SectorGroupRelationRepository sectorGroupRelationRepository,
+      SectorVersionRepository sectorVersionRepository) {
     this.sectorGroupVersionRepository = sectorGroupVersionRepository;
-    this.sectorVersionRepository = sectorVersionRepository;
     this.trafficPointElementService = trafficPointElementService;
     this.versionableService = versionableService;
+    this.sectorGroupRelationRepository = sectorGroupRelationRepository;
+    this.sectorVersionRepository = sectorVersionRepository;
   }
 
-  public List<SectorGroupVersion> getSectorGroups() {
-    return sectorGroupVersionRepository.findAll();
+  public List<SectorGroupVersionModel> getSectorGroups() {
+    return sectorGroupVersionRepository.findAll().stream().map(SectorGroupMapper::toModel).toList();
   }
 
+  public List<SectorGroupVersionModel> getSectorGroup(String sectorGroupSloid) {
+    List<SectorGroupVersion> sectorGroupVersions = findAllBySloidOrderByValidFrom(sectorGroupSloid);
+    return sectorGroupVersions.stream().map(SectorGroupMapper::toModel).toList();
+  }
+
+  public ReadSectorGroupVersionModel getSectorGroupVersion(Long id) {
+    SectorGroupVersion sectorGroupVersion = sectorGroupVersionRepository.findById(id).orElseThrow();
+    List<String> sectors = findAllSectorsRelatedToGroup(sectorGroupVersion.getSloid());
+
+    return SectorGroupMapper.toReadModel(sectorGroupVersion, sectors);
+  }
+
+  private List<String> findAllSectorsRelatedToGroup(String sectorGroupSloid) {
+    return sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(sectorGroupSloid)
+        .stream()
+        .map(r -> r.getSectorGroupRelationId().getSectorSloid()).toList();
+  }
+
+  @Transactional
   public ReadSectorGroupVersionModel createSectorGroup(CreateSectorGroupVersionModel createSectorGroupVersionModel) {
     SectorGroupVersion sectorGroupVersion = SectorGroupMapper.toEntity(createSectorGroupVersionModel);
+    List<String> sectorSloids = createSectorGroupVersionModel.getSectorSloids().stream().toList();
+    String sectorGroupSloid = createSectorGroupVersionModel.getSloid();
+
     List<SectorVersion> validSectorVersions = new ArrayList<>();
     existTrafficPointElement(createSectorGroupVersionModel.getTrafficPointSloid());
 
     //TODO locationService.claimSloid waiting for -> ATLAS-2963 (LocationService erweiterung)
 
-    List<SectorVersion> sectorVersions =
-        sectorVersionRepository.findAllBySloidIn(createSectorGroupVersionModel.getSectorSloids());
+    List<SectorVersion> sectorVersions = sectorVersionRepository.findAllBySloidIn(sectorSloids);
 
     existSectorVersion(sectorVersions);
     isTrafficPointSloidMatchingOverAllObjects(sectorVersions, sectorGroupVersion.getTrafficPointSloid(), validSectorVersions);
     hasAtLeastTwoValidSectorVersions(validSectorVersions);
 
-    sectorGroupVersion.setSectorVersions(sectorVersions);
-
+    createRelation(sectorSloids, sectorGroupSloid);
     SectorGroupVersion savedSectorGroupVersion = save(sectorGroupVersion);
-    return SectorGroupMapper.toReadModelWithSectors(savedSectorGroupVersion);
+    return SectorGroupMapper.toReadModel(savedSectorGroupVersion, sectorSloids);
+  }
+
+  private void createRelation(List<String> sectorSloids, String sectorGroupSloid) {
+    for (String sectorSloid : sectorSloids) {
+      SectorGroupRelationModel sectorGroupRelationModel = SectorGroupRelationModel.builder()
+          .sectorGroupSloid(sectorGroupSloid)
+          .sectorSloid(sectorSloid)
+          .build();
+      sectorGroupRelationRepository.saveAndFlush(SectorGroupRelationMapper.toEntity(sectorGroupRelationModel));
+    }
   }
 
   private void existTrafficPointElement(String sloid) {
@@ -98,10 +135,10 @@ public class SectorGroupService {
   }
 
   SectorGroupVersion save(SectorGroupVersion sectorGroupVersion) {
-    System.out.println("test ");
     return sectorGroupVersionRepository.saveAndFlush(sectorGroupVersion);
   }
 
+  @Transactional
   public void updateSectorGroup(SectorGroupVersion currentVersion, SectorGroupVersion editedVersion) {
     sectorGroupVersionRepository.incrementVersion(currentVersion.getSloid());
 
@@ -111,7 +148,6 @@ public class SectorGroupService {
 
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setTrafficPointSloid(currentVersion.getTrafficPointSloid());
-    editedVersion.setSectorVersions(currentVersion.getSectorVersions());
 
     List<SectorGroupVersion> currentVersions = findAllBySloidOrderByValidFrom(currentVersion.getSloid());
 
@@ -129,6 +165,10 @@ public class SectorGroupService {
 
   public List<SectorGroupVersion> findAllBySloidOrderByValidFrom(String sectorGroupSloid) {
     return sectorGroupVersionRepository.findAllBySloidOrderByValidFrom(sectorGroupSloid);
+  }
+
+  public Optional<SectorGroupVersion> findById(Long id) {
+    return sectorGroupVersionRepository.findById(id);
   }
 
 }
