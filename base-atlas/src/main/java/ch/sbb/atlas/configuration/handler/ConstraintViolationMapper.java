@@ -12,7 +12,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.internal.engine.path.PathImpl;
 
 @RequiredArgsConstructor
 public class ConstraintViolationMapper {
@@ -50,7 +49,7 @@ public class ConstraintViolationMapper {
         cv -> "Max decimal places exceeded. LV03 and LV95 max. 5. WGS84 and WGS84WEB max. 11."));
     ERROR_CODE_MAP.put("{atlas.constraint.validStopPointType}", new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_STOP_POINT_TYPE",
-        cv -> "Stop Point type not valid...")); // todo
+        cv -> "stopPointType is only allowed for StopPoints and must not be null or unknown"));
     ERROR_CODE_MAP.put("{atlas.constraint.validServicePointNumber}", new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_SERVICE_POINT_NUMBER",
         cv -> "numberShort must be present only if country not in (85,11,12,13,14)"));
@@ -58,10 +57,9 @@ public class ConstraintViolationMapper {
 
   private static String propertyName(ConstraintViolation<?> cv) {
     if (cv.getPropertyPath().toString().isEmpty()) {
-      // is type constraint -> return constraint name
-      return cv.getMessageTemplate();
+      return cv.getInvalidValue().getClass().getSimpleName();
     }
-    return ((PathImpl) cv.getPropertyPath()).getLeafNode().getName();
+    return cv.getPropertyPath().toString();
   }
 
   private static ErrorInfo errorInfo(ConstraintViolation<?> cv) {
@@ -75,8 +73,12 @@ public class ConstraintViolationMapper {
     constraintViolations.forEach(constraintViolation -> {
       DisplayInfoBuilder displayInfoBuilder = DisplayInfo.builder()
           .code(errorInfo(constraintViolation).code)
-          .with("propertyPath", propertyName(constraintViolation))
-          .with(VALUE, String.valueOf(constraintViolation.getInvalidValue())); // todo: makes not sense for full type
+          .with("propertyPath", propertyName(constraintViolation));
+
+      if (!constraintViolation.getPropertyPath().toString().isEmpty()) {
+        displayInfoBuilder.with(VALUE, String.valueOf(constraintViolation.getInvalidValue()));
+      }
+
       constraintViolation.getConstraintDescriptor().getAttributes()
           .forEach((key, value) -> {
             if (!value.toString().contains("java.lang.Class")) {
@@ -99,16 +101,14 @@ public class ConstraintViolationMapper {
     final Function<ConstraintViolation<?>, String> cvToString = cv -> {
       if (cv.getPropertyPath().toString().isEmpty()) {
         return String.format(
-            "Constraint '%s' was violated, info: %s",
-            propertyName(cv),
-            errorInfo(cv).message.apply(cv)
+            "Constraint on '%s' was violated",
+            propertyName(cv)
         );
       } else {
         return String.format(
-            "Property/Parameter '%s' has invalid value: '%s', info: %s",
+            "Property '%s' has invalid value: '%s'",
             propertyName(cv),
-            cv.getInvalidValue(),
-            errorInfo(cv).message.apply(cv)
+            cv.getInvalidValue()
         );
       }
     };
