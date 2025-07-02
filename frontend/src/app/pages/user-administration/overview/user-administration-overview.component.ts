@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import {
   ActivatedRoute,
   Router,
-  RouterLinkActive,
   RouterLink,
+  RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
 import { Pages } from '../../pages';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
-import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
-import { NgFor } from '@angular/common';
+import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -18,7 +17,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     AtlasButtonComponent,
     MatTabNav,
-    NgFor,
     RouterLinkActive,
     MatTabLink,
     RouterLink,

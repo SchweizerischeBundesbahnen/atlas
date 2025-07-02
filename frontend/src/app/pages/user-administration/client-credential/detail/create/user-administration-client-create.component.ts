@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   BusinessOrganisationsService,
   ClientCredentialPermissionCreate,
@@ -62,13 +62,13 @@ export class UserAdministrationClientCreateComponent {
     ]),
   });
 
-  constructor(
-    private readonly clientCredentialAdministrationService: ClientCredentialAdministrationService,
-    private readonly notificationService: NotificationService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly dialogService: DialogService
-  ) {}
+  clientCredentialAdministrationService = inject(
+    ClientCredentialAdministrationService
+  );
+  notificationService = inject(NotificationService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
+  dialogService = inject(DialogService);
 
   create(): void {
     this.form.markAllAsTouched();
