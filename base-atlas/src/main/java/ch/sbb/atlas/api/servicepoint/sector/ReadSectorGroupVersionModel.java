@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "ReadSectorGroupVersion")
-public class ReadSectorGroupVersionModel extends AbstractSectorVersion {
+public class ReadSectorGroupVersionModel extends AbstractSectorCore {
 
   @Schema(description = "Sector sloid's related to the sector group")
   List<String> sectorSloids;
