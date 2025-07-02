@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { User } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
 import { UserAdministrationUserCreateComponent } from './create/user-administration-user-create.component';
@@ -13,7 +13,7 @@ import { UserAdministrationUserEditComponent } from './edit/user-administration-
   ],
 })
 export class UserAdministrationUserDetailComponent implements OnInit {
-  constructor(private activatedRoute: ActivatedRoute) {}
+  activatedRoute = inject(ActivatedRoute);
 
   user?: User;
 

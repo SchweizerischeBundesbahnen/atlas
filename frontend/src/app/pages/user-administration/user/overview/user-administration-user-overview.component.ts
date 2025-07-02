@@ -22,7 +22,6 @@ import { MatSelectChange } from '@angular/material/select';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { MatLabel } from '@angular/material/form-field';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { NgFor, NgIf } from '@angular/common';
 import { UserSelectComponent } from '../user-select/user-select.component';
 import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
@@ -39,14 +38,12 @@ import { UserAdministrationService } from '../../../../api/service/user-administ
     MatRadioGroup,
     ReactiveFormsModule,
     FormsModule,
-    NgFor,
-    MatRadioButton,
-    NgIf,
     UserSelectComponent,
     BusinessOrganisationSelectComponent,
     SelectComponent,
     RouterOutlet,
     TranslatePipe,
+    MatRadioButton,
   ],
 })
 export class UserAdministrationUserOverviewComponent {

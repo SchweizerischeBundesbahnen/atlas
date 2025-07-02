@@ -135,7 +135,7 @@ describe('UserAdministrationUserEditComponent', () => {
       })
     );
 
-    component.save();
+    component.saveUser();
 
     expect(
       userAdministrationServiceSpy.updateUserPermission
@@ -152,7 +152,7 @@ describe('UserAdministrationUserEditComponent', () => {
     userAdministrationServiceSpy.updateUserPermission.and.returnValue(
       new Observable<User>((subscriber) => subscriber.error('error'))
     );
-    component.save();
+    component.saveUser();
   });
 
   it('shows first creation and last edition', () => {

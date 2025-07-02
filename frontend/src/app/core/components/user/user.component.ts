@@ -3,7 +3,6 @@ import { AuthService } from '../../auth/auth.service';
 import { ApplicationRole, ApplicationType, Permission } from '../../../api';
 import { UserService } from '../../auth/user/user.service';
 import { User } from '../../auth/user/user';
-import { NgIf } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -14,7 +13,7 @@ import { Pages } from '../../../pages/pages';
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
-  imports: [NgIf, MatButton, MatMenuTrigger, MatMenu, TranslatePipe],
+  imports: [MatButton, MatMenuTrigger, MatMenu, TranslatePipe],
 })
 export class UserComponent implements OnInit {
   user: User | undefined;
