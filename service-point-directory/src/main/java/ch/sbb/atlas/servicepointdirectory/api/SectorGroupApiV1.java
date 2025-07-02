@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
-import ch.sbb.atlas.api.servicepoint.CreateSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.ReadSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.SectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.UpdateSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorGroupVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;

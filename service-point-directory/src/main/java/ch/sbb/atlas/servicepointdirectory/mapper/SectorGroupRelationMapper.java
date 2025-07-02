@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.SectorGroupRelationModel;
-import ch.sbb.atlas.servicepointdirectory.entity.SectorGroupRelation;
-import ch.sbb.atlas.servicepointdirectory.entity.SectorGroupRelationId;
+import ch.sbb.atlas.api.servicepoint.sector.relation.SectorGroupRelationId;
+import ch.sbb.atlas.api.servicepoint.sector.relation.SectorGroupRelationModel;
+import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupRelation;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

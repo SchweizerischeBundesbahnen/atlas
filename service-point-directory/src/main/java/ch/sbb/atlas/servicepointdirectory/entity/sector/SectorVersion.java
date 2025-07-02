@@ -1,14 +1,11 @@
-package ch.sbb.atlas.servicepointdirectory.entity;
+package ch.sbb.atlas.servicepointdirectory.entity.sector;
 
-import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
-import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,8 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +31,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "sector_version")
 @AtlasVersionable
-public class SectorVersion extends BaseEntity implements Versionable, DatesValidator {
+public class SectorVersion extends AbstractSectorEntity implements Versionable, DatesValidator {
 
   private static final String VERSION_SEQ = "sector_version_seq";
 
@@ -44,29 +39,6 @@ public class SectorVersion extends BaseEntity implements Versionable, DatesValid
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
-
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
-  @AtlasVersionableProperty
-  @NotNull
-  private String sloid;
-
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
-  @AtlasVersionableProperty
-  @NotNull
-  private String trafficPointSloid;
-
-  @NotNull
-  @Column(columnDefinition = "DATE")
-  private LocalDate validFrom;
-
-  @NotNull
-  @Column(columnDefinition = "DATE")
-  private LocalDate validTo;
-
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_8)
-  @AtlasVersionableProperty
-  @NotNull
-  private String designation;
 
   @AtlasVersionableProperty
   @NotNull
@@ -83,10 +55,6 @@ public class SectorVersion extends BaseEntity implements Versionable, DatesValid
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private SpatialReference spatialReference;
-
-  @Schema(description = "Length of the Sector", example = "18.000")
-  @AtlasVersionableProperty
-  private Double length;
 
   @Schema(description = "Edge Height of the Sector", example = "TODO")
   @AtlasVersionableProperty

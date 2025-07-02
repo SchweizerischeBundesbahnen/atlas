@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.entity.SectorGroupVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.SectorVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;

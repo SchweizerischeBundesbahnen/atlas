@@ -1,6 +1,7 @@
-package ch.sbb.atlas.api.servicepoint;
+package ch.sbb.atlas.api.servicepoint.sector;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.model.BaseVersionModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
@@ -8,18 +9,19 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 @FieldNameConstants
-@Schema(name = "UpdateSectorGroupVersion")
-public class UpdateSectorGroupVersionModel {
+public abstract class AbstractSectorCore extends BaseVersionModel {
 
   @NotNull
   private LocalDate validFrom;
@@ -28,14 +30,15 @@ public class UpdateSectorGroupVersionModel {
   private LocalDate validTo;
 
   @Schema(description = "Designation used in the customer information systems.", example = "Bezeichnung")
-  @Size(max = AtlasFieldLengths.LENGTH_40)
+  @Size(max = AtlasFieldLengths.LENGTH_8)
   private String designation;
 
-  @Schema(description = "", example = "18.000")
-  @Digits(integer = 13, fraction = 3)
+  @Schema(description = "Length of a Sector", example = "18.000")
+  @Digits(integer = 6, fraction = 3)
   @Min(0)
   private Double length;
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  @NotNull
   private Integer etagVersion;
 }

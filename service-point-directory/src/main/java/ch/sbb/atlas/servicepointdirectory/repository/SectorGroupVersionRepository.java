@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
-import ch.sbb.atlas.servicepointdirectory.entity.SectorGroupVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

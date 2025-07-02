@@ -1,13 +1,13 @@
-package ch.sbb.atlas.servicepointdirectory.service;
+package ch.sbb.atlas.servicepointdirectory.service.sector;
 
-import ch.sbb.atlas.api.servicepoint.CreateSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.ReadSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.SectorGroupRelationModel;
-import ch.sbb.atlas.api.servicepoint.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.relation.SectorGroupRelationModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.servicepointdirectory.entity.SectorGroupVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorGroupMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorGroupRelationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupRelationRepository;
