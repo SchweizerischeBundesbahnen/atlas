@@ -14,10 +14,6 @@ include::{snippets}/user-administration-controller-api-test/should-get-user/atla
 
 include::{snippets}/user-administration-controller-api-test/should-update-user/atlas-doc.adoc[]
 
-== Create User Permissions - Successfully
-
-include::{snippets}/user-administration-controller-api-test/should-create-user-permission/atlas-doc.adoc[]
-
 == Get Users filtered with applicationTypes and sboids
 
 include::{snippets}/user-administration-controller-api-test/get-users-with-sboids-and-application-types-found/atlas-doc.adoc[]
