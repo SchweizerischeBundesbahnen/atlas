@@ -1,4 +1,4 @@
-<ng-template [ngIf]="isLoggedIn">
+@if (isLoggedIn) {
   <button
     [matMenuTriggerFor]="profile"
     id="user-menu-button"
@@ -36,8 +36,7 @@
       </div>
     </div>
   </mat-menu>
-</ng-template>
-<ng-template [ngIf]="!isLoggedIn">
+} @else {
   <button (click)="login()" id="login" mat-button>
     <div class="user-presentation d-inline-flex">
       <div class="user-icon bg-color-primary-500">
@@ -46,4 +45,4 @@
       <div class="color-primary-400">{{ 'PROFILE.LOGIN' | translate }}</div>
     </div>
   </button>
-</ng-template>
+}

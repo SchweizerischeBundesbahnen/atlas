@@ -47,7 +47,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
     this.convertUserPermissionToRecord();
   }
 
-  save(): void {
+  saveUser(): void {
     const userPermission = ApplicationPermissionFormGroupBuilder.formToModel(
       this.formGroup
     );
@@ -89,9 +89,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
   }
 
   private convertUserPermissionToRecord(): void {
-    const permissionsFromUserModelAsArray = Array.from(
-      this.user().permissions!
-    );
+    const permissionsFromUserModelAsArray = Array.from(this.user().permissions);
     if (permissionsFromUserModelAsArray.length > 0) {
       const firstCreated = permissionsFromUserModelAsArray.reduce(
         (previousValue, currentValue) => {
