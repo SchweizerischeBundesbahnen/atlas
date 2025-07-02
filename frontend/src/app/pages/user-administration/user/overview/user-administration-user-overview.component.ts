@@ -134,6 +134,9 @@ export class UserAdministrationUserOverviewComponent {
     } else if (!selectedUser.sbbUserId) {
       this.userPageResult = { users: [], totalCount: 0 };
       this.tableService.pageIndex = 0;
+    } else {
+      this.userPageResult = { users: [selectedUser], totalCount: 1 };
+      this.tableService.pageIndex = 0;
     }
   }
 

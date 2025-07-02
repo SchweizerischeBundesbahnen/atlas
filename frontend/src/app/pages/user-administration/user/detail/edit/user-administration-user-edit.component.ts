@@ -54,7 +54,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
     this.formGroup.disable();
     this.userAdministrationService
       .updateUserPermission(
-        this.user().userId!,
+        this.user().sbbUserId,
         userPermission.application,
         userPermission
       )

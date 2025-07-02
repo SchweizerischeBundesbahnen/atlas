@@ -61,6 +61,7 @@ describe('UserSelectComponent', () => {
       of([
         {
           sbbUserId: 'u236171',
+          permissions: new Set<Permission>(),
         },
       ])
     );
@@ -86,6 +87,7 @@ describe('UserSelectComponent', () => {
       of([
         {
           sbbUserId: 'u236171',
+          permissions: new Set<Permission>(),
         },
       ])
     );

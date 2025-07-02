@@ -10,13 +10,15 @@ import {
   BusinessOrganisationsService,
   Permission,
   User,
+  UserDisplayName,
 } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import SpyObj = jasmine.SpyObj;
 import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
+import SpyObj = jasmine.SpyObj;
+import { UserPermissionGivenUserService } from './user-permission-given-user.service';
 
 describe('UserAdministrationUserEditComponent', () => {
   let component: UserAdministrationUserEditComponent;
@@ -31,8 +33,15 @@ describe('UserAdministrationUserEditComponent', () => {
     userAdministrationServiceSpy =
       jasmine.createSpyObj<UserAdministrationService>(
         'UserAdministrationService',
-        ['updateUserPermission']
+        ['updateUserPermission', 'getUserDisplayName']
       );
+    const userDisplayName: UserDisplayName = {
+      sbbUserId: 'u123456',
+      displayName: 'UserDisplayName',
+    };
+    userAdministrationServiceSpy.getUserDisplayName.and.returnValue(
+      of(userDisplayName)
+    );
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
       'success',
     ]);
@@ -67,6 +76,9 @@ describe('UserAdministrationUserEditComponent', () => {
           useValue: dialogServiceSpy,
         },
         {
+          provide: UserPermissionGivenUserService,
+        },
+        {
           provide: ActivatedRoute,
           useValue: { snapshot: { data: { user: {} } } },
         },
@@ -77,8 +89,9 @@ describe('UserAdministrationUserEditComponent', () => {
 
     fixture = TestBed.createComponent(UserAdministrationUserEditComponent);
     component = fixture.componentInstance;
+
     const user: User = {
-      sbbUserId: 'yb56789',
+      sbbUserId: 'u123456',
       permissions: new Set<Permission>([
         {
           creationDate: '2020-01-01',
@@ -94,23 +107,24 @@ describe('UserAdministrationUserEditComponent', () => {
           creator: 'me',
           editionDate: '2020-01-06',
           editor: 'sumotherdude',
-          role: ApplicationRole.Supervisor,
+          role: ApplicationRole.Reader,
           application: ApplicationType.Ttfn,
           permissionRestrictions: [],
         },
       ]),
     };
     fixture.componentRef.setInput('user', user);
+
+    const givenUserService = TestBed.inject(UserPermissionGivenUserService);
+    givenUserService.user = user;
+    givenUserService.loadFormGroup(ApplicationType.Ttfn);
+
     component.userRecord = {};
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('test ngOnInit', () => {
-    expect(component.user).toBeUndefined();
   });
 
   it('test saveEdits', () => {
@@ -130,7 +144,6 @@ describe('UserAdministrationUserEditComponent', () => {
       application: ApplicationType.Ttfn,
       permissionRestrictions: [],
     });
-    expect(component.user).toEqual({ sbbUserId: 'u123456' });
     expect(component.editMode).toBeFalse();
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
       'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'

@@ -8,12 +8,14 @@ import { UserAdministrationUserEditComponent } from './edit/user-administration-
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-user-administration-create',
   template: '',
 })
 class MockAppUserAdministrationCreateComponent {}
+
 @Component({
   selector: 'Create new scratch file from selection',
   template: '',
@@ -35,7 +37,7 @@ describe('UserAdministrationUserDetailComponent', () => {
         provideHttpClientTesting(),
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { data: { user: {} } } },
+          useValue: { data: of({ user: undefined }) },
         },
       ],
     })
