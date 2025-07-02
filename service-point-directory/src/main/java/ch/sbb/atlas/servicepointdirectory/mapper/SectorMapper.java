@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.SectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.UpdateSectorVersionModel;
-import ch.sbb.atlas.servicepointdirectory.entity.SectorVersion;
+import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
+import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

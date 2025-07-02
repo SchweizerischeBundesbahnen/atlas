@@ -1,6 +1,5 @@
-package ch.sbb.atlas.servicepointdirectory.entity;
+package ch.sbb.atlas.api.servicepoint.sector.relation;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,10 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SectorGroupRelationId {
 
-  @Column(name = "sector_group_sloid")
   private String sectorGroupSloid;
 
-  @Column(name = "sector_sloid")
   private String sectorSloid;
 
 }

@@ -1,7 +1,7 @@
-package ch.sbb.atlas.api.servicepoint;
+package ch.sbb.atlas.api.servicepoint.sector.relation;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,15 +14,14 @@ import lombok.experimental.FieldNameConstants;
 @Data
 @FieldNameConstants
 @Builder
-@Schema(name = "SectorGroupRelationModel")
 public class SectorGroupRelationModel {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
-  @Schema(description = "")
+  @NotNull
   private String sectorSloid;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
-  @Schema(description = "")
+  @NotNull
   private String sectorGroupSloid;
 
 }
