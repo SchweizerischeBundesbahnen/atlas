@@ -1,14 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { UserAdministrationClientOverviewComponent } from './user-administration-client-overview.component';
-import {
-  ClientCredentialAdministrationService,
-  ContainerClientCredential,
-} from '../../../../api';
+import { ContainerClientCredential } from '../../../../api';
 import { Observable, of, Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
+import { ClientCredentialAdministrationService } from '../../../../api/service/user-administration/client-credential-administration.service';
 
 describe('UserAdministrationClientOverviewComponent', () => {
   let component: UserAdministrationClientOverviewComponent;
