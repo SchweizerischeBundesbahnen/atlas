@@ -1,22 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 import { UserService } from './user.service';
-import { of } from 'rxjs';
 import { ApiConfigService } from '../../configuration/api-config.service';
-import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 import { provideHttpClient } from '@angular/common/http';
+import {
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
 
 describe('UserService', () => {
   let userService: UserService;
-  const userAdministrationService = jasmine.createSpyObj(['getCurrentUser']);
-  userAdministrationService.getCurrentUser.and.returnValue(
-    of({
-      displayName: 'Test (ITC)',
-      mail: 'test@test.ch',
-      sbbUserId: 'e123456',
-      permissions: [],
-    })
-  );
   const apiConfigService = jasmine.createSpyObj<ApiConfigService>([
     'setToAuthenticatedUrl',
     'setToUnauthenticatedUrl',
@@ -27,15 +20,21 @@ describe('UserService', () => {
       imports: [RouterModule.forRoot([])],
       providers: [
         provideHttpClient(),
+        provideHttpClientTesting(),
         UserService,
-        {
-          provide: UserAdministrationService,
-          useValue: userAdministrationService,
-        },
         { provide: ApiConfigService, useValue: apiConfigService },
       ],
     });
     userService = TestBed.inject(UserService);
+    const httpTesting = TestBed.inject(HttpTestingController);
+    httpTesting.match({ method: 'GET' }).forEach((request) => {
+      request.flush({
+        displayName: 'Test (ITC)',
+        mail: 'test@test.ch',
+        sbbUserId: 'e123456',
+        permissions: [],
+      });
+    });
   });
 
   it('should set current user and load permissions', () => {
@@ -48,7 +47,6 @@ describe('UserService', () => {
     });
 
     expect(userService.loggedIn).toBeTrue();
-    expect(userAdministrationService.getCurrentUser).toHaveBeenCalled();
     expect(apiConfigService.setToAuthenticatedUrl).toHaveBeenCalled();
 
     expect(userService.isAdmin).toBeTrue();

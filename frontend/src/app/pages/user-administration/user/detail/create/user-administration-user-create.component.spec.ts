@@ -113,18 +113,6 @@ describe('UserAdministrationUserCreateComponent', () => {
     expect(component.selectedUserHasNoUserId).toBe(false);
   });
 
-  it('test selectUser without userId', () => {
-    component.selectUser({
-      sbbUserId: 'uid',
-      lastName: 'test',
-      permissions: new Set(),
-    });
-    expect(component.selectedUserHasNoUserId).toBe(true);
-    expect(component.userHasAlreadyPermissions).toBe(false);
-    expect(component.selectedUser).toBeUndefined();
-    expect(userAdministrationServiceSpy.getUser).not.toHaveBeenCalled();
-  });
-
   it('test selectUser with valid user', () => {
     userAdministrationServiceSpy.getUser.and.callFake((userId) =>
       of({

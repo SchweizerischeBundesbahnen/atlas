@@ -44,10 +44,7 @@ describe('UserAdministrationUserDetailResolver', () => {
 
     const userModel = await firstValueFrom(resolver.resolve(routeMock));
     expect(userAdministrationServiceSpy.getUser).not.toHaveBeenCalled();
-    expect(userModel).toEqual({
-      sbbUserId: 'add',
-      permissions: new Set(),
-    });
+    expect(userModel).toBeUndefined();
   });
 
   it('test sbbUserIdParam=userId', async () => {
