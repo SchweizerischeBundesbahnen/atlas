@@ -34,72 +34,46 @@ export class ApplicationPermissionConfig {
     return this.CONFIG[application].roles.map((i) => i.role);
   }
 
+  // Reader, Writer with BOs, SuperUser and Supervisor. Writer and SuperUser with BulkImport
+  private static readonly DEFAULT_ROLES = [
+    {
+      role: ApplicationRole.Reader,
+      permissions: {
+        restrictions: [],
+        specialPermissions: [],
+      },
+    },
+    {
+      role: ApplicationRole.Writer,
+      permissions: {
+        restrictions: [PermissionRestrictionType.BusinessOrganisation],
+        specialPermissions: [PermissionRestrictionType.BulkImport],
+      },
+    },
+    {
+      role: ApplicationRole.SuperUser,
+      permissions: {
+        restrictions: [],
+        specialPermissions: [PermissionRestrictionType.BulkImport],
+      },
+    },
+    {
+      role: ApplicationRole.Supervisor,
+      permissions: {
+        restrictions: [],
+        specialPermissions: [],
+      },
+    },
+  ];
+
   private static readonly CONFIG: {
     [application in ApplicationType]: ApplicationConfig;
   } = {
     TTFN: {
-      roles: [
-        {
-          role: ApplicationRole.Reader,
-          permissions: {
-            restrictions: [],
-            specialPermissions: [],
-          },
-        },
-        {
-          role: ApplicationRole.Writer,
-          permissions: {
-            restrictions: [PermissionRestrictionType.BusinessOrganisation],
-            specialPermissions: [PermissionRestrictionType.BulkImport],
-          },
-        },
-        {
-          role: ApplicationRole.SuperUser,
-          permissions: {
-            restrictions: [],
-            specialPermissions: [PermissionRestrictionType.BulkImport],
-          },
-        },
-        {
-          role: ApplicationRole.Supervisor,
-          permissions: {
-            restrictions: [],
-            specialPermissions: [],
-          },
-        },
-      ],
+      roles: ApplicationPermissionConfig.DEFAULT_ROLES,
     },
     LIDI: {
-      roles: [
-        {
-          role: ApplicationRole.Reader,
-          permissions: {
-            restrictions: [],
-            specialPermissions: [],
-          },
-        },
-        {
-          role: ApplicationRole.Writer,
-          permissions: {
-            restrictions: [PermissionRestrictionType.BusinessOrganisation],
-            specialPermissions: [PermissionRestrictionType.BulkImport],
-          },
-        },
-        {
-          role: ApplicationRole.SuperUser,
-          permissions: {
-            restrictions: [],
-            specialPermissions: [PermissionRestrictionType.BulkImport],
-          },
-        },
-        {
-          role: ApplicationRole.Supervisor,
-          permissions: {
-            restrictions: [],
-            specialPermissions: [],
-          },
-        },
-      ],
+      roles: ApplicationPermissionConfig.DEFAULT_ROLES,
     },
     BODI: {
       roles: [
@@ -201,36 +175,7 @@ export class ApplicationPermissionConfig {
       ],
     },
     PRM: {
-      roles: [
-        {
-          role: ApplicationRole.Reader,
-          permissions: {
-            restrictions: [],
-            specialPermissions: [],
-          },
-        },
-        {
-          role: ApplicationRole.Writer,
-          permissions: {
-            restrictions: [PermissionRestrictionType.BusinessOrganisation],
-            specialPermissions: [PermissionRestrictionType.BulkImport],
-          },
-        },
-        {
-          role: ApplicationRole.SuperUser,
-          permissions: {
-            restrictions: [],
-            specialPermissions: [PermissionRestrictionType.BulkImport],
-          },
-        },
-        {
-          role: ApplicationRole.Supervisor,
-          permissions: {
-            restrictions: [],
-            specialPermissions: [],
-          },
-        },
-      ],
+      roles: ApplicationPermissionConfig.DEFAULT_ROLES,
     },
   };
 }
