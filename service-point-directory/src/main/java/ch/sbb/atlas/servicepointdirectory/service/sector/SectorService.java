@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.TrafficPointNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
@@ -84,8 +85,7 @@ public class SectorService {
 
   private void existTrafficPointElement(String sloid) {
     if (trafficPointElementService.findBySloidOrderByValidFrom(sloid).isEmpty()) {
-      //TODO change exception
-      throw new RuntimeException("Traffic point not found");
+      throw new TrafficPointNotFoundException(sloid);
     }
   }
 
