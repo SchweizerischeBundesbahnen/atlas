@@ -337,7 +337,10 @@ export class ServicePointDetailComponent
 
   private startTermination() {
     this.terminationDialogService
-      .openDialog(this.selectedVersion!, this.form!.controls.validTo.value!)
+      .openDialog(
+        this.selectedVersion!,
+        this.form!.controls.validityGroup.controls.validTo.value!
+      )
       .subscribe((saved) => {
         if (saved) {
           this.router
