@@ -39,6 +39,5 @@ public abstract class AbstractSectorVersion extends BaseVersionModel {
   private Double length;
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
-  @NotNull
   private Integer etagVersion;
 }
