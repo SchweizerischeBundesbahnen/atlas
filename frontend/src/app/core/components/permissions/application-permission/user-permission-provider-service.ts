@@ -9,6 +9,8 @@ export abstract class UserPermissionProviderService {
 
   abstract showAllSpecialPermissions(): boolean;
 
+  abstract getCurrentForm(): FormGroup<ApplicationPermission> | undefined;
+
   protected getPermission(
     permissions: Iterable<Permission>,
     application: ApplicationType
