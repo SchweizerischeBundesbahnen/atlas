@@ -22,9 +22,7 @@ import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointEleme
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.stereotype.Service;
@@ -61,9 +59,9 @@ public class SectorGroupService {
   }
 
   public ReadSectorGroupVersionModel getSectorGroupVersion(Long id) {
-    SectorGroupVersion sectorGroupVersion = sectorGroupVersionRepository.findById(id).orElseThrow();
+    SectorGroupVersion sectorGroupVersion = getSectorGroupVersionById(id);
     List<String> sectorSloids = findAllSectorsRelatedToGroup(sectorGroupVersion.getSloid());
-    List<SectorVersionModel> sectorVersionModels = mapSectorVersions(sectorSloids);
+    List<SectorVersionModel> sectorVersionModels = mapToModels(fetchLatestSectorVersions(sectorSloids));
 
     return SectorGroupMapper.toReadModel(sectorGroupVersion, sectorVersionModels);
   }
@@ -75,33 +73,51 @@ public class SectorGroupService {
   }
 
   @Transactional
-  public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion sectorGroupVersionToCreate, List<String> sectorSloids) {
-    List<SectorVersion> sectorVersions = sectorVersionRepository.findAllBySloidIn(sectorSloids);
+  public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion toCreate,
+      List<String> sloids
+  ) {
+    List<SectorVersion> versions = fetchLatestSectorVersions(sloids);
+    validateSectorVersions(versions);
+    validateTrafficPoint(toCreate.getTrafficPointSloid(), versions);
 
-    //TODO locationService.claimSloid waiting for -> ATLAS-2963 (LocationService erweiterung)
+    createRelation(sloids, toCreate.getSloid());
+    SectorGroupVersion saved = save(toCreate);
 
-    preSaveCheck(sectorGroupVersionToCreate, sectorVersions);
-    createRelation(sectorSloids, sectorGroupVersionToCreate.getSloid());
-    SectorGroupVersion savedSectorGroupVersion = save(sectorGroupVersionToCreate);
-
-    List<SectorVersionModel> sectorVersionModels = sectorVersions.stream().map(SectorMapper::toModel).toList();
-    return SectorGroupMapper.toReadModel(savedSectorGroupVersion, sectorVersionModels);
+    List<SectorVersionModel> models = mapToModels(versions);
+    return SectorGroupMapper.toReadModel(saved, models);
   }
 
-  private void preSaveCheck(SectorGroupVersion sectorGroupVersion, List<SectorVersion> sectorVersions) {
-    existSectorVersion(sectorVersions);
-    hasAtLeastTwoValidSectorVersions(sectorVersions);
-    existTrafficPointElement(sectorGroupVersion.getTrafficPointSloid());
-    isTrafficPointSloidMatchingOverAllObjects(sectorVersions, sectorGroupVersion.getTrafficPointSloid());
+  private List<SectorVersion> fetchLatestSectorVersions(List<String> sloids) {
+    return sloids.stream()
+        .map(sloid -> {
+          List<SectorVersion> sectorVersions = sectorVersionRepository
+              .findAllBySloidOrderByValidFrom(sloid);
+          if (sectorVersions.isEmpty()) {
+            throw new SectorNotExistingException(sloid);
+          }
+          return sectorVersions.getLast();
+        })
+        .toList();
   }
 
-  private List<SectorVersionModel> mapSectorVersions(List<String> sectorSloids) {
-    List<SectorVersionModel> sectorVersionModels = new ArrayList<>();
-    for (String sectorSloid : sectorSloids) {
-      SectorVersion sectorVersion = sectorVersionRepository.findAllBySloidOrderByValidFrom(sectorSloid).getFirst();
-      sectorVersionModels.add(SectorMapper.toModel(sectorVersion));
+  private void validateSectorVersions(List<SectorVersion> versions) {
+    if (versions.size() < 2) {
+      throw new SectorNotValidException("At least two sector's are required");
     }
-    return sectorVersionModels;
+  }
+
+  private void validateTrafficPoint(
+      String trafficPointSloid,
+      List<SectorVersion> sectorVersions
+  ) {
+    existTrafficPointElement(trafficPointSloid);
+    isTrafficPointSloidMatchingOverAllObjects(sectorVersions, trafficPointSloid);
+  }
+
+  private List<SectorVersionModel> mapToModels(List<SectorVersion> versions) {
+    return versions.stream()
+        .map(SectorMapper::toModel)
+        .toList();
   }
 
   private void createRelation(List<String> sectorSloids, String sectorGroupSloid) {
@@ -120,24 +136,12 @@ public class SectorGroupService {
     }
   }
 
-  private void existSectorVersion(List<SectorVersion> sectorVersions) {
-    if (sectorVersions.isEmpty()) {
-      throw new SectorNotExistingException(sectorVersions.getFirst().getSloid());
-    }
-  }
-
   private void isTrafficPointSloidMatchingOverAllObjects(List<SectorVersion> sectorVersions, String trafficPointSloid) {
     sectorVersions.forEach(sectorVersion -> {
       if (!sectorVersion.getTrafficPointSloid().equals(trafficPointSloid)) {
         throw new SloidsNotEqualException("Traffic Point sloid of sector not matching with sector group traffic point sloid");
       }
     });
-  }
-
-  private void hasAtLeastTwoValidSectorVersions(List<SectorVersion> sectorVersions) {
-    if (sectorVersions.size() < 2) {
-      throw new SectorNotValidException("Should be at least two valid sector versions");
-    }
   }
 
   private SectorGroupVersion save(SectorGroupVersion sectorGroupVersion) {
@@ -171,10 +175,6 @@ public class SectorGroupService {
 
   public List<SectorGroupVersion> findAllBySloidOrderByValidFrom(String sectorGroupSloid) {
     return sectorGroupVersionRepository.findAllBySloidOrderByValidFrom(sectorGroupSloid);
-  }
-
-  public Optional<SectorGroupVersion> findById(Long id) {
-    return sectorGroupVersionRepository.findById(id);
   }
 
 }

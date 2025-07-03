@@ -13,8 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface SectorVersionRepository extends
     JpaRepository<SectorVersion, Long>, JpaSpecificationExecutor<SectorVersion> {
 
-  List<SectorVersion> findAllBySloidIn(List<String> sloids);
-
   List<SectorVersion> findAllBySloidOrderByValidFrom(String sloid);
 
   @Modifying(clearAutomatically = true)
