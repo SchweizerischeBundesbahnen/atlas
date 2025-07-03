@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
+import { UserPermissionGivenClientService } from './edit/user-permission-given-client.service';
 
 describe('UserAdministrationClientDetailComponent', () => {
   let component: UserAdministrationClientDetailComponent;
@@ -21,6 +22,9 @@ describe('UserAdministrationClientDetailComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: { data: of({ clientCredential: {} }) },
+        },
+        {
+          provide: UserPermissionGivenClientService,
         },
         TranslatePipe,
         provideHttpClient(),

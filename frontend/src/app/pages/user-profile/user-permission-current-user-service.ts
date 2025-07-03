@@ -10,6 +10,11 @@ import { UserPermissionProviderService } from '../../core/components/permissions
 
 export class UserPermissionCurrentUserService extends UserPermissionProviderService {
   userService = inject(UserService);
+  applicationPermissionFormGroup?: FormGroup<ApplicationPermission>;
+
+  getCurrentForm(): FormGroup<ApplicationPermission> | undefined {
+    return this.applicationPermissionFormGroup;
+  }
 
   showAllSpecialPermissions(): boolean {
     return false;
@@ -28,6 +33,7 @@ export class UserPermissionCurrentUserService extends UserPermissionProviderServ
         permission
       );
     applicationPermissionFormGroup.disable();
+    this.applicationPermissionFormGroup = applicationPermissionFormGroup;
     return applicationPermissionFormGroup;
   }
 }

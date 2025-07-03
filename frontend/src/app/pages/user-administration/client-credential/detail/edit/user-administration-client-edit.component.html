@@ -46,6 +46,7 @@
         </button>
         <button
           (click)="saveClientCredential()"
+          [disabled]="!formGroup.dirty"
           class="atlas-primary-btn ms-3"
           data-cy="save"
           type="submit"

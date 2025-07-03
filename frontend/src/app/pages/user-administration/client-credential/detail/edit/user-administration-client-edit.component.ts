@@ -93,6 +93,7 @@ export class UserAdministrationClientEditComponent implements OnInit {
     this.dialogService.confirmLeave().subscribe((result) => {
       if (result) {
         this.editMode = false;
+        this.ngOnInit();
       }
     });
   }
@@ -120,7 +121,11 @@ export class UserAdministrationClientEditComponent implements OnInit {
       this.dialogService.confirmLeave().subscribe((result) => {
         if (result) {
           this.editMode = false;
-          this.formGroup.disable();
+          this.userPermissionGivenClientService.applicationPermissionFormGroup =
+            this.userPermissionGivenClientService.loadFormGroup(
+              this.userPermissionGivenClientService.getCurrentForm()!.controls
+                .application.value!
+            );
         }
       });
     }

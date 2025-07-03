@@ -120,8 +120,6 @@ export class ApplicationPermissionComponent implements OnInit {
   );
   form!: FormGroup<ApplicationPermission>;
   permissionsForm!: FormGroup<PermissionRestriction>;
-  currentRole!: ApplicationRole;
-  currentRoleConfig!: RoleConfig;
   showAllSpecialPermissions = false;
 
   userPermissionProviderService = inject(UserPermissionProviderService);
@@ -141,8 +139,6 @@ export class ApplicationPermissionComponent implements OnInit {
     this.showAllSpecialPermissions =
       this.userPermissionProviderService.showAllSpecialPermissions();
 
-    this.onRoleChanged(this.form.controls.role.value ?? ApplicationRole.Reader);
-
     this.permissionsForm.controls.sboidsRestrictions?.value?.forEach((sboid) =>
       this.addBusinessOrganisationToCurrentTable(sboid)
     );
@@ -153,6 +149,7 @@ export class ApplicationPermissionComponent implements OnInit {
     const updatedSboids = sboids.value!;
     updatedSboids.splice(this.selectedIndex, 1);
     sboids.setValue(updatedSboids);
+    sboids.markAsDirty();
 
     this.currentBusinessOrganisations =
       this.currentBusinessOrganisations.filter(
@@ -172,6 +169,7 @@ export class ApplicationPermissionComponent implements OnInit {
       const updatedSboids = sboids.value!;
       updatedSboids.push(sboid);
       sboids.setValue(updatedSboids);
+      sboids.markAsDirty();
       this.businessOrganisationForm.reset();
     }
   }
@@ -195,15 +193,18 @@ export class ApplicationPermissionComponent implements OnInit {
     });
   }
 
-  onRoleChanged(applicationRole: ApplicationRole) {
-    this.currentRole = applicationRole;
+  get currentRole() {
+    return this.form.controls.role.value ?? ApplicationRole.Reader;
+  }
+
+  get currentRoleConfig(): RoleConfig {
     const availableConfig = this.applicationConfig.roles.find(
-      (i) => i.role === applicationRole
+      (i) => i.role === this.currentRole
     );
     if (!availableConfig) {
       throw new Error('Available Config not found');
     }
-    this.currentRoleConfig = availableConfig!;
+    return availableConfig!;
   }
 
   get showBusinessOrganisationRestriction() {
