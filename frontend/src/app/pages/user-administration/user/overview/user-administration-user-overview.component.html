@@ -33,7 +33,7 @@
         </mat-label>
       </div>
       <app-user-select
-        (selectionChange)="checkIfUserExists($event)"
+        (selectionChange)="onUserFilterChanged($event)"
         [form]="userSearchForm"
       ></app-user-select>
     } @else if (selectedSearch === 'FILTER') {

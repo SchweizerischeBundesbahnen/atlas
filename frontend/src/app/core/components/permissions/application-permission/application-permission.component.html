@@ -18,7 +18,7 @@
   </div>
 
   @if (currentRoleConfig.permissions.restrictions.length > 0) {
-    <atlas-spacer height="15px" [divider]="true"></atlas-spacer>
+    <atlas-spacer height="20px" [divider]="false"></atlas-spacer>
     <div class="restrictions col-12 d-flex flex-column mb-3">
       <div class="d-flex font-bold-xl">
         {{ 'PROFILE.PERMISSIONS' | translate }}
@@ -86,7 +86,7 @@
   }
 
   @if (showSpecialPermissions) {
-    <atlas-spacer height="15px" [divider]="true"></atlas-spacer>
+    <atlas-spacer height="20px" [divider]="false"></atlas-spacer>
     <div class="special-permissions">
       <div class="d-flex font-bold-xl">
         {{ 'PROFILE.SPECIAL_PERMISSIONS' | translate }}

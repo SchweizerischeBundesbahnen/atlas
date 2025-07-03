@@ -81,7 +81,7 @@ export class UserAdministrationUserOverviewComponent {
   SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
 
   constructor(
-    private readonly userService: UserAdministrationService,
+    private readonly userAdministrationService: UserAdministrationService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly tableService: TableService
@@ -89,7 +89,7 @@ export class UserAdministrationUserOverviewComponent {
 
   reloadTableWithCurrentSettings(): void {
     if (this.selectedSearch === 'USER') {
-      this.checkIfUserExists(
+      this.onUserFilterChanged(
         this.userSearchForm.get(this.userSearchCtrlName)?.value,
         this.tableService.pageIndex
       );
@@ -110,7 +110,7 @@ export class UserAdministrationUserOverviewComponent {
     this.userSearchForm.reset();
     this.boForm.reset();
     this.selectedApplicationOptions = [];
-    this.userService
+    this.userAdministrationService
       .getUsers(pagination.page, pagination.size)
       .pipe(
         tap((result) => {
@@ -125,21 +125,30 @@ export class UserAdministrationUserOverviewComponent {
       .subscribe();
   }
 
-  checkIfUserExists(selectedUser: User, pageIndex = 0): void {
+  onUserFilterChanged(selectedUser: User, pageIndex = 0): void {
     if (!selectedUser) {
       this.loadUsers({ page: pageIndex, size: this.tableService.pageSize });
     } else if (!selectedUser.sbbUserId) {
       this.userPageResult = { users: [], totalCount: 0 };
       this.tableService.pageIndex = 0;
     } else {
-      this.userPageResult = { users: [selectedUser], totalCount: 1 };
-      this.tableService.pageIndex = 0;
+      this.userAdministrationService
+        .getUser(selectedUser.sbbUserId)
+        .subscribe((user) => {
+          if (Array.from(user.permissions).length > 0) {
+            this.userPageResult = { users: [user], totalCount: 1 };
+            this.tableService.pageIndex = 0;
+          } else {
+            this.userPageResult = { users: [], totalCount: 0 };
+            this.tableService.pageIndex = 0;
+          }
+        });
     }
   }
 
   filterChanged(pageIndex = 0): void {
     const selectedSboid = this.boForm.get(this.boSearchCtrlName)?.value;
-    this.userService
+    this.userAdministrationService
       .getUsers(
         pageIndex,
         this.tableService.pageSize,

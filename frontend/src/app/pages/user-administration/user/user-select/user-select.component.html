@@ -1,6 +1,6 @@
 <form-search-select
   (changeTrigger)="selectionChange.emit($event)"
-  (searchTrigger)="!searchInAtlas ? searchUser($event) : searchUserInAtlas($event)"
+  (searchTrigger)="search($event)"
   [controlName]="'userSearch'"
   [formGroup]="form"
   [items$]="userSearchResults$"
