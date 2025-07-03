@@ -3,6 +3,9 @@ import { User } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
 import { UserAdministrationUserCreateComponent } from './create/user-administration-user-create.component';
 import { UserAdministrationUserEditComponent } from './edit/user-administration-user-edit.component';
+import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { FormGroup } from '@angular/forms';
+import { UserPermissionGivenUserService } from './edit/user-permission-given-user.service';
 
 @Component({
   selector: 'app-user-administration',
@@ -12,8 +15,11 @@ import { UserAdministrationUserEditComponent } from './edit/user-administration-
     UserAdministrationUserCreateComponent,
   ],
 })
-export class UserAdministrationUserDetailComponent implements OnInit {
+export class UserAdministrationUserDetailComponent
+  implements OnInit, DetailFormComponent
+{
   activatedRoute = inject(ActivatedRoute);
+  userPermissionGivenUserService = inject(UserPermissionGivenUserService);
 
   user?: User;
 
@@ -21,5 +27,9 @@ export class UserAdministrationUserDetailComponent implements OnInit {
     this.activatedRoute.data.subscribe((data) => {
       this.user = data.user;
     });
+  }
+
+  get form(): FormGroup | undefined {
+    return this.userPermissionGivenUserService.applicationPermissionFormGroup;
   }
 }

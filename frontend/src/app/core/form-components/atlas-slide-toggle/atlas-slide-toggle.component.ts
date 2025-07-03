@@ -32,6 +32,7 @@ export class AtlasSlideToggleComponent implements OnInit {
 
     if (this.formControl) {
       this.formControl?.setValue(this.toggle);
+      this.formControl?.markAsDirty();
     }
   }
 

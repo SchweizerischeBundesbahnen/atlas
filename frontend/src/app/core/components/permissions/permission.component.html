@@ -2,11 +2,7 @@
   {{ 'PROFILE.PERMISSIONS' | translate }}
 </div>
 
-<mat-tab-group
-  class="tabs"
-  animationDuration="0ms"
-  (selectedTabChange)="onSelectedTabChange($event.index)"
->
+<mat-tab-group class="tabs" animationDuration="0ms">
   @for (application of applications; track application) {
     <mat-tab>
       <ng-template mat-tab-label>

@@ -8,6 +8,7 @@ import { clientCredentialResolver } from './client-credential/detail/client-cred
 import { UserPermissionProviderService } from '../../core/components/permissions/application-permission/user-permission-provider-service';
 import { UserPermissionGivenUserService } from './user/detail/edit/user-permission-given-user.service';
 import { UserPermissionGivenClientService } from './client-credential/detail/edit/user-permission-given-client.service';
+import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,7 @@ export const routes: Routes = [
       import('./user/detail/user-administration-user-detail.component').then(
         (m) => m.UserAdministrationUserDetailComponent
       ),
+    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       user: userResolver,
     },
@@ -33,6 +35,7 @@ export const routes: Routes = [
       import(
         './client-credential/detail/user-administration-client-detail.component'
       ).then((m) => m.UserAdministrationClientDetailComponent),
+    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       clientCredential: clientCredentialResolver,
     },

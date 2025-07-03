@@ -18,6 +18,10 @@ import {
 } from '../form/application-permission-form-group';
 
 export class MockUserPermissionProviderService extends UserPermissionProviderService {
+  getCurrentForm(): FormGroup<ApplicationPermission> | undefined {
+    return undefined;
+  }
+
   showAllSpecialPermissions(): boolean {
     return false;
   }
