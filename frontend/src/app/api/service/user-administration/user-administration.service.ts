@@ -33,7 +33,7 @@ export class UserAdministrationService {
       searchQuery,
       applicationType,
     });
-    return this.atlasApiService.get('user-administration/v1/search-in-atlas', httpParams);
+    return this.atlasApiService.get('/user-administration/v1/search-in-atlas', httpParams);
   }
 
   getUsers(
