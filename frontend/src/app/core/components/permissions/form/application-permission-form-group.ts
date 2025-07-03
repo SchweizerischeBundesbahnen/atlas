@@ -216,8 +216,9 @@ export class ApplicationPermissionFormGroupBuilder {
     ) {
       const countries =
         form.controls.permissions.controls.countryRestrictions?.value ?? [];
-      const countryRestrictions: CountryPermissionRestrictionModel[] =
-        countries.map((country) => ({
+      const countryRestrictions: CountryPermissionRestrictionModel[] = countries
+        .filter((country) => !!country)
+        .map((country) => ({
           type: PermissionRestrictionType.Country,
           valueAsString: country,
         }));
