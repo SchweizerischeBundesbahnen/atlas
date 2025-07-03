@@ -35,4 +35,8 @@ export class UserPermissionGivenUserService extends UserPermissionProviderServic
     this.applicationPermissionFormGroup = applicationPermissionFormGroup;
     return applicationPermissionFormGroup;
   }
+
+  getCurrentForm(): FormGroup<ApplicationPermission> | undefined {
+    return this.applicationPermissionFormGroup;
+  }
 }

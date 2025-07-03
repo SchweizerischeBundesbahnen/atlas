@@ -78,7 +78,14 @@ export class UserAdministrationUserEditComponent implements OnInit {
       this.dialogService.confirmLeave().subscribe((result) => {
         if (result) {
           this.editMode = false;
-          this.formGroup.disable();
+          this.userPermissionGivenUserService.loadFormGroup(
+            this.userPermissionGivenUserService.getCurrentForm()!.controls
+              .application.value!
+          );
+          console.log(
+            'form after reset',
+            this.userPermissionGivenUserService.applicationPermissionFormGroup
+          );
         }
       });
     }

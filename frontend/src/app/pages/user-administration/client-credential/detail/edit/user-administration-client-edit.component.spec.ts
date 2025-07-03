@@ -13,8 +13,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import SpyObj = jasmine.SpyObj;
 import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
+import { UserPermissionGivenClientService } from './user-permission-given-client.service';
+import { UserPermissionProviderService } from '../../../../../core/components/permissions/application-permission/user-permission-provider-service';
+import SpyObj = jasmine.SpyObj;
 
 describe('UserAdministrationClientEditComponent', () => {
   let component: UserAdministrationClientEditComponent;
@@ -65,6 +67,13 @@ describe('UserAdministrationClientEditComponent', () => {
       providers: [
         TranslatePipe,
         { provide: MatDialogRef, useValue: dialogMock },
+        {
+          provide: UserPermissionGivenClientService,
+        },
+        {
+          provide: UserPermissionProviderService,
+          useClass: UserPermissionGivenClientService,
+        },
         {
           provide: ClientCredentialAdministrationService,
           useValue: clientCredentialAdministrationServiceSpy,
