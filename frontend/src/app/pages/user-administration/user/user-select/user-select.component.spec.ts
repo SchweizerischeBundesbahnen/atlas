@@ -65,7 +65,7 @@ describe('UserSelectComponent', () => {
         },
       ])
     );
-    component.searchUser('testQuery');
+    component.search('testQuery');
     component.searchInAtlas = false;
     fixture.detectChanges();
     expect(userAdministrationServiceSpy.searchUsers).toHaveBeenCalledOnceWith(
@@ -94,7 +94,7 @@ describe('UserSelectComponent', () => {
     component.searchInAtlas = true;
     component.applicationType = ApplicationType.Sepodi;
     fixture.detectChanges();
-    component.searchUserInAtlas('testQuery');
+    component.search('testQuery');
     expect(
       userAdministrationServiceSpy.searchUsersInAtlas
     ).toHaveBeenCalledOnceWith('testQuery', ApplicationType.Sepodi);

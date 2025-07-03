@@ -6,7 +6,7 @@ import {
 } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, Subject } from 'rxjs';
-import { Permission } from '../../../../api';
+import { ApplicationRole, ApplicationType, Permission } from '../../../../api';
 import { UserAdministrationUserOverviewComponent } from './user-administration-user-overview.component';
 import { adminPermissionServiceMock } from '../../../../app.testing.mocks';
 import { TableService } from '../../../../core/components/table/table.service';
@@ -20,7 +20,7 @@ describe('UserAdministrationUserOverviewComponent', () => {
 
   const userAdministrationServiceMock = jasmine.createSpyObj(
     'UserAdministrationService',
-    ['getUsers']
+    ['getUsers', 'getUser']
   );
   userAdministrationServiceMock.getUsers.and.returnValue(
     of({ objects: [], totalCount: 0 })
@@ -121,17 +121,29 @@ describe('UserAdministrationUserOverviewComponent', () => {
   it('test checkIfUserExists with undefined user', () => {
     spyOn(component, 'loadUsers');
     tableService.pageSize = 10;
-    component.checkIfUserExists(undefined!);
+    component.onUserFilterChanged(undefined!);
     expect(component.loadUsers).toHaveBeenCalledOnceWith({ page: 0, size: 10 });
   });
 
   it('test checkIfUserExists normal', () => {
+    userAdministrationServiceMock.getUser.and.returnValue(
+      of({
+        sbbUserId: 'u123456',
+        permissions: new Set<Permission>([
+          {
+            role: ApplicationRole.Reader,
+            application: ApplicationType.Ttfn,
+            permissionRestrictions: [],
+          },
+        ]),
+      })
+    );
     tableService.pageIndex = 10;
 
     userAdministrationServiceMock.hasUserPermissions = jasmine
       .createSpy()
       .and.returnValue(of(true));
-    component.checkIfUserExists({
+    component.onUserFilterChanged({
       sbbUserId: 'u123456',
       permissions: new Set<Permission>(),
     });
@@ -139,7 +151,13 @@ describe('UserAdministrationUserOverviewComponent', () => {
       users: [
         {
           sbbUserId: 'u123456',
-          permissions: new Set<Permission>(),
+          permissions: new Set<Permission>([
+            {
+              role: ApplicationRole.Reader,
+              application: ApplicationType.Ttfn,
+              permissionRestrictions: [],
+            },
+          ]),
         },
       ],
       totalCount: 1,
@@ -193,11 +211,11 @@ describe('UserAdministrationUserOverviewComponent', () => {
   });
 
   it('test reloadTableWithCurrentSettings, USER', () => {
-    spyOn(component, 'checkIfUserExists');
+    spyOn(component, 'onUserFilterChanged');
     tableService.pageSize = 10;
     tableService.pageIndex = 10;
     component.reloadTableWithCurrentSettings();
-    expect(component.checkIfUserExists).toHaveBeenCalledOnceWith(null!, 10);
+    expect(component.onUserFilterChanged).toHaveBeenCalledOnceWith(null!, 10);
   });
 
   it('test reloadTableWithCurrentSettings, FILTER', () => {
