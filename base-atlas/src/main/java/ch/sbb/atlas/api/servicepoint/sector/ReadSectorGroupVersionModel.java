@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "ReadSectorGroupVersion")
 public class ReadSectorGroupVersionModel extends AbstractSectorCore {
 
-  @Schema(description = "Sector sloid's related to the sector group")
-  List<String> sectorSloids;
+  @Schema(description = "Sector's related to the sector group")
+  List<SectorVersionModel> sectorVersions;
 
 }
