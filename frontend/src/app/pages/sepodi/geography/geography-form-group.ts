@@ -6,7 +6,7 @@ import { LV95_MAX_DIGITS, WGS84_MAX_DIGITS } from './geography.component';
 export interface GeographyFormGroup {
   east: FormControl<number | null | undefined>;
   north: FormControl<number | null | undefined>;
-  height: FormControl<number | null | undefined>;
+  height: FormControl<number | undefined>;
   spatialReference: FormControl<SpatialReference | null | undefined>;
 }
 
@@ -21,9 +21,10 @@ export class GeographyFormGroupBuilder {
         this.getCoordinates(geolocation)?.north,
         this.getValidatorsForCoordinates(geolocation?.spatialReference, 'NORTH')
       ),
-      height: new FormControl(geolocation?.height, [
-        AtlasCharsetsValidator.decimalWithDigits(5, 4),
-      ]),
+      height: new FormControl(geolocation?.height, {
+        nonNullable: true,
+        validators: [AtlasCharsetsValidator.decimalWithDigits(5, 4)],
+      }),
       spatialReference: new FormControl(
         geolocation?.spatialReference ?? SpatialReference.Lv95
       ),
