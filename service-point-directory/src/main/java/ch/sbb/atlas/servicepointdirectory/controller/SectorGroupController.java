@@ -37,7 +37,9 @@ public class SectorGroupController implements SectorGroupApiV1 {
 
   @Override
   public ReadSectorGroupVersionModel createSectorGroupVersion(CreateSectorGroupVersionModel createSectorGroupVersionModel) {
-    return sectorGroupService.createSectorGroup(createSectorGroupVersionModel);
+    SectorGroupVersion sectorGroupVersionToCreate = SectorGroupMapper.toEntity(createSectorGroupVersionModel);
+    List<String> sectorSloidsToAdd = createSectorGroupVersionModel.getSectorSloids().stream().toList();
+    return sectorGroupService.createSectorGroup(sectorGroupVersionToCreate, sectorSloidsToAdd);
   }
 
   @Override
