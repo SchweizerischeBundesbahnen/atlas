@@ -27,7 +27,13 @@ describe('UserAdministrationUserEditComponent', () => {
 
   let userAdministrationServiceSpy: SpyObj<UserAdministrationService>;
   let notificationServiceSpy: SpyObj<NotificationService>;
-  let boServiceSpy: SpyObj<BusinessOrganisationsService>;
+  const businessOrganisationsService = jasmine.createSpyObj(
+    'BusinessOrganisationService',
+    ['getAllBusinessOrganisations']
+  );
+  businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(
+    of({ objects: [] })
+  );
   let dialogServiceSpy: SpyObj<DialogService>;
 
   beforeEach(async () => {
@@ -46,16 +52,13 @@ describe('UserAdministrationUserEditComponent', () => {
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
       'success',
     ]);
-    boServiceSpy = jasmine.createSpyObj('BusinessOrganisationService', [
-      'getAllBusinessOrganisations',
-    ]);
     dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirmLeave']);
     TestBed.overrideComponent(UserAdministrationUserEditComponent, {
       set: {
         viewProviders: [
           {
             provide: BusinessOrganisationsService,
-            useValue: boServiceSpy,
+            useValue: businessOrganisationsService,
           },
         ],
       },
@@ -195,5 +198,15 @@ describe('UserAdministrationUserEditComponent', () => {
     expect(component.userRecord!.creator).toBe('me');
     expect(component.userRecord!.editionDate).toBe('2020-01-06');
     expect(component.userRecord!.editor).toBe('sumotherdude');
+  });
+
+  it('should toggleEdit', () => {
+    expect(component.editMode).toBeFalse();
+
+    component.toggleEdit();
+    expect(component.editMode).toBeTrue();
+
+    component.toggleEdit();
+    expect(component.editMode).toBeFalse();
   });
 });

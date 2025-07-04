@@ -6,7 +6,7 @@
   @for (application of applications; track application) {
     <mat-tab>
       <ng-template mat-tab-label>
-        <div class="font-bold-xl">
+        <div [class]="'font-bold-xl tab-' + application">
           {{ 'USER_ADMIN.APPLICATION.' + application | translate }}
         </div>
       </ng-template>
