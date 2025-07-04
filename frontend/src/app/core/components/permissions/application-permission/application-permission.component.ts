@@ -120,27 +120,40 @@ export class ApplicationPermissionComponent implements OnInit {
   );
   form!: FormGroup<ApplicationPermission>;
   permissionsForm!: FormGroup<PermissionRestriction>;
+  currentRole!: ApplicationRole;
+  currentRoleConfig!: RoleConfig;
   showAllSpecialPermissions = false;
 
   userPermissionProviderService = inject(UserPermissionProviderService);
 
   ngOnInit(): void {
-    this.form = this.userPermissionProviderService.loadFormGroup(
-      this.application()
-    );
+    this.userPermissionProviderService.loadFormGroup(this.application());
+    this.initializeView();
+    this.userPermissionProviderService.formChanged.subscribe(() => {
+      this.initializeView();
+    });
+  }
+
+  private initializeView(): void {
+    this.form = this.userPermissionProviderService.getCurrentForm()!;
     this.permissionsForm = this.form.controls.permissions;
 
     this.availableRoles = ApplicationPermissionConfig.getRoles(
-      this.application()
+      this.form.controls.application.value!
     );
     this.applicationConfig = ApplicationPermissionConfig.get(
-      this.application()
+      this.form.controls.application.value!
     );
     this.showAllSpecialPermissions =
       this.userPermissionProviderService.showAllSpecialPermissions();
 
-    this.permissionsForm.controls.sboidsRestrictions?.value?.forEach((sboid) =>
-      this.addBusinessOrganisationToCurrentTable(sboid)
+    this.onRoleChanged(this.form.controls.role.value ?? ApplicationRole.Reader);
+
+    this.permissionsForm.controls.sboidsRestrictions?.value?.forEach(
+      (sboid) => {
+        this.currentBusinessOrganisations = [];
+        this.addBusinessOrganisationToCurrentTable(sboid);
+      }
     );
   }
 
@@ -193,18 +206,16 @@ export class ApplicationPermissionComponent implements OnInit {
     });
   }
 
-  get currentRole() {
-    return this.form.controls.role.value ?? ApplicationRole.Reader;
-  }
-
-  get currentRoleConfig(): RoleConfig {
+  onRoleChanged(applicationRole: ApplicationRole) {
+    this.currentRole = applicationRole;
     const availableConfig = this.applicationConfig.roles.find(
-      (i) => i.role === this.currentRole
+      (i) => i.role === applicationRole
     );
     if (!availableConfig) {
-      throw new Error('Available Config not found');
+      console.log(this.applicationConfig);
+      throw new Error('Available Config not found for ' + applicationRole);
     }
-    return availableConfig!;
+    this.currentRoleConfig = availableConfig!;
   }
 
   get showBusinessOrganisationRestriction() {

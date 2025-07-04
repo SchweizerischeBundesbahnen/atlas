@@ -18,7 +18,6 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
 import { UserPermissionGivenUserService } from './user-permission-given-user.service';
-import { UserPermissionGivenClientService } from '../../../client-credential/detail/edit/user-permission-given-client.service';
 import { UserPermissionProviderService } from '../../../../../core/components/permissions/application-permission/user-permission-provider-service';
 import SpyObj = jasmine.SpyObj;
 
