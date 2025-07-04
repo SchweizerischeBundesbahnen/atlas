@@ -81,7 +81,7 @@ describe('UserAdministrationUserEditComponent', () => {
         },
         {
           provide: UserPermissionProviderService,
-          useClass: UserPermissionGivenUserService,
+          useExisting: UserPermissionGivenUserService,
         },
         {
           provide: ActivatedRoute,
