@@ -18,8 +18,10 @@ import {
 } from '../form/application-permission-form-group';
 
 export class MockUserPermissionProviderService extends UserPermissionProviderService {
+  applicationPermissionFormGroup?: FormGroup<ApplicationPermission>;
+
   getCurrentForm(): FormGroup<ApplicationPermission> | undefined {
-    return undefined;
+    return this.applicationPermissionFormGroup;
   }
 
   showAllSpecialPermissions(): boolean {
@@ -27,7 +29,9 @@ export class MockUserPermissionProviderService extends UserPermissionProviderSer
   }
 
   loadFormGroup(): void {
-    ApplicationPermissionFormGroupBuilder.buildFormGroup();
+    const formGroup = ApplicationPermissionFormGroupBuilder.buildFormGroup();
+    formGroup.controls.application.setValue(ApplicationType.Ttfn);
+    this.applicationPermissionFormGroup = formGroup;
   }
 }
 
