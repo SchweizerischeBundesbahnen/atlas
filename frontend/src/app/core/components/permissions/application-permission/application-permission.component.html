@@ -48,12 +48,12 @@
           <app-relation
             (deleteRelation)="removeBusinessOrganisation()"
             (editModeChanged)="addBusinessOrganisation()"
-            (selectedIndexChanged)="selectedIndex = $event"
+            (selectedIndexChanged)="selectedBusinessOrganisationIndex = $event"
             addBtnNameTranslationKey="USER_ADMIN.ADD_BUSINESS_ORGANISATION"
             deleteBtnNameTranslationKey="USER_ADMIN.DELETE_BUSINESS_ORGANISATION"
             [editable]="form.enabled"
             [records]="currentBusinessOrganisations"
-            [selectedIndex]="selectedIndex"
+            [selectedIndex]="selectedBusinessOrganisationIndex"
             [tableColumns]="tableColumnDef"
             [relationEditable]="false"
           >

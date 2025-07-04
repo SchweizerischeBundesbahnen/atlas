@@ -87,6 +87,7 @@ export class ApplicationPermissionFormGroupBuilder {
       application: new FormControl(),
       role: new FormControl(),
       permissions: new FormGroup<PermissionRestriction>({
+        cantonRestrictions: new FormControl([]),
         countryRestrictions: new FormControl([]),
         sboidsRestrictions: new FormControl([]),
         bulkImportRestriction: new FormControl(),
