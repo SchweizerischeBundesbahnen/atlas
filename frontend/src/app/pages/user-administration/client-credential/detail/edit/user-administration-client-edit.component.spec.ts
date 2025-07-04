@@ -2,15 +2,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationClientEditComponent } from './user-administration-client-edit.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
+  ApplicationRole,
+  ApplicationType,
   BusinessOrganisationsService,
   ClientCredential,
+  PermissionRestrictionType,
 } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
@@ -30,17 +32,20 @@ describe('UserAdministrationClientEditComponent', () => {
     },
   };
 
-  let clientCredentialAdministrationServiceSpy: SpyObj<ClientCredentialAdministrationService>;
+  let clientCredentialAdministrationService: SpyObj<ClientCredentialAdministrationService>;
   let notificationServiceSpy: SpyObj<NotificationService>;
   let boServiceSpy: SpyObj<BusinessOrganisationsService>;
   let dialogServiceSpy: SpyObj<DialogService>;
 
   beforeEach(async () => {
-    clientCredentialAdministrationServiceSpy =
+    clientCredentialAdministrationService =
       jasmine.createSpyObj<ClientCredentialAdministrationService>(
         'ClientCredentialAdministrationService',
         ['updateClientCredentialPermissions']
       );
+    clientCredentialAdministrationService.updateClientCredentialPermissions.and.returnValue(
+      of()
+    );
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
       'success',
     ]);
@@ -48,7 +53,7 @@ describe('UserAdministrationClientEditComponent', () => {
       'getAllBusinessOrganisations',
     ]);
     dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirmLeave']);
-    dialogMock.closeCalled = false;
+    dialogServiceSpy.confirmLeave.and.returnValue(of(true));
     TestBed.overrideComponent(UserAdministrationClientEditComponent, {
       set: {
         viewProviders: [
@@ -66,7 +71,6 @@ describe('UserAdministrationClientEditComponent', () => {
       ],
       providers: [
         TranslatePipe,
-        { provide: MatDialogRef, useValue: dialogMock },
         {
           provide: UserPermissionGivenClientService,
         },
@@ -76,7 +80,7 @@ describe('UserAdministrationClientEditComponent', () => {
         },
         {
           provide: ClientCredentialAdministrationService,
-          useValue: clientCredentialAdministrationServiceSpy,
+          useValue: clientCredentialAdministrationService,
         },
         {
           provide: NotificationService,
@@ -99,7 +103,19 @@ describe('UserAdministrationClientEditComponent', () => {
     component = fixture.componentInstance;
     const clientCredential: ClientCredential = {
       clientCredentialId: 'clientCredentialId',
-      permissions: new Set([]),
+      permissions: new Set([
+        {
+          role: ApplicationRole.Writer,
+          application: ApplicationType.Ttfn,
+          permissionRestrictions: [
+            {
+              type: PermissionRestrictionType.BusinessOrganisation,
+              valueAsString: 'ch:1:sboid:12312',
+            },
+          ],
+          editionDate: '',
+        },
+      ]),
       alias: 'alias',
       comment: 'comment',
     };
@@ -110,5 +126,24 @@ describe('UserAdministrationClientEditComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+
+    expect(component.record.editionDate).toBe('');
+  });
+
+  it('should save permissions', () => {
+    component.saveClientCredential();
+    expect(
+      clientCredentialAdministrationService.updateClientCredentialPermissions
+    ).toHaveBeenCalledTimes(1);
+  });
+
+  it('should toggleEdit', () => {
+    expect(component.editMode).toBeFalse();
+
+    component.toggleEdit();
+    expect(component.editMode).toBeTrue();
+
+    component.toggleEdit();
+    expect(component.editMode).toBeFalse();
   });
 });

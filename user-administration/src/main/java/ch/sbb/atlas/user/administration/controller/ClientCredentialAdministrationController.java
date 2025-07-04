@@ -46,7 +46,8 @@ public class ClientCredentialAdministrationController implements ClientCredentia
   }
 
   @Override
-  public ClientCredentialModel updateClientCredential( String clientId,      ApplicationType application,      PermissionModel editedPermissions) {
+  public ClientCredentialModel updateClientCredential(String clientId, ApplicationType application,
+      PermissionModel editedPermissions) {
     clientCredentialAdministrationService.update(clientId, application, editedPermissions);
     ClientCredentialModel clientCredentialModel = getClientCredential(clientId);
     userPermissionDistributor.pushUserPermissionToKafka(KafkaModelMapper.toKafkaModel(clientCredentialModel));
