@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AtlasSlideToggleComponent } from './atlas-slide-toggle.component';
+import { FormControl, FormGroup } from '@angular/forms';
 
 describe('AtlasSlideToggleComponent', () => {
   let component: AtlasSlideToggleComponent;
@@ -18,5 +19,19 @@ describe('AtlasSlideToggleComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should be created with form', () => {
+    component.formGroup = new FormGroup({
+      value: new FormControl(false),
+    });
+    component.controlName = 'value';
+    fixture.detectChanges();
+    expect(component.formControl).toBeTruthy();
+
+    component.handleToggleClick();
+
+    expect(component.formControl?.value).toBeTrue();
+    expect(component.formControl?.dirty).toBeTrue();
   });
 });
