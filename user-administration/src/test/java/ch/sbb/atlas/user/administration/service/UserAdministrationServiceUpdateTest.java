@@ -138,4 +138,24 @@ class UserAdministrationServiceUpdateTest {
     assertThat(lidiPermissions.getRole()).isEqualTo(ApplicationRole.READER);
   }
 
+  @Test
+  void shouldAddAdditionalApplication() {
+    // Given
+    assertThat(userAdministrationService.getCurrentUserPermission(SBBUID,
+        ApplicationType.SEPODI)).isEmpty();
+    
+    PermissionModel editedPermissions = PermissionModel.builder()
+        .application(ApplicationType.SEPODI)
+        .role(ApplicationRole.SUPERVISOR)
+        .build();
+
+    // When
+    userAdministrationService.updatePermission(SBBUID, ApplicationType.SEPODI, editedPermissions);
+
+    // Then
+    UserPermission sepodiPermission = userAdministrationService.getCurrentUserPermission(SBBUID,
+        ApplicationType.SEPODI).orElseThrow();
+    assertThat(sepodiPermission.getRole()).isEqualTo(ApplicationRole.SUPERVISOR);
+  }
+
 }

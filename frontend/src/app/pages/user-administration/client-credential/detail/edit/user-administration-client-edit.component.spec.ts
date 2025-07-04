@@ -34,7 +34,13 @@ describe('UserAdministrationClientEditComponent', () => {
 
   let clientCredentialAdministrationService: SpyObj<ClientCredentialAdministrationService>;
   let notificationServiceSpy: SpyObj<NotificationService>;
-  let boServiceSpy: SpyObj<BusinessOrganisationsService>;
+  const businessOrganisationsService = jasmine.createSpyObj(
+    'BusinessOrganisationService',
+    ['getAllBusinessOrganisations']
+  );
+  businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(
+    of({ objects: [] })
+  );
   let dialogServiceSpy: SpyObj<DialogService>;
 
   beforeEach(async () => {
@@ -49,9 +55,6 @@ describe('UserAdministrationClientEditComponent', () => {
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
       'success',
     ]);
-    boServiceSpy = jasmine.createSpyObj('BusinessOrganisationService', [
-      'getAllBusinessOrganisations',
-    ]);
     dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirmLeave']);
     dialogServiceSpy.confirmLeave.and.returnValue(of(true));
     TestBed.overrideComponent(UserAdministrationClientEditComponent, {
@@ -59,7 +62,7 @@ describe('UserAdministrationClientEditComponent', () => {
         viewProviders: [
           {
             provide: BusinessOrganisationsService,
-            useValue: boServiceSpy,
+            useValue: businessOrganisationsService,
           },
         ],
       },

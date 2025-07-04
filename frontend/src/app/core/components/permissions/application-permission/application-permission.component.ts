@@ -88,7 +88,7 @@ export class ApplicationPermissionComponent implements OnInit {
     [this.boFormCtrlName]: new FormControl<BusinessOrganisation | null>(null),
   });
   currentBusinessOrganisations: BusinessOrganisation[] = [];
-  selectedIndex = -1;
+  selectedBusinessOrganisationIndex = -1;
   readonly tableColumnDef: TableColumn<BusinessOrganisation>[] = [
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
@@ -160,16 +160,16 @@ export class ApplicationPermissionComponent implements OnInit {
   removeBusinessOrganisation(): void {
     const sboids = this.form.controls.permissions.controls.sboidsRestrictions!;
     const updatedSboids = sboids.value!;
-    updatedSboids.splice(this.selectedIndex, 1);
+    updatedSboids.splice(this.selectedBusinessOrganisationIndex, 1);
     sboids.setValue(updatedSboids);
     sboids.markAsDirty();
 
     this.currentBusinessOrganisations =
       this.currentBusinessOrganisations.filter(
-        (_, index) => index !== this.selectedIndex
+        (_, index) => index !== this.selectedBusinessOrganisationIndex
       );
 
-    this.selectedIndex = -1;
+    this.selectedBusinessOrganisationIndex = -1;
   }
 
   addBusinessOrganisation(): void {
