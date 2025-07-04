@@ -72,7 +72,7 @@ describe('UserAdministrationClientEditComponent', () => {
         },
         {
           provide: UserPermissionProviderService,
-          useClass: UserPermissionGivenClientService,
+          useExisting: UserPermissionGivenClientService,
         },
         {
           provide: ClientCredentialAdministrationService,
@@ -99,7 +99,7 @@ describe('UserAdministrationClientEditComponent', () => {
     component = fixture.componentInstance;
     const clientCredential: ClientCredential = {
       clientCredentialId: 'clientCredentialId',
-      permissions: new Set(),
+      permissions: new Set([]),
       alias: 'alias',
       comment: 'comment',
     };

@@ -212,7 +212,6 @@ export class ApplicationPermissionComponent implements OnInit {
       (i) => i.role === applicationRole
     );
     if (!availableConfig) {
-      console.log(this.applicationConfig);
       throw new Error('Available Config not found for ' + applicationRole);
     }
     this.currentRoleConfig = availableConfig!;
