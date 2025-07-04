@@ -7,7 +7,6 @@ import {
 } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
@@ -44,14 +43,11 @@ export class UserAdministrationClientEditComponent implements OnInit {
   record!: CreationEditionRecord;
 
   userPermissionGivenClientService = inject(UserPermissionGivenClientService);
-
-  constructor(
-    private readonly notificationService: NotificationService,
-    private readonly clientCredentialAdministrationService: ClientCredentialAdministrationService,
-    private readonly dialogService: DialogService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  notificationService = inject(NotificationService);
+  clientCredentialAdministrationService = inject(
+    ClientCredentialAdministrationService
+  );
+  dialogService = inject(DialogService);
 
   ngOnInit() {
     this.userPermissionGivenClientService.clientCredential = this.client();
@@ -85,19 +81,6 @@ export class UserAdministrationClientEditComponent implements OnInit {
       });
   }
 
-  cancel(showDialog = true): void {
-    if (!showDialog) {
-      this.back();
-      return;
-    }
-    this.dialogService.confirmLeave().subscribe((result) => {
-      if (result) {
-        this.editMode = false;
-        this.ngOnInit();
-      }
-    });
-  }
-
   private convertPermissionToRecord(permissions: Permission[]): void {
     if (permissions.length > 0) {
       this.record = {
@@ -107,10 +90,6 @@ export class UserAdministrationClientEditComponent implements OnInit {
         creationDate: permissions[0].creationDate,
       };
     }
-  }
-
-  back() {
-    this.router.navigate(['..'], { relativeTo: this.route }).then();
   }
 
   toggleEdit() {
