@@ -26,10 +26,8 @@ export class MockUserPermissionProviderService extends UserPermissionProviderSer
     return false;
   }
 
-  loadFormGroup(
-    application: ApplicationType
-  ): FormGroup<ApplicationPermission> {
-    return ApplicationPermissionFormGroupBuilder.buildFormGroup(application);
+  loadFormGroup(): void {
+    ApplicationPermissionFormGroupBuilder.buildFormGroup();
   }
 }
 

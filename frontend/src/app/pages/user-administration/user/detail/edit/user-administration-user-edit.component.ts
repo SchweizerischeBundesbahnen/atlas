@@ -75,19 +75,20 @@ export class UserAdministrationUserEditComponent implements OnInit {
       this.formGroup.enable();
       this.editMode = true;
     } else {
-      this.dialogService.confirmLeave().subscribe((result) => {
-        if (result) {
-          this.editMode = false;
-          this.userPermissionGivenUserService.loadFormGroup(
-            this.userPermissionGivenUserService.getCurrentForm()!.controls
-              .application.value!
-          );
-          console.log(
-            'form after reset',
-            this.userPermissionGivenUserService.applicationPermissionFormGroup
-          );
-        }
-      });
+      if (this.formGroup.dirty) {
+        this.dialogService.confirmLeave().subscribe((result) => {
+          if (result) {
+            this.editMode = false;
+            this.userPermissionGivenUserService.loadFormGroup(
+              this.userPermissionGivenUserService.getCurrentForm()!.controls
+                .application.value!
+            );
+          }
+        });
+      } else {
+        this.editMode = false;
+        this.formGroup.disable();
+      }
     }
   }
 
