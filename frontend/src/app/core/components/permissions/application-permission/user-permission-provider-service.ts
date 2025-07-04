@@ -1,11 +1,12 @@
 import { ApplicationRole, ApplicationType, Permission } from '../../../../api';
 import { FormGroup } from '@angular/forms';
 import { ApplicationPermission } from '../form/application-permission-form-group';
+import { Subject } from 'rxjs';
 
 export abstract class UserPermissionProviderService {
-  abstract loadFormGroup(
-    application: ApplicationType
-  ): FormGroup<ApplicationPermission>;
+  formChanged = new Subject<FormGroup<ApplicationPermission>>();
+
+  abstract loadFormGroup(application: ApplicationType): void;
 
   abstract showAllSpecialPermissions(): boolean;
 

@@ -22,9 +22,7 @@ export class UserPermissionGivenClientService extends UserPermissionProviderServ
     return true;
   }
 
-  loadFormGroup(
-    application: ApplicationType
-  ): FormGroup<ApplicationPermission> {
+  loadFormGroup(application: ApplicationType): void {
     const permissions: Permission = super.getPermission(
       this.clientCredential.permissions!,
       application
@@ -37,7 +35,7 @@ export class UserPermissionGivenClientService extends UserPermissionProviderServ
       );
     applicationPermissionFormGroup.disable();
     this.applicationPermissionFormGroup = applicationPermissionFormGroup;
-    return applicationPermissionFormGroup;
+    this.formChanged.next(this.applicationPermissionFormGroup);
   }
 
   getCurrentForm(): FormGroup<ApplicationPermission> | undefined {
