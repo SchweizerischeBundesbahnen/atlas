@@ -37,8 +37,7 @@ export class ApplicationPermissionFormGroupBuilder {
     application: ApplicationType,
     permission: Permission
   ) {
-    const formGroup: FormGroup<ApplicationPermission> =
-      this.buildFormGroup(application);
+    const formGroup: FormGroup<ApplicationPermission> = this.buildFormGroup();
     formGroup.controls.role.setValue(permission.role);
     formGroup.controls.application.setValue(application);
 
@@ -83,45 +82,8 @@ export class ApplicationPermissionFormGroupBuilder {
     return formGroup;
   }
 
-  static buildFormGroup(
-    application: ApplicationType
-  ): FormGroup<ApplicationPermission> {
-    return this.APPLICATION_FORM_GROUPS[application];
-  }
-
-  // Necessary? Or just one formgroup for all ... with all controls should also work
-  private static readonly APPLICATION_FORM_GROUPS: {
-    [application in ApplicationType]: FormGroup<ApplicationPermission>;
-  } = {
-    TTFN: new FormGroup({
-      application: new FormControl(),
-      role: new FormControl(),
-      permissions: new FormGroup<PermissionRestriction>({
-        sboidsRestrictions: new FormControl([]),
-        bulkImportRestriction: new FormControl(),
-      }),
-    }),
-    LIDI: new FormGroup({
-      application: new FormControl(),
-      role: new FormControl(),
-      permissions: new FormGroup<PermissionRestriction>({
-        sboidsRestrictions: new FormControl([]),
-        bulkImportRestriction: new FormControl(),
-      }),
-    }),
-    BODI: new FormGroup({
-      application: new FormControl(),
-      role: new FormControl(),
-      permissions: new FormGroup<PermissionRestriction>({}),
-    }),
-    TIMETABLE_HEARING: new FormGroup({
-      application: new FormControl(),
-      role: new FormControl(),
-      permissions: new FormGroup<PermissionRestriction>({
-        cantonRestrictions: new FormControl([]),
-      }),
-    }),
-    SEPODI: new FormGroup({
+  static buildFormGroup(): FormGroup<ApplicationPermission> {
+    return new FormGroup({
       application: new FormControl(),
       role: new FormControl(),
       permissions: new FormGroup<PermissionRestriction>({
@@ -131,16 +93,8 @@ export class ApplicationPermissionFormGroupBuilder {
         novaTerminationVote: new FormControl(),
         infoPlusTerminationVote: new FormControl(),
       }),
-    }),
-    PRM: new FormGroup({
-      application: new FormControl(),
-      role: new FormControl(),
-      permissions: new FormGroup<PermissionRestriction>({
-        sboidsRestrictions: new FormControl([]),
-        bulkImportRestriction: new FormControl(),
-      }),
-    }),
-  };
+    });
+  }
 
   static formToModel(form: FormGroup<ApplicationPermission>): Permission {
     const application = form.controls.application.value!;
