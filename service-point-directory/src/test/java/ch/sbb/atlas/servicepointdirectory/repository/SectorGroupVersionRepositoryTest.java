@@ -94,6 +94,7 @@ class SectorGroupVersionRepositoryTest {
 
   @Test
   void shouldFindAllBySloidOrderByValidFrom() {
+    sectorGroupVersionRepository.deleteAll();
     // given
     SectorGroupVersion sectorGroup1 = SectorTestData.getBasicSectorGroupVersion();
     SectorGroupVersion sectorGroup2 = SectorTestData.getBasicSectorGroupVersion();
