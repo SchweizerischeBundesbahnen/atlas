@@ -2,6 +2,7 @@
   <div class="application-role d-flex mb-3">
     <div class="role d-flex flex-column col-3 me-3">
       <atlas-select
+        (selectChanged)="onRoleChanged($event.value)"
         [formGroup]="form"
         label="USER_ADMIN.ROLE"
         controlName="role"
