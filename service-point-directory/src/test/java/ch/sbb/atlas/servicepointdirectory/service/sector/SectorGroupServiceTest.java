@@ -145,6 +145,9 @@ class SectorGroupServiceTest {
 
   @Test
   void shouldCreateSectorGroupSuccessfully() {
+    sectorGroupVersionRepository.deleteAll();
+    sectorGroupRelationRepository.deleteAll();
+
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(
         TrafficPointTestData.getBasicTrafficPoint());
     List<String> sloids = List.of("sector:A", "sector:B");
