@@ -25,7 +25,6 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,9 +73,6 @@ public class SectorGroupService {
   }
 
   @Transactional
-  @PreAuthorize("""
-      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
-      (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion toCreate,
       List<String> sloids
   ) {
@@ -153,9 +149,6 @@ public class SectorGroupService {
   }
 
   @Transactional
-  @PreAuthorize("""
-      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
-      (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public void updateSectorGroup(SectorGroupVersion currentVersion, SectorGroupVersion editedVersion) {
     sectorGroupVersionRepository.incrementVersion(currentVersion.getSloid());
 
