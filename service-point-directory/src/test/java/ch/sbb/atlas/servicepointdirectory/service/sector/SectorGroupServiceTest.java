@@ -329,4 +329,6 @@ class SectorGroupServiceTest {
     assertThatThrownBy(() -> sectorGroupService.updateSectorGroup(sectorGroupVersion, edited))
         .isInstanceOf(StaleObjectStateException.class);
   }
+
+  //TODO Should create relation
 }
