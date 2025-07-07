@@ -14,6 +14,7 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,9 @@ public class SectorService {
     return sectorVersionRepository.findAll().stream().map(SectorMapper::toModel).toList();
   }
 
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
+      (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public SectorVersionModel createSector(SectorVersionModel createSectorVersionModel) {
     SectorVersion sectorVersion = SectorMapper.toEntity(createSectorVersionModel);
     existTrafficPointElement(createSectorVersionModel.getTrafficPointSloid());
@@ -46,6 +50,9 @@ public class SectorService {
     return SectorMapper.toModel(saved);
   }
 
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
+      (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public void updateSector(SectorVersion currentVersion, SectorVersion editedVersion) {
     sectorVersionRepository.incrementVersion(currentVersion.getSloid());
 
