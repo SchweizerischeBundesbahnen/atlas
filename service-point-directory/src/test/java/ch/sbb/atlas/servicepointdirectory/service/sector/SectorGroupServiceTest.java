@@ -176,6 +176,7 @@ class SectorGroupServiceTest {
         sectorGroupService.createSectorGroup(toCreate, sloids);
 
     assertThat(sectorGroupVersionRepository.findById(result.getId())).isPresent();
+    assertThat(sectorGroupRelationRepository.findAll()).hasSize(2);
     assertThat(sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(toCreate.getSloid()))
         .extracting(r -> r.getSectorGroupRelationId().getSectorSloid())
         .containsExactlyInAnyOrder("sector:A", "sector:B");
@@ -329,6 +330,4 @@ class SectorGroupServiceTest {
     assertThatThrownBy(() -> sectorGroupService.updateSectorGroup(sectorGroupVersion, edited))
         .isInstanceOf(StaleObjectStateException.class);
   }
-
-  //TODO Should create relation
 }
