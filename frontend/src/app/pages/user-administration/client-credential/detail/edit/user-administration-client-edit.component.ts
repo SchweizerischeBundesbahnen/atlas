@@ -71,8 +71,14 @@ export class UserAdministrationClientEditComponent implements OnInit {
         permission
       )
       .subscribe({
-        next: () => {
+        next: (clientCredential) => {
+          this.userPermissionGivenClientService.clientCredential =
+            clientCredential;
           this.editMode = false;
+          this.userPermissionGivenClientService.loadFormGroup(
+            this.userPermissionGivenClientService.getCurrentForm()!.controls
+              .application.value!
+          );
           this.notificationService.success(
             'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
           );
