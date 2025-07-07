@@ -11,6 +11,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import java.time.LocalDate;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +30,16 @@ class SectorGroupVersionRepositoryTest {
     this.sectorGroupRelationRepository = sectorGroupRelationRepository;
   }
 
+  @BeforeEach
+  void cleanUp() {
+    sectorGroupVersionRepository.deleteAll();
+    sectorGroupRelationRepository.deleteAll();
+  }
+
   @Test
   void shouldSaveSectorGroupVersion() {
+    sectorGroupVersionRepository.deleteAll();
+
     SectorVersion sectorVersion = SectorVersion.builder()
         .sloid("ch:1:sloid:1")
         .trafficPointSloid("ch:1:sloid:1")
