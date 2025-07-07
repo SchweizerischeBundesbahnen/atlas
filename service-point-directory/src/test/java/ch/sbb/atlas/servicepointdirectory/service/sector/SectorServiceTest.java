@@ -51,6 +51,7 @@ class SectorServiceTest {
 
   @Test
   void shouldGetSectorVersionByIdWhenExists() {
+    sectorVersionRepository.deleteAll();
     // Given
     SectorVersion saved = sectorVersionRepository.save(SectorTestData.getBasicSectorVersion());
     // When
@@ -72,6 +73,7 @@ class SectorServiceTest {
 
   @Test
   void shouldCreateSector() {
+    sectorVersionRepository.deleteAll();
     //Given
     TrafficPointElementVersion trafficPointElementVersion =
         trafficPointElementVersionRepository.save(TrafficPointTestData.getBasicTrafficPoint());
@@ -118,6 +120,7 @@ class SectorServiceTest {
 
   @Test
   void shouldFindAllVersionsAndGetSectorModels() {
+    sectorVersionRepository.deleteAll();
     String sloid = "ch:1:sector:multi";
 
     SectorVersion v1 = SectorTestData.getBasicSectorVersion().toBuilder()
@@ -183,6 +186,7 @@ class SectorServiceTest {
 
   @Test
   void shouldThrowWhenUpdateSectorWithStaleVersion() {
+    sectorVersionRepository.deleteAll();
     // Given
     SectorVersion original = sectorVersionRepository.save(SectorTestData.getBasicSectorVersion());
 
