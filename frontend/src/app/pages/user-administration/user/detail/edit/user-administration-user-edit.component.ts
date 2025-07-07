@@ -59,9 +59,13 @@ export class UserAdministrationUserEditComponent implements OnInit {
         userPermission
       )
       .subscribe({
-        next: () => {
-          this.ngOnInit();
+        next: (user) => {
+          this.userPermissionGivenUserService.user = user;
           this.editMode = false;
+          this.userPermissionGivenUserService.loadFormGroup(
+            this.userPermissionGivenUserService.getCurrentForm()!.controls
+              .application.value!
+          );
           this.notificationService.success(
             'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
           );
