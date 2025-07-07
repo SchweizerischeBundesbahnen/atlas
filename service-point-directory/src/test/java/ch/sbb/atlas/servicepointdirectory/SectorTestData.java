@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import java.time.LocalDate;
@@ -30,6 +31,29 @@ public class SectorTestData {
         .build();
 
     return sectorVersion;
+  }
+
+  public static SectorVersionModel getCreateSectorVersion() {
+
+    SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
+        .sloid("ch:1:sloid:sector:1")
+        .trafficPointSloid("ch:1:sloid:sector:1")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2024, 1, 1))
+        .designation("test")
+        .length(18.00)
+        .north(1111.111)
+        .east(222.222)
+        .spatialReference(SpatialReference.LV95)
+        .height(19.0)
+        .edgeHeight(20.0)
+        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+        .editor("fs45117")
+        .build();
+
+    return sectorVersionModel;
   }
 
   public static SectorGroupVersion getBasicSectorGroupVersion() {
