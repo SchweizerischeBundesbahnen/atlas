@@ -7,6 +7,7 @@ import ch.sbb.atlas.servicepointdirectory.SectorTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import java.time.LocalDate;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,11 @@ class SectorVersionRepositoryTest {
     this.sectorVersionRepository = sectorVersionRepository;
   }
 
+  @BeforeEach
+  void cleanUp() {
+    sectorVersionRepository.deleteAll();
+  }
+
   @Test
   void shouldSaveSectorVersion() {
     SectorVersion sectorVersion = SectorTestData.getBasicSectorVersion();
@@ -35,6 +41,7 @@ class SectorVersionRepositoryTest {
 
   @Test
   void shouldFindAllBySloidOrderByValidFrom() {
+    sectorVersionRepository.deleteAll();
     // given
     SectorVersion sectorVersion1 = SectorTestData.getBasicSectorVersion();
     SectorVersion sectorVersion2 = SectorTestData.getBasicSectorVersion();
