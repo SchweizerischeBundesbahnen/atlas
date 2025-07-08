@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "CreateSectorGroupVersion")
-public class CreateSectorGroupVersionModel extends AbstractSectorCore {
+public class CreateSectorGroupVersionModel extends BaseSectorCoreModel {
 
   @Size(min = 2)
   @Schema(description = "Sector sloid's related to the sector group")

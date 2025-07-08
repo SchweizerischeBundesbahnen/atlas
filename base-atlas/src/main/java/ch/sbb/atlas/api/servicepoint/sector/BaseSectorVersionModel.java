@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-public abstract class AbstractSectorVersion extends BaseVersionModel {
+public abstract class BaseSectorVersionModel extends BaseVersionModel {
 
   @NotNull
   private LocalDate validFrom;

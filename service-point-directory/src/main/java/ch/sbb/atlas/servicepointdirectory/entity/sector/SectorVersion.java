@@ -31,7 +31,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "sector_version")
 @AtlasVersionable
-public class SectorVersion extends AbstractSectorEntity implements Versionable, DatesValidator {
+public class SectorVersion extends BaseSectorEntity implements Versionable, DatesValidator {
 
   private static final String VERSION_SEQ = "sector_version_seq";
 
