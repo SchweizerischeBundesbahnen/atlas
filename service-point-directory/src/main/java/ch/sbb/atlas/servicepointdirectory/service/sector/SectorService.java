@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.sector;
 
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
@@ -95,8 +96,9 @@ public class SectorService {
     return sectorVersionRepository.findAllBySloidOrderByValidFrom(sectorSloid);
   }
 
-  private SectorVersion save(SectorVersion sectorGroupVersion) {
-    return sectorVersionRepository.saveAndFlush(sectorGroupVersion);
+  private SectorVersion save(SectorVersion sectorVersion) {
+    sectorVersion.setStatus(Status.VALIDATED);
+    return sectorVersionRepository.saveAndFlush(sectorVersion);
   }
 
 }
