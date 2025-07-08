@@ -19,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "SectorVersion")
-public class SectorVersionModel extends BaseSectorCoreModel {
+public class SectorVersionModel extends BaseSectorModel {
 
   @NotNull
   @Digits(integer = 8, fraction = 11)
