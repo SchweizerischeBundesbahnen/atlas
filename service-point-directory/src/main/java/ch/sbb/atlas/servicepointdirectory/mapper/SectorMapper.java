@@ -27,6 +27,7 @@ public class SectorMapper {
         .editor(sectorVersion.getEditor())
         .editionDate(sectorVersion.getEditionDate())
         .etagVersion(sectorVersion.getVersion())
+        .status(sectorVersion.getStatus())
         .build();
   }
 
@@ -49,6 +50,7 @@ public class SectorMapper {
         .creationDate(createSectorVersionModel.getCreationDate())
         .editor(createSectorVersionModel.getEditor())
         .editionDate(createSectorVersionModel.getEditionDate())
+        .status(createSectorVersionModel.getStatus())
         .build();
   }
 
@@ -65,6 +67,7 @@ public class SectorMapper {
         .length(updateSectorVersionModel.getLength())
         .edgeHeight(updateSectorVersionModel.getEdgeHeight())
         .version(updateSectorVersionModel.getEtagVersion())
+        .status(updateSectorVersionModel.getStatus())
         .build();
   }
 }
