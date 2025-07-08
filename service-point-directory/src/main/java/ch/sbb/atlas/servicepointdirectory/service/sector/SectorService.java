@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
-import ch.sbb.atlas.servicepointdirectory.exception.TrafficPointNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-@Transactional
 public class SectorService {
 
   private final SectorVersionRepository sectorVersionRepository;
@@ -40,7 +38,7 @@ public class SectorService {
 
   public SectorVersionModel createSector(SectorVersionModel createSectorVersionModel) {
     SectorVersion sectorVersion = SectorMapper.toEntity(createSectorVersionModel);
-    existTrafficPointElement(createSectorVersionModel.getTrafficPointSloid());
+    trafficPointElementService.doesTrafficPointExist(createSectorVersionModel.getTrafficPointSloid());
     //TODO locationService.claimSloid waiting for -> ATLAS-2963 (LocationService erweiterung)
 
     SectorVersion saved = save(sectorVersion);
@@ -50,6 +48,7 @@ public class SectorService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  @Transactional
   public SectorVersionModel create(SectorVersionModel createSectorVersionModel,
       List<ServicePointVersion> servicePointVersions) {
     return createSector(createSectorVersionModel);
@@ -58,6 +57,7 @@ public class SectorService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  @Transactional
   public void update(SectorVersion currentVersion, SectorVersion editedVersion, List<ServicePointVersion> servicePointVersions) {
     updateSector(currentVersion, editedVersion);
   }
@@ -97,12 +97,6 @@ public class SectorService {
 
   private SectorVersion save(SectorVersion sectorGroupVersion) {
     return sectorVersionRepository.saveAndFlush(sectorGroupVersion);
-  }
-
-  public void existTrafficPointElement(String sloid) {
-    if (trafficPointElementService.findBySloidOrderByValidFrom(sloid).isEmpty()) {
-      throw new TrafficPointNotFoundException(sloid);
-    }
   }
 
 }

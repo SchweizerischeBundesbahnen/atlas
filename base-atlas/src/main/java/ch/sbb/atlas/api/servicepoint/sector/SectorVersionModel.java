@@ -18,8 +18,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "SectorVersionModel")
-public class SectorVersionModel extends AbstractSectorCore {
+@Schema(name = "SectorVersion")
+public class SectorVersionModel extends BaseSectorCoreModel {
 
   @NotNull
   @Digits(integer = 8, fraction = 11)

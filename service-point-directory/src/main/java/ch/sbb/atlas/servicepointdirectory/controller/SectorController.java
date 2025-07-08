@@ -41,7 +41,7 @@ public class SectorController implements SectorApiV1 {
 
   @Override
   public SectorVersionModel createSectorVersion(SectorVersionModel createSectorVersionModel) {
-    sectorService.existTrafficPointElement(createSectorVersionModel.getTrafficPointSloid());
+    trafficPointElementService.doesTrafficPointExist(createSectorVersionModel.getTrafficPointSloid());
     TrafficPointElementVersion trafficPointElementVersion =
         trafficPointElementService.findBySloidOrderByValidFrom(createSectorVersionModel.getTrafficPointSloid()).getFirst();
 
@@ -56,7 +56,7 @@ public class SectorController implements SectorApiV1 {
     SectorVersion sectorVersionToUpdate = sectorService.getSectorVersionById(id);
     SectorVersion editedVersion = SectorMapper.toEntity(updateSectorVersionModel);
 
-    sectorService.existTrafficPointElement(sectorVersionToUpdate.getTrafficPointSloid());
+    trafficPointElementService.doesTrafficPointExist(sectorVersionToUpdate.getTrafficPointSloid());
     TrafficPointElementVersion trafficPointElementVersion =
         trafficPointElementService.findBySloidOrderByValidFrom(sectorVersionToUpdate.getTrafficPointSloid()).getFirst();
 

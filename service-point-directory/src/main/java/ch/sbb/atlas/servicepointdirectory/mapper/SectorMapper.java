@@ -26,6 +26,7 @@ public class SectorMapper {
         .creationDate(sectorVersion.getCreationDate())
         .editor(sectorVersion.getEditor())
         .editionDate(sectorVersion.getEditionDate())
+        .etagVersion(sectorVersion.getVersion())
         .build();
   }
 
