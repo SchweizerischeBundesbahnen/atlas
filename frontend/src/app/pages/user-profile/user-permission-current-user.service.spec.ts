@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
-import { UserPermissionCurrentUserService } from './user-permission-current-user-service';
+import { UserPermissionCurrentUserService } from './user-permission-current-user.service';
 import { UserService } from '../../core/auth/user/user.service';
 import { ApplicationType } from '../../api';
 
