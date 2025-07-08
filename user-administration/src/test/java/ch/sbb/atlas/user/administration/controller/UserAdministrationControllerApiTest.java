@@ -1,7 +1,6 @@
 package ch.sbb.atlas.user.administration.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,7 +9,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.user.administration.BulkImportPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.UserModel.Fields;
@@ -24,9 +22,9 @@ import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.ClientCredentialPermissionRepository;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,7 @@ import org.springframework.http.MediaType;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
 @EmbeddedKafka(topics = {"atlas.user.administration"})
- class UserAdministrationControllerApiTest extends BaseControllerApiTest {
+class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private UserPermissionRepository userPermissionRepository;
@@ -107,45 +105,22 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
   }
 
   @Test
-  void shouldCreateUserPermission() throws Exception {
-    PermissionModel permissionModelWriter = PermissionModel.builder()
-        .role(ApplicationRole.WRITER)
-        .application(
-            ApplicationType.TTFN)
-        .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:test")))
-        .build();
-    PermissionModel permissionModelReader = PermissionModel.builder()
-        .role(ApplicationRole.READER)
-        .application(
-            ApplicationType.BODI)
-        .permissionRestrictions(List.of())
-        .build();
+  void shouldCreateUserPermissionWithAllReaderPermissions() throws Exception {
     UserPermissionCreateModel model = UserPermissionCreateModel
         .builder()
         .sbbUserId("***REMOVED***")
-        .permissions(List.of(
-            permissionModelWriter, permissionModelReader
-        ))
         .build();
 
     mvc.perform(post("/v1/users")
             .content(mapper.writeValueAsString(model)).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + Fields.sbbUserId).value("***REMOVED***"))
-        .andExpect(jsonPath("$." + Fields.mail).value("***REMOVED***"))
-        .andExpect(jsonPath("$." + Fields.permissions).value(hasSize(2)))
-        .andExpect(
-            jsonPath("$." + Fields.permissions + "[?(@.application == 'BODI')].permissionRestrictions[*]").value(
-                hasSize(0)))
-        .andExpect(
-            jsonPath("$." + Fields.permissions + "[?(@.application == 'TTFN')].permissionRestrictions[*].valueAsString").value(
-                hasItem("ch:1:sboid:test")));
+        .andExpect(jsonPath("$." + Fields.mail).value("***REMOVED***"));
 
     List<UserPermission> savedPermissions = userPermissionRepository.findBySbbUserIdIgnoreCase(
         "***REMOVED***");
-    assertThat(savedPermissions).hasSize(2);
-    assertThat(savedPermissions.get(0).getSbbUserId()).isEqualTo("***REMOVED***");
-    assertThat(savedPermissions.get(1).getSbbUserId()).isEqualTo("***REMOVED***");
+    assertThat(savedPermissions).hasSize(6);
+    assertThat(savedPermissions.stream().map(UserPermission::getRole).collect(Collectors.toSet())).containsExactly(ApplicationRole.READER);
   }
 
   @Test
@@ -159,13 +134,6 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
     UserPermissionCreateModel createModel = UserPermissionCreateModel
         .builder()
         .sbbUserId("***REMOVED***")
-        .permissions(List.of(
-            PermissionModel.builder()
-                .role(ApplicationRole.WRITER)
-                .application(ApplicationType.TTFN)
-                .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:test")))
-                .build()
-        ))
         .build();
 
     mvc.perform(post("/v1/users")
@@ -179,62 +147,28 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 
   @Test
   void shouldUpdateUser() throws Exception {
-
     userPermissionRepository.save(UserPermission.builder()
         .role(ApplicationRole.SUPERVISOR)
         .application(ApplicationType.TTFN)
         .sbbUserId("***REMOVED***").build());
 
-    UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
-        .sbbUserId("***REMOVED***")
-        .permissions(List.of(
-            PermissionModel.builder()
-                .application(
-                    ApplicationType.TTFN)
-                .role(
-                    ApplicationRole.WRITER)
-                .permissionRestrictions(
-                    List.of(new SboidPermissionRestrictionModel("ch:1:sboid:10009")))
-                .build()))
+    PermissionModel permission = PermissionModel.builder()
+        .application(
+            ApplicationType.TTFN)
+        .role(
+            ApplicationRole.WRITER)
+        .permissionRestrictions(
+            List.of(new SboidPermissionRestrictionModel("ch:1:sboid:10009")))
         .build();
 
-    mvc.perform(put("/v1/users").contentType(contentType)
-            .content(mapper.writeValueAsString(editedPermissions)))
+    mvc.perform(put("/v1/users/***REMOVED***/TTFN").contentType(contentType)
+            .content(mapper.writeValueAsString(permission)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.sbbUserId").value("***REMOVED***"))
         .andExpect(jsonPath("$.lastName").value("***REMOVED***"))
         .andExpect(jsonPath("$.permissions").value(hasSize(1)))
         .andExpect(jsonPath("$.permissions[0].role").value("WRITER"))
         .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
-  }
-
-  @Test
-  void getUsersWithSboidsAndApplicationTypesNonFound() throws Exception {
-    userPermissionRepository.saveAll(List.of(
-        UserPermission.builder()
-            .role(ApplicationRole.WRITER)
-            .application(ApplicationType.TTFN)
-            .permissionRestrictions(
-                new HashSet<>(List.of(PermissionRestriction.builder().type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-                    .restriction("ch:1:sboid:1").build())))
-            .sbbUserId("***REMOVED***").build(),
-        UserPermission.builder()
-            .role(ApplicationRole.READER)
-            .application(ApplicationType.LIDI)
-            .permissionRestrictions(
-                new HashSet<>(List.of(PermissionRestriction.builder().type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-                    .restriction("ch:1:sboid:1").build())))
-            .sbbUserId("***REMOVED***").build()
-    ));
-
-    mvc.perform(get("/v1/users")
-            .queryParam("page", "0")
-            .queryParam("size", "5")
-            .queryParam("applicationTypes", "LIDI", "TTFN")
-            .queryParam("sboids", "ch:1:sboid:1"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount").value(0))
-        .andExpect(jsonPath("$.objects", hasSize(0)));
   }
 
   @Test
@@ -329,34 +263,6 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
     mvc.perform(get("/v1/users/client-id/displayname"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.displayName").value("ALIAS"));
-  }
-
-  @Test
-  void shouldCreateUserWithBulkImportPermission() throws Exception {
-    PermissionModel sepodiWriterAndBulkImporter = PermissionModel.builder()
-        .role(ApplicationRole.WRITER)
-        .application(ApplicationType.SEPODI)
-        .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:100011"),
-            new BulkImportPermissionRestrictionModel(true)))
-        .build();
-    UserPermissionCreateModel model = UserPermissionCreateModel
-        .builder()
-        .sbbUserId("***REMOVED***")
-        .permissions(List.of(sepodiWriterAndBulkImporter))
-        .build();
-
-    mvc.perform(post("/v1/users")
-            .content(mapper.writeValueAsString(model)).contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$." + Fields.sbbUserId).value("***REMOVED***"))
-        .andExpect(jsonPath("$." + Fields.mail).value("***REMOVED***"))
-        .andExpect(jsonPath("$." + Fields.permissions).value(hasSize(1)));
-
-    List<UserPermission> savedPermissions = userPermissionRepository.findBySbbUserIdIgnoreCase("***REMOVED***");
-    assertThat(savedPermissions).hasSize(1);
-    PermissionRestriction bulkImportRestriction = savedPermissions.getFirst().getPermissionRestrictions().stream()
-        .filter(i -> i.getType() == PermissionRestrictionType.BULK_IMPORT).findFirst().orElseThrow();
-    assertThat(bulkImportRestriction.getRestriction()).isEqualTo("true");
   }
 
 }

@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @SuperBuilder
 @NoArgsConstructor
 @Schema(name = "UserPermissionCreate")
-public class UserPermissionCreateModel extends PermissionCreateModel {
+public class UserPermissionCreateModel {
 
   @Schema(description = "SBB User-ID", example = "u123456")
   @NotEmpty

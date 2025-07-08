@@ -2,17 +2,12 @@ package ch.sbb.atlas.user.administration.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.user.administration.CantonPermissionRestrictionModel;
-import ch.sbb.atlas.api.user.administration.CountryPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
@@ -24,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
- class UserAdministrationServiceUpdateTest {
+class UserAdministrationServiceUpdateTest {
 
   private static final String SBBUID = "***REMOVED***";
 
@@ -64,17 +59,14 @@ import org.springframework.beans.factory.annotation.Autowired;
   @Test
   void shouldDegradeTtfnSuperVisorToSuperuser() {
     // Given
-    UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
-        .sbbUserId(SBBUID)
-        .permissions(List.of(
-            PermissionModel.builder()
-                .application(ApplicationType.TTFN)
-                .role(ApplicationRole.SUPER_USER)
-                .build()))
-        .build();
+    PermissionModel editedPermission =
+        PermissionModel.builder()
+            .application(ApplicationType.TTFN)
+            .role(ApplicationRole.SUPER_USER)
+            .build();
 
     // When
-    userAdministrationService.updateUser(editedPermissions);
+    userAdministrationService.updatePermission(SBBUID, ApplicationType.TTFN, editedPermission);
 
     // Then
     UserPermission ttfnPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
@@ -90,18 +82,14 @@ import org.springframework.beans.factory.annotation.Autowired;
   @Test
   void shouldDegradeTtfnSuperVisorToWriter() {
     // Given
-    UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
-        .sbbUserId(SBBUID)
-        .permissions(List.of(
-            PermissionModel.builder()
-                .application(ApplicationType.TTFN)
-                .role(ApplicationRole.WRITER)
-                .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:10009")))
-                .build()))
+    PermissionModel editedPermission = PermissionModel.builder()
+        .application(ApplicationType.TTFN)
+        .role(ApplicationRole.WRITER)
+        .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:10009")))
         .build();
 
     // When
-    userAdministrationService.updateUser(editedPermissions);
+    userAdministrationService.updatePermission(SBBUID, ApplicationType.TTFN, editedPermission);
 
     // Then
     UserPermission ttfnPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
@@ -113,17 +101,14 @@ import org.springframework.beans.factory.annotation.Autowired;
   @Test
   void shouldUpgradeFromWriterToSuperUserAndClearSboids() {
     // Given
-    UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
-        .sbbUserId(SBBUID)
-        .permissions(List.of(
-            PermissionModel.builder()
-                .application(ApplicationType.LIDI)
-                .role(ApplicationRole.SUPER_USER)
-                .build()))
-        .build();
+    PermissionModel editedPermissions =
+        PermissionModel.builder()
+            .application(ApplicationType.LIDI)
+            .role(ApplicationRole.SUPER_USER)
+            .build();
 
     // When
-    userAdministrationService.updateUser(editedPermissions);
+    userAdministrationService.updatePermission(SBBUID, ApplicationType.LIDI, editedPermissions);
 
     // Then
     UserPermission lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
@@ -139,17 +124,13 @@ import org.springframework.beans.factory.annotation.Autowired;
   @Test
   void shouldUpdateUserPermissionOnReaderDowngrade() {
     // Given
-    UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
-        .sbbUserId(SBBUID)
-        .permissions(List.of(
-            PermissionModel.builder()
-                .application(ApplicationType.LIDI)
-                .role(ApplicationRole.READER)
-                .build()))
+    PermissionModel editedPermissions = PermissionModel.builder()
+        .application(ApplicationType.LIDI)
+        .role(ApplicationRole.READER)
         .build();
 
     // When
-    userAdministrationService.updateUser(editedPermissions);
+    userAdministrationService.updatePermission(SBBUID, ApplicationType.LIDI, editedPermissions);
 
     // Then
     UserPermission lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
@@ -158,44 +139,23 @@ import org.springframework.beans.factory.annotation.Autowired;
   }
 
   @Test
-  void shouldAddAdditionalApplicationPermissionsOnEdit() {
+  void shouldAddAdditionalApplication() {
     // Given
-    UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
-        .sbbUserId(SBBUID)
-        .permissions(List.of(
-            PermissionModel.builder()
-                .application(ApplicationType.LIDI)
-                .role(ApplicationRole.SUPER_USER)
-                .build(),
-            PermissionModel.builder()
-                .application(ApplicationType.TIMETABLE_HEARING)
-                .role(ApplicationRole.WRITER)
-                .permissionRestrictions(List.of(new CantonPermissionRestrictionModel(SwissCanton.BERN),
-                    new CantonPermissionRestrictionModel(SwissCanton.LUCERNE)))
-                .build(),
-            PermissionModel.builder()
-                .application(ApplicationType.SEPODI)
-                .role(ApplicationRole.WRITER)
-                .permissionRestrictions(List.of(new CountryPermissionRestrictionModel(Country.AFGHANISTAN),
-                    new CountryPermissionRestrictionModel(Country.SWITZERLAND)))
-                .build()
-        ))
+    assertThat(userAdministrationService.getCurrentUserPermission(SBBUID,
+        ApplicationType.SEPODI)).isEmpty();
+    
+    PermissionModel editedPermissions = PermissionModel.builder()
+        .application(ApplicationType.SEPODI)
+        .role(ApplicationRole.SUPERVISOR)
         .build();
 
     // When
-    userAdministrationService.updateUser(editedPermissions);
+    userAdministrationService.updatePermission(SBBUID, ApplicationType.SEPODI, editedPermissions);
 
     // Then
-    UserPermission lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
-        ApplicationType.LIDI).orElseThrow();
-    assertThat(lidiPermissions.getRole()).isEqualTo(ApplicationRole.SUPER_USER);
-
-    UserPermission hearingPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
-        ApplicationType.TIMETABLE_HEARING).orElseThrow();
-    assertThat(hearingPermissions.getPermissionRestrictions()).hasSize(2);
-
-    UserPermission sepodiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
+    UserPermission sepodiPermission = userAdministrationService.getCurrentUserPermission(SBBUID,
         ApplicationType.SEPODI).orElseThrow();
-    assertThat(sepodiPermissions.getPermissionRestrictions()).hasSize(2);
+    assertThat(sepodiPermission.getRole()).isEqualTo(ApplicationRole.SUPERVISOR);
   }
+
 }

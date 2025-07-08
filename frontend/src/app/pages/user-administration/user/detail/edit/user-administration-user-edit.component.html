@@ -1,56 +1,81 @@
 <div scrollToTop>
+  <div class="user-info">
+    <h2 class="font-bold-4xl">{{ user().lastName }} {{ user().firstName }}</h2>
+    <div class="d-flex flex-column">
+      <div class="d-inline-flex">
+        <div class="d-flex me-3 font-bold-base">
+          {{ 'PROFILE.NAME' | translate }}:
+        </div>
+        <div class="d-flex">{{ user().displayName }}</div>
+      </div>
+
+      <div class="d-inline-flex">
+        <div class="d-flex me-3 font-bold-base">
+          {{ 'PROFILE.SBBUID' | translate }}:
+        </div>
+        <div class="d-flex">{{ user().sbbUserId }}</div>
+      </div>
+
+      <div class="d-inline-flex">
+        <div class="d-flex me-3 font-bold-base">
+          {{ 'PROFILE.EMAIL' | translate }}:
+        </div>
+        <div class="d-flex">{{ user().mail }}</div>
+      </div>
+
+      <div class="d-inline-flex">
+        <div class="d-flex me-3 font-bold-base">
+          {{ 'USER_ADMIN.ACCOUNT_STATUS' | translate }}:
+        </div>
+        <div class="d-flex">
+          {{
+            'USER_ADMIN.ACCOUNT_STATUS_TYPE.' + user().accountStatus | translate
+          }}
+        </div>
+      </div>
+    </div>
+  </div>
+
   <atlas-detail-page-container>
     <atlas-detail-page-content>
-      <h1 class="font-bold-4xl mb-5">{{ user | editTitle }}</h1>
-
-      <ng-template [ngIf]="user">
-        <h2 class="font-bold-xl mb-2">{{ 'USER_ADMIN.INFORMATION' | translate }}</h2>
-        <app-user-administration-read-only-data
-          [data]="user"
-        ></app-user-administration-read-only-data>
-        <h1 class="font-bold-4xl mt-5">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</h1>
-        <div *ngFor="let permission of userPermissionManager.userPermission.permissions">
-          <app-user-administration-application-config
-            [application]="permission.application"
-            [readOnly]="!editMode"
-            [role]="permission.role"
-          ></app-user-administration-application-config>
-        </div>
-        <div class="mt-5">
-          <app-user-detail-info [record]="userRecord!"></app-user-detail-info>
-        </div>
-      </ng-template>
+      <atlas-permission
+        (applicationChanged)="editMode = false"
+      ></atlas-permission>
+      <div class="mt-3">
+        <app-user-detail-info [record]="userRecord!"></app-user-detail-info>
+      </div>
     </atlas-detail-page-content>
 
     <atlas-detail-footer>
-      <ng-container *ngIf="editMode; else readMode">
-        <button (click)="cancelEdit()" class="atlas-primary-btn" data-cy="cancel">
+      @if (editMode) {
+        <button
+          (click)="toggleEdit()"
+          class="atlas-primary-btn"
+          data-cy="cancel"
+        >
           {{ 'COMMON.CANCEL' | translate }}
         </button>
         <button
-          (click)="saveEdits()"
-          [disabled]="!saveEnabled"
+          (click)="saveUser()"
+          [disabled]="!formGroup.dirty"
           class="atlas-primary-btn ms-3"
           data-cy="save"
           type="submit"
         >
           {{ 'COMMON.SAVE' | translate }}
         </button>
-      </ng-container>
-
-      <ng-template #readMode>
+      } @else {
         <button backButton class="atlas-primary-btn" data-cy="backToOverview">
           {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
         </button>
         <button
-          (click)="editMode = true; saveEnabled = true"
-          [disabled]="!user"
+          (click)="toggleEdit()"
           class="atlas-primary-btn ms-3"
           data-cy="edit"
         >
           {{ 'COMMON.EDIT' | translate }}
         </button>
-      </ng-template>
+      }
     </atlas-detail-footer>
   </atlas-detail-page-container>
 </div>

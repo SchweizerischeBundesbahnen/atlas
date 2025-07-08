@@ -1,0 +1,187 @@
+import { Component } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { tap } from 'rxjs/operators';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import {
+  ApplicationType,
+  PermissionRestrictionType,
+  SwissCanton,
+  User,
+} from '../../../../api';
+import { tableColumns } from './table-column-definition';
+import { SearchType, SearchTypes } from './search-type';
+import { Cantons } from '../../../../core/cantons/Cantons';
+import { TableService } from '../../../../core/components/table/table.service';
+import { TablePagination } from '../../../../core/components/table/table-pagination';
+import { MatSelectChange } from '@angular/material/select';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { MatLabel } from '@angular/material/form-field';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { UserSelectComponent } from '../user-select/user-select.component';
+import { BusinessOrganisationSelectComponent } from '../../../../core/form-components/bo-select/business-organisation-select.component';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
+
+@Component({
+  selector: 'app-user-administration-overview',
+  templateUrl: './user-administration-user-overview.component.html',
+  styleUrls: ['./user-administration-user-overview.component.scss'],
+  imports: [
+    TableComponent,
+    MatLabel,
+    MatRadioGroup,
+    ReactiveFormsModule,
+    FormsModule,
+    UserSelectComponent,
+    BusinessOrganisationSelectComponent,
+    SelectComponent,
+    RouterOutlet,
+    TranslatePipe,
+    MatRadioButton,
+  ],
+})
+export class UserAdministrationUserOverviewComponent {
+  userPageResult: { users: User[]; totalCount: number } = {
+    users: [],
+    totalCount: 0,
+  };
+  selectedSearch: SearchType = 'USER';
+  readonly searchOptions = SearchTypes;
+
+  selectedApplicationOptions: ApplicationType[] = [];
+  readonly applicationBoOptions: ApplicationType[] = [
+    ApplicationType.Ttfn,
+    ApplicationType.Lidi,
+    ApplicationType.Bodi,
+    ApplicationType.Sepodi,
+    ApplicationType.Prm,
+  ];
+  readonly applicationCantonOptions: ApplicationType[] = [
+    ApplicationType.TimetableHearing,
+  ];
+  readonly cantonOptions: SwissCanton[] = Object.values(SwissCanton);
+  selectedCantonOptions: SwissCanton[] = [];
+
+  readonly userSearchCtrlName = 'userSearch';
+  readonly userSearchForm: FormGroup = new FormGroup({
+    [this.userSearchCtrlName]: new FormControl<string | null>(null),
+  });
+  readonly boSearchCtrlName = 'boSearch';
+  readonly boForm: FormGroup = new FormGroup({
+    [this.boSearchCtrlName]: new FormControl<string | null>(null),
+  });
+  readonly tableColumns = tableColumns;
+
+  SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
+
+  constructor(
+    private readonly userAdministrationService: UserAdministrationService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly tableService: TableService
+  ) {}
+
+  reloadTableWithCurrentSettings(): void {
+    if (this.selectedSearch === 'USER') {
+      this.onUserFilterChanged(
+        this.userSearchForm.get(this.userSearchCtrlName)?.value,
+        this.tableService.pageIndex
+      );
+    } else {
+      this.filterChanged(this.tableService.pageIndex);
+    }
+  }
+
+  openUser(user: User) {
+    this.router
+      .navigate([user.sbbUserId], {
+        relativeTo: this.route,
+      })
+      .then();
+  }
+
+  loadUsers(pagination: TablePagination): void {
+    this.userSearchForm.reset();
+    this.boForm.reset();
+    this.selectedApplicationOptions = [];
+    this.userAdministrationService
+      .getUsers(pagination.page, pagination.size)
+      .pipe(
+        tap((result) => {
+          this.userPageResult = {
+            users: result.objects!,
+            totalCount: result.totalCount!,
+          };
+          this.tableService.pageIndex = pagination.page;
+          this.tableService.pageSize = pagination.size;
+        })
+      )
+      .subscribe();
+  }
+
+  onUserFilterChanged(selectedUser: User, pageIndex = 0): void {
+    if (!selectedUser) {
+      this.loadUsers({ page: pageIndex, size: this.tableService.pageSize });
+    } else if (!selectedUser.sbbUserId) {
+      this.userPageResult = { users: [], totalCount: 0 };
+      this.tableService.pageIndex = 0;
+    } else {
+      this.userAdministrationService
+        .getUser(selectedUser.sbbUserId)
+        .subscribe((user) => {
+          if (Array.from(user.permissions).length > 0) {
+            this.userPageResult = { users: [user], totalCount: 1 };
+            this.tableService.pageIndex = 0;
+          } else {
+            this.userPageResult = { users: [], totalCount: 0 };
+            this.tableService.pageIndex = 0;
+          }
+        });
+    }
+  }
+
+  filterChanged(pageIndex = 0): void {
+    const selectedSboid = this.boForm.get(this.boSearchCtrlName)?.value;
+    this.userAdministrationService
+      .getUsers(
+        pageIndex,
+        this.tableService.pageSize,
+        new Set<string>([selectedSboid, ...this.selectedCantonOptions]),
+        this.selectedSearch === 'FILTER'
+          ? PermissionRestrictionType.BusinessOrganisation
+          : PermissionRestrictionType.Canton,
+        new Set<ApplicationType>(this.selectedApplicationOptions)
+      )
+      .pipe(
+        tap((result) => {
+          this.userPageResult = {
+            users: result.objects!,
+            totalCount: result.totalCount!,
+          };
+          this.tableService.pageIndex = pageIndex;
+        })
+      )
+      .subscribe();
+  }
+
+  selectedSearchChanged(): void {
+    this.loadUsers({ page: 0, size: 10 });
+  }
+
+  readonly getCantonAbbreviation = (canton: SwissCanton) =>
+    Cantons.fromSwissCanton(canton)?.short;
+
+  applicationChanged($event: MatSelectChange) {
+    this.selectedApplicationOptions = $event.value;
+  }
+
+  cantonChanged($event: MatSelectChange) {
+    this.selectedCantonOptions = $event.value;
+  }
+}

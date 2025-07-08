@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StopPointRestartWorkflowDialogComponent } from './stop-point-restart-workflow-dialog.component';
 import {
+  Permission,
   ReadStopPointWorkflow,
   StopPointWorkflowService,
   User,
-  UserAdministrationService,
 } from '../../../../api';
 import { of } from 'rxjs';
 import { StopPointRejectWorkflowDialogData } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog-data';
@@ -19,6 +19,7 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -57,6 +58,7 @@ const user: User = {
   lastName: 'Marek',
   firstName: 'Hamsik',
   mail: 'a@b.cd',
+  permissions: new Set<Permission>(),
 };
 
 const userAdministrationServiceMock = jasmine.createSpyObj(

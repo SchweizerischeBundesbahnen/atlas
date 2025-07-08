@@ -1,5 +1,4 @@
 import {BusinessOrganisationsService} from './businessOrganisations.service';
-import {ClientCredentialAdministrationService} from './clientCredentialAdministration.service';
 import {CompaniesService} from './companies.service';
 import {GeoDataService} from './geoData.service';
 import {LoadingPointsService} from './loadingPoints.service';
@@ -13,12 +12,9 @@ import {TrafficPointElementBulkImportService} from './trafficPointElementBulkImp
 import {TrafficPointElementsService} from './trafficPointElements.service';
 import {TransportCompaniesService} from './transportCompanies.service';
 import {TransportCompanyRelationsService} from './transportCompanyRelations.service';
-import {UserAdministrationService} from './userAdministration.service';
-import {UserInformationService} from './userInformation.service';
 import {WorkflowService} from './workflow.service';
 
 export * from './businessOrganisations.service';
-export * from './clientCredentialAdministration.service';
 export * from './companies.service';
 export * from './geoData.service';
 export * from './loadingPoints.service';
@@ -32,7 +28,5 @@ export * from './trafficPointElementBulkImport.service';
 export * from './trafficPointElements.service';
 export * from './transportCompanies.service';
 export * from './transportCompanyRelations.service';
-export * from './userAdministration.service';
-export * from './userInformation.service';
 export * from './workflow.service';
-export const APIS = [BusinessOrganisationsService, ClientCredentialAdministrationService, CompaniesService, GeoDataService, LoadingPointsService, PersonWithReducedMobilityService, PlatformBulkImportService, ServicePointBulkImportService, ServicePointUpdateGeoService, ServicePointsService, StopPointWorkflowService, TrafficPointElementBulkImportService, TrafficPointElementsService, TransportCompaniesService, TransportCompanyRelationsService, UserAdministrationService, UserInformationService, WorkflowService];
+export const APIS = [BusinessOrganisationsService, CompaniesService, GeoDataService, LoadingPointsService, PersonWithReducedMobilityService, PlatformBulkImportService, ServicePointBulkImportService, ServicePointUpdateGeoService, ServicePointsService, StopPointWorkflowService, TrafficPointElementBulkImportService, TrafficPointElementsService, TransportCompaniesService, TransportCompanyRelationsService, WorkflowService];

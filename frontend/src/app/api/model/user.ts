@@ -15,7 +15,7 @@ export interface User {
     /**
      * SBB User Id
      */
-    sbbUserId?: string;
+    sbbUserId: string;
     /**
      * User lastname
      */
@@ -36,7 +36,7 @@ export interface User {
     /**
      * User permissions
      */
-    permissions?: Set<Permission>;
+    permissions: Set<Permission>;
     userId?: string;
 }
 export namespace User {

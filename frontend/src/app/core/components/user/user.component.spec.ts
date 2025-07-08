@@ -54,34 +54,6 @@ describe('UserComponent', () => {
       );
     });
 
-    it('should show user menu', () => {
-      adminUserServiceMock.userChanged?.next();
-      fixture.detectChanges();
-
-      const usernameModal = fixture.debugElement.query(
-        By.css('.user-name')
-      ).nativeElement;
-      expect(usernameModal.textContent).toContain('Test');
-      fixture.detectChanges();
-
-      const userMenuOpenButton = fixture.debugElement.query(
-        By.css('#user-menu-button')
-      );
-      userMenuOpenButton.nativeElement.click();
-      fixture.detectChanges();
-
-      const userRolesModal = fixture.debugElement.query(
-        By.css('#user-roles-modal')
-      ).nativeElement;
-      expect(
-        userRolesModal.querySelector('.user-info-modal').textContent
-      ).toContain('PROFILE.YOUR_ROLES');
-      fixture.detectChanges();
-
-      const userRoles = userRolesModal.querySelectorAll('.user-role-item');
-      expect(userRoles[0].textContent).toContain('atlas-admin');
-    });
-
     it('should logout', () => {
       // Open user menu
       const usermenuOpenButton = fixture.debugElement.query(By.css('button'));
