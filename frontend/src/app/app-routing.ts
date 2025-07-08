@@ -5,7 +5,7 @@ import { Pages } from './pages/pages';
 import { canActivateTimetableHearing } from './core/auth/guards/timetable-hearing.guard';
 import { loggedInUsers } from './core/auth/guards/login.guard';
 import { adminUser } from './core/auth/guards/admin.guard';
-import { UserPermissionCurrentUserService } from './pages/user-profile/user-permission-current-user-service';
+import { UserPermissionCurrentUserService } from './pages/user-profile/user-permission-current-user.service';
 import { UserPermissionProviderService } from './core/components/permissions/application-permission/user-permission-provider-service';
 
 export const routes: Routes = [
