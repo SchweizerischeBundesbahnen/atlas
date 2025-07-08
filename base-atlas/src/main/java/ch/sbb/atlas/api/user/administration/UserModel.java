@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.user.administration;
 import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
 import ch.sbb.atlas.redact.Redacted;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import lombok.experimental.FieldNameConstants;
 @Schema(name = "User")
 public class UserModel implements UserAdministrationEvent {
 
+  @NotNull
   @Schema(description = "SBB User Id", example = "u111111")
   private String sbbUserId;
 
@@ -37,6 +39,7 @@ public class UserModel implements UserAdministrationEvent {
   @Schema(description = "User account status", example = "ACTIVE")
   private UserAccountStatus accountStatus;
 
+  @NotNull
   @Schema(description = "User permissions")
   private Set<PermissionModel> permissions;
 

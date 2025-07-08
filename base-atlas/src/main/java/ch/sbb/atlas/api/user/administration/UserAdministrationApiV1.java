@@ -50,12 +50,15 @@ public interface UserAdministrationApiV1 {
 
   @PostMapping(BASE_PATH)
   @ResponseStatus(HttpStatus.CREATED)
-  @Operation(description = "Register a user with given permissions")
+  @Operation(description = "Register a user")
   UserModel createUserPermission(@RequestBody @Valid UserPermissionCreateModel user);
 
-  @PutMapping(BASE_PATH)
-  @Operation(description = "Update the user permissions of a user")
-  UserModel updateUserPermissions(@RequestBody @Valid UserPermissionCreateModel editedPermissions);
+  @PutMapping(BASE_PATH+"/{userId}/{application}")
+  @Operation(description = "Update the permissions of a user")
+  UserModel updateUserPermissions(
+      @PathVariable String userId,
+      @PathVariable ApplicationType application,
+      @RequestBody @Valid PermissionModel editedPermissions);
 
   @PostMapping(BASE_PATH + "/sync-permissions")
   @Operation(description = "Write all user permission to kafka again for redistribution")
