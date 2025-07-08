@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-public abstract class BaseSectorCoreModel extends BaseSectorVersionModel {
+public abstract class BaseSectorModel extends BaseSectorVersionModel {
 
   @Schema(description = """
       This ID helps identify versions of a traffic point element in the use case front end and/or update.
