@@ -2,16 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationClientEditComponent } from './user-administration-client-edit.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { UserService } from '../../../service/user.service';
-import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import { BusinessOrganisationsService } from '../../../../../api';
+import {
+  ApplicationRole,
+  ApplicationType,
+  BusinessOrganisationsService,
+  ClientCredential,
+  PermissionRestrictionType,
+} from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
+import { UserPermissionGivenClientService } from './user-permission-given-client.service';
+import { UserPermissionProviderService } from '../../../../../core/components/permissions/application-permission/user-permission-provider-service';
 import SpyObj = jasmine.SpyObj;
 
 describe('UserAdministrationClientEditComponent', () => {
@@ -26,50 +32,37 @@ describe('UserAdministrationClientEditComponent', () => {
     },
   };
 
-  let userServiceSpy: SpyObj<UserService>;
-  let userPermissionManagerSpy: SpyObj<UserPermissionManager>;
+  let clientCredentialAdministrationService: SpyObj<ClientCredentialAdministrationService>;
   let notificationServiceSpy: SpyObj<NotificationService>;
-  let boServiceSpy: SpyObj<BusinessOrganisationsService>;
+  const businessOrganisationsService = jasmine.createSpyObj(
+    'BusinessOrganisationService',
+    ['getAllBusinessOrganisations']
+  );
+  businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(
+    of({ objects: [] })
+  );
   let dialogServiceSpy: SpyObj<DialogService>;
 
   beforeEach(async () => {
-    userServiceSpy = jasmine.createSpyObj<UserService>('UserService', [
-      'getPermissionsFromUserModelAsArray',
-      'updateUserPermission',
-    ]);
-    userPermissionManagerSpy = jasmine.createSpyObj(
-      'UserPermissionManager',
-      [
-        'setSbbUserId',
-        'setPermissions',
-        'clearPermissionRestrictionsIfNotWriter',
-        'emitBoFormResetEvent',
-      ],
-      {
-        userPermission: {
-          sbbUserId: 'u123456',
-          permissions: [],
-        },
-      }
+    clientCredentialAdministrationService =
+      jasmine.createSpyObj<ClientCredentialAdministrationService>(
+        'ClientCredentialAdministrationService',
+        ['updateClientCredentialPermissions']
+      );
+    clientCredentialAdministrationService.updateClientCredentialPermissions.and.returnValue(
+      of()
     );
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
       'success',
     ]);
-    boServiceSpy = jasmine.createSpyObj('BusinessOrganisationService', [
-      'getAllBusinessOrganisations',
-    ]);
     dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirmLeave']);
-    dialogMock.closeCalled = false;
+    dialogServiceSpy.confirmLeave.and.returnValue(of(true));
     TestBed.overrideComponent(UserAdministrationClientEditComponent, {
       set: {
         viewProviders: [
           {
-            provide: UserPermissionManager,
-            useValue: userPermissionManagerSpy,
-          },
-          {
             provide: BusinessOrganisationsService,
-            useValue: boServiceSpy,
+            useValue: businessOrganisationsService,
           },
         ],
       },
@@ -81,10 +74,16 @@ describe('UserAdministrationClientEditComponent', () => {
       ],
       providers: [
         TranslatePipe,
-        { provide: MatDialogRef, useValue: dialogMock },
         {
-          provide: UserService,
-          useValue: userServiceSpy,
+          provide: UserPermissionGivenClientService,
+        },
+        {
+          provide: UserPermissionProviderService,
+          useExisting: UserPermissionGivenClientService,
+        },
+        {
+          provide: ClientCredentialAdministrationService,
+          useValue: clientCredentialAdministrationService,
         },
         {
           provide: NotificationService,
@@ -105,13 +104,49 @@ describe('UserAdministrationClientEditComponent', () => {
 
     fixture = TestBed.createComponent(UserAdministrationClientEditComponent);
     component = fixture.componentInstance;
-    component.client = {};
+    const clientCredential: ClientCredential = {
+      clientCredentialId: 'clientCredentialId',
+      permissions: new Set([
+        {
+          role: ApplicationRole.Writer,
+          application: ApplicationType.Ttfn,
+          permissionRestrictions: [
+            {
+              type: PermissionRestrictionType.BusinessOrganisation,
+              valueAsString: 'ch:1:sboid:12312',
+            },
+          ],
+          editionDate: '',
+        },
+      ]),
+      alias: 'alias',
+      comment: 'comment',
+    };
+    fixture.componentRef.setInput('client', clientCredential);
     component.record = {};
-    userServiceSpy.getPermissionsFromUserModelAsArray.and.returnValue([]);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+
+    expect(component.record.editionDate).toBe('');
+  });
+
+  it('should save permissions', () => {
+    component.saveClientCredential();
+    expect(
+      clientCredentialAdministrationService.updateClientCredentialPermissions
+    ).toHaveBeenCalledTimes(1);
+  });
+
+  it('should toggleEdit', () => {
+    expect(component.editMode).toBeFalse();
+
+    component.toggleEdit();
+    expect(component.editMode).toBeTrue();
+
+    component.toggleEdit();
+    expect(component.editMode).toBeFalse();
   });
 });

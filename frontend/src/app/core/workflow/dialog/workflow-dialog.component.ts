@@ -14,7 +14,6 @@ import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets
 import { WhitespaceValidator } from '../../validation/whitespace/whitespace-validator';
 import {
   LineVersionWorkflow,
-  UserAdministrationService,
   Workflow,
   WorkflowProcessingStatus,
   WorkflowService,
@@ -30,6 +29,7 @@ import { WorkflowFormComponent } from '../workflow-form/workflow-form.component'
 import { WorkflowCheckFormComponent } from '../workflow-check-form/workflow-check-form.component';
 import { DialogFooterComponent } from '../../components/dialog/footer/dialog-footer.component';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
+import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
 
 @Component({
   selector: 'app-workflow-dialog',

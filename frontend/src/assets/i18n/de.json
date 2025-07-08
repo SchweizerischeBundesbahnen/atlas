@@ -163,10 +163,22 @@
     "UNRECOVERABLE_MESSAGE": "Bitte laden Sie die Seite neu."
   },
   "PROFILE": {
-    "HELLO": "Hallo",
-    "YOUR_ROLES": "Ihre Rollen:",
     "LOGIN": "Login",
-    "LOGOUT": "Logout"
+    "LOGOUT": "Logout",
+    "USER_PROFILE": "Profil",
+    "PROFILE_HEADER": "Ihr Profil",
+    "NAME": "Name",
+    "SBBUID": "SBB-User-ID",
+    "EMAIL": "E-Mail",
+    "ROLE_DESCRIPTION": {
+      "READER": "Lesender Zugriff auf atlas Daten (Standard)",
+      "EXPLICIT_READER": "Lesender Zugriff auf atlas Daten des entsprechenden Moduls explizit gewährleistet.",
+      "WRITER": "Schreibender Zugriff für Daten einer oder mehrerer Geschäftsorganisationen. Die Bearbeitung von Daten ist auf die unten aufgeführten Kategorien beschränkt.",
+      "SUPER_USER": "Geschäftsorganisationsübergreifende Schreibrechte. Die Bearbeitung von Daten ist auf die unten aufgeührten Kategorien beschränkt.",
+      "SUPERVISOR": "Fachstelle atlas und BAV mit Spezialrechten"
+    },
+    "PERMISSIONS": "Berechtigungen",
+    "SPECIAL_PERMISSIONS": "Spezialberechtigungen"
   },
   "MENU": {
     "TITLE": "Menü",
@@ -174,6 +186,7 @@
   },
   "PAGES": {
     "HOME": "Home",
+    "USER_PROFILE": "Profil",
     "HOME_MENU": "Start",
     "HOME_BUSINESS_PLATFORM": "Die SKI Business Plattform",
     "TERMINATION_STOP_WORKFLOW": {
@@ -315,7 +328,7 @@
       "BODI": "Geschäftsorganisationen",
       "TIMETABLE_HEARING": "Fahrplananhörungen",
       "SEPODI": "Dienststellen",
-      "PRM": "BehiG"
+      "PRM": "Barrierefreiheit"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Aktiv",
@@ -323,7 +336,7 @@
       "DELETED": "Gelöscht"
     },
     "ROLE": "Rolle",
-    "NOVA": "Nova Termination",
+    "NOVA": "NOVA Termination",
     "INFO_PLUS": "Info+ Termination",
     "ADD_BUSINESS_ORGANISATION": "Geschäftsorganisation hinzufügen",
     "DELETE_BUSINESS_ORGANISATION": "Geschäftsorganisation entfernen",

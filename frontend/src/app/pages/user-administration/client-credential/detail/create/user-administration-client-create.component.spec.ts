@@ -6,7 +6,6 @@ import {
 } from '@angular/core/testing';
 
 import { UserAdministrationClientCreateComponent } from './user-administration-client-create.component';
-import { UserService } from '../../../service/user.service';
 import { BusinessOrganisationsService } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
@@ -16,41 +15,30 @@ import {
   TranslatePipe,
 } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
-import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
+import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
 import SpyObj = jasmine.SpyObj;
 
 describe('UserAdministrationClientCreateComponent', () => {
   let component: UserAdministrationClientCreateComponent;
   let fixture: ComponentFixture<UserAdministrationClientCreateComponent>;
 
-  let userServiceSpy: SpyObj<UserService>;
+  let clientCredentialAdministrationServiceSpy: SpyObj<ClientCredentialAdministrationService>;
   let notificationServiceSpy: SpyObj<NotificationService>;
-  let userPermissionManagerSpy: SpyObj<UserPermissionManager>;
   let boServiceSpy: SpyObj<BusinessOrganisationsService>;
 
   beforeEach(async () => {
-    userServiceSpy = jasmine.createSpyObj('UserService', [
-      'createClientCredentialPermission',
-    ]);
+    clientCredentialAdministrationServiceSpy = jasmine.createSpyObj(
+      'ClientCredentialAdministrationService',
+      ['createClientCredential']
+    );
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
       'success',
     ]);
-    userPermissionManagerSpy = jasmine.createSpyObj<UserPermissionManager>(
-      'UserPermissionManager',
-      ['clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser'],
-      {
-        userPermission: {
-          sbbUserId: '',
-          permissions: [],
-        },
-      }
-    );
     boServiceSpy = jasmine.createSpyObj<BusinessOrganisationsService>(
       'BusinessOrganisationsService',
       ['getAllBusinessOrganisations']
@@ -67,7 +55,7 @@ describe('UserAdministrationClientCreateComponent', () => {
     });
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
+        RouterModule.forRoot([]),
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
@@ -78,12 +66,8 @@ describe('UserAdministrationClientCreateComponent', () => {
       ],
       providers: [
         {
-          provide: UserService,
-          useValue: userServiceSpy,
-        },
-        {
-          provide: UserPermissionManager,
-          useValue: userPermissionManagerSpy,
+          provide: ClientCredentialAdministrationService,
+          useValue: clientCredentialAdministrationServiceSpy,
         },
         {
           provide: NotificationService,
@@ -112,7 +96,6 @@ describe('UserAdministrationClientCreateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.userPermissionManager).toBe(userPermissionManagerSpy);
   });
 
   it('should create client', fakeAsync(() => {
@@ -120,7 +103,7 @@ describe('UserAdministrationClientCreateComponent', () => {
     component.form.controls.clientCredentialId.setValue('client-id');
     component.form.controls.alias.setValue('alias');
 
-    userServiceSpy.createClientCredentialPermission.and.returnValue(
+    clientCredentialAdministrationServiceSpy.createClientCredential.and.returnValue(
       of({
         clientCredentialId: 'client-id',
       })
@@ -129,10 +112,7 @@ describe('UserAdministrationClientCreateComponent', () => {
 
     component.create();
     expect(
-      userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser
-    ).toHaveBeenCalledOnceWith();
-    expect(
-      userServiceSpy.createClientCredentialPermission
+      clientCredentialAdministrationServiceSpy.createClientCredential
     ).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledTimes(1);
     tick();

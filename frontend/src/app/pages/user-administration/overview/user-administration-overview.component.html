@@ -17,15 +17,16 @@
   </atlas-button>
 
   <nav [tabPanel]="tabPanel" class="tabs" data-cy="tabs" mat-tab-nav-bar>
-    <a
-      *ngFor="let tab of TABS"
-      [routerLink]="tab.link"
-      routerLinkActive="active-tab"
-      class="font-bold-xl"
-      mat-tab-link
-    >
-      {{ tab.title | translate }}
-    </a>
+    @for (tab of TABS; track tab) {
+      <a
+        [routerLink]="tab.link"
+        routerLinkActive="active-tab"
+        class="font-bold-xl"
+        mat-tab-link
+      >
+        {{ tab.title | translate }}
+      </a>
+    }
   </nav>
   <div class="white-table-container-tabs">
     <mat-tab-nav-panel #tabPanel>

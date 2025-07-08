@@ -1,0 +1,136 @@
+<div class="application-wrapper">
+  <div class="application-role d-flex mb-3">
+    <div class="role d-flex flex-column col-3 me-3">
+      <atlas-select
+        (selectChanged)="onRoleChanged($event.value)"
+        [formGroup]="form"
+        label="USER_ADMIN.ROLE"
+        controlName="role"
+        [additionalLabelspace]="0"
+        [options]="availableRoles"
+        optionTranslateLabelPrefix="COMMON.ROLES."
+      >
+      </atlas-select>
+    </div>
+    <div class="role d-flex flex-column justify-content-center font-regular-sm">
+      {{ 'PROFILE.ROLE_DESCRIPTION.' + currentRole | translate }}
+    </div>
+  </div>
+
+  @if (currentRoleConfig.permissions.restrictions.length > 0) {
+    <atlas-spacer height="20px" [divider]="false"></atlas-spacer>
+    <div class="restrictions col-12 d-flex flex-column mb-3">
+      <div class="d-flex font-bold-xl">
+        {{ 'PROFILE.PERMISSIONS' | translate }}
+      </div>
+      <div class="d-flex flex-column">
+        @if (showCountryRestriction) {
+          <div class="mb-3">
+            <atlas-select
+              label="COMMON.COUNTRIES"
+              [additionalLabelspace]="0"
+              [optionTranslateLabelPrefix]="SWISS_COUNTRIES_PREFIX_LABEL"
+              [displayExtractor]="getCountryEnum"
+              [options]="COUNTRIES"
+              [multiple]="true"
+              [isSelectAllEnabled]="true"
+              controlName="countryRestrictions"
+              [formGroup]="permissionsForm"
+            >
+            </atlas-select>
+          </div>
+        }
+        @if (showBusinessOrganisationRestriction) {
+          <span class="font-bold-lg">
+            {{
+              'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate
+            }}
+          </span>
+          <app-relation
+            (deleteRelation)="removeBusinessOrganisation()"
+            (editModeChanged)="addBusinessOrganisation()"
+            (selectedIndexChanged)="selectedBusinessOrganisationIndex = $event"
+            addBtnNameTranslationKey="USER_ADMIN.ADD_BUSINESS_ORGANISATION"
+            deleteBtnNameTranslationKey="USER_ADMIN.DELETE_BUSINESS_ORGANISATION"
+            [editable]="form.enabled"
+            [records]="currentBusinessOrganisations"
+            [selectedIndex]="selectedBusinessOrganisationIndex"
+            [tableColumns]="tableColumnDef"
+            [relationEditable]="false"
+          >
+            @if (form.enabled) {
+              <div class="mb-3 bo-select-wrapper" table-button-between>
+                <bo-select
+                  [controlName]="boFormCtrlName"
+                  [formGroup]="businessOrganisationForm"
+                ></bo-select>
+              </div>
+            }
+          </app-relation>
+        }
+        @if (showCantonRestriction) {
+          <atlas-select
+            controlName="cantonRestrictions"
+            [formGroup]="permissionsForm"
+            label="COMMON.CANTONS"
+            [additionalLabelspace]="0"
+            [optionTranslateLabelPrefix]="SWISS_CANTONS_PREFIX_LABEL"
+            [displayExtractor]="getCantonAbbreviation"
+            [options]="SWISS_CANTONS"
+            [multiple]="true"
+          >
+          </atlas-select>
+        }
+      </div>
+    </div>
+  }
+
+  @if (showSpecialPermissions) {
+    <atlas-spacer height="20px" [divider]="false"></atlas-spacer>
+    <div class="special-permissions">
+      <div class="d-flex font-bold-xl">
+        {{ 'PROFILE.SPECIAL_PERMISSIONS' | translate }}
+      </div>
+      <div class="special-permissions d-flex flex-row">
+        @if (showBulkImport) {
+          <div class="me-5">
+            <app-atlas-label-field
+              fieldLabel="PAGES.BULK_IMPORT.TITLE_MENU"
+            ></app-atlas-label-field>
+            <atlas-slide-toggle
+              [formGroup]="permissionsForm"
+              controlName="bulkImportRestriction"
+              [disabled]="form.disabled"
+            ></atlas-slide-toggle>
+          </div>
+        }
+        @if (showNovaTerminationVote) {
+          <div class="me-5">
+            <app-atlas-label-field
+              fieldLabel="USER_ADMIN.NOVA"
+            ></app-atlas-label-field>
+            <atlas-slide-toggle
+              (toggleChange)="onNovaToggle($event)"
+              [formGroup]="permissionsForm"
+              controlName="novaTerminationVote"
+              [disabled]="form.disabled"
+            ></atlas-slide-toggle>
+          </div>
+        }
+        @if (showInfoPlusTerminationVote) {
+          <div class="me-5">
+            <app-atlas-label-field
+              fieldLabel="USER_ADMIN.INFO_PLUS"
+            ></app-atlas-label-field>
+            <atlas-slide-toggle
+              (toggleChange)="onInfoPlusToggle($event)"
+              [formGroup]="permissionsForm"
+              controlName="infoPlusTerminationVote"
+              [disabled]="form.disabled"
+            ></atlas-slide-toggle>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

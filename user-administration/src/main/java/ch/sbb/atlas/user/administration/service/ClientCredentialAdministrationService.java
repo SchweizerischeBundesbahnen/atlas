@@ -1,7 +1,8 @@
 package ch.sbb.atlas.user.administration.service;
 
-import ch.sbb.atlas.api.user.administration.ClientCredentialPermissionCreateModel;
+import ch.sbb.atlas.api.user.administration.ClientCredentialCreateModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
@@ -33,7 +34,7 @@ public class ClientCredentialAdministrationService {
     return clientCredentialPermissionRepository.findAllByClientCredentialId(clientId);
   }
 
-  public List<ClientCredentialPermission> create(ClientCredentialPermissionCreateModel createModel) {
+  public List<ClientCredentialPermission> create(ClientCredentialCreateModel createModel) {
     String clientCredentialId = createModel.getClientCredentialId();
     if (clientCredentialPermissionRepository.existsByClientCredentialId(clientCredentialId)) {
       throw new UserPermissionConflictException(clientCredentialId);
@@ -41,24 +42,19 @@ public class ClientCredentialAdministrationService {
     return clientCredentialPermissionRepository.saveAll(ClientCredentialPermissionCreateMapper.toEntityList(createModel));
   }
 
-  public void update(String clientCredentialId, ClientCredentialPermissionCreateModel editedPermissions) {
-    List<ClientCredentialPermission> existingPermissions = getClientCredentialPermission(clientCredentialId);
+  public void update(String clientId, ApplicationType application, PermissionModel editedPermission) {
+    List<ClientCredentialPermission> existingPermissions = getClientCredentialPermission(clientId);
 
-    editedPermissions.getPermissions().forEach(editedPermission -> {
-      Optional<ClientCredentialPermission> existingPermission =
-          existingPermissions.stream().filter(i -> i.getApplication() == editedPermission.getApplication()).findFirst();
+    Optional<ClientCredentialPermission> existingPermission =
+        existingPermissions.stream().filter(i -> i.getApplication() == application).findFirst();
 
-      if (existingPermission.isPresent()) {
-        updateExistingPermission(editedPermission, existingPermission.get());
-      } else {
-        createNewPermission(editedPermissions, editedPermission);
-      }
-    });
-  }
-
-  private void createNewPermission(ClientCredentialPermissionCreateModel editedPermissions, PermissionModel editedPermission) {
-    ClientCredentialPermission additionalPermission = ClientCredentialMapper.toEntity(editedPermission, editedPermissions);
-    clientCredentialPermissionRepository.save(additionalPermission);
+    if (existingPermission.isPresent()) {
+      updateExistingPermission(editedPermission, existingPermission.get());
+    } else {
+      ClientCredentialPermission credentialPermission = existingPermissions.getFirst();
+      ClientCredentialPermission additionalPermission = ClientCredentialMapper.toEntity(editedPermission, credentialPermission);
+      clientCredentialPermissionRepository.save(additionalPermission);
+    }
   }
 
   private void updateExistingPermission(PermissionModel editedPermission, ClientCredentialPermission existingPermission) {

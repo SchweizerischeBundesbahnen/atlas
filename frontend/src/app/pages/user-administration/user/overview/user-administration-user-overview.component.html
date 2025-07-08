@@ -1,0 +1,94 @@
+<app-table
+  (editElementEvent)="openUser($event)"
+  (tableChanged)="reloadTableWithCurrentSettings()"
+  (tableInitialized)="reloadTableWithCurrentSettings()"
+  [showTableFilter]="false"
+  [pageSizeOptions]="[5, 10, 20]"
+  [sortingDisabled]="true"
+  [tableColumns]="tableColumns"
+  [tableData]="userPageResult.users"
+  [totalCount]="userPageResult.totalCount"
+>
+  <div class="d-flex flex-column mb-1">
+    <mat-label class="font-bold-lg"
+      >{{ 'COMMON.SEARCH.SEARCH_FOR' | translate }}
+    </mat-label>
+    <mat-radio-group
+      (change)="selectedSearchChanged()"
+      [(ngModel)]="selectedSearch"
+    >
+      @for (option of searchOptions; track option) {
+        <mat-radio-button [value]="option.value" class="pe-2">
+          {{ option.translationKey | translate }}
+        </mat-radio-button>
+      }
+    </mat-radio-group>
+  </div>
+
+  <div class="col-12 search-section-height">
+    @if (selectedSearch === 'USER') {
+      <div class="mb-1">
+        <mat-label class="font-bold-lg"
+          >{{ 'USER_ADMIN.TABLE_HEADER' | translate }}
+        </mat-label>
+      </div>
+      <app-user-select
+        (selectionChange)="onUserFilterChanged($event)"
+        [form]="userSearchForm"
+      ></app-user-select>
+    } @else if (selectedSearch === 'FILTER') {
+      <div class="d-flex flex-row">
+        <bo-select
+          (boSelectionChanged)="filterChanged()"
+          [controlName]="boSearchCtrlName"
+          [formGroup]="boForm"
+          [formModus]="false"
+          class="col-6 pe-1"
+        ></bo-select>
+
+        <div class="d-flex flex-column col-6 ps-3">
+          <atlas-select
+            (selectChanged)="applicationChanged($event); filterChanged()"
+            [value]="selectedApplicationOptions"
+            label="USER_ADMIN.APPLICATIONS"
+            [additionalLabelspace]="0"
+            optionTranslateLabelPrefix="USER_ADMIN.APPLICATION."
+            [options]="applicationBoOptions"
+            [multiple]="true"
+          >
+          </atlas-select>
+        </div>
+      </div>
+    } @else {
+      <div class="d-flex flex-row">
+        <div class="d-flex flex-column col-6 ps-1">
+          <atlas-select
+            (selectChanged)="cantonChanged($event); filterChanged()"
+            [value]="selectedCantonOptions"
+            label="COMMON.CANTONS"
+            [additionalLabelspace]="0"
+            [optionTranslateLabelPrefix]="SWISS_CANTONS_PREFIX_LABEL"
+            [options]="cantonOptions"
+            [multiple]="true"
+            [displayExtractor]="getCantonAbbreviation"
+          >
+          </atlas-select>
+        </div>
+
+        <div class="d-flex flex-column col-6 ps-3">
+          <atlas-select
+            (selectChanged)="applicationChanged($event); filterChanged()"
+            [value]="selectedApplicationOptions"
+            label="USER_ADMIN.APPLICATIONS"
+            [additionalLabelspace]="0"
+            optionTranslateLabelPrefix="USER_ADMIN.APPLICATION."
+            [options]="applicationCantonOptions"
+            [multiple]="true"
+          >
+          </atlas-select>
+        </div>
+      </div>
+    }
+  </div>
+</app-table>
+<router-outlet></router-outlet>

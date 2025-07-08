@@ -1,7 +1,9 @@
 <div scrollToTop>
   <atlas-detail-page-container>
     <atlas-detail-page-content>
-      <h1 class="font-bold-4xl mb-5">{{ 'USER_ADMIN.CLIENT_CREDENTIAL.NEW' | translate }}</h1>
+      <h1 class="font-bold-4xl mb-5">
+        {{ 'USER_ADMIN.CLIENT_CREDENTIAL.NEW' | translate }}
+      </h1>
       <h2 class="font-bold-xl mb-2">
         {{ 'USER_ADMIN.CLIENT_CREDENTIAL.NEW_INFORMATION' | translate }}
       </h2>
@@ -35,21 +37,22 @@
           </atlas-text-field>
         </div>
       </div>
-
-      <h1 class="font-bold-4xl mt-5">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</h1>
-      <div *ngFor="let permission of userPermissionManager.userPermission.permissions">
-        <app-user-administration-application-config
-          [application]="permission.application"
-          [role]="permission.role"
-        ></app-user-administration-application-config>
-      </div>
     </atlas-detail-page-content>
 
     <atlas-detail-footer>
-      <button (click)="cancelCreation()" class="atlas-primary-btn" data-cy="cancel">
+      <button
+        (click)="cancelCreation()"
+        class="atlas-primary-btn"
+        data-cy="cancel"
+      >
         {{ 'COMMON.CANCEL' | translate }}
       </button>
-      <button (click)="create()" class="atlas-primary-btn ms-3" data-cy="save" type="submit">
+      <button
+        (click)="create()"
+        class="atlas-primary-btn ms-3"
+        data-cy="save"
+        type="submit"
+      >
         {{ 'COMMON.SAVE' | translate }}
       </button>
     </atlas-detail-footer>
