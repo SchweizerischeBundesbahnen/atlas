@@ -129,9 +129,9 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   }
 
   @Override
-  public UserModel updateUserPermissions(UserPermissionCreateModel editedPermissions) {
-    userAdministrationService.updateUser(editedPermissions);
-    UserModel userModel = getUser(editedPermissions.getSbbUserId());
+  public UserModel updateUserPermissions(String userId, ApplicationType application, PermissionModel editedPermissions) {
+    userAdministrationService.updatePermission(userId, application, editedPermissions);
+    UserModel userModel = getUser(userId);
     userPermissionDistributor.pushUserPermissionToKafka(KafkaModelMapper.toKafkaModel(userModel));
     return userModel;
   }

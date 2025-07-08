@@ -32,6 +32,10 @@
   }
 }
 
+.slide-disabled {
+  filter: grayscale(50%);
+}
+
 .slide-btn {
   border: unset;
   padding: unset;

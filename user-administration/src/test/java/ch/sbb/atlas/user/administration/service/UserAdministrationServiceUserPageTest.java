@@ -94,8 +94,8 @@ import org.springframework.data.domain.Pageable;
   @Test
   void testWithoutAppTypesWithoutSboids() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20), null, null, null);
-    Assertions.assertEquals(2, userPage.getTotalElements());
-    Assertions.assertEquals(2, userPage.getContent().size());
+    Assertions.assertEquals(3, userPage.getTotalElements());
+    Assertions.assertEquals(3, userPage.getContent().size());
     Assertions.assertTrue(userPage.getContent().containsAll(List.of("e654321", "u123456")));
   }
 

@@ -7,14 +7,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Permission } from './permission';
 
 
 export interface UserPermissionCreate { 
-    /**
-     * User permissions
-     */
-    permissions: Array<Permission>;
     /**
      * SBB User-ID
      */

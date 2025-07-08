@@ -1,0 +1,31 @@
+<div class="ps-5 pt-5">
+  <h2 class="font-bold-4xl">
+    {{ 'PROFILE.PROFILE_HEADER' | translate }}
+  </h2>
+  <div class="d-flex flex-column">
+    <div class="d-inline-flex">
+      <div class="d-flex me-3 font-bold-base">
+        {{ 'PROFILE.NAME' | translate }}:
+      </div>
+      <div class="d-flex">{{ currentUser.name }}</div>
+    </div>
+
+    <div class="d-inline-flex">
+      <div class="d-flex me-3 font-bold-base">
+        {{ 'PROFILE.SBBUID' | translate }}:
+      </div>
+      <div class="d-flex">{{ currentUser.sbbuid }}</div>
+    </div>
+
+    <div class="d-inline-flex">
+      <div class="d-flex me-3 font-bold-base">
+        {{ 'PROFILE.EMAIL' | translate }}:
+      </div>
+      <div class="d-flex">{{ currentUser.email }}</div>
+    </div>
+  </div>
+
+  <div class="white-table-container-no-tabs mt-4">
+    <atlas-permission></atlas-permission>
+  </div>
+</div>

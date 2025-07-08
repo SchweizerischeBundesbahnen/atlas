@@ -2,8 +2,10 @@ package ch.sbb.atlas.user.administration.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.user.administration.ClientCredentialAdministrationApiV1;
+import ch.sbb.atlas.api.user.administration.ClientCredentialCreateModel;
 import ch.sbb.atlas.api.user.administration.ClientCredentialModel;
-import ch.sbb.atlas.api.user.administration.ClientCredentialPermissionCreateModel;
+import ch.sbb.atlas.api.user.administration.PermissionModel;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.mapper.ClientCredentialMapper;
@@ -36,7 +38,7 @@ public class ClientCredentialAdministrationController implements ClientCredentia
   }
 
   @Override
-  public ClientCredentialModel createClientCredential(ClientCredentialPermissionCreateModel client) {
+  public ClientCredentialModel createClientCredential(ClientCredentialCreateModel client) {
     ClientCredentialModel clientCredentialModel = ClientCredentialMapper.toSingleModel(
         clientCredentialAdministrationService.create(client));
     userPermissionDistributor.pushUserPermissionToKafka(KafkaModelMapper.toKafkaModel(clientCredentialModel));
@@ -44,9 +46,10 @@ public class ClientCredentialAdministrationController implements ClientCredentia
   }
 
   @Override
-  public ClientCredentialModel updateClientCredential(ClientCredentialPermissionCreateModel editedPermissions) {
-    clientCredentialAdministrationService.update(editedPermissions.getClientCredentialId(), editedPermissions);
-    ClientCredentialModel clientCredentialModel = getClientCredential(editedPermissions.getClientCredentialId());
+  public ClientCredentialModel updateClientCredential(String clientId, ApplicationType application,
+      PermissionModel editedPermissions) {
+    clientCredentialAdministrationService.update(clientId, application, editedPermissions);
+    ClientCredentialModel clientCredentialModel = getClientCredential(clientId);
     userPermissionDistributor.pushUserPermissionToKafka(KafkaModelMapper.toKafkaModel(clientCredentialModel));
     return clientCredentialModel;
   }

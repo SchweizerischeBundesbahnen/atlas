@@ -1,0 +1,7 @@
+@if (user) {
+  <app-user-administration-user-edit
+    [user]="user"
+  ></app-user-administration-user-edit>
+} @else {
+  <app-user-administration-create></app-user-administration-create>
+}

@@ -1,0 +1,181 @@
+import {
+  ApplicationRole,
+  ApplicationType,
+  PermissionRestrictionType,
+} from '../../../../api';
+
+export interface ApplicationConfig {
+  roles: RoleConfig[];
+}
+
+export interface RoleConfig {
+  role: ApplicationRole;
+  permissions: PermissionsConfig;
+}
+
+export interface PermissionsConfig {
+  restrictions: PermissionRestrictionType[];
+  specialPermissions: PermissionRestrictionType[];
+}
+
+export class ApplicationPermissionConfig {
+  public static get(application: ApplicationType): ApplicationConfig {
+    return this.CONFIG[application];
+  }
+
+  public static getByRole(
+    application: ApplicationType,
+    role: ApplicationRole
+  ): RoleConfig {
+    return this.get(application).roles.find((i) => i.role === role)!;
+  }
+
+  public static getRoles(application: ApplicationType): ApplicationRole[] {
+    return this.CONFIG[application].roles.map((i) => i.role);
+  }
+
+  // Reader, Writer with BOs, SuperUser and Supervisor. Writer and SuperUser with BulkImport
+  private static readonly DEFAULT_ROLES = [
+    {
+      role: ApplicationRole.Reader,
+      permissions: {
+        restrictions: [],
+        specialPermissions: [],
+      },
+    },
+    {
+      role: ApplicationRole.Writer,
+      permissions: {
+        restrictions: [PermissionRestrictionType.BusinessOrganisation],
+        specialPermissions: [PermissionRestrictionType.BulkImport],
+      },
+    },
+    {
+      role: ApplicationRole.SuperUser,
+      permissions: {
+        restrictions: [],
+        specialPermissions: [PermissionRestrictionType.BulkImport],
+      },
+    },
+    {
+      role: ApplicationRole.Supervisor,
+      permissions: {
+        restrictions: [],
+        specialPermissions: [],
+      },
+    },
+  ];
+
+  private static readonly CONFIG: {
+    [application in ApplicationType]: ApplicationConfig;
+  } = {
+    TTFN: {
+      roles: ApplicationPermissionConfig.DEFAULT_ROLES,
+    },
+    LIDI: {
+      roles: ApplicationPermissionConfig.DEFAULT_ROLES,
+    },
+    BODI: {
+      roles: [
+        {
+          role: ApplicationRole.Reader,
+          permissions: {
+            restrictions: [],
+            specialPermissions: [],
+          },
+        },
+        {
+          role: ApplicationRole.Supervisor,
+          permissions: {
+            restrictions: [],
+            specialPermissions: [],
+          },
+        },
+      ],
+    },
+    TIMETABLE_HEARING: {
+      roles: [
+        {
+          role: ApplicationRole.Reader,
+          permissions: {
+            restrictions: [],
+            specialPermissions: [],
+          },
+        },
+        {
+          role: ApplicationRole.ExplicitReader,
+          permissions: {
+            restrictions: [],
+            specialPermissions: [],
+          },
+        },
+        {
+          role: ApplicationRole.Writer,
+          permissions: {
+            restrictions: [PermissionRestrictionType.Canton],
+            specialPermissions: [],
+          },
+        },
+        {
+          role: ApplicationRole.Supervisor,
+          permissions: {
+            restrictions: [],
+            specialPermissions: [],
+          },
+        },
+      ],
+    },
+    SEPODI: {
+      roles: [
+        {
+          role: ApplicationRole.Reader,
+          permissions: {
+            restrictions: [],
+            specialPermissions: [
+              PermissionRestrictionType.NovaTerminationVote,
+              PermissionRestrictionType.InfoPlusTerminationVote,
+            ],
+          },
+        },
+        {
+          role: ApplicationRole.Writer,
+          permissions: {
+            restrictions: [
+              PermissionRestrictionType.Country,
+              PermissionRestrictionType.BusinessOrganisation,
+            ],
+            specialPermissions: [
+              PermissionRestrictionType.BulkImport,
+              PermissionRestrictionType.NovaTerminationVote,
+              PermissionRestrictionType.InfoPlusTerminationVote,
+            ],
+          },
+        },
+        {
+          role: ApplicationRole.SuperUser,
+          permissions: {
+            restrictions: [PermissionRestrictionType.Country],
+            specialPermissions: [
+              PermissionRestrictionType.BulkImport,
+              PermissionRestrictionType.NovaTerminationVote,
+              PermissionRestrictionType.InfoPlusTerminationVote,
+            ],
+          },
+        },
+        {
+          role: ApplicationRole.Supervisor,
+          permissions: {
+            restrictions: [],
+            specialPermissions: [
+              PermissionRestrictionType.NovaTerminationVote,
+              PermissionRestrictionType.InfoPlusTerminationVote,
+            ],
+          },
+        },
+      ],
+    },
+    PRM: {
+      roles: ApplicationPermissionConfig.DEFAULT_ROLES,
+    },
+  };
+}

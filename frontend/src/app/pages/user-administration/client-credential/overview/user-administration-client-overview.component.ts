@@ -1,14 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
-import {
-  ClientCredential,
-  ClientCredentialAdministrationService,
-} from '../../../../api';
+import { ClientCredential } from '../../../../api';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 import { TableComponent } from '../../../../core/components/table/table.component';
+import { ClientCredentialAdministrationService } from '../../../../api/service/user-administration/client-credential-administration.service';
 
 @Component({
   selector: 'app-client-credential-administration-overview',

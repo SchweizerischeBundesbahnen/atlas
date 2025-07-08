@@ -2,14 +2,21 @@ import { Page } from '../core/model/page';
 import { environment } from '../../environments/environment';
 
 export class Pages {
-  public static HOME: Page = {
+  public static readonly HOME: Page = {
     title: 'PAGES.HOME',
     titleMenu: 'PAGES.HOME_MENU',
     headerTitle: 'PAGES.HOME',
     path: '',
   };
 
-  public static TTFN: Page = {
+  public static readonly USER_PROFILE: Page = {
+    title: 'PAGES.USER_PROFILE',
+    titleMenu: 'PAGES.USER_PROFILE',
+    headerTitle: 'PAGES.USER_PROFILE',
+    path: 'profile',
+  };
+
+  public static readonly TTFN: Page = {
     title: 'PAGES.TTFN.TITLE',
     titleMenu: 'PAGES.TTFN.TITLE_MENU',
     headerTitle: 'PAGES.TTFN.TITLE_HEADER',
@@ -18,12 +25,12 @@ export class Pages {
     description: 'PAGES.TTFN.DESCRIPTION',
   };
 
-  public static TTFN_DETAIL: Page = {
+  public static readonly TTFN_DETAIL: Page = {
     title: 'PAGES.DETAILS',
     path: ':id',
   };
 
-  public static BULK_IMPORT: Page = {
+  public static readonly BULK_IMPORT: Page = {
     title: 'PAGES.BULK_IMPORT.TITLE',
     titleMenu: 'PAGES.BULK_IMPORT.TITLE_MENU',
     headerTitle: 'PAGES.BULK_IMPORT.TITLE_MENU',
@@ -32,7 +39,7 @@ export class Pages {
     description: 'PAGES.BULK_IMPORT.DESCRIPTION',
   };
 
-  public static LIDI: Page = {
+  public static readonly LIDI: Page = {
     title: 'PAGES.LIDI.TITLE',
     titleMenu: 'PAGES.LIDI.TITLE_MENU',
     headerTitle: 'PAGES.LIDI.TITLE_MENU',
@@ -41,22 +48,22 @@ export class Pages {
     description: 'PAGES.LIDI.DESCRIPTION',
   };
 
-  public static LINES: Page = {
+  public static readonly LINES: Page = {
     title: 'PAGES.DETAILS',
     path: 'lines',
   };
 
-  public static SUBLINES: Page = {
+  public static readonly SUBLINES: Page = {
     title: 'PAGES.DETAILS',
     path: 'sublines',
   };
 
-  public static WORKFLOWS: Page = {
+  public static readonly WORKFLOWS: Page = {
     title: 'PAGES.LIDI_WORKFLOW.TITLE',
     path: 'workflows',
   };
 
-  public static BODI: Page = {
+  public static readonly BODI: Page = {
     title: 'PAGES.BODI.TITLE',
     titleMenu: 'PAGES.BODI.TITLE_MENU',
     headerTitle: 'PAGES.BODI.TITLE_HEADER',
@@ -65,7 +72,7 @@ export class Pages {
     description: 'PAGES.BODI.DESCRIPTION',
   };
 
-  public static USER_ADMINISTRATION: Page = {
+  public static readonly USER_ADMINISTRATION: Page = {
     title: 'PAGES.USER_ADMIN.TITLE',
     titleMenu: 'PAGES.USER_ADMIN.TITLE_HEADER',
     headerTitle: 'PAGES.USER_ADMIN.TITLE_HEADER',
@@ -74,17 +81,17 @@ export class Pages {
     description: 'PAGES.USER_ADMIN.DESCRIPTION',
   };
 
-  public static USERS: Page = {
+  public static readonly USERS: Page = {
     title: 'PAGES.DETAILS',
     path: 'users',
   };
 
-  public static CLIENTS: Page = {
+  public static readonly CLIENTS: Page = {
     title: 'PAGES.DETAILS',
     path: 'clients',
   };
 
-  public static TTH: Page = {
+  public static readonly TTH: Page = {
     title: 'PAGES.TTH.TITLE',
     titleMenu: 'PAGES.TTH.TITLE_MENU',
     headerTitle: 'PAGES.TTH.TITLE_MENU',
@@ -93,22 +100,22 @@ export class Pages {
     description: 'PAGES.TTH.DESCRIPTION',
   };
 
-  public static TTH_ACTIVE: Page = {
+  public static readonly TTH_ACTIVE: Page = {
     title: 'PAGES.DETAILS',
     path: 'active',
   };
 
-  public static TTH_PLANNED: Page = {
+  public static readonly TTH_PLANNED: Page = {
     title: 'PAGES.DETAILS',
     path: 'planned',
   };
 
-  public static TTH_ARCHIVED: Page = {
+  public static readonly TTH_ARCHIVED: Page = {
     title: 'PAGES.DETAILS',
     path: 'archived',
   };
 
-  public static TTH_OVERVIEW_DETAIL: Page = {
+  public static readonly TTH_OVERVIEW_DETAIL: Page = {
     title: 'PAGES.OVERVIEW_DETAILS',
     path: ':canton',
   };
@@ -118,22 +125,22 @@ export class Pages {
     path: ':id',
   };
 
-  public static BUSINESS_ORGANISATIONS: Page = {
+  public static readonly BUSINESS_ORGANISATIONS: Page = {
     title: 'PAGES.DETAILS',
     path: 'business-organisations',
   };
 
-  public static TRANSPORT_COMPANIES: Page = {
+  public static readonly TRANSPORT_COMPANIES: Page = {
     title: 'PAGES.DETAILS',
     path: 'transport-companies',
   };
 
-  public static COMPANIES: Page = {
+  public static readonly COMPANIES: Page = {
     title: 'PAGES.DETAILS',
     path: 'companies',
   };
 
-  public static SERVICE_POINT_WORKFLOWS: Page = {
+  public static readonly SERVICE_POINT_WORKFLOWS: Page = {
     title: 'PAGES.WORKFLOW.TITLE_HEADER',
     titleMenu: 'PAGES.WORKFLOW.TITLE_HEADER',
     headerTitle: 'PAGES.WORKFLOW.TITLE_HEADER',
@@ -142,7 +149,7 @@ export class Pages {
     description: 'PAGES.WORKFLOW.TITLE_HEADER',
   };
 
-  public static TERMINATION_STOP_POINT_WORKFLOWS: Page = {
+  public static readonly TERMINATION_STOP_POINT_WORKFLOWS: Page = {
     title: 'PAGES.TERMINATION_STOP_WORKFLOW.TITLE_HEADER',
     titleMenu: 'PAGES.TERMINATION_STOP_WORKFLOW.TITLE_HEADER',
     headerTitle: 'PAGES.TERMINATION_STOP_WORKFLOW.TITLE_HEADER',
@@ -151,7 +158,7 @@ export class Pages {
     description: 'PAGES.TERMINATION_STOP_WORKFLOW.TITLE_HEADER',
   };
 
-  public static SEPODI: Page = {
+  public static readonly SEPODI: Page = {
     title: 'PAGES.SERVICE_POINTS.TITLE',
     titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     headerTitle: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
@@ -163,7 +170,7 @@ export class Pages {
       : [Pages.SERVICE_POINT_WORKFLOWS],
   };
 
-  public static SERVICE_POINTS: Page = {
+  public static readonly SERVICE_POINTS: Page = {
     title: 'PAGES.SERVICE_POINTS.TITLE',
     titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     headerTitle: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
@@ -172,7 +179,7 @@ export class Pages {
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
   };
 
-  public static TRAFFIC_POINT_ELEMENTS_PLATFORM: Page = {
+  public static readonly TRAFFIC_POINT_ELEMENTS_PLATFORM: Page = {
     title: 'PAGES.SERVICE_POINTS.TITLE',
     titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     headerTitle: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
@@ -181,7 +188,7 @@ export class Pages {
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
   };
 
-  public static TRAFFIC_POINT_ELEMENTS_AREA: Page = {
+  public static readonly TRAFFIC_POINT_ELEMENTS_AREA: Page = {
     title: 'PAGES.SERVICE_POINTS.TITLE',
     titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     headerTitle: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
@@ -190,7 +197,7 @@ export class Pages {
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
   };
 
-  public static LOADING_POINTS: Page = {
+  public static readonly LOADING_POINTS: Page = {
     title: 'PAGES.SERVICE_POINTS.TITLE',
     titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     headerTitle: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
@@ -199,7 +206,7 @@ export class Pages {
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
   };
 
-  public static PRM: Page = {
+  public static readonly PRM: Page = {
     title: 'PAGES.PRM.TITLE',
     titleMenu: 'PAGES.PRM.TITLE_HEADER',
     headerTitle: 'PAGES.PRM.TITLE_HEADER',
@@ -208,7 +215,7 @@ export class Pages {
     description: 'PAGES.PRM.DESCRIPTION',
   };
 
-  public static STOP_POINTS: Page = {
+  public static readonly STOP_POINTS: Page = {
     title: 'PRM.STOP_POINTS.TITLE',
     titleMenu: 'PAGES.STOP_POINTS.TITLE_HEADER',
     headerTitle: 'PAGES.STOP_POINTS.TITLE_HEADER',
@@ -217,7 +224,7 @@ export class Pages {
     description: 'PAGES.STOP_POINTS.DESCRIPTION',
   };
 
-  public static PLATFORMS: Page = {
+  public static readonly PLATFORMS: Page = {
     title: 'PRM.PLATFORMS.TITLE',
     titleMenu: 'PAGES.PLATFORMS.TITLE_HEADER',
     headerTitle: 'PAGES.PLATFORMS.TITLE_HEADER',
@@ -226,7 +233,7 @@ export class Pages {
     description: 'PAGES.PLATFORMS.DESCRIPTION',
   };
 
-  public static REFERENCE_POINT: Page = {
+  public static readonly REFERENCE_POINT: Page = {
     title: 'PRM.REFERENCE_POINTS.TITLE',
     titleMenu: 'PAGES.REFERENCE_POINTS.TITLE_HEADER',
     headerTitle: 'PAGES.REFERENCE_POINTS.TITLE_HEADER',
@@ -235,7 +242,7 @@ export class Pages {
     description: 'PAGES.REFERENCE_POINTS.DESCRIPTION',
   };
 
-  public static PARKING_LOT: Page = {
+  public static readonly PARKING_LOT: Page = {
     title: 'PRM.PARKING_LOT.TITLE',
     titleMenu: 'PAGES.PARKING_LOT.TITLE_HEADER',
     headerTitle: 'PAGES.PARKING_LOT.TITLE_HEADER',
@@ -244,7 +251,7 @@ export class Pages {
     description: 'PAGES.PARKING_LOT.DESCRIPTION',
   };
 
-  public static CONTACT_POINT: Page = {
+  public static readonly CONTACT_POINT: Page = {
     title: 'PRM.CONTACT_POINT.TITLE',
     titleMenu: 'PAGES.CONTACT_POINT.TITLE_HEADER',
     headerTitle: 'PAGES.CONTACT_POINT.TITLE_HEADER',
@@ -253,7 +260,7 @@ export class Pages {
     description: 'PAGES.CONTACT_POINT.DESCRIPTION',
   };
 
-  public static TOILET: Page = {
+  public static readonly TOILET: Page = {
     title: 'PRM.TOILET.TITLE',
     titleMenu: 'PAGES.TOILET.TITLE_HEADER',
     headerTitle: 'PAGES.TOILET.TITLE_HEADER',
@@ -262,12 +269,12 @@ export class Pages {
     description: 'PAGES.TOILET.DESCRIPTION',
   };
 
-  public static PRM_STOP_POINT_TAB: Page = {
+  public static readonly PRM_STOP_POINT_TAB: Page = {
     title: 'PRM.TABS.STOP_POINT',
     path: 'stop-point',
   };
 
-  public static SEPODI_TAB: Page = {
+  public static readonly SEPODI_TAB: Page = {
     title: 'SEPODI.SERVICE_POINTS.SERVICE_POINT',
     path: 'service-point',
   };
