@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.location.LocationService;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -137,6 +138,13 @@ public class TrafficPointElementService {
             .validOn(validOn)
             .build())
         .build().getSpecification());
+  }
+
+  public void doesTrafficPointExist(String sloid) {
+    if (findBySloidOrderByValidFrom(sloid).isEmpty()) {
+      throw new SloidNotFoundException(sloid) {
+      };
+    }
   }
 
 }
