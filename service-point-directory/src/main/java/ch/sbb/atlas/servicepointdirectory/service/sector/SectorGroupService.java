@@ -3,7 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.sector;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.relation.SectorGroupRelationModel;
+import ch.sbb.atlas.api.servicepoint.sector.relation.SectorGroupRelationId;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
@@ -11,7 +11,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.SectorNotExistingException;
 import ch.sbb.atlas.servicepointdirectory.exception.SectorNotValidException;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
-import ch.sbb.atlas.servicepointdirectory.exception.TrafficPointNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorGroupMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorGroupRelationMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorMapper;
@@ -85,7 +84,7 @@ public class SectorGroupService {
   public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion toCreate,
       List<String> sloids
   ) {
-    existTrafficPointElement(toCreate.getTrafficPointSloid());
+    trafficPointElementService.doesTrafficPointExist(toCreate.getTrafficPointSloid());
     List<SectorVersion> versions = fetchLatestSectorVersions(sloids);
     validateSectorVersions(versions);
     validateTrafficPoint(toCreate.getTrafficPointSloid(), versions);
@@ -120,7 +119,7 @@ public class SectorGroupService {
       String trafficPointSloid,
       List<SectorVersion> sectorVersions
   ) {
-    existTrafficPointElement(trafficPointSloid);
+    trafficPointElementService.doesTrafficPointExist(trafficPointSloid);
     isTrafficPointSloidMatchingOverAllObjects(sectorVersions, trafficPointSloid);
   }
 
@@ -132,17 +131,13 @@ public class SectorGroupService {
 
   private void createRelation(List<String> sectorSloids, String sectorGroupSloid) {
     for (String sectorSloid : sectorSloids) {
-      SectorGroupRelationModel sectorGroupRelationModel = SectorGroupRelationModel.builder()
+
+      SectorGroupRelationId sectorGroupRelationModel = SectorGroupRelationId.builder()
           .sectorGroupSloid(sectorGroupSloid)
           .sectorSloid(sectorSloid)
           .build();
-      sectorGroupRelationRepository.saveAndFlush(SectorGroupRelationMapper.toEntity(sectorGroupRelationModel));
-    }
-  }
 
-  public void existTrafficPointElement(String sloid) {
-    if (trafficPointElementService.findBySloidOrderByValidFrom(sloid).isEmpty()) {
-      throw new TrafficPointNotFoundException(sloid);
+      sectorGroupRelationRepository.saveAndFlush(SectorGroupRelationMapper.toEntity(sectorGroupRelationModel));
     }
   }
 

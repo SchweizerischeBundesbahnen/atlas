@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-public abstract class AbstractSectorCore extends AbstractSectorVersion {
+public abstract class BaseSectorCoreModel extends BaseSectorVersionModel {
 
   @Schema(description = """
       This ID helps identify versions of a traffic point element in the use case front end and/or update.
@@ -35,10 +35,13 @@ public abstract class AbstractSectorCore extends AbstractSectorVersion {
   private String sloid;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
-  @Schema(description = "Unique code for traffic point element (TPE) that is used in customer information.\n" +
-      "By means of this ID, the connection between stops and bus / station stop area or boarding area can be established.\n\n" +
-      "The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here.\n\n" +
-      "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:16161:1")
+  @Schema(description = """
+      Unique code for traffic point element (TPE) that is used in customer information.
+      By means of this ID, the connection between stops and bus / station stop area or boarding area can be established.
+      The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here.
+      https://transportdatamanagement.ch/standards/
+      """,
+      example = "ch:1:sloid:16161:1")
   @NotNull
   private String trafficPointSloid;
 

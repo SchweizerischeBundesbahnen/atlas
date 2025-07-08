@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.relation.SectorGroupRelationId;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.SectorTestData;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -15,7 +16,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupRelation;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.SectorNotExistingException;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
-import ch.sbb.atlas.servicepointdirectory.exception.TrafficPointNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupRelationRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
@@ -243,7 +243,7 @@ class SectorGroupServiceTest {
 
     assertThatThrownBy(() ->
         sectorGroupService.createSectorGroup(toCreate, List.of(sloid, sloid2))
-    ).isInstanceOf(TrafficPointNotFoundException.class);
+    ).isInstanceOf(SloidNotFoundException.class);
   }
 
   @Test

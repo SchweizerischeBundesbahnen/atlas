@@ -23,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @MappedSuperclass
-public abstract class AbstractSectorEntity extends BaseEntity {
+public abstract class BaseSectorEntity extends BaseEntity {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
   @AtlasVersionableProperty

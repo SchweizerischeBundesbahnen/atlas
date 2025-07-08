@@ -7,6 +7,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @Schema(name = "UpdateSectorGroupVersion")
-public class UpdateSectorGroupVersionModel extends AbstractSectorVersion {
+public class UpdateSectorGroupVersionModel extends BaseSectorVersionModel {
 
 }

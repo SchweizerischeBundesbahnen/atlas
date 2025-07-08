@@ -7,13 +7,14 @@ import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.SectorTestData;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
-import ch.sbb.atlas.servicepointdirectory.exception.TrafficPointNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import org.hibernate.StaleObjectStateException;
@@ -115,7 +116,7 @@ class SectorServiceTest {
     // When
     // Then
     assertThatThrownBy(() -> sectorService.createSector(model))
-        .isInstanceOf(TrafficPointNotFoundException.class);
+        .isInstanceOf(SloidNotFoundException.class);
   }
 
   @Test
@@ -148,6 +149,7 @@ class SectorServiceTest {
   }
 
   @Test
+  @Transactional
   void shouldUpdateSectorAndCreateNewVersion() {
     String sloid = "ch:1:sector:update";
     SectorVersion original = sectorVersionRepository.save(
@@ -185,6 +187,7 @@ class SectorServiceTest {
   }
 
   @Test
+  @Transactional
   void shouldThrowWhenUpdateSectorWithStaleVersion() {
     sectorVersionRepository.deleteAll();
     // Given
