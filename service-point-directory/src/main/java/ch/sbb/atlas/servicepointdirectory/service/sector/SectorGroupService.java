@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.relation.SectorGroupRelationId;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
@@ -150,6 +151,8 @@ public class SectorGroupService {
   }
 
   private SectorGroupVersion save(SectorGroupVersion sectorGroupVersion) {
+    sectorGroupVersion.setStatus(Status.VALIDATED);
+
     return sectorGroupVersionRepository.saveAndFlush(sectorGroupVersion);
   }
 
