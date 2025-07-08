@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,6 +16,7 @@ import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.relation.SectorGroupRelationId;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.SectorTestData;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupRelation;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
@@ -22,6 +24,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupRelationRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
 import java.time.LocalDate;
 import java.util.List;
@@ -39,6 +42,9 @@ class SectorGroupControllerTest extends BaseControllerApiTest {
 
   @MockBean
   private TrafficPointElementService trafficPointElementService;
+
+  @MockBean
+  private ServicePointService servicePointService;
 
   @Autowired
   public SectorGroupControllerTest(SectorVersionRepository sectorVersionRepository,
@@ -138,6 +144,9 @@ class SectorGroupControllerTest extends BaseControllerApiTest {
     when(trafficPointElementService.findBySloidOrderByValidFrom(sectorVersion1.getTrafficPointSloid()))
         .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
 
+    when(servicePointService.findAllByNumberOrderByValidFrom(any()))
+        .thenReturn(List.of(ServicePointTestData.getBern()));
+
     mvc.perform(post("/v1/sector-groups")
             .contentType(contentType)
             .content(mapper.writeValueAsString(create)))
@@ -178,6 +187,12 @@ class SectorGroupControllerTest extends BaseControllerApiTest {
         SectorGroupRelation.builder().sectorGroupRelationId(sectorGroupRelationId).build());
     sectorGroupRelationRepository.saveAndFlush(
         SectorGroupRelation.builder().sectorGroupRelationId(sectorGroupRelationId2).build());
+
+    when(trafficPointElementService.findBySloidOrderByValidFrom(any()))
+        .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
+
+    when(servicePointService.findAllByNumberOrderByValidFrom(any()))
+        .thenReturn(List.of(ServicePointTestData.getBern()));
 
     UpdateSectorGroupVersionModel updateDto = UpdateSectorGroupVersionModel.builder()
         .etagVersion(sectorGroupVersion.getVersion())

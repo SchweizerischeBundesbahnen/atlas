@@ -25,6 +25,7 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,9 +74,18 @@ public class SectorGroupService {
   }
 
   @Transactional
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
+      (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  public ReadSectorGroupVersionModel create(SectorGroupVersion toCreate,
+      List<String> sloids, List<ServicePointVersion> servicePointVersions) {
+    return createSectorGroup(toCreate, sloids);
+  }
+
   public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion toCreate,
       List<String> sloids
   ) {
+    existTrafficPointElement(toCreate.getTrafficPointSloid());
     List<SectorVersion> versions = fetchLatestSectorVersions(sloids);
     validateSectorVersions(versions);
     validateTrafficPoint(toCreate.getTrafficPointSloid(), versions);
@@ -102,7 +112,7 @@ public class SectorGroupService {
 
   private void validateSectorVersions(List<SectorVersion> versions) {
     if (versions.size() < 2) {
-      throw new SectorNotValidException("At least two sector's are required");
+      throw new SectorNotValidException();
     }
   }
 
@@ -130,7 +140,7 @@ public class SectorGroupService {
     }
   }
 
-  private void existTrafficPointElement(String sloid) {
+  public void existTrafficPointElement(String sloid) {
     if (trafficPointElementService.findBySloidOrderByValidFrom(sloid).isEmpty()) {
       throw new TrafficPointNotFoundException(sloid);
     }
@@ -149,6 +159,14 @@ public class SectorGroupService {
   }
 
   @Transactional
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
+      (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  public void update(SectorGroupVersion currentVersion, SectorGroupVersion editedVersion,
+      List<ServicePointVersion> servicePointVersions) {
+    updateSectorGroup(currentVersion, editedVersion);
+  }
+
   public void updateSectorGroup(SectorGroupVersion currentVersion, SectorGroupVersion editedVersion) {
     sectorGroupVersionRepository.incrementVersion(currentVersion.getSloid());
 

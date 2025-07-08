@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,10 +15,12 @@ import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
 import ch.sbb.atlas.model.LocalDateTimeMatchers;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.SectorTestData;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -32,6 +34,9 @@ class SectorControllerTest extends BaseControllerApiTest {
   @MockBean
   private TrafficPointElementService trafficPointElementService;
 
+  @MockBean
+  private ServicePointService servicePointService;
+
   private final SectorVersionRepository sectorVersionRepository;
 
   private SectorVersion sectorVersion;
@@ -43,7 +48,7 @@ class SectorControllerTest extends BaseControllerApiTest {
 
   @BeforeEach
   void createDefaultVersion() {
-    sectorVersion = SectorTestData.getBasicSectorVersion();
+    sectorVersion = SectorTestData.getNewBasicSectorVersion();
     this.sectorVersion = sectorVersionRepository.save(sectorVersion);
   }
 
@@ -56,7 +61,7 @@ class SectorControllerTest extends BaseControllerApiTest {
   void shouldGetSectors() throws Exception {
     mvc.perform(get("/v1/sectors")).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + Fields.id, is(sectorVersion.getId().intValue())))
-        .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:sector:1")))
+        .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:sector:1111")))
         .andExpect(jsonPath("$[0]." + Fields.designation, is("test")))
         .andExpect(jsonPath("$[0].creationDate", LocalDateTimeMatchers.stringDateTimeIsWithinOneHourOfNow()))
         .andExpect(jsonPath("$[0].creator", is("e123456")));
@@ -66,7 +71,7 @@ class SectorControllerTest extends BaseControllerApiTest {
   void shouldGetSectorsBySloid() throws Exception {
     mvc.perform(get("/v1/sectors/" + sectorVersion.getSloid())).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + Fields.id, is(sectorVersion.getId().intValue())))
-        .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:sector:1")))
+        .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:sector:1111")))
         .andExpect(jsonPath("$[0]." + Fields.designation, is("test")))
         .andExpect(jsonPath("$[0].creationDate", LocalDateTimeMatchers.stringDateTimeIsWithinOneHourOfNow()))
         .andExpect(jsonPath("$[0].creator", is("e123456")));
@@ -90,6 +95,9 @@ class SectorControllerTest extends BaseControllerApiTest {
     when(trafficPointElementService.findBySloidOrderByValidFrom(toCreate.getTrafficPointSloid()))
         .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
 
+    when(servicePointService.findAllByNumberOrderByValidFrom(any()))
+        .thenReturn(List.of(ServicePointTestData.getBern()));
+
     mvc.perform(post("/v1/sectors")
             .contentType(contentType)
             .content(mapper.writeValueAsString(toCreate)))
@@ -101,9 +109,6 @@ class SectorControllerTest extends BaseControllerApiTest {
   @Test
   void shouldUpdateSectorAndReturnTwoVersions() throws Exception {
     sectorVersionRepository.deleteAll();
-
-    when(trafficPointElementService.findBySloidOrderByValidFrom(anyString()))
-        .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
 
     SectorVersion initial = sectorVersionRepository.save(
         SectorTestData.getBasicSectorVersion()
@@ -122,6 +127,12 @@ class SectorControllerTest extends BaseControllerApiTest {
         .height(initial.getHeight() + 1)
         .edgeHeight(initial.getEdgeHeight() + 1)
         .build();
+
+    when(trafficPointElementService.findBySloidOrderByValidFrom(initial.getTrafficPointSloid()))
+        .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
+
+    when(servicePointService.findAllByNumberOrderByValidFrom(any()))
+        .thenReturn(List.of(ServicePointTestData.getBern()));
 
     mvc.perform(put("/v1/sectors/{id}", id)
             .contentType(contentType)
