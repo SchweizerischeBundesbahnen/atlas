@@ -46,7 +46,7 @@ public class SectorGroupController implements SectorGroupApiV1 {
     SectorGroupVersion sectorGroupVersionToCreate = SectorGroupMapper.toEntity(createSectorGroupVersionModel);
     List<String> sectorSloidsToAdd = createSectorGroupVersionModel.getSectorSloids().stream().toList();
 
-    sectorGroupService.existTrafficPointElement(createSectorGroupVersionModel.getTrafficPointSloid());
+    trafficPointElementService.doesTrafficPointExist(createSectorGroupVersionModel.getTrafficPointSloid());
     TrafficPointElementVersion trafficPointElementVersion =
         trafficPointElementService.findBySloidOrderByValidFrom(createSectorGroupVersionModel.getTrafficPointSloid()).getFirst();
 
@@ -62,7 +62,7 @@ public class SectorGroupController implements SectorGroupApiV1 {
     SectorGroupVersion sectorGroupVersionToUpdate = sectorGroupService.getSectorGroupVersionById(id);
     SectorGroupVersion editedVersion = SectorGroupMapper.toEntity(updateSectorGroupVersionModel);
 
-    sectorGroupService.existTrafficPointElement(sectorGroupVersionToUpdate.getTrafficPointSloid());
+    trafficPointElementService.doesTrafficPointExist(sectorGroupVersionToUpdate.getTrafficPointSloid());
     TrafficPointElementVersion trafficPointElementVersion =
         trafficPointElementService.findBySloidOrderByValidFrom(sectorGroupVersionToUpdate.getTrafficPointSloid()).getFirst();
 
