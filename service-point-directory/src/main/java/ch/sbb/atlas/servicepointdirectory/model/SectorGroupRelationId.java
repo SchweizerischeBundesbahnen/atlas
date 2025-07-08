@@ -1,4 +1,4 @@
-package ch.sbb.atlas.api.servicepoint.sector.relation;
+package ch.sbb.atlas.servicepointdirectory.model;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;

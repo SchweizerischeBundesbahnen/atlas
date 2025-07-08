@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.relation.SectorGroupRelationId;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.SectorTestData;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
@@ -21,6 +20,7 @@ import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupRelation;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
+import ch.sbb.atlas.servicepointdirectory.model.SectorGroupRelationId;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupRelationRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
