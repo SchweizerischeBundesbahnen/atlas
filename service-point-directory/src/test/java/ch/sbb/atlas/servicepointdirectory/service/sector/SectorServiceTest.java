@@ -43,6 +43,24 @@ class SectorServiceTest {
   }
 
   @Test
+  @Transactional
+  void shouldMergeSector() {
+    SectorVersion sectorVersion = SectorTestData.getBasicSectorVersion();
+    sectorVersion = sectorVersionRepository.save(sectorVersion);
+
+    SectorVersion edited = SectorTestData.getBasicSectorVersion();
+    edited.setValidFrom(LocalDate.of(2020, 1, 2));
+    edited.setValidTo(LocalDate.of(2025, 12, 31));
+    edited.setVersion(sectorVersion.getVersion());
+
+    // when
+    sectorService.updateSector(sectorVersion, edited);
+
+    // then
+    assertThat(sectorService.findAllBySloidOrderByValidFrom("ch:1:sloid:sector:1")).hasSize(1);
+  }
+
+  @Test
   void shouldGetSectors() {
     SectorVersion sectorVersion = SectorTestData.getBasicSectorVersion();
     sectorVersionRepository.save(sectorVersion);

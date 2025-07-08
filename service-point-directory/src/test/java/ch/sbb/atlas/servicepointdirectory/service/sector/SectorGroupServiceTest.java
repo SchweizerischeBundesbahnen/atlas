@@ -57,6 +57,24 @@ class SectorGroupServiceTest {
   }
 
   @Test
+  @Transactional
+  void shouldMergeSectorGroup() {
+    SectorGroupVersion sectorGroupVersion = SectorTestData.getBasicSectorGroupVersion();
+    sectorGroupVersion = sectorGroupVersionRepository.save(sectorGroupVersion);
+
+    SectorGroupVersion edited = SectorTestData.getBasicSectorGroupVersion();
+    edited.setValidFrom(LocalDate.of(2020, 1, 2));
+    edited.setValidTo(LocalDate.of(2025, 12, 31));
+    edited.setVersion(sectorGroupVersion.getVersion());
+
+    // when
+    sectorGroupService.updateSectorGroup(sectorGroupVersion, edited);
+
+    // then
+    assertThat(sectorGroupService.findAllBySloidOrderByValidFrom("ch:1:sloid:group:1")).hasSize(1);
+  }
+
+  @Test
   void shouldReturnEmptyListWhenNoGroups() {
     assertThat(sectorGroupService.getSectorGroups()).isEmpty();
   }
