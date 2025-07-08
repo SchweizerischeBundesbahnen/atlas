@@ -10,7 +10,7 @@ class SectorNotValidExceptionTest {
   @Test
   void shouldDisplayErrorMessage() {
     // given
-    SectorNotValidException exception = new SectorNotValidException("At least two sector's are required");
+    SectorNotValidException exception = new SectorNotValidException();
     // when & then
     ErrorResponse errorResponse = exception.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
