@@ -22,19 +22,20 @@ import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 class SectorControllerTest extends BaseControllerApiTest {
 
-  @MockBean
+  @MockitoBean
   private TrafficPointElementService trafficPointElementService;
 
-  @MockBean
+  @MockitoBean
   private ServicePointService servicePointService;
 
   private final SectorVersionRepository sectorVersionRepository;
@@ -117,15 +118,15 @@ class SectorControllerTest extends BaseControllerApiTest {
 
     UpdateSectorVersionModel update = UpdateSectorVersionModel.builder()
         .etagVersion(initial.getVersion())
-        .validFrom(initial.getValidFrom().plusDays(1))
-        .validTo(initial.getValidTo())
-        .designation("updown")
-        .length(initial.getLength() + 1)
-        .north(initial.getNorth() + 1)
-        .east(initial.getEast() + 1)
+        .validFrom(LocalDate.of(2023, 1, 1))
+        .validTo(LocalDate.of(2033, 1, 2))
+        .designation("jaja")
+        .length(initial.getLength())
+        .north(initial.getNorth())
+        .east(initial.getEast())
         .spatialReference(initial.getSpatialReference())
-        .height(initial.getHeight() + 1)
-        .edgeHeight(initial.getEdgeHeight() + 1)
+        .height(initial.getHeight())
+        .edgeHeight(initial.getEdgeHeight())
         .build();
 
     when(trafficPointElementService.findBySloidOrderByValidFrom(initial.getTrafficPointSloid()))
@@ -142,7 +143,7 @@ class SectorControllerTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].id", is(initial.getId().intValue())))
         .andExpect(jsonPath("$[0].designation", is(initial.getDesignation())))
         .andExpect(jsonPath("$[1].id", is(initial.getId().intValue() + 1)))
-        .andExpect(jsonPath("$[1].designation", is("updown")));
+        .andExpect(jsonPath("$[1].designation", is("jaja")));
   }
 
 }
