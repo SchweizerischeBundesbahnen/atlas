@@ -20,6 +20,7 @@ import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupRelationReposito
 import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import org.hibernate.StaleObjectStateException;
@@ -282,16 +283,17 @@ class SectorGroupServiceTest {
   }
 
   @Test
+  @Transactional
   void shouldUpdateSectorGroupAndIncrementVersion() {
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(
         TrafficPointTestData.getBasicTrafficPoint());
+
     SectorGroupVersion sectorGroupVersion = sectorGroupVersionRepository.save(
         SectorTestData.getBasicSectorGroupVersion().toBuilder()
             .sloid("sector:A")
             .validFrom(LocalDate.of(2022, 1, 1))
             .validTo(LocalDate.of(2024, 1, 1))
             .designation("hehe")
-            .version(1)
             .trafficPointSloid(trafficPointElementVersion.getSloid())
             .build()
     );
@@ -299,6 +301,7 @@ class SectorGroupServiceTest {
     SectorGroupVersion edited = sectorGroupVersion.toBuilder()
         .validFrom(sectorGroupVersion.getValidFrom().plusDays(1))
         .designation("new des")
+        .version(0)
         .build();
 
     sectorGroupService.updateSectorGroup(sectorGroupVersion, edited);
@@ -310,6 +313,7 @@ class SectorGroupServiceTest {
   }
 
   @Test
+  @Transactional
   void shouldThrowWhenUpdatingGroupWithStaleVersion() {
     TrafficPointElementVersion trafficPointElementVersion = trafficPointElementVersionRepository.save(
         TrafficPointTestData.getBasicTrafficPoint());
