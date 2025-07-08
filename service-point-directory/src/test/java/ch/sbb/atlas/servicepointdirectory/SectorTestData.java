@@ -33,6 +33,29 @@ public class SectorTestData {
     return sectorVersion;
   }
 
+  public static SectorVersion getNewBasicSectorVersion() {
+
+    SectorVersion sectorVersion = SectorVersion.builder()
+        .sloid("ch:1:sloid:sector:1111")
+        .trafficPointSloid("ch:1:sloid:sector:1111")
+        .validFrom(LocalDate.of(1900, 1, 1))
+        .validTo(LocalDate.of(9999, 1, 1))
+        .designation("test")
+        .length(18.00)
+        .north(1111.111)
+        .east(222.222)
+        .spatialReference(SpatialReference.LV95)
+        .height(19.0)
+        .edgeHeight(20.0)
+        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+        .editor("fs45117")
+        .build();
+
+    return sectorVersion;
+  }
+
   public static SectorVersionModel getCreateSectorVersion() {
 
     SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
