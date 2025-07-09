@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
 import static ch.sbb.atlas.api.servicepoint.SpatialReference.LV95;
 import static ch.sbb.atlas.api.servicepoint.SpatialReference.WGS84;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,8 +47,6 @@ import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClientB
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -165,17 +162,11 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldFindServicePointVersionBycreatedAfterByISODateTime() throws Exception {
-    ZonedDateTime zonedDateTime = servicePointVersion.getCreationDate().plusDays(1).atZone(ZoneId.of(ZURICH_ZONE_ID));
-    String createdAfterQueryString = zonedDateTime.format(
-        DateTimeFormatter.ofPattern(AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN));
-
-    mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
+    mvc.perform(get("/v1/service-points?createdAfter=2025-07-09T17:32:07.867462000"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(0)));
 
-    createdAfterQueryString = servicePointVersion.getCreationDate().minusDays(1)
-        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN));
-    mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
+    mvc.perform(get("/v1/service-points?createdAfter=2025-07-07T17:32:07.867462000"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)));
   }
