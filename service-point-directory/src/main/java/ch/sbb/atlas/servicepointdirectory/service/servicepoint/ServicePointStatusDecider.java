@@ -31,7 +31,7 @@ public class ServicePointStatusDecider {
         currentServicePointVersion.get());
     if (isChangeFromServicePointToStopPoint(newServicePointVersion, currentVersion)
         || isTimeslotChangedFromNotValidEnoughToValidEnough(newServicePointVersion, currentVersion)
-        || hasGeolocationChangedBackToSwitzerland(newServicePointVersion, currentVersion)
+        || hasGeolocationChanged(newServicePointVersion, currentVersion)
         || isIsolatedOrTouchingServicePointVersion(newServicePointVersion, servicePointVersions)) {
       logMessage(currentVersion, newServicePointVersion, "Deciding on ServicePoint.Status when update where "
           + "currentServicePointVersion={}, existing versions servicePointVersions={} and newServicePointVersion={}.");
@@ -126,10 +126,10 @@ public class ServicePointStatusDecider {
     return ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo()) + 1;
   }
 
-  private static boolean hasGeolocationChangedBackToSwitzerland(ServicePointVersion newServicePointVersion,
+  private static boolean hasGeolocationChanged(ServicePointVersion newServicePointVersion,
       ServicePointVersion currentVersion) {
     if (ServicePointHelper.isGeolocationOrCountryNull(newServicePointVersion)) {
-      return false;
+      return true;
     }
     return isNewServicePointWithSwissGeolocation(newServicePointVersion)
         && isExistingServicePointWithAbroadOrNoGeolocation(currentVersion);
