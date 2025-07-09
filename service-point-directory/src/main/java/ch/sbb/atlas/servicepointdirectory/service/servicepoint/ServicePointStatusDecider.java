@@ -76,7 +76,7 @@ public class ServicePointStatusDecider {
 
   private static boolean isChangeFromServicePointToStopPoint(ServicePointVersion newServicePointVersion,
       ServicePointVersion currentVersion) {
-    return newServicePointVersion.isStopPoint() && !currentVersion.isStopPoint();
+    return newServicePointVersion.isStopPoint() != currentVersion.isStopPoint();
   }
 
   private static ServicePointVersion calculateCurrentVersion(List<ServicePointVersion> servicePointVersions,
