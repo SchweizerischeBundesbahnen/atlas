@@ -437,6 +437,32 @@ public class ServicePointTestData {
         .build();
   }
 
+  public static ServicePointVersion createServicePointVersionWithNoGeolocation() {
+    return ServicePointVersion
+        .builder()
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(5819768))
+        .sloid("ch:1:sloid:19768")
+        .numberShort(19768)
+        .country(Country.ARMENIA)
+        .designationLong(null)
+        .designationOfficial("Flüh Grenze")
+        .abbreviation(null)
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .businessOrganisation("ch:1:sboid:100626")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2014, 11, 2))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .servicePointGeolocation(null)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .editor("fs45117")
+        .build();
+  }
+
   public static CreateServicePointVersionModel getAargauServicePointVersionModel() {
     return CreateServicePointVersionModel.builder()
         .country(Country.SWITZERLAND)

@@ -97,6 +97,24 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.status", is(Status.DRAFT.toString())));
   }
 
+  @Test
+  void scenarioAbroadGeolocationWhenCreateNewStopPointThenSetStatusToValidate() throws Exception {
+    mvc.perform(post("/v1/service-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(ServicePointTestData.createAbroadServicePointVersion())))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
+  }
+
+  @Test
+  void scenarioNoGeolocationWhenCreateNewStopPointThenSetStatusToValidate() throws Exception {
+    mvc.perform(post("/v1/service-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(ServicePointTestData.createServicePointVersionWithNoGeolocation())))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
+  }
+
   /**
    * Szenario 2: Umwandlung in Haltestelle (stopPoint = true)
    * <p>
