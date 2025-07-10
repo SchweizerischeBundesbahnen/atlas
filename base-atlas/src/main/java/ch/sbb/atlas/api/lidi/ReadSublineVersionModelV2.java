@@ -34,7 +34,6 @@ public class ReadSublineVersionModelV2 extends CreateSublineVersionModelV2 imple
   @Schema(description = "MainLineNumber", example = "IC61", accessMode = AccessMode.READ_ONLY)
   @NotBlank
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
-  @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   private String mainLineNumber;
 
   @Schema(description = "ShortNumber", example = "61", accessMode = AccessMode.READ_ONLY)
