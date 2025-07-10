@@ -89,7 +89,7 @@ public class TerminationStopPointWorkflowService {
       notificationService.sendTerminationApprovedNotificationToNova(terminationWorkflow, decisionModel);
     }
     if (decisionModel.getJudgement() == JudgementType.NO) {
-      postStopServicePointTermination(decisionModel.getSloid(), decisionModel.getVersionId());
+      postStopServicePointTermination(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
       terminationWorkflow.setStatus(TerminationWorkflowStatus.TARIFF_STOP_NOT_APPROVED);
       notificationService.sendCancelNotificationToApplicationMail(terminationWorkflow, decisionModel);
     }
