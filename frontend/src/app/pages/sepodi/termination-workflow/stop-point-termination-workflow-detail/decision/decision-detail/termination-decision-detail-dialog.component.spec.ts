@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TerminationDecisionDetailDialogComponent } from './termination-decision-detail-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DecisionDetailDialogData } from './termination-decision-detail-dialog.service';
+import { TerminationDecisionDetailDialogData } from './termination-decision-detail-dialog.service';
 import { StopPointWorkflowDetailFormGroupBuilder } from '../../detail-form/stop-point-workflow-detail-form-group';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { of } from 'rxjs';
@@ -26,7 +26,7 @@ import { DialogFooterComponent } from '../../../../../../core/components/dialog/
 import { MockAtlasButtonComponent } from '../../../../../../app.testing.mocks';
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
-const dialogData: DecisionDetailDialogData = {
+const dialogData: TerminationDecisionDetailDialogData = {
   title: '',
   message: '',
   workflowId: 123,
@@ -34,7 +34,7 @@ const dialogData: DecisionDetailDialogData = {
   examinant: StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(),
 };
 
-const dialogDataWithExisitingExaminant: DecisionDetailDialogData = {
+const dialogDataWithExisitingExaminant: TerminationDecisionDetailDialogData = {
   title: '',
   message: '',
   workflowId: 123,
@@ -46,7 +46,7 @@ const dialogDataWithExisitingExaminant: DecisionDetailDialogData = {
   }),
 };
 
-const dialogDataWithSpecialDecision: DecisionDetailDialogData = {
+const dialogDataWithSpecialDecision: TerminationDecisionDetailDialogData = {
   title: '',
   message: '',
   workflowId: 123,

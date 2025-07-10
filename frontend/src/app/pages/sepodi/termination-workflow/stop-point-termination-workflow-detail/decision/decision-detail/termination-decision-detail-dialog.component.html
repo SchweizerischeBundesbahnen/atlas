@@ -4,6 +4,8 @@
   <div class="font-bold-4xl mb-1">{{ title | translate }}</div>
 
   do your deciding here
+
+  {{ person }}
 </atlas-dialog-content>
 <atlas-dialog-footer>
   <button
@@ -13,14 +15,4 @@
   >
     {{ 'COMMON.BACK' | translate }}
   </button>
-  @if (decisionDetailDialogData.workflowStatus === WorkflowStatus.Hearing) {
-    <atlas-button
-      buttonDataCy="override-decision"
-      buttonText="WORKFLOW.BUTTON.OVERRIDE"
-      buttonType="supervisorButton"
-      applicationType="SEPODI"
-      (buttonClicked)="overrideDecision()"
-    >
-    </atlas-button>
-  }
 </atlas-dialog-footer>
