@@ -1,0 +1,26 @@
+<atlas-dialog-close class="pe-2" (clicked)="close()"></atlas-dialog-close>
+
+<atlas-dialog-content>
+  <div class="font-bold-4xl mb-1">{{ title | translate }}</div>
+
+  do your deciding here
+</atlas-dialog-content>
+<atlas-dialog-footer>
+  <button
+    (click)="close()"
+    class="atlas-primary-btn me-3"
+    data-cy="dialog-close-button"
+  >
+    {{ 'COMMON.BACK' | translate }}
+  </button>
+  @if (decisionDetailDialogData.workflowStatus === WorkflowStatus.Hearing) {
+    <atlas-button
+      buttonDataCy="override-decision"
+      buttonText="WORKFLOW.BUTTON.OVERRIDE"
+      buttonType="supervisorButton"
+      applicationType="SEPODI"
+      (buttonClicked)="overrideDecision()"
+    >
+    </atlas-button>
+  }
+</atlas-dialog-footer>
