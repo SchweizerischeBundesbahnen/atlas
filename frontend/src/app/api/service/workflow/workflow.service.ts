@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { TerminationInfo } from '../../model/terminationInfo';
 import { ContainerTerminationStopPointWorkflowModel } from '../../model/containerTerminationStopPointWorkflowModel';
 import { TerminationWorkflowStatus } from '../../model/terminationWorkflowStatus';
+import { TerminationDecision } from '../../model/terminationDecision';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class WorkflowService {
   }
 
   getTerminationStopPointWorkflows(searchCriterias?: string[], sboids?: string[], workflowIds?: number[],
-                                   status?: TerminationWorkflowStatus[], page?: number, size?: number, sort?: string[]
+                                   status?: TerminationWorkflowStatus[], page?: number, size?: number, sort?: string[],
   ): Observable<ContainerTerminationStopPointWorkflowModel> {
     const httpParams = this.atlasApiService.paramsOf({
       searchCriterias,
@@ -44,4 +45,13 @@ export class WorkflowService {
     return this.atlasApiService.get(`${this.STOP_POINT_TERMINATION}/${encodeURIComponent(String(id))}`);
   }
 
+  decisionInfoPlus(id: number, decision: TerminationDecision): Observable<TerminationStopPointAddWorkflow> {
+    this.atlasApiService.validateParams({ id, decision });
+    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION}/decision/info-plus/${encodeURIComponent(String(id))}`, decision);
+  }
+
+  decisionNova(id: number, decision: TerminationDecision): Observable<TerminationStopPointAddWorkflow> {
+    this.atlasApiService.validateParams({ id, decision });
+    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION}/decision/nova/${encodeURIComponent(String(id))}`, decision);
+  }
 }

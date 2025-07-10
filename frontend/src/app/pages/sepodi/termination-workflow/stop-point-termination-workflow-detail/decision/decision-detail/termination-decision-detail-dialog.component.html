@@ -1,12 +1,61 @@
 <atlas-dialog-close class="pe-2" (clicked)="close()"></atlas-dialog-close>
 
 <atlas-dialog-content>
-  <div class="font-bold-4xl mb-1">{{ title | translate }}</div>
+  <div class="font-bold-4xl mb-1">
+    {{ 'WORKFLOW.PERSON.JUDGEMENT' | translate }} - {{ examinant }}
+  </div>
 
-  do your deciding here
+  <div class="mb-2">
+    {{ 'TERMINATION_WORKFLOW.DECISION.DECISION_INFO' | translate }}
+  </div>
+  <form [formGroup]="form">
+    <mat-radio-group formControlName="judgement" class="d-grid mb-3">
+      <mat-radio-button [value]="JudgementType.Yes">
+        {{ 'WORKFLOW.DECISION.ACCEPT' | translate }}
+      </mat-radio-button>
+      <mat-radio-button [value]="JudgementType.No">
+        {{ 'WORKFLOW.DECISION.DECLINE' | translate }}
+      </mat-radio-button>
+      <app-atlas-field-error
+        [form]="form"
+        controlName="judgement"
+      ></app-atlas-field-error>
+    </mat-radio-group>
 
-  {{ person }}
+    <div class="d-flex flex-column pb-3">
+      <app-atlas-label-field
+        fieldLabel="Aufhebung per:"
+      ></app-atlas-label-field>
+      <div class="text-field-flex">
+        <input
+          [matDatepicker]="terminationDatePicker!"
+          [max]="MAX_DATE"
+          [min]="minDate"
+          [attr.data-cy]="'terminationDate'"
+          formControlName="terminationDate"
+          required
+        />
+        <mat-datepicker-toggle [for]="terminationDatePicker" [tabIndex]="-1">
+          <mat-icon matDatepickerToggleIcon>
+            <form-date-icon [enabled]="form.enabled"></form-date-icon>
+          </mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #terminationDatePicker> </mat-datepicker>
+      </div>
+      <app-atlas-field-error
+        [form]="form"
+        controlName="terminationDate"
+      ></app-atlas-field-error>
+    </div>
+
+    <form-comment
+      [formGroup]="form"
+      [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
+      controlName="motivation"
+    ></form-comment>
+  </form>
 </atlas-dialog-content>
+
 <atlas-dialog-footer>
   <button
     (click)="close()"
@@ -14,5 +63,12 @@
     data-cy="dialog-close-button"
   >
     {{ 'COMMON.BACK' | translate }}
+  </button>
+  <button
+    (click)="decide()"
+    class="atlas-primary-btn me-3"
+    data-cy="dialog-save-button"
+  >
+    {{ 'WORKFLOW.BUTTON.DECIDE' | translate }}
   </button>
 </atlas-dialog-footer>

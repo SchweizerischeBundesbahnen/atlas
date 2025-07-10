@@ -24,9 +24,12 @@ export interface TerminationDecisionFormGroup {
   organisation: FormControl<string | null | undefined>;
   examinantMail: FormControl<string | null | undefined>;
   judgement: FormControl<JudgementType | null | undefined>;
+  motivation: FormControl<string | null | undefined>;
   judgementIcon: FormControl<string | null | undefined>;
   terminationDate: FormControl<string | Date | null | undefined>;
-  person: FormControl<TerminationDecisionPersonEnum | null | undefined>;
+  terminationDecisionPerson: FormControl<
+    TerminationDecisionPersonEnum | null | undefined
+  >;
 }
 
 export class StopPointTerminationWorkflowDetailFormGroupBuilder {
@@ -91,7 +94,10 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
           ? DateService.getDateFormatted(terminationDecision?.terminationDate)
           : terminationDecision?.terminationDate
       ),
-      person: new FormControl(terminationDecision?.terminationDecisionPerson),
+      terminationDecisionPerson: new FormControl(
+        terminationDecision?.terminationDecisionPerson
+      ),
+      motivation: new FormControl(terminationDecision?.motivation),
     });
   }
 }

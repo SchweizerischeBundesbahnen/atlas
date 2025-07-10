@@ -20,10 +20,6 @@ public class TerminationDecisionMapper {
         .terminationDecisionPerson(decision.getTerminationDecisionPerson())
         .judgement(decision.getJudgement())
         .motivation(decision.getMotivation())
-        .creationDate(decision.getCreationDate())
-        .creator(decision.getCreator())
-        .editor(decision.getEditor())
-        .editionDate(decision.getEditionDate())
         .build();
   }
 
