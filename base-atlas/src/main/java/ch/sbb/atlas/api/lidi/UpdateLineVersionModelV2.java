@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.OfferCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -50,7 +51,7 @@ public class UpdateLineVersionModelV2 extends BaseLineVersionModel {
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String shortNumber;
 
-  @Schema(description = "offerCategory")
+  @Schema(description = "offerCategory", requiredMode = RequiredMode.NOT_REQUIRED)
   @NotNull
   private OfferCategory offerCategory;
 }
