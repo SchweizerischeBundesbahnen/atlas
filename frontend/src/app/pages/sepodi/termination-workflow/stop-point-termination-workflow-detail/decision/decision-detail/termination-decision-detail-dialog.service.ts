@@ -6,9 +6,13 @@ import { TerminationDecisionDetailDialogComponent } from './termination-decision
 import { FormGroup } from '@angular/forms';
 import { DialogData } from 'src/app/core/components/dialog/dialog.data';
 import { TerminationDecisionFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
+import { TerminationDecision } from '../../../../../../api/model/terminationDecision';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 export interface TerminationDecisionDetailDialogData extends DialogData {
   workflowId: number;
+  readOnly: boolean;
+  examinant: TerminationDecisionPersonEnum;
   decision: FormGroup<TerminationDecisionFormGroup>;
 }
 
@@ -20,6 +24,8 @@ export class TerminationDecisionDetailDialogService {
 
   openDialog(
     workflowId: number,
+    readOnly: boolean,
+    examinant: TerminationDecisionPersonEnum,
     decision: FormGroup<TerminationDecisionFormGroup>
   ): Observable<boolean> {
     const dialogData: TerminationDecisionDetailDialogData = {
@@ -28,6 +34,8 @@ export class TerminationDecisionDetailDialogService {
       cancelText: 'DIALOG.CANCEL',
       confirmText: 'WORKFLOW.BUTTON.SEND',
       workflowId: workflowId,
+      readOnly: readOnly,
+      examinant: examinant,
       decision: decision,
     };
 

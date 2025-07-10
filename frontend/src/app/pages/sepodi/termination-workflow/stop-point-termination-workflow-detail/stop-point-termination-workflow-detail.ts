@@ -23,6 +23,9 @@ import { CommentComponent } from '../../../../core/form-components/comment/comme
 import { LinkComponent } from '../../../../core/form-components/link/link.component';
 import { Pages } from '../../../pages';
 import { TerminationDecisionDetailDialogService } from './decision/decision-detail/termination-decision-detail-dialog.service';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { TerminationDecision } from '../../../../api/model/terminationDecision';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 @Component({
   selector: 'app-stop-point-termination-workflow-detail',
@@ -45,6 +48,7 @@ import { TerminationDecisionDetailDialogService } from './decision/decision-deta
 export class StopPointTerminationWorkflowDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly permissionService = inject(PermissionService);
   private readonly terminationDecisionDetailDialogService = inject(
     TerminationDecisionDetailDialogService
   );
@@ -52,6 +56,7 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
   stopPoint!: ReadServicePointVersion;
   workflow!: TerminationStopPointAddWorkflow;
   form!: FormGroup<StopPointTerminationWorkflowDetailFormGroup>;
+  terminationPermission?: TerminationDecisionPersonEnum;
 
   ngOnInit(): void {
     const workflowData: StopPointTerminationWorkflowDetailData =
@@ -69,11 +74,16 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
         workflowData.workflow
       );
     this.form.disable();
+
+    this.terminationPermission =
+      this.permissionService.getTerminationPermission();
   }
 
   onOpenDecision(examinantDecision: FormGroup<TerminationDecisionFormGroup>) {
     this.terminationDecisionDetailDialogService.openDialog(
       this.workflow.id!,
+      true,
+      examinantDecision.controls.terminationDecisionPerson.value!,
       examinantDecision
     );
   }
@@ -94,5 +104,20 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
       )
     );
     window.open(url, '_blank');
+  }
+
+  openDecisionDialog() {
+    const decisionForm =
+      StopPointTerminationWorkflowDetailFormGroupBuilder.buildTerminationDecisionFormGroup();
+    decisionForm.controls.terminationDecisionPerson.setValue(
+      this.terminationPermission!
+    );
+
+    this.terminationDecisionDetailDialogService.openDialog(
+      this.workflow.id!,
+      false,
+      this.terminationPermission!,
+      decisionForm
+    );
   }
 }
