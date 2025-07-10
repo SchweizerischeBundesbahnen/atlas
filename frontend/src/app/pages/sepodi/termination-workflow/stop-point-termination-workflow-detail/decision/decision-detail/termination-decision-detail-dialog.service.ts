@@ -5,12 +5,10 @@ import { map } from 'rxjs/operators';
 import { TerminationDecisionDetailDialogComponent } from './termination-decision-detail-dialog.component';
 import { FormGroup } from '@angular/forms';
 import { DialogData } from 'src/app/core/components/dialog/dialog.data';
-import { WorkflowStatus } from '../../../../../../api';
-import { TerminationDecisionFormGroup } from './termination-decision-form-group';
+import { TerminationDecisionFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
 
-export interface DecisionDetailDialogData extends DialogData {
+export interface TerminationDecisionDetailDialogData extends DialogData {
   workflowId: number;
-  workflowStatus: WorkflowStatus;
   decision: FormGroup<TerminationDecisionFormGroup>;
 }
 
@@ -22,23 +20,21 @@ export class TerminationDecisionDetailDialogService {
 
   openDialog(
     workflowId: number,
-    workflowStatus: WorkflowStatus,
     decision: FormGroup<TerminationDecisionFormGroup>
   ): Observable<boolean> {
-    const dialogData: DecisionDetailDialogData = {
+    const dialogData: TerminationDecisionDetailDialogData = {
       title: 'WORKFLOW.BUTTON.ADD',
       message: '',
       cancelText: 'DIALOG.CANCEL',
       confirmText: 'WORKFLOW.BUTTON.SEND',
       workflowId: workflowId,
-      workflowStatus: workflowStatus,
       decision: decision,
     };
 
     return this.open(dialogData);
   }
 
-  private open(dialogData: DecisionDetailDialogData) {
+  private open(dialogData: TerminationDecisionDetailDialogData) {
     this.dialogRef = this.dialog.open(
       TerminationDecisionDetailDialogComponent,
       {

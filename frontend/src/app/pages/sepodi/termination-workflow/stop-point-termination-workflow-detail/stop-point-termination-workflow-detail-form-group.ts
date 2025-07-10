@@ -6,6 +6,7 @@ import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atl
 import { TerminationDecision } from '../../../../api/model/terminationDecision';
 import { DateService } from '../../../../core/date/date.service';
 import { StopPointWorkflowDetailFormGroupBuilder } from '../../workflow/detail-page/detail-form/stop-point-workflow-detail-form-group';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 export interface StopPointTerminationWorkflowDetailFormGroup {
   boTerminationDate: FormControl<string | null | undefined>;
@@ -25,6 +26,7 @@ export interface TerminationDecisionFormGroup {
   judgement: FormControl<JudgementType | null | undefined>;
   judgementIcon: FormControl<string | null | undefined>;
   terminationDate: FormControl<string | Date | null | undefined>;
+  person: FormControl<TerminationDecisionPersonEnum | null | undefined>;
 }
 
 export class StopPointTerminationWorkflowDetailFormGroupBuilder {
@@ -89,6 +91,7 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
           ? DateService.getDateFormatted(terminationDecision?.terminationDate)
           : terminationDecision?.terminationDate
       ),
+      person: new FormControl(terminationDecision?.terminationDecisionPerson),
     });
   }
 }
