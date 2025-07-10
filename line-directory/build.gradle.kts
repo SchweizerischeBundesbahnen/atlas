@@ -16,7 +16,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
-    implementation("org.apache.tika:tika-core:3.2.0")
+    implementation("org.apache.tika:tika-core:3.2.1")
 
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
     annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
