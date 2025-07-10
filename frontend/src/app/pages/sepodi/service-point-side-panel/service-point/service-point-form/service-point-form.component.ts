@@ -28,7 +28,6 @@ import { DialogService } from '../../../../../core/components/dialog/dialog.serv
 import { GeographyComponent } from '../../../geography/geography.component';
 import { Countries } from '../../../../../core/country/Countries';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
-import { AtLeastOneValidator } from '../../../../../core/validation/boolean-cross-validator/at-least-one-validator';
 import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
@@ -97,7 +96,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   @Input() set currentVersion(version: ReadServicePointVersion | undefined) {
     this._currentVersion = version;
-    this.setStopPointValidator();
     this.locationInformation$ = of({
       isoCountryCode: version?.servicePointGeolocation?.isoCountryCode,
       canton: version?.servicePointGeolocation?.swissLocation?.canton,
@@ -182,6 +180,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       ],
       'SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPES.'
     );
+    console.log(this.operatingPointTypes);
   };
 
   private initTypeChangeInformationDialog(
@@ -201,6 +200,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
             this._currentSelectedServicePointType !=
             ServicePointType.ServicePoint
           ) {
+            console.log('hasdasdasd');
             this.dialogService
               .confirm({
                 title: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.TITLE',
@@ -242,43 +242,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       } else {
         this.boSboidRestriction = [];
       }
-    }
-  }
-
-  setOperatingPointRouteNetwork(isSelected: boolean) {
-    if (!this.form) return;
-    if (isSelected) {
-      this.form.controls.operatingPointRouteNetwork.setValue(true);
-      this.form.controls.operatingPointKilometer.setValue(true);
-      this.form.controls.operatingPointKilometer.disable();
-      this.form.controls.operatingPointKilometerMaster.setValue(
-        this.currentVersion?.number.number
-      );
-      this.form.controls.operatingPointKilometerMaster.disable();
-    } else {
-      this.form.controls.operatingPointRouteNetwork.setValue(false);
-      this.form.controls.operatingPointKilometer.setValue(false);
-      this.form.controls.operatingPointKilometer.enable();
-      this.form.controls.operatingPointKilometerMaster.reset();
-      this.form.controls.operatingPointKilometerMaster.enable();
-    }
-  }
-
-  setOperatingPointKilometer(isSelected: boolean) {
-    if (!this.form) return;
-    if (isSelected) {
-      this.form.controls.operatingPointKilometer.setValue(true);
-    } else {
-      this.form.controls.operatingPointKilometer.setValue(false);
-      this.form.controls.operatingPointKilometerMaster.reset();
-    }
-  }
-
-  setStopPointValidator() {
-    if (this.form?.controls.selectedType.value === ServicePointType.StopPoint) {
-      this.form!.addValidators(
-        AtLeastOneValidator.of('stopPoint', 'freightServicePoint')
-      );
     }
   }
 }

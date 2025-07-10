@@ -40,7 +40,7 @@ import { PermissionService } from '../../../../core/auth/permission/permission.s
 import { AddStopPointWorkflowDialogService } from '../../workflow/add-dialog/add-stop-point-workflow-dialog.service';
 import { takeUntil } from 'rxjs/operators';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
 import { ServicePointFormComponent } from './service-point-form/service-point-form.component';
@@ -73,7 +73,6 @@ import { TerminationService } from './stop-point-termination/termination.service
     UserDetailInfoComponent,
     DetailFooterComponent,
     AtlasButtonComponent,
-    AsyncPipe,
     TranslatePipe,
     PrmRecordingObligationComponent,
     StopPointTerminationInfoComponent,
@@ -217,7 +216,7 @@ export class ServicePointDetailComponent
     this.terminationInProgress = version.terminationInProgress!;
     this.initShowRevokeButton(version);
     this.form = ServicePointFormGroupBuilder.buildFormGroup(version);
-    this.disableForm();
+    // this.disableForm(); // todo
     this.isSwitchVersionDisabled = false;
     this.selectedVersion = version;
     this.displayAndSelectServicePointOnMap();
@@ -259,9 +258,6 @@ export class ServicePointDetailComponent
     } else {
       this.isSwitchVersionDisabled = true;
       this.enableForm();
-      if (this.form?.controls.operatingPointRouteNetwork.value) {
-        this.form.controls.operatingPointKilometer.disable();
-      }
     }
   }
 
@@ -278,15 +274,13 @@ export class ServicePointDetailComponent
   }
 
   private disableForm(): void {
-    this.form?.disable({ emitEvent: false });
-    this.isFormEnabled$.next(false);
+    this.form?.disable();
     this._savedGeographyForm = undefined;
   }
 
   private enableForm(): void {
-    this.form?.enable({ emitEvent: false });
-    this.isFormEnabled$.next(true);
-    this.validityService.initValidity(this.form!);
+    this.form?.enable();
+    this.validityService.initValidity(this.form!.controls.validityGroup);
   }
 
   confirmLeave(): Observable<boolean> {
@@ -323,13 +317,14 @@ export class ServicePointDetailComponent
   save() {
     ValidationService.validateForm(this.form!);
     if (this.form?.valid) {
-      this.validityService.updateValidity(this.form);
+      this.validityService.updateValidity(this.form.controls.validityGroup);
       if (this.isStartingTermination(this.form)) {
         this.startTermination();
       } else {
         this.validityService.validateAndDisableCustom(
           () => this.updateVersion(),
-          () => this.disableForm()
+          () => {}
+          // () => this.disableForm() todo
         );
       }
     }
@@ -392,9 +387,6 @@ export class ServicePointDetailComponent
 
   private handleError = () => {
     this.enableForm();
-    if (this.form?.controls.operatingPointRouteNetwork.value) {
-      this.form.controls.operatingPointKilometer.disable();
-    }
     return EMPTY;
   };
 
@@ -471,6 +463,7 @@ export class ServicePointDetailComponent
   updateVersion() {
     const servicePointVersion =
       ServicePointFormGroupBuilder.getWritableServicePoint(this.form!);
+    servicePointVersion.etagVersion = this.selectedVersion?.etagVersion;
     this.update(this.selectedVersion!.id!, servicePointVersion);
   }
 
