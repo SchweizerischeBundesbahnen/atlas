@@ -1,0 +1,47 @@
+import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { TerminationDecisionDetailDialogService } from './termination-decision-detail-dialog.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ExaminantFormGroup } from '../../detail-form/stop-point-workflow-detail-form-group';
+import { DecisionType, WorkflowStatus } from '../../../../../../api';
+
+describe('DecisionDetailDialogService', () => {
+  let service: TerminationDecisionDetailDialogService;
+
+  const dialogSpy = jasmine.createSpyObj('dialog', ['open']);
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: MatDialog, useValue: dialogSpy }],
+    });
+    service = TestBed.inject(TerminationDecisionDetailDialogService);
+  });
+
+  it('should open dialog', (done) => {
+    dialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+
+    service
+      .openDialog(
+        1,
+        WorkflowStatus.Hearing,
+        new FormGroup<ExaminantFormGroup>({
+          mail: new FormControl(''),
+          firstName: new FormControl(''),
+          lastName: new FormControl(''),
+          judgementIcon: new FormControl(''),
+          organisation: new FormControl(''),
+          personFunction: new FormControl(''),
+          judgement: new FormControl('YES'),
+          id: new FormControl(1),
+          decisionType: new FormControl(DecisionType.Voted),
+          defaultExaminant: new FormControl(false),
+        })
+      )
+      .subscribe((result) => {
+        expect(result).toBeTrue();
+        expect(dialogSpy.open).toHaveBeenCalled();
+        done();
+      });
+  });
+});
