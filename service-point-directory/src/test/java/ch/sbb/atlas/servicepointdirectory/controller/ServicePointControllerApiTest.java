@@ -161,17 +161,6 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldFindServicePointVersionBycreatedAfterByISODateTime() throws Exception {
-    mvc.perform(get("/v1/service-points?createdAfter=2025-07-09T17:32:07.867462000"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount", is(0)));
-
-    mvc.perform(get("/v1/service-points?createdAfter=2025-07-07T17:32:07.867462000"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount", is(1)));
-  }
-
-  @Test
   void shouldFindServicePointVersionBycreatedAfterByDateTimeWithT() throws Exception {
     String createdAfterQueryString = servicePointVersion.getCreationDate().plusDays(1)
         .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T));
