@@ -128,11 +128,8 @@ public class ServicePointStatusDecider {
 
   private static boolean isGeolocationValidationRequired(ServicePointVersion newServicePointVersion,
       ServicePointVersion currentVersion) {
-    if (ServicePointHelper.isGeolocationOrCountryNull(newServicePointVersion)) {
-      return true;
-    }
     return isNewServicePointWithSwissGeolocation(newServicePointVersion)
-        && isExistingServicePointWithAbroadOrNoGeolocation(currentVersion);
+        || isExistingServicePointWithAbroadOrNoGeolocation(currentVersion);
   }
 
   private static boolean isExistingServicePointWithAbroadOrNoGeolocation(ServicePointVersion currentVersion) {
