@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.servicepointdirectory.api.StopPointTerminationApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationDateException;
-import ch.sbb.atlas.servicepointdirectory.helper.TerminationHelper;
+import ch.sbb.atlas.servicepointdirectory.helper.ServicePointTerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
@@ -27,7 +27,7 @@ public class StopPointTerminationController implements StopPointTerminationApiV1
       UpdateTerminationServicePointModel updateTerminationServicePointModel) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
-    ServicePointVersion servicePointVersion = TerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id,
+    ServicePointVersion servicePointVersion = ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id,
         servicePointVersions);
 
     if (updateTerminationServicePointModel.getTerminationDate().isAfter(servicePointVersion.getValidTo())
@@ -44,7 +44,7 @@ public class StopPointTerminationController implements StopPointTerminationApiV1
   public ReadServicePointVersionModel stopServicePointTermination(String sloid, Long id) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
-    ServicePointVersion servicePointVersion = TerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id,
+    ServicePointVersion servicePointVersion = ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id,
         servicePointVersions);
     UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
         .terminationInProgress(false)
