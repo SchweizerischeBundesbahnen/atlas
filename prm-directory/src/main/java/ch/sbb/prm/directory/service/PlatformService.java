@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
+import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
@@ -69,7 +70,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   @Override
   public PlatformVersion save(PlatformVersion version) {
-    Set<MeanOfTransport> meanOfTransports = stopPointService.getMeansOfTransportOfAllVersions(version.getParentServicePointSloid());
+    Set<MeanOfTransport> meanOfTransports = stopPointService.getMeansOfTransportOfAllVersions(
+        version.getParentServicePointSloid());
     PlatformVersionMapper.initDefaultDropdownData(version, meanOfTransports);
     platformValidationService.validateRecordingVariants(version, PrmMeansOfTransportHelper.isReduced(meanOfTransports));
     platformValidationService.validatePreconditions(version, meanOfTransports);
@@ -103,6 +105,12 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
   public PlatformVersion updatePlatformVersion(PlatformVersion currentVersion, PlatformVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
+  }
+
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
+  public ReadPlatformVersionModel terminatePlatform(PlatformVersion platformToUpdate, PlatformVersion editedVersion) {
+    return PlatformVersionMapper.toModel(
+        updateVersion(platformToUpdate, editedVersion));
   }
 
   public Optional<PlatformVersion> getPlatformVersionById(Long id) {

@@ -36,7 +36,7 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
     applyVersioning(versionedObjects);
-    return currentVersion;
+    return editedVersion;
   }
 
   protected void checkStaleObjectIntegrity(T currentVersion, T editedVersion) {
@@ -46,11 +46,11 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
     }
   }
 
-  protected void initDefaultData(T editedVersion){
+  protected void initDefaultData(T editedVersion) {
     setStatusToValidate(editedVersion);
   }
 
-  protected void setStatusToValidate(T version){
+  protected void setStatusToValidate(T version) {
     version.setStatus(Status.VALIDATED);
   }
 
