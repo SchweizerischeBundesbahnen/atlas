@@ -16,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
-import ch.sbb.atlas.api.prm.model.platform.TerminatePlatformModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -462,15 +461,12 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     version2.setInfoOpportunities(Collections.emptySet());
     version2 = platformRepository.saveAndFlush(version2);
 
-    TerminatePlatformModel editedVersionModel = TerminatePlatformModel.builder()
-        .validTo(LocalDate.of(2002, 2, 28))
-        .build();
-
     //when & then
-    mvc.perform(post("/v1/platforms/terminate/" + version2.getId()).contentType(contentType)
-            .content(mapper.writeValueAsString(editedVersionModel)))
+    mvc.perform(put("/v1/platforms/terminate/" + version2.getSloid() + "/" + LocalDate.of(2002, 2, 28))
+            .contentType(contentType))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validTo, is("2002-02-28")));
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$.[0].validTo", is("2002-02-28")));
   }
 
   @Test
@@ -488,13 +484,9 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     version2.setInfoOpportunities(Collections.emptySet());
     platformRepository.saveAndFlush(version2);
 
-    TerminatePlatformModel editedVersionModel = TerminatePlatformModel.builder()
-        .validTo(LocalDate.of(2000, 2, 28))
-        .build();
-
     //when & then
-    mvc.perform(post("/v1/platforms/terminate/" + version1.getId()).contentType(contentType)
-            .content(mapper.writeValueAsString(editedVersionModel)))
+    mvc.perform(put("/v1/platforms/terminate/" + version1.getSloid() + "/" + LocalDate.of(2000, 2, 28)).contentType(contentType)
+            .contentType(contentType))
         .andExpect(status().isForbidden());
   }
 
