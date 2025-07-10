@@ -9,7 +9,6 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
-import ch.sbb.atlas.api.prm.model.platform.TerminatePlatformModel;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
@@ -20,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
@@ -69,6 +69,10 @@ public interface PlatformApiV1 {
   @GetMapping("{sloid}")
   List<ReadPlatformVersionModel> getPlatformVersions(@PathVariable String sloid);
 
-  @PostMapping("/terminate/{id}")
-  ReadPlatformVersionModel terminatePlatform(@PathVariable Long id, @RequestBody @Valid TerminatePlatformModel model);
+  @PutMapping("/terminate/{sloid}/{validTo}")
+  List<ReadPlatformVersionModel> terminatePlatform(
+      @Parameter(description = "Sloid in the format 'ch:1:sloid:1400015:0:55555'", example = "ch:1:sloid:1400015:0:55555")
+      @PathVariable String sloid,
+      @Parameter(description = "ValidTo date in the format 'YYYY-MM-DD'", example = "2024-03-03")
+      @PathVariable LocalDate validTo);
 }
