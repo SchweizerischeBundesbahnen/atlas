@@ -29,9 +29,9 @@ public class ServicePointStatusDecider {
     }
     ServicePointVersion currentVersion = calculateCurrentVersion(servicePointVersions, newServicePointVersion,
         currentServicePointVersion.get());
-    if (isChangeFromServicePointToStopPoint(newServicePointVersion, currentVersion)
+    if (hasStopPointChanged(newServicePointVersion, currentVersion)
         || isTimeslotChangedFromNotValidEnoughToValidEnough(newServicePointVersion, currentVersion)
-        || hasGeolocationChangedBackToSwitzerland(newServicePointVersion, currentVersion)
+        || isGeolocationValidationRequired(newServicePointVersion, currentVersion)
         || isIsolatedOrTouchingServicePointVersion(newServicePointVersion, servicePointVersions)) {
       logMessage(currentVersion, newServicePointVersion, "Deciding on ServicePoint.Status when update where "
           + "currentServicePointVersion={}, existing versions servicePointVersions={} and newServicePointVersion={}.");
@@ -74,9 +74,9 @@ public class ServicePointStatusDecider {
     return !newServicePointVersion.getDesignationOfficial().equals(currentVersion.getDesignationOfficial());
   }
 
-  private static boolean isChangeFromServicePointToStopPoint(ServicePointVersion newServicePointVersion,
+  private static boolean hasStopPointChanged(ServicePointVersion newServicePointVersion,
       ServicePointVersion currentVersion) {
-    return newServicePointVersion.isStopPoint() && !currentVersion.isStopPoint();
+    return newServicePointVersion.isStopPoint() != currentVersion.isStopPoint();
   }
 
   private static ServicePointVersion calculateCurrentVersion(List<ServicePointVersion> servicePointVersions,
@@ -126,10 +126,10 @@ public class ServicePointStatusDecider {
     return ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo()) + 1;
   }
 
-  private static boolean hasGeolocationChangedBackToSwitzerland(ServicePointVersion newServicePointVersion,
+  private static boolean isGeolocationValidationRequired(ServicePointVersion newServicePointVersion,
       ServicePointVersion currentVersion) {
     if (ServicePointHelper.isGeolocationOrCountryNull(newServicePointVersion)) {
-      return false;
+      return true;
     }
     return isNewServicePointWithSwissGeolocation(newServicePointVersion)
         && isExistingServicePointWithAbroadOrNoGeolocation(currentVersion);
