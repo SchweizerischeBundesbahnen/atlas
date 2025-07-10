@@ -15,12 +15,14 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
 import {
   StopPointTerminationWorkflowDetailFormGroup,
   StopPointTerminationWorkflowDetailFormGroupBuilder,
-} from './StopPointTerminationWorkflowDetailFormGroup';
+  TerminationDecisionFormGroup,
+} from './stop-point-termination-workflow-detail-form-group';
 import { FormGroup } from '@angular/forms';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { LinkComponent } from '../../../../core/form-components/link/link.component';
 import { Pages } from '../../../pages';
+import { TerminationDecisionDetailDialogService } from './decision/decision-detail/termination-decision-detail-dialog.service';
 
 @Component({
   selector: 'app-stop-point-termination-workflow-detail',
@@ -43,6 +45,9 @@ import { Pages } from '../../../pages';
 export class StopPointTerminationWorkflowDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly terminationDecisionDetailDialogService = inject(
+    TerminationDecisionDetailDialogService
+  );
 
   stopPoint!: ReadServicePointVersion;
   workflow!: TerminationStopPointAddWorkflow;
@@ -66,8 +71,11 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
     this.form.disable();
   }
 
-  onOpenDecision($index: number) {
-    window.alert($index);
+  onOpenDecision(examinantDecision: FormGroup<TerminationDecisionFormGroup>) {
+    this.terminationDecisionDetailDialogService.openDialog(
+      this.workflow.id!,
+      examinantDecision
+    );
   }
 
   goToAtlasStopPoint() {
