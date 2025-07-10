@@ -68,8 +68,6 @@ class TerminationStopPointWorkflowServiceTest {
     TerminationStopPointWorkflow stopPointWorkflow = saveTerminationStopPointWorkflow();
 
     TerminationDecisionModel decisionModel = TerminationDecisionModel.builder()
-        .sloid(SLOID)
-        .versionId(VERSION_ID)
         .judgement(JudgementType.YES)
         .motivation("Forza Napoli")
         .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
@@ -95,8 +93,6 @@ class TerminationStopPointWorkflowServiceTest {
     repository.save(stopPointWorkflow);
 
     TerminationDecisionModel decisionModel = TerminationDecisionModel.builder()
-        .sloid(SLOID)
-        .versionId(VERSION_ID)
         .judgement(JudgementType.YES)
         .motivation("Forza Napoli")
         .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
@@ -114,8 +110,6 @@ class TerminationStopPointWorkflowServiceTest {
     TerminationStopPointWorkflow stopPointWorkflow = saveTerminationStopPointWorkflow();
 
     TerminationDecisionModel decisionModel = TerminationDecisionModel.builder()
-        .sloid(SLOID)
-        .versionId(VERSION_ID)
         .judgement(JudgementType.YES)
         .motivation("Forza Napoli")
         .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
@@ -149,8 +143,6 @@ class TerminationStopPointWorkflowServiceTest {
     TerminationStopPointWorkflow stopPointWorkflow = saveTerminationStopPointWorkflow();
 
     TerminationDecisionModel decisionModel = TerminationDecisionModel.builder()
-        .sloid(SLOID)
-        .versionId(VERSION_ID)
         .judgement(JudgementType.NO)
         .motivation("Forza Napoli")
         .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
