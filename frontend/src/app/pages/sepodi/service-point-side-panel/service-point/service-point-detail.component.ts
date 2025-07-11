@@ -15,15 +15,7 @@ import {
   ServicePointFormGroupBuilder,
 } from './service-point-detail-form-group';
 import { MapService } from '../../map/map.service';
-import {
-  BehaviorSubject,
-  catchError,
-  EMPTY,
-  Observable,
-  of,
-  Subject,
-  take,
-} from 'rxjs';
+import { catchError, EMPTY, Observable, of, Subject, take } from 'rxjs';
 import { Pages } from '../../../pages';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
@@ -120,7 +112,6 @@ export class ServicePointDetailComponent
     this._terminationInProgress = terminationInProgress;
   }
 
-  public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
@@ -215,8 +206,10 @@ export class ServicePointDetailComponent
   public initSelectedVersion(version: ReadServicePointVersion) {
     this.terminationInProgress = version.terminationInProgress!;
     this.initShowRevokeButton(version);
-    this.form = ServicePointFormGroupBuilder.buildFormGroup(version);
-    // this.disableForm(); // todo
+    console.log(this.form);
+    const form = ServicePointFormGroupBuilder.buildFormGroup(version);
+    // this.disableForm(form); todo
+    this.form = form;
     this.isSwitchVersionDisabled = false;
     this.selectedVersion = version;
     this.displayAndSelectServicePointOnMap();
@@ -267,14 +260,14 @@ export class ServicePointDetailComponent
       .subscribe((confirmed) => {
         if (confirmed) {
           this.initSelectedVersion({ ...this.selectedVersion! });
-          this.disableForm();
           this.isSwitchVersionDisabled = false;
         }
       });
   }
 
-  private disableForm(): void {
-    this.form?.disable();
+  // todo
+  private disableForm(form?: FormGroup): void {
+    form?.disable();
     this._savedGeographyForm = undefined;
   }
 
