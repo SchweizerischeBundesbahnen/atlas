@@ -180,7 +180,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       ],
       'SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPES.'
     );
-    console.log(this.operatingPointTypes);
   };
 
   private initTypeChangeInformationDialog(
@@ -200,7 +199,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
             this._currentSelectedServicePointType !=
             ServicePointType.ServicePoint
           ) {
-            console.log('hasdasdasd');
             this.dialogService
               .confirm({
                 title: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.TITLE',
