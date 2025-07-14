@@ -43,12 +43,14 @@ public class TerminationStopPointWorkflowMapper {
     infoPlusDecision.setFirstName(infoPlus.getFirstname());
     infoPlusDecision.setLastName(infoPlus.getLastname());
     infoPlusDecision.setOrganisation(infoPlus.getOrganisation());
+    infoPlusDecision.setTerminationDate(workflow.getInfoPlusTerminationDate());
 
     TerminationDecisionModel novaDecision = model.getNovaDecision();
     novaDecision.setExaminantMail(nova.getEmail());
     novaDecision.setFirstName(nova.getFirstname());
     novaDecision.setLastName(nova.getLastname());
     novaDecision.setOrganisation(nova.getOrganisation());
+    novaDecision.setTerminationDate(workflow.getNovaTerminationDate());
 
     model.setInfoPlusDecision(infoPlusDecision);
     model.setNovaDecision(novaDecision);

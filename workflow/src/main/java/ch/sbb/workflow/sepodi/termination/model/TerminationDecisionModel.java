@@ -42,24 +42,18 @@ public class TerminationDecisionModel {
   private LocalDate terminationDate;
 
   @Redacted
-  @Schema(description = "Firstname", example = "John")
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @Schema(description = "Firstname", example = "John", accessMode = AccessMode.READ_ONLY)
   private String firstName;
 
   @Redacted
-  @Schema(description = "Second", example = "Doe")
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Schema(description = "Second", example = "Doe", accessMode = AccessMode.READ_ONLY)
   private String lastName;
 
-  @Schema(description = "Organisation", example = "ZVV Zürcher Verkehrsverbund")
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
+  @Schema(description = "Organisation", example = "ZVV Zürcher Verkehrsverbund", accessMode = AccessMode.READ_ONLY)
   private String organisation;
 
   @Redacted(showFirstChar = true)
-  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
+  @Schema(description = "Mail of examinant", example = "examinant@be.ch", accessMode = AccessMode.READ_ONLY)
   private String examinantMail;
 
 }
