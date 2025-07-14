@@ -9,6 +9,7 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
+import { of } from 'rxjs';
 
 const workflow: TerminationStopPointAddWorkflow = {
   sloid: 'ch:1sloid:700',
@@ -24,11 +25,9 @@ const workflowData: StopPointTerminationWorkflowDetailData = {
 };
 
 const activatedRoute = {
-  snapshot: {
-    data: {
-      workflow: workflowData,
-    },
-  },
+  data: of({
+    workflow: workflowData,
+  }),
 };
 
 describe('StopPointTerminationWorkflowDetail', () => {
