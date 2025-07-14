@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 class TerminationHelperTest {
 
   @Test
-  void doesNotThrowIfValidToWithinRange() {
+  void shouldNotThrowIfValidToWithinRange() {
     String sloid = "test-id";
     LocalDate from = LocalDate.of(2024, 1, 1);
     LocalDate to = LocalDate.of(2024, 12, 31);
@@ -24,7 +24,7 @@ class TerminationHelperTest {
   }
 
   @Test
-  void throwsIfValidToOutsideRange() {
+  void shouldThrowIfValidToOutsideRange() {
     String sloid = "test-id";
     LocalDate from = LocalDate.of(2024, 1, 1);
     LocalDate to = LocalDate.of(2024, 12, 31);
