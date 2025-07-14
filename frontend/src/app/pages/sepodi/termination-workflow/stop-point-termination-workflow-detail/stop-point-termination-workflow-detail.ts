@@ -25,6 +25,8 @@ import { Pages } from '../../../pages';
 import { TerminationDecisionDetailDialogService } from './decision/decision-detail/termination-decision-detail-dialog.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import { TerminationDecision } from '../../../../api/model/terminationDecision';
+import moment from 'moment';
+import { TerminationWorkflowStatus } from '../../../../api/model/terminationWorkflowStatus';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 @Component({
@@ -57,26 +59,42 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
   workflow!: TerminationStopPointAddWorkflow;
   form!: FormGroup<StopPointTerminationWorkflowDetailFormGroup>;
   terminationPermission?: TerminationDecisionPersonEnum;
+  showDecisionButton = false;
 
   ngOnInit(): void {
-    const workflowData: StopPointTerminationWorkflowDetailData =
-      this.route.snapshot.data.workflow;
+    this.route.data.subscribe((data) => {
+      const workflowData: StopPointTerminationWorkflowDetailData =
+        data.workflow;
 
-    this.workflow = workflowData.workflow;
+      this.workflow = workflowData.workflow;
 
-    const indexOfVersionInReview = workflowData.servicePoint.findIndex(
-      (i) => i.id === this.workflow.versionId
-    );
-    this.stopPoint = workflowData.servicePoint[indexOfVersionInReview];
-
-    this.form =
-      StopPointTerminationWorkflowDetailFormGroupBuilder.buildFormGroup(
-        workflowData.workflow
+      const indexOfVersionInReview = workflowData.servicePoint.findIndex(
+        (i) => i.id === this.workflow.versionId
       );
-    this.form.disable();
+      this.stopPoint = workflowData.servicePoint[indexOfVersionInReview];
 
-    this.terminationPermission =
-      this.permissionService.getTerminationPermission();
+      this.form =
+        StopPointTerminationWorkflowDetailFormGroupBuilder.buildFormGroup(
+          workflowData.workflow
+        );
+      this.form.disable();
+
+      this.terminationPermission =
+        this.permissionService.getTerminationPermission();
+
+      if (this.terminationPermission) {
+        if (
+          this.terminationPermission === TerminationDecisionPersonEnum.InfoPlus
+        ) {
+          this.showDecisionButton = !this.workflow.infoPlusTerminationDate;
+        }
+        if (this.terminationPermission === TerminationDecisionPersonEnum.Nova) {
+          this.showDecisionButton =
+            this.workflow.status !=
+            TerminationWorkflowStatus.TerminationApproved;
+        }
+      }
+    });
   }
 
   onOpenDecision(examinantDecision: FormGroup<TerminationDecisionFormGroup>) {
@@ -112,12 +130,28 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
     decisionForm.controls.terminationDecisionPerson.setValue(
       this.terminationPermission!
     );
-
-    this.terminationDecisionDetailDialogService.openDialog(
-      this.workflow.id!,
-      false,
-      this.terminationPermission!,
-      decisionForm
+    decisionForm.controls.terminationDate.setValue(
+      moment(
+        this.workflow.infoPlusTerminationDate ??
+          this.workflow.boTerminationDate!
+      )
     );
+
+    this.terminationDecisionDetailDialogService
+      .openDialog(
+        this.workflow.id!,
+        false,
+        this.terminationPermission!,
+        decisionForm
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.router
+            .navigate(['..', this.workflow.id!], {
+              relativeTo: this.route,
+            })
+            .then();
+        }
+      });
   }
 }
