@@ -131,8 +131,9 @@ public class ServicePointStatusDecider {
     if (ServicePointHelper.isGeolocationOrCountryNull(newServicePointVersion)) {
       return true;
     }
-    return isNewServicePointWithSwissGeolocation(newServicePointVersion)
-        && isExistingServicePointWithAbroadOrNoGeolocation(currentVersion);
+    return (isNewServicePointWithSwissGeolocation(newServicePointVersion)
+        && isExistingServicePointWithAbroadOrNoGeolocation(currentVersion)) || isExistingServicePointWithAbroadOrNoGeolocation(
+        newServicePointVersion);
   }
 
   private static boolean isExistingServicePointWithAbroadOrNoGeolocation(ServicePointVersion currentVersion) {
