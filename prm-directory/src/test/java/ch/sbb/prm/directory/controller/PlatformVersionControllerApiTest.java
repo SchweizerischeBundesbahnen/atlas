@@ -79,7 +79,8 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
 
   @BeforeEach
   void setUp() {
-    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000",
+        Set.of("ch:1:sboid:100602"),
         Set.of("ch:1:sloid:12345:1"));
     sharedServicePointRepository.saveAndFlush(servicePoint);
   }
@@ -447,6 +448,46 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2000-02-01")))
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")));
+  }
+
+  @Test
+  void shouldTerminatePlatform() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.saveAndFlush(stopPointVersion);
+    PlatformVersion version2 = PlatformTestData.builderCompleteVersion2().build();
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    version2.setInfoOpportunities(Collections.emptySet());
+    version2 = platformRepository.saveAndFlush(version2);
+
+    //when & then
+    mvc.perform(put("/v1/platforms/terminate/" + version2.getSloid() + "/" + LocalDate.of(2002, 2, 28))
+            .contentType(contentType))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$.[0].validTo", is("2002-02-28")));
+  }
+
+  @Test
+  void shouldNotTerminatePlatformIfNotInLastVersion() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.saveAndFlush(stopPointVersion);
+    PlatformVersion version1 = PlatformTestData.builderCompleteVersion1().build();
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    version1.setInfoOpportunities(Collections.emptySet());
+    platformRepository.saveAndFlush(version1);
+    PlatformVersion version2 = PlatformTestData.builderCompleteVersion2().build();
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    version2.setInfoOpportunities(Collections.emptySet());
+    platformRepository.saveAndFlush(version2);
+
+    //when & then
+    mvc.perform(put("/v1/platforms/terminate/" + version1.getSloid() + "/" + LocalDate.of(2000, 2, 28)).contentType(contentType)
+            .contentType(contentType))
+        .andExpect(status().isForbidden());
   }
 
 }
