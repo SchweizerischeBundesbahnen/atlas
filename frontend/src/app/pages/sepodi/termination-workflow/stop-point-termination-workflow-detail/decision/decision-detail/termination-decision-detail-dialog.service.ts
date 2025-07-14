@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,9 +18,8 @@ export interface TerminationDecisionDetailDialogData extends DialogData {
 
 @Injectable({ providedIn: 'root' })
 export class TerminationDecisionDetailDialogService {
+  private readonly dialog = inject(MatDialog);
   private dialogRef?: MatDialogRef<TerminationDecisionDetailDialogComponent>;
-
-  constructor(private dialog: MatDialog) {}
 
   openDialog(
     workflowId: number,

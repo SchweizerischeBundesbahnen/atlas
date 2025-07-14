@@ -132,7 +132,7 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
     const decisionForm =
       StopPointTerminationWorkflowDetailFormGroupBuilder.buildTerminationDecisionFormGroup();
     decisionForm.controls.terminationDecisionPerson.setValue(
-      this.terminationPermission!
+      this.terminationPermission
     );
     decisionForm.controls.terminationDate.setValue(
       moment(
