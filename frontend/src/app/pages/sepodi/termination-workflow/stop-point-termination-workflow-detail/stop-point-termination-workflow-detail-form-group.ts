@@ -88,7 +88,7 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
         ),
         terminationDate: new FormControl(
           terminationDecision?.terminationDate
-            ? moment(terminationDecision!.terminationDate)
+            ? moment(terminationDecision.terminationDate)
             : null
         ),
         terminationDecisionPerson: new FormControl(

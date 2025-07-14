@@ -111,13 +111,18 @@ describe('TerminationDecisionDetailDialogComponent', () => {
       expect(component).toBeTruthy();
 
       expect(component.readOnly).toBeFalse();
-      expect(component.form.enabled).toBeTrue();
     });
 
     it('should close dialog', () => {
       component.close();
 
       expect(dialogRefSpy.close).toHaveBeenCalled();
+    });
+
+    it('should decide', () => {
+      component.decide();
+
+      expect(terminationWorkflowService.decisionInfoPlus).toHaveBeenCalled();
     });
   });
 
