@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.exception;
+package ch.sbb.atlas.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;

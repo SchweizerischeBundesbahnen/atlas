@@ -36,7 +36,8 @@ class TerminationHelperTest {
     bern2.setValidFrom(LocalDate.of(2026, 1, 1));
     bern2.setValidTo(LocalDate.of(2026, 1, 1));
     //when
-    ServicePointVersion result = TerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern2.getId(),
+    ServicePointVersion result = ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(),
+        bern2.getId(),
         List.of(bern, bern2));
     //then
     assertThat(result).isNotNull();
@@ -60,7 +61,8 @@ class TerminationHelperTest {
     bern2.setValidFrom(LocalDate.of(2026, 1, 1));
     bern2.setValidTo(LocalDate.of(2026, 1, 1));
     //when
-    ServicePointVersion result = TerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern2.getId(),
+    ServicePointVersion result = ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(),
+        bern2.getId(),
         List.of(bern, bern2));
     //then
     assertThat(result).isNotNull();
@@ -83,14 +85,15 @@ class TerminationHelperTest {
 
     //given & when
     assertThrows(StopPointTerminationNotOnLastVersionException.class,
-        () -> TerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern.getId(), List.of(bern, bern2)));
+        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern.getId(),
+            List.of(bern, bern2)));
   }
 
   @Test
   void shouldNotCheckIsStopPointTerminationWorkflowAllowedWhenSloidNotFound() {
     //given & when
     assertThrows(SloidNotFoundException.class,
-        () -> TerminationHelper.checkIsStopPointTerminationWorkflowAllowed("ch:1:sloid:666", 1L, List.of()));
+        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed("ch:1:sloid:666", 1L, List.of()));
   }
 
   @Test
@@ -110,7 +113,7 @@ class TerminationHelperTest {
 
     //given & when
     assertThrows(TerminationNotAllowedWhenVersionInWrongStatusException.class,
-        () -> TerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern2.getId(),
+        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern2.getId(),
             List.of(bern, bern2)));
   }
 
@@ -133,7 +136,7 @@ class TerminationHelperTest {
 
     //given & when
     assertThrows(TerminationNotStopPointException.class,
-        () -> TerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern2.getId(),
+        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern2.getId(),
             List.of(bern, bern2)));
   }
 
@@ -156,7 +159,7 @@ class TerminationHelperTest {
 
     //given & when
     assertThrows(TerminationAlreadyInProgressException.class,
-        () -> TerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern2.getId(),
+        () -> ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(bern2.getSloid(), bern2.getId(),
             List.of(bern, bern2)));
   }
 
