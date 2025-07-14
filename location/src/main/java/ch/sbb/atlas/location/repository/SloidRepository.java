@@ -24,6 +24,7 @@ public class SloidRepository {
 
   private static final String AREA_SEQ = "area_seq";
   private static final String EDGE_SEQ = "edge_seq";
+  private static final String SECTOR_SEQ = "sector_seq";
   public static final int BATCH_SIZE = 5_000;
 
   @Qualifier("locationJdbcTemplate")
@@ -43,7 +44,12 @@ public class SloidRepository {
   }
 
   public Integer getNextSeqValue(SloidType sloidType) {
-    final String sequence = sloidType == SloidType.PLATFORM ? EDGE_SEQ : AREA_SEQ;
+    final String sequence = switch (sloidType) {
+      case PLATFORM -> EDGE_SEQ;
+      case SECTOR, SECTOR_GROUP -> SECTOR_SEQ;
+      default -> AREA_SEQ;
+    };
+
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sequence", sequence);
     String sqlQuery = "select nextval(:sequence);";
@@ -141,18 +147,18 @@ public class SloidRepository {
     AtlasListUtil.getPartitionedSublists(sloidList, BATCH_SIZE).forEach(sloidSubList -> {
       log.info("Execution batching update: provided list size: {}", sloidSubList.size());
       locationJdbcTemplate.getJdbcTemplate()
-                          .batchUpdate(sqlQuery, new BatchPreparedStatementSetter() {
-                                @Override
-                                public void setValues(PreparedStatement ps, int i) throws SQLException {
-                                  ps.setString(1, sloidSubList.get(i));
-                                }
+          .batchUpdate(sqlQuery, new BatchPreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                  ps.setString(1, sloidSubList.get(i));
+                }
 
-                                @Override
-                                public int getBatchSize() {
-                                  return sloidSubList.size();
-                                }
-                              }
-                          );
+                @Override
+                public int getBatchSize() {
+                  return sloidSubList.size();
+                }
+              }
+          );
     });
   }
 
@@ -162,20 +168,20 @@ public class SloidRepository {
     AtlasListUtil.getPartitionedSublists(sloids, BATCH_SIZE).forEach(sloidSubList -> {
       log.info("Execution batching update: provided list size: {}", sloidSubList.size());
       locationJdbcTemplate.getJdbcTemplate()
-                          .batchUpdate(sqlQuery, new BatchPreparedStatementSetter() {
+          .batchUpdate(sqlQuery, new BatchPreparedStatementSetter() {
 
-                                @Override
-                                public void setValues(PreparedStatement ps, int i) throws SQLException {
-                                  ps.setString(1, sloidSubList.get(i));
-                                  ps.setString(2, sloidType.name());
-                                }
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                  ps.setString(1, sloidSubList.get(i));
+                  ps.setString(2, sloidType.name());
+                }
 
-                                @Override
-                                public int getBatchSize() {
-                                  return sloidSubList.size();
-                                }
-                              }
-                          );
+                @Override
+                public int getBatchSize() {
+                  return sloidSubList.size();
+                }
+              }
+          );
     });
   }
 
