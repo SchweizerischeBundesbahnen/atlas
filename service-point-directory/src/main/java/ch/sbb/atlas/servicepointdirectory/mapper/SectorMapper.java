@@ -34,7 +34,6 @@ public class SectorMapper {
   public static SectorVersion toEntity(SectorVersionModel createSectorVersionModel) {
     return SectorVersion.builder()
         .id(createSectorVersionModel.getId())
-        .sloid(createSectorVersionModel.getSloid())
         .trafficPointSloid(createSectorVersionModel.getTrafficPointSloid())
         .designation(createSectorVersionModel.getDesignation())
         .validFrom(createSectorVersionModel.getValidFrom())

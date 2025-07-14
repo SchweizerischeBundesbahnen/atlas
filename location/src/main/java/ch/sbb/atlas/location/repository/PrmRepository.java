@@ -25,7 +25,7 @@ public class PrmRepository {
 
   private String getEntityName(SloidType sloidType) {
     return switch (sloidType) {
-      case PLATFORM, AREA, SERVICE_POINT ->
+      case PLATFORM, AREA, SERVICE_POINT, SECTOR, SECTOR_GROUP ->
           throw new IllegalArgumentException("Wrong sloidType " + sloidType + " provided! Please"
               + " use only PRM SloidTypes!");
       case CONTACT_POINT -> "contact_point_version";
