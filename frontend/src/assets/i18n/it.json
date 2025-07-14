@@ -671,7 +671,15 @@
       "TERMINATION_NOT_APPROVED_CLOSED": "Chiuso",
       "CANCELED": "Cancellato"
     },
-    "PROPOSAL": "Data di scadenza desiderata IT"
+    "PROPOSAL": "Data di scadenza desiderata IT",
+    "DECISION": {
+      "DECISION_INFO": "Accetti la richiesta di soppressione della fermata?",
+      "TERMINATION_DATE": "Data di abrogazione",
+      "DECISION_INFO_YES_INFO_PLUS": "La soppressione è conforme all’orario. La richiesta viene inoltrata a NOVA.",
+      "DECISION_INFO_NO_INFO_PLUS": "Indica l’organizzazione aziendale corrispondente o le organizzazioni commerciali che utilizzano ancora la fermata. Le IT sono responsabili dell’esecuzione del corrispondente cambio di concessione.",
+      "DECISION_INFO_YES_NOVA": "La data di soppressione viene utilizzata per ridurre automaticamente il posto di servizio.",
+      "DECISION_INFO_NO_NOVA": "Il posto di servizio viene automaticamente convertito in una fermata tariffaria."
+    }
   },
   "WORKFLOW": {
     "TITLE": "Audizione",
