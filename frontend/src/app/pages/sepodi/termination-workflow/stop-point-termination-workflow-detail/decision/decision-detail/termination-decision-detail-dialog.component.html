@@ -2,7 +2,7 @@
 
 <atlas-dialog-content>
   <div class="font-bold-4xl mb-1">
-    {{ 'WORKFLOW.PERSON.JUDGEMENT' | translate }} - {{ examinant }}
+    {{ 'WORKFLOW.PERSON.JUDGEMENT' | translate }}
   </div>
 
   <div class="mb-2">
@@ -12,9 +12,15 @@
     <mat-radio-group formControlName="judgement" class="d-grid mb-3">
       <mat-radio-button [value]="JudgementType.Yes">
         {{ 'WORKFLOW.DECISION.ACCEPT' | translate }}
+        @if (!readOnly) {
+          *
+        }
       </mat-radio-button>
       <mat-radio-button [value]="JudgementType.No">
         {{ 'WORKFLOW.DECISION.DECLINE' | translate }}
+        @if (!readOnly) {
+          **
+        }
       </mat-radio-button>
       <app-atlas-field-error
         [form]="form"
@@ -54,6 +60,25 @@
       controlName="motivation"
     ></form-comment>
   </form>
+
+  @if (!readOnly) {
+    <div class="mt-3">
+      <div>
+        *
+        {{
+          'TERMINATION_WORKFLOW.DECISION.DECISION_INFO_YES_' + examinant
+            | translate
+        }}
+      </div>
+      <div>
+        **
+        {{
+          'TERMINATION_WORKFLOW.DECISION.DECISION_INFO_NO_' + examinant
+            | translate
+        }}
+      </div>
+    </div>
+  }
 </atlas-dialog-content>
 
 <atlas-dialog-footer>

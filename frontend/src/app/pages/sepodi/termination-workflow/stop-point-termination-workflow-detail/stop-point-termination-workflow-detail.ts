@@ -48,6 +48,10 @@ import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPe
   templateUrl: './stop-point-termination-workflow-detail.html',
 })
 export class StopPointTerminationWorkflowDetail implements OnInit {
+  protected readonly TerminationDecisionPersonEnum =
+    TerminationDecisionPersonEnum;
+  protected readonly TerminationWorkflowStatus = TerminationWorkflowStatus;
+
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly permissionService = inject(PermissionService);

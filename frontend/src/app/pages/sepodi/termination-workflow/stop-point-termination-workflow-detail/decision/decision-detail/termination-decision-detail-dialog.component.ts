@@ -74,7 +74,8 @@ export class TerminationDecisionDetailDialogComponent implements OnInit {
     this.examinant = this.decisionDetailDialogData.examinant;
     this.form = this.decisionDetailDialogData.decision;
     this.readOnly = this.decisionDetailDialogData.readOnly;
-    this.minDate = this.form.controls.terminationDate.value!.toDate();
+    this.minDate =
+      this.form.controls.terminationDate.value?.toDate() ?? MIN_DATE;
     if (this.readOnly) {
       this.form.disable();
     }
