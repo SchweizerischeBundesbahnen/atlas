@@ -99,7 +99,8 @@ public class TerminationStopPointWorkflowService {
 
   public TerminationStopPointWorkflow addDecisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
     TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
-    if (!Set.of(TerminationWorkflowStatus.TARIFF_STOP_APPROVED, TerminationWorkflowStatus.TARIFF_STOP_NOT_APPROVED).contains(terminationWorkflow.getStatus())) {
+    if (!Set.of(TerminationWorkflowStatus.TARIFF_STOP_APPROVED, TerminationWorkflowStatus.TARIFF_STOP_NOT_APPROVED,
+        TerminationWorkflowStatus.TERMINATION_NOT_APPROVED).contains(terminationWorkflow.getStatus())) {
       throw new TerminationStopPointWorkflowPreconditionStatusException(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
     }
     if (decisionModel.getTerminationDate().isBefore(terminationWorkflow.getInfoPlusTerminationDate())) {
