@@ -1,8 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.service.sector;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -38,16 +40,18 @@ public class SectorGroupService {
   private final VersionableService versionableService;
   private final SectorGroupRelationRepository sectorGroupRelationRepository;
   private final SectorVersionRepository sectorVersionRepository;
+  private final LocationService locationService;
 
   public SectorGroupService(SectorGroupVersionRepository sectorGroupVersionRepository,
       TrafficPointElementService trafficPointElementService,
       VersionableService versionableService, SectorGroupRelationRepository sectorGroupRelationRepository,
-      SectorVersionRepository sectorVersionRepository) {
+      SectorVersionRepository sectorVersionRepository, LocationService locationService) {
     this.sectorGroupVersionRepository = sectorGroupVersionRepository;
     this.trafficPointElementService = trafficPointElementService;
     this.versionableService = versionableService;
     this.sectorGroupRelationRepository = sectorGroupRelationRepository;
     this.sectorVersionRepository = sectorVersionRepository;
+    this.locationService = locationService;
   }
 
   public List<SectorGroupVersionModel> getSectorGroups() {
@@ -82,16 +86,17 @@ public class SectorGroupService {
     return createSectorGroup(toCreate, sloids);
   }
 
-  public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion toCreate,
+  public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion sectorGroupVersion,
       List<String> sloids
   ) {
-    trafficPointElementService.doesTrafficPointExist(toCreate.getTrafficPointSloid());
+    trafficPointElementService.doesTrafficPointExist(sectorGroupVersion.getTrafficPointSloid());
     List<SectorVersion> versions = fetchLatestSectorVersions(sloids);
     validateSectorVersions(versions);
-    validateTrafficPoint(toCreate.getTrafficPointSloid(), versions);
+    validateTrafficPoint(sectorGroupVersion.getTrafficPointSloid(), versions);
+    sectorGroupVersion.setSloid(locationService.generateSloid(SloidType.SECTOR, sectorGroupVersion.getTrafficPointSloid()));
 
-    createRelation(sloids, toCreate.getSloid());
-    SectorGroupVersion saved = save(toCreate);
+    createRelation(sloids, sectorGroupVersion.getSloid());
+    SectorGroupVersion saved = save(sectorGroupVersion);
 
     List<SectorVersionModel> models = mapToModels(versions);
     return SectorGroupMapper.toReadModel(saved, models);

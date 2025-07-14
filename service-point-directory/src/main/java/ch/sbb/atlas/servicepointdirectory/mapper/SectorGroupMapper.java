@@ -53,7 +53,6 @@ public class SectorGroupMapper {
   public static SectorGroupVersion toEntity(CreateSectorGroupVersionModel createSectorGroupVersionModel) {
     return SectorGroupVersion.builder()
         .id(createSectorGroupVersionModel.getId())
-        .sloid(createSectorGroupVersionModel.getSloid())
         .trafficPointSloid(createSectorGroupVersionModel.getTrafficPointSloid())
         .validFrom(createSectorGroupVersionModel.getValidFrom())
         .validTo(createSectorGroupVersionModel.getValidTo())
