@@ -4,13 +4,17 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
+import ch.sbb.atlas.helper.TerminationHelper;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.prm.directory.api.PlatformApiV1;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
 import ch.sbb.prm.directory.service.PlatformService;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,4 +69,27 @@ public class PlatformController implements PlatformApiV1 {
     return platformService.getAllVersions(sloid).stream().map(PlatformVersionMapper::toModel).toList();
   }
 
+  @Override
+  public List<ReadPlatformVersionModel> terminatePlatform(String sloid, LocalDate validTo) {
+    List<PlatformVersion> currentVersions = platformService.getAllVersions(sloid);
+
+    if (currentVersions.isEmpty()) {
+      throw new SloidNotFoundException(sloid);
+    }
+
+    PlatformVersion latestVersion = currentVersions.getLast();
+    PlatformVersion editedVersion = latestVersion.toBuilder().build();
+    editedVersion.setValidTo(validTo);
+
+    terminate(latestVersion, editedVersion);
+
+    return platformService.getAllVersions(sloid).stream().map(PlatformVersionMapper::toModel).toList();
+  }
+
+  private void terminate(PlatformVersion latestVersion, PlatformVersion editedVersion) {
+    DateRange dateRange = new DateRange(latestVersion.getValidFrom(), latestVersion.getValidTo());
+
+    TerminationHelper.isValidToInLastVersionRange(latestVersion.getSloid(), dateRange, editedVersion.getValidTo());
+    platformService.updatePlatformVersion(latestVersion, editedVersion);
+  }
 }
