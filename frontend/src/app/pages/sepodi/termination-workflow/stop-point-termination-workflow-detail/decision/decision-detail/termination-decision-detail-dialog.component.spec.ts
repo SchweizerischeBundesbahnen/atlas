@@ -3,17 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TerminationDecisionDetailDialogComponent } from './termination-decision-detail-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TerminationDecisionDetailDialogData } from './termination-decision-detail-dialog.service';
-import { StopPointWorkflowDetailFormGroupBuilder } from '../../detail-form/stop-point-workflow-detail-form-group';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { of } from 'rxjs';
-import {
-  DecisionType,
-  JudgementType,
-  ReadDecision,
-  StopPointWorkflowService,
-  WorkflowStatus,
-} from '../../../../../../api';
-import { DecisionFormComponent } from '../decision-form/decision-form.component';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { AtlasFieldErrorComponent } from '../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
@@ -21,56 +12,63 @@ import { AtlasLabelFieldComponent } from '../../../../../../core/form-components
 import { LoadingSpinnerComponent } from '../../../../../../core/components/loading-spinner/loading-spinner.component';
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
-import { DecisionOverrideComponent } from './override/decision-override.component';
 import { DialogFooterComponent } from '../../../../../../core/components/dialog/footer/dialog-footer.component';
 import { MockAtlasButtonComponent } from '../../../../../../app.testing.mocks';
+import { TerminationDecision } from '../../../../../../api/model/terminationDecision';
+import { FormControl, FormGroup } from '@angular/forms';
+import { TerminationDecisionFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
+import moment from 'moment/moment';
+import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
-const dialogData: TerminationDecisionDetailDialogData = {
+const terminationWorkflowService = jasmine.createSpyObj('WorkflowService', {
+  decisionInfoPlus: of(),
+  decisionNova: of(),
+});
+const decisionDialogData: TerminationDecisionDetailDialogData = {
   title: '',
   message: '',
   workflowId: 123,
-  workflowStatus: WorkflowStatus.Hearing,
-  examinant: StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(),
-};
-
-const dialogDataWithExisitingExaminant: TerminationDecisionDetailDialogData = {
-  title: '',
-  message: '',
-  workflowId: 123,
-  workflowStatus: WorkflowStatus.Hearing,
-  examinant: StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup({
-    judgement: JudgementType.Yes,
-    organisation: 'Stadt Bern',
-    mail: 'stadt@bern.be',
+  readOnly: false,
+  examinant: TerminationDecisionPersonEnum.InfoPlus,
+  decision: new FormGroup<TerminationDecisionFormGroup>({
+    examinantMail: new FormControl(''),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    judgementIcon: new FormControl(''),
+    organisation: new FormControl(''),
+    judgement: new FormControl('YES'),
+    motivation: new FormControl(),
+    terminationDate: new FormControl(moment()),
+    terminationDecisionPerson: new FormControl(
+      TerminationDecisionPersonEnum.InfoPlus
+    ),
   }),
 };
 
-const dialogDataWithSpecialDecision: TerminationDecisionDetailDialogData = {
+const dialogDataReadOnly: TerminationDecisionDetailDialogData = {
   title: '',
   message: '',
   workflowId: 123,
-  workflowStatus: WorkflowStatus.Canceled,
-  examinant: StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup({
-    judgement: JudgementType.No,
-    organisation: 'BAV',
-    mail: 'bav@bern.be',
-    decisionType: DecisionType.Canceled,
+  readOnly: true,
+  examinant: TerminationDecisionPersonEnum.InfoPlus,
+  decision: new FormGroup<TerminationDecisionFormGroup>({
+    examinantMail: new FormControl(''),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    judgementIcon: new FormControl(''),
+    organisation: new FormControl(''),
+    judgement: new FormControl('YES'),
+    motivation: new FormControl(),
+    terminationDate: new FormControl(moment()),
+    terminationDecisionPerson: new FormControl(
+      TerminationDecisionPersonEnum.InfoPlus
+    ),
   }),
 };
 
-const existingDecision: ReadDecision = {
-  judgement: JudgementType.Yes,
-  motivation: 'Yep boiii',
-};
-const stopPointWorkflowService = jasmine.createSpyObj(
-  'stopPointWorkflowService',
-  {
-    getDecision: of(existingDecision),
-  }
-);
-
-describe('DecisionDetailDialogComponent', () => {
+describe('TerminationDecisionDetailDialogComponent', () => {
   let component: TerminationDecisionDetailDialogComponent;
   let fixture: ComponentFixture<TerminationDecisionDetailDialogComponent>;
 
@@ -79,8 +77,6 @@ describe('DecisionDetailDialogComponent', () => {
       imports: [
         AppTestingModule,
         TerminationDecisionDetailDialogComponent,
-        DecisionOverrideComponent,
-        DecisionFormComponent,
         CommentComponent,
         AtlasFieldErrorComponent,
         TextFieldComponent,
@@ -93,16 +89,16 @@ describe('DecisionDetailDialogComponent', () => {
       ],
       providers: [
         { provide: MatDialogRef, useValue: dialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: dialogData },
+        { provide: MAT_DIALOG_DATA, useValue: decisionDialogData },
         {
-          provide: StopPointWorkflowService,
-          useValue: stopPointWorkflowService,
+          provide: WorkflowService,
+          useValue: terminationWorkflowService,
         },
       ],
     });
   });
 
-  describe('without existing decision', () => {
+  describe('while deciding', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(
         TerminationDecisionDetailDialogComponent
@@ -114,8 +110,8 @@ describe('DecisionDetailDialogComponent', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
 
-      expect(component.existingDecision).toBeUndefined();
-      expect(component.decisionForm.disabled).toBeTrue();
+      expect(component.readOnly).toBeFalse();
+      expect(component.form.enabled).toBeTrue();
     });
 
     it('should close dialog', () => {
@@ -125,10 +121,10 @@ describe('DecisionDetailDialogComponent', () => {
     });
   });
 
-  describe('with existing decision', () => {
+  describe('while reading', () => {
     beforeEach(() => {
       TestBed.overrideProvider(MAT_DIALOG_DATA, {
-        useValue: dialogDataWithExisitingExaminant,
+        useValue: dialogDataReadOnly,
       });
       fixture = TestBed.createComponent(
         TerminationDecisionDetailDialogComponent
@@ -140,35 +136,8 @@ describe('DecisionDetailDialogComponent', () => {
     it('should init', () => {
       expect(component).toBeTruthy();
 
-      expect(stopPointWorkflowService.getDecision).toHaveBeenCalled();
-
-      expect(component.existingDecision).toBeDefined();
-      expect(component.decisionForm.controls.judgement.value).toEqual(
-        JudgementType.Yes
-      );
-    });
-  });
-
-  describe('with cancel decision', () => {
-    beforeEach(() => {
-      TestBed.overrideProvider(MAT_DIALOG_DATA, {
-        useValue: dialogDataWithSpecialDecision,
-      });
-      fixture = TestBed.createComponent(
-        TerminationDecisionDetailDialogComponent
-      );
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-
-    it('should init', () => {
-      expect(component).toBeTruthy();
-
-      expect(stopPointWorkflowService.getDecision).toHaveBeenCalled();
-
-      expect(component.existingDecision).toBeDefined();
-      expect(component.title).toEqual('WORKFLOW.STATUS.CANCELED');
-      expect(component.specialDecision).toBeTrue();
+      expect(component.readOnly).toBeTrue();
+      expect(component.form.disabled).toBeTrue();
     });
   });
 });
