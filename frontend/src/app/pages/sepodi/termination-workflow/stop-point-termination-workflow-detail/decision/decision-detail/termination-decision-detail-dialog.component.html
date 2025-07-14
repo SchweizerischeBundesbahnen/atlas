@@ -24,7 +24,7 @@
 
     <div class="d-flex flex-column pb-3">
       <app-atlas-label-field
-        fieldLabel="Aufhebung per:"
+        fieldLabel="TERMINATION_WORKFLOW.DECISION.TERMINATION_DATE"
       ></app-atlas-label-field>
       <div class="text-field-flex">
         <input
@@ -40,7 +40,7 @@
             <form-date-icon [enabled]="form.enabled"></form-date-icon>
           </mat-icon>
         </mat-datepicker-toggle>
-        <mat-datepicker #terminationDatePicker> </mat-datepicker>
+        <mat-datepicker #terminationDatePicker></mat-datepicker>
       </div>
       <app-atlas-field-error
         [form]="form"
@@ -64,11 +64,13 @@
   >
     {{ 'COMMON.BACK' | translate }}
   </button>
-  <button
-    (click)="decide()"
-    class="atlas-primary-btn me-3"
-    data-cy="dialog-save-button"
-  >
-    {{ 'WORKFLOW.BUTTON.DECIDE' | translate }}
-  </button>
+  @if (!readOnly) {
+    <button
+      (click)="decide()"
+      class="atlas-primary-btn me-3"
+      data-cy="dialog-save-button"
+    >
+      {{ 'WORKFLOW.BUTTON.DECIDE' | translate }}
+    </button>
+  }
 </atlas-dialog-footer>

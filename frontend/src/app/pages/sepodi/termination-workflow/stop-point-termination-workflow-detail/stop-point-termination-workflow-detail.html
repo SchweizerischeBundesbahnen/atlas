@@ -155,7 +155,7 @@
       buttonType="whiteFooterNonEdit"
       wrapperStyleClass="me-3"
     ></atlas-button>
-    @if (terminationPermission) {
+    @if (showDecisionButton) {
     <atlas-button
       [footerEdit]="form.enabled"
       buttonDataCy="decide-btn"

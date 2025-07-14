@@ -5,7 +5,10 @@ import { DialogCloseComponent } from '../../../../../../core/components/dialog/c
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
 import { DialogFooterComponent } from '../../../../../../core/components/dialog/footer/dialog-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TerminationDecisionFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
+import {
+  StopPointTerminationWorkflowDetailFormGroupBuilder,
+  TerminationDecisionFormGroup,
+} from '../../stop-point-termination-workflow-detail-form-group';
 import { TerminationDecision } from '../../../../../../api/model/terminationDecision';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasFieldErrorComponent } from '../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
@@ -23,6 +26,7 @@ import {
 import { MAX_DATE, MIN_DATE } from '../../../../../../core/date/date.service';
 import { MatIcon } from '@angular/material/icon';
 import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { ValidationService } from '../../../../../../core/validation/validation.service';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 @Component({
@@ -70,35 +74,44 @@ export class TerminationDecisionDetailDialogComponent implements OnInit {
     this.examinant = this.decisionDetailDialogData.examinant;
     this.form = this.decisionDetailDialogData.decision;
     this.readOnly = this.decisionDetailDialogData.readOnly;
+    this.minDate = this.form.controls.terminationDate.value!.toDate();
     if (this.readOnly) {
       this.form.disable();
     }
   }
 
-  close() {
-    this.dialogRef.close();
+  close(result?: boolean) {
+    this.dialogRef.close(result);
   }
 
   decide() {
-    if (this.examinant === TerminationDecisionPersonEnum.InfoPlus) {
-      this.terminationWorkflowService
-        .decisionInfoPlus(
-          this.decisionDetailDialogData.workflowId,
-          this.form.value as TerminationDecision
-        )
-        .subscribe((response) => {
-          console.log(response);
-        });
-    }
-    if (this.examinant === TerminationDecisionPersonEnum.Nova) {
-      this.terminationWorkflowService
-        .decisionNova(
-          this.decisionDetailDialogData.workflowId,
-          this.form.value as TerminationDecision
-        )
-        .subscribe((response) => {
-          console.log(response);
-        });
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      const terminationDecision =
+        StopPointTerminationWorkflowDetailFormGroupBuilder.getTerminationDecision(
+          this.form
+        );
+      this.form.disable();
+      if (this.examinant === TerminationDecisionPersonEnum.InfoPlus) {
+        this.terminationWorkflowService
+          .decisionInfoPlus(
+            this.decisionDetailDialogData.workflowId,
+            terminationDecision
+          )
+          .subscribe(() => {
+            this.close(true);
+          });
+      }
+      if (this.examinant === TerminationDecisionPersonEnum.Nova) {
+        this.terminationWorkflowService
+          .decisionNova(
+            this.decisionDetailDialogData.workflowId,
+            terminationDecision
+          )
+          .subscribe(() => {
+            this.close(true);
+          });
+      }
     }
   }
 }

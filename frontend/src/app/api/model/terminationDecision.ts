@@ -10,15 +10,7 @@
 import { JudgementType } from './judgementType';
 
 
-export interface TerminationDecision { 
-    /**
-     * Service Point version id
-     */
-    versionId: number;
-    /**
-     * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. https://transportdatamanagement.ch/standards/
-     */
-    sloid: string;
+export interface TerminationDecision {
     judgement: JudgementType;
     /**
      * Motivation
@@ -29,7 +21,7 @@ export interface TerminationDecision {
      */
     terminationDecisionPerson: TerminationDecision.TerminationDecisionPersonEnum;
     /**
-     * Termination Date 
+     * Termination Date
      */
     terminationDate: Date;
     /**
