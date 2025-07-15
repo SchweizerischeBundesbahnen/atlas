@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
-import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
@@ -59,9 +59,9 @@ public class SectorTestData {
     return sectorVersion;
   }
 
-  public static CreateSectorVersionModel getCreateSectorVersion() {
+  public static SectorVersionModel getCreateSectorVersion() {
 
-    CreateSectorVersionModel sectorVersionModel = CreateSectorVersionModel.builder()
+    SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
         .trafficPointSloid("ch:1:sloid:sector:1")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2024, 1, 1))

@@ -1,16 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class SectorMapper {
 
-  public static ReadSectorVersionModel toModel(SectorVersion sectorVersion) {
-    return ReadSectorVersionModel.builder()
+  public static SectorVersionModel toModel(SectorVersion sectorVersion) {
+    return SectorVersionModel.builder()
         .id(sectorVersion.getId())
         .sloid(sectorVersion.getSloid())
         .trafficPointSloid(sectorVersion.getTrafficPointSloid())
@@ -32,7 +30,7 @@ public class SectorMapper {
         .build();
   }
 
-  public static SectorVersion toEntity(CreateSectorVersionModel createSectorVersionModel) {
+  public static SectorVersion toEntity(SectorVersionModel createSectorVersionModel) {
     return SectorVersion.builder()
         .id(createSectorVersionModel.getId())
         .trafficPointSloid(createSectorVersionModel.getTrafficPointSloid())
@@ -51,23 +49,7 @@ public class SectorMapper {
         .editor(createSectorVersionModel.getEditor())
         .editionDate(createSectorVersionModel.getEditionDate())
         .status(createSectorVersionModel.getStatus())
-        .build();
-  }
-
-  public static SectorVersion toEntity(UpdateSectorVersionModel updateSectorVersionModel) {
-    return SectorVersion.builder()
-        .designation(updateSectorVersionModel.getDesignation())
-        .validFrom(updateSectorVersionModel.getValidFrom())
-        .validTo(updateSectorVersionModel.getValidTo())
-        .designation(updateSectorVersionModel.getDesignation())
-        .north(updateSectorVersionModel.getNorth())
-        .east(updateSectorVersionModel.getEast())
-        .height(updateSectorVersionModel.getHeight())
-        .spatialReference(updateSectorVersionModel.getSpatialReference())
-        .length(updateSectorVersionModel.getLength())
-        .edgeHeight(updateSectorVersionModel.getEdgeHeight())
-        .version(updateSectorVersionModel.getEtagVersion())
-        .status(updateSectorVersionModel.getStatus())
+        .version(createSectorVersionModel.getEtagVersion())
         .build();
   }
 }
