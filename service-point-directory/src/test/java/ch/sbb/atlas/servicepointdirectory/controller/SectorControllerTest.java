@@ -12,8 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.LocalDateTimeMatchers;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -97,7 +96,7 @@ class SectorControllerTest extends BaseControllerApiTest {
   void shouldCreateSector() throws Exception {
     sectorVersionRepository.deleteAll();
 
-    CreateSectorVersionModel toCreate = SectorTestData.getCreateSectorVersion();
+    SectorVersionModel toCreate = SectorTestData.getCreateSectorVersion();
 
     doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR,
         toCreate.getTrafficPointSloid());
@@ -125,8 +124,10 @@ class SectorControllerTest extends BaseControllerApiTest {
     );
     Long id = initial.getId();
 
-    UpdateSectorVersionModel update = UpdateSectorVersionModel.builder()
+    SectorVersionModel update = SectorVersionModel.builder()
         .etagVersion(initial.getVersion())
+        .sloid(initial.getSloid())
+        .trafficPointSloid(initial.getTrafficPointSloid())
         .validFrom(LocalDate.of(2023, 1, 1))
         .validTo(LocalDate.of(2033, 1, 2))
         .designation("jaja")

@@ -1,8 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.api.SectorApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -26,22 +24,22 @@ public class SectorController implements SectorApiV1 {
   private final ServicePointService servicePointService;
 
   @Override
-  public List<ReadSectorVersionModel> getSectors() {
+  public List<SectorVersionModel> getSectors() {
     return sectorService.getSectors();
   }
 
   @Override
-  public List<ReadSectorVersionModel> getSector(String sloid) {
+  public List<SectorVersionModel> getSector(String sloid) {
     return sectorService.getSector(sloid);
   }
 
   @Override
-  public ReadSectorVersionModel getSectorVersion(Long id) {
+  public SectorVersionModel getSectorVersion(Long id) {
     return SectorMapper.toModel(sectorService.getSectorVersionById(id));
   }
 
   @Override
-  public ReadSectorVersionModel createSectorVersion(CreateSectorVersionModel createSectorVersionModel) {
+  public SectorVersionModel createSectorVersion(SectorVersionModel createSectorVersionModel) {
     trafficPointElementService.doesTrafficPointExist(createSectorVersionModel.getTrafficPointSloid());
     TrafficPointElementVersion trafficPointElementVersion =
         trafficPointElementService.findBySloidOrderByValidFrom(createSectorVersionModel.getTrafficPointSloid()).getFirst();
@@ -53,7 +51,7 @@ public class SectorController implements SectorApiV1 {
   }
 
   @Override
-  public List<ReadSectorVersionModel> updateSectorVersion(Long id, UpdateSectorVersionModel updateSectorVersionModel) {
+  public List<SectorVersionModel> updateSectorVersion(Long id, SectorVersionModel updateSectorVersionModel) {
     SectorVersion sectorVersionToUpdate = sectorService.getSectorVersionById(id);
     SectorVersion editedVersion = SectorMapper.toEntity(updateSectorVersionModel);
 
