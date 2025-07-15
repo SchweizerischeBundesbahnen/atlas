@@ -17,7 +17,6 @@ class SectorVersionModelTest {
   @Test
   void shouldProvideAdditionalInformationCorrectly() {
     SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
-        .sloid("abc")
         .trafficPointSloid("cde")
         .north(11.11)
         .east(11.22)

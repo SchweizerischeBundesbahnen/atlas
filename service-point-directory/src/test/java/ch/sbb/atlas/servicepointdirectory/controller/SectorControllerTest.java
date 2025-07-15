@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -10,8 +11,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.LocalDateTimeMatchers;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.SectorTestData;
@@ -37,6 +40,9 @@ class SectorControllerTest extends BaseControllerApiTest {
 
   @MockitoBean
   private ServicePointService servicePointService;
+
+  @MockitoBean
+  private LocationService locationService;
 
   private final SectorVersionRepository sectorVersionRepository;
 
@@ -91,7 +97,10 @@ class SectorControllerTest extends BaseControllerApiTest {
   void shouldCreateSector() throws Exception {
     sectorVersionRepository.deleteAll();
 
-    SectorVersionModel toCreate = SectorTestData.getCreateSectorVersion();
+    CreateSectorVersionModel toCreate = SectorTestData.getCreateSectorVersion();
+
+    doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR,
+        toCreate.getTrafficPointSloid());
 
     when(trafficPointElementService.findBySloidOrderByValidFrom(toCreate.getTrafficPointSloid()))
         .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
@@ -103,7 +112,7 @@ class SectorControllerTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(toCreate)))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.sloid", is(toCreate.getSloid())))
+        .andExpect(jsonPath("$.sloid", is("ch:1:sloid:sector:1:0:1")))
         .andExpect(jsonPath("$.designation", is(toCreate.getDesignation())));
   }
 
