@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import lombok.experimental.UtilityClass;
@@ -8,8 +9,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class SectorMapper {
 
-  public static SectorVersionModel toModel(SectorVersion sectorVersion) {
-    return SectorVersionModel.builder()
+  public static ReadSectorVersionModel toModel(SectorVersion sectorVersion) {
+    return ReadSectorVersionModel.builder()
         .id(sectorVersion.getId())
         .sloid(sectorVersion.getSloid())
         .trafficPointSloid(sectorVersion.getTrafficPointSloid())
@@ -31,7 +32,7 @@ public class SectorMapper {
         .build();
   }
 
-  public static SectorVersion toEntity(SectorVersionModel createSectorVersionModel) {
+  public static SectorVersion toEntity(CreateSectorVersionModel createSectorVersionModel) {
     return SectorVersion.builder()
         .id(createSectorVersionModel.getId())
         .trafficPointSloid(createSectorVersionModel.getTrafficPointSloid())

@@ -17,8 +17,7 @@ class ReadSectorGroupVersionModelTest {
 
   @Test
   void shouldProvideAdditionalInformationCorrectly() {
-    SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
-        .sloid("abc")
+    ReadSectorVersionModel sectorVersionModel = ReadSectorVersionModel.builder()
         .trafficPointSloid("cde")
         .north(11.11)
         .east(11.22)
@@ -28,8 +27,7 @@ class ReadSectorGroupVersionModelTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    SectorVersionModel sectorVersionModel2 = SectorVersionModel.builder()
-        .sloid("123")
+    ReadSectorVersionModel sectorVersionModel2 = ReadSectorVersionModel.builder()
         .trafficPointSloid("cde")
         .north(11.11)
         .east(11.22)
