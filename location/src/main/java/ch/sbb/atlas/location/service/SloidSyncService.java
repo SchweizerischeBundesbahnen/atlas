@@ -21,7 +21,7 @@ public class SloidSyncService {
   private final PrmRepository prmRepository;
 
   private static final List<SloidType> SLOID_TYPES = List.of(SloidType.PLATFORM, SloidType.AREA, SloidType.REFERENCE_POINT,
-      SloidType.PARKING_LOT, SloidType.CONTACT_POINT, SloidType.TOILET);
+      SloidType.PARKING_LOT, SloidType.CONTACT_POINT, SloidType.TOILET, SloidType.SECTOR, SloidType.SECTOR_GROUP);
 
   public void sync() {
     servicePointSloidSync();
@@ -42,6 +42,12 @@ public class SloidSyncService {
   private Set<String> getAlreadyDistributedSloid(SloidType sloidType) {
     if (SloidType.PLATFORM == sloidType || SloidType.AREA == sloidType) {
       return sePoDiRepository.getAlreadyDistributedSloids(sloidType);
+    }
+    if (SloidType.SECTOR == sloidType) {
+      return sePoDiRepository.getAlreadyDistributedSectorSloids();
+    }
+    if (SloidType.SECTOR_GROUP == sloidType) {
+      return sePoDiRepository.getAlreadyDistributedSectorGroupSloids();
     }
     return prmRepository.getAlreadyDistributedSloids(sloidType);
   }
