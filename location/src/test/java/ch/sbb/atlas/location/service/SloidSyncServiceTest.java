@@ -104,7 +104,7 @@ class SloidSyncServiceTest {
 
   @ParameterizedTest
   @EnumSource(value = SloidType.class,
-      names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "CONTACT_POINT", "TOILET"})
+      names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "CONTACT_POINT", "TOILET", "SECTOR", "SECTOR_GROUP"})
   void shouldSyncSloidWhenAlreadyDistributedSloidAreMoreThenAllocated(SloidType sloidType) {
     //given
     Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");
@@ -112,6 +112,12 @@ class SloidSyncServiceTest {
     allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, sloidType));
     if (SloidType.PLATFORM == sloidType || SloidType.AREA == sloidType) {
       when(sePoDiRepository.getAlreadyDistributedSloids(sloidType)).thenReturn(alreadyDistributedSloids);
+    }
+    if (SloidType.SECTOR == sloidType) {
+      when(sePoDiRepository.getAlreadyDistributedSectorSloids()).thenReturn(alreadyDistributedSloids);
+    }
+    if (SloidType.SECTOR_GROUP == sloidType) {
+      when(sePoDiRepository.getAlreadyDistributedSectorGroupSloids()).thenReturn(alreadyDistributedSloids);
     } else {
       when(prmRepository.getAlreadyDistributedSloids(sloidType)).thenReturn(alreadyDistributedSloids);
     }
@@ -124,7 +130,7 @@ class SloidSyncServiceTest {
 
   @ParameterizedTest
   @EnumSource(value = SloidType.class,
-      names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "CONTACT_POINT", "TOILET"})
+      names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "CONTACT_POINT", "TOILET", "SECTOR", "SECTOR_GROUP"})
   void shouldSyncSloidWhenAllocatedAreMoreThenDistributed(SloidType sloidType) {
     //given
     Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
@@ -132,6 +138,12 @@ class SloidSyncServiceTest {
     allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, sloidType));
     if (SloidType.PLATFORM == sloidType || SloidType.AREA == sloidType) {
       when(sePoDiRepository.getAlreadyDistributedSloids(sloidType)).thenReturn(alreadyDistributedSloids);
+    }
+    if (SloidType.SECTOR == sloidType) {
+      when(sePoDiRepository.getAlreadyDistributedSectorSloids()).thenReturn(alreadyDistributedSloids);
+    }
+    if (SloidType.SECTOR_GROUP == sloidType) {
+      when(sePoDiRepository.getAlreadyDistributedSectorGroupSloids()).thenReturn(alreadyDistributedSloids);
     } else {
       when(prmRepository.getAlreadyDistributedSloids(sloidType)).thenReturn(alreadyDistributedSloids);
     }
