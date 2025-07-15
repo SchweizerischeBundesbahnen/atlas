@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -97,8 +99,7 @@ class SectorServiceTest {
     TrafficPointElementVersion trafficPointElementVersion =
         trafficPointElementVersionRepository.save(TrafficPointTestData.getBasicTrafficPoint());
 
-    SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
-        .sloid("ch:1:sloid:sector:1")
+    CreateSectorVersionModel sectorVersionModel = CreateSectorVersionModel.builder()
         .trafficPointSloid(trafficPointElementVersion.getSloid())
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2024, 1, 1))
@@ -120,8 +121,7 @@ class SectorServiceTest {
   @Test
   void shouldThrowWhenCreateSectorWithoutTrafficPoint() {
     // Given
-    SectorVersionModel model = SectorVersionModel.builder()
-        .sloid("ch:1:sector:xxx")
+    CreateSectorVersionModel model = CreateSectorVersionModel.builder()
         .trafficPointSloid("nonexistent-sloid")
         .validFrom(LocalDate.now())
         .validTo(LocalDate.now().plusDays(1))
@@ -157,7 +157,7 @@ class SectorServiceTest {
 
     // When
     List<SectorVersion> entities = sectorService.findAllBySloidOrderByValidFrom(sloid);
-    List<SectorVersionModel> models = sectorService.getSector(sloid);
+    List<ReadSectorVersionModel> models = sectorService.getSector(sloid);
     // Then
     assertThat(entities).extracting(SectorVersion::getDesignation)
         .containsExactly("v1", "v2");
