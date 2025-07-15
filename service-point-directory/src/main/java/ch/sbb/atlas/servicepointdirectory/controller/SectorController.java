@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.api.SectorApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -25,22 +26,22 @@ public class SectorController implements SectorApiV1 {
   private final ServicePointService servicePointService;
 
   @Override
-  public List<SectorVersionModel> getSectors() {
+  public List<ReadSectorVersionModel> getSectors() {
     return sectorService.getSectors();
   }
 
   @Override
-  public List<SectorVersionModel> getSector(String sloid) {
+  public List<ReadSectorVersionModel> getSector(String sloid) {
     return sectorService.getSector(sloid);
   }
 
   @Override
-  public SectorVersionModel getSectorVersion(Long id) {
+  public ReadSectorVersionModel getSectorVersion(Long id) {
     return SectorMapper.toModel(sectorService.getSectorVersionById(id));
   }
 
   @Override
-  public SectorVersionModel createSectorVersion(SectorVersionModel createSectorVersionModel) {
+  public ReadSectorVersionModel createSectorVersion(CreateSectorVersionModel createSectorVersionModel) {
     trafficPointElementService.doesTrafficPointExist(createSectorVersionModel.getTrafficPointSloid());
     TrafficPointElementVersion trafficPointElementVersion =
         trafficPointElementService.findBySloidOrderByValidFrom(createSectorVersionModel.getTrafficPointSloid()).getFirst();
@@ -52,7 +53,7 @@ public class SectorController implements SectorApiV1 {
   }
 
   @Override
-  public List<SectorVersionModel> updateSectorVersion(Long id, UpdateSectorVersionModel updateSectorVersionModel) {
+  public List<ReadSectorVersionModel> updateSectorVersion(Long id, UpdateSectorVersionModel updateSectorVersionModel) {
     SectorVersion sectorVersionToUpdate = sectorService.getSectorVersionById(id);
     SectorVersion editedVersion = SectorMapper.toEntity(updateSectorVersionModel);
 
