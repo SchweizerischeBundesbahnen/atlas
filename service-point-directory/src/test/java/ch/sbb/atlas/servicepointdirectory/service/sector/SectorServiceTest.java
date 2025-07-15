@@ -6,8 +6,6 @@ import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
-import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -106,7 +104,7 @@ class SectorServiceTest {
     TrafficPointElementVersion trafficPointElementVersion =
         trafficPointElementVersionRepository.save(TrafficPointTestData.getBasicTrafficPoint());
 
-    CreateSectorVersionModel sectorVersionModel = CreateSectorVersionModel.builder()
+    SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
         .trafficPointSloid(trafficPointElementVersion.getSloid())
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2024, 1, 1))
@@ -123,7 +121,7 @@ class SectorServiceTest {
         sectorVersionModel.getTrafficPointSloid());
 
     //when
-    ReadSectorVersionModel saved = sectorService.createSector(sectorVersionModel);
+    SectorVersionModel saved = sectorService.createSector(sectorVersionModel);
 
     //Then
     assertThat(sectorVersionRepository.findById(saved.getId())).isNotNull();
@@ -133,7 +131,7 @@ class SectorServiceTest {
   @Test
   void shouldThrowWhenCreateSectorWithoutTrafficPoint() {
     // Given
-    CreateSectorVersionModel model = CreateSectorVersionModel.builder()
+    SectorVersionModel model = SectorVersionModel.builder()
         .trafficPointSloid("nonexistent-sloid")
         .validFrom(LocalDate.now())
         .validTo(LocalDate.now().plusDays(1))
@@ -169,7 +167,7 @@ class SectorServiceTest {
 
     // When
     List<SectorVersion> entities = sectorService.findAllBySloidOrderByValidFrom(sloid);
-    List<ReadSectorVersionModel> models = sectorService.getSector(sloid);
+    List<SectorVersionModel> models = sectorService.getSector(sloid);
     // Then
     assertThat(entities).extracting(SectorVersion::getDesignation)
         .containsExactly("v1", "v2");

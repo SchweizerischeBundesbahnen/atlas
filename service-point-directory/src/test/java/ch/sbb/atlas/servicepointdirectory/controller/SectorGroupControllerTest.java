@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.SectorTestData;
@@ -208,8 +208,10 @@ class SectorGroupControllerTest extends BaseControllerApiTest {
     when(servicePointService.findAllByNumberOrderByValidFrom(any()))
         .thenReturn(List.of(ServicePointTestData.getBern()));
 
-    UpdateSectorGroupVersionModel updateDto = UpdateSectorGroupVersionModel.builder()
+    SectorGroupVersionModel updateDto = SectorGroupVersionModel.builder()
         .etagVersion(sectorGroupVersion.getVersion())
+        .sloid(sectorVersion.getSloid())
+        .trafficPointSloid(sectorVersion.getTrafficPointSloid())
         .validFrom(sectorGroupVersion.getValidFrom().plusYears(1))
         .validTo(sectorGroupVersion.getValidTo())
         .designation("novo")

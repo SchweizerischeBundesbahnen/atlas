@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-class ReadSectorGroupVersionModelTest {
+class SectorGroupVersionModelTest {
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
   void shouldProvideAdditionalInformationCorrectly() {
-    ReadSectorVersionModel sectorVersionModel = ReadSectorVersionModel.builder()
+    SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
         .trafficPointSloid("cde")
         .north(11.11)
         .east(11.22)
@@ -27,7 +27,7 @@ class ReadSectorGroupVersionModelTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    ReadSectorVersionModel sectorVersionModel2 = ReadSectorVersionModel.builder()
+    SectorVersionModel sectorVersionModel2 = SectorVersionModel.builder()
         .trafficPointSloid("cde")
         .north(11.11)
         .east(11.22)
