@@ -93,7 +93,7 @@ public class SectorGroupService {
     List<SectorVersion> versions = fetchLatestSectorVersions(sloids);
     validateSectorVersions(versions);
     validateTrafficPoint(sectorGroupVersion.getTrafficPointSloid(), versions);
-    sectorGroupVersion.setSloid(locationService.generateSloid(SloidType.SECTOR, sectorGroupVersion.getTrafficPointSloid()));
+    sectorGroupVersion.setSloid(locationService.generateSloid(SloidType.SECTOR_GROUP, sectorGroupVersion.getTrafficPointSloid()));
 
     createRelation(sloids, sectorGroupVersion.getSloid());
     SectorGroupVersion saved = save(sectorGroupVersion);
