@@ -32,6 +32,10 @@ public abstract class BaseSectorModel extends BaseVersionModel {
       accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
+  @Schema(description = "Unique code for sector that is used in customer information.\n" +
+      "https://transportdatamanagement.ch/standards/", accessMode = AccessMode.READ_ONLY, example = "ch:1:sloid:16161:1")
+  private String sloid;
+
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
   @Schema(description = """
       Unique code for traffic point element (TPE) that is used in customer information.

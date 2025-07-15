@@ -6,8 +6,8 @@ import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
@@ -165,7 +165,7 @@ class SectorGroupServiceTest {
     // Then
     assertThat(read.getSloid()).isEqualTo(savedGroup.getSloid());
     assertThat(read.getSectorVersions())
-        .extracting(ReadSectorVersionModel::getSloid)
+        .extracting(SectorVersionModel::getSloid)
         .containsExactlyInAnyOrder(sector1, sector2);
   }
 
