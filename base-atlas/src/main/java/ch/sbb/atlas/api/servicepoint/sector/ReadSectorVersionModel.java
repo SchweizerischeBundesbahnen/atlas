@@ -17,8 +17,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "SectorVersion")
-public class SectorGroupVersionModel extends BaseSectorModel {
+@Schema(name = "ReadSectorVersion")
+public class ReadSectorVersionModel extends SectorVersionModel {
 
   @Schema(description = "Unique code for sector that is used in customer information.\n" +
       "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:16161:1")

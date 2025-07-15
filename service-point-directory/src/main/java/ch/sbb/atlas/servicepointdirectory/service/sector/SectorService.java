@@ -1,7 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service.sector;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.CreateSectorVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -37,11 +38,11 @@ public class SectorService {
     this.locationService = locationService;
   }
 
-  public List<SectorVersionModel> getSectors() {
+  public List<ReadSectorVersionModel> getSectors() {
     return sectorVersionRepository.findAll().stream().map(SectorMapper::toModel).toList();
   }
 
-  public SectorVersionModel createSector(SectorVersionModel createSectorVersionModel) {
+  public ReadSectorVersionModel createSector(CreateSectorVersionModel createSectorVersionModel) {
     SectorVersion sectorVersion = SectorMapper.toEntity(createSectorVersionModel);
     trafficPointElementService.doesTrafficPointExist(createSectorVersionModel.getTrafficPointSloid());
     sectorVersion.setSloid(locationService.generateSloid(SloidType.SECTOR, createSectorVersionModel.getTrafficPointSloid()));
@@ -53,7 +54,7 @@ public class SectorService {
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   @Transactional
-  public SectorVersionModel create(SectorVersionModel createSectorVersionModel,
+  public ReadSectorVersionModel create(CreateSectorVersionModel createSectorVersionModel,
       List<ServicePointVersion> servicePointVersions) {
     return createSector(createSectorVersionModel);
   }
@@ -90,7 +91,7 @@ public class SectorService {
     return sectorVersionRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
-  public List<SectorVersionModel> getSector(String sectorSloid) {
+  public List<ReadSectorVersionModel> getSector(String sectorSloid) {
     List<SectorVersion> sectorVersions = findAllBySloidOrderByValidFrom(sectorSloid);
     return sectorVersions.stream().map(SectorMapper::toModel).toList();
   }
