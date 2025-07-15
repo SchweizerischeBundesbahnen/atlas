@@ -14,6 +14,7 @@ create table available_service_point_sloid
 
 create sequence area_seq start with 100;
 create sequence edge_seq;
+create sequence sector_seq;
 
 insert into available_service_point_sloid (sloid, country)
 WITH empty_rows AS (
