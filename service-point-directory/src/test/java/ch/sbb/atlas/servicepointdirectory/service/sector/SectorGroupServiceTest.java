@@ -2,10 +2,13 @@ package ch.sbb.atlas.servicepointdirectory.service.sector;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.doReturn;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.SectorTestData;
@@ -27,9 +30,13 @@ import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
 class SectorGroupServiceTest {
+
+  @MockitoBean
+  private LocationService locationService;
 
   private final SectorGroupService sectorGroupService;
   private final SectorGroupVersionRepository sectorGroupVersionRepository;
@@ -158,7 +165,7 @@ class SectorGroupServiceTest {
     // Then
     assertThat(read.getSloid()).isEqualTo(savedGroup.getSloid());
     assertThat(read.getSectorVersions())
-        .extracting(SectorVersionModel::getSloid)
+        .extracting(ReadSectorVersionModel::getSloid)
         .containsExactlyInAnyOrder(sector1, sector2);
   }
 
@@ -194,10 +201,14 @@ class SectorGroupServiceTest {
         .designation("hehe")
         .build();
 
+    doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
+        toCreate.getTrafficPointSloid());
+
     ReadSectorGroupVersionModel result =
         sectorGroupService.createSectorGroup(toCreate, sloids);
 
     assertThat(sectorGroupVersionRepository.findById(result.getId())).isPresent();
+    assertThat(result.getSloid()).isEqualTo("ch:1:sloid:sector:1:0:1");
     assertThat(sectorGroupRelationRepository.findAll()).hasSize(2);
     assertThat(sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(toCreate.getSloid()))
         .extracting(r -> r.getSectorGroupRelationId().getSectorSloid())
