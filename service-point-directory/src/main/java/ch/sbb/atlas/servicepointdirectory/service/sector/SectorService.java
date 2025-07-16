@@ -1,6 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service.sector;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -25,12 +27,14 @@ public class SectorService {
   private final SectorVersionRepository sectorVersionRepository;
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
+  private final LocationService locationService;
 
   public SectorService(SectorVersionRepository sectorVersionRepository, TrafficPointElementService trafficPointElementService,
-      VersionableService versionableService) {
+      VersionableService versionableService, LocationService locationService) {
     this.sectorVersionRepository = sectorVersionRepository;
     this.trafficPointElementService = trafficPointElementService;
     this.versionableService = versionableService;
+    this.locationService = locationService;
   }
 
   public List<SectorVersionModel> getSectors() {
@@ -40,8 +44,7 @@ public class SectorService {
   public SectorVersionModel createSector(SectorVersionModel createSectorVersionModel) {
     SectorVersion sectorVersion = SectorMapper.toEntity(createSectorVersionModel);
     trafficPointElementService.doesTrafficPointExist(createSectorVersionModel.getTrafficPointSloid());
-    //TODO locationService.claimSloid waiting for -> ATLAS-2963 (LocationService erweiterung)
-
+    sectorVersion.setSloid(locationService.generateSloid(SloidType.SECTOR, createSectorVersionModel.getTrafficPointSloid()));
     SectorVersion saved = save(sectorVersion);
     return SectorMapper.toModel(saved);
   }

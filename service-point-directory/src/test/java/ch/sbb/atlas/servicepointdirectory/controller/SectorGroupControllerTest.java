@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -11,8 +12,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
+import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.SectorTestData;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
@@ -33,6 +37,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MvcResult;
 
 class SectorGroupControllerTest extends BaseControllerApiTest {
 
@@ -45,6 +50,9 @@ class SectorGroupControllerTest extends BaseControllerApiTest {
 
   @MockitoBean
   private ServicePointService servicePointService;
+
+  @MockitoBean
+  private LocationService locationService;
 
   @Autowired
   public SectorGroupControllerTest(SectorVersionRepository sectorVersionRepository,
@@ -132,7 +140,6 @@ class SectorGroupControllerTest extends BaseControllerApiTest {
     sectorVersionRepository.save(sectorVersion1);
 
     CreateSectorGroupVersionModel create = CreateSectorGroupVersionModel.builder()
-        .sloid("ch:1:sloid:group:1")
         .trafficPointSloid(sectorVersion.getTrafficPointSloid())
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2030, 1, 1))
@@ -141,21 +148,28 @@ class SectorGroupControllerTest extends BaseControllerApiTest {
         .sectorSloids(List.of("ch:1:sloid:sector:1", "new:sloid"))
         .build();
 
+    doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
+        create.getTrafficPointSloid());
+
     when(trafficPointElementService.findBySloidOrderByValidFrom(sectorVersion1.getTrafficPointSloid()))
         .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
 
     when(servicePointService.findAllByNumberOrderByValidFrom(any()))
         .thenReturn(List.of(ServicePointTestData.getBern()));
 
-    mvc.perform(post("/v1/sector-groups")
+    MvcResult mvcResult = mvc.perform(post("/v1/sector-groups")
             .contentType(contentType)
             .content(mapper.writeValueAsString(create)))
         .andExpect(status().isCreated())
         .andReturn();
 
+    String responseContent = mvcResult.getResponse().getContentAsString();
+    ReadSectorGroupVersionModel createdSectorGroup = mapper.readValue(responseContent, ReadSectorGroupVersionModel.class);
+
     Set<SectorGroupRelation> relations = sectorGroupRelationRepository.findBySectorGroupRelationIdSectorGroupSloid(
-        create.getSloid());
+        createdSectorGroup.getSloid());
     assertThat(relations).hasSize(2);
+    assertThat(createdSectorGroup.getSloid()).isEqualTo("ch:1:sloid:sector:1:0:1");
   }
 
   @Test
@@ -194,8 +208,10 @@ class SectorGroupControllerTest extends BaseControllerApiTest {
     when(servicePointService.findAllByNumberOrderByValidFrom(any()))
         .thenReturn(List.of(ServicePointTestData.getBern()));
 
-    UpdateSectorGroupVersionModel updateDto = UpdateSectorGroupVersionModel.builder()
+    SectorGroupVersionModel updateDto = SectorGroupVersionModel.builder()
         .etagVersion(sectorGroupVersion.getVersion())
+        .sloid(sectorVersion.getSloid())
+        .trafficPointSloid(sectorVersion.getTrafficPointSloid())
         .validFrom(sectorGroupVersion.getValidFrom().plusYears(1))
         .validTo(sectorGroupVersion.getValidTo())
         .designation("novo")
