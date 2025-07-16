@@ -11,14 +11,6 @@ import { JudgementType } from './judgementType';
 
 
 export interface TerminationDecision { 
-    /**
-     * Service Point version id
-     */
-    versionId: number;
-    /**
-     * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. https://transportdatamanagement.ch/standards/
-     */
-    sloid: string;
     judgement: JudgementType;
     /**
      * Motivation
@@ -35,32 +27,19 @@ export interface TerminationDecision {
     /**
      * Firstname
      */
-    firstName?: string;
+    readonly firstName?: string;
     /**
      * Second
      */
-    lastName?: string;
+    readonly lastName?: string;
     /**
      * Organisation
      */
-    organisation?: string;
-    examinantMail?: string;
+    readonly organisation?: string;
     /**
-     * Object creation date
+     * Mail of examinant
      */
-    creationDate?: string;
-    /**
-     * User creator
-     */
-    readonly creator?: string;
-    /**
-     * Last edition date
-     */
-    editionDate?: string;
-    /**
-     * Editor
-     */
-    readonly editor?: string;
+    readonly examinantMail?: string;
 }
 export namespace TerminationDecision {
     export type TerminationDecisionPersonEnum = 'INFO_PLUS' | 'NOVA';

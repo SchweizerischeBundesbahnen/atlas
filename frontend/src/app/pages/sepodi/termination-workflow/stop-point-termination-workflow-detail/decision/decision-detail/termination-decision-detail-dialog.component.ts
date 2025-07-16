@@ -1,0 +1,118 @@
+import { Component, inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TerminationDecisionDetailDialogData } from './termination-decision-detail-dialog.service';
+import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
+import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
+import { DialogFooterComponent } from '../../../../../../core/components/dialog/footer/dialog-footer.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import {
+  StopPointTerminationWorkflowDetailFormGroupBuilder,
+  TerminationDecisionFormGroup,
+} from '../../stop-point-termination-workflow-detail-form-group';
+import { TerminationDecision } from '../../../../../../api/model/terminationDecision';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AtlasFieldErrorComponent } from '../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { JudgementType } from '../../../../../../api';
+import { AtlasLabelFieldComponent } from '../../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { DateIconComponent } from '../../../../../../core/form-components/date-icon/date-icon.component';
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerToggle,
+  MatDatepickerToggleIcon,
+} from '@angular/material/datepicker';
+import { MAX_DATE, MIN_DATE } from '../../../../../../core/date/date.service';
+import { MatIcon } from '@angular/material/icon';
+import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
+import { ValidationService } from '../../../../../../core/validation/validation.service';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
+
+@Component({
+  selector: 'termination-decision-detail-dialog',
+  templateUrl: './termination-decision-detail-dialog.component.html',
+  styleUrls: [
+    '../../../../../../core/form-components/text-field/text-field.component.scss',
+  ],
+  imports: [
+    DialogCloseComponent,
+    DialogContentComponent,
+    DialogFooterComponent,
+    TranslatePipe,
+    AtlasFieldErrorComponent,
+    CommentComponent,
+    MatRadioButton,
+    MatRadioGroup,
+    ReactiveFormsModule,
+    AtlasLabelFieldComponent,
+    DateIconComponent,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatDatepickerToggleIcon,
+    MatIcon,
+  ],
+})
+export class TerminationDecisionDetailDialogComponent implements OnInit {
+  protected readonly JudgementType = JudgementType;
+  protected readonly MAX_DATE = MAX_DATE;
+
+  private readonly dialogRef = inject(
+    MatDialogRef<TerminationDecisionDetailDialogComponent>
+  );
+  private readonly decisionDetailDialogData: TerminationDecisionDetailDialogData =
+    inject(MAT_DIALOG_DATA);
+  private readonly terminationWorkflowService = inject(WorkflowService);
+
+  form!: FormGroup<TerminationDecisionFormGroup>;
+  examinant!: TerminationDecisionPersonEnum;
+  readOnly = true;
+  minDate: Date = MIN_DATE;
+
+  ngOnInit() {
+    this.examinant = this.decisionDetailDialogData.examinant;
+    this.form = this.decisionDetailDialogData.decision;
+    this.readOnly = this.decisionDetailDialogData.readOnly;
+    this.minDate =
+      this.form.controls.terminationDate.value?.toDate() ?? MIN_DATE;
+    if (this.readOnly) {
+      this.form.disable();
+    }
+  }
+
+  close(result?: boolean) {
+    this.dialogRef.close(result);
+  }
+
+  decide() {
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      const terminationDecision =
+        StopPointTerminationWorkflowDetailFormGroupBuilder.getTerminationDecision(
+          this.form
+        );
+      this.form.disable();
+      if (this.examinant === TerminationDecisionPersonEnum.InfoPlus) {
+        this.terminationWorkflowService
+          .decisionInfoPlus(
+            this.decisionDetailDialogData.workflowId,
+            terminationDecision
+          )
+          .subscribe(() => {
+            this.close(true);
+          });
+      }
+      if (this.examinant === TerminationDecisionPersonEnum.Nova) {
+        this.terminationWorkflowService
+          .decisionNova(
+            this.decisionDetailDialogData.workflowId,
+            terminationDecision
+          )
+          .subscribe(() => {
+            this.close(true);
+          });
+      }
+    }
+  }
+}

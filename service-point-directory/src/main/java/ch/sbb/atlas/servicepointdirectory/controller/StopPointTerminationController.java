@@ -2,6 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.api.StopPointTerminationApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationDateException;
@@ -44,8 +46,11 @@ public class StopPointTerminationController implements StopPointTerminationApiV1
   public ReadServicePointVersionModel stopServicePointTermination(String sloid, Long id) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
     List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
-    ServicePointVersion servicePointVersion = ServicePointTerminationHelper.checkIsStopPointTerminationWorkflowAllowed(sloid, id,
-        servicePointVersions);
+    if (servicePointVersions.isEmpty()) {
+      throw new SloidNotFoundException(sloid);
+    }
+    ServicePointVersion servicePointVersion = servicePointVersions.stream().filter(sp -> sp.getId().equals(id)).findFirst()
+        .orElseThrow(() -> new IdNotFoundException(id));
     UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
         .terminationInProgress(false)
         .build();

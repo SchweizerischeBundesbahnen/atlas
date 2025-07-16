@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
-import { ApplicationRole, ApplicationType, Permission } from '../../../api';
+import {
+  ApplicationRole,
+  ApplicationType,
+  Permission,
+  PermissionRestrictionType,
+} from '../../../api';
 import { Cantons } from '../../cantons/Cantons';
 import { BulkImportPermission } from './bulk-import-permission';
+import { TerminationDecision } from '../../../api/model/terminationDecision';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 @Injectable({
   providedIn: 'root',
@@ -220,5 +227,33 @@ export class PermissionService {
       role: ApplicationRole.Reader,
       permissionRestrictions: [],
     };
+  }
+
+  getTerminationPermission(): TerminationDecisionPersonEnum | undefined {
+    const applicationUserPermission = this.getApplicationUserPermission(
+      ApplicationType.Sepodi
+    );
+    const votingRestriction =
+      applicationUserPermission.permissionRestrictions.find(
+        (i) =>
+          [
+            PermissionRestrictionType.InfoPlusTerminationVote,
+            PermissionRestrictionType.NovaTerminationVote,
+          ].includes(i.type!) && i.valueAsString === 'true'
+      );
+    if (
+      votingRestriction &&
+      votingRestriction.type ===
+        PermissionRestrictionType.InfoPlusTerminationVote
+    ) {
+      return TerminationDecisionPersonEnum.InfoPlus;
+    }
+    if (
+      votingRestriction &&
+      votingRestriction.type === PermissionRestrictionType.NovaTerminationVote
+    ) {
+      return TerminationDecisionPersonEnum.Nova;
+    }
+    return undefined;
   }
 }

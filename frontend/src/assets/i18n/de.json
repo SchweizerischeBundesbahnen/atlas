@@ -671,7 +671,15 @@
       "TERMINATION_NOT_APPROVED_CLOSED": "Geschlossen",
       "CANCELED": "Abgebrochen"
     },
-    "PROPOSAL": "Antrag zur Terminierung"
+    "PROPOSAL": "Antrag zur Terminierung",
+    "DECISION": {
+      "DECISION_INFO": "Stimmen Sie dem Antrag zur Aufhebung der Haltestelle zu?",
+      "TERMINATION_DATE": "Aufhebungsdatum",
+      "DECISION_INFO_YES_INFO_PLUS": "Die Aufhebung ist mit dem Fahrplan konform. Der Antrag wird an NOVA weitergereicht.",
+      "DECISION_INFO_NO_INFO_PLUS": "Bitte nennen Sie die jeweiligen Geschäftsorganisation(en) welche die Haltestelle noch nutzen. Die TU sind verantwortlich, den Konzessionswechsel entsprechend durchzuführen.",
+      "DECISION_INFO_YES_NOVA": "Das Aufhebungsdatum wird genutzt um die Dienststelle automatisch einzukürzen.",
+      "DECISION_INFO_NO_NOVA": "Die Dienststelle wird automatisch zu einer Tarifhaltestelle umgewandelt. Sie können zu einem späteren Zeitpunkt Ihre Entscheidung überschreiben."
+    }
   },
   "WORKFLOW": {
     "TITLE": "Anhörung",
