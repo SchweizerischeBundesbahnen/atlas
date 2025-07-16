@@ -34,7 +34,7 @@ export const routes: Routes = [
       import(
         './termination-workflow/stop-point-termination-workflow-detail/stop-point-termination-workflow-detail'
       ).then((m) => m.StopPointTerminationWorkflowDetail),
-    canActivate: [featureToggleGuard],
+    canActivate: [featureToggleGuard, permissionsLoaded],
     resolve: { workflow: stopPointTerminationWorkflowResolver },
     runGuardsAndResolvers: 'always',
   },
