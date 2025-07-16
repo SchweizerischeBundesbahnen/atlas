@@ -108,6 +108,17 @@ class SloidServiceTest extends BaseLocationIntegrationTest {
     assertThat(result).isEqualTo("ch:1:sloid:7000:102");
   }
 
+  @ParameterizedTest
+  @EnumSource(value = SloidType.class, names = {"SECTOR", "SECTOR_GROUP"})
+  void shouldGenerateNewSloidSector(SloidType sloidType) {
+    //given
+    String sloidPrefix = "ch:1:sloid:7000:0:1";
+    //when
+    String result = sloidService.generateNewSloid(sloidPrefix, sloidType);
+    //then
+    assertThat(result).isEqualTo("ch:1:sloid:7000:0:1:1");
+  }
+
   @Test
   void shouldGenerateNewSloidEvenWhenSloidAlreadyOccupiedPlatformCase() {
     //given

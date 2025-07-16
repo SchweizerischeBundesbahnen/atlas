@@ -62,7 +62,6 @@ public class SectorTestData {
   public static SectorVersionModel getCreateSectorVersion() {
 
     SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
-        .sloid("ch:1:sloid:sector:1")
         .trafficPointSloid("ch:1:sloid:sector:1")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2024, 1, 1))

@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -37,6 +36,6 @@ public interface SectorApiV1 {
   @PutMapping(path = "{id}")
   List<SectorVersionModel> updateSectorVersion(
       @PathVariable Long id,
-      @Valid @RequestBody UpdateSectorVersionModel updateSectorVersionModel
+      @Valid @RequestBody SectorVersionModel updateSectorVersionModel
   );
 }

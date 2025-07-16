@@ -38,6 +38,20 @@ public class SePoDiRepository {
     ));
   }
 
+  public Set<String> getAlreadyDistributedSectorSloids() {
+    String sqlQuery = "select distinct sloid from sector_version where sloid is not null;";
+    return new HashSet<>(sePoDiJdbcTemplate.query(sqlQuery,
+        (rs, rowNum) -> rs.getString(SLOID)
+    ));
+  }
+
+  public Set<String> getAlreadyDistributedSectorGroupSloids() {
+    String sqlQuery = "select distinct sloid from sector_group_version where sloid is not null;";
+    return new HashSet<>(sePoDiJdbcTemplate.query(sqlQuery,
+        (rs, rowNum) -> rs.getString(SLOID)
+    ));
+  }
+
   public Set<String> getAlreadyDistributedServicePointSloids() {
     String sqlQuery = "select distinct sloid from service_point_version where sloid is not null;";
     return new HashSet<>(sePoDiJdbcTemplate.query(sqlQuery,

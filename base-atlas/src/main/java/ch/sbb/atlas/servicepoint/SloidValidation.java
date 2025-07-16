@@ -13,6 +13,7 @@ public class SloidValidation {
   public static final int EXPECTED_COLONS_SERVICE_POINT = 3;
   public static final int EXPECTED_COLONS_AREA = 4;
   public static final int EXPECTED_COLONS_PLATFORM = 5;
+  public static final int EXPECTED_COLONS_SECTOR = 6;
 
   public static boolean isSloidValid(String sloid, int expectedAmountOfColons) {
     boolean prefixIsCorrect = prefixIsCorrect(sloid);
