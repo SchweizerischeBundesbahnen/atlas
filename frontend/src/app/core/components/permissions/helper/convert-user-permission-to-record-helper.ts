@@ -6,34 +6,40 @@ export class ConvertUserPermissionToRecordHelper {
   static convertUserPermissionToRecord(
     permissions: Permission[]
   ): CreationEditionRecord {
-    const permissionsFromUserModelAsArray = Array.from(permissions!);
+    const permissionsArray = Array.from(permissions || []);
 
-    if (permissionsFromUserModelAsArray.length > 0) {
-      const firstCreated = permissionsFromUserModelAsArray.reduce(
-        (previousValue, currentValue) => {
-          return moment(new Date(previousValue.creationDate!)).isBefore(
-            moment(new Date(currentValue.creationDate!))
-          )
-            ? previousValue
-            : currentValue;
-        }
-      );
-      const lastEdited = permissionsFromUserModelAsArray.reduce(
-        (previousValue, currentValue) => {
-          return moment(new Date(previousValue.editionDate!)).isAfter(
-            moment(new Date(currentValue.editionDate!))
-          )
-            ? previousValue
-            : currentValue;
-        }
-      );
-      return {
-        editor: lastEdited.editor,
-        editionDate: lastEdited.editionDate,
-        creator: firstCreated.creator,
-        creationDate: firstCreated.creationDate,
-      };
+    if (permissionsArray.length === 0) {
+      return {};
     }
-    return {};
+
+    let firstCreated = permissionsArray[0];
+    let lastEdited = permissionsArray[0];
+
+    for (let i = 1; i < permissionsArray.length; i++) {
+      const current = permissionsArray[i];
+
+      if (
+        moment(new Date(current.creationDate!)).isBefore(
+          moment(new Date(firstCreated.creationDate!))
+        )
+      ) {
+        firstCreated = current;
+      }
+
+      if (
+        moment(new Date(current.editionDate!)).isAfter(
+          moment(new Date(lastEdited.editionDate!))
+        )
+      ) {
+        lastEdited = current;
+      }
+    }
+
+    return {
+      editor: lastEdited.editor,
+      editionDate: lastEdited.editionDate,
+      creator: firstCreated.creator,
+      creationDate: firstCreated.creationDate,
+    };
   }
 }
