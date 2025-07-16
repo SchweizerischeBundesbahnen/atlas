@@ -93,9 +93,10 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
           this.showDecisionButton = !this.workflow.infoPlusTerminationDate;
         }
         if (this.terminationPermission === TerminationDecisionPersonEnum.Nova) {
-          this.showDecisionButton =
-            this.workflow.status !=
-            TerminationWorkflowStatus.TerminationApproved;
+          this.showDecisionButton = [
+            TerminationWorkflowStatus.TariffStopApproved,
+            TerminationWorkflowStatus.TerminationNotApproved,
+          ].includes(this.workflow.status!);
         }
       }
     });
