@@ -85,7 +85,7 @@ export interface LineVersionV2 {
      * ShortNumber
      */
     shortNumber?: string;
-    offerCategory: OfferCategory;
+    offerCategory?: OfferCategory;
     lineType: LineType;
 }
 export namespace LineVersionV2 {
