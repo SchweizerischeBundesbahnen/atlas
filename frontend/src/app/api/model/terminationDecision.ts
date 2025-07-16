@@ -10,7 +10,7 @@
 import { JudgementType } from './judgementType';
 
 
-export interface TerminationDecision {
+export interface TerminationDecision { 
     judgement: JudgementType;
     /**
      * Motivation
@@ -21,38 +21,25 @@ export interface TerminationDecision {
      */
     terminationDecisionPerson: TerminationDecision.TerminationDecisionPersonEnum;
     /**
-     * Termination Date
+     * Termination Date 
      */
     terminationDate: Date;
     /**
      * Firstname
      */
-    firstName?: string;
+    readonly firstName?: string;
     /**
      * Second
      */
-    lastName?: string;
+    readonly lastName?: string;
     /**
      * Organisation
      */
-    organisation?: string;
-    examinantMail?: string;
+    readonly organisation?: string;
     /**
-     * Object creation date
+     * Mail of examinant
      */
-    creationDate?: string;
-    /**
-     * User creator
-     */
-    readonly creator?: string;
-    /**
-     * Last edition date
-     */
-    editionDate?: string;
-    /**
-     * Editor
-     */
-    readonly editor?: string;
+    readonly examinantMail?: string;
 }
 export namespace TerminationDecision {
     export type TerminationDecisionPersonEnum = 'INFO_PLUS' | 'NOVA';
