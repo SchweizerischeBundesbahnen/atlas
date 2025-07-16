@@ -671,7 +671,15 @@
       "TERMINATION_NOT_APPROVED_CLOSED": "fermé",
       "CANCELED": "annulé"
     },
-    "PROPOSAL": "Demande d’ordonnancement"
+    "PROPOSAL": "Demande d’ordonnancement",
+    "DECISION": {
+      "DECISION_INFO": "Êtes-vous d’accord avec la demande de suppression de cet arrêt?",
+      "TERMINATION_DATE": "Date d’abrogation",
+      "DECISION_INFO_YES_INFO_PLUS": "La suppression est conforme à l’horaire. La demande est transmise à NOVA.",
+      "DECISION_INFO_NO_INFO_PLUS": "Veuillez indiquer l’organisation commerciale ou les organisations commerciales qui utilisent encore l’arrêt. Les ET sont chargées de procéder au changement de concession en conséquence.",
+      "DECISION_INFO_YES_NOVA": "La date de suppression est utilisée pour raccourcir automatiquement le service.",
+      "DECISION_INFO_NO_NOVA": "Le service est automatiquement transformé en arrêt tarifaire."
+    }
   },
   "WORKFLOW": {
     "TITLE": "Audition",

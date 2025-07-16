@@ -121,8 +121,12 @@
           ></atlas-text-field>
         </div>
         <div class="col">
+          @if (formDecision.controls.terminationDecisionPerson.value ===
+          TerminationDecisionPersonEnum.InfoPlus ||
+          (TerminationWorkflowStatus.TariffStopApproved === workflow.status! ||
+          workflow.novaTerminationDate)) {
           <atlas-button
-            (buttonClicked)="onOpenDecision($index)"
+            (buttonClicked)="onOpenDecision(formDecision)"
             buttonType="icon"
             wrapperStyleClass="ps-4 pt-1"
             buttonStyleClass="bordered-btn px-2 py-1"
@@ -131,6 +135,7 @@
               <i class="bi {{ formDecision.controls.judgementIcon.value }}"></i>
             </ng-template>
           </atlas-button>
+          }
         </div>
       </div>
       }
@@ -155,5 +160,15 @@
       buttonType="whiteFooterNonEdit"
       wrapperStyleClass="me-3"
     ></atlas-button>
+    @if (showDecisionButton) {
+    <atlas-button
+      [footerEdit]="form.enabled"
+      buttonDataCy="decide-btn"
+      buttonText="WORKFLOW.BUTTON.DECIDE"
+      buttonType="whiteFooterNonEdit"
+      (buttonClicked)="openDecisionDialog()"
+    >
+    </atlas-button>
+    }
   </atlas-detail-footer>
 </atlas-detail-page-container>

@@ -1,11 +1,12 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { JudgementType } from '../../../../api';
 import { TerminationStopPointAddWorkflow } from '../../../../api/model/terminationStopPointAddWorkflow';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { TerminationDecision } from '../../../../api/model/terminationDecision';
 import { DateService } from '../../../../core/date/date.service';
 import { StopPointWorkflowDetailFormGroupBuilder } from '../../workflow/detail-page/detail-form/stop-point-workflow-detail-form-group';
+import moment, { Moment } from 'moment/moment';
+import { DecisionFormGroupBuilder } from '../../workflow/detail-page/decision/decision-form/decision-form-group';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 export interface StopPointTerminationWorkflowDetailFormGroup {
   boTerminationDate: FormControl<string | null | undefined>;
@@ -23,8 +24,12 @@ export interface TerminationDecisionFormGroup {
   organisation: FormControl<string | null | undefined>;
   examinantMail: FormControl<string | null | undefined>;
   judgement: FormControl<JudgementType | null | undefined>;
+  motivation: FormControl<string | null | undefined>;
   judgementIcon: FormControl<string | null | undefined>;
-  terminationDate: FormControl<string | Date | null | undefined>;
+  terminationDate: FormControl<Moment | null | undefined>;
+  terminationDecisionPerson: FormControl<
+    TerminationDecisionPersonEnum | null | undefined
+  >;
 }
 
 export class StopPointTerminationWorkflowDetailFormGroupBuilder {
@@ -67,28 +72,47 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
   static buildTerminationDecisionFormGroup(
     terminationDecision?: TerminationDecision
   ): FormGroup<TerminationDecisionFormGroup> {
-    return new FormGroup<TerminationDecisionFormGroup>({
-      firstName: new FormControl(terminationDecision?.firstName),
-      lastName: new FormControl(terminationDecision?.lastName),
-      organisation: new FormControl(terminationDecision?.organisation, [
-        Validators.required,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      ]),
-      examinantMail: new FormControl(terminationDecision?.examinantMail, [
-        Validators.required,
-        AtlasCharsetsValidator.email,
-      ]),
-      judgement: new FormControl(terminationDecision?.judgement),
-      judgementIcon: new FormControl(
-        StopPointWorkflowDetailFormGroupBuilder.buildJudgementIcon(
-          terminationDecision?.judgement
-        )
-      ),
-      terminationDate: new FormControl(
-        terminationDecision?.terminationDate
-          ? DateService.getDateFormatted(terminationDecision?.terminationDate)
-          : terminationDecision?.terminationDate
-      ),
-    });
+    return new FormGroup<TerminationDecisionFormGroup>(
+      {
+        firstName: new FormControl(terminationDecision?.firstName),
+        lastName: new FormControl(terminationDecision?.lastName),
+        organisation: new FormControl(terminationDecision?.organisation, []),
+        examinantMail: new FormControl(terminationDecision?.examinantMail, []),
+        judgement: new FormControl(terminationDecision?.judgement, [
+          Validators.required,
+        ]),
+        judgementIcon: new FormControl(
+          StopPointWorkflowDetailFormGroupBuilder.buildJudgementIcon(
+            terminationDecision?.judgement
+          )
+        ),
+        terminationDate: new FormControl(
+          terminationDecision?.terminationDate
+            ? moment(terminationDecision.terminationDate)
+            : null
+        ),
+        terminationDecisionPerson: new FormControl(
+          terminationDecision?.terminationDecisionPerson
+        ),
+        motivation: new FormControl(terminationDecision?.motivation),
+      },
+      {
+        validators: DecisionFormGroupBuilder.conditionallyRequired(
+          'judgement',
+          'motivation'
+        ),
+      }
+    );
+  }
+
+  static getTerminationDecision(
+    form: FormGroup<TerminationDecisionFormGroup>
+  ): TerminationDecision {
+    return {
+      judgement: form.controls.judgement.value!,
+      motivation: form.controls.motivation.value!,
+      terminationDecisionPerson: form.controls.terminationDecisionPerson.value!,
+      terminationDate: form.controls.terminationDate.value!.toDate(),
+    };
   }
 }

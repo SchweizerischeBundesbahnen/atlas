@@ -15,12 +15,19 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
 import {
   StopPointTerminationWorkflowDetailFormGroup,
   StopPointTerminationWorkflowDetailFormGroupBuilder,
-} from './StopPointTerminationWorkflowDetailFormGroup';
+  TerminationDecisionFormGroup,
+} from './stop-point-termination-workflow-detail-form-group';
 import { FormGroup } from '@angular/forms';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { LinkComponent } from '../../../../core/form-components/link/link.component';
 import { Pages } from '../../../pages';
+import { TerminationDecisionDetailDialogService } from './decision/decision-detail/termination-decision-detail-dialog.service';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { TerminationDecision } from '../../../../api/model/terminationDecision';
+import moment from 'moment';
+import { TerminationWorkflowStatus } from '../../../../api/model/terminationWorkflowStatus';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 @Component({
   selector: 'app-stop-point-termination-workflow-detail',
@@ -41,33 +48,67 @@ import { Pages } from '../../../pages';
   templateUrl: './stop-point-termination-workflow-detail.html',
 })
 export class StopPointTerminationWorkflowDetail implements OnInit {
+  protected readonly TerminationDecisionPersonEnum =
+    TerminationDecisionPersonEnum;
+  protected readonly TerminationWorkflowStatus = TerminationWorkflowStatus;
+
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly permissionService = inject(PermissionService);
+  private readonly terminationDecisionDetailDialogService = inject(
+    TerminationDecisionDetailDialogService
+  );
 
   stopPoint!: ReadServicePointVersion;
   workflow!: TerminationStopPointAddWorkflow;
   form!: FormGroup<StopPointTerminationWorkflowDetailFormGroup>;
+  terminationPermission?: TerminationDecisionPersonEnum;
+  showDecisionButton = false;
 
   ngOnInit(): void {
-    const workflowData: StopPointTerminationWorkflowDetailData =
-      this.route.snapshot.data.workflow;
+    this.route.data.subscribe((data) => {
+      const workflowData: StopPointTerminationWorkflowDetailData =
+        data.workflow;
 
-    this.workflow = workflowData.workflow;
+      this.workflow = workflowData.workflow;
 
-    const indexOfVersionInReview = workflowData.servicePoint.findIndex(
-      (i) => i.id === this.workflow.versionId
-    );
-    this.stopPoint = workflowData.servicePoint[indexOfVersionInReview];
-
-    this.form =
-      StopPointTerminationWorkflowDetailFormGroupBuilder.buildFormGroup(
-        workflowData.workflow
+      const indexOfVersionInReview = workflowData.servicePoint.findIndex(
+        (i) => i.id === this.workflow.versionId
       );
-    this.form.disable();
+      this.stopPoint = workflowData.servicePoint[indexOfVersionInReview];
+
+      this.form =
+        StopPointTerminationWorkflowDetailFormGroupBuilder.buildFormGroup(
+          workflowData.workflow
+        );
+      this.form.disable();
+
+      this.terminationPermission =
+        this.permissionService.getTerminationPermission();
+
+      if (this.terminationPermission) {
+        if (
+          this.terminationPermission === TerminationDecisionPersonEnum.InfoPlus
+        ) {
+          this.showDecisionButton = !this.workflow.infoPlusTerminationDate;
+        }
+        if (this.terminationPermission === TerminationDecisionPersonEnum.Nova) {
+          this.showDecisionButton = [
+            TerminationWorkflowStatus.TariffStopApproved,
+            TerminationWorkflowStatus.TerminationNotApproved,
+          ].includes(this.workflow.status!);
+        }
+      }
+    });
   }
 
-  onOpenDecision($index: number) {
-    window.alert($index);
+  onOpenDecision(examinantDecision: FormGroup<TerminationDecisionFormGroup>) {
+    this.terminationDecisionDetailDialogService.openDialog(
+      this.workflow.id!,
+      true,
+      examinantDecision.controls.terminationDecisionPerson.value!,
+      examinantDecision
+    );
   }
 
   goToAtlasStopPoint() {
@@ -86,5 +127,36 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
       )
     );
     window.open(url, '_blank');
+  }
+
+  openDecisionDialog() {
+    const decisionForm =
+      StopPointTerminationWorkflowDetailFormGroupBuilder.buildTerminationDecisionFormGroup();
+    decisionForm.controls.terminationDecisionPerson.setValue(
+      this.terminationPermission
+    );
+    decisionForm.controls.terminationDate.setValue(
+      moment(
+        this.workflow.infoPlusTerminationDate ??
+          this.workflow.boTerminationDate!
+      )
+    );
+
+    this.terminationDecisionDetailDialogService
+      .openDialog(
+        this.workflow.id!,
+        false,
+        this.terminationPermission!,
+        decisionForm
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.router
+            .navigate(['..', this.workflow.id!], {
+              relativeTo: this.route,
+            })
+            .then();
+        }
+      });
   }
 }

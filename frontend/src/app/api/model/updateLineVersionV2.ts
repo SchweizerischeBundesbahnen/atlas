@@ -84,7 +84,7 @@ export interface UpdateLineVersionV2 {
      * ShortNumber
      */
     shortNumber?: string;
-    offerCategory: OfferCategory;
+    offerCategory?: OfferCategory;
 }
 export namespace UpdateLineVersionV2 {
 }

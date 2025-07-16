@@ -5,6 +5,8 @@ import {
   CantonPermissionRestrictionModel,
   PermissionRestrictionType,
 } from '../../../api';
+import { TerminationDecision } from '../../../api/model/terminationDecision';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 describe('PermissionService', () => {
   describe('Permissions for create Button', () => {
@@ -412,6 +414,66 @@ describe('PermissionService', () => {
         ApplicationType.Ttfn
       );
       expect(ttfnSupervisor).toBeTrue();
+    });
+  });
+
+  describe('Permissions for termination', () => {
+    let permissionService: PermissionService;
+    const userServiceMock = jasmine.createSpyObj({}, { isAdmin: false });
+
+    beforeEach(() => {
+      permissionService = new PermissionService(userServiceMock);
+    });
+
+    it('should have no termination permission', () => {
+      userServiceMock.permissions = [];
+      const terminationPermission =
+        permissionService.getTerminationPermission();
+      expect(terminationPermission).toBeUndefined();
+    });
+
+    it('should get infoplus termination permission', () => {
+      userServiceMock.permissions = [
+        {
+          application: ApplicationType.Sepodi,
+          role: ApplicationRole.Reader,
+          permissionRestrictions: [
+            {
+              type: PermissionRestrictionType.InfoPlusTerminationVote,
+              valueAsString: 'true',
+            },
+          ],
+        },
+      ];
+
+      const terminationPermission =
+        permissionService.getTerminationPermission();
+      expect(terminationPermission).toEqual(
+        TerminationDecisionPersonEnum.InfoPlus
+      );
+    });
+
+    it('should get nova termination permission', () => {
+      userServiceMock.permissions = [
+        {
+          application: ApplicationType.Sepodi,
+          role: ApplicationRole.Reader,
+          permissionRestrictions: [
+            {
+              type: PermissionRestrictionType.InfoPlusTerminationVote,
+              valueAsString: 'false',
+            },
+            {
+              type: PermissionRestrictionType.NovaTerminationVote,
+              valueAsString: 'true',
+            },
+          ],
+        },
+      ];
+
+      const terminationPermission =
+        permissionService.getTerminationPermission();
+      expect(terminationPermission).toEqual(TerminationDecisionPersonEnum.Nova);
     });
   });
 });
