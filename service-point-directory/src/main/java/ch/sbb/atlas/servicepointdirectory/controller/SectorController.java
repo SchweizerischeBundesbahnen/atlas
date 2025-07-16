@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.api.SectorApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -52,7 +51,7 @@ public class SectorController implements SectorApiV1 {
   }
 
   @Override
-  public List<SectorVersionModel> updateSectorVersion(Long id, UpdateSectorVersionModel updateSectorVersionModel) {
+  public List<SectorVersionModel> updateSectorVersion(Long id, SectorVersionModel updateSectorVersionModel) {
     SectorVersion sectorVersionToUpdate = sectorService.getSectorVersionById(id);
     SectorVersion editedVersion = SectorMapper.toEntity(updateSectorVersionModel);
 

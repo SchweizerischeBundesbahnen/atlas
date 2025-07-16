@@ -56,6 +56,7 @@ public class SloidController implements SloidApiV1 {
       case AREA, TOILET, REFERENCE_POINT, PARKING_LOT, CONTACT_POINT ->
           SloidValidation.isSloidValid(requestModel.sloid(), SloidValidation.EXPECTED_COLONS_AREA);
       case PLATFORM -> SloidValidation.isSloidValid(requestModel.sloid(), SloidValidation.EXPECTED_COLONS_PLATFORM);
+      case SECTOR, SECTOR_GROUP -> SloidValidation.isSloidValid(requestModel.sloid(), SloidValidation.EXPECTED_COLONS_SECTOR);
     }
   }
 }

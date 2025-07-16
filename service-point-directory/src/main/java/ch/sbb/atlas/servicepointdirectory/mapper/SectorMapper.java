@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import lombok.experimental.UtilityClass;
 
@@ -34,7 +33,6 @@ public class SectorMapper {
   public static SectorVersion toEntity(SectorVersionModel createSectorVersionModel) {
     return SectorVersion.builder()
         .id(createSectorVersionModel.getId())
-        .sloid(createSectorVersionModel.getSloid())
         .trafficPointSloid(createSectorVersionModel.getTrafficPointSloid())
         .designation(createSectorVersionModel.getDesignation())
         .validFrom(createSectorVersionModel.getValidFrom())
@@ -51,23 +49,7 @@ public class SectorMapper {
         .editor(createSectorVersionModel.getEditor())
         .editionDate(createSectorVersionModel.getEditionDate())
         .status(createSectorVersionModel.getStatus())
-        .build();
-  }
-
-  public static SectorVersion toEntity(UpdateSectorVersionModel updateSectorVersionModel) {
-    return SectorVersion.builder()
-        .designation(updateSectorVersionModel.getDesignation())
-        .validFrom(updateSectorVersionModel.getValidFrom())
-        .validTo(updateSectorVersionModel.getValidTo())
-        .designation(updateSectorVersionModel.getDesignation())
-        .north(updateSectorVersionModel.getNorth())
-        .east(updateSectorVersionModel.getEast())
-        .height(updateSectorVersionModel.getHeight())
-        .spatialReference(updateSectorVersionModel.getSpatialReference())
-        .length(updateSectorVersionModel.getLength())
-        .edgeHeight(updateSectorVersionModel.getEdgeHeight())
-        .version(updateSectorVersionModel.getEtagVersion())
-        .status(updateSectorVersionModel.getStatus())
+        .version(createSectorVersionModel.getEtagVersion())
         .build();
   }
 }
