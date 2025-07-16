@@ -1,6 +1,7 @@
 package ch.sbb.workflow.sepodi.termination.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -9,6 +10,7 @@ import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.user.administration.security.service.ServicePointTerminationBasedUserAdministrationService;
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
+import ch.sbb.workflow.exception.TerminationStopPointWorkflowPreconditionStatusException;
 import ch.sbb.workflow.sepodi.client.SePoDiAdminClient;
 import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
@@ -26,7 +28,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+/**
+ * Workflow Status Flow according to
+ * <a href="https://confluence.sbb.ch/spaces/ATLAS/pages/3057021043/ADR-0031+ServicePoint+Workflow+Haltestellen+Terminierungsworkflow#ADR0031:ServicePointWorkflow(HaltestellenTerminierungsworkflow)-UseCasesDiagramm">UseCases</a>
+ */
 class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseControllerApiTest {
+
+  private static final StartTerminationStopPointWorkflowModel WORKFLOW = StartTerminationStopPointWorkflowModel.builder()
+      .workflowComment("Please terminate this stop point")
+      .applicantMail("user@tu.ch")
+      .boTerminationDate(LocalDate.of(2020, 1, 1))
+      .sloid("ch:1:sboid:132")
+      .versionId(123L)
+      .build();
+  private static final LocalDate TERMINATION_DATE = LocalDate.of(2020, 1, 2);
 
   @Autowired
   private TerminationStopPointWorkflowInternalController controller;
@@ -69,22 +84,16 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
   }
 
   @Test
-  void shouldFlowThroughApprovedStatuses() {
+  void shouldFlowThroughInfoPlusAndNovaApproval() {
     TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
-        StartTerminationStopPointWorkflowModel.builder()
-            .workflowComment("Please terminate this stop point")
-            .applicantMail("user@tu.ch")
-            .boTerminationDate(LocalDate.of(2020, 1, 1))
-            .sloid("ch:1:sboid:132")
-            .versionId(123L)
-            .build());
+        WORKFLOW);
     assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
 
     TerminationStopPointWorkflowModel infoPlusApprovedTermination = controller.decisionInfoPlus(
         TerminationDecisionModel.builder()
             .judgement(JudgementType.YES)
             .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
-            .terminationDate(LocalDate.of(2020, 1, 2))
+            .terminationDate(TERMINATION_DATE)
             .build(), terminationWorkflow.getId());
     assertThat(infoPlusApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
 
@@ -92,9 +101,62 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
         TerminationDecisionModel.builder()
             .judgement(JudgementType.YES)
             .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
-            .terminationDate(LocalDate.of(2020, 1, 2))
+            .terminationDate(TERMINATION_DATE)
             .build(), terminationWorkflow.getId());
     assertThat(novaApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_APPROVED);
   }
 
+  @Test
+  void shouldFlowThroughInfoPlusDisapproval() {
+    TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
+        WORKFLOW);
+    assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
+
+    TerminationStopPointWorkflowModel infoPlusApprovedTermination = controller.decisionInfoPlus(
+        TerminationDecisionModel.builder()
+            .judgement(JudgementType.NO)
+            .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
+            .terminationDate(TERMINATION_DATE)
+            .build(), terminationWorkflow.getId());
+    assertThat(infoPlusApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_NOT_APPROVED);
+
+    assertThatExceptionOfType(TerminationStopPointWorkflowPreconditionStatusException.class).isThrownBy(
+        () -> controller.decisionNova(
+            TerminationDecisionModel.builder()
+                .judgement(JudgementType.NO)
+                .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+                .terminationDate(TERMINATION_DATE)
+                .build(), terminationWorkflow.getId()));
+  }
+
+  @Test
+  void shouldFlowThroughInfoPlusApprovalButNovaDisapproval() {
+    TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
+        WORKFLOW);
+    assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
+
+    TerminationStopPointWorkflowModel infoPlusApprovedTermination = controller.decisionInfoPlus(
+        TerminationDecisionModel.builder()
+            .judgement(JudgementType.YES)
+            .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
+            .terminationDate(TERMINATION_DATE)
+            .build(), terminationWorkflow.getId());
+    assertThat(infoPlusApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
+
+    TerminationStopPointWorkflowModel novaDisapprovedTermination = controller.decisionNova(
+        TerminationDecisionModel.builder()
+            .judgement(JudgementType.NO)
+            .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+            .terminationDate(TERMINATION_DATE)
+            .build(), terminationWorkflow.getId());
+    assertThat(novaDisapprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
+
+    TerminationStopPointWorkflowModel novaApprovedTermination = controller.decisionNova(
+        TerminationDecisionModel.builder()
+            .judgement(JudgementType.YES)
+            .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+            .terminationDate(TERMINATION_DATE)
+            .build(), terminationWorkflow.getId());
+    assertThat(novaApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_APPROVED);
+  }
 }
