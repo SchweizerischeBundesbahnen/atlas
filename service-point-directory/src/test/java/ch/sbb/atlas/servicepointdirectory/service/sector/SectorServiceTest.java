@@ -2,9 +2,12 @@ package ch.sbb.atlas.servicepointdirectory.service.sector;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.doReturn;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
@@ -21,9 +24,13 @@ import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
 class SectorServiceTest {
+
+  @MockitoBean
+  private LocationService locationService;
 
   private final SectorService sectorService;
   private final SectorVersionRepository sectorVersionRepository;
@@ -98,7 +105,6 @@ class SectorServiceTest {
         trafficPointElementVersionRepository.save(TrafficPointTestData.getBasicTrafficPoint());
 
     SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
-        .sloid("ch:1:sloid:sector:1")
         .trafficPointSloid(trafficPointElementVersion.getSloid())
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2024, 1, 1))
@@ -110,18 +116,22 @@ class SectorServiceTest {
         .height(19.0)
         .edgeHeight(20.0)
         .build();
+
+    doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR,
+        sectorVersionModel.getTrafficPointSloid());
+
     //when
     SectorVersionModel saved = sectorService.createSector(sectorVersionModel);
 
     //Then
     assertThat(sectorVersionRepository.findById(saved.getId())).isNotNull();
+    assertThat(saved.getSloid()).isEqualTo("ch:1:sloid:sector:1:0:1");
   }
 
   @Test
   void shouldThrowWhenCreateSectorWithoutTrafficPoint() {
     // Given
     SectorVersionModel model = SectorVersionModel.builder()
-        .sloid("ch:1:sector:xxx")
         .trafficPointSloid("nonexistent-sloid")
         .validFrom(LocalDate.now())
         .validTo(LocalDate.now().plusDays(1))

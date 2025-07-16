@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
-import ch.sbb.atlas.api.servicepoint.sector.UpdateSectorGroupVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorGroupVersion;
 import java.util.List;
 import lombok.experimental.UtilityClass;
@@ -53,7 +52,6 @@ public class SectorGroupMapper {
   public static SectorGroupVersion toEntity(CreateSectorGroupVersionModel createSectorGroupVersionModel) {
     return SectorGroupVersion.builder()
         .id(createSectorGroupVersionModel.getId())
-        .sloid(createSectorGroupVersionModel.getSloid())
         .trafficPointSloid(createSectorGroupVersionModel.getTrafficPointSloid())
         .validFrom(createSectorGroupVersionModel.getValidFrom())
         .validTo(createSectorGroupVersionModel.getValidTo())
@@ -68,7 +66,7 @@ public class SectorGroupMapper {
         .build();
   }
 
-  public static SectorGroupVersion toEntity(UpdateSectorGroupVersionModel updateSectorGroupVersionModel) {
+  public static SectorGroupVersion toEntity(SectorGroupVersionModel updateSectorGroupVersionModel) {
     return SectorGroupVersion.builder()
         .designation(updateSectorGroupVersionModel.getDesignation())
         .validFrom(updateSectorGroupVersionModel.getValidFrom())
