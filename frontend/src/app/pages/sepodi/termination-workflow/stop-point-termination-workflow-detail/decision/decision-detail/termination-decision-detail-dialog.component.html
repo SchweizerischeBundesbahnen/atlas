@@ -28,31 +28,32 @@
       ></app-atlas-field-error>
     </mat-radio-group>
 
-    <div class="d-flex flex-column pb-3">
-      <app-atlas-label-field
-        fieldLabel="TERMINATION_WORKFLOW.DECISION.TERMINATION_DATE"
-      ></app-atlas-label-field>
-      <div class="text-field-flex">
-        <input
-          [matDatepicker]="terminationDatePicker!"
-          [max]="MAX_DATE"
-          [min]="minDate"
-          [attr.data-cy]="'terminationDate'"
-          formControlName="terminationDate"
-          required
-        />
-        <mat-datepicker-toggle [for]="terminationDatePicker" [tabIndex]="-1">
-          <mat-icon matDatepickerToggleIcon>
-            <form-date-icon [enabled]="form.enabled"></form-date-icon>
-          </mat-icon>
-        </mat-datepicker-toggle>
-        <mat-datepicker #terminationDatePicker></mat-datepicker>
+    @if (form.controls.judgement.value === 'YES') {
+      <div class="d-flex flex-column pb-3">
+        <app-atlas-label-field
+          fieldLabel="TERMINATION_WORKFLOW.DECISION.TERMINATION_DATE"
+        ></app-atlas-label-field>
+        <div class="text-field-flex">
+          <input
+            [matDatepicker]="terminationDatePicker!"
+            [max]="MAX_DATE"
+            [min]="minDate"
+            [attr.data-cy]="'terminationDate'"
+            formControlName="terminationDate"
+          />
+          <mat-datepicker-toggle [for]="terminationDatePicker" [tabIndex]="-1">
+            <mat-icon matDatepickerToggleIcon>
+              <form-date-icon [enabled]="form.enabled"></form-date-icon>
+            </mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #terminationDatePicker></mat-datepicker>
+        </div>
+        <app-atlas-field-error
+          [form]="form"
+          controlName="terminationDate"
+        ></app-atlas-field-error>
       </div>
-      <app-atlas-field-error
-        [form]="form"
-        controlName="terminationDate"
-      ></app-atlas-field-error>
-    </div>
+    }
 
     <form-comment
       [formGroup]="form"

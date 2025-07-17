@@ -90,7 +90,8 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
         if (
           this.terminationPermission === TerminationDecisionPersonEnum.InfoPlus
         ) {
-          this.showDecisionButton = !this.workflow.infoPlusTerminationDate;
+          this.showDecisionButton =
+            this.workflow.status === TerminationWorkflowStatus.Started;
         }
         if (this.terminationPermission === TerminationDecisionPersonEnum.Nova) {
           this.showDecisionButton = [
