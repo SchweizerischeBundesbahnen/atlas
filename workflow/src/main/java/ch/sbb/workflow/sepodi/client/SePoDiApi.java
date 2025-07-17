@@ -40,9 +40,9 @@ public interface SePoDiApi {
   ReadServicePointVersionModel stopServicePointTermination(@PathVariable("sloid") String sloid,
       @PathVariable("id") Long id);
 
-  @PostMapping(value = TERMINATION_BASEPATH + "/terminate/{id}/{date}")
-  void terminateStopPoint(@PathVariable Long id, @PathVariable LocalDate date);
+  @PostMapping(value = TERMINATION_BASEPATH + "/terminate/{sloid}/{id}/{date}")
+  void terminateStopPoint(@PathVariable String sloid, @PathVariable Long id, @PathVariable LocalDate date);
 
-  @PostMapping(value = TERMINATION_BASEPATH + "/change-to-tariff-stop/{id}/{date}")
-  void changeToTariffStop(@PathVariable Long id, @PathVariable LocalDate date);
+  @PostMapping(value = TERMINATION_BASEPATH + "/change-to-tariff-stop/{sloid}/{id}/{date}")
+  void changeToTariffStop(@PathVariable String sloid, @PathVariable Long id, @PathVariable LocalDate date);
 }

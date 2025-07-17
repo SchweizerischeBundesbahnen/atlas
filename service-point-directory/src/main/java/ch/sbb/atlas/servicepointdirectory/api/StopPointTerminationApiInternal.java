@@ -28,10 +28,10 @@ public interface StopPointTerminationApiInternal {
   ReadServicePointVersionModel stopServicePointTermination(@PathVariable String sloid, @PathVariable Long id);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
-  @PostMapping(value = "/terminate/{id}/{date}")
-  void terminateStopPoint(@PathVariable Long id, @PathVariable LocalDate date);
+  @PostMapping(value = "/terminate/{sloid}/{id}/{date}")
+  void terminateStopPoint(@PathVariable String sloid, @PathVariable Long id, @PathVariable LocalDate date);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
-  @PostMapping(value = "/change-to-tariff-stop/{id}/{date}")
-  void changeToTariffStop(@PathVariable Long id, @PathVariable LocalDate date);
+  @PostMapping(value = "/change-to-tariff-stop/{sloid}/{id}/{date}")
+  void changeToTariffStop(@PathVariable String sloid, @PathVariable Long id, @PathVariable LocalDate date);
 }
