@@ -137,9 +137,7 @@ class TerminationStopPointWorkflowInternalControllerTest extends BaseControllerA
     assertThat(result).isNotNull();
     assertThat(result.getBoTerminationDate()).isEqualTo(workflowModel.getBoTerminationDate());
     assertThat(result.getSloid()).isEqualTo(workflowModel.getSloid());
-    verify(notificationService, times(1)).sendStartTerminationNotificationToInfoPlus(any(TerminationStopPointWorkflow.class));
-    verify(notificationService, times(1)).sendStartConfirmationTerminationNotificationToApplicantMail(
-        any(TerminationStopPointWorkflow.class));
+    verify(notificationService, times(1)).sendStartTerminationNotificationToInfoPlusAndBo(any(TerminationStopPointWorkflow.class));
 
   }
 

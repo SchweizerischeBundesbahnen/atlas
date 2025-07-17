@@ -43,7 +43,7 @@ class TerminationStopPointNotificationServiceTest {
         .status(TerminationWorkflowStatus.STARTED)
         .build();
     //when
-    notificationService.sendStartTerminationNotificationToInfoPlus(terminationStopPointWorkflow);
+    notificationService.sendStartTerminationNotificationToInfoPlusAndBo(terminationStopPointWorkflow);
 
     verify(builderNotificationService).buildStartTerminationNotificationMailForInfoPlus(terminationStopPointWorkflow);
     verify(mailProducerService).produceMailNotification(any());
