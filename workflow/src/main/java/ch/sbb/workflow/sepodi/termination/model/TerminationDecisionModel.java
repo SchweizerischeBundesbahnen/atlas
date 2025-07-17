@@ -37,7 +37,6 @@ public class TerminationDecisionModel {
   @NotNull
   private TerminationDecisionPerson terminationDecisionPerson;
 
-  @NotNull
   @Schema(description = "Termination Date ")
   private LocalDate terminationDate;
 

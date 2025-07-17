@@ -123,8 +123,11 @@
         <div class="col">
           @if (formDecision.controls.terminationDecisionPerson.value ===
           TerminationDecisionPersonEnum.InfoPlus ||
-          (TerminationWorkflowStatus.TariffStopApproved === workflow.status! ||
-          workflow.novaTerminationDate)) {
+          ([TerminationWorkflowStatus.TariffStopApproved,
+          TerminationWorkflowStatus.TerminationApproved,
+          TerminationWorkflowStatus.TerminationNotApproved,
+          TerminationWorkflowStatus.TerminationNotApprovedClosed].includes(workflow.status!)))
+          {
           <atlas-button
             (buttonClicked)="onOpenDecision(formDecision)"
             buttonType="icon"
