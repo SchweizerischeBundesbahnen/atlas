@@ -39,12 +39,12 @@ export class UserAdministrationService {
   getUsers(
     page: number,
     size: number,
-    sboids: Set<string> | undefined = undefined,
+    permissionRestrictions: Set<string> | undefined = undefined,
     type: PermissionRestrictionType | undefined = undefined,
     applicationTypes: Set<ApplicationType> | undefined = undefined,
   ): Observable<ContainerUser> {
     const httpParams = this.atlasApiService.paramsOf({
-      sboids,
+      permissionRestrictions,
       type,
       applicationTypes,
       page,
