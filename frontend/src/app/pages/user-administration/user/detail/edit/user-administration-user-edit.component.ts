@@ -2,12 +2,10 @@ import { Component, inject, input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
-import moment from 'moment';
 import { User } from '../../../../../api';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
-import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { BackButtonDirective } from '../../../../../core/components/button/back-button/back-button.directive';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -15,6 +13,8 @@ import { PermissionComponent } from '../../../../../core/components/permissions/
 import { UserPermissionGivenUserService } from './user-permission-given-user.service';
 import { ApplicationPermissionFormGroupBuilder } from '../../../../../core/components/permissions/form/application-permission-form-group';
 import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
+import { ConvertUserPermissionToRecordHelper } from '../../../../../core/components/permissions/helper/convert-user-permission-to-record-helper';
+import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 
 @Component({
   selector: 'app-user-administration-user-edit',
@@ -24,11 +24,11 @@ import { UserAdministrationService } from '../../../../../api/service/user-admin
     ScrollToTopDirective,
     DetailPageContainerComponent,
     DetailPageContentComponent,
-    UserDetailInfoComponent,
     DetailFooterComponent,
     BackButtonDirective,
     TranslatePipe,
     PermissionComponent,
+    UserDetailInfoComponent,
   ],
 })
 export class UserAdministrationUserEditComponent implements OnInit {
@@ -69,6 +69,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
           this.notificationService.success(
             'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
           );
+          this.convertUserPermissionToRecord();
         },
         error: () => this.formGroup.enable(),
       });
@@ -99,32 +100,13 @@ export class UserAdministrationUserEditComponent implements OnInit {
   }
 
   private convertUserPermissionToRecord(): void {
-    const permissionsFromUserModelAsArray = Array.from(this.user().permissions);
-    if (permissionsFromUserModelAsArray.length > 0) {
-      const firstCreated = permissionsFromUserModelAsArray.reduce(
-        (previousValue, currentValue) => {
-          return moment(new Date(previousValue.creationDate!)).isBefore(
-            moment(new Date(currentValue.creationDate!))
-          )
-            ? previousValue
-            : currentValue;
-        }
+    const permissionsFromUserModelAsArray = Array.from(
+      this.userPermissionGivenUserService.user.permissions
+    );
+
+    this.userRecord =
+      ConvertUserPermissionToRecordHelper.convertUserPermissionToRecord(
+        permissionsFromUserModelAsArray
       );
-      const lastEdited = permissionsFromUserModelAsArray.reduce(
-        (previousValue, currentValue) => {
-          return moment(new Date(previousValue.editionDate!)).isAfter(
-            moment(new Date(currentValue.editionDate!))
-          )
-            ? previousValue
-            : currentValue;
-        }
-      );
-      this.userRecord = {
-        editor: lastEdited.editor,
-        editionDate: lastEdited.editionDate,
-        creator: firstCreated.creator,
-        creationDate: firstCreated.creationDate,
-      };
-    }
   }
 }
