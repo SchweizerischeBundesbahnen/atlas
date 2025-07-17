@@ -23,12 +23,12 @@ public class TerminationStopPointNotificationService {
     //add mailTemplate2
   }
 
-  public void sendCancelNotificationToApplicationMail(TerminationStopPointWorkflow terminationWorkflow,
+  public void sendTariffStopNotApprovedNotificationToBo(TerminationStopPointWorkflow terminationWorkflow,
       TerminationDecisionModel decisionModel) {
     //send notification
   }
 
-  public void sendTerminationApprovedNotificationToNova(TerminationStopPointWorkflow terminationWorkflow,
+  public void sendTariffStopApprovedNotificationToNovaAndBo(TerminationStopPointWorkflow terminationWorkflow,
       TerminationDecisionModel decisionModel) {
     //send notification
   }

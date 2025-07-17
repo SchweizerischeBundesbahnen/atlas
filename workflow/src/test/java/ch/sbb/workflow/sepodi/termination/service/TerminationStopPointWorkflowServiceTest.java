@@ -132,9 +132,9 @@ class TerminationStopPointWorkflowServiceTest {
     assertThat(infoPlusDecisionResult.getTerminationDecisionPerson()).isEqualTo(TerminationDecisionPerson.INFO_PLUS);
 
     verify(notificationService, times(1))
-        .sendTerminationApprovedNotificationToNova(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
+        .sendTariffStopApprovedNotificationToNovaAndBo(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
     verify(notificationService, never())
-        .sendCancelNotificationToApplicationMail(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
+        .sendTariffStopNotApprovedNotificationToBo(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
   }
 
   @Test
@@ -165,9 +165,9 @@ class TerminationStopPointWorkflowServiceTest {
     assertThat(infoPlusDecisionResult.getTerminationDecisionPerson()).isEqualTo(TerminationDecisionPerson.INFO_PLUS);
 
     verify(notificationService, never())
-        .sendTerminationApprovedNotificationToNova(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
+        .sendTariffStopApprovedNotificationToNovaAndBo(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
     verify(notificationService, times(1))
-        .sendCancelNotificationToApplicationMail(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
+        .sendTariffStopNotApprovedNotificationToBo(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
   }
 
   @Test
@@ -189,7 +189,7 @@ class TerminationStopPointWorkflowServiceTest {
     repository.save(workflow);
     StartTerminationStopPointWorkflowModel stopPointWorkflowModel = buildTerminationStopPointWorkflowModel();
     ReadServicePointVersionModel readServicePointVersionModel = buildReadServicePointVersionModel();
-    when(sePoDiAdminClient.postStartServicePointTermination(stopPointWorkflowModel.getSloid(),
+    when(sePoDiAdminClient.startServicePointTermination(stopPointWorkflowModel.getSloid(),
         stopPointWorkflowModel.getVersionId(),
         UpdateTerminationServicePointModel.builder().terminationInProgress(true).build()))
         .thenReturn(readServicePointVersionModel);
@@ -207,7 +207,7 @@ class TerminationStopPointWorkflowServiceTest {
         .terminationInProgress(true)
         .terminationDate(stopPointWorkflowModel.getBoTerminationDate())
         .build();
-    when(sePoDiAdminClient.postStartServicePointTermination(
+    when(sePoDiAdminClient.startServicePointTermination(
         stopPointWorkflowModel.getSloid(),
         stopPointWorkflowModel.getVersionId(),
         terminationServicePointModel))
