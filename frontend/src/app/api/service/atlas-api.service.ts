@@ -26,7 +26,7 @@ export class AtlasApiService {
     let queryParameters = new HttpParams();
 
     Object.keys(params).forEach(key => {
-      if (Array.isArray(params[key])) {
+      if (Array.isArray(params[key]) || params[key] instanceof Set) {
         params[key].forEach((element) => {
           queryParameters = this.addToHttpParams(queryParameters, element, key);
         });
