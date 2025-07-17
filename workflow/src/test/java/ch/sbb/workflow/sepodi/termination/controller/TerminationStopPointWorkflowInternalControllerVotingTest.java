@@ -89,8 +89,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
     TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
         WORKFLOW);
     assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
-    verify(notificationService).sendStartTerminationNotificationToInfoPlus(any());
-    verify(notificationService).sendStartConfirmationTerminationNotificationToApplicantMail(any());
+    verify(notificationService).sendStartTerminationNotificationToInfoPlusAndBo(any());
 
     TerminationStopPointWorkflowModel infoPlusApprovedTermination = controller.decisionInfoPlus(
         TerminationDecisionModel.builder()
@@ -116,7 +115,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
     TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
         WORKFLOW);
     assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
-    verify(notificationService).sendStartTerminationNotificationToInfoPlus(any());
+    verify(notificationService).sendStartTerminationNotificationToInfoPlusAndBo(any());
 
     TerminationStopPointWorkflowModel infoPlusApprovedTermination = controller.decisionInfoPlus(
         TerminationDecisionModel.builder()

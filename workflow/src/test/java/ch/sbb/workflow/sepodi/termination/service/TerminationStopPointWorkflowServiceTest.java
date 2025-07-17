@@ -218,9 +218,7 @@ class TerminationStopPointWorkflowServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
-    verify(notificationService, times(1)).sendStartTerminationNotificationToInfoPlus(any(TerminationStopPointWorkflow.class));
-    verify(notificationService, times(1)).sendStartConfirmationTerminationNotificationToApplicantMail(
-        any(TerminationStopPointWorkflow.class));
+    verify(notificationService, times(1)).sendStartTerminationNotificationToInfoPlusAndBo(any(TerminationStopPointWorkflow.class));
   }
 
   private @NotNull TerminationStopPointWorkflow saveTerminationStopPointWorkflow() {
