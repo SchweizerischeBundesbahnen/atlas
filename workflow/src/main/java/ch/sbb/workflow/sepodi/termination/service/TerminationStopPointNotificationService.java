@@ -14,13 +14,9 @@ public class TerminationStopPointNotificationService {
   private final MailProducerService mailProducerService;
   private final TerminationStopPointWorkflowBuilderNotificationService builderNotificationService;
 
-  public void sendStartTerminationNotificationToInfoPlus(TerminationStopPointWorkflow workflow) {
+  public void sendStartTerminationNotificationToInfoPlusAndBo(TerminationStopPointWorkflow workflow) {
     MailNotification notification = builderNotificationService.buildStartTerminationNotificationMailForInfoPlus(workflow);
     mailProducerService.produceMailNotification(notification);
-  }
-
-  public void sendStartConfirmationTerminationNotificationToApplicantMail(TerminationStopPointWorkflow workflow) {
-    //add mailTemplate2
   }
 
   public void sendTariffStopNotApprovedNotificationToBo(TerminationStopPointWorkflow terminationWorkflow,
