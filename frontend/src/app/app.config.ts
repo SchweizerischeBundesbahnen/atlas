@@ -7,7 +7,12 @@ import {
 import { CoreModule } from './core/module/core.module';
 import { DateModule } from './core/module/date.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  provideHttpClient,
+  withFetch,
+} from '@angular/common/http';
 import { AppRouting } from './app-routing';
 import { AtlasApiModule, Configuration } from './api';
 import { environment } from '../environments/environment';
@@ -66,5 +71,6 @@ export const appConfig: ApplicationConfig = {
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
     }),
+    provideHttpClient(withFetch()),
   ],
 };
