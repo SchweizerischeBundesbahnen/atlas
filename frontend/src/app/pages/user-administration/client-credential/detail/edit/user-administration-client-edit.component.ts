@@ -3,7 +3,6 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import {
   BusinessOrganisationsService,
   ClientCredential,
-  Permission,
 } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
@@ -18,6 +17,7 @@ import { BackButtonDirective } from '../../../../../core/components/button/back-
 import { UserPermissionGivenClientService } from './user-permission-given-client.service';
 import { ApplicationPermissionFormGroupBuilder } from '../../../../../core/components/permissions/form/application-permission-form-group';
 import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
+import { ConvertUserPermissionToRecordHelper } from '../../../../../core/components/permissions/helper/convert-user-permission-to-record-helper';
 
 @Component({
   selector: 'app-client-credential-administration-edit',
@@ -51,10 +51,7 @@ export class UserAdministrationClientEditComponent implements OnInit {
 
   ngOnInit() {
     this.userPermissionGivenClientService.clientCredential = this.client();
-    const permissionsFromUserModelAsArray = Array.from(
-      this.client().permissions!
-    );
-    this.convertPermissionToRecord(permissionsFromUserModelAsArray);
+    this.convertUserPermissionToRecord();
   }
 
   saveClientCredential(): void {
@@ -82,19 +79,22 @@ export class UserAdministrationClientEditComponent implements OnInit {
           this.notificationService.success(
             'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
           );
+          this.convertUserPermissionToRecord();
         },
         error: () => (this.saveEnabled = true),
       });
   }
 
-  private convertPermissionToRecord(permissions: Permission[]): void {
-    if (permissions.length > 0) {
-      this.record = {
-        editor: permissions[0].editor,
-        editionDate: permissions[0].editionDate,
-        creator: permissions[0].creator,
-        creationDate: permissions[0].creationDate,
-      };
+  private convertUserPermissionToRecord(): void {
+    const permissionsFromUserModelAsArray = Array.from(
+      this.userPermissionGivenClientService.clientCredential.permissions!
+    );
+
+    if (permissionsFromUserModelAsArray.length > 0) {
+      this.record =
+        ConvertUserPermissionToRecordHelper.convertUserPermissionToRecord(
+          permissionsFromUserModelAsArray
+        );
     }
   }
 
