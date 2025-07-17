@@ -122,7 +122,7 @@ class TerminationStopPointWorkflowInternalControllerTest extends BaseControllerA
         .businessOrganisation("ch:1:sboid:132")
         .build();
 
-    when(sePoDiAdminClient.postStartServicePointTermination(eq(workflowModel.getSloid()), eq(workflowModel.getVersionId()), any(
+    when(sePoDiAdminClient.startServicePointTermination(eq(workflowModel.getSloid()), eq(workflowModel.getVersionId()), any(
         UpdateTerminationServicePointModel.class))).thenReturn(servicePointVersionModel);
 
     //when

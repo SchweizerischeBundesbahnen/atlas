@@ -24,7 +24,6 @@ import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowSear
 import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflowRepository;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +46,7 @@ public class TerminationStopPointWorkflowService {
         .terminationDate(model.getBoTerminationDate())
         .build();
 
-    ReadServicePointVersionModel readServicePointVersionModel = sePoDiAdminClient.postStartServicePointTermination(
+    ReadServicePointVersionModel readServicePointVersionModel = sePoDiAdminClient.startServicePointTermination(
         model.getSloid(), model.getVersionId(), terminationServicePointModel);
 
     TerminationStopPointWorkflow terminationStopPointWorkflow = populateWorkflow(
@@ -87,12 +86,12 @@ public class TerminationStopPointWorkflowService {
 
     if (decisionModel.getJudgement() == JudgementType.YES) {
       terminationWorkflow.setStatus(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
-      notificationService.sendTerminationApprovedNotificationToNova(terminationWorkflow, decisionModel);
+      notificationService.sendTariffStopApprovedNotificationToNovaAndBo(terminationWorkflow, decisionModel);
     }
     if (decisionModel.getJudgement() == JudgementType.NO) {
-      postStopServicePointTermination(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
+      sePoDiAdminClient.stopServicePointTermination(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
       terminationWorkflow.setStatus(TerminationWorkflowStatus.TARIFF_STOP_NOT_APPROVED);
-      notificationService.sendCancelNotificationToApplicationMail(terminationWorkflow, decisionModel);
+      notificationService.sendTariffStopNotApprovedNotificationToBo(terminationWorkflow, decisionModel);
     }
     return repository.save(terminationWorkflow);
   }
@@ -109,16 +108,14 @@ public class TerminationStopPointWorkflowService {
     terminationWorkflow.setNovaTerminationDate(decisionModel.getTerminationDate());
 
     if (decisionModel.getJudgement() == JudgementType.YES) {
+      sePoDiAdminClient.terminateStopPoint(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
       terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_APPROVED);
     }
     if (decisionModel.getJudgement() == JudgementType.NO) {
+      sePoDiAdminClient.changeToTariffStop(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
       terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
     }
     return repository.save(terminationWorkflow);
-  }
-
-  private ReadServicePointVersionModel postStopServicePointTermination(String sloid, Long id) {
-    return sePoDiAdminClient.postStopServicePointTermination(sloid, id);
   }
 
   private TerminationStopPointWorkflow populateWorkflow(StartTerminationStopPointWorkflowModel model,

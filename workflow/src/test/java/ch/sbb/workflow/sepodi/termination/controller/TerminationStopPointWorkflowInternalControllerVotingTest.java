@@ -3,6 +3,7 @@ package ch.sbb.workflow.sepodi.termination.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
@@ -74,7 +75,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
         .businessOrganisation("ch:1:sboid:132")
         .build();
 
-    when(sePoDiAdminClient.postStartServicePointTermination(any(), any(), any(
+    when(sePoDiAdminClient.startServicePointTermination(any(), any(), any(
         UpdateTerminationServicePointModel.class))).thenReturn(servicePointVersionModel);
   }
 
@@ -88,6 +89,8 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
     TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
         WORKFLOW);
     assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
+    verify(notificationService).sendStartTerminationNotificationToInfoPlus(any());
+    verify(notificationService).sendStartConfirmationTerminationNotificationToApplicantMail(any());
 
     TerminationStopPointWorkflowModel infoPlusApprovedTermination = controller.decisionInfoPlus(
         TerminationDecisionModel.builder()
@@ -96,6 +99,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
             .terminationDate(TERMINATION_DATE)
             .build(), terminationWorkflow.getId());
     assertThat(infoPlusApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
+    verify(notificationService).sendTariffStopApprovedNotificationToNovaAndBo(any(), any());
 
     TerminationStopPointWorkflowModel novaApprovedTermination = controller.decisionNova(
         TerminationDecisionModel.builder()
@@ -104,6 +108,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
             .terminationDate(TERMINATION_DATE)
             .build(), terminationWorkflow.getId());
     assertThat(novaApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_APPROVED);
+    verify(sePoDiAdminClient).terminateStopPoint(any(), any());
   }
 
   @Test
@@ -111,6 +116,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
     TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
         WORKFLOW);
     assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
+    verify(notificationService).sendStartTerminationNotificationToInfoPlus(any());
 
     TerminationStopPointWorkflowModel infoPlusApprovedTermination = controller.decisionInfoPlus(
         TerminationDecisionModel.builder()
@@ -119,6 +125,8 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
             .terminationDate(TERMINATION_DATE)
             .build(), terminationWorkflow.getId());
     assertThat(infoPlusApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_NOT_APPROVED);
+    verify(notificationService).sendTariffStopNotApprovedNotificationToBo(any(), any());
+    verify(sePoDiAdminClient).stopServicePointTermination(any(), any());
 
     assertThatExceptionOfType(TerminationStopPointWorkflowPreconditionStatusException.class).isThrownBy(
         () -> controller.decisionNova(
@@ -150,6 +158,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
             .terminationDate(TERMINATION_DATE)
             .build(), terminationWorkflow.getId());
     assertThat(novaDisapprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
+    verify(sePoDiAdminClient).changeToTariffStop(any(), any());
 
     TerminationStopPointWorkflowModel novaApprovedTermination = controller.decisionNova(
         TerminationDecisionModel.builder()
