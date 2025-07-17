@@ -1,11 +1,11 @@
-import {AtlasApiService} from './atlas-api.service';
-import {TestBed} from '@angular/core/testing';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {UserService} from '../../core/auth/user/user.service';
-import {BulkImportRequest} from "../model/bulkImportRequest";
-import {ImportType} from "../model/importType";
-import {BusinessObjectType} from "../model/businessObjectType";
-import {ApplicationType} from "../model/applicationType";
+import { AtlasApiService } from './atlas-api.service';
+import { TestBed } from '@angular/core/testing';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { UserService } from '../../core/auth/user/user.service';
+import { BulkImportRequest } from '../model/bulkImportRequest';
+import { ImportType } from '../model/importType';
+import { BusinessObjectType } from '../model/businessObjectType';
+import { ApplicationType } from '../model/applicationType';
 import SpyObj = jasmine.SpyObj;
 
 describe('AtlasApiService', () => {
@@ -36,12 +36,21 @@ describe('AtlasApiService', () => {
     expect(() => service.validateParams({ prop1: '123', prop2: 'test' })).not.toThrow();
   });
 
-  it('should create HttpParams', () => {
+  it('should create HttpParams with array', () => {
     const httpParams = service.paramsOf({
       array: ['uno', 'due'],
       string: '123',
     });
     expect(httpParams.getAll('array')).toEqual(['uno', 'due']);
+    expect(httpParams.get('string')).toEqual('123');
+  });
+
+  it('should create HttpParams with set', () => {
+    const httpParams = service.paramsOf({
+      set: new Set(['uno', 'due']),
+      string: '123',
+    });
+    expect(httpParams.getAll('set')).toEqual(['uno', 'due']);
     expect(httpParams.get('string')).toEqual('123');
   });
 
