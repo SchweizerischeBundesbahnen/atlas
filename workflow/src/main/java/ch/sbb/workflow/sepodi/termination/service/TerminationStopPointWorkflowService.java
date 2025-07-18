@@ -54,8 +54,9 @@ public class TerminationStopPointWorkflowService {
     TerminationStopPointWorkflow terminationStopPointWorkflow = populateWorkflow(
         model, readServicePointVersionModel);
 
-    notificationService.sendStartTerminationNotificationToInfoPlusAndBo(terminationStopPointWorkflow);
-    return repository.save(terminationStopPointWorkflow);
+    TerminationStopPointWorkflow savedTerminationWorkflow = repository.saveAndFlush(terminationStopPointWorkflow);
+    notificationService.sendStartTerminationNotificationToInfoPlusAndBo(savedTerminationWorkflow);
+    return savedTerminationWorkflow;
   }
 
   @Redacted
@@ -89,7 +90,7 @@ public class TerminationStopPointWorkflowService {
 
     if (decisionModel.getJudgement() == JudgementType.YES) {
       terminationWorkflow.setStatus(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
-      notificationService.sendTariffStopApprovedNotificationToNovaAndBo(terminationWorkflow, decisionModel);
+      notificationService.sendTariffStopApprovedNotificationToNovaAndBo(terminationWorkflow);
     }
     if (decisionModel.getJudgement() == JudgementType.NO) {
       sePoDiAdminClient.stopServicePointTermination(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());

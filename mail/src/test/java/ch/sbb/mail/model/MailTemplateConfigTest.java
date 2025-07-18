@@ -128,4 +128,28 @@ class MailTemplateConfigTest {
     assertThat(result).isEqualTo(MailTemplateConfig.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE);
   }
 
+  @Test
+  void shouldReturnTariffStopApprovedNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.TARIFF_STOP_APPROVED_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.TARIFF_STOP_APPROVED_NOTIFICATION_TEMPLATE);
+  }
+
+  @Test
+  void shouldReturnTariffStopNotApprovedNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.TARIFF_STOP_NOT_APPROVED_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.TARIFF_STOP_NOT_APPROVED_NOTIFICATION_TEMPLATE);
+  }
+
+  @Test
+  void shouldReturnCancelTerminationNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.CANCEL_TERMINATION_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.CANCEL_TERMINATION_NOTIFICATION_TEMPLATE);
+  }
+
 }
