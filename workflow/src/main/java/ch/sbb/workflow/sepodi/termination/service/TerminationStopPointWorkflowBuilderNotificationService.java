@@ -51,4 +51,43 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
   private String calculateTerminationDate(TerminationStopPointWorkflow workflow) {
     return DATE_FORMATTER.format(TerminationHelper.getTerminationDate(workflow));
   }
+
+  public MailNotification buildTariffStopNotApprovedNotification(TerminationStopPointWorkflow workflow, String motivation) {
+    List<Map<String, Object>> mailProperties = new ArrayList<>();
+    Map<String, Object> mailContentProperty = new HashMap<>();
+    mailContentProperty.put("title", TerminationWorkflowSubject.TARIFF_STOP_NOT_APPROVED_SUBJECT);
+    mailContentProperty.put("designationOfficial", workflow.getDesignationOfficial());
+    mailContentProperty.put("sloid", workflow.getSloid());
+    mailContentProperty.put("motivation", motivation);
+    mailProperties.add(mailContentProperty);
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.TARIFF_STOP_NOT_APPROVED_NOTIFICATION)
+        .subject(TerminationWorkflowSubject.TARIFF_STOP_NOT_APPROVED_SUBJECT)
+        .to(List.of(workflow.getApplicantMail()))
+        .templateProperties(mailProperties)
+        .build();
+  }
+
+  public MailNotification buildTariffStopApprovedNotification(TerminationStopPointWorkflow workflow) {
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.TARIFF_STOP_APPROVED_NOTIFICATION)
+        .subject(TerminationWorkflowSubject.TARIFF_STOP_APPROVED_SUBJECT)
+        .to(List.of(terminationExaminants.getNova().getEmail()))
+        .templateProperties(buildMailProperties(workflow,
+            TerminationWorkflowSubject.TARIFF_STOP_APPROVED_SUBJECT))
+        .build();
+  }
+
+  public MailNotification buildCancelNotification(TerminationStopPointWorkflow workflow) {
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.CANCEL_TERMINATION_NOTIFICATION)
+        .subject(TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT)
+        .to(List.of(terminationExaminants.getInfoPlus().getEmail()))
+        .templateProperties(buildMailProperties(workflow,
+            TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT))
+        .build();
+  }
 }
