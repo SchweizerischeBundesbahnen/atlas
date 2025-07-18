@@ -132,7 +132,7 @@ class TerminationStopPointWorkflowServiceTest {
     assertThat(infoPlusDecisionResult.getTerminationDecisionPerson()).isEqualTo(TerminationDecisionPerson.INFO_PLUS);
 
     verify(notificationService, times(1))
-        .sendTariffStopApprovedNotificationToNovaAndBo(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
+        .sendTariffStopApprovedNotificationToNovaAndBo(any(TerminationStopPointWorkflow.class));
     verify(notificationService, never())
         .sendTariffStopNotApprovedNotificationToBo(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
   }
@@ -165,7 +165,7 @@ class TerminationStopPointWorkflowServiceTest {
     assertThat(infoPlusDecisionResult.getTerminationDecisionPerson()).isEqualTo(TerminationDecisionPerson.INFO_PLUS);
 
     verify(notificationService, never())
-        .sendTariffStopApprovedNotificationToNovaAndBo(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
+        .sendTariffStopApprovedNotificationToNovaAndBo(any(TerminationStopPointWorkflow.class));
     verify(notificationService, times(1))
         .sendTariffStopNotApprovedNotificationToBo(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
   }
