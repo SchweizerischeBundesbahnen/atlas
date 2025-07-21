@@ -56,8 +56,8 @@ export class ValidityService {
       .pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {
-          updateFunction(); // todo
           disableFunction();
+          updateFunction();
         }
       });
   }

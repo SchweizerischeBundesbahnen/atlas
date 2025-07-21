@@ -88,6 +88,11 @@ const stopPointTypeRequiredValidator = (
   return null;
 };
 
+type BuiltFormGroup = {
+  cleanupFn: () => void;
+  group: FormGroup<ServicePointDetailFormGroup>;
+};
+
 export class ServicePointFormGroupBuilder {
   static addGroupToForm<
     T extends {
@@ -115,7 +120,7 @@ export class ServicePointFormGroupBuilder {
     form.removeControl(controlName, { emitEvent: false });
   }
 
-  static buildEmptyFormGroup(): FormGroup<ServicePointDetailFormGroup> {
+  static buildEmptyFormGroup(): BuiltFormGroup {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>({
       number: new FormControl(
         { value: undefined, disabled: true },
@@ -178,12 +183,13 @@ export class ServicePointFormGroupBuilder {
       ),
     });
 
-    this.handleServicePointTypes(formGroup);
-
-    return formGroup;
+    return {
+      cleanupFn: this.handleServicePointTypes(formGroup),
+      group: formGroup,
+    };
   }
 
-  static buildFormGroup(version: ReadServicePointVersion): FormGroup {
+  static buildFormGroup(version: ReadServicePointVersion): BuiltFormGroup {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>({
       number: new FormControl(version.number.numberShort, {
         nonNullable: true,
@@ -252,10 +258,13 @@ export class ServicePointFormGroupBuilder {
       );
     }
 
-    this.handleServicePointTypes(formGroup, version);
-    // todo: check when and how to do this
+    const cleanupFn = this.handleServicePointTypes(formGroup, version);
     formGroup.disable({ emitEvent: false });
-    return formGroup;
+
+    return {
+      cleanupFn,
+      group: formGroup,
+    };
   }
 
   private static handleServicePointTypes(
@@ -263,7 +272,7 @@ export class ServicePointFormGroupBuilder {
     version?: ReadServicePointVersion
   ) {
     let currentSelectedType = formGroup.controls.selectedType.value;
-    let cleanupFun = () => {};
+    let cleanupFn = () => {};
 
     const selectedSPTypeTransition = {
       [ServicePointType.StopPoint]: () => {
@@ -275,7 +284,7 @@ export class ServicePointFormGroupBuilder {
           'routeNetworkGroup',
           routeNetworkGroup.group
         );
-        cleanupFun = () => {
+        cleanupFn = () => {
           emptyStationGroup.cleanupFn();
           routeNetworkGroup.cleanupFn();
           this.removeGroupFromForm(formGroup, 'spTypeGroup');
@@ -294,7 +303,7 @@ export class ServicePointFormGroupBuilder {
           'routeNetworkGroup',
           routeNetworkGroup.group
         );
-        cleanupFun = () => {
+        cleanupFn = () => {
           routeNetworkGroup.cleanupFn();
           this.removeGroupFromForm(formGroup, 'spTypeGroup');
           this.removeGroupFromForm(formGroup, 'routeNetworkGroup');
@@ -338,7 +347,7 @@ export class ServicePointFormGroupBuilder {
         routeNetworkGroup.group
       );
 
-      cleanupFun = () => {
+      cleanupFn = () => {
         stationGroup.cleanupFn();
         routeNetworkGroup.cleanupFn();
         freightPointGroup?.cleanupFn();
@@ -347,12 +356,18 @@ export class ServicePointFormGroupBuilder {
       };
     }
 
-    formGroup.controls.selectedType.valueChanges.subscribe((selectedType) => {
-      if (selectedType === currentSelectedType || !selectedType) return;
-      cleanupFun();
-      cleanupFun = () => {};
-      selectedSPTypeTransition[selectedType]();
-    });
+    const selectedTypeSub =
+      formGroup.controls.selectedType.valueChanges.subscribe((selectedType) => {
+        if (selectedType === currentSelectedType || !selectedType) return;
+        cleanupFn();
+        cleanupFn = () => {};
+        selectedSPTypeTransition[selectedType]();
+      });
+
+    return () => {
+      selectedTypeSub.unsubscribe();
+      cleanupFn();
+    };
   }
 
   private static emptyOperatingGroup(version?: ReadServicePointVersion) {
@@ -514,7 +529,6 @@ export class ServicePointFormGroupBuilder {
     };
   }
 
-  // todo: cleanupFn on cancel
   private static routeNetworkGroup(version?: ReadServicePointVersion) {
     const routeNetworkGroup = new FormGroup<RouteNetworkGroup>({
       operatingPointRouteNetwork: new FormControl(
@@ -533,11 +547,14 @@ export class ServicePointFormGroupBuilder {
       ),
     });
 
-    // todo: check for status like 'pristine' or similar to know if the value didn't change and it's triggered only because of
-    //  enabling the form
     const routeNetworkSub =
-      routeNetworkGroup.controls.operatingPointRouteNetwork.valueChanges.subscribe(
-        (value) => {
+      routeNetworkGroup.controls.operatingPointRouteNetwork.valueChanges
+        .pipe(
+          filter(
+            () => routeNetworkGroup.controls.operatingPointRouteNetwork.dirty
+          )
+        )
+        .subscribe((value) => {
           if (value) {
             routeNetworkGroup.controls.operatingPointKilometer.setValue(true, {
               emitEvent: false,
@@ -565,8 +582,7 @@ export class ServicePointFormGroupBuilder {
               { emitEvent: false }
             );
           }
-        }
-      );
+        });
 
     const kilometerSub =
       routeNetworkGroup.controls.operatingPointKilometer.valueChanges.subscribe(
@@ -583,8 +599,7 @@ export class ServicePointFormGroupBuilder {
         }
       );
 
-    // todo: mby not needed when this also works over the valueChanges above (l.545)
-    const statusSub =
+    const operatingPointKilometerStatusSub =
       routeNetworkGroup.controls.operatingPointKilometer.statusChanges
         .pipe(
           map(() => routeNetworkGroup.controls.operatingPointKilometer.enabled),
@@ -596,6 +611,21 @@ export class ServicePointFormGroupBuilder {
             routeNetworkGroup.controls.operatingPointKilometer.disable({
               emitEvent: false,
             });
+          }
+        });
+
+    const operatingPointKilometerMasterStatusSub =
+      routeNetworkGroup.controls.operatingPointKilometerMaster.statusChanges
+        .pipe(
+          map(
+            () =>
+              routeNetworkGroup.controls.operatingPointKilometerMaster.enabled
+          ),
+          distinctUntilChanged(),
+          filter((enabled) => enabled)
+        )
+        .subscribe(() => {
+          if (routeNetworkGroup.controls.operatingPointRouteNetwork.value) {
             routeNetworkGroup.controls.operatingPointKilometerMaster.disable({
               emitEvent: false,
             });
@@ -607,7 +637,8 @@ export class ServicePointFormGroupBuilder {
       cleanupFn: () => {
         routeNetworkSub.unsubscribe();
         kilometerSub.unsubscribe();
-        statusSub.unsubscribe();
+        operatingPointKilometerStatusSub.unsubscribe();
+        operatingPointKilometerMasterStatusSub.unsubscribe();
       },
     };
   }
@@ -628,95 +659,125 @@ export class ServicePointFormGroupBuilder {
     return ServicePointType.ServicePoint;
   }
 
-  static getWritableServicePoint(
-    form: FormGroup<ServicePointDetailFormGroup>
-  ): CreateServicePointVersion {
-    const formControls = form.controls;
-    const validityGroupControls = formControls.validityGroup.controls;
-    if (
-      !formControls.country.value ||
-      !formControls.designationOfficial.value ||
-      !formControls.businessOrganisation.value ||
-      !validityGroupControls.validFrom.value ||
-      !validityGroupControls.validTo.value
-    ) {
-      throw 'required fields are not defined';
-    }
+  static mapper = class Mapper {
+    static getWritableServicePoint(
+      form: FormGroup<ServicePointDetailFormGroup>
+    ): CreateServicePointVersion {
+      const formControls = form.controls;
+      const validityGroupControls = formControls.validityGroup.controls;
+      if (
+        !formControls.country.value ||
+        !formControls.designationOfficial.value ||
+        !formControls.businessOrganisation.value ||
+        !validityGroupControls.validFrom.value ||
+        !validityGroupControls.validTo.value
+      ) {
+        throw 'required fields are not defined';
+      }
 
-    const routeNetworkGroupControls = formControls.routeNetworkGroup?.controls;
-    const writableForm: CreateServicePointVersion = {
-      country: formControls.country.value,
-      numberShort: formControls.number.value,
-      designationOfficial: formControls.designationOfficial.value,
-      designationLong: formControls.designationLong.value,
-      abbreviation: formControls.abbreviation.value,
-      businessOrganisation: formControls.businessOrganisation.value,
-      categories: formControls.categories.value,
-      operatingPointRouteNetwork:
-        routeNetworkGroupControls?.operatingPointRouteNetwork.value,
-      validFrom: validityGroupControls.validFrom.value.toDate(),
-      validTo: validityGroupControls.validTo.value.toDate(),
-      operatingPointTrafficPointType:
-        formControls.selectedType.value === 'FARE_STOP'
-          ? 'TARIFF_POINT'
-          : undefined,
-    };
+      const routeNetworkGroupControls =
+        formControls.routeNetworkGroup?.controls;
 
-    if (routeNetworkGroupControls?.operatingPointRouteNetwork.value === false) {
-      writableForm.operatingPointKilometerMasterNumber =
-        routeNetworkGroupControls.operatingPointKilometerMaster.value;
-    }
-
-    const spgControls = formControls.servicePointGeolocation?.controls;
-    if (
-      spgControls?.spatialReference.value &&
-      spgControls.north.value &&
-      spgControls.east.value
-    ) {
-      writableForm.servicePointGeolocation = {
-        spatialReference: spgControls.spatialReference.value,
-        north: spgControls.north.value,
-        east: spgControls.east.value,
-        height: spgControls.height.value,
+      const writableForm: CreateServicePointVersion = {
+        country: formControls.country.value,
+        numberShort: formControls.number.value,
+        designationOfficial: formControls.designationOfficial.value,
+        designationLong: formControls.designationLong.value,
+        abbreviation: formControls.abbreviation.value,
+        businessOrganisation: formControls.businessOrganisation.value,
+        categories: formControls.categories.value,
+        operatingPointRouteNetwork:
+          routeNetworkGroupControls?.operatingPointRouteNetwork.value,
+        validFrom: validityGroupControls.validFrom.value.toDate(),
+        validTo: validityGroupControls.validTo.value.toDate(),
+        operatingPointTrafficPointType:
+          formControls.selectedType.value === 'FARE_STOP'
+            ? 'TARIFF_POINT'
+            : undefined,
       };
+
+      this.mapRouteNetworkControls(routeNetworkGroupControls, writableForm);
+      this.mapGeolocation(formControls, writableForm);
+
+      const spTypeControls = formControls.spTypeGroup?.controls;
+      this.mapOperatingPoint(spTypeControls, writableForm);
+      this.mapStation(spTypeControls, writableForm);
+
+      return writableForm;
     }
 
-    const spTypeControls = formControls.spTypeGroup?.controls;
-    if (
-      spTypeControls &&
-      'operatingPointType' in spTypeControls &&
-      spTypeControls.operatingPointType.value
+    private static mapStation(
+      spTypeControls: StationGroup | OperatingPointGroup | undefined,
+      writableForm: CreateServicePointVersion
     ) {
-      const operatingPointType = spTypeControls.operatingPointType.value;
-      writableForm.operatingPointType = Object.values(OperatingPointType).find(
-        (value) => value === operatingPointType
-      );
+      if (spTypeControls && 'stopPoint' in spTypeControls) {
+        writableForm.freightServicePoint =
+          spTypeControls.freightServicePoint.value;
+        if (spTypeControls.freightPointGroup) {
+          writableForm.sortCodeOfDestinationStation =
+            spTypeControls.freightPointGroup.controls.sortCodeOfDestinationStation.value;
+        }
 
-      writableForm.operatingPointTechnicalTimetableType = Object.values(
-        OperatingPointTechnicalTimetableType
-      ).find((value) => value === operatingPointType);
-    }
-
-    if (spTypeControls && 'stopPoint' in spTypeControls) {
-      writableForm.freightServicePoint =
-        spTypeControls.freightServicePoint.value;
-      if (spTypeControls.freightPointGroup) {
-        writableForm.sortCodeOfDestinationStation =
-          spTypeControls.freightPointGroup.controls.sortCodeOfDestinationStation.value;
-      }
-
-      if (spTypeControls.stopPointGroup) {
-        writableForm.meansOfTransport =
-          spTypeControls.stopPointGroup.controls.meansOfTransport.value;
-        writableForm.stopPointType =
-          spTypeControls.stopPointGroup.controls.stopPointType.value;
+        if (spTypeControls.stopPointGroup) {
+          writableForm.meansOfTransport =
+            spTypeControls.stopPointGroup.controls.meansOfTransport.value;
+          writableForm.stopPointType =
+            spTypeControls.stopPointGroup.controls.stopPointType.value;
+        }
       }
     }
 
-    return writableForm;
-  } // todo: cleanup
+    private static mapOperatingPoint(
+      spTypeControls: StationGroup | OperatingPointGroup | undefined,
+      writableForm: CreateServicePointVersion
+    ) {
+      if (
+        spTypeControls &&
+        'operatingPointType' in spTypeControls &&
+        spTypeControls.operatingPointType.value
+      ) {
+        const operatingPointType = spTypeControls.operatingPointType.value;
+        writableForm.operatingPointType = Object.values(
+          OperatingPointType
+        ).find((value) => value === operatingPointType);
+
+        writableForm.operatingPointTechnicalTimetableType = Object.values(
+          OperatingPointTechnicalTimetableType
+        ).find((value) => value === operatingPointType);
+      }
+    }
+
+    private static mapGeolocation(
+      formControls: ServicePointDetailFormGroup,
+      writableForm: CreateServicePointVersion
+    ) {
+      const spgControls = formControls.servicePointGeolocation?.controls;
+      if (
+        spgControls?.spatialReference.value &&
+        spgControls.north.value &&
+        spgControls.east.value
+      ) {
+        writableForm.servicePointGeolocation = {
+          spatialReference: spgControls.spatialReference.value,
+          north: spgControls.north.value,
+          east: spgControls.east.value,
+          height: spgControls.height.value,
+        };
+      }
+    }
+
+    private static mapRouteNetworkControls(
+      routeNetworkGroupControls: RouteNetworkGroup | undefined,
+      writableForm: CreateServicePointVersion
+    ) {
+      if (
+        routeNetworkGroupControls?.operatingPointRouteNetwork.value === false
+      ) {
+        writableForm.operatingPointKilometerMasterNumber =
+          routeNetworkGroupControls.operatingPointKilometerMaster.value;
+      }
+    }
+  };
 }
 
-// todo: make kilometermasternumber required when bpk is checked
-
-// todo: check if bulkimport logs work with new feature
+// todo: check if bulkimport logs work with new feature, check e2e tests

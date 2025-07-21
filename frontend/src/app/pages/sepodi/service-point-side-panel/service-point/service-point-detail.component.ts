@@ -83,6 +83,7 @@ export class ServicePointDetailComponent
   showVersionSwitch = false;
   selectedVersionIndex!: number;
   form?: FormGroup<ServicePointDetailFormGroup>;
+  private formCleanup = () => {};
 
   hasAbbreviation = false;
   isAbbreviationAllowed = false;
@@ -162,6 +163,7 @@ export class ServicePointDetailComponent
     this.mapService.deselectServicePoint();
     this.onDestroy$.next(true);
     this.onDestroy$.complete();
+    this.formCleanup();
   }
 
   switchVersion(newIndex: number) {
@@ -206,10 +208,11 @@ export class ServicePointDetailComponent
   public initSelectedVersion(version: ReadServicePointVersion) {
     this.terminationInProgress = version.terminationInProgress!;
     this.initShowRevokeButton(version);
-    console.log(this.form);
-    const form = ServicePointFormGroupBuilder.buildFormGroup(version);
-    // this.disableForm(form); todo
-    this.form = form;
+    this.formCleanup();
+    const builtFormGroup = ServicePointFormGroupBuilder.buildFormGroup(version);
+    this.form = builtFormGroup.group;
+    this.formCleanup = builtFormGroup.cleanupFn;
+    this._savedGeographyForm = undefined;
     this.isSwitchVersionDisabled = false;
     this.selectedVersion = version;
     this.displayAndSelectServicePointOnMap();
@@ -265,12 +268,6 @@ export class ServicePointDetailComponent
       });
   }
 
-  // todo
-  private disableForm(form?: FormGroup): void {
-    form?.disable();
-    this._savedGeographyForm = undefined;
-  }
-
   private enableForm(): void {
     this.form?.enable();
     this.validityService.initValidity(this.form!.controls.validityGroup);
@@ -314,10 +311,16 @@ export class ServicePointDetailComponent
       if (this.isStartingTermination(this.form)) {
         this.startTermination();
       } else {
+        const formValue =
+          ServicePointFormGroupBuilder.mapper.getWritableServicePoint(
+            this.form
+          );
         this.validityService.validateAndDisableCustom(
-          () => this.updateVersion(),
-          () => {}
-          // () => this.disableForm() todo
+          () => this.updateVersion(formValue),
+          () => {
+            this.form?.disable({ emitEvent: false });
+            this._savedGeographyForm = undefined;
+          }
         );
       }
     }
@@ -340,7 +343,8 @@ export class ServicePointDetailComponent
           const notEditedForm = ServicePointFormGroupBuilder.buildFormGroup(
             this.selectedVersion!
           );
-          this.terminationService.initTermination(notEditedForm);
+          this.terminationService.initTermination(notEditedForm.group);
+          notEditedForm.cleanupFn();
         }
       });
   }
@@ -453,11 +457,9 @@ export class ServicePointDetailComponent
       });
   }
 
-  updateVersion() {
-    const servicePointVersion =
-      ServicePointFormGroupBuilder.getWritableServicePoint(this.form!);
-    servicePointVersion.etagVersion = this.selectedVersion?.etagVersion;
-    this.update(this.selectedVersion!.id!, servicePointVersion);
+  updateVersion(formValue: CreateServicePointVersion) {
+    formValue.etagVersion = this.selectedVersion?.etagVersion;
+    this.update(this.selectedVersion!.id!, formValue);
   }
 
   addWorkflow() {

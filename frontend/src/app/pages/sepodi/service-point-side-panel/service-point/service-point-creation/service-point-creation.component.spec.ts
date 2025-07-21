@@ -92,9 +92,10 @@ describe('ServicePointCreationComponent', () => {
     );
 
     (
-      spyOn(ServicePointFormGroupBuilder, 'getWritableServicePoint') as Spy<
-        () => Partial<CreateServicePointVersion>
-      >
+      spyOn(
+        ServicePointFormGroupBuilder.mapper,
+        'getWritableServicePoint'
+      ) as Spy<() => Partial<CreateServicePointVersion>>
     ).and.returnValue({
       numberShort: 57385,
     });
