@@ -43,7 +43,8 @@ public class TerminationStopPointNotificationService {
   public void sendCancelNotificationToInfoPlusAndBoAndNova(TerminationStopPointWorkflow workflow) {
     MailNotification notification = builderNotificationService.buildCancelNotification(workflow);
     if (workflow.getInfoPlusDecision() != null) {
-      notification.setTo(List.of(terminationExaminants.getNova().getEmail(), terminationExaminants.getInfoPlus().getEmail()));
+      notification.setTo(List.of(terminationExaminants.getNova().getEmail(), terminationExaminants.getInfoPlus().getEmail(),
+          workflow.getApplicantMail()));
     }
     mailProducerService.produceMailNotification(notification);
   }
