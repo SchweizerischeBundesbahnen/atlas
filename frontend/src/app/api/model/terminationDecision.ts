@@ -10,7 +10,7 @@
 import { JudgementType } from './judgementType';
 
 
-export interface TerminationDecision { 
+export interface TerminationDecision {
     judgement: JudgementType;
     /**
      * Motivation
@@ -21,9 +21,9 @@ export interface TerminationDecision {
      */
     terminationDecisionPerson: TerminationDecision.TerminationDecisionPersonEnum;
     /**
-     * Termination Date 
+     * Termination Date
      */
-    terminationDate: Date;
+    terminationDate?: Date;
     /**
      * Firstname
      */

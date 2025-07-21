@@ -5,26 +5,21 @@ import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.Status;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface SePoDiApi {
 
   String BASEPATH = "/service-point-directory/v1/service-points/";
+  String TERMINATION_BASEPATH = "/service-point-directory/internal/service-points/termination";
 
   @PutMapping(value = BASEPATH + "status/{sloid}/{id}")
   ReadServicePointVersionModel postServicePointsStatusUpdate(@PathVariable("sloid") String sloid, @PathVariable("id") Long id,
       @RequestBody Status status);
-
-  @PutMapping(value = BASEPATH + "/termination/start/{sloid}/{id}")
-  ReadServicePointVersionModel postStartServicePointTermination(@PathVariable("sloid") String sloid,
-      @PathVariable("id") Long id, @RequestBody @Valid UpdateTerminationServicePointModel updateTerminationServicePointModel);
-
-  @PutMapping(value = BASEPATH + "/termination/stop/{sloid}/{id}")
-  ReadServicePointVersionModel postStopServicePointTermination(@PathVariable("sloid") String sloid,
-      @PathVariable("id") Long id);
 
   @PutMapping(value = BASEPATH + "/update-designation-official/{id}")
   ReadServicePointVersionModel updateServicePointDesignationOfficial(
@@ -36,4 +31,18 @@ public interface SePoDiApi {
   ReadServicePointVersionModel getServicePointById(
       @PathVariable("id") Long id
   );
+
+  @PostMapping(value = TERMINATION_BASEPATH + "/start/{sloid}/{id}")
+  ReadServicePointVersionModel startServicePointTermination(@PathVariable("sloid") String sloid,
+      @PathVariable("id") Long id, @RequestBody @Valid UpdateTerminationServicePointModel updateTerminationServicePointModel);
+
+  @PostMapping(value = TERMINATION_BASEPATH + "/stop/{sloid}/{id}")
+  ReadServicePointVersionModel stopServicePointTermination(@PathVariable("sloid") String sloid,
+      @PathVariable("id") Long id);
+
+  @PostMapping(value = TERMINATION_BASEPATH + "/terminate/{sloid}/{id}/{date}")
+  void terminateStopPoint(@PathVariable String sloid, @PathVariable Long id, @PathVariable LocalDate date);
+
+  @PostMapping(value = TERMINATION_BASEPATH + "/change-to-tariff-stop/{sloid}/{id}/{date}")
+  void changeToTariffStop(@PathVariable String sloid, @PathVariable Long id, @PathVariable LocalDate date);
 }
