@@ -31,12 +31,12 @@ describe('TerminationService', () => {
       //given
       const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
       const initialForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       service.initTermination(initialForm);
 
       servicePoint.validTo = new Date('2020-03-31');
       const editedForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       //when
       const result = service.isStartingTermination(editedForm);
       //then
@@ -50,12 +50,12 @@ describe('TerminationService', () => {
           const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
           servicePoint.country = country;
           const initialForm =
-            ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+            ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
           service.initTermination(initialForm);
 
           servicePoint.validTo = new Date('2020-03-30');
           const editedForm =
-            ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+            ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
           //when
           const result = service.isStartingTermination(editedForm);
           //then
@@ -68,13 +68,13 @@ describe('TerminationService', () => {
       //given
       const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
       const initialForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       service.initTermination(initialForm);
 
       servicePoint.validTo = new Date('2020-03-31');
       servicePoint.country = Country.Albania;
       const editedForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       //when
       const result = service.isStartingTermination(editedForm);
       //then
@@ -85,13 +85,13 @@ describe('TerminationService', () => {
       //given
       const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
       const initialForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       service.initTermination(initialForm);
 
       servicePoint.validTo = new Date('2020-03-31');
       servicePoint.stopPoint = false;
       const editedForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       //when
       const result = service.isStartingTermination(editedForm);
       //then
@@ -102,13 +102,13 @@ describe('TerminationService', () => {
       //given
       const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
       const initialForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       service.initTermination(initialForm);
 
       servicePoint.validTo = new Date('2020-03-31');
       servicePoint.abbreviation = 'abb-2';
       const editedForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       //when
       const result = service.isStartingTermination(editedForm);
       //then
@@ -119,13 +119,13 @@ describe('TerminationService', () => {
       //given
       const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
       const initialForm =
-        ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG);
+        ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG).group;
       service.initTermination(initialForm);
 
       servicePoint.validTo = new Date('2020-03-31');
       servicePoint.status = 'DRAFT';
       const editedForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       //when
       const result = service.isStartingTermination(editedForm);
       //then
@@ -136,13 +136,13 @@ describe('TerminationService', () => {
       //given
       const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
       const initialForm =
-        ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG);
+        ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG).group;
       service.initTermination(initialForm);
 
       servicePoint.validTo = new Date('2020-03-31');
       servicePoint.stopPoint = false;
       const editedForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       //when
       const result = service.isStartingTermination(editedForm);
       //then
@@ -153,12 +153,12 @@ describe('TerminationService', () => {
       //given
       const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
       const initialForm =
-        ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG);
+        ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG).group;
       service.initTermination(initialForm);
 
       servicePoint.validTo = new Date('2022-03-31');
       const editedForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       //when
       const result = service.isStartingTermination(editedForm);
       //then
@@ -182,12 +182,12 @@ describe('TerminationService', () => {
       //given
       const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
       const initialForm =
-        ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG);
+        ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG).group;
       service.initTermination(initialForm);
 
       servicePoint.validTo = new Date('2022-03-31');
       const editedForm =
-        ServicePointFormGroupBuilder.buildFormGroup(servicePoint);
+        ServicePointFormGroupBuilder.buildFormGroup(servicePoint).group;
       //when
       const result = service.isStartingTermination(editedForm);
       //then

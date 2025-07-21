@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
@@ -13,7 +18,7 @@ import {
   ServicePointsService,
 } from '../../../../../api';
 import { Countries } from '../../../../../core/country/Countries';
-import { catchError, EMPTY, mergeWith, Subject, take } from 'rxjs';
+import { catchError, EMPTY, mergeWith, Subject } from 'rxjs';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicePointType } from '../service-point-type';
@@ -52,10 +57,11 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class ServicePointCreationComponent
-  implements OnInit, DetailFormComponent
+  implements OnInit, DetailFormComponent, OnDestroy
 {
-  public form: FormGroup<ServicePointDetailFormGroup> =
-    ServicePointFormGroupBuilder.buildEmptyFormGroup();
+  public form: FormGroup<ServicePointDetailFormGroup>;
+  private formCleanup;
+
   public countryOptions: Country[] = [];
   public readonly getCountryEnum = Countries.getCountryEnum;
   public servicePointTypeChanged$: Subject<
@@ -71,6 +77,10 @@ export class ServicePointCreationComponent
     private readonly notificationService: NotificationService,
     private readonly mapService: MapService
   ) {
+    const builtFormGroup = ServicePointFormGroupBuilder.buildEmptyFormGroup();
+    this.form = builtFormGroup.group;
+    this.formCleanup = builtFormGroup.cleanupFn;
+
     this.form.controls.country?.valueChanges
       .pipe(mergeWith(this.servicePointTypeChanged$), takeUntilDestroyed())
       .subscribe(this.handleCountryOrTypeChange);
@@ -117,6 +127,10 @@ export class ServicePointCreationComponent
     }
   }
 
+  ngOnDestroy() {
+    this.formCleanup();
+  }
+
   onGeographyEnabled() {
     ServicePointFormGroupBuilder.addGroupToForm(
       this.form,
@@ -133,25 +147,16 @@ export class ServicePointCreationComponent
   }
 
   async onCancel(): Promise<void> {
-    if (this.form.dirty) {
-      this.dialogService
-        .confirmLeave()
-        .pipe(take(1))
-        .subscribe(async (result) => {
-          if (result) {
-            await this.leaveCreation();
-          }
-        });
-    } else {
-      await this.leaveCreation();
-    }
+    await this.router.navigate(['..'], {
+      relativeTo: this.route,
+    });
   }
 
   onSave(): void {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const servicePointVersion =
-        ServicePointFormGroupBuilder.getWritableServicePoint(this.form);
+        ServicePointFormGroupBuilder.mapper.getWritableServicePoint(this.form);
       const controlsAlreadyDisabled = Object.keys(this.form.controls).filter(
         (key) => this.form.get(key)?.disabled
       );
@@ -217,10 +222,4 @@ export class ServicePointCreationComponent
   private readonly isSupervisorOrAdmin = (sepodiUserPermission: Permission) =>
     sepodiUserPermission.role === ApplicationRole.Supervisor ||
     this.permissionService.isAdmin;
-
-  private async leaveCreation(): Promise<void> {
-    await this.router.navigate(['..'], {
-      relativeTo: this.route,
-    });
-  }
 }
