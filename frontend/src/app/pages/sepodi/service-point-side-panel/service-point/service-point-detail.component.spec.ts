@@ -444,7 +444,9 @@ describe('ServicePointDetailComponent', () => {
     component.isLatestVersionSelected = true;
 
     component.toggleEdit();
-    component.form?.controls.validTo.setValue(moment('2099-12-30'));
+    component.form?.controls.validityGroup.controls.validTo.setValue(
+      moment('2099-12-30')
+    );
     fixture.detectChanges();
     //when
     component.save();
