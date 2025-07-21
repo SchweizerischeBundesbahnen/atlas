@@ -1,16 +1,22 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
-import ch.sbb.atlas.servicepointdirectory.api.StopPointTerminationApiV1;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepointdirectory.api.StopPointTerminationApiInternal;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationDateException;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.helper.ServicePointTerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class StopPointTerminationController implements StopPointTerminationApiV1 {
+public class StopPointTerminationController implements StopPointTerminationApiInternal {
 
   private final ServicePointService servicePointService;
   private final TerminationStopPointFeatureTogglingService terminationStopPointFeatureTogglingService;
@@ -57,6 +63,46 @@ public class StopPointTerminationController implements StopPointTerminationApiV1
     return ServicePointVersionMapper.toModel(
         servicePointService.updateStopPointTerminationStatus(servicePointVersion, servicePointVersions,
             terminationServicePointModel));
+  }
+
+  @Override
+  public void terminateStopPoint(String sloid, Long id, LocalDate date) {
+    ServicePointVersion lastVersion = getLastServicePointVersionCheckedForDate(sloid, id, date);
+
+    ServicePointVersion editedVersion = lastVersion.toBuilder().build();
+    editedVersion.setValidTo(date);
+    servicePointService.updateAndPublish(lastVersion, editedVersion,
+        servicePointService.findAllByNumberOrderByValidFrom(lastVersion.getNumber()));
+  }
+
+  private ServicePointVersion getLastServicePointVersionCheckedForDate(String sloid, Long id, LocalDate date) {
+    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
+
+    stopServicePointTermination(sloid, id);
+
+    List<ServicePointVersion> currentVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
+    ServicePointVersion lastVersion = currentVersions.getLast();
+    if (!DateRange.fromVersionable(lastVersion).contains(date)) {
+      throw new TerminationNotAllowedException(lastVersion.getNumber());
+    }
+    return lastVersion;
+  }
+
+  @Override
+  public void changeToTariffStop(String sloid, Long id, LocalDate date) {
+    ServicePointVersion lastVersion = getLastServicePointVersionCheckedForDate(sloid, id, date);
+
+    ServicePointVersion editedVersion = lastVersion.toBuilder().build();
+    editedVersion.setValidFrom(date);
+    editedVersion.setMeansOfTransport(Collections.emptySet());
+    editedVersion.setStopPointType(null);
+    editedVersion.setServicePointGeolocation(null);
+    editedVersion.setFreightServicePoint(false);
+    editedVersion.setBusinessOrganisation(ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID);
+    editedVersion.setOperatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT);
+
+    servicePointService.updateAndPublish(lastVersion, editedVersion,
+        servicePointService.findAllByNumberOrderByValidFrom(lastVersion.getNumber()));
   }
 
 }
