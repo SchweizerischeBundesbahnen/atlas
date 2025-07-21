@@ -152,7 +152,7 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(CANCEL_TERMINATION_NOTIFICATION);
     assertThat(result.getSubject()).isEqualTo(TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT);
-    assertThat(result.getTo()).hasSize(1).contains("a@b-ch");
+    assertThat(result.getTo()).hasSize(2).containsExactlyInAnyOrder("a@b-ch", "a@b.com");
     assertThat(result.getCc()).isNull();
   }
 }
