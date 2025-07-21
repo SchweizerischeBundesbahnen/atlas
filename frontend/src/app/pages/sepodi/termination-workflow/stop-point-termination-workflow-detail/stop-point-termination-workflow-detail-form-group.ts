@@ -7,6 +7,7 @@ import { StopPointWorkflowDetailFormGroupBuilder } from '../../workflow/detail-p
 import moment, { Moment } from 'moment/moment';
 import { DecisionFormGroupBuilder } from '../../workflow/detail-page/decision/decision-form/decision-form-group';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
+import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 
 export interface StopPointTerminationWorkflowDetailFormGroup {
   boTerminationDate: FormControl<string | null | undefined>;
@@ -94,7 +95,9 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
         terminationDecisionPerson: new FormControl(
           terminationDecision?.terminationDecisionPerson
         ),
-        motivation: new FormControl(terminationDecision?.motivation),
+        motivation: new FormControl(terminationDecision?.motivation, [
+          AtlasFieldLengthValidator.comments,
+        ]),
       },
       {
         validators: DecisionFormGroupBuilder.conditionallyRequired(
