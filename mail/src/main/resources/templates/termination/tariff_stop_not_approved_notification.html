@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml' xmlns:th='http://www.thymeleaf.org'>
+<head>
+    <title th:text="${properties.get(0).get('title')}"></title>
+    <meta charset='UTF-8'>
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: 'IBM Plex Sans', sans-serif;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .logo-container {
+            width: 12%;
+            float: left;
+        }
+
+        .logo {
+            margin: 35px 35px 35px 40px;
+            top: 32px;
+            left: 47px;
+            width: 45px;
+            height: 45px;
+            background-size: 23px 23px;
+        }
+
+        .logo-title {
+            color: #06348b;
+            position: absolute;
+            top: 83px;
+            left: 47px;
+            width: 45px;
+            height: 20px;
+            line-height: 20px;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .header-title {
+            font-size: large;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header-container {
+            width: 100%;
+            height: 100%;
+            float: left;
+            text-align: justify;
+        }
+
+        .ski-color {
+            color: #06348b
+        }
+
+        .content-container {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .header-right {
+            float: left;
+            width: 79%;
+            padding-top: 132px;
+            font-weight: bold;
+            text-align: center;
+            display: inline-block;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:active {
+            text-decoration: underline;
+        }
+
+        .mb-1 {
+            margin-bottom: 48px;
+        }
+
+        .mail-container {
+            padding-bottom: 30px;
+        }
+
+        hr {
+            height: 2px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+<div class="mail-container">
+    <div class='header-container'>
+        <div class='logo-container'>
+            <div class='logo'>
+                <img src="logo-atlas.jpeg" th:src="'cid:' + ${logo}" th:width='45'/>
+                <div class='logo-title'>
+                    atlas
+                </div>
+            </div>
+        </div>
+        <div class='header-right mb-1'>
+            <span class='header-title' th:text="${properties.get(0).get('title')}"></span>
+        </div>
+    </div>
+    <div class='content-container'>
+        <div>
+            <i>Pour la version française voir ci-dessous. / Per la versione in lingua italiana vedi sotto.</i>
+            <br><br>
+            <hr>
+            <div>
+                <br><span>Sehr geehrte Damen und Herren</span><br><br>
+                <span>Der Antrag zur Aufhebung der Haltestelle <b>[[${properties.get(0).get('designationOfficial')}]],
+                    [[${properties.get(0).get('sloid')}]]</b> wurde mit folgender Begründung abgelehnt:
+                </span>
+                <br><br>
+                [[${properties.get(0).get('motivation')}]]
+                <br><br>
+                Die Haltestelle bleibt gültig in atlas bestehen und wird weiterhin durch das zuständige Transportunternehmen
+                verwaltet.
+                <br><br>
+                Sollte ein anderes Transportunternehmen die Haltestelle nutzen, bitten wir Sie, mit diesem einen allfälligen
+                Zuständigkeitswechsel zu prüfen. Passen Sie dazu die Geschäftsorganisation in atlas per vereinbartem Datum an.
+                <br><br>
+                Bei Fragen dürfen Sie sich jederzeit bei der Fachstelle atlas melden: <a
+                    href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
+                <br><br>
+
+                <div>
+                    <br>Freundliche Grüsse<br><br>
+                    Fachstelle atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>SBB AG</b><br>
+                    Infrastruktur, Fahrplan und Betrieb, Kundeninformation<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <br><span>Mesdames et Messieurs</span><br><br>
+                <span>La demande de suppression de l'arrêt <b>[[${properties.get(0).get('designationOfficial')}]],
+                    [[${properties.get(0).get('sloid')}]]</b> a été rejetée avec la justification suivante:
+                </span>
+                <br><br>
+                [[${properties.get(0).get('motivation')}]]
+                <br><br>
+                L'arrêt reste valide dans atlas et continue d'être géré par l'entreprise de transport responsable.
+                <br><br>
+                Si une autre entreprise de transport utilise l'arrêt, veuillez examiner avec cette entreprise de transport un
+                changement de responsabilité de l'arrêt. Pour cela, l'organisation commerciale sera modifiée dans atlas à la date
+                convenue.
+                <br><br>
+                Si vous avez des questions, n'hésitez pas à contacter le service spécialisée atlas: <a href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
+                <br><br>
+                <div>
+                    <br>Meilleures Salutations<br><br>
+                    Service spécialisé atlas<br>
+                    <b>Tâches systémiques d'information à la clientele</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>CFF SA</b><br>
+                    Incrastructure – Horaire et Exploitation, Information à la clientèle<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
+            <hr>
+            <div>
+                <br><span>Gentile signore o signora </span><br><br>
+                <span>La richiesta di soppressione della fermata <b>[[${properties.get(0).get('designationOfficial')}]],
+                    [[${properties.get(0).get('sloid')}]]</b> è stata respinta con la seguente motivazione:
+                </span>
+                <br><br>
+                [[${properties.get(0).get('motivation')}]]
+                <br><br>
+                La fermata rimane valida nell' atlas e continuerà ad essere gestita dall'azienda di trasporto responsabile.
+                <br><br>
+                Se la fermata viene utilizzata da un'altra azienda di trasporto, verificare con quest'ultima se la responsabilità
+                della fermata può essere modificata. L'organizzazione aziendale in atlas sarà modificata alla data concordata.
+                <br><br>
+                Per qualsiasi domanda, è possibile contattare il centro specializzato atlas in qualsiasi momento: <a
+                    href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
+                <br><br>
+                <div>
+                    <br>Cordiali saluti<br><br>
+                    Servizio specializzato atlas<br>
+                    <b>Attività di sistema informazioni alla clientela</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>FFS SA</b><br>
+                    Infrastrutture – Orario ed Esercizio, Informazione della clientela<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
