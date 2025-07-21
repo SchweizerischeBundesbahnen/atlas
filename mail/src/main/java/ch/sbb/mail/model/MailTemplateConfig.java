@@ -4,6 +4,7 @@ import static ch.sbb.atlas.kafka.model.mail.MailType.APPROVED_STOP_POINT_WORKFLO
 import static ch.sbb.atlas.kafka.model.mail.MailType.ATLAS_STANDARD;
 import static ch.sbb.atlas.kafka.model.mail.MailType.BULK_IMPORT_RESULT_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.CANCEL_STOP_POINT_WORKFLOW_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.CANCEL_TERMINATION_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.LINE_APPROVED_WORKFLOW_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.LINE_REJECTED_WORKFLOW_NOTIFICATION;
@@ -16,6 +17,8 @@ import static ch.sbb.atlas.kafka.model.mail.MailType.START_TERMINATION_STOP_POIN
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.TARIFF_STOP_APPROVED_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.TARIFF_STOP_NOT_APPROVED_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.TU_IMPORT;
 import static ch.sbb.atlas.kafka.model.mail.MailType.UPDATE_GEOLOCATION_ERROR_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.UPDATE_GEOLOCATION_SUCCESS_NOTIFICATION;
@@ -56,7 +59,15 @@ public enum MailTemplateConfig {
   STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION_TEMPLATE("stop_point_workflow_restart_cc_notification", null, null, true, false,
       true),
   BULK_IMPORT_RESULT_TEMPLATE("bulk-import-result-template", null, null, true, false, true),
-  START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("termination_stop_point_workflow_notification", null, null, true,
+
+  // StopPoint Termination Workflow
+  START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("termination/start_notification", null, null,
+      true, false, true),
+  TARIFF_STOP_NOT_APPROVED_NOTIFICATION_TEMPLATE("termination/tariff_stop_not_approved_notification", null, null, true,
+      false, true),
+  TARIFF_STOP_APPROVED_NOTIFICATION_TEMPLATE("termination/tariff_stop_approved_notification", null, null, true,
+      false, true),
+  CANCEL_TERMINATION_NOTIFICATION_TEMPLATE("termination/cancel_notification", null, null, true,
       false, true),
 
   ;
@@ -89,7 +100,12 @@ public enum MailTemplateConfig {
     CONFIG.put(STOP_POINT_WORKFLOW_RESTART_NOTIFICATION, STOP_POINT_WORKFLOW_RESTART_NOTIFICATION_TEMPLATE);
     CONFIG.put(STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION, STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION_TEMPLATE);
     CONFIG.put(BULK_IMPORT_RESULT_NOTIFICATION, BULK_IMPORT_RESULT_TEMPLATE);
+
+    // StopPoint Termination Workflow
     CONFIG.put(START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION, START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE);
+    CONFIG.put(TARIFF_STOP_NOT_APPROVED_NOTIFICATION, TARIFF_STOP_NOT_APPROVED_NOTIFICATION_TEMPLATE);
+    CONFIG.put(TARIFF_STOP_APPROVED_NOTIFICATION, TARIFF_STOP_APPROVED_NOTIFICATION_TEMPLATE);
+    CONFIG.put(CANCEL_TERMINATION_NOTIFICATION, CANCEL_TERMINATION_NOTIFICATION_TEMPLATE);
   }
 
   public static MailTemplateConfig getMailTemplateConfig(MailType mailType) {

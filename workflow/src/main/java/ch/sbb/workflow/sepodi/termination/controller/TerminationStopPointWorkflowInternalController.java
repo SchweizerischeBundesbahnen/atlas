@@ -62,7 +62,7 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
   @Override
   public TerminationInfoModel getTerminationInfoBySloid(String sloid) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
-    TerminationStopPointWorkflow terminationWorkflow = service.getTerminationWorkflowBySloid(sloid);
+    TerminationStopPointWorkflow terminationWorkflow = service.getTerminationWorkflowBySloidAndInProgress(sloid);
     return calculateTerminationDate(terminationWorkflow);
   }
 

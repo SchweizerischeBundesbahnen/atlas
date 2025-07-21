@@ -90,7 +90,8 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
         if (
           this.terminationPermission === TerminationDecisionPersonEnum.InfoPlus
         ) {
-          this.showDecisionButton = !this.workflow.infoPlusTerminationDate;
+          this.showDecisionButton =
+            this.workflow.status === TerminationWorkflowStatus.Started;
         }
         if (this.terminationPermission === TerminationDecisionPersonEnum.Nova) {
           this.showDecisionButton = [
@@ -135,12 +136,15 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
     decisionForm.controls.terminationDecisionPerson.setValue(
       this.terminationPermission
     );
-    decisionForm.controls.terminationDate.setValue(
-      moment(
-        this.workflow.infoPlusTerminationDate ??
-          this.workflow.boTerminationDate!
-      )
+    const terminationDatePrefill = moment(
+      this.workflow.infoPlusTerminationDate ?? this.workflow.boTerminationDate!
     );
+    if (
+      this.workflow.status === TerminationWorkflowStatus.TerminationNotApproved
+    ) {
+      terminationDatePrefill.add(1, 'day');
+    }
+    decisionForm.controls.terminationDate.setValue(terminationDatePrefill);
 
     this.terminationDecisionDetailDialogService
       .openDialog(

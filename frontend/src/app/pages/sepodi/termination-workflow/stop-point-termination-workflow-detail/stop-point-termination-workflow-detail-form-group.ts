@@ -112,7 +112,10 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
       judgement: form.controls.judgement.value!,
       motivation: form.controls.motivation.value!,
       terminationDecisionPerson: form.controls.terminationDecisionPerson.value!,
-      terminationDate: form.controls.terminationDate.value!.toDate(),
+      terminationDate:
+        form.controls.judgement.value === JudgementType.Yes
+          ? form.controls.terminationDate.value!.toDate()
+          : undefined,
     };
   }
 }
