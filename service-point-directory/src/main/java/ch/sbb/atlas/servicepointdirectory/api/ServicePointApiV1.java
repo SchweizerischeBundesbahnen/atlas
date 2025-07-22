@@ -32,6 +32,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +43,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Service Points")
 @RequestMapping("v1/service-points")
-//@Validated
+@Validated
 public interface ServicePointApiV1 {
 
   @GetMapping
