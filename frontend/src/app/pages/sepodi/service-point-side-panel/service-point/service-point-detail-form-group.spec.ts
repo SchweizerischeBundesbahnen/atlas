@@ -9,6 +9,7 @@ import {
   CreateServicePointVersion,
   MeanOfTransport,
   OperatingPointType,
+  StopPointType,
 } from '../../../../api';
 import moment from 'moment';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
@@ -33,12 +34,6 @@ describe('ServicePointFormGroup', () => {
     servicePointFormGroup.controls.validityGroup.controls.validTo.setValue(
       moment(new Date(2099 - 10 - 1))
     );
-    servicePointFormGroup.controls.routeNetworkGroup?.controls.operatingPointRouteNetwork.setValue(
-      true
-    );
-    servicePointFormGroup.controls.routeNetworkGroup?.controls.operatingPointKilometerMaster.setValue(
-      7000
-    );
   });
 
   it(
@@ -53,8 +48,9 @@ describe('ServicePointFormGroup', () => {
 
       if (
         !('stopPoint' in servicePointFormGroup.controls.spTypeGroup!.controls)
-      )
+      ) {
         throw 'wrong form group';
+      }
       servicePointFormGroup.controls.spTypeGroup?.controls.stopPoint.setValue(
         true
       );
@@ -66,7 +62,7 @@ describe('ServicePointFormGroup', () => {
       );
       expect(servicePointFormGroup.valid).toBeTrue();
     }
-  ); // todo: check that stopPointtype cannot be unknown or empty
+  );
 
   it('should add validators to include one of stopPoint, freightServicePoint. freightServicePoint needs nothing', () => {
     servicePointFormGroup.controls.selectedType.setValue(
@@ -74,8 +70,11 @@ describe('ServicePointFormGroup', () => {
     );
 
     expect(servicePointFormGroup.valid).toBeFalse();
-    if (!('stopPoint' in servicePointFormGroup.controls.spTypeGroup!.controls))
+    if (
+      !('stopPoint' in servicePointFormGroup.controls.spTypeGroup!.controls)
+    ) {
       throw 'wrong form group';
+    }
     servicePointFormGroup.controls.spTypeGroup?.controls.freightServicePoint.setValue(
       true
     );
@@ -104,15 +103,16 @@ describe('ServicePointFormGroup', () => {
         'operatingPointType' in
         servicePointFormGroup.controls.spTypeGroup!.controls
       )
-    )
+    ) {
       throw 'wrong form group';
+    }
     servicePointFormGroup.controls.spTypeGroup?.controls.operatingPointType.setValue(
       OperatingPointType.InventoryPoint
     );
     expect(servicePointFormGroup.valid).toBeTrue();
   });
 
-  it('should set RouteNetwork false and KilometerMaster undefined when ServicePoint', () => {
+  it('should set RouteNetwork and KilometerMaster undefined when ServicePoint', () => {
     servicePointFormGroup.controls.selectedType.setValue(
       ServicePointType.ServicePoint
     );
@@ -124,10 +124,12 @@ describe('ServicePointFormGroup', () => {
     expect(
       createServicePointVersion.operatingPointKilometerMasterNumber
     ).toEqual(undefined);
-    expect(createServicePointVersion.operatingPointRouteNetwork).toEqual(false);
+    expect(createServicePointVersion.operatingPointRouteNetwork).toEqual(
+      undefined
+    );
   });
 
-  it('should set RouteNetwork false and KilometerMaster undefined when FareStop', () => {
+  it('should set RouteNetwork and KilometerMaster undefined when FareStop', () => {
     servicePointFormGroup.controls.selectedType.setValue(
       ServicePointType.FareStop
     );
@@ -139,12 +141,20 @@ describe('ServicePointFormGroup', () => {
     expect(
       createServicePointVersion.operatingPointKilometerMasterNumber
     ).toEqual(undefined);
-    expect(createServicePointVersion.operatingPointRouteNetwork).toEqual(false);
+    expect(createServicePointVersion.operatingPointRouteNetwork).toEqual(
+      undefined
+    );
   });
 
   it('should set RouteNetwork true and KilometerMaster undefined when OperatingPoint', () => {
     servicePointFormGroup.controls.selectedType.setValue(
       ServicePointType.OperatingPoint
+    );
+    servicePointFormGroup.controls.routeNetworkGroup?.controls.operatingPointKilometerMaster.setValue(
+      7000
+    );
+    servicePointFormGroup.controls.routeNetworkGroup?.controls.operatingPointRouteNetwork.setValue(
+      true
     );
     const createServicePointVersion: CreateServicePointVersion =
       ServicePointFormGroupBuilder.mapper.getWritableServicePoint(
@@ -161,6 +171,12 @@ describe('ServicePointFormGroup', () => {
     servicePointFormGroup.controls.selectedType.setValue(
       ServicePointType.StopPoint
     );
+    servicePointFormGroup.controls.routeNetworkGroup?.controls.operatingPointKilometerMaster.setValue(
+      7000
+    );
+    servicePointFormGroup.controls.routeNetworkGroup?.controls.operatingPointRouteNetwork.setValue(
+      true
+    );
     const createServicePointVersion: CreateServicePointVersion =
       ServicePointFormGroupBuilder.mapper.getWritableServicePoint(
         servicePointFormGroup
@@ -172,18 +188,35 @@ describe('ServicePointFormGroup', () => {
     expect(createServicePointVersion.operatingPointRouteNetwork).toEqual(true);
   });
 
-  it('should init MoT required on existing StopPoint', () => {
+  it('should validate MoT and stopPointType required on existing StopPoint', () => {
     servicePointFormGroup =
       ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG).group;
-    if (!('stopPoint' in servicePointFormGroup.controls.spTypeGroup!.controls))
+    if (
+      !('stopPoint' in servicePointFormGroup.controls.spTypeGroup!.controls)
+    ) {
       throw 'wrong form group';
+    }
+    servicePointFormGroup.enable();
     servicePointFormGroup.controls.spTypeGroup?.controls.stopPointGroup?.controls.meansOfTransport.setValue(
       []
+    );
+    servicePointFormGroup.controls.spTypeGroup?.controls.stopPointGroup?.controls.stopPointType.setValue(
+      undefined
     );
     expect(servicePointFormGroup.valid).toEqual(false);
 
     servicePointFormGroup.controls.spTypeGroup?.controls.stopPointGroup?.controls.meansOfTransport.setValue(
       [MeanOfTransport.Bus]
+    );
+    expect(servicePointFormGroup.valid).toEqual(false);
+
+    servicePointFormGroup.controls.spTypeGroup?.controls.stopPointGroup?.controls.stopPointType.setValue(
+      StopPointType.Unknown
+    );
+    expect(servicePointFormGroup.valid).toEqual(false);
+
+    servicePointFormGroup.controls.spTypeGroup?.controls.stopPointGroup?.controls.stopPointType.setValue(
+      StopPointType.OnRequest
     );
     expect(servicePointFormGroup.valid).toEqual(true);
   });
