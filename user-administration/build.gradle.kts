@@ -36,7 +36,6 @@ dependencies {
     testImplementation(project(":base-atlas", "test"))
     testImplementation(project(":auto-rest-doc"))
     testImplementation("org.springframework.security:spring-security-test")
-    testImplementation("org.springframework.kafka:spring-kafka-test")
 
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:postgresql")
