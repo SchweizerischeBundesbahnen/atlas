@@ -10,10 +10,8 @@ import ch.sbb.workflow.lidi.line.entity.LineWorkflow;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 
 @IntegrationTest
-@EmbeddedKafka(topics = {"atlas.mail"})
 class LineWorkflowBuilderNotificationServiceTest {
 
   @Autowired
