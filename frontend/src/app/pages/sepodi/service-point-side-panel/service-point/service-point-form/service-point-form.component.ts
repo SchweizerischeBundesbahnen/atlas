@@ -28,7 +28,7 @@ import { DialogService } from '../../../../../core/components/dialog/dialog.serv
 import { GeographyComponent } from '../../../geography/geography.component';
 import { Countries } from '../../../../../core/country/Countries';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
-import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
 import { BusinessOrganisationSelectComponent } from '../../../../../core/form-components/bo-select/business-organisation-select.component';
@@ -47,14 +47,12 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './service-point-form.component.html',
   styleUrls: ['./service-point-form.component.scss'],
   imports: [
-    NgIf,
     TextFieldComponent,
     ReactiveFormsModule,
     DateRangeComponent,
     BusinessOrganisationSelectComponent,
     MatLabel,
     MatRadioGroup,
-    NgFor,
     MatRadioButton,
     AtlasFieldErrorComponent,
     SelectComponent,

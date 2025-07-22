@@ -39,7 +39,8 @@ export class TerminationService {
   private checkStartingTermination(
     editedForm: FormGroup<ServicePointDetailFormGroup>
   ) {
-    if (!this.initialFormValues) throw 'initTermination was not called before';
+    if (!this.initialFormValues)
+      throw Error('initTermination was not called before');
     const isStopPoint = !!this.initialFormValues.stopPointType;
     const isStopPointCountryAllowed =
       this.isStopPointCountryTerminationAllowed();
@@ -75,9 +76,11 @@ export class TerminationService {
     initialFormValues: Partial<CreateServicePointVersion>,
     editedFormValues: Partial<CreateServicePointVersion>
   ) {
+    const sortFn = (a: [string, unknown], b: [string, unknown]): number =>
+      a[0].localeCompare(b[0]);
     return (
-      JSON.stringify(Object.entries(initialFormValues).sort()) ===
-      JSON.stringify(Object.entries(editedFormValues).sort())
+      JSON.stringify(Object.entries(initialFormValues).sort(sortFn)) ===
+      JSON.stringify(Object.entries(editedFormValues).sort(sortFn))
     );
   }
 
