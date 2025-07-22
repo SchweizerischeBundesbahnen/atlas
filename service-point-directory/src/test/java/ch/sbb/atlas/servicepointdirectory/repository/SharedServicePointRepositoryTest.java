@@ -131,6 +131,7 @@ class SharedServicePointRepositoryTest {
     bernWylereggV2.setValidFrom(LocalDate.of(2022, 1, 1));
     bernWylereggV2.setValidTo(LocalDate.of(2022, 3, 31));
     bernWylereggV2.setMeansOfTransport(Collections.emptySet());
+    bernWylereggV2.setStopPointType(null);
     servicePointVersionRepository.saveAndFlush(bernWylereggV2);
 
     TrafficPointElementVersion trafficPoint = TrafficPointTestData.getWylerEggPlatform();

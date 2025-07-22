@@ -359,6 +359,7 @@ export class ServicePointFormGroupBuilder {
     const selectedTypeSub =
       formGroup.controls.selectedType.valueChanges.subscribe((selectedType) => {
         if (selectedType === currentSelectedType || !selectedType) return;
+        currentSelectedType = selectedType;
         cleanupFn();
         cleanupFn = () => {};
         selectedSPTypeTransition[selectedType]();
