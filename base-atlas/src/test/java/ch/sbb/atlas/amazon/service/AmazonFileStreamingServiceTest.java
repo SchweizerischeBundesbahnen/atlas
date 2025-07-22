@@ -8,7 +8,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -44,7 +43,7 @@ class AmazonFileStreamingServiceTest {
         "file.json");
 
     //then
-    String result = IOUtils.toString(response.getInputStream(), StandardCharsets.UTF_8);
+    String result = new String(response.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     assertThat(result).isEqualTo(testData);
   }
 
@@ -59,7 +58,7 @@ class AmazonFileStreamingServiceTest {
     InputStreamResource response = amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, "file.json");
 
     //then
-    String result = IOUtils.toString(response.getInputStream(), StandardCharsets.UTF_8);
+    String result =  new String(response.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     assertThat(result).isEqualTo("Tesd data");
   }
 }
