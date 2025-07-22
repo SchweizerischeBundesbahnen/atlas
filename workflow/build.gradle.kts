@@ -33,7 +33,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-    testImplementation("org.springframework.kafka:spring-kafka-test")//get this dependency from :kafka use as api does not work
     testImplementation("org.mockito:mockito-inline:5.2.0")
     testImplementation(project(":base-atlas", "test"))
     testImplementation(project(":auto-rest-doc"))
