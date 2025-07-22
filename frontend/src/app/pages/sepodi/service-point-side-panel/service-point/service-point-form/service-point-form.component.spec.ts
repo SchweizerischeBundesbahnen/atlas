@@ -1,5 +1,4 @@
 import { ServicePointFormComponent } from './service-point-form.component';
-import { FormGroup } from '@angular/forms';
 import {
   ApplicationRole,
   ApplicationType,
@@ -13,10 +12,6 @@ import {
 import { EventEmitter } from '@angular/core';
 import { GeographyComponent } from '../../../geography/geography.component';
 import { of } from 'rxjs';
-import {
-  ServicePointDetailFormGroup,
-  ServicePointFormGroupBuilder,
-} from '../service-point-detail-form-group';
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
@@ -27,14 +22,11 @@ describe('ServicePointFormComponent', () => {
   const geoDataServiceSpy = jasmine.createSpyObj(['getLocationInformation']);
   const authServiceSpy = jasmine.createSpyObj(['getApplicationUserPermission']);
   authServiceSpy.isAdmin = true;
-  let servicePointFormGroup: FormGroup<ServicePointDetailFormGroup>;
+
   const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 
   beforeEach(() => {
     dialogServiceSpy.confirm.and.returnValue(of(true));
-    servicePointFormGroup =
-      ServicePointFormGroupBuilder.buildEmptyFormGroup().group;
-
     component = new ServicePointFormComponent(
       translationSortingServiceSpy,
       dialogServiceSpy,
