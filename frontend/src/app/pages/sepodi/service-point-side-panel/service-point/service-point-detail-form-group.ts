@@ -34,7 +34,7 @@ export interface ServicePointDetailFormGroup {
   country: FormControl<Country | null>;
   number: FormControl<number | undefined>;
   abbreviation: FormControl<string | undefined>;
-  status: FormControl<Status | null | undefined>;
+  status: FormControl<Status | undefined>;
   designationOfficial: FormControl<string | undefined>;
   designationLong: FormControl<string | undefined>;
   businessOrganisation: FormControl<string | undefined>;
@@ -203,7 +203,7 @@ export class ServicePointFormGroupBuilder {
           AtlasCharsetsValidator.uppercaseNumeric,
         ],
       }),
-      status: new FormControl(version.status),
+      status: new FormControl(version.status, { nonNullable: true }),
       designationOfficial: new FormControl(version.designationOfficial, {
         nonNullable: true,
         validators: [
@@ -694,6 +694,7 @@ export class ServicePointFormGroupBuilder {
           formControls.selectedType.value === 'FARE_STOP'
             ? 'TARIFF_POINT'
             : undefined,
+        status: formControls.status.value,
       };
 
       this.mapRouteNetworkControls(routeNetworkGroupControls, writableForm);
@@ -779,5 +780,3 @@ export class ServicePointFormGroupBuilder {
     }
   };
 }
-
-// todo: check if bulkimport logs work with new feature, check e2e tests

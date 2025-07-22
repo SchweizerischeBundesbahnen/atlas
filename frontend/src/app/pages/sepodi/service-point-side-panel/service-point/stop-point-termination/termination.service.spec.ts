@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import {
   ALLOWED_TERMINATION_COUNTRIES,
   TerminationService,
@@ -9,10 +8,9 @@ import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 import { Country } from '../../../../../api';
 import { environment } from '../../../../../../environments/environment';
 
-function init(service: TerminationService) {
+function init() {
   TestBed.configureTestingModule({});
-  service = TestBed.inject(TerminationService);
-  return service;
+  return TestBed.inject(TerminationService);
 }
 
 describe('TerminationService', () => {
@@ -20,7 +18,7 @@ describe('TerminationService', () => {
     let service: TerminationService;
 
     beforeEach(() => {
-      service = init(service);
+      service = init();
     });
 
     it('should be created', () => {
@@ -149,7 +147,7 @@ describe('TerminationService', () => {
       expect(result).toBeFalse();
     });
 
-    it('should not start termination when edited validTo is in the feature', () => {
+    it('should not start termination when edited validTo is in the future', () => {
       //given
       const servicePoint = JSON.parse(JSON.stringify(BERN_WYLEREGG));
       const initialForm =
@@ -170,7 +168,7 @@ describe('TerminationService', () => {
     let service: TerminationService;
 
     beforeEach(() => {
-      service = init(service);
+      service = init();
       environment.terminationWorkflowEnabled = false;
     });
 
