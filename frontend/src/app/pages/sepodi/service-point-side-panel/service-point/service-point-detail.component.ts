@@ -32,7 +32,6 @@ import { PermissionService } from '../../../../core/auth/permission/permission.s
 import { AddStopPointWorkflowDialogService } from '../../workflow/add-dialog/add-stop-point-workflow-dialog.service';
 import { takeUntil } from 'rxjs/operators';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
-import { NgIf } from '@angular/common';
 import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
 import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
 import { ServicePointFormComponent } from './service-point-form/service-point-form.component';
@@ -54,7 +53,6 @@ import { TerminationService } from './stop-point-termination/termination.service
   providers: [ValidityService],
   imports: [
     DetailPageContainerComponent,
-    NgIf,
     SwitchVersionComponent,
     NavigationSepodiPrmComponent,
     ServicePointFormComponent,
