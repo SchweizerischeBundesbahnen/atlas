@@ -2,7 +2,6 @@ package ch.sbb.line.directory.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,10 +28,9 @@ class TimetableYearChangeControllerInternalApiTest extends BaseControllerApiTest
     mvc.perform(get("/internal/timetable-year-change/" + year))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
         .andExpect(jsonPath("$.message",
-            is("Constraint for Path parameter was violated: [Path parameter 'year' value '1699' must be greater than or equal "
-                + "to 1700]")));
+            is("Following constraints were violated: [Property 'getTimetableYearChange.year' has invalid value: '1699']")));
   }
 
   @Test
@@ -43,10 +41,9 @@ class TimetableYearChangeControllerInternalApiTest extends BaseControllerApiTest
     mvc.perform(get("/internal/timetable-year-change/" + year))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
         .andExpect(jsonPath("$.message",
-            is("Constraint for Path parameter was violated: [Path parameter 'year' value '10000' must be less than or equal to "
-                + "9999]")));
+            is("Following constraints were violated: [Property 'getTimetableYearChange.year' has invalid value: '10000']")));
   }
 
   @Test
@@ -57,10 +54,9 @@ class TimetableYearChangeControllerInternalApiTest extends BaseControllerApiTest
     mvc.perform(get("/internal/timetable-year-change/next-years/" + count))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
         .andExpect(jsonPath("$.message",
-            is("Constraint for Path parameter was violated: [Path parameter 'count' value '0' must be greater than or equal to "
-                + "1]")));
+            is("Following constraints were violated: [Property 'getNextTimetablesYearChange.count' has invalid value: '0']")));
   }
 
   @Test
@@ -71,10 +67,9 @@ class TimetableYearChangeControllerInternalApiTest extends BaseControllerApiTest
     mvc.perform(get("/internal/timetable-year-change/next-years/" + count))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
         .andExpect(jsonPath("$.message",
-            is("Constraint for Path parameter was violated: [Path parameter 'count' value '101' must be less than or equal to "
-                + "100]")));
+            is("Following constraints were violated: [Property 'getNextTimetablesYearChange.count' has invalid value: '101']")));
   }
 
   @Test
