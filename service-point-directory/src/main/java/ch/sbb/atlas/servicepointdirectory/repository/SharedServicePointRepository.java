@@ -56,7 +56,7 @@ public class SharedServicePointRepository {
               sharedServicePointVersionModel.getTrafficPointSloids().add(trafficPointElementSloid);
             }
             if (stopPoint) {
-              sharedServicePointVersionModel.setStopPoint(stopPoint);
+              sharedServicePointVersionModel.setStopPoint(true);
             }
           } else {
             SharedServicePointVersionModel servicePoint = SharedServicePointVersionModel.builder()
