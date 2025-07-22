@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
@@ -17,7 +16,6 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 @Slf4j
 @RequiredArgsConstructor
 @Import(SharedKafkaConfig.class)
-@Profile("!integration-test")
 public class KafkaConfig {
 
   private final KafkaProperties kafkaProperties;
