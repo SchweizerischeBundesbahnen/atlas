@@ -400,41 +400,45 @@ export class ServicePointFormGroupBuilder {
       AtLeastOneValidator.of('stopPoint', 'freightServicePoint')
     );
 
+    const handleStopPointChecked = () => {
+      this.addGroupToForm(
+        stationGroup,
+        'stopPointGroup',
+        this.emptyStopPointGroup(version)
+      );
+    };
+
+    const handleStopPointUnchecked = () => {
+      this.removeGroupFromForm(stationGroup, 'stopPointGroup');
+    };
+
     const stopPointSub = stationGroup.controls.stopPoint.valueChanges.subscribe(
-      (value) => {
-        if (value) {
-          this.addGroupToForm(
-            stationGroup,
-            'stopPointGroup',
-            this.emptyStopPointGroup(version)
-          );
-        } else {
-          this.removeGroupFromForm(stationGroup, 'stopPointGroup');
-        }
-      }
+      (checked) =>
+        checked ? handleStopPointChecked() : handleStopPointUnchecked()
     );
 
     let emptyFreightPointGroup:
       | ReturnType<typeof this.emptyFreightPointGroup>
       | undefined;
+
+    const handleFreightPointChecked = () => {
+      emptyFreightPointGroup = this.emptyFreightPointGroup(formGroup, version);
+      this.addGroupToForm(
+        stationGroup,
+        'freightPointGroup',
+        emptyFreightPointGroup.group
+      );
+    };
+
+    const handleFreightPointUnchecked = () => {
+      emptyFreightPointGroup?.cleanupFn();
+      this.removeGroupFromForm(stationGroup, 'freightPointGroup');
+    };
+
     const freightPointSub =
       stationGroup.controls.freightServicePoint.valueChanges.subscribe(
-        (value) => {
-          if (value) {
-            emptyFreightPointGroup = this.emptyFreightPointGroup(
-              formGroup,
-              version
-            );
-            this.addGroupToForm(
-              stationGroup,
-              'freightPointGroup',
-              emptyFreightPointGroup.group
-            );
-          } else {
-            emptyFreightPointGroup?.cleanupFn();
-            this.removeGroupFromForm(stationGroup, 'freightPointGroup');
-          }
-        }
+        (checked) =>
+          checked ? handleFreightPointChecked() : handleFreightPointUnchecked()
       );
 
     return {
@@ -548,6 +552,36 @@ export class ServicePointFormGroupBuilder {
       ),
     });
 
+    const handleOperatingPointRouteNetworkChecked = () => {
+      routeNetworkGroup.controls.operatingPointKilometer.setValue(true, {
+        emitEvent: false,
+      });
+      routeNetworkGroup.controls.operatingPointKilometer.disable({
+        emitEvent: false,
+      });
+      routeNetworkGroup.controls.operatingPointKilometerMaster.setValue(
+        version?.number.number,
+        { emitEvent: false }
+      );
+      routeNetworkGroup.controls.operatingPointKilometerMaster.disable({
+        emitEvent: false,
+      });
+    };
+
+    const handleOperatingPointRouteNetworkUnchecked = () => {
+      routeNetworkGroup.controls.operatingPointKilometer.setValue(false);
+      routeNetworkGroup.controls.operatingPointKilometer.enable({
+        emitEvent: false,
+      });
+      routeNetworkGroup.controls.operatingPointKilometerMaster.reset(
+        {
+          value: undefined,
+          disabled: false,
+        },
+        { emitEvent: false }
+      );
+    };
+
     const routeNetworkSub =
       routeNetworkGroup.controls.operatingPointRouteNetwork.valueChanges
         .pipe(
@@ -555,35 +589,11 @@ export class ServicePointFormGroupBuilder {
             () => routeNetworkGroup.controls.operatingPointRouteNetwork.dirty
           )
         )
-        .subscribe((value) => {
-          if (value) {
-            routeNetworkGroup.controls.operatingPointKilometer.setValue(true, {
-              emitEvent: false,
-            });
-            routeNetworkGroup.controls.operatingPointKilometer.disable({
-              emitEvent: false,
-            });
-            routeNetworkGroup.controls.operatingPointKilometerMaster.setValue(
-              version?.number.number,
-              { emitEvent: false }
-            );
-            routeNetworkGroup.controls.operatingPointKilometerMaster.disable({
-              emitEvent: false,
-            });
-          } else {
-            routeNetworkGroup.controls.operatingPointKilometer.setValue(false);
-            routeNetworkGroup.controls.operatingPointKilometer.enable({
-              emitEvent: false,
-            });
-            routeNetworkGroup.controls.operatingPointKilometerMaster.reset(
-              {
-                value: undefined,
-                disabled: false,
-              },
-              { emitEvent: false }
-            );
-          }
-        });
+        .subscribe((checked) =>
+          checked
+            ? handleOperatingPointRouteNetworkChecked()
+            : handleOperatingPointRouteNetworkUnchecked()
+        );
 
     const kilometerSub =
       routeNetworkGroup.controls.operatingPointKilometer.valueChanges.subscribe(
@@ -660,7 +670,7 @@ export class ServicePointFormGroupBuilder {
     return ServicePointType.ServicePoint;
   }
 
-  static mapper = class Mapper {
+  static readonly mapper = class Mapper {
     static getWritableServicePoint(
       form: FormGroup<ServicePointDetailFormGroup>
     ): CreateServicePointVersion {
@@ -673,7 +683,7 @@ export class ServicePointFormGroupBuilder {
         !validityGroupControls.validFrom.value ||
         !validityGroupControls.validTo.value
       ) {
-        throw 'required fields are not defined';
+        throw Error('required fields are not defined');
       }
 
       const routeNetworkGroupControls =

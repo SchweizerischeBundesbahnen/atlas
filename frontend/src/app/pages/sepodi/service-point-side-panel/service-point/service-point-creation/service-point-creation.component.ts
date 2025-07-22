@@ -60,7 +60,7 @@ export class ServicePointCreationComponent
   implements OnInit, DetailFormComponent, OnDestroy
 {
   public form: FormGroup<ServicePointDetailFormGroup>;
-  private formCleanup;
+  private readonly formCleanup;
 
   public countryOptions: Country[] = [];
   public readonly getCountryEnum = Countries.getCountryEnum;
