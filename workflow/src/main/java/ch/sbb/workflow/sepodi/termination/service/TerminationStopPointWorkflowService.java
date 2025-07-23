@@ -3,6 +3,7 @@ package ch.sbb.workflow.sepodi.termination.service;
 import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.STARTED;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
@@ -115,14 +116,22 @@ public class TerminationStopPointWorkflowService {
     terminationWorkflow.setNovaTerminationDate(decisionModel.getTerminationDate());
 
     if (decisionModel.getJudgement() == JudgementType.YES) {
-      sePoDiAdminClient.terminateStopPoint(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId(),
-          terminationWorkflow.getNovaTerminationDate());
+      sePoDiAdminClient.terminateStopPoint(StopPointWorkflowTerminationModel.builder()
+          .sloid(terminationWorkflow.getSloid())
+          .versionId(terminationWorkflow.getVersionId())
+          .terminationDate(terminationWorkflow.getNovaTerminationDate())
+          .build());
       terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_APPROVED);
     }
     if (decisionModel.getJudgement() == JudgementType.NO) {
       LocalDate terminationDate = TerminationHelper.getTerminationDate(terminationWorkflow);
-      sePoDiAdminClient.changeToTariffStop(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId(),
-          terminationDate.plusDays(1));
+      sePoDiAdminClient.changeToTariffStop(
+          StopPointWorkflowTerminationModel.builder()
+              .sloid(terminationWorkflow.getSloid())
+              .versionId(terminationWorkflow.getVersionId())
+              .terminationDate(terminationDate.plusDays(1))
+              .build()
+      );
       terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
     }
     return repository.save(terminationWorkflow);

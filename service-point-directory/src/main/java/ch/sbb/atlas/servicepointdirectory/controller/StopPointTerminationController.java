@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
+import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -15,7 +16,6 @@ import ch.sbb.atlas.servicepointdirectory.helper.ServicePointTerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -66,34 +66,34 @@ public class StopPointTerminationController implements StopPointTerminationApiIn
   }
 
   @Override
-  public void terminateStopPoint(String sloid, Long id, LocalDate date) {
-    ServicePointVersion lastVersion = getLastServicePointVersionCheckedForDate(sloid, id, date);
+  public void terminateStopPoint(StopPointWorkflowTerminationModel terminationModel) {
+    ServicePointVersion lastVersion = getLastServicePointVersionCheckedForDate(terminationModel);
 
     ServicePointVersion editedVersion = lastVersion.toBuilder().build();
-    editedVersion.setValidTo(date);
+    editedVersion.setValidTo(terminationModel.getTerminationDate());
     servicePointService.updateAndPublish(lastVersion, editedVersion,
         servicePointService.findAllByNumberOrderByValidFrom(lastVersion.getNumber()));
   }
 
-  private ServicePointVersion getLastServicePointVersionCheckedForDate(String sloid, Long id, LocalDate date) {
+  private ServicePointVersion getLastServicePointVersionCheckedForDate(StopPointWorkflowTerminationModel terminationModel) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
 
-    stopServicePointTermination(sloid, id);
+    stopServicePointTermination(terminationModel.getSloid(), terminationModel.getVersionId());
 
-    List<ServicePointVersion> currentVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
+    List<ServicePointVersion> currentVersions = servicePointService.findBySloidAndOrderByValidFrom(terminationModel.getSloid());
     ServicePointVersion lastVersion = currentVersions.getLast();
-    if (!DateRange.fromVersionable(lastVersion).contains(date)) {
+    if (!DateRange.fromVersionable(lastVersion).contains(terminationModel.getTerminationDate())) {
       throw new TerminationNotAllowedException(lastVersion.getNumber());
     }
     return lastVersion;
   }
 
   @Override
-  public void changeToTariffStop(String sloid, Long id, LocalDate date) {
-    ServicePointVersion lastVersion = getLastServicePointVersionCheckedForDate(sloid, id, date);
+  public void changeToTariffStop(StopPointWorkflowTerminationModel terminationModel) {
+    ServicePointVersion lastVersion = getLastServicePointVersionCheckedForDate(terminationModel);
 
     ServicePointVersion editedVersion = lastVersion.toBuilder().build();
-    editedVersion.setValidFrom(date);
+    editedVersion.setValidFrom(terminationModel.getTerminationDate());
     editedVersion.setMeansOfTransport(Collections.emptySet());
     editedVersion.setStopPointType(null);
     editedVersion.setServicePointGeolocation(null);
