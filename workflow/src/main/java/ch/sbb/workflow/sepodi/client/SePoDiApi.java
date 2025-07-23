@@ -1,11 +1,11 @@
 package ch.sbb.workflow.sepodi.client;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.Status;
 import jakarta.validation.Valid;
-import java.time.LocalDate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,9 +40,9 @@ public interface SePoDiApi {
   ReadServicePointVersionModel stopServicePointTermination(@PathVariable("sloid") String sloid,
       @PathVariable("id") Long id);
 
-  @PostMapping(value = TERMINATION_BASEPATH + "/terminate/{sloid}/{id}/{date}")
-  void terminateStopPoint(@PathVariable String sloid, @PathVariable Long id, @PathVariable LocalDate date);
+  @PostMapping(value = TERMINATION_BASEPATH + "/terminate")
+  void terminateStopPoint(@RequestBody @Valid StopPointWorkflowTerminationModel terminationModel);
 
-  @PostMapping(value = TERMINATION_BASEPATH + "/change-to-tariff-stop/{sloid}/{id}/{date}")
-  void changeToTariffStop(@PathVariable String sloid, @PathVariable Long id, @PathVariable LocalDate date);
+  @PostMapping(value = TERMINATION_BASEPATH + "/change-to-tariff-stop")
+  void changeToTariffStop(@RequestBody @Valid StopPointWorkflowTerminationModel terminationModel);
 }
