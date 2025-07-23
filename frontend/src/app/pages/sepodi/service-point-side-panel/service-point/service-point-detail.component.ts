@@ -46,6 +46,10 @@ import { PrmRecordingObligationComponent } from '../../../../core/prm-recording-
 import { StopPointTerminationDialogService } from './stop-point-termination/stop-point-termination-dialog/stop-point-termination-dialog.service';
 import { StopPointTerminationInfoComponent } from './stop-point-termination/stop-point-termination-info/stop-point-termination-info.component';
 import { TerminationService } from './stop-point-termination/termination.service';
+import {
+  addGroupToForm,
+  removeGroupFromForm,
+} from '../../../../core/util/forms';
 
 @Component({
   selector: 'app-service-point',
@@ -81,7 +85,7 @@ export class ServicePointDetailComponent
   showVersionSwitch = false;
   selectedVersionIndex!: number;
   form?: FormGroup<ServicePointDetailFormGroup>;
-  private formCleanup = () => {};
+  private readonly formDestroy$ = new Subject<void>();
 
   hasAbbreviation = false;
   isAbbreviationAllowed = false;
@@ -137,7 +141,7 @@ export class ServicePointDetailComponent
 
   onGeographyEnabled() {
     if (this.form && !this.form.controls.servicePointGeolocation) {
-      ServicePointFormGroupBuilder.addGroupToForm(
+      addGroupToForm(
         this.form,
         'servicePointGeolocation',
         this._savedGeographyForm ?? GeographyFormGroupBuilder.buildFormGroup()
@@ -149,10 +153,7 @@ export class ServicePointDetailComponent
   onGeographyDisabled() {
     if (this.form?.controls.servicePointGeolocation) {
       this._savedGeographyForm = this.form.controls.servicePointGeolocation;
-      ServicePointFormGroupBuilder.removeGroupFromForm(
-        this.form,
-        'servicePointGeolocation'
-      );
+      removeGroupFromForm(this.form, 'servicePointGeolocation');
       this.form.markAsDirty();
     }
   }
@@ -161,7 +162,8 @@ export class ServicePointDetailComponent
     this.mapService.deselectServicePoint();
     this.onDestroy$.next(true);
     this.onDestroy$.complete();
-    this.formCleanup();
+    this.formDestroy$.next();
+    this.formDestroy$.complete();
   }
 
   switchVersion(newIndex: number) {
@@ -206,10 +208,11 @@ export class ServicePointDetailComponent
   public initSelectedVersion(version: ReadServicePointVersion) {
     this.terminationInProgress = version.terminationInProgress!;
     this.initShowRevokeButton(version);
-    this.formCleanup();
-    const builtFormGroup = ServicePointFormGroupBuilder.buildFormGroup(version);
-    this.form = builtFormGroup.group;
-    this.formCleanup = builtFormGroup.cleanupFn;
+    this.formDestroy$.next();
+    this.form = ServicePointFormGroupBuilder.buildFormGroup(
+      version,
+      this.formDestroy$
+    );
     this._savedGeographyForm = undefined;
     this.isSwitchVersionDisabled = false;
     this.selectedVersion = version;
@@ -339,10 +342,10 @@ export class ServicePointDetailComponent
             .then();
         } else {
           const notEditedForm = ServicePointFormGroupBuilder.buildFormGroup(
-            this.selectedVersion!
+            this.selectedVersion!,
+            this.formDestroy$ // todo: check termination
           );
-          this.terminationService.initTermination(notEditedForm.group);
-          notEditedForm.cleanupFn();
+          this.terminationService.initTermination(notEditedForm);
         }
       });
   }
