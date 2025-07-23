@@ -83,6 +83,9 @@ public class AtlasExceptionHandler {
   @ExceptionHandler(value = FeignException.class)
   public ResponseEntity<ErrorResponse> handleFeignException(FeignException feignException) throws IOException {
     Optional<ByteBuffer> responseBody = feignException.responseBody();
+    log.info("FeignException occurred on {} {}: ", feignException.request().httpMethod(),
+        feignException.request().url(), feignException);
+
     if (responseBody.isPresent()) {
       String responseBodyContent = new String(responseBody.get().array());
       ErrorResponse response = objectMapper.readValue(responseBodyContent, ErrorResponse.class);

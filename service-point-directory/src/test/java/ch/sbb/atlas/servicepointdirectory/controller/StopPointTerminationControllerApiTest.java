@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
+import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.journey.poi.model.CountryCode;
@@ -171,9 +172,13 @@ class StopPointTerminationControllerApiTest extends BaseControllerApiTest {
 
     ServicePointVersion version = repository.save(servicePointVersion);
 
-    mvc.perform(post(
-            "/internal/service-points/termination/terminate/" + version.getSloid() + "/" + version.getId() + "/" + LocalDate.of(2030,
-                12, 31)))
+    StopPointWorkflowTerminationModel terminationModel = StopPointWorkflowTerminationModel.builder()
+        .sloid(version.getSloid())
+        .versionId(version.getId())
+        .terminationDate(LocalDate.of(2030, 12, 31))
+        .build();
+    mvc.perform(post("/internal/service-points/termination/terminate").contentType(contentType)
+            .content(mapper.writeValueAsString(terminationModel)))
         .andExpect(status().isOk());
 
     List<ServicePointVersion> result = repository.findAllByNumberOrderByValidFrom(version.getNumber());
@@ -195,9 +200,13 @@ class StopPointTerminationControllerApiTest extends BaseControllerApiTest {
     ServicePointVersion version = repository.save(servicePointVersion);
     Long id = version.getId();
 
-    mvc.perform(post(
-            "/internal/service-points/termination/change-to-tariff-stop/" + version.getSloid() + "/" + id + "/" + LocalDate.of(2030,
-                12, 31)))
+    StopPointWorkflowTerminationModel terminationModel = StopPointWorkflowTerminationModel.builder()
+        .sloid(version.getSloid())
+        .versionId(id)
+        .terminationDate(LocalDate.of(2030, 12, 31))
+        .build();
+    mvc.perform(post("/internal/service-points/termination/change-to-tariff-stop").contentType(contentType)
+            .content(mapper.writeValueAsString(terminationModel)))
         .andExpect(status().isOk());
 
     List<ServicePointVersion> result = repository.findAllByNumberOrderByValidFrom(version.getNumber());
