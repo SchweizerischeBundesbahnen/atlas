@@ -19,7 +19,6 @@ import {
 } from '../../../../../api';
 import { Countries } from '../../../../../core/country/Countries';
 import { catchError, EMPTY, mergeWith, Subject } from 'rxjs';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicePointType } from '../service-point-type';
 import { NotificationService } from '../../../../../core/notification/notification.service';
@@ -37,6 +36,10 @@ import { GeographyComponent } from '../../../geography/geography.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import {
+  addGroupToForm,
+  removeGroupFromForm,
+} from '../../../../../core/util/forms';
 
 @Component({
   selector: 'app-service-point-creation',
@@ -60,7 +63,7 @@ export class ServicePointCreationComponent
   implements OnInit, DetailFormComponent, OnDestroy
 {
   public form: FormGroup<ServicePointDetailFormGroup>;
-  private readonly formCleanup;
+  private readonly formDestroy$ = new Subject<void>();
 
   public countryOptions: Country[] = [];
   public readonly getCountryEnum = Countries.getCountryEnum;
@@ -70,16 +73,15 @@ export class ServicePointCreationComponent
 
   constructor(
     private readonly permissionService: PermissionService,
-    private readonly dialogService: DialogService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly servicePointService: ServicePointsService,
     private readonly notificationService: NotificationService,
     private readonly mapService: MapService
   ) {
-    const builtFormGroup = ServicePointFormGroupBuilder.buildEmptyFormGroup();
-    this.form = builtFormGroup.group;
-    this.formCleanup = builtFormGroup.cleanupFn;
+    this.form = ServicePointFormGroupBuilder.buildEmptyFormGroup(
+      this.formDestroy$
+    );
 
     this.form.controls.country?.valueChanges
       .pipe(mergeWith(this.servicePointTypeChanged$), takeUntilDestroyed())
@@ -128,11 +130,12 @@ export class ServicePointCreationComponent
   }
 
   ngOnDestroy() {
-    this.formCleanup();
+    this.formDestroy$.next();
+    this.formDestroy$.complete();
   }
 
   onGeographyEnabled() {
-    ServicePointFormGroupBuilder.addGroupToForm(
+    addGroupToForm(
       this.form,
       'servicePointGeolocation',
       GeographyFormGroupBuilder.buildFormGroup()
@@ -140,10 +143,7 @@ export class ServicePointCreationComponent
   }
 
   onGeographyDisabled() {
-    ServicePointFormGroupBuilder.removeGroupFromForm(
-      this.form,
-      'servicePointGeolocation'
-    );
+    removeGroupFromForm(this.form, 'servicePointGeolocation');
   }
 
   async onCancel(): Promise<void> {
