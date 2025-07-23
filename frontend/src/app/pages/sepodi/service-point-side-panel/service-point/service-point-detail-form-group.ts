@@ -27,8 +27,12 @@ import {
 import { ServicePointType } from './service-point-type';
 import { Moment } from 'moment/moment';
 import { AtLeastOneValidator } from '../../../../core/validation/boolean-cross-validator/at-least-one-validator';
-import { filter, map } from 'rxjs/operators';
-import { distinctUntilChanged } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, mergeWith, Observable, Subject } from 'rxjs';
+import {
+  addGroupToForm,
+  removeGroupFromForm,
+} from '../../../../core/util/forms';
 
 export interface ServicePointDetailFormGroup {
   country: FormControl<Country | null>;
@@ -88,39 +92,8 @@ const stopPointTypeRequiredValidator = (
   return null;
 };
 
-type BuiltFormGroup = {
-  cleanupFn: () => void;
-  group: FormGroup<ServicePointDetailFormGroup>;
-};
-
 export class ServicePointFormGroupBuilder {
-  static addGroupToForm<
-    T extends {
-      [K in keyof T]: AbstractControl;
-    },
-  >(
-    form: FormGroup<T>,
-    controlName: string & keyof T,
-    group: Required<T>[string & keyof T]
-  ) {
-    form.addControl(controlName, group, { emitEvent: false });
-  }
-
-  static removeGroupFromForm<
-    T extends {
-      [K in keyof T]: AbstractControl;
-    },
-  >(
-    form: FormGroup<T>,
-    controlName: {
-      [K in keyof T]-?: undefined extends T[K] ? K : never;
-    }[keyof T] &
-      string
-  ) {
-    form.removeControl(controlName, { emitEvent: false });
-  }
-
-  static buildEmptyFormGroup(): BuiltFormGroup {
+  static buildEmptyFormGroup(formDestroy$: Observable<void>) {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>({
       number: new FormControl(
         { value: undefined, disabled: true },
@@ -183,13 +156,14 @@ export class ServicePointFormGroupBuilder {
       ),
     });
 
-    return {
-      cleanupFn: this.handleServicePointTypes(formGroup),
-      group: formGroup,
-    };
+    this.handleServicePointTypes(formGroup, formDestroy$);
+    return formGroup;
   }
 
-  static buildFormGroup(version: ReadServicePointVersion): BuiltFormGroup {
+  static buildFormGroup(
+    version: ReadServicePointVersion,
+    formDestroy$: Observable<void>
+  ) {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>({
       number: new FormControl(version.number.numberShort, {
         nonNullable: true,
@@ -258,117 +232,99 @@ export class ServicePointFormGroupBuilder {
       );
     }
 
-    const cleanupFn = this.handleServicePointTypes(formGroup, version);
+    this.handleServicePointTypes(formGroup, formDestroy$, version);
     formGroup.disable({ emitEvent: false });
 
-    return {
-      cleanupFn,
-      group: formGroup,
-    };
+    return formGroup;
   }
 
   private static handleServicePointTypes(
     formGroup: FormGroup<ServicePointDetailFormGroup>,
+    formDestroy$: Observable<void>,
     version?: ReadServicePointVersion
   ) {
-    let currentSelectedType = formGroup.controls.selectedType.value;
-    let cleanupFn = () => {};
+    const selectedTypeSwitch$ = new Subject<void>();
+    const selectedTypeDestroy$ = selectedTypeSwitch$.pipe(
+      takeUntil(formDestroy$),
+      mergeWith(formDestroy$)
+    );
 
-    const selectedSPTypeTransition = {
-      [ServicePointType.StopPoint]: () => {
-        const emptyStationGroup = this.emptyStationGroup(formGroup, version);
-        this.addGroupToForm(formGroup, 'spTypeGroup', emptyStationGroup.group);
-        const routeNetworkGroup = this.routeNetworkGroup(version);
-        this.addGroupToForm(
+    this.handleSelectedType(
+      formGroup,
+      selectedTypeDestroy$,
+      version,
+      formGroup.controls.selectedType.value
+    );
+
+    // todo: filter !pristine events
+    formGroup.controls.selectedType.valueChanges
+      .pipe(takeUntil(formDestroy$))
+      .subscribe((selectedType) => {
+        if (!selectedType) return;
+        selectedTypeSwitch$.next();
+        this.handleSelectedType(
           formGroup,
-          'routeNetworkGroup',
-          routeNetworkGroup.group
+          selectedTypeDestroy$,
+          version,
+          selectedType
         );
-        cleanupFn = () => {
-          emptyStationGroup.cleanupFn();
-          routeNetworkGroup.cleanupFn();
-          this.removeGroupFromForm(formGroup, 'spTypeGroup');
-          this.removeGroupFromForm(formGroup, 'routeNetworkGroup');
-        };
-      },
-      [ServicePointType.OperatingPoint]: () => {
-        this.addGroupToForm(
+      });
+  }
+
+  private static handleSelectedType(
+    formGroup: FormGroup<ServicePointDetailFormGroup>,
+    selectedTypeDestroy$: Observable<void>,
+    version?: ReadServicePointVersion,
+    selectedType?: ServicePointType
+  ) {
+    removeGroupFromForm(formGroup, 'spTypeGroup');
+    removeGroupFromForm(formGroup, 'routeNetworkGroup');
+    switch (selectedType) {
+      case 'OPERATING_POINT': {
+        addGroupToForm(
           formGroup,
           'spTypeGroup',
           this.emptyOperatingGroup(version)
         );
-        const routeNetworkGroup = this.routeNetworkGroup(version);
-        this.addGroupToForm(
+        const routeNetworkGroup = this.routeNetworkGroup(
+          selectedTypeDestroy$,
+          version
+        );
+        addGroupToForm(formGroup, 'routeNetworkGroup', routeNetworkGroup);
+        break;
+      }
+      case 'STOP_POINT': {
+        const stationGroup = this.emptyStationGroup(
           formGroup,
-          'routeNetworkGroup',
-          routeNetworkGroup.group
+          selectedTypeDestroy$,
+          version
         );
-        cleanupFn = () => {
-          routeNetworkGroup.cleanupFn();
-          this.removeGroupFromForm(formGroup, 'spTypeGroup');
-          this.removeGroupFromForm(formGroup, 'routeNetworkGroup');
-        };
-      },
-      [ServicePointType.ServicePoint]: () => {},
-      [ServicePointType.FareStop]: () => {},
-    };
-
-    if (
-      formGroup.controls.selectedType.value === ServicePointType.OperatingPoint
-    ) {
-      selectedSPTypeTransition[ServicePointType.OperatingPoint]();
-    } else if (
-      formGroup.controls.selectedType.value === ServicePointType.StopPoint
-    ) {
-      const stationGroup = this.emptyStationGroup(formGroup, version);
-      this.addGroupToForm(formGroup, 'spTypeGroup', stationGroup.group);
-      if (stationGroup.group.controls.stopPoint.value) {
-        this.addGroupToForm(
-          stationGroup.group,
-          'stopPointGroup',
-          this.emptyStopPointGroup(version)
+        addGroupToForm(formGroup, 'spTypeGroup', stationGroup);
+        if (stationGroup.controls.stopPoint.value) {
+          addGroupToForm(
+            stationGroup,
+            'stopPointGroup',
+            this.emptyStopPointGroup(version)
+          );
+        }
+        if (stationGroup.controls.freightServicePoint.value) {
+          const freightPointGroup = this.emptyFreightPointGroup(
+            formGroup,
+            selectedTypeDestroy$,
+            version
+          );
+          addGroupToForm(stationGroup, 'freightPointGroup', freightPointGroup);
+        }
+        const routeNetworkGroup = this.routeNetworkGroup(
+          selectedTypeDestroy$,
+          version
         );
+        addGroupToForm(formGroup, 'routeNetworkGroup', routeNetworkGroup);
+        break;
       }
-      let freightPointGroup:
-        | ReturnType<typeof this.emptyFreightPointGroup>
-        | undefined;
-      if (stationGroup.group.controls.freightServicePoint.value) {
-        freightPointGroup = this.emptyFreightPointGroup(formGroup, version);
-        this.addGroupToForm(
-          stationGroup.group,
-          'freightPointGroup',
-          freightPointGroup.group
-        );
+      default: {
       }
-      const routeNetworkGroup = this.routeNetworkGroup(version);
-      this.addGroupToForm(
-        formGroup,
-        'routeNetworkGroup',
-        routeNetworkGroup.group
-      );
-
-      cleanupFn = () => {
-        stationGroup.cleanupFn();
-        routeNetworkGroup.cleanupFn();
-        freightPointGroup?.cleanupFn();
-        this.removeGroupFromForm(formGroup, 'spTypeGroup');
-        this.removeGroupFromForm(formGroup, 'routeNetworkGroup');
-      };
     }
-
-    const selectedTypeSub =
-      formGroup.controls.selectedType.valueChanges.subscribe((selectedType) => {
-        if (selectedType === currentSelectedType || !selectedType) return;
-        currentSelectedType = selectedType;
-        cleanupFn();
-        cleanupFn = () => {};
-        selectedSPTypeTransition[selectedType]();
-      });
-
-    return () => {
-      selectedTypeSub.unsubscribe();
-      cleanupFn();
-    };
   }
 
   private static emptyOperatingGroup(version?: ReadServicePointVersion) {
@@ -386,6 +342,7 @@ export class ServicePointFormGroupBuilder {
 
   private static emptyStationGroup(
     formGroup: FormGroup<ServicePointDetailFormGroup>,
+    destroy$: Observable<void>,
     version?: ReadServicePointVersion
   ) {
     const stationGroup = new FormGroup<StationGroup>(
@@ -401,7 +358,7 @@ export class ServicePointFormGroupBuilder {
     );
 
     const handleStopPointChecked = () => {
-      this.addGroupToForm(
+      addGroupToForm(
         stationGroup,
         'stopPointGroup',
         this.emptyStopPointGroup(version)
@@ -409,46 +366,37 @@ export class ServicePointFormGroupBuilder {
     };
 
     const handleStopPointUnchecked = () => {
-      this.removeGroupFromForm(stationGroup, 'stopPointGroup');
+      removeGroupFromForm(stationGroup, 'stopPointGroup');
     };
 
-    const stopPointSub = stationGroup.controls.stopPoint.valueChanges.subscribe(
-      (checked) =>
+    stationGroup.controls.stopPoint.valueChanges
+      .pipe(takeUntil(destroy$))
+      .subscribe((checked) =>
         checked ? handleStopPointChecked() : handleStopPointUnchecked()
-    );
-
-    let emptyFreightPointGroup:
-      | ReturnType<typeof this.emptyFreightPointGroup>
-      | undefined;
-
-    const handleFreightPointChecked = () => {
-      emptyFreightPointGroup = this.emptyFreightPointGroup(formGroup, version);
-      this.addGroupToForm(
-        stationGroup,
-        'freightPointGroup',
-        emptyFreightPointGroup.group
       );
+
+    const freightPointDestroy$ = new Subject<void>();
+    const handleFreightPointChecked = () => {
+      const emptyFreightPointGroup = this.emptyFreightPointGroup(
+        formGroup,
+        freightPointDestroy$.pipe(takeUntil(destroy$), mergeWith(destroy$)),
+        version
+      );
+      addGroupToForm(stationGroup, 'freightPointGroup', emptyFreightPointGroup);
     };
 
     const handleFreightPointUnchecked = () => {
-      emptyFreightPointGroup?.cleanupFn();
-      this.removeGroupFromForm(stationGroup, 'freightPointGroup');
+      freightPointDestroy$.next();
+      removeGroupFromForm(stationGroup, 'freightPointGroup');
     };
 
-    const freightPointSub =
-      stationGroup.controls.freightServicePoint.valueChanges.subscribe(
-        (checked) =>
-          checked ? handleFreightPointChecked() : handleFreightPointUnchecked()
+    stationGroup.controls.freightServicePoint.valueChanges
+      .pipe(takeUntil(destroy$))
+      .subscribe((checked) =>
+        checked ? handleFreightPointChecked() : handleFreightPointUnchecked()
       );
 
-    return {
-      group: stationGroup,
-      cleanupFn: () => {
-        stopPointSub.unsubscribe();
-        freightPointSub.unsubscribe();
-        emptyFreightPointGroup?.cleanupFn();
-      },
-    };
+    return stationGroup;
   }
 
   private static emptyStopPointGroup(version?: ReadServicePointVersion) {
@@ -466,6 +414,7 @@ export class ServicePointFormGroupBuilder {
 
   private static emptyFreightPointGroup(
     formGroup: FormGroup<ServicePointDetailFormGroup>,
+    destroy$: Observable<void>,
     version?: ReadServicePointVersion
   ) {
     const isRequired =
@@ -485,8 +434,9 @@ export class ServicePointFormGroupBuilder {
       ),
     });
 
-    const countrySub = formGroup.controls.country.valueChanges.subscribe(
-      (country) => {
+    formGroup.controls.country.valueChanges
+      .pipe(takeUntil(destroy$))
+      .subscribe((country) => {
         if (
           country === 'SWITZERLAND' &&
           formGroup.controls.validityGroup.controls.validFrom.value?.isSameOrAfter(
@@ -503,38 +453,34 @@ export class ServicePointFormGroupBuilder {
           );
         }
         freightPointGroup.controls.sortCodeOfDestinationStation.updateValueAndValidity();
-      }
-    );
+      });
 
-    const validFromSub =
-      formGroup.controls.validityGroup.controls.validFrom.valueChanges.subscribe(
-        (validFrom) => {
-          if (
-            validFrom?.isSameOrAfter(moment(), 'day') &&
-            formGroup.controls.country.value === 'SWITZERLAND'
-          ) {
-            freightPointGroup.controls.sortCodeOfDestinationStation.addValidators(
-              Validators.required
-            );
-          } else {
-            freightPointGroup.controls.sortCodeOfDestinationStation.removeValidators(
-              Validators.required
-            );
-          }
-          freightPointGroup.controls.sortCodeOfDestinationStation.updateValueAndValidity();
+    formGroup.controls.validityGroup.controls.validFrom.valueChanges
+      .pipe(takeUntil(destroy$))
+      .subscribe((validFrom) => {
+        if (
+          validFrom?.isSameOrAfter(moment(), 'day') &&
+          formGroup.controls.country.value === 'SWITZERLAND'
+        ) {
+          freightPointGroup.controls.sortCodeOfDestinationStation.addValidators(
+            Validators.required
+          );
+        } else {
+          freightPointGroup.controls.sortCodeOfDestinationStation.removeValidators(
+            Validators.required
+          );
         }
-      );
+        freightPointGroup.controls.sortCodeOfDestinationStation.updateValueAndValidity();
+      });
 
-    return {
-      group: freightPointGroup,
-      cleanupFn: () => {
-        countrySub.unsubscribe();
-        validFromSub.unsubscribe();
-      },
-    };
+    return freightPointGroup;
   }
 
-  private static routeNetworkGroup(version?: ReadServicePointVersion) {
+  private static routeNetworkGroup(
+    destroy$: Observable<void>,
+    version?: ReadServicePointVersion
+  ) {
+    // todo: define initial disabled state of operatingPointKilometer and operatingPointKilometerMaster
     const routeNetworkGroup = new FormGroup<RouteNetworkGroup>({
       operatingPointRouteNetwork: new FormControl(
         version?.operatingPointRouteNetwork ?? false,
@@ -582,76 +528,66 @@ export class ServicePointFormGroupBuilder {
       );
     };
 
-    const routeNetworkSub =
-      routeNetworkGroup.controls.operatingPointRouteNetwork.valueChanges
-        .pipe(
-          filter(
-            () => routeNetworkGroup.controls.operatingPointRouteNetwork.dirty
-          )
+    routeNetworkGroup.controls.operatingPointRouteNetwork.valueChanges
+      .pipe(
+        takeUntil(destroy$),
+        filter(
+          () => routeNetworkGroup.controls.operatingPointRouteNetwork.dirty
         )
-        .subscribe((checked) =>
-          checked
-            ? handleOperatingPointRouteNetworkChecked()
-            : handleOperatingPointRouteNetworkUnchecked()
-        );
-
-    const kilometerSub =
-      routeNetworkGroup.controls.operatingPointKilometer.valueChanges.subscribe(
-        (value) => {
-          if (!value) {
-            routeNetworkGroup.controls.operatingPointKilometerMaster.reset(
-              {
-                value: undefined,
-                disabled: false,
-              },
-              { emitEvent: false }
-            );
-          }
-        }
+      )
+      .subscribe((checked) =>
+        checked
+          ? handleOperatingPointRouteNetworkChecked()
+          : handleOperatingPointRouteNetworkUnchecked()
       );
 
-    const operatingPointKilometerStatusSub =
-      routeNetworkGroup.controls.operatingPointKilometer.statusChanges
-        .pipe(
-          map(() => routeNetworkGroup.controls.operatingPointKilometer.enabled),
-          distinctUntilChanged(),
-          filter((enabled) => enabled)
-        )
-        .subscribe(() => {
-          if (routeNetworkGroup.controls.operatingPointRouteNetwork.value) {
-            routeNetworkGroup.controls.operatingPointKilometer.disable({
-              emitEvent: false,
-            });
-          }
-        });
+    routeNetworkGroup.controls.operatingPointKilometer.valueChanges
+      .pipe(takeUntil(destroy$))
+      .subscribe((value) => {
+        if (!value) {
+          routeNetworkGroup.controls.operatingPointKilometerMaster.reset(
+            {
+              value: undefined,
+              disabled: false,
+            },
+            { emitEvent: false }
+          );
+        }
+      });
 
-    const operatingPointKilometerMasterStatusSub =
-      routeNetworkGroup.controls.operatingPointKilometerMaster.statusChanges
-        .pipe(
-          map(
-            () =>
-              routeNetworkGroup.controls.operatingPointKilometerMaster.enabled
-          ),
-          distinctUntilChanged(),
-          filter((enabled) => enabled)
-        )
-        .subscribe(() => {
-          if (routeNetworkGroup.controls.operatingPointRouteNetwork.value) {
-            routeNetworkGroup.controls.operatingPointKilometerMaster.disable({
-              emitEvent: false,
-            });
-          }
-        });
+    routeNetworkGroup.controls.operatingPointKilometer.statusChanges
+      .pipe(
+        takeUntil(destroy$),
+        map(() => routeNetworkGroup.controls.operatingPointKilometer.enabled),
+        distinctUntilChanged(),
+        filter((enabled) => enabled)
+      )
+      .subscribe(() => {
+        if (routeNetworkGroup.controls.operatingPointRouteNetwork.value) {
+          routeNetworkGroup.controls.operatingPointKilometer.disable({
+            emitEvent: false,
+          });
+        }
+      });
 
-    return {
-      group: routeNetworkGroup,
-      cleanupFn: () => {
-        routeNetworkSub.unsubscribe();
-        kilometerSub.unsubscribe();
-        operatingPointKilometerStatusSub.unsubscribe();
-        operatingPointKilometerMasterStatusSub.unsubscribe();
-      },
-    };
+    routeNetworkGroup.controls.operatingPointKilometerMaster.statusChanges
+      .pipe(
+        takeUntil(destroy$),
+        map(
+          () => routeNetworkGroup.controls.operatingPointKilometerMaster.enabled
+        ),
+        distinctUntilChanged(),
+        filter((enabled) => enabled)
+      )
+      .subscribe(() => {
+        if (routeNetworkGroup.controls.operatingPointRouteNetwork.value) {
+          routeNetworkGroup.controls.operatingPointKilometerMaster.disable({
+            emitEvent: false,
+          });
+        }
+      });
+
+    return routeNetworkGroup;
   }
 
   private static determineType(version: ReadServicePointVersion) {
