@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.configuration.Role;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,10 +29,10 @@ public interface StopPointTerminationApiInternal {
   ReadServicePointVersionModel stopServicePointTermination(@PathVariable String sloid, @PathVariable Long id);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
-  @PostMapping(value = "/terminate/{sloid}/{id}/{date}")
-  void terminateStopPoint(@PathVariable String sloid, @PathVariable Long id, @PathVariable LocalDate date);
+  @PostMapping(value = "/terminate")
+  void terminateStopPoint(@RequestBody @Valid StopPointWorkflowTerminationModel terminationModel);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
-  @PostMapping(value = "/change-to-tariff-stop/{sloid}/{id}/{date}")
-  void changeToTariffStop(@PathVariable String sloid, @PathVariable Long id, @PathVariable LocalDate date);
+  @PostMapping(value = "/change-to-tariff-stop")
+  void changeToTariffStop(@RequestBody @Valid StopPointWorkflowTerminationModel terminationModel);
 }
