@@ -107,7 +107,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
             .terminationDate(TERMINATION_DATE)
             .build(), terminationWorkflow.getId());
     assertThat(novaApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_APPROVED);
-    verify(sePoDiAdminClient).terminateStopPoint(any(), any(), any());
+    verify(sePoDiAdminClient).terminateStopPoint(any());
   }
 
   @Test
@@ -157,7 +157,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
             .terminationDate(TERMINATION_DATE)
             .build(), terminationWorkflow.getId());
     assertThat(novaDisapprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
-    verify(sePoDiAdminClient).changeToTariffStop(any(), any(), any());
+    verify(sePoDiAdminClient).changeToTariffStop(any());
 
     TerminationStopPointWorkflowModel novaApprovedTermination = controller.decisionNova(
         TerminationDecisionModel.builder()
