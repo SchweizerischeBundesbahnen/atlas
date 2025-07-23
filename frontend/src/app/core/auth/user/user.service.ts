@@ -4,6 +4,7 @@ import { map, tap } from 'rxjs/operators';
 import { ApiConfigService } from '../../configuration/api-config.service';
 import { Permission } from '../../../api';
 import { User } from './user';
+import { User as UserModel } from '../../../api/model/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
@@ -54,7 +55,7 @@ export class UserService {
       throw new Error('Can not load Permissions if not logged in');
     }
     return this.httpClient
-      .get<User>(
+      .get<UserModel>(
         `${environment.atlasApiUrl}/user-administration/v1/users/current`,
         {
           headers: new HttpHeaders({ Accept: '*/*' }),
@@ -66,6 +67,7 @@ export class UserService {
           this.currentUser!.permissions = response.permissions
             ? Array.from(response.permissions)
             : [];
+          this.currentUser!.email = response.mail!;
           this.permissionsLoaded.next();
           this.userChanged.next();
         }),
