@@ -43,8 +43,8 @@ class RouteConfigTest {
     // Then
     List<Route> routes = routeLocator.getRoutes().collectList().block();
     assertThat(routes).isNotNull().hasSize(1);
-    assertThat(routes.get(0).getId()).isEqualTo(key);
-    assertThat(routes.get(0).getUri()).hasToString(value);
+    assertThat(routes.getFirst().getId()).isEqualTo(key);
+    assertThat(routes.getFirst().getUri()).hasToString(value);
   }
 
   private ConfigurableApplicationContext createMockGatewayContext() {
