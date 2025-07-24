@@ -40,7 +40,7 @@ interface FreightPointGroup {
 }
 
 export class StationFormGroup {
-  private static stopPointTypeRequiredValidator = (
+  private static readonly stopPointTypeRequiredValidator = (
     control: AbstractControl<StopPointType | null | undefined>
   ) => {
     if (!control.value || control.value === 'UNKNOWN') {
