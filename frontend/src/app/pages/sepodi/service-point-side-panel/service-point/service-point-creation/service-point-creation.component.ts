@@ -8,7 +8,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
   ServicePointFormGroupBuilder,
-} from '../service-point-detail-form-group';
+} from '../service-point-form/form-group/service-point-detail-form-group';
 import {
   ApplicationRole,
   ApplicationType,
@@ -37,8 +37,8 @@ import { DetailFooterComponent } from '../../../../../core/components/detail-foo
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
-  addGroupToForm,
-  removeGroupFromForm,
+  addControlToFormNoEvent,
+  removeControlFromFormNoEvent,
 } from '../../../../../core/util/forms';
 
 @Component({
@@ -135,7 +135,7 @@ export class ServicePointCreationComponent
   }
 
   onGeographyEnabled() {
-    addGroupToForm(
+    addControlToFormNoEvent(
       this.form,
       'servicePointGeolocation',
       GeographyFormGroupBuilder.buildFormGroup()
@@ -143,7 +143,7 @@ export class ServicePointCreationComponent
   }
 
   onGeographyDisabled() {
-    removeGroupFromForm(this.form, 'servicePointGeolocation');
+    removeControlFromFormNoEvent(this.form, 'servicePointGeolocation');
   }
 
   async onCancel(): Promise<void> {

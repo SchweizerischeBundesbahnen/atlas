@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
   ServicePointFormGroupBuilder,
-} from '../service-point-detail-form-group';
+} from '../service-point-form/form-group/service-point-detail-form-group';
 import { environment } from '../../../../../../environments/environment';
 import { Country, CreateServicePointVersion } from '../../../../../api';
 import moment from 'moment';
@@ -21,8 +21,6 @@ export const ALLOWED_TERMINATION_COUNTRIES: Country[] = [
 })
 export class TerminationService {
   private initialFormValues?: Partial<CreateServicePointVersion>;
-
-  constructor() {}
 
   initTermination(form: FormGroup<ServicePointDetailFormGroup>) {
     this.initialFormValues =

@@ -3,23 +3,24 @@ import {
   ServicePointDetailFormGroup,
   ServicePointFormGroupBuilder,
 } from './service-point-detail-form-group';
-import { ServicePointType } from './service-point-type';
+import { ServicePointType } from '../../service-point-type';
 import {
   Country,
   CreateServicePointVersion,
   MeanOfTransport,
   OperatingPointType,
   StopPointType,
-} from '../../../../api';
+} from '../../../../../../api';
 import moment from 'moment';
-import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
+import { BERN_WYLEREGG } from '../../../../../../../test/data/service-point';
+import { EMPTY } from 'rxjs';
 
 describe('ServicePointFormGroup', () => {
   let servicePointFormGroup: FormGroup<ServicePointDetailFormGroup>;
 
   beforeEach(() => {
     servicePointFormGroup =
-      ServicePointFormGroupBuilder.buildEmptyFormGroup().group;
+      ServicePointFormGroupBuilder.buildEmptyFormGroup(EMPTY);
     servicePointFormGroup.enable();
 
     servicePointFormGroup.controls.number.setValue(7000);
@@ -40,10 +41,10 @@ describe('ServicePointFormGroup', () => {
     'should add validators to include one of stopPoint, freightServicePoint. stopPoints needs meansOfTransport and' +
       ' stopPointType',
     () => {
+      servicePointFormGroup.controls.selectedType.markAsDirty();
       servicePointFormGroup.controls.selectedType.setValue(
         ServicePointType.StopPoint
       );
-
       expect(servicePointFormGroup.valid).toBeFalse();
 
       if (
@@ -65,11 +66,12 @@ describe('ServicePointFormGroup', () => {
   );
 
   it('should add validators to include one of stopPoint, freightServicePoint. freightServicePoint needs nothing', () => {
+    servicePointFormGroup.controls.selectedType.markAsDirty();
     servicePointFormGroup.controls.selectedType.setValue(
       ServicePointType.StopPoint
     );
-
     expect(servicePointFormGroup.valid).toBeFalse();
+
     if (
       !('stopPoint' in servicePointFormGroup.controls.spTypeGroup!.controls)
     ) {
@@ -93,11 +95,12 @@ describe('ServicePointFormGroup', () => {
   });
 
   it('should require operatingPointType for OperatingPoint', () => {
+    servicePointFormGroup.controls.selectedType.markAsDirty();
     servicePointFormGroup.controls.selectedType.setValue(
       ServicePointType.OperatingPoint
     );
-
     expect(servicePointFormGroup.valid).toBeFalse();
+
     if (
       !(
         'operatingPointType' in
@@ -147,6 +150,7 @@ describe('ServicePointFormGroup', () => {
   });
 
   it('should set RouteNetwork true and KilometerMaster undefined when OperatingPoint', () => {
+    servicePointFormGroup.controls.selectedType.markAsDirty();
     servicePointFormGroup.controls.selectedType.setValue(
       ServicePointType.OperatingPoint
     );
@@ -168,6 +172,7 @@ describe('ServicePointFormGroup', () => {
   });
 
   it('should set RouteNetwork true and KilometerMaster undefined when StopPoint', () => {
+    servicePointFormGroup.controls.selectedType.markAsDirty();
     servicePointFormGroup.controls.selectedType.setValue(
       ServicePointType.StopPoint
     );
@@ -189,8 +194,10 @@ describe('ServicePointFormGroup', () => {
   });
 
   it('should validate MoT and stopPointType required on existing StopPoint', () => {
-    servicePointFormGroup =
-      ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG).group;
+    servicePointFormGroup = ServicePointFormGroupBuilder.buildFormGroup(
+      BERN_WYLEREGG,
+      EMPTY
+    );
     if (
       !('stopPoint' in servicePointFormGroup.controls.spTypeGroup!.controls)
     ) {
