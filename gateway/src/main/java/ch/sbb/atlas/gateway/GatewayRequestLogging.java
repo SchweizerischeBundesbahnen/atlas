@@ -1,6 +1,7 @@
 package ch.sbb.atlas.gateway;
 
 import java.util.Map;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
@@ -23,15 +24,28 @@ public class GatewayRequestLogging {
     return new OrderedGatewayFilter((exchange, chain) -> chain.filter(exchange)
         .then(Mono.fromRunnable(() -> TRACING_HEADERS.forEach((loggingKey, headerValue) -> {
           ServerHttpRequest request = exchange.getRequest();
-          if (request.getHeaders().containsKey(headerValue)) {
-            log.info("Routing [{}] request with {}=[{}] to path [{}]", loggingKey, request.getMethod(),
-                request.getHeaders().get(headerValue), request.getPath());
-          }
+          logRequest(request, loggingKey, headerValue);
+
           ServerHttpResponse response = exchange.getResponse();
-          if (response.getHeaders().containsKey(headerValue)) {
-            log.info("Routing [{}] response with {}=[{}] from path [{}] with statusCode=[{}]", request.getMethod(), loggingKey,
-                response.getHeaders().get(headerValue), request.getPath(), response.getStatusCode());
-          }
+          logResponse(loggingKey, headerValue, response, request);
         }))), -1);
+  }
+
+  private static void logRequest(ServerHttpRequest request, String loggingKey, String headerValue) {
+    String correlationIdInfo = "";
+    if (request.getHeaders().containsKey(headerValue)) {
+      correlationIdInfo = " with " + loggingKey + "=" + request.getHeaders().getFirst(headerValue);
+    }
+    String credentialId = HeaderUtil.getClientCredentialId(request.getHeaders());
+    log.info("Routing request{} to path=[{} {}] for clientId={}", correlationIdInfo, request.getMethod(),
+        request.getPath(), credentialId);
+  }
+
+  private static void logResponse(String loggingKey, String headerValue, ServerHttpResponse response, ServerHttpRequest request) {
+    if (response.getHeaders().containsKey(headerValue)) {
+      log.info("Routing response with {}={} from path=[{} {}] with statusCode={}", loggingKey,
+          Objects.requireNonNull(response.getHeaders().get(headerValue)).getFirst(), request.getMethod(), request.getPath(),
+          response.getStatusCode());
+    }
   }
 }
