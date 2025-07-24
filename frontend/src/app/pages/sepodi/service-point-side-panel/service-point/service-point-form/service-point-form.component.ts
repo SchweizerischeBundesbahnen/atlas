@@ -8,7 +8,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
+import { ServicePointDetailFormGroup } from './form-group/service-point-detail-form-group';
 import { ServicePointType } from '../service-point-type';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { Observable, of, Subject, Subscription, take } from 'rxjs';
