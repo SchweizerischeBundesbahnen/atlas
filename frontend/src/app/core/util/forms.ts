@@ -1,18 +1,18 @@
 import { AbstractControl, FormGroup } from '@angular/forms';
 
-export function addGroupToForm<
+export function addControlToFormNoEvent<
   T extends {
     [K in keyof T]: AbstractControl;
   },
 >(
   form: FormGroup<T>,
   controlName: string & keyof T,
-  group: Required<T>[string & keyof T]
+  control: Required<T>[string & keyof T]
 ) {
-  form.addControl(controlName, group, { emitEvent: false });
+  form.addControl(controlName, control, { emitEvent: false });
 }
 
-export function removeGroupFromForm<
+export function removeControlFromFormNoEvent<
   T extends {
     [K in keyof T]: AbstractControl;
   },

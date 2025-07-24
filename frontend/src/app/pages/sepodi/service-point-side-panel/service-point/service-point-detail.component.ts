@@ -13,7 +13,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
   ServicePointFormGroupBuilder,
-} from './service-point-detail-form-group';
+} from './service-point-form/form-group/service-point-detail-form-group';
 import { MapService } from '../../map/map.service';
 import { catchError, EMPTY, Observable, of, Subject, take } from 'rxjs';
 import { Pages } from '../../../pages';
@@ -47,8 +47,8 @@ import { StopPointTerminationDialogService } from './stop-point-termination/stop
 import { StopPointTerminationInfoComponent } from './stop-point-termination/stop-point-termination-info/stop-point-termination-info.component';
 import { TerminationService } from './stop-point-termination/termination.service';
 import {
-  addGroupToForm,
-  removeGroupFromForm,
+  addControlToFormNoEvent,
+  removeControlFromFormNoEvent,
 } from '../../../../core/util/forms';
 
 @Component({
@@ -141,7 +141,7 @@ export class ServicePointDetailComponent
 
   onGeographyEnabled() {
     if (this.form && !this.form.controls.servicePointGeolocation) {
-      addGroupToForm(
+      addControlToFormNoEvent(
         this.form,
         'servicePointGeolocation',
         this._savedGeographyForm ?? GeographyFormGroupBuilder.buildFormGroup()
@@ -153,7 +153,7 @@ export class ServicePointDetailComponent
   onGeographyDisabled() {
     if (this.form?.controls.servicePointGeolocation) {
       this._savedGeographyForm = this.form.controls.servicePointGeolocation;
-      removeGroupFromForm(this.form, 'servicePointGeolocation');
+      removeControlFromFormNoEvent(this.form, 'servicePointGeolocation');
       this.form.markAsDirty();
     }
   }
@@ -343,7 +343,7 @@ export class ServicePointDetailComponent
         } else {
           const notEditedForm = ServicePointFormGroupBuilder.buildFormGroup(
             this.selectedVersion!,
-            this.formDestroy$ // todo: check termination
+            this.formDestroy$
           );
           this.terminationService.initTermination(notEditedForm);
         }
