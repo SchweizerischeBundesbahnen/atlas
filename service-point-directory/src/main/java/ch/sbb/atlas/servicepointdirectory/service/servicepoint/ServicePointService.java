@@ -78,7 +78,10 @@ public class ServicePointService {
     if (hasVersionInReview) {
       throw new TerminationNotAllowedWhenVersionInWrongStatusException(servicePointNumber, Status.IN_REVIEW);
     }
-    servicePointVersions.forEach(servicePointVersion -> servicePointVersion.setStatus(Status.REVOKED));
+    servicePointVersions.forEach(servicePointVersion -> {
+      servicePointValidationService.checkIfServicePointIsTerminationInProgress(servicePointVersion);
+      servicePointVersion.setStatus(Status.REVOKED);
+    });
     return servicePointVersions;
   }
 
