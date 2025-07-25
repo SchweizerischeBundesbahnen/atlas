@@ -11,6 +11,8 @@ import org.springframework.http.HttpHeaders;
 @UtilityClass
 class HeaderUtil {
 
+  private static final int BEARER_TOKEN_PREFIX = 7;
+
   static String getClientCredentialId(HttpHeaders headers) {
     String authorizationHeader = getAuthorizationHeader(headers);
     String bearerToken = getBearerToken(authorizationHeader);
@@ -27,7 +29,7 @@ class HeaderUtil {
 
   private static String getBearerToken(String authorizationHeader) {
     if (authorizationHeader.startsWith("Bearer ")) {
-      return authorizationHeader.substring(7);
+      return authorizationHeader.substring(BEARER_TOKEN_PREFIX);
     }
     return "";
   }

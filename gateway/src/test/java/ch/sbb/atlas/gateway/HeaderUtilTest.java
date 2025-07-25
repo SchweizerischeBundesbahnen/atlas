@@ -28,7 +28,7 @@ class HeaderUtilTest {
     headers.setBearerAuth(testToken);
     String clientCredentialId = HeaderUtil.getClientCredentialId(headers);
 
-    assertThat(clientCredentialId).isEqualTo("");
+    assertThat(clientCredentialId).isEmpty();
   }
 
   @Test
@@ -36,7 +36,7 @@ class HeaderUtilTest {
     HttpHeaders headers = new HttpHeaders();
     String clientCredentialId = HeaderUtil.getClientCredentialId(headers);
 
-    assertThat(clientCredentialId).isEqualTo("");
+    assertThat(clientCredentialId).isEmpty();
   }
 
 }
