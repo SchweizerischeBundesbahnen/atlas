@@ -23,7 +23,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -179,7 +178,7 @@ class AmazonServiceTest {
     InputStreamResource result = amazonService.pullFileAsStream(AmazonBucket.EXPORT, filePath);
     //then
     assertThat(result).isNotNull();
-    String stringResult = IOUtils.toString(result.getInputStream(), StandardCharsets.UTF_8);
+    String stringResult = new String(result.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     assertThat(stringResult).isEqualTo(testData);
   }
 

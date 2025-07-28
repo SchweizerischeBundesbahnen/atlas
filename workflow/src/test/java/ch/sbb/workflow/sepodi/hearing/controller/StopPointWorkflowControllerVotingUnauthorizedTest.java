@@ -37,7 +37,6 @@ import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +45,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithUnauthorizedMockJwtAuthentication
 @ActiveProfiles("integration-test")
 @Import(TestcontainersConfiguration.class)
-@EmbeddedKafka
 @Transactional
 class StopPointWorkflowControllerVotingUnauthorizedTest {
 
