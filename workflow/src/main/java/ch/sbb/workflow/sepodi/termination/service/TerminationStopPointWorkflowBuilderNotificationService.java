@@ -4,7 +4,7 @@ import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.workflow.mail.BaseNotificationService;
-import ch.sbb.workflow.sepodi.termination.TerminationHelper;
+import ch.sbb.workflow.sepodi.termination.TerminationWorkflowHelper;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
   }
 
   private String calculateTerminationDate(TerminationStopPointWorkflow workflow) {
-    return DATE_FORMATTER.format(TerminationHelper.getTerminationDate(workflow));
+    return DATE_FORMATTER.format(TerminationWorkflowHelper.getTerminationDate(workflow));
   }
 
   public MailNotification buildTariffStopNotApprovedNotification(TerminationStopPointWorkflow workflow, String motivation) {

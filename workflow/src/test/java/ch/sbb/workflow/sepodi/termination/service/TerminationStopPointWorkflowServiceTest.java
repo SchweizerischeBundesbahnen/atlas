@@ -115,6 +115,8 @@ class TerminationStopPointWorkflowServiceTest {
         .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
         .terminationDate(LocalDate.of(2001, 1, 1))
         .build();
+    when(sePoDiAdminClient.getServicePointVersionsBySloid(stopPointWorkflow.getSloid())).thenReturn(
+        List.of(buildReadServicePointVersionModel()));
 
     //when
     TerminationStopPointWorkflow result = service.addDecisionInfoPlus(decisionModel,
@@ -148,6 +150,8 @@ class TerminationStopPointWorkflowServiceTest {
         .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
         .terminationDate(LocalDate.of(2001, 1, 1))
         .build();
+    when(sePoDiAdminClient.getServicePointVersionsBySloid(stopPointWorkflow.getSloid())).thenReturn(
+        List.of(buildReadServicePointVersionModel()));
 
     //when
     TerminationStopPointWorkflow result = service.addDecisionInfoPlus(decisionModel,
