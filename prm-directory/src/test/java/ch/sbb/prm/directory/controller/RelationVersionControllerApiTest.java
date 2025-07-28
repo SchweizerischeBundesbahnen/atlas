@@ -165,7 +165,9 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(put("/v1/relations/" + version2.getId()).contentType(contentType)
             .content(mapper.writeValueAsString(editedVersionModel)))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.message",
+            is("Following constraints were violated: [Property 'contrastingAreas' has invalid value: 'null', Property "
+                + "'tactileVisualMarks' has invalid value: 'null', Property 'stepFreeAccess' has invalid value: 'null']")))
         .andExpect(jsonPath("$.details", hasSize(3)));
   }
 

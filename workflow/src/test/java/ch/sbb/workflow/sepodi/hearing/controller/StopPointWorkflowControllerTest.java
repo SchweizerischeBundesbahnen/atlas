@@ -3,6 +3,7 @@ package ch.sbb.workflow.sepodi.hearing.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -444,16 +445,17 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(workflowModel))
         ).andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.error", is("Method argument not valid error")))
-        .andExpect(jsonPath("$.details[0].message", is("Value \uD83D\uDE00\uD83D\uDE01? rejected due to must match "
-            + "\"[\\u0000-\\u00ff]*\"")))
+        .andExpect(jsonPath("$.message",
+            is("Following constraints were violated: [Property 'examinants[0].firstName' has invalid value: "
+                + "'\uD83D\uDE00\uD83D\uDE01?']")))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].message", is("must match \"[\\u0000-\\u00ff]*\"")))
         .andExpect(jsonPath("$.details[0].field", is("examinants[0].firstName")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("\uD83D\uDE00\uD83D\uDE01?")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must match \"[\\u0000-\\u00ff]*\"")));
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.PATTERN")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("propertyPath")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("examinants[0].firstName")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("\uD83D\uDE00\uD83D\uDE01?")));
   }
 
   @Test
@@ -475,20 +477,22 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(workflowModel))
         ).andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.error", is("Method argument not valid error")))
-        .andExpect(jsonPath("$.details[0].message", is("Value null rejected due to must not be blank")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("null")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must not be blank")))
-        .andExpect(jsonPath("$.details[1].message", is("Value null rejected due to must not be blank")))
-        .andExpect(jsonPath("$.details[1].displayInfo.code", is("ERROR.CONSTRAINT")))
-        .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].key", is("rejectedValue")))
-        .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].value", is("null")))
-        .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].key", is("cause")))
-        .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].value", is("must not be blank")));
+        .andExpect(jsonPath("$.message",
+            is("Following constraints were violated: [Property 'examinants[0].mail' has invalid value: 'null', Property "
+                + "'examinants[0].organisation' has invalid value: 'null']")))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].message", is("must not be blank")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.NOT_BLANK")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("propertyPath")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", startsWith("examinants[0].")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("null")))
+        .andExpect(jsonPath("$.details[1].message", is("must not be blank")))
+        .andExpect(jsonPath("$.details[1].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.NOT_BLANK")))
+        .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].key", is("propertyPath")))
+        .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].value", startsWith("examinants[0].")))
+        .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].key", is("value")))
+        .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].value", is("null")));
   }
 
   @Test

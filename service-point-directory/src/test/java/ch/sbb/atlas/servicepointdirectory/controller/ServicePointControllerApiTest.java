@@ -37,6 +37,7 @@ import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
@@ -49,8 +50,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,6 +62,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -211,9 +215,10 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   void shouldFailOnFindWithInvalidServicePointNumber() throws Exception {
     mvc.perform(get("/v1/service-points?numbers=12345678"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.message", is("Following constraints were violated: [Property 'numbers[0].<list element>' has "
+            + "invalid value: '12345678']")))
         .andExpect(jsonPath("$.details[0].message",
-            is("Value 12345678 rejected due to must be less than or equal to 9999999")));
+            is("must be less than or equal to 9999999")));
   }
 
   @Test
@@ -601,7 +606,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details", hasSize(1)))
         .andExpect(jsonPath("$.details.[0].message", endsWith(
             "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same value as "
                 + "numberWithoutCheckDigit and it should not be sent in the request")));
@@ -679,7 +684,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details", hasSize(1)))
         .andExpect(jsonPath("$.details.[0].message", endsWith(
             "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
                 " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")));
@@ -904,7 +909,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details", hasSize(1)))
         .andExpect(jsonPath("$.details.[0].message", endsWith(
             "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
                 " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")));
@@ -1491,4 +1496,139 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     assertThat(allVersions.getFirst().getBusinessOrganisation()).isEqualTo(ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID);
   }
 
+  @Test
+  void shouldCreateNotStopPointWithoutStopPointType() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getNotStopPointCreateModel();
+
+    // when & then
+    performCreate(createModel)
+        .andExpect(status().isCreated());
+  }
+
+  @Test
+  void shouldUpdateNotStopPointWithoutStopPointType() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getNotStopPointCreateModel();
+    final ReadServicePointVersionModel savedModel = mapper.readValue(
+        performCreate(createModel).andReturn().getResponse().getContentAsByteArray(), ReadServicePointVersionModel.class);
+
+    createModel.setDesignationLong("updated");
+    createModel.setEtagVersion(savedModel.getEtagVersion());
+
+    // when & then
+    performUpdate(createModel, savedModel.getId())
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldNotCreateStopPointWithoutStopPointType() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getStopPointWithoutStopPointTypeCreateModel();
+
+    // when & then
+    performCreate(createModel)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details[0].message", is("stopPointType is only allowed for StopPoints and must not be null or "
+            + "unknown")));
+  }
+
+  @Test
+  void shouldNotUpdateStopPointWithoutStopPointType() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getStopPointWithoutStopPointTypeCreateModel();
+
+    // when & then
+    performUpdate(createModel, 15L)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details[0].message", is("stopPointType is only allowed for StopPoints and must not be null or "
+            + "unknown")));
+  }
+
+  @Test
+  void shouldNotCreateStopPointWithStopPointTypeUnknown() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getStopPointWithStopPointTypeUnknownCreateModel();
+
+    // when & then
+    performCreate(createModel)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details[0].message", is("stopPointType is only allowed for StopPoints and must not be null or "
+            + "unknown")));
+  }
+
+  @Test
+  void shouldNotUpdateStopPointWithStopPointTypeUnknown() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getStopPointWithStopPointTypeUnknownCreateModel();
+
+    // when & then
+    performUpdate(createModel, 15L)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details[0].message", is("stopPointType is only allowed for StopPoints and must not be null or "
+            + "unknown")));
+  }
+
+  @Test
+  void shouldCreateStopPointWithValidStopPointType() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getStopPointWithoutStopPointTypeCreateModel();
+    createModel.setStopPointType(StopPointType.TEMPORARY);
+
+    // when & then
+    performCreate(createModel)
+        .andExpect(status().isCreated());
+  }
+
+  @Test
+  void shouldUpdateStopPointWithValidStopPointType() throws Exception {
+    // given
+    final CreateServicePointVersionModel createModel = getStopPointWithoutStopPointTypeCreateModel();
+    createModel.setStopPointType(StopPointType.TEMPORARY);
+    final ReadServicePointVersionModel savedModel = mapper.readValue(
+        performCreate(createModel).andReturn().getResponse().getContentAsByteArray(), ReadServicePointVersionModel.class);
+
+    createModel.setStopPointType(StopPointType.ORDERLY);
+    createModel.setEtagVersion(savedModel.getEtagVersion());
+
+    // when & then
+    performUpdate(createModel, savedModel.getId())
+        .andExpect(status().isOk());
+  }
+
+  private static @NotNull CreateServicePointVersionModel getNotStopPointCreateModel() {
+    CreateServicePointVersionModel notStopPoint = ServicePointTestData.getAargauServicePointVersionModel();
+    notStopPoint.setMeansOfTransport(Collections.emptyList());
+    notStopPoint.setStopPointType(null);
+    notStopPoint.setOperatingPointRouteNetwork(false);
+    return notStopPoint;
+  }
+
+  private static @NotNull CreateServicePointVersionModel getStopPointWithoutStopPointTypeCreateModel() {
+    final CreateServicePointVersionModel notStopPointCreateModel = getNotStopPointCreateModel();
+    notStopPointCreateModel.setMeansOfTransport(List.of(MeanOfTransport.TRAIN));
+    return notStopPointCreateModel;
+  }
+
+  private static @NotNull CreateServicePointVersionModel getStopPointWithStopPointTypeUnknownCreateModel() {
+    final CreateServicePointVersionModel stopPoint = getStopPointWithoutStopPointTypeCreateModel();
+    stopPoint.setStopPointType(StopPointType.UNKNOWN);
+    return stopPoint;
+  }
+
+  private @NotNull ResultActions performCreate(CreateServicePointVersionModel createModel) throws Exception {
+    return mvc.perform(post("/v1/service-points")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(createModel)));
+  }
+
+  private @NotNull ResultActions performUpdate(CreateServicePointVersionModel createModel, Long id) throws Exception {
+    return mvc.perform(put("/v1/service-points/" + id)
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(createModel)));
+  }
 }

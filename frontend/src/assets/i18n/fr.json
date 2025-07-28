@@ -10,7 +10,8 @@
       "MIN": "La valeur du paramètre <{{propertyPath}}> ne doit pas être inférieure à {{attributeValue}}.",
       "MAX": "La valeur du paramètre <{{propertyPath}}> ne doit pas dépasser {{attributeValue}}.",
       "VALID_SPATIAL_REFERENCE_FRACTION": "Nombre maximal de décimales dépassé. LV03 et LV95 max. 5. WGS84 et WGS84WEB max. 11.",
-      "VALID_SERVICE_POINT_NUMBER": "<numberShort> ne doit être présent que si le pays n'est pas dans (85,11,12,13,14)."
+      "VALID_SERVICE_POINT_NUMBER": "<numberShort> ne doit être présent que si le pays n'est pas dans (85,11,12,13,14).",
+      "VALID_STOP_POINT_TYPE": "<stopPointType> n’est autorisé que pour les arrêts et doit, dans ce cas, être défini avec une valeur autre que \"UNKNOWN\"."
     },
     "CLIENT": {
       "GENERIC": "Une erreur s’est produite sur le site Web, veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé atlas."
@@ -304,7 +305,8 @@
     "COLON_SEPERATED_SID4PT": "Utilisez le jeu de caractères SID4PT (-._0-9a-zA-Z) avec des deux-points séparant exactement {{numbersWithColons}}.",
     "DECISION_COMMENT_REQUIRED": "La justification est nécessaire",
     "NOTUNIQUEEMAIL": "E-mail déjà existant. Veuillez vérifier si le destinataire est déjà saisi ou modifier l'adresse e-mail.",
-    "EXAMINANT_OR_CC_MAIL": "Veuillez saisir au moins un destinataire ou un cc-mail supplémentaire."
+    "EXAMINANT_OR_CC_MAIL": "Veuillez saisir au moins un destinataire ou un cc-mail supplémentaire.",
+    "REQUIREDANDNOTUNKNOWN": "Ne peut pas être vide ou sans spécification."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
