@@ -5,6 +5,8 @@ import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatu
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
+import ch.sbb.atlas.helper.TerminationHelper;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.redact.Redacted;
@@ -13,7 +15,7 @@ import ch.sbb.workflow.exception.TerminationStopPointWorkflowAlreadyInStatusExce
 import ch.sbb.workflow.exception.TerminationStopPointWorkflowPreconditionStatusException;
 import ch.sbb.workflow.sepodi.client.SePoDiAdminClient;
 import ch.sbb.workflow.sepodi.hearing.enity.JudgementType;
-import ch.sbb.workflow.sepodi.termination.TerminationHelper;
+import ch.sbb.workflow.sepodi.termination.TerminationWorkflowHelper;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationDecision;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
@@ -86,6 +88,8 @@ public class TerminationStopPointWorkflowService {
         .isBefore(terminationWorkflow.getBoTerminationDate())) {
       throw new TerminationDateBeforeException(decisionModel.getTerminationDate(), terminationWorkflow.getBoTerminationDate());
     }
+    checkDecisionTerminationDateWithinLastVersion(decisionModel.getTerminationDate(), terminationWorkflow);
+
     terminationWorkflow.setInfoPlusDecision(TerminationDecisionMapper.toEntity(decisionModel));
     terminationWorkflow.setInfoPlusTerminationDate(decisionModel.getTerminationDate());
 
@@ -101,6 +105,15 @@ public class TerminationStopPointWorkflowService {
     return repository.save(terminationWorkflow);
   }
 
+  private void checkDecisionTerminationDateWithinLastVersion(LocalDate terminationDate,
+      TerminationStopPointWorkflow terminationWorkflow) {
+    ReadServicePointVersionModel lastVersion = sePoDiAdminClient.getServicePointVersionsBySloid(terminationWorkflow.getSloid())
+        .getLast();
+    TerminationHelper.isValidToInLastVersionRange(terminationWorkflow.getSloid(),
+        new DateRange(lastVersion.getValidFrom(), lastVersion.getValidTo()),
+        terminationDate);
+  }
+
   public TerminationStopPointWorkflow addDecisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
     TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
     if (!Set.of(TerminationWorkflowStatus.TARIFF_STOP_APPROVED, TerminationWorkflowStatus.TERMINATION_NOT_APPROVED)
@@ -112,6 +125,8 @@ public class TerminationStopPointWorkflowService {
       throw new TerminationDateBeforeException(decisionModel.getTerminationDate(),
           terminationWorkflow.getInfoPlusTerminationDate());
     }
+    checkDecisionTerminationDateWithinLastVersion(decisionModel.getTerminationDate(), terminationWorkflow);
+
     terminationWorkflow.setNovaDecision(TerminationDecisionMapper.toEntity(decisionModel));
     terminationWorkflow.setNovaTerminationDate(decisionModel.getTerminationDate());
 
@@ -124,7 +139,7 @@ public class TerminationStopPointWorkflowService {
       terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_APPROVED);
     }
     if (decisionModel.getJudgement() == JudgementType.NO) {
-      LocalDate terminationDate = TerminationHelper.getTerminationDate(terminationWorkflow);
+      LocalDate terminationDate = TerminationWorkflowHelper.getTerminationDate(terminationWorkflow);
       sePoDiAdminClient.changeToTariffStop(
           StopPointWorkflowTerminationModel.builder()
               .sloid(terminationWorkflow.getSloid())

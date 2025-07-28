@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class TerminationHelper {
+public class TerminationWorkflowHelper {
 
   public static LocalDate getTerminationDate(TerminationStopPointWorkflow workflow) {
     return calculateTerminationDate(workflow).getTerminationDate();
