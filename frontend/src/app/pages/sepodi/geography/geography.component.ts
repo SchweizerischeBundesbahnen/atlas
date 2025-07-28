@@ -19,7 +19,7 @@ import {
   MatRadioChange,
   MatRadioGroup,
 } from '@angular/material/radio';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
 import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
@@ -61,7 +61,11 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       this.updateMapInteractionMode();
       this.onChangeCoordinatesManually(this.currentCoordinates!, false);
       merge(form.controls.east.valueChanges, form.controls.north.valueChanges)
-        .pipe(debounceTime(500), takeUntil(this.formDestroy$))
+        .pipe(
+          debounceTime(500),
+          filter(() => form.dirty),
+          takeUntil(this.formDestroy$)
+        )
         .subscribe(() => {
           this.onChangeCoordinatesManually(this.currentCoordinates!, true);
           this.coordinatesChanged.emit(this.currentCoordinates);
@@ -137,11 +141,11 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     const roundedEast = Number(coordinates.east.toFixed(maxDigits));
     const roundedNorth = Number(coordinates.north.toFixed(maxDigits));
 
+    this._form.markAsDirty();
     this._form.patchValue({
       east: roundedEast,
       north: roundedNorth,
     });
-    this._form.markAsDirty();
   }
 
   initTransformedCoordinatePair() {
