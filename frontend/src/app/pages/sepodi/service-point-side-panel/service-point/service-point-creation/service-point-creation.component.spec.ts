@@ -11,7 +11,7 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import { ServicePointFormGroupBuilder } from '../service-point-detail-form-group';
+import { ServicePointFormGroupBuilder } from '../service-point-form/form-group/service-point-detail-form-group';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Countries } from '../../../../../core/country/Countries';
 import { TestBed } from '@angular/core/testing';
@@ -92,9 +92,10 @@ describe('ServicePointCreationComponent', () => {
     );
 
     (
-      spyOn(ServicePointFormGroupBuilder, 'getWritableServicePoint') as Spy<
-        () => Partial<CreateServicePointVersion>
-      >
+      spyOn(
+        ServicePointFormGroupBuilder.mapper,
+        'getWritableServicePoint'
+      ) as Spy<() => Partial<CreateServicePointVersion>>
     ).and.returnValue({
       numberShort: 57385,
     });

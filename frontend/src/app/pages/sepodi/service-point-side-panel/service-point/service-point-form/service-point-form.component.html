@@ -1,11 +1,15 @@
-<ng-container *ngIf="form">
+@if (form) {
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column col-6 pe-3">
       <atlas-text-field
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
           { label: 'Altstätten SG, Eichbergerstr. |', translate: false },
-          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '30' } }
+          {
+            label: 'FORM.MAX_CHARS',
+            translate: true,
+            arg: { key: 'numberOfChars', value: '30' },
+          },
         ]"
         [formGroup]="form"
         [required]="true"
@@ -19,7 +23,11 @@
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
           { label: 'Altstätten SG, Eichbergerstrasse |', translate: false },
-          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+          {
+            label: 'FORM.MAX_CHARS',
+            translate: true,
+            arg: { key: 'numberOfChars', value: '50' },
+          },
         ]"
         [formGroup]="form"
         [required]="false"
@@ -38,7 +46,9 @@
 
   <div class="col-12 d-flex">
     <div class="col-6 d-flex pb-3">
-      <form-date-range [formGroup]="form"></form-date-range>
+      <form-date-range
+        [formGroup]="form.controls.validityGroup"
+      ></form-date-range>
     </div>
 
     <div class="col-6 d-flex pb-3">
@@ -60,140 +70,178 @@
 
   <div class="col-12 mt-2 d-flex flex-column" [formGroup]="form">
     <mat-radio-group formControlName="selectedType">
-      <mat-radio-button *ngFor="let option of servicePointTypes" [value]="option">
-        {{ 'SEPODI.SERVICE_POINTS.TYPES.' + option | translate }}
-      </mat-radio-button>
+      @for (option of servicePointTypes; track $index) {
+        <mat-radio-button [value]="option">
+          {{ 'SEPODI.SERVICE_POINTS.TYPES.' + option | translate }}
+        </mat-radio-button>
+      }
     </mat-radio-group>
-    <app-atlas-field-error [form]="form" controlName="selectedType"></app-atlas-field-error>
+    <app-atlas-field-error
+      [form]="form"
+      controlName="selectedType"
+    ></app-atlas-field-error>
   </div>
 
-  <div *ngIf="form.value.selectedType === 'OPERATING_POINT'" class="col-12 d-flex mt-2">
-    <atlas-select
-      class="col-12"
-      [formGroup]="form"
-      controlName="operatingPointType"
-      dataCy="operatingPointType"
-      label="SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPE"
-      optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPES."
-      [options]="operatingPointTypes"
-      [required]="true"
-      [additionalLabelspace]="0"
-    >
-    </atlas-select>
-  </div>
-
-  <div *ngIf="form.value.selectedType === 'STOP_POINT'" class="d-flex mt-2 d-flex flex-column">
-    <div class="font-bold-lg d-flex col-12">{{ 'PAGES.DETAILS' | translate }}</div>
-    <div class="d-flex col-12 mt-2 flex-column" [formGroup]="form">
-      <mat-checkbox formControlName="stopPoint" data-cy="checkboxStopPoint">
-        {{ 'SEPODI.SERVICE_POINTS.STOP_POINT' | translate }}
-      </mat-checkbox>
-      <app-atlas-field-error [form]="form" controlName="stopPoint"></app-atlas-field-error>
-    </div>
-    <div class="d-flex col-12 mb-3 mt-2" *ngIf="form.value.stopPoint">
-      <atlas-select
-        class="col-6 pe-3"
-        [formGroup]="form"
-        controlName="stopPointType"
-        dataCy="stopPointType"
-        label="SEPODI.SERVICE_POINTS.STOP_POINT_TYPE"
-        optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.STOP_POINT_TYPES."
-        [options]="stopPointTypes"
-        [additionalLabelspace]="0"
-        [required]="true"
-      >
-      </atlas-select>
-      <div class="col-6">
-        <means-of-transport-picker
-          [formGroup]="form"
-          controlName="meansOfTransport"
-          [disabled]="form.disabled"
-          label="SEPODI.SERVICE_POINTS.MEANS_OF_TRANSPORT"
-        ></means-of-transport-picker>
+  @if (form.controls.spTypeGroup) {
+    @if ('operatingPointType' in form.controls.spTypeGroup.controls) {
+      <div class="col-12 d-flex mt-2">
+        <atlas-select
+          class="col-12"
+          [formGroup]="form.controls.spTypeGroup"
+          controlName="operatingPointType"
+          dataCy="operatingPointType"
+          label="SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPE"
+          optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPES."
+          [options]="operatingPointTypes"
+          [required]="true"
+          [additionalLabelspace]="0"
+        >
+        </atlas-select>
       </div>
-    </div>
+    }
 
-    <div class="d-flex col-12 flex-column" [formGroup]="form">
-      <mat-checkbox formControlName="freightServicePoint" data-cy="freightServicePoint">
-        {{ 'SEPODI.SERVICE_POINTS.FREIGHT_SERVICE_POINT' | translate }}
-      </mat-checkbox>
-      <app-atlas-field-error
-        [form]="form"
-        controlName="freightServicePoint"
-      ></app-atlas-field-error>
-    </div>
+    @if ('stopPoint' in form.controls.spTypeGroup.controls) {
+      <div class="d-flex mt-2 d-flex flex-column">
+        <div class="font-bold-lg d-flex col-12">
+          {{ 'PAGES.DETAILS' | translate }}
+        </div>
+        <div
+          class="d-flex col-12 mt-2 flex-column"
+          [formGroup]="form.controls.spTypeGroup"
+        >
+          <mat-checkbox formControlName="stopPoint" data-cy="checkboxStopPoint">
+            {{ 'SEPODI.SERVICE_POINTS.STOP_POINT' | translate }}
+          </mat-checkbox>
+          <app-atlas-field-error
+            [form]="form.controls.spTypeGroup"
+            controlName="stopPoint"
+          ></app-atlas-field-error>
+        </div>
 
-    <div class="d-flex col-12 mt-2" *ngIf="form.value.freightServicePoint">
-      <atlas-text-field
-        [fieldExamples]="[
-          { label: 'FORM.FOR_EXAMPLE', translate: true },
-          { label: '70003 |', translate: false },
-          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '5' } }
-        ]"
-        [formGroup]="form"
-        [required]="form.value.country === 'SWITZERLAND'"
-        controlName="sortCodeOfDestinationStation"
-        fieldLabel="SEPODI.SERVICE_POINTS.SORT_CODE_OF_DESTINATION_STATION"
-      >
-      </atlas-text-field>
-    </div>
-  </div>
+        @if (form.controls.spTypeGroup.controls.stopPointGroup) {
+          <div class="d-flex col-12 mb-3 mt-2">
+            <atlas-select
+              class="col-6 pe-3"
+              [formGroup]="form.controls.spTypeGroup.controls.stopPointGroup"
+              controlName="stopPointType"
+              dataCy="stopPointType"
+              label="SEPODI.SERVICE_POINTS.STOP_POINT_TYPE"
+              optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.STOP_POINT_TYPES."
+              [options]="stopPointTypes"
+              [additionalLabelspace]="0"
+              [required]="true"
+            >
+            </atlas-select>
+            <div class="col-6">
+              <means-of-transport-picker
+                [formGroup]="form.controls.spTypeGroup.controls.stopPointGroup"
+                controlName="meansOfTransport"
+                [disabled]="form.disabled"
+                label="SEPODI.SERVICE_POINTS.MEANS_OF_TRANSPORT"
+              ></means-of-transport-picker>
+            </div>
+          </div>
+        }
+
+        <div
+          class="d-flex col-12 flex-column"
+          [formGroup]="form.controls.spTypeGroup"
+        >
+          <mat-checkbox
+            formControlName="freightServicePoint"
+            data-cy="freightServicePoint"
+          >
+            {{ 'SEPODI.SERVICE_POINTS.FREIGHT_SERVICE_POINT' | translate }}
+          </mat-checkbox>
+          <app-atlas-field-error
+            [form]="form.controls.spTypeGroup"
+            controlName="freightServicePoint"
+          ></app-atlas-field-error>
+        </div>
+
+        @if (form.controls.spTypeGroup.controls.freightPointGroup) {
+          <div class="d-flex col-12 mt-2">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: '70003 |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '5' },
+                },
+              ]"
+              [formGroup]="form.controls.spTypeGroup.controls.freightPointGroup"
+              [required]="form.value.country === 'SWITZERLAND'"
+              controlName="sortCodeOfDestinationStation"
+              fieldLabel="SEPODI.SERVICE_POINTS.SORT_CODE_OF_DESTINATION_STATION"
+            >
+            </atlas-text-field>
+          </div>
+        }
+      </div>
+    }
+  }
 
   <ng-content select="[geography]"></ng-content>
 
-  <div *ngIf="form.value.servicePointGeolocation?.spatialReference && currentVersion">
-    <div class="font-bold-2xl mt-5">{{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}</div>
-
-    <ng-container
-      [ngTemplateOutlet]="locationInformationTemplate"
-      [ngTemplateOutletContext]="{ $implicit: locationInformation$ | async }"
-    ></ng-container>
-
-    <ng-template #locationInformationTemplate let-locationInformation>
-      <div class="d-flex flex-row mt-2">
-        <div class="col-2 pe-3 flex-column">
-          <div class="font-bold-lg color-gray-900">
-            {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
-          </div>
-          <div class="color-gray-900">
-            {{ locationInformation?.isoCountryCode ?? '-' }}
-          </div>
-        </div>
-        <div class="col-2 pe-3">
-          <div class="font-bold-lg color-gray-900">
-            {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
-          </div>
-          <div class="color-gray-900">
-            {{ locationInformation?.canton | displayCanton }}
-          </div>
-        </div>
-        <div class="col-2 pe-3">
-          <div class="font-bold-lg color-gray-900">
-            {{ 'SEPODI.GEOLOCATION.MUNICIPALITY' | translate }}
-          </div>
-          <div class="color-gray-900">
-            {{ locationInformation?.municipalityName ?? '-' }}
-          </div>
-        </div>
-        <div class="col-2 pe-3">
-          <div class="font-bold-lg color-gray-900">
-            {{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}
-          </div>
-          <div class="color-gray-900">
-            {{ locationInformation?.localityName ?? '-' }}
-          </div>
-        </div>
-        <div class="col-2 pe-3">
-          <div class="font-bold-lg color-gray-900">
-            {{ 'SEPODI.GEOLOCATION.DISTRICT_NAME' | translate }}
-          </div>
-          <div class="color-gray-900">
-            {{ locationInformation?.swissDistrictName ?? '-' }}
-          </div>
-        </div>
+  @if (form.value.servicePointGeolocation?.spatialReference && currentVersion) {
+    <div>
+      <div class="font-bold-2xl mt-5">
+        {{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}
       </div>
-    </ng-template>
-  </div>
+
+      <ng-container
+        [ngTemplateOutlet]="locationInformationTemplate"
+        [ngTemplateOutletContext]="{ $implicit: locationInformation$ | async }"
+      ></ng-container>
+
+      <ng-template #locationInformationTemplate let-locationInformation>
+        <div class="d-flex flex-row mt-2">
+          <div class="col-2 pe-3 flex-column">
+            <div class="font-bold-lg color-gray-900">
+              {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
+            </div>
+            <div class="color-gray-900">
+              {{ locationInformation?.isoCountryCode ?? '-' }}
+            </div>
+          </div>
+          <div class="col-2 pe-3">
+            <div class="font-bold-lg color-gray-900">
+              {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
+            </div>
+            <div class="color-gray-900">
+              {{ locationInformation?.canton | displayCanton }}
+            </div>
+          </div>
+          <div class="col-2 pe-3">
+            <div class="font-bold-lg color-gray-900">
+              {{ 'SEPODI.GEOLOCATION.MUNICIPALITY' | translate }}
+            </div>
+            <div class="color-gray-900">
+              {{ locationInformation?.municipalityName ?? '-' }}
+            </div>
+          </div>
+          <div class="col-2 pe-3">
+            <div class="font-bold-lg color-gray-900">
+              {{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}
+            </div>
+            <div class="color-gray-900">
+              {{ locationInformation?.localityName ?? '-' }}
+            </div>
+          </div>
+          <div class="col-2 pe-3">
+            <div class="font-bold-lg color-gray-900">
+              {{ 'SEPODI.GEOLOCATION.DISTRICT_NAME' | translate }}
+            </div>
+            <div class="color-gray-900">
+              {{ locationInformation?.swissDistrictName ?? '-' }}
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  }
 
   <div class="d-flex flex-column col-12">
     <div class="font-bold-2xl mt-5 mb-2">
@@ -211,50 +259,48 @@
     </atlas-select>
   </div>
 
-  <div
-    *ngIf="
-      form.value.selectedType === 'STOP_POINT' || form.value.selectedType === 'OPERATING_POINT'
-    "
-    class="font-bold-2xl mt-5 d-flex col-12"
-  >
-    {{ 'SEPODI.SERVICE_POINTS.ROUTE_NETWORK_DATA' | translate }}
-  </div>
-  <div
-    *ngIf="
-      form.value.selectedType === 'STOP_POINT' || form.value.selectedType === 'OPERATING_POINT'
-    "
-    class="d-flex col-12 align-items-center"
-    [formGroup]="form"
-  >
-    <div class="col-2 me-5">
-      <mat-checkbox
-        (change)="setOperatingPointRouteNetwork($event.checked)"
-        formControlName="operatingPointRouteNetwork"
-        data-cy="operatingPointRouteNetwork"
-      >
-        {{ 'SEPODI.SERVICE_POINTS.ROUTE_NETWORK' | translate }}
-      </mat-checkbox>
+  @if (form.controls.routeNetworkGroup) {
+    <div class="font-bold-2xl mt-5 d-flex col-12">
+      {{ 'SEPODI.SERVICE_POINTS.ROUTE_NETWORK_DATA' | translate }}
     </div>
+    <div class="d-flex col-12 align-items-center">
+      <div class="col-2 me-5" [formGroup]="form.controls.routeNetworkGroup">
+        <mat-checkbox
+          formControlName="operatingPointRouteNetwork"
+          data-cy="operatingPointRouteNetwork"
+        >
+          {{ 'SEPODI.SERVICE_POINTS.ROUTE_NETWORK' | translate }}
+        </mat-checkbox>
+      </div>
 
-    <div class="col-2 me-5">
-      <mat-checkbox
-        (change)="setOperatingPointKilometer($event.checked)"
-        formControlName="operatingPointKilometer"
-        data-cy="operatingPointKilometer"
-      >
-        {{ 'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER' | translate }}
-      </mat-checkbox>
-    </div>
+      <div class="col-2 me-5">
+        @let operatingPointKilometerCtrl =
+          form.controls.routeNetworkGroup.controls.operatingPointKilometer;
+        <mat-checkbox
+          [disabled]="operatingPointKilometerCtrl.disabled"
+          [checked]="operatingPointKilometerCtrl.value"
+          (change)="
+            operatingPointKilometerCtrl.setValue($event.checked);
+            operatingPointKilometerCtrl.markAsDirty()
+          "
+          data-cy="operatingPointKilometer"
+        >
+          {{ 'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER' | translate }}
+        </mat-checkbox>
+      </div>
 
-    <div class="col-6 service-point-search">
-      <kilometer-master-search
-        [disabled]="form.disabled || form.controls.operatingPointRouteNetwork.value!"
-        class="mt-3 col-12"
-        [formGroup]="form"
-        controlName="operatingPointKilometerMaster"
-        data-cy="operatingPointKilometerMaster"
-      ></kilometer-master-search>
+      <div class="col-6 service-point-search">
+        <kilometer-master-search
+          class="mt-3 col-12"
+          [formGroup]="form.controls.routeNetworkGroup"
+          [disabled]="
+            form.controls.routeNetworkGroup.controls
+              .operatingPointKilometerMaster.disabled
+          "
+          controlName="operatingPointKilometerMaster"
+          data-cy="operatingPointKilometerMaster"
+        ></kilometer-master-search>
+      </div>
     </div>
-  </div>
-  <br />
-</ng-container>
+  }
+}

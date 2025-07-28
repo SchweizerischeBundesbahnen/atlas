@@ -17,6 +17,7 @@ $height: 36px;
       overflow: hidden;
       .ng-value {
         width: 100%;
+        z-index: 5 !important;
       }
     }
   }

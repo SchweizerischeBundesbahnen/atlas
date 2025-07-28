@@ -8,7 +8,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
+import { ServicePointDetailFormGroup } from './form-group/service-point-detail-form-group';
 import { ServicePointType } from '../service-point-type';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { Observable, of, Subject, Subscription, take } from 'rxjs';
@@ -28,13 +28,12 @@ import { DialogService } from '../../../../../core/components/dialog/dialog.serv
 import { GeographyComponent } from '../../../geography/geography.component';
 import { Countries } from '../../../../../core/country/Countries';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
-import { AtLeastOneValidator } from '../../../../../core/validation/boolean-cross-validator/at-least-one-validator';
-import { NgIf, NgFor, NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
 import { BusinessOrganisationSelectComponent } from '../../../../../core/form-components/bo-select/business-organisation-select.component';
 import { MatLabel } from '@angular/material/form-field';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { SelectComponent } from '../../../../../core/form-components/select/select.component';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -48,14 +47,12 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './service-point-form.component.html',
   styleUrls: ['./service-point-form.component.scss'],
   imports: [
-    NgIf,
     TextFieldComponent,
     ReactiveFormsModule,
     DateRangeComponent,
     BusinessOrganisationSelectComponent,
     MatLabel,
     MatRadioGroup,
-    NgFor,
     MatRadioButton,
     AtlasFieldErrorComponent,
     SelectComponent,
@@ -97,7 +94,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   @Input() set currentVersion(version: ReadServicePointVersion | undefined) {
     this._currentVersion = version;
-    this.setStopPointValidator();
     this.locationInformation$ = of({
       isoCountryCode: version?.servicePointGeolocation?.isoCountryCode,
       canton: version?.servicePointGeolocation?.swissLocation?.canton,
@@ -242,43 +238,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       } else {
         this.boSboidRestriction = [];
       }
-    }
-  }
-
-  setOperatingPointRouteNetwork(isSelected: boolean) {
-    if (!this.form) return;
-    if (isSelected) {
-      this.form.controls.operatingPointRouteNetwork.setValue(true);
-      this.form.controls.operatingPointKilometer.setValue(true);
-      this.form.controls.operatingPointKilometer.disable();
-      this.form.controls.operatingPointKilometerMaster.setValue(
-        this.currentVersion?.number.number
-      );
-      this.form.controls.operatingPointKilometerMaster.disable();
-    } else {
-      this.form.controls.operatingPointRouteNetwork.setValue(false);
-      this.form.controls.operatingPointKilometer.setValue(false);
-      this.form.controls.operatingPointKilometer.enable();
-      this.form.controls.operatingPointKilometerMaster.reset();
-      this.form.controls.operatingPointKilometerMaster.enable();
-    }
-  }
-
-  setOperatingPointKilometer(isSelected: boolean) {
-    if (!this.form) return;
-    if (isSelected) {
-      this.form.controls.operatingPointKilometer.setValue(true);
-    } else {
-      this.form.controls.operatingPointKilometer.setValue(false);
-      this.form.controls.operatingPointKilometerMaster.reset();
-    }
-  }
-
-  setStopPointValidator() {
-    if (this.form?.controls.selectedType.value === ServicePointType.StopPoint) {
-      this.form!.addValidators(
-        AtLeastOneValidator.of('stopPoint', 'freightServicePoint')
-      );
     }
   }
 }

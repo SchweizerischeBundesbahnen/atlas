@@ -70,7 +70,7 @@ describe('GeographyComponent', () => {
     component.form = new FormGroup<GeographyFormGroup>({
       east: new FormControl(45),
       north: new FormControl(7),
-      height: new FormControl(5),
+      height: new FormControl(5, { nonNullable: true }),
       spatialReference: new FormControl(SpatialReference.Lv95),
     });
     fixture.detectChanges();

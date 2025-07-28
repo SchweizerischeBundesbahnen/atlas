@@ -2,13 +2,14 @@
   <div class="col-12 d-flex mt-3 flex-row">
     <div class="d-flex pe-3 col-12 justify-content-between">
       <div class="col-9">
-        <app-switch-version
-          *ngIf="showVersionSwitch && selectedVersion"
-          (switchVersion)="switchVersion($event)"
-          [currentRecord]="selectedVersion"
-          [records]="servicePointVersions"
-          [switchDisabled]="isSwitchVersionDisabled"
-        ></app-switch-version>
+        @if (showVersionSwitch && selectedVersion) {
+          <app-switch-version
+            (switchVersion)="switchVersion($event)"
+            [currentRecord]="selectedVersion"
+            [records]="servicePointVersions"
+            [switchDisabled]="isSwitchVersionDisabled"
+          ></app-switch-version>
+        }
       </div>
       <div class="d-flex flex-column">
         <app-navigation-sepodi-prm
@@ -36,59 +37,60 @@
   </div>
 
   <div class="col-12 d-flex mt-5">
-    <div *ngIf="selectedVersion?.id" class="form-title-section">
-      <h2 class="font-bold-2xl color-gray-900">
-        {{ 'SEPODI.SERVICE_POINTS.DETAILS' | translate }} -
-        {{ 'COMMON.VERSION' | translate }}
-        {{ selectedVersionIndex + 1 }}
-      </h2>
-      <div>
-        <span class="font-bold-lg color-gray-900"
-          >{{ 'COMMON.STATUS' | translate }}
-        </span>
-        <span class="color-gray-900">{{
-          'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
-        }}</span>
+    @if (selectedVersion?.id) {
+      <div class="form-title-section">
+        <h2 class="font-bold-2xl color-gray-900">
+          {{ 'SEPODI.SERVICE_POINTS.DETAILS' | translate }} -
+          {{ 'COMMON.VERSION' | translate }}
+          {{ selectedVersionIndex + 1 }}
+        </h2>
+        <div>
+          <span class="font-bold-lg color-gray-900"
+            >{{ 'COMMON.STATUS' | translate }}
+          </span>
+          <span class="color-gray-900">{{
+            'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
+          }}</span>
+        </div>
       </div>
-    </div>
+    }
   </div>
 
-  <ng-container *ngIf="form">
+  @if (form) {
     <service-point-form [form]="form" [currentVersion]="selectedVersion">
       <div class="color-gray-900" abbreviation>
-        <atlas-text-field
-          *ngIf="
-            !hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected
-          "
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'BIBD |', translate: false },
-            {
-              label: 'FORM.MAX_CHARS',
-              translate: true,
-              arg: { key: 'numberOfChars', value: '6' },
-            },
-          ]"
-          [formGroup]="form"
-          [required]="false"
-          controlName="abbreviation"
-          fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
-        >
-        </atlas-text-field>
-        <div
-          *ngIf="
-            hasAbbreviation ||
-            !isAbbreviationAllowed ||
-            !isLatestVersionSelected
-          "
-        >
-          <div class="font-bold-lg color-gray-900">
-            {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
+        @if (
+          !hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected
+        ) {
+          <atlas-text-field
+            [fieldExamples]="[
+              { label: 'FORM.FOR_EXAMPLE', translate: true },
+              { label: 'BIBD |', translate: false },
+              {
+                label: 'FORM.MAX_CHARS',
+                translate: true,
+                arg: { key: 'numberOfChars', value: '6' },
+              },
+            ]"
+            [formGroup]="form"
+            [required]="false"
+            controlName="abbreviation"
+            fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
+          >
+          </atlas-text-field>
+        }
+        @if (
+          hasAbbreviation || !isAbbreviationAllowed || !isLatestVersionSelected
+        ) {
+          <div>
+            <div class="font-bold-lg color-gray-900">
+              {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
+            </div>
+            <div class="color-gray-900">
+              {{ selectedVersion?.abbreviation ?? '-' }}
+            </div>
           </div>
-          <div class="color-gray-900">
-            {{ selectedVersion?.abbreviation ?? '-' }}
-          </div>
-        </div>
+        }
       </div>
 
       <sepodi-geography
@@ -100,12 +102,14 @@
         "
       ></sepodi-geography>
     </service-point-form>
-  </ng-container>
+  }
 
-  <div *ngIf="selectedVersion" class="mb-3">
-    <mat-divider class="mt-4 mb-4"></mat-divider>
-    <app-user-detail-info [record]="selectedVersion"></app-user-detail-info>
-  </div>
+  @if (selectedVersion) {
+    <div class="mb-3">
+      <mat-divider class="mt-4 mb-4"></mat-divider>
+      <app-user-detail-info [record]="selectedVersion"></app-user-detail-info>
+    </div>
+  }
 </atlas-detail-page-container>
 <atlas-detail-footer>
   <atlas-button
@@ -113,57 +117,57 @@
     buttonText="SEPODI.BACK_TO_MAP"
     buttonType="whiteFooterNonEdit"
     (buttonClicked)="closeSidePanel()"
-    [footerEdit]="(isFormEnabled$ | async) ?? false"
+    [footerEdit]="form?.enabled ?? false"
   >
   </atlas-button>
+  @if (form?.disabled && !isTerminationInProgress) {
+    <atlas-button
+      (buttonClicked)="toggleEdit()"
+      applicationType="SEPODI"
+      [businessOrganisation]="form!.controls.businessOrganisation.value!"
+      [uicCountryCode]="selectedVersion?.number?.uicCountryCode"
+      [disabled]="
+        selectedVersion?.status === servicePointStatus.Revoked ||
+        selectedVersion?.status === servicePointStatus.InReview
+      "
+      buttonDataCy="edit"
+      buttonText="COMMON.EDIT"
+      buttonType="edit"
+      wrapperStyleClass="ms-3"
+    ></atlas-button>
+  }
   <atlas-button
-    *ngIf="
-      (isFormEnabled$ | async) === false && form && !isTerminationInProgress
-    "
-    (buttonClicked)="toggleEdit()"
-    applicationType="SEPODI"
-    [businessOrganisation]="form.controls.businessOrganisation.value!"
-    [uicCountryCode]="selectedVersion?.number?.uicCountryCode"
-    [disabled]="
-      selectedVersion?.status === servicePointStatus.Revoked ||
-      selectedVersion?.status === servicePointStatus.InReview
-    "
-    buttonDataCy="edit"
-    buttonText="COMMON.EDIT"
-    buttonType="edit"
-    wrapperStyleClass="ms-3"
-  ></atlas-button>
-  <atlas-button
-    [footerEdit]="(isFormEnabled$ | async) ?? false"
+    [footerEdit]="form?.enabled ?? false"
     (buttonClicked)="toggleEdit()"
     buttonDataCy="cancel"
     buttonText="COMMON.CANCEL"
     buttonType="whiteFooterEdit"
     wrapperStyleClass="ms-3"
   ></atlas-button>
-  <atlas-button
-    *ngIf="
-      (isFormEnabled$ | async) === false &&
-      form &&
-      selectedVersion?.status === servicePointStatus.Draft &&
-      !isTerminationInProgress
-    "
-    (buttonClicked)="addWorkflow()"
-    applicationType="SEPODI"
-    [businessOrganisation]="form.controls.businessOrganisation.value!"
-    [uicCountryCode]="selectedVersion?.number?.uicCountryCode"
-    [disabled]="
-      selectedVersion?.status === servicePointStatus.Revoked ||
-      selectedVersion?.status === servicePointStatus.InReview
-    "
-    buttonDataCy="add-workflow"
-    buttonText="WORKFLOW.BUTTON.ADD"
-    buttonType="edit"
-    wrapperStyleClass="ms-3"
-  ></atlas-button>
+
+  @if (
+    form?.disabled &&
+    selectedVersion?.status === 'DRAFT' &&
+    !isTerminationInProgress
+  ) {
+    <atlas-button
+      (buttonClicked)="addWorkflow()"
+      applicationType="SEPODI"
+      [businessOrganisation]="form!.controls.businessOrganisation.value!"
+      [uicCountryCode]="selectedVersion?.number?.uicCountryCode"
+      [disabled]="
+        selectedVersion?.status === servicePointStatus.Revoked ||
+        selectedVersion?.status === servicePointStatus.InReview
+      "
+      buttonDataCy="add-workflow"
+      buttonText="WORKFLOW.BUTTON.ADD"
+      buttonType="edit"
+      wrapperStyleClass="ms-3"
+    ></atlas-button>
+  }
   <atlas-button
     (click)="save()"
-    [footerEdit]="(isFormEnabled$ | async) ?? false"
+    [footerEdit]="form?.enabled ?? false"
     [disabled]="!form?.dirty"
     [submitButton]="true"
     buttonDataCy="save-item"
@@ -172,28 +176,29 @@
     wrapperStyleClass="ms-3"
   >
   </atlas-button>
-  <atlas-button
-    *ngIf="!isTerminationInProgress"
-    (buttonClicked)="revoke()"
-    [applicationType]="'SEPODI'"
-    [hidden]="!showRevokeButton"
-    [disabled]="isSwitchVersionDisabled"
-    buttonDataCy="revoke-item"
-    buttonText="COMMON.REVOKE"
-    buttonType="revoke"
-    wrapperStyleClass="ms-3"
-  >
-  </atlas-button>
-  <atlas-button
-    *ngIf="!isTerminationInProgress"
-    (buttonClicked)="validate()"
-    [applicationType]="'SEPODI'"
-    [hidden]="selectedVersion?.status !== 'DRAFT'"
-    [disabled]="isSwitchVersionDisabled"
-    buttonDataCy="skip-workflow"
-    buttonText="WORKFLOW.BUTTON.SKIP"
-    buttonType="skipworkflow"
-    wrapperStyleClass="ms-3"
-  >
-  </atlas-button>
+
+  @if (!isTerminationInProgress) {
+    <atlas-button
+      (buttonClicked)="revoke()"
+      [applicationType]="'SEPODI'"
+      [hidden]="!showRevokeButton"
+      [disabled]="isSwitchVersionDisabled"
+      buttonDataCy="revoke-item"
+      buttonText="COMMON.REVOKE"
+      buttonType="revoke"
+      wrapperStyleClass="ms-3"
+    >
+    </atlas-button>
+    <atlas-button
+      (buttonClicked)="validate()"
+      [applicationType]="'SEPODI'"
+      [hidden]="selectedVersion?.status !== 'DRAFT'"
+      [disabled]="isSwitchVersionDisabled"
+      buttonDataCy="skip-workflow"
+      buttonText="WORKFLOW.BUTTON.SKIP"
+      buttonType="skipworkflow"
+      wrapperStyleClass="ms-3"
+    >
+    </atlas-button>
+  }
 </atlas-detail-footer>

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
+import {
+  ServicePointDetailFormGroup,
+  ServicePointFormGroupBuilder,
+} from '../service-point-form/form-group/service-point-detail-form-group';
 import { environment } from '../../../../../../environments/environment';
-import { Country, ReadServicePointVersion } from '../../../../../api';
+import { Country, CreateServicePointVersion } from '../../../../../api';
 import moment from 'moment';
 
 export const ALLOWED_TERMINATION_COUNTRIES: Country[] = [
@@ -17,12 +20,11 @@ export const ALLOWED_TERMINATION_COUNTRIES: Country[] = [
   providedIn: 'root',
 })
 export class TerminationService {
-  private reducedInitialFromValues!: Partial<ReadServicePointVersion>;
-
-  constructor() {}
+  private initialFormValues?: Partial<CreateServicePointVersion>;
 
   initTermination(form: FormGroup<ServicePointDetailFormGroup>) {
-    this.reducedInitialFromValues = this.reduceFormGroupToValues(form);
+    this.initialFormValues =
+      ServicePointFormGroupBuilder.mapper.getWritableServicePoint(form);
   }
 
   isStartingTermination(editedForm: FormGroup<ServicePointDetailFormGroup>) {
@@ -35,10 +37,12 @@ export class TerminationService {
   private checkStartingTermination(
     editedForm: FormGroup<ServicePointDetailFormGroup>
   ) {
-    const isStopPoint = this.reducedInitialFromValues.stopPoint;
+    if (!this.initialFormValues)
+      throw Error('initTermination was not called before');
+    const isStopPoint = !!this.initialFormValues.stopPointType;
     const isStopPointCountryAllowed =
       this.isStopPointCountryTerminationAllowed();
-    const isValidated = this.reducedInitialFromValues.status === 'VALIDATED';
+    const isValidated = this.initialFormValues.status === 'VALIDATED';
     const isInThePast = this.isOnlyValidToChangedInThePast(editedForm);
     return (
       isStopPoint && isValidated && isStopPointCountryAllowed && isInThePast
@@ -47,50 +51,42 @@ export class TerminationService {
 
   private isStopPointCountryTerminationAllowed() {
     return ALLOWED_TERMINATION_COUNTRIES.some(
-      (country) => this.reducedInitialFromValues.country === country
+      (country) => this.initialFormValues?.country === country
     );
   }
 
   private isOnlyValidToChangedInThePast(
     editedForm: FormGroup<ServicePointDetailFormGroup>
   ) {
-    const reduceEditedFormToValues = this.reduceFormGroupToValues(editedForm);
+    const editedFormValues =
+      ServicePointFormGroupBuilder.mapper.getWritableServicePoint(editedForm);
     if (
-      moment(reduceEditedFormToValues.validTo).isBefore(
-        this.reducedInitialFromValues.validTo
-      )
+      moment(editedFormValues.validTo).isBefore(this.initialFormValues?.validTo)
     ) {
       //remove validTo property to compare all form values
-      this.deleteValidToProperty(reduceEditedFormToValues);
-      return this.areValuesEquals(
-        this.reducedInitialFromValues,
-        reduceEditedFormToValues
-      );
+      this.deleteValidToProperty(editedFormValues);
+      return this.areValuesEquals(this.initialFormValues!, editedFormValues);
     }
     return false;
   }
 
   private areValuesEquals(
-    reduceEditedFormToValues: Partial<ReadServicePointVersion>,
-    reducedInitialFromValues: Partial<ReadServicePointVersion>
+    initialFormValues: Partial<CreateServicePointVersion>,
+    editedFormValues: Partial<CreateServicePointVersion>
   ) {
+    const sortFn = (a: [string, unknown], b: [string, unknown]): number =>
+      a[0].localeCompare(b[0]);
     return (
-      JSON.stringify(Object.entries(reduceEditedFormToValues).sort()) ===
-      JSON.stringify(Object.entries(reducedInitialFromValues).sort())
+      JSON.stringify(Object.entries(initialFormValues).sort(sortFn)) ===
+      JSON.stringify(Object.entries(editedFormValues).sort(sortFn))
     );
   }
 
   private deleteValidToProperty(
-    reduceEditedFormToValues: Partial<ReadServicePointVersion>
+    editedFormValues: Partial<CreateServicePointVersion>
   ) {
     const validToProperty = 'validTo';
-    delete reduceEditedFormToValues[validToProperty];
-    delete this.reducedInitialFromValues[validToProperty];
-  }
-
-  private reduceFormGroupToValues(
-    form: FormGroup<ServicePointDetailFormGroup>
-  ): Partial<ReadServicePointVersion> {
-    return form.getRawValue() as unknown as ReadServicePointVersion;
+    delete editedFormValues[validToProperty];
+    delete this.initialFormValues![validToProperty];
   }
 }

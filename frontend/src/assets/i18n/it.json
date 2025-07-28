@@ -10,7 +10,8 @@
       "MIN": "Il valore del campo <{{propertyPath}}> non deve essere inferiore a {{attributeValue}}.",
       "MAX": "Il valore del campo <{{propertyPath}}> non deve superare {{attributeValue}}.",
       "VALID_SPATIAL_REFERENCE_FRACTION": "Il numero massimo di decimali è stato superato. LV03 e LV95 max. 5. WGS84 e WGS84WEB max. 11.",
-      "VALID_SERVICE_POINT_NUMBER": "<numberShort> deve essere presente solo se il paese non è in (85,11,12,13,14)."
+      "VALID_SERVICE_POINT_NUMBER": "<numberShort> deve essere presente solo se il paese non è in (85,11,12,13,14).",
+      "VALID_STOP_POINT_TYPE": "<stopPointType> è consentito solo per le fermate e in questo caso deve essere definito con un valore non \"UNKNOWN\"."
     },
     "CLIENT": {
       "GENERIC": "Si è verificato un errore nella pagina web, ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato atlas."
@@ -304,7 +305,8 @@
     "COLON_SEPERATED_SID4PT": "Utilizzare i caratteri SID4PT (-._0-9a-zA-Z) con esattamente {{numbersWithColons}} due punti.",
     "DECISION_COMMENT_REQUIRED": "La giustificazione è necessaria",
     "NOTUNIQUEEMAIL": "L'e-mail esiste già. Verificare se il destinatario è già stato inserito o modificare l'indirizzo e-mail.",
-    "EXAMINANT_OR_CC_MAIL": "Inserire almeno un destinatario o un indirizzo e-mail aggiuntivo."
+    "EXAMINANT_OR_CC_MAIL": "Inserire almeno un destinatario o un indirizzo e-mail aggiuntivo.",
+    "REQUIREDANDNOTUNKNOWN": "Non può essere vuoto o non specificato."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
