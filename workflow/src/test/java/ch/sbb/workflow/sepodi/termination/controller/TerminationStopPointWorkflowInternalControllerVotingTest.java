@@ -23,6 +23,7 @@ import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflo
 import ch.sbb.workflow.sepodi.termination.service.TerminationStopPointNotificationService;
 import ch.sbb.workflow.sepodi.termination.service.TerminationStopPointWorkflowService;
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 /**
  * Workflow Status Flow according to
- * <a href="https://confluence.sbb.ch/spaces/ATLAS/pages/3057021043/ADR-0031+ServicePoint+Workflow+Haltestellen+Terminierungsworkflow#ADR0031:ServicePointWorkflow(HaltestellenTerminierungsworkflow)-UseCasesDiagramm">UseCases</a>
+ * <a
+ * href="https://confluence.sbb.ch/spaces/ATLAS/pages/3057021043/ADR-0031+ServicePoint+Workflow+Haltestellen
+ * +Terminierungsworkflow#ADR0031:ServicePointWorkflow(HaltestellenTerminierungsworkflow)-UseCasesDiagramm">UseCases</a>
  */
 class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseControllerApiTest {
 
@@ -73,10 +76,13 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
     ReadServicePointVersionModel servicePointVersionModel = ReadServicePointVersionModel.builder()
         .designationOfficial("official")
         .businessOrganisation("ch:1:sboid:132")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(9999, 12, 31))
         .build();
 
     when(sePoDiAdminClient.startServicePointTermination(any(), any(), any(
         UpdateTerminationServicePointModel.class))).thenReturn(servicePointVersionModel);
+    when(sePoDiAdminClient.getServicePointVersionsBySloid(any())).thenReturn(List.of(servicePointVersionModel));
   }
 
   @AfterEach
