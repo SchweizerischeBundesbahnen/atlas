@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +27,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @WithUnauthorizedMockJwtAuthentication
 @ActiveProfiles("integration-test")
 @Import(TestcontainersConfiguration.class)
-@EmbeddedKafka
 @AutoConfigureMockMvc
 class UserAdministrationSecurityConfigTest {
 
