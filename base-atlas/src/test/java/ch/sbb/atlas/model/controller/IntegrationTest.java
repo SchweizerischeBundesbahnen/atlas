@@ -7,7 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 
 @Target({ElementType.TYPE})
@@ -16,8 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @WithAdminMockJwtAuthentication
 @ActiveProfiles("integration-test")
-@EmbeddedKafka
-@Import(TestcontainersConfiguration.class)
+@Import({TestcontainersConfiguration.class, MockKafkaConfig.class})
 public @interface IntegrationTest {
 
 }
