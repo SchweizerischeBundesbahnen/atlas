@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -127,8 +126,8 @@ class ServicePointSearchControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType))
         // then
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details.[0].message", is("You must enter at least 2 digits to start a search!")));
   }
 
   @Test
@@ -143,8 +142,8 @@ class ServicePointSearchControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType))
         // then
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details.[0].message", is("You must enter at least 2 digits to start a search!")));
   }
 
   @Test
@@ -159,8 +158,8 @@ class ServicePointSearchControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType))
         // then
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details.[0].message", is("You must enter at least 2 digits to start a search!")));
   }
 
 }

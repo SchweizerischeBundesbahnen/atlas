@@ -159,7 +159,7 @@ class ServicePointBulkImportServiceTest {
             .validTo(bernWyleregg.getValidTo())
             .freightServicePoint(true)
             .build())
-        .attributesToNull(List.of(Fields.meansOfTransport))
+        .attributesToNull(List.of(Fields.meansOfTransport, Fields.stopPointType))
         .build());
 
     ServicePointVersion bulkUpdateResult = servicePointVersionRepository.findById(bernWyleregg.getId()).orElseThrow();

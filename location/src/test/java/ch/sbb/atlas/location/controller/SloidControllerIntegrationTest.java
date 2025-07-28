@@ -50,7 +50,8 @@ class SloidControllerIntegrationTest extends BaseLocationIntegrationTest {
     mvc.perform(post("/v1/sloid/generate").contentType(MediaType.APPLICATION_JSON).content("""
             {"sloidType": "SERVICE_POINT"}"""))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
+        .andExpect(jsonPath("$.message",
+            is("Following constraints were violated: [Property 'validCountry' has invalid value: 'false']")));
   }
 
   @Test
@@ -74,7 +75,8 @@ class SloidControllerIntegrationTest extends BaseLocationIntegrationTest {
     mvc.perform(post("/v1/sloid/generate").contentType(MediaType.APPLICATION_JSON).content("""
             {"sloidType": "AREA"}"""))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
+        .andExpect(jsonPath("$.message",
+            is("Following constraints were violated: [Property 'sloidPrefixSet' has invalid value: 'false']")));
   }
 
   @Test

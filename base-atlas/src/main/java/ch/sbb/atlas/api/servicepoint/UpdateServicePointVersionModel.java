@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.validation.ValidStopPointType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
+@ValidStopPointType
 @Schema(name = "UpdateServicePointVersion")
 public class UpdateServicePointVersionModel extends ServicePointVersionModel {
 
@@ -53,23 +55,17 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
   }
 
   @JsonIgnore
-  @AssertTrue(message = "StopPointType only allowed for StopPoint")
-  boolean isValidStopPointWithType() {
-    return isStopPoint() || getStopPointType() == null;
-  }
-
-  @JsonIgnore
   @AssertTrue(message = "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same "
-          + "value as numberWithoutCheckDigit and it should not be sent in the request")
+      + "value as numberWithoutCheckDigit and it should not be sent in the request")
   public boolean isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull() {
     return !isOperatingPointRouteNetwork() || operatingPointKilometerMasterNumber == null;
   }
 
   @JsonIgnore
   @AssertTrue(message = "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
-          " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")
+      " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")
   public boolean isRouteNetworkOrKilometerMasterNumberAllowed() {
-    return !isOperatingPointRouteNetwork() && operatingPointKilometerMasterNumber == null || (isStopPoint() || isPureOperatingPoint() || isFreightServicePoint());
+    return !isOperatingPointRouteNetwork() && operatingPointKilometerMasterNumber == null || (isStopPoint()
+        || isPureOperatingPoint() || isFreightServicePoint());
   }
-
 }

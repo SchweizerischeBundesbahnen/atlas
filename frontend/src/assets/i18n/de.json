@@ -10,7 +10,8 @@
       "MIN": "Der Wert für das Feld <{{propertyPath}}> darf {{attributeValue}} nicht unterschreiten.",
       "MAX": "Der Wert für das Feld <{{propertyPath}}> darf {{attributeValue}} nicht überschreiten.",
       "VALID_SPATIAL_REFERENCE_FRACTION": "Maximale Dezimalstellen überschritten. LV03 und LV95 max. 5. WGS84 und WGS84WEB max. 11.",
-      "VALID_SERVICE_POINT_NUMBER": "<numberShort> muss nur vorhanden sein, wenn das Land nicht in (85,11,12,13,14) liegt."
+      "VALID_SERVICE_POINT_NUMBER": "<numberShort> muss nur vorhanden sein, wenn das Land nicht in (85,11,12,13,14) liegt.",
+      "VALID_STOP_POINT_TYPE": "<stopPointType> ist nur für Haltestellen erlaubt und muss in diesem Fall mit einem Wert definiert werden, der nicht \"UNKNOWN\" ist."
     },
     "CLIENT": {
       "GENERIC": "Ein Fehler auf der Webseite ist aufgetreten, bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle atlas."
@@ -304,7 +305,8 @@
     "COLON_SEPERATED_SID4PT": "Verwenden Sie den SID4PT Zeichensatz (-._0-9a-zA-Z) mit genau {{numbersWithColons}} trennenden Doppelpunkten.",
     "DECISION_COMMENT_REQUIRED": "Begründung ist notwendig",
     "NOTUNIQUEEMAIL": "E-Mail bereits vorhanden. Bitte prüfen Sie ob der Empfänger bereits erfasst ist oder ändern Sie die E-Mail Adresse.",
-    "EXAMINANT_OR_CC_MAIL": "Bitte mindestens einen Empfänger oder eine zusätzliche cc-Mail erfassen."
+    "EXAMINANT_OR_CC_MAIL": "Bitte mindestens einen Empfänger oder eine zusätzliche cc-Mail erfassen.",
+    "REQUIREDANDNOTUNKNOWN": "Darf nicht leer oder unspezifiziert sein."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",

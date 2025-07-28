@@ -15,6 +15,7 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.time.LocalDate;
 import java.util.List;
@@ -107,6 +108,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .meansOfTransport(List.of(MeanOfTransport.BUS))
+        .stopPointType(StopPointType.ON_REQUEST)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
