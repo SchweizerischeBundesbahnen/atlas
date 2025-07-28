@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,7 +38,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTest {
 
@@ -60,21 +61,19 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
       .validTo(LocalDate.of(2000, 12, 31))
       .build();
 
-  @Autowired
-  private BusinessOrganisationVersionRepository versionRepository;
+  private final BusinessOrganisationVersionRepository versionRepository;
 
   @Autowired
-  private BusinessOrganisationController controller;
+  BusinessOrganisationControllerIntegrationTest(BusinessOrganisationVersionRepository versionRepository) {
+    this.versionRepository = versionRepository;
+  }
 
-  @MockBean
+  @MockitoBean
   private AmazonService amazonService;
-
-  BusinessOrganisationVersion version1;
-  BusinessOrganisationVersion version2;
 
   @BeforeEach
   void createDefaultVersion() {
-    version1 = BusinessOrganisationVersion.builder()
+    /*BusinessOrganisationVersion.builder()
         .sboid("ch:1:sboid:100000")
         .abbreviationDe("de1")
         .abbreviationFr("fr1")
@@ -93,7 +92,7 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31))
         .build();
-    version2 = BusinessOrganisationVersion.builder()
+    BusinessOrganisationVersion.builder()
         .sboid("ch:1:sboid:100000")
         .abbreviationDe("de2")
         .abbreviationFr("fr1")
@@ -111,7 +110,7 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2023, 12, 31))
-        .build();
+        .build();*/
     versionRepository.save(version);
   }
 
@@ -143,7 +142,7 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .build();
 
     //when and then
-    mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
+    mvc.perform(post("/internal/business-organisations/versions").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
   }
@@ -168,13 +167,25 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .build();
-    BusinessOrganisationVersionModel businessOrganisationVersion = controller.createBusinessOrganisationVersion(model);
+
+    BusinessOrganisationVersionModel businessOrganisationVersion =
+        mapper.readValue(
+            mvc.perform(post("/internal/business-organisations/versions")
+                .contentType(contentType)
+                .content(mapper.writeValueAsString(model))
+            ).andReturn().getResponse().getContentAsByteArray(),
+            BusinessOrganisationVersionModel.class
+        );
 
     model.setDescriptionDe("desc-de1-changed");
     model.setValidFrom(LocalDate.of(2002, 1, 1));
     model.setValidTo(LocalDate.of(2002, 12, 31));
     model.setEtagVersion(businessOrganisationVersion.getEtagVersion());
-    controller.updateBusinessOrganisationVersion(businessOrganisationVersion.getId(), model);
+
+    mvc.perform(put("/internal/business-organisations/versions/" + businessOrganisationVersion.getId())
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(model))
+    );
 
     //when and then
     mvc.perform(get(
@@ -246,10 +257,14 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .build();
-    controller.createBusinessOrganisationVersion(model);
+
+    mvc.perform(post("/internal/business-organisations/versions")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(model))
+    );
 
     //when and then
-    mvc.perform(get("/v1/business-organisations"))
+    mvc.perform(get("/internal/business-organisations"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount").value(2))
         .andExpect(jsonPath("$.objects[0]."
@@ -307,7 +322,7 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .build();
 
     //when and then
-    mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
+    mvc.perform(post("/internal/business-organisations/versions").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
@@ -347,7 +362,7 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .build();
 
     //when and then
-    mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
+    mvc.perform(post("/internal/business-organisations/versions").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
@@ -387,7 +402,7 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .build();
 
     //when and then
-    mvc.perform(post("/v1/business-organisations/versions/123456789").contentType(contentType)
+    mvc.perform(put("/internal/business-organisations/versions/123456789").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isNotFound())
         .andExpect(jsonPath("$.status", is(404)))
@@ -405,14 +420,14 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
   @Test
   void shouldDeleteBusinessOrganisationBySboid() throws Exception {
     //when and then
-    mvc.perform(delete("/v1/business-organisations/" + version.getSboid()))
+    mvc.perform(delete("/internal/business-organisations/" + version.getSboid()))
         .andExpect(status().isOk());
   }
 
   @Test
   void shouldRevokeBusinessOrganisationBySboid() throws Exception {
     //when and then
-    mvc.perform(post("/v1/business-organisations/" + version.getSboid() + "/revoke"))
+    mvc.perform(post("/internal/business-organisations/" + version.getSboid() + "/revoke"))
         .andExpect(status().isOk())
         .andExpect(
             jsonPath("$[0]." + BusinessOrganisationVersionModel.Fields.status, is("REVOKED")));
@@ -437,10 +452,18 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .build();
-    BusinessOrganisationVersionModel savedVersion = controller.createBusinessOrganisationVersion(model);
+
+    BusinessOrganisationVersionModel savedVersion =
+        mapper.readValue(
+            mvc.perform(post("/internal/business-organisations/versions")
+                .contentType(contentType)
+                .content(mapper.writeValueAsString(model))
+            ).andReturn().getResponse().getContentAsByteArray(),
+            BusinessOrganisationVersionModel.class
+        );
 
     //when and then
-    mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
+    mvc.perform(post("/internal/business-organisations/versions").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isConflict())
         .andExpect(jsonPath("$.status", is(409)))
@@ -483,11 +506,20 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .build();
-    BusinessOrganisationVersionModel savedVersion = controller.createBusinessOrganisationVersion(model);
-    controller.revokeBusinessOrganisation(savedVersion.getSboid());
+
+    BusinessOrganisationVersionModel savedVersion =
+        mapper.readValue(
+            mvc.perform(post("/internal/business-organisations/versions")
+                .contentType(contentType)
+                .content(mapper.writeValueAsString(model))
+            ).andReturn().getResponse().getContentAsByteArray(),
+            BusinessOrganisationVersionModel.class
+        );
+
+    mvc.perform(post("/internal/business-organisations/" + savedVersion.getSboid() + "/revoke"));
 
     //when and then
-    mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
+    mvc.perform(post("/internal/business-organisations/versions").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
   }
@@ -499,21 +531,28 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .build();
-    versionModel = controller.createBusinessOrganisationVersion(versionModel);
+    versionModel =
+        mapper.readValue(
+            mvc.perform(post("/internal/business-organisations/versions")
+                .contentType(contentType)
+                .content(mapper.writeValueAsString(versionModel))
+            ).andReturn().getResponse().getContentAsByteArray(),
+            BusinessOrganisationVersionModel.class
+        );
 
     // When first update it is ok
     versionModel.setValidFrom(LocalDate.of(2010, 1, 1));
     versionModel.setValidTo(LocalDate.of(2010, 12, 31));
-    mvc.perform(post(
-            "/v1/business-organisations/versions/" + versionModel.getId()).contentType(contentType)
+    mvc.perform(put(
+            "/internal/business-organisations/versions/" + versionModel.getId()).contentType(contentType)
             .content(mapper.writeValueAsString(versionModel)))
         .andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
     versionModel.setValidFrom(LocalDate.of(2001, 1, 1));
     versionModel.setValidTo(LocalDate.of(2010, 12, 31));
-    mvc.perform(post(
-            "/v1/business-organisations/versions/" + versionModel.getId()).contentType(contentType)
+    mvc.perform(put(
+            "/internal/business-organisations/versions/" + versionModel.getId()).contentType(contentType)
             .content(mapper.writeValueAsString(versionModel)))
         .andExpect(status().isPreconditionFailed());
   }
@@ -525,7 +564,11 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .build();
-    controller.createBusinessOrganisationVersion(versionModel);
+
+    mvc.perform(post("/internal/business-organisations/versions")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(versionModel))
+    );
 
     //when and then
     mvc.perform(post("/v1/business-organisations/export/full"))
@@ -539,7 +582,11 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
         .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
         .build();
-    controller.createBusinessOrganisationVersion(versionModel);
+
+    mvc.perform(post("/internal/business-organisations/versions")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(versionModel))
+    );
 
     //when and then
     mvc.perform(post("/v1/business-organisations/export/actual"))
@@ -553,7 +600,11 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
         .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
         .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
         .build();
-    controller.createBusinessOrganisationVersion(versionModel);
+
+    mvc.perform(post("/internal/business-organisations/versions")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(versionModel))
+    );
 
     //when and then
     mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
@@ -563,7 +614,7 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
   @Test
   void shouldReturnErrorMessageOnEmptyBody() throws Exception {
     // when and then
-    mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
+    mvc.perform(post("/internal/business-organisations/versions").contentType(contentType)
             .content(mapper.writeValueAsString("{}")))
         .andExpect(status().isBadRequest());
   }
@@ -579,7 +630,7 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
 
   @Test
   void shouldReturnBadRequestWhenPageSizeExceeded() throws Exception {
-    mvc.perform(get("/v1/business-organisations?size=5000"))
+    mvc.perform(get("/internal/business-organisations?size=5000"))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is("The page size is limited to 2000")));
   }
