@@ -311,16 +311,17 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.error", is("Method argument not valid error")))
+        .andExpect(jsonPath("$.message",
+            is("Following constraints were violated: [Property 'abbreviationFr' has invalid value: 'frufrufrufrufrufrufr']")))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
         .andExpect(
-            jsonPath("$.details[0].message", is("Value frufrufrufrufrufrufr rejected due to size must be between 1 and 10")))
+            jsonPath("$.details[0].message", is("size must be between 1 and 10")))
         .andExpect(jsonPath("$.details[0].field", is("abbreviationFr")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("frufrufrufrufrufrufr")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("size must be between 1 and 10")));
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.SIZE")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("propertyPath")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("abbreviationFr")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("frufrufrufrufrufrufr")));
   }
 
   @Test
@@ -350,15 +351,16 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerApiTes
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.error", is("Method argument not valid error")))
-        .andExpect(jsonPath("$.details[0].message", is("Value null rejected due to must not be null")))
+        .andExpect(jsonPath("$.message",
+            is("Following constraints were violated: [Property 'abbreviationDe' has invalid value: 'null']")))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].message", is("must not be null")))
         .andExpect(jsonPath("$.details[0].field", is("abbreviationDe")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("null")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must not be null")));
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.NOT_NULL")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("propertyPath")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("abbreviationDe")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("null")));
   }
 
   @Test

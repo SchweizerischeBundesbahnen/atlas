@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { HttpClientModule } from '@angular/common/http';
 import { DialogComponent } from '../components/dialog/dialog.component';
 import { HeaderComponent } from '../components/header/header.component';
 import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-spinner.component';
@@ -58,6 +57,11 @@ import { DialogFooterComponent } from '../components/dialog/footer/dialog-footer
 import { SearchServicePointPanelComponent } from '../search-service-point-panel/search-service-point-panel.component';
 import { NavigationSepodiPrmComponent } from '../navigation-sepodi-prm/navigation-sepodi-prm.component';
 import { PrmRecordingObligationComponent } from '../prm-recording-obligation/prm-recording-obligation.component';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -115,7 +119,6 @@ const coreComponents = [
     TranslateModule,
     RouterModule,
     FormModule,
-    HttpClientModule,
     OAuthModule.forRoot({
       resourceServer: {
         // When sendAccessToken is set to true and you send
@@ -137,6 +140,7 @@ const coreComponents = [
     TranslatePipe,
     FormatPipe,
     { provide: OAuthStorage, useClass: OAuthCookieStorage },
+    provideHttpClient(withFetch(), withInterceptorsFromDi()),
   ],
 })
 export class CoreModule {}

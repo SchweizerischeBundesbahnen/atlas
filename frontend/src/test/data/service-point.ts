@@ -25,7 +25,7 @@ export const BERN_WYLEREGG: ReadServicePointVersion = {
   operatingPointTrafficPointType: undefined,
   operatingPointRouteNetwork: false,
   meansOfTransport: ['BUS'],
-  stopPointType: undefined,
+  stopPointType: 'ON_REQUEST',
   servicePointGeolocation: {
     spatialReference: 'LV95',
     lv95: {

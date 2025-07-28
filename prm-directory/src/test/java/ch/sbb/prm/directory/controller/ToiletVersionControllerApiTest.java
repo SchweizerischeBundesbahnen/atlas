@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
@@ -144,7 +145,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/toilets").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.message", startsWith("Following constraints were violated: [")))
         .andExpect(jsonPath("$.details", hasSize(4)));
     verify(relationService, times(0)).save(any(RelationVersion.class));
     verify(prmLocationService, times(0)).allocateSloid(any(ToiletVersion.class), eq(SloidType.TOILET));

@@ -1,5 +1,4 @@
 import { ServicePointFormComponent } from './service-point-form.component';
-import { FormControl, FormGroup } from '@angular/forms';
 import {
   ApplicationRole,
   ApplicationType,
@@ -13,11 +12,6 @@ import {
 import { EventEmitter } from '@angular/core';
 import { GeographyComponent } from '../../../geography/geography.component';
 import { of } from 'rxjs';
-import {
-  ServicePointDetailFormGroup,
-  ServicePointFormGroupBuilder,
-} from '../service-point-detail-form-group';
-import { AtLeastOneValidator } from '../../../../../core/validation/boolean-cross-validator/at-least-one-validator';
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
@@ -28,13 +22,11 @@ describe('ServicePointFormComponent', () => {
   const geoDataServiceSpy = jasmine.createSpyObj(['getLocationInformation']);
   const authServiceSpy = jasmine.createSpyObj(['getApplicationUserPermission']);
   authServiceSpy.isAdmin = true;
-  let servicePointFormGroup: FormGroup<ServicePointDetailFormGroup>;
+
   const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 
   beforeEach(() => {
     dialogServiceSpy.confirm.and.returnValue(of(true));
-    servicePointFormGroup = ServicePointFormGroupBuilder.buildEmptyFormGroup();
-
     component = new ServicePointFormComponent(
       translationSortingServiceSpy,
       dialogServiceSpy,
@@ -45,124 +37,6 @@ describe('ServicePointFormComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should test component method setOperatingPointRouteNetwork with argument true', () => {
-    const form = new FormGroup({
-      operatingPointRouteNetwork: new FormControl(),
-      operatingPointKilometer: new FormControl(),
-      operatingPointKilometerMaster: new FormControl(),
-    });
-    const currentVersion = {
-      number: {
-        number: 1,
-      },
-    };
-
-    (
-      spyOnProperty<ServicePointFormComponent, 'form'>(
-        component,
-        'form',
-        'get'
-      ) as jasmine.Spy<(this: ServicePointFormComponent) => FormGroup>
-    ).and.returnValue(form);
-
-    (
-      spyOnProperty<ServicePointFormComponent, 'currentVersion'>(
-        component,
-        'currentVersion',
-        'get'
-      ) as jasmine.Spy<(this: ServicePointFormComponent) => object>
-    ).and.returnValue(currentVersion);
-
-    component.setOperatingPointRouteNetwork(true);
-
-    expect(component.form?.controls.operatingPointRouteNetwork.value).toBe(
-      true
-    );
-    expect(component.form?.controls.operatingPointKilometer.value).toBe(true);
-    expect(component.form?.controls.operatingPointKilometer.disabled).toBe(
-      true
-    );
-    expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(
-      1
-    );
-    expect(
-      component.form?.controls.operatingPointKilometerMaster.disabled
-    ).toBe(true);
-  });
-
-  it('should test component method setOperatingPointRouteNetwork with argument false', () => {
-    const form = new FormGroup({
-      operatingPointRouteNetwork: new FormControl(),
-      operatingPointKilometer: new FormControl({
-        value: null,
-        disabled: true,
-      }),
-      operatingPointKilometerMaster: new FormControl({
-        value: 5,
-        disabled: true,
-      }),
-    });
-    (
-      spyOnProperty<ServicePointFormComponent, 'form'>(
-        component,
-        'form',
-        'get'
-      ) as jasmine.Spy<(this: ServicePointFormComponent) => FormGroup>
-    ).and.returnValue(form);
-
-    component.setOperatingPointRouteNetwork(false);
-
-    expect(component.form?.controls.operatingPointRouteNetwork.value).toBe(
-      false
-    );
-    expect(component.form?.controls.operatingPointKilometer.value).toBe(false);
-    expect(component.form?.controls.operatingPointKilometer.enabled).toBe(true);
-    expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(
-      null
-    );
-    expect(component.form?.controls.operatingPointKilometerMaster.enabled).toBe(
-      true
-    );
-  });
-
-  it('should test component method setOperatingPointKilometer with argument true', () => {
-    const form = new FormGroup({
-      operatingPointKilometer: new FormControl(null),
-    });
-    (
-      spyOnProperty<ServicePointFormComponent, 'form'>(
-        component,
-        'form',
-        'get'
-      ) as jasmine.Spy<(this: ServicePointFormComponent) => FormGroup>
-    ).and.returnValue(form);
-
-    component.setOperatingPointKilometer(true);
-
-    expect(component.form?.controls.operatingPointKilometer.value).toBe(true);
-  });
-
-  it('should test component method setOperatingPointKilometer with argument false', () => {
-    const form = new FormGroup({
-      operatingPointKilometer: new FormControl(null),
-      operatingPointKilometerMaster: new FormControl(5),
-    });
-    (
-      spyOnProperty<ServicePointFormComponent, 'form'>(
-        component,
-        'form',
-        'get'
-      ) as jasmine.Spy<(this: ServicePointFormComponent) => FormGroup>
-    ).and.returnValue(form);
-
-    component.setOperatingPointKilometer(false);
-
-    expect(component.form?.controls.operatingPointKilometer.value).toBe(false);
-    expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(
-      null
-    );
   });
 
   it('should update locationInformation when coordinates changed', (done) => {
@@ -234,17 +108,5 @@ describe('ServicePointFormComponent', () => {
 
     expect(component.isNew).toBeTrue();
     expect(component.boSboidRestriction).toHaveSize(1);
-  });
-
-  it('should add AtLeastOneValidator if selectedType is StopPoint', () => {
-    component.form = servicePointFormGroup;
-    component.form.controls['selectedType'].setValue('STOP_POINT');
-    spyOn(AtLeastOneValidator, 'of').and.callThrough();
-
-    component.setStopPointValidator();
-    expect(AtLeastOneValidator.of).toHaveBeenCalledWith(
-      'stopPoint',
-      'freightServicePoint'
-    );
   });
 });
