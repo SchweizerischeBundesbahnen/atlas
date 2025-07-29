@@ -1,17 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of, Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { TransportCompaniesComponent } from './transport-companies.component';
 import {
   ContainerTransportCompany,
-  TransportCompaniesService,
   TransportCompanyStatus,
 } from '../../../api';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { TransportCompanyInternalService } from '../../../api/service/bodi/transport-company-internal.service';
 import SpyObj = jasmine.SpyObj;
-import Spy = jasmine.Spy;
 
 const transportCompany: ContainerTransportCompany = {
   objects: [
@@ -27,19 +26,13 @@ describe('TransportCompaniesComponent', () => {
   let component: TransportCompaniesComponent;
   let fixture: ComponentFixture<TransportCompaniesComponent>;
 
-  let transportCompaniesServiceSpy: SpyObj<TransportCompaniesService>;
+  let transportCompanyInternalServiceSpy: SpyObj<TransportCompanyInternalService>;
 
   beforeEach(() => {
-    transportCompaniesServiceSpy =
-      jasmine.createSpyObj<TransportCompaniesService>(
-        'TransportCompaniesServiceSpy',
-        ['getTransportCompanies']
-      );
-    (
-      transportCompaniesServiceSpy.getTransportCompanies as Spy<
-        () => Observable<ContainerTransportCompany>
-      >
-    ).and.returnValue(of(transportCompany));
+    transportCompanyInternalServiceSpy =
+      jasmine.createSpyObj<TransportCompanyInternalService>({
+        getTransportCompanies: of(transportCompany),
+      });
 
     TestBed.configureTestingModule({
       imports: [TransportCompaniesComponent, TranslateModule.forRoot()],
@@ -47,8 +40,8 @@ describe('TransportCompaniesComponent', () => {
         TranslatePipe,
         RouterOutlet,
         {
-          provide: TransportCompaniesService,
-          useValue: transportCompaniesServiceSpy,
+          provide: TransportCompanyInternalService,
+          useValue: transportCompanyInternalServiceSpy,
         },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
@@ -75,7 +68,7 @@ describe('TransportCompaniesComponent', () => {
     });
 
     expect(
-      transportCompaniesServiceSpy.getTransportCompanies
+      transportCompanyInternalServiceSpy.getTransportCompanies
     ).toHaveBeenCalledOnceWith(
       [],
       [

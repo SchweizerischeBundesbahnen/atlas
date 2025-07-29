@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { BusinessOrganisationsService, User } from '../../../../../api';
+import { User } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
@@ -17,7 +17,6 @@ import { UserAdministrationService } from '../../../../../api/service/user-admin
 @Component({
   selector: 'app-user-administration-create',
   templateUrl: './user-administration-user-create.component.html',
-  viewProviders: [BusinessOrganisationsService],
   imports: [
     ScrollToTopDirective,
     DetailPageContainerComponent,

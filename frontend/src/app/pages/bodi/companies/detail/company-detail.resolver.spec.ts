@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { CompaniesService, Company } from '../../../../api';
+import { Company } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { CompanyDetailResolver } from './company-detail-resolver.service';
+import { CompanyInternalService } from '../../../../api/service/bodi/company-internal.service';
+import SpyObj = jasmine.SpyObj;
 
 const company: Company = {
   uicCode: '1234',
@@ -11,17 +13,23 @@ const company: Company = {
 };
 
 describe('CompanyDetailResolver', () => {
-  const companyService = jasmine.createSpyObj('companyService', ['getCompany']);
-  companyService.getCompany.and.returnValue(of(company));
-
   let resolver: CompanyDetailResolver;
 
+  let companyInternalServiceSpy: SpyObj<CompanyInternalService>;
+
   beforeEach(() => {
+    companyInternalServiceSpy = jasmine.createSpyObj({
+      getCompany: of(company),
+    });
+
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
       providers: [
         CompanyDetailResolver,
-        { provide: CompaniesService, useValue: companyService },
+        {
+          provide: CompanyInternalService,
+          useValue: companyInternalServiceSpy,
+        },
       ],
     });
     resolver = TestBed.inject(CompanyDetailResolver);

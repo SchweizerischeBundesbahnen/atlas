@@ -1,8 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {
-  BusinessOrganisationsService,
-  ClientCredentialPermissionCreate,
-} from '../../../../../api';
+import { ClientCredentialPermissionCreate } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
@@ -28,7 +25,6 @@ import { ClientCredentialAdministrationService } from '../../../../../api/servic
 @Component({
   selector: 'app-client-credential-administration-create',
   templateUrl: './user-administration-client-create.component.html',
-  viewProviders: [BusinessOrganisationsService],
   imports: [
     ScrollToTopDirective,
     DetailPageContainerComponent,

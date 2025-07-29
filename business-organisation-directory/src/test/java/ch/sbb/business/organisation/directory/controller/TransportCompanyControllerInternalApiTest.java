@@ -14,19 +14,23 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
- class TransportCompanyControllerApiTest extends BaseControllerApiTest {
+class TransportCompanyControllerInternalApiTest extends BaseControllerApiTest {
+
+  private final TransportCompanyRepository repository;
 
   @Autowired
-  private TransportCompanyRepository repository;
+  TransportCompanyControllerInternalApiTest(TransportCompanyRepository repository) {
+    this.repository = repository;
+  }
 
   @BeforeEach
   void createDefaultVersion() {
     repository.save(TransportCompany.builder()
-                                    .id(5L)
-                                    .description("Beste Company")
-                                    .number("#0001")
-                                    .enterpriseId("enterprisige ID")
-                                    .build());
+        .id(5L)
+        .description("Beste Company")
+        .number("#0001")
+        .enterpriseId("enterprisige ID")
+        .build());
   }
 
   @AfterEach
@@ -36,17 +40,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
   @Test
   void shouldGetTransportCompanies() throws Exception {
-    mvc.perform(get("/v1/transport-companies")).andExpect(status().isOk())
-       .andExpect(jsonPath("$.objects[0]." + Fields.id, is(5)))
-       .andExpect(jsonPath("$.objects[0]." + Fields.description, is("Beste Company")))
-       .andExpect(jsonPath("$.objects[0]." + Fields.number, is("#0001")));
+    mvc.perform(get("/internal/transport-companies")).andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(5)))
+        .andExpect(jsonPath("$.objects[0]." + Fields.description, is("Beste Company")))
+        .andExpect(jsonPath("$.objects[0]." + Fields.number, is("#0001")));
   }
 
   @Test
   void shouldGetTransportCompany() throws Exception {
-    mvc.perform(get("/v1/transport-companies/5")).andExpect(status().isOk())
-       .andExpect(jsonPath("$." + Fields.id, is(5)))
-       .andExpect(jsonPath("$." + Fields.description, is("Beste Company")))
-       .andExpect(jsonPath("$." + Fields.number, is("#0001")));
+    mvc.perform(get("/internal/transport-companies/5")).andExpect(status().isOk())
+        .andExpect(jsonPath("$." + Fields.id, is(5)))
+        .andExpect(jsonPath("$." + Fields.description, is("Beste Company")))
+        .andExpect(jsonPath("$." + Fields.number, is("#0001")));
   }
 }

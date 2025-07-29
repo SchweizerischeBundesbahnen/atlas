@@ -4,9 +4,7 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-
 import { UserAdministrationClientCreateComponent } from './user-administration-client-create.component';
-import { BusinessOrganisationsService } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -26,7 +24,6 @@ describe('UserAdministrationClientCreateComponent', () => {
 
   let clientCredentialAdministrationServiceSpy: SpyObj<ClientCredentialAdministrationService>;
   let notificationServiceSpy: SpyObj<NotificationService>;
-  let boServiceSpy: SpyObj<BusinessOrganisationsService>;
 
   beforeEach(async () => {
     clientCredentialAdministrationServiceSpy = jasmine.createSpyObj(
@@ -36,20 +33,7 @@ describe('UserAdministrationClientCreateComponent', () => {
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
       'success',
     ]);
-    boServiceSpy = jasmine.createSpyObj<BusinessOrganisationsService>(
-      'BusinessOrganisationsService',
-      ['getAllBusinessOrganisations']
-    );
-    TestBed.overrideComponent(UserAdministrationClientCreateComponent, {
-      set: {
-        viewProviders: [
-          {
-            provide: BusinessOrganisationsService,
-            useValue: boServiceSpy,
-          },
-        ],
-      },
-    });
+
     await TestBed.configureTestingModule({
       imports: [
         RouterModule.forRoot([]),

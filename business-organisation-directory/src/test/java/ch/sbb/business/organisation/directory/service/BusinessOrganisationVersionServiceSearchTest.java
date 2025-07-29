@@ -7,8 +7,8 @@ import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionRequestParams;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.business.organisation.directory.controller.BusinessOrganisationVersionSearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
+import ch.sbb.business.organisation.directory.model.BusinessOrganisationVersionSearchRestrictions;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
- class BusinessOrganisationVersionServiceSearchTest {
+class BusinessOrganisationVersionServiceSearchTest {
 
   private final BusinessOrganisationVersionRepository repository;
   private final BusinessOrganisationService service;
@@ -34,14 +34,14 @@ import org.springframework.transaction.annotation.Transactional;
   private BusinessOrganisationVersion version3;
 
   @Autowired
-   BusinessOrganisationVersionServiceSearchTest(BusinessOrganisationVersionRepository repository,
+  BusinessOrganisationVersionServiceSearchTest(BusinessOrganisationVersionRepository repository,
       BusinessOrganisationService service) {
     this.repository = repository;
     this.service = service;
   }
 
   @BeforeEach
-   void init() {
+  void init() {
     version1 = BusinessOrganisationVersion.builder().sboid("ch:1:sboid:100000").abbreviationDe("de1").abbreviationFr("fr1")
         .abbreviationIt("it1").abbreviationEn("en1").descriptionDe("desc-de1").descriptionFr("desc-fr1").descriptionIt("desc-it1")
         .descriptionEn("desc-en1")
@@ -63,7 +63,7 @@ import org.springframework.transaction.annotation.Transactional;
   }
 
   @AfterEach
-   void cleanUp() {
+  void cleanUp() {
     repository.deleteAll();
   }
 

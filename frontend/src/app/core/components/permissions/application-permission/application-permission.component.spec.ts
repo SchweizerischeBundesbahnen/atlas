@@ -4,23 +4,20 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-
 import { ApplicationPermissionComponent } from './application-permission.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserPermissionProviderService } from './user-permission-provider-service';
 import { provideHttpClient } from '@angular/common/http';
-import {
-  ApplicationType,
-  BusinessOrganisation,
-  BusinessOrganisationsService,
-} from '../../../../api';
+import { ApplicationType, BusinessOrganisation } from '../../../../api';
 import { FormGroup } from '@angular/forms';
 import {
   ApplicationPermission,
   ApplicationPermissionFormGroupBuilder,
 } from '../form/application-permission-form-group';
 import { of } from 'rxjs';
+import { BusinessOrganisationInternalService } from '../../../../api/service/bodi/business-organisation-internal.service';
+import SpyObj = jasmine.SpyObj;
 import { translateServiceProvider } from '../../../../app.testing.mocks';
 
 export class MockUserPermissionProviderService extends UserPermissionProviderService {
@@ -44,15 +41,14 @@ export class MockUserPermissionProviderService extends UserPermissionProviderSer
 describe('ApplicationPermissionComponent', () => {
   let component: ApplicationPermissionComponent;
   let fixture: ComponentFixture<ApplicationPermissionComponent>;
-  const businessOrganisationsService = jasmine.createSpyObj(
-    'BusinessOrganisationService',
-    ['getAllBusinessOrganisations']
-  );
-  businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(
-    of({ objects: [] })
-  );
+
+  let businessOrganisationInternalServiceSpy: SpyObj<BusinessOrganisationInternalService>;
 
   beforeEach(() => {
+    businessOrganisationInternalServiceSpy = jasmine.createSpyObj({
+      getAllBusinessOrganisations: of({ objects: [] }),
+    });
+
     TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, ApplicationPermissionComponent],
       providers: [
@@ -62,8 +58,8 @@ describe('ApplicationPermissionComponent', () => {
           useClass: MockUserPermissionProviderService,
         },
         {
-          provide: BusinessOrganisationsService,
-          useValue: businessOrganisationsService,
+          provide: BusinessOrganisationInternalService,
+          useValue: businessOrganisationInternalServiceSpy,
         },
         translateServiceProvider,
         provideHttpClient(),
@@ -94,8 +90,8 @@ describe('ApplicationPermissionComponent', () => {
       validFrom: new Date(),
       validTo: new Date(),
     };
-    businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(
-      of({ objects: businessOrganisation })
+    businessOrganisationInternalServiceSpy.getAllBusinessOrganisations.and.returnValue(
+      of({ objects: [businessOrganisation] })
     );
     component.businessOrganisationForm.controls.businessOrganisation.setValue(
       businessOrganisation
