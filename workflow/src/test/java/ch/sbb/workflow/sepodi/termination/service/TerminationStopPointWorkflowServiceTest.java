@@ -183,6 +183,7 @@ class TerminationStopPointWorkflowServiceTest {
         .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .applicantMail("a@b.com")
         .designationOfficial("Heimsiswil Zentrum")
+        .versionValidTo(LocalDate.of(2099, 12, 31))
         .sboid("ch:sboid:1")
         .status(TerminationWorkflowStatus.STARTED)
         .build();
@@ -232,6 +233,7 @@ class TerminationStopPointWorkflowServiceTest {
         .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .applicantMail("a@b.com")
         .designationOfficial("Heimsiswil Zentrum")
+        .versionValidTo(LocalDate.of(2099, 12, 31))
         .sboid("ch:sboid:1")
         .status(TerminationWorkflowStatus.STARTED)
         .build();
