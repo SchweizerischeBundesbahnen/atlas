@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of, Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { CompaniesComponent } from './companies.component';
-import { CompaniesService, ContainerCompany } from '../../../api';
+import { ContainerCompany } from '../../../api';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { CompanyInternalService } from '../../../api/service/bodi/company-internal.service';
 import SpyObj = jasmine.SpyObj;
-import Spy = jasmine.Spy;
 
 const company: ContainerCompany = {
   objects: [
@@ -23,25 +23,22 @@ describe('CompaniesComponent', () => {
   let component: CompaniesComponent;
   let fixture: ComponentFixture<CompaniesComponent>;
 
-  let companiesServiceSpy: SpyObj<CompaniesService>;
+  let companyInternalServiceSpy: SpyObj<CompanyInternalService>;
 
   beforeEach(() => {
-    companiesServiceSpy = jasmine.createSpyObj<CompaniesService>(
-      'CompaniesServiceSpy',
-      ['getCompanies']
-    );
-    (
-      companiesServiceSpy.getCompanies as Spy<
-        () => Observable<ContainerCompany>
-      >
-    ).and.returnValue(of(company));
+    companyInternalServiceSpy = jasmine.createSpyObj<CompanyInternalService>({
+      getCompanies: of(company),
+    });
 
     TestBed.configureTestingModule({
       imports: [CompaniesComponent, TranslateModule.forRoot()],
       providers: [
         TranslatePipe,
         RouterOutlet,
-        { provide: CompaniesService, useValue: companiesServiceSpy },
+        {
+          provide: CompanyInternalService,
+          useValue: companyInternalServiceSpy,
+        },
         {
           provide: ActivatedRoute,
           useValue: { paramMap: new Subject() },
@@ -69,7 +66,7 @@ describe('CompaniesComponent', () => {
       size: 10,
     });
 
-    expect(companiesServiceSpy.getCompanies).toHaveBeenCalledOnceWith(
+    expect(companyInternalServiceSpy.getCompanies).toHaveBeenCalledOnceWith(
       [],
       0,
       10,

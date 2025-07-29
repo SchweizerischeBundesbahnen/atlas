@@ -1,13 +1,14 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import ch.sbb.atlas.api.bodi.TransportCompanyApiV1;
+import ch.sbb.atlas.api.bodi.TransportCompanyApiInternal;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
+import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.mapper.TransportCompanyMapper;
+import ch.sbb.business.organisation.directory.model.TransportCompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.service.TransportCompanyService;
-import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class TransportCompanyController implements TransportCompanyApiV1 {
+public class TransportCompanyControllerInternal implements TransportCompanyApiInternal {
 
   private final TransportCompanyService transportCompanyService;
 
@@ -33,19 +34,19 @@ public class TransportCompanyController implements TransportCompanyApiV1 {
       List<String> searchCriteria, List<TransportCompanyStatus> statusChoices) {
     Page<TransportCompany> transportCompanies = transportCompanyService.getTransportCompanies(
         TransportCompanySearchRestrictions.builder()
-                                          .pageable(pageable)
-                                          .searchCriterias(searchCriteria)
-                                          .statusRestrictions(statusChoices)
-                                          .build());
+            .pageable(pageable)
+            .searchCriterias(searchCriteria)
+            .statusRestrictions(statusChoices)
+            .build());
     List<TransportCompanyModel> transportCompanyModels = transportCompanies.stream()
-                                                                           .map(
-                                                                               TransportCompanyMapper::fromEntity)
-                                                                           .collect(
-                                                                               Collectors.toList());
+        .map(
+            TransportCompanyMapper::fromEntity)
+        .collect(
+            Collectors.toList());
     return Container.<TransportCompanyModel>builder()
-                    .objects(transportCompanyModels)
-                    .totalCount(transportCompanies.getTotalElements())
-                    .build();
+        .objects(transportCompanyModels)
+        .totalCount(transportCompanies.getTotalElements())
+        .build();
   }
 
   @Override
@@ -56,8 +57,8 @@ public class TransportCompanyController implements TransportCompanyApiV1 {
   @Override
   public TransportCompanyModel getTransportCompany(Long id) {
     return transportCompanyService.findById(id)
-                                  .map(TransportCompanyMapper::fromEntity)
-                                  .orElseThrow(() -> new IdNotFoundException(id));
+        .map(TransportCompanyMapper::fromEntity)
+        .orElseThrow(() -> new IdNotFoundException(id));
   }
 
 }

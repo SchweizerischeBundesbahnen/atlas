@@ -1,4 +1,4 @@
-package ch.sbb.business.organisation.directory.controller;
+package ch.sbb.business.organisation.directory.model;
 
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionRequestParams;
 import ch.sbb.atlas.searching.SpecificationBuilder;

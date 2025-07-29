@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { CompaniesService, Company } from '../../../api';
+import { Company } from '../../../api';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
@@ -11,6 +11,7 @@ import { TableFilter } from '../../../core/components/table-filter/config/table-
 import { Pages } from '../../pages';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CompanyInternalService } from '../../../api/service/bodi/company-internal.service';
 
 @Component({
   selector: 'app-bodi-companies',
@@ -44,10 +45,10 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   private companiesSubscription?: Subscription;
 
   constructor(
-    private companiesService: CompaniesService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private tableService: TableService
+    private readonly companyInternalService: CompanyInternalService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly tableService: TableService
   ) {}
 
   ngOnInit() {
@@ -58,7 +59,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   }
 
   getOverview(pagination: TablePagination) {
-    this.companiesSubscription = this.companiesService
+    this.companiesSubscription = this.companyInternalService
       .getCompanies(
         this.tableService.filter.chipSearch.getActiveSearch(),
         pagination.page,

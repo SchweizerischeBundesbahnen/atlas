@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "Companies")
-@RequestMapping("v1/companies")
-public interface CompanyApiV1 {
+@Tag(name = "[INTERNAL] Companies")
+@RequestMapping("internal/companies")
+public interface CompanyApiInternal {
 
   @Secured(Role.ROLE_PREFIX + Role.ATLAS_ADMIN)
   @PostMapping("loadFromCRD")

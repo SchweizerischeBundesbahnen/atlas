@@ -11,26 +11,21 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
-import { CustomHttpParameterCodec }                          from '../encoder';
-import { Observable }                                        from 'rxjs';
+import { Inject, Injectable, Optional } from '@angular/core';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParameterCodec, HttpParams, HttpResponse } from '@angular/common/http';
+import { CustomHttpParameterCodec } from '../encoder';
+import { Observable } from 'rxjs';
 
-import { ContainerTransportCompany } from '../model/models';
-import { ErrorResponse } from '../model/models';
-import { TransportCompany } from '../model/models';
-import { TransportCompanyStatus } from '../model/models';
+import { ContainerTransportCompany, TransportCompany, TransportCompanyStatus } from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
-
+import { BASE_PATH } from '../variables';
+import { Configuration } from '../configuration';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class TransportCompaniesService {
+class TransportCompaniesService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -88,8 +83,8 @@ export class TransportCompaniesService {
     }
 
     /**
-     * @param searchCriteria 
-     * @param statusChoices 
+     * @param searchCriteria
+     * @param statusChoices
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -162,7 +157,7 @@ export class TransportCompaniesService {
     }
 
     /**
-     * @param sboid 
+     * @param sboid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -213,7 +208,7 @@ export class TransportCompaniesService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
