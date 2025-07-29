@@ -11,12 +11,18 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BoSelectionDisplayPipe } from '../../../../core/form-components/bo-select/bo-selection-display.pipe';
 import { of } from 'rxjs';
 import { TerminationDecisionDetailDialogService } from './decision/decision-detail/termination-decision-detail-dialog.service';
+import { TerminationWorkflowStatus } from '../../../../api/model/terminationWorkflowStatus';
+import { TerminationDecision } from '../../../../api/model/terminationDecision';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
+import { FormGroup } from '@angular/forms';
+import { StopPointTerminationWorkflowDetailFormGroupBuilder } from './stop-point-termination-workflow-detail-form-group';
+import moment from 'moment/moment';
 
 const workflow: TerminationStopPointAddWorkflow = {
   id: 10,
   sloid: 'ch:1sloid:700',
   versionId: 1000,
-  boTerminationDate: new Date(),
+  boTerminationDate: new Date('2029-06-01'),
   applicantMail: 'a@b.ch',
   workflowComment: 'Comment',
 };
@@ -90,5 +96,31 @@ describe('StopPointTerminationWorkflowDetail', () => {
     expect(
       terminationDecisionDetailDialogService.openDialog
     ).toHaveBeenCalled();
+  });
+
+  it('should open decision dialog on nova revote with an extra day and judgement prefilled', () => {
+    component.workflow.status =
+      TerminationWorkflowStatus.TerminationNotApproved;
+    component.terminationPermission = TerminationDecisionPersonEnum.Nova;
+
+    const expectedDecisionForm =
+      StopPointTerminationWorkflowDetailFormGroupBuilder.buildTerminationDecisionFormGroup();
+    expectedDecisionForm.controls.terminationDecisionPerson.setValue(
+      TerminationDecisionPersonEnum.Nova
+    );
+    expectedDecisionForm.controls.terminationDate.setValue(
+      moment('2029-06-01')
+    );
+
+    component.openDecisionDialog();
+    expect(
+      terminationDecisionDetailDialogService.openDialog
+    ).toHaveBeenCalledWith(
+      10,
+      false,
+      TerminationWorkflowStatus.TerminationNotApproved,
+      TerminationDecisionPersonEnum.Nova,
+      jasmine.any(FormGroup)
+    );
   });
 });
