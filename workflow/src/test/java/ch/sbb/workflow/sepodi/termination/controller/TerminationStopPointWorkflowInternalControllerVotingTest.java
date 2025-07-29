@@ -26,7 +26,6 @@ import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflo
 import ch.sbb.workflow.sepodi.termination.service.TerminationStopPointNotificationService;
 import ch.sbb.workflow.sepodi.termination.service.TerminationStopPointWorkflowService;
 import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,7 +84,6 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
 
     when(sePoDiAdminClient.startServicePointTermination(any(), any(), any(
         UpdateTerminationServicePointModel.class))).thenReturn(servicePointVersionModel);
-    when(sePoDiAdminClient.getServicePointVersionsBySloid(any())).thenReturn(List.of(servicePointVersionModel));
   }
 
   @AfterEach
