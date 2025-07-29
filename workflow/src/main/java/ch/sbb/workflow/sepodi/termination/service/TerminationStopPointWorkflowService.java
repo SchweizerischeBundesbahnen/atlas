@@ -68,6 +68,7 @@ public class TerminationStopPointWorkflowService {
     terminationStopPointWorkflow.setDesignationOfficial(readServicePointVersionModel.getDesignationOfficial());
     terminationStopPointWorkflow.setSboid(readServicePointVersionModel.getBusinessOrganisation());
     terminationStopPointWorkflow.setStatus(STARTED);
+    terminationStopPointWorkflow.setVersionValidTo(readServicePointVersionModel.getValidTo());
 
     TerminationDecision infoPlusEmptyDecision = TerminationDecision.builder()
         .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
@@ -131,10 +132,8 @@ public class TerminationStopPointWorkflowService {
 
   private void checkDecisionTerminationDateWithinLastVersion(LocalDate terminationDate,
       TerminationStopPointWorkflow terminationWorkflow) {
-    ReadServicePointVersionModel lastVersion = sePoDiAdminClient.getServicePointVersionsBySloid(terminationWorkflow.getSloid())
-        .getLast();
     TerminationHelper.isValidToInLastVersionRange(terminationWorkflow.getSloid(),
-        new DateRange(lastVersion.getValidFrom(), lastVersion.getValidTo()), terminationDate);
+        new DateRange(terminationWorkflow.getBoTerminationDate(), terminationWorkflow.getVersionValidTo()), terminationDate);
   }
 
   public TerminationStopPointWorkflow addDecisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
