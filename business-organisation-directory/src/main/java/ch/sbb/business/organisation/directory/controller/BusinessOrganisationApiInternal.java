@@ -60,7 +60,6 @@ public interface BusinessOrganisationApiInternal {
   BusinessOrganisationVersionModel createBusinessOrganisationVersion(
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
 
-  // todo: change in frontend and backend to put
   @PutMapping("versions/{id}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),

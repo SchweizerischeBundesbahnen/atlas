@@ -1,14 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import {
-  TransportCompaniesService,
-  TransportCompany,
-  TransportCompanyBoRelation,
-  TransportCompanyRelationsService,
-} from '../../../../api';
+import { of } from 'rxjs';
+import { TransportCompany, TransportCompanyBoRelation } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { TransportCompanyDetailResolver } from './transport-company-detail-resolver.service';
+import { TransportCompanyInternalService } from '../../../../api/service/bodi/transport-company-internal.service';
+import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
+import SpyObj = jasmine.SpyObj;
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -25,47 +23,31 @@ const transportCompanyRelations: TransportCompanyBoRelation[] = [
   },
 ];
 
-type getTransportCompanyRelationsType = (
-  transportCompanyId: number,
-  observe?: 'body',
-  reportProgress?: boolean,
-  options?: { httpHeaderAccept?: '*/*' }
-) => Observable<TransportCompanyBoRelation[]>;
-
 describe('TransportCompanyDetailResolver', () => {
-  const transportCompanyService = jasmine.createSpyObj(
-    'transportCompanyService',
-    ['getTransportCompany']
-  );
-  const getTransportCompanyRelationsSpy =
-    jasmine.createSpy<getTransportCompanyRelationsType>(
-      'getTransportCompanyRelations',
-      TransportCompanyRelationsService.prototype.getTransportCompanyRelations
-    );
-
-  transportCompanyService.getTransportCompany.and.returnValue(
-    of(transportCompany)
-  );
-  getTransportCompanyRelationsSpy.and.returnValue(
-    of(transportCompanyRelations)
-  );
-
   let resolver: TransportCompanyDetailResolver;
 
+  let transportCompanyInternalServiceSpy: SpyObj<TransportCompanyInternalService>;
+  let transportCompanyRelationInternalServiceSpy: SpyObj<TransportCompanyRelationInternalService>;
+
   beforeEach(() => {
+    transportCompanyInternalServiceSpy = jasmine.createSpyObj({
+      getTransportCompany: of(transportCompany),
+    });
+    transportCompanyRelationInternalServiceSpy = jasmine.createSpyObj({
+      getTransportCompanyRelations: of(transportCompanyRelations),
+    });
+
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
       providers: [
         TransportCompanyDetailResolver,
         {
-          provide: TransportCompaniesService,
-          useValue: transportCompanyService,
+          provide: TransportCompanyInternalService,
+          useValue: transportCompanyInternalServiceSpy,
         },
         {
-          provide: TransportCompanyRelationsService,
-          useValue: {
-            getTransportCompanyRelations: getTransportCompanyRelationsSpy,
-          },
+          provide: TransportCompanyRelationInternalService,
+          useValue: transportCompanyRelationInternalServiceSpy,
         },
       ],
     });
@@ -84,9 +66,9 @@ describe('TransportCompanyDetailResolver', () => {
     const resolvedVersion = resolver.resolve(mockRoute);
 
     resolvedVersion.subscribe(
-      ([tranyportCompany, transportCompanyRelations]) => {
-        expect(tranyportCompany.id).toBe(1234);
-        expect(tranyportCompany.description).toBe('SBB');
+      ([transportCompany, transportCompanyRelations]) => {
+        expect(transportCompany.id).toBe(1234);
+        expect(transportCompany.description).toBe('SBB');
         expect(transportCompanyRelations.length).toBe(2);
         expect(transportCompanyRelations[0].id).toBe(1);
         expect(transportCompanyRelations[1].id).toBe(2);

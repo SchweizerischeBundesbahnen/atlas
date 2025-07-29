@@ -9,6 +9,7 @@ import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.model.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationVersionMapper;
+import ch.sbb.business.organisation.directory.model.BusinessOrganisationVersionSearchRestrictions;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationAmazonService;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;

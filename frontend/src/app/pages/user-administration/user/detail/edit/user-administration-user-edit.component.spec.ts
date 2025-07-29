@@ -7,7 +7,6 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import {
   ApplicationRole,
   ApplicationType,
-  BusinessOrganisationsService,
   Permission,
   User,
   UserDisplayName,
@@ -27,13 +26,6 @@ describe('UserAdministrationUserEditComponent', () => {
 
   let userAdministrationServiceSpy: SpyObj<UserAdministrationService>;
   let notificationServiceSpy: SpyObj<NotificationService>;
-  const businessOrganisationsService = jasmine.createSpyObj(
-    'BusinessOrganisationService',
-    ['getAllBusinessOrganisations']
-  );
-  businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(
-    of({ objects: [] })
-  );
   let dialogServiceSpy: SpyObj<DialogService>;
 
   beforeEach(async () => {
@@ -53,16 +45,6 @@ describe('UserAdministrationUserEditComponent', () => {
       'success',
     ]);
     dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirmLeave']);
-    TestBed.overrideComponent(UserAdministrationUserEditComponent, {
-      set: {
-        viewProviders: [
-          {
-            provide: BusinessOrganisationsService,
-            useValue: businessOrganisationsService,
-          },
-        ],
-      },
-    });
     await TestBed.configureTestingModule({
       imports: [UserAdministrationUserEditComponent, TranslateModule.forRoot()],
       providers: [

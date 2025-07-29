@@ -1,4 +1,4 @@
-package ch.sbb.business.organisation.directory.controller;
+package ch.sbb.business.organisation.directory.model;
 
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.business.organisation.directory.entity.Company;
@@ -27,14 +27,14 @@ public class CompanySearchRestrictions {
 
   protected SpecificationBuilder<Company> specificationBuilder() {
     return SpecificationBuilder.<Company>builder()
-                               .stringAttributes(
-                                   List.of(
-                                       Fields.uicCode,
-                                       Fields.shortName,
-                                       Fields.name,
-                                       Fields.countryCodeIso,
-                                       Fields.url))
-                               .build();
+        .stringAttributes(
+            List.of(
+                Fields.uicCode,
+                Fields.shortName,
+                Fields.name,
+                Fields.countryCodeIso,
+                Fields.url))
+        .build();
   }
 
 }

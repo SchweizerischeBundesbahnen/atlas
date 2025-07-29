@@ -3,31 +3,28 @@ import { BusinessOrganisationSelectComponent } from './business-organisation-sel
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormControl, FormGroup } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
-import { BusinessOrganisationsService } from '../../../api';
 import { of } from 'rxjs';
+import { BusinessOrganisationInternalService } from '../../../api/service/bodi/business-organisation-internal.service';
+import SpyObj = jasmine.SpyObj;
 import { translateServiceProvider } from '../../../app.testing.mocks';
-
-const businessOrganisationsService = jasmine.createSpyObj(
-  'businessOrganisationsService',
-  ['getAllBusinessOrganisations']
-);
-businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(
-  of([])
-);
 
 describe('BusinessOrganisationSelectComponent', () => {
   let component: BusinessOrganisationSelectComponent;
   let fixture: ComponentFixture<BusinessOrganisationSelectComponent>;
 
+  let businessOrganisationInternalService: SpyObj<BusinessOrganisationInternalService>;
+
   beforeEach(async () => {
+    businessOrganisationInternalService = jasmine.createSpyObj({
+      getAllBusinessOrganisations: of([]),
+    });
+
     await TestBed.configureTestingModule({
       imports: [
         NgSelectModule,
-        HttpClientTestingModule,
         BusinessOrganisationSelectComponent,
         SearchSelectComponent,
         AtlasLabelFieldComponent,
@@ -36,8 +33,8 @@ describe('BusinessOrganisationSelectComponent', () => {
       providers: [
         TranslatePipe,
         {
-          provide: BusinessOrganisationsService,
-          useValue: businessOrganisationsService,
+          provide: BusinessOrganisationInternalService,
+          useValue: businessOrganisationInternalService,
         },
         translateServiceProvider,
       ],
@@ -60,7 +57,7 @@ describe('BusinessOrganisationSelectComponent', () => {
   it('should search by businessOrganisation sorted by sboid', () => {
     component.searchBusinessOrganisation('ch:1:sboid:1');
     expect(
-      businessOrganisationsService.getAllBusinessOrganisations
+      businessOrganisationInternalService.getAllBusinessOrganisations
     ).toHaveBeenCalledWith(
       ['ch:1:sboid:1'],
       [],

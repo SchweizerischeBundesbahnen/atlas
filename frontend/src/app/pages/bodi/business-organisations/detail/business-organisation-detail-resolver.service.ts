@@ -1,16 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import {
-  BusinessOrganisationsService,
-  BusinessOrganisationVersion,
-} from '../../../../api';
+import { BusinessOrganisationVersion } from '../../../../api';
 import { Pages } from '../../../pages';
+import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
 
 @Injectable({ providedIn: 'root' })
 export class BusinessOrganisationDetailResolver {
   constructor(
-    private readonly businessOrganisationsService: BusinessOrganisationsService,
+    private readonly businessOrganisationService: BusinessOrganisationService,
     private readonly router: Router
   ) {}
 
@@ -20,7 +18,7 @@ export class BusinessOrganisationDetailResolver {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
-      : this.businessOrganisationsService.getVersions(idParameter).pipe(
+      : this.businessOrganisationService.getVersions(idParameter).pipe(
           catchError(() =>
             this.router
               .navigate([Pages.BODI.path], {
