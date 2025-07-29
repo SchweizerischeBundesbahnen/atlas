@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ch.sbb.atlas"
-version = "2.753.0"
+version = "2.754.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
