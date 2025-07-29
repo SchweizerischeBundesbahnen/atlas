@@ -107,6 +107,7 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
     this.terminationDecisionDetailDialogService.openDialog(
       this.workflow.id!,
       true,
+      this.workflow.status!,
       examinantDecision.controls.terminationDecisionPerson.value!,
       examinantDecision
     );
@@ -143,6 +144,12 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
       this.workflow.status === TerminationWorkflowStatus.TerminationNotApproved
     ) {
       terminationDatePrefill.add(1, 'day');
+      decisionForm.controls.judgement.setValue(
+        this.workflow.novaDecision?.judgement
+      );
+      decisionForm.controls.motivation.setValue(
+        this.workflow.novaDecision?.motivation
+      );
     }
     decisionForm.controls.terminationDate.setValue(terminationDatePrefill);
 
@@ -150,6 +157,7 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
       .openDialog(
         this.workflow.id!,
         false,
+        this.workflow.status!,
         this.terminationPermission!,
         decisionForm
       )

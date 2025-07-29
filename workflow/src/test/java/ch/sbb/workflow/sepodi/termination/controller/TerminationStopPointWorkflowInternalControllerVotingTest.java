@@ -3,10 +3,12 @@ package ch.sbb.workflow.sepodi.termination.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.user.administration.security.service.ServicePointTerminationBasedUserAdministrationService;
@@ -31,7 +33,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 /**
  * Workflow Status Flow according to
- * <a href="https://confluence.sbb.ch/spaces/ATLAS/pages/3057021043/ADR-0031+ServicePoint+Workflow+Haltestellen+Terminierungsworkflow#ADR0031:ServicePointWorkflow(HaltestellenTerminierungsworkflow)-UseCasesDiagramm">UseCases</a>
+ * <a
+ * href="https://confluence.sbb.ch/spaces/ATLAS/pages/3057021043/ADR-0031+ServicePoint+Workflow+Haltestellen
+ * +Terminierungsworkflow#ADR0031:ServicePointWorkflow(HaltestellenTerminierungsworkflow)-UseCasesDiagramm">UseCases</a>
  */
 class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseControllerApiTest {
 
@@ -73,6 +77,8 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
     ReadServicePointVersionModel servicePointVersionModel = ReadServicePointVersionModel.builder()
         .designationOfficial("official")
         .businessOrganisation("ch:1:sboid:132")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(9999, 12, 31))
         .build();
 
     when(sePoDiAdminClient.startServicePointTermination(any(), any(), any(
@@ -91,6 +97,43 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
     assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
     verify(notificationService).sendStartTerminationNotificationToInfoPlusAndBo(any());
 
+    LocalDate infoPlusTerminationDate = TERMINATION_DATE;
+    TerminationStopPointWorkflowModel infoPlusApprovedTermination = controller.decisionInfoPlus(
+        TerminationDecisionModel.builder()
+            .judgement(JudgementType.YES)
+            .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
+            .terminationDate(infoPlusTerminationDate)
+            .build(), terminationWorkflow.getId());
+    assertThat(infoPlusApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
+    verify(notificationService).sendTariffStopApprovedNotificationToNovaAndBo(any());
+
+    LocalDate novaTerminationDate = TERMINATION_DATE.plusMonths(1);
+    TerminationStopPointWorkflowModel novaApprovedTermination = controller.decisionNova(
+        TerminationDecisionModel.builder()
+            .judgement(JudgementType.YES)
+            .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+            .terminationDate(novaTerminationDate)
+            .build(), terminationWorkflow.getId());
+    assertThat(novaApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_APPROVED);
+    verify(sePoDiAdminClient, never()).changeToTariffStop(StopPointWorkflowTerminationModel.builder()
+        .sloid(terminationWorkflow.getSloid())
+        .versionId(terminationWorkflow.getVersionId())
+        .terminationDate(infoPlusTerminationDate)
+        .build());
+    verify(sePoDiAdminClient).terminateStopPoint(StopPointWorkflowTerminationModel.builder()
+        .sloid(terminationWorkflow.getSloid())
+        .versionId(terminationWorkflow.getVersionId())
+        .terminationDate(novaTerminationDate)
+        .build());
+  }
+
+  @Test
+  void shouldFlowThroughInfoPlusAndNovaApprovalOnLaterNovaDate() {
+    TerminationStopPointWorkflowModel terminationWorkflow = controller.startTerminationStopPointWorkflow(
+        WORKFLOW);
+    assertThat(terminationWorkflow.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
+    verify(notificationService).sendStartTerminationNotificationToInfoPlusAndBo(any());
+
     TerminationStopPointWorkflowModel infoPlusApprovedTermination = controller.decisionInfoPlus(
         TerminationDecisionModel.builder()
             .judgement(JudgementType.YES)
@@ -104,10 +147,11 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
         TerminationDecisionModel.builder()
             .judgement(JudgementType.YES)
             .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
-            .terminationDate(TERMINATION_DATE)
+            .terminationDate(TERMINATION_DATE.plusMonths(1))
             .build(), terminationWorkflow.getId());
     assertThat(novaApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_APPROVED);
     verify(sePoDiAdminClient).terminateStopPoint(any());
+    verify(sePoDiAdminClient).changeToTariffStop(any());
   }
 
   @Test
