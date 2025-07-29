@@ -3,7 +3,6 @@ package ch.sbb.workflow.sepodi.termination.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -116,16 +115,16 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
             .terminationDate(novaTerminationDate)
             .build(), terminationWorkflow.getId());
     assertThat(novaApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_APPROVED);
-    verify(sePoDiAdminClient, never()).changeToTariffStop(eq(StopPointWorkflowTerminationModel.builder()
+    verify(sePoDiAdminClient, never()).changeToTariffStop(StopPointWorkflowTerminationModel.builder()
         .sloid(terminationWorkflow.getSloid())
         .versionId(terminationWorkflow.getVersionId())
         .terminationDate(infoPlusTerminationDate)
-        .build()));
-    verify(sePoDiAdminClient).terminateStopPoint(eq(StopPointWorkflowTerminationModel.builder()
+        .build());
+    verify(sePoDiAdminClient).terminateStopPoint(StopPointWorkflowTerminationModel.builder()
         .sloid(terminationWorkflow.getSloid())
         .versionId(terminationWorkflow.getVersionId())
         .terminationDate(novaTerminationDate)
-        .build()));
+        .build());
   }
 
   @Test

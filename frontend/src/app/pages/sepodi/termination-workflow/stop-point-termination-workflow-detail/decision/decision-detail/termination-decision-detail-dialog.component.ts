@@ -28,6 +28,7 @@ import { MatIcon } from '@angular/material/icon';
 import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
 import { ValidationService } from '../../../../../../core/validation/validation.service';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
+import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
 
 @Component({
   selector: 'termination-decision-detail-dialog',
@@ -68,12 +69,14 @@ export class TerminationDecisionDetailDialogComponent implements OnInit {
   form!: FormGroup<TerminationDecisionFormGroup>;
   examinant!: TerminationDecisionPersonEnum;
   readOnly = true;
+  workflowStatus!: TerminationWorkflowStatus;
   minDate: Date = MIN_DATE;
 
   ngOnInit() {
     this.examinant = this.decisionDetailDialogData.examinant;
     this.form = this.decisionDetailDialogData.decision;
     this.readOnly = this.decisionDetailDialogData.readOnly;
+    this.workflowStatus = this.decisionDetailDialogData.workflowStatus;
     this.minDate =
       this.form.controls.terminationDate.value?.toDate() ?? MIN_DATE;
     if (this.readOnly) {
