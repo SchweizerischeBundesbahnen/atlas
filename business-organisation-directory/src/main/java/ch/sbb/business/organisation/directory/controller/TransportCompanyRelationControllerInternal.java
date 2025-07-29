@@ -1,8 +1,7 @@
 package ch.sbb.business.organisation.directory.controller;
 
-
 import ch.sbb.atlas.api.bodi.TransportCompanyBoRelationModel;
-import ch.sbb.atlas.api.bodi.TransportCompanyRelationApiV1;
+import ch.sbb.atlas.api.bodi.TransportCompanyRelationApiInternal;
 import ch.sbb.atlas.api.bodi.TransportCompanyRelationModel;
 import ch.sbb.atlas.api.bodi.UpdateTransportCompanyRelationModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
@@ -20,10 +19,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RequiredArgsConstructor
 @RestController
-public class TransportCompanyRelationController implements TransportCompanyRelationApiV1 {
+public class TransportCompanyRelationControllerInternal implements TransportCompanyRelationApiInternal {
 
   private final TransportCompanyRelationService transportCompanyRelationService;
   private final TransportCompanyService transportCompanyService;
@@ -34,8 +32,8 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
       TransportCompanyRelationModel model) {
     TransportCompanyRelation relationEntity = TransportCompanyRelationMapper.toEntity(model,
         transportCompanyService.findById(model.getTransportCompanyId())
-                               .orElseThrow(() -> new TransportCompanyNotFoundException(
-                                   model.getTransportCompanyId())));
+            .orElseThrow(() -> new TransportCompanyNotFoundException(
+                model.getTransportCompanyId())));
 
     TransportCompanyRelation savedRelationEntity = transportCompanyRelationService.save(
         relationEntity, false);
@@ -53,22 +51,22 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
       Long transportCompanyId) {
 
     TransportCompany transportCompany = transportCompanyService.findById(transportCompanyId)
-                                                               .orElseThrow(
-                                                                   () -> new TransportCompanyNotFoundException(
-                                                                       transportCompanyId));
+        .orElseThrow(
+            () -> new TransportCompanyNotFoundException(
+                transportCompanyId));
 
     return transportCompany.getTransportCompanyRelations()
-                           .stream()
-                           .map(
-                               transportCompanyRelation -> {
-                                 BusinessOrganisation businessOrganisation = businessOrganisationService.findBusinessOrganisationBySboid(
-                                     transportCompanyRelation.getSboid());
+        .stream()
+        .map(
+            transportCompanyRelation -> {
+              BusinessOrganisation businessOrganisation = businessOrganisationService.findBusinessOrganisationBySboid(
+                  transportCompanyRelation.getSboid());
 
-                                 return TransportCompanyBoRelationMapper.toModel(
-                                     businessOrganisation,
-                                     transportCompanyRelation);
-                               })
-                           .collect(Collectors.toList());
+              return TransportCompanyBoRelationMapper.toModel(
+                  businessOrganisation,
+                  transportCompanyRelation);
+            })
+        .collect(Collectors.toList());
   }
 
   @Override

@@ -25,10 +25,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class TransportCompanyRelationControllerApiTest extends BaseControllerApiTest {
+class TransportCompanyRelationControllerInternalApiTest extends BaseControllerApiTest {
 
   @Autowired
-  TransportCompanyRelationControllerApiTest(BusinessOrganisationVersionRepository businessOrganisationVersionRepository,
+  TransportCompanyRelationControllerInternalApiTest(BusinessOrganisationVersionRepository businessOrganisationVersionRepository,
       TransportCompanyRepository transportCompanyRepository,
       TransportCompanyRelationRepository transportCompanyRelationRepository) {
     this.businessOrganisationVersionRepository = businessOrganisationVersionRepository;
@@ -66,7 +66,7 @@ class TransportCompanyRelationControllerApiTest extends BaseControllerApiTest {
             LocalDate.of(2021, 5, 5))
         .build();
 
-    mvc.perform(post("/v1/transport-company-relations").contentType(contentType)
+    mvc.perform(post("/internal/transport-company-relations").contentType(contentType)
             .content(
                 mapper.writeValueAsString(model)))
         .andExpect(status().isCreated())
@@ -90,7 +90,7 @@ class TransportCompanyRelationControllerApiTest extends BaseControllerApiTest {
             .validTo(LocalDate.of(2021, 1, 1))
             .build());
 
-    mvc.perform(delete("/v1/transport-company-relations/" + savedRelationEntity.getId()))
+    mvc.perform(delete("/internal/transport-company-relations/" + savedRelationEntity.getId()))
         .andExpect(status().isNoContent());
   }
 
@@ -116,7 +116,7 @@ class TransportCompanyRelationControllerApiTest extends BaseControllerApiTest {
             .validTo(LocalDate.of(2024, 1, 1))
             .build());
 
-    mvc.perform(get("/v1/transport-company-relations/5"))
+    mvc.perform(get("/internal/transport-company-relations/5"))
         .andExpect(status().isOk())
         .andExpect(jsonPath(
             "$[0]." + Fields.businessOrganisation + "." + BusinessOrganisationModel.Fields.said,
@@ -138,20 +138,20 @@ class TransportCompanyRelationControllerApiTest extends BaseControllerApiTest {
         .validTo(
             LocalDate.of(2021, 5, 5))
         .build();
+
     // First creation of relation is ok
-    mvc.perform(post("/v1/transport-company-relations").contentType(contentType)
+    mvc.perform(post("/internal/transport-company-relations").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
 
     // Second creation of identical relation should fail
-    mvc.perform(post("/v1/transport-company-relations").contentType(contentType)
+    mvc.perform(post("/internal/transport-company-relations").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isConflict());
   }
 
   @Test
   void shouldUpdateTransportCompanyRelation() throws Exception {
-
     TransportCompanyRelation savedRelationEntity = transportCompanyRelationRepository.save(
         TransportCompanyRelation.builder()
             .sboid("ch:1:sboid:1000000")
@@ -164,7 +164,7 @@ class TransportCompanyRelationControllerApiTest extends BaseControllerApiTest {
     savedRelationEntity.setValidFrom(LocalDate.of(2030, 1, 1));
     savedRelationEntity.setValidTo(LocalDate.of(2035, 1, 1));
 
-    mvc.perform(put("/v1/transport-company-relations").contentType(contentType)
+    mvc.perform(put("/internal/transport-company-relations").contentType(contentType)
             .content(
                 mapper.writeValueAsString(savedRelationEntity)))
         .andExpect(status().isOk());
@@ -193,7 +193,7 @@ class TransportCompanyRelationControllerApiTest extends BaseControllerApiTest {
     savedRelationEntity.setValidFrom(LocalDate.of(2031, 1, 1));
     savedRelationEntity.setValidTo(LocalDate.of(2039, 1, 1));
 
-    mvc.perform(put("/v1/transport-company-relations").contentType(contentType)
+    mvc.perform(put("/internal/transport-company-relations").contentType(contentType)
             .content(
                 mapper.writeValueAsString(savedRelationEntity)))
         .andExpect(status().isConflict());

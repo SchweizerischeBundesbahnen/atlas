@@ -5,16 +5,13 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import {
-  BusinessOrganisationsService,
-  BusinessOrganisationVersion,
-  Status,
-} from '../../../../api';
+import { BusinessOrganisationVersion, Status } from '../../../../api';
 import {
   BusinessOrganisationDetailResolver,
   businessOrganisationResolver,
 } from './business-organisation-detail-resolver.service';
 import { AppTestingModule } from '../../../../app.testing.module';
+import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
 
 const version: BusinessOrganisationVersion = {
   id: 1234,
@@ -48,7 +45,7 @@ describe('BusinessOrganisationDetailResolver', () => {
       providers: [
         BusinessOrganisationDetailResolver,
         {
-          provide: BusinessOrganisationsService,
+          provide: BusinessOrganisationService,
           useValue: businessOrganisationsServiceSpy,
         },
       ],

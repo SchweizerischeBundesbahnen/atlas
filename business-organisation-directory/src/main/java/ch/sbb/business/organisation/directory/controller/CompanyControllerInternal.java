@@ -1,10 +1,11 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import ch.sbb.atlas.api.bodi.CompanyApiV1;
+import ch.sbb.atlas.api.bodi.CompanyApiInternal;
 import ch.sbb.atlas.api.bodi.CompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.business.organisation.directory.entity.Company;
 import ch.sbb.business.organisation.directory.mapper.CompanyMapper;
+import ch.sbb.business.organisation.directory.model.CompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.service.CompanyService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class CompanyController implements CompanyApiV1 {
+public class CompanyControllerInternal implements CompanyApiInternal {
 
   private final CompanyService companyService;
 
