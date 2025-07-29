@@ -115,8 +115,6 @@ class TerminationStopPointWorkflowServiceTest {
         .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
         .terminationDate(LocalDate.of(2001, 1, 1))
         .build();
-    when(sePoDiAdminClient.getServicePointVersionsBySloid(stopPointWorkflow.getSloid())).thenReturn(
-        List.of(buildReadServicePointVersionModel()));
 
     //when
     TerminationStopPointWorkflow result = service.addDecisionInfoPlus(decisionModel,
@@ -150,8 +148,6 @@ class TerminationStopPointWorkflowServiceTest {
         .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
         .terminationDate(LocalDate.of(2001, 1, 1))
         .build();
-    when(sePoDiAdminClient.getServicePointVersionsBySloid(stopPointWorkflow.getSloid())).thenReturn(
-        List.of(buildReadServicePointVersionModel()));
 
     //when
     TerminationStopPointWorkflow result = service.addDecisionInfoPlus(decisionModel,
@@ -187,6 +183,7 @@ class TerminationStopPointWorkflowServiceTest {
         .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .applicantMail("a@b.com")
         .designationOfficial("Heimsiswil Zentrum")
+        .versionValidTo(LocalDate.of(2099, 12, 31))
         .sboid("ch:sboid:1")
         .status(TerminationWorkflowStatus.STARTED)
         .build();
@@ -236,6 +233,7 @@ class TerminationStopPointWorkflowServiceTest {
         .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .applicantMail("a@b.com")
         .designationOfficial("Heimsiswil Zentrum")
+        .versionValidTo(LocalDate.of(2099, 12, 31))
         .sboid("ch:sboid:1")
         .status(TerminationWorkflowStatus.STARTED)
         .build();
