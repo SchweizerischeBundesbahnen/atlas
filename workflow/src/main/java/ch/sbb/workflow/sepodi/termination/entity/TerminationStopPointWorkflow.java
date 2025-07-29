@@ -63,6 +63,9 @@ public class TerminationStopPointWorkflow extends BaseWorkflowEntity {
   @Size(max = AtlasFieldLengths.LENGTH_30)
   private String designationOfficial;
 
+  @NotNull
+  private LocalDate versionValidTo;
+
   @Redacted(showFirstChar = true)
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty

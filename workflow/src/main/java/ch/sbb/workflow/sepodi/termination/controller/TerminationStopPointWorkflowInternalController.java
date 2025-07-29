@@ -1,6 +1,6 @@
 package ch.sbb.workflow.sepodi.termination.controller;
 
-import static ch.sbb.workflow.sepodi.termination.TerminationHelper.calculateTerminationDate;
+import static ch.sbb.workflow.sepodi.termination.TerminationWorkflowHelper.calculateTerminationDate;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.redact.Redacted;

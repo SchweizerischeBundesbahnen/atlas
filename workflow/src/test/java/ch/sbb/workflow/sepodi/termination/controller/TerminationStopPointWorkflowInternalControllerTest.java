@@ -73,6 +73,7 @@ class TerminationStopPointWorkflowInternalControllerTest extends BaseControllerA
         .novaTerminationDate(LocalDate.of(2000, 1, 3))
         .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .designationOfficial("Bern")
+        .versionValidTo(LocalDate.of(2000, 12, 31))
         .status(TerminationWorkflowStatus.STARTED)
         .build();
     TerminationStopPointWorkflow workflowTwo = TerminationStopPointWorkflow.builder()
@@ -85,6 +86,7 @@ class TerminationStopPointWorkflowInternalControllerTest extends BaseControllerA
         .novaTerminationDate(LocalDate.of(2000, 1, 3))
         .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .designationOfficial("Züri")
+        .versionValidTo(LocalDate.of(2000, 12, 31))
         .status(TerminationWorkflowStatus.TERMINATION_APPROVED)
         .build();
 
@@ -120,6 +122,7 @@ class TerminationStopPointWorkflowInternalControllerTest extends BaseControllerA
     ReadServicePointVersionModel servicePointVersionModel = ReadServicePointVersionModel.builder()
         .designationOfficial("official")
         .businessOrganisation("ch:1:sboid:132")
+        .validTo(LocalDate.of(2000, 12, 31))
         .build();
 
     when(sePoDiAdminClient.startServicePointTermination(eq(workflowModel.getSloid()), eq(workflowModel.getVersionId()), any(
@@ -154,6 +157,7 @@ class TerminationStopPointWorkflowInternalControllerTest extends BaseControllerA
         .novaTerminationDate(LocalDate.of(2000, 1, 3))
         .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
         .designationOfficial("Bern")
+        .versionValidTo(LocalDate.of(2000, 12, 31))
         .status(TerminationWorkflowStatus.STARTED)
         .build();
 
@@ -187,6 +191,7 @@ class TerminationStopPointWorkflowInternalControllerTest extends BaseControllerA
         .workflowComment("workflow comment")
         .status(TerminationWorkflowStatus.STARTED)
         .designationOfficial("official")
+        .versionValidTo(LocalDate.of(2000, 12, 31))
         .sboid("ch:1:sboid:132")
         .build();
     repository.save(workflow);
