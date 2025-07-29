@@ -7,6 +7,7 @@ import { TerminationDecision } from '../../../../../../api/model/terminationDeci
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 import { TerminationDecisionFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
 import moment from 'moment';
+import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
 
 describe('TerminationDecisionDetailDialogService', () => {
   let service: TerminationDecisionDetailDialogService;
@@ -27,6 +28,7 @@ describe('TerminationDecisionDetailDialogService', () => {
       .openDialog(
         1,
         false,
+        TerminationWorkflowStatus.Started,
         TerminationDecisionPersonEnum.InfoPlus,
         new FormGroup<TerminationDecisionFormGroup>({
           examinantMail: new FormControl(''),
