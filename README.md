@@ -8,24 +8,9 @@ This is the repository for business relevant services for ATLAS.
 - [SonarQube Static Code Analysis](#sonarqube-static-code-analysis)
 - [Opensource](#opensource)
 - [Big Picture](#big-picture)
-- [Links](#links)
-- [ATLAS CI/CD with Tekton](#atlas-cicd-with-tekton)
-  * [Gradle build automation](#gradle-build-automation)
-  * [Continuous Deployment Pipeline](#continuous-deployment-pipeline)
-  * [E2E Videos Results](#e2e-videos-results)
-  * [Opengrep Results](#opengrep-results)
-- [Stages and their purpose](#stages-and-their-purpose)
-- [Monitoring and Logging](#monitoring-and-logging)
-- [Hotfix Build and Deployment](#hotfix-build-and-deployment)
-  * [Correlation-Id](#correlation-id)
-- [Timeouts](#timeouts)
-- [Development](#development)
-  * [Run locally](#run-locally)
-  * [Monorepo](#monorepo)
-  * [Code-Formatting](#code-formatting)
+- [Monorepo](#monorepo)
 - [Structure](#structure)
   * [APIM-configuration](#apim-configuration)
-  * [Charts](#charts)
   * [Api Auth Gateway](#api-auth-gateway)
   * [Gateway](#gateway)
   * [Kafka](#kafka)
@@ -40,9 +25,25 @@ This is the repository for business relevant services for ATLAS.
   * [Location Service](#location-service)
   * [Base Service lib](#base-service-lib)
   * [Frontend](#frontend)
+- [ATLAS CI/CD with Tekton](#atlas-cicd-with-tekton)
+  * [Gradle build automation](#gradle-build-automation)
+  * [Continuous Deployment Pipeline](#continuous-deployment-pipeline)
+  * [E2E Videos Results](#e2e-videos-results)
+  * [Opengrep Results](#opengrep-results)
+- [Stages and their purpose](#stages-and-their-purpose)
+- [Monitoring and Logging](#monitoring-and-logging)
+- [Hotfix Build and Deployment](#hotfix-build-and-deployment)
+  * [Correlation-Id](#correlation-id)
+- [Timeouts](#timeouts)
+- [Development](#development)
+  * [Run locally](#run-locally)
+  * [Code-Formatting](#code-formatting)
 - [Troubleshooting](#troubleshooting)
+- [Links](#links)
 
 <!-- tocstop -->
+
+Application **MEGAID**: `ADB3AE9A60E510ED`
 
 ## CI/CD Status
 
@@ -72,34 +73,103 @@ Applications on this platform share their tech stack and have the same monitorin
 It's applications share the following architectural goal:
 ![ATLAS Big Picture](documentation/image/ATLAS_Infrastruktur.svg)
 
-Application MEGAID: `ADB3AE9A60E510ED`
 
-## Links
 
-- **Tekton**: https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas
-- **ArgoCD**:
-    - **DEV/TEST**: https://argocd-server-atlas-argocd.apps.aws01t.sbb-aws-test.net/
-    - **INT/PROD**: https://argocd-server-atlas-argocd.apps.maggie.sbb-aws.net/
-- **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas&branch=master
-- **JFrog Artifactory**:
-    - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker/atlas/atlas-frontend
-- **Openshift**:
-    - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
-    - **Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
-    - **Int**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
-    - **Prod**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
-- **Deployment**:
-    - **Dev**: https://atlas.dev.sbb-cloud.net
-    - **Test**: https://atlas.test.sbb-cloud.net
-    - **Int**: https://atlas.int.sbb-cloud.net
-    - **Prod**: https://atlas.sbb-cloud.net
-- **Developer Portal**:
-    - **INT**: https://developer-int.sbb.ch/apis?text=atlas&all=
-    - **PROD**: https://developer.sbb.ch/apis?text=atlas&all=
-- **API Management - 3scale**:
-    - **INT**: https://api-management.int.sbb-cloud.net
-    - **PROD**: https://api-management.prod.sbb-cloud.net
-- **Vulnerability Management (VMC)**: https://vmc.sbb.ch/de/reporting/mg/ADB3AE9A60E510ED/vulnerabilitylist
+## Monorepo
+
+ATLAS has a Monorepo project structure. The CI/CD is executed on each module. For each push event on
+master a Jenkins pipiline is executed. The modules are versionied and deployed with the same version
+number.
+
+![ATLAS Monorepo](documentation/image/ATLAS-Mono-Repo.svg)
+
+## Structure
+
+Quick overview of the modules. There are more detailed `README`s available within each module.
+
+### APIM-configuration
+
+Module, which will be published to APIM and served on the SBB developer portal.
+
+The module combines the APIs from services into one composed API.
+
+### Api Auth Gateway
+
+Gateway used by the frontend to fake authenticate read access to the atlas platform.
+See [Api Auth Gateway documentation](api-auth-gateway/README.md);
+
+### Gateway
+
+Module to handle routing of API endpoints to the respective business applications. Start this
+locally, if you want to run the angular UI.
+See [Gateway documentation](gateway/README.md);
+
+### Kafka
+
+This folder [kafka](kafka) is used to store `json` files that create topics using kafka-automation
+with estaCloudPipeline.
+More information can be found in the [kafka documentation](documentation/kafka.md).
+
+### Line-directory
+
+Business service for lines, sublines and timetable field numbers. All of these business objects use
+the atlas own versioning.
+See [Line-directory documentation](line-directory/README.md);
+
+### Business-organisation-directory
+
+Business service for business organisations. All of these business objects use the atlas own
+versioning.
+See [Business-Organisation-directory documentation](business-organisation-directory/README.md);
+
+### Mail Service
+
+Service used by Atlas to send emails. See [Mail Service Documentation](mail/README.md)
+
+### Workflow
+
+Service used to implement ATLAS Workflows. See [documentation](workflow/README.md)
+
+### User Administration
+
+User Administration provides the backend for creating and maintaining role and business organisation assignments for user.
+See [UserAdministration Documentation](user-administration/README.md) for more.
+
+### Service-Point-Directory
+
+Business service for `ServicePoints`, `TrafficPointElements` and `LoadingPoints`. All of these business objects use the atlas own
+versioning.
+See [Service-Point-Directory documentation](service-point-directory/README.md);
+
+### Prm-Directory
+
+Business service for PRM (Person with Reduced Mobility) Data. All of these business objects use the atlas own
+versioning.
+See [Prm-Directory documentation](prm-directory/README.md);
+
+### Bulk Import Service
+
+Spring Batch Job to import CSV File. See [Bulk-Import-Service documentation](bulk-import-service/README.md);
+
+### Location Service
+
+Service to assign SLOIDs centrally for all ATLAS applications.
+See [Location Service documentation](location/README.md);
+
+### Base Service lib
+
+Libraries used to perform:
+
+* business object **versioning** according to
+  the [documentation](https://confluence.sbb.ch/pages/viewpage.action?spaceKey=ATLAS&title=%5BATLAS%5D+8.7+Versionierung)
+  See [Versioning documentation](base-atlas/documentation/versioning/README.md);
+* CSV and ZIP exports. See [Export documentation](base-atlas/documentation/export/README.md);
+* Amazon REST Client operations.
+  See [Amazon documentation](base-atlas/documentation/amazon/README.md);
+
+### Frontend
+
+ATLAS Angular App. See [Frontend documentation](frontend/README.md);
 
 ## ATLAS CI/CD with Tekton
 
@@ -202,14 +272,6 @@ Stop infrastructure container and remove volume (deletes persistent content):
 docker-compose down -v 
 ~~~
 
-### Monorepo
-
-ATLAS has a Monorepo project structure. The CI/CD is executed on each module. For each push event on
-master a Jenkins pipiline is executed. The modules are versionied and deployed with the same version
-number.
-
-![ATLAS Monorepo](documentation/image/ATLAS-Mono-Repo.svg)
-
 ### Code-Formatting
 
 Configuration for the Frontend using IntelliJ:
@@ -232,109 +294,35 @@ General configuration:
 1. File > Settings > Tools > Actions on Save
     1. Activate "Optimize imports" with (Files: Java, TypeScript) options
 
-## Structure
-
-Quick overview of the modules. There are more detailed `README`s available within each module.
-
-### APIM-configuration
-
-Module, which will be published to APIM and served on the SBB developer portal.
-
-The module combines the APIs from services into one composed API.
-
-### Charts
-
-Contains helm charts for the entire ATLAS application.
-We use one helm chart with a flat structure to publish multiple `Deployments`, `Services`
-and `Routes`.
-
-You can generate the helm charts yamls, which will be deployed by using helm from the commandline.
-This is useful for debugging and local inspection of value resolution.
-
-```bash
-# Working dir ./charts/atlas
-# Generate Template for atlas-dev
-helm template . -n atlas-dev -f values-atlas-dev.yaml
-```
-
-### Api Auth Gateway
-
-Gateway used by the frontend to fake authenticate read access to the atlas platform.
-See [Api Auth Gateway documentation](api-auth-gateway/README.md);
-
-### Gateway
-
-Module to handle routing of API endpoints to the respective business applications. Start this
-locally, if you want to run the angular UI.
-See [Gateway documentation](gateway/README.md);
-
-### Kafka
-
-This folder [kafka](kafka) is used to store `json` files that create topics using kafka-automation
-with estaCloudPipeline.
-More information can be found in the [kafka documentation](documentation/kafka.md).
-
-### Line-directory
-
-Business service for lines, sublines and timetable field numbers. All of these business objects use
-the atlas own versioning.
-See [Line-directory documentation](line-directory/README.md);
-
-### Business-organisation-directory
-
-Business service for business organisations. All of these business objects use the atlas own
-versioning.
-See [Business-Organisation-directory documentation](business-organisation-directory/README.md);
-
-### Mail Service
-
-Service used by Atlas to send emails. See [Mail Service Documentation](mail/README.md)
-
-### Workflow
-
-Service used to implement ATLAS Workflows. See [documentation](workflow/README.md)
-
-### User Administration
-
-User Administration provides the backend for creating and maintaining role and business organisation assignments for user.
-See [UserAdministration Documentation](user-administration/README.md) for more.
-
-### Service-Point-Directory
-
-Business service for `ServicePoints`, `TrafficPointElements` and `LoadingPoints`. All of these business objects use the atlas own
-versioning.
-See [Service-Point-Directory documentation](service-point-directory/README.md);
-
-### Prm-Directory
-
-Business service for PRM (Person with Reduced Mobility) Data. All of these business objects use the atlas own
-versioning.
-See [Prm-Directory documentation](prm-directory/README.md);
-
-### Bulk Import Service
-
-Spring Batch Job to import CSV File. See [Bulk-Import-Service documentation](bulk-import-service/README.md);
-
-### Location Service
-
-Service to assign SLOIDs centrally for all ATLAS applications.
-See [Location Service documentation](location/README.md);
-
-### Base Service lib
-
-Libraries used to perform:
-
-* business object **versioning** according to
-  the [documentation](https://confluence.sbb.ch/pages/viewpage.action?spaceKey=ATLAS&title=%5BATLAS%5D+8.7+Versionierung)
-  See [Versioning documentation](base-atlas/documentation/versioning/README.md);
-* CSV and ZIP exports. See [Export documentation](base-atlas/documentation/export/README.md);
-* Amazon REST Client operations.
-  See [Amazon documentation](base-atlas/documentation/amazon/README.md);
-
-### Frontend
-
-ATLAS Angular App. See [Frontend documentation](frontend/README.md);
 
 ## Troubleshooting
 
 * [Sonarqube](documentation/Troubleshooting.md)
+
+## Links
+
+- **Tekton**: https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas
+- **ArgoCD**:
+  - **DEV/TEST**: https://argocd-server-atlas-argocd.apps.aws01t.sbb-aws-test.net/
+  - **INT/PROD**: https://argocd-server-atlas-argocd.apps.maggie.sbb-aws.net/
+- **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas&branch=master
+- **JFrog Artifactory**:
+  - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker/atlas/atlas-frontend
+- **Openshift**:
+  - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
+  - **Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
+  - **Int**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
+  - **Prod**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
+- **Deployment**:
+  - **Dev**: https://atlas.dev.sbb-cloud.net
+  - **Test**: https://atlas.test.sbb-cloud.net
+  - **Int**: https://atlas.int.sbb-cloud.net
+  - **Prod**: https://atlas.sbb-cloud.net
+- **Developer Portal**:
+  - **INT**: https://developer-int.sbb.ch/apis?text=atlas&all=
+  - **PROD**: https://developer.sbb.ch/apis?text=atlas&all=
+- **API Management - 3scale**:
+  - **INT**: https://api-management.int.sbb-cloud.net
+  - **PROD**: https://api-management.prod.sbb-cloud.net
+- **Vulnerability Management (VMC)**: https://vmc.sbb.ch/de/reporting/mg/ADB3AE9A60E510ED/vulnerabilitylist
+- **GitHub**: https://github.com/SchweizerischeBundesbahnen/atlas
