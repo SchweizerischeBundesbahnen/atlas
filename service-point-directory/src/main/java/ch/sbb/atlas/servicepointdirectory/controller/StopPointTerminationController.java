@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
+import ch.sbb.atlas.helper.TerminationHelper;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
@@ -11,7 +12,6 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.api.StopPointTerminationApiInternal;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationDateException;
-import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.helper.ServicePointTerminationHelper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
@@ -82,9 +82,8 @@ public class StopPointTerminationController implements StopPointTerminationApiIn
 
     List<ServicePointVersion> currentVersions = servicePointService.findBySloidAndOrderByValidFrom(terminationModel.getSloid());
     ServicePointVersion lastVersion = currentVersions.getLast();
-    if (!DateRange.fromVersionable(lastVersion).contains(terminationModel.getTerminationDate())) {
-      throw new TerminationNotAllowedException(lastVersion.getNumber());
-    }
+    TerminationHelper.isValidToInLastVersionRange(terminationModel.getSloid(), DateRange.fromVersionable(lastVersion),
+        terminationModel.getTerminationDate());
     return lastVersion;
   }
 

@@ -6,7 +6,6 @@ import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.Status;
 import jakarta.validation.Valid;
-import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,9 +31,6 @@ public interface SePoDiApi {
   ReadServicePointVersionModel getServicePointById(
       @PathVariable("id") Long id
   );
-
-  @GetMapping(BASEPATH + "/sloid/{sloid}")
-  List<ReadServicePointVersionModel> getServicePointVersionsBySloid(@PathVariable String sloid);
 
   @PostMapping(value = TERMINATION_BASEPATH + "/start/{sloid}/{id}")
   ReadServicePointVersionModel startServicePointTermination(@PathVariable("sloid") String sloid,
