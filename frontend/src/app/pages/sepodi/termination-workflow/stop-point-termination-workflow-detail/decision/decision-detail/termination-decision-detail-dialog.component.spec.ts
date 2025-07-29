@@ -20,6 +20,7 @@ import { TerminationDecisionFormGroup } from '../../stop-point-termination-workf
 import moment from 'moment/moment';
 import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
+import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const terminationWorkflowService = jasmine.createSpyObj('WorkflowService', {
@@ -31,6 +32,7 @@ const decisionDialogData: TerminationDecisionDetailDialogData = {
   message: '',
   workflowId: 123,
   readOnly: false,
+  workflowStatus: TerminationWorkflowStatus.Started,
   examinant: TerminationDecisionPersonEnum.InfoPlus,
   decision: new FormGroup<TerminationDecisionFormGroup>({
     examinantMail: new FormControl(''),
@@ -52,6 +54,7 @@ const dialogDataReadOnly: TerminationDecisionDetailDialogData = {
   message: '',
   workflowId: 123,
   readOnly: true,
+  workflowStatus: TerminationWorkflowStatus.Started,
   examinant: TerminationDecisionPersonEnum.InfoPlus,
   decision: new FormGroup<TerminationDecisionFormGroup>({
     examinantMail: new FormControl(''),

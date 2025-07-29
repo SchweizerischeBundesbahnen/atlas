@@ -92,6 +92,10 @@
   </button>
   @if (!readOnly) {
     <button
+      [disabled]="
+        workflowStatus === 'TERMINATION_NOT_APPROVED' &&
+        form.controls.judgement.value === 'NO'
+      "
       (click)="decide()"
       class="atlas-primary-btn me-3"
       data-cy="dialog-save-button"
