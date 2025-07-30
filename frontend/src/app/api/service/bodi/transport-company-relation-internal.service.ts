@@ -34,4 +34,3 @@ export class TransportCompanyRelationInternalService {
     return this.atlasApiService.put(this.BASE_PATH, updateTransportCompanyRelation);
   }
 }
-// todo: tests, remove comments in api.ts and remove unused services in /api
