@@ -29,4 +29,3 @@ export class CompanyInternalService {
   }
 
 }
-// todo: tests
