@@ -7,15 +7,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
 
 
-export interface PageableObject { 
-    offset?: number;
-    sort?: SortObject;
-    pageNumber?: number;
-    pageSize?: number;
-    unpaged?: boolean;
-    paged?: boolean;
+export interface StopPointWorkflowTermination { 
+    sloid: string;
+    versionId: number;
+    /**
+     * StopPoint Termination date
+     */
+    terminationDate: Date;
 }
 

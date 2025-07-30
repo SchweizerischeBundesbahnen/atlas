@@ -17,4 +17,3 @@ export class BusinessOrganisationService {
     return this.atlasApiService.get(`${this.BASE_PATH}/versions/${encodeURIComponent(sboid)}`);
   }
 }
-// todo: tests
