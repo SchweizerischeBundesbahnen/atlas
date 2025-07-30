@@ -39,7 +39,8 @@ export class TerminationService {
   ) {
     if (!this.initialFormValues)
       throw Error('initTermination was not called before');
-    const isStopPoint = !!this.initialFormValues.stopPointType;
+    const isStopPoint: boolean =
+      (this.initialFormValues.meansOfTransport?.length ?? 0) > 0;
     const isStopPointCountryAllowed =
       this.isStopPointCountryTerminationAllowed();
     const isValidated = this.initialFormValues.status === 'VALIDATED';
