@@ -24,8 +24,8 @@ import { DetailPageContainerComponent } from '../../../../core/components/detail
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
-import { BusinessOrganisationInternalService } from '../../../../api/service/bodi/business-organisation-internal.service';
 import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
+import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
 import SpyObj = jasmine.SpyObj;
 
 const transportCompany: TransportCompany = {
@@ -77,7 +77,7 @@ const transportCompanyRelations: TransportCompanyBoRelation[] = [
 let component: TransportCompanyDetailComponent;
 let fixture: ComponentFixture<TransportCompanyDetailComponent>;
 
-let boService: BusinessOrganisationInternalService;
+let boService: BusinessOrganisationService;
 let transportCompanyRelationInternalServiceSpy: SpyObj<TransportCompanyRelationInternalService>;
 
 describe('TransportCompanyDetailComponent', () => {
@@ -87,7 +87,7 @@ describe('TransportCompanyDetailComponent', () => {
     setupTestBed(mockData);
 
     fixture = TestBed.createComponent(TransportCompanyDetailComponent);
-    boService = TestBed.inject(BusinessOrganisationInternalService);
+    boService = TestBed.inject(BusinessOrganisationService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

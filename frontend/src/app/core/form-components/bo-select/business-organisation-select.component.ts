@@ -18,7 +18,7 @@ import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field
 import { NgClass, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
-import { BusinessOrganisationInternalService } from '../../../api/service/bodi/business-organisation-internal.service';
+import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 
 @Component({
   selector: 'bo-select',
@@ -51,8 +51,8 @@ export class BusinessOrganisationSelectComponent
   businessOrganisations: Observable<BusinessOrganisation[]> = of([]);
   private formSubscription!: Subscription;
 
-  private readonly businessOrganisationInternalService = inject(
-    BusinessOrganisationInternalService
+  private readonly businessOrganisationService = inject(
+    BusinessOrganisationService
   );
 
   ngOnInit(): void {
@@ -80,7 +80,7 @@ export class BusinessOrganisationSelectComponent
 
   searchBusinessOrganisation(searchString: string) {
     if (searchString) {
-      this.businessOrganisations = this.businessOrganisationInternalService
+      this.businessOrganisations = this.businessOrganisationService
         .getAllBusinessOrganisations(
           [searchString],
           this.sboidsRestrictions,

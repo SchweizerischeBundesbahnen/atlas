@@ -7,8 +7,9 @@ import { MockTableComponent } from '../../../app.testing.mocks';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { TableComponent } from '../../../core/components/table/table.component';
-import { BusinessOrganisationInternalService } from '../../../api/service/bodi/business-organisation-internal.service';
+import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 import Spy = jasmine.Spy;
+import SpyObj = jasmine.SpyObj;
 
 const businessOrganisation: ContainerBusinessOrganisation = {
   objects: [
@@ -34,16 +35,16 @@ describe('BusinessOrganisationComponent', () => {
   let component: BusinessOrganisationComponent;
   let fixture: ComponentFixture<BusinessOrganisationComponent>;
 
-  let businessOrganisationInternalServiceSpy: jasmine.SpyObj<BusinessOrganisationInternalService>;
+  let businessOrganisationServiceSpy: SpyObj<BusinessOrganisationService>;
 
   beforeEach(() => {
-    businessOrganisationInternalServiceSpy =
-      jasmine.createSpyObj<BusinessOrganisationInternalService>([
+    businessOrganisationServiceSpy =
+      jasmine.createSpyObj<BusinessOrganisationService>([
         'getAllBusinessOrganisations',
       ]);
 
     (
-      businessOrganisationInternalServiceSpy.getAllBusinessOrganisations as Spy<
+      businessOrganisationServiceSpy.getAllBusinessOrganisations as Spy<
         () => Observable<ContainerBusinessOrganisation>
       >
     ).and.returnValue(of(businessOrganisation));
@@ -54,8 +55,8 @@ describe('BusinessOrganisationComponent', () => {
         TranslatePipe,
         RouterOutlet,
         {
-          provide: BusinessOrganisationInternalService,
-          useValue: businessOrganisationInternalServiceSpy,
+          provide: BusinessOrganisationService,
+          useValue: businessOrganisationServiceSpy,
         },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
@@ -82,7 +83,7 @@ describe('BusinessOrganisationComponent', () => {
     });
 
     expect(
-      businessOrganisationInternalServiceSpy.getAllBusinessOrganisations
+      businessOrganisationServiceSpy.getAllBusinessOrganisations
     ).toHaveBeenCalledOnceWith(
       [],
       undefined,

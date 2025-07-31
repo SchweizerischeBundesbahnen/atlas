@@ -7,7 +7,7 @@ import { SearchSelectComponent } from '../search-select/search-select.component'
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import { of } from 'rxjs';
-import { BusinessOrganisationInternalService } from '../../../api/service/bodi/business-organisation-internal.service';
+import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 import SpyObj = jasmine.SpyObj;
 import { translateServiceProvider } from '../../../app.testing.mocks';
 
@@ -15,10 +15,10 @@ describe('BusinessOrganisationSelectComponent', () => {
   let component: BusinessOrganisationSelectComponent;
   let fixture: ComponentFixture<BusinessOrganisationSelectComponent>;
 
-  let businessOrganisationInternalService: SpyObj<BusinessOrganisationInternalService>;
+  let businessOrganisationServiceSpy: SpyObj<BusinessOrganisationService>;
 
   beforeEach(async () => {
-    businessOrganisationInternalService = jasmine.createSpyObj({
+    businessOrganisationServiceSpy = jasmine.createSpyObj({
       getAllBusinessOrganisations: of([]),
     });
 
@@ -33,8 +33,8 @@ describe('BusinessOrganisationSelectComponent', () => {
       providers: [
         TranslatePipe,
         {
-          provide: BusinessOrganisationInternalService,
-          useValue: businessOrganisationInternalService,
+          provide: BusinessOrganisationService,
+          useValue: businessOrganisationServiceSpy,
         },
         translateServiceProvider,
       ],
@@ -57,7 +57,7 @@ describe('BusinessOrganisationSelectComponent', () => {
   it('should search by businessOrganisation sorted by sboid', () => {
     component.searchBusinessOrganisation('ch:1:sboid:1');
     expect(
-      businessOrganisationInternalService.getAllBusinessOrganisations
+      businessOrganisationServiceSpy.getAllBusinessOrganisations
     ).toHaveBeenCalledWith(
       ['ch:1:sboid:1'],
       [],
