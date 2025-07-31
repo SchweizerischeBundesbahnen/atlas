@@ -46,6 +46,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     BackButtonDirective,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class LineVersionSnapshotDetailComponent implements OnInit {
   lineVersionSnapshot!: LineVersionSnapshot;

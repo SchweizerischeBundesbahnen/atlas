@@ -8,6 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './atlas-clipboard.component.html',
   styleUrl: './atlas-clipboard.component.scss',
   imports: [CdkCopyToClipboard, TranslatePipe],
+  providers: [TranslatePipe],
 })
 export class AtlasClipboardComponent {
   @Input() value: string | undefined;

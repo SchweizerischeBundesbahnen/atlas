@@ -10,8 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormControl,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
@@ -37,7 +37,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   templateUrl: './business-organisation-detail.component.html',
   styleUrls: ['./business-organisation-detail.component.scss'],
-  providers: [ValidityService],
+  providers: [ValidityService, TranslatePipe],
   imports: [
     BaseDetailComponent,
     ReactiveFormsModule,

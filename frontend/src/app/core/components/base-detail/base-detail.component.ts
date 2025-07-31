@@ -39,6 +39,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     AtlasButtonComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class BaseDetailComponent implements OnInit, OnDestroy {
   @Input() controller!: BaseDetailController<Record>;

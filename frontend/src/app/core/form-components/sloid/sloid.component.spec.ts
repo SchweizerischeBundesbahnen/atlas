@@ -2,13 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SloidComponent } from './sloid.component';
 import { FormModule } from '../../module/form.module';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { translateServiceProvider } from '../../../app.testing.mocks';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('SloidComponent', () => {
   let component: SloidComponent;
@@ -16,14 +13,8 @@ describe('SloidComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        FormModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        SloidComponent,
-      ],
-      providers: [{ provide: TranslatePipe }],
+      imports: [FormModule, SloidComponent],
+      providers: [TranslatePipe, translateServiceProvider, provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SloidComponent);

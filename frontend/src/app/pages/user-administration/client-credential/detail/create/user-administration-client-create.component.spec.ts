@@ -8,12 +8,7 @@ import {
 import { UserAdministrationClientCreateComponent } from './user-administration-client-create.component';
 import { BusinessOrganisationsService } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -21,6 +16,8 @@ import { DetailPageContainerComponent } from '../../../../../core/components/det
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import { ClientCredentialAdministrationService } from '../../../../../api/service/user-administration/client-credential-administration.service';
+import { translateServiceProvider } from '../../../../../app.testing.mocks';
+import { provideHttpClient } from '@angular/common/http';
 import SpyObj = jasmine.SpyObj;
 
 describe('UserAdministrationClientCreateComponent', () => {
@@ -56,15 +53,14 @@ describe('UserAdministrationClientCreateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterModule.forRoot([]),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
         UserAdministrationClientCreateComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
       ],
       providers: [
+        provideHttpClient(),
+        translateServiceProvider,
         {
           provide: ClientCredentialAdministrationService,
           useValue: clientCredentialAdministrationServiceSpy,

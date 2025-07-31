@@ -1,13 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-} from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { UserProfileComponent } from './user-profile.component';
-import { adminUserServiceMock } from '../../app.testing.mocks';
+import {
+  adminUserServiceMock,
+  translateServiceProvider,
+} from '../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
 import { UserService } from '../../core/auth/user/user.service';
 import { Component } from '@angular/core';
@@ -28,12 +26,10 @@ describe('UserProfileComponent', () => {
       imports: [
         BrowserAnimationsModule,
         RouterModule.forRoot([]),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
         UserProfileComponent,
       ],
       providers: [
+        translateServiceProvider,
         provideHttpClient(),
         { provide: UserService, useValue: adminUserServiceMock },
       ],

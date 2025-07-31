@@ -43,6 +43,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatDialogActions,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class NewTimetableHearingYearDialogComponent implements OnInit {
   form: FormGroup = new FormGroup<NewTimetableHearingYearFormGroup>(

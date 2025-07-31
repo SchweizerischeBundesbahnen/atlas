@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { DialogComponent } from '../components/dialog/dialog.component';
 import { HeaderComponent } from '../components/header/header.component';
 import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-spinner.component';
@@ -116,7 +115,6 @@ const coreComponents = [
 @NgModule({
   imports: [
     CommonModule,
-    TranslateModule,
     RouterModule,
     FormModule,
     OAuthModule.forRoot({
@@ -135,9 +133,8 @@ const coreComponents = [
     FormatPipe,
     InstanceOfPipe,
   ],
-  exports: [...coreComponents, CommonModule, TranslateModule],
+  exports: [...coreComponents, CommonModule],
   providers: [
-    TranslatePipe,
     FormatPipe,
     { provide: OAuthStorage, useClass: OAuthCookieStorage },
     provideHttpClient(withFetch(), withInterceptorsFromDi()),

@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './canton-card.component.html',
   styleUrls: ['./canton-card.component.scss'],
   imports: [TranslatePipe],
+  providers: [TranslatePipe],
 })
 export class CantonCardComponent {
   @Input() canton!: Canton;

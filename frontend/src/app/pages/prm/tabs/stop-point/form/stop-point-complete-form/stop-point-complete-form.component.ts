@@ -41,6 +41,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     SelectComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe, TranslationSortingService],
 })
 export class StopPointCompleteFormComponent implements OnInit {
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
