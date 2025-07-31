@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -16,7 +15,7 @@ import { TableFilter } from '../../../core/components/table-filter/config/table-
 import { Pages } from '../../pages';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BusinessOrganisationInternalService } from '../../../api/service/bodi/business-organisation-internal.service';
+import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 
 @Component({
   selector: 'app-bodi-business-organisations',
@@ -49,7 +48,7 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
   private langChangeSubscription: Subscription;
 
   constructor(
-    private readonly businessOrganisationInternalService: BusinessOrganisationInternalService,
+    private readonly businessOrganisationService: BusinessOrganisationService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
@@ -68,24 +67,23 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
   }
 
   getOverview(pagination: TablePagination) {
-    this.businessOrganisationsSubscription =
-      this.businessOrganisationInternalService
-        .getAllBusinessOrganisations(
-          this.tableService.filter.chipSearch.getActiveSearch(),
-          undefined,
-          this.tableService.filter.dateSelect.getActiveSearch(),
-          this.tableService.filter.multiSelectStatus.getActiveSearch(),
-          pagination.page,
-          pagination.size,
-          addElementsToArrayWhenNotUndefined(
-            pagination.sort,
-            this.getDefaultSort()
-          )
+    this.businessOrganisationsSubscription = this.businessOrganisationService
+      .getAllBusinessOrganisations(
+        this.tableService.filter.chipSearch.getActiveSearch(),
+        undefined,
+        this.tableService.filter.dateSelect.getActiveSearch(),
+        this.tableService.filter.multiSelectStatus.getActiveSearch(),
+        pagination.page,
+        pagination.size,
+        addElementsToArrayWhenNotUndefined(
+          pagination.sort,
+          this.getDefaultSort()
         )
-        .subscribe((container) => {
-          this.businessOrganisations = container.objects!;
-          this.totalCount$ = container.totalCount!;
-        });
+      )
+      .subscribe((container) => {
+        this.businessOrganisations = container.objects!;
+        this.totalCount$ = container.totalCount!;
+      });
   }
 
   editVersion($event: BusinessOrganisation) {

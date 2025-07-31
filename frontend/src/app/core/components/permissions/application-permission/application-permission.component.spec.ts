@@ -16,7 +16,7 @@ import {
   ApplicationPermissionFormGroupBuilder,
 } from '../form/application-permission-form-group';
 import { of } from 'rxjs';
-import { BusinessOrganisationInternalService } from '../../../../api/service/bodi/business-organisation-internal.service';
+import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
 import SpyObj = jasmine.SpyObj;
 import { translateServiceProvider } from '../../../../app.testing.mocks';
 
@@ -42,10 +42,10 @@ describe('ApplicationPermissionComponent', () => {
   let component: ApplicationPermissionComponent;
   let fixture: ComponentFixture<ApplicationPermissionComponent>;
 
-  let businessOrganisationInternalServiceSpy: SpyObj<BusinessOrganisationInternalService>;
+  let businessOrganisationServiceSpy: SpyObj<BusinessOrganisationService>;
 
   beforeEach(() => {
-    businessOrganisationInternalServiceSpy = jasmine.createSpyObj({
+    businessOrganisationServiceSpy = jasmine.createSpyObj({
       getAllBusinessOrganisations: of({ objects: [] }),
     });
 
@@ -58,8 +58,8 @@ describe('ApplicationPermissionComponent', () => {
           useClass: MockUserPermissionProviderService,
         },
         {
-          provide: BusinessOrganisationInternalService,
-          useValue: businessOrganisationInternalServiceSpy,
+          provide: BusinessOrganisationService,
+          useValue: businessOrganisationServiceSpy,
         },
         translateServiceProvider,
         provideHttpClient(),
@@ -90,7 +90,7 @@ describe('ApplicationPermissionComponent', () => {
       validFrom: new Date(),
       validTo: new Date(),
     };
-    businessOrganisationInternalServiceSpy.getAllBusinessOrganisations.and.returnValue(
+    businessOrganisationServiceSpy.getAllBusinessOrganisations.and.returnValue(
       of({ objects: [businessOrganisation] })
     );
     component.businessOrganisationForm.controls.businessOrganisation.setValue(

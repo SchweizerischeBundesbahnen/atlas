@@ -36,8 +36,8 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BusinessOrganisationInternalService } from '../../../../api/service/bodi/business-organisation-internal.service';
 import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
+import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
 
 @Component({
   templateUrl: './transport-company-detail.component.html',
@@ -124,7 +124,7 @@ export class TransportCompanyDetailComponent
   );
 
   constructor(
-    private readonly businessOrganisationInternalService: BusinessOrganisationInternalService,
+    private readonly businessOrganisationService: BusinessOrganisationService,
     private readonly transportCompanyRelationInternalService: TransportCompanyRelationInternalService,
     private readonly permissionService: PermissionService,
     private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
@@ -201,22 +201,21 @@ export class TransportCompanyDetailComponent
 
   getBusinessOrganisations(searchString: string): void {
     if (!searchString) return;
-    this.businessOrganisationSearchResults =
-      this.businessOrganisationInternalService
-        .getAllBusinessOrganisations(
-          [searchString],
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          this.pageSizeForBusinessOrganisationSearch
-        )
-        .pipe(
-          map((value) => {
-            this.totalCountOfFoundBusinessOrganisations = value.totalCount!;
-            return value.objects ?? [];
-          })
-        );
+    this.businessOrganisationSearchResults = this.businessOrganisationService
+      .getAllBusinessOrganisations(
+        [searchString],
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        this.pageSizeForBusinessOrganisationSearch
+      )
+      .pipe(
+        map((value) => {
+          this.totalCountOfFoundBusinessOrganisations = value.totalCount!;
+          return value.objects ?? [];
+        })
+      );
   }
 
   save(): void {

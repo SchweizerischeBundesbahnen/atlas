@@ -36,7 +36,7 @@ import {
   RoleConfig,
 } from './application-permission.config';
 import { UserPermissionProviderService } from './user-permission-provider-service';
-import { BusinessOrganisationInternalService } from '../../../../api/service/bodi/business-organisation-internal.service';
+import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
 
 @Component({
   selector: 'atlas-application-permission',
@@ -81,8 +81,8 @@ export class ApplicationPermissionComponent implements OnInit {
     Cantons.fromSwissCanton(canton)?.short;
   readonly SWISS_CANTONS = Object.values(SwissCanton);
 
-  private readonly businessOrganisationInternalService = inject(
-    BusinessOrganisationInternalService
+  private readonly businessOrganisationService = inject(
+    BusinessOrganisationService
   );
   private readonly boLanguageService = inject(
     BusinessOrganisationLanguageService
@@ -193,7 +193,7 @@ export class ApplicationPermissionComponent implements OnInit {
 
   private addBusinessOrganisationToCurrentTable(sboid: string) {
     firstValueFrom(
-      this.businessOrganisationInternalService.getAllBusinessOrganisations(
+      this.businessOrganisationService.getAllBusinessOrganisations(
         undefined,
         [sboid],
         undefined,
