@@ -16,18 +16,18 @@ import { TableColumn } from '../table/table-column';
 import { Status } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
-  MatRow,
-  MatTable,
-  MatColumnDef,
-  MatHeaderCellDef,
-  MatHeaderCell,
-  MatCellDef,
   MatCell,
-  MatHeaderRowDef,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
   MatRowDef,
+  MatTable,
 } from '@angular/material/table';
-import { NgFor, NgIf, NgClass } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-switch-version',
@@ -49,6 +49,7 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
     NgClass,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class SwitchVersionComponent
   implements OnInit, OnChanges, AfterViewInit

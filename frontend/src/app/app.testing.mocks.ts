@@ -23,6 +23,8 @@ import { Pages } from './pages/pages';
 import { FieldExample } from './core/form-components/text-field/field-example';
 import { TargetPageType } from './core/navigation-sepodi-prm/navigation-sepodi-prm.component';
 import { Page } from './core/model/page';
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @Component({
   selector: 'app-switch-version',
@@ -240,5 +242,14 @@ export const authServiceSpy = jasmine.createSpyObj<AuthService>([
   'login',
   'logout',
 ]);
+
+export const translateServiceProvider = provideTranslateService({
+  loader: provideTranslateHttpLoader({
+    prefix: './assets/i18n/',
+    suffix: '.json',
+    enforceLoading: true,
+    useHttpBackend: true,
+  }),
+});
 
 // Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself

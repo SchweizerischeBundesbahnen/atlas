@@ -367,7 +367,10 @@ function setupTestBed(
   })
     .overrideComponent(SublineDetailComponent, {
       set: {
-        providers: [{ provide: ValidityService, useValue: validityService }],
+        providers: [
+          { provide: ValidityService, useValue: validityService },
+          TranslatePipe,
+        ],
       },
     })
     .compileComponents()

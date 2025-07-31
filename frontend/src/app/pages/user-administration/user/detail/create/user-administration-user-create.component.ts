@@ -27,6 +27,7 @@ import { UserAdministrationService } from '../../../../../api/service/user-admin
     DetailFooterComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class UserAdministrationUserCreateComponent {
   readonly userSearchForm: FormGroup = new FormGroup({

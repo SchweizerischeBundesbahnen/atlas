@@ -25,6 +25,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-bodi-business-organisations',
   templateUrl: './business-organisation.component.html',
   imports: [TableComponent, RouterOutlet, TranslatePipe],
+  providers: [TranslatePipe],
 })
 export class BusinessOrganisationComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<BusinessOrganisation>[] = this.getColumns();

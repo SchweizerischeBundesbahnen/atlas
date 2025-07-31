@@ -1,10 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { FormModule } from '../../../core/module/form.module';
 import { GeographyComponent } from './geography.component';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -47,9 +42,6 @@ describe('GeographyComponent', () => {
       imports: [
         AppTestingModule,
         FormModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
         GeographyComponent,
         TextFieldComponent,
         RemoveCharsDirective,

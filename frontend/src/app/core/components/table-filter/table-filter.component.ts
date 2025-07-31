@@ -8,13 +8,13 @@ import { TableFilterDateSelect } from './config/table-filter-date-select';
 import { TableFilter } from './config/table-filter';
 import { TableFilterSingleSearch } from './config/table-filter-single-search';
 import { TableFilterBoolean } from './config/table-filter-boolean';
-import { NgFor, NgIf, NgClass } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { AtlasLabelFieldComponent } from '../../form-components/atlas-label-field/atlas-label-field.component';
 import {
   MatChipGrid,
-  MatChipRow,
-  MatChipRemove,
   MatChipInput,
+  MatChipRemove,
+  MatChipRow,
 } from '@angular/material/chips';
 import { AtlasSlideToggleComponent } from '../../form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
@@ -25,16 +25,17 @@ import { SelectComponent } from '../../form-components/select/select.component';
 import { AtlasSpacerComponent } from '../spacer/atlas-spacer.component';
 import { MatInput } from '@angular/material/input';
 import {
+  MatDatepicker,
   MatDatepickerInput,
   MatDatepickerToggle,
   MatDatepickerToggleIcon,
-  MatDatepicker,
 } from '@angular/material/datepicker';
 import { MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
 import { AtlasFieldErrorComponent } from '../../form-components/atlas-field-error/atlas-field-error.component';
 import { InstanceOfPipe } from './instance-of.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-table-filter',
@@ -67,6 +68,7 @@ import { InstanceOfPipe } from './instance-of.pipe';
     AtlasFieldErrorComponent,
     InstanceOfPipe,
   ],
+  providers: [TranslatePipe],
 })
 export class TableFilterComponent<TFilterConfig> {
   @Input() filterConfigurations: TableFilter<TFilterConfig>[][] = [];

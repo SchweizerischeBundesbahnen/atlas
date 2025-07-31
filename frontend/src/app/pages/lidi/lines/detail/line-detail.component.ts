@@ -48,7 +48,7 @@ import { LineInternalService } from '../../../../api/service/lidi/line-internal.
 @Component({
   templateUrl: './line-detail.component.html',
   styleUrls: ['./line-detail.component.scss'],
-  providers: [ValidityService],
+  providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContainerComponent,
     ScrollToTopDirective,

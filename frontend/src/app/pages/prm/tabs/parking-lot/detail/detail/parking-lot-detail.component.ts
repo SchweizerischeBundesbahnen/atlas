@@ -27,7 +27,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'app-parking-lot-detail',
   templateUrl: './parking-lot-detail.component.html',
-  providers: [ValidityService],
+  providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContentComponent,
     NgIf,

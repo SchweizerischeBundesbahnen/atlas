@@ -7,21 +7,21 @@ import {
 } from '@angular/core';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
-import { MatSort, Sort, MatSortHeader } from '@angular/material/sort';
+import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import {
-  MatTable,
-  MatColumnDef,
-  MatHeaderCellDef,
-  MatHeaderCell,
-  MatCellDef,
   MatCell,
-  MatHeaderRowDef,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
-  MatRowDef,
-  MatRow,
+  MatHeaderRowDef,
   MatNoDataRow,
+  MatRow,
+  MatRowDef,
+  MatTable,
 } from '@angular/material/table';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -47,6 +47,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatNoDataRow,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export class RelationComponent<RECORD_TYPE> {

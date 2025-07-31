@@ -33,7 +33,7 @@ import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import { ReferencePointCreationHintService } from './reference-point-creation-hint/reference-point-creation-hint.service';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
 import { filter, map } from 'rxjs/operators';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { CreateStopPointComponent } from '../create-stop-point/create-stop-point.component';
 import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
 import { NavigationSepodiPrmComponent } from '../../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
@@ -44,11 +44,12 @@ import { UserDetailInfoComponent } from '../../../../../core/components/base-det
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 
 @Component({
   selector: 'app-stop-point-detail',
   templateUrl: './stop-point-detail.component.html',
-  providers: [ValidityService],
+  providers: [ValidityService, TranslatePipe, TranslationSortingService],
   imports: [
     NgIf,
     CreateStopPointComponent,

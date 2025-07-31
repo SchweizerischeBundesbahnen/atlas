@@ -8,6 +8,7 @@ import { Pages } from '../../../../../pages';
 @Component({
   selector: 'app-stop-point-termination-info',
   imports: [TranslatePipe],
+  providers: [TranslatePipe],
   styleUrls: ['./stop-point-termination-info.component.scss'],
   templateUrl: './stop-point-termination-info.component.html',
 })
