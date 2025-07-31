@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FieldExample } from '../text-field/field-example';
-import { NgClass, NgIf, NgFor } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { InfoIconComponent } from '../info-icon/info-icon.component';
 import { InfoLinkDirective } from '../info-icon/info-link.directive';
 
@@ -16,6 +16,7 @@ import { InfoLinkDirective } from '../info-icon/info-link.directive';
     NgFor,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class AtlasLabelFieldComponent {
   @Input() required!: boolean;

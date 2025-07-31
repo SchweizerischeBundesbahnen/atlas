@@ -4,6 +4,7 @@ import { NgIf } from '@angular/common';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import { MatInput } from '@angular/material/input';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'form-comment',
@@ -16,6 +17,7 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
     MatInput,
     AtlasFieldErrorComponent,
   ],
+  providers: [TranslatePipe],
 })
 export class CommentComponent {
   @Input() formGroup!: FormGroup;

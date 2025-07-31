@@ -53,6 +53,7 @@ import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPe
     MatDatepickerToggleIcon,
     MatIcon,
   ],
+  providers: [TranslatePipe],
 })
 export class TerminationDecisionDetailDialogComponent implements OnInit {
   protected readonly JudgementType = JudgementType;

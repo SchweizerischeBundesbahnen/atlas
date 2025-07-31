@@ -2,9 +2,9 @@ import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogClose,
   MatDialogActions,
+  MatDialogClose,
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { StatusChangeData } from '../tth-change-status-dialog/model/status-change-data';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
@@ -24,6 +24,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatDialogActions,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class BaseChangeDialogComponent {
   @Input() formGroup!: FormGroup;

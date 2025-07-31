@@ -31,6 +31,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     SplitServicePointNumberPipe,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class KilometerMasterSearchComponent
   implements OnInit, OnDestroy, OnChanges

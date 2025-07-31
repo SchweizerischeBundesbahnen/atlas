@@ -13,8 +13,8 @@ import { ServicePointSearchResult, ServicePointsService } from '../../api';
 import { SearchSelectComponent } from '../form-components/search-select/search-select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ServicePointSearch } from './service-point-search';
-import SpyObj = jasmine.SpyObj;
 import { BERN_WYLEREGG } from '../../../test/data/service-point';
+import SpyObj = jasmine.SpyObj;
 
 describe('SearchServicePointComponent', () => {
   let component: SearchServicePointComponent;

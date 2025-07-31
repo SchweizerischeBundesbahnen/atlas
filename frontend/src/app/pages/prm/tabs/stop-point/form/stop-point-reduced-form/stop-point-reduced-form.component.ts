@@ -24,6 +24,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     DateRangeComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class StopPointReducedFormComponent implements OnInit {
   @Input() form!: FormGroup<StopPointDetailFormGroup>;

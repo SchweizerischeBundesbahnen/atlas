@@ -1,17 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimetableFieldNumberSelectComponent } from './timetable-field-number-select.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormControl, FormGroup } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { translateServiceProvider } from '../../../app.testing.mocks';
 
 describe('TimetableFieldNumberSelectComponent', () => {
   let component: TimetableFieldNumberSelectComponent;
@@ -20,9 +16,6 @@ describe('TimetableFieldNumberSelectComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
         NgSelectModule,
         HttpClientTestingModule,
         TimetableFieldNumberSelectComponent,
@@ -30,7 +23,7 @@ describe('TimetableFieldNumberSelectComponent', () => {
         AtlasLabelFieldComponent,
         AtlasFieldErrorComponent,
       ],
-      providers: [TranslatePipe],
+      providers: [TranslatePipe, translateServiceProvider],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimetableFieldNumberSelectComponent);

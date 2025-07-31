@@ -26,6 +26,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     AtlasButtonComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class StatementDialogComponent {
   private ngUnsubscribe = new Subject<void>();

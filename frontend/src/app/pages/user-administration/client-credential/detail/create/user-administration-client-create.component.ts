@@ -38,6 +38,7 @@ import { ClientCredentialAdministrationService } from '../../../../../api/servic
     DetailFooterComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class UserAdministrationClientCreateComponent {
   saveEnabled = true;

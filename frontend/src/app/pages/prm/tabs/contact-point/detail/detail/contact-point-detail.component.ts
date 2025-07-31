@@ -27,7 +27,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'app-contact-point-detail',
   templateUrl: './contact-point-detail.component.html',
-  providers: [ValidityService],
+  providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContentComponent,
     NgIf,

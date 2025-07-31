@@ -38,7 +38,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'app-platforms',
   templateUrl: './platform-detail.component.html',
-  providers: [ValidityService],
+  providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContentComponent,
     NgIf,

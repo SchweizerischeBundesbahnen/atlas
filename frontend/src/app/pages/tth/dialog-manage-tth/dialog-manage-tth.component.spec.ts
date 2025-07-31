@@ -5,11 +5,9 @@ import { TimetableHearingYear } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { of } from 'rxjs';
 import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-} from '@ngx-translate/core';
-import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
+  MockAtlasButtonComponent,
+  translateServiceProvider,
+} from '../../../app.testing.mocks';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TimetableHearingYearInternalService } from '../../../api/service/lidi/timetable-hearing-year-internal.service';
@@ -61,6 +59,7 @@ describe('DialogManageTthComponent', () => {
 
     await TestBed.configureTestingModule({
       providers: [
+        translateServiceProvider,
         {
           provide: MAT_DIALOG_DATA,
           useValue: matDialogDataMock,
@@ -80,9 +79,6 @@ describe('DialogManageTthComponent', () => {
       ],
       imports: [
         AppTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
         DialogManageTthComponent,
         MockAtlasButtonComponent,
         MockAtlasSlideToggleComponent,

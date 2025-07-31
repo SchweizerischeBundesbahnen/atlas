@@ -16,6 +16,7 @@ import { AtlasSlideToggleComponent } from '../form-components/atlas-slide-toggle
   selector: 'prm-recording-obligation',
   templateUrl: './prm-recording-obligation.component.html',
   imports: [TranslatePipe, AtlasSlideToggleComponent],
+  providers: [TranslatePipe],
 })
 export class PrmRecordingObligationComponent implements OnInit, OnChanges {
   recordingObligation = true;

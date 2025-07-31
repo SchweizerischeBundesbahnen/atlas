@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  InterpolatableTranslationObject,
+  TranslateService,
+} from '@ngx-translate/core';
 import { DateAdapter } from '@angular/material/core';
 import { Language } from './language';
 import { NgClass, NgFor, UpperCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-language-switcher',
@@ -34,15 +38,15 @@ export class LanguageSwitcherComponent {
   }
 
   get currentLanguage(): string {
-    return this.translateService.currentLang;
+    return this.translateService.getCurrentLang();
   }
 
-  setLanguage(language: string): void {
+  setLanguage(language: string): Observable<InterpolatableTranslationObject> {
     localStorage.setItem(
       LanguageSwitcherComponent.STORED_LANGUAGE_KEY,
       language
     );
-    this.translateService.use(language);
     this.dateAdapter.setLocale(language);
+    return this.translateService.use(language);
   }
 }

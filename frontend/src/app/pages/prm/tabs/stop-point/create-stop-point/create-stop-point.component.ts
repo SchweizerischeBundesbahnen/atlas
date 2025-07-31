@@ -1,9 +1,9 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
-  MatStepper,
   MatStep,
   MatStepLabel,
+  MatStepper,
   MatStepperIcon,
 } from '@angular/material/stepper';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
@@ -39,6 +39,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatStepperIcon,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class CreateStopPointComponent implements DetailFormComponent {
   @ViewChild('stepper') stepper!: MatStepper;
