@@ -19,7 +19,7 @@ import { PermissionService } from 'src/app/core/auth/permission/permission.servi
 import { Pages } from 'src/app/pages/pages';
 import { ValidationService } from '../../../../../../../core/validation/validation.service';
 import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { AtlasFieldErrorComponent } from '../../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { CommentComponent } from '../../../../../../../core/form-components/comment/comment.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -36,6 +36,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     CommentComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class DecisionOverrideComponent implements OnInit, OnChanges {
   protected readonly JudgementType = JudgementType;

@@ -1,12 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PermissionComponent } from './permission.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 import { UserPermissionProviderService } from './application-permission/user-permission-provider-service';
@@ -15,6 +10,7 @@ import { By } from '@angular/platform-browser';
 import { ApplicationType } from '../../../api';
 import { DialogService } from '../dialog/dialog.service';
 import { of } from 'rxjs';
+import { translateServiceProvider } from '../../../app.testing.mocks';
 
 describe('PermissionComponent', () => {
   let component: PermissionComponent;
@@ -28,15 +24,10 @@ describe('PermissionComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        PermissionComponent,
-      ],
+      imports: [BrowserAnimationsModule, PermissionComponent],
       providers: [
         TranslatePipe,
+        translateServiceProvider,
         {
           provide: DialogService,
           useValue: dialogServiceSpy,

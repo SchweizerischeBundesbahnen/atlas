@@ -9,6 +9,7 @@ import { PermissionComponent } from '../../core/components/permissions/permissio
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss'],
   imports: [TranslatePipe, PermissionComponent],
+  providers: [TranslatePipe],
 })
 export class UserProfileComponent implements OnInit {
   userService = inject(UserService);

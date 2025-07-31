@@ -96,6 +96,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     AsyncPipe,
     TranslatePipe,
   ],
+  providers: [OpenStatementInMailService, TranslatePipe],
 })
 export class StatementDetailComponent implements OnInit, DetailFormComponent {
   YEAR_OPTIONS: number[] = [];

@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CantonCardComponent } from './canton-card.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-} from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { Canton } from '../../../../core/cantons/Canton';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
+import { provideHttpClient } from '@angular/common/http';
 
 const cantonAG: Canton = { short: 'AG', path: 'ag' };
 
@@ -17,12 +14,8 @@ describe('CantonCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        CantonCardComponent,
-      ],
+      imports: [CantonCardComponent],
+      providers: [translateServiceProvider, provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CantonCardComponent);

@@ -30,6 +30,7 @@ import { UserDetailInfoComponent } from '../../../../../core/components/base-det
     PermissionComponent,
     UserDetailInfoComponent,
   ],
+  providers: [TranslatePipe],
 })
 export class UserAdministrationUserEditComponent implements OnInit {
   user = input.required<User>();

@@ -45,6 +45,7 @@ import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPe
     CommentComponent,
     LinkComponent,
   ],
+  providers: [TranslatePipe],
   templateUrl: './stop-point-termination-workflow-detail.html',
 })
 export class StopPointTerminationWorkflowDetail implements OnInit {

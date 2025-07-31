@@ -7,6 +7,7 @@ import { DisplayDatePipe } from '../../pipe/display-date.pipe';
   selector: 'date-range-text [dateRange]',
   templateUrl: './date-range-text.component.html',
   imports: [TranslatePipe, DisplayDatePipe],
+  providers: [TranslatePipe],
 })
 export class DateRangeTextComponent {
   @Input() dateRange!: DateRange;

@@ -6,10 +6,9 @@ import {
 } from '@angular/core';
 import { CoreModule } from './core/module/core.module';
 import { DateModule } from './core/module/date.module';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
 import {
   HTTP_INTERCEPTORS,
-  HttpClient,
   provideHttpClient,
   withFetch,
 } from '@angular/common/http';
@@ -20,13 +19,11 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { GlobalErrorHandler } from './core/configuration/global-error-handler';
 import { ServerErrorInterceptor } from './core/configuration/server-error-interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslatedPaginator } from './core/components/table/translated-paginator';
 import { MAT_CHIPS_DEFAULT_OPTIONS } from '@angular/material/chips';
 import { ENTER } from '@angular/cdk/keycodes';
-
-const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
 
 function withBasePath(basePath: string) {
   return () => new Configuration({ basePath: basePath });
@@ -38,16 +35,18 @@ if (environment.production) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideTranslateService({
+      loader: provideTranslateHttpLoader({
+        prefix: './assets/i18n/',
+        suffix: '.json',
+        enforceLoading: true,
+        useHttpBackend: true,
+      }),
+    }),
+    TranslatePipe,
     importProvidersFrom(
       CoreModule,
       DateModule.forRoot(),
-      TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useFactory: httpLoaderFactory,
-          deps: [HttpClient],
-        },
-      }),
       AppRouting,
       AtlasApiModule.forRoot(withBasePath(environment.atlasUnauthApiUrl))
     ),

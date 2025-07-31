@@ -10,12 +10,12 @@ import {
 import { Observable, of } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
-  NgSelectComponent,
   NgLabelTemplateDirective,
   NgOptionTemplateDirective,
+  NgSelectComponent,
 } from '@ng-select/ng-select';
 import { TranslatePipe } from '@ngx-translate/core';
-import { NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 
 @Component({
@@ -32,6 +32,7 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
     AsyncPipe,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class SearchSelectComponent<TYPE> {
   @Input() items$: Observable<TYPE[]> = of([]);

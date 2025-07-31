@@ -5,8 +5,8 @@ import { NotificationService } from '../../notification/notification.service';
 import {
   FormControl,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { WorkflowFormGroup } from '../workflow-form-group';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
@@ -19,17 +19,17 @@ import {
   WorkflowService,
   WorkflowStart,
 } from '../../../api';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ValidationService } from '../../validation/validation.service';
 import { Observable } from 'rxjs';
 import { DialogCloseComponent } from '../../components/dialog/close/dialog-close.component';
 import { DialogContentComponent } from '../../components/dialog/content/dialog-content.component';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
 import { WorkflowCheckFormComponent } from '../workflow-check-form/workflow-check-form.component';
 import { DialogFooterComponent } from '../../components/dialog/footer/dialog-footer.component';
-import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 import { UserAdministrationService } from '../../../api/service/user-administration/user-administration.service';
+import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 
 @Component({
   selector: 'app-workflow-dialog',
@@ -46,6 +46,7 @@ import { UserAdministrationService } from '../../../api/service/user-administrat
     AsyncPipe,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class WorkflowDialogComponent implements OnInit {
   workflowStartFormGroup: FormGroup<WorkflowFormGroup> =

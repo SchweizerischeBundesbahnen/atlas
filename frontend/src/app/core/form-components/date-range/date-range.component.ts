@@ -4,14 +4,15 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TodayAndFutureTimetableHeaderComponent } from './today-and-future-timetable-header/today-and-future-timetable-header.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import {
+  MatDatepicker,
   MatDatepickerInput,
   MatDatepickerToggle,
   MatDatepickerToggleIcon,
-  MatDatepicker,
 } from '@angular/material/datepicker';
 import { MatIcon } from '@angular/material/icon';
 import { DateIconComponent } from '../date-icon/date-icon.component';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'form-date-range',
@@ -28,6 +29,7 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
     MatDatepicker,
     AtlasFieldErrorComponent,
   ],
+  providers: [TranslatePipe],
 })
 export class DateRangeComponent {
   validFromHeader = TodayAndFutureTimetableHeaderComponent;

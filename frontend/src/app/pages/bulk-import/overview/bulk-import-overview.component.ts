@@ -82,6 +82,7 @@ const VALID_COMBINATIONS: [ApplicationType, BusinessObjectType, ImportType][] =
     AtlasButtonComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class BulkImportOverviewComponent implements OnInit {
   protected readonly OPTIONS_SCENARIO = OPTIONS_SCENARIO;

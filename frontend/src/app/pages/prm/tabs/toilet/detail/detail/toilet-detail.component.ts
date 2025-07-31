@@ -27,7 +27,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'app-toilet-detail',
   templateUrl: './toilet-detail.component.html',
-  providers: [ValidityService],
+  providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContentComponent,
     NgIf,
