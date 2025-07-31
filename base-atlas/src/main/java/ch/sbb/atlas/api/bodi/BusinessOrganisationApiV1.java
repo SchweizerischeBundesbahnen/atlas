@@ -1,8 +1,10 @@
 package ch.sbb.atlas.api.bodi;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.export.enumeration.ExportType;
+import ch.sbb.atlas.model.Status;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,21 +13,35 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Business Organisations")
 @RequestMapping("v1/business-organisations")
 public interface BusinessOrganisationApiV1 {
+
+  @GetMapping
+  @PageableAsQueryParam
+  Container<BusinessOrganisationModel> getAllBusinessOrganisations(
+      @Parameter(hidden = true) Pageable pageable,
+      @Parameter @RequestParam(required = false) List<String> searchCriteria,
+      @Parameter @RequestParam(required = false) List<String> inSboids,
+      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
+      @Parameter @RequestParam(required = false) List<Status> statusChoices
+  );
 
   @GetMapping("versions")
   @PageableAsQueryParam
@@ -34,8 +50,7 @@ public interface BusinessOrganisationApiV1 {
       @ParameterObject BusinessOrganisationVersionRequestParams businessOrganisationVersionRequestParams);
 
   @GetMapping("versions/{sboid}")
-  List<BusinessOrganisationVersionModel> getVersions(
-      @PathVariable String sboid);
+  List<BusinessOrganisationVersionModel> getVersions(@PathVariable String sboid);
 
   @Deprecated(forRemoval = true)
   @Operation(description = "Export all Business Organisations versions as csv, zip and gz file to the ATLAS Amazon S3 Bucket")
