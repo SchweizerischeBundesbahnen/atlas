@@ -10,7 +10,7 @@
   <ng-select
     data-cy="search-service-point-select"
     autofocus="true"
-    [items]="servicePointSearchResult$ | async"
+    [items]="(servicePointSearchResult$ | async) ?? []"
     [typeahead]="searchInput$"
     [loading]="loading"
     (change)="navigateTo($event)"
@@ -22,17 +22,24 @@
     loadingText="{{ 'COMMON.LOADING' | translate }}"
   >
     <ng-template let-item="item" ng-option-tmp>
-      <span [ngClass]="isSearchBySloid ? 'bold' : ''"
-            [innerHTML]="item.sloid"
+      <span
+        [ngClass]="isSearchBySloid ? 'bold' : ''"
+        [innerHTML]="item.sloid"
       ></span>
       <span>&nbsp;&nbsp;&nbsp;</span>
       <span
         [innerHTML]="
-          item.number.toString() | searchResultHighlight: searchValue | splitServicePointNumber
+          item.number.toString()
+            | searchResultHighlight: searchValue
+            | splitServicePointNumber
         "
       ></span>
       <span>&nbsp;&nbsp;&nbsp;</span>
-      <span [innerHTML]="item.designationOfficial | searchResultHighlight: searchValue"></span>
+      <span
+        [innerHTML]="
+          item.designationOfficial | searchResultHighlight: searchValue
+        "
+      ></span>
     </ng-template>
   </ng-select>
 </div>
