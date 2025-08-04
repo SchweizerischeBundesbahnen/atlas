@@ -52,6 +52,6 @@ export class SearchSelectComponent<TYPE> {
   @ContentChild('labelOptionTemplates') labelOptionTemplates!: TemplateRef<any>;
 
   isDropdownOpen(): boolean {
-    return this.ngSelect?.isOpen ?? false;
+    return this.ngSelect?.isOpen() ?? false;
   }
 }
