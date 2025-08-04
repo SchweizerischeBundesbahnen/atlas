@@ -1,14 +1,14 @@
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { ReadServicePointVersion, ServicePointsService } from '../../../../api';
-import { TerminationStopPointAddWorkflow } from '../../../../api/model/terminationStopPointAddWorkflow';
 import { inject, Injectable } from '@angular/core';
 import { catchError, mergeMap, Observable, of } from 'rxjs';
 import { Pages } from '../../../pages';
 import { map } from 'rxjs/operators';
 import { WorkflowService } from '../../../../api/service/workflow/workflow.service';
+import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
 
 export interface StopPointTerminationWorkflowDetailData {
-  workflow: TerminationStopPointAddWorkflow;
+  workflow: TerminationStopPointWorkflowModel;
   servicePoint: ReadServicePointVersion[];
 }
 

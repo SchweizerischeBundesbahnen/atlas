@@ -1,6 +1,8 @@
 package ch.sbb.workflow.sepodi.termination.service;
 
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.CANCELED;
 import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.STARTED;
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.TERMINATION_NOT_APPROVED_CLOSED;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
@@ -23,6 +25,7 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationDecisionMapper;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationCancelModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflowRepository;
@@ -97,6 +100,25 @@ public class TerminationStopPointWorkflowService {
   public Page<TerminationStopPointWorkflow> getTerminationWorkflows(
       TerminationStopPointWorkflowSearchRestrictions searchRestrictions) {
     return repository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  }
+
+  public TerminationStopPointWorkflow cancelTerminationWorkflow(Long workflowId, TerminationCancelModel cancelModel) {
+    TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
+    if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.STARTED) {
+      terminationWorkflow.setStatus(CANCELED);
+      notificationService.sendCancelNotificationToBoAndInfoPlus(terminationWorkflow);
+    }
+    if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.TARIFF_STOP_APPROVED) {
+      terminationWorkflow.setStatus(CANCELED);
+      notificationService.sendCancelNotificationToBoInfoPlusAndNova(terminationWorkflow);
+    }
+    if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.TERMINATION_NOT_APPROVED) {
+      terminationWorkflow.setStatus(TERMINATION_NOT_APPROVED_CLOSED);
+      //no mail an NOVA?
+    }
+    terminationWorkflow.setCancelComment(cancelModel.getCancelComment());
+    sePoDiAdminClient.stopServicePointTermination(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
+    return repository.saveAndFlush(terminationWorkflow);
   }
 
   public TerminationStopPointWorkflow addDecisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
