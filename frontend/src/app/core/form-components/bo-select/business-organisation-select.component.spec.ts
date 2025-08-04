@@ -8,8 +8,9 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import { of } from 'rxjs';
 import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
-import SpyObj = jasmine.SpyObj;
 import { translateServiceProvider } from '../../../app.testing.mocks';
+import { provideHttpClient } from '@angular/common/http';
+import SpyObj = jasmine.SpyObj;
 
 describe('BusinessOrganisationSelectComponent', () => {
   let component: BusinessOrganisationSelectComponent;
@@ -37,6 +38,7 @@ describe('BusinessOrganisationSelectComponent', () => {
           useValue: businessOrganisationServiceSpy,
         },
         translateServiceProvider,
+        provideHttpClient(),
       ],
     }).compileComponents();
 
