@@ -66,6 +66,7 @@ import { FormatPipe } from './pipe/format.pipe';
     ShowTitlePipe,
     FormatPipe,
   ],
+  providers: [TranslatePipe],
 })
 export class TableComponent<DATATYPE> implements OnInit {
   @Input() checkBoxSelection = new SelectionModel<DATATYPE>(true, []);

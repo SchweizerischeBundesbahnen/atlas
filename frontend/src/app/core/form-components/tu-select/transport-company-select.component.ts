@@ -14,7 +14,7 @@ import { TransportCompaniesService, TransportCompany } from '../../../api';
 import { map } from 'rxjs/operators';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -29,6 +29,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     NgClass,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class TransportCompanySelectComponent
   implements OnInit, OnDestroy, OnChanges

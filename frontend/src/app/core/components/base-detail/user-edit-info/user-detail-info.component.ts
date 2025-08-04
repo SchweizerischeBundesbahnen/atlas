@@ -17,6 +17,7 @@ import { UserAdministrationService } from '../../../../api/service/user-administ
   styleUrls: ['./user-detail-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgIf, AsyncPipe, TranslatePipe],
+  providers: [TranslatePipe],
 })
 export class UserDetailInfoComponent {
   @Input() short = false;

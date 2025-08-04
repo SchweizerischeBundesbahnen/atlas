@@ -1,13 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserDetailInfoComponent } from './user-detail-info.component';
 import { AppTestingModule } from '../../../../app.testing.module';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-} from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { UserAdministrationService } from '../../../../api/service/user-administration/user-administration.service';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
 
 describe('UserDetailComponent', () => {
   let component: UserDetailInfoComponent;
@@ -21,15 +17,10 @@ describe('UserDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        UserDetailInfoComponent,
-      ],
+      imports: [AppTestingModule, UserDetailInfoComponent],
       providers: [
         { provide: UserAdministrationService, useValue: userAdminServiceMock },
+        translateServiceProvider,
       ],
     }).compileComponents();
   });

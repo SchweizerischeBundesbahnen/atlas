@@ -1,10 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { OpenStatementInMailService } from './open-statement-in-mail.service';
 import {
   Status,
@@ -13,6 +8,7 @@ import {
   TimetableHearingStatementV2,
 } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
+import { translateServiceProvider } from '../../../app.testing.mocks';
 
 const translatePipeSpy = jasmine.createSpyObj('translatePipe', ['transform']);
 translatePipeSpy.transform
@@ -30,13 +26,9 @@ describe('OpenStatementInMailService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [AppTestingModule],
       providers: [
+        translateServiceProvider,
         { provide: OpenStatementInMailService },
         { provide: TranslatePipe, useValue: translatePipeSpy },
       ],

@@ -34,6 +34,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     AtlasFieldErrorComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class PlatformReducedFormComponent implements OnInit {
   @Input() form!: FormGroup<ReducedPlatformFormGroup>;

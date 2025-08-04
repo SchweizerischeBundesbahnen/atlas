@@ -31,6 +31,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     CommentComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class ReferencePointCompleteFormComponent {
   @Input() form!: FormGroup<CompleteReferencePointFormGroup>;

@@ -34,6 +34,7 @@ import { ConvertUserPermissionToRecordHelper } from '../../../../../core/compone
     PermissionComponent,
     BackButtonDirective,
   ],
+  providers: [TranslatePipe],
 })
 export class UserAdministrationClientEditComponent implements OnInit {
   client = input.required<ClientCredential>();

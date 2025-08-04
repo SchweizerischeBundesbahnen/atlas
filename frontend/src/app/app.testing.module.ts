@@ -1,16 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { DateModule } from './core/module/date.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
+import { translateServiceProvider } from './app.testing.mocks';
 
 const dialogMock = {
   close: () => {
@@ -25,9 +21,6 @@ const dialogMock = {
     HttpClientTestingModule,
     ReactiveFormsModule,
     RouterModule.forRoot([]),
-    TranslateModule.forRoot({
-      loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-    }),
   ],
   exports: [
     BrowserAnimationsModule,
@@ -35,11 +28,11 @@ const dialogMock = {
     HttpClientTestingModule,
     ReactiveFormsModule,
     RouterModule,
-    TranslateModule,
   ],
   providers: [
     { provide: MatDialogRef, useValue: dialogMock },
     { provide: TranslatePipe },
+    translateServiceProvider,
   ],
 })
 export class AppTestingModule {}
