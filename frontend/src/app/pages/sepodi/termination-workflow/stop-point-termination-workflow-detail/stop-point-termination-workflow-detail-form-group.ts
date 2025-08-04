@@ -1,19 +1,20 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { JudgementType } from '../../../../api';
-import { TerminationStopPointAddWorkflow } from '../../../../api/model/terminationStopPointAddWorkflow';
 import { TerminationDecision } from '../../../../api/model/terminationDecision';
 import { DateService } from '../../../../core/date/date.service';
 import { StopPointWorkflowDetailFormGroupBuilder } from '../../workflow/detail-page/detail-form/stop-point-workflow-detail-form-group';
 import moment, { Moment } from 'moment/moment';
 import { DecisionFormGroupBuilder } from '../../workflow/detail-page/decision/decision-form/decision-form-group';
-import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 export interface StopPointTerminationWorkflowDetailFormGroup {
   boTerminationDate: FormControl<string | null | undefined>;
   infoPlusTerminationDate: FormControl<string | null | undefined>;
   novaTerminationDate: FormControl<string | null | undefined>;
   workflowComment: FormControl<string | null | undefined>;
+  cancelComment: FormControl<string | null | undefined>;
   examinants: FormArray<FormGroup<TerminationDecisionFormGroup>>;
   infoPlus: FormGroup<TerminationDecisionFormGroup>;
   nova: FormGroup<TerminationDecisionFormGroup>;
@@ -33,9 +34,13 @@ export interface TerminationDecisionFormGroup {
   >;
 }
 
+export interface TerminationCancelFormGroup {
+  cancelComment: FormControl<string | null | undefined>;
+}
+
 export class StopPointTerminationWorkflowDetailFormGroupBuilder {
   static buildFormGroup(
-    workflow: TerminationStopPointAddWorkflow
+    workflow: TerminationStopPointWorkflowModel
   ): FormGroup<StopPointTerminationWorkflowDetailFormGroup> {
     const terminationDecisions: TerminationDecision[] = [];
     terminationDecisions.push(<TerminationDecision>workflow.infoPlusDecision);
@@ -57,6 +62,7 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
           : workflow?.novaTerminationDate
       ),
       workflowComment: new FormControl(workflow.workflowComment),
+      cancelComment: new FormControl(workflow.cancelComment),
       infoPlus: this.buildTerminationDecisionFormGroup(
         workflow.infoPlusDecision
       ),
@@ -67,6 +73,15 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
             this.buildTerminationDecisionFormGroup(terminationDecision) ?? []
         )
       ),
+    });
+  }
+
+  static buildCancelTermination(): FormGroup<TerminationCancelFormGroup> {
+    return new FormGroup<TerminationCancelFormGroup>({
+      cancelComment: new FormControl('', [
+        Validators.required,
+        AtlasFieldLengthValidator.comments,
+      ]),
     });
   }
 

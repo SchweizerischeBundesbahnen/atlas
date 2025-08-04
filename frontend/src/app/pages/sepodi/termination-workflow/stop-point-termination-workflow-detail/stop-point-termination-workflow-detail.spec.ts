@@ -4,7 +4,6 @@ import { StopPointTerminationWorkflowDetail } from './stop-point-termination-wor
 import { ActivatedRoute, Router } from '@angular/router';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { StopPointTerminationWorkflowDetailData } from './stop-point-termination-workflow-resolver';
-import { TerminationStopPointAddWorkflow } from '../../../../api/model/terminationStopPointAddWorkflow';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -13,18 +12,20 @@ import { of } from 'rxjs';
 import { TerminationDecisionDetailDialogService } from './decision/decision-detail/termination-decision-detail-dialog.service';
 import { TerminationWorkflowStatus } from '../../../../api/model/terminationWorkflowStatus';
 import { TerminationDecision } from '../../../../api/model/terminationDecision';
-import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 import { FormGroup } from '@angular/forms';
 import { StopPointTerminationWorkflowDetailFormGroupBuilder } from './stop-point-termination-workflow-detail-form-group';
 import moment from 'moment/moment';
+import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
-const workflow: TerminationStopPointAddWorkflow = {
+const workflow: TerminationStopPointWorkflowModel = {
   id: 10,
   sloid: 'ch:1sloid:700',
   versionId: 1000,
   boTerminationDate: new Date('2029-06-01'),
   applicantMail: 'a@b.ch',
   workflowComment: 'Comment',
+  designationOfficial: 'designationOfficial',
 };
 
 const workflowData: StopPointTerminationWorkflowDetailData = {

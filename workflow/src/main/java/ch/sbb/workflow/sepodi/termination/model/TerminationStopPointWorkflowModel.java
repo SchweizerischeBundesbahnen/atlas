@@ -59,6 +59,11 @@ public class TerminationStopPointWorkflowModel {
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   private String workflowComment;
 
+  @Schema(description = "Workflow cancel comment")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
+  private String cancelComment;
+
   @Schema(description = "Termination Date defined by Business Organisation managing the Stop Point")
   private LocalDate boTerminationDate;
 
