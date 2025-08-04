@@ -1,0 +1,32 @@
+<atlas-dialog-close class="pe-2" (clicked)="close()"></atlas-dialog-close>
+
+<atlas-dialog-content>
+  <div class="font-bold-4xl mb-1">
+    {{ 'TERMINATION_WORKFLOW.CANCEL_DECISION_DIALOG.TITLE' | translate }}
+  </div>
+
+  <form-comment
+    [formGroup]="form"
+    [label]="'TERMINATION_WORKFLOW.CANCEL_DECISION_DIALOG.COMMENT' | translate"
+    controlName="cancelComment"
+  ></form-comment>
+</atlas-dialog-content>
+
+<atlas-dialog-footer>
+  <button
+    (click)="close()"
+    class="atlas-primary-btn me-3"
+    data-cy="dialog-close-button"
+  >
+    {{ 'COMMON.BACK' | translate }}
+  </button>
+  <button
+    (click)="cancelTermination()"
+    class="atlas-primary-btn me-3"
+    data-cy="dialog-save-button"
+  >
+    {{
+      'TERMINATION_WORKFLOW.CANCEL_DECISION_DIALOG.CONFIRM_BUTTON' | translate
+    }}
+  </button>
+</atlas-dialog-footer>

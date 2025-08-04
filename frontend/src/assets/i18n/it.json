@@ -681,6 +681,17 @@
       "DECISION_INFO_NO_INFO_PLUS": "Indica l’organizzazione aziendale corrispondente o le organizzazioni commerciali che utilizzano ancora la fermata. Le IT sono responsabili dell’esecuzione del corrispondente cambio di concessione.",
       "DECISION_INFO_YES_NOVA": "La data di soppressione viene utilizzata per ridurre automaticamente il posto di servizio.",
       "DECISION_INFO_NO_NOVA": "Il posto di servizio viene automaticamente convertito in una fermata tariffaria."
+    },
+    "CANCEL_DECISION_DIALOG": {
+      "TITLE": "Annullare terminazione",
+      "COMMENT": "Osservazioni",
+      "CONFIRM_BUTTON": "Annullare terminazione"
+    },
+    "TERMINATION_CANCEL_COMMENT": "Motivo dell'annullamento'",
+    "NOTIFICATION": {
+      "CANCEL": {
+        "SUCCESS": "L'annullamento della terminazione è stato salvato correttamente"
+      }
     }
   },
   "WORKFLOW": {
