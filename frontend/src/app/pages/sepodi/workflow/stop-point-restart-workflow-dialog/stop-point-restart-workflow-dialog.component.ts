@@ -36,6 +36,7 @@ import { UserAdministrationService } from '../../../../api/service/user-administ
     DialogFooterComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class StopPointRestartWorkflowDialogComponent implements OnInit {
   formGroup!: FormGroup<StopPointRestartWorkflowFormGroup>;

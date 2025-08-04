@@ -15,6 +15,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     NgIf,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class WorkflowFormComponent {
   @Input() formGroup!: FormGroup;

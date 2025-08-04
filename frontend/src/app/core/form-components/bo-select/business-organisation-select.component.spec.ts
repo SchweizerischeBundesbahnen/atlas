@@ -1,11 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BusinessOrganisationSelectComponent } from './business-organisation-select.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormControl, FormGroup } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -14,6 +9,7 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import { BusinessOrganisationsService } from '../../../api';
 import { of } from 'rxjs';
+import { translateServiceProvider } from '../../../app.testing.mocks';
 
 const businessOrganisationsService = jasmine.createSpyObj(
   'businessOrganisationsService',
@@ -30,9 +26,6 @@ describe('BusinessOrganisationSelectComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
         NgSelectModule,
         HttpClientTestingModule,
         BusinessOrganisationSelectComponent,
@@ -46,6 +39,7 @@ describe('BusinessOrganisationSelectComponent', () => {
           provide: BusinessOrganisationsService,
           useValue: businessOrganisationsService,
         },
+        translateServiceProvider,
       ],
     }).compileComponents();
 

@@ -4,7 +4,7 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PageService } from '../../pages/page.service';
-import { NgFor, NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { MatListItem } from '@angular/material/list';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -21,6 +21,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     AsyncPipe,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class SideNavComponent {
   activePageIndex: number | null = 0;

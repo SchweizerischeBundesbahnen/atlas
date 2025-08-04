@@ -40,6 +40,7 @@ describe('DateRangeComponent', () => {
         AtlasFieldErrorComponent,
         InfoIconComponent,
         AtlasLabelFieldComponent,
+        TranslatePipe,
       ],
       providers: [
         { provide: TranslatePipe },

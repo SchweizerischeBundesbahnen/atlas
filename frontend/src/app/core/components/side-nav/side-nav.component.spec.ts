@@ -2,16 +2,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SideNavComponent } from './side-nav.component';
 import { By } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-} from '@ngx-translate/core';
 import { Pages } from '../../../pages/pages';
 import { LidiOverviewComponent } from '../../../pages/lidi/overview/lidi-overview.component';
 import { TimetableFieldNumberOverviewComponent } from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
-import { pageServiceMock } from '../../../app.testing.mocks';
+import {
+  pageServiceMock,
+  translateServiceProvider,
+} from '../../../app.testing.mocks';
 import { PageService } from '../../pages/page.service';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('SideNavComponent', () => {
   let component: SideNavComponent;
@@ -31,12 +30,11 @@ describe('SideNavComponent', () => {
             component: TimetableFieldNumberOverviewComponent,
           },
         ]),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
         SideNavComponent,
       ],
       providers: [
+        translateServiceProvider,
+        provideHttpClient(),
         {
           provide: PageService,
           useValue: pageServiceMock,

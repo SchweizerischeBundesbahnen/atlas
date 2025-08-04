@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './link.component.html',
   styleUrls: ['./link.component.scss'],
   imports: [LinkIconComponent, TranslatePipe],
+  providers: [TranslatePipe],
 })
 export class LinkComponent {
   @Input() label!: string;

@@ -25,6 +25,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     CommentComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class ParkingLotFormComponent {
   @Input() form!: FormGroup<ParkingLotFormGroup>;

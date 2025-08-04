@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormControl,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
@@ -31,6 +31,7 @@ import { UserAdministrationService } from '../../../api/service/user-administrat
     AtlasButtonComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class WorkflowCheckFormComponent implements OnInit {
   @Input() workflowId: number | undefined;
