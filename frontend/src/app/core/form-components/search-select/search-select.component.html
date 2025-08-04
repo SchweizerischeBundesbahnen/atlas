@@ -5,7 +5,7 @@
     (change)="changeTrigger.emit($event)"
     [bindValue]="bindValueInp"
     [formControlName]="controlName"
-    [items]="items$ | async"
+    [items]="(items$ | async) ?? []"
     [minTermLength]="2"
     [multiple]="multiple"
     [placeholder]="placeholderTextKey | translate"
@@ -27,5 +27,8 @@
     </ng-template>
   </ng-select>
 
-  <app-atlas-field-error [form]="formGroup" controlName="{{ controlName }}"></app-atlas-field-error>
+  <app-atlas-field-error
+    [form]="formGroup"
+    controlName="{{ controlName }}"
+  ></app-atlas-field-error>
 </div>
