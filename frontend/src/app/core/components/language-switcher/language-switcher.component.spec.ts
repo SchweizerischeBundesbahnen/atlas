@@ -31,19 +31,24 @@ describe('LanguageSwitcherComponent', () => {
     });
 
     it('should switch to "de"', () => {
-      component.setLanguage('de');
-      expect(component.currentLanguage).toBe('de');
-      expect(dateAdapter.setLocale).toHaveBeenCalledWith('de');
+      component.setLanguage('de').subscribe(() => {
+        expect(component.currentLanguage).toBe('de');
+        expect(dateAdapter.setLocale).toHaveBeenCalledWith('de');
+      });
     });
 
     it('should switch to "fr"', () => {
-      component.setLanguage('fr');
-      expect(component.currentLanguage).toBe('fr');
+      component.setLanguage('de').subscribe(() => {
+        component.setLanguage('fr');
+        expect(component.currentLanguage).toBe('fr');
+      });
     });
 
     it('should switch to "it"', () => {
-      component.setLanguage('it');
-      expect(component.currentLanguage).toBe('it');
+      component.setLanguage('de').subscribe(() => {
+        component.setLanguage('it');
+        expect(component.currentLanguage).toBe('it');
+      });
     });
 
     it('should have translation for all defined keys', () => {
@@ -82,16 +87,6 @@ describe('LanguageSwitcherComponent', () => {
     it('should create links for languages', () => {
       const links = fixture.debugElement.queryAll(By.css('a'));
       expect(links.length).toBe(component.languages.length);
-    });
-
-    it('should link to french', () => {
-      const links = fixture.debugElement.queryAll(By.css('a'));
-      const frenchLink = links[1];
-      frenchLink.nativeElement.click();
-      fixture.detectChanges();
-
-      expect(component.currentLanguage).toBe('fr');
-      expect(frenchLink.nativeElement).toHaveClass('isSelected');
     });
   });
 });

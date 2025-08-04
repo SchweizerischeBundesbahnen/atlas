@@ -1,11 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { FormModule } from '../../../core/module/form.module';
 import { MeansOfTransportPickerComponent } from './means-of-transport-picker.component';
@@ -14,6 +9,8 @@ import { By } from '@angular/platform-browser';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
 import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { translateServiceProvider } from '../../../app.testing.mocks';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('MeansOfTransportPickerComponent', () => {
   let component: MeansOfTransportPickerComponent;
@@ -24,15 +21,12 @@ describe('MeansOfTransportPickerComponent', () => {
       imports: [
         FormModule,
         FormsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
         MeansOfTransportPickerComponent,
         InfoIconComponent,
         AtlasLabelFieldComponent,
         AtlasSpacerComponent,
       ],
-      providers: [{ provide: TranslatePipe }],
+      providers: [TranslatePipe, provideHttpClient(), translateServiceProvider],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MeansOfTransportPickerComponent);

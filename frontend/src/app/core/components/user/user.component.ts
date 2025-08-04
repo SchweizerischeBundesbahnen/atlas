@@ -14,6 +14,7 @@ import { Pages } from '../../../pages/pages';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
   imports: [MatButton, MatMenuTrigger, MatMenu, TranslatePipe],
+  providers: [TranslatePipe],
 })
 export class UserComponent implements OnInit {
   user: User | undefined;

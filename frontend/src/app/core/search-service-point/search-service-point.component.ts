@@ -18,10 +18,10 @@ import {
 } from './service-point-search';
 import { MatLabel } from '@angular/material/form-field';
 import {
-  NgSelectComponent,
   NgOptionTemplateDirective,
+  NgSelectComponent,
 } from '@ng-select/ng-select';
-import { NgClass, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { SearchResultHighlightPipe } from './search-result-highlight.pipe';
 import { SplitServicePointNumberPipe } from './split-service-point-number.pipe';
 
@@ -42,6 +42,7 @@ const SEARCH_STOP_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.STOP_POINT';
     SearchResultHighlightPipe,
     SplitServicePointNumberPipe,
   ],
+  providers: [TranslatePipe],
 })
 export class SearchServicePointComponent implements OnInit {
   private readonly MIN_LENGTH_TERM = 2;

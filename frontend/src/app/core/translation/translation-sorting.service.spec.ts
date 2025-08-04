@@ -1,12 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslationSortingService } from './translation-sorting.service';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AppTestingModule } from '../../app.testing.module';
+import { translateServiceProvider } from '../../app.testing.mocks';
 
 const translatePipeSpy = jasmine.createSpyObj('translatePipe', ['transform']);
 translatePipeSpy.transform
@@ -22,13 +18,9 @@ describe('TranslationSortingService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        AppTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [AppTestingModule],
       providers: [
+        translateServiceProvider,
         { provide: TranslationSortingService },
         { provide: TranslatePipe, useValue: translatePipeSpy },
       ],

@@ -1,17 +1,13 @@
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { SearchSelectComponent } from '../../../../../core/form-components/search-select/search-select.component';
 import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-} from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { KilometerMasterSearchComponent } from './kilometer-master-search.component';
 import { ServicePointsService } from '../../../../../api';
 import { of } from 'rxjs';
+import { translateServiceProvider } from '../../../../../app.testing.mocks';
 import SpyObj = jasmine.SpyObj;
 
 describe('KilometerMasterSearchComponent', () => {
@@ -31,11 +27,9 @@ describe('KilometerMasterSearchComponent', () => {
     await TestBed.configureTestingModule({
       providers: [
         { provide: ServicePointsService, useValue: servicePointsServiceSpy },
+        translateServiceProvider,
       ],
       imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
         NgSelectModule,
         HttpClientTestingModule,
         KilometerMasterSearchComponent,

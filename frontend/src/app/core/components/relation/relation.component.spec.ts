@@ -1,12 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RelationComponent } from './relation.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-} from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { translateServiceProvider } from '../../../app.testing.mocks';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('TransportCompanyRelationComponent', () => {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -16,13 +13,8 @@ describe('TransportCompanyRelationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        BrowserAnimationsModule,
-        RelationComponent,
-      ],
+      imports: [BrowserAnimationsModule, RelationComponent],
+      providers: [translateServiceProvider, provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RelationComponent);

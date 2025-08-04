@@ -50,11 +50,12 @@ import {
   addControlToFormNoEvent,
   removeControlFromFormNoEvent,
 } from '../../../../core/util/forms';
+import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
 
 @Component({
   selector: 'app-service-point',
   templateUrl: './service-point-detail.component.html',
-  providers: [ValidityService],
+  providers: [ValidityService, TranslatePipe, TranslationSortingService],
   imports: [
     DetailPageContainerComponent,
     SwitchVersionComponent,

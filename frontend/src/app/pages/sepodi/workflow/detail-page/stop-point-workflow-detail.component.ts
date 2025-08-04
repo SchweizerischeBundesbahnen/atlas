@@ -51,6 +51,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     AsyncPipe,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class StopPointWorkflowDetailComponent implements OnInit {
   protected readonly WorkflowStatus = WorkflowStatus;

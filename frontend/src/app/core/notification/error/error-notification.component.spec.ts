@@ -1,9 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-} from '@ngx-translate/core';
 import { ErrorNotificationComponent } from './error-notification.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -14,6 +9,7 @@ import {
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { translateServiceProvider } from '../../../app.testing.mocks';
 
 const errorResponse = new HttpErrorResponse({
   status: 404,
@@ -61,12 +57,10 @@ describe('Error Notification component', () => {
         HttpClientTestingModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
         ErrorNotificationComponent,
       ],
       providers: [
+        translateServiceProvider,
         {
           provide: MatSnackBarRef,
           useValue: {},

@@ -8,16 +8,12 @@ import { AtlasButtonComponent } from '../../../core/components/button/atlas-butt
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MapService } from '../map/map.service';
 import { BehaviorSubject } from 'rxjs';
 import { Map } from 'maplibre-gl';
 import { GeoJsonProperties } from 'geojson';
+import { translateServiceProvider } from '../../../app.testing.mocks';
 
 @Component({
   selector: 'atlas-map',
@@ -61,11 +57,9 @@ describe('SepodiMapviewComponent', () => {
         SearchServicePointMockComponent,
         AtlasButtonComponent,
         RouterModule.forRoot([]),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
       ],
       providers: [
+        translateServiceProvider,
         { provide: AuthService, useValue: authService },
         { provide: MapService, useValue: mapService },
         provideHttpClient(),

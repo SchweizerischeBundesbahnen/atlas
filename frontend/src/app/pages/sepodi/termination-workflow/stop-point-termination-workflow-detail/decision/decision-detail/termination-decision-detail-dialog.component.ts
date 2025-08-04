@@ -54,6 +54,7 @@ import { TerminationWorkflowStatus } from '../../../../../../api/model/terminati
     MatDatepickerToggleIcon,
     MatIcon,
   ],
+  providers: [TranslatePipe],
 })
 export class TerminationDecisionDetailDialogComponent implements OnInit {
   protected readonly JudgementType = JudgementType;

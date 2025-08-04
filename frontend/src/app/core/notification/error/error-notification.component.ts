@@ -13,6 +13,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './error-notification.component.html',
   styleUrls: ['./error-notification.component.scss'],
   imports: [NgIf, NgFor, TranslatePipe],
+  providers: [TranslatePipe],
 })
 export class ErrorNotificationComponent {
   constructor(
