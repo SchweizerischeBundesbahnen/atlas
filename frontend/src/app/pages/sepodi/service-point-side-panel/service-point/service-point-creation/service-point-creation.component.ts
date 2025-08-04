@@ -40,6 +40,7 @@ import {
   addControlToFormNoEvent,
   removeControlFromFormNoEvent,
 } from '../../../../../core/util/forms';
+import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 
 @Component({
   selector: 'app-service-point-creation',
@@ -58,6 +59,7 @@ import {
     AtlasButtonComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe, TranslationSortingService],
 })
 export class ServicePointCreationComponent
   implements OnInit, DetailFormComponent, OnDestroy

@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DecisionFormGroup } from './decision-form-group';
 import { JudgementType } from 'src/app/api';
-import { MatChipListbox, MatChip } from '@angular/material/chips';
+import { MatChip, MatChipListbox } from '@angular/material/chips';
 import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { AtlasFieldErrorComponent } from '../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -24,6 +24,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     CommentComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class DecisionFormComponent {
   protected readonly JudgementType = JudgementType;

@@ -15,16 +15,14 @@ import {
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-} from '@ngx-translate/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ApplicationType } from 'src/app/api';
 import { ValidityService } from '../../../pages/sepodi/validity/validity.service';
 import { PermissionService } from '../../auth/permission/permission.service';
-import { adminPermissionServiceMock } from '../../../app.testing.mocks';
+import {
+  adminPermissionServiceMock,
+  translateServiceProvider,
+} from '../../../app.testing.mocks';
 
 const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 const dialogRefSpy = jasmine.createSpyObj(['close']);
@@ -126,9 +124,6 @@ describe('BaseDetailController', () => {
         HttpClientTestingModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
       ],
       providers: [
         ValidityService,
@@ -136,6 +131,7 @@ describe('BaseDetailController', () => {
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
+        translateServiceProvider,
       ],
     });
     dialogService = TestBed.inject(DialogService);
@@ -245,9 +241,6 @@ describe('Get actual versioned record', () => {
         HttpClientTestingModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
       ],
       providers: [
         ValidityService,
@@ -258,6 +251,7 @@ describe('Get actual versioned record', () => {
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
+        translateServiceProvider,
       ],
     });
     controller = TestBed.inject(BaseDetailController);

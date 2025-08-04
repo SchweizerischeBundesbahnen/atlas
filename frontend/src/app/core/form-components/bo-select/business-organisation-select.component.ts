@@ -17,7 +17,7 @@ import {
 import { map } from 'rxjs/operators';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
 
@@ -34,6 +34,7 @@ import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
     TranslatePipe,
     BoSelectionDisplayPipe,
   ],
+  providers: [TranslatePipe],
 })
 export class BusinessOrganisationSelectComponent
   implements OnInit, OnDestroy, OnChanges

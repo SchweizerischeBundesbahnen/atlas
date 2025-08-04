@@ -1,12 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AtlasLabelFieldComponent } from './atlas-label-field.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { translateServiceProvider } from '../../../app.testing.mocks';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('AtlasLableFieldComponent', () => {
   let component: AtlasLabelFieldComponent;
@@ -14,13 +11,8 @@ describe('AtlasLableFieldComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        AtlasLabelFieldComponent,
-      ],
-      providers: [{ provide: TranslatePipe }],
+      imports: [AtlasLabelFieldComponent],
+      providers: [TranslatePipe, translateServiceProvider, provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AtlasLabelFieldComponent);

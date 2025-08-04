@@ -11,8 +11,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatOption, MatOptgroup } from '@angular/material/core';
-import { NgIf, NgFor, NgTemplateOutlet } from '@angular/common';
+import { MatOptgroup, MatOption } from '@angular/material/core';
+import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import { AtlasSpacerComponent } from '../../components/spacer/atlas-spacer.component';
 import { MatSelect } from '@angular/material/select';
@@ -43,6 +43,7 @@ export interface SelectOptionGroup {
     AtlasFieldErrorComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export class SelectComponent<TYPE> implements OnInit, OnChanges {

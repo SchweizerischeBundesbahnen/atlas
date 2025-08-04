@@ -6,12 +6,7 @@ import {
 } from '@angular/core/testing';
 
 import { ApplicationPermissionComponent } from './application-permission.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserPermissionProviderService } from './user-permission-provider-service';
 import { provideHttpClient } from '@angular/common/http';
@@ -26,6 +21,7 @@ import {
   ApplicationPermissionFormGroupBuilder,
 } from '../form/application-permission-form-group';
 import { of } from 'rxjs';
+import { translateServiceProvider } from '../../../../app.testing.mocks';
 
 export class MockUserPermissionProviderService extends UserPermissionProviderService {
   applicationPermissionFormGroup?: FormGroup<ApplicationPermission>;
@@ -58,13 +54,7 @@ describe('ApplicationPermissionComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        ApplicationPermissionComponent,
-      ],
+      imports: [BrowserAnimationsModule, ApplicationPermissionComponent],
       providers: [
         TranslatePipe,
         {
@@ -75,6 +65,7 @@ describe('ApplicationPermissionComponent', () => {
           provide: BusinessOrganisationsService,
           useValue: businessOrganisationsService,
         },
+        translateServiceProvider,
         provideHttpClient(),
       ],
     });

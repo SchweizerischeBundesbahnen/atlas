@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FileUploadError } from './file-upload-error';
 import { FileDropDirective } from './file-drop/file-drop.directive';
-import { NgIf, NgFor, NgStyle } from '@angular/common';
+import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { AtlasButtonComponent } from '../button/atlas-button.component';
 import { DownloadIconComponent } from '../../form-components/download-icon/download-icon.component';
 import { UploadIconComponent } from '../../form-components/upload-icon/upload-icon.component';
@@ -32,6 +32,7 @@ import { FileSizePipe } from './file-size/file-size.pipe';
     TranslatePipe,
     FileSizePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class FileUploadComponent {
   @Input() acceptedFileExtension!: string;

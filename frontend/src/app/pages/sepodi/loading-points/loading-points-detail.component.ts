@@ -25,14 +25,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validity } from '../../model/validity';
 import { ValidityService } from '../validity/validity.service';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
-import { NgIf, NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { SwitchVersionComponent } from '../../../core/components/switch-version/switch-version.component';
 import { MatLabel } from '@angular/material/form-field';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
 import { MatDivider } from '@angular/material/divider';
@@ -45,7 +45,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-loading-points',
   templateUrl: './loading-points-detail.component.html',
   styleUrls: ['./loading-points-detail.component.scss'],
-  providers: [ValidityService],
+  providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContainerComponent,
     NgIf,

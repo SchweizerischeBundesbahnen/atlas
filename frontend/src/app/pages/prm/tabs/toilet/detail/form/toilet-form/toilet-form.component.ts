@@ -19,6 +19,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     CommentComponent,
     TranslatePipe,
   ],
+  providers: [TranslatePipe],
 })
 export class ToiletFormComponent {
   @Input() form!: FormGroup<ToiletFormGroup>;

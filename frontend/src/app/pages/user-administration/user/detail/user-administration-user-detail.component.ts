@@ -6,6 +6,7 @@ import { UserAdministrationUserEditComponent } from './edit/user-administration-
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { FormGroup } from '@angular/forms';
 import { UserPermissionGivenUserService } from './edit/user-permission-given-user.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-administration',
@@ -14,6 +15,7 @@ import { UserPermissionGivenUserService } from './edit/user-permission-given-use
     UserAdministrationUserEditComponent,
     UserAdministrationUserCreateComponent,
   ],
+  providers: [TranslatePipe],
 })
 export class UserAdministrationUserDetailComponent
   implements OnInit, DetailFormComponent

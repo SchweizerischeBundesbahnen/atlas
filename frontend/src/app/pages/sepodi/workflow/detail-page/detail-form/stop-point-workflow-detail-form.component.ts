@@ -53,6 +53,7 @@ import { StopPointWorkflowBasicInfo } from '../../stop-point-workflow-basic-info
     TranslatePipe,
     StopPointWorkflowBasicInfo,
   ],
+  providers: [TranslatePipe],
 })
 export class StopPointWorkflowDetailFormComponent implements OnInit {
   readonly WorkflowStatus = WorkflowStatus;

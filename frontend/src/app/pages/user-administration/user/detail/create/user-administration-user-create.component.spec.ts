@@ -8,12 +8,7 @@ import {
 import { UserAdministrationUserCreateComponent } from './user-administration-user-create.component';
 import { BusinessOrganisationsService, Permission } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 import { Component, Input } from '@angular/core';
@@ -23,6 +18,8 @@ import { DetailPageContainerComponent } from '../../../../../core/components/det
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import { UserAdministrationService } from '../../../../../api/service/user-administration/user-administration.service';
+import { translateServiceProvider } from '../../../../../app.testing.mocks';
+import { provideHttpClient } from '@angular/common/http';
 import SpyObj = jasmine.SpyObj;
 
 @Component({
@@ -67,9 +64,6 @@ describe('UserAdministrationUserCreateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterModule.forRoot([]),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
         UserAdministrationUserCreateComponent,
         MockUserSelectComponent,
         DetailPageContainerComponent,
@@ -77,6 +71,8 @@ describe('UserAdministrationUserCreateComponent', () => {
         DetailFooterComponent,
       ],
       providers: [
+        translateServiceProvider,
+        provideHttpClient(),
         {
           provide: UserAdministrationService,
           useValue: userAdministrationServiceSpy,

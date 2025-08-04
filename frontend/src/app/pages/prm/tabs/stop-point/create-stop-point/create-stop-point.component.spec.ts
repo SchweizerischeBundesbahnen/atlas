@@ -1,11 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateStopPointComponent } from './create-stop-point.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-} from '@ngx-translate/core';
 import { MeanOfTransport } from '../../../../../api';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -19,6 +14,8 @@ import {
   STOP_POINT,
   STOP_POINT_COMPLETE,
 } from '../../../util/stop-point-test-data.spec';
+import { translateServiceProvider } from '../../../../../app.testing.mocks';
+import { provideHttpClient } from '@angular/common/http';
 import SpyObj = jasmine.SpyObj;
 
 describe('CreateStopPointComponent', () => {
@@ -30,14 +27,12 @@ describe('CreateStopPointComponent', () => {
     dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
     dialogService.confirm.and.returnValue(of(true));
     TestBed.configureTestingModule({
-      imports: [
-        MatStepperModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        CreateStopPointComponent,
+      imports: [MatStepperModule, CreateStopPointComponent],
+      providers: [
+        { provide: DialogService, useValue: dialogService },
+        translateServiceProvider,
+        provideHttpClient(),
       ],
-      providers: [{ provide: DialogService, useValue: dialogService }],
     });
     fixture = TestBed.createComponent(CreateStopPointComponent);
     component = fixture.componentInstance;

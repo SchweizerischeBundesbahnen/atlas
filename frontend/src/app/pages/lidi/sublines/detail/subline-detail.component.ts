@@ -59,7 +59,7 @@ import { LineService } from '../../../../api/service/lidi/line.service';
 @Component({
   templateUrl: './subline-detail.component.html',
   styleUrls: ['./subline-detail.component.scss'],
-  providers: [ValidityService],
+  providers: [ValidityService, TranslatePipe],
   imports: [
     DetailPageContainerComponent,
     ScrollToTopDirective,
