@@ -25,10 +25,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class TransportCompanyRelationControllerInternalApiTest extends BaseControllerApiTest {
+class TransportCompanyRelationApiInternalTest extends BaseControllerApiTest {
 
   @Autowired
-  TransportCompanyRelationControllerInternalApiTest(BusinessOrganisationVersionRepository businessOrganisationVersionRepository,
+  TransportCompanyRelationApiInternalTest(BusinessOrganisationVersionRepository businessOrganisationVersionRepository,
       TransportCompanyRepository transportCompanyRepository,
       TransportCompanyRelationRepository transportCompanyRelationRepository) {
     this.businessOrganisationVersionRepository = businessOrganisationVersionRepository;

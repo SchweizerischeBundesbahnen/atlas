@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest {
+public class BusinessOrganisationApiV1Test extends BaseControllerApiTest {
 
   private final BusinessOrganisationVersion version = BusinessOrganisationVersion
       .builder()
@@ -65,7 +65,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
   private AmazonService amazonService;
 
   @Autowired
-  BusinessOrganisationControllerApiTest(BusinessOrganisationVersionRepository versionRepository) {
+  BusinessOrganisationApiV1Test(BusinessOrganisationVersionRepository versionRepository) {
     this.versionRepository = versionRepository;
   }
 

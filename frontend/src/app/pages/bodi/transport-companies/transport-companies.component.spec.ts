@@ -9,7 +9,7 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { TransportCompanyInternalService } from '../../../api/service/bodi/transport-company-internal.service';
+import { TransportCompanyService } from '../../../api/service/bodi/transport-company.service';
 import SpyObj = jasmine.SpyObj;
 
 const transportCompany: ContainerTransportCompany = {
@@ -26,13 +26,12 @@ describe('TransportCompaniesComponent', () => {
   let component: TransportCompaniesComponent;
   let fixture: ComponentFixture<TransportCompaniesComponent>;
 
-  let transportCompanyInternalServiceSpy: SpyObj<TransportCompanyInternalService>;
+  let transportCompanyServiceSpy: SpyObj<TransportCompanyService>;
 
   beforeEach(() => {
-    transportCompanyInternalServiceSpy =
-      jasmine.createSpyObj<TransportCompanyInternalService>({
-        getTransportCompanies: of(transportCompany),
-      });
+    transportCompanyServiceSpy = jasmine.createSpyObj({
+      getTransportCompanies: of(transportCompany),
+    });
 
     TestBed.configureTestingModule({
       imports: [TransportCompaniesComponent, TranslateModule.forRoot()],
@@ -40,8 +39,8 @@ describe('TransportCompaniesComponent', () => {
         TranslatePipe,
         RouterOutlet,
         {
-          provide: TransportCompanyInternalService,
-          useValue: transportCompanyInternalServiceSpy,
+          provide: TransportCompanyService,
+          useValue: transportCompanyServiceSpy,
         },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
@@ -57,10 +56,6 @@ describe('TransportCompaniesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should getOverview', () => {
     component.getOverview({
       page: 0,
@@ -68,7 +63,7 @@ describe('TransportCompaniesComponent', () => {
     });
 
     expect(
-      transportCompanyInternalServiceSpy.getTransportCompanies
+      transportCompanyServiceSpy.getTransportCompanies
     ).toHaveBeenCalledOnceWith(
       [],
       [

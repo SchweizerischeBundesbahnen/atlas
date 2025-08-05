@@ -1,0 +1,12 @@
+include::../../../../auto-rest-doc/src/main/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Transport Company API Guide
+
+link:rest-api.html[*< Back to main*]
+
+== Get All Transport Companies - Successfully
+
+include::{snippets}/transport-company-api-v1-test/should-get-transport-companies/atlas-doc.adoc[]
+
+link:rest-api.html[*< Back to main*]

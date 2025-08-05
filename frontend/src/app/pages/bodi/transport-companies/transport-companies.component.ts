@@ -12,7 +12,7 @@ import { TableFilter } from '../../../core/components/table-filter/config/table-
 import { Pages } from '../../pages';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TransportCompanyInternalService } from '../../../api/service/bodi/transport-company-internal.service';
+import { TransportCompanyService } from '../../../api/service/bodi/transport-company.service';
 
 @Component({
   selector: 'app-bodi-transport-companies',
@@ -72,7 +72,7 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
   private transportCompaniesSubscription?: Subscription;
 
   constructor(
-    private readonly transportCompanyInternalService: TransportCompanyInternalService,
+    private readonly transportCompanyService: TransportCompanyService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly tableService: TableService
@@ -86,7 +86,7 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
   }
 
   getOverview(pagination: TablePagination) {
-    this.transportCompaniesSubscription = this.transportCompanyInternalService
+    this.transportCompaniesSubscription = this.transportCompanyService
       .getTransportCompanies(
         this.tableService.filter.chipSearch.getActiveSearch(),
         this.tableService.filter.multiSelectTransportCompanyStatus.getActiveSearch(),
