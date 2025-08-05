@@ -3,42 +3,31 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
-import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
-import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
-import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusRevokedChangeNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.mapper.CreateServicePointMapper;
-import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointSwissWithGeoMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSwissWithGeoTransfer;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class ServicePointController implements ServicePointApiV1 {
+public class ServicePointApiV1Controller implements ServicePointApiV1 {
 
   private final ServicePointService servicePointService;
   private final GeoReferenceService geoReferenceService;
@@ -87,39 +76,11 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
-  public List<ReadServicePointVersionModel> revokeServicePoint(Integer servicePointNumber) {
-    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointService.revokeServicePoint(
-            ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber))
-        .stream()
-        .map(ServicePointVersionMapper::toModel)
-        .toList();
-    if (servicePointVersionModels.isEmpty()) {
-      throw new ServicePointNumberNotFoundException(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber));
-    }
-    return servicePointVersionModels;
-  }
-
-  @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointVersion servicePointVersion = createServicePointMapper.toEntity(createServicePointVersionModel);
     geoReferenceService.addGeoReferenceInformation(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.createAndPublish(servicePointVersion, Optional.empty(), List.of());
     return ServicePointVersionMapper.toModel(createdVersion);
-  }
-
-  @Override
-  public ReadServicePointVersionModel validateServicePoint(Long id) {
-    ServicePointVersion servicePointVersion = servicePointService.findById(id)
-        .orElseThrow(() -> new IdNotFoundException(id));
-
-    if (!Status.DRAFT.equals(servicePointVersion.getStatus())) {
-      throw new ServicePointStatusRevokedChangeNotAllowedException(servicePointVersion.getNumber(),
-          servicePointVersion.getStatus());
-    }
-
-    ServicePointVersion validatedServicePointVersion = servicePointService.validate(servicePointVersion);
-
-    return ServicePointVersionMapper.toModel(validatedServicePointVersion);
   }
 
   @Override
@@ -143,64 +104,4 @@ public class ServicePointController implements ServicePointApiV1 {
     return servicePointService.terminateServicePoint(id, terminateServicePointModel);
   }
 
-  @Override
-  public ReadServicePointVersionModel updateDesignationOfficial(Long id,
-      UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
-
-    return servicePointService.updateDesignationOfficial(id, updateDesignationOfficialServicePointModel);
-
-  }
-
-  @Override
-  public ReadServicePointVersionModel updateServicePointStatus(String sloid, Long id, Status status) {
-    List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
-    if (servicePointVersions.isEmpty()) {
-      throw new SloidNotFoundException(sloid);
-    }
-    ServicePointVersion servicePointVersion = servicePointVersions.stream().filter(sp -> sp.getId().equals(id)).findFirst()
-        .orElseThrow(() -> new IdNotFoundException(id));
-
-    return ServicePointVersionMapper.toModel(
-        servicePointService.updateStopPointStatusForWorkflow(servicePointVersion, servicePointVersions,
-            status));
-  }
-
-  @Override
-  public void syncServicePoints() {
-    servicePointService.publishAllServicePoints();
-  }
-
-  @Override
-  public List<ServicePointSwissWithGeoLocationModel> getActualServicePointWithGeolocation() {
-    List<ServicePointSwissWithGeoTransfer> actualServicePointWithGeolocation =
-        servicePointService.findActualServicePointWithGeolocation();
-
-    List<ServicePointSwissWithGeoLocationModel> swissWithGeoModels = new ArrayList<>();
-    actualServicePointWithGeolocation.stream()
-        .collect(Collectors.groupingBy(ServicePointSwissWithGeoTransfer::getSloid))
-        .forEach((sloid, swissWithGeoTransfers) ->
-            swissWithGeoModels.add(ServicePointSwissWithGeoMapper.toModel(sloid, swissWithGeoTransfers)));
-
-    return swissWithGeoModels;
-  }
-
-  @Async
-  public void cleanupFareStops() {
-    log.info("Cleaning up fareStops");
-
-    List<ServicePointVersion> fareStopsToCleanup = servicePointService.findFareStopsToCleanup();
-    for (int i = 0; i < fareStopsToCleanup.size(); i++) {
-      ServicePointVersion servicePointVersion = fareStopsToCleanup.get(i);
-      List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
-          servicePointVersion.getNumber());
-
-      ServicePointVersion editedVersion = servicePointVersion.toBuilder()
-          .servicePointGeolocation(null)
-          .businessOrganisation(ServicePointConstants.ALLIANCE_SWISS_PASS_SBOID)
-          .build();
-      servicePointService.updateAndPublish(servicePointVersion, editedVersion, currentVersions);
-      log.info("Processed {}/{}", i + 1, fareStopsToCleanup.size());
-    }
-    log.info("Cleaning up fareStops done.");
-  }
 }

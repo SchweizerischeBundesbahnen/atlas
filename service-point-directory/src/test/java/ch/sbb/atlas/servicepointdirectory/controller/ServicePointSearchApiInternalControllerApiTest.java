@@ -15,12 +15,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class ServicePointSearchControllerApiTest extends BaseControllerApiTest {
+class ServicePointSearchApiInternalControllerApiTest extends BaseControllerApiTest {
 
   private final ServicePointVersionRepository repository;
 
   @Autowired
-  ServicePointSearchControllerApiTest(ServicePointVersionRepository repository) {
+  ServicePointSearchApiInternalControllerApiTest(ServicePointVersionRepository repository) {
     this.repository = repository;
   }
 

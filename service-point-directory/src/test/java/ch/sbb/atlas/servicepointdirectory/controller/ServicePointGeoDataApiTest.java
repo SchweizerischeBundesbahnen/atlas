@@ -19,10 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  class ServicePointGeoDataApiTest extends BaseControllerApiTest {
 
   private final ServicePointVersionRepository repository;
-  private final ServicePointGeoDataController geoDataController;
+  private final ServicePointGeoDataApiInternalController geoDataController;
 
   @Autowired
-   ServicePointGeoDataApiTest(ServicePointVersionRepository repository, ServicePointGeoDataController geoDataController) {
+   ServicePointGeoDataApiTest(ServicePointVersionRepository repository, ServicePointGeoDataApiInternalController geoDataController) {
     this.repository = repository;
     this.geoDataController = geoDataController;
   }

@@ -39,7 +39,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
-class LoadingPointControllerApiTest extends BaseControllerApiTest {
+class LoadingPointApiV1ControllerApiTest extends BaseControllerApiTest {
 
   private static final int NUMBER = 4201;
 
@@ -48,15 +48,15 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
   private final LoadingPointVersionRepository repository;
   private final ServicePointVersionRepository servicePointVersionRepository;
-  private final LoadingPointController loadingPointController;
+  private final LoadingPointApiV1Controller loadingPointController;
 
   private LoadingPointVersion loadingPointVersion;
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  LoadingPointControllerApiTest(LoadingPointVersionRepository repository,
+  LoadingPointApiV1ControllerApiTest(LoadingPointVersionRepository repository,
       ServicePointVersionRepository servicePointVersionRepository,
-      LoadingPointController loadingPointController) {
+      LoadingPointApiV1Controller loadingPointController) {
     this.repository = repository;
     this.servicePointVersionRepository = servicePointVersionRepository;
     this.loadingPointController = loadingPointController;

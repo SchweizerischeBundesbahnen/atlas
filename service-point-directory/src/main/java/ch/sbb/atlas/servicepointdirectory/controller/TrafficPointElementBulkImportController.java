@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import ch.sbb.atlas.api.servicepoint.TrafficPointBulkImportApiV1;
+import ch.sbb.atlas.api.servicepoint.TrafficPointBulkImportApi;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BaseBulkImportControllerInternal;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class TrafficPointElementBulkImportController extends BaseBulkImportControllerInternal implements
-    TrafficPointBulkImportApiV1 {
+    TrafficPointBulkImportApi {
 
   private final TrafficPointElementBulkImportService trafficPointElementBulkImportService;
 

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class ServicePointFotCommentController implements ServicePointFotCommentApiV1 {
+public class ServicePointFotCommentApiV1Controller implements ServicePointFotCommentApiV1 {
 
   private final ServicePointService servicePointService;
   private final ServicePointFotCommentService servicePointFotCommentService;
