@@ -35,15 +35,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 
 class LoadingPointApiV1ControllerApiTest extends BaseControllerApiTest {
 
   private static final int NUMBER = 4201;
 
-  @MockBean
+  @MockitoBean
   private CrossValidationService crossValidationServiceMock;
 
   private final LoadingPointVersionRepository repository;
