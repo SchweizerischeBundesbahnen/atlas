@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointGeoDataApiV1;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointGeoDataApiInternal;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     MvcResult result = mvc.perform(get("/v1/service-points/geodata/" + z + "/" + x + "/" + y + ".pbf?validAtDate=2021-03-31"))
         .andExpect(status().isOk()).andReturn();
 
-    assertThat(result.getResponse().getContentType()).isEqualTo(ServicePointGeoDataApiV1.MEDIA_TYPE_PROTOBUF);
+    assertThat(result.getResponse().getContentType()).isEqualTo(ServicePointGeoDataApiInternal.MEDIA_TYPE_PROTOBUF);
     assertThat(result.getResponse().getContentAsString()).contains("service-points", "number");
   }
 

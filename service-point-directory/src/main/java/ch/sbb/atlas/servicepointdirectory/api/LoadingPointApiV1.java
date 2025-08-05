@@ -1,5 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
@@ -27,8 +31,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static ch.sbb.atlas.model.ResponseCodeDescription.*;
-
 @Tag(name = "Loading Points")
 @RequestMapping("v1/loading-points")
 public interface LoadingPointApiV1 {
@@ -40,14 +42,6 @@ public interface LoadingPointApiV1 {
           LoadingPointVersion.Fields.servicePointNumber,
           LoadingPointVersion.Fields.number, LoadingPointVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject LoadingPointRequestParams loadingPointRequestParams);
-
-  @GetMapping("{servicePointNumber}")
-  @PageableAsQueryParam
-  Container<ReadLoadingPointVersionModel> getLoadingPointOverview(
-      @PathVariable Integer servicePointNumber,
-      @Parameter(hidden = true) @PageableDefault(sort = {
-          LoadingPointVersion.Fields.servicePointNumber,
-          LoadingPointVersion.Fields.number, LoadingPointVersion.Fields.validFrom}) Pageable pageable);
 
   @GetMapping("{servicePointNumber}/{loadingPointNumber}")
   List<ReadLoadingPointVersionModel> getLoadingPoint(@PathVariable Integer servicePointNumber,
