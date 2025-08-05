@@ -12,6 +12,7 @@ import ch.sbb.atlas.geoupdate.job.model.GeoUpdateItemResultModel;
 import ch.sbb.atlas.imports.ItemProcessResponseStatus;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepointdirectory.geodata.service.ServicePointGeoDataService;
 import ch.sbb.atlas.servicepointdirectory.model.UpdateGeoLocationResultContainer;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceJobService;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
@@ -20,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class GeoReferenceControllerTest {
+class ServicePointGeoDataControllerTest {
 
   @Mock
   private GeoReferenceService geoReferenceService;
@@ -28,12 +29,15 @@ class GeoReferenceControllerTest {
   @Mock
   private GeoReferenceJobService geoReferenceJobService;
 
-  private GeoReferenceController geoReferenceController;
+  @Mock
+  private ServicePointGeoDataService servicePointGeoDataService;
+
+  private ServicePointGeoDataApiInternalController geoReferenceController;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    geoReferenceController = new GeoReferenceController(geoReferenceService, geoReferenceJobService);
+    geoReferenceController = new ServicePointGeoDataApiInternalController(geoReferenceService, geoReferenceJobService, servicePointGeoDataService);
   }
 
   @Test

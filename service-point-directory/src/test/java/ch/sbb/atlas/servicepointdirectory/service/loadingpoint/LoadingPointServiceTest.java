@@ -22,11 +22,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 
   private final LoadingPointService loadingPointService;
 
-  @MockBean
+  @MockitoBean
   private CrossValidationService crossValidationServiceMock;
 
   @Autowired
