@@ -52,11 +52,13 @@ public class LineSearchRestrictions extends SearchRestrictions<Line> {
         .and(new SingleStringSpecification<>(Optional.ofNullable(lineRequestParams.getBusinessOrganisation()),
             Fields.businessOrganisation))
         .and(new ValidOrEditionTimerangeSpecification<>(
-            lineRequestParams.getFromDate(),
-            lineRequestParams.getToDate(),
-            lineRequestParams.getValidToFromDate(),
-            lineRequestParams.getCreatedAfter(),
-            lineRequestParams.getModifiedAfter()));
+                lineRequestParams.getFromDate(),
+                lineRequestParams.getToDate(),
+                lineRequestParams.getValidToFromDate(),
+                null,
+                null
+            )
+        );
   }
 
   @Override
