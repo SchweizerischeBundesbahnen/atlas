@@ -44,8 +44,8 @@
         <div class="d-flex flex-column col-6 mt-3">
           <form-comment
             [formGroup]="form"
-            label="TERMINATION_WORKFLOW.TERMINATION_CANCEL_COMMENT"
-            controlName="cancelComment"
+            label="TERMINATION_WORKFLOW.TERMINATION_ABORT_COMMENT"
+            controlName="abortComment"
           ></form-comment>
         </div>
         }
@@ -185,12 +185,12 @@
     } @if (workflow.status !== TerminationWorkflowStatus.Canceled) {
     <atlas-button
       [footerEdit]="false"
-      buttonDataCy="termination-workflow-cancel"
-      buttonText="TERMINATION_WORKFLOW.CANCEL_DECISION_DIALOG.CONFIRM_BUTTON"
+      buttonDataCy="termination-workflow-abort"
+      buttonText="TERMINATION_WORKFLOW.ABORT_DECISION_DIALOG.CONFIRM_BUTTON"
       buttonType="supervisorButton"
       applicationType="SEPODI"
       wrapperStyleClass="ms-3"
-      (buttonClicked)="openCancelTermination()"
+      (buttonClicked)="openAbortTermination()"
     />
     }
   </atlas-detail-footer>

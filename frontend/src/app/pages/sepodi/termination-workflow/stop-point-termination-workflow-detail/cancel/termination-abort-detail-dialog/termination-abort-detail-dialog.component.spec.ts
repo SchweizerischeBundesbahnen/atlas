@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TerminationCancelDetailDialogComponent } from './termination-cancel-detail-dialog.component';
+import { TerminationAbortDetailDialogComponent } from './termination-abort-detail-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TerminationCancelFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
-import { TerminationCancelDetailDialogData } from '../termination-cancel-dialog.service';
+import { TerminationAbortFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
+import { TerminationAbortDetailDialogData } from '../termination-abort-dialog.service';
 import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
 import { of } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -13,26 +13,26 @@ import { provideHttpClient } from '@angular/common/http';
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 
-const closeTerminationDialogData: TerminationCancelDetailDialogData = {
+const closeTerminationDialogData: TerminationAbortDetailDialogData = {
   title: '',
   message: '',
   workflowId: 123,
-  cancelComment: new FormGroup<TerminationCancelFormGroup>({
-    cancelComment: new FormControl(''),
+  abortComment: new FormGroup<TerminationAbortFormGroup>({
+    abortComment: new FormControl(''),
   }),
 };
 
 const terminationWorkflowService = jasmine.createSpyObj('WorkflowService', {
-  cancelTermination: of(),
+  abortTermination: of(),
 });
 
 describe('TerminationCancelDetailDialog', () => {
-  let component: TerminationCancelDetailDialogComponent;
-  let fixture: ComponentFixture<TerminationCancelDetailDialogComponent>;
+  let component: TerminationAbortDetailDialogComponent;
+  let fixture: ComponentFixture<TerminationAbortDetailDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TerminationCancelDetailDialogComponent],
+      imports: [TerminationAbortDetailDialogComponent],
       providers: [
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: closeTerminationDialogData },
@@ -46,7 +46,7 @@ describe('TerminationCancelDetailDialog', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TerminationCancelDetailDialogComponent);
+    fixture = TestBed.createComponent(TerminationAbortDetailDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -62,8 +62,8 @@ describe('TerminationCancelDetailDialog', () => {
   });
 
   it('should cancel termination', () => {
-    component.cancelTermination();
+    component.abortTermination();
 
-    expect(terminationWorkflowService.cancelTermination).toHaveBeenCalled();
+    expect(terminationWorkflowService.abortTermination).toHaveBeenCalled();
   });
 });

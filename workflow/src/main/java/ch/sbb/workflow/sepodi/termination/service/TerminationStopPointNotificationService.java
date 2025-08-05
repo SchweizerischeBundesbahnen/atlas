@@ -49,11 +49,11 @@ public class TerminationStopPointNotificationService {
     mailProducerService.produceMailNotification(notification);
   }
 
-  public void sendCancelNotificationToBoAndInfoPlus(TerminationStopPointWorkflow terminationWorkflow) {
+  public void sendAbortNotificationToBoAndInfoPlus(TerminationStopPointWorkflow terminationWorkflow) {
 
   }
 
-  public void sendCancelNotificationToBoInfoPlusAndNova(TerminationStopPointWorkflow terminationWorkflow) {
+  public void sendAbortNotificationToBoInfoPlusAndNova(TerminationStopPointWorkflow terminationWorkflow) {
 
   }
 }
