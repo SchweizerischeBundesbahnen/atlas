@@ -3,7 +3,7 @@ package ch.sbb.workflow.sepodi.termination.api;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
-import ch.sbb.workflow.sepodi.termination.model.TerminationCancelModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationInfoModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowFilterParams;
@@ -66,8 +66,8 @@ public interface TerminationStopPointWorkflowApi {
 
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).SEPODI)")
-  @PostMapping(path = "/cancel/{workflowId}")
+  @PostMapping(path = "/abort/{workflowId}")
   @ResponseStatus(HttpStatus.OK)
-  TerminationStopPointWorkflowModel cancelTermination(@RequestBody @Valid TerminationCancelModel cancelModel,
+  TerminationStopPointWorkflowModel abortTermination(@RequestBody @Valid TerminationAbortModel abortModel,
       @PathVariable Long workflowId);
 }

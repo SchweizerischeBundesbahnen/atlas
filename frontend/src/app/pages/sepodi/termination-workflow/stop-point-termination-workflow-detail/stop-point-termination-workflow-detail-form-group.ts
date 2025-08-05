@@ -14,7 +14,7 @@ export interface StopPointTerminationWorkflowDetailFormGroup {
   infoPlusTerminationDate: FormControl<string | null | undefined>;
   novaTerminationDate: FormControl<string | null | undefined>;
   workflowComment: FormControl<string | null | undefined>;
-  cancelComment: FormControl<string | null | undefined>;
+  abortComment: FormControl<string | null | undefined>;
   examinants: FormArray<FormGroup<TerminationDecisionFormGroup>>;
   infoPlus: FormGroup<TerminationDecisionFormGroup>;
   nova: FormGroup<TerminationDecisionFormGroup>;
@@ -34,8 +34,8 @@ export interface TerminationDecisionFormGroup {
   >;
 }
 
-export interface TerminationCancelFormGroup {
-  cancelComment: FormControl<string | null | undefined>;
+export interface TerminationAbortFormGroup {
+  abortComment: FormControl<string | null | undefined>;
 }
 
 export class StopPointTerminationWorkflowDetailFormGroupBuilder {
@@ -62,7 +62,7 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
           : workflow?.novaTerminationDate
       ),
       workflowComment: new FormControl(workflow.workflowComment),
-      cancelComment: new FormControl(workflow.cancelComment),
+      abortComment: new FormControl(workflow.abortComment),
       infoPlus: this.buildTerminationDecisionFormGroup(
         workflow.infoPlusDecision
       ),
@@ -76,9 +76,9 @@ export class StopPointTerminationWorkflowDetailFormGroupBuilder {
     });
   }
 
-  static buildCancelTermination(): FormGroup<TerminationCancelFormGroup> {
-    return new FormGroup<TerminationCancelFormGroup>({
-      cancelComment: new FormControl('', [
+  static buildCancelTermination(): FormGroup<TerminationAbortFormGroup> {
+    return new FormGroup<TerminationAbortFormGroup>({
+      abortComment: new FormControl('', [
         Validators.required,
         AtlasFieldLengthValidator.comments,
       ]),

@@ -682,12 +682,12 @@
       "DECISION_INFO_YES_NOVA": "La date de suppression est utilisée pour raccourcir automatiquement le service.",
       "DECISION_INFO_NO_NOVA": "Le service est automatiquement transformé en arrêt tarifaire."
     },
-    "CANCEL_DECISION_DIALOG": {
+    "ABORT_DECISION_DIALOG": {
       "TITLE": "Annuler la planification",
       "COMMENT": "Remarques",
       "CONFIRM_BUTTON": "Annuler la planification"
     },
-    "TERMINATION_CANCEL_COMMENT": "Motif du licenciement",
+    "TERMINATION_ABORT_COMMENT": "Motif du licenciement",
     "NOTIFICATION": {
       "CANCEL": {
         "SUCCESS": "Annuler l'annulation a été enregistrée avec succès"
