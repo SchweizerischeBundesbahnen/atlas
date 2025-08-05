@@ -90,4 +90,15 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
             TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT))
         .build();
   }
+
+  public MailNotification buildAbortTerminationNotification(TerminationStopPointWorkflow workflow) {
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.CANCEL_TERMINATION_NOTIFICATION)
+        .subject(TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT)
+        .to(List.of(terminationExaminants.getInfoPlus().getEmail(), workflow.getApplicantMail()))
+        .templateProperties(buildMailProperties(workflow,
+            TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT))
+        .build();
+  }
 }

@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-@Schema(name = "TerminationCancel")
-public class TerminationCancelModel {
+@Schema(name = "TerminationAbort")
+public class TerminationAbortModel {
 
-  @Schema(description = "Cancel model", example = "I don't agree")
+  @Schema(description = "Termination abort model", example = "I don't agree")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   @NotNull
-  private String cancelComment;
+  private String abortComment;
 
 }

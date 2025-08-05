@@ -6,8 +6,8 @@ import {TerminationInfo} from '../../model/terminationInfo';
 import {ContainerTerminationStopPointWorkflowModel} from '../../model/containerTerminationStopPointWorkflowModel';
 import {TerminationWorkflowStatus} from '../../model/terminationWorkflowStatus';
 import {TerminationDecision} from '../../model/terminationDecision';
-import {TerminationCancel} from "../../model/terminationCancel";
 import {TerminationStopPointWorkflowModel} from "../../model/terminationStopPointWorkflowModel";
+import {TerminationAbort} from "../../model/terminationAbort";
 
 @Injectable({
   providedIn: 'root',
@@ -57,8 +57,8 @@ export class WorkflowService {
     return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION}/decision/nova/${encodeURIComponent(String(id))}`, decision);
   }
 
-  cancelTermination(id: number, terminationCancel: TerminationCancel): Observable<TerminationStopPointAddWorkflow> {
-    this.atlasApiService.validateParams({ id, terminationCancel });
-    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION}/cancel/${encodeURIComponent(String(id))}`, terminationCancel);
+  abortTermination(id: number, terminationAbort: TerminationAbort): Observable<TerminationStopPointAddWorkflow> {
+    this.atlasApiService.validateParams({ id, terminationCancel: terminationAbort });
+    return this.atlasApiService.post(`${this.STOP_POINT_TERMINATION}/abort/${encodeURIComponent(String(id))}`, terminationAbort);
   }
 }

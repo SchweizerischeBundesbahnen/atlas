@@ -682,12 +682,12 @@
       "DECISION_INFO_YES_NOVA": "Das Aufhebungsdatum wird genutzt um die Dienststelle automatisch einzukürzen.",
       "DECISION_INFO_NO_NOVA": "Die Dienststelle wird automatisch zu einer Tarifhaltestelle umgewandelt. Sie können zu einem späteren Zeitpunkt Ihre Entscheidung überschreiben."
     },
-    "CANCEL_DECISION_DIALOG": {
+    "ABORT_DECISION_DIALOG": {
       "TITLE": "Terminierung abbrechen",
       "COMMENT": "Anmerkungen",
       "CONFIRM_BUTTON": "Terminierung abbrechen"
     },
-    "TERMINATION_CANCEL_COMMENT": "Begründung abbruch",
+    "TERMINATION_ABORT_COMMENT": "Begründung abbruch",
     "NOTIFICATION": {
       "CANCEL": {
         "SUCCESS": "Abbrechen der Kündigung wurde erfolgreich gespeichert"

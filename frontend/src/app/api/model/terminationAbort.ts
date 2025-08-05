@@ -9,10 +9,10 @@
  */
 
 
-export interface TerminationCancel { 
+export interface TerminationAbort { 
     /**
-     * Cancel model
+     * Termination abort model
      */
-    cancelComment: string;
+    abortComment: string;
 }
 

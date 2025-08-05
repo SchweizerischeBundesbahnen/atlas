@@ -1,42 +1,42 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
-import { TerminationCancelFormGroup } from '../stop-point-termination-workflow-detail-form-group';
+import { TerminationAbortFormGroup } from '../stop-point-termination-workflow-detail-form-group';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DialogData } from '../../../../../core/components/dialog/dialog.data';
-import { TerminationCancelDetailDialogComponent } from './termination-cancel-detail-dialog/termination-cancel-detail-dialog.component';
+import { TerminationAbortDetailDialogComponent } from './termination-abort-detail-dialog/termination-abort-detail-dialog.component';
 
-export interface TerminationCancelDetailDialogData extends DialogData {
+export interface TerminationAbortDetailDialogData extends DialogData {
   workflowId: number;
-  cancelComment: FormGroup<TerminationCancelFormGroup>;
+  abortComment: FormGroup<TerminationAbortFormGroup>;
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class TerminationCancelDialogService {
+export class TerminationAbortDialogService {
   private readonly dialog = inject(MatDialog);
-  private dialogRef?: MatDialogRef<TerminationCancelDetailDialogComponent>;
+  private dialogRef?: MatDialogRef<TerminationAbortDetailDialogComponent>;
 
   openDialog(
     workflowId: number,
-    cancelComment: FormGroup<TerminationCancelFormGroup>
+    abortComment: FormGroup<TerminationAbortFormGroup>
   ): Observable<boolean> {
-    const dialogData: TerminationCancelDetailDialogData = {
+    const dialogData: TerminationAbortDetailDialogData = {
       title: 'WORKFLOW.TERMINATION.CANCEL',
       message: '',
       cancelText: 'DIALOG.CANCEL',
       confirmText: 'WORKFLOW.BUTTON.SEND',
       workflowId: workflowId,
-      cancelComment: cancelComment,
+      abortComment: abortComment,
     };
 
     return this.open(dialogData);
   }
 
-  private open(dialogData: TerminationCancelDetailDialogData) {
-    this.dialogRef = this.dialog.open(TerminationCancelDetailDialogComponent, {
+  private open(dialogData: TerminationAbortDetailDialogData) {
+    this.dialogRef = this.dialog.open(TerminationAbortDetailDialogComponent, {
       data: dialogData,
       disableClose: true,
       panelClass: 'atlas-dialog-panel',

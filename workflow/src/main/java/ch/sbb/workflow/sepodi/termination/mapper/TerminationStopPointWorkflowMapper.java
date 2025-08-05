@@ -54,7 +54,7 @@ public class TerminationStopPointWorkflowMapper {
 
     model.setInfoPlusDecision(infoPlusDecision);
     model.setNovaDecision(novaDecision);
-    model.setCancelComment(workflow.getCancelComment());
+    model.setAbortComment(workflow.getAbortComment());
 
     return model;
   }

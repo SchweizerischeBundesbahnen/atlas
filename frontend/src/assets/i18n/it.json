@@ -682,12 +682,12 @@
       "DECISION_INFO_YES_NOVA": "La data di soppressione viene utilizzata per ridurre automaticamente il posto di servizio.",
       "DECISION_INFO_NO_NOVA": "Il posto di servizio viene automaticamente convertito in una fermata tariffaria."
     },
-    "CANCEL_DECISION_DIALOG": {
+    "ABORT_DECISION_DIALOG": {
       "TITLE": "Annullare terminazione",
       "COMMENT": "Osservazioni",
       "CONFIRM_BUTTON": "Annullare terminazione"
     },
-    "TERMINATION_CANCEL_COMMENT": "Motivo dell'annullamento'",
+    "TERMINATION_ABORT_COMMENT": "Motivo dell'annullamento'",
     "NOTIFICATION": {
       "CANCEL": {
         "SUCCESS": "L'annullamento della terminazione è stato salvato correttamente"
