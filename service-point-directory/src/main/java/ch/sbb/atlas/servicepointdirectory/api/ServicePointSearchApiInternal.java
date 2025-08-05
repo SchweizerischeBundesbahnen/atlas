@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Service Points")
-@RequestMapping("v1/service-points")
-public interface ServicePointSearchApiV1 {
+@Tag(name = "[INTERNAL] Service Points")
+@RequestMapping("internal/service-points")
+public interface ServicePointSearchApiInternal {
 
   @PostMapping("search")
   List<ServicePointSearchResult> searchServicePoints(@RequestBody @Valid ServicePointSearchRequest value);
