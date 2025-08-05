@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class ServicePointSearchController implements ServicePointSearchApiInternal {
+public class ServicePointSearchApiInternalController implements ServicePointSearchApiInternal {
 
   private final ServicePointSearchService servicePointSearchService;
 

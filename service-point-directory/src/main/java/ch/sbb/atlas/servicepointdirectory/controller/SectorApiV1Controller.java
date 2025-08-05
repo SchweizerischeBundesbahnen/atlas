@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class SectorController implements SectorApiV1 {
+public class SectorApiV1Controller implements SectorApiV1 {
 
   private final SectorService sectorService;
   private final TrafficPointElementService trafficPointElementService;
