@@ -2,7 +2,7 @@ package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.api.lidi.enumaration.ElementType;
 import ch.sbb.atlas.api.lidi.enumaration.LidiElementType;
-import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
+import ch.sbb.atlas.api.model.VersionedObjectValidityRequestParams;
 import ch.sbb.atlas.model.Status;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @ToString
-public class LineRequestParams extends VersionedObjectDateRequestParams {
+public class LineRequestParams extends VersionedObjectValidityRequestParams {
 
   @Parameter(description = "Filter for a swiss line number.")
   private String swissLineNumber;
