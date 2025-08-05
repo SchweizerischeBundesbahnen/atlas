@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchApiV1;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchApiInternal;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchService;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class ServicePointSearchController implements ServicePointSearchApiV1 {
+public class ServicePointSearchController implements ServicePointSearchApiInternal {
 
   private final ServicePointSearchService servicePointSearchService;
 

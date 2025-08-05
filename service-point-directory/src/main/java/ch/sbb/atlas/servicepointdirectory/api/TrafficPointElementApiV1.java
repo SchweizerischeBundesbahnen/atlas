@@ -52,21 +52,6 @@ public interface TrafficPointElementApiV1 {
   @GetMapping("{sloid}")
   List<ReadTrafficPointElementVersionModel> getTrafficPointElement(@PathVariable String sloid);
 
-  @PageableAsQueryParam
-  @GetMapping("/areas/{servicePointNumber}")
-  Container<ReadTrafficPointElementVersionModel> getAreasOfServicePoint(@PathVariable Integer servicePointNumber,
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid,
-          Fields.validFrom}, direction = Direction.ASC, size = 500) Pageable pageable);
-
-  @PageableAsQueryParam
-  @GetMapping("/platforms/{servicePointNumber}")
-  Container<ReadTrafficPointElementVersionModel> getPlatformsOfServicePoint(@PathVariable Integer servicePointNumber,
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid,
-          Fields.validFrom}, direction = Direction.ASC, size = 500) Pageable pageable);
-
-  @GetMapping("actual-date/{servicePointNumber}")
-  List<ReadTrafficPointElementVersionModel> getTrafficPointsOfServicePointValidToday(@PathVariable Integer servicePointNumber);
-
   @GetMapping("versions/{id}")
   ReadTrafficPointElementVersionModel getTrafficPointElementVersion(@PathVariable Long id);
 
@@ -77,12 +62,12 @@ public interface TrafficPointElementApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   @PutMapping(path = "{id}")
   List<ReadTrafficPointElementVersionModel> updateTrafficPoint(
