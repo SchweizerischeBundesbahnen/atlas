@@ -14,12 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class TransportCompanyControllerInternalApiTest extends BaseControllerApiTest {
+class TransportCompanyApiInternalTest extends BaseControllerApiTest {
 
   private final TransportCompanyRepository repository;
 
   @Autowired
-  TransportCompanyControllerInternalApiTest(TransportCompanyRepository repository) {
+  TransportCompanyApiInternalTest(TransportCompanyRepository repository) {
     this.repository = repository;
   }
 
@@ -36,14 +36,6 @@ class TransportCompanyControllerInternalApiTest extends BaseControllerApiTest {
   @AfterEach
   void cleanUpDb() {
     repository.deleteAll();
-  }
-
-  @Test
-  void shouldGetTransportCompanies() throws Exception {
-    mvc.perform(get("/internal/transport-companies")).andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(5)))
-        .andExpect(jsonPath("$.objects[0]." + Fields.description, is("Beste Company")))
-        .andExpect(jsonPath("$.objects[0]." + Fields.number, is("#0001")));
   }
 
   @Test

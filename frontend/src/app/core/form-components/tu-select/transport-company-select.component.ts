@@ -17,7 +17,7 @@ import { SearchSelectComponent } from '../search-select/search-select.component'
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import { NgClass, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TransportCompanyInternalService } from '../../../api/service/bodi/transport-company-internal.service';
+import { TransportCompanyService } from '../../../api/service/bodi/transport-company.service';
 
 @Component({
   selector: 'tu-select',
@@ -48,9 +48,7 @@ export class TransportCompanySelectComponent
   transportCompanies: Observable<TransportCompany[]> = of([]);
   alreadySelectedTransportCompany: TransportCompany[] = [];
   private formSubscription?: Subscription;
-  private readonly transportCompanyInternalService = inject(
-    TransportCompanyInternalService
-  );
+  private readonly transportCompanyService = inject(TransportCompanyService);
 
   ngOnInit(): void {
     this.init();
@@ -79,7 +77,7 @@ export class TransportCompanySelectComponent
 
   searchTransportCompany(searchString: string) {
     if (searchString) {
-      this.transportCompanies = this.transportCompanyInternalService
+      this.transportCompanies = this.transportCompanyService
         .getTransportCompanies(
           [searchString],
           undefined,

@@ -9,6 +9,7 @@ include::../release-notes.adoc[]
 Below are the links to the REST API Documentations:
 
 * link:business-organisation.html[*Business Organisation REST API Documentation*]
+* link:transport-company.html[*Transport Company REST API Documentation*]
 
 == Business Organisation Export REST API Documentation [DEPRECATED]
 

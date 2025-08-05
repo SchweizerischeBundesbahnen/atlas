@@ -14,12 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class CompanyControllerInternalApiTest extends BaseControllerApiTest {
+class CompanyApiInternalTest extends BaseControllerApiTest {
 
   private final CompanyRepository repository;
 
   @Autowired
-  CompanyControllerInternalApiTest(CompanyRepository repository) {
+  CompanyApiInternalTest(CompanyRepository repository) {
     this.repository = repository;
   }
 
