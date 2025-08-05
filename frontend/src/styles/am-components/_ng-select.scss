@@ -8,6 +8,7 @@ $height: 36px;
 .ng-select.ng-select-multiple {
   min-height: $height;
   margin-top: -2px;
+  z-index: 5;
 
   .ng-select-container {
     min-height: $height;
@@ -17,7 +18,6 @@ $height: 36px;
       overflow: hidden;
       .ng-value {
         width: 100%;
-        z-index: 5 !important;
       }
     }
   }

@@ -16,10 +16,11 @@ import {
   ReadServicePointVersion,
   ServicePointsService,
   Status,
+  StopPointType,
 } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { MapService } from '../../map/map.service';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output } from '@angular/core';
 import { BERN } from '../../../../../test/data/service-point';
 import { ValidityService } from '../../validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
@@ -67,6 +68,7 @@ class ServicePointFormMockComponent {
   @Input() form?: FormGroup;
   @Input() currentVersion?: object;
   @Input() locationInformation?: object;
+  selectableStopPointTypes = input.required<StopPointType[]>();
 }
 
 @Component({
