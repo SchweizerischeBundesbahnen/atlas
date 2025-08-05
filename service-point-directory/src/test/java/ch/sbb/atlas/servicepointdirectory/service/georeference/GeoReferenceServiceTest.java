@@ -18,17 +18,17 @@ import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
 class GeoReferenceServiceTest {
 
-  @MockBean
+  @MockitoBean
   private JourneyPoiConfig journeyPoiConfig;
-  @MockBean
+  @MockitoBean
   private OAuthFeignConfig oAuthFeignConfig;
-  @MockBean
+  @MockitoBean
   private JourneyPoiClientBase journeyPoiClient;
 
   @Autowired

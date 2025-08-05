@@ -45,7 +45,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     int x = 8530;
     int y = 5765;
 
-    MvcResult result = mvc.perform(get("/v1/service-points/geodata/" + z + "/" + x + "/" + y + ".pbf?validAtDate=2021-03-31"))
+    MvcResult result = mvc.perform(get("/internal/service-points/geodata/" + z + "/" + x + "/" + y + ".pbf?validAtDate=2021-03"
+            + "-31"))
         .andExpect(status().isOk()).andReturn();
 
     assertThat(result.getResponse().getContentType()).isEqualTo(ServicePointGeoDataApiInternal.MEDIA_TYPE_PROTOBUF);
