@@ -8,6 +8,7 @@ import {
   ReadServicePointVersion,
   ServicePointsService,
   Status,
+  StopPointType,
 } from '../../../../api';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -52,6 +53,10 @@ import {
 } from '../../../../core/util/forms';
 import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
 
+export type StopPointTypeNotUnknown = Exclude<StopPointType, 'UNKNOWN'>;
+export const stopPointTypesWithoutUnknown: StopPointTypeNotUnknown[] =
+  Object.values(StopPointType).filter((type) => type !== 'UNKNOWN');
+
 @Component({
   selector: 'app-service-point',
   templateUrl: './service-point-detail.component.html',
@@ -82,6 +87,7 @@ export class ServicePointDetailComponent
 
   servicePointVersions!: ReadServicePointVersion[];
   selectedVersion?: ReadServicePointVersion;
+  selectableStopPointTypes: StopPointType[] = [];
 
   showVersionSwitch = false;
   selectedVersionIndex!: number;
@@ -209,6 +215,10 @@ export class ServicePointDetailComponent
   public initSelectedVersion(version: ReadServicePointVersion) {
     this.terminationInProgress = version.terminationInProgress!;
     this.initShowRevokeButton(version);
+    this.selectableStopPointTypes =
+      version.stopPointType === 'UNKNOWN'
+        ? Object.values(StopPointType)
+        : stopPointTypesWithoutUnknown;
     this.formDestroy$.next();
     this.form = ServicePointFormGroupBuilder.buildFormGroup(
       version,
