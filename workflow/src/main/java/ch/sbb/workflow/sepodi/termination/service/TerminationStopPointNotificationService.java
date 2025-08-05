@@ -40,20 +40,22 @@ public class TerminationStopPointNotificationService {
     mailProducerService.produceMailNotification(notification);
   }
 
-  public void sendCancelNotificationToInfoPlusAndBoAndNova(TerminationStopPointWorkflow workflow) {
-    MailNotification notification = builderNotificationService.buildCancelNotification(workflow);
-    if (workflow.getInfoPlusDecision() != null) {
-      notification.setTo(List.of(terminationExaminants.getNova().getEmail(), terminationExaminants.getInfoPlus().getEmail(),
-          workflow.getApplicantMail()));
-    }
+  public void sendAbortNotificationToBoAndInfoPlus(TerminationStopPointWorkflow workflow) {
+    List<String> emailsTo = List.of(terminationExaminants.getInfoPlus().getEmail(),
+        workflow.getApplicantMail());
+    sendAbortNotificationToInfoPlusAndBoAndNova(workflow, emailsTo);
+  }
+
+  public void sendAbortNotificationToBoInfoPlusAndNova(TerminationStopPointWorkflow workflow) {
+    List<String> emailsTo = List.of(terminationExaminants.getInfoPlus().getEmail(),
+        workflow.getApplicantMail(), terminationExaminants.getNova().getEmail());
+    sendAbortNotificationToInfoPlusAndBoAndNova(workflow, emailsTo);
+  }
+
+  void sendAbortNotificationToInfoPlusAndBoAndNova(TerminationStopPointWorkflow workflow, List<String> emailsTo) {
+    MailNotification notification = builderNotificationService.buildAbortNotification(workflow);
+    notification.setTo(emailsTo);
     mailProducerService.produceMailNotification(notification);
   }
 
-  public void sendAbortNotificationToBoAndInfoPlus(TerminationStopPointWorkflow terminationWorkflow) {
-
-  }
-
-  public void sendAbortNotificationToBoInfoPlusAndNova(TerminationStopPointWorkflow terminationWorkflow) {
-
-  }
 }

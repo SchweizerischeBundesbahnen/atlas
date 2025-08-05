@@ -1,6 +1,6 @@
 package ch.sbb.workflow.sepodi.termination.service;
 
-import static ch.sbb.atlas.kafka.model.mail.MailType.CANCEL_TERMINATION_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.ABORT_TERMINATION_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.TARIFF_STOP_APPROVED_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.TARIFF_STOP_NOT_APPROVED_NOTIFICATION;
@@ -127,7 +127,7 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
   }
 
   @Test
-  void shouldBuildCancelNotification() {
+  void shouldBuildAbortNotification() {
     //given
     TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflow.builder()
         .sloid("ch:1:sloid:1")
@@ -146,12 +146,12 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
         .build();
     when(terminationExaminants.getInfoPlus()).thenReturn(InfoPlus.builder().email("a@b-ch").build());
     //when
-    MailNotification result = builderNotificationService.buildCancelNotification(
+    MailNotification result = builderNotificationService.buildAbortNotification(
         terminationStopPointWorkflow);
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getMailType()).isEqualTo(CANCEL_TERMINATION_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo(TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT);
+    assertThat(result.getMailType()).isEqualTo(ABORT_TERMINATION_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo(TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT);
     assertThat(result.getTo()).hasSize(2).containsExactlyInAnyOrder("a@b-ch", "a@b.com");
     assertThat(result.getCc()).isNull();
   }

@@ -23,6 +23,7 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationInfoModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationStopPointWorkflowModel;
 import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflowRepository;
@@ -140,7 +141,8 @@ class TerminationStopPointWorkflowInternalControllerTest extends BaseControllerA
     assertThat(result).isNotNull();
     assertThat(result.getBoTerminationDate()).isEqualTo(workflowModel.getBoTerminationDate());
     assertThat(result.getSloid()).isEqualTo(workflowModel.getSloid());
-    verify(notificationService, times(1)).sendStartTerminationNotificationToInfoPlusAndBo(any(TerminationStopPointWorkflow.class));
+    verify(notificationService, times(1)).sendStartTerminationNotificationToInfoPlusAndBo(
+        any(TerminationStopPointWorkflow.class));
 
   }
 
@@ -207,6 +209,38 @@ class TerminationStopPointWorkflowInternalControllerTest extends BaseControllerA
     assertThat(result.getTerminationDate()).isEqualTo(workflow.getBoTerminationDate());
     assertThat(result.getWorkflowId()).isNotNull();
 
+  }
+
+  @Test
+  void shouldAbortTermination() throws Exception {
+    //given
+    TerminationStopPointWorkflow workflow = TerminationStopPointWorkflow.builder()
+        .sboid("ch:1:sboid:1")
+        .versionId(50L)
+        .sloid("ch:1:sloid:1")
+        .boTerminationDate(LocalDate.of(2000, 1, 1))
+        .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
+        .infoPlusDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).build())
+        .novaTerminationDate(LocalDate.of(2000, 1, 3))
+        .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
+        .designationOfficial("Bern")
+        .versionValidTo(LocalDate.of(2000, 12, 31))
+        .status(TerminationWorkflowStatus.STARTED)
+        .build();
+    TerminationStopPointWorkflow stopPointWorkflow = repository.saveAndFlush(workflow);
+    TerminationAbortModel abortComment = TerminationAbortModel.builder().abortComment("abortComment").build();
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/internal/termination-stop-point/workflows/abort/" + stopPointWorkflow.getId())
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(abortComment))
+    ).andExpect(status().isOk()).andReturn();
+
+    //then
+    TerminationStopPointWorkflowModel result = mapper.readValue(mvcResult.getResponse().getContentAsString(),
+        TerminationStopPointWorkflowModel.class);
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.CANCELED);
   }
 
 }
