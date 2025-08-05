@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class StopPointTerminationController implements StopPointTerminationApiInternal {
+public class StopPointTerminationApiInternalController implements StopPointTerminationApiInternal {
 
   private final ServicePointService servicePointService;
   private final TerminationStopPointFeatureTogglingService terminationStopPointFeatureTogglingService;

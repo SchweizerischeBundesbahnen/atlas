@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-class SectorControllerTest extends BaseControllerApiTest {
+class SectorApiV1ControllerTest extends BaseControllerApiTest {
 
   @MockitoBean
   private TrafficPointElementService trafficPointElementService;
@@ -48,7 +48,7 @@ class SectorControllerTest extends BaseControllerApiTest {
   private SectorVersion sectorVersion;
 
   @Autowired
-  public SectorControllerTest(SectorVersionRepository sectorVersionRepository) {
+  public SectorApiV1ControllerTest(SectorVersionRepository sectorVersionRepository) {
     this.sectorVersionRepository = sectorVersionRepository;
   }
 

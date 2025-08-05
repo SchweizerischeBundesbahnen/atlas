@@ -39,7 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 
-class SectorGroupControllerTest extends BaseControllerApiTest {
+class SectorGroupApiV1ControllerTest extends BaseControllerApiTest {
 
   private final SectorGroupRelationRepository sectorGroupRelationRepository;
   private final SectorVersionRepository sectorVersionRepository;
@@ -55,7 +55,7 @@ class SectorGroupControllerTest extends BaseControllerApiTest {
   private LocationService locationService;
 
   @Autowired
-  public SectorGroupControllerTest(SectorVersionRepository sectorVersionRepository,
+  public SectorGroupApiV1ControllerTest(SectorVersionRepository sectorVersionRepository,
       SectorGroupRelationRepository sectorGroupRelationRepository, SectorGroupVersionRepository sectorGroupVersionRepository) {
     this.sectorVersionRepository = sectorVersionRepository;
     this.sectorGroupRelationRepository = sectorGroupRelationRepository;

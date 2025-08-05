@@ -8,7 +8,6 @@ import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -19,7 +18,6 @@ import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointTerminationService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
 import java.time.LocalDate;
@@ -33,11 +31,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class TrafficPointElementController implements TrafficPointElementApiV1 {
+public class TrafficPointElementApiV1Controller implements TrafficPointElementApiV1 {
 
   private final TrafficPointElementService trafficPointElementService;
   private final ServicePointService servicePointService;
-  private final ServicePointTerminationService servicePointTerminationService;
   private final CrossValidationService crossValidationService;
   private final ServicePointDistributor servicePointDistributor;
   private final GeoReferenceService geoReferenceService;
@@ -73,25 +70,6 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
       throw new SloidNotFoundException(sloid);
     }
     return trafficPointElementVersions;
-  }
-
-  @Override
-  public Container<ReadTrafficPointElementVersionModel> getAreasOfServicePoint(Integer servicePointNumber, Pageable pageable) {
-    return trafficPointElementService.getTrafficPointElementsByServicePointNumber(servicePointNumber, pageable,
-        TrafficPointElementType.BOARDING_AREA);
-  }
-
-  @Override
-  public Container<ReadTrafficPointElementVersionModel> getPlatformsOfServicePoint(Integer servicePointNumber,
-      Pageable pageable) {
-    return trafficPointElementService.getTrafficPointElementsByServicePointNumber(servicePointNumber, pageable,
-        TrafficPointElementType.BOARDING_PLATFORM);
-  }
-
-  @Override
-  public List<ReadTrafficPointElementVersionModel> getTrafficPointsOfServicePointValidToday(Integer servicePointNumber) {
-    return trafficPointElementService.getTrafficPointElementsByServicePointNumber(servicePointNumber, LocalDate.now()).stream()
-        .map(TrafficPointElementVersionMapper::toModel).toList();
   }
 
   @Override

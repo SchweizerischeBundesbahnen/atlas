@@ -64,7 +64,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-class ServicePointControllerApiTest extends BaseControllerApiTest {
+class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
 
   @MockitoBean
   private JourneyPoiConfig journeyPoiConfig;
@@ -82,11 +82,11 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   private LocationService locationService;
 
   private final ServicePointVersionRepository repository;
-  private final ServicePointController servicePointController;
+  private final ServicePointApiV1Controller servicePointController;
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  ServicePointControllerApiTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
+  ServicePointApiV1ControllerApiTest(ServicePointVersionRepository repository, ServicePointApiV1Controller servicePointController) {
     this.repository = repository;
     this.servicePointController = servicePointController;
   }
