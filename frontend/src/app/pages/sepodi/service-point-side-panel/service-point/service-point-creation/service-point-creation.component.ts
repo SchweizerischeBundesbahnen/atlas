@@ -41,6 +41,7 @@ import {
   removeControlFromFormNoEvent,
 } from '../../../../../core/util/forms';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
+import { stopPointTypesWithoutUnknown } from '../service-point-detail.component';
 
 @Component({
   selector: 'app-service-point-creation',
@@ -224,4 +225,7 @@ export class ServicePointCreationComponent
   private readonly isSupervisorOrAdmin = (sepodiUserPermission: Permission) =>
     sepodiUserPermission.role === ApplicationRole.Supervisor ||
     this.permissionService.isAdmin;
+
+  protected readonly stopPointTypesWithoutUnknown =
+    stopPointTypesWithoutUnknown;
 }
