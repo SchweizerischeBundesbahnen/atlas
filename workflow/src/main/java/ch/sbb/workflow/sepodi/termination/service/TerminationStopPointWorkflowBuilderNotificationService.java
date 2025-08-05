@@ -38,13 +38,13 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
     mailContentProperty.put("title", title);
     mailContentProperty.put("designationOfficial", workflow.getDesignationOfficial());
     mailContentProperty.put("sloid", workflow.getSloid());
-    mailContentProperty.put("url", getUrl(workflow));
+    mailContentProperty.put("url", getWorkflowUrl(workflow));
     mailContentProperty.put("terminationDate", calculateTerminationDate(workflow));
     mailProperties.add(mailContentProperty);
     return mailProperties;
   }
 
-  private String getUrl(TerminationStopPointWorkflow workflow) {
+  private String getWorkflowUrl(TerminationStopPointWorkflow workflow) {
     return AtlasFrontendBaseUrl.getUrl(activeProfile) + TERMINATION_WORKFLOW_URL + workflow.getId();
   }
 
@@ -80,25 +80,15 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
         .build();
   }
 
-  public MailNotification buildCancelNotification(TerminationStopPointWorkflow workflow) {
+  public MailNotification buildAbortNotification(TerminationStopPointWorkflow workflow) {
     return MailNotification.builder()
         .from(from)
-        .mailType(MailType.CANCEL_TERMINATION_NOTIFICATION)
-        .subject(TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT)
+        .mailType(MailType.ABORT_TERMINATION_NOTIFICATION)
+        .subject(TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT)
         .to(List.of(terminationExaminants.getInfoPlus().getEmail(), workflow.getApplicantMail()))
         .templateProperties(buildMailProperties(workflow,
-            TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT))
+            TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT))
         .build();
   }
 
-  public MailNotification buildAbortTerminationNotification(TerminationStopPointWorkflow workflow) {
-    return MailNotification.builder()
-        .from(from)
-        .mailType(MailType.CANCEL_TERMINATION_NOTIFICATION)
-        .subject(TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT)
-        .to(List.of(terminationExaminants.getInfoPlus().getEmail(), workflow.getApplicantMail()))
-        .templateProperties(buildMailProperties(workflow,
-            TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT))
-        .build();
-  }
 }
