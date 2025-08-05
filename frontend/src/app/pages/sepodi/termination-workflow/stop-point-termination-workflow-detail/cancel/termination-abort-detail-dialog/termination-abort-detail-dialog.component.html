@@ -2,13 +2,13 @@
 
 <atlas-dialog-content>
   <div class="font-bold-4xl mb-1">
-    {{ 'TERMINATION_WORKFLOW.CANCEL_DECISION_DIALOG.TITLE' | translate }}
+    {{ 'TERMINATION_WORKFLOW.ABORT_DECISION_DIALOG.TITLE' | translate }}
   </div>
 
   <form-comment
     [formGroup]="form"
-    [label]="'TERMINATION_WORKFLOW.CANCEL_DECISION_DIALOG.COMMENT' | translate"
-    controlName="cancelComment"
+    [label]="'TERMINATION_WORKFLOW.ABORT_DECISION_DIALOG.COMMENT' | translate"
+    controlName="abortComment"
   ></form-comment>
 </atlas-dialog-content>
 
@@ -21,12 +21,12 @@
     {{ 'COMMON.BACK' | translate }}
   </button>
   <button
-    (click)="cancelTermination()"
+    (click)="abortTermination()"
     class="atlas-primary-btn me-3"
     data-cy="dialog-save-button"
   >
     {{
-      'TERMINATION_WORKFLOW.CANCEL_DECISION_DIALOG.CONFIRM_BUTTON' | translate
+      'TERMINATION_WORKFLOW.ABORT_DECISION_DIALOG.CONFIRM_BUTTON' | translate
     }}
   </button>
 </atlas-dialog-footer>

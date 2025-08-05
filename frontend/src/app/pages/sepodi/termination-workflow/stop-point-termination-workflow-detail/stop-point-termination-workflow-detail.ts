@@ -26,7 +26,7 @@ import { PermissionService } from '../../../../core/auth/permission/permission.s
 import { TerminationDecision } from '../../../../api/model/terminationDecision';
 import moment from 'moment';
 import { TerminationWorkflowStatus } from '../../../../api/model/terminationWorkflowStatus';
-import { TerminationCancelDialogService } from './cancel/termination-cancel-dialog.service';
+import { TerminationAbortDialogService } from './cancel/termination-abort-dialog.service';
 import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
@@ -60,8 +60,8 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
   private readonly terminationDecisionDetailDialogService = inject(
     TerminationDecisionDetailDialogService
   );
-  private readonly terminationCancelDialogService = inject(
-    TerminationCancelDialogService
+  private readonly terminationAbortDialogService = inject(
+    TerminationAbortDialogService
   );
 
   stopPoint!: ReadServicePointVersion;
@@ -177,10 +177,10 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
       });
   }
 
-  openCancelTermination() {
+  openAbortTermination() {
     const terminationCancelFormGroupFormGroup =
       StopPointTerminationWorkflowDetailFormGroupBuilder.buildCancelTermination();
-    this.terminationCancelDialogService
+    this.terminationAbortDialogService
       .openDialog(this.workflow.id!, terminationCancelFormGroupFormGroup)
       .subscribe((result) => {
         if (result) {

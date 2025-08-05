@@ -11,7 +11,7 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.mapper.TerminationStopPointWorkflowMapper;
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
-import ch.sbb.workflow.sepodi.termination.model.TerminationCancelModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.InfoPlus;
@@ -100,8 +100,8 @@ public class TerminationStopPointWorkflowInternalController implements Terminati
 
   @Redacted
   @Override
-  public TerminationStopPointWorkflowModel cancelTermination(TerminationCancelModel cancelModel, Long workflowId) {
+  public TerminationStopPointWorkflowModel abortTermination(TerminationAbortModel abortModel, Long workflowId) {
     terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
-    return TerminationStopPointWorkflowMapper.toModel(service.cancelTerminationWorkflow(workflowId, cancelModel));
+    return TerminationStopPointWorkflowMapper.toModel(service.abortTerminationWorkflow(workflowId, abortModel));
   }
 }
