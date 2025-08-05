@@ -7,18 +7,18 @@ link:rest-api.html[*< Back to main*]
 
 == Get All Business Organisation Directories - Successfully
 
-include::{snippets}/business-organisation-controller-api-test/should-get-all-business-organisation-versions/atlas-doc.adoc[]
+include::{snippets}/business-organisation-api-v1-test/should-get-all-business-organisation-versions/atlas-doc.adoc[]
 
 == Get Business Organisation Directories Versions - Successfully
 
-include::{snippets}/business-organisation-controller-api-test/should-get-business-organisation-versions/atlas-doc.adoc[]
+include::{snippets}/business-organisation-api-v1-test/should-get-business-organisation-versions/atlas-doc.adoc[]
 
 == Get Business Organisation Directories Versions By SBOID - Successfully
 
-include::{snippets}/business-organisation-controller-api-test/should-get-business-organisation-versions-by-sboid/atlas-doc.adoc[]
+include::{snippets}/business-organisation-api-v1-test/should-get-business-organisation-versions-by-sboid/atlas-doc.adoc[]
 
 == Get Business Organisation Directories Versions- Unsuccessfully
 
-include::{snippets}/business-organisation-controller-api-test/should-not-get-business-organisation-versions-when-provided-sboid-does-not-exists/atlas-doc.adoc[]
+include::{snippets}/business-organisation-api-v1-test/should-not-get-business-organisation-versions-when-provided-sboid-does-not-exists/atlas-doc.adoc[]
 
 link:rest-api.html[*< Back to main*]
