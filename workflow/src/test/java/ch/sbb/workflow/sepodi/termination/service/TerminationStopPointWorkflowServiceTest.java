@@ -26,6 +26,7 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
+import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.repository.TerminationStopPointWorkflowRepository;
 import java.time.LocalDate;
@@ -173,20 +174,7 @@ class TerminationStopPointWorkflowServiceTest {
   @Test
   void shouldNotStartTerminationWorkflowWhenWorkflowAlreadyExists() {
     //given
-    TerminationStopPointWorkflow workflow = TerminationStopPointWorkflow.builder()
-        .sloid(SLOID)
-        .versionId(VERSION_ID)
-        .boTerminationDate(LocalDate.of(2000, 1, 1))
-        .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
-        .infoPlusDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).build())
-        .novaTerminationDate(LocalDate.of(2000, 1, 3))
-        .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
-        .applicantMail("a@b.com")
-        .designationOfficial("Heimsiswil Zentrum")
-        .versionValidTo(LocalDate.of(2099, 12, 31))
-        .sboid("ch:sboid:1")
-        .status(TerminationWorkflowStatus.STARTED)
-        .build();
+    TerminationStopPointWorkflow workflow = getStopPointWorkflow();
     repository.save(workflow);
     StartTerminationStopPointWorkflowModel stopPointWorkflowModel = buildTerminationStopPointWorkflowModel();
     ReadServicePointVersionModel readServicePointVersionModel = buildReadServicePointVersionModel();
@@ -219,24 +207,64 @@ class TerminationStopPointWorkflowServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.STARTED);
-    verify(notificationService, times(1)).sendStartTerminationNotificationToInfoPlusAndBo(any(TerminationStopPointWorkflow.class));
+    verify(notificationService, times(1)).sendStartTerminationNotificationToInfoPlusAndBo(
+        any(TerminationStopPointWorkflow.class));
+  }
+
+  @Test
+  void shouldAbortTerminationWorkflowWhenWorkflowIsStarted() {
+    //given
+    TerminationStopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    stopPointWorkflow.setStatus(TerminationWorkflowStatus.STARTED);
+    repository.save(stopPointWorkflow);
+    TerminationAbortModel abortingTerminationWorkflow = TerminationAbortModel.builder()
+        .abortComment("Aborting termination workflow").build();
+    //when
+    TerminationStopPointWorkflow result = service.abortTerminationWorkflow(stopPointWorkflow.getId(),
+        abortingTerminationWorkflow);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.CANCELED);
+    verify(notificationService, times(1)).sendAbortNotificationToBoAndInfoPlus(any(TerminationStopPointWorkflow.class));
+  }
+
+  @Test
+  void shouldAbortTerminationWorkflowWhenWorkflowIsTariffStopApproved() {
+    //given
+    TerminationStopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    stopPointWorkflow.setStatus(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
+    repository.save(stopPointWorkflow);
+    TerminationAbortModel abortingTerminationWorkflow = TerminationAbortModel.builder()
+        .abortComment("Aborting termination workflow").build();
+    //when
+    TerminationStopPointWorkflow result = service.abortTerminationWorkflow(stopPointWorkflow.getId(),
+        abortingTerminationWorkflow);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.CANCELED);
+    verify(notificationService, times(1)).sendAbortNotificationToBoInfoPlusAndNova(any(TerminationStopPointWorkflow.class));
+  }
+
+  @Test
+  void shouldAbortTerminationWorkflowWhenWorkflowIsTerminationNotApproved() {
+    //given
+    TerminationStopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    stopPointWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
+    repository.save(stopPointWorkflow);
+    TerminationAbortModel abortingTerminationWorkflow = TerminationAbortModel.builder()
+        .abortComment("Aborting termination workflow").build();
+    //when
+    TerminationStopPointWorkflow result = service.abortTerminationWorkflow(stopPointWorkflow.getId(),
+        abortingTerminationWorkflow);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED_CLOSED);
+    verify(notificationService, never()).sendAbortNotificationToBoAndInfoPlus(any(TerminationStopPointWorkflow.class));
+    verify(notificationService, never()).sendAbortNotificationToBoInfoPlusAndNova(any(TerminationStopPointWorkflow.class));
   }
 
   private @NotNull TerminationStopPointWorkflow saveTerminationStopPointWorkflow() {
-    TerminationStopPointWorkflow workflow = TerminationStopPointWorkflow.builder()
-        .sloid(SLOID)
-        .versionId(VERSION_ID)
-        .boTerminationDate(LocalDate.of(2000, 1, 1))
-        .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
-        .infoPlusDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).build())
-        .novaTerminationDate(LocalDate.of(2000, 1, 3))
-        .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
-        .applicantMail("a@b.com")
-        .designationOfficial("Heimsiswil Zentrum")
-        .versionValidTo(LocalDate.of(2099, 12, 31))
-        .sboid("ch:sboid:1")
-        .status(TerminationWorkflowStatus.STARTED)
-        .build();
+    TerminationStopPointWorkflow workflow = getStopPointWorkflow();
     return repository.save(workflow);
   }
 
@@ -271,6 +299,24 @@ class TerminationStopPointWorkflowServiceTest {
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2018, 2, 19), LocalTime.of(13, 44, 2)))
         .editor("fs45117")
+        .build();
+
+  }
+
+  private static TerminationStopPointWorkflow getStopPointWorkflow() {
+    return TerminationStopPointWorkflow.builder()
+        .sloid(SLOID)
+        .versionId(VERSION_ID)
+        .boTerminationDate(LocalDate.of(2000, 1, 1))
+        .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
+        .infoPlusDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).build())
+        .novaTerminationDate(LocalDate.of(2000, 1, 3))
+        .novaDecision(TerminationDecision.builder().terminationDecisionPerson(TerminationDecisionPerson.NOVA).build())
+        .applicantMail("a@b.com")
+        .designationOfficial("Heimsiswil Zentrum")
+        .versionValidTo(LocalDate.of(2099, 12, 31))
+        .sboid("ch:sboid:1")
+        .status(TerminationWorkflowStatus.STARTED)
         .build();
   }
 

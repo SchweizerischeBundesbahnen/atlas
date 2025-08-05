@@ -102,7 +102,7 @@ public class TerminationStopPointWorkflowService {
     return repository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
-  public TerminationStopPointWorkflow abortTerminationWorkflow(Long workflowId, TerminationAbortModel cancelModel) {
+  public TerminationStopPointWorkflow abortTerminationWorkflow(Long workflowId, TerminationAbortModel abortModel) {
     TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
     if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.STARTED) {
       terminationWorkflow.setStatus(CANCELED);
@@ -116,7 +116,7 @@ public class TerminationStopPointWorkflowService {
       terminationWorkflow.setStatus(TERMINATION_NOT_APPROVED_CLOSED);
       //no mail an NOVA?
     }
-    terminationWorkflow.setAbortComment(cancelModel.getAbortComment());
+    terminationWorkflow.setAbortComment(abortModel.getAbortComment());
     sePoDiAdminClient.stopServicePointTermination(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
     return repository.saveAndFlush(terminationWorkflow);
   }
