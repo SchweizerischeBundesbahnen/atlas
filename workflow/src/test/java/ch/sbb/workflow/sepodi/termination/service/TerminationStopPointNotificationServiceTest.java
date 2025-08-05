@@ -1,6 +1,7 @@
 package ch.sbb.workflow.sepodi.termination.service;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,6 +12,8 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
+import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.InfoPlus;
+import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.Nova;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,7 +108,7 @@ class TerminationStopPointNotificationServiceTest {
   }
 
   @Test
-  void shouldSendCancelNotificationToInfoPlusAndBoAndNova() {
+  void shouldSendAbortNotificationToBoAndInfoPlus() {
     //given
     TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflow.builder()
         .sloid("ch:1:sloid:1")
@@ -118,10 +121,39 @@ class TerminationStopPointNotificationServiceTest {
         .sboid("ch:sboid:1")
         .status(TerminationWorkflowStatus.CANCELED)
         .build();
-    //when
-    notificationService.sendCancelNotificationToInfoPlusAndBoAndNova(terminationStopPointWorkflow);
 
-    verify(builderNotificationService).buildCancelNotification(terminationStopPointWorkflow);
+    doReturn(InfoPlus.builder().email("asd@as.ch").build()).when(terminationExaminants).getInfoPlus();
+    when(builderNotificationService.buildAbortNotification(any())).thenReturn(MailNotification.builder().build());
+    //when
+    notificationService.sendAbortNotificationToBoAndInfoPlus(terminationStopPointWorkflow);
+
+    verify(builderNotificationService).buildAbortNotification(terminationStopPointWorkflow);
+
+    verify(mailProducerService).produceMailNotification(any());
+  }
+
+  @Test
+  void shouldSendAbortNotificationToBoInfoPlusNova() {
+    //given
+    TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1")
+        .versionId(1234L)
+        .boTerminationDate(LocalDate.of(2000, 1, 1))
+        .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
+        .novaTerminationDate(LocalDate.of(2000, 1, 3))
+        .applicantMail("a@b.com")
+        .designationOfficial("Heimsiswil Zentrum")
+        .sboid("ch:sboid:1")
+        .status(TerminationWorkflowStatus.CANCELED)
+        .build();
+
+    doReturn(InfoPlus.builder().email("asd@as.ch").build()).when(terminationExaminants).getInfoPlus();
+    doReturn(Nova.builder().email("asd@as.ch").build()).when(terminationExaminants).getNova();
+    when(builderNotificationService.buildAbortNotification(any())).thenReturn(MailNotification.builder().build());
+    //when
+    notificationService.sendAbortNotificationToBoInfoPlusAndNova(terminationStopPointWorkflow);
+
+    verify(builderNotificationService).buildAbortNotification(terminationStopPointWorkflow);
     verify(mailProducerService).produceMailNotification(any());
   }
 
