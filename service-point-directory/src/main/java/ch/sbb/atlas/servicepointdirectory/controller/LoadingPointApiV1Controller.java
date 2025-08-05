@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class LoadingPointController implements LoadingPointApiV1 {
+public class LoadingPointApiV1Controller implements LoadingPointApiV1 {
 
   private final LoadingPointService loadingPointService;
   private final ServicePointService servicePointService;
@@ -44,11 +44,6 @@ public class LoadingPointController implements LoadingPointApiV1 {
         .objects(loadingPointVersions.stream().map(LoadingPointVersionMapper::fromEntity).toList())
         .totalCount(loadingPointVersions.getTotalElements())
         .build();
-  }
-
-  @Override
-  public Container<ReadLoadingPointVersionModel> getLoadingPointOverview(Integer servicePointNumber, Pageable pageable) {
-    return loadingPointService.getOverview(servicePointNumber, pageable);
   }
 
   @Override

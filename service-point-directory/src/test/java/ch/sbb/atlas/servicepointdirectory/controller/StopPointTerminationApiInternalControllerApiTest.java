@@ -34,7 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-class StopPointTerminationControllerApiTest extends BaseControllerApiTest {
+class StopPointTerminationApiInternalControllerApiTest extends BaseControllerApiTest {
 
   @MockitoBean
   private JourneyPoiConfig journeyPoiConfig;
@@ -52,10 +52,10 @@ class StopPointTerminationControllerApiTest extends BaseControllerApiTest {
   private LocationService locationService;
 
   private final ServicePointVersionRepository repository;
-  private final ServicePointController servicePointController;
+  private final ServicePointApiV1Controller servicePointController;
 
   @Autowired
-  StopPointTerminationControllerApiTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
+  StopPointTerminationApiInternalControllerApiTest(ServicePointVersionRepository repository, ServicePointApiV1Controller servicePointController) {
     this.repository = repository;
     this.servicePointController = servicePointController;
   }

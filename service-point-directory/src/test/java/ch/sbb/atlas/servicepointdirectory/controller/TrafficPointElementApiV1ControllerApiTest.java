@@ -43,7 +43,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
+class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private CrossValidationService crossValidationService;
@@ -53,13 +53,13 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
 
   private final TrafficPointElementVersionRepository repository;
   private final ServicePointVersionRepository servicePointVersionRepository;
-  private final TrafficPointElementController trafficPointElementController;
+  private final TrafficPointElementApiV1Controller trafficPointElementController;
 
   private TrafficPointElementVersion trafficPointElementVersion;
 
   @Autowired
-  TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository,
-      TrafficPointElementController trafficPointElementController,
+  TrafficPointElementApiV1ControllerApiTest(TrafficPointElementVersionRepository repository,
+      TrafficPointElementApiV1Controller trafficPointElementController,
       ServicePointVersionRepository servicePointVersionRepository) {
     this.repository = repository;
     this.trafficPointElementController = trafficPointElementController;

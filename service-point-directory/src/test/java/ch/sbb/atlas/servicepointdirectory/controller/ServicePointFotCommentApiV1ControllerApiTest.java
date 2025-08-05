@@ -18,16 +18,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class ServicePointFotCommentControllerApiTest extends BaseControllerApiTest {
+class ServicePointFotCommentApiV1ControllerApiTest extends BaseControllerApiTest {
 
   private final ServicePointVersionRepository repository;
   private final ServicePointFotCommentRepository fotCommentRepository;
-  private final ServicePointFotCommentController servicePointFotCommentController;
+  private final ServicePointFotCommentApiV1Controller servicePointFotCommentController;
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  ServicePointFotCommentControllerApiTest(ServicePointVersionRepository repository,
-      ServicePointFotCommentRepository fotCommentRepository, ServicePointFotCommentController servicePointFotCommentController) {
+  ServicePointFotCommentApiV1ControllerApiTest(ServicePointVersionRepository repository,
+      ServicePointFotCommentRepository fotCommentRepository, ServicePointFotCommentApiV1Controller servicePointFotCommentController) {
     this.repository = repository;
     this.fotCommentRepository = fotCommentRepository;
     this.servicePointFotCommentController = servicePointFotCommentController;
