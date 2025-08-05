@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class BusinessOrganisationController implements BusinessOrganisationApiV1 {
+public class BusinessOrganisationControllerV1 implements BusinessOrganisationApiV1 {
 
   private final BusinessOrganisationService service;
   private final BusinessOrganisationVersionExportService exportService;
