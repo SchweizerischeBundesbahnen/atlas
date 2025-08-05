@@ -41,7 +41,7 @@ class ServicePointSearchApiInternalControllerApiTest extends BaseControllerApiTe
     String jsonString = mapper.writeValueAsString(request);
 
     // when
-    mvc.perform(post("/v1/service-points/search")
+    mvc.perform(post("/internal/service-points/search")
             .content(jsonString)
             .contentType(contentType))
         // then
@@ -57,7 +57,7 @@ class ServicePointSearchApiInternalControllerApiTest extends BaseControllerApiTe
     String jsonString = mapper.writeValueAsString(request);
 
     // when
-    mvc.perform(post("/v1/service-points/search-sp-with-route-network")
+    mvc.perform(post("/internal/service-points/search-sp-with-route-network")
             .content(jsonString)
             .contentType(contentType))
         // then
@@ -75,7 +75,7 @@ class ServicePointSearchApiInternalControllerApiTest extends BaseControllerApiTe
     String jsonString = mapper.writeValueAsString(request);
 
     // when
-    mvc.perform(post("/v1/service-points/search-swiss-only")
+    mvc.perform(post("/internal/service-points/search-swiss-only")
             .content(jsonString)
             .contentType(contentType))
         // then
@@ -91,7 +91,7 @@ class ServicePointSearchApiInternalControllerApiTest extends BaseControllerApiTe
     String jsonString = mapper.writeValueAsString(request);
 
     // when
-    mvc.perform(post("/v1/service-points/search")
+    mvc.perform(post("/internal/service-points/search")
             .content(jsonString)
             .contentType(contentType))
         // then
@@ -106,7 +106,7 @@ class ServicePointSearchApiInternalControllerApiTest extends BaseControllerApiTe
     String jsonString = mapper.writeValueAsString(request);
 
     // when
-    mvc.perform(post("/v1/service-points/search-sp-with-route-network")
+    mvc.perform(post("/internal/service-points/search-sp-with-route-network")
             .content(jsonString)
             .contentType(contentType))
         // then
@@ -121,7 +121,7 @@ class ServicePointSearchApiInternalControllerApiTest extends BaseControllerApiTe
     String jsonString = mapper.writeValueAsString(request);
 
     // when
-    mvc.perform(post("/v1/service-points/search")
+    mvc.perform(post("/internal/service-points/search")
             .content(jsonString)
             .contentType(contentType))
         // then
@@ -137,7 +137,7 @@ class ServicePointSearchApiInternalControllerApiTest extends BaseControllerApiTe
     String jsonString = mapper.writeValueAsString(request);
 
     // when
-    mvc.perform(post("/v1/service-points/search-sp-with-route-network")
+    mvc.perform(post("/internal/service-points/search-sp-with-route-network")
             .content(jsonString)
             .contentType(contentType))
         // then
@@ -153,7 +153,7 @@ class ServicePointSearchApiInternalControllerApiTest extends BaseControllerApiTe
     String jsonString = mapper.writeValueAsString(request);
 
     // when
-    mvc.perform(post("/v1/service-points/search-sp-with-route-network")
+    mvc.perform(post("/internal/service-points/search-sp-with-route-network")
             .content(jsonString)
             .contentType(contentType))
         // then

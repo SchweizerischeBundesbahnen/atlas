@@ -20,16 +20,16 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @IntegrationTest
  class TrafficPointElementServiceTest {
 
-  @MockBean
+  @MockitoBean
   private CrossValidationService crossValidationService;
 
   private final TrafficPointElementService trafficPointElementService;

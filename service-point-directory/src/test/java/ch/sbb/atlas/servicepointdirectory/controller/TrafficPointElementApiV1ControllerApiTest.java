@@ -38,17 +38,17 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
 
-  @MockBean
+  @MockitoBean
   private CrossValidationService crossValidationService;
 
-  @MockBean
+  @MockitoBean
   private LocationService locationService;
 
   private final TrafficPointElementVersionRepository repository;
@@ -90,13 +90,6 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].hasGeolocation", is(true)))
         .andExpect(jsonPath("$[0].creationDate", LocalDateTimeMatchers.stringDateTimeIsWithinOneHourOfNow()))
         .andExpect(jsonPath("$[0].creator", is("e123456")));
-  }
-
-  @Test
-  void shouldGetTrafficPointElementValidTodayByServicePointNumber() throws Exception {
-    mvc.perform(get("/v1/traffic-point-elements/actual-date/" + trafficPointElementVersion.getServicePointNumber().getNumber()))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:1400015:0:310240")));
   }
 
   @Test
