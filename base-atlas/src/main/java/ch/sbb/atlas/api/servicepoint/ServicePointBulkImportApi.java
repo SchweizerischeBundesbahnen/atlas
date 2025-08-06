@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.servicepoint;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
@@ -10,7 +11,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "[Internal] Service Point Bulk Import")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Service Point Bulk Import")
 public interface ServicePointBulkImportApi {
 
   String BASEPATH = "internal/service-points/bulk-import";

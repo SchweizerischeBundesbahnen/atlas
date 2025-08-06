@@ -20,4 +20,6 @@ public class AtlasApiConstants {
 
   public static final String ZURICH_ZONE_ID = "Europe/Zurich";
 
+  public static final String INTERNAL_API_TAG_PREFIX = "[INTERNAL] ";
+
 }
