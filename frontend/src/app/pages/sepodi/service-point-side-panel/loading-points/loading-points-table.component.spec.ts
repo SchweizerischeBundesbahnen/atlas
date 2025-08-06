@@ -7,20 +7,21 @@ import {
 } from '../../../../app.testing.mocks';
 import { of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingPointsService } from '../../../../api';
 import { LOADING_POINT } from '../../../../../test/data/loading-point';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { LoadingPointInternalService } from '../../../../api/service/sepodi/loading-point-internal.service';
 
 describe('LoadingPointsTableComponent', () => {
   let component: LoadingPointsTableComponent;
   let fixture: ComponentFixture<LoadingPointsTableComponent>;
 
-  const loadingPointService = jasmine.createSpyObj('LoadingPointsService', [
-    'getLoadingPointOverview',
-  ]);
-  loadingPointService.getLoadingPointOverview.and.returnValue(
+  const loadingPointInternalService = jasmine.createSpyObj(
+    'LoadingPointInternalService',
+    ['getLoadingPointOverview']
+  );
+  loadingPointInternalService.getLoadingPointOverview.and.returnValue(
     of(LOADING_POINT)
   );
   const route = { parent: { snapshot: { params: { id: 8504414 } } } };
@@ -31,7 +32,10 @@ describe('LoadingPointsTableComponent', () => {
       imports: [LoadingPointsTableComponent, TranslateModule.forRoot()],
       providers: [
         { provide: ActivatedRoute, useValue: route },
-        { provide: LoadingPointsService, useValue: loadingPointService },
+        {
+          provide: LoadingPointInternalService,
+          useValue: loadingPointInternalService,
+        },
       ],
     })
       .overrideComponent(LoadingPointsTableComponent, {
@@ -57,7 +61,7 @@ describe('LoadingPointsTableComponent', () => {
     });
 
     expect(
-      loadingPointService.getLoadingPointOverview
+      loadingPointInternalService.getLoadingPointOverview
     ).toHaveBeenCalledOnceWith(8504414, 0, 10, ['designation,asc']);
   });
 
