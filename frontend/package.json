@@ -51,7 +51,7 @@
     "@angular/platform-browser-dynamic": "20.1.6",
     "@angular/router": "20.1.6",
     "@angular/service-worker": "20.1.6",
-    "@ng-select/ng-select": "15.2.0",
+    "@ng-select/ng-select": "20.1.0",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "angular-oauth2-oidc": "^20.0.0",
