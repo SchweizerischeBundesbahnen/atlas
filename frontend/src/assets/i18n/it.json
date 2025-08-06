@@ -11,7 +11,7 @@
       "MAX": "Il valore del campo <{{propertyPath}}> non deve superare {{attributeValue}}.",
       "VALID_SPATIAL_REFERENCE_FRACTION": "Il numero massimo di decimali è stato superato. LV03 e LV95 max. 5. WGS84 e WGS84WEB max. 11.",
       "VALID_SERVICE_POINT_NUMBER": "<numberShort> deve essere presente solo se il paese non è in (85,11,12,13,14).",
-      "VALID_STOP_POINT_TYPE": "<stopPointType> è consentito solo per le fermate e in questo caso deve essere definito con un valore non \"UNKNOWN\"."
+      "VALID_STOP_POINT_TYPE": "<stopPointType> può essere utilizzato solo per le fermate. Una fermata è definita dalla selezione del mezzo di trasporto. Per le fermate deve essere assegnato un valore valido che non sia \"UNKNOWN\"."
     },
     "CLIENT": {
       "GENERIC": "Si è verificato un errore nella pagina web, ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato atlas."
