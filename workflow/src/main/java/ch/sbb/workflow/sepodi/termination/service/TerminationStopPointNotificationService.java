@@ -33,11 +33,8 @@ public class TerminationStopPointNotificationService {
     mailProducerService.produceMailNotification(notification);
   }
 
-  public void sendTariffStopApprovedNotificationToNovaAndBo(TerminationStopPointWorkflow workflow) {
+  public void sendTariffStopApprovedNotificationToNova(TerminationStopPointWorkflow workflow) {
     MailNotification notification = builderNotificationService.buildTariffStopApprovedNotification(workflow);
-    mailProducerService.produceMailNotification(notification);
-
-    notification.setTo(List.of(workflow.getApplicantMail()));
     mailProducerService.produceMailNotification(notification);
   }
 
