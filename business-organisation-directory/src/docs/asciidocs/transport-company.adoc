@@ -5,8 +5,12 @@ image::logo-atlas.svg[50,50,align=left,role=left]
 
 link:rest-api.html[*< Back to main*]
 
-== Get All Transport Companies - Successfully
+== Get all Transport Companies - Successfully
 
 include::{snippets}/transport-company-api-v1-test/should-get-transport-companies/atlas-doc.adoc[]
+
+== Get single Transport Company - Successfully
+
+include::{snippets}/transport-company-api-v1-test/should-get-transport-company/atlas-doc.adoc[]
 
 link:rest-api.html[*< Back to main*]

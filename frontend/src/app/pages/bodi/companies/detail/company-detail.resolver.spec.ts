@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { Company } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { CompanyDetailResolver } from './company-detail-resolver.service';
-import { CompanyInternalService } from '../../../../api/service/bodi/company-internal.service';
+import { CompanyService } from '../../../../api/service/bodi/company.service';
 import SpyObj = jasmine.SpyObj;
 
 const company: Company = {
@@ -15,7 +15,7 @@ const company: Company = {
 describe('CompanyDetailResolver', () => {
   let resolver: CompanyDetailResolver;
 
-  let companyInternalServiceSpy: SpyObj<CompanyInternalService>;
+  let companyInternalServiceSpy: SpyObj<CompanyService>;
 
   beforeEach(() => {
     companyInternalServiceSpy = jasmine.createSpyObj({
@@ -27,7 +27,7 @@ describe('CompanyDetailResolver', () => {
       providers: [
         CompanyDetailResolver,
         {
-          provide: CompanyInternalService,
+          provide: CompanyService,
           useValue: companyInternalServiceSpy,
         },
       ],

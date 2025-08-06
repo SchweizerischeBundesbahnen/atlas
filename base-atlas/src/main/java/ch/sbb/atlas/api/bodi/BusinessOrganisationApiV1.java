@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("v1/business-organisations")
 public interface BusinessOrganisationApiV1 {
 
+  @Operation(deprecated = true, summary = "Use GET /versions instead")
   @GetMapping
   @PageableAsQueryParam
   Container<BusinessOrganisationModel> getAllBusinessOrganisations(
