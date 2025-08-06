@@ -87,7 +87,7 @@ class TerminationStopPointNotificationServiceTest {
   }
 
   @Test
-  void shouldSendTariffStopApprovedNotificationToNovaAndBo() {
+  void shouldSendTariffStopApprovedNotificationToNova() {
     //given
     TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflow.builder()
         .sloid("ch:1:sloid:1")
@@ -102,7 +102,7 @@ class TerminationStopPointNotificationServiceTest {
         .build();
     //when
     when(builderNotificationService.buildTariffStopApprovedNotification(any())).thenReturn(MailNotification.builder().build());
-    notificationService.sendTariffStopApprovedNotificationToNovaAndBo(terminationStopPointWorkflow);
+    notificationService.sendTariffStopApprovedNotificationToNova(terminationStopPointWorkflow);
 
     verify(builderNotificationService).buildTariffStopApprovedNotification(terminationStopPointWorkflow);
     verify(mailProducerService, times(2)).produceMailNotification(any());
