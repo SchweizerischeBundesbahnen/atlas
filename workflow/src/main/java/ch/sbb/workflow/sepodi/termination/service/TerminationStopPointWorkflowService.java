@@ -106,11 +106,11 @@ public class TerminationStopPointWorkflowService {
     TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
     if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.STARTED) {
       terminationWorkflow.setStatus(CANCELED);
-      notificationService.sendAbortNotificationToBoAndInfoPlus(terminationWorkflow);
+      notificationService.sendAbortNotificationToBoAndInfoPlus(terminationWorkflow, abortModel);
     }
     if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.TARIFF_STOP_APPROVED) {
       terminationWorkflow.setStatus(CANCELED);
-      notificationService.sendAbortNotificationToBoInfoPlusAndNova(terminationWorkflow);
+      notificationService.sendAbortNotificationToBoInfoPlusAndNova(terminationWorkflow, abortModel);
     }
     if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.TERMINATION_NOT_APPROVED) {
       terminationWorkflow.setStatus(TERMINATION_NOT_APPROVED_CLOSED);

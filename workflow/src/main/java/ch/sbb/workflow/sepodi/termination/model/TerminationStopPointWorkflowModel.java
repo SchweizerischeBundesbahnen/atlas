@@ -64,6 +64,9 @@ public class TerminationStopPointWorkflowModel {
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   private String abortComment;
 
+  @Schema(description = "StopPoint valid to")
+  private LocalDate versionValidTo;
+
   @Schema(description = "Termination Date defined by Business Organisation managing the Stop Point")
   private LocalDate boTerminationDate;
 
