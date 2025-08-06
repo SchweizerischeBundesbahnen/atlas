@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UserAdministrationClientEditComponent } from './user-administration-client-edit.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
   ApplicationRole,
   ApplicationType,
-  BusinessOrganisationsService,
   ClientCredential,
   PermissionRestrictionType,
 } from '../../../../../api';
@@ -34,13 +32,6 @@ describe('UserAdministrationClientEditComponent', () => {
 
   let clientCredentialAdministrationService: SpyObj<ClientCredentialAdministrationService>;
   let notificationServiceSpy: SpyObj<NotificationService>;
-  const businessOrganisationsService = jasmine.createSpyObj(
-    'BusinessOrganisationService',
-    ['getAllBusinessOrganisations']
-  );
-  businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(
-    of({ objects: [] })
-  );
   let dialogServiceSpy: SpyObj<DialogService>;
 
   beforeEach(async () => {
@@ -57,16 +48,6 @@ describe('UserAdministrationClientEditComponent', () => {
     ]);
     dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirmLeave']);
     dialogServiceSpy.confirmLeave.and.returnValue(of(true));
-    TestBed.overrideComponent(UserAdministrationClientEditComponent, {
-      set: {
-        viewProviders: [
-          {
-            provide: BusinessOrganisationsService,
-            useValue: businessOrganisationsService,
-          },
-        ],
-      },
-    });
     await TestBed.configureTestingModule({
       imports: [
         UserAdministrationClientEditComponent,

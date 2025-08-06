@@ -2,18 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import {
   ApplicationType,
   BusinessOrganisation,
-  BusinessOrganisationsService,
   TransportCompany,
   TransportCompanyBoRelation,
-  TransportCompanyRelationsService,
 } from '../../../../api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import {
   FormControl,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import moment, { Moment } from 'moment';
@@ -38,6 +36,8 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { BackButtonDirective } from '../../../../core/components/button/back-button/back-button.directive';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
+import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
 
 @Component({
   templateUrl: './transport-company-detail.component.html',
@@ -124,8 +124,8 @@ export class TransportCompanyDetailComponent
   );
 
   constructor(
-    private readonly businessOrganisationsService: BusinessOrganisationsService,
-    private readonly transportCompanyRelationsService: TransportCompanyRelationsService,
+    private readonly businessOrganisationService: BusinessOrganisationService,
+    private readonly transportCompanyRelationInternalService: TransportCompanyRelationInternalService,
     private readonly permissionService: PermissionService,
     private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
     private readonly dialogService: DialogService,
@@ -201,7 +201,7 @@ export class TransportCompanyDetailComponent
 
   getBusinessOrganisations(searchString: string): void {
     if (!searchString) return;
-    this.businessOrganisationSearchResults = this.businessOrganisationsService
+    this.businessOrganisationSearchResults = this.businessOrganisationService
       .getAllBusinessOrganisations(
         [searchString],
         undefined,
@@ -225,20 +225,15 @@ export class TransportCompanyDetailComponent
     const validFrom = moment(this.form.value.validFrom).toDate();
     const validTo = moment(this.form.value.validTo).toDate();
 
-    const save = this.isUpdateRelationSelected
-      ? this.transportCompanyRelationsService.updateTransportCompanyRelation({
-          id: this.relationId,
-          validFrom,
-          validTo,
-        })
-      : this.transportCompanyRelationsService.createTransportCompanyRelation({
-          transportCompanyId: this.transportCompany.id!,
-          sboid: this.form.value.businessOrganisation!.sboid!,
-          validFrom,
-          validTo,
-        });
+    if (this.isUpdateRelationSelected) {
+      this.handleSave(this.updateExistingRelation(validFrom, validTo));
+    } else {
+      this.handleSave(this.createRelation(validFrom, validTo));
+    }
+  }
 
-    save
+  private handleSave(save$: Observable<TransportCompanyBoRelation | void>) {
+    save$
       .pipe(
         switchMap(() => this.reloadRelations()),
         tap(() => {
@@ -255,8 +250,29 @@ export class TransportCompanyDetailComponent
       .subscribe();
   }
 
+  private createRelation(validFrom: Date, validTo: Date) {
+    return this.transportCompanyRelationInternalService.createTransportCompanyRelation(
+      {
+        transportCompanyId: this.transportCompany.id!,
+        sboid: this.form.value.businessOrganisation!.sboid!,
+        validFrom,
+        validTo,
+      }
+    );
+  }
+
+  private updateExistingRelation(validFrom: Date, validTo: Date) {
+    return this.transportCompanyRelationInternalService.updateTransportCompanyRelation(
+      {
+        id: this.relationId,
+        validFrom,
+        validTo,
+      }
+    );
+  }
+
   updateRelation() {
-    this.transportCompanyRelationsService
+    this.transportCompanyRelationInternalService
       .getTransportCompanyRelations(this.transportCompany.id!)
       .subscribe((relations) => {
         const foundRelation = relations.find(
@@ -273,7 +289,7 @@ export class TransportCompanyDetailComponent
   }
 
   deleteRelation(): void {
-    this.transportCompanyRelationsService
+    this.transportCompanyRelationInternalService
       .deleteTransportCompanyRelation(
         this.transportCompanyRelations[
           this.selectedTransportCompanyRelationIndex
@@ -300,7 +316,7 @@ export class TransportCompanyDetailComponent
   }
 
   private reloadRelations(): Observable<TransportCompanyBoRelation[]> {
-    return this.transportCompanyRelationsService
+    return this.transportCompanyRelationInternalService
       .getTransportCompanyRelations(this.transportCompany.id!)
       .pipe(
         tap(

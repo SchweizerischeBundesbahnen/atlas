@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.business.organisation.directory.controller.TransportCompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
+import ch.sbb.business.organisation.directory.model.TransportCompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRepository;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
- class TransportCompanyServiceSearchTest {
+class TransportCompanyServiceSearchTest {
 
   @Autowired
   private TransportCompanyRepository repository;
@@ -30,12 +30,12 @@ import org.springframework.transaction.annotation.Transactional;
   @BeforeEach
   void createDefaultVersion() {
     repository.save(TransportCompany.builder()
-                                    .id(5L)
-                                    .description("Beste Company")
-                                    .number("#0001")
-                                    .enterpriseId("enterprisige ID")
-                                    .transportCompanyStatus(TransportCompanyStatus.OPERATOR)
-                                    .build());
+        .id(5L)
+        .description("Beste Company")
+        .number("#0001")
+        .enterpriseId("enterprisige ID")
+        .transportCompanyStatus(TransportCompanyStatus.OPERATOR)
+        .build());
   }
 
   @AfterEach
@@ -48,9 +48,9 @@ import org.springframework.transaction.annotation.Transactional;
     //when
     Page<TransportCompany> result = transportCompanyService.getTransportCompanies(
         TransportCompanySearchRestrictions.builder()
-                                          .pageable(Pageable.unpaged())
-                                          .searchCriterias(List.of("company"))
-                                          .build());
+            .pageable(Pageable.unpaged())
+            .searchCriterias(List.of("company"))
+            .build());
 
     //then
     assertThat(result.getContent()).hasSize(1);
@@ -61,9 +61,9 @@ import org.springframework.transaction.annotation.Transactional;
     //when
     Page<TransportCompany> result = transportCompanyService.getTransportCompanies(
         TransportCompanySearchRestrictions.builder()
-                                          .pageable(Pageable.unpaged())
-                                          .searchCriterias(List.of("wadde hadde dudde da"))
-                                          .build());
+            .pageable(Pageable.unpaged())
+            .searchCriterias(List.of("wadde hadde dudde da"))
+            .build());
 
     //then
     assertThat(result.getContent()).isEmpty();
@@ -74,10 +74,10 @@ import org.springframework.transaction.annotation.Transactional;
     //when
     Page<TransportCompany> result = transportCompanyService.getTransportCompanies(
         TransportCompanySearchRestrictions.builder()
-                                          .pageable(Pageable.unpaged())
-                                          .statusRestrictions(Collections.singletonList(
-                                              TransportCompanyStatus.OPERATOR))
-                                          .build());
+            .pageable(Pageable.unpaged())
+            .statusRestrictions(Collections.singletonList(
+                TransportCompanyStatus.OPERATOR))
+            .build());
 
     //then
     assertThat(result.getContent()).hasSize(1);
@@ -88,10 +88,10 @@ import org.springframework.transaction.annotation.Transactional;
     //when
     Page<TransportCompany> result = transportCompanyService.getTransportCompanies(
         TransportCompanySearchRestrictions.builder()
-                                          .pageable(Pageable.unpaged())
-                                          .statusRestrictions(Collections.singletonList(
-                                              TransportCompanyStatus.LIQUIDATED))
-                                          .build());
+            .pageable(Pageable.unpaged())
+            .statusRestrictions(Collections.singletonList(
+                TransportCompanyStatus.LIQUIDATED))
+            .build());
 
     //then
     assertThat(result.getContent()).isEmpty();

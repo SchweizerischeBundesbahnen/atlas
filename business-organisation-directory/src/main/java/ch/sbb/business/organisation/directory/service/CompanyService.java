@@ -1,8 +1,8 @@
 package ch.sbb.business.organisation.directory.service;
 
 import ch.sbb.atlas.model.exception.CountryCodeNotFoundException;
-import ch.sbb.business.organisation.directory.controller.CompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.Company;
+import ch.sbb.business.organisation.directory.model.CompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.repository.CompanyRepository;
 import ch.sbb.business.organisation.directory.service.crd.CrdClient;
 import java.time.LocalDate;

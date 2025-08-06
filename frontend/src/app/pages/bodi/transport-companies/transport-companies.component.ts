@@ -2,11 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
-import {
-  TransportCompaniesService,
-  TransportCompany,
-  TransportCompanyStatus,
-} from '../../../api';
+import { TransportCompany, TransportCompanyStatus } from '../../../api';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TableService } from '../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
@@ -16,6 +12,7 @@ import { TableFilter } from '../../../core/components/table-filter/config/table-
 import { Pages } from '../../pages';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TransportCompanyService } from '../../../api/service/bodi/transport-company.service';
 
 @Component({
   selector: 'app-bodi-transport-companies',
@@ -75,10 +72,10 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
   private transportCompaniesSubscription?: Subscription;
 
   constructor(
-    private transportCompaniesService: TransportCompaniesService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private tableService: TableService
+    private readonly transportCompanyService: TransportCompanyService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly tableService: TableService
   ) {}
 
   ngOnInit() {
@@ -89,7 +86,7 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
   }
 
   getOverview(pagination: TablePagination) {
-    this.transportCompaniesSubscription = this.transportCompaniesService
+    this.transportCompaniesSubscription = this.transportCompanyService
       .getTransportCompanies(
         this.tableService.filter.chipSearch.getActiveSearch(),
         this.tableService.filter.multiSelectTransportCompanyStatus.getActiveSearch(),

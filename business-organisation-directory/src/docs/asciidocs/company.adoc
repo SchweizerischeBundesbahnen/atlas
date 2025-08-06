@@ -1,0 +1,16 @@
+include::../../../../auto-rest-doc/src/main/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Company API Guide
+
+link:rest-api.html[*< Back to main*]
+
+== Get all Companies - Successfully
+
+include::{snippets}/company-api-v1-test/should-get-companies/atlas-doc.adoc[]
+
+== Get single Company - Successfully
+
+include::{snippets}/company-api-v1-test/should-get-company/atlas-doc.adoc[]
+
+link:rest-api.html[*< Back to main*]
