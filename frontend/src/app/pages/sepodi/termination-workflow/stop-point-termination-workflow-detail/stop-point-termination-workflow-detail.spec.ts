@@ -26,6 +26,7 @@ const workflow: TerminationStopPointWorkflowModel = {
   applicantMail: 'a@b.ch',
   workflowComment: 'Comment',
   designationOfficial: 'designationOfficial',
+  versionValidTo: new Date('9999-06-01'),
 };
 
 const workflowData: StopPointTerminationWorkflowDetailData = {
@@ -121,7 +122,8 @@ describe('StopPointTerminationWorkflowDetail', () => {
       false,
       TerminationWorkflowStatus.TerminationNotApproved,
       TerminationDecisionPersonEnum.Nova,
-      jasmine.any(FormGroup)
+      jasmine.any(FormGroup),
+      new Date('9999-06-01')
     );
   });
 });

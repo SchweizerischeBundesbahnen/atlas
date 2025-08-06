@@ -114,7 +114,8 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
       true,
       this.workflow.status!,
       examinantDecision.controls.terminationDecisionPerson.value!,
-      examinantDecision
+      examinantDecision,
+      this.workflow.versionValidTo!
     );
   }
 
@@ -164,7 +165,8 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
         false,
         this.workflow.status!,
         this.terminationPermission!,
-        decisionForm
+        decisionForm,
+        this.workflow.versionValidTo!
       )
       .subscribe((result) => {
         if (result) {
