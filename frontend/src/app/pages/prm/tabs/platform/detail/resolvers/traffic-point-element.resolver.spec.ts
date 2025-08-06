@@ -9,17 +9,15 @@ import {
 import { trafficPointElementResolver } from './traffic-point-element.resolver';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../../../test/data/traffic-point-element';
 import { AppTestingModule } from '../../../../../../app.testing.module';
-import {
-  ReadTrafficPointElementVersion,
-  TrafficPointElementsService,
-} from '../../../../../../api';
+import { ReadTrafficPointElementVersion } from '../../../../../../api';
+import { TrafficPointElementService } from '../../../../../../api/service/sepodi/traffic-point-element.service';
 
 describe('TrafficPointElementResolver', () => {
-  const trafficPointElementsService = jasmine.createSpyObj(
+  const trafficPointElementService = jasmine.createSpyObj(
     'trafficPointElementsService',
     ['getTrafficPointElement']
   );
-  trafficPointElementsService.getTrafficPointElement.and.returnValue(
+  trafficPointElementService.getTrafficPointElement.and.returnValue(
     of(BERN_WYLEREGG_TRAFFIC_POINTS)
   );
 
@@ -28,8 +26,8 @@ describe('TrafficPointElementResolver', () => {
       imports: [AppTestingModule],
       providers: [
         {
-          provide: TrafficPointElementsService,
-          useValue: trafficPointElementsService,
+          provide: TrafficPointElementService,
+          useValue: trafficPointElementService,
         },
       ],
     });

@@ -1,17 +1,17 @@
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { TrafficPointElementsService } from '../../../api';
 import { TestBed } from '@angular/core/testing';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TrafficPointElementsDetailResolver } from './traffic-point-elements-detail-resolver.service';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
+import { TrafficPointElementService } from '../../../api/service/sepodi/traffic-point-element.service';
 
 describe('TrafficPointElementsDetailResolver', () => {
-  const trafficPointServiceSpy = jasmine.createSpyObj(
+  const trafficPointElementService = jasmine.createSpyObj(
     'trafficPointElementsService',
     ['getTrafficPointElement']
   );
-  trafficPointServiceSpy.getTrafficPointElement.and.returnValue(
+  trafficPointElementService.getTrafficPointElement.and.returnValue(
     of([BERN_WYLEREGG_TRAFFIC_POINTS[0]])
   );
 
@@ -23,8 +23,8 @@ describe('TrafficPointElementsDetailResolver', () => {
       providers: [
         TrafficPointElementsDetailResolver,
         {
-          provide: TrafficPointElementsService,
-          useValue: trafficPointServiceSpy,
+          provide: TrafficPointElementService,
+          useValue: trafficPointElementService,
         },
       ],
     });

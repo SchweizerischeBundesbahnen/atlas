@@ -2,15 +2,12 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { GeoJSONSource, MapGeoJSONFeature } from 'maplibre-gl';
 import { MAP_TRAFFIC_POINT_LAYER_NAME } from './map-style';
 import { Feature } from 'geojson';
-import {
-  CoordinatePair,
-  TrafficPointElementsService,
-  TrafficPointElementType,
-} from '../../../api';
+import { CoordinatePair, TrafficPointElementType } from '../../../api';
 import { Pages } from '../../pages';
 import { MapService } from './map.service';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject, take } from 'rxjs';
+import { TrafficPointElementInternalService } from '../../../api/service/sepodi/traffic-point-element-internal.service';
 
 export interface DisplayableTrafficPoint {
   type: TrafficPointElementType;
@@ -27,7 +24,7 @@ export class TrafficPointMapService implements OnDestroy {
 
   constructor(
     private mapService: MapService,
-    private trafficPointElementsService: TrafficPointElementsService
+    private trafficPointElementInternalService: TrafficPointElementInternalService
   ) {}
 
   static buildTrafficPointPopupInformation(features: MapGeoJSONFeature[]) {
@@ -58,7 +55,7 @@ export class TrafficPointMapService implements OnDestroy {
         takeUntil(this.onDestroy$)
       )
       .subscribe(() => {
-        this.trafficPointElementsService
+        this.trafficPointElementInternalService
           .getTrafficPointsOfServicePointValidToday(servicePointNumber)
           .subscribe((points) => {
             const trafficPoints: DisplayableTrafficPoint[] = points

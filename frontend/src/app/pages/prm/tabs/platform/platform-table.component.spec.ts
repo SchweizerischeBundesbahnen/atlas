@@ -1,22 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlatformTableComponent } from './platform-table.component';
-import {
-  MockAtlasButtonComponent,
-  MockNavigationSepodiPrmComponent,
-  MockTableComponent,
-} from '../../../../app.testing.mocks';
+import { MockAtlasButtonComponent, MockNavigationSepodiPrmComponent, MockTableComponent, } from '../../../../app.testing.mocks';
 import { ActivatedRoute, Router } from '@angular/router';
 import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
-import {
-  PersonWithReducedMobilityService,
-  TrafficPointElementsService,
-} from '../../../../api';
+import { PersonWithReducedMobilityService, } from '../../../../api';
 import { of } from 'rxjs';
 import { BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER } from '../../../../../test/data/traffic-point-element';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi-prm/navigation-sepodi-prm.component';
+import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
 import SpyObj = jasmine.SpyObj;
 
 describe('PlatformTableComponent', () => {
@@ -30,11 +24,11 @@ describe('PlatformTableComponent', () => {
   );
   personWithReducedMobilityService.getPlatformOverview.and.returnValue(of([]));
 
-  const trafficPointElementsService = jasmine.createSpyObj(
+  const trafficPointElementInternalService = jasmine.createSpyObj(
     'trafficPointElementsService',
     ['getPlatformsOfServicePoint']
   );
-  trafficPointElementsService.getPlatformsOfServicePoint.and.returnValue(
+  trafficPointElementInternalService.getPlatformsOfServicePoint.and.returnValue(
     of(BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER)
   );
 
@@ -59,8 +53,8 @@ describe('PlatformTableComponent', () => {
           useValue: personWithReducedMobilityService,
         },
         {
-          provide: TrafficPointElementsService,
-          useValue: trafficPointElementsService,
+          provide: TrafficPointElementInternalService,
+          useValue: trafficPointElementInternalService,
         },
         { provide: Router, useValue: routerSpy },
       ],
