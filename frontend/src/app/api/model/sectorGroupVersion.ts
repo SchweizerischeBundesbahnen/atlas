@@ -28,6 +28,18 @@ export interface SectorGroupVersion {
      */
     readonly editor?: string;
     status?: Status;
+    /**
+     * This ID helps identify versions of a traffic point element in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a traffic point element. To do this, use the sloid in combination with the data range (valid from/valid until). 
+     */
+    readonly id?: number;
+    /**
+     * Unique code for sector that is used in customer information. https://transportdatamanagement.ch/standards/
+     */
+    readonly sloid?: string;
+    /**
+     * Unique code for traffic point element (TPE) that is used in customer information. By means of this ID, the connection between stops and bus / station stop area or boarding area can be established. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. https://transportdatamanagement.ch/standards/ 
+     */
+    trafficPointSloid: string;
     validFrom: Date;
     validTo: Date;
     /**
@@ -42,18 +54,6 @@ export interface SectorGroupVersion {
      * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
      */
     etagVersion?: number;
-    /**
-     * This ID helps identify versions of a traffic point element in the use case front end and/or update. This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a traffic point element. To do this, use the sloid in combination with the data range (valid from/valid until). 
-     */
-    readonly id?: number;
-    /**
-     * Unique code for sector that is used in customer information. https://transportdatamanagement.ch/standards/
-     */
-    sloid: string;
-    /**
-     * Unique code for traffic point element (TPE) that is used in customer information. By means of this ID, the connection between stops and bus / station stop area or boarding area can be established. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. https://transportdatamanagement.ch/standards/ 
-     */
-    trafficPointSloid: string;
 }
 export namespace SectorGroupVersion {
 }

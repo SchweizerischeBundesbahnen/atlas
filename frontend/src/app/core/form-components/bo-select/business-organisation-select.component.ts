@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -10,16 +11,14 @@ import {
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  BusinessOrganisation,
-  BusinessOrganisationsService,
-} from '../../../api';
+import { BusinessOrganisation } from '../../../api';
 import { map } from 'rxjs/operators';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import { NgClass, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
+import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 
 @Component({
   selector: 'bo-select',
@@ -52,9 +51,9 @@ export class BusinessOrganisationSelectComponent
   businessOrganisations: Observable<BusinessOrganisation[]> = of([]);
   private formSubscription!: Subscription;
 
-  constructor(
-    private businessOrganisationsService: BusinessOrganisationsService
-  ) {}
+  private readonly businessOrganisationService = inject(
+    BusinessOrganisationService
+  );
 
   ngOnInit(): void {
     this.init();
@@ -81,7 +80,7 @@ export class BusinessOrganisationSelectComponent
 
   searchBusinessOrganisation(searchString: string) {
     if (searchString) {
-      this.businessOrganisations = this.businessOrganisationsService
+      this.businessOrganisations = this.businessOrganisationService
         .getAllBusinessOrganisations(
           [searchString],
           this.sboidsRestrictions,

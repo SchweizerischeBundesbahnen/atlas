@@ -1,9 +1,6 @@
 import { Component, inject, input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import {
-  BusinessOrganisationsService,
-  ClientCredential,
-} from '../../../../../api';
+import { ClientCredential } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import { ScrollToTopDirective } from '../../../../../core/scroll-to-top/scroll-to-top.directive';
@@ -23,7 +20,6 @@ import { ConvertUserPermissionToRecordHelper } from '../../../../../core/compone
   selector: 'app-client-credential-administration-edit',
   templateUrl: './user-administration-client-edit.component.html',
   styleUrls: ['./user-administration-client-edit.component.scss'],
-  viewProviders: [BusinessOrganisationsService],
   imports: [
     ScrollToTopDirective,
     DetailPageContainerComponent,

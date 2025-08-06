@@ -13,23 +13,11 @@ import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 class BusinessOrganisationControllerStreamingResponseBodyTests extends BaseControllerApiTest {
 
   @MockitoBean
   private BusinessOrganisationAmazonService businessOrganisationAmazonService;
-
-  private StreamingResponseBody writeOutputStream(InputStream inputStream) {
-    return outputStream -> {
-      int len;
-      byte[] data = new byte[4096];
-      while ((len = inputStream.read(data, 0, data.length)) != -1) {
-        outputStream.write(data, 0, len);
-      }
-      inputStream.close();
-    };
-  }
 
   @Test
   void shouldReadJsonAfterExportTimetableYearChangeBusinessOrganisationVersions() throws Exception {

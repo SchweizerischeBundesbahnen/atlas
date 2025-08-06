@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { BusinessOrganisationsService } from '../../../api';
 import { Observable } from 'rxjs';
 import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
 import { map } from 'rxjs/operators';
 import { VersionsHandlingService } from '../../versioning/versions-handling.service';
+import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 
 @Pipe({
   name: 'boDisplay',
@@ -12,7 +12,7 @@ import { VersionsHandlingService } from '../../versioning/versions-handling.serv
 export class BoDisplayPipe implements PipeTransform {
   constructor(
     private readonly boSelectionDisplayPipe: BoSelectionDisplayPipe,
-    private readonly businessOrganisationsService: BusinessOrganisationsService
+    private readonly businessOrganisationsService: BusinessOrganisationService
   ) {}
 
   transform(sboid: string): Observable<string> {
