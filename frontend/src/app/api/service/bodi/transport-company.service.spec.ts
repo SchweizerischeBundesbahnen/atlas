@@ -24,6 +24,7 @@ describe('TransportCompanyService', () => {
     apiService = TestBed.inject(AtlasApiService);
 
     spyOn(apiService, 'paramsOf').and.callThrough();
+    spyOn(apiService, 'validateParams').and.callThrough();
     spyOn(apiService, 'get');
   });
 
@@ -46,6 +47,17 @@ describe('TransportCompanyService', () => {
     expect(apiService.get).toHaveBeenCalledOnceWith(
       '/business-organisation-directory/v1/transport-companies',
       any(HttpParams),
+    );
+  });
+
+  it('should getTransportCompany', () => {
+    const id = 123;
+
+    service.getTransportCompany(id);
+
+    expect(apiService.validateParams).toHaveBeenCalledOnceWith({ id });
+    expect(apiService.get).toHaveBeenCalledOnceWith(
+      `/business-organisation-directory/v1/transport-companies/${id}`,
     );
   });
 });

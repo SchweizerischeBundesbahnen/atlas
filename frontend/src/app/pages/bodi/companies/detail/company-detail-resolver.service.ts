@@ -4,12 +4,12 @@ import { catchError, EMPTY, Observable } from 'rxjs';
 import { Company } from '../../../../api';
 import { Pages } from '../../../pages';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { CompanyInternalService } from '../../../../api/service/bodi/company-internal.service';
+import { CompanyService } from '../../../../api/service/bodi/company.service';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyDetailResolver {
   constructor(
-    private readonly companyInternalService: CompanyInternalService,
+    private readonly companyInternalService: CompanyService,
     private readonly notificationService: NotificationService,
     private readonly router: Router
   ) {}

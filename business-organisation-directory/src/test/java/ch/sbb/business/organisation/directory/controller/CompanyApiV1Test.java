@@ -14,12 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class CompanyApiInternalTest extends BaseControllerApiTest {
+class CompanyApiV1Test extends BaseControllerApiTest {
 
   private final CompanyRepository repository;
 
   @Autowired
-  CompanyApiInternalTest(CompanyRepository repository) {
+  CompanyApiV1Test(CompanyRepository repository) {
     this.repository = repository;
   }
 
@@ -40,14 +40,14 @@ class CompanyApiInternalTest extends BaseControllerApiTest {
 
   @Test
   void shouldGetCompanies() throws Exception {
-    mvc.perform(get("/internal/companies")).andExpect(status().isOk())
+    mvc.perform(get("/v1/companies")).andExpect(status().isOk())
         .andExpect(jsonPath("$.objects[0]." + Fields.uicCode, is("5")))
         .andExpect(jsonPath("$.objects[0]." + Fields.name, is("Beste Company")));
   }
 
   @Test
   void shouldGetCompany() throws Exception {
-    mvc.perform(get("/internal/companies/5")).andExpect(status().isOk())
+    mvc.perform(get("/v1/companies/5")).andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.uicCode, is("5")))
         .andExpect(jsonPath("$." + Fields.name, is("Beste Company")));
   }

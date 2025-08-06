@@ -2,7 +2,6 @@ package ch.sbb.business.organisation.directory.controller;
 
 import ch.sbb.atlas.api.bodi.TransportCompanyApiInternal;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.business.organisation.directory.mapper.TransportCompanyMapper;
 import ch.sbb.business.organisation.directory.service.TransportCompanyService;
 import java.util.List;
@@ -25,13 +24,6 @@ public class TransportCompanyControllerInternal implements TransportCompanyApiIn
   @Override
   public List<TransportCompanyModel> getTransportCompaniesBySboid(String sboid) {
     return transportCompanyService.findBySboid(sboid).stream().map(TransportCompanyMapper::fromEntity).toList();
-  }
-
-  @Override
-  public TransportCompanyModel getTransportCompany(Long id) {
-    return transportCompanyService.findById(id)
-        .map(TransportCompanyMapper::fromEntity)
-        .orElseThrow(() -> new IdNotFoundException(id));
   }
 
 }

@@ -1,7 +1,6 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import ch.sbb.atlas.api.bodi.TransportCompanyModel;
-import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
+import ch.sbb.atlas.api.bodi.CompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,18 +12,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "Transport Companies")
-@RequestMapping("v1/transport-companies")
-public interface TransportCompanyApiV1 {
+@Tag(name = "Companies")
+@RequestMapping("v1/companies")
+public interface CompanyApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
-  Container<TransportCompanyModel> getTransportCompanies(
+  Container<CompanyModel> getCompanies(
       @Parameter(hidden = true) Pageable pageable,
-      @Parameter @RequestParam(required = false) List<String> searchCriteria,
-      @Parameter @RequestParam(required = false) List<TransportCompanyStatus> statusChoices);
+      @Parameter @RequestParam(required = false) List<String> searchCriteria);
 
-  @GetMapping("{id}")
-  TransportCompanyModel getTransportCompany(@PathVariable Long id);
+  @GetMapping("{uic}")
+  CompanyModel getCompany(@PathVariable String uic);
 
 }
