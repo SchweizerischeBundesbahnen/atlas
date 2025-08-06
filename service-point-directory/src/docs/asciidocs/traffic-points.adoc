@@ -7,62 +7,62 @@ link:rest-api.html[*< Back to main*]
 
 == Read TrafficPointElements - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-versions/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-get-traffic-point-element-versions/atlas-doc.adoc[]
 
 == Read TrafficPointElement by SLOID - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-get-traffic-point-element/atlas-doc.adoc[]
 
 == Read TrafficPointElement by ID - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-version-by-id/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-get-traffic-point-element-version-by-id/atlas-doc.adoc[]
 
 == Read TrafficPointElement by ServicePointNumbers - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-fail-on-invalid-traffic-point-element-number/atlas-doc.adoc[]
 
 == Read TrafficPointElement by SLOID - NotFound
 
-include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-fail-on-invalid-traffic-point-element-number/atlas-doc.adoc[]
 
 == Read TrafficPointElement by ParentServicePointSloids - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-versions-by-parent-service-point-sloid/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-get-traffic-point-element-versions-by-parent-service-point-sloid/atlas-doc.adoc[]
 
 == Create TrafficPointElement with automatic SLOID generation - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-create-traffic-point-element-platform-with-automatic-sloid/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-create-traffic-point-element-platform-with-automatic-sloid/atlas-doc.adoc[]
 
 == Create TrafficPointElement with given SLOID - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-create-traffic-point-element-platform-with-given-sloid/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-create-traffic-point-element-platform-with-given-sloid/atlas-doc.adoc[]
 
 == Update TrafficPointElement - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-update-traffic-point-and-create-multiple-versions/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-update-traffic-point-and-create-multiple-versions/atlas-doc.adoc[]
 
 == Update TrafficPointElement - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-update-traffic-point-and-not-create-multiple-versions/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-update-traffic-point-and-not-create-multiple-versions/atlas-doc.adoc[]
 
 == Update TrafficPointElement - NotEqualSloids
 
-include::{snippets}/traffic-point-element-controller-api-test/should-throw-sloids-not-equal-exception-when-update/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-throw-sloids-not-equal-exception-when-update/atlas-doc.adoc[]
 
 == Update TrafficPointElement - OptimisticLocking
 
-include::{snippets}/traffic-point-element-controller-api-test/should-return-optimistic-locking-error-response/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-return-optimistic-locking-error-response/atlas-doc.adoc[]
 
 == Terminate TrafficPointElement - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-terminate-traffic-point-successfully/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-terminate-traffic-point-successfully/atlas-doc.adoc[]
 
 == Terminate TrafficPointElement - Unsuccessfully SLOID not found
 
-include::{snippets}/traffic-point-element-controller-api-test/should-throw-sloid-not-found-exception-when-terminate-traffic-point/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-throw-sloid-not-found-exception-when-terminate-traffic-point/atlas-doc.adoc[]
 
 == Terminate TrafficPointElement - Unsuccessfully FORBIDDEN
 
-include::{snippets}/traffic-point-element-controller-api-test/should-throw-exception-when-terminating-traffic-point/atlas-doc.adoc[]
+include::{snippets}/traffic-point-element-api-v1-controller-api-test/should-throw-exception-when-terminating-traffic-point/atlas-doc.adoc[]
 
 link:rest-api.html[*< Back to main*]
