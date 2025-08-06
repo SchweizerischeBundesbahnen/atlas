@@ -49,13 +49,21 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
   }
 
   public MailNotification buildTariffStopApprovedNotification(TerminationStopPointWorkflow workflow) {
+    List<Map<String, Object>> mailProperties = new ArrayList<>();
+    Map<String, Object> mailContentProperty = getCommonMailContentProperty(
+        TerminationWorkflowSubject.TARIFF_STOP_APPROVED_SUBJECT, workflow);
+    mailContentProperty.put("url", getWorkflowUrl(workflow));
+    mailContentProperty.put("boTerminationDate", DATE_FORMATTER.format(workflow.getBoTerminationDate()));
+    mailContentProperty.put("infoPlusTerminationDate", DATE_FORMATTER.format(workflow.getInfoPlusTerminationDate()));
+    mailContentProperty.put("infoPlusMotivation", workflow.getInfoPlusDecision().getMotivation());
+    mailProperties.add(mailContentProperty);
+
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.TARIFF_STOP_APPROVED_NOTIFICATION)
         .subject(TerminationWorkflowSubject.TARIFF_STOP_APPROVED_SUBJECT)
         .to(List.of(terminationExaminants.getNova().getEmail()))
-        .templateProperties(buildMailProperties(workflow,
-            TerminationWorkflowSubject.TARIFF_STOP_APPROVED_SUBJECT))
+        .templateProperties(mailProperties)
         .build();
   }
 

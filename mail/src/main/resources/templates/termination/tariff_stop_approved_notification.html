@@ -122,15 +122,20 @@
             <br><br>
             <hr>
             <div>
-                <br><span>Sehr geehrte Damen und Herren</span><br><br>
-                <span>Der Antrag zur Aufhebung der Haltestelle <b>[[${properties.get(0).get('designationOfficial')}]],
-                    [[${properties.get(0).get('sloid')}]]</b> wurde durch die erste Instanz bearbeitet und akzeptiert.
+                <br><span>Liebes Team NOVA</span><br><br>
+                <span>Der <a th:href="${properties.get(0).get('url')}">Antrag</a> zur Aufhebung der Haltestelle
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
+                    wurde durch Info+ geprüft.
                 </span>
                 <br><br>
-                Im nächsten Schritt wird die weitere Nutzung der Haltestelle beim Tarifsystem NOVA geprüft. Abhängig vom Ergebnis
-                dieser Abklärung wird die Haltestelle entweder terminiert oder an die Alliance SwissPass übergeben. In jedem Fall
-                liegt die Zuständigkeit für die Haltestelle künftig nicht mehr beim Transportunternehmen, die Anpassung erfolgt
-                automatisch in atlas.
+                <ul>
+                    <li>TU Aufhebung per: [[${properties.get(0).get('boTerminationDate')}]]</li>
+                    <li>Info+ Aufhebung per: [[${properties.get(0).get('infoPlusTerminationDate')}]]</li>
+                    <li>Kommentar Info+: <i>[[${properties.get(0).get('infoPlusMotivation')}]]</i></li>
+                </ul>
+                <br><br>
+                Wir bitten Sie, den Entscheid zeitnah im entsprechenden Formular zu erfassen. Erst nach vollständigem Eintrag
+                durch NOVA wird das Transportunternehmen über das Resultat seines Antrags informiert.
                 <br><br>
                 Bei Fragen dürfen Sie sich jederzeit bei der Fachstelle atlas melden: <a
                     href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
@@ -149,13 +154,20 @@
             <hr>
             <div>
                 <br><span>Mesdames et Messieurs</span><br><br>
-                <span>La demande de suppression de l'arrêt <b>[[${properties.get(0).get('designationOfficial')}]],
-                    [[${properties.get(0).get('sloid')}]]</b> traitée et acceptée par le premier service responsable.
+                <span>La <a th:href="${properties.get(0).get('url')}">demande</a> de suppression de l'arrêt
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
+                    a été examinée par Info+.
                 </span>
                 <br><br>
-                La prochaine étape consistera à clarifier l'utilisation de cet arrêt auprès du système tarifaire Nova. Après cette
-                clarification, l'arrêt sera terminé ou transmis à Alliance Swisspass pour la suite du suivi. Dans tous les cas,
-                l'entreprise de transport n'est plus responsable de cet arrêt, l'adaptation se fait automatiquement dans atlas.
+                <ul>
+                    <li>Suppression selon l’entreprise de transport: [[${properties.get(0).get('boTerminationDate')}]]</li>
+                    <li>Suppression selon Info+: [[${properties.get(0).get('infoPlusTerminationDate')}]]</li>
+                    <li>Commentaire Info+: <i>[[${properties.get(0).get('infoPlusMotivation')}]]</i></li>
+                </ul>
+                <br><br>
+                Nous vous prions de bien vouloir saisir la décision dans le formulaire correspondant dans les plus brefs délais.
+                Ce n’est qu’après la saisie complète par NOVA que l’entreprise de transport sera informée du résultat de sa
+                demande.
                 <br><br>
                 Si vous avez des questions, n'hésitez pas à contacter le service spécialisée atlas: <a href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
                 <br><br>
@@ -173,9 +185,16 @@
             <hr>
             <div>
                 <br><span>Gentile signore o signora </span><br><br>
-                <span>La richiesta di soppressione della fermata di <b>[[${properties.get(0).get('designationOfficial')}]],
-                    [[${properties.get(0).get('sloid')}]]</b> è stata elaborata e accettata dalla prima autorità responsabile.
+                <span>La <a th:href="${properties.get(0).get('url')}">richiesta</a> di soppressione della fermata di
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
+                    è stata elaborata e accettata dalla prima autorità responsabile.
                 </span>
+                <br><br>
+                <ul>
+                    <li>Soppressione secondo l’impresa di trasporto: [[${properties.get(0).get('boTerminationDate')}]]</li>
+                    <li>Soppressione secondo Info+: [[${properties.get(0).get('infoPlusTerminationDate')}]]</li>
+                    <li>Commento Info+: <i>[[${properties.get(0).get('infoPlusMotivation')}]]</i></li>
+                </ul>
                 <br><br>
                 Il prossimo passo sarà quello di chiarire l'uso di questa fermata con il sistema tariffario Nova. Dopo questo
                 chiarimento, la fermata sarà programmata o consegnata ad Alliance Swisspass per un ulteriore supporto. In entrambi

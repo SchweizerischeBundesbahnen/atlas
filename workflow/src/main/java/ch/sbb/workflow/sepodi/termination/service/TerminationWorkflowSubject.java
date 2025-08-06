@@ -12,6 +12,7 @@ public class TerminationWorkflowSubject {
   public static final String TARIFF_STOP_NOT_APPROVED_SUBJECT = """
       Aufhebungsantrag abgelehnt / Demande de terminaison refusé/ Richiesta di eliminazione rifituato
       """;
+  
   public static final String TARIFF_STOP_APPROVED_SUBJECT = """
       Haltestellenaufhebung bestätigt / Suppression de l'arrêt confirmée / Confermata la soppressione della fermata
       """;
