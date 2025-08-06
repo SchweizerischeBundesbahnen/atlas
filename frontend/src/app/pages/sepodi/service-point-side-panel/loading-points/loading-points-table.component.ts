@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Pages } from '../../../pages';
-import { LoadingPointsService, ReadLoadingPointVersion } from '../../../../api';
+import { ReadLoadingPointVersion } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { Subject } from 'rxjs';
@@ -12,6 +12,7 @@ import { AtlasButtonComponent } from '../../../../core/components/button/atlas-b
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LoadingPointInternalService } from '../../../../api/service/sepodi/loading-point-internal.service';
 
 @Component({
   selector: 'app-service-point-loading-points',
@@ -52,7 +53,7 @@ export class LoadingPointsTableComponent implements OnInit {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    private loadingPointsService: LoadingPointsService,
+    private loadingPointInternalService: LoadingPointInternalService,
     private tableService: TableService,
     private route: ActivatedRoute,
     private router: Router
@@ -66,7 +67,7 @@ export class LoadingPointsTableComponent implements OnInit {
   }
 
   getOverview(pagination: TablePagination) {
-    this.loadingPointsService
+    this.loadingPointInternalService
       .getLoadingPointOverview(
         this.servicePointNumber,
         pagination.page,
