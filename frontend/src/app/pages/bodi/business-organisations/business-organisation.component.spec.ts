@@ -1,16 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable, of, Subject } from 'rxjs';
 import { BusinessOrganisationComponent } from './business-organisation.component';
-import {
-  BusinessOrganisationsService,
-  ContainerBusinessOrganisation,
-} from '../../../api';
+import { ContainerBusinessOrganisation } from '../../../api';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { TableComponent } from '../../../core/components/table/table.component';
+import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 import Spy = jasmine.Spy;
+import SpyObj = jasmine.SpyObj;
 
 const businessOrganisation: ContainerBusinessOrganisation = {
   objects: [
@@ -36,17 +35,16 @@ describe('BusinessOrganisationComponent', () => {
   let component: BusinessOrganisationComponent;
   let fixture: ComponentFixture<BusinessOrganisationComponent>;
 
-  let businessOrganisationsServiceSpy: jasmine.SpyObj<BusinessOrganisationsService>;
+  let businessOrganisationServiceSpy: SpyObj<BusinessOrganisationService>;
 
   beforeEach(() => {
-    businessOrganisationsServiceSpy =
-      jasmine.createSpyObj<BusinessOrganisationsService>(
-        'BusinessOrganisationsServiceSpy',
-        ['getAllBusinessOrganisations']
-      );
+    businessOrganisationServiceSpy =
+      jasmine.createSpyObj<BusinessOrganisationService>([
+        'getAllBusinessOrganisations',
+      ]);
 
     (
-      businessOrganisationsServiceSpy.getAllBusinessOrganisations as Spy<
+      businessOrganisationServiceSpy.getAllBusinessOrganisations as Spy<
         () => Observable<ContainerBusinessOrganisation>
       >
     ).and.returnValue(of(businessOrganisation));
@@ -57,8 +55,8 @@ describe('BusinessOrganisationComponent', () => {
         TranslatePipe,
         RouterOutlet,
         {
-          provide: BusinessOrganisationsService,
-          useValue: businessOrganisationsServiceSpy,
+          provide: BusinessOrganisationService,
+          useValue: businessOrganisationServiceSpy,
         },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
@@ -85,7 +83,7 @@ describe('BusinessOrganisationComponent', () => {
     });
 
     expect(
-      businessOrganisationsServiceSpy.getAllBusinessOrganisations
+      businessOrganisationServiceSpy.getAllBusinessOrganisations
     ).toHaveBeenCalledOnceWith(
       [],
       undefined,

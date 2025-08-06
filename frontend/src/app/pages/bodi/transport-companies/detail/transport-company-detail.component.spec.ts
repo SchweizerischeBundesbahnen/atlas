@@ -1,17 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   BusinessOrganisation,
-  BusinessOrganisationsService,
-  ContainerBusinessOrganisation,
   TransportCompany,
   TransportCompanyBoRelation,
-  TransportCompanyRelationsService,
 } from '../../../../api';
 import { TransportCompanyDetailComponent } from './transport-company-detail.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { RelationComponent } from '../../../../core/components/relation/relation.component';
 import moment from 'moment';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import {
   adminPermissionServiceMock,
@@ -27,6 +24,9 @@ import { DetailPageContainerComponent } from '../../../../core/components/detail
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
+import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
+import SpyObj = jasmine.SpyObj;
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -77,7 +77,8 @@ const transportCompanyRelations: TransportCompanyBoRelation[] = [
 let component: TransportCompanyDetailComponent;
 let fixture: ComponentFixture<TransportCompanyDetailComponent>;
 
-let boService: BusinessOrganisationsService;
+let boService: BusinessOrganisationService;
+let transportCompanyRelationInternalServiceSpy: SpyObj<TransportCompanyRelationInternalService>;
 
 describe('TransportCompanyDetailComponent', () => {
   const mockData = [transportCompany, transportCompanyRelations];
@@ -86,7 +87,7 @@ describe('TransportCompanyDetailComponent', () => {
     setupTestBed(mockData);
 
     fixture = TestBed.createComponent(TransportCompanyDetailComponent);
-    boService = TestBed.inject(BusinessOrganisationsService);
+    boService = TestBed.inject(BusinessOrganisationService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -113,18 +114,13 @@ describe('TransportCompanyDetailComponent', () => {
   });
 
   it('should call getAllBusinessOrganisations with correct params', () => {
-    (boService.getAllBusinessOrganisations as () => Observable<ContainerBusinessOrganisation>) =
-      jasmine
-        .createSpy(
-          'getAllBusinessOrganisations',
-          boService.getAllBusinessOrganisations as () => Observable<ContainerBusinessOrganisation>
-        )
-        .and.returnValue(
-          of({
-            objects: [],
-            totalCount: 0,
-          })
-        );
+    spyOn(boService, 'getAllBusinessOrganisations').and.returnValue(
+      of({
+        objects: [],
+        totalCount: 0,
+      })
+    );
+
     component.getBusinessOrganisations('testSearchString');
     expect(boService.getAllBusinessOrganisations).toHaveBeenCalledOnceWith(
       ['testSearchString'],
@@ -154,7 +150,7 @@ describe('TransportCompanyDetailComponent', () => {
     expect(component.form.untouched).toBeTrue();
     expect(component.editMode).toBeFalse();
     expect(
-      transportCompanyRelationsServiceSpy.createTransportCompanyRelation
+      transportCompanyRelationInternalServiceSpy.createTransportCompanyRelation
     ).toHaveBeenCalledOnceWith({
       transportCompanyId: 1234,
       sboid: 'ch:1:sboid:100500',
@@ -162,7 +158,7 @@ describe('TransportCompanyDetailComponent', () => {
       validTo: moment('2021-05-05').toDate(),
     });
     expect(
-      transportCompanyRelationsServiceSpy.getTransportCompanyRelations
+      transportCompanyRelationInternalServiceSpy.getTransportCompanyRelations
     ).toHaveBeenCalledOnceWith(1234);
   });
 
@@ -187,14 +183,14 @@ describe('TransportCompanyDetailComponent', () => {
     expect(component.editMode).toBeFalse();
     expect(component.isUpdateRelationSelected).toBeFalse();
     expect(
-      transportCompanyRelationsServiceSpy.updateTransportCompanyRelation
+      transportCompanyRelationInternalServiceSpy.updateTransportCompanyRelation
     ).toHaveBeenCalledOnceWith({
       id: 1,
       validFrom: moment('2020-05-05').toDate(),
       validTo: moment('2021-05-05').toDate(),
     });
     expect(
-      transportCompanyRelationsServiceSpy.getTransportCompanyRelations
+      transportCompanyRelationInternalServiceSpy.getTransportCompanyRelations
     ).toHaveBeenCalledOnceWith(1234);
   });
 
@@ -202,44 +198,24 @@ describe('TransportCompanyDetailComponent', () => {
     component.selectedTransportCompanyRelationIndex = 0;
     component.deleteRelation();
     expect(
-      transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation
+      transportCompanyRelationInternalServiceSpy.deleteTransportCompanyRelation
     ).toHaveBeenCalledOnceWith(1);
     expect(
-      transportCompanyRelationsServiceSpy.getTransportCompanyRelations
+      transportCompanyRelationInternalServiceSpy.getTransportCompanyRelations
     ).toHaveBeenCalledOnceWith(1234);
   });
 });
 
-const transportCompanyRelationsServiceSpy = jasmine.createSpyObj(
-  'TransportCompanyRelationsService',
-  [
-    'createTransportCompanyRelation',
-    'getTransportCompanyRelations',
-    'updateTransportCompanyRelation',
-    'deleteTransportCompanyRelation',
-  ]
-);
-
 function setupTestBed(
   data: (TransportCompany | TransportCompanyBoRelation[])[]
 ) {
-  transportCompanyRelationsServiceSpy.createTransportCompanyRelation.and.returnValue(
-    of({})
-  );
-  transportCompanyRelationsServiceSpy.getTransportCompanyRelations.and.returnValue(
-    of([])
-  );
-  transportCompanyRelationsServiceSpy.updateTransportCompanyRelation.and.returnValue(
-    of({})
-  );
-  transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation.and.returnValue(
-    of({})
-  );
-
-  transportCompanyRelationsServiceSpy.createTransportCompanyRelation.calls.reset();
-  transportCompanyRelationsServiceSpy.getTransportCompanyRelations.calls.reset();
-  transportCompanyRelationsServiceSpy.updateTransportCompanyRelation.calls.reset();
-  transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation.calls.reset();
+  transportCompanyRelationInternalServiceSpy =
+    jasmine.createSpyObj<TransportCompanyRelationInternalService>({
+      createTransportCompanyRelation: of({}),
+      getTransportCompanyRelations: of([]),
+      updateTransportCompanyRelation: of(undefined),
+      deleteTransportCompanyRelation: of(undefined),
+    });
 
   TestBed.configureTestingModule({
     imports: [
@@ -266,8 +242,8 @@ function setupTestBed(
         useValue: adminPermissionServiceMock,
       },
       {
-        provide: TransportCompanyRelationsService,
-        useValue: transportCompanyRelationsServiceSpy,
+        provide: TransportCompanyRelationInternalService,
+        useValue: transportCompanyRelationInternalServiceSpy,
       },
       { provide: TranslatePipe },
     ],

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
   ApplicationType,
-  BusinessOrganisationsService,
   BusinessOrganisationVersion,
   BusinessType,
 } from '../../../../api';
@@ -33,6 +32,7 @@ import { TextFieldComponent } from '../../../../core/form-components/text-field/
 import { DateRangeComponent } from '../../../../core/form-components/date-range/date-range.component';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { BusinessOrganisationInternalService } from '../../../../api/service/bodi/business-organisation-internal.service';
 
 @Component({
   templateUrl: './business-organisation-detail.component.html',
@@ -55,14 +55,14 @@ export class BusinessOrganisationDetailComponent
   BUSINESS_TYPES = Object.values(BusinessType);
 
   constructor(
-    protected router: Router,
-    private businessOrganisationsService: BusinessOrganisationsService,
-    private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
-    protected notificationService: NotificationService,
-    protected dialogService: DialogService,
-    protected permissionService: PermissionService,
-    protected activatedRoute: ActivatedRoute,
-    protected validityService: ValidityService
+    private readonly businessOrganisationInternalService: BusinessOrganisationInternalService,
+    private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
+    protected readonly router: Router,
+    protected readonly notificationService: NotificationService,
+    protected readonly dialogService: DialogService,
+    protected readonly permissionService: PermissionService,
+    protected readonly activatedRoute: ActivatedRoute,
+    protected readonly validityService: ValidityService
   ) {
     super(
       router,
@@ -103,7 +103,7 @@ export class BusinessOrganisationDetailComponent
   }
 
   updateRecord(): void {
-    this.businessOrganisationsService
+    this.businessOrganisationInternalService
       .updateBusinessOrganisationVersion(this.getId(), this.form.value)
       .pipe(catchError(this.handleError))
       .subscribe(() => {
@@ -122,7 +122,7 @@ export class BusinessOrganisationDetailComponent
 
   createRecord(): void {
     this.form.disable();
-    this.businessOrganisationsService
+    this.businessOrganisationInternalService
       .createBusinessOrganisationVersion(this.form.value)
       .pipe(catchError(this.handleError))
       .subscribe((version) => {
@@ -142,7 +142,7 @@ export class BusinessOrganisationDetailComponent
   revokeRecord(): void {
     const selectedRecord = this.getSelectedRecord();
     if (selectedRecord.sboid) {
-      this.businessOrganisationsService
+      this.businessOrganisationInternalService
         .revokeBusinessOrganisation(selectedRecord.sboid)
         .subscribe(() => {
           this.notificationService.success(
@@ -163,7 +163,7 @@ export class BusinessOrganisationDetailComponent
     const selectedVersion: BusinessOrganisationVersion =
       this.getSelectedRecord();
     if (selectedVersion.sboid != null) {
-      this.businessOrganisationsService
+      this.businessOrganisationInternalService
         .deleteBusinessOrganisation(selectedVersion.sboid)
         .subscribe(() => {
           this.notificationService.success(

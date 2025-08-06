@@ -1,0 +1,24 @@
+package ch.sbb.atlas.api.bodi;
+
+import ch.sbb.atlas.configuration.Role;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Tag(name = "[INTERNAL] Transport Companies")
+public interface TransportCompanyApiInternal {
+
+  String BASE_PATH = "internal/transport-companies";
+
+  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @PostMapping(BASE_PATH + "/loadFromBAV")
+  void loadTransportCompaniesFromBav();
+
+  @GetMapping(BASE_PATH + "/bySboid")
+  List<TransportCompanyModel> getTransportCompaniesBySboid(@Parameter @RequestParam String sboid);
+
+}

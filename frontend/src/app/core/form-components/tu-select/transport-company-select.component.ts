@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -10,12 +11,13 @@ import {
 } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { TransportCompaniesService, TransportCompany } from '../../../api';
+import { TransportCompany } from '../../../api';
 import { map } from 'rxjs/operators';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import { NgClass, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TransportCompanyService } from '../../../api/service/bodi/transport-company.service';
 
 @Component({
   selector: 'tu-select',
@@ -46,8 +48,7 @@ export class TransportCompanySelectComponent
   transportCompanies: Observable<TransportCompany[]> = of([]);
   alreadySelectedTransportCompany: TransportCompany[] = [];
   private formSubscription?: Subscription;
-
-  constructor(private transportCompaniesService: TransportCompaniesService) {}
+  private readonly transportCompanyService = inject(TransportCompanyService);
 
   ngOnInit(): void {
     this.init();
@@ -76,7 +77,7 @@ export class TransportCompanySelectComponent
 
   searchTransportCompany(searchString: string) {
     if (searchString) {
-      this.transportCompanies = this.transportCompaniesService
+      this.transportCompanies = this.transportCompanyService
         .getTransportCompanies(
           [searchString],
           undefined,
