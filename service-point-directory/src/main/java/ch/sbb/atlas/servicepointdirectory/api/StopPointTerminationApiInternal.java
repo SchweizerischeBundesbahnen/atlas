@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "[INTERNAL] Stop Point Termination")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Stop Point Termination")
 @RequestMapping("internal/service-points/termination")
 @Validated
 public interface StopPointTerminationApiInternal {

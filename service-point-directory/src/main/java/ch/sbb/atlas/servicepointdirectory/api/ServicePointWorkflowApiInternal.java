@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "[INTERNAL] Service Points")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Service Points")
 @RequestMapping("internal/service-points")
 @Validated
 public interface ServicePointWorkflowApiInternal {
