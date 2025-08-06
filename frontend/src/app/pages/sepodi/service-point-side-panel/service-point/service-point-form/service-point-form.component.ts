@@ -2,6 +2,7 @@ import {
   Component,
   ContentChild,
   EventEmitter,
+  input,
   Input,
   OnDestroy,
   OnInit,
@@ -72,9 +73,10 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   locationInformation$?: Observable<LocationInformation>;
   servicePointTypes = Object.values(ServicePointType);
   operatingPointTypes: string[] = [];
-  stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
   isNew = false;
+
+  selectableStopPointTypes = input.required<StopPointType[]>();
 
   @Output()
   selectedServicePointTypeChange: EventEmitter<

@@ -4,6 +4,8 @@ import {
   ApplicationType,
   CoordinatePair,
   Country,
+  GeoDataService,
+  Permission,
   PermissionRestrictionType,
   ReadServicePointVersion,
   SpatialReference,
@@ -12,31 +14,85 @@ import {
 import { EventEmitter } from '@angular/core';
 import { GeographyComponent } from '../../../geography/geography.component';
 import { of } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
+import { BusinessOrganisationSelectComponent } from '../../../../../core/form-components/bo-select/business-organisation-select.component';
+import { MatLabel } from '@angular/material/form-field';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { SelectComponent } from '../../../../../core/form-components/select/select.component';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MeansOfTransportPickerComponent } from '../../../means-of-transport-picker/means-of-transport-picker.component';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { KilometerMasterSearchComponent } from '../search/kilometer-master-search.component';
+import { DisplayCantonPipe } from '../../../../../core/cantons/display-canton.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
+import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { PermissionService } from '../../../../../core/auth/permission/permission.service';
+import SpyObj = jasmine.SpyObj;
+import Spy = jasmine.Spy;
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
+  let fixture: ComponentFixture<ServicePointFormComponent>;
 
-  const translationSortingServiceSpy = jasmine.createSpyObj(['sort'], {
-    translateService: { onLangChange: jasmine.createSpyObj(['subscribe']) },
-  });
-  const geoDataServiceSpy = jasmine.createSpyObj(['getLocationInformation']);
-  const authServiceSpy = jasmine.createSpyObj(['getApplicationUserPermission']);
-  authServiceSpy.isAdmin = true;
+  let translationSortingServiceSpy: SpyObj<TranslationSortingService>;
+  let dialogServiceSpy: SpyObj<DialogService>;
+  let geoDataServiceSpy: SpyObj<GeoDataService>;
 
-  const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
+  let isAdmin = true;
+  let permission = {} as Permission;
+  const permissionServiceMock: Partial<PermissionService> = {
+    get isAdmin() {
+      return isAdmin;
+    },
+    getApplicationUserPermission: () => permission,
+  };
 
-  beforeEach(() => {
-    dialogServiceSpy.confirm.and.returnValue(of(true));
-    component = new ServicePointFormComponent(
-      translationSortingServiceSpy,
-      dialogServiceSpy,
-      geoDataServiceSpy,
-      authServiceSpy
-    );
-  });
+  beforeEach(async () => {
+    translationSortingServiceSpy = jasmine.createSpyObj(['sort'], {
+      translateService: { onLangChange: jasmine.createSpyObj(['subscribe']) },
+    });
+    dialogServiceSpy = jasmine.createSpyObj('DialogService', {
+      confirm: of(true),
+    });
+    geoDataServiceSpy = jasmine.createSpyObj(['getLocationInformation']);
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    await TestBed.configureTestingModule({
+      imports: [
+        TextFieldComponent,
+        ReactiveFormsModule,
+        DateRangeComponent,
+        BusinessOrganisationSelectComponent,
+        MatLabel,
+        MatRadioGroup,
+        MatRadioButton,
+        AtlasFieldErrorComponent,
+        SelectComponent,
+        MatCheckbox,
+        MeansOfTransportPickerComponent,
+        NgTemplateOutlet,
+        KilometerMasterSearchComponent,
+        DisplayCantonPipe,
+        AsyncPipe,
+        TranslatePipe,
+      ],
+      providers: [
+        {
+          provide: TranslationSortingService,
+          useValue: translationSortingServiceSpy,
+        },
+        { provide: DialogService, useValue: dialogServiceSpy },
+        { provide: GeoDataService, useValue: geoDataServiceSpy },
+        { provide: PermissionService, useValue: permissionServiceMock },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ServicePointFormComponent);
+    component = fixture.componentInstance;
   });
 
   it('should update locationInformation when coordinates changed', (done) => {
@@ -51,7 +107,7 @@ describe('ServicePointFormComponent', () => {
       east: 6,
     };
 
-    geoDataServiceSpy.getLocationInformation
+    (geoDataServiceSpy.getLocationInformation as Spy)
       .withArgs(coordinatePair)
       .and.returnValue(
         of({
@@ -84,7 +140,7 @@ describe('ServicePointFormComponent', () => {
   });
 
   it('should show all bos new for admin', () => {
-    authServiceSpy.isAdmin = true;
+    isAdmin = true;
     component.ngOnInit();
 
     expect(component.isNew).toBeTrue();
@@ -92,8 +148,8 @@ describe('ServicePointFormComponent', () => {
   });
 
   it('should show only allowed bos on new for writer', () => {
-    authServiceSpy.isAdmin = false;
-    authServiceSpy.getApplicationUserPermission.and.returnValue({
+    isAdmin = false;
+    permission = {
       role: ApplicationRole.Writer,
       application: ApplicationType.Sepodi,
       permissionRestrictions: [
@@ -102,7 +158,7 @@ describe('ServicePointFormComponent', () => {
           valueAsString: 'ch:1:sboid:213',
         },
       ],
-    });
+    };
 
     component.ngOnInit();
 
