@@ -6,7 +6,6 @@ import {
   ApplicationType,
   CreateServicePointVersion,
   ReadServicePointVersion,
-  ServicePointsService,
   Status,
   StopPointType,
 } from '../../../../api';
@@ -52,6 +51,8 @@ import {
   removeControlFromFormNoEvent,
 } from '../../../../core/util/forms';
 import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
+import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
+import { ServicePointInternalService } from '../../../../api/service/sepodi/service-point-internal.service';
 
 export type StopPointTypeNotUnknown = Exclude<StopPointType, 'UNKNOWN'>;
 export const stopPointTypesWithoutUnknown: StopPointTypeNotUnknown[] =
@@ -129,7 +130,8 @@ export class ServicePointDetailComponent
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: DialogService,
-    private servicePointService: ServicePointsService,
+    private servicePointService: ServicePointService,
+    private servicePointInternalService: ServicePointInternalService,
     private notificationService: NotificationService,
     private mapService: MapService,
     private permissionService: PermissionService,
@@ -424,7 +426,7 @@ export class ServicePointDetailComponent
       })
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.servicePointService
+          this.servicePointInternalService
             .revokeServicePoint(this.selectedVersion!.number.number)
             .pipe(catchError(this.handleError))
             .subscribe(() => {
@@ -451,7 +453,7 @@ export class ServicePointDetailComponent
       })
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.servicePointService
+          this.servicePointInternalService
             .validateServicePoint(this.selectedVersion!.id!)
             .pipe(catchError(this.handleError))
             .subscribe(() => {

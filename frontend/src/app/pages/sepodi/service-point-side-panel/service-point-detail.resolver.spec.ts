@@ -1,16 +1,17 @@
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { ServicePointsService, Status } from '../../../api';
+import { Status } from '../../../api';
 import { TestBed } from '@angular/core/testing';
 import { AppTestingModule } from '../../../app.testing.module';
 import { ServicePointDetailResolver } from './service-point-detail.resolver';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
+import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
 
 describe('ServicePointDetailResolver', () => {
-  const servicePointsServiceSpy = jasmine.createSpyObj('servicePointsService', [
+  const servicePointServiceSpy = jasmine.createSpyObj('servicePointsService', [
     'getServicePointVersions',
   ]);
-  servicePointsServiceSpy.getServicePointVersions.and.returnValue(
+  servicePointServiceSpy.getServicePointVersions.and.returnValue(
     of([BERN_WYLEREGG])
   );
 
@@ -21,7 +22,7 @@ describe('ServicePointDetailResolver', () => {
       imports: [AppTestingModule],
       providers: [
         ServicePointDetailResolver,
-        { provide: ServicePointsService, useValue: servicePointsServiceSpy },
+        { provide: ServicePointService, useValue: servicePointServiceSpy },
       ],
     });
     resolver = TestBed.inject(ServicePointDetailResolver);

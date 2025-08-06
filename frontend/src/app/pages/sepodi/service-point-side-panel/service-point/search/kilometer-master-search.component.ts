@@ -8,10 +8,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import {
-  ServicePointSearchResult,
-  ServicePointsService,
-} from '../../../../../api';
+import { ServicePointSearchResult } from '../../../../../api';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -19,6 +16,7 @@ import { SearchSelectComponent } from '../../../../../core/form-components/searc
 import { MatLabel } from '@angular/material/form-field';
 import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ServicePointInternalService } from '../../../../../api/service/sepodi/service-point-internal.service';
 
 @Component({
   selector: 'kilometer-master-search',
@@ -48,7 +46,9 @@ export class KilometerMasterSearchComponent
   servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
   private formSubscription!: Subscription;
 
-  constructor(private readonly servicePointService: ServicePointsService) {}
+  constructor(
+    private readonly servicePointInternalService: ServicePointInternalService
+  ) {}
 
   ngOnInit(): void {
     this.init();
@@ -75,7 +75,7 @@ export class KilometerMasterSearchComponent
 
   searchServicePoint(searchString: string) {
     if (searchString) {
-      this.servicePointSearchResult$ = this.servicePointService
+      this.servicePointSearchResult$ = this.servicePointInternalService
         .searchServicePointsWithRouteNetworkTrue({ value: searchString })
         .pipe(map((values) => values ?? []));
     }
