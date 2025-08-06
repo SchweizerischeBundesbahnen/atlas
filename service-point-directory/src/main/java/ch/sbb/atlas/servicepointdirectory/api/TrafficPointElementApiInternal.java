@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Traffic Point Elements")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Traffic Point Elements")
 @RequestMapping("internal/traffic-point-elements")
 @Validated
 public interface TrafficPointElementApiInternal {

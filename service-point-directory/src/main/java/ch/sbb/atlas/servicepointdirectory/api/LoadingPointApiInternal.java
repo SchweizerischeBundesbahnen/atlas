@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Loading Points")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Loading Points")
 @RequestMapping("internal/loading-points")
 public interface LoadingPointApiInternal {
 
