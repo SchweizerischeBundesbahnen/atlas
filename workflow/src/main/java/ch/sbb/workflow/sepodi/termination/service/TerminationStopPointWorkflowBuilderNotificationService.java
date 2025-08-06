@@ -6,6 +6,7 @@ import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.workflow.mail.BaseNotificationService;
 import ch.sbb.workflow.sepodi.termination.TerminationWorkflowHelper;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
+import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,32 +33,10 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
         .build();
   }
 
-  private List<Map<String, Object>> buildMailProperties(TerminationStopPointWorkflow workflow, String title) {
-    List<Map<String, Object>> mailProperties = new ArrayList<>();
-    Map<String, Object> mailContentProperty = new HashMap<>();
-    mailContentProperty.put("title", title);
-    mailContentProperty.put("designationOfficial", workflow.getDesignationOfficial());
-    mailContentProperty.put("sloid", workflow.getSloid());
-    mailContentProperty.put("url", getUrl(workflow));
-    mailContentProperty.put("terminationDate", calculateTerminationDate(workflow));
-    mailProperties.add(mailContentProperty);
-    return mailProperties;
-  }
-
-  private String getUrl(TerminationStopPointWorkflow workflow) {
-    return AtlasFrontendBaseUrl.getUrl(activeProfile) + TERMINATION_WORKFLOW_URL + workflow.getId();
-  }
-
-  private String calculateTerminationDate(TerminationStopPointWorkflow workflow) {
-    return DATE_FORMATTER.format(TerminationWorkflowHelper.getTerminationDate(workflow));
-  }
-
   public MailNotification buildTariffStopNotApprovedNotification(TerminationStopPointWorkflow workflow, String motivation) {
     List<Map<String, Object>> mailProperties = new ArrayList<>();
-    Map<String, Object> mailContentProperty = new HashMap<>();
-    mailContentProperty.put("title", TerminationWorkflowSubject.TARIFF_STOP_NOT_APPROVED_SUBJECT);
-    mailContentProperty.put("designationOfficial", workflow.getDesignationOfficial());
-    mailContentProperty.put("sloid", workflow.getSloid());
+    Map<String, Object> mailContentProperty = getCommonMailContentProperty(
+        TerminationWorkflowSubject.TARIFF_STOP_NOT_APPROVED_SUBJECT, workflow);
     mailContentProperty.put("motivation", motivation);
     mailProperties.add(mailContentProperty);
     return MailNotification.builder()
@@ -80,14 +59,46 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
         .build();
   }
 
-  public MailNotification buildCancelNotification(TerminationStopPointWorkflow workflow) {
+  public MailNotification buildAbortNotification(TerminationStopPointWorkflow workflow, TerminationAbortModel abortModel) {
+    List<Map<String, Object>> mailProperties = new ArrayList<>();
+    Map<String, Object> mailContentProperty = getCommonMailContentProperty(
+        TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT, workflow);
+    mailContentProperty.put("abortComment", abortModel.getAbortComment());
+    mailContentProperty.put("url", getWorkflowUrl(workflow));
+    mailProperties.add(mailContentProperty);
     return MailNotification.builder()
         .from(from)
-        .mailType(MailType.CANCEL_TERMINATION_NOTIFICATION)
-        .subject(TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT)
+        .mailType(MailType.ABORT_TERMINATION_NOTIFICATION)
+        .subject(TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT)
         .to(List.of(terminationExaminants.getInfoPlus().getEmail(), workflow.getApplicantMail()))
-        .templateProperties(buildMailProperties(workflow,
-            TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT))
+        .templateProperties(mailProperties)
         .build();
   }
+
+  private static Map<String, Object> getCommonMailContentProperty(String abortTerminationSubject,
+      TerminationStopPointWorkflow workflow) {
+    Map<String, Object> mailContentProperty = new HashMap<>();
+    mailContentProperty.put("title", abortTerminationSubject);
+    mailContentProperty.put("designationOfficial", workflow.getDesignationOfficial());
+    mailContentProperty.put("sloid", workflow.getSloid());
+    return mailContentProperty;
+  }
+
+  private List<Map<String, Object>> buildMailProperties(TerminationStopPointWorkflow workflow, String title) {
+    List<Map<String, Object>> mailProperties = new ArrayList<>();
+    Map<String, Object> mailContentProperty = getCommonMailContentProperty(title, workflow);
+    mailContentProperty.put("url", getWorkflowUrl(workflow));
+    mailContentProperty.put("terminationDate", calculateTerminationDate(workflow));
+    mailProperties.add(mailContentProperty);
+    return mailProperties;
+  }
+
+  private String getWorkflowUrl(TerminationStopPointWorkflow workflow) {
+    return AtlasFrontendBaseUrl.getUrl(activeProfile) + TERMINATION_WORKFLOW_URL + workflow.getId();
+  }
+
+  private String calculateTerminationDate(TerminationStopPointWorkflow workflow) {
+    return DATE_FORMATTER.format(TerminationWorkflowHelper.getTerminationDate(workflow));
+  }
+
 }

@@ -28,9 +28,7 @@ public interface SePoDiApi {
   );
 
   @GetMapping(value = BASEPATH + "/versions/{id}")
-  ReadServicePointVersionModel getServicePointById(
-      @PathVariable("id") Long id
-  );
+  ReadServicePointVersionModel getServicePointById(@PathVariable("id") Long id);
 
   @PostMapping(value = TERMINATION_BASEPATH + "/start/{sloid}/{id}")
   ReadServicePointVersionModel startServicePointTermination(@PathVariable("sloid") String sloid,
