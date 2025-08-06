@@ -1,12 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TrafficPointElementsTableComponent } from './traffic-point-elements-table.component';
 import { AuthService } from '../../../../core/auth/auth.service';
-import {
-  MockAtlasButtonComponent,
-  MockNavigationSepodiPrmComponent,
-  MockTableComponent,
-} from '../../../../app.testing.mocks';
-import { TrafficPointElementsService } from '../../../../api';
+import { MockAtlasButtonComponent, MockNavigationSepodiPrmComponent, MockTableComponent, } from '../../../../app.testing.mocks';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER } from '../../../../../test/data/traffic-point-element';
@@ -17,6 +12,7 @@ import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi
 import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
 import SpyObj = jasmine.SpyObj;
 
 describe('TrafficPointElementsTableComponent', () => {
@@ -25,11 +21,11 @@ describe('TrafficPointElementsTableComponent', () => {
   let routerSpy: SpyObj<Router>;
 
   const authService: Partial<AuthService> = {};
-  const trafficPointElementsService = jasmine.createSpyObj(
+  const trafficPointElementInternalService = jasmine.createSpyObj(
     'TrafficPointElementsService',
     ['getPlatformsOfServicePoint']
   );
-  trafficPointElementsService.getPlatformsOfServicePoint.and.returnValue(
+  trafficPointElementInternalService.getPlatformsOfServicePoint.and.returnValue(
     of(BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER)
   );
   const activatedRouteMock = {
@@ -58,8 +54,8 @@ describe('TrafficPointElementsTableComponent', () => {
         provideHttpClientTesting(),
         { provide: AuthService, useValue: authService },
         {
-          provide: TrafficPointElementsService,
-          useValue: trafficPointElementsService,
+          provide: TrafficPointElementInternalService,
+          useValue: trafficPointElementInternalService,
         },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: routerSpy },
@@ -99,7 +95,7 @@ describe('TrafficPointElementsTableComponent', () => {
     });
 
     expect(
-      trafficPointElementsService.getPlatformsOfServicePoint
+      trafficPointElementInternalService.getPlatformsOfServicePoint
     ).toHaveBeenCalledOnceWith(8507000, 0, 10, ['designation,asc']);
   });
 });
