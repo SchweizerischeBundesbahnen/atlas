@@ -114,7 +114,6 @@ public class TerminationStopPointWorkflowService {
     }
     if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.TERMINATION_NOT_APPROVED) {
       terminationWorkflow.setStatus(TERMINATION_NOT_APPROVED_CLOSED);
-      //no mail an NOVA?
     }
     terminationWorkflow.setAbortComment(abortModel.getAbortComment());
     sePoDiAdminClient.stopServicePointTermination(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
