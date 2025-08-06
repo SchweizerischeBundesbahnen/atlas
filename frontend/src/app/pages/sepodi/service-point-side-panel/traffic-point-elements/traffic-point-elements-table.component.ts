@@ -72,10 +72,10 @@ export class TrafficPointElementsTableComponent implements OnInit {
   servicePointVersion!: ReadServicePointVersion;
 
   constructor(
-    private trafficPointElementInternalService: TrafficPointElementInternalService,
-    private tableService: TableService,
-    private route: ActivatedRoute,
-    private router: Router
+    private readonly trafficPointElementInternalService: TrafficPointElementInternalService,
+    private readonly tableService: TableService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {

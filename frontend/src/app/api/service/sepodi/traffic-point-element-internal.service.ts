@@ -9,7 +9,7 @@ import { ReadTrafficPointElementVersion } from '../../model/readTrafficPointElem
 })
 export class TrafficPointElementInternalService {
 
-  private readonly BASE_PATH = '/service-point-directory/v1/traffic-point-elements';
+  private readonly BASE_PATH = '/service-point-directory/internal/traffic-point-elements';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
