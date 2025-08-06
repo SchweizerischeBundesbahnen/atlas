@@ -3,6 +3,7 @@ package ch.sbb.workflow.sepodi.termination.service;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.workflow.mail.MailProducerService;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
+import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
 import java.util.List;
@@ -40,12 +41,23 @@ public class TerminationStopPointNotificationService {
     mailProducerService.produceMailNotification(notification);
   }
 
-  public void sendCancelNotificationToInfoPlusAndBoAndNova(TerminationStopPointWorkflow workflow) {
-    MailNotification notification = builderNotificationService.buildCancelNotification(workflow);
-    if (workflow.getInfoPlusDecision() != null) {
-      notification.setTo(List.of(terminationExaminants.getNova().getEmail(), terminationExaminants.getInfoPlus().getEmail(),
-          workflow.getApplicantMail()));
-    }
+  public void sendAbortNotificationToBoAndInfoPlus(TerminationStopPointWorkflow workflow, TerminationAbortModel abortModel) {
+    List<String> emailsTo = List.of(terminationExaminants.getInfoPlus().getEmail(),
+        workflow.getApplicantMail());
+    sendAbortNotificationToInfoPlusAndBoAndNova(workflow, abortModel, emailsTo);
+  }
+
+  public void sendAbortNotificationToBoInfoPlusAndNova(TerminationStopPointWorkflow workflow, TerminationAbortModel abortModel) {
+    List<String> emailsTo = List.of(terminationExaminants.getInfoPlus().getEmail(),
+        workflow.getApplicantMail(), terminationExaminants.getNova().getEmail());
+    sendAbortNotificationToInfoPlusAndBoAndNova(workflow, abortModel, emailsTo);
+  }
+
+  void sendAbortNotificationToInfoPlusAndBoAndNova(TerminationStopPointWorkflow workflow, TerminationAbortModel abortModel,
+      List<String> emailsTo) {
+    MailNotification notification = builderNotificationService.buildAbortNotification(workflow, abortModel);
+    notification.setTo(emailsTo);
     mailProducerService.produceMailNotification(notification);
   }
+
 }

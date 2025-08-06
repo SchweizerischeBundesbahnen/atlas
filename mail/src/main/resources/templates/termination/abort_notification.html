@@ -123,8 +123,15 @@
             <hr>
             <div>
                 <br><span>Sehr geehrte Damen und Herren</span><br><br>
-                <span>Der Antrag zur Aufhebung der Haltestelle <b>[[${properties.get(0).get('designationOfficial')}]],
-                    [[${properties.get(0).get('sloid')}]]</b> wurde abgebrochen und wird nicht weiterbearbeitet.
+                <span>Der <a th:href="${properties.get(0).get('url')}">Antrag</a> zur Aufhebung der Haltestelle
+                    <b>[[${properties.get(0).get('designationOfficial')}]],[[${properties.get(0).get('sloid')}]]</b>
+                    wurde abgebrochen und wird nicht weiterbearbeitet.
+                    <br>
+                    <br>
+                    <b>Begründung:</b>
+                    <br>
+                    <i>[[${properties.get(0).get('abortComment')}]]</i>
+                    <br>
                     <br>
                     Die Haltestelle bleibt gültig in atlas bestehen und wird weiterhin durch das zuständige Transportunternehmen verwaltet.
                 </span>
@@ -145,8 +152,15 @@
             <hr>
             <div>
                 <br><span>Mesdames et Messieurs</span><br><br>
-                <span>La demande de suppression de l'arrêt <b>[[${properties.get(0).get('designationOfficial')}]],
-                    [[${properties.get(0).get('sloid')}]]</b> a été arrêtée et ne sera pas poursuivie.
+                <span>La <a th:href="${properties.get(0).get('url')}">demande</a> de suppression de l'arrêt
+                    <b>[[${properties.get(0).get('designationOfficial')}]],[[${properties.get(0).get('sloid')}]]</b>
+                    a été arrêtée et ne sera pas poursuivie.
+                    <br>
+                    <br>
+                    <b>Justification:</b>
+                    <br>
+                    <i>[[${properties.get(0).get('abortComment')}]]</i>
+                    <br>
                     <br>
                     L'arrêt reste valable dans atlas et continue d'être géré par l'entreprise de transport responsable.
                 </span>
@@ -166,8 +180,15 @@
             <hr>
             <div>
                 <br><span>Gentile signore o signora </span><br><br>
-                <span>La richiesta di soppressione della fermata <b>[[${properties.get(0).get('designationOfficial')}]],
-                    [[${properties.get(0).get('sloid')}]]</b> è stata cancellata e non verrà più elaborata.
+                <span>La <a th:href="${properties.get(0).get('url')}">richiesta</a> di soppressione della fermata
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
+                    è stata cancellata e non verrà più elaborata.
+                    <br>
+                    <br>
+                    <b>Motivazione:</b>
+                    <br>
+                    <i>[[${properties.get(0).get('abortComment')}]]</i>
+                    <br>
                     <br>
                     La fermata rimarrà valida nell' atlas e continuerà a essere gestita dall'azienda di trasporto responsabile.
                 </span>
