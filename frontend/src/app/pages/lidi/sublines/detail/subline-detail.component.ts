@@ -323,8 +323,6 @@ export class SublineDetailComponent
         undefined,
         undefined,
         undefined,
-        undefined,
-        undefined,
         ['swissLineNumber,ASC']
       )
       .pipe(map((value) => value.objects ?? []));

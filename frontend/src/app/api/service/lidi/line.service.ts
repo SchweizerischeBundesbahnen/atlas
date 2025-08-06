@@ -23,8 +23,7 @@ export class LineService {
   public getLines(swissLineNumber?: string, searchCriteria?: Array<string>,
                   statusRestrictions?: Array<Status>, typeRestrictions?: Array<LidiElementType>,
                   elementRestrictions?: Array<ElementType>, businessOrganisation?: string,
-                  validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string,
-                  modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>,
+                  validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, page?: number, size?: number, sort?: Array<string>,
   ): Observable<ContainerLine> {
     const httpParams = this.atlasApiService.paramsOf({
       swissLineNumber,
@@ -37,8 +36,6 @@ export class LineService {
       fromDate,
       toDate,
       validToFromDate,
-      createdAfter,
-      modifiedAfter,
       page,
       size,
       sort,
