@@ -19,7 +19,7 @@ export class LoadingPointService {
 
   public createLoadingPoint(createLoadingPointVersion: CreateLoadingPointVersion): Observable<ReadLoadingPointVersion> {
     this.atlasApiService.validateParams({ createLoadingPointVersion });
-    return this.atlasApiService.post(`${this.BASE_PATH}`);
+    return this.atlasApiService.post(`${this.BASE_PATH}`, createLoadingPointVersion);
   }
 
   public updateLoadingPoint(id: number, createLoadingPointVersion: CreateLoadingPointVersion): Observable<Array<ReadLoadingPointVersion>> {

@@ -127,19 +127,19 @@ export class ServicePointDetailComponent
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private dialogService: DialogService,
-    private servicePointService: ServicePointService,
-    private servicePointInternalService: ServicePointInternalService,
-    private notificationService: NotificationService,
-    private mapService: MapService,
-    private permissionService: PermissionService,
-    private validityService: ValidityService,
-    private addStopPointWorkflowDialogService: AddStopPointWorkflowDialogService,
-    private terminationDialogService: StopPointTerminationDialogService,
-    private terminationService: TerminationService,
-    protected activatedRoute: ActivatedRoute
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly dialogService: DialogService,
+    private readonly servicePointService: ServicePointService,
+    private readonly servicePointInternalService: ServicePointInternalService,
+    private readonly notificationService: NotificationService,
+    private readonly mapService: MapService,
+    private readonly permissionService: PermissionService,
+    private readonly validityService: ValidityService,
+    private readonly addStopPointWorkflowDialogService: AddStopPointWorkflowDialogService,
+    private readonly terminationDialogService: StopPointTerminationDialogService,
+    private readonly terminationService: TerminationService,
+    protected readonly activatedRoute: ActivatedRoute
   ) {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.servicePointVersions = next.servicePoint;

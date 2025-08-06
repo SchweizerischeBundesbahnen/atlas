@@ -57,7 +57,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       type: 'vector',
       minzoom: SERVICE_POINT_MIN_ZOOM,
       tiles: [
-        `${environment.atlasUnauthApiUrl}/service-point-directory/v1/service-points/geodata/{z}/{x}/{y}.pbf`,
+        `${environment.atlasUnauthApiUrl}/service-point-directory/internal/service-points/geodata/{z}/{x}/{y}.pbf`,
       ],
       promoteId: 'number',
     },
