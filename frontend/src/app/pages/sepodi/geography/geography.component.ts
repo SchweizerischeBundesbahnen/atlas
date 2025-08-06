@@ -9,7 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CoordinatePair, GeoDataService, SpatialReference } from '../../../api';
+import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { debounceTime, merge, Subject } from 'rxjs';
@@ -28,6 +28,7 @@ import { TextFieldComponent } from '../../../core/form-components/text-field/tex
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
 import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ServicePointGeoDataInternalService } from '../../../api/service/sepodi/service-point-geo-data-internal.service';
 
 export const LV95_MAX_DIGITS = 5;
 export const WGS84_MAX_DIGITS = 11;
@@ -100,7 +101,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
     private changeDetector: ChangeDetectorRef,
-    private readonly geoDataService: GeoDataService
+    private readonly servicePointGeoDataInternalService: ServicePointGeoDataInternalService
   ) {
     this.mapService.clickedGeographyCoordinates
       .pipe(takeUntilDestroyed())
@@ -240,7 +241,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     updateHeight: boolean
   ) {
     if (coordinatePair && updateHeight) {
-      this.geoDataService
+      this.servicePointGeoDataInternalService
         .getLocationInformation(coordinatePair)
         .subscribe((value) => {
           this._form?.patchValue({

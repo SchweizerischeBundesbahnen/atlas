@@ -1,13 +1,10 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  Country,
-  PersonWithReducedMobilityService,
-  ServicePointsService,
-} from '../../api';
+import { Country, PersonWithReducedMobilityService } from '../../api';
 import { Countries } from '../country/Countries';
 import { NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ServicePointService } from '../../api/service/sepodi/service-point.service';
 
 export type TargetPageType =
   | 'stop-point'
@@ -36,7 +33,7 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
   constructor(
     private router: Router,
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private readonly servicePointsService: ServicePointsService
+    private readonly servicePointService: ServicePointService
   ) {}
 
   ngOnInit(): void {
@@ -114,7 +111,7 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
   }
 
   checkServicePointIsLocatedInSwitzerland(number: number) {
-    this.servicePointsService
+    this.servicePointService
       .getServicePointVersions(number)
       .subscribe((servicePointVersion) => {
         const servicePoint =

@@ -4,7 +4,6 @@ import {
   CreateTrafficPointElementVersion,
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
-  ServicePointsService,
   TrafficPointElementsService,
   TrafficPointElementType,
 } from '../../../api';
@@ -44,6 +43,7 @@ import { UserDetailInfoComponent } from '../../../core/components/base-detail/us
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -111,7 +111,7 @@ export class TrafficPointElementsDetailComponent
     private route: ActivatedRoute,
     private router: Router,
     private trafficPointMapService: TrafficPointMapService,
-    private servicePointService: ServicePointsService,
+    private servicePointService: ServicePointService,
     private trafficPointElementsService: TrafficPointElementsService,
     private dialogService: DialogService,
     private validityConfirmationService: ValidityConfirmationService,

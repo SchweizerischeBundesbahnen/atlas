@@ -21,7 +21,6 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
@@ -34,7 +33,6 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
@@ -239,7 +237,6 @@ class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
     List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
         createServicePointVersionModel1);
     servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
-    Integer number = servicePointVersionModel.getNumber().getNumber();
 
     CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
     buchsiServicePoint.setCountry(Country.GERMANY);

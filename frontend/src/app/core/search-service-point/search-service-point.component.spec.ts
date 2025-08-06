@@ -1,35 +1,31 @@
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, } from '@angular/core/testing';
 
 import { SearchServicePointComponent } from './search-service-point.component';
 import { AppTestingModule } from '../../app.testing.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { ServicePointSearchResult, ServicePointsService } from '../../api';
+import { ServicePointSearchResult } from '../../api';
 import { SearchSelectComponent } from '../form-components/search-select/search-select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ServicePointSearch } from './service-point-search';
 import { BERN_WYLEREGG } from '../../../test/data/service-point';
+import { ServicePointInternalService } from '../../api/service/sepodi/service-point-internal.service';
 import SpyObj = jasmine.SpyObj;
 
 describe('SearchServicePointComponent', () => {
   let component: SearchServicePointComponent;
   let fixture: ComponentFixture<SearchServicePointComponent>;
-  let servicePointsServiceSpy: SpyObj<ServicePointsService>;
+  let servicePointInternalService: SpyObj<ServicePointInternalService>;
   let router: Router;
 
   const activatedRouteMock = { data: of({ servicePoint: [BERN_WYLEREGG] }) };
 
   beforeEach(() => {
-    servicePointsServiceSpy = jasmine.createSpyObj<ServicePointsService>(
+    servicePointInternalService = jasmine.createSpyObj<ServicePointInternalService>(
       'servicePointsService',
       ['searchServicePoints']
     );
-    servicePointsServiceSpy.searchServicePoints
+    servicePointInternalService.searchServicePoints
       .withArgs({ value: 'be' })
       .and.returnValue(of());
 
@@ -41,7 +37,7 @@ describe('SearchServicePointComponent', () => {
       ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: ServicePointsService, useValue: servicePointsServiceSpy },
+        { provide: ServicePointInternalService, useValue: servicePointInternalService },
         { provide: TranslatePipe },
       ],
     });
@@ -76,7 +72,7 @@ describe('SearchServicePointComponent', () => {
     tick(1000);
     //then
     expect(component.searchValue).toEqual('be');
-    expect(servicePointsServiceSpy.searchServicePoints).toHaveBeenCalled();
+    expect(servicePointInternalService.searchServicePoints).toHaveBeenCalled();
   }));
 
   it('should not load result when search input length is smaller than 2', fakeAsync(() => {
@@ -86,7 +82,7 @@ describe('SearchServicePointComponent', () => {
     tick(1000);
     //then
     expect(component.searchValue).toEqual('b');
-    expect(servicePointsServiceSpy.searchServicePoints).not.toHaveBeenCalled();
+    expect(servicePointInternalService.searchServicePoints).not.toHaveBeenCalled();
   }));
 
   it('should init search value', () => {
