@@ -687,10 +687,10 @@
       "COMMENT": "Anmerkungen",
       "CONFIRM_BUTTON": "Terminierung abbrechen"
     },
-    "TERMINATION_ABORT_COMMENT": "Begründung abbruch",
+    "TERMINATION_ABORT_COMMENT": "Begründung Abbruch",
     "NOTIFICATION": {
       "CANCEL": {
-        "SUCCESS": "Abbrechen der Kündigung wurde erfolgreich gespeichert"
+        "SUCCESS": "Abbrechen der Terminierung erfolgreich"
       }
     }
   },
