@@ -1,6 +1,6 @@
 package ch.sbb.workflow.sepodi.termination.service;
 
-import static ch.sbb.atlas.kafka.model.mail.MailType.CANCEL_TERMINATION_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.ABORT_TERMINATION_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.TARIFF_STOP_APPROVED_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.TARIFF_STOP_NOT_APPROVED_NOTIFICATION;
@@ -13,6 +13,7 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationDecision;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
+import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.InfoPlus;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.Nova;
@@ -127,7 +128,7 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
   }
 
   @Test
-  void shouldBuildCancelNotification() {
+  void shouldBuildAbortNotification() {
     //given
     TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflow.builder()
         .sloid("ch:1:sloid:1")
@@ -145,13 +146,14 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
         .status(TerminationWorkflowStatus.STARTED)
         .build();
     when(terminationExaminants.getInfoPlus()).thenReturn(InfoPlus.builder().email("a@b-ch").build());
+    TerminationAbortModel abortModel = TerminationAbortModel.builder().abortComment("abort").build();
     //when
-    MailNotification result = builderNotificationService.buildCancelNotification(
-        terminationStopPointWorkflow);
+    MailNotification result = builderNotificationService.buildAbortNotification(
+        terminationStopPointWorkflow, abortModel);
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getMailType()).isEqualTo(CANCEL_TERMINATION_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo(TerminationWorkflowSubject.CANCEL_TERMINATION_SUBJECT);
+    assertThat(result.getMailType()).isEqualTo(ABORT_TERMINATION_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo(TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT);
     assertThat(result.getTo()).hasSize(2).containsExactlyInAnyOrder("a@b-ch", "a@b.com");
     assertThat(result.getCc()).isNull();
   }

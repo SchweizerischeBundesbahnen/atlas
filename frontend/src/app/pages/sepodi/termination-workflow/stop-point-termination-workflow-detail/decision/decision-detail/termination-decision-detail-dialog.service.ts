@@ -7,8 +7,8 @@ import { FormGroup } from '@angular/forms';
 import { DialogData } from 'src/app/core/components/dialog/dialog.data';
 import { TerminationDecisionFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
 import { TerminationDecision } from '../../../../../../api/model/terminationDecision';
-import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 export interface TerminationDecisionDetailDialogData extends DialogData {
   workflowId: number;
@@ -16,6 +16,7 @@ export interface TerminationDecisionDetailDialogData extends DialogData {
   workflowStatus: TerminationWorkflowStatus;
   examinant: TerminationDecisionPersonEnum;
   decision: FormGroup<TerminationDecisionFormGroup>;
+  versionValidTo: Date;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -28,7 +29,8 @@ export class TerminationDecisionDetailDialogService {
     readOnly: boolean,
     workflowStatus: TerminationWorkflowStatus,
     examinant: TerminationDecisionPersonEnum,
-    decision: FormGroup<TerminationDecisionFormGroup>
+    decision: FormGroup<TerminationDecisionFormGroup>,
+    versionValidTo: Date
   ): Observable<boolean> {
     const dialogData: TerminationDecisionDetailDialogData = {
       title: 'WORKFLOW.BUTTON.ADD',
@@ -40,6 +42,7 @@ export class TerminationDecisionDetailDialogService {
       workflowStatus: workflowStatus,
       examinant: examinant,
       decision: decision,
+      versionValidTo: versionValidTo,
     };
 
     return this.open(dialogData);

@@ -147,9 +147,9 @@ class MailTemplateConfigTest {
   @Test
   void shouldReturnCancelTerminationNotification() {
     //when
-    MailTemplateConfig result = getMailTemplateConfig(MailType.CANCEL_TERMINATION_NOTIFICATION);
+    MailTemplateConfig result = getMailTemplateConfig(MailType.ABORT_TERMINATION_NOTIFICATION);
     //then
-    assertThat(result).isEqualTo(MailTemplateConfig.CANCEL_TERMINATION_NOTIFICATION_TEMPLATE);
+    assertThat(result).isEqualTo(MailTemplateConfig.ABORT_TERMINATION_NOTIFICATION_TEMPLATE);
   }
 
 }

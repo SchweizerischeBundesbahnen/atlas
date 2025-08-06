@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StopPointTerminationWorkflowDetailData } from './stop-point-termination-workflow-resolver';
 import { ReadServicePointVersion } from '../../../../api';
-import { TerminationStopPointAddWorkflow } from '../../../../api/model/terminationStopPointAddWorkflow';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -27,6 +26,8 @@ import { PermissionService } from '../../../../core/auth/permission/permission.s
 import { TerminationDecision } from '../../../../api/model/terminationDecision';
 import moment from 'moment';
 import { TerminationWorkflowStatus } from '../../../../api/model/terminationWorkflowStatus';
+import { TerminationAbortDialogService } from './cancel/termination-abort-dialog.service';
+import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
 import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 @Component({
@@ -59,9 +60,12 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
   private readonly terminationDecisionDetailDialogService = inject(
     TerminationDecisionDetailDialogService
   );
+  private readonly terminationAbortDialogService = inject(
+    TerminationAbortDialogService
+  );
 
   stopPoint!: ReadServicePointVersion;
-  workflow!: TerminationStopPointAddWorkflow;
+  workflow!: TerminationStopPointWorkflowModel;
   form!: FormGroup<StopPointTerminationWorkflowDetailFormGroup>;
   terminationPermission?: TerminationDecisionPersonEnum;
   showDecisionButton = false;
@@ -110,7 +114,8 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
       true,
       this.workflow.status!,
       examinantDecision.controls.terminationDecisionPerson.value!,
-      examinantDecision
+      examinantDecision,
+      this.workflow.versionValidTo!
     );
   }
 
@@ -160,8 +165,25 @@ export class StopPointTerminationWorkflowDetail implements OnInit {
         false,
         this.workflow.status!,
         this.terminationPermission!,
-        decisionForm
+        decisionForm,
+        this.workflow.versionValidTo!
       )
+      .subscribe((result) => {
+        if (result) {
+          this.router
+            .navigate(['..', this.workflow.id!], {
+              relativeTo: this.route,
+            })
+            .then();
+        }
+      });
+  }
+
+  openAbortTermination() {
+    const terminationCancelFormGroupFormGroup =
+      StopPointTerminationWorkflowDetailFormGroupBuilder.buildCancelTermination();
+    this.terminationAbortDialogService
+      .openDialog(this.workflow.id!, terminationCancelFormGroupFormGroup)
       .subscribe((result) => {
         if (result) {
           this.router

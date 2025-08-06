@@ -38,6 +38,17 @@
             (linkClicked)="goToAtlasStopPoint()"
           ></atlas-link>
         </div>
+        @if ([TerminationWorkflowStatus.Canceled,
+        TerminationWorkflowStatus.TerminationNotApprovedClosed].includes(workflow.status!))
+        {
+        <div class="d-flex flex-column col-6 mt-3">
+          <form-comment
+            [formGroup]="form"
+            label="TERMINATION_WORKFLOW.TERMINATION_ABORT_COMMENT"
+            controlName="abortComment"
+          ></form-comment>
+        </div>
+        }
       </div>
 
       <div class="mt-5">
@@ -170,8 +181,17 @@
       buttonText="WORKFLOW.BUTTON.DECIDE"
       buttonType="whiteFooterNonEdit"
       (buttonClicked)="openDecisionDialog()"
-    >
-    </atlas-button>
+    />
+    } @if (workflow.status !== TerminationWorkflowStatus.Canceled) {
+    <atlas-button
+      [footerEdit]="false"
+      buttonDataCy="termination-workflow-abort"
+      buttonText="TERMINATION_WORKFLOW.ABORT_DECISION_DIALOG.CONFIRM_BUTTON"
+      buttonType="supervisorButton"
+      applicationType="SEPODI"
+      wrapperStyleClass="ms-3"
+      (buttonClicked)="openAbortTermination()"
+    />
     }
   </atlas-detail-footer>
 </atlas-detail-page-container>

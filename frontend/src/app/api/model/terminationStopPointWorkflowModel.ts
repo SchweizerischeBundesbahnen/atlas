@@ -38,6 +38,14 @@ export interface TerminationStopPointWorkflowModel {
      */
     workflowComment?: string;
     /**
+     * Workflow abort comment
+     */
+    abortComment?: string;
+    /**
+     * StopPoint valid to
+     */
+    versionValidTo?: Date;
+    /**
      * Termination Date defined by Business Organisation managing the Stop Point
      */
     boTerminationDate?: Date;

@@ -23,12 +23,12 @@ import {
   MatDatepickerToggle,
   MatDatepickerToggleIcon,
 } from '@angular/material/datepicker';
-import { MAX_DATE, MIN_DATE } from '../../../../../../core/date/date.service';
+import { MIN_DATE } from '../../../../../../core/date/date.service';
 import { MatIcon } from '@angular/material/icon';
 import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
 import { ValidationService } from '../../../../../../core/validation/validation.service';
-import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 @Component({
   selector: 'termination-decision-detail-dialog',
@@ -58,7 +58,6 @@ import { TerminationWorkflowStatus } from '../../../../../../api/model/terminati
 })
 export class TerminationDecisionDetailDialogComponent implements OnInit {
   protected readonly JudgementType = JudgementType;
-  protected readonly MAX_DATE = MAX_DATE;
 
   private readonly dialogRef = inject(
     MatDialogRef<TerminationDecisionDetailDialogComponent>
@@ -72,12 +71,14 @@ export class TerminationDecisionDetailDialogComponent implements OnInit {
   readOnly = true;
   workflowStatus!: TerminationWorkflowStatus;
   minDate: Date = MIN_DATE;
+  maxDate!: Date;
 
   ngOnInit() {
     this.examinant = this.decisionDetailDialogData.examinant;
     this.form = this.decisionDetailDialogData.decision;
     this.readOnly = this.decisionDetailDialogData.readOnly;
     this.workflowStatus = this.decisionDetailDialogData.workflowStatus;
+    this.maxDate = this.decisionDetailDialogData.versionValidTo;
     this.minDate =
       this.form.controls.terminationDate.value?.toDate() ?? MIN_DATE;
     if (this.readOnly) {
