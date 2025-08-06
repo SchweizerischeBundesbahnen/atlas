@@ -4,10 +4,10 @@ import { TestBed } from '@angular/core/testing';
 import { TerminationDecisionDetailDialogService } from './termination-decision-detail-dialog.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TerminationDecision } from '../../../../../../api/model/terminationDecision';
-import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 import { TerminationDecisionFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
 import moment from 'moment';
 import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 describe('TerminationDecisionDetailDialogService', () => {
   let service: TerminationDecisionDetailDialogService;
@@ -42,7 +42,8 @@ describe('TerminationDecisionDetailDialogService', () => {
           terminationDecisionPerson: new FormControl(
             TerminationDecisionPersonEnum.InfoPlus
           ),
-        })
+        }),
+        new Date('9999-12-14')
       )
       .subscribe((result) => {
         expect(result).toBeTrue();

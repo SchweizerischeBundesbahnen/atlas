@@ -19,8 +19,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TerminationDecisionFormGroup } from '../../stop-point-termination-workflow-detail-form-group';
 import moment from 'moment/moment';
 import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
-import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
+import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPersonEnum;
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const terminationWorkflowService = jasmine.createSpyObj('WorkflowService', {
@@ -28,6 +28,7 @@ const terminationWorkflowService = jasmine.createSpyObj('WorkflowService', {
   decisionNova: of(),
 });
 const decisionDialogData: TerminationDecisionDetailDialogData = {
+  versionValidTo: new Date('9999-12-14'),
   title: '',
   message: '',
   workflowId: 123,
@@ -50,6 +51,7 @@ const decisionDialogData: TerminationDecisionDetailDialogData = {
 };
 
 const dialogDataReadOnly: TerminationDecisionDetailDialogData = {
+  versionValidTo: new Date('9999-12-14'),
   title: '',
   message: '',
   workflowId: 123,
