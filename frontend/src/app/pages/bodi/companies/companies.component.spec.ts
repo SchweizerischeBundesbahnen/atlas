@@ -6,7 +6,7 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { CompanyInternalService } from '../../../api/service/bodi/company-internal.service';
+import { CompanyService } from '../../../api/service/bodi/company.service';
 import SpyObj = jasmine.SpyObj;
 
 const company: ContainerCompany = {
@@ -23,10 +23,10 @@ describe('CompaniesComponent', () => {
   let component: CompaniesComponent;
   let fixture: ComponentFixture<CompaniesComponent>;
 
-  let companyInternalServiceSpy: SpyObj<CompanyInternalService>;
+  let companyInternalServiceSpy: SpyObj<CompanyService>;
 
   beforeEach(() => {
-    companyInternalServiceSpy = jasmine.createSpyObj<CompanyInternalService>({
+    companyInternalServiceSpy = jasmine.createSpyObj<CompanyService>({
       getCompanies: of(company),
     });
 
@@ -36,7 +36,7 @@ describe('CompaniesComponent', () => {
         TranslatePipe,
         RouterOutlet,
         {
-          provide: CompanyInternalService,
+          provide: CompanyService,
           useValue: companyInternalServiceSpy,
         },
         {

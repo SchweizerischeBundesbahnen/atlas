@@ -46,4 +46,12 @@ class TransportCompanyApiV1Test extends BaseControllerApiTest {
         .andExpect(jsonPath("$.objects[0]." + Fields.number, is("#0001")));
   }
 
+  @Test
+  void shouldGetTransportCompany() throws Exception {
+    mvc.perform(get("/v1/transport-companies/5")).andExpect(status().isOk())
+        .andExpect(jsonPath("$." + Fields.id, is(5)))
+        .andExpect(jsonPath("$." + Fields.description, is("Beste Company")))
+        .andExpect(jsonPath("$." + Fields.number, is("#0001")));
+  }
+
 }

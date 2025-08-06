@@ -113,6 +113,7 @@ public class BusinessOrganisationControllerV1 implements BusinessOrganisationApi
     return exportService.exportFutureTimetableVersionsAllFormats();
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public ResponseEntity<InputStreamResource> streamGzipFile(ExportType exportType) {
     String fileName = businessOrganisationAmazonService.getFileName(exportType);
@@ -121,6 +122,7 @@ public class BusinessOrganisationControllerV1 implements BusinessOrganisationApi
     return ResponseEntity.ok().headers(headers).body(body);
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public ResponseEntity<InputStreamResource> streamJsonFile(ExportType exportType) {
     InputStreamResource body = businessOrganisationAmazonService.streamJsonFile(exportType);

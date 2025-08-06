@@ -4,8 +4,8 @@ import { of } from 'rxjs';
 import { TransportCompany, TransportCompanyBoRelation } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { TransportCompanyDetailResolver } from './transport-company-detail-resolver.service';
-import { TransportCompanyInternalService } from '../../../../api/service/bodi/transport-company-internal.service';
 import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
+import { TransportCompanyService } from '../../../../api/service/bodi/transport-company.service';
 import SpyObj = jasmine.SpyObj;
 
 const transportCompany: TransportCompany = {
@@ -26,11 +26,11 @@ const transportCompanyRelations: TransportCompanyBoRelation[] = [
 describe('TransportCompanyDetailResolver', () => {
   let resolver: TransportCompanyDetailResolver;
 
-  let transportCompanyInternalServiceSpy: SpyObj<TransportCompanyInternalService>;
+  let transportCompanyServiceSpy: SpyObj<TransportCompanyService>;
   let transportCompanyRelationInternalServiceSpy: SpyObj<TransportCompanyRelationInternalService>;
 
   beforeEach(() => {
-    transportCompanyInternalServiceSpy = jasmine.createSpyObj({
+    transportCompanyServiceSpy = jasmine.createSpyObj({
       getTransportCompany: of(transportCompany),
     });
     transportCompanyRelationInternalServiceSpy = jasmine.createSpyObj({
@@ -42,8 +42,8 @@ describe('TransportCompanyDetailResolver', () => {
       providers: [
         TransportCompanyDetailResolver,
         {
-          provide: TransportCompanyInternalService,
-          useValue: transportCompanyInternalServiceSpy,
+          provide: TransportCompanyService,
+          useValue: transportCompanyServiceSpy,
         },
         {
           provide: TransportCompanyRelationInternalService,
@@ -52,10 +52,6 @@ describe('TransportCompanyDetailResolver', () => {
       ],
     });
     resolver = TestBed.inject(TransportCompanyDetailResolver);
-  });
-
-  it('should create', () => {
-    expect(resolver).toBeTruthy();
   });
 
   it('should get transportCompany and transportCompanyRelations from service to display', (done) => {

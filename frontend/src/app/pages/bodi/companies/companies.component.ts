@@ -11,7 +11,7 @@ import { TableFilter } from '../../../core/components/table-filter/config/table-
 import { Pages } from '../../pages';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { CompanyInternalService } from '../../../api/service/bodi/company-internal.service';
+import { CompanyService } from '../../../api/service/bodi/company.service';
 
 @Component({
   selector: 'app-bodi-companies',
@@ -45,7 +45,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   private companiesSubscription?: Subscription;
 
   constructor(
-    private readonly companyInternalService: CompanyInternalService,
+    private readonly companyInternalService: CompanyService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly tableService: TableService

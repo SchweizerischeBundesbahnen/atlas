@@ -7,9 +7,9 @@ import { Company } from '../../model/company';
 @Injectable({
   providedIn: 'root',
 })
-export class CompanyInternalService {
+export class CompanyService {
 
-  private readonly BASE_PATH = '/business-organisation-directory/internal/companies';
+  private readonly BASE_PATH = '/business-organisation-directory/v1/companies';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
