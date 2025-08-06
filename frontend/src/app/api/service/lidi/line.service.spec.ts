@@ -43,8 +43,6 @@ describe('LineService', () => {
       typeRestrictions: undefined,
       validToFromDate: undefined,
       searchCriteria: undefined,
-      modifiedAfter: undefined,
-      createdAfter: undefined,
       fromDate: undefined,
       toDate: undefined,
       page: undefined,

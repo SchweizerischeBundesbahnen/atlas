@@ -78,8 +78,6 @@ export class SublineTableComponent implements OnInit, OnDestroy {
         undefined,
         undefined,
         undefined,
-        undefined,
-        undefined,
         0,
         50
       )

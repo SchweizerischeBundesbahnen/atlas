@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of, Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { LinesComponent } from './lines.component';
 import {
   ContainerLine,
@@ -15,7 +15,6 @@ import { Pages } from '../../pages';
 import { LineService } from '../../../api/service/lidi/line.service';
 import { TableComponent } from '../../../core/components/table/table.component';
 import SpyObj = jasmine.SpyObj;
-import Spy = jasmine.Spy;
 
 const line: Line = {
   swissLineNumber: 'IC6',
@@ -53,12 +52,9 @@ describe('LinesComponent', () => {
   let lineServiceSpy: SpyObj<LineService>;
 
   beforeEach(() => {
-    lineServiceSpy = jasmine.createSpyObj<LineService>('LineServiceSpy', [
-      'getLines',
-    ]);
-    (
-      lineServiceSpy.getLines as Spy<() => Observable<ContainerLine>>
-    ).and.returnValue(of(versionContainer));
+    lineServiceSpy = jasmine.createSpyObj<LineService>('LineServiceSpy', {
+      getLines: of(versionContainer),
+    });
 
     TestBed.configureTestingModule({
       imports: [LinesComponent, TranslateModule.forRoot()],
@@ -126,8 +122,6 @@ describe('LinesComponent', () => {
       [],
       [Status.Draft, Status.Validated, Status.InReview, Status.Withdrawn],
       [],
-      undefined,
-      undefined,
       undefined,
       undefined,
       undefined,
