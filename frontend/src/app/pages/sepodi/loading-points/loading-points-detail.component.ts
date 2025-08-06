@@ -5,7 +5,6 @@ import {
   LoadingPointsService,
   ReadLoadingPointVersion,
   ReadServicePointVersion,
-  ServicePointsService,
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
@@ -40,6 +39,7 @@ import { UserDetailInfoComponent } from '../../../core/components/base-detail/us
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
 
 @Component({
   selector: 'app-loading-points',
@@ -89,7 +89,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private servicePointService: ServicePointsService,
+    private servicePointService: ServicePointService,
     private loadingPointsService: LoadingPointsService,
     private dialogService: DialogService,
     private validityConfirmationService: ValidityConfirmationService,

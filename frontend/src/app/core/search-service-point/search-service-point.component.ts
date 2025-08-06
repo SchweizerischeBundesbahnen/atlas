@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
-import { ServicePointSearchResult, ServicePointsService } from '../../api';
+import { ServicePointSearchResult } from '../../api';
 import {
   catchError,
   concat,
@@ -24,6 +24,7 @@ import {
 import { AsyncPipe, NgClass } from '@angular/common';
 import { SearchResultHighlightPipe } from './search-result-highlight.pipe';
 import { SplitServicePointNumberPipe } from './split-service-point-number.pipe';
+import { ServicePointInternalService } from '../../api/service/sepodi/service-point-internal.service';
 
 const SEARCH_SERVICE_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.SERVICE_POINT';
 const SEARCH_STOP_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.STOP_POINT';
@@ -65,7 +66,7 @@ export class SearchServicePointComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly servicePointService: ServicePointsService,
+    private readonly servicePointInternalService: ServicePointInternalService,
     private readonly translatePipe: TranslatePipe
   ) {}
 
@@ -138,7 +139,7 @@ export class SearchServicePointComponent implements OnInit {
   }
 
   private searchSwissOnlyServicePointAsStopPoint(term: string) {
-    return this.servicePointService
+    return this.servicePointInternalService
       .searchSwissOnlyServicePoints({ value: term })
       .pipe(
         catchError(() => of([])),
@@ -147,10 +148,12 @@ export class SearchServicePointComponent implements OnInit {
   }
 
   private searchServicePoint(term: string) {
-    return this.servicePointService.searchServicePoints({ value: term }).pipe(
-      catchError(() => of([])),
-      tap(() => (this.loading = false))
-    );
+    return this.servicePointInternalService
+      .searchServicePoints({ value: term })
+      .pipe(
+        catchError(() => of([])),
+        tap(() => (this.loading = false))
+      );
   }
 
   initSearchValue(searchValue: string) {

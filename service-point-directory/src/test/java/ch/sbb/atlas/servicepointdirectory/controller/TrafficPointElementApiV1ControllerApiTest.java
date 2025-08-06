@@ -280,18 +280,18 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
   void shouldTerminateTrafficPointSettingLastVersionOnOneDayDuration() throws Exception {
     repository.deleteAll();
     LocalDate localDate = LocalDate.of(2025, 1, 1);
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
-    trafficPointElementVersion.setValidFrom(localDate);
-    trafficPointElementVersion.setValidTo(LocalDate.of(2030, 12, 31));
+    TrafficPointElementVersion version = TrafficPointTestData.getTrafficPoint();
+    version.setValidFrom(localDate);
+    version.setValidTo(LocalDate.of(2030, 12, 31));
     TrafficPointElementVersion trafficPointElementVersion1 = TrafficPointTestData.getTrafficPoint();
     trafficPointElementVersion1.setValidFrom(LocalDate.of(2020, 1, 1));
     trafficPointElementVersion1.setValidTo(LocalDate.of(2024, 12, 31));
     trafficPointElementVersion1.setDesignation("Bezeichnung1");
     repository.save(trafficPointElementVersion1);
-    repository.save(trafficPointElementVersion);
+    repository.save(version);
 
     mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/terminate/"
-                + trafficPointElementVersion.getSloid() + "/" + localDate)
+                + version.getSloid() + "/" + localDate)
             .contentType(contentType))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
@@ -301,15 +301,15 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldThrowExceptionWhenTerminatingTrafficPoint() throws Exception {
     repository.deleteAll();
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
-    trafficPointElementVersion.setValidFrom(LocalDate.of(2025, 1, 1));
-    trafficPointElementVersion.setValidTo(LocalDate.of(2030, 12, 31));
+    TrafficPointElementVersion version = TrafficPointTestData.getTrafficPoint();
+    version.setValidFrom(LocalDate.of(2025, 1, 1));
+    version.setValidTo(LocalDate.of(2030, 12, 31));
     TrafficPointElementVersion trafficPointElementVersion1 = TrafficPointTestData.getTrafficPoint();
     trafficPointElementVersion1.setValidFrom(LocalDate.of(2020, 1, 1));
     trafficPointElementVersion1.setValidTo(LocalDate.of(2024, 12, 31));
     trafficPointElementVersion1.setDesignation("Bezeichnung1");
     TrafficPointElementVersion firstSaved = repository.save(trafficPointElementVersion1);
-    repository.save(trafficPointElementVersion);
+    repository.save(version);
     LocalDate validTo = LocalDate.of(2024, 3, 3);
 
     // when
@@ -324,7 +324,7 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
     assertThat(errorResponse.getMessage()).isEqualTo(
         "Termination not allowed for sloid " + firstSaved.getSloid() + " since the date range for the last version "
-            + "is from " + trafficPointElementVersion.getValidFrom() + " until " + trafficPointElementVersion.getValidTo() +
+            + "is from " + version.getValidFrom() + " until " + version.getValidTo() +
             ". And requested validTo value " + validTo + " is not within the range.");
 
     SortedSet<Detail> errorResponseDetails = errorResponse.getDetails();

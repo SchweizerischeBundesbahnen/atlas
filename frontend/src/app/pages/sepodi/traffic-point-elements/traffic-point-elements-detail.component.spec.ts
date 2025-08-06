@@ -4,11 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { BehaviorSubject, of, Subject } from 'rxjs';
-import {
-  ActivatedRouteMockType,
-  MockAtlasButtonComponent,
-  MockNavigationSepodiPrmComponent,
-} from '../../../app.testing.mocks';
+import { ActivatedRouteMockType, MockAtlasButtonComponent, MockNavigationSepodiPrmComponent, } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
@@ -28,10 +24,7 @@ import { CoordinatePairWGS84, MapService } from '../map/map.service';
 import { CoordinateTransformationService } from '../geography/coordinate-transformation.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { SloidComponent } from '../../../core/form-components/sloid/sloid.component';
-import {
-  ServicePointsService,
-  TrafficPointElementsService,
-} from '../../../api';
+import { TrafficPointElementsService, } from '../../../api';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
@@ -40,6 +33,7 @@ import { UserDetailInfoComponent } from '../../../core/components/base-detail/us
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
+import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
 import SpyObj = jasmine.SpyObj;
 
 const authService: Partial<AuthService> = {};
@@ -237,7 +231,7 @@ describe('TrafficPointElementsDetailComponent', () => {
           provide: CoordinateTransformationService,
           useValue: coordinateTransformationService,
         },
-        { provide: ServicePointsService, useValue: servicePointService },
+        { provide: ServicePointService, useValue: servicePointService },
         { provide: TrafficPointElementsService, useValue: trafficPointService },
         { provide: DialogService, useValue: dialogService },
         { provide: Router, useValue: routerSpy },

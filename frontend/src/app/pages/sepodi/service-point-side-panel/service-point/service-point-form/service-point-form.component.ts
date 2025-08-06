@@ -17,7 +17,6 @@ import {
   ApplicationRole,
   ApplicationType,
   Category,
-  GeoDataService,
   OperatingPointTechnicalTimetableType,
   OperatingPointType,
   ReadServicePointVersion,
@@ -42,6 +41,7 @@ import { MeansOfTransportPickerComponent } from '../../../means-of-transport-pic
 import { KilometerMasterSearchComponent } from '../search/kilometer-master-search.component';
 import { DisplayCantonPipe } from '../../../../../core/cantons/display-canton.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ServicePointGeoDataInternalService } from '../../../../../api/service/sepodi/service-point-geo-data-internal.service';
 
 @Component({
   selector: 'service-point-form',
@@ -126,7 +126,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translationSortingService: TranslationSortingService,
     private readonly dialogService: DialogService,
-    private readonly geoDataService: GeoDataService,
+    private readonly servicePointGeoDataInternalService: ServicePointGeoDataInternalService,
     private readonly permissionService: PermissionService
   ) {}
 
@@ -138,7 +138,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       this.geographyComponent?.coordinatesChanged.subscribe(
         (coordinatePair) => {
           if (coordinatePair.north && coordinatePair.east) {
-            this.locationInformation$ = this.geoDataService
+            this.locationInformation$ = this.servicePointGeoDataInternalService
               .getLocationInformation(coordinatePair)
               .pipe(
                 map((geoReference) => ({

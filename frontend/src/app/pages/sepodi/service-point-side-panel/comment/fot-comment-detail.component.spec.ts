@@ -7,10 +7,10 @@ import { of } from 'rxjs';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { ServicePointsService } from '../../../../api';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 
 describe('FotCommentDetailComponent', () => {
   let component: FotCommentDetailComponent;
@@ -42,7 +42,7 @@ describe('FotCommentDetailComponent', () => {
       ],
       providers: [
         { provide: ActivatedRoute, useValue: route },
-        { provide: ServicePointsService, useValue: servicePointService },
+        { provide: ServicePointService, useValue: servicePointService },
       ],
     }).compileComponents();
 

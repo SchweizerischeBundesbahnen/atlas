@@ -5,18 +5,18 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { KilometerMasterSearchComponent } from './kilometer-master-search.component';
-import { ServicePointsService } from '../../../../../api';
 import { of } from 'rxjs';
 import { translateServiceProvider } from '../../../../../app.testing.mocks';
+import { ServicePointInternalService } from '../../../../../api/service/sepodi/service-point-internal.service';
 import SpyObj = jasmine.SpyObj;
 
 describe('KilometerMasterSearchComponent', () => {
   let component: KilometerMasterSearchComponent;
   let fixture: ComponentFixture<KilometerMasterSearchComponent>;
-  let servicePointsServiceSpy: SpyObj<ServicePointsService>;
+  let servicePointsServiceSpy: SpyObj<ServicePointInternalService>;
 
   beforeEach(async () => {
-    servicePointsServiceSpy = jasmine.createSpyObj<ServicePointsService>(
+    servicePointsServiceSpy = jasmine.createSpyObj<ServicePointInternalService>(
       'servicePointsService',
       ['searchServicePointsWithRouteNetworkTrue']
     );
@@ -26,7 +26,10 @@ describe('KilometerMasterSearchComponent', () => {
 
     await TestBed.configureTestingModule({
       providers: [
-        { provide: ServicePointsService, useValue: servicePointsServiceSpy },
+        {
+          provide: ServicePointInternalService,
+          useValue: servicePointsServiceSpy,
+        },
         translateServiceProvider,
       ],
       imports: [
