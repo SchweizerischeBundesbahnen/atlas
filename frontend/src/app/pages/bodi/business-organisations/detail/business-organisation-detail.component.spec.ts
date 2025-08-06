@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import {
-  BusinessOrganisationsService,
-  BusinessOrganisationVersion,
-} from '../../../../api';
+import { BusinessOrganisationVersion } from '../../../../api';
 import { BusinessOrganisationDetailComponent } from './business-organisation-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppTestingModule } from '../../../../app.testing.module';
@@ -22,6 +19,7 @@ import { DetailPageContainerComponent } from '../../../../core/components/detail
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { ValidityService } from '../../../sepodi/validity/validity.service';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import { BusinessOrganisationInternalService } from '../../../../api/service/bodi/business-organisation-internal.service';
 
 const businessOrganisationVersion: BusinessOrganisationVersion = {
   id: 1234,
@@ -80,10 +78,10 @@ let fixture: ComponentFixture<BusinessOrganisationDetailComponent>;
 let router: Router;
 
 describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationVersion', () => {
-  const mockBusinessOrganisationsService = jasmine.createSpyObj(
-    'businessOrganisationsService',
-    ['updateBusinessOrganisationVersion', 'deleteBusinessOrganisation']
-  );
+  const mockBusinessOrganisationsService = jasmine.createSpyObj([
+    'updateBusinessOrganisationVersion',
+    'deleteBusinessOrganisation',
+  ]);
 
   const mockData = {
     businessOrganisationDetail: businessOrganisationVersion,
@@ -222,7 +220,7 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
 });
 
 function setupTestBed(
-  businessOrganisationsService: BusinessOrganisationsService,
+  businessOrganisationInternalService: BusinessOrganisationInternalService,
   validityService: ValidityService,
   data: { businessOrganisationDetail: string | BusinessOrganisationVersion }
 ) {
@@ -241,8 +239,8 @@ function setupTestBed(
     providers: [
       { provide: FormBuilder },
       {
-        provide: BusinessOrganisationsService,
-        useValue: businessOrganisationsService,
+        provide: BusinessOrganisationInternalService,
+        useValue: businessOrganisationInternalService,
       },
       { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: ValidityService, useValue: validityService },

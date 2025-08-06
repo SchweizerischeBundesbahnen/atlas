@@ -1,22 +1,19 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, EMPTY, forkJoin, Observable } from 'rxjs';
-import {
-  TransportCompaniesService,
-  TransportCompany,
-  TransportCompanyBoRelation,
-  TransportCompanyRelationsService,
-} from '../../../../api';
+import { TransportCompany, TransportCompanyBoRelation } from '../../../../api';
 import { Pages } from '../../../pages';
 import { NotificationService } from '../../../../core/notification/notification.service';
+import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
+import { TransportCompanyService } from '../../../../api/service/bodi/transport-company.service';
 
 @Injectable({ providedIn: 'root' })
 export class TransportCompanyDetailResolver {
   constructor(
-    private readonly transportCompaniesService: TransportCompaniesService,
-    private notificationService: NotificationService,
+    private readonly transportCompanyService: TransportCompanyService,
+    private readonly notificationService: NotificationService,
     private readonly router: Router,
-    private readonly transportCompanyRelationsService: TransportCompanyRelationsService
+    private readonly transportCompanyRelationInternalService: TransportCompanyRelationInternalService
   ) {}
 
   resolve(
@@ -30,16 +27,16 @@ export class TransportCompanyDetailResolver {
       );
       return this.routeOnFailure();
     }
-    return forkJoin(
-      this.transportCompaniesService.getTransportCompany(idParameter).pipe(
+    return forkJoin([
+      this.transportCompanyService.getTransportCompany(idParameter).pipe(
         catchError(() => {
           return this.routeOnFailure();
         })
       ),
-      this.transportCompanyRelationsService
+      this.transportCompanyRelationInternalService
         .getTransportCompanyRelations(idParameter)
-        .pipe(catchError(() => this.routeOnFailure()))
-    );
+        .pipe(catchError(() => this.routeOnFailure())),
+    ]);
   }
 
   routeOnFailure() {

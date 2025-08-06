@@ -3,7 +3,6 @@ import {
   ApplicationRole,
   ApplicationType,
   BusinessOrganisation,
-  BusinessOrganisationsService,
   Country,
   PermissionRestrictionType,
   SwissCanton,
@@ -37,6 +36,7 @@ import {
   RoleConfig,
 } from './application-permission.config';
 import { UserPermissionProviderService } from './user-permission-provider-service';
+import { BusinessOrganisationService } from '../../../../api/service/bodi/business-organisation.service';
 
 @Component({
   selector: 'atlas-application-permission',
@@ -81,8 +81,12 @@ export class ApplicationPermissionComponent implements OnInit {
     Cantons.fromSwissCanton(canton)?.short;
   readonly SWISS_CANTONS = Object.values(SwissCanton);
 
-  boService = inject(BusinessOrganisationsService);
-  boLanguageService = inject(BusinessOrganisationLanguageService);
+  private readonly businessOrganisationService = inject(
+    BusinessOrganisationService
+  );
+  private readonly boLanguageService = inject(
+    BusinessOrganisationLanguageService
+  );
   readonly boFormCtrlName = 'businessOrganisation';
   readonly businessOrganisationForm: FormGroup = new FormGroup({
     [this.boFormCtrlName]: new FormControl<BusinessOrganisation | null>(null),
@@ -189,7 +193,7 @@ export class ApplicationPermissionComponent implements OnInit {
 
   private addBusinessOrganisationToCurrentTable(sboid: string) {
     firstValueFrom(
-      this.boService.getAllBusinessOrganisations(
+      this.businessOrganisationService.getAllBusinessOrganisations(
         undefined,
         [sboid],
         undefined,

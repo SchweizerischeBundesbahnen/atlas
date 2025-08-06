@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {
-  BusinessOrganisationsService,
   BusinessOrganisationVersion,
   ReadServicePointVersion,
   ReadStopPointVersion,
@@ -24,6 +23,7 @@ import { NgFor } from '@angular/common';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PrmRecordingObligationComponent } from '../../../core/prm-recording-obligation/prm-recording-obligation.component';
+import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
 
 @Component({
   selector: 'app-prm-panel',
@@ -55,10 +55,10 @@ export class PrmPanelComponent {
   tabs = PRM_TABS;
 
   constructor(
-    private route: ActivatedRoute,
-    private businessOrganisationsService: BusinessOrganisationsService,
-    private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
-    private prmTabsService: PrmTabsService
+    private readonly route: ActivatedRoute,
+    private readonly businessOrganisationsService: BusinessOrganisationService,
+    private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
+    private readonly prmTabsService: PrmTabsService
   ) {
     this.businessOrganisationLanguageService
       .languageChanged()

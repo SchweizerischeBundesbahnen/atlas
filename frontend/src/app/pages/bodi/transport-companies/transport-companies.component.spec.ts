@@ -1,17 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of, Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { TransportCompaniesComponent } from './transport-companies.component';
 import {
   ContainerTransportCompany,
-  TransportCompaniesService,
   TransportCompanyStatus,
 } from '../../../api';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { TransportCompanyService } from '../../../api/service/bodi/transport-company.service';
 import SpyObj = jasmine.SpyObj;
-import Spy = jasmine.Spy;
 
 const transportCompany: ContainerTransportCompany = {
   objects: [
@@ -27,19 +26,12 @@ describe('TransportCompaniesComponent', () => {
   let component: TransportCompaniesComponent;
   let fixture: ComponentFixture<TransportCompaniesComponent>;
 
-  let transportCompaniesServiceSpy: SpyObj<TransportCompaniesService>;
+  let transportCompanyServiceSpy: SpyObj<TransportCompanyService>;
 
   beforeEach(() => {
-    transportCompaniesServiceSpy =
-      jasmine.createSpyObj<TransportCompaniesService>(
-        'TransportCompaniesServiceSpy',
-        ['getTransportCompanies']
-      );
-    (
-      transportCompaniesServiceSpy.getTransportCompanies as Spy<
-        () => Observable<ContainerTransportCompany>
-      >
-    ).and.returnValue(of(transportCompany));
+    transportCompanyServiceSpy = jasmine.createSpyObj({
+      getTransportCompanies: of(transportCompany),
+    });
 
     TestBed.configureTestingModule({
       imports: [TransportCompaniesComponent, TranslateModule.forRoot()],
@@ -47,8 +39,8 @@ describe('TransportCompaniesComponent', () => {
         TranslatePipe,
         RouterOutlet,
         {
-          provide: TransportCompaniesService,
-          useValue: transportCompaniesServiceSpy,
+          provide: TransportCompanyService,
+          useValue: transportCompanyServiceSpy,
         },
         { provide: ActivatedRoute, useValue: { paramMap: new Subject() } },
       ],
@@ -64,10 +56,6 @@ describe('TransportCompaniesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should getOverview', () => {
     component.getOverview({
       page: 0,
@@ -75,7 +63,7 @@ describe('TransportCompaniesComponent', () => {
     });
 
     expect(
-      transportCompaniesServiceSpy.getTransportCompanies
+      transportCompanyServiceSpy.getTransportCompanies
     ).toHaveBeenCalledOnceWith(
       [],
       [

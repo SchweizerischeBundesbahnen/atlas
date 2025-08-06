@@ -2,9 +2,9 @@ package ch.sbb.business.organisation.directory.service;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
-import ch.sbb.business.organisation.directory.controller.TransportCompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompany.Fields;
+import ch.sbb.business.organisation.directory.model.TransportCompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRepository;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -66,8 +66,8 @@ public class TransportCompanyService {
 
   void saveTransportCompanies(List<TransportCompanyCsvModel> companies) {
     List<TransportCompany> transportCompanies = companies.stream()
-                                                         .map(TransportCompanyCsvModel::toEntity)
-                                                         .toList();
+        .map(TransportCompanyCsvModel::toEntity)
+        .toList();
     transportCompanyRepository.saveAll(transportCompanies);
     log.info("DB save complete");
 
@@ -77,7 +77,7 @@ public class TransportCompanyService {
 
   List<TransportCompanyCsvModel> getTransportCompaniesFromBav() {
     try (Body body = transportCompanyClient.getTransportCompanies()
-                                           .body(); InputStream inputStream = body.asInputStream()) {
+        .body(); InputStream inputStream = body.asInputStream()) {
       return parseTransportCompanies(inputStream);
     } catch (IOException e) {
       throw new IllegalStateException("Could not read response from BAV correctly", e);
@@ -88,9 +88,9 @@ public class TransportCompanyService {
       throws IOException {
     CsvMapper mapper = new CsvMapper().enable(Feature.EMPTY_STRING_AS_NULL);
     CsvSchema csvSchema = CsvSchema.emptySchema()
-                                   .withHeader()
-                                   .withColumnSeparator(';')
-                                   .withEscapeChar('\\');
+        .withHeader()
+        .withColumnSeparator(';')
+        .withEscapeChar('\\');
 
     MappingIterator<TransportCompanyCsvModel> mappingIterator = mapper.readerFor(
         TransportCompanyCsvModel.class).with(csvSchema).readValues(inputStream);
@@ -100,37 +100,38 @@ public class TransportCompanyService {
   }
 
   private void validateRelationsAndNotifyBusiness() {
-    List<TransportCompany> transportCompaniesWithInvalidRelations = transportCompanyRepository.findTransportCompaniesWithInvalidRelations();
+    List<TransportCompany> transportCompaniesWithInvalidRelations =
+        transportCompanyRepository.findTransportCompaniesWithInvalidRelations();
     if (!transportCompaniesWithInvalidRelations.isEmpty()) {
       log.warn("TransportCompany with numbers={} have invalid relations",
           transportCompaniesWithInvalidRelations.stream()
-                                                .map(TransportCompany::getNumber)
-                                                .toList());
+              .map(TransportCompany::getNumber)
+              .toList());
 
       mailClient.produceMailNotification(MailNotification.builder()
-                                                         .to(relationsReportAddresses)
-                                                         .templateProperties(buildProperties(
-                                                             transportCompaniesWithInvalidRelations))
-                                                         .mailType(MailType.TU_IMPORT)
-                                                         .build());
+          .to(relationsReportAddresses)
+          .templateProperties(buildProperties(
+              transportCompaniesWithInvalidRelations))
+          .mailType(MailType.TU_IMPORT)
+          .build());
     }
   }
 
   private List<Map<String, Object>> buildProperties(
       List<TransportCompany> transportCompaniesWithInvalidRelations) {
     return transportCompaniesWithInvalidRelations.stream()
-                                                 .map(transportCompany -> {
-                                                   Map<String, Object> object = new HashMap<>();
-                                                   object.put(Fields.number,
-                                                       transportCompany.getNumber());
-                                                   object.put(Fields.abbreviation,
-                                                       transportCompany.getAbbreviation());
-                                                   object.put(Fields.businessRegisterName,
-                                                       transportCompany.getBusinessRegisterName());
-                                                   object.put(Fields.transportCompanyStatus,
-                                                       transportCompany.getTransportCompanyStatus());
-                                                   return object;
-                                                 }).toList();
+        .map(transportCompany -> {
+          Map<String, Object> object = new HashMap<>();
+          object.put(Fields.number,
+              transportCompany.getNumber());
+          object.put(Fields.abbreviation,
+              transportCompany.getAbbreviation());
+          object.put(Fields.businessRegisterName,
+              transportCompany.getBusinessRegisterName());
+          object.put(Fields.transportCompanyStatus,
+              transportCompany.getTransportCompanyStatus());
+          return object;
+        }).toList();
   }
 
   public List<TransportCompany> findBySboid(String sboid) {
