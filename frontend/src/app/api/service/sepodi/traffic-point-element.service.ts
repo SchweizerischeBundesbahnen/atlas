@@ -19,7 +19,7 @@ export class TrafficPointElementService {
 
   public createTrafficPoint(createTrafficPointElementVersion: CreateTrafficPointElementVersion): Observable<ReadTrafficPointElementVersion> {
     this.atlasApiService.validateParams({ createTrafficPointElementVersion });
-    return this.atlasApiService.post(`${this.BASE_PATH}`);
+    return this.atlasApiService.post(`${this.BASE_PATH}`, createTrafficPointElementVersion);
   }
 
   public updateTrafficPoint(id: number, createTrafficPointElementVersion: CreateTrafficPointElementVersion): Observable<Array<ReadTrafficPointElementVersion>> {

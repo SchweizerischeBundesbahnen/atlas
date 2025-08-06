@@ -25,7 +25,7 @@ export class ServicePointService {
 
   public createServicePoint(createServicePointVersion: CreateServicePointVersion): Observable<ReadServicePointVersion> {
     this.atlasApiService.validateParams({ createServicePointVersion });
-    return this.atlasApiService.post(`${this.BASE_PATH}`);
+    return this.atlasApiService.post(`${this.BASE_PATH}`, createServicePointVersion);
   }
 
   public updateServicePoint(id: number, updateServicePointVersion: UpdateServicePointVersion): Observable<ReadServicePointVersion> {

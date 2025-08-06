@@ -109,16 +109,16 @@ export class TrafficPointElementsDetailComponent
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private trafficPointMapService: TrafficPointMapService,
-    private servicePointService: ServicePointService,
-    private trafficPointElementService: TrafficPointElementService,
-    private trafficPointElementInternalService: TrafficPointElementInternalService,
-    private dialogService: DialogService,
-    private validityConfirmationService: ValidityConfirmationService,
-    private notificationService: NotificationService,
-    private validityService: ValidityService
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly trafficPointMapService: TrafficPointMapService,
+    private readonly servicePointService: ServicePointService,
+    private readonly trafficPointElementService: TrafficPointElementService,
+    private readonly trafficPointElementInternalService: TrafficPointElementInternalService,
+    private readonly dialogService: DialogService,
+    private readonly validityConfirmationService: ValidityConfirmationService,
+    private readonly notificationService: NotificationService,
+    private readonly validityService: ValidityService
   ) {}
 
   ngOnInit() {

@@ -48,11 +48,11 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
   form!: FormGroup<FotCommentFormGroup>;
 
   constructor(
-    private servicePointService: ServicePointService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private dialogService: DialogService,
-    private notificationService: NotificationService
+    private readonly servicePointService: ServicePointService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly dialogService: DialogService,
+    private readonly notificationService: NotificationService
   ) {}
 
   ngOnInit() {
