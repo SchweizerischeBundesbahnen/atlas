@@ -10,6 +10,7 @@ import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.workflow.mail.MailProducerService;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
+import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.InfoPlus;
@@ -123,11 +124,12 @@ class TerminationStopPointNotificationServiceTest {
         .build();
 
     doReturn(InfoPlus.builder().email("asd@as.ch").build()).when(terminationExaminants).getInfoPlus();
-    when(builderNotificationService.buildAbortNotification(any())).thenReturn(MailNotification.builder().build());
+    when(builderNotificationService.buildAbortNotification(any(), any())).thenReturn(MailNotification.builder().build());
+    TerminationAbortModel abortModel = TerminationAbortModel.builder().abortComment("abort").build();
     //when
-    notificationService.sendAbortNotificationToBoAndInfoPlus(terminationStopPointWorkflow);
+    notificationService.sendAbortNotificationToBoAndInfoPlus(terminationStopPointWorkflow, abortModel);
 
-    verify(builderNotificationService).buildAbortNotification(terminationStopPointWorkflow);
+    verify(builderNotificationService).buildAbortNotification(terminationStopPointWorkflow, abortModel);
 
     verify(mailProducerService).produceMailNotification(any());
   }
@@ -149,11 +151,12 @@ class TerminationStopPointNotificationServiceTest {
 
     doReturn(InfoPlus.builder().email("asd@as.ch").build()).when(terminationExaminants).getInfoPlus();
     doReturn(Nova.builder().email("asd@as.ch").build()).when(terminationExaminants).getNova();
-    when(builderNotificationService.buildAbortNotification(any())).thenReturn(MailNotification.builder().build());
+    when(builderNotificationService.buildAbortNotification(any(), any())).thenReturn(MailNotification.builder().build());
+    TerminationAbortModel abortModel = TerminationAbortModel.builder().abortComment("abort").build();
     //when
-    notificationService.sendAbortNotificationToBoInfoPlusAndNova(terminationStopPointWorkflow);
+    notificationService.sendAbortNotificationToBoInfoPlusAndNova(terminationStopPointWorkflow, abortModel);
 
-    verify(builderNotificationService).buildAbortNotification(terminationStopPointWorkflow);
+    verify(builderNotificationService).buildAbortNotification(terminationStopPointWorkflow, abortModel);
     verify(mailProducerService).produceMailNotification(any());
   }
 
