@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   CreateLoadingPointVersion,
-  LoadingPointsService,
   ReadLoadingPointVersion,
   ReadServicePointVersion,
 } from '../../../api';
@@ -40,6 +39,7 @@ import { DetailFooterComponent } from '../../../core/components/detail-footer/de
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
+import { LoadingPointService } from '../../../api/service/sepodi/loading-point.service';
 
 @Component({
   selector: 'app-loading-points',
@@ -90,7 +90,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
     private route: ActivatedRoute,
     private router: Router,
     private servicePointService: ServicePointService,
-    private loadingPointsService: LoadingPointsService,
+    private loadingPointService: LoadingPointService,
     private dialogService: DialogService,
     private validityConfirmationService: ValidityConfirmationService,
     private notificationService: NotificationService,
@@ -244,7 +244,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   }
 
   private create(loadingPointVersion: CreateLoadingPointVersion) {
-    this.loadingPointsService
+    this.loadingPointService
       .createLoadingPoint(loadingPointVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((loadingPointVersion) => {
@@ -263,7 +263,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   }
 
   update(id: number, loadingPointVersion: CreateLoadingPointVersion) {
-    this.loadingPointsService
+    this.loadingPointService
       .updateLoadingPoint(id, loadingPointVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {

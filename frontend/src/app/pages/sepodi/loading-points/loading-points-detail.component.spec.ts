@@ -23,7 +23,6 @@ import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-s
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
 import { SloidComponent } from '../../../core/form-components/sloid/sloid.component';
-import { LoadingPointsService } from '../../../api';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
 import { LoadingPointsDetailComponent } from './loading-points-detail.component';
@@ -34,6 +33,7 @@ import { DetailPageContainerComponent } from '../../../core/components/detail-pa
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
 import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
+import { LoadingPointService } from '../../../api/service/sepodi/loading-point.service';
 
 const authService: Partial<AuthService> = {};
 
@@ -178,7 +178,7 @@ describe('LoadingPointsDetailComponent', () => {
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: ServicePointService, useValue: servicePointService },
-        { provide: LoadingPointsService, useValue: loadingPointService },
+        { provide: LoadingPointService, useValue: loadingPointService },
         { provide: DialogService, useValue: dialogService },
         SplitServicePointNumberPipe,
         TranslatePipe,

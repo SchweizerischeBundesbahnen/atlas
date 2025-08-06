@@ -1,13 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import { LoadingPointsService, ReadLoadingPointVersion } from '../../../api';
+import { ReadLoadingPointVersion } from '../../../api';
 import { Pages } from '../../pages';
+import { LoadingPointService } from '../../../api/service/sepodi/loading-point.service';
 
 @Injectable({ providedIn: 'root' })
 export class LoadingPointsDetailResolver {
   constructor(
-    private readonly loadingPointsService: LoadingPointsService,
+    private readonly loadingPointsService: LoadingPointService,
     private readonly router: Router
   ) {}
 
