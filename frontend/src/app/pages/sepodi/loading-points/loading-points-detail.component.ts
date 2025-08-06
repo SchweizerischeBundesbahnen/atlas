@@ -87,14 +87,14 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   loadingPointVersion!: CreateLoadingPointVersion;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private servicePointService: ServicePointService,
-    private loadingPointService: LoadingPointService,
-    private dialogService: DialogService,
-    private validityConfirmationService: ValidityConfirmationService,
-    private notificationService: NotificationService,
-    private validityService: ValidityService
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly servicePointService: ServicePointService,
+    private readonly loadingPointService: LoadingPointService,
+    private readonly dialogService: DialogService,
+    private readonly validityConfirmationService: ValidityConfirmationService,
+    private readonly notificationService: NotificationService,
+    private readonly validityService: ValidityService
   ) {
     this.route.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.loadingPointVersions = next.loadingPoint;

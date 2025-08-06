@@ -70,10 +70,10 @@ export class PlatformTableComponent
 
   constructor(
     readonly router: Router,
-    private route: ActivatedRoute,
-    private tableService: TableService,
-    private personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private trafficPointElementInternalService: TrafficPointElementInternalService
+    private readonly route: ActivatedRoute,
+    private readonly tableService: TableService,
+    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private readonly trafficPointElementInternalService: TrafficPointElementInternalService
   ) {
     super(router);
   }

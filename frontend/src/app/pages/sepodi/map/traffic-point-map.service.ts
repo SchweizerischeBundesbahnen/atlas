@@ -23,8 +23,8 @@ export class TrafficPointMapService implements OnDestroy {
   private onDestroy$ = new Subject<boolean>();
 
   constructor(
-    private mapService: MapService,
-    private trafficPointElementInternalService: TrafficPointElementInternalService
+    private readonly mapService: MapService,
+    private readonly trafficPointElementInternalService: TrafficPointElementInternalService
   ) {}
 
   static buildTrafficPointPopupInformation(features: MapGeoJSONFeature[]) {
