@@ -4,13 +4,13 @@ import { catchError, EMPTY, forkJoin, Observable } from 'rxjs';
 import { TransportCompany, TransportCompanyBoRelation } from '../../../../api';
 import { Pages } from '../../../pages';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { TransportCompanyInternalService } from '../../../../api/service/bodi/transport-company-internal.service';
 import { TransportCompanyRelationInternalService } from '../../../../api/service/bodi/transport-company-relation-internal.service';
+import { TransportCompanyService } from '../../../../api/service/bodi/transport-company.service';
 
 @Injectable({ providedIn: 'root' })
 export class TransportCompanyDetailResolver {
   constructor(
-    private readonly transportCompanyInternalService: TransportCompanyInternalService,
+    private readonly transportCompanyService: TransportCompanyService,
     private readonly notificationService: NotificationService,
     private readonly router: Router,
     private readonly transportCompanyRelationInternalService: TransportCompanyRelationInternalService
@@ -28,13 +28,11 @@ export class TransportCompanyDetailResolver {
       return this.routeOnFailure();
     }
     return forkJoin([
-      this.transportCompanyInternalService
-        .getTransportCompany(idParameter)
-        .pipe(
-          catchError(() => {
-            return this.routeOnFailure();
-          })
-        ),
+      this.transportCompanyService.getTransportCompany(idParameter).pipe(
+        catchError(() => {
+          return this.routeOnFailure();
+        })
+      ),
       this.transportCompanyRelationInternalService
         .getTransportCompanyRelations(idParameter)
         .pipe(catchError(() => this.routeOnFailure())),
