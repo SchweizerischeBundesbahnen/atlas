@@ -19,10 +19,6 @@ export class ServicePointService {
     return this.atlasApiService.get(`${this.BASE_PATH}/${servicePointNumber}`);
   }
 
-  public getServicePointVersion(id: number): Observable<ReadServicePointVersion> {
-    return this.atlasApiService.get(`${this.BASE_PATH}/versions/${id}`);
-  }
-
   public getServicePointVersionsBySloid(sloid: string): Observable<Array<ReadServicePointVersion>> {
     return this.atlasApiService.get(`${this.BASE_PATH}/sloid/${encodeURIComponent(String(sloid))}`);
   }

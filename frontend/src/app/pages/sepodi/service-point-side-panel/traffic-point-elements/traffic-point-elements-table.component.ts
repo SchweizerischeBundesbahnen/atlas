@@ -3,7 +3,6 @@ import { TableColumn } from '../../../../core/components/table/table-column';
 import {
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
-  TrafficPointElementsService,
 } from '../../../../api';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +15,7 @@ import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
 
 @Component({
   selector: 'app-service-point-traffic-point-elements-table',
@@ -72,7 +72,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
   servicePointVersion!: ReadServicePointVersion;
 
   constructor(
-    private trafficPointElementService: TrafficPointElementsService,
+    private trafficPointElementInternalService: TrafficPointElementInternalService,
     private tableService: TableService,
     private route: ActivatedRoute,
     private router: Router
@@ -149,7 +149,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
       ? 'getAreasOfServicePoint'
       : 'getPlatformsOfServicePoint';
 
-    this.trafficPointElementService[getEndpoint](
+    this.trafficPointElementInternalService[getEndpoint](
       this.servicePointNumber,
       pagination.page,
       pagination.size,

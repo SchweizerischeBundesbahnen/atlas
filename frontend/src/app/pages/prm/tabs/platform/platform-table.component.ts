@@ -8,7 +8,6 @@ import {
   PlatformOverview,
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
-  TrafficPointElementsService,
 } from '../../../../api';
 import { PlatformOverviewRow } from './platform-overview-row';
 import { TableColumn } from '../../../../core/components/table/table-column';
@@ -24,6 +23,7 @@ import { NavigationSepodiPrmComponent } from '../../../../core/navigation-sepodi
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
 
 @Component({
   selector: 'app-platform',
@@ -73,7 +73,7 @@ export class PlatformTableComponent
     private route: ActivatedRoute,
     private tableService: TableService,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
-    private trafficPointElementsService: TrafficPointElementsService
+    private trafficPointElementInternalService: TrafficPointElementInternalService
   ) {
     super(router);
   }
@@ -100,7 +100,7 @@ export class PlatformTableComponent
   getOverview(pagination: TablePagination) {
     const sloid = this.route.parent!.snapshot.params.stopPointSloid!;
 
-    this.trafficPointElementsService
+    this.trafficPointElementInternalService
       .getPlatformsOfServicePoint(SloidHelper.servicePointSloidToNumber(sloid))
       .pipe(
         tap((sepodiPlatforms) => {
