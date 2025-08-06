@@ -1,10 +1,10 @@
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { LoadingPointsService } from '../../../api';
 import { TestBed } from '@angular/core/testing';
 import { AppTestingModule } from '../../../app.testing.module';
 import { LoadingPointsDetailResolver } from './loading-points-detail-resolver.service';
 import { LOADING_POINT } from '../../../../test/data/loading-point';
+import { LoadingPointService } from '../../../api/service/sepodi/loading-point.service';
 
 describe('LoadingPointsDetailResolver', () => {
   const loadingPointsService = jasmine.createSpyObj('loadingPointsService', [
@@ -19,7 +19,7 @@ describe('LoadingPointsDetailResolver', () => {
       imports: [AppTestingModule],
       providers: [
         LoadingPointsDetailResolver,
-        { provide: LoadingPointsService, useValue: loadingPointsService },
+        { provide: LoadingPointService, useValue: loadingPointsService },
       ],
     });
     resolver = TestBed.inject(LoadingPointsDetailResolver);
