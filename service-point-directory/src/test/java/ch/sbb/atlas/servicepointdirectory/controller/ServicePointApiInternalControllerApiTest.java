@@ -25,7 +25,6 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClientBase;
 import java.time.LocalDate;

@@ -395,7 +395,6 @@ class ServicePointWorkflowApiInternalControllerApiTest extends BaseControllerApi
 
     List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointApiV1Controller.updateServicePoint(id,
         stopPoint2);
-    Long id2 = servicePointVersionModel2.get(1).getId();
 
     //2nd version is now in hearing => status = IN_REVIEW
     servicePointWorkflowApiInternalController.updateServicePointStatus(servicePointVersionModel2.get(1).getSloid(),

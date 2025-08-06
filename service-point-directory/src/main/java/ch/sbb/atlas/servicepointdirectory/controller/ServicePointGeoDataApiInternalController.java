@@ -53,6 +53,7 @@ public class ServicePointGeoDataApiInternalController implements ServicePointGeo
             .build();
       }
     } catch (Exception e) {
+      log.error("Geolocation could not be updated!", e);
       return GeoUpdateItemResultModel.builder()
           .sloid(sloid)
           .id(id)

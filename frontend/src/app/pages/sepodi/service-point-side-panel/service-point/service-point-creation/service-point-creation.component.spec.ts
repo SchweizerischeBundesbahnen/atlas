@@ -5,7 +5,6 @@ import {
   Country,
   CreateServicePointVersion,
   PermissionRestrictionType,
-  ServicePointsService,
   SwissCanton,
 } from '../../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -20,6 +19,7 @@ import { PermissionService } from '../../../../../core/auth/permission/permissio
 import SpyObj = jasmine.SpyObj;
 import anything = jasmine.anything;
 import Spy = jasmine.Spy;
+import { ServicePointService } from '../../../../../api/service/sepodi/service-point.service';
 
 class PermissionServiceMock implements Partial<PermissionService> {
   getApplicationUserPermission = jasmine.createSpy();
@@ -57,7 +57,7 @@ describe('ServicePointCreationComponent', () => {
           useValue: spy,
         },
         {
-          provide: ServicePointsService,
+          provide: ServicePointService,
           useValue: servicePointServiceSpy,
         },
         {

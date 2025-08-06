@@ -66,7 +66,7 @@ class LoadingPointApiV1ControllerApiTest extends BaseControllerApiTest {
   void createDefaultVersion() {
     servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.createAbroadServicePointVersion());
 
-    LoadingPointVersion loadingPointVersion = LoadingPointVersion
+    LoadingPointVersion version = LoadingPointVersion
         .builder()
         .number(NUMBER)
         .designation("Piazzale")
@@ -81,7 +81,7 @@ class LoadingPointApiV1ControllerApiTest extends BaseControllerApiTest {
         .editionDate(LocalDateTime.of(2018, 6, 28, 11, 48, 56))
         .build();
 
-    this.loadingPointVersion = repository.saveAndFlush(loadingPointVersion);
+    this.loadingPointVersion = repository.saveAndFlush(version);
   }
 
   @AfterEach

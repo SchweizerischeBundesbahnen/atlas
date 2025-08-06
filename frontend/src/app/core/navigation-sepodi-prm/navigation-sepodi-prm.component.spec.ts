@@ -3,16 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavigationSepodiPrmComponent } from './navigation-sepodi-prm.component';
 import { AppTestingModule } from '../../app.testing.module';
 import { Router } from '@angular/router';
-import {
-  PersonWithReducedMobilityService,
-  ReadServicePointVersion,
-  ReadStopPointVersion,
-  ServicePointsService,
-} from '../../api';
+import { PersonWithReducedMobilityService, ReadServicePointVersion, ReadStopPointVersion, } from '../../api';
 import { BERN_WYLEREGG } from '../../../test/data/service-point';
-import SpyObj = jasmine.SpyObj;
 import { of } from 'rxjs';
 import { STOP_POINT } from '../../pages/prm/util/stop-point-test-data.spec';
+import { ServicePointService } from '../../api/service/sepodi/service-point.service';
+import SpyObj = jasmine.SpyObj;
 
 describe('NavigationSepodiPrmComponent', () => {
   let component: NavigationSepodiPrmComponent;
@@ -22,7 +18,7 @@ describe('NavigationSepodiPrmComponent', () => {
     'personWithReducedMobilityService',
     ['getStopPointVersions']
   );
-  const servicePointsServiceSpy = jasmine.createSpyObj('servicePointsService', [
+  const servicePointServiceSpy = jasmine.createSpyObj('servicePointsService', [
     'getServicePointVersions',
   ]);
 
@@ -37,14 +33,14 @@ describe('NavigationSepodiPrmComponent', () => {
           provide: PersonWithReducedMobilityService,
           useValue: personWithReducedMobilityServiceSpy,
         },
-        { provide: ServicePointsService, useValue: servicePointsServiceSpy },
+        { provide: ServicePointService, useValue: servicePointServiceSpy },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NavigationSepodiPrmComponent);
     component = fixture.componentInstance;
     component.targetPage = 'stop-point';
-    servicePointsServiceSpy.getServicePointVersions.and.returnValue(
+    servicePointServiceSpy.getServicePointVersions.and.returnValue(
       of([BERN_WYLEREGG])
     );
     fixture.detectChanges();
@@ -167,14 +163,14 @@ describe('NavigationSepodiPrmComponent', () => {
     const number = 8589008;
     const mockResponse: ReadServicePointVersion[] = [BERN_WYLEREGG];
 
-    servicePointsServiceSpy.getServicePointVersions.and.returnValue(
+    servicePointServiceSpy.getServicePointVersions.and.returnValue(
       of(mockResponse)
     );
 
     component.checkServicePointIsLocatedInSwitzerland(number);
 
     expect(
-      servicePointsServiceSpy.getServicePointVersions
+      servicePointServiceSpy.getServicePointVersions
     ).toHaveBeenCalledWith(number);
     expect(component.isSwissServicePoint).toBeTrue();
   });
@@ -184,14 +180,14 @@ describe('NavigationSepodiPrmComponent', () => {
     const number = 8589008;
     const mockResponse: ReadServicePointVersion[] = [BERN_WYLEREGG];
 
-    servicePointsServiceSpy.getServicePointVersions.and.returnValue(
+    servicePointServiceSpy.getServicePointVersions.and.returnValue(
       of(mockResponse)
     );
 
     component.checkServicePointIsLocatedInSwitzerland(number);
 
     expect(
-      servicePointsServiceSpy.getServicePointVersions
+      servicePointServiceSpy.getServicePointVersions
     ).toHaveBeenCalledWith(number);
     expect(component.isSwissServicePoint).toBeTrue();
     expect(component.isStopPoint).toBeTrue();

@@ -12,11 +12,11 @@ import {
 } from './stop-point-workflow-detail-resolver.service';
 import {
   ReadStopPointWorkflow,
-  ServicePointsService,
   StopPointWorkflowService,
 } from '../../../../api';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import { AppTestingModule } from '../../../../app.testing.module';
+import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -49,7 +49,7 @@ describe('StopPointWorkflowDetailResolver', () => {
           provide: StopPointWorkflowService,
           useValue: stopPointWorkflowService,
         },
-        { provide: ServicePointsService, useValue: servicePointsService },
+        { provide: ServicePointService, useValue: servicePointsService },
       ],
     });
     resolver = TestBed.inject(StopPointWorkflowDetailResolver);
