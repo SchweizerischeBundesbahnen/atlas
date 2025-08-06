@@ -6,6 +6,7 @@ import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.workflow.mail.BaseNotificationService;
 import ch.sbb.workflow.sepodi.termination.TerminationWorkflowHelper;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
+import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,14 +81,21 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
         .build();
   }
 
-  public MailNotification buildAbortNotification(TerminationStopPointWorkflow workflow) {
+  public MailNotification buildAbortNotification(TerminationStopPointWorkflow workflow, TerminationAbortModel abortModel) {
+    List<Map<String, Object>> mailProperties = new ArrayList<>();
+    Map<String, Object> mailContentProperty = new HashMap<>();
+    mailContentProperty.put("title", TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT);
+    mailContentProperty.put("designationOfficial", workflow.getDesignationOfficial());
+    mailContentProperty.put("sloid", workflow.getSloid());
+    mailContentProperty.put("abortComment", abortModel.getAbortComment());
+    mailContentProperty.put("url", getWorkflowUrl(workflow));
+    mailProperties.add(mailContentProperty);
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.ABORT_TERMINATION_NOTIFICATION)
         .subject(TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT)
         .to(List.of(terminationExaminants.getInfoPlus().getEmail(), workflow.getApplicantMail()))
-        .templateProperties(buildMailProperties(workflow,
-            TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT))
+        .templateProperties(mailProperties)
         .build();
   }
 

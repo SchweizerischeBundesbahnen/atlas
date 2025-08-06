@@ -13,6 +13,7 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationDecision;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
+import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.InfoPlus;
 import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.Nova;
@@ -145,9 +146,10 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
         .status(TerminationWorkflowStatus.STARTED)
         .build();
     when(terminationExaminants.getInfoPlus()).thenReturn(InfoPlus.builder().email("a@b-ch").build());
+    TerminationAbortModel abortModel = TerminationAbortModel.builder().abortComment("abort").build();
     //when
     MailNotification result = builderNotificationService.buildAbortNotification(
-        terminationStopPointWorkflow);
+        terminationStopPointWorkflow, abortModel);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(ABORT_TERMINATION_NOTIFICATION);

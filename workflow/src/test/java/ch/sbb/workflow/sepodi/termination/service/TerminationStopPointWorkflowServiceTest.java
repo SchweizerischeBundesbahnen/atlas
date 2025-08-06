@@ -225,7 +225,8 @@ class TerminationStopPointWorkflowServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.CANCELED);
-    verify(notificationService, times(1)).sendAbortNotificationToBoAndInfoPlus(any(TerminationStopPointWorkflow.class));
+    verify(notificationService, times(1)).sendAbortNotificationToBoAndInfoPlus(any(TerminationStopPointWorkflow.class),
+        any(TerminationAbortModel.class));
   }
 
   @Test
@@ -242,7 +243,8 @@ class TerminationStopPointWorkflowServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.CANCELED);
-    verify(notificationService, times(1)).sendAbortNotificationToBoInfoPlusAndNova(any(TerminationStopPointWorkflow.class));
+    verify(notificationService, times(1)).sendAbortNotificationToBoInfoPlusAndNova(any(TerminationStopPointWorkflow.class),
+        any(TerminationAbortModel.class));
   }
 
   @Test
@@ -259,8 +261,10 @@ class TerminationStopPointWorkflowServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED_CLOSED);
-    verify(notificationService, never()).sendAbortNotificationToBoAndInfoPlus(any(TerminationStopPointWorkflow.class));
-    verify(notificationService, never()).sendAbortNotificationToBoInfoPlusAndNova(any(TerminationStopPointWorkflow.class));
+    verify(notificationService, never()).sendAbortNotificationToBoAndInfoPlus(any(TerminationStopPointWorkflow.class),
+        any(TerminationAbortModel.class));
+    verify(notificationService, never()).sendAbortNotificationToBoInfoPlusAndNova(any(TerminationStopPointWorkflow.class),
+        any(TerminationAbortModel.class));
   }
 
   private @NotNull TerminationStopPointWorkflow saveTerminationStopPointWorkflow() {
