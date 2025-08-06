@@ -1,9 +1,10 @@
-import { TestBed } from '@angular/core/testing';
-import { WorkflowService } from './workflow.service';
-import { AtlasApiService } from '../atlas-api.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { UserService } from '../../../core/auth/user/user.service';
-import { TerminationStopPointAddWorkflow } from '../../model/terminationStopPointAddWorkflow';
+import {TestBed} from '@angular/core/testing';
+import {WorkflowService} from './workflow.service';
+import {AtlasApiService} from '../atlas-api.service';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {UserService} from '../../../core/auth/user/user.service';
+import {TerminationStopPointAddWorkflow} from '../../model/terminationStopPointAddWorkflow';
+import {TerminationAbort} from "../../model/terminationAbort";
 import any = jasmine.any;
 
 describe('WorkflowService', () => {
@@ -75,5 +76,18 @@ describe('WorkflowService', () => {
       '/workflow/internal/termination-stop-point/workflows',
       any(HttpParams)
     );
+  });
+
+  it('should abort termination', () => {
+    // given
+    const terminationAbort: TerminationAbort = {
+      abortComment: 'abort comment'
+    };
+
+    // when
+    service.abortTermination(123, terminationAbort);
+
+    // then
+    expect(apiService.post).toHaveBeenCalledOnceWith('/workflow/internal/termination-stop-point/workflows/abort/123', terminationAbort);
   });
 });
