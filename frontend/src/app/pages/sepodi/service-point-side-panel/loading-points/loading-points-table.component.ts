@@ -53,10 +53,10 @@ export class LoadingPointsTableComponent implements OnInit {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    private loadingPointInternalService: LoadingPointInternalService,
-    private tableService: TableService,
-    private route: ActivatedRoute,
-    private router: Router
+    private readonly loadingPointInternalService: LoadingPointInternalService,
+    private readonly tableService: TableService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {}
 
   ngOnInit() {
