@@ -6,10 +6,7 @@ import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field
 import {
   MatDatepicker,
   MatDatepickerInput,
-  MatDatepickerToggle,
-  MatDatepickerToggleIcon,
 } from '@angular/material/datepicker';
-import { MatIcon } from '@angular/material/icon';
 import { DateIconComponent } from '../date-icon/date-icon.component';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -22,9 +19,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     ReactiveFormsModule,
     AtlasLabelFieldComponent,
     MatDatepickerInput,
-    MatDatepickerToggle,
-    MatIcon,
-    MatDatepickerToggleIcon,
     DateIconComponent,
     MatDatepicker,
     AtlasFieldErrorComponent,
