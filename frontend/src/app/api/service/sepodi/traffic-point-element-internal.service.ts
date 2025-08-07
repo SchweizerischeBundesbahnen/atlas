@@ -28,7 +28,7 @@ export class TrafficPointElementInternalService {
       size,
       sort,
     });
-    return this.atlasApiService.get(`${this.BASE_PATH}/platforms/${encodeURIComponent(String(servicePointNumber))}`, httpParams);
+    return this.atlasApiService.get(`${this.BASE_PATH}/areas/${encodeURIComponent(String(servicePointNumber))}`, httpParams);
   }
 
   public getTrafficPointsOfServicePointValidToday(servicePointNumber: number): Observable<Array<ReadTrafficPointElementVersion>> {
