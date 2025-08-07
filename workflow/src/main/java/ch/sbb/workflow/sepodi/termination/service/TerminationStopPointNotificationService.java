@@ -5,7 +5,6 @@ import ch.sbb.workflow.mail.MailProducerService;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
-import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ public class TerminationStopPointNotificationService {
 
   private final MailProducerService mailProducerService;
   private final TerminationStopPointWorkflowBuilderNotificationService builderNotificationService;
-  private final TerminationExaminants terminationExaminants;
 
   public void sendStartTerminationNotificationToInfoPlusAndBo(TerminationStopPointWorkflow workflow) {
     MailNotification notification = builderNotificationService.buildStartTerminationNotificationMailForInfoPlus(workflow);
@@ -39,21 +37,17 @@ public class TerminationStopPointNotificationService {
   }
 
   public void sendAbortNotificationToBoAndInfoPlus(TerminationStopPointWorkflow workflow, TerminationAbortModel abortModel) {
-    List<String> emailsTo = List.of(terminationExaminants.getInfoPlus().getEmail(),
-        workflow.getApplicantMail());
-    sendAbortNotificationToInfoPlusAndBoAndNova(workflow, abortModel, emailsTo);
+    MailNotification notification = builderNotificationService.buildAbortNotificationForBoAndInfoPlus(workflow, abortModel);
+    mailProducerService.produceMailNotification(notification);
   }
 
   public void sendAbortNotificationToBoInfoPlusAndNova(TerminationStopPointWorkflow workflow, TerminationAbortModel abortModel) {
-    List<String> emailsTo = List.of(terminationExaminants.getInfoPlus().getEmail(),
-        workflow.getApplicantMail(), terminationExaminants.getNova().getEmail());
-    sendAbortNotificationToInfoPlusAndBoAndNova(workflow, abortModel, emailsTo);
+    MailNotification notification = builderNotificationService.buildAbortNotificationForBoInfoPlusAndNova(workflow, abortModel);
+    mailProducerService.produceMailNotification(notification);
   }
 
-  void sendAbortNotificationToInfoPlusAndBoAndNova(TerminationStopPointWorkflow workflow, TerminationAbortModel abortModel,
-      List<String> emailsTo) {
-    MailNotification notification = builderNotificationService.buildAbortNotification(workflow, abortModel);
-    notification.setTo(emailsTo);
+  public void sendTerminationConfirmedNotification(TerminationStopPointWorkflow workflow) {
+    MailNotification notification = builderNotificationService.buildTerminationConfirmedNotification(workflow);
     mailProducerService.produceMailNotification(notification);
   }
 
