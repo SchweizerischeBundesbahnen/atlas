@@ -11,7 +11,12 @@ import {
   MockNavigationSepodiPrmComponent,
 } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { Country, ReadServicePointVersion, ServicePointsService, Status, StopPointType, } from '../../../../api';
+import {
+  Country,
+  ReadServicePointVersion,
+  Status,
+  StopPointType,
+} from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { MapService } from '../../map/map.service';
 import { Component, EventEmitter, input, Input, Output } from '@angular/core';
@@ -28,9 +33,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { ServicePointFormComponent } from './service-point-form/service-point-form.component';
 import { TerminationService } from './stop-point-termination/termination.service';
 import moment from 'moment';
-import {
-  StopPointTerminationDialogService
-} from './stop-point-termination/stop-point-termination-dialog/stop-point-termination-dialog.service';
+import { StopPointTerminationDialogService } from './stop-point-termination/stop-point-termination-dialog/stop-point-termination-dialog.service';
 import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 import { ServicePointInternalService } from '../../../../api/service/sepodi/service-point-internal.service';
 import SpyObj = jasmine.SpyObj;
@@ -39,10 +42,10 @@ const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointService = jasmine.createSpyObj('ServicePointService', [
   'updateServicePoint',
 ]);
-const servicePointInternalService = jasmine.createSpyObj('ServicePointInternalService', [
-  'validateServicePoint',
-  'revokeServicePoint',
-]);
+const servicePointInternalService = jasmine.createSpyObj(
+  'ServicePointInternalService',
+  ['validateServicePoint', 'revokeServicePoint']
+);
 
 const notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
   'success',
@@ -109,7 +112,10 @@ describe('ServicePointDetailComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: ServicePointService, useValue: servicePointService },
-        { provide: ServicePointInternalService, useValue: servicePointInternalService },
+        {
+          provide: ServicePointInternalService,
+          useValue: servicePointInternalService,
+        },
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: TranslatePipe },
         { provide: MapService, useValue: mapServiceSpy },
