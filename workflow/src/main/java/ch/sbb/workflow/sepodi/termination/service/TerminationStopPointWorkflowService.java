@@ -129,9 +129,11 @@ public class TerminationStopPointWorkflowService {
 
     if (decisionModel.getJudgement() == JudgementType.YES) {
       doApproveTermination(decisionModel, terminationWorkflow);
+      notificationService.sendTerminationConfirmedNotification(terminationWorkflow);
     }
     if (decisionModel.getJudgement() == JudgementType.NO) {
       doNotApproveTermination(terminationWorkflow);
+      notificationService.sendTerminationConfirmedNotification(terminationWorkflow);
     }
     return repository.save(terminationWorkflow);
   }
