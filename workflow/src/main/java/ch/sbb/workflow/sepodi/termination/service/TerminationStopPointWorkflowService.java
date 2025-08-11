@@ -128,8 +128,11 @@ public class TerminationStopPointWorkflowService {
     terminationWorkflow.setNovaTerminationDate(decisionModel.getTerminationDate());
 
     if (decisionModel.getJudgement() == JudgementType.YES) {
+      TerminationWorkflowStatus actualTerminationStatus = terminationWorkflow.getStatus();
       doApproveTermination(decisionModel, terminationWorkflow);
-      notificationService.sendTerminationConfirmedNotification(terminationWorkflow);
+      if (TerminationWorkflowStatus.TERMINATION_NOT_APPROVED != actualTerminationStatus) {
+        notificationService.sendTerminationConfirmedNotification(terminationWorkflow);
+      }
     }
     if (decisionModel.getJudgement() == JudgementType.NO) {
       doNotApproveTermination(terminationWorkflow);
