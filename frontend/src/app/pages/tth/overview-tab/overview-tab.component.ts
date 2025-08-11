@@ -2,15 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Pages } from '../../pages';
 import {
   ActivatedRoute,
-  Router,
-  RouterLinkActive,
   RouterLink,
+  RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
 import { OverviewToTabShareDataService } from './service/overview-to-tab-share-data.service';
 import { Cantons } from '../../../core/cantons/Cantons';
 import { HearingOverviewTab } from './model/hearing-overview-tab';
-import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
+import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
 import { NgFor } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -46,7 +45,6 @@ export class OverviewTabComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private overviewToTabService: OverviewToTabShareDataService
   ) {}
 

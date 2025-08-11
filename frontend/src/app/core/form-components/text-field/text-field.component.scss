@@ -5,8 +5,6 @@ input:focus {
 }
 
 input {
-  //margin-top: 5px; // todo: check if styling is ok everywhere where is used and check also all ng-select styles after update
-
   border-top-style: hidden;
   border-left: 1px solid variables.$gray-400;
   border-right: 1px solid variables.$gray-400;
