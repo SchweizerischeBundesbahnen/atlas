@@ -14,6 +14,7 @@ import static ch.sbb.atlas.kafka.model.mail.MailType.SCHEDULING_ERROR_NOTIFICATI
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_TERMINATION_CONFIRMED_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION;
@@ -69,6 +70,9 @@ public enum MailTemplateConfig {
       false, true),
   ABORT_TERMINATION_NOTIFICATION_TEMPLATE("termination/abort_notification", null, null, true,
       false, true),
+  STOP_POINT_TERMINATION_CONFIRMED_NOTIFICATION_TEMPLATE("termination/stop_point_termination_confirmed_notification", null, null,
+      true,
+      false, true),
 
   ;
 
@@ -106,6 +110,7 @@ public enum MailTemplateConfig {
     CONFIG.put(TARIFF_STOP_NOT_APPROVED_NOTIFICATION, TARIFF_STOP_NOT_APPROVED_NOTIFICATION_TEMPLATE);
     CONFIG.put(TARIFF_STOP_APPROVED_NOTIFICATION, TARIFF_STOP_APPROVED_NOTIFICATION_TEMPLATE);
     CONFIG.put(ABORT_TERMINATION_NOTIFICATION, ABORT_TERMINATION_NOTIFICATION_TEMPLATE);
+    CONFIG.put(STOP_POINT_TERMINATION_CONFIRMED_NOTIFICATION, STOP_POINT_TERMINATION_CONFIRMED_NOTIFICATION_TEMPLATE);
 
   }
 
