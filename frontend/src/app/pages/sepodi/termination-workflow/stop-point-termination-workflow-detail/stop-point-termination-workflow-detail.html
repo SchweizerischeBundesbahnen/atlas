@@ -182,7 +182,10 @@
       buttonType="whiteFooterNonEdit"
       (buttonClicked)="openDecisionDialog()"
     />
-    } @if (workflow.status !== TerminationWorkflowStatus.Canceled) {
+    } @if ([TerminationWorkflowStatus.Started,
+    TerminationWorkflowStatus.TariffStopApproved,
+    TerminationWorkflowStatus.TerminationNotApproved].includes(workflow.status!)
+    ) {
     <atlas-button
       [footerEdit]="false"
       buttonDataCy="termination-workflow-abort"
