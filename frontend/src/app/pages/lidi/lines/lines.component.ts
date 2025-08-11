@@ -35,7 +35,7 @@ export class LinesComponent implements OnInit, OnDestroy {
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
       TableFilterSearchType.BUSINESS_ORGANISATION,
       1,
-      'col-3',
+      'filter-width',
       new FormGroup({
         businessOrganisation: new FormControl(),
       })
@@ -45,17 +45,17 @@ export class LinesComponent implements OnInit, OnDestroy {
       'LIDI.TYPE',
       Object.values(LidiElementType),
       1,
-      'col-3'
+      'filter-width'
     ),
     multiSelectStatus: new TableFilterMultiSelect(
       'COMMON.STATUS_TYPES.',
       'COMMON.STATUS',
       Object.values(Status),
       1,
-      'col-3',
+      'filter-width',
       [Status.Draft, Status.Validated, Status.InReview, Status.Withdrawn]
     ),
-    dateSelect: new TableFilterDateSelect(1, 'col-3'),
+    dateSelect: new TableFilterDateSelect(1, 'filter-width'),
   };
 
   private lineVersionsSubscription?: Subscription;

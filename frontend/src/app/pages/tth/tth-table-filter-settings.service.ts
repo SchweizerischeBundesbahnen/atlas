@@ -18,13 +18,13 @@ export class TthTableFilterSettingsService {
         'COMMON.STATUS',
         Object.values(StatementStatus),
         1,
-        'col-3',
+        'filter-width',
         []
       ),
       searchSelectTU: new TableFilterSearchSelect<TransportCompany[]>(
         TableFilterSearchType.TRANSPORT_COMPANY,
         1,
-        'col-3',
+        'filter-width',
         new FormGroup({
           transportCompany: new FormControl([]),
         })
@@ -32,7 +32,7 @@ export class TthTableFilterSettingsService {
       searchSelectTTFN: new TableFilterSearchSelect<TimetableFieldNumber>(
         TableFilterSearchType.TIMETABLE_FIELD_NUMBER,
         1,
-        'col-3',
+        'filter-width',
         new FormGroup({
           ttfnid: new FormControl(),
         })
