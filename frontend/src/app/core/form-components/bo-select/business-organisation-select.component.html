@@ -11,16 +11,35 @@
     <app-atlas-label-field
       fieldLabel="BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION"
       [required]="formModus"
+      [fieldExamples]="
+        formModus
+          ? [
+              {
+                label: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
+              },
+              {
+                label: '-',
+              },
+              {
+                label: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
+              },
+              {
+                label: '-',
+              },
+              {
+                label: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
+              },
+              {
+                label: '-',
+              },
+              {
+                label: 'SBOID',
+              },
+            ]
+          : []
+      "
     ></app-atlas-label-field>
-    <div *ngIf="formModus" class="font-regular-sm">
-      {{ 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER' | translate }} -
-      {{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION' | translate }} -
-      {{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION' | translate }} - SBOID
-    </div>
   </div>
-  <div
-    [ngClass]="formModus ? 'form-mode-label-form-field-space' : 'search-mode-space-between'"
-  ></div>
   <ng-template #labelOptionTemplates let-item>
     <div class="text-truncate" [title]="item | boSelectionDisplay">
       {{ item | boSelectionDisplay }}

@@ -15,7 +15,6 @@ import { BusinessOrganisation } from '../../../api';
 import { map } from 'rxjs/operators';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
-import { NgClass, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BoSelectionDisplayPipe } from './bo-selection-display.pipe';
 import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
@@ -28,9 +27,6 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
     SearchSelectComponent,
     ReactiveFormsModule,
     AtlasLabelFieldComponent,
-    NgIf,
-    NgClass,
-    TranslatePipe,
     BoSelectionDisplayPipe,
   ],
   providers: [TranslatePipe],

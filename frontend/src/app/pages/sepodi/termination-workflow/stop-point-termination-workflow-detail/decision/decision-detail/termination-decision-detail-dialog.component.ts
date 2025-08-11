@@ -20,11 +20,8 @@ import { DateIconComponent } from '../../../../../../core/form-components/date-i
 import {
   MatDatepicker,
   MatDatepickerInput,
-  MatDatepickerToggle,
-  MatDatepickerToggleIcon,
 } from '@angular/material/datepicker';
 import { MIN_DATE } from '../../../../../../core/date/date.service';
-import { MatIcon } from '@angular/material/icon';
 import { WorkflowService } from '../../../../../../api/service/workflow/workflow.service';
 import { ValidationService } from '../../../../../../core/validation/validation.service';
 import { TerminationWorkflowStatus } from '../../../../../../api/model/terminationWorkflowStatus';
@@ -50,9 +47,6 @@ import TerminationDecisionPersonEnum = TerminationDecision.TerminationDecisionPe
     DateIconComponent,
     MatDatepicker,
     MatDatepickerInput,
-    MatDatepickerToggle,
-    MatDatepickerToggleIcon,
-    MatIcon,
   ],
   providers: [TranslatePipe],
 })

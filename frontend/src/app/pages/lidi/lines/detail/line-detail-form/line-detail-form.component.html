@@ -13,7 +13,7 @@
         [options]="TYPE_OPTIONS"
         [required]="true"
         [disabled]="!newRecord"
-        [additionalLabelspace]="24"
+        [additionalLabelspace]="22"
         (selectChanged)="updateMandatoryFields($event)"
       >
       </atlas-select>
@@ -28,7 +28,7 @@
           optionTranslateLabelPrefix="LIDI.LINE_CONCESSION."
           [options]="LINE_CONCESSION_TYPE_OPTIONS"
           [required]="isLineConcessionTypeRequired"
-          [additionalLabelspace]="24"
+          [additionalLabelspace]="22"
           [isOptional]="false"
         >
         </atlas-select>
@@ -171,7 +171,10 @@
   <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
 
   <div class="w-50">
-    <form-date-range [formGroup]="form" [showMaxValidityAutoFill]="false"></form-date-range>
+    <form-date-range
+      [formGroup]="form"
+      [showMaxValidityAutoFill]="false"
+    ></form-date-range>
   </div>
 
   <div class="col-12 d-flex mt-3 pb-3">

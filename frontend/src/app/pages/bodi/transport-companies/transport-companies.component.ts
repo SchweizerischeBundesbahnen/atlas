@@ -54,7 +54,7 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
       'BODI.TRANSPORT_COMPANIES.STATUS',
       Object.values(TransportCompanyStatus),
       1,
-      'col-3',
+      'col-6',
       [
         TransportCompanyStatus.Current,
         TransportCompanyStatus.OperatingPart,
