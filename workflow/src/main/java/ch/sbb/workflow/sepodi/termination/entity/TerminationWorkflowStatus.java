@@ -11,9 +11,8 @@ public enum TerminationWorkflowStatus {
   TERMINATION_APPROVED,
   TERMINATION_NOT_APPROVED,
   TERMINATION_NOT_APPROVED_CLOSED,
-  CANCELED,
-
-  ;
+  CANCELED;
 
   public static final Set<TerminationWorkflowStatus> WORKFLOW_IN_PROGRESS = Set.of(STARTED, TARIFF_STOP_APPROVED);
+
 }
