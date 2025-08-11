@@ -105,7 +105,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
             .terminationDate(infoPlusTerminationDate)
             .build(), terminationWorkflow.getId());
     assertThat(infoPlusApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
-    verify(notificationService).sendTariffStopApprovedNotificationToNovaAndBo(any());
+    verify(notificationService).sendTariffStopApprovedNotificationToNova(any());
 
     LocalDate novaTerminationDate = TERMINATION_DATE.plusMonths(1);
     TerminationStopPointWorkflowModel novaApprovedTermination = controller.decisionNova(
@@ -141,7 +141,7 @@ class TerminationStopPointWorkflowInternalControllerVotingTest extends BaseContr
             .terminationDate(TERMINATION_DATE)
             .build(), terminationWorkflow.getId());
     assertThat(infoPlusApprovedTermination.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
-    verify(notificationService).sendTariffStopApprovedNotificationToNovaAndBo(any());
+    verify(notificationService).sendTariffStopApprovedNotificationToNova(any());
 
     TerminationStopPointWorkflowModel novaApprovedTermination = controller.decisionNova(
         TerminationDecisionModel.builder()

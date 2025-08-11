@@ -1,5 +1,7 @@
 package ch.sbb.workflow.sepodi.termination.service;
 
+import static ch.sbb.workflow.sepodi.termination.service.TerminationWorkflowSubject.STOP_POINT_TERMINATION_CONFIRMED_SUBJECT;
+
 import ch.sbb.atlas.helper.AtlasFrontendBaseUrl;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
@@ -49,17 +51,40 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
   }
 
   public MailNotification buildTariffStopApprovedNotification(TerminationStopPointWorkflow workflow) {
+    List<Map<String, Object>> mailProperties = new ArrayList<>();
+    Map<String, Object> mailContentProperty = getCommonMailContentProperty(
+        TerminationWorkflowSubject.TARIFF_STOP_APPROVED_SUBJECT, workflow);
+    mailContentProperty.put("url", getWorkflowUrl(workflow));
+    mailContentProperty.put("boTerminationDate", DATE_FORMATTER.format(workflow.getBoTerminationDate()));
+    mailContentProperty.put("infoPlusTerminationDate", DATE_FORMATTER.format(workflow.getInfoPlusTerminationDate()));
+    mailContentProperty.put("infoPlusMotivation", workflow.getInfoPlusDecision().getMotivation());
+    mailProperties.add(mailContentProperty);
+
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.TARIFF_STOP_APPROVED_NOTIFICATION)
         .subject(TerminationWorkflowSubject.TARIFF_STOP_APPROVED_SUBJECT)
         .to(List.of(terminationExaminants.getNova().getEmail()))
-        .templateProperties(buildMailProperties(workflow,
-            TerminationWorkflowSubject.TARIFF_STOP_APPROVED_SUBJECT))
+        .templateProperties(mailProperties)
         .build();
   }
 
-  public MailNotification buildAbortNotification(TerminationStopPointWorkflow workflow, TerminationAbortModel abortModel) {
+  public MailNotification buildAbortNotificationForBoAndInfoPlus(TerminationStopPointWorkflow workflow,
+      TerminationAbortModel abortModel) {
+    List<String> emailsTo = List.of(terminationExaminants.getInfoPlus().getEmail(),
+        workflow.getApplicantMail());
+    return buildAbortNotification(workflow, abortModel, emailsTo);
+  }
+
+  public MailNotification buildAbortNotificationForBoInfoPlusAndNova(TerminationStopPointWorkflow workflow,
+      TerminationAbortModel abortModel) {
+    List<String> emailsTo = List.of(terminationExaminants.getInfoPlus().getEmail(),
+        workflow.getApplicantMail(), terminationExaminants.getNova().getEmail());
+    return buildAbortNotification(workflow, abortModel, emailsTo);
+  }
+
+  MailNotification buildAbortNotification(TerminationStopPointWorkflow workflow, TerminationAbortModel abortModel,
+      List<String> emailsTo) {
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = getCommonMailContentProperty(
         TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT, workflow);
@@ -70,7 +95,25 @@ public class TerminationStopPointWorkflowBuilderNotificationService extends Base
         .from(from)
         .mailType(MailType.ABORT_TERMINATION_NOTIFICATION)
         .subject(TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT)
-        .to(List.of(terminationExaminants.getInfoPlus().getEmail(), workflow.getApplicantMail()))
+        .to(emailsTo)
+        .templateProperties(mailProperties)
+        .build();
+  }
+
+  public MailNotification buildTerminationConfirmedNotification(TerminationStopPointWorkflow workflow) {
+    List<String> emailsTo = List.of(terminationExaminants.getInfoPlus().getEmail(),
+        terminationExaminants.getNova().getEmail(),
+        workflow.getApplicantMail());
+    List<Map<String, Object>> mailProperties = new ArrayList<>();
+    Map<String, Object> mailContentProperty = getCommonMailContentProperty(STOP_POINT_TERMINATION_CONFIRMED_SUBJECT, workflow);
+    mailContentProperty.put("infoPlusTerminationDate", DATE_FORMATTER.format(workflow.getInfoPlusTerminationDate().plusDays(1)));
+    mailContentProperty.put("url", getWorkflowUrl(workflow));
+    mailProperties.add(mailContentProperty);
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.STOP_POINT_TERMINATION_CONFIRMED_NOTIFICATION)
+        .subject(STOP_POINT_TERMINATION_CONFIRMED_SUBJECT)
+        .to(emailsTo)
         .templateProperties(mailProperties)
         .build();
   }

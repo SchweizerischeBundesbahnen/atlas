@@ -1,5 +1,7 @@
 package ch.sbb.workflow.sepodi.termination.service;
 
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.TARIFF_STOP_APPROVED;
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.TERMINATION_NOT_APPROVED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -123,7 +125,7 @@ class TerminationStopPointWorkflowServiceTest {
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
+    assertThat(result.getStatus()).isEqualTo(TARIFF_STOP_APPROVED);
     assertThat(result.getBoTerminationDate()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.getInfoPlusTerminationDate()).isEqualTo(LocalDate.of(2001, 1, 1));
 
@@ -133,7 +135,7 @@ class TerminationStopPointWorkflowServiceTest {
     assertThat(infoPlusDecisionResult.getTerminationDecisionPerson()).isEqualTo(TerminationDecisionPerson.INFO_PLUS);
 
     verify(notificationService, times(1))
-        .sendTariffStopApprovedNotificationToNovaAndBo(any(TerminationStopPointWorkflow.class));
+        .sendTariffStopApprovedNotificationToNova(any(TerminationStopPointWorkflow.class));
     verify(notificationService, never())
         .sendTariffStopNotApprovedNotificationToBo(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
   }
@@ -166,9 +168,129 @@ class TerminationStopPointWorkflowServiceTest {
     assertThat(infoPlusDecisionResult.getTerminationDecisionPerson()).isEqualTo(TerminationDecisionPerson.INFO_PLUS);
 
     verify(notificationService, never())
-        .sendTariffStopApprovedNotificationToNovaAndBo(any(TerminationStopPointWorkflow.class));
+        .sendTariffStopApprovedNotificationToNova(any(TerminationStopPointWorkflow.class));
     verify(notificationService, times(1))
         .sendTariffStopNotApprovedNotificationToBo(any(TerminationStopPointWorkflow.class), any(TerminationDecisionModel.class));
+  }
+
+  @Test
+  void shouldAddDecisionNovaAccepted() {
+    //given
+    TerminationStopPointWorkflow workflow = getStopPointWorkflow();
+    TerminationDecision infoPlusDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
+        .judgement(JudgementType.YES)
+        .motivation("Forza Napoli")
+        .build();
+    workflow.setInfoPlusDecision(infoPlusDecision);
+    workflow.setInfoPlusTerminationDate(LocalDate.of(8000, 1, 1));
+    workflow.setVersionValidTo(LocalDate.of(9999, 12, 31));
+    workflow.setStatus(TARIFF_STOP_APPROVED);
+    repository.save(workflow);
+
+    TerminationDecisionModel novaDecision = TerminationDecisionModel.builder()
+        .judgement(JudgementType.YES)
+        .motivation("Forza Napoli")
+        .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+        .terminationDate(LocalDate.of(8001, 1, 1))
+        .build();
+    //when
+    TerminationStopPointWorkflow result = service.addDecisionNova(novaDecision, workflow.getId());
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_APPROVED);
+    assertThat(result.getBoTerminationDate()).isEqualTo(LocalDate.of(2000, 1, 1));
+    assertThat(result.getInfoPlusTerminationDate()).isEqualTo(LocalDate.of(8000, 1, 1));
+    assertThat(result.getNovaTerminationDate()).isEqualTo(LocalDate.of(8001, 1, 1));
+
+    TerminationDecision novaPlusDecisionResult = result.getNovaDecision();
+    assertThat(novaPlusDecisionResult).isNotNull();
+    assertThat(novaPlusDecisionResult.getJudgement()).isEqualTo(JudgementType.YES);
+    assertThat(novaPlusDecisionResult.getTerminationDecisionPerson()).isEqualTo(TerminationDecisionPerson.NOVA);
+
+    verify(notificationService, times(1))
+        .sendTerminationConfirmedNotification(any(TerminationStopPointWorkflow.class));
+  }
+
+  @Test
+  void shouldAddDecisionNovaNotAccepted() {
+    //given
+    TerminationStopPointWorkflow workflow = getStopPointWorkflow();
+    TerminationDecision infoPlusDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
+        .judgement(JudgementType.YES)
+        .motivation("Forza Napoli")
+        .build();
+    workflow.setInfoPlusDecision(infoPlusDecision);
+    workflow.setInfoPlusTerminationDate(LocalDate.of(8000, 1, 1));
+    workflow.setVersionValidTo(LocalDate.of(9999, 12, 31));
+    workflow.setStatus(TARIFF_STOP_APPROVED);
+    repository.save(workflow);
+
+    TerminationDecisionModel novaDecision = TerminationDecisionModel.builder()
+        .judgement(JudgementType.NO)
+        .motivation("Forza Napoli")
+        .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+        .terminationDate(LocalDate.of(8001, 1, 1))
+        .build();
+    //when
+    TerminationStopPointWorkflow result = service.addDecisionNova(novaDecision, workflow.getId());
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
+    assertThat(result.getBoTerminationDate()).isEqualTo(LocalDate.of(2000, 1, 1));
+    assertThat(result.getInfoPlusTerminationDate()).isEqualTo(LocalDate.of(8000, 1, 1));
+    assertThat(result.getNovaTerminationDate()).isEqualTo(LocalDate.of(8001, 1, 1));
+
+    TerminationDecision novaPlusDecisionResult = result.getNovaDecision();
+    assertThat(novaPlusDecisionResult).isNotNull();
+    assertThat(novaPlusDecisionResult.getJudgement()).isEqualTo(JudgementType.NO);
+    assertThat(novaPlusDecisionResult.getTerminationDecisionPerson()).isEqualTo(TerminationDecisionPerson.NOVA);
+
+    verify(notificationService, times(1))
+        .sendTerminationConfirmedNotification(any(TerminationStopPointWorkflow.class));
+  }
+
+  @Test
+  void shouldAddDecisionNovaAndNotSendNotificationWhenAlreadyInStatusTerminationNotApproved() {
+    //given
+    TerminationStopPointWorkflow workflow = getStopPointWorkflow();
+    TerminationDecision infoPlusDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
+        .judgement(JudgementType.YES)
+        .motivation("Forza Napoli")
+        .build();
+    workflow.setInfoPlusDecision(infoPlusDecision);
+    workflow.setInfoPlusTerminationDate(LocalDate.of(8000, 1, 1));
+    workflow.setVersionValidTo(LocalDate.of(9999, 12, 31));
+    workflow.setStatus(TERMINATION_NOT_APPROVED);
+    repository.save(workflow);
+
+    TerminationDecisionModel novaDecision = TerminationDecisionModel.builder()
+        .judgement(JudgementType.YES)
+        .motivation("Forza Napoli")
+        .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+        .terminationDate(LocalDate.of(8001, 1, 1))
+        .build();
+    //when
+    TerminationStopPointWorkflow result = service.addDecisionNova(novaDecision, workflow.getId());
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(TerminationWorkflowStatus.TERMINATION_APPROVED);
+    assertThat(result.getBoTerminationDate()).isEqualTo(LocalDate.of(2000, 1, 1));
+    assertThat(result.getInfoPlusTerminationDate()).isEqualTo(LocalDate.of(8000, 1, 1));
+    assertThat(result.getNovaTerminationDate()).isEqualTo(LocalDate.of(8001, 1, 1));
+
+    TerminationDecision novaPlusDecisionResult = result.getNovaDecision();
+    assertThat(novaPlusDecisionResult).isNotNull();
+    assertThat(novaPlusDecisionResult.getJudgement()).isEqualTo(JudgementType.YES);
+    assertThat(novaPlusDecisionResult.getTerminationDecisionPerson()).isEqualTo(TerminationDecisionPerson.NOVA);
+
+    verify(notificationService, never())
+        .sendTerminationConfirmedNotification(any(TerminationStopPointWorkflow.class));
   }
 
   @Test
@@ -233,7 +355,7 @@ class TerminationStopPointWorkflowServiceTest {
   void shouldAbortTerminationWorkflowWhenWorkflowIsTariffStopApproved() {
     //given
     TerminationStopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
-    stopPointWorkflow.setStatus(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
+    stopPointWorkflow.setStatus(TARIFF_STOP_APPROVED);
     repository.save(stopPointWorkflow);
     TerminationAbortModel abortingTerminationWorkflow = TerminationAbortModel.builder()
         .abortComment("Aborting termination workflow").build();

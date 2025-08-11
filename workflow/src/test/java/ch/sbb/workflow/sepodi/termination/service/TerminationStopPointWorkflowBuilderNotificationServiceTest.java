@@ -2,6 +2,7 @@ package ch.sbb.workflow.sepodi.termination.service;
 
 import static ch.sbb.atlas.kafka.model.mail.MailType.ABORT_TERMINATION_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_TERMINATION_STOP_POINT_WORKFLOW_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_TERMINATION_CONFIRMED_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.TARIFF_STOP_APPROVED_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.TARIFF_STOP_NOT_APPROVED_NOTIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -128,7 +129,7 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
   }
 
   @Test
-  void shouldBuildAbortNotification() {
+  void shouldBuildAbortNotificationForBoInfoPlusAndNova() {
     //given
     TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflow.builder()
         .sloid("ch:1:sloid:1")
@@ -146,15 +147,78 @@ class TerminationStopPointWorkflowBuilderNotificationServiceTest {
         .status(TerminationWorkflowStatus.STARTED)
         .build();
     when(terminationExaminants.getInfoPlus()).thenReturn(InfoPlus.builder().email("a@b-ch").build());
+    when(terminationExaminants.getNova()).thenReturn(Nova.builder().email("a@b-ch").build());
     TerminationAbortModel abortModel = TerminationAbortModel.builder().abortComment("abort").build();
     //when
-    MailNotification result = builderNotificationService.buildAbortNotification(
+    MailNotification result = builderNotificationService.buildAbortNotificationForBoInfoPlusAndNova(
+        terminationStopPointWorkflow, abortModel);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getMailType()).isEqualTo(ABORT_TERMINATION_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo(TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT);
+    assertThat(result.getTo()).hasSize(3).containsExactlyInAnyOrder("a@b-ch", "a@b-ch", "a@b.com");
+    assertThat(result.getCc()).isNull();
+  }
+
+  @Test
+  void shouldBuildAbortNotificationForBoAndInfoPlus() {
+    //given
+    TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1")
+        .versionId(1234L)
+        .boTerminationDate(LocalDate.of(2000, 1, 1))
+        .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
+        .infoPlusDecision(TerminationDecision.builder()
+            .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).judgement(JudgementType.YES).build())
+        .novaTerminationDate(LocalDate.of(2000, 1, 3))
+        .novaDecision(TerminationDecision.builder()
+            .terminationDecisionPerson(TerminationDecisionPerson.NOVA).judgement(JudgementType.YES).build())
+        .applicantMail("a@b.com")
+        .designationOfficial("Heimsiswil Zentrum")
+        .sboid("ch:sboid:1")
+        .status(TerminationWorkflowStatus.STARTED)
+        .build();
+    when(terminationExaminants.getInfoPlus()).thenReturn(InfoPlus.builder().email("a@b-ch").build());
+    when(terminationExaminants.getNova()).thenReturn(Nova.builder().email("a@b-ch").build());
+    TerminationAbortModel abortModel = TerminationAbortModel.builder().abortComment("abort").build();
+    //when
+    MailNotification result = builderNotificationService.buildAbortNotificationForBoAndInfoPlus(
         terminationStopPointWorkflow, abortModel);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(ABORT_TERMINATION_NOTIFICATION);
     assertThat(result.getSubject()).isEqualTo(TerminationWorkflowSubject.ABORT_TERMINATION_SUBJECT);
     assertThat(result.getTo()).hasSize(2).containsExactlyInAnyOrder("a@b-ch", "a@b.com");
+    assertThat(result.getCc()).isNull();
+  }
+
+  @Test
+  void shouldBuildTerminationConfirmNotification() {
+    //given
+    TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1")
+        .versionId(1234L)
+        .boTerminationDate(LocalDate.of(2000, 1, 1))
+        .infoPlusTerminationDate(LocalDate.of(2000, 1, 2))
+        .infoPlusDecision(TerminationDecision.builder()
+            .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS).judgement(JudgementType.YES).build())
+        .novaTerminationDate(LocalDate.of(2000, 1, 3))
+        .novaDecision(TerminationDecision.builder()
+            .terminationDecisionPerson(TerminationDecisionPerson.NOVA).judgement(JudgementType.YES).build())
+        .applicantMail("a@b.com")
+        .designationOfficial("Heimsiswil Zentrum")
+        .sboid("ch:sboid:1")
+        .status(TerminationWorkflowStatus.STARTED)
+        .build();
+    when(terminationExaminants.getInfoPlus()).thenReturn(InfoPlus.builder().email("a@b-ch").build());
+    when(terminationExaminants.getNova()).thenReturn(Nova.builder().email("a@b-ch").build());
+    //when
+    MailNotification result = builderNotificationService.buildTerminationConfirmedNotification(terminationStopPointWorkflow);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getMailType()).isEqualTo(STOP_POINT_TERMINATION_CONFIRMED_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo(TerminationWorkflowSubject.STOP_POINT_TERMINATION_CONFIRMED_SUBJECT);
+    assertThat(result.getTo()).hasSize(3).containsExactlyInAnyOrder("a@b-ch", "a@b-ch", "a@b.com");
     assertThat(result.getCc()).isNull();
   }
 }
