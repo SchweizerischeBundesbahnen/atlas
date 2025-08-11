@@ -122,25 +122,26 @@
             <br><br>
             <hr>
             <div>
-                <br><span>Liebes Team NOVA</span><br><br>
-                <span>Der <a th:href="${properties.get(0).get('url')}">Antrag</a> zur Aufhebung der Haltestelle
-                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
-                    wurde durch Info+ geprüft.
+                <br>
+                <span>Sehr geehrte Damen und Herren</span>
+                <br>
+                <br>
+                <span>Der Antrag zur Aufhebung der Haltestelle
+                    <b>[[${properties.get(0).get('designationOfficial')}]],[[${properties.get(0).get('sloid')}]]</b>
+                    wurde geprüft.
                 </span>
                 <br><br>
-                <ul>
-                    <li>TU Aufhebung per: [[${properties.get(0).get('boTerminationDate')}]]</li>
-                    <li>Info+ Aufhebung per: [[${properties.get(0).get('infoPlusTerminationDate')}]]</li>
-                    <li>Kommentar Info+: <i>[[${properties.get(0).get('infoPlusMotivation')}]]</i></li>
-                </ul>
+                Die Zuständigkeit für die Haltestelle liegt ab <b>[[${properties.get(0).get('infoPlusTerminationDate')}]]</b>
+                nicht mehr beim Transportunternehmen, die Anpassung erfolgt automatisch in atlas.
                 <br>
-                Wir bitten Sie, den Entscheid zeitnah im entsprechenden Formular zu erfassen. Erst nach vollständigem Eintrag
-                durch NOVA wird das Transportunternehmen über das Resultat seines Antrags informiert.
-                <br><br>
+                Im <a th:href="${properties.get(0).get('url')}">Antragsformular</a>
+                können Sie weitere Details zum Verlauf einsehen.
+                <br>
+                <br>
                 Bei Fragen dürfen Sie sich jederzeit bei der Fachstelle atlas melden: <a
                     href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
-                <br><br>
-
+                <br>
+                <br>
                 <div>
                     <br>Freundliche Grüsse<br><br>
                     Fachstelle atlas<br>
@@ -154,22 +155,21 @@
             <hr>
             <div>
                 <br><span>Mesdames et Messieurs</span><br><br>
-                <span>La <a th:href="${properties.get(0).get('url')}">demande</a> de suppression de l'arrêt
-                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
-                    a été examinée par Info+.
+                <span>La demande de suppression de l'arrêt
+                    <b>[[${properties.get(0).get('designationOfficial')}]],[[${properties.get(0).get('sloid')}]]</b>
+                    a été examinée.
+                    <br>
                 </span>
-                <br><br>
-                <ul>
-                    <li>Suppression selon l’entreprise de transport: [[${properties.get(0).get('boTerminationDate')}]]</li>
-                    <li>Suppression selon Info+: [[${properties.get(0).get('infoPlusTerminationDate')}]]</li>
-                    <li>Commentaire Info+: <i>[[${properties.get(0).get('infoPlusMotivation')}]]</i></li>
-                </ul>
+                À partir du <b>[[${properties.get(0).get('infoPlusTerminationDate')}]]</b>,
+                la responsabilité de cet arrêt n’incombera plus à l’entreprise de transport.
+                La modification sera effectuée automatiquement dans atlas.
                 <br>
-                Nous vous prions de bien vouloir saisir la décision dans le formulaire correspondant dans les plus brefs délais.
-                Ce n’est qu’après la saisie complète par NOVA que l’entreprise de transport sera informée du résultat de sa
-                demande.
-                <br><br>
-                Si vous avez des questions, n'hésitez pas à contacter le service spécialisée atlas: <a href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
+                <br>
+                Vous pouvez consulter les <a th:href="${properties.get(0).get('url')}">informations détaillées</a>
+                relatives au traitement de la demande dans le formulaire correspondant.
+                <br>
+                <br>
+                Si vous avez des questions, n'hésitez pas à contacter le service spécialicée atlas: <a href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
                 <br><br>
                 <div>
                     <br>Meilleures Salutations<br><br>
@@ -185,23 +185,21 @@
             <hr>
             <div>
                 <br><span>Gentile signore o signora </span><br><br>
-                <span>La <a th:href="${properties.get(0).get('url')}">richiesta</a> di soppressione della fermata di
+                <span>La richiesta di soppressione della fermata
                     <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
-                    è stata elaborata e accettata dalla prima autorità responsabile.
+                    è stata esaminata.
                 </span>
-                <br><br>
-                <ul>
-                    <li>Soppressione secondo l’impresa di trasporto: [[${properties.get(0).get('boTerminationDate')}]]</li>
-                    <li>Soppressione secondo Info+: [[${properties.get(0).get('infoPlusTerminationDate')}]]</li>
-                    <li>Commento Info+: <i>[[${properties.get(0).get('infoPlusMotivation')}]]</i></li>
-                </ul>
                 <br>
-                Il prossimo passo sarà quello di chiarire l'uso di questa fermata con il sistema tariffario Nova. Dopo questo
-                chiarimento, la fermata sarà programmata o consegnata ad Alliance Swisspass per un ulteriore supporto. In entrambi
-                i casi, l'azienda di trasporto non è più responsabile di questa fermata e l'adeguamento viene effettuato
-                automaticamente nell' atlas.
+                <br>
+                A partire dal <b>[[${properties.get(0).get('infoPlusTerminationDate')}]]</b>,
+                la responsabilità per questa fermata non sarà più a carico dell’impresa di trasporto.
+                L’aggiornamento verrà eseguito automaticamente in atlas.
+                <br>
+                <br>
+                Ulteriori dettagli sull’evoluzione della <a th:href="${properties.get(0).get('url')}">richiesta</a>
+                sono disponibili nel modulo corrispondente.
                 <br><br>
-                In caso di domande, potete contattare il centro specializzato atlas in qualsiasi momento: <a
+                Per qualsiasi domanda, è possibile contattare il centro specializzato atlas in qualsiasi momento: <a
                     href="mailto:atlas@sbb.ch">atlas@sbb.ch</a>
                 <br><br>
                 <div>

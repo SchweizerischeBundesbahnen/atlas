@@ -1,7 +1,6 @@
 package ch.sbb.workflow.sepodi.termination.service;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,9 +11,6 @@ import ch.sbb.workflow.sepodi.termination.entity.TerminationStopPointWorkflow;
 import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
 import ch.sbb.workflow.sepodi.termination.model.TerminationAbortModel;
 import ch.sbb.workflow.sepodi.termination.model.TerminationDecisionModel;
-import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants;
-import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.InfoPlus;
-import ch.sbb.workflow.sepodi.termination.model.TerminationExaminants.Nova;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,14 +27,10 @@ class TerminationStopPointNotificationServiceTest {
   @Mock
   private MailProducerService mailProducerService;
 
-  @Mock
-  private TerminationExaminants terminationExaminants;
-
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    notificationService = new TerminationStopPointNotificationService(mailProducerService, builderNotificationService,
-        terminationExaminants);
+    notificationService = new TerminationStopPointNotificationService(mailProducerService, builderNotificationService);
   }
 
   @Test
@@ -87,7 +79,7 @@ class TerminationStopPointNotificationServiceTest {
   }
 
   @Test
-  void shouldSendTariffStopApprovedNotificationToNovaAndBo() {
+  void shouldSendTariffStopApprovedNotificationToNova() {
     //given
     TerminationStopPointWorkflow terminationStopPointWorkflow = TerminationStopPointWorkflow.builder()
         .sloid("ch:1:sloid:1")
@@ -102,10 +94,10 @@ class TerminationStopPointNotificationServiceTest {
         .build();
     //when
     when(builderNotificationService.buildTariffStopApprovedNotification(any())).thenReturn(MailNotification.builder().build());
-    notificationService.sendTariffStopApprovedNotificationToNovaAndBo(terminationStopPointWorkflow);
+    notificationService.sendTariffStopApprovedNotificationToNova(terminationStopPointWorkflow);
 
     verify(builderNotificationService).buildTariffStopApprovedNotification(terminationStopPointWorkflow);
-    verify(mailProducerService, times(2)).produceMailNotification(any());
+    verify(mailProducerService, times(1)).produceMailNotification(any());
   }
 
   @Test
@@ -123,13 +115,12 @@ class TerminationStopPointNotificationServiceTest {
         .status(TerminationWorkflowStatus.CANCELED)
         .build();
 
-    doReturn(InfoPlus.builder().email("asd@as.ch").build()).when(terminationExaminants).getInfoPlus();
-    when(builderNotificationService.buildAbortNotification(any(), any())).thenReturn(MailNotification.builder().build());
+    when(builderNotificationService.buildAbortNotification(any(), any(), any())).thenReturn(MailNotification.builder().build());
     TerminationAbortModel abortModel = TerminationAbortModel.builder().abortComment("abort").build();
     //when
     notificationService.sendAbortNotificationToBoAndInfoPlus(terminationStopPointWorkflow, abortModel);
 
-    verify(builderNotificationService).buildAbortNotification(terminationStopPointWorkflow, abortModel);
+    verify(builderNotificationService).buildAbortNotificationForBoAndInfoPlus(terminationStopPointWorkflow, abortModel);
 
     verify(mailProducerService).produceMailNotification(any());
   }
@@ -149,14 +140,12 @@ class TerminationStopPointNotificationServiceTest {
         .status(TerminationWorkflowStatus.CANCELED)
         .build();
 
-    doReturn(InfoPlus.builder().email("asd@as.ch").build()).when(terminationExaminants).getInfoPlus();
-    doReturn(Nova.builder().email("asd@as.ch").build()).when(terminationExaminants).getNova();
-    when(builderNotificationService.buildAbortNotification(any(), any())).thenReturn(MailNotification.builder().build());
+    when(builderNotificationService.buildAbortNotification(any(), any(), any())).thenReturn(MailNotification.builder().build());
     TerminationAbortModel abortModel = TerminationAbortModel.builder().abortComment("abort").build();
     //when
     notificationService.sendAbortNotificationToBoInfoPlusAndNova(terminationStopPointWorkflow, abortModel);
 
-    verify(builderNotificationService).buildAbortNotification(terminationStopPointWorkflow, abortModel);
+    verify(builderNotificationService).buildAbortNotificationForBoInfoPlusAndNova(terminationStopPointWorkflow, abortModel);
     verify(mailProducerService).produceMailNotification(any());
   }
 

@@ -18,7 +18,6 @@ public class StopPointWorkflowStatusTransitionDecider {
       case HEARING -> fromStatusTo(WorkflowStatus.HEARING, toStatus, FROM_STATUS_HEARING_TO_STATUS_ALLOWED);
       default -> throw new StopPointPointStatusChangeNotAllowedException(fromStatus, toStatus);
     }
-
   }
 
   private void fromStatusTo(WorkflowStatus fromStatus, WorkflowStatus toStatus, Set<WorkflowStatus> allowedStatusList) {
@@ -27,5 +26,5 @@ public class StopPointWorkflowStatusTransitionDecider {
       throw new StopPointPointStatusChangeNotAllowedException(fromStatus, toStatus);
     }
   }
-  
+
 }
