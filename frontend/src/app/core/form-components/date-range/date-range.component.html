@@ -23,7 +23,10 @@
       />
       <div>
         <form-date-icon
+          tabindex="0"
           (click)="validFromPicker.open()"
+          (keydown.enter)="validFromPicker.open()"
+          (keydown.space)="validFromPicker.open()"
           [enabled]="controlFrom.enabled"
         ></form-date-icon>
         <mat-datepicker
@@ -68,7 +71,10 @@
       }
       <div>
         <form-date-icon
+          tabindex="0"
           (click)="validToPicker.open()"
+          (keydown.enter)="validToPicker.open()"
+          (keydown.space)="validToPicker.open()"
           [enabled]="controlTo.enabled"
         ></form-date-icon>
         <mat-datepicker #validToPicker> </mat-datepicker>

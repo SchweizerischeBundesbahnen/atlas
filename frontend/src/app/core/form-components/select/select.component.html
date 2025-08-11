@@ -24,7 +24,10 @@
     <mat-option
       *ngIf="isSelectAllEnabled"
       #allSelected
+      tabindex="0"
       (click)="toggleAllSelection()"
+      (keydown.enter)="toggleAllSelection()"
+      (keydown.space)="toggleAllSelection()"
       >{{ selectAll | translate }}</mat-option
     >
     <mat-option

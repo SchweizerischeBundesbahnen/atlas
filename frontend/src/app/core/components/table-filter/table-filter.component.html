@@ -157,7 +157,10 @@
                   matInput
                 />
                 <form-date-icon
+                  tabindex="0"
                   (click)="picker.open()"
+                  (keydown.enter)="picker.open()"
+                  (keydown.space)="picker.open()"
                   [enabled]="true"
                 ></form-date-icon>
                 <mat-datepicker #picker></mat-datepicker>

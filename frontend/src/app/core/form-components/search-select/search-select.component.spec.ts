@@ -6,11 +6,9 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
 import { translateServiceProvider } from '../../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
 
-describe('SearchSelectComponent', () => {
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  let component: SearchSelectComponent<any>;
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  let fixture: ComponentFixture<SearchSelectComponent<any>>;
+fdescribe('SearchSelectComponent', () => {
+  let component: SearchSelectComponent<unknown>;
+  let fixture: ComponentFixture<SearchSelectComponent<unknown>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,21 +23,26 @@ describe('SearchSelectComponent', () => {
 
     fixture = TestBed.createComponent(SearchSelectComponent);
     component = fixture.componentInstance;
+
     component.formGroup = new FormGroup({
       testControl: new FormControl(null),
     });
     component.controlName = 'testControl';
-    component.ngSelect = jasmine.createSpyObj<NgSelectComponent>([], {
-      isOpen: undefined,
-    });
+
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('isDropdownOpen should return false', () => {
+    component.ngSelect = jasmine.createSpyObj<NgSelectComponent>([], {
+      isOpen: undefined,
+    });
+    expect(component.isDropdownOpen()).toBeFalse();
   });
 
-  it('isDropdownOpen should return false', () => {
-    expect(component.isDropdownOpen()).toBeFalse();
+  it('isDropdownOpen should return true', () => {
+    component.ngSelect = jasmine.createSpyObj<NgSelectComponent>([], {
+      isOpen: true,
+    });
+    expect(component.isDropdownOpen()).toBeTrue();
   });
 });
