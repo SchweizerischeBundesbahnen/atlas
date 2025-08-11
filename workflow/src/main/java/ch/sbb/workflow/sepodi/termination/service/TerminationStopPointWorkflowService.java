@@ -2,7 +2,13 @@ package ch.sbb.workflow.sepodi.termination.service;
 
 import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.CANCELED;
 import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.STARTED;
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.TARIFF_STOP_APPROVED;
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.TARIFF_STOP_NOT_APPROVED;
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.TERMINATION_APPROVED;
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.TERMINATION_NOT_APPROVED;
 import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.TERMINATION_NOT_APPROVED_CLOSED;
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.validateTerminationIsAbortible;
+import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus.validateWorkflowStatusTransition;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
@@ -43,12 +49,25 @@ public class TerminationStopPointWorkflowService {
   private final SePoDiAdminClient sePoDiAdminClient;
   private final TerminationStopPointNotificationService notificationService;
 
-  public TerminationStopPointWorkflow startTerminationWorkflow(StartTerminationStopPointWorkflowModel model) {
+  @Redacted
+  public TerminationStopPointWorkflow getTerminationWorkflow(Long id) {
+    return repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  }
 
-    if (!repository.findTerminationStopPointWorkflowBySloidAndVersionIdAndStatus(model.getSloid(), model.getVersionId(), STARTED)
-        .isEmpty()) {
-      throw new TerminationStopPointWorkflowAlreadyInStatusException(STARTED);
-    }
+  @Redacted
+  public TerminationStopPointWorkflow getTerminationWorkflowBySloidAndInProgress(String sloid) {
+    return repository.findTerminationStopPointWorkflowBySloidAndStatusIn(sloid, TerminationWorkflowStatus.WORKFLOW_IN_PROGRESS)
+        .orElseThrow(() -> new SloidNotFoundException(sloid));
+  }
+
+  @Redacted
+  public Page<TerminationStopPointWorkflow> getTerminationWorkflows(
+      TerminationStopPointWorkflowSearchRestrictions searchRestrictions) {
+    return repository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  }
+
+  public TerminationStopPointWorkflow startTerminationWorkflow(StartTerminationStopPointWorkflowModel model) {
+    checkTerminationWorkflowAlreadyExists(model);
     UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
         .terminationInProgress(true)
         .terminationDate(model.getBoTerminationDate())
@@ -63,6 +82,74 @@ public class TerminationStopPointWorkflowService {
     TerminationStopPointWorkflow savedTerminationWorkflow = repository.saveAndFlush(terminationStopPointWorkflow);
     notificationService.sendStartTerminationNotificationToInfoPlusAndBo(savedTerminationWorkflow);
     return savedTerminationWorkflow;
+  }
+
+  public TerminationStopPointWorkflow abortTerminationWorkflow(Long workflowId, TerminationAbortModel abortModel) {
+    TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
+    validateTerminationIsAbortible(terminationWorkflow.getStatus());
+    if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.STARTED) {
+      abortStartedTermination(abortModel, terminationWorkflow);
+    }
+    if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.TARIFF_STOP_APPROVED) {
+      abortTariffStopApprovedTermination(abortModel, terminationWorkflow);
+    }
+    if (terminationWorkflow.getStatus() == TERMINATION_NOT_APPROVED) {
+      abortTerminationNotApprovedTermination(terminationWorkflow);
+    }
+    terminationWorkflow.setAbortComment(abortModel.getAbortComment());
+    sePoDiAdminClient.stopServicePointTermination(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
+    return repository.saveAndFlush(terminationWorkflow);
+  }
+
+  public TerminationStopPointWorkflow addDecisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
+    TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
+    checkInfoPlusDecisionPreconditions(decisionModel, terminationWorkflow);
+
+    terminationWorkflow.setInfoPlusDecision(TerminationDecisionMapper.toEntity(decisionModel));
+    terminationWorkflow.setInfoPlusTerminationDate(decisionModel.getTerminationDate());
+    if (decisionModel.getJudgement() == JudgementType.YES) {
+      addDecisionInfoPlusYes(decisionModel, terminationWorkflow);
+    }
+    if (decisionModel.getJudgement() == JudgementType.NO) {
+      addDecisionInfoPlusNo(decisionModel, terminationWorkflow);
+    }
+    return repository.save(terminationWorkflow);
+  }
+
+  public TerminationStopPointWorkflow addDecisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
+    TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
+    checkNovaDecisionPreconditions(decisionModel, terminationWorkflow);
+
+    terminationWorkflow.setNovaDecision(TerminationDecisionMapper.toEntity(decisionModel));
+    terminationWorkflow.setNovaTerminationDate(decisionModel.getTerminationDate());
+
+    if (decisionModel.getJudgement() == JudgementType.YES) {
+      addDecisionNovaYes(decisionModel, terminationWorkflow);
+    }
+    if (decisionModel.getJudgement() == JudgementType.NO) {
+      addDecisionNovaNo(terminationWorkflow);
+    }
+    return repository.save(terminationWorkflow);
+  }
+
+  private void checkTerminationWorkflowAlreadyExists(StartTerminationStopPointWorkflowModel model) {
+    if (!repository.findTerminationStopPointWorkflowBySloidAndVersionIdAndStatus(model.getSloid(), model.getVersionId(), STARTED)
+        .isEmpty()) {
+      throw new TerminationStopPointWorkflowAlreadyInStatusException(STARTED);
+    }
+  }
+
+  private void checkNovaDecisionPreconditions(TerminationDecisionModel decisionModel,
+      TerminationStopPointWorkflow terminationWorkflow) {
+    if (!Set.of(TerminationWorkflowStatus.TARIFF_STOP_APPROVED, TERMINATION_NOT_APPROVED)
+        .contains(terminationWorkflow.getStatus())) {
+      throw new TerminationStopPointWorkflowPreconditionStatusException(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
+    }
+    if (decisionModel.getTerminationDate() != null && decisionModel.getTerminationDate()
+        .isBefore(terminationWorkflow.getInfoPlusTerminationDate())) {
+      throw new TerminationDateBeforeException(decisionModel.getTerminationDate(),
+          terminationWorkflow.getInfoPlusTerminationDate());
+    }
   }
 
   private TerminationStopPointWorkflow populateWorkflow(StartTerminationStopPointWorkflowModel model,
@@ -85,62 +172,7 @@ public class TerminationStopPointWorkflowService {
     return terminationStopPointWorkflow;
   }
 
-  @Redacted
-  public TerminationStopPointWorkflow getTerminationWorkflow(Long id) {
-    return repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
-  }
-
-  @Redacted
-  public TerminationStopPointWorkflow getTerminationWorkflowBySloidAndInProgress(String sloid) {
-    return repository.findTerminationStopPointWorkflowBySloidAndStatusIn(sloid, TerminationWorkflowStatus.WORKFLOW_IN_PROGRESS)
-        .orElseThrow(() -> new SloidNotFoundException(sloid));
-  }
-
-  @Redacted
-  public Page<TerminationStopPointWorkflow> getTerminationWorkflows(
-      TerminationStopPointWorkflowSearchRestrictions searchRestrictions) {
-    return repository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
-  }
-
-  public TerminationStopPointWorkflow abortTerminationWorkflow(Long workflowId, TerminationAbortModel abortModel) {
-    TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
-    if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.STARTED) {
-      terminationWorkflow.setStatus(CANCELED);
-      notificationService.sendAbortNotificationToBoAndInfoPlus(terminationWorkflow, abortModel);
-    }
-    if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.TARIFF_STOP_APPROVED) {
-      terminationWorkflow.setStatus(CANCELED);
-      notificationService.sendAbortNotificationToBoInfoPlusAndNova(terminationWorkflow, abortModel);
-    }
-    if (terminationWorkflow.getStatus() == TerminationWorkflowStatus.TERMINATION_NOT_APPROVED) {
-      terminationWorkflow.setStatus(TERMINATION_NOT_APPROVED_CLOSED);
-    }
-    terminationWorkflow.setAbortComment(abortModel.getAbortComment());
-    sePoDiAdminClient.stopServicePointTermination(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
-    return repository.saveAndFlush(terminationWorkflow);
-  }
-
-  public TerminationStopPointWorkflow addDecisionInfoPlus(TerminationDecisionModel decisionModel, Long workflowId) {
-    TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
-    checkInfoPlusDecisionPreconditions(decisionModel, terminationWorkflow);
-
-    terminationWorkflow.setInfoPlusDecision(TerminationDecisionMapper.toEntity(decisionModel));
-    terminationWorkflow.setInfoPlusTerminationDate(decisionModel.getTerminationDate());
-
-    if (decisionModel.getJudgement() == JudgementType.YES) {
-      checkDecisionTerminationDateWithinLastVersion(decisionModel.getTerminationDate(), terminationWorkflow);
-      terminationWorkflow.setStatus(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
-      notificationService.sendTariffStopApprovedNotificationToNovaAndBo(terminationWorkflow);
-    }
-    if (decisionModel.getJudgement() == JudgementType.NO) {
-      sePoDiAdminClient.stopServicePointTermination(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
-      terminationWorkflow.setStatus(TerminationWorkflowStatus.TARIFF_STOP_NOT_APPROVED);
-      notificationService.sendTariffStopNotApprovedNotificationToBo(terminationWorkflow, decisionModel);
-    }
-    return repository.save(terminationWorkflow);
-  }
-
-  private static void checkInfoPlusDecisionPreconditions(TerminationDecisionModel decisionModel,
+  private void checkInfoPlusDecisionPreconditions(TerminationDecisionModel decisionModel,
       TerminationStopPointWorkflow terminationWorkflow) {
     if (terminationWorkflow.getStatus() != STARTED) {
       throw new TerminationStopPointWorkflowPreconditionStatusException(STARTED);
@@ -157,38 +189,68 @@ public class TerminationStopPointWorkflowService {
         new DateRange(terminationWorkflow.getBoTerminationDate(), terminationWorkflow.getVersionValidTo()), terminationDate);
   }
 
-  public TerminationStopPointWorkflow addDecisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
-    TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
-    checkNovaDecisionPreconditions(decisionModel, terminationWorkflow);
-
-    terminationWorkflow.setNovaDecision(TerminationDecisionMapper.toEntity(decisionModel));
-    terminationWorkflow.setNovaTerminationDate(decisionModel.getTerminationDate());
-
-    if (decisionModel.getJudgement() == JudgementType.YES) {
-      doApproveTermination(decisionModel, terminationWorkflow);
-    }
-    if (decisionModel.getJudgement() == JudgementType.NO) {
-      doNotApproveTermination(terminationWorkflow);
-    }
-    return repository.save(terminationWorkflow);
+  private void abortTerminationNotApprovedTermination(TerminationStopPointWorkflow terminationWorkflow) {
+    validateWorkflowStatusTransition(TERMINATION_NOT_APPROVED, TERMINATION_NOT_APPROVED_CLOSED);
+    terminationWorkflow.setStatus(TERMINATION_NOT_APPROVED_CLOSED);
   }
 
-  private static void checkNovaDecisionPreconditions(TerminationDecisionModel decisionModel,
+  private void abortTariffStopApprovedTermination(TerminationAbortModel abortModel,
       TerminationStopPointWorkflow terminationWorkflow) {
-    if (!Set.of(TerminationWorkflowStatus.TARIFF_STOP_APPROVED, TerminationWorkflowStatus.TERMINATION_NOT_APPROVED)
-        .contains(terminationWorkflow.getStatus())) {
-      throw new TerminationStopPointWorkflowPreconditionStatusException(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
-    }
-    if (decisionModel.getTerminationDate() != null && decisionModel.getTerminationDate()
-        .isBefore(terminationWorkflow.getInfoPlusTerminationDate())) {
-      throw new TerminationDateBeforeException(decisionModel.getTerminationDate(),
-          terminationWorkflow.getInfoPlusTerminationDate());
+    validateWorkflowStatusTransition(TARIFF_STOP_APPROVED, CANCELED);
+    terminationWorkflow.setStatus(CANCELED);
+    notificationService.sendAbortNotificationToBoInfoPlusAndNova(terminationWorkflow, abortModel);
+  }
+
+  private void abortStartedTermination(TerminationAbortModel abortModel, TerminationStopPointWorkflow terminationWorkflow) {
+    validateWorkflowStatusTransition(STARTED, CANCELED);
+    terminationWorkflow.setStatus(CANCELED);
+    notificationService.sendAbortNotificationToBoAndInfoPlus(terminationWorkflow, abortModel);
+  }
+
+  private void addDecisionInfoPlusNo(TerminationDecisionModel decisionModel, TerminationStopPointWorkflow terminationWorkflow) {
+    validateWorkflowStatusTransition(STARTED, TARIFF_STOP_NOT_APPROVED);
+    sePoDiAdminClient.stopServicePointTermination(terminationWorkflow.getSloid(), terminationWorkflow.getVersionId());
+    terminationWorkflow.setStatus(TARIFF_STOP_NOT_APPROVED);
+    notificationService.sendTariffStopNotApprovedNotificationToBo(terminationWorkflow, decisionModel);
+  }
+
+  private void addDecisionInfoPlusYes(TerminationDecisionModel decisionModel, TerminationStopPointWorkflow terminationWorkflow) {
+    validateWorkflowStatusTransition(STARTED, TARIFF_STOP_APPROVED);
+    checkDecisionTerminationDateWithinLastVersion(decisionModel.getTerminationDate(), terminationWorkflow);
+    terminationWorkflow.setStatus(TerminationWorkflowStatus.TARIFF_STOP_APPROVED);
+    notificationService.sendTariffStopApprovedNotificationToNova(terminationWorkflow);
+  }
+
+  private void addDecisionNovaNo(TerminationStopPointWorkflow terminationWorkflow) {
+    validateWorkflowStatusTransition(TARIFF_STOP_APPROVED, TERMINATION_NOT_APPROVED);
+    doNotApproveTermination(terminationWorkflow);
+    notificationService.sendTerminationConfirmedNotification(terminationWorkflow);
+  }
+
+  private void doNotApproveTermination(TerminationStopPointWorkflow terminationWorkflow) {
+    LocalDate terminationDate = TerminationWorkflowHelper.getTerminationDate(terminationWorkflow);
+    sePoDiAdminClient.changeToTariffStop(
+        StopPointWorkflowTerminationModel.builder()
+            .sloid(terminationWorkflow.getSloid())
+            .versionId(terminationWorkflow.getVersionId())
+            .terminationDate(terminationDate.plusDays(1))
+            .build()
+    );
+    terminationWorkflow.setStatus(TERMINATION_NOT_APPROVED);
+  }
+
+  private void addDecisionNovaYes(TerminationDecisionModel decisionModel, TerminationStopPointWorkflow terminationWorkflow) {
+    TerminationWorkflowStatus actualTerminationStatus = terminationWorkflow.getStatus();
+    validateWorkflowStatusTransition(TARIFF_STOP_APPROVED, TERMINATION_APPROVED);
+    doApproveTermination(decisionModel, terminationWorkflow);
+    if (TERMINATION_NOT_APPROVED != actualTerminationStatus) {
+      notificationService.sendTerminationConfirmedNotification(terminationWorkflow);
     }
   }
 
   private void doApproveTermination(TerminationDecisionModel decisionModel, TerminationStopPointWorkflow terminationWorkflow) {
     checkDecisionTerminationDateWithinLastVersion(decisionModel.getTerminationDate(), terminationWorkflow);
-    if (terminationWorkflow.getStatus() != TerminationWorkflowStatus.TERMINATION_NOT_APPROVED
+    if (terminationWorkflow.getStatus() != TERMINATION_NOT_APPROVED
         && !terminationWorkflow.getInfoPlusTerminationDate().equals(terminationWorkflow.getNovaTerminationDate())) {
       sePoDiAdminClient.changeToTariffStop(
           StopPointWorkflowTerminationModel.builder()
@@ -203,18 +265,6 @@ public class TerminationStopPointWorkflowService {
         .terminationDate(terminationWorkflow.getNovaTerminationDate())
         .build());
     terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_APPROVED);
-  }
-
-  private void doNotApproveTermination(TerminationStopPointWorkflow terminationWorkflow) {
-    LocalDate terminationDate = TerminationWorkflowHelper.getTerminationDate(terminationWorkflow);
-    sePoDiAdminClient.changeToTariffStop(
-        StopPointWorkflowTerminationModel.builder()
-            .sloid(terminationWorkflow.getSloid())
-            .versionId(terminationWorkflow.getVersionId())
-            .terminationDate(terminationDate.plusDays(1))
-            .build()
-    );
-    terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
   }
 
 }

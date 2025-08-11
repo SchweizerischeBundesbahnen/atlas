@@ -152,4 +152,12 @@ class MailTemplateConfigTest {
     assertThat(result).isEqualTo(MailTemplateConfig.ABORT_TERMINATION_NOTIFICATION_TEMPLATE);
   }
 
+  @Test
+  void shouldReturnStopPointTerminationConfirmedNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.STOP_POINT_TERMINATION_CONFIRMED_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.STOP_POINT_TERMINATION_CONFIRMED_NOTIFICATION_TEMPLATE);
+  }
+
 }
