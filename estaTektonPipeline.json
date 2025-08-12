@@ -1,0 +1,90 @@
+{
+  "$schema": "https://clew-resources.sbb-cloud.net/tekton-schema.json",
+  "productName": "atlas",
+  "advancedBuildSettings": {
+    "buildWorkspaceSize": "12Gi",
+    "buildCacheSize": "10Gi",
+    "taggingWorkspaceSize": "2Gi",
+    "pipelineTimeout": "1h30m0s"
+  },
+  "builder": {
+    "java": "21",
+    "node": "20"
+  },
+  "gradle": {
+    "artifactoryMavenRepo": "atlas.mvn",
+    "buildTaskName": "atlas-gradle-build"
+  },
+  "pipelines": [
+    {
+      "name": "push-to-github-playground",
+      "triggerType": [
+        "USER",
+        "GITEVENT"
+      ],
+      "branchNamePrefixes": [
+        "master"
+      ],
+      "tasks": [
+        {
+          "name": "publish-to-github",
+          "taskRef": "atlas-publish-to-github",
+          "params": {
+            "INSTALLATION_ID": "70990969",
+            "CLIENT_ID": "Iv23liBwj4myfivLRXe6",
+            "SBB_REPOSITORY_URL": "https://code.sbb.ch/scm/ki_atlas/atlas-github-playground.git",
+            "SBB_REPOSITORY_NAME": "atlas-github-playground",
+            "GITHUB_USER_MAIL_OVERRIDER": "TechSupport-ATLAS@sbb.ch",
+            "GITHUB_USER_NAME_OVERRIDER": "atlas",
+            "GITHUB_WEB_URL": "github.com/SchweizerischeBundesbahnen/atlas.git"
+          },
+          "runAfter": "quality-gate-check"
+        }
+      ],
+      "build": {
+        "testcontainers": {
+          "enabled": false
+        },
+        "buildDockerImage": false,
+        "sonarScan": {
+          "enabled": true
+        },
+        "additionalBuildParams": "--parallel",
+        "failOnQualityGateFailure": true
+      }
+    },
+    {
+      "name": "continuous",
+      "triggerType": [
+        "GITEVENT",
+        "USER"
+      ],
+      "branchNamePrefixes": [
+        "feature"
+      ],
+      "build": {
+        "testcontainers": {
+          "enabled": false
+        },
+        "buildDockerImage": false,
+        "sonarScan": {
+          "enabled": true
+        },
+        "additionalBuildParams": "--parallel",
+        "failOnQualityGateFailure": true
+      }
+    }
+  ],
+  "notifications": [
+    {
+      "type": "TEAMS",
+      "enabled": true,
+      "eventTypes": [
+        "SUCCESS",
+        "FAILURE",
+        "ABORTED"
+      ],
+      "webhookSecretName": "esta-tekton-pipeline-env"
+    }
+  ]
+}
