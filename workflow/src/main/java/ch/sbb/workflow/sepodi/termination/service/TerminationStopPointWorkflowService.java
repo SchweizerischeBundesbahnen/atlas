@@ -18,6 +18,8 @@ import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.redact.Redacted;
+import ch.sbb.workflow.aop.LoggingAspect;
+import ch.sbb.workflow.aop.MethodLogged;
 import ch.sbb.workflow.exception.TerminationDateBeforeException;
 import ch.sbb.workflow.exception.TerminationStopPointWorkflowAlreadyInStatusException;
 import ch.sbb.workflow.exception.TerminationStopPointWorkflowPreconditionStatusException;
@@ -66,6 +68,7 @@ public class TerminationStopPointWorkflowService {
     return repository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
+  @MethodLogged(workflowType = LoggingAspect.START_TERMINATION_WORKFLOW)
   public TerminationStopPointWorkflow startTerminationWorkflow(StartTerminationStopPointWorkflowModel model) {
     checkTerminationWorkflowAlreadyExists(model);
     UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
@@ -84,6 +87,7 @@ public class TerminationStopPointWorkflowService {
     return savedTerminationWorkflow;
   }
 
+  @MethodLogged(workflowType = LoggingAspect.ABORT_TERMINATION_WORKFLOW)
   public TerminationStopPointWorkflow abortTerminationWorkflow(Long workflowId, TerminationAbortModel abortModel) {
     TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
     validateTerminationIsAbortible(terminationWorkflow.getStatus());
@@ -116,6 +120,7 @@ public class TerminationStopPointWorkflowService {
     return repository.save(terminationWorkflow);
   }
 
+  @MethodLogged(workflowType = LoggingAspect.ADD_TERMINATION_DECISION_NOVA)
   public TerminationStopPointWorkflow addDecisionNova(TerminationDecisionModel decisionModel, Long workflowId) {
     TerminationStopPointWorkflow terminationWorkflow = getTerminationWorkflow(workflowId);
     checkNovaDecisionPreconditions(decisionModel, terminationWorkflow);
