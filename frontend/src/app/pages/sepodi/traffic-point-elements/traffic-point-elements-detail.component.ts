@@ -4,8 +4,6 @@ import {
   CreateTrafficPointElementVersion,
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
-  ServicePointsService,
-  TrafficPointElementsService,
   TrafficPointElementType,
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
@@ -44,6 +42,9 @@ import { UserDetailInfoComponent } from '../../../core/components/base-detail/us
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
+import { TrafficPointElementService } from '../../../api/service/sepodi/traffic-point-element.service';
+import { TrafficPointElementInternalService } from '../../../api/service/sepodi/traffic-point-element-internal.service';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -108,15 +109,16 @@ export class TrafficPointElementsDetailComponent
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private trafficPointMapService: TrafficPointMapService,
-    private servicePointService: ServicePointsService,
-    private trafficPointElementsService: TrafficPointElementsService,
-    private dialogService: DialogService,
-    private validityConfirmationService: ValidityConfirmationService,
-    private notificationService: NotificationService,
-    private validityService: ValidityService
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly trafficPointMapService: TrafficPointMapService,
+    private readonly servicePointService: ServicePointService,
+    private readonly trafficPointElementService: TrafficPointElementService,
+    private readonly trafficPointElementInternalService: TrafficPointElementInternalService,
+    private readonly dialogService: DialogService,
+    private readonly validityConfirmationService: ValidityConfirmationService,
+    private readonly notificationService: NotificationService,
+    private readonly validityService: ValidityService
   ) {}
 
   ngOnInit() {
@@ -193,7 +195,7 @@ export class TrafficPointElementsDetailComponent
           );
         });
 
-      this.trafficPointElementsService
+      this.trafficPointElementInternalService
         .getAreasOfServicePoint(this.servicePointNumber)
         .subscribe((areas) => {
           const options: AreaOption[] = [{ sloid: undefined, displayText: '' }];
@@ -336,7 +338,7 @@ export class TrafficPointElementsDetailComponent
   }
 
   private create(trafficPointElementVersion: CreateTrafficPointElementVersion) {
-    this.trafficPointElementsService
+    this.trafficPointElementService
       .createTrafficPoint(trafficPointElementVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((trafficPointElementVersion) => {
@@ -358,7 +360,7 @@ export class TrafficPointElementsDetailComponent
     id: number,
     trafficPointElementVersion: CreateTrafficPointElementVersion
   ) {
-    this.trafficPointElementsService
+    this.trafficPointElementService
       .updateTrafficPoint(id, trafficPointElementVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {

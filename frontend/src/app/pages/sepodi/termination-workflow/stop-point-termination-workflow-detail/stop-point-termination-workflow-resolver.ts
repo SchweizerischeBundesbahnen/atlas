@@ -1,11 +1,12 @@
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
-import { ReadServicePointVersion, ServicePointsService } from '../../../../api';
+import { ReadServicePointVersion } from '../../../../api';
 import { inject, Injectable } from '@angular/core';
 import { catchError, mergeMap, Observable, of } from 'rxjs';
 import { Pages } from '../../../pages';
 import { map } from 'rxjs/operators';
 import { WorkflowService } from '../../../../api/service/workflow/workflow.service';
 import { TerminationStopPointWorkflowModel } from '../../../../api/model/terminationStopPointWorkflowModel';
+import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 
 export interface StopPointTerminationWorkflowDetailData {
   workflow: TerminationStopPointWorkflowModel;
@@ -16,7 +17,7 @@ export interface StopPointTerminationWorkflowDetailData {
 export class StopPointTerminationWorkflowResolver {
   constructor(
     private readonly workflowService: WorkflowService,
-    private readonly servicePointService: ServicePointsService,
+    private readonly servicePointService: ServicePointService,
     private readonly router: Router
   ) {}
 

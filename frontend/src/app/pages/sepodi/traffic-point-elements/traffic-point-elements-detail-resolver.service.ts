@@ -1,16 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import {
-  ReadTrafficPointElementVersion,
-  TrafficPointElementsService,
-} from '../../../api';
+import { ReadTrafficPointElementVersion } from '../../../api';
 import { Pages } from '../../pages';
+import { TrafficPointElementService } from '../../../api/service/sepodi/traffic-point-element.service';
 
 @Injectable({ providedIn: 'root' })
 export class TrafficPointElementsDetailResolver {
   constructor(
-    private readonly trafficPointElementsService: TrafficPointElementsService,
+    private readonly trafficPointElementService: TrafficPointElementService,
     private readonly router: Router
   ) {}
 
@@ -20,7 +18,7 @@ export class TrafficPointElementsDetailResolver {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
-      : this.trafficPointElementsService
+      : this.trafficPointElementService
           .getTrafficPointElement(idParameter)
           .pipe(
             catchError(() =>
