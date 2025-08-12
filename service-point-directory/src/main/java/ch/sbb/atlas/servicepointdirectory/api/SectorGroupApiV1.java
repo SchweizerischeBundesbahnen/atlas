@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.api;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Tag(name = "Sector Groups")
 @RequestMapping("v1/sector-groups")
 @Validated
+@Hidden
 public interface SectorGroupApiV1 {
 
   @GetMapping

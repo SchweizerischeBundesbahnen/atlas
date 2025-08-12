@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Tag(name = "Sectors")
 @RequestMapping("v1/sectors")
 @Validated
+@Hidden
 public interface SectorApiV1 {
 
   @GetMapping

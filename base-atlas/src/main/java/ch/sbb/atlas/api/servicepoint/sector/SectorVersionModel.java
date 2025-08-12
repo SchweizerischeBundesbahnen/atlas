@@ -2,6 +2,7 @@ package ch.sbb.atlas.api.servicepoint.sector;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -39,9 +40,14 @@ public class SectorVersionModel extends BaseSectorModel {
   @NotNull
   private SpatialReference spatialReference;
 
-  @Schema(description = "Height of edge", example = "18")
+  @Schema(description = "Height of edge", example = "180")
   @Digits(integer = 3, fraction = 0)
   @Min(0)
   private Double edgeHeight;
 
+  @AssertTrue(message = "Only LV95 and WGS84 are allowed")
+  public boolean isSpatialReferenceAllowed() {
+    return spatialReference == SpatialReference.LV95
+        || spatialReference == SpatialReference.WGS84;
+  }
 }
