@@ -31,4 +31,23 @@ class SectorVersionModelTest {
 
   }
 
+  @Test
+  void shouldThrowWhenSpatialReferenceIsNotWGS84OrLV95() {
+    // Given
+    SectorVersionModel model = SectorVersionModel.builder()
+        .trafficPointSloid("nonexistent-sloid")
+        .validFrom(LocalDate.now())
+        .validTo(LocalDate.now().plusDays(1))
+        .designation("foo")
+        .length(1.0).north(0.0).east(0.0)
+        .spatialReference(SpatialReference.LV03)
+        .height(1.0).edgeHeight(1.0)
+        .build();
+
+    Set<ConstraintViolation<SectorVersionModel>> constraintViolations = validator.validate(model);
+
+    assertThat(constraintViolations).isNotEmpty();
+
+  }
+
 }
