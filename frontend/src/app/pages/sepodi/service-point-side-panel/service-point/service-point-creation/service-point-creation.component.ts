@@ -15,7 +15,6 @@ import {
   Country,
   Permission,
   PermissionRestrictionType,
-  ServicePointsService,
 } from '../../../../../api';
 import { Countries } from '../../../../../core/country/Countries';
 import { catchError, EMPTY, mergeWith, Subject } from 'rxjs';
@@ -42,6 +41,7 @@ import {
 } from '../../../../../core/util/forms';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { stopPointTypesWithoutUnknown } from '../service-point-detail.component';
+import { ServicePointService } from '../../../../../api/service/sepodi/service-point.service';
 
 @Component({
   selector: 'app-service-point-creation',
@@ -78,7 +78,7 @@ export class ServicePointCreationComponent
     private readonly permissionService: PermissionService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly servicePointService: ServicePointsService,
+    private readonly servicePointService: ServicePointService,
     private readonly notificationService: NotificationService,
     private readonly mapService: MapService
   ) {

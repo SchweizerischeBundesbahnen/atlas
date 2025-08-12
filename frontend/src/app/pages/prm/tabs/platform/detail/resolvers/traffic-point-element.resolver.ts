@@ -1,16 +1,14 @@
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
-import {
-  ReadTrafficPointElementVersion,
-  TrafficPointElementsService,
-} from '../../../../../../api';
+import { ReadTrafficPointElementVersion } from '../../../../../../api';
 import { Pages } from '../../../../../pages';
+import { TrafficPointElementService } from '../../../../../../api/service/sepodi/traffic-point-element.service';
 
 @Injectable({ providedIn: 'root' })
 export class TrafficPointElementResolver {
   constructor(
-    private readonly trafficPointElementsService: TrafficPointElementsService,
+    private readonly trafficPointElementsService: TrafficPointElementService,
     private readonly router: Router
   ) {}
 

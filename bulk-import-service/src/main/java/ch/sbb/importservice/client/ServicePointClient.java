@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
     configuration = OAuthFeignConfig.class)
 public interface ServicePointClient {
 
-  @GetMapping("v1/service-points/actual-swiss-service-point-with-geo")
+  @GetMapping("internal/service-points/actual-swiss-service-point-with-geo")
   List<ServicePointSwissWithGeoLocationModel> getActualSwissServicePointWithGeolocation();
 
-  @PutMapping("v1/geodata/update-geo/{sloid}/{id}")
+  @PutMapping("internal/geodata/update-geo/{sloid}/{id}")
   GeoUpdateItemResultModel updateServicePointGeoLocation(@PathVariable("sloid") String sloid, @PathVariable("id") Long id);
 }
