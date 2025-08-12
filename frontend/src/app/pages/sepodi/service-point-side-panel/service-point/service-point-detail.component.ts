@@ -6,7 +6,6 @@ import {
   ApplicationType,
   CreateServicePointVersion,
   ReadServicePointVersion,
-  ServicePointsService,
   Status,
   StopPointType,
 } from '../../../../api';
@@ -52,6 +51,8 @@ import {
   removeControlFromFormNoEvent,
 } from '../../../../core/util/forms';
 import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
+import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
+import { ServicePointInternalService } from '../../../../api/service/sepodi/service-point-internal.service';
 
 export type StopPointTypeNotUnknown = Exclude<StopPointType, 'UNKNOWN'>;
 export const stopPointTypesWithoutUnknown: StopPointTypeNotUnknown[] =
@@ -126,18 +127,19 @@ export class ServicePointDetailComponent
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private dialogService: DialogService,
-    private servicePointService: ServicePointsService,
-    private notificationService: NotificationService,
-    private mapService: MapService,
-    private permissionService: PermissionService,
-    private validityService: ValidityService,
-    private addStopPointWorkflowDialogService: AddStopPointWorkflowDialogService,
-    private terminationDialogService: StopPointTerminationDialogService,
-    private terminationService: TerminationService,
-    protected activatedRoute: ActivatedRoute
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly dialogService: DialogService,
+    private readonly servicePointService: ServicePointService,
+    private readonly servicePointInternalService: ServicePointInternalService,
+    private readonly notificationService: NotificationService,
+    private readonly mapService: MapService,
+    private readonly permissionService: PermissionService,
+    private readonly validityService: ValidityService,
+    private readonly addStopPointWorkflowDialogService: AddStopPointWorkflowDialogService,
+    private readonly terminationDialogService: StopPointTerminationDialogService,
+    private readonly terminationService: TerminationService,
+    protected readonly activatedRoute: ActivatedRoute
   ) {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
@@ -424,7 +426,7 @@ export class ServicePointDetailComponent
       })
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.servicePointService
+          this.servicePointInternalService
             .revokeServicePoint(this.selectedVersion!.number.number)
             .pipe(catchError(this.handleError))
             .subscribe(() => {
@@ -451,7 +453,7 @@ export class ServicePointDetailComponent
       })
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.servicePointService
+          this.servicePointInternalService
             .validateServicePoint(this.selectedVersion!.id!)
             .pipe(catchError(this.handleError))
             .subscribe(() => {

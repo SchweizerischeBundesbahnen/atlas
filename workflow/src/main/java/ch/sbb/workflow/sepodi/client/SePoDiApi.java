@@ -15,20 +15,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface SePoDiApi {
 
   String BASEPATH = "/service-point-directory/v1/service-points/";
+  String INTERNAL_BASEPATH = "/service-point-directory/internal/service-points/";
   String TERMINATION_BASEPATH = "/service-point-directory/internal/service-points/termination";
 
-  @PutMapping(value = BASEPATH + "status/{sloid}/{id}")
+  @GetMapping(value = BASEPATH + "/versions/{id}")
+  ReadServicePointVersionModel getServicePointById(@PathVariable("id") Long id);
+
+  @PutMapping(value = INTERNAL_BASEPATH + "status/{sloid}/{id}")
   ReadServicePointVersionModel postServicePointsStatusUpdate(@PathVariable("sloid") String sloid, @PathVariable("id") Long id,
       @RequestBody Status status);
 
-  @PutMapping(value = BASEPATH + "/update-designation-official/{id}")
+  @PutMapping(value = INTERNAL_BASEPATH + "/update-designation-official/{id}")
   ReadServicePointVersionModel updateServicePointDesignationOfficial(
       @PathVariable("id") Long id,
       @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
   );
-
-  @GetMapping(value = BASEPATH + "/versions/{id}")
-  ReadServicePointVersionModel getServicePointById(@PathVariable("id") Long id);
 
   @PostMapping(value = TERMINATION_BASEPATH + "/start/{sloid}/{id}")
   ReadServicePointVersionModel startServicePointTermination(@PathVariable("sloid") String sloid,

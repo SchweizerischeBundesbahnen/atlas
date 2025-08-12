@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { Map, MapGeoJSONFeature } from 'maplibre-gl';
 import { TrafficPointMapService } from './traffic-point-map.service';
 import { MapService } from './map.service';
-import { TrafficPointElementsService } from '../../../api';
 import { BehaviorSubject, of } from 'rxjs';
 import { MAP_TRAFFIC_POINT_LAYER_NAME } from './map-style';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
+import { TrafficPointElementInternalService } from '../../../api/service/sepodi/traffic-point-element-internal.service';
 
 const mapService = jasmine.createSpyObj<MapService>(['centerOn']);
 mapService.mapInitialized = new BehaviorSubject<boolean>(true);
@@ -14,7 +14,7 @@ const sourceSpy = jasmine.createSpyObj('source', ['setData']);
 mapSpy.getSource.and.returnValue(sourceSpy);
 mapService.map = mapSpy;
 
-const trafficPointElementsService = jasmine.createSpyObj([
+const trafficPointElementInternalService = jasmine.createSpyObj([
   'getTrafficPointsOfServicePointValidToday',
 ]);
 
@@ -29,8 +29,8 @@ describe('TrafficPointMapService', () => {
           useValue: mapService,
         },
         {
-          provide: TrafficPointElementsService,
-          useValue: trafficPointElementsService,
+          provide: TrafficPointElementInternalService,
+          useValue: trafficPointElementInternalService,
         },
       ],
     });
@@ -59,7 +59,7 @@ describe('TrafficPointMapService', () => {
   });
 
   it('should display TrafficPoints on map', () => {
-    trafficPointElementsService.getTrafficPointsOfServicePointValidToday.and.returnValue(
+    trafficPointElementInternalService.getTrafficPointsOfServicePointValidToday.and.returnValue(
       of(BERN_WYLEREGG_TRAFFIC_POINTS)
     );
 

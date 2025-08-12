@@ -1,13 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import { ReadServicePointVersion, ServicePointsService } from '../../../api';
+import { ReadServicePointVersion } from '../../../api';
 import { Pages } from '../../pages';
+import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
 
 @Injectable({ providedIn: 'root' })
 export class ServicePointDetailResolver {
   constructor(
-    private readonly servicePointsService: ServicePointsService,
+    private readonly servicePointService: ServicePointService,
     private readonly router: Router
   ) {}
 
@@ -17,7 +18,7 @@ export class ServicePointDetailResolver {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
-      : this.servicePointsService
+      : this.servicePointService
           .getServicePointVersions(Number(idParameter))
           .pipe(
             catchError(() =>
