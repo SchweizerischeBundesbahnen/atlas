@@ -7,18 +7,19 @@ import {
   convertToParamMap,
   RouterStateSnapshot,
 } from '@angular/router';
-import { ReadServicePointVersion, ServicePointsService } from '../../../../api';
+import { ReadServicePointVersion } from '../../../../api';
 import {
   prmPanelResolver,
   PrmPanelResolver,
 } from './prm-panel-resolver.service';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
+import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 
 describe('PrmOverviewResolver', () => {
-  const servicePointsServiceSpy = jasmine.createSpyObj('servicePointsService', [
+  const servicePointServiceSpy = jasmine.createSpyObj('servicePointsService', [
     'getServicePointVersionsBySloid',
   ]);
-  servicePointsServiceSpy.getServicePointVersionsBySloid.and.returnValue(
+  servicePointServiceSpy.getServicePointVersionsBySloid.and.returnValue(
     of([BERN_WYLEREGG])
   );
 
@@ -30,8 +31,8 @@ describe('PrmOverviewResolver', () => {
       providers: [
         PrmPanelResolver,
         {
-          provide: ServicePointsService,
-          useValue: servicePointsServiceSpy,
+          provide: ServicePointService,
+          useValue: servicePointServiceSpy,
         },
       ],
     });

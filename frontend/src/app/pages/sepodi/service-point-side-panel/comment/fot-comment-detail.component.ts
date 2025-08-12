@@ -3,8 +3,8 @@ import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-fo
 import {
   FormControl,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, EMPTY, Observable, of, take } from 'rxjs';
@@ -12,13 +12,14 @@ import { Pages } from '../../../pages';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { ServicePointFotComment, ServicePointsService } from '../../../../api';
+import { ServicePointFotComment } from '../../../../api';
 import { DetailPageContentComponent } from '../../../../core/components/detail-page-content/detail-page-content.component';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 
 export interface FotCommentFormGroup {
   fotComment: FormControl<string | null | undefined>;
@@ -47,11 +48,11 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
   form!: FormGroup<FotCommentFormGroup>;
 
   constructor(
-    private servicePointService: ServicePointsService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private dialogService: DialogService,
-    private notificationService: NotificationService
+    private readonly servicePointService: ServicePointService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly dialogService: DialogService,
+    private readonly notificationService: NotificationService
   ) {}
 
   ngOnInit() {

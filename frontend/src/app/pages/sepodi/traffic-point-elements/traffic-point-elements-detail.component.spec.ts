@@ -28,10 +28,6 @@ import { CoordinatePairWGS84, MapService } from '../map/map.service';
 import { CoordinateTransformationService } from '../geography/coordinate-transformation.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { SloidComponent } from '../../../core/form-components/sloid/sloid.component';
-import {
-  ServicePointsService,
-  TrafficPointElementsService,
-} from '../../../api';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
@@ -40,6 +36,9 @@ import { UserDetailInfoComponent } from '../../../core/components/base-detail/us
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailPageContentComponent } from '../../../core/components/detail-page-content/detail-page-content.component';
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
+import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
+import { TrafficPointElementInternalService } from '../../../api/service/sepodi/traffic-point-element-internal.service';
+import { TrafficPointElementService } from '../../../api/service/sepodi/traffic-point-element.service';
 import SpyObj = jasmine.SpyObj;
 
 const authService: Partial<AuthService> = {};
@@ -72,9 +71,13 @@ describe('TrafficPointElementsDetailComponent', () => {
   );
   const trafficPointService = jasmine.createSpyObj(
     'trafficPointElementsService',
-    ['getAreasOfServicePoint', 'updateTrafficPoint', 'createTrafficPoint']
+    ['updateTrafficPoint', 'createTrafficPoint']
   );
-  trafficPointService.getAreasOfServicePoint.and.returnValue(
+  const trafficPointInternalService = jasmine.createSpyObj(
+    'trafficPointElementsService',
+    ['getAreasOfServicePoint']
+  );
+  trafficPointInternalService.getAreasOfServicePoint.and.returnValue(
     of({ objects: BERN_WYLEREGG_TRAFFIC_POINTS })
   );
   trafficPointService.updateTrafficPoint.and.returnValue(
@@ -126,7 +129,9 @@ describe('TrafficPointElementsDetailComponent', () => {
     it('should init selectable areas', () => {
       expect(component.areaOptions).toBeTruthy();
 
-      expect(trafficPointService.getAreasOfServicePoint).toHaveBeenCalled();
+      expect(
+        trafficPointInternalService.getAreasOfServicePoint
+      ).toHaveBeenCalled();
     });
 
     it('should go back to servicepoint', () => {
@@ -237,8 +242,12 @@ describe('TrafficPointElementsDetailComponent', () => {
           provide: CoordinateTransformationService,
           useValue: coordinateTransformationService,
         },
-        { provide: ServicePointsService, useValue: servicePointService },
-        { provide: TrafficPointElementsService, useValue: trafficPointService },
+        { provide: ServicePointService, useValue: servicePointService },
+        { provide: TrafficPointElementService, useValue: trafficPointService },
+        {
+          provide: TrafficPointElementInternalService,
+          useValue: trafficPointInternalService,
+        },
         { provide: DialogService, useValue: dialogService },
         { provide: Router, useValue: routerSpy },
         SplitServicePointNumberPipe,

@@ -9,12 +9,12 @@ import { TerminationStopPointAddWorkflow } from '../../../../api/model/terminati
 import { Observable, of } from 'rxjs';
 import { BERN_WYLEREGG } from 'src/test/data/service-point';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { ServicePointsService } from '../../../../api';
 import {
   ActivatedRouteSnapshot,
   convertToParamMap,
   RouterStateSnapshot,
 } from '@angular/router';
+import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
 
 const workflow: TerminationStopPointAddWorkflow = {
   versionId: 1,
@@ -51,7 +51,7 @@ describe('stopPointTerminationWorkflowResolverResolver', () => {
           provide: workflowService,
           useValue: workflowService,
         },
-        { provide: ServicePointsService, useValue: servicePointsService },
+        { provide: ServicePointService, useValue: servicePointsService },
       ],
     });
     resolver = TestBed.inject(StopPointTerminationWorkflowResolver);

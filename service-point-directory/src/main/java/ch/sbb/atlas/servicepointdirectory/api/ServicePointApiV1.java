@@ -8,15 +8,10 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointSwissWithGeoLocationModel;
 import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
-import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
-import ch.sbb.atlas.configuration.Role;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,7 +25,6 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,20 +56,9 @@ public interface ServicePointApiV1 {
   @GetMapping("versions/{id}")
   ReadServicePointVersionModel getServicePointVersion(@PathVariable Long id);
 
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).SEPODI)")
-  @PostMapping("{servicePointNumber}/revoke")
-  List<ReadServicePointVersionModel> revokeServicePoint(@PathVariable Integer servicePointNumber);
-
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadServicePointVersionModel createServicePoint(@RequestBody @Valid CreateServicePointVersionModel servicePointVersionModel);
-
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).SEPODI)")
-  @ResponseStatus(HttpStatus.OK)
-  @PostMapping({"versions/{id}/skip-workflow"})
-  ReadServicePointVersionModel validateServicePoint(@PathVariable Long id);
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
@@ -99,31 +82,5 @@ public interface ServicePointApiV1 {
       @PathVariable Long id,
       @RequestBody @Valid TerminateServicePointModel terminateServicePointModel
   );
-
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).SEPODI)")
-  @PutMapping(path = "/update-designation-official/{id}")
-  ReadServicePointVersionModel updateDesignationOfficial(
-      @PathVariable Long id,
-      @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
-  );
-
-  @PutMapping(path = "/status/{sloid}/{id}")
-  ReadServicePointVersionModel updateServicePointStatus(@PathVariable String sloid, @PathVariable Long id,
-      @RequestBody @Valid Status status);
-
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
-  @PostMapping("/sync-service-points")
-  @Operation(description = "Write all Service Points to kafka again for redistribution")
-  void syncServicePoints();
-
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
-  @GetMapping("/actual-swiss-service-point-with-geo")
-  List<ServicePointSwissWithGeoLocationModel> getActualServicePointWithGeolocation();
-
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
-  @PostMapping("/cleanup-fare-stops")
-  @Deprecated
-  void cleanupFareStops();
 
 }

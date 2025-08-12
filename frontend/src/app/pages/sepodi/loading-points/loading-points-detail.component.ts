@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   CreateLoadingPointVersion,
-  LoadingPointsService,
   ReadLoadingPointVersion,
   ReadServicePointVersion,
-  ServicePointsService,
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
@@ -40,6 +38,8 @@ import { UserDetailInfoComponent } from '../../../core/components/base-detail/us
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ServicePointService } from '../../../api/service/sepodi/service-point.service';
+import { LoadingPointService } from '../../../api/service/sepodi/loading-point.service';
 
 @Component({
   selector: 'app-loading-points',
@@ -87,14 +87,14 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   loadingPointVersion!: CreateLoadingPointVersion;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private servicePointService: ServicePointsService,
-    private loadingPointsService: LoadingPointsService,
-    private dialogService: DialogService,
-    private validityConfirmationService: ValidityConfirmationService,
-    private notificationService: NotificationService,
-    private validityService: ValidityService
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly servicePointService: ServicePointService,
+    private readonly loadingPointService: LoadingPointService,
+    private readonly dialogService: DialogService,
+    private readonly validityConfirmationService: ValidityConfirmationService,
+    private readonly notificationService: NotificationService,
+    private readonly validityService: ValidityService
   ) {
     this.route.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.loadingPointVersions = next.loadingPoint;
@@ -244,7 +244,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   }
 
   private create(loadingPointVersion: CreateLoadingPointVersion) {
-    this.loadingPointsService
+    this.loadingPointService
       .createLoadingPoint(loadingPointVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((loadingPointVersion) => {
@@ -263,7 +263,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   }
 
   update(id: number, loadingPointVersion: CreateLoadingPointVersion) {
-    this.loadingPointsService
+    this.loadingPointService
       .updateLoadingPoint(id, loadingPointVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {

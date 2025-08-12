@@ -4,7 +4,6 @@ import {
   ApplicationType,
   CoordinatePair,
   Country,
-  GeoDataService,
   Permission,
   PermissionRestrictionType,
   ReadServicePointVersion,
@@ -18,7 +17,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
-import { BusinessOrganisationSelectComponent } from '../../../../../core/form-components/bo-select/business-organisation-select.component';
+import {
+  BusinessOrganisationSelectComponent
+} from '../../../../../core/form-components/bo-select/business-organisation-select.component';
 import { MatLabel } from '@angular/material/form-field';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { AtlasFieldErrorComponent } from '../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
@@ -32,6 +33,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
+import { ServicePointGeoDataInternalService } from '../../../../../api/service/sepodi/service-point-geo-data-internal.service';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
@@ -41,7 +43,7 @@ describe('ServicePointFormComponent', () => {
 
   let translationSortingServiceSpy: SpyObj<TranslationSortingService>;
   let dialogServiceSpy: SpyObj<DialogService>;
-  let geoDataServiceSpy: SpyObj<GeoDataService>;
+  let geoDataServiceSpy: SpyObj<ServicePointGeoDataInternalService>;
 
   let isAdmin = true;
   let permission = {} as Permission;
@@ -86,7 +88,10 @@ describe('ServicePointFormComponent', () => {
           useValue: translationSortingServiceSpy,
         },
         { provide: DialogService, useValue: dialogServiceSpy },
-        { provide: GeoDataService, useValue: geoDataServiceSpy },
+        {
+          provide: ServicePointGeoDataInternalService,
+          useValue: geoDataServiceSpy,
+        },
         { provide: PermissionService, useValue: permissionServiceMock },
       ],
     }).compileComponents();

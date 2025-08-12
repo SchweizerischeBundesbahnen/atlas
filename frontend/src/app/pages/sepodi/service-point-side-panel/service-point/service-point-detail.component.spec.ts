@@ -14,7 +14,6 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import {
   Country,
   ReadServicePointVersion,
-  ServicePointsService,
   Status,
   StopPointType,
 } from '../../../../api';
@@ -35,14 +34,18 @@ import { ServicePointFormComponent } from './service-point-form/service-point-fo
 import { TerminationService } from './stop-point-termination/termination.service';
 import moment from 'moment';
 import { StopPointTerminationDialogService } from './stop-point-termination/stop-point-termination-dialog/stop-point-termination-dialog.service';
+import { ServicePointService } from '../../../../api/service/sepodi/service-point.service';
+import { ServicePointInternalService } from '../../../../api/service/sepodi/service-point-internal.service';
 import SpyObj = jasmine.SpyObj;
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
-const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
+const servicePointService = jasmine.createSpyObj('ServicePointService', [
   'updateServicePoint',
-  'validateServicePoint',
-  'revokeServicePoint',
 ]);
+const servicePointInternalService = jasmine.createSpyObj(
+  'ServicePointInternalService',
+  ['validateServicePoint', 'revokeServicePoint']
+);
 
 const notificationServiceSpy = jasmine.createSpyObj('NotificationService', [
   'success',
@@ -108,7 +111,11 @@ describe('ServicePointDetailComponent', () => {
         { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: DialogService, useValue: dialogServiceSpy },
-        { provide: ServicePointsService, useValue: servicePointsServiceSpy },
+        { provide: ServicePointService, useValue: servicePointService },
+        {
+          provide: ServicePointInternalService,
+          useValue: servicePointInternalService,
+        },
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: TranslatePipe },
         { provide: MapService, useValue: mapServiceSpy },
@@ -404,20 +411,20 @@ describe('ServicePointDetailComponent', () => {
 
   it('should validate service point on validate', () => {
     dialogServiceSpy.confirm.and.returnValue(of(true));
-    servicePointsServiceSpy.validateServicePoint.and.returnValue(of(BERN));
+    servicePointInternalService.validateServicePoint.and.returnValue(of(BERN));
 
     component.validate();
 
-    expect(servicePointsServiceSpy.validateServicePoint).toHaveBeenCalled();
+    expect(servicePointInternalService.validateServicePoint).toHaveBeenCalled();
   });
 
   it('should revoke service points on revoke', () => {
     dialogServiceSpy.confirm.and.returnValue(of(true));
-    servicePointsServiceSpy.revokeServicePoint.and.returnValue(of(BERN));
+    servicePointInternalService.revokeServicePoint.and.returnValue(of(BERN));
 
     component.revoke();
 
-    expect(servicePointsServiceSpy.revokeServicePoint).toHaveBeenCalled();
+    expect(servicePointInternalService.revokeServicePoint).toHaveBeenCalled();
   });
 
   it('should update service point on save', () => {
@@ -426,13 +433,13 @@ describe('ServicePointDetailComponent', () => {
     spyOn(validityService, 'confirmValidityDialog').and.returnValue(of(true));
 
     dialogServiceSpy.confirm.and.returnValue(of(true));
-    servicePointsServiceSpy.updateServicePoint.and.returnValue(of(BERN));
+    servicePointService.updateServicePoint.and.returnValue(of(BERN));
 
     component.toggleEdit();
     component.form?.controls.designationOfficial.setValue('New YB Station');
     component.save();
 
-    expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
+    expect(servicePointService.updateServicePoint).toHaveBeenCalled();
   });
 
   it('should start termination on save', () => {
