@@ -229,13 +229,7 @@ public class TerminationStopPointWorkflowService {
 
   private void doNotApproveTermination(TerminationStopPointWorkflow terminationWorkflow) {
     LocalDate terminationDate = TerminationWorkflowHelper.getTerminationDate(terminationWorkflow);
-    sePoDiAdminClient.changeToTariffStop(
-        StopPointWorkflowTerminationModel.builder()
-            .sloid(terminationWorkflow.getSloid())
-            .versionId(terminationWorkflow.getVersionId())
-            .terminationDate(terminationDate.plusDays(1))
-            .build()
-    );
+    changeToTariffStop(terminationWorkflow, terminationDate);
     terminationWorkflow.setStatus(TERMINATION_NOT_APPROVED);
   }
 
@@ -252,19 +246,28 @@ public class TerminationStopPointWorkflowService {
     checkDecisionTerminationDateWithinLastVersion(decisionModel.getTerminationDate(), terminationWorkflow);
     if (terminationWorkflow.getStatus() != TERMINATION_NOT_APPROVED
         && !terminationWorkflow.getInfoPlusTerminationDate().equals(terminationWorkflow.getNovaTerminationDate())) {
-      sePoDiAdminClient.changeToTariffStop(
-          StopPointWorkflowTerminationModel.builder()
-              .sloid(terminationWorkflow.getSloid())
-              .versionId(terminationWorkflow.getVersionId())
-              .terminationDate(terminationWorkflow.getInfoPlusTerminationDate().plusDays(1))
-              .build());
+      changeToTariffStop(terminationWorkflow, terminationWorkflow.getInfoPlusTerminationDate());
     }
-    sePoDiAdminClient.terminateStopPoint(StopPointWorkflowTerminationModel.builder()
-        .sloid(terminationWorkflow.getSloid())
-        .versionId(terminationWorkflow.getVersionId())
-        .terminationDate(terminationWorkflow.getNovaTerminationDate())
-        .build());
+    terminateStopPoint(terminationWorkflow);
     terminationWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_APPROVED);
   }
 
+  private void changeToTariffStop(TerminationStopPointWorkflow terminationWorkflow, LocalDate terminationWorkflow1) {
+    sePoDiAdminClient.changeToTariffStop(
+        StopPointWorkflowTerminationModel.builder()
+            .sloid(terminationWorkflow.getSloid())
+            .versionId(terminationWorkflow.getVersionId())
+            .terminationDate(terminationWorkflow1.plusDays(1))
+            .build());
+  }
+
+  private void terminateStopPoint(TerminationStopPointWorkflow terminationWorkflow) {
+    if (terminationWorkflow.getNovaTerminationDate().isBefore(terminationWorkflow.getVersionValidTo())) {
+      sePoDiAdminClient.terminateStopPoint(StopPointWorkflowTerminationModel.builder()
+          .sloid(terminationWorkflow.getSloid())
+          .versionId(terminationWorkflow.getVersionId())
+          .terminationDate(terminationWorkflow.getNovaTerminationDate())
+          .build());
+    }
+  }
 }
