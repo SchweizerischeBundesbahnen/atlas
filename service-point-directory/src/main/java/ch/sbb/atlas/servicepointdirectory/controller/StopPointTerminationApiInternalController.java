@@ -68,23 +68,12 @@ public class StopPointTerminationApiInternalController implements StopPointTermi
   @Override
   public void terminateStopPoint(StopPointWorkflowTerminationModel terminationModel) {
     ServicePointVersion lastVersion = getLastServicePointVersionCheckedForDate(terminationModel);
-
     ServicePointVersion editedVersion = lastVersion.toBuilder().build();
-    editedVersion.setValidTo(terminationModel.getTerminationDate());
-    servicePointService.updateAndPublish(lastVersion, editedVersion,
-        servicePointService.findAllByNumberOrderByValidFrom(lastVersion.getNumber()));
-  }
-
-  private ServicePointVersion getLastServicePointVersionCheckedForDate(StopPointWorkflowTerminationModel terminationModel) {
-    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
-
-    stopServicePointTermination(terminationModel.getSloid(), terminationModel.getVersionId());
-
-    List<ServicePointVersion> currentVersions = servicePointService.findBySloidAndOrderByValidFrom(terminationModel.getSloid());
-    ServicePointVersion lastVersion = currentVersions.getLast();
-    TerminationHelper.isValidToInLastVersionRange(terminationModel.getSloid(), DateRange.fromVersionable(lastVersion),
-        terminationModel.getTerminationDate());
-    return lastVersion;
+    if (terminationModel.getTerminationDate().isBefore(editedVersion.getValidTo())) {
+      editedVersion.setValidTo(terminationModel.getTerminationDate());
+      servicePointService.updateAndPublish(lastVersion, editedVersion,
+          servicePointService.findAllByNumberOrderByValidFrom(lastVersion.getNumber()));
+    }
   }
 
   @Override
@@ -102,6 +91,18 @@ public class StopPointTerminationApiInternalController implements StopPointTermi
 
     servicePointService.updateAndPublish(lastVersion, editedVersion,
         servicePointService.findAllByNumberOrderByValidFrom(lastVersion.getNumber()));
+  }
+
+  private ServicePointVersion getLastServicePointVersionCheckedForDate(StopPointWorkflowTerminationModel terminationModel) {
+    terminationStopPointFeatureTogglingService.checkIsFeatureEnabled();
+
+    stopServicePointTermination(terminationModel.getSloid(), terminationModel.getVersionId());
+
+    List<ServicePointVersion> currentVersions = servicePointService.findBySloidAndOrderByValidFrom(terminationModel.getSloid());
+    ServicePointVersion lastVersion = currentVersions.getLast();
+    TerminationHelper.isValidToInLastVersionRange(terminationModel.getSloid(), DateRange.fromVersionable(lastVersion),
+        terminationModel.getTerminationDate());
+    return lastVersion;
   }
 
 }
