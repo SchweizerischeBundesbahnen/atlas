@@ -5,7 +5,6 @@ import ch.sbb.atlas.api.model.BaseVersionModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -60,7 +59,6 @@ public abstract class BaseSectorModel extends BaseVersionModel {
 
   @Schema(description = "Length of a Sector in m", example = "180.000")
   @Digits(integer = 3, fraction = 3)
-  @Min(0)
   private Double length;
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
