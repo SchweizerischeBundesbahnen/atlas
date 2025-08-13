@@ -33,20 +33,25 @@
         <app-atlas-label-field
           fieldLabel="TERMINATION_WORKFLOW.DECISION.TERMINATION_DATE"
         ></app-atlas-label-field>
+
         <div class="text-field-flex">
           <input
-            [matDatepicker]="terminationDatePicker!"
+            [matDatepicker]="terminationDatePicker"
             [max]="maxDate"
             [min]="minDate"
             [attr.data-cy]="'terminationDate'"
             formControlName="terminationDate"
           />
-          <mat-datepicker-toggle [for]="terminationDatePicker" [tabIndex]="-1">
-            <mat-icon matDatepickerToggleIcon>
-              <form-date-icon [enabled]="form.enabled"></form-date-icon>
-            </mat-icon>
-          </mat-datepicker-toggle>
-          <mat-datepicker #terminationDatePicker></mat-datepicker>
+          <div>
+            <form-date-icon
+              tabindex="0"
+              (click)="terminationDatePicker.open()"
+              (keydown.enter)="terminationDatePicker.open()"
+              (keydown.space)="terminationDatePicker.open()"
+              [enabled]="form.enabled"
+            ></form-date-icon>
+            <mat-datepicker #terminationDatePicker></mat-datepicker>
+          </div>
         </div>
         <app-atlas-field-error
           [form]="form"

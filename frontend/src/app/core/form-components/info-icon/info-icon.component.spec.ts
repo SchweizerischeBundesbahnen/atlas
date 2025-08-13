@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { InfoIconComponent } from './info-icon.component';
 
-describe('DateIconComponent', () => {
+describe('InfoIconComponent', () => {
   let component: InfoIconComponent;
   let fixture: ComponentFixture<InfoIconComponent>;
 
