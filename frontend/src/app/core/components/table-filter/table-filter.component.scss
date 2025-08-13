@@ -76,6 +76,10 @@
     width: 10rem;
     flex: 1 1 auto;
   }
+
+  .filter-width-quarter {
+    width: calc(25% - 0.5rem);
+  }
 }
 
 .disabled {
