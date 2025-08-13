@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-class SectorApiV1ControllerTest extends BaseControllerApiTest {
+class SectorApiInternalControllerTest extends BaseControllerApiTest {
 
   @MockitoBean
   private TrafficPointElementService trafficPointElementService;
@@ -48,7 +48,7 @@ class SectorApiV1ControllerTest extends BaseControllerApiTest {
   private SectorVersion sectorVersion;
 
   @Autowired
-  public SectorApiV1ControllerTest(SectorVersionRepository sectorVersionRepository) {
+  public SectorApiInternalControllerTest(SectorVersionRepository sectorVersionRepository) {
     this.sectorVersionRepository = sectorVersionRepository;
   }
 
@@ -65,7 +65,7 @@ class SectorApiV1ControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldGetSectors() throws Exception {
-    mvc.perform(get("/v1/sectors")).andExpect(status().isOk())
+    mvc.perform(get("/internal/sectors")).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + Fields.id, is(sectorVersion.getId().intValue())))
         .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:sector:1111")))
         .andExpect(jsonPath("$[0]." + Fields.designation, is("test")))
@@ -75,7 +75,7 @@ class SectorApiV1ControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldGetSectorsBySloid() throws Exception {
-    mvc.perform(get("/v1/sectors/" + sectorVersion.getSloid())).andExpect(status().isOk())
+    mvc.perform(get("/internal/sectors/" + sectorVersion.getSloid())).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + Fields.id, is(sectorVersion.getId().intValue())))
         .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:sector:1111")))
         .andExpect(jsonPath("$[0]." + Fields.designation, is("test")))
@@ -85,7 +85,7 @@ class SectorApiV1ControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldGetSectorVersionById() throws Exception {
-    mvc.perform(get("/v1/sectors/versions/{id}", sectorVersion.getId()))
+    mvc.perform(get("/internal/sectors/versions/{id}", sectorVersion.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(sectorVersion.getId().intValue())))
         .andExpect(jsonPath("$.sloid", is(sectorVersion.getSloid())))
@@ -107,7 +107,7 @@ class SectorApiV1ControllerTest extends BaseControllerApiTest {
     when(servicePointService.findAllByNumberOrderByValidFrom(any()))
         .thenReturn(List.of(ServicePointTestData.getBern()));
 
-    mvc.perform(post("/v1/sectors")
+    mvc.perform(post("/internal/sectors")
             .contentType(contentType)
             .content(mapper.writeValueAsString(toCreate)))
         .andExpect(status().isCreated())
@@ -128,8 +128,8 @@ class SectorApiV1ControllerTest extends BaseControllerApiTest {
         .etagVersion(initial.getVersion())
         .sloid(initial.getSloid())
         .trafficPointSloid(initial.getTrafficPointSloid())
-        .validFrom(LocalDate.of(2023, 1, 1))
-        .validTo(LocalDate.of(2033, 1, 2))
+        .validFrom(LocalDate.of(2023, 1, 2))
+        .validTo(LocalDate.of(2024, 1, 1))
         .designation("jaja")
         .length(initial.getLength())
         .north(initial.getNorth())
@@ -145,7 +145,7 @@ class SectorApiV1ControllerTest extends BaseControllerApiTest {
     when(servicePointService.findAllByNumberOrderByValidFrom(any()))
         .thenReturn(List.of(ServicePointTestData.getBern()));
 
-    mvc.perform(put("/v1/sectors/{id}", id)
+    mvc.perform(put("/internal/sectors/{id}", id)
             .contentType(contentType)
             .content(mapper.writeValueAsString(update)))
         .andExpect(status().isOk())
