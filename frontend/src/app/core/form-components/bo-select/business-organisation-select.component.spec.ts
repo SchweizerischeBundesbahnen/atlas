@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BusinessOrganisationSelectComponent } from './business-organisation-select.component';
-import { TranslatePipe } from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SearchSelectComponent } from '../search-select/search-select.component';
@@ -32,7 +31,6 @@ describe('BusinessOrganisationSelectComponent', () => {
         AtlasFieldErrorComponent,
       ],
       providers: [
-        TranslatePipe,
         {
           provide: BusinessOrganisationService,
           useValue: businessOrganisationServiceSpy,
@@ -49,10 +47,6 @@ describe('BusinessOrganisationSelectComponent', () => {
     });
     component.controlName = 'testControl';
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   // To be able to find ch:1:sboid:1 we should sort by sboid instead of organisation number

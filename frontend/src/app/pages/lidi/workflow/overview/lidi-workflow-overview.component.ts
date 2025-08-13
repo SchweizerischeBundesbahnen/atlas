@@ -1,8 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  LineVersionSnapshot,
-  WorkflowStatus,
-} from '../../../../api';
+import { LineVersionSnapshot, WorkflowStatus } from '../../../../api';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -51,10 +48,10 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
       'COMMON.STATUS',
       [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected],
       1,
-      'col-3',
+      'filter-width-quarter',
       [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected]
     ),
-    dateSelect: new TableFilterDateSelect(1, 'col-3'),
+    dateSelect: new TableFilterDateSelect(1, 'filter-width-quarter'),
   };
 
   tableFilterConfig!: TableFilter<unknown>[][];

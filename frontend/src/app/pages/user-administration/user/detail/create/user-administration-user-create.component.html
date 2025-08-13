@@ -14,22 +14,23 @@
           >{{ 'FORM.FOR_EXAMPLE' | translate }} u123456
         </mat-label>
       </div>
-      <div class="pe-1 pb-5">
+      <div style="margin-bottom: 15rem">
         <app-user-select
           (selectionChange)="selectUser($event)"
           [form]="userSearchForm"
         ></app-user-select>
+
+        @if (userHasAlreadyPermissions) {
+          <p class="color-error">
+            {{ 'USER_ADMIN.SELECTED_USER_HAS_ALREADY_PERMISSIONS' | translate }}
+          </p>
+        }
+        @if (selectedUserHasNoUserId) {
+          <p class="color-error">
+            {{ 'USER_ADMIN.SELECTED_USER_HAS_NO_USER_ID' | translate }}
+          </p>
+        }
       </div>
-      @if (userHasAlreadyPermissions) {
-        <p class="color-error">
-          {{ 'USER_ADMIN.SELECTED_USER_HAS_ALREADY_PERMISSIONS' | translate }}
-        </p>
-      }
-      @if (selectedUserHasNoUserId) {
-        <p class="color-error">
-          {{ 'USER_ADMIN.SELECTED_USER_HAS_NO_USER_ID' | translate }}
-        </p>
-      }
     </atlas-detail-page-content>
 
     <atlas-detail-footer>
