@@ -16,7 +16,7 @@ describe('DateIconComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should be enabled', () => {
+    expect(component.enabled()).toBeTrue();
   });
 });
