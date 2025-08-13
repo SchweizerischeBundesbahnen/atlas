@@ -1,6 +1,7 @@
 package ch.sbb.workflow.aop;
 
 import ch.sbb.workflow.sepodi.hearing.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,11 @@ public class LoggingAspect {
   public static final String REJECT_WORKFLOW = "REJECT_WORKFLOW";
   public static final String RESTART_WORKFLOW = "RESTART_WORKFLOW";
   public static final String ADD_WORKFLOW = "ADD_WORKFLOW";
+  // Termination Workflow
+  public static final String START_TERMINATION_WORKFLOW = "START_TERMINATION_WORKFLOW";
+  public static final String ABORT_TERMINATION_WORKFLOW = "ABORT_TERMINATION_WORKFLOW";
+  public static final String ADD_TERMINATION_DECISION_NOVA = "ADD_TERMINATION_DECISION_NOVA";
+
   public static final String ERROR_MARKER = "CRITICAL_WORKFLOW_ERROR"; // this value should not be changed, or if so, splunk
   // alert should be adjusted as well
 
@@ -63,6 +69,10 @@ public class LoggingAspect {
       switch (arg) {
         case StopPointAddWorkflowModel model -> {
           details.put("workflowId", model.getId());
+          details.put("servicePointVersionId", model.getVersionId());
+          details.put("sloid", model.getSloid());
+        }
+        case StartTerminationStopPointWorkflowModel model -> {
           details.put("servicePointVersionId", model.getVersionId());
           details.put("sloid", model.getSloid());
         }
