@@ -203,6 +203,43 @@ class SectorServiceTest {
   }
 
   @Test
+  @Transactional
+  void shouldThrowWhenValidityOfSectorIsNotInRangeOfValidityTrafficPointOnUpdate() {
+
+    trafficPointElementVersionRepository.save(TrafficPointTestData.getBasicTrafficPoint());
+
+    // Given
+    String sloid = "ch:1:sector:update";
+    SectorVersion original = sectorVersionRepository.save(
+        SectorTestData.getBasicSectorVersion().toBuilder()
+            .sloid(sloid)
+            .version(1)
+            .designation("orig")
+            .build()
+    );
+
+    SectorVersion edited = SectorTestData.getBasicSectorVersion().toBuilder()
+        .sloid(original.getSloid())
+        .trafficPointSloid(original.getTrafficPointSloid())
+        .version(original.getVersion())
+        .validFrom(original.getValidFrom().plusDays(2))
+        .validTo(LocalDate.of(9999, 1, 1))
+        .designation("updated")
+        .length(original.getLength())
+        .north(original.getNorth())
+        .east(original.getEast())
+        .spatialReference(original.getSpatialReference())
+        .height(original.getHeight())
+        .edgeHeight(original.getEdgeHeight())
+        .build();
+
+    // When
+    // Then
+    assertThatThrownBy(() -> sectorService.updateSector(original, edited))
+        .isInstanceOf(SectorValidityException.class);
+  }
+
+  @Test
   void shouldFindAllVersionsAndGetSectorModels() {
     String sloid = "ch:1:sector:multi";
 
