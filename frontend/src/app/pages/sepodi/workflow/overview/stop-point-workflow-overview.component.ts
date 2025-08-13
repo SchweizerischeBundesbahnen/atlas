@@ -40,7 +40,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
     workflowIds: new TableFilterSingleSearch(
       1,
       'SEPODI.SERVICE_POINTS.WORKFLOW.ID',
-      'col-3',
+      'filter-width',
       AtlasCharsetsValidator.numeric
     ),
     workflowStatus: new TableFilterMultiSelect(
@@ -54,7 +54,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
         WorkflowStatus.Canceled,
       ],
       1,
-      'col-3',
+      'filter-width',
       [
         WorkflowStatus.Added,
         WorkflowStatus.Hearing,
@@ -66,7 +66,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
     sboid: new TableFilterSearchSelect<BusinessOrganisation>(
       TableFilterSearchType.BUSINESS_ORGANISATION,
       1,
-      'col-3',
+      'filter-width',
       new FormGroup({
         businessOrganisation: new FormControl(),
       })
@@ -74,7 +74,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
     locality: new TableFilterSingleSearch(
       1,
       'SEPODI.GEOLOCATION.DISTRICT',
-      'col-3 pb-5'
+      'filter-width'
     ),
   };
 

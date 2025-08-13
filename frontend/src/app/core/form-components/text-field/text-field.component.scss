@@ -5,8 +5,6 @@ input:focus {
 }
 
 input {
-  margin-top: 5px;
-
   border-top-style: hidden;
   border-left: 1px solid variables.$gray-400;
   border-right: 1px solid variables.$gray-400;
@@ -47,10 +45,9 @@ input[disabled] {
 }
 
 .text-field-flex {
-  display: inline-flex;
-  align-items: baseline;
-  box-sizing: border-box;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .mat-form-field {

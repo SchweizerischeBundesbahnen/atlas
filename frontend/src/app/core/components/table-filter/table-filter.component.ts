@@ -8,7 +8,7 @@ import { TableFilterDateSelect } from './config/table-filter-date-select';
 import { TableFilter } from './config/table-filter';
 import { TableFilterSingleSearch } from './config/table-filter-single-search';
 import { TableFilterBoolean } from './config/table-filter-boolean';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { AtlasLabelFieldComponent } from '../../form-components/atlas-label-field/atlas-label-field.component';
 import {
   MatChipGrid,
@@ -22,16 +22,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TimetableFieldNumberSelectComponent } from '../../form-components/ttfn-select/timetable-field-number-select.component';
 import { TransportCompanySelectComponent } from '../../form-components/tu-select/transport-company-select.component';
 import { SelectComponent } from '../../form-components/select/select.component';
-import { AtlasSpacerComponent } from '../spacer/atlas-spacer.component';
 import { MatInput } from '@angular/material/input';
 import {
   MatDatepicker,
   MatDatepickerInput,
-  MatDatepickerToggle,
-  MatDatepickerToggleIcon,
 } from '@angular/material/datepicker';
-import { MatSuffix } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
 import { AtlasFieldErrorComponent } from '../../form-components/atlas-field-error/atlas-field-error.component';
 import { InstanceOfPipe } from './instance-of.pipe';
@@ -42,8 +37,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.scss'],
   imports: [
-    NgFor,
-    NgIf,
     AtlasLabelFieldComponent,
     NgClass,
     MatChipGrid,
@@ -56,13 +49,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     TimetableFieldNumberSelectComponent,
     TransportCompanySelectComponent,
     SelectComponent,
-    AtlasSpacerComponent,
     MatInput,
     MatDatepickerInput,
-    MatDatepickerToggle,
-    MatSuffix,
-    MatIcon,
-    MatDatepickerToggleIcon,
     DateIconComponent,
     MatDatepicker,
     AtlasFieldErrorComponent,
