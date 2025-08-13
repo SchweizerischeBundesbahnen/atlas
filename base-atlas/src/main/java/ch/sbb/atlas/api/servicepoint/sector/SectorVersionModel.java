@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,7 +41,6 @@ public class SectorVersionModel extends BaseSectorModel {
 
   @Schema(description = "Height of edge in cm", example = "180")
   @Digits(integer = 3, fraction = 0)
-  @Min(0)
   private Double edgeHeight;
 
   @AssertTrue(message = "Only LV95 and WGS84 are allowed")
