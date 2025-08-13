@@ -58,7 +58,7 @@ public abstract class BaseSectorModel extends BaseVersionModel {
   @NotNull
   private String designation;
 
-  @Schema(description = "Length of a Sector", example = "180.000")
+  @Schema(description = "Length of a Sector in m", example = "180.000")
   @Digits(integer = 3, fraction = 3)
   @Min(0)
   private Double length;
