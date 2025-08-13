@@ -18,6 +18,7 @@ import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.MissingTrainStopPointException;
+import ch.sbb.atlas.servicepointdirectory.exception.SectorValidityException;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import jakarta.transaction.Transactional;
@@ -56,12 +57,15 @@ class SectorServiceTest {
   @Test
   @Transactional
   void shouldMergeSector() {
+    //Given
+    trafficPointElementVersionRepository.save(TrafficPointTestData.getBasicTrafficPoint());
+
     SectorVersion sectorVersion = SectorTestData.getBasicSectorVersion();
     sectorVersion = sectorVersionRepository.save(sectorVersion);
 
     SectorVersion edited = SectorTestData.getBasicSectorVersion();
-    edited.setValidFrom(LocalDate.of(2020, 1, 2));
-    edited.setValidTo(LocalDate.of(2025, 12, 31));
+    edited.setValidFrom(LocalDate.of(2022, 1, 2));
+    edited.setValidTo(LocalDate.of(2024, 1, 1));
     edited.setVersion(sectorVersion.getVersion());
 
     // when
@@ -135,8 +139,8 @@ class SectorServiceTest {
     // Given
     SectorVersionModel model = SectorVersionModel.builder()
         .trafficPointSloid("nonexistent-sloid")
-        .validFrom(LocalDate.now())
-        .validTo(LocalDate.now().plusDays(1))
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2024, 1, 1))
         .designation("foo")
         .length(1.0).north(0.0).east(0.0)
         .spatialReference(SpatialReference.LV95)
@@ -151,17 +155,17 @@ class SectorServiceTest {
 
   @Test
   void shouldThrowWhenServicePointIsNotStopPointAndIsMissingTrainAsMeansOfTransport() {
+    // Given
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getBasicTrafficPoint();
 
     trafficPointElementVersion.setServicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8519768));
 
     TrafficPointElementVersion saved =
         trafficPointElementVersionRepository.save(trafficPointElementVersion);
-    // Given
     SectorVersionModel model = SectorVersionModel.builder()
         .trafficPointSloid(saved.getSloid())
-        .validFrom(LocalDate.now())
-        .validTo(LocalDate.now().plusDays(1))
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2024, 1, 1))
         .designation("foo")
         .length(1.0).north(0.0).east(0.0)
         .spatialReference(SpatialReference.LV95)
@@ -172,6 +176,30 @@ class SectorServiceTest {
     // Then
     assertThatThrownBy(() -> sectorService.createSector(model, List.of(ServicePointTestData.createServicePointVersion())))
         .isInstanceOf(MissingTrainStopPointException.class);
+  }
+
+  @Test
+  void shouldThrowWhenValidityOfSectorIsNotInRangeOfValidityTrafficPoint() {
+    // Given
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getBasicTrafficPoint();
+
+    TrafficPointElementVersion saved =
+        trafficPointElementVersionRepository.save(trafficPointElementVersion);
+
+    SectorVersionModel model = SectorVersionModel.builder()
+        .trafficPointSloid(saved.getSloid())
+        .validFrom(LocalDate.of(2024, 1, 1))
+        .validTo(LocalDate.of(2044, 1, 1))
+        .designation("foo")
+        .length(1.0).north(0.0).east(0.0)
+        .spatialReference(SpatialReference.LV95)
+        .height(1.0).edgeHeight(1.0)
+        .build();
+
+    // When
+    // Then
+    assertThatThrownBy(() -> sectorService.createSector(model, List.of(ServicePointTestData.createServicePointVersion())))
+        .isInstanceOf(SectorValidityException.class);
   }
 
   @Test
@@ -205,6 +233,8 @@ class SectorServiceTest {
   @Test
   @Transactional
   void shouldUpdateSectorAndCreateNewVersion() {
+    trafficPointElementVersionRepository.save(TrafficPointTestData.getBasicTrafficPoint());
+
     String sloid = "ch:1:sector:update";
     SectorVersion original = sectorVersionRepository.save(
         SectorTestData.getBasicSectorVersion().toBuilder()

@@ -12,11 +12,10 @@ import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import lombok.experimental.UtilityClass;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class TrafficPointTestData {
@@ -81,34 +80,34 @@ public class TrafficPointTestData {
 
   public static TrafficPointElementVersion getTrafficPoint() {
     TrafficPointElementGeolocation trafficPointElementGeolocation = TrafficPointElementGeolocation
-            .builder()
-            .spatialReference(SpatialReference.LV95)
-            .east(2505236.389)
-            .north(1116323.213)
-            .height(-9999.0)
-            .creationDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-            .creator("fs45117")
-            .editionDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-            .editor("fs45117")
-            .build();
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2505236.389)
+        .north(1116323.213)
+        .height(-9999.0)
+        .creationDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
+        .editor("fs45117")
+        .build();
 
     return TrafficPointElementVersion
-            .builder()
-            .designation("Bezeichnung")
-            .designationOperational("gali00")
-            .servicePointNumber(SERVICE_POINT_NUMBER)
-            .trafficPointElementGeolocation(trafficPointElementGeolocation)
-            .sloid("ch:1:sloid:1400015:0:310240")
-            .parentSloid("ch:1:sloid:1400015:310240")
-            .compassDirection(277.0)
-            .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
-            .validFrom(LocalDate.of(2020, 1, 6))
-            .validTo(LocalDate.of(2099, 12, 31))
-            .creationDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-            .creator("fs45117")
-            .editionDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-            .editor("fs45117")
-            .build();
+        .builder()
+        .designation("Bezeichnung")
+        .designationOperational("gali00")
+        .servicePointNumber(SERVICE_POINT_NUMBER)
+        .trafficPointElementGeolocation(trafficPointElementGeolocation)
+        .sloid("ch:1:sloid:1400015:0:310240")
+        .parentSloid("ch:1:sloid:1400015:310240")
+        .compassDirection(277.0)
+        .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+        .validFrom(LocalDate.of(2020, 1, 6))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .creationDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
+        .editor("fs45117")
+        .build();
   }
 
   public static ServicePointVersion testServicePointForTrafficPoint() {
@@ -128,29 +127,29 @@ public class TrafficPointTestData {
 
   public static CreateTrafficPointElementVersionModel getCreateTrafficPointVersionModel() {
     GeolocationBaseCreateModel trafficPointElementGeolocation = GeolocationBaseCreateModel
-            .builder()
-            .spatialReference(SpatialReference.LV95)
-            .east(2505236.389)
-            .north(1116323.213)
-            .height(-9999.0)
-            .build();
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2505236.389)
+        .north(1116323.213)
+        .height(-9999.0)
+        .build();
 
     return CreateTrafficPointElementVersionModel
-            .builder()
-            .designation("Bezeichnung")
-            .designationOperational("gali00")
-            .numberWithoutCheckDigit(1400015)
-            .trafficPointElementGeolocation(trafficPointElementGeolocation)
-            .sloid("ch:1:sloid:1400015:0:310240")
-            .parentSloid("ch:1:sloid:1400015:310240")
-            .compassDirection(277.0)
-            .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
-            .validFrom(LocalDate.of(2020, 1, 6))
-            .validTo(LocalDate.of(2099, 12, 31))
-            .creationDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-            .creator("fs45117")
-            .editionDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-            .editor("fs45117")
-            .build();
+        .builder()
+        .designation("Bezeichnung")
+        .designationOperational("gali00")
+        .numberWithoutCheckDigit(1400015)
+        .trafficPointElementGeolocation(trafficPointElementGeolocation)
+        .sloid("ch:1:sloid:1400015:0:310240")
+        .parentSloid("ch:1:sloid:1400015:310240")
+        .compassDirection(277.0)
+        .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+        .validFrom(LocalDate.of(2020, 1, 6))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .creationDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
+        .editor("fs45117")
+        .build();
   }
 }
