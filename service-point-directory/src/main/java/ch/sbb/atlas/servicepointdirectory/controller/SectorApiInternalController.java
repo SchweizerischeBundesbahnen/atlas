@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
-import ch.sbb.atlas.servicepointdirectory.api.SectorApiV1;
+import ch.sbb.atlas.servicepointdirectory.api.SectorApiInternal;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class SectorApiV1Controller implements SectorApiV1 {
+public class SectorApiInternalController implements SectorApiInternal {
 
   private final SectorService sectorService;
   private final TrafficPointElementService trafficPointElementService;
