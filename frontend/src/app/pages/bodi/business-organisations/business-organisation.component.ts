@@ -33,10 +33,10 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
       'COMMON.STATUS',
       Object.values(Status),
       1,
-      'filter-width',
+      'filter-width-quarter',
       DEFAULT_STATUS_SELECTION
     ),
-    dateSelect: new TableFilterDateSelect(1, 'filter-width'),
+    dateSelect: new TableFilterDateSelect(1, 'filter-width-quarter'),
   };
 
   tableFilterConfig!: TableFilter<unknown>[][];

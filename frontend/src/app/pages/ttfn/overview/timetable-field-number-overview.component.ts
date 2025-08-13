@@ -37,7 +37,7 @@ export class TimetableFieldNumberOverviewComponent
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
       TableFilterSearchType.BUSINESS_ORGANISATION,
       1,
-      'filter-width',
+      'filter-width-quarter',
       new FormGroup({
         businessOrganisation: new FormControl(),
       })
@@ -47,10 +47,10 @@ export class TimetableFieldNumberOverviewComponent
       'COMMON.STATUS',
       Object.values(Status),
       1,
-      'filter-width',
+      'filter-width-quarter',
       DEFAULT_STATUS_SELECTION
     ),
-    dateSelect: new TableFilterDateSelect(1, 'filter-width'),
+    dateSelect: new TableFilterDateSelect(1, 'filter-width-quarter'),
   };
 
   private getVersionsSubscription?: Subscription;
