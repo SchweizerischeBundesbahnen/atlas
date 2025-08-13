@@ -48,10 +48,10 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
       'COMMON.STATUS',
       [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected],
       1,
-      'filter-width',
+      'filter-width-quarter',
       [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected]
     ),
-    dateSelect: new TableFilterDateSelect(1, 'filter-width'),
+    dateSelect: new TableFilterDateSelect(1, 'filter-width-quarter'),
   };
 
   tableFilterConfig!: TableFilter<unknown>[][];

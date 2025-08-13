@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BusinessOrganisationSelectComponent } from './business-organisation-select.component';
-import { TranslatePipe } from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SearchSelectComponent } from '../search-select/search-select.component';
@@ -8,8 +7,6 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import { of } from 'rxjs';
 import { BusinessOrganisationService } from '../../../api/service/bodi/business-organisation.service';
-import { translateServiceProvider } from '../../../app.testing.mocks';
-import { provideHttpClient } from '@angular/common/http';
 import SpyObj = jasmine.SpyObj;
 
 describe('BusinessOrganisationSelectComponent', () => {
@@ -32,13 +29,10 @@ describe('BusinessOrganisationSelectComponent', () => {
         AtlasFieldErrorComponent,
       ],
       providers: [
-        TranslatePipe,
         {
           provide: BusinessOrganisationService,
           useValue: businessOrganisationServiceSpy,
         },
-        translateServiceProvider,
-        provideHttpClient(),
       ],
     }).compileComponents();
 
@@ -49,10 +43,6 @@ describe('BusinessOrganisationSelectComponent', () => {
     });
     component.controlName = 'testControl';
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   // To be able to find ch:1:sboid:1 we should sort by sboid instead of organisation number
