@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DateIconComponent } from './date-icon.component';
 
 describe('DateIconComponent', () => {
@@ -10,15 +9,14 @@ describe('DateIconComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DateIconComponent],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(DateIconComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('enabled', true);
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should be enabled', () => {
+    expect(component.enabled()).toBeTrue();
   });
 });

@@ -10,7 +10,6 @@
   }
 }
 
-// Main search field
 .search-main-field {
   @extend %atlas-outline;
   background-color: variables.$gray-50;
@@ -42,7 +41,6 @@
   }
 }
 
-//Date search field
 .container-date-field {
   display: flex;
   align-items: center;
@@ -68,14 +66,19 @@
   }
 }
 
-// search row
 .search-row {
   display: flex;
-  flex-direction: row;
   width: 100%;
+  flex-direction: row;
+  gap: 1rem;
 
-  div:not(:nth-child(4)) {
-    padding-right: 1rem !important;
+  .filter-width {
+    width: 10rem;
+    flex: 1 1 auto;
+  }
+
+  .filter-width-quarter {
+    width: calc(25% - 0.5rem);
   }
 }
 
@@ -115,5 +118,3 @@
   display: flex;
   justify-content: flex-end;
 }
-
-

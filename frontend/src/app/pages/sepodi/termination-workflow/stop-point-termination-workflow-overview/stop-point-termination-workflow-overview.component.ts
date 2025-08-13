@@ -77,7 +77,7 @@ export class StopPointTerminationWorkflowOverviewComponent {
     workflowIds: new TableFilterSingleSearch(
       1,
       'SEPODI.SERVICE_POINTS.WORKFLOW.ID',
-      'col-4',
+      'filter-width',
       AtlasCharsetsValidator.numeric
     ),
     workflowStatus: new TableFilterMultiSelect(
@@ -93,12 +93,12 @@ export class StopPointTerminationWorkflowOverviewComponent {
         TerminationWorkflowStatus.TariffStopNotApproved,
       ],
       1,
-      'col-4'
+      'filter-width'
     ),
     sboid: new TableFilterSearchSelect<BusinessOrganisation>(
       TableFilterSearchType.BUSINESS_ORGANISATION,
       1,
-      'col-4',
+      'filter-width',
       new FormGroup({
         businessOrganisation: new FormControl(),
       })

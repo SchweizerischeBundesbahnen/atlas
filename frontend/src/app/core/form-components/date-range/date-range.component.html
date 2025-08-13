@@ -3,7 +3,10 @@
     <app-atlas-label-field
       [fieldExamples]="[
         { label: 'FORM.FOR_EXAMPLE', translate: true },
-        { label: setDateExamples ? labelFromExample : EXAMPLE_DATE_FROM, translate: false }
+        {
+          label: setDateExamples ? labelFromExample : EXAMPLE_DATE_FROM,
+          translate: false,
+        },
       ]"
       [required]="required"
       [fieldLabel]="labelFrom"
@@ -11,20 +14,27 @@
     ></app-atlas-label-field>
     <div class="text-field-flex">
       <input
-        [matDatepicker]="validFromPicker!"
+        [matDatepicker]="validFromPicker"
         [max]="MAX_DATE"
         [min]="MIN_DATE"
         [attr.data-cy]="controlNameFrom"
         [formControlName]="controlNameFrom"
         required
       />
-      <mat-datepicker-toggle [for]="validFromPicker" [tabIndex]="-1">
-        <mat-icon matDatepickerToggleIcon>
-          <form-date-icon [enabled]="controlFrom.enabled"></form-date-icon>
-        </mat-icon>
-      </mat-datepicker-toggle>
-      <mat-datepicker #validFromPicker [calendarHeaderComponent]="validFromHeader">
-      </mat-datepicker>
+      <div>
+        <form-date-icon
+          tabindex="0"
+          (click)="validFromPicker.open()"
+          (keydown.enter)="validFromPicker.open()"
+          (keydown.space)="validFromPicker.open()"
+          [enabled]="controlFrom.enabled"
+        ></form-date-icon>
+        <mat-datepicker
+          #validFromPicker
+          [calendarHeaderComponent]="validFromHeader"
+        >
+        </mat-datepicker>
+      </div>
     </div>
     <app-atlas-field-error
       [form]="formGroup"
@@ -35,7 +45,10 @@
     <app-atlas-label-field
       [fieldExamples]="[
         { label: 'FORM.FOR_EXAMPLE', translate: true },
-        { label: setDateExamples ? labelUntilExample : EXAMPLE_DATE_TO, translate: false }
+        {
+          label: setDateExamples ? labelUntilExample : EXAMPLE_DATE_TO,
+          translate: false,
+        },
       ]"
       [required]="required"
       [fieldLabel]="labelUntil"
@@ -43,7 +56,7 @@
     ></app-atlas-label-field>
     <div class="text-field-flex">
       <input
-        [matDatepicker]="validToPicker!"
+        [matDatepicker]="validToPicker"
         [max]="MAX_DATE"
         [min]="MIN_DATE"
         [attr.data-cy]="controlNameTo"
@@ -51,18 +64,25 @@
         required
         list="validToSuggestions"
       />
-      @if (showMaxValidityAutoFill){
+      @if (showMaxValidityAutoFill) {
         <datalist id="validToSuggestions">
           <option value="31.12.9999"></option>
         </datalist>
       }
-      <mat-datepicker-toggle [for]="validToPicker">
-        <mat-icon matDatepickerToggleIcon>
-          <form-date-icon [enabled]="controlTo.enabled"></form-date-icon>
-        </mat-icon>
-      </mat-datepicker-toggle>
-      <mat-datepicker #validToPicker></mat-datepicker>
+      <div>
+        <form-date-icon
+          tabindex="0"
+          (click)="validToPicker.open()"
+          (keydown.enter)="validToPicker.open()"
+          (keydown.space)="validToPicker.open()"
+          [enabled]="controlTo.enabled"
+        ></form-date-icon>
+        <mat-datepicker #validToPicker> </mat-datepicker>
+      </div>
     </div>
-    <app-atlas-field-error [form]="formGroup" [controlName]="controlNameTo"></app-atlas-field-error>
+    <app-atlas-field-error
+      [form]="formGroup"
+      [controlName]="controlNameTo"
+    ></app-atlas-field-error>
   </div>
 </div>

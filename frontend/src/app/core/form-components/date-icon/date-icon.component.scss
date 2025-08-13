@@ -1,9 +1,17 @@
 @use 'src/styles/variables' as variables;
 
-svg.active path {
-  fill: variables.$primary-400;
+svg {
+  display: block;
+
+  path {
+    fill: variables.$gray-500;
+  }
 }
 
-svg.inactive path {
-  fill: variables.$gray-500;
+.active {
+  cursor: pointer;
+
+  path {
+    fill: variables.$primary-400;
+  }
 }
