@@ -3,12 +3,15 @@ package ch.sbb.atlas.servicepointdirectory.service.sector;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import ch.sbb.atlas.location.LocationService;
+import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.sector.SectorVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.MissingTrainStopPointException;
+import ch.sbb.atlas.servicepointdirectory.exception.SectorValidityException;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
@@ -47,8 +50,11 @@ public class SectorService {
   public SectorVersionModel createSector(SectorVersionModel createSectorVersionModel,
       List<ServicePointVersion> servicePointVersions) {
     SectorVersion sectorVersion = SectorMapper.toEntity(createSectorVersionModel);
+
     trafficPointElementService.doesTrafficPointExist(createSectorVersionModel.getTrafficPointSloid());
-    isStopPointWithOnlyTrain(servicePointVersions);
+
+    validateSectorValidity(sectorVersion);
+    validateMeanOfTransportOfServicePoint(servicePointVersions);
 
     sectorVersion.setSloid(locationService.generateSloid(SloidType.SECTOR, createSectorVersionModel.getTrafficPointSloid()));
 
@@ -83,6 +89,8 @@ public class SectorService {
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setTrafficPointSloid(currentVersion.getTrafficPointSloid());
 
+    validateSectorValidity(editedVersion);
+
     List<SectorVersion> currentVersions = findAllBySloidOrderByValidFrom(currentVersion.getSloid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
@@ -111,7 +119,7 @@ public class SectorService {
     return sectorVersionRepository.saveAndFlush(sectorVersion);
   }
 
-  private void isStopPointWithOnlyTrain(List<ServicePointVersion> servicePointVersions) {
+  private void validateMeanOfTransportOfServicePoint(List<ServicePointVersion> servicePointVersions) {
     boolean isServicePointValid = servicePointVersions.stream()
         .anyMatch(servicePoint -> servicePoint.isStopPoint() && isMeanOfTransportOnlyTrain(servicePoint.getMeansOfTransport()));
 
@@ -126,4 +134,25 @@ public class SectorService {
         && meansOfTransport.stream().allMatch(m -> m == MeanOfTransport.TRAIN);
   }
 
+  private void validateSectorValidity(SectorVersion sectorVersion) {
+    List<TrafficPointElementVersion> trafficPointElementVersions =
+        trafficPointElementService.findBySloidOrderByValidFrom(sectorVersion.getTrafficPointSloid());
+
+    TrafficPointElementVersion oldestVersion = trafficPointElementVersions.getLast();
+    TrafficPointElementVersion latestVersion = trafficPointElementVersions.getFirst();
+
+    DateRange validityTrafficPoint = DateRange.builder()
+        .from(oldestVersion.getValidFrom())
+        .to(latestVersion.getValidTo())
+        .build();
+
+    DateRange validitySector = DateRange.builder()
+        .from(sectorVersion.getValidFrom())
+        .to(sectorVersion.getValidTo())
+        .build();
+
+    if (!validitySector.isDateRangeContainedIn(validityTrafficPoint)) {
+      throw new SectorValidityException();
+    }
+  }
 }

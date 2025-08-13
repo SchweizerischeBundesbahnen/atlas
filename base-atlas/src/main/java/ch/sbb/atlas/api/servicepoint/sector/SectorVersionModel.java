@@ -40,7 +40,7 @@ public class SectorVersionModel extends BaseSectorModel {
   @NotNull
   private SpatialReference spatialReference;
 
-  @Schema(description = "Height of edge", example = "180")
+  @Schema(description = "Height of edge in cm", example = "180")
   @Digits(integer = 3, fraction = 0)
   @Min(0)
   private Double edgeHeight;

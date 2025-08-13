@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
@@ -17,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "Sector Groups")
-@RequestMapping("v1/sector-groups")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Sector Groups")
+@RequestMapping("internal/sector-groups")
 @Validated
 @Hidden
-public interface SectorGroupApiV1 {
+public interface SectorGroupApiInternal {
 
   @GetMapping
   List<SectorGroupVersionModel> getSectorGroups();
