@@ -6,7 +6,7 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
 import { translateServiceProvider } from '../../../app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
 
-fdescribe('SearchSelectComponent', () => {
+describe('SearchSelectComponent', () => {
   let component: SearchSelectComponent<unknown>;
   let fixture: ComponentFixture<SearchSelectComponent<unknown>>;
 
