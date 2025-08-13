@@ -5,11 +5,16 @@ import static ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatu
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.StopPointWorkflowTerminationModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
@@ -19,6 +24,8 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.workflow.aop.LoggingAspect;
+import ch.sbb.workflow.exception.SePoDiClientException;
 import ch.sbb.workflow.exception.TerminationDateBeforeException;
 import ch.sbb.workflow.exception.TerminationStopPointWorkflowAlreadyInStatusException;
 import ch.sbb.workflow.exception.TerminationStopPointWorkflowPreconditionStatusException;
@@ -37,9 +44,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
@@ -61,9 +71,20 @@ class TerminationStopPointWorkflowServiceTest {
   @MockitoBean
   private TerminationStopPointNotificationService notificationService;
 
+  private ListAppender<ILoggingEvent> listAppender;
+
+  @BeforeEach
+  public void setUp() {
+    listAppender = new ListAppender<>();
+    Logger logger = (Logger) LoggerFactory.getLogger(LoggingAspect.class);
+    listAppender.start();
+    logger.addAppender(listAppender);
+  }
+
   @AfterEach
   void tearDown() {
     repository.deleteAll();
+    listAppender.stop();
   }
 
   @Test
@@ -212,6 +233,43 @@ class TerminationStopPointWorkflowServiceTest {
 
     verify(notificationService, times(1))
         .sendTerminationConfirmedNotification(any(TerminationStopPointWorkflow.class));
+  }
+
+  @Test
+  void shouldAddDecisionNovaLoggingAspect() {
+    //given
+    TerminationStopPointWorkflow workflow = getStopPointWorkflow();
+    TerminationDecision infoPlusDecision = TerminationDecision.builder()
+        .terminationDecisionPerson(TerminationDecisionPerson.INFO_PLUS)
+        .judgement(JudgementType.YES)
+        .motivation("Forza Napoli")
+        .build();
+    workflow.setInfoPlusDecision(infoPlusDecision);
+    workflow.setInfoPlusTerminationDate(LocalDate.of(8000, 1, 1));
+    workflow.setVersionValidTo(LocalDate.of(9999, 12, 31));
+    workflow.setStatus(TARIFF_STOP_APPROVED);
+    repository.save(workflow);
+
+    TerminationDecisionModel novaDecision = TerminationDecisionModel.builder()
+        .judgement(JudgementType.YES)
+        .motivation("Forza Napoli")
+        .terminationDecisionPerson(TerminationDecisionPerson.NOVA)
+        .terminationDate(LocalDate.of(8001, 1, 1))
+        .build();
+
+    ErrorResponse errorResponse = ErrorResponse.builder().details(new TreeSet<>()).build();
+    SePoDiClientException sePoDiClientException = new SePoDiClientException(errorResponse);
+    doThrow(sePoDiClientException).when(sePoDiAdminClient).terminateStopPoint(any());
+    //when
+    assertThrows(SePoDiClientException.class,
+        () -> service.addDecisionNova(novaDecision, workflow.getId()));
+
+    //then
+    boolean logFound = listAppender.list.stream()
+        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
+            event.getFormattedMessage()
+                .contains("\"workflowType\":" + "\"" + LoggingAspect.ADD_TERMINATION_DECISION_NOVA + "\""));
+    assertThat(logFound).isTrue();
   }
 
   @Test
@@ -377,6 +435,36 @@ class TerminationStopPointWorkflowServiceTest {
   }
 
   @Test
+  void shouldStartTerminationWorkflowLoggingCorrectly() {
+    //given
+    StartTerminationStopPointWorkflowModel stopPointWorkflowModel = buildTerminationStopPointWorkflowModel();
+    ReadServicePointVersionModel readServicePointVersionModel = buildReadServicePointVersionModel();
+    UpdateTerminationServicePointModel terminationServicePointModel = UpdateTerminationServicePointModel.builder()
+        .terminationInProgress(true)
+        .terminationDate(stopPointWorkflowModel.getBoTerminationDate())
+        .build();
+    when(sePoDiAdminClient.startServicePointTermination(
+        stopPointWorkflowModel.getSloid(),
+        stopPointWorkflowModel.getVersionId(),
+        terminationServicePointModel))
+        .thenReturn(readServicePointVersionModel);
+
+    ErrorResponse errorResponse = ErrorResponse.builder().details(new TreeSet<>()).build();
+    SePoDiClientException sePoDiClientException = new SePoDiClientException(errorResponse);
+    doThrow(sePoDiClientException).when(sePoDiAdminClient).startServicePointTermination(any(), any(), any());
+    //when
+    assertThrows(SePoDiClientException.class,
+        () -> service.startTerminationWorkflow(stopPointWorkflowModel));
+
+    //then
+    boolean logFound = listAppender.list.stream()
+        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
+            event.getFormattedMessage()
+                .contains("\"workflowType\":" + "\"" + LoggingAspect.START_TERMINATION_WORKFLOW + "\""));
+    assertThat(logFound).isTrue();
+  }
+
+  @Test
   void shouldAbortTerminationWorkflowWhenWorkflowIsStarted() {
     //given
     TerminationStopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
@@ -430,6 +518,30 @@ class TerminationStopPointWorkflowServiceTest {
         any(TerminationAbortModel.class));
     verify(notificationService, never()).sendAbortNotificationToBoInfoPlusAndNova(any(TerminationStopPointWorkflow.class),
         any(TerminationAbortModel.class));
+  }
+
+  @Test
+  void shouldAbortTerminationWorkflowWhenWorkflowLoggingCorrectly() {
+    //given
+    TerminationStopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    stopPointWorkflow.setStatus(TerminationWorkflowStatus.TERMINATION_NOT_APPROVED);
+    repository.save(stopPointWorkflow);
+    TerminationAbortModel abortingTerminationWorkflow = TerminationAbortModel.builder()
+        .abortComment("Aborting termination workflow").build();
+
+    ErrorResponse errorResponse = ErrorResponse.builder().details(new TreeSet<>()).build();
+    SePoDiClientException sePoDiClientException = new SePoDiClientException(errorResponse);
+    doThrow(sePoDiClientException).when(sePoDiAdminClient).stopServicePointTermination(any(), any());
+    //when
+    assertThrows(SePoDiClientException.class,
+        () -> service.abortTerminationWorkflow(stopPointWorkflow.getId(), abortingTerminationWorkflow));
+
+    //then
+    boolean logFound = listAppender.list.stream()
+        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
+            event.getFormattedMessage()
+                .contains("\"workflowType\":" + "\"" + LoggingAspect.ABORT_TERMINATION_WORKFLOW + "\""));
+    assertThat(logFound).isTrue();
   }
 
   private @NotNull TerminationStopPointWorkflow saveTerminationStopPointWorkflow() {
