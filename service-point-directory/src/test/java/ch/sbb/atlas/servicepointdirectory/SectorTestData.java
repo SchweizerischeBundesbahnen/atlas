@@ -15,9 +15,9 @@ public class SectorTestData {
 
     SectorVersion sectorVersion = SectorVersion.builder()
         .sloid("ch:1:sloid:sector:1")
-        .trafficPointSloid("ch:1:sloid:sector:1")
+        .trafficPointSloid("ch:1:sloid:89108:123:123")
         .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2024, 1, 1))
+        .validTo(LocalDate.of(2023, 1, 1))
         .designation("test")
         .length(18.00)
         .north(1111.111)
@@ -39,7 +39,7 @@ public class SectorTestData {
 
     SectorVersion sectorVersion = SectorVersion.builder()
         .sloid("ch:1:sloid:sector:1111")
-        .trafficPointSloid("ch:1:sloid:sector:1111")
+        .trafficPointSloid("ch:1:sloid:89108:123:123")
         .validFrom(LocalDate.of(1900, 1, 1))
         .validTo(LocalDate.of(9999, 1, 1))
         .designation("test")
@@ -62,7 +62,7 @@ public class SectorTestData {
   public static SectorVersionModel getCreateSectorVersion() {
 
     SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
-        .trafficPointSloid("ch:1:sloid:sector:1")
+        .trafficPointSloid("ch:1:sloid:89108:123:123")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2024, 1, 1))
         .designation("test")
@@ -86,7 +86,7 @@ public class SectorTestData {
 
     SectorGroupVersion sectorGroupVersion = SectorGroupVersion.builder()
         .sloid("ch:1:sloid:group:1")
-        .trafficPointSloid("ch:1:sloid:group:1")
+        .trafficPointSloid("ch:1:sloid:89108:123:123")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2024, 1, 1))
         .designation("test")
