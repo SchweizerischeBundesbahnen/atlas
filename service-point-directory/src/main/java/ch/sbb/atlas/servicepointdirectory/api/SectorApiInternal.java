@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "Sectors")
-@RequestMapping("v1/sectors")
+@Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Sectors")
+@RequestMapping("internal/sectors")
 @Validated
 @Hidden
-public interface SectorApiV1 {
+public interface SectorApiInternal {
 
   @GetMapping
   List<SectorVersionModel> getSectors();
