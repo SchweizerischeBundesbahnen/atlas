@@ -1,23 +1,23 @@
-import { TestBed } from '@angular/core/testing';
-import { AtlasApiService } from '../atlas-api.service';
-import { HttpClient } from '@angular/common/http';
-import { UserService } from '../../../core/auth/user/user.service';
-import { PersonWithReducedMobilityService } from './person-with-reduced-mobility.service';
-import { RecordingObligation } from '../../model/recordingObligation';
+import {TestBed} from '@angular/core/testing';
+import {AtlasApiService} from '../atlas-api.service';
+import {HttpClient} from '@angular/common/http';
+import {UserService} from '../../../core/auth/user/user.service';
+import {StopPointInternalService} from './stop-point-internal.service';
+import {RecordingObligation} from '../../model/recordingObligation';
 
-describe('PersonWithReducedMobilityService', () => {
-  let service: PersonWithReducedMobilityService;
+describe('StopPointInternalService', () => {
+  let service: StopPointInternalService;
   let apiService: AtlasApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PersonWithReducedMobilityService, AtlasApiService,
+      providers: [StopPointInternalService, AtlasApiService,
         {provide: HttpClient, useValue: {}},
         {provide: UserService, useValue: {}},
       ],
     });
 
-    service = TestBed.inject(PersonWithReducedMobilityService);
+    service = TestBed.inject(StopPointInternalService);
     apiService = TestBed.inject(AtlasApiService);
     spyOn(apiService, 'validateParams').and.callThrough();
     spyOn(apiService, 'get');
@@ -31,7 +31,7 @@ describe('PersonWithReducedMobilityService', () => {
       sloid: '123'
     });
     expect(apiService.get).toHaveBeenCalledOnceWith(
-      '/prm-directory/v1/stop-points/recording-obligation/123',
+      '/prm-directory/internal/stop-points/recording-obligation/123',
     );
   });
 
@@ -43,7 +43,7 @@ describe('PersonWithReducedMobilityService', () => {
       recordingObligation: {}
     });
     expect(apiService.put).toHaveBeenCalledOnceWith(
-      '/prm-directory/v1/stop-points/recording-obligation/123',
+      '/prm-directory/internal/stop-points/recording-obligation/123',
       {}
     );
   });

@@ -23,7 +23,6 @@ import {
 } from '../form/stop-point-detail-form-group';
 import { PrmTabsService } from '../../../prm-panel/prm-tabs.service';
 import {
-  PersonWithReducedMobilityService,
   ReadServicePointVersion,
   ReadStopPointVersion,
   StopPointVersion,
@@ -45,6 +44,7 @@ import { DetailFooterComponent } from '../../../../../core/components/detail-foo
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
+import { StopPointService } from '../../../../../api/service/prm/stop-point.service';
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -84,7 +84,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private readonly stopPointService: StopPointService,
     private readonly notificationService: NotificationService,
     private readonly dialogService: DialogService,
     private readonly permissionService: PermissionService,
@@ -270,7 +270,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   doUpdateStopPoint(writableStopPoint: StopPointVersion) {
-    return this.personWithReducedMobilityService
+    return this.stopPointService
       .updateStopPoint(this.selectedVersion.id!, writableStopPoint)
       .pipe(
         switchMap((updatedVersions) => {
@@ -283,20 +283,18 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private createStopPoint(writableStopPoint: StopPointVersion) {
-    return this.personWithReducedMobilityService
-      .createStopPoint(writableStopPoint)
-      .pipe(
-        switchMap((stopPoint) => {
-          this.notificationService.success(
-            'PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS'
-          );
-          this.prmTabsService.initTabs([stopPoint]);
-          if (!stopPoint.reduced) {
-            this.referencePointCreationHintService.showHint();
-          }
-          return this.reloadPage().pipe(map(() => stopPoint));
-        })
-      );
+    return this.stopPointService.createStopPoint(writableStopPoint).pipe(
+      switchMap((stopPoint) => {
+        this.notificationService.success(
+          'PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS'
+        );
+        this.prmTabsService.initTabs([stopPoint]);
+        if (!stopPoint.reduced) {
+          this.referencePointCreationHintService.showHint();
+        }
+        return this.reloadPage().pipe(map(() => stopPoint));
+      })
+    );
   }
 
   private reloadPage() {
