@@ -97,6 +97,25 @@ class SublineControllerV2ApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    CreateSublineVersionModelV2 sublineVersionModel =
+        CreateSublineVersionModelV2.builder()
+            .id(1111L)
+            .validFrom(LocalDate.of(2020, 2, 1))
+            .validTo(LocalDate.of(2020, 11, 30))
+            .businessOrganisation("sbb")
+            .description("b0.Ic2-sibline")
+            .sublineType(SublineType.TECHNICAL)
+            .mainlineSlnid(mainLineVersion.getSlnid())
+            .build();
+
+    mvc.perform(post("/v2/sublines/versions")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(sublineVersionModel)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void shouldUpdateSubline() throws Exception {
     //given
     CreateSublineVersionModelV2 sublineVersionModel =

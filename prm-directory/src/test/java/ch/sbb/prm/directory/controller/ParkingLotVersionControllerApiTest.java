@@ -226,6 +226,27 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointRepository.save(referencePointVersion);
+
+    ParkingLotVersionModel model = ParkingLotTestData.getParkingLotVersionModel();
+    model.setId(11111L);
+    model.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+
+    //when && then
+    mvc.perform(post("/v1/parking-lots")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(model)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void shouldCreateParkingLotWithReducedStopPoint() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";

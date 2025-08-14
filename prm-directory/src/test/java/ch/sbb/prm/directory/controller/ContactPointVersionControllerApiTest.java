@@ -226,6 +226,26 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointRepository.save(referencePointVersion);
+
+    ContactPointVersionModel contactPointVersionModel = ContactPointTestData.getContactPointVersionModel();
+    contactPointVersionModel.setId(1111L);
+    contactPointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    //when && then
+    mvc.perform(post("/v1/contact-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(contactPointVersionModel)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void shouldCreateContactPointWithoutRelationWhenStopPointIsReduced() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
