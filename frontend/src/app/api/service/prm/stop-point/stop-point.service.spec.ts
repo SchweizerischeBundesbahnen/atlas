@@ -1,10 +1,10 @@
 import {TestBed} from '@angular/core/testing';
 
 import {StopPointService} from './stop-point.service';
-import {AtlasApiService} from "../atlas-api.service";
+import {AtlasApiService} from "../../atlas-api.service";
 import {provideHttpClient} from "@angular/common/http";
-import {UserService} from "../../../core/auth/user/user.service";
-import {ReadStopPointVersion} from "../../model/readStopPointVersion";
+import {UserService} from "../../../../core/auth/user/user.service";
+import {ReadStopPointVersion} from "../../../model/readStopPointVersion";
 
 describe('StopPointService', () => {
   let service: StopPointService;

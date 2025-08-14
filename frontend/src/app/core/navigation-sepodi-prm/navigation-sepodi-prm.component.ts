@@ -5,7 +5,7 @@ import { Countries } from '../country/Countries';
 import { NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ServicePointService } from '../../api/service/sepodi/service-point.service';
-import { StopPointService } from '../../api/service/prm/stop-point.service';
+import { StopPointService } from '../../api/service/prm/stop-point/stop-point.service';
 
 export type TargetPageType =
   | 'stop-point'

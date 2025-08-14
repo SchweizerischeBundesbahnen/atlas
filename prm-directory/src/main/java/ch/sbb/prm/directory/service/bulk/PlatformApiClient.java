@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.service.bulk;
 
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
-import ch.sbb.prm.directory.api.PlatformApiV1;
+import ch.sbb.prm.directory.api.platform.PlatformApiV1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

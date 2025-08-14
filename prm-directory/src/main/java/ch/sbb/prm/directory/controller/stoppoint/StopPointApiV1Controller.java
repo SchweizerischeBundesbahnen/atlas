@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.controller;
+package ch.sbb.prm.directory.controller.stoppoint;
 
 import static ch.sbb.prm.directory.util.PrmVariantUtil.isPrmVariantChanging;
 
@@ -6,7 +6,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.prm.directory.api.StopPointApiV1;
+import ch.sbb.prm.directory.api.stoppoint.StopPointApiV1;
 import ch.sbb.prm.directory.controller.model.StopPointRequestParams;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointAlreadyExistsException;

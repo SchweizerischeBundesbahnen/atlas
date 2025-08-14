@@ -8,7 +8,7 @@ import { BERN_WYLEREGG } from '../../../test/data/service-point';
 import { of } from 'rxjs';
 import { STOP_POINT } from '../../pages/prm/util/stop-point-test-data.spec';
 import { ServicePointService } from '../../api/service/sepodi/service-point.service';
-import { StopPointService } from '../../api/service/prm/stop-point.service';
+import { StopPointService } from '../../api/service/prm/stop-point/stop-point.service';
 import SpyObj = jasmine.SpyObj;
 
 describe('NavigationSepodiPrmComponent', () => {

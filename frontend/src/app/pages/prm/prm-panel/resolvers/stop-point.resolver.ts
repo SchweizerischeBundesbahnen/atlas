@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { ReadStopPointVersion } from '../../../../api';
 import { catchError, Observable, of } from 'rxjs';
 import { Pages } from '../../../pages';
-import { StopPointService } from '../../../../api/service/prm/stop-point.service';
+import { StopPointService } from '../../../../api/service/prm/stop-point/stop-point.service';
 
 @Injectable({ providedIn: 'root' })
 export class StopPointResolver {
