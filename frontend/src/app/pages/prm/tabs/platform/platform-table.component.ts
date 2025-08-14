@@ -4,7 +4,6 @@ import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
 import {
-  PersonWithReducedMobilityService,
   PlatformOverview,
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
@@ -24,6 +23,7 @@ import { TableComponent } from '../../../../core/components/table/table.componen
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TrafficPointElementInternalService } from '../../../../api/service/sepodi/traffic-point-element-internal.service';
+import { PlatformInternalService } from '../../../../api/service/prm/platform/platform-internal.service';
 
 @Component({
   selector: 'app-platform',
@@ -72,7 +72,7 @@ export class PlatformTableComponent
     readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly tableService: TableService,
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private readonly platformInternalService: PlatformInternalService,
     private readonly trafficPointElementInternalService: TrafficPointElementInternalService
   ) {
     super(router);
@@ -107,9 +107,7 @@ export class PlatformTableComponent
           this.trafficPointElements = sepodiPlatforms.objects!;
           this.totalCount = sepodiPlatforms.totalCount!;
         }),
-        mergeMap(() =>
-          this.personWithReducedMobilityService.getPlatformOverview(sloid)
-        )
+        mergeMap(() => this.platformInternalService.getPlatformOverview(sloid))
       )
       .subscribe((platforms) => {
         const mergedPlatformInfos =

@@ -11,7 +11,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { STOP_POINT } from '../../util/stop-point-test-data.spec';
-import { StopPointService } from '../../../../api/service/prm/stop-point.service';
+import { StopPointService } from '../../../../api/service/prm/stop-point/stop-point.service';
 
 describe('stopPointResolver', () => {
   const stopPointService = jasmine.createSpyObj('stopPointService', [

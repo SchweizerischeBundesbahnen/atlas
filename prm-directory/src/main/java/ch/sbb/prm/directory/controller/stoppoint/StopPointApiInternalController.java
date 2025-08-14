@@ -1,7 +1,7 @@
-package ch.sbb.prm.directory.controller;
+package ch.sbb.prm.directory.controller.stoppoint;
 
 import ch.sbb.atlas.api.prm.model.stoppoint.RecordingObligationModel;
-import ch.sbb.prm.directory.api.StopPointApiInternal;
+import ch.sbb.prm.directory.api.stoppoint.StopPointApiInternal;
 import ch.sbb.prm.directory.service.RecordingObligationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

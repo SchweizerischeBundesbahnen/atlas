@@ -31,7 +31,7 @@ import { InfoIconComponent } from '../../../../../core/form-components/info-icon
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { PrmVariantInfoService } from '../prm-variant-info.service';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
-import { StopPointService } from '../../../../../api/service/prm/stop-point.service';
+import { StopPointService } from '../../../../../api/service/prm/stop-point/stop-point.service';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 

@@ -7,11 +7,9 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { platformResolver } from './platform.resolver';
-import {
-  PersonWithReducedMobilityService,
-  ReadPlatformVersion,
-} from '../../../../../../api';
+import { ReadPlatformVersion } from '../../../../../../api';
 import { AppTestingModule } from '../../../../../../app.testing.module';
+import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
 
 const platform: ReadPlatformVersion[] = [
   {
@@ -53,21 +51,18 @@ const platform: ReadPlatformVersion[] = [
 ];
 
 describe('PrmPlatformResolver', () => {
-  const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['getPlatformVersions']
-  );
-  personWithReducedMobilityServiceSpy.getPlatformVersions.and.returnValue(
-    of(platform)
-  );
+  const platformServiceSpy = jasmine.createSpyObj('platformService', [
+    'getPlatformVersions',
+  ]);
+  platformServiceSpy.getPlatformVersions.and.returnValue(of(platform));
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
       providers: [
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityServiceSpy,
+          provide: PlatformService,
+          useValue: platformServiceSpy,
         },
       ],
     });

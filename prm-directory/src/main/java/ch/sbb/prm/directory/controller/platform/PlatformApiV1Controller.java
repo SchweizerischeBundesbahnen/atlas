@@ -1,14 +1,13 @@
-package ch.sbb.prm.directory.controller;
+package ch.sbb.prm.directory.controller.platform;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.helper.TerminationHelper;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
-import ch.sbb.prm.directory.api.PlatformApiV1;
+import ch.sbb.prm.directory.api.platform.PlatformApiV1;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class PlatformController implements PlatformApiV1 {
+public class PlatformApiV1Controller implements PlatformApiV1 {
 
   private final PlatformService platformService;
 
@@ -57,11 +56,6 @@ public class PlatformController implements PlatformApiV1 {
     platformService.updatePlatformVersion(currentVersion, editedVersion);
 
     return platformService.getAllVersions(currentVersion.getSloid()).stream().map(PlatformVersionMapper::toModel).toList();
-  }
-
-  @Override
-  public List<PlatformOverviewModel> getPlatformOverview(String parentSloid) {
-    return platformService.mergePlatformsForOverview(platformService.getPlatformsByStopPoint(parentSloid), parentSloid);
   }
 
   @Override

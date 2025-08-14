@@ -1,8 +1,8 @@
 import {inject, Injectable} from '@angular/core';
-import {AtlasApiService} from "../atlas-api.service";
+import {AtlasApiService} from "../../atlas-api.service";
 import {Observable} from "rxjs";
-import {ReadStopPointVersion} from "../../model/readStopPointVersion";
-import {StopPointVersion} from "../../model/stopPointVersion";
+import {ReadStopPointVersion} from "../../../model/readStopPointVersion";
+import {StopPointVersion} from "../../../model/stopPointVersion";
 
 @Injectable({
   providedIn: 'root'
