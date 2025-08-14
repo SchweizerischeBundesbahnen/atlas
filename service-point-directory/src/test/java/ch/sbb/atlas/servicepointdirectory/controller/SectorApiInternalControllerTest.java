@@ -116,6 +116,28 @@ class SectorApiInternalControllerTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    sectorVersionRepository.deleteAll();
+
+    SectorVersionModel toCreate = SectorTestData.getCreateSectorVersion();
+    toCreate.setId(1111L);
+
+    doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR,
+        toCreate.getTrafficPointSloid());
+
+    when(trafficPointElementService.findBySloidOrderByValidFrom(toCreate.getTrafficPointSloid()))
+        .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
+
+    when(servicePointService.findAllByNumberOrderByValidFrom(any()))
+        .thenReturn(List.of(ServicePointTestData.getBern()));
+
+    mvc.perform(post("/internal/sectors")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(toCreate)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void shouldUpdateSectorAndReturnTwoVersions() throws Exception {
     sectorVersionRepository.deleteAll();
 

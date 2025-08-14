@@ -201,6 +201,26 @@ class LoadingPointApiV1ControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    CreateLoadingPointVersionModel ladestationOne = CreateLoadingPointVersionModel
+        .builder()
+        .id(1111L)
+        .number(2201)
+        .designation("Ladest Nr.1")
+        .designationLong("Ladestation Nummer 1")
+        .connectionPoint(false)
+        .servicePointNumber(servicePointVersion.getNumber().getNumber())
+        .validFrom(LocalDate.of(2018, 6, 28))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .build();
+
+    mvc.perform(post("/v1/loading-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(ladestationOne)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void shouldNotCreateLoadingPointVersionIfCorrespondingServicePointDoesNotExist() throws Exception {
     Mockito.doThrow(new ServicePointNumberNotFoundException(ServicePointNumber.ofNumberWithoutCheckDigit(11_00703)))
         .when(crossValidationServiceMock).validateServicePointNumberExists(any());

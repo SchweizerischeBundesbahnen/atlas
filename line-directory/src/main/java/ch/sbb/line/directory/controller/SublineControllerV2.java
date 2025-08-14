@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.lidi.CreateSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.ReadSublineVersionModelV2;
 import ch.sbb.atlas.api.lidi.SublineApiV2;
 import ch.sbb.atlas.api.lidi.SublineVersionModelV2;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -36,6 +37,10 @@ public class SublineControllerV2 implements SublineApiV2 {
 
   @Override
   public ReadSublineVersionModelV2 createSublineVersionV2(CreateSublineVersionModelV2 newSublineVersion) {
+    if (newSublineVersion.getId() != null) {
+      throw new IdProvidedOnCreateException();
+    }
+
     SublineVersion sublineVersion = SublineMapper.toEntity(newSublineVersion);
     sublineVersion.setStatus(Status.VALIDATED);
     SublineVersion createdVersion = sublineService.create(sublineVersion);

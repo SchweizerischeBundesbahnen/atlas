@@ -1,6 +1,7 @@
 package ch.sbb.business.organisation.directory.controller;
 
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
@@ -33,6 +34,9 @@ public class BusinessOrganisationControllerInternal implements BusinessOrganisat
   @Override
   public BusinessOrganisationVersionModel createBusinessOrganisationVersion(
       BusinessOrganisationVersionModel newVersion) {
+    if (newVersion.getId() != null) {
+      throw new IdProvidedOnCreateException();
+    }
     BusinessOrganisationVersion businessOrganisationVersion = BusinessOrganisationVersionMapper.toEntity(newVersion);
     businessOrganisationVersion.setStatus(Status.VALIDATED);
     BusinessOrganisationVersion organisationVersionSaved =

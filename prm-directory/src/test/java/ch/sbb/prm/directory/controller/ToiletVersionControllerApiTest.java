@@ -126,6 +126,26 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointRepository.save(referencePointVersion);
+
+    ToiletVersionModel model = ToiletTestData.getToiletVersionModel();
+    model.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    model.setId(1111L);
+
+    //when && then
+    mvc.perform(post("/v1/toilets").contentType(contentType)
+            .content(mapper.writeValueAsString(model)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void shouldNotCreateToiletWithViolation() throws Exception {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();

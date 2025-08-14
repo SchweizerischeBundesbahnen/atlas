@@ -261,6 +261,23 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersionModel referencePointVersionModel = ReferencePointTestData.getReferencePointVersionModel();
+    referencePointVersionModel.setId(1111L);
+    referencePointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+
+    //when && then
+    mvc.perform(post("/v1/reference-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(referencePointVersionModel)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void shouldCreateReferencePointWithAutomaticSloid() throws Exception {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();

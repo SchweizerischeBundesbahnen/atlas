@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.service;
 
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -53,6 +54,9 @@ public class TimetableFieldNumberService {
           + ".model.user.admin"
           + ".ApplicationType).TTFN)")
   public TimetableFieldNumberVersion create(TimetableFieldNumberVersion businessObject) {
+    if (businessObject.getId() != null) {
+      throw new IdProvidedOnCreateException();
+    }
     return save(businessObject);
   }
 

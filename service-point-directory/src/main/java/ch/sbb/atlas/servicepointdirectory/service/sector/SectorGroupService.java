@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -81,9 +82,12 @@ public class SectorGroupService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
-  public ReadSectorGroupVersionModel create(SectorGroupVersion toCreate,
+  public ReadSectorGroupVersionModel create(SectorGroupVersion sectorGroupVersion,
       List<String> sloids, List<ServicePointVersion> servicePointVersions) {
-    return createSectorGroup(toCreate, sloids);
+    if (sectorGroupVersion.getId() != null) {
+      throw new IdProvidedOnCreateException();
+    }
+    return createSectorGroup(sectorGroupVersion, sloids);
   }
 
   public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion sectorGroupVersion,
