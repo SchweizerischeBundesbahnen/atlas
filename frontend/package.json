@@ -39,7 +39,7 @@
     "frontend/src/**/*": "frontend/node_modules/prettier/bin/prettier.cjs --write --ignore-unknown"
   },
   "engines": {
-    "npm": "11.5.2"
+    "npm": "10.8.2"
   },
   "dependencies": {
     "@angular/animations": "20.1.6",
