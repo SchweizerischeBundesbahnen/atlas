@@ -1,5 +1,9 @@
 package ch.sbb.prm.directory.api;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
@@ -29,8 +33,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static ch.sbb.atlas.model.ResponseCodeDescription.*;
-
 @Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/parking-lots")
 public interface ParkingLotApiV1 {
@@ -42,6 +44,7 @@ public interface ParkingLotApiV1 {
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject PrmObjectRequestParams prmObjectRequestParams);
 
+  //TODO [INTERNAL]
   @GetMapping("overview/{parentServicePointSloid}")
   List<ParkingLotOverviewModel> getParkingLotsOverview(@PathVariable String parentServicePointSloid);
 
@@ -51,12 +54,12 @@ public interface ParkingLotApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   @PutMapping(path = "{id}")
   List<ReadParkingLotVersionModel> updateParkingLot(@PathVariable Long id,

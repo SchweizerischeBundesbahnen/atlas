@@ -20,11 +20,7 @@ import { MeansOfTransportPickerComponent } from '../../../../sepodi/means-of-tra
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { StopPointFormGroupBuilder } from '../form/stop-point-detail-form-group';
-import {
-  MeanOfTransport,
-  PersonWithReducedMobilityService,
-  ReadStopPointVersion,
-} from '../../../../../api';
+import { MeanOfTransport, ReadStopPointVersion } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
   STOP_POINT,
@@ -35,6 +31,7 @@ import { InfoIconComponent } from '../../../../../core/form-components/info-icon
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { PrmVariantInfoService } from '../prm-variant-info.service';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
+import { StopPointService } from '../../../../../api/service/prm/stop-point.service';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
@@ -44,7 +41,7 @@ describe('StopPointDetailComponent', () => {
 
   let dialogService: SpyObj<DialogService>;
   let routerSpy: SpyObj<Router>;
-  let prmServiceSpy: SpyObj<PersonWithReducedMobilityService>;
+  let stopPointServiceSpy: SpyObj<StopPointService>;
   let prmVariantInfoService: SpyObj<PrmVariantInfoService>;
   let notificationService: SpyObj<NotificationService>;
 
@@ -60,18 +57,18 @@ describe('StopPointDetailComponent', () => {
     dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
     dialogService.confirm.and.returnValue(of(true));
 
-    prmServiceSpy = jasmine.createSpyObj('personWithReducedMobilityService', [
+    stopPointServiceSpy = jasmine.createSpyObj('stopPointService', [
       'createStopPoint',
       'updateStopPoint',
     ]);
     (
-      prmServiceSpy.createStopPoint as Spy<
+      stopPointServiceSpy.createStopPoint as Spy<
         (...args: unknown[]) => Observable<ReadStopPointVersion>
       >
     ).and.returnValue(of(STOP_POINT));
 
     (
-      prmServiceSpy.updateStopPoint as Spy<
+      stopPointServiceSpy.updateStopPoint as unknown as Spy<
         (...args: unknown[]) => Observable<ReadStopPointVersion[]>
       >
     ).and.returnValue(of([STOP_POINT]));
@@ -109,7 +106,7 @@ describe('StopPointDetailComponent', () => {
       providers: [
         ValidityService,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: PersonWithReducedMobilityService, useValue: prmServiceSpy },
+        { provide: StopPointService, useValue: stopPointServiceSpy },
         { provide: PrmVariantInfoService, useValue: prmVariantInfoService },
         { provide: NotificationService, useValue: notificationService },
         { provide: Router, useValue: routerSpy },
@@ -228,7 +225,7 @@ describe('StopPointDetailComponent', () => {
     //when
     component.save();
     //then
-    expect(prmServiceSpy.createStopPoint).toHaveBeenCalled();
+    expect(stopPointServiceSpy.createStopPoint).toHaveBeenCalled();
     expect(notificationService.success).toHaveBeenCalled();
   });
 
@@ -252,7 +249,7 @@ describe('StopPointDetailComponent', () => {
     component.isNew = false;
     //when
     component.doUpdateStopPoint(STOP_POINT).subscribe(() => {
-      expect(prmServiceSpy.updateStopPoint).toHaveBeenCalled();
+      expect(stopPointServiceSpy.updateStopPoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
       done();
     });

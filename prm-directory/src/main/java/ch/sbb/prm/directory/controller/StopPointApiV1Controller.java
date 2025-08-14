@@ -4,7 +4,6 @@ import static ch.sbb.prm.directory.util.PrmVariantUtil.isPrmVariantChanging;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
-import ch.sbb.atlas.api.prm.model.stoppoint.RecordingObligationModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.StopPointApiV1;
@@ -15,10 +14,8 @@ import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.service.PlatformService;
 import ch.sbb.prm.directory.service.PrmChangeRecordingVariantService;
-import ch.sbb.prm.directory.service.RecordingObligationService;
 import ch.sbb.prm.directory.service.StopPointService;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,11 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class StopPointController implements StopPointApiV1 {
+public class StopPointApiV1Controller implements StopPointApiV1 {
 
   private final StopPointService stopPointService;
   private final PlatformService platformService;
-  private final RecordingObligationService recordingObligationService;
   private final PrmChangeRecordingVariantService prmChangeRecordingVariantService;
 
   @Override
@@ -43,8 +39,6 @@ public class StopPointController implements StopPointApiV1 {
         .stopPointRequestParams(stopPointRequestParams)
         .build();
     Page<StopPointVersion> stopPointVersions = stopPointService.findAll(searchRestrictions);
-    Map<String, Boolean> recordingObligations = recordingObligationService.getRecordingObligations(
-        stopPointVersions.stream().map(StopPointVersion::getSloid).toList());
 
     return Container.<ReadStopPointVersionModel>builder()
         .objects(stopPointVersions.stream().map(StopPointVersionMapper::toModel).toList())
@@ -83,18 +77,6 @@ public class StopPointController implements StopPointApiV1 {
     }
     return stopPointService.findAllByNumberOrderByValidFrom(stopPointVersionToUpdate.getNumber()).stream()
         .map(StopPointVersionMapper::toModel).toList();
-  }
-
-  @Override
-  public void updateRecordingObligation(String sloid, RecordingObligationModel recordingObligation) {
-    recordingObligationService.setRecordingObligation(sloid, recordingObligation.getValue());
-  }
-
-  @Override
-  public RecordingObligationModel getRecordingObligation(String sloid) {
-    return RecordingObligationModel.builder()
-        .value(recordingObligationService.getRecordingObligation(sloid))
-        .build();
   }
 
 }
