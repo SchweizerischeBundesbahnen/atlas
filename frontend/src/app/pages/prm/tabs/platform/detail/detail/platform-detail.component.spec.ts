@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlatformDetailComponent } from './platform-detail.component';
 import {
-  PersonWithReducedMobilityService,
   ReadPlatformVersion,
   VehicleAccessAttributeType,
 } from '../../../../../../api';
@@ -43,6 +42,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SplitServicePointNumberPipe } from '../../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
 import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
+import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
 import SpyObj = jasmine.SpyObj;
 
 const reducedPlatform: ReadPlatformVersion[] = [
@@ -124,16 +124,12 @@ describe('PlatformDetailComponent', () => {
   let component: PlatformDetailComponent;
   let fixture: ComponentFixture<PlatformDetailComponent>;
 
-  const personWithReducedMobilityService = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['createPlatform', 'updatePlatform']
-  );
-  personWithReducedMobilityService.createPlatform.and.returnValue(
-    of(reducedPlatform[0])
-  );
-  personWithReducedMobilityService.updatePlatform.and.returnValue(
-    of(reducedPlatform)
-  );
+  const platformService = jasmine.createSpyObj('platformService', [
+    'createPlatform',
+    'updatePlatform',
+  ]);
+  platformService.createPlatform.and.returnValue(of(reducedPlatform[0]));
+  platformService.updatePlatform.and.returnValue(of(reducedPlatform));
   let routerSpy: SpyObj<Router>;
 
   const notificationService = jasmine.createSpyObj('notificationService', [
@@ -198,8 +194,8 @@ describe('PlatformDetailComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityService,
+          provide: PlatformService,
+          useValue: platformService,
         },
         { provide: DialogService, useValue: dialogService },
         { provide: Router, useValue: routerSpy },
@@ -236,9 +232,7 @@ describe('PlatformDetailComponent', () => {
 
       component.save();
 
-      expect(
-        personWithReducedMobilityService.createPlatform
-      ).toHaveBeenCalled();
+      expect(platformService.createPlatform).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
@@ -306,9 +300,7 @@ describe('PlatformDetailComponent', () => {
       component.reducedForm.controls.vehicleAccess.markAsDirty();
 
       component.save();
-      expect(
-        personWithReducedMobilityService.updatePlatform
-      ).toHaveBeenCalled();
+      expect(platformService.updatePlatform).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
@@ -352,9 +344,7 @@ describe('PlatformDetailComponent', () => {
       );
 
       component.save();
-      expect(
-        personWithReducedMobilityService.createPlatform
-      ).toHaveBeenCalled();
+      expect(platformService.createPlatform).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });

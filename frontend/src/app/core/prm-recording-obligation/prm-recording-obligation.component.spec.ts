@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PrmRecordingObligationComponent } from './prm-recording-obligation.component';
-import { StopPointInternalService } from '../../api/service/prm/stop-point-internal.service';
+import { StopPointInternalService } from '../../api/service/prm/stop-point/stop-point-internal.service';
 import { EMPTY, of } from 'rxjs';
 import { PermissionService } from '../auth/permission/permission.service';
 import { adminPermissionServiceMock } from '../../app.testing.mocks';
