@@ -47,7 +47,7 @@
       "description": "Ignore npm engine update",
       "matchManagers": ["npm"],
       "matchDepTypes": ["engines"],
-      "matchFileNames": ["package.json"],
+      "matchFileNames": ["frontend/package.json"],
       "enabled": false
     },
     {
