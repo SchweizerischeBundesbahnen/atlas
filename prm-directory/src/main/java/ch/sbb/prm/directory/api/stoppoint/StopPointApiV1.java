@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.api;
+package ch.sbb.prm.directory.api.stoppoint;
 
 import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
@@ -6,12 +6,10 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMEN
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
-import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
-import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
-import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
-import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
-import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
+import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
+import ch.sbb.prm.directory.controller.model.StopPointRequestParams;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,7 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
@@ -35,19 +32,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Person with Reduced Mobility")
-@RequestMapping("v1/platforms")
-public interface PlatformApiV1 {
+@RequestMapping("v1/stop-points")
+public interface StopPointApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
-  Container<ReadPlatformVersionModel> getPlatforms(
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid,
-          BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
-      @Valid @ParameterObject PrmObjectRequestParams prmObjectRequestParams);
+  Container<ReadStopPointVersionModel> getStopPoints(
+      @Parameter(hidden = true) @PageableDefault(sort = {StopPointVersion.Fields.number,
+          StopPointVersion.Fields.validFrom}) Pageable pageable,
+      @Valid @ParameterObject StopPointRequestParams stopPointRequestParams);
+
+  @GetMapping("{sloid}")
+  List<ReadStopPointVersionModel> getStopPointVersions(@PathVariable String sloid);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadPlatformVersionModel createPlatform(@RequestBody @Valid PlatformVersionModel model);
+  ReadStopPointVersionModel createStopPoint(@RequestBody @Valid StopPointVersionModel stopPointVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
@@ -59,21 +59,7 @@ public interface PlatformApiV1 {
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   @PutMapping(path = "{id}")
-  List<ReadPlatformVersionModel> updatePlatform(@PathVariable Long id,
-      @RequestBody @Valid PlatformVersionModel platformVersionModel);
+  List<ReadStopPointVersionModel> updateStopPoint(@PathVariable Long id,
+      @RequestBody @Valid StopPointVersionModel stopPointVersionModel);
 
-  //TODO: [INTERNAL]
-  @PageableAsQueryParam
-  @GetMapping("/overview/{parentSloid}")
-  List<PlatformOverviewModel> getPlatformOverview(@PathVariable String parentSloid);
-
-  @GetMapping("{sloid}")
-  List<ReadPlatformVersionModel> getPlatformVersions(@PathVariable String sloid);
-
-  @PutMapping("/terminate/{sloid}/{validTo}")
-  List<ReadPlatformVersionModel> terminatePlatform(
-      @Parameter(description = "Sloid in the format 'ch:1:sloid:1400015:0:55555'", example = "ch:1:sloid:1400015:0:55555")
-      @PathVariable String sloid,
-      @Parameter(description = "ValidTo date in the format 'YYYY-MM-DD'", example = "2024-03-03")
-      @PathVariable LocalDate validTo);
 }

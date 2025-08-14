@@ -44,7 +44,7 @@ import { DetailFooterComponent } from '../../../../../core/components/detail-foo
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
-import { StopPointService } from '../../../../../api/service/prm/stop-point.service';
+import { StopPointService } from '../../../../../api/service/prm/stop-point/stop-point.service';
 
 @Component({
   selector: 'app-stop-point-detail',

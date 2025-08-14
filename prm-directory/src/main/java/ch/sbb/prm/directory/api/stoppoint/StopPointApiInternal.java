@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.api;
+package ch.sbb.prm.directory.api.stoppoint;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.stoppoint.RecordingObligationModel;

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { ApplicationType } from '../../api';
 import { PermissionService } from '../auth/permission/permission.service';
-import { StopPointInternalService } from '../../api/service/prm/stop-point-internal.service';
+import { StopPointInternalService } from '../../api/service/prm/stop-point/stop-point-internal.service';
 import { NotificationService } from '../notification/notification.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AtlasSlideToggleComponent } from '../form-components/atlas-slide-toggle/atlas-slide-toggle.component';
