@@ -82,6 +82,27 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel =
+        TimetableFieldNumberVersionModel.builder()
+            .id(1111L)
+            .validTo(LocalDate.of(2000, 12, 31))
+            .validFrom(LocalDate.of(2000, 1, 1))
+            .businessOrganisation("sbb")
+            .swissTimetableFieldNumber("swissLineNumber")
+            .number("123")
+            .description("description")
+            .ttfnid("123")
+            .status(Status.VALIDATED).build();
+    //when && then
+    mvc.perform(post("/v1/field-numbers/versions")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(timetableFieldNumberVersionModel))
+    ).andExpect(status().isBadRequest());
+  }
+
+  @Test
   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     // Given
     String responseBody = mvc.perform(

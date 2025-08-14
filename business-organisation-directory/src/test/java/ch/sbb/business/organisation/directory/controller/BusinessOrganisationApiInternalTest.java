@@ -90,6 +90,35 @@ class BusinessOrganisationApiInternalTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
+        .builder()
+        .id(1111L)
+        .sboid("ch:1:sboid:100000")
+        .abbreviationDe("abkde")
+        .abbreviationFr("abkfr")
+        .abbreviationIt("abkit")
+        .abbreviationEn("abken")
+        .descriptionDe("desc-de")
+        .descriptionFr("desc-fr")
+        .descriptionIt("desc-it")
+        .descriptionEn("desc-en")
+        .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
+        .contactEnterpriseEmail("mail@mail.ch")
+        .organisationNumber(1234)
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
+
+    //when and then
+    mvc.perform(post("/internal/business-organisations/versions").contentType(contentType)
+            .content(mapper.writeValueAsString(model)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void shouldNotCreateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldProvidedIsTooLong()
       throws Exception {
     //given

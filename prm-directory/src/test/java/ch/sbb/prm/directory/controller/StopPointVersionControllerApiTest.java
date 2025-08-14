@@ -147,6 +147,21 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    stopPointCreateVersionModel.setId(1111L);
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000",
+        Set.of("ch:1:sboid:100602"),
+        Collections.emptySet());
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+    //when && then
+    mvc.perform(post("/v1/stop-points").contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void shouldNotCreateStopPointReducedIfCompletePropertiesProvided() throws Exception {
     //given
     StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getWrongStopPointReducedCreateVersionModel();

@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.sector;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
@@ -68,6 +69,9 @@ public class SectorService {
   @Transactional
   public SectorVersionModel create(SectorVersionModel createSectorVersionModel,
       List<ServicePointVersion> servicePointVersions) {
+    if (createSectorVersionModel.getId() != null) {
+      throw new IdProvidedOnCreateException();
+    }
     return createSector(createSectorVersionModel, servicePointVersions);
   }
 

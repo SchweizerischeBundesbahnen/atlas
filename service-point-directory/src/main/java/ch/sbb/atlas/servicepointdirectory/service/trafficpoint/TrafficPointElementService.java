@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
@@ -63,6 +64,11 @@ public class TrafficPointElementService {
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public TrafficPointElementVersion create(TrafficPointElementVersion trafficPointElementVersion,
       List<ServicePointVersion> servicePointVersions) {
+
+    if (trafficPointElementVersion.getId() != null) {
+      throw new IdProvidedOnCreateException();
+    }
+
     if (trafficPointElementVersion.getSloid() != null) {
       trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
       locationService.claimSloid(LocationService.getSloidType(trafficPointElementVersion.getTrafficPointElementType()),

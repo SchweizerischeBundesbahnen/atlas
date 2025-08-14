@@ -335,6 +335,17 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    repository.deleteAll();
+    CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
+    platformToCreate.setId(1111L);
+    mvc.perform(post("/v1/traffic-point-elements")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(platformToCreate)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void shouldCreateTrafficPointElementPlatformWithGivenSloid() throws Exception {
     repository.deleteAll();
     CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();

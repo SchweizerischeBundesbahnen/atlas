@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.service;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -73,6 +74,9 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public ContactPointVersion createContactPoint(ContactPointVersion version) {
+    if (version.getId() != null) {
+      throw new IdProvidedOnCreateException();
+    }
     createRelationWithSloidAllocation(version);
     return save(version);
   }

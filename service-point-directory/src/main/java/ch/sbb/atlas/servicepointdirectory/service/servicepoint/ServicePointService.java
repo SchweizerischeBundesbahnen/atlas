@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.helper.TerminationHelper;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
@@ -97,6 +98,9 @@ public class ServicePointService {
   public ServicePointVersion createAndPublish(ServicePointVersion servicePointVersion,
       Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
+    if (servicePointVersion.getId() != null) {
+      throw new IdProvidedOnCreateException();
+    }
     ServicePointVersion createdVersion = save(servicePointVersion, currentVersion, currentVersions);
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return createdVersion;
