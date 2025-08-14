@@ -1,14 +1,14 @@
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { RecordingObligation } from '../../model/recordingObligation';
-import { AtlasApiService } from '../atlas-api.service';
+import {inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {RecordingObligation} from '../../model/recordingObligation';
+import {AtlasApiService} from '../atlas-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PersonWithReducedMobilityService {
+export class StopPointInternalService {
 
-  private readonly RECORDING_OBLIGATION = '/prm-directory/v1/stop-points/recording-obligation';
+  private readonly RECORDING_OBLIGATION = '/prm-directory/internal/stop-points/recording-obligation';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
@@ -21,4 +21,5 @@ export class PersonWithReducedMobilityService {
     this.atlasApiService.validateParams({ sloid, recordingObligation });
     return this.atlasApiService.put(`${this.RECORDING_OBLIGATION}/${encodeURIComponent(String(sloid))}`, recordingObligation);
   }
+
 }

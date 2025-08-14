@@ -62,6 +62,7 @@ public interface PlatformApiV1 {
   List<ReadPlatformVersionModel> updatePlatform(@PathVariable Long id,
       @RequestBody @Valid PlatformVersionModel platformVersionModel);
 
+  //TODO: [INTERNAL]
   @PageableAsQueryParam
   @GetMapping("/overview/{parentSloid}")
   List<PlatformOverviewModel> getPlatformOverview(@PathVariable String parentSloid);

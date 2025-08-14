@@ -11,46 +11,43 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
-import { CustomHttpParameterCodec }                          from '../encoder';
-import { Observable }                                        from 'rxjs';
+import {Inject, Injectable, Optional} from '@angular/core';
+import {HttpClient, HttpEvent, HttpHeaders, HttpParameterCodec, HttpParams, HttpResponse} from '@angular/common/http';
+import {CustomHttpParameterCodec} from '../encoder';
+import {Observable} from 'rxjs';
 
-import { ContactPointOverview } from '../model/models';
-import { ContactPointType } from '../model/models';
-import { ContactPointVersion } from '../model/models';
-import { ContainerReadContactPointVersion } from '../model/models';
-import { ContainerReadParkingLotVersion } from '../model/models';
-import { ContainerReadPlatformVersion } from '../model/models';
-import { ContainerReadReferencePointVersion } from '../model/models';
-import { ContainerReadRelationVersion } from '../model/models';
-import { ContainerReadStopPointVersion } from '../model/models';
-import { ContainerReadToiletVersion } from '../model/models';
-import { ErrorResponse } from '../model/models';
-import { ParkingLotOverview } from '../model/models';
-import { ParkingLotVersion } from '../model/models';
-import { PlatformOverview } from '../model/models';
-import { PlatformVersion } from '../model/models';
-import { ReadContactPointVersion } from '../model/models';
-import { ReadParkingLotVersion } from '../model/models';
-import { ReadPlatformVersion } from '../model/models';
-import { ReadReferencePointVersion } from '../model/models';
-import { ReadRelationVersion } from '../model/models';
-import { ReadStopPointVersion } from '../model/models';
-import { ReadToiletVersion } from '../model/models';
-import { ReferencePointAttributeType } from '../model/models';
-import { ReferencePointElementType } from '../model/models';
-import { ReferencePointVersion } from '../model/models';
-import { RelationVersion } from '../model/models';
-import { Status } from '../model/models';
-import { StopPointVersion } from '../model/models';
-import { ToiletOverview } from '../model/models';
-import { ToiletVersion } from '../model/models';
+import {
+  ContactPointOverview,
+  ContactPointType,
+  ContactPointVersion,
+  ContainerReadContactPointVersion,
+  ContainerReadParkingLotVersion,
+  ContainerReadPlatformVersion,
+  ContainerReadReferencePointVersion,
+  ContainerReadRelationVersion,
+  ContainerReadStopPointVersion,
+  ContainerReadToiletVersion,
+  ParkingLotOverview,
+  ParkingLotVersion,
+  PlatformOverview,
+  PlatformVersion,
+  ReadContactPointVersion,
+  ReadParkingLotVersion,
+  ReadPlatformVersion,
+  ReadReferencePointVersion,
+  ReadRelationVersion,
+  ReadToiletVersion,
+  ReferencePointAttributeType,
+  ReferencePointElementType,
+  ReferencePointVersion,
+  RelationVersion,
+  Status,
+  ToiletOverview,
+  ToiletVersion
+} from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
-
+import {BASE_PATH} from '../variables';
+import {Configuration} from '../configuration';
 
 
 @Injectable({
@@ -114,7 +111,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param contactPointVersion 
+     * @param contactPointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -168,7 +165,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param parkingLotVersion 
+     * @param parkingLotVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -222,7 +219,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param platformVersion 
+     * @param platformVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -276,7 +273,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param referencePointVersion 
+     * @param referencePointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -330,61 +327,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param stopPointVersion 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public createStopPoint(stopPointVersion: StopPointVersion, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ReadStopPointVersion>;
-    public createStopPoint(stopPointVersion: StopPointVersion, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ReadStopPointVersion>>;
-    public createStopPoint(stopPointVersion: StopPointVersion, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ReadStopPointVersion>>;
-    public createStopPoint(stopPointVersion: StopPointVersion, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (stopPointVersion === null || stopPointVersion === undefined) {
-            throw new Error('Required parameter stopPointVersion was null or undefined when calling createStopPoint.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.post<ReadStopPointVersion>(`${this.configuration.basePath}/prm-directory/v1/stop-points`,
-            stopPointVersion,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param toiletVersion 
+     * @param toiletVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -438,7 +381,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param parentServicePointSloid 
+     * @param parentServicePointSloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -482,7 +425,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -651,7 +594,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -813,7 +756,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param parentServicePointSloid 
+     * @param parentServicePointSloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -857,7 +800,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param parentSloid 
+     * @param parentSloid
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -921,7 +864,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1083,7 +1026,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1252,7 +1195,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param parentServicePointSloid 
+     * @param parentServicePointSloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1428,7 +1371,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1472,162 +1415,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getStopPointVersions(sloid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<ReadStopPointVersion>>;
-    public getStopPointVersions(sloid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<ReadStopPointVersion>>>;
-    public getStopPointVersions(sloid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<ReadStopPointVersion>>>;
-    public getStopPointVersions(sloid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (sloid === null || sloid === undefined) {
-            throw new Error('Required parameter sloid was null or undefined when calling getStopPointVersions.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<Array<ReadStopPointVersion>>(`${this.configuration.basePath}/prm-directory/v1/stop-points/${encodeURIComponent(String(sloid))}`,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param numbers Number
-     * @param sloids Unique key for prm objects which is used in the customer information.
-     * @param statusRestrictions Filter on the Status of a servicePoint.
-     * @param validOn ValidOn. Date format: yyyy-MM-dd
-     * @param fromDate [fromDate] &lt;&#x3D; validFrom. Filters for all versions where validFrom is bigger or equal than fromDate. Date format: yyyy-MM-dd
-     * @param toDate [toDate] &gt;&#x3D; validTo. Filters for all versions where validTo is smaller or equal than toDate. Date format: yyyy-MM-dd
-     * @param validToFromDate [validToFromDate] &lt;&#x3D; validTo. Filters for all versions where validTo is greater than or equal to validToFromDate. Example: If validToFromDate is set to \&#39;2020-01-01\&#39;, only versions where validTo is on or after \&#39;2020-01-01\&#39; will be included. Date format: yyyy-MM-dd
-     * @param createdAfter creationDate &gt;&#x3D; [createdAfter]. DateTime format: yyyy-MM-dd HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss.SSS\&#39;Z\&#39;
-     * @param modifiedAfter editionDate &gt;&#x3D; [modifiedAfter]. DateTime format: yyyy-MM-dd HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss.SSS\&#39;Z\&#39;
-     * @param page Zero-based page index (0..N)
-     * @param size The size of the page to be returned
-     * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getStopPoints(numbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerReadStopPointVersion>;
-    public getStopPoints(numbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerReadStopPointVersion>>;
-    public getStopPoints(numbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerReadStopPointVersion>>;
-    public getStopPoints(numbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (numbers) {
-            numbers.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'numbers');
-            })
-        }
-        if (sloids) {
-            sloids.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'sloids');
-            })
-        }
-        if (statusRestrictions) {
-            statusRestrictions.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'statusRestrictions');
-            })
-        }
-        if (validOn !== undefined && validOn !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>validOn, 'validOn');
-        }
-        if (fromDate !== undefined && fromDate !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>fromDate, 'fromDate');
-        }
-        if (toDate !== undefined && toDate !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>toDate, 'toDate');
-        }
-        if (validToFromDate !== undefined && validToFromDate !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>validToFromDate, 'validToFromDate');
-        }
-        if (createdAfter !== undefined && createdAfter !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>createdAfter, 'createdAfter');
-        }
-        if (modifiedAfter !== undefined && modifiedAfter !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>modifiedAfter, 'modifiedAfter');
-        }
-        if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
-        }
-        if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
-        }
-        if (sort) {
-            sort.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'sort');
-            })
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ContainerReadStopPointVersion>(`${this.configuration.basePath}/prm-directory/v1/stop-points`,
-            {
-                params: queryParameters,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param parentServicePointSloid 
+     * @param parentServicePointSloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1671,7 +1459,7 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param sloid 
+     * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1833,8 +1621,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param contactPointVersion 
+     * @param id
+     * @param contactPointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1891,8 +1679,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param parkingLotVersion 
+     * @param id
+     * @param parkingLotVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1949,8 +1737,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param platformVersion 
+     * @param id
+     * @param platformVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -2007,8 +1795,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param referencePointVersion 
+     * @param id
+     * @param referencePointVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -2065,8 +1853,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param relationVersion 
+     * @param id
+     * @param relationVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -2123,66 +1911,8 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param id 
-     * @param stopPointVersion 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public updateStopPoint(id: number, stopPointVersion: StopPointVersion, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<ReadStopPointVersion>>;
-    public updateStopPoint(id: number, stopPointVersion: StopPointVersion, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<ReadStopPointVersion>>>;
-    public updateStopPoint(id: number, stopPointVersion: StopPointVersion, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<ReadStopPointVersion>>>;
-    public updateStopPoint(id: number, stopPointVersion: StopPointVersion, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling updateStopPoint.');
-        }
-        if (stopPointVersion === null || stopPointVersion === undefined) {
-            throw new Error('Required parameter stopPointVersion was null or undefined when calling updateStopPoint.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.put<Array<ReadStopPointVersion>>(`${this.configuration.basePath}/prm-directory/v1/stop-points/${encodeURIComponent(String(id))}`,
-            stopPointVersion,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param id 
-     * @param toiletVersion 
+     * @param id
+     * @param toiletVersion
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
