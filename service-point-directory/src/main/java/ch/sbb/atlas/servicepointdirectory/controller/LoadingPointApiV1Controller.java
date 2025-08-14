@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.LoadingPointApiV1;
@@ -67,6 +68,10 @@ public class LoadingPointApiV1Controller implements LoadingPointApiV1 {
 
   @Override
   public ReadLoadingPointVersionModel createLoadingPoint(CreateLoadingPointVersionModel newVersion) {
+    if (newVersion.getId() != null) {
+      throw new IdProvidedOnCreateException();
+    }
+
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(newVersion.getServicePointNumber());
     crossValidationService.validateServicePointNumberExists(servicePointNumber);
 

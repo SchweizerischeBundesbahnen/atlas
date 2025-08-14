@@ -82,7 +82,8 @@ class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  ServicePointApiV1ControllerApiTest(ServicePointVersionRepository repository, ServicePointApiV1Controller servicePointController) {
+  ServicePointApiV1ControllerApiTest(ServicePointVersionRepository repository,
+      ServicePointApiV1Controller servicePointController) {
     this.repository = repository;
     this.servicePointController = servicePointController;
   }
@@ -328,6 +329,16 @@ class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.hasGeolocation", is(true)))
         .andExpect(jsonPath("$.creator", is("e123456")));
     verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
+  }
+
+  @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    aargauServicePointVersionModel.setId(1111L);
+    mvc.perform(post("/v1/service-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+        .andExpect(status().isBadRequest());
   }
 
   @Test
