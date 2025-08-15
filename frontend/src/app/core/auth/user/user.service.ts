@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, ReplaySubject, Subject, take } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { ApiConfigService } from '../../configuration/api-config.service';
+// import { ApiConfigService } from '../../configuration/api-config.service';
 import { Permission } from '../../../api';
 import { User } from './user';
 import { User as UserModel } from '../../../api/model/user';
@@ -17,18 +17,18 @@ export class UserService {
   private readonly permissionsLoaded = new ReplaySubject<void>(1);
 
   private readonly httpClient = inject(HttpClient);
-  private readonly apiConfigService = inject(ApiConfigService);
+  // private readonly apiConfigService = inject(ApiConfigService);
 
   setCurrentUserAndLoadPermissions(user: User) {
     this.currentUser = user;
-    this.apiConfigService.setToAuthenticatedUrl();
+    // this.apiConfigService.setToAuthenticatedUrl();
     this.userChanged.next();
     return this.loadPermissions();
   }
 
   setToUnauthenticatedUser() {
     this.currentUser = undefined;
-    this.apiConfigService.setToUnauthenticatedUrl();
+    // this.apiConfigService.setToUnauthenticatedUrl();
     this.userChanged.next();
     this.permissionsLoaded.next();
   }

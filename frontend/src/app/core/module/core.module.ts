@@ -9,7 +9,7 @@ import { TableComponent } from '../components/table/table.component';
 import { BaseDetailComponent } from '../components/base-detail/base-detail.component';
 import { SideNavComponent } from '../components/side-nav/side-nav.component';
 import { RouterModule } from '@angular/router';
-import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
+// import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
 import { TrimInputDirective } from '../text-input/trim-input';
 import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
@@ -50,17 +50,11 @@ import { SplitServicePointNumberPipe } from '../search-service-point/split-servi
 import { MeansOfTransportPickerComponent } from '../../pages/sepodi/means-of-transport-picker/means-of-transport-picker.component';
 import { DetailPageContentComponent } from '../components/detail-page-content/detail-page-content.component';
 import { StringListComponent } from '../form-components/string-list/string-list.component';
-import { OAuthCookieStorage } from '../cookies/oauth-cookie-storage';
 import { DialogContentComponent } from '../components/dialog/content/dialog-content.component';
 import { DialogFooterComponent } from '../components/dialog/footer/dialog-footer.component';
 import { SearchServicePointPanelComponent } from '../search-service-point-panel/search-service-point-panel.component';
 import { NavigationSepodiPrmComponent } from '../navigation-sepodi-prm/navigation-sepodi-prm.component';
 import { PrmRecordingObligationComponent } from '../prm-recording-obligation/prm-recording-obligation.component';
-import {
-  provideHttpClient,
-  withFetch,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -117,16 +111,16 @@ const coreComponents = [
     CommonModule,
     RouterModule,
     FormModule,
-    OAuthModule.forRoot({
-      resourceServer: {
-        // When sendAccessToken is set to true and you send
-        // a request to these, the access token is appended.
-        // Documentation:
-        // https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/working-with-httpinterceptors.html
-        allowedUrls: [environment.atlasApiUrl],
-        sendAccessToken: true,
-      },
-    }),
+    // OAuthModule.forRoot({
+    //   resourceServer: {
+    //     // When sendAccessToken is set to true and you send
+    //     // a request to these, the access token is appended.
+    //     // Documentation:
+    //     // https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/working-with-httpinterceptors.html
+    //     allowedUrls: [environment.atlasApiUrl],
+    //     sendAccessToken: true,
+    //   },
+    // }),
     ...coreComponents,
     ShowTitlePipe,
     MouseOverTitleDirective,
@@ -136,8 +130,8 @@ const coreComponents = [
   exports: [...coreComponents, CommonModule],
   providers: [
     FormatPipe,
-    { provide: OAuthStorage, useClass: OAuthCookieStorage },
-    provideHttpClient(withFetch(), withInterceptorsFromDi()),
+    // { provide: OAuthStorage, useClass: OAuthCookieStorage },
+    // provideHttpClient(withFetch(), withInterceptorsFromDi()),
   ],
 })
 export class CoreModule {}
