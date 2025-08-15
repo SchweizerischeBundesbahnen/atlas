@@ -11,6 +11,8 @@ import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
   withFetch,
+  withInterceptors,
+  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { AppRouting } from './app-routing';
 import { AtlasApiModule, Configuration } from './api';
@@ -24,6 +26,11 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslatedPaginator } from './core/components/table/translated-paginator';
 import { MAT_CHIPS_DEFAULT_OPTIONS } from '@angular/material/chips';
 import { ENTER } from '@angular/cdk/keycodes';
+import {
+  authInterceptor,
+  provideAuth,
+  withAppInitializerAuthCheck,
+} from 'angular-auth-oidc-client';
 
 function withBasePath(basePath: string) {
   return () => new Configuration({ basePath: basePath });
@@ -70,6 +77,11 @@ export const appConfig: ApplicationConfig = {
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    provideHttpClient(withFetch()),
+    provideHttpClient(
+      withFetch(),
+      withInterceptorsFromDi(),
+      withInterceptors([authInterceptor()])
+    ),
+    provideAuth(environment.authConfig, withAppInitializerAuthCheck()),
   ],
 };
