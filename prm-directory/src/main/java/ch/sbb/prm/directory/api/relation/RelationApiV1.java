@@ -1,4 +1,8 @@
-package ch.sbb.prm.directory.api;
+package ch.sbb.prm.directory.api.relation;
+
+import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
@@ -27,8 +31,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static ch.sbb.atlas.model.ResponseCodeDescription.*;
-
 @Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/relations")
 public interface RelationApiV1 {
@@ -45,12 +47,12 @@ public interface RelationApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   @PutMapping(path = "{id}")
   List<ReadRelationVersionModel> updateRelation(@PathVariable Long id,

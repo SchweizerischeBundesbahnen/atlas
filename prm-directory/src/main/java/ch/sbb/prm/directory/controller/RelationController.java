@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.prm.directory.api.RelationApiV1;
+import ch.sbb.prm.directory.api.relation.RelationApiV1;
 import ch.sbb.prm.directory.controller.model.RelationRequestParams;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.mapper.RelationVersionMapper;
