@@ -1,29 +1,17 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
 import { UserService } from './user.service';
-import { ApiConfigService } from '../../configuration/api-config.service';
-import { provideHttpClient } from '@angular/common/http';
 import {
   HttpTestingController,
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('UserService', () => {
   let userService: UserService;
-  const apiConfigService = jasmine.createSpyObj<ApiConfigService>([
-    'setToAuthenticatedUrl',
-    'setToUnauthenticatedUrl',
-  ]);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterModule.forRoot([])],
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        UserService,
-        { provide: ApiConfigService, useValue: apiConfigService },
-      ],
+      providers: [provideHttpClient(), provideHttpClientTesting(), UserService],
     });
     userService = TestBed.inject(UserService);
     const httpTesting = TestBed.inject(HttpTestingController);
@@ -47,8 +35,6 @@ describe('UserService', () => {
     });
 
     expect(userService.loggedIn).toBeTrue();
-    expect(apiConfigService.setToAuthenticatedUrl).toHaveBeenCalled();
-
     expect(userService.isAdmin).toBeTrue();
     expect(userService.permissions).toEqual([]);
   });
@@ -63,9 +49,8 @@ describe('UserService', () => {
     });
 
     expect(userService.loggedIn).toBeTrue();
-
     userService.setToUnauthenticatedUser();
-    expect(apiConfigService.setToUnauthenticatedUrl).toHaveBeenCalled();
+
     expect(userService.loggedIn).toBeFalse();
     expect(userService.isAdmin).toBeFalse();
     expect(userService.permissions).toEqual([]);
