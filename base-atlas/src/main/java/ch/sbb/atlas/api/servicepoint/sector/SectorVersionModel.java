@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.servicepoint.sector;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Digits;
@@ -44,6 +45,7 @@ public class SectorVersionModel extends BaseSectorModel {
   private Double edgeHeight;
 
   @AssertTrue(message = "Only LV95 and WGS84 are allowed")
+  @JsonIgnore
   public boolean isSpatialReferenceAllowed() {
     return spatialReference == SpatialReference.LV95
         || spatialReference == SpatialReference.WGS84;
