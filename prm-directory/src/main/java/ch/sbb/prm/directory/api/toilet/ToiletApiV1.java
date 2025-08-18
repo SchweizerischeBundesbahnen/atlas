@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.api;
+package ch.sbb.prm.directory.api.toilet;
 
 import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
@@ -7,7 +7,6 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMEN
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
-import ch.sbb.atlas.api.prm.model.toilet.ToiletOverviewModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
@@ -47,10 +46,6 @@ public interface ToiletApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadToiletVersionModel createToiletVersion(@RequestBody @Valid ToiletVersionModel toiletVersionModel);
-
-  //TODO [INTERNAL]
-  @GetMapping("overview/{parentServicePointSloid}")
-  List<ToiletOverviewModel> getToiletOverview(@PathVariable String parentServicePointSloid);
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
