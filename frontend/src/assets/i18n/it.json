@@ -117,6 +117,7 @@
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} caratteri max.",
     "MAX_NUMBER_OF_DIGITS": "{{numberOfDigits}} numeri max.",
+    "MAX_NUMBER_OF_NUMERAL": "{{numberOfDigits}} cifre max.",
     "MAX_DIGITS": "{{amount}} cifre decimali max.",
     "DROPDOWN_PLACEHOLDER": "selezionare",
     "FOR_EXAMPLE": "p.e.:",

@@ -117,6 +117,7 @@
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} Zeichen max.",
     "MAX_NUMBER_OF_DIGITS": "{{numberOfDigits}} Zahlen max.",
+    "MAX_NUMBER_OF_NUMERAL": "{{numberOfDigits}} Ziffern max.",
     "MAX_DIGITS": "max. {{amount}} Nachkommastellen",
     "DROPDOWN_PLACEHOLDER": "auswählen",
     "FOR_EXAMPLE": "z.B.:",
