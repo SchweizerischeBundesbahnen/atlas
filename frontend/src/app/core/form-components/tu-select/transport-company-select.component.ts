@@ -15,21 +15,16 @@ import { TransportCompany } from '../../../api';
 import { map } from 'rxjs/operators';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
-import { NgClass, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TransportCompanyService } from '../../../api/service/bodi/transport-company.service';
 
 @Component({
   selector: 'tu-select',
   templateUrl: './transport-company-select.component.html',
-  styleUrls: ['./transport-company-select.component.scss'],
   imports: [
     SearchSelectComponent,
     ReactiveFormsModule,
     AtlasLabelFieldComponent,
-    NgIf,
-    NgClass,
-    TranslatePipe,
   ],
   providers: [TranslatePipe],
 })
