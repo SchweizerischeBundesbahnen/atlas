@@ -22,6 +22,7 @@ import { DetailFooterComponent } from '../../../../../core/components/detail-foo
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import moment from 'moment';
+import { RelationService } from '../../../../../api/service/prm/relation/relation.service';
 
 const referencePointOverview: ReadReferencePointVersion[] = [
   {
@@ -102,8 +103,13 @@ describe('RelationTabDetailComponent', () => {
 
   let personWithReducedMobilityService = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['getReferencePointsOverview', 'getRelationsBySloid', 'updateRelation']
+    ['getReferencePointsOverview']
   );
+
+  let relationService = jasmine.createSpyObj('relationService', [
+    'getRelationsBySloid',
+    'updateRelation',
+  ]);
 
   const activatedRouteMock = {
     parent: {
@@ -120,15 +126,17 @@ describe('RelationTabDetailComponent', () => {
   beforeEach(() => {
     personWithReducedMobilityService = jasmine.createSpyObj(
       'personWithReducedMobilityService',
-      ['getReferencePointsOverview', 'getRelationsBySloid', 'updateRelation']
+      ['getReferencePointsOverview']
     );
+    relationService = jasmine.createSpyObj('relationService', [
+      'getRelationsBySloid',
+      'updateRelation',
+    ]);
     personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
       of([])
     );
-    personWithReducedMobilityService.getRelationsBySloid.and.returnValue(
-      of([])
-    );
-    personWithReducedMobilityService.updateRelation.and.returnValue(of());
+    relationService.getRelationsBySloid.and.returnValue(of([]));
+    relationService.updateRelation.and.returnValue(of());
     TestBed.configureTestingModule({
       imports: [
         AppTestingModule,
@@ -148,6 +156,10 @@ describe('RelationTabDetailComponent', () => {
           provide: PersonWithReducedMobilityService,
           useValue: personWithReducedMobilityService,
         },
+        {
+          provide: RelationService,
+          useValue: relationService,
+        },
       ],
     });
     fixture = TestBed.createComponent(RelationTabDetailComponent);
@@ -158,18 +170,14 @@ describe('RelationTabDetailComponent', () => {
     personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
       of(referencePointOverview)
     );
-    personWithReducedMobilityService.getRelationsBySloid.and.returnValue(
-      of([relations[1]])
-    );
+    relationService.getRelationsBySloid.and.returnValue(of([relations[1]]));
     fixture.detectChanges();
 
     expect(component).toBeTruthy();
     expect(
       personWithReducedMobilityService.getReferencePointsOverview
     ).toHaveBeenCalled();
-    expect(
-      personWithReducedMobilityService.getRelationsBySloid
-    ).toHaveBeenCalled();
+    expect(relationService.getRelationsBySloid).toHaveBeenCalled();
     expect(component.elementSloid).toBe('ch:1:sloid:89008:0:1');
     expect(component.selectedReferencePointSloid).toBe('ch:1:sloid:12345:1');
     expect(component.parentServicePointSloid).toBe('ch:1:sloid:89008');
@@ -185,9 +193,7 @@ describe('RelationTabDetailComponent', () => {
     expect(
       personWithReducedMobilityService.getReferencePointsOverview
     ).toHaveBeenCalled();
-    expect(
-      personWithReducedMobilityService.getRelationsBySloid
-    ).not.toHaveBeenCalled();
+    expect(relationService.getRelationsBySloid).not.toHaveBeenCalled();
     expect(component.elementSloid).toBe('ch:1:sloid:89008:0:1');
     expect(component.parentServicePointSloid).toBe('ch:1:sloid:89008');
     expect(component.businessOrganisations).toEqual(['ch:1:sboid:100626']);
@@ -197,9 +203,7 @@ describe('RelationTabDetailComponent', () => {
   it('should switch reference point', () => {
     // triggers ngOnInit()
     fixture.detectChanges();
-    personWithReducedMobilityService.getRelationsBySloid.and.returnValue(
-      of([relations[0]])
-    );
+    relationService.getRelationsBySloid.and.returnValue(of([relations[0]]));
 
     component.referencePointChanged({
       source: undefined!,
@@ -208,9 +212,7 @@ describe('RelationTabDetailComponent', () => {
     fixture.detectChanges();
 
     expect(component.selectedReferencePointSloid).toBe('ch:1:sloid:12345:1');
-    expect(
-      personWithReducedMobilityService.getRelationsBySloid
-    ).toHaveBeenCalledTimes(1);
+    expect(relationService.getRelationsBySloid).toHaveBeenCalledTimes(1);
     expect(component.form).toBeDefined();
     expect(component.currentRelationId).toBe(1000);
     expect(component.selectedRelationVersion).toBe(1);
@@ -220,9 +222,7 @@ describe('RelationTabDetailComponent', () => {
     personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
       of(referencePointOverview)
     );
-    personWithReducedMobilityService.getRelationsBySloid.and.returnValue(
-      of(relations)
-    );
+    relationService.getRelationsBySloid.and.returnValue(of(relations));
     fixture.detectChanges();
 
     component.versionChanged(relations[0], 0);
@@ -235,20 +235,16 @@ describe('RelationTabDetailComponent', () => {
     personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
       of(referencePointOverview)
     );
-    personWithReducedMobilityService.getRelationsBySloid.and.returnValue(
-      of(relations)
-    );
+    relationService.getRelationsBySloid.and.returnValue(of(relations));
     fixture.detectChanges();
 
     component.toggleEdit();
     expect(component.editing).toBeTrue();
 
-    component.form?.controls.validFrom.setValue(moment('2000-01-02'));
+    component.form?.controls.validFrom.setValue(moment('2000-01-03'));
     component.save();
 
     expect(component.editing).toBeFalse();
-    expect(
-      personWithReducedMobilityService.updateRelation
-    ).toHaveBeenCalledTimes(1);
+    expect(relationService.updateRelation).toHaveBeenCalledTimes(1);
   });
 });

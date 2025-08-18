@@ -1,35 +1,36 @@
 import {TestBed} from '@angular/core/testing';
 
-import {PlatformInternalService} from './platform-internal.service';
+import {RelationService} from './relation.service';
 import {AtlasApiService} from "../../atlas-api.service";
-import {HttpClient} from "@angular/common/http";
+import {StopPointService} from "../stop-point/stop-point.service";
+import {provideHttpClient} from "@angular/common/http";
 import {UserService} from "../../../../core/auth/user/user.service";
 
-describe('PlatformInternalService', () => {
-  let service: PlatformInternalService;
+describe('RelationService', () => {
+  let service: RelationService;
   let apiService: AtlasApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PlatformInternalService, AtlasApiService,
-        {provide: HttpClient, useValue: {}},
+      providers: [StopPointService, AtlasApiService,
+        provideHttpClient(),
         {provide: UserService, useValue: {}},
-      ],
+      ]
     });
-    service = TestBed.inject(PlatformInternalService);
+    service = TestBed.inject(RelationService);
     apiService = TestBed.inject(AtlasApiService);
     spyOn(apiService, 'validateParams').and.callThrough();
     spyOn(apiService, 'get');
   });
 
-  it('should getPlatformOverview', () => {
-    service.getPlatformOverview('123');
+  it('should getRelationsBySloid', () => {
+    service.getRelationsBySloid('ch:1:sloid:7000');
 
     expect(apiService.validateParams).toHaveBeenCalledOnceWith({
-      parentSloid: '123'
+      sloid: 'ch:1:sloid:7000'
     });
     expect(apiService.get).toHaveBeenCalledOnceWith(
-      '/prm-directory/internal/platforms/overview/123',
+      '/prm-directory/v1/relations/ch:1:sloid:7000',
     );
   });
 });
