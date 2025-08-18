@@ -23,7 +23,6 @@ import { AppTestingModule } from '../../../../../app.testing.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
-  PersonWithReducedMobilityService,
   ReadReferencePointVersion,
   ReferencePointAttributeType,
 } from '../../../../../api';
@@ -38,6 +37,7 @@ import { DetailPageContainerComponent } from '../../../../../core/components/det
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { PermissionService } from '../../../../../core/auth/permission/permission.service';
+import { ReferencePointService } from '../../../../../api/service/prm/reference-point/reference-point.service';
 import SpyObj = jasmine.SpyObj;
 
 const referencePoint: ReadReferencePointVersion[] = [
@@ -75,15 +75,15 @@ describe('ReferencePointDetailComponent', () => {
   let component: ReferencePointDetailComponent;
   let fixture: ComponentFixture<ReferencePointDetailComponent>;
 
-  const personWithReducedMobilityService = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['createReferencePoint', 'updateReferencePoint']
-  );
+  const referencePointService = jasmine.createSpyObj('referencePointService', [
+    'createReferencePoint',
+    'updateReferencePoint',
+  ]);
 
-  personWithReducedMobilityService.createReferencePoint.and.returnValue(
+  referencePointService.createReferencePoint.and.returnValue(
     of(referencePoint[0])
   );
-  personWithReducedMobilityService.updateReferencePoint.and.returnValue(
+  referencePointService.updateReferencePoint.and.returnValue(
     of(referencePoint)
   );
 
@@ -136,8 +136,8 @@ describe('ReferencePointDetailComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityService,
+          provide: ReferencePointService,
+          useValue: referencePointService,
         },
         { provide: DialogService, useValue: dialogService },
         TranslatePipe,
@@ -176,9 +176,7 @@ describe('ReferencePointDetailComponent', () => {
 
       component.save();
 
-      expect(
-        personWithReducedMobilityService.createReferencePoint
-      ).toHaveBeenCalled();
+      expect(referencePointService.createReferencePoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
@@ -247,9 +245,7 @@ describe('ReferencePointDetailComponent', () => {
       component.form.controls.designation.markAsDirty();
 
       component.save();
-      expect(
-        personWithReducedMobilityService.updateReferencePoint
-      ).toHaveBeenCalled();
+      expect(referencePointService.updateReferencePoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });

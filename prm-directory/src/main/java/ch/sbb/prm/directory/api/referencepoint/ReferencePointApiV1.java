@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.api;
+package ch.sbb.prm.directory.api.referencepoint;
 
 import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
@@ -42,10 +42,6 @@ public interface ReferencePointApiV1 {
       @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid,
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject ReferencePointRequestParams referencePointRequestParams);
-
-  //TODO [INTERNAL]
-  @GetMapping("overview/{parentServicePointSloid}")
-  List<ReadReferencePointVersionModel> getReferencePointsOverview(@PathVariable String parentServicePointSloid);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping

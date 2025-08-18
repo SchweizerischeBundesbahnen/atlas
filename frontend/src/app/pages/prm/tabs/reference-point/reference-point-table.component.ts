@@ -3,10 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
-import {
-  PersonWithReducedMobilityService,
-  ReadReferencePointVersion,
-} from '../../../../api';
+import { ReadReferencePointVersion } from '../../../../api';
 import { TableService } from '../../../../core/components/table/table.service';
 import { Pages } from '../../../pages';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
@@ -17,6 +14,7 @@ import { NgIf } from '@angular/common';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { ReferencePointInternalService } from '../../../../api/service/prm/reference-point/reference-point-internal.service';
 
 @Component({
   selector: 'app-reference-point-table',
@@ -48,7 +46,7 @@ export class ReferencePointTableComponent
   constructor(
     protected readonly router: Router,
     private route: ActivatedRoute,
-    private personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private referencePointInternalService: ReferencePointInternalService,
     private tableService: TableService
   ) {
     super(router);
@@ -70,7 +68,7 @@ export class ReferencePointTableComponent
     const parentServicePointSloid =
       this.route.parent!.snapshot.params.stopPointSloid!;
 
-    this.personWithReducedMobilityService
+    this.referencePointInternalService
       .getReferencePointsOverview(parentServicePointSloid)
       .subscribe((overviewRows) => {
         this.referencePoints = TableContentPaginationAndSorting.pageAndSort(

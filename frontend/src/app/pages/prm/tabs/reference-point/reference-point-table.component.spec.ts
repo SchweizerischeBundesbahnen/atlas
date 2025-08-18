@@ -8,16 +8,14 @@ import {
 } from '../../../../app.testing.mocks';
 import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
-import {
-  PersonWithReducedMobilityService,
-  ReadReferencePointVersion,
-} from '../../../../api';
+import { ReadReferencePointVersion } from '../../../../api';
 import { of } from 'rxjs';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { ReferencePointInternalService } from '../../../../api/service/prm/reference-point/reference-point-internal.service';
 
 const referencePointOverview: ReadReferencePointVersion[] = [
   {
@@ -49,11 +47,11 @@ describe('ReferencePointTableComponent', () => {
   let fixture: ComponentFixture<ReferencePointTableComponent>;
   let router: Router;
 
-  const personWithReducedMobilityService = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
+  const referencePointInternalService = jasmine.createSpyObj(
+    'referencePointInternalService',
     ['getReferencePointsOverview']
   );
-  personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
+  referencePointInternalService.getReferencePointsOverview.and.returnValue(
     of(referencePointOverview)
   );
 
@@ -74,8 +72,8 @@ describe('ReferencePointTableComponent', () => {
         provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityService,
+          provide: ReferencePointInternalService,
+          useValue: referencePointInternalService,
         },
       ],
     }).overrideComponent(ReferencePointTableComponent, {
