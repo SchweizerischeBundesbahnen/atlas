@@ -12,11 +12,11 @@ import { of } from 'rxjs';
 import {
   ContactPointOverview,
   ContactPointType,
-  PersonWithReducedMobilityService,
   StandardAttributeType,
 } from '../../../../api';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
+import { ContactPointInternalService } from '../../../../api/service/prm/contact-point/contact-point-internal.service';
 
 const contactPointOverview: ContactPointOverview[] = [
   {
@@ -45,11 +45,11 @@ describe('ContactPointTableComponent', () => {
   let fixture: ComponentFixture<ContactPointTableComponent>;
   let router: Router;
 
-  const personWithReducedMobilityService = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
+  const contactPointInternalService = jasmine.createSpyObj(
+    'contactPointInternalService',
     ['getContactPointOverview']
   );
-  personWithReducedMobilityService.getContactPointOverview.and.returnValue(
+  contactPointInternalService.getContactPointOverview.and.returnValue(
     of(contactPointOverview)
   );
 
@@ -68,8 +68,8 @@ describe('ContactPointTableComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityService,
+          provide: ContactPointInternalService,
+          useValue: contactPointInternalService,
         },
       ],
     }).overrideComponent(ContactPointTableComponent, {
