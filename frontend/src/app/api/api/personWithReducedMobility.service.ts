@@ -22,7 +22,6 @@ import {
   ContactPointVersion,
   ContainerReadContactPointVersion,
   ContainerReadParkingLotVersion,
-  ContainerReadReferencePointVersion,
   ContainerReadToiletVersion,
   ParkingLotOverview,
   ParkingLotVersion,
@@ -30,11 +29,8 @@ import {
   ReadContactPointVersion,
   ReadParkingLotVersion,
   ReadPlatformVersion,
-  ReadReferencePointVersion,
   ReadRelationVersion,
   ReadToiletVersion,
-  ReferencePointAttributeType,
-  ReferencePointVersion,
   Status,
   ToiletOverview,
   ToiletVersion
@@ -202,60 +198,6 @@ export class PersonWithReducedMobilityService {
 
         return this.httpClient.post<ReadParkingLotVersion>(`${this.configuration.basePath}/prm-directory/v1/parking-lots`,
             parkingLotVersion,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param referencePointVersion
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public createReferencePoint(referencePointVersion: ReferencePointVersion, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ReadReferencePointVersion>;
-    public createReferencePoint(referencePointVersion: ReferencePointVersion, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ReadReferencePointVersion>>;
-    public createReferencePoint(referencePointVersion: ReferencePointVersion, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ReadReferencePointVersion>>;
-    public createReferencePoint(referencePointVersion: ReferencePointVersion, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (referencePointVersion === null || referencePointVersion === undefined) {
-            throw new Error('Required parameter referencePointVersion was null or undefined when calling createReferencePoint.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.post<ReadReferencePointVersion>(`${this.configuration.basePath}/prm-directory/v1/reference-points`,
-            referencePointVersion,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -744,219 +686,6 @@ export class PersonWithReducedMobilityService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getReferencePointVersions(sloid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<ReadReferencePointVersion>>;
-    public getReferencePointVersions(sloid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<ReadReferencePointVersion>>>;
-    public getReferencePointVersions(sloid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<ReadReferencePointVersion>>>;
-    public getReferencePointVersions(sloid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (sloid === null || sloid === undefined) {
-            throw new Error('Required parameter sloid was null or undefined when calling getReferencePointVersions.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<Array<ReadReferencePointVersion>>(`${this.configuration.basePath}/prm-directory/v1/reference-points/${encodeURIComponent(String(sloid))}`,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param referencePointAttributeTypes ReferencePointAttributeType
-     * @param parentServicePointSloids Unique key for the associated Service Point.
-     * @param servicePointNumbers Service Point Numbers
-     * @param sloids Unique key for prm objects which is used in the customer information.
-     * @param statusRestrictions Filter on the Status of a servicePoint.
-     * @param validOn ValidOn. Date format: yyyy-MM-dd
-     * @param fromDate [fromDate] &lt;&#x3D; validFrom. Filters for all versions where validFrom is bigger or equal than fromDate. Date format: yyyy-MM-dd
-     * @param toDate [toDate] &gt;&#x3D; validTo. Filters for all versions where validTo is smaller or equal than toDate. Date format: yyyy-MM-dd
-     * @param validToFromDate [validToFromDate] &lt;&#x3D; validTo. Filters for all versions where validTo is greater than or equal to validToFromDate. Example: If validToFromDate is set to \&#39;2020-01-01\&#39;, only versions where validTo is on or after \&#39;2020-01-01\&#39; will be included. Date format: yyyy-MM-dd
-     * @param createdAfter creationDate &gt;&#x3D; [createdAfter]. DateTime format: yyyy-MM-dd HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss.SSS\&#39;Z\&#39;
-     * @param modifiedAfter editionDate &gt;&#x3D; [modifiedAfter]. DateTime format: yyyy-MM-dd HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss.SSS\&#39;Z\&#39;
-     * @param page Zero-based page index (0..N)
-     * @param size The size of the page to be returned
-     * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getReferencePoints(referencePointAttributeTypes?: Array<ReferencePointAttributeType>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerReadReferencePointVersion>;
-    public getReferencePoints(referencePointAttributeTypes?: Array<ReferencePointAttributeType>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerReadReferencePointVersion>>;
-    public getReferencePoints(referencePointAttributeTypes?: Array<ReferencePointAttributeType>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerReadReferencePointVersion>>;
-    public getReferencePoints(referencePointAttributeTypes?: Array<ReferencePointAttributeType>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (referencePointAttributeTypes) {
-            referencePointAttributeTypes.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'referencePointAttributeTypes');
-            })
-        }
-        if (parentServicePointSloids) {
-            parentServicePointSloids.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'parentServicePointSloids');
-            })
-        }
-        if (servicePointNumbers) {
-            servicePointNumbers.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'servicePointNumbers');
-            })
-        }
-        if (sloids) {
-            sloids.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'sloids');
-            })
-        }
-        if (statusRestrictions) {
-            statusRestrictions.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'statusRestrictions');
-            })
-        }
-        if (validOn !== undefined && validOn !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>validOn, 'validOn');
-        }
-        if (fromDate !== undefined && fromDate !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>fromDate, 'fromDate');
-        }
-        if (toDate !== undefined && toDate !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>toDate, 'toDate');
-        }
-        if (validToFromDate !== undefined && validToFromDate !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>validToFromDate, 'validToFromDate');
-        }
-        if (createdAfter !== undefined && createdAfter !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>createdAfter, 'createdAfter');
-        }
-        if (modifiedAfter !== undefined && modifiedAfter !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>modifiedAfter, 'modifiedAfter');
-        }
-        if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
-        }
-        if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
-        }
-        if (sort) {
-            sort.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'sort');
-            })
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ContainerReadReferencePointVersion>(`${this.configuration.basePath}/prm-directory/v1/reference-points`,
-            {
-                params: queryParameters,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param parentServicePointSloid
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getReferencePointsOverview(parentServicePointSloid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<ReadReferencePointVersion>>;
-    public getReferencePointsOverview(parentServicePointSloid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<ReadReferencePointVersion>>>;
-    public getReferencePointsOverview(parentServicePointSloid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<ReadReferencePointVersion>>>;
-    public getReferencePointsOverview(parentServicePointSloid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (parentServicePointSloid === null || parentServicePointSloid === undefined) {
-            throw new Error('Required parameter parentServicePointSloid was null or undefined when calling getReferencePointsOverview.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<Array<ReadReferencePointVersion>>(`${this.configuration.basePath}/prm-directory/v1/reference-points/overview/${encodeURIComponent(String(parentServicePointSloid))}`,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param sloid
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
     public getRelationsBySloid(sloid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<ReadRelationVersion>>;
     public getRelationsBySloid(sloid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<ReadRelationVersion>>>;
     public getRelationsBySloid(sloid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<ReadRelationVersion>>>;
@@ -1366,64 +1095,6 @@ export class PersonWithReducedMobilityService {
 
         return this.httpClient.put<Array<ReadPlatformVersion>>(`${this.configuration.basePath}/prm-directory/v1/platforms/${encodeURIComponent(String(id))}`,
             platformVersion,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param id
-     * @param referencePointVersion
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public updateReferencePoint(id: number, referencePointVersion: ReferencePointVersion, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<ReadReferencePointVersion>>;
-    public updateReferencePoint(id: number, referencePointVersion: ReferencePointVersion, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<ReadReferencePointVersion>>>;
-    public updateReferencePoint(id: number, referencePointVersion: ReferencePointVersion, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<ReadReferencePointVersion>>>;
-    public updateReferencePoint(id: number, referencePointVersion: ReferencePointVersion, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling updateReferencePoint.');
-        }
-        if (referencePointVersion === null || referencePointVersion === undefined) {
-            throw new Error('Required parameter referencePointVersion was null or undefined when calling updateReferencePoint.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.put<Array<ReadReferencePointVersion>>(`${this.configuration.basePath}/prm-directory/v1/reference-points/${encodeURIComponent(String(id))}`,
-            referencePointVersion,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
