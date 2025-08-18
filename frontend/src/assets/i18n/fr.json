@@ -117,6 +117,7 @@
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} caractères max.",
     "MAX_NUMBER_OF_DIGITS": "{{numberOfDigits}} numéros max.",
+    "MAX_NUMBER_OF_NUMERAL": "{{numberOfDigits}} chiffres max.",
     "MAX_DIGITS": "max. {{amount}} chiffres après la virgule.",
     "DROPDOWN_PLACEHOLDER": "sélectionner",
     "FOR_EXAMPLE": "p.ex.:",
