@@ -23,7 +23,6 @@ import {
   ContainerReadContactPointVersion,
   ContainerReadParkingLotVersion,
   ContainerReadReferencePointVersion,
-  ContainerReadRelationVersion,
   ContainerReadToiletVersion,
   ParkingLotOverview,
   ParkingLotVersion,
@@ -35,9 +34,7 @@ import {
   ReadRelationVersion,
   ReadToiletVersion,
   ReferencePointAttributeType,
-  ReferencePointElementType,
   ReferencePointVersion,
-  RelationVersion,
   Status,
   ToiletOverview,
   ToiletVersion
@@ -956,138 +953,6 @@ export class PersonWithReducedMobilityService {
     }
 
     /**
-     * @param referencePointElementTypes ReferencePointElementType
-     * @param referencePointSloids ReferencePoint Sloid
-     * @param parentServicePointSloids Unique key for the associated Service Point.
-     * @param servicePointNumbers Service Point Numbers
-     * @param sloids Unique key for prm objects which is used in the customer information.
-     * @param statusRestrictions Filter on the Status of a servicePoint.
-     * @param validOn ValidOn. Date format: yyyy-MM-dd
-     * @param fromDate [fromDate] &lt;&#x3D; validFrom. Filters for all versions where validFrom is bigger or equal than fromDate. Date format: yyyy-MM-dd
-     * @param toDate [toDate] &gt;&#x3D; validTo. Filters for all versions where validTo is smaller or equal than toDate. Date format: yyyy-MM-dd
-     * @param validToFromDate [validToFromDate] &lt;&#x3D; validTo. Filters for all versions where validTo is greater than or equal to validToFromDate. Example: If validToFromDate is set to \&#39;2020-01-01\&#39;, only versions where validTo is on or after \&#39;2020-01-01\&#39; will be included. Date format: yyyy-MM-dd
-     * @param createdAfter creationDate &gt;&#x3D; [createdAfter]. DateTime format: yyyy-MM-dd HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss.SSS\&#39;Z\&#39;
-     * @param modifiedAfter editionDate &gt;&#x3D; [modifiedAfter]. DateTime format: yyyy-MM-dd HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss.SSS\&#39;Z\&#39;
-     * @param page Zero-based page index (0..N)
-     * @param size The size of the page to be returned
-     * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getRelations(referencePointElementTypes?: Array<ReferencePointElementType>, referencePointSloids?: Array<string>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerReadRelationVersion>;
-    public getRelations(referencePointElementTypes?: Array<ReferencePointElementType>, referencePointSloids?: Array<string>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerReadRelationVersion>>;
-    public getRelations(referencePointElementTypes?: Array<ReferencePointElementType>, referencePointSloids?: Array<string>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerReadRelationVersion>>;
-    public getRelations(referencePointElementTypes?: Array<ReferencePointElementType>, referencePointSloids?: Array<string>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, sloids?: Array<string>, statusRestrictions?: Array<Status>, validOn?: Date, fromDate?: Date, toDate?: Date, validToFromDate?: Date, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (referencePointElementTypes) {
-            referencePointElementTypes.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'referencePointElementTypes');
-            })
-        }
-        if (referencePointSloids) {
-            referencePointSloids.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'referencePointSloids');
-            })
-        }
-        if (parentServicePointSloids) {
-            parentServicePointSloids.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'parentServicePointSloids');
-            })
-        }
-        if (servicePointNumbers) {
-            servicePointNumbers.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'servicePointNumbers');
-            })
-        }
-        if (sloids) {
-            sloids.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'sloids');
-            })
-        }
-        if (statusRestrictions) {
-            statusRestrictions.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'statusRestrictions');
-            })
-        }
-        if (validOn !== undefined && validOn !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>validOn, 'validOn');
-        }
-        if (fromDate !== undefined && fromDate !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>fromDate, 'fromDate');
-        }
-        if (toDate !== undefined && toDate !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>toDate, 'toDate');
-        }
-        if (validToFromDate !== undefined && validToFromDate !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>validToFromDate, 'validToFromDate');
-        }
-        if (createdAfter !== undefined && createdAfter !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>createdAfter, 'createdAfter');
-        }
-        if (modifiedAfter !== undefined && modifiedAfter !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>modifiedAfter, 'modifiedAfter');
-        }
-        if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
-        }
-        if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
-        }
-        if (sort) {
-            sort.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'sort');
-            })
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ContainerReadRelationVersion>(`${this.configuration.basePath}/prm-directory/v1/relations`,
-            {
-                params: queryParameters,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * @param sloid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -1559,64 +1424,6 @@ export class PersonWithReducedMobilityService {
 
         return this.httpClient.put<Array<ReadReferencePointVersion>>(`${this.configuration.basePath}/prm-directory/v1/reference-points/${encodeURIComponent(String(id))}`,
             referencePointVersion,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param id
-     * @param relationVersion
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public updateRelation(id: number, relationVersion: RelationVersion, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<ReadRelationVersion>>;
-    public updateRelation(id: number, relationVersion: RelationVersion, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<ReadRelationVersion>>>;
-    public updateRelation(id: number, relationVersion: RelationVersion, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<ReadRelationVersion>>>;
-    public updateRelation(id: number, relationVersion: RelationVersion, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling updateRelation.');
-        }
-        if (relationVersion === null || relationVersion === undefined) {
-            throw new Error('Required parameter relationVersion was null or undefined when calling updateRelation.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.put<Array<ReadRelationVersion>>(`${this.configuration.basePath}/prm-directory/v1/relations/${encodeURIComponent(String(id))}`,
-            relationVersion,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
