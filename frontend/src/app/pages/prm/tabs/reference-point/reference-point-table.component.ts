@@ -46,7 +46,7 @@ export class ReferencePointTableComponent
   constructor(
     protected readonly router: Router,
     private route: ActivatedRoute,
-    private referencePointInternalService: ReferencePointInternalService,
+    private readonly referencePointInternalService: ReferencePointInternalService,
     private tableService: TableService
   ) {
     super(router);

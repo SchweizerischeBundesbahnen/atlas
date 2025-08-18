@@ -26,7 +26,7 @@ export class PrmRecordingObligationComponent implements OnInit, OnChanges {
   @Input() showToggle = true;
 
   constructor(
-    private personWithReducedMobilityService: StopPointInternalService,
+    private readonly stopPointInternalService: StopPointInternalService,
     private permissionService: PermissionService,
     private notificationService: NotificationService
   ) {}
@@ -46,7 +46,7 @@ export class PrmRecordingObligationComponent implements OnInit, OnChanges {
   }
 
   private initCurrentRecordingObligation() {
-    this.personWithReducedMobilityService
+    this.stopPointInternalService
       .getRecordingObligation(this.sloid)
       .subscribe(
         (recordingObligation) =>
@@ -55,7 +55,7 @@ export class PrmRecordingObligationComponent implements OnInit, OnChanges {
   }
 
   toggleRecordingObligation() {
-    this.personWithReducedMobilityService
+    this.stopPointInternalService
       .updateRecordingObligation(this.sloid, {
         value: !this.recordingObligation,
       })

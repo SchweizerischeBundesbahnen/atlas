@@ -53,7 +53,7 @@ export class ContactPointTableComponent
   constructor(
     protected readonly router: Router,
     private route: ActivatedRoute,
-    private contactPointInternalService: ContactPointInternalService,
+    private readonly contactPointInternalService: ContactPointInternalService,
     private tableService: TableService
   ) {
     super(router);

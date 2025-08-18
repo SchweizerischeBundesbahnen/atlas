@@ -9,10 +9,10 @@ import {
 import { parkingLotResolver } from './parking-lot.resolver';
 import {
   BooleanOptionalAttributeType,
-  PersonWithReducedMobilityService,
   ReadParkingLotVersion,
 } from '../../../../../../api';
 import { AppTestingModule } from '../../../../../../app.testing.module';
+import { ParkingLotService } from '../../../../../../api/service/prm/parking-lot/parking-lot.service';
 
 const parkingLot: ReadParkingLotVersion[] = [
   {
@@ -40,21 +40,18 @@ const parkingLot: ReadParkingLotVersion[] = [
 ];
 
 describe('PrmParkingLotResolver', () => {
-  const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['getParkingLotVersions']
-  );
-  personWithReducedMobilityServiceSpy.getParkingLotVersions.and.returnValue(
-    of(parkingLot)
-  );
+  const parkingLotServiceSpy = jasmine.createSpyObj('parkingLotService', [
+    'getParkingLotVersions',
+  ]);
+  parkingLotServiceSpy.getParkingLotVersions.and.returnValue(of(parkingLot));
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
       providers: [
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityServiceSpy,
+          provide: ParkingLotService,
+          useValue: parkingLotServiceSpy,
         },
       ],
     });
