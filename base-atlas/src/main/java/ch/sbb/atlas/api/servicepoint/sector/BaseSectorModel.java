@@ -1,11 +1,13 @@
 package ch.sbb.atlas.api.servicepoint.sector;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -54,6 +56,7 @@ public abstract class BaseSectorModel extends BaseVersionModel {
 
   @Schema(description = "Designation used in the customer information systems.", example = "Bezeichnung")
   @Size(max = AtlasFieldLengths.LENGTH_8)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String designation;
 
