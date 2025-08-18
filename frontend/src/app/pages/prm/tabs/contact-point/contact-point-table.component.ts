@@ -5,10 +5,7 @@ import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
-import {
-  ContactPointOverview,
-  PersonWithReducedMobilityService,
-} from '../../../../api';
+import { ContactPointOverview } from '../../../../api';
 import { TableService } from '../../../../core/components/table/table.service';
 import { Pages } from '../../../pages';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
@@ -17,6 +14,7 @@ import { NgIf } from '@angular/common';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { ContactPointInternalService } from '../../../../api/service/prm/contact-point/contact-point-internal.service';
 
 @Component({
   selector: 'app-contact-point-table',
@@ -55,7 +53,7 @@ export class ContactPointTableComponent
   constructor(
     protected readonly router: Router,
     private route: ActivatedRoute,
-    private personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private contactPointInternalService: ContactPointInternalService,
     private tableService: TableService
   ) {
     super(router);
@@ -77,7 +75,7 @@ export class ContactPointTableComponent
     const parentServicePointSloid =
       this.route.parent!.snapshot.params.stopPointSloid!;
 
-    this.personWithReducedMobilityService
+    this.contactPointInternalService
       .getContactPointOverview(parentServicePointSloid)
       .subscribe((overviewRows) => {
         this.contactPoints = TableContentPaginationAndSorting.pageAndSort(
