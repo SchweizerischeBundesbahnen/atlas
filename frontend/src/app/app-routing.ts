@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { Pages } from './pages/pages';
 import { canActivateTimetableHearing } from './core/auth/guards/timetable-hearing.guard';
-import { loggedInUsers } from './core/auth/guards/login.guard';
 import { adminUser } from './core/auth/guards/admin.guard';
 import { UserPermissionCurrentUserService } from './pages/user-profile/user-permission-current-user.service';
 import { UserPermissionProviderService } from './core/components/permissions/application-permission/user-permission-provider-service';
+import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 
 export const routes: Routes = [
   {
@@ -20,7 +19,7 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./pages/bulk-import/bulk-import-routing').then((r) => r.routes),
     data: { headerTitle: Pages.BULK_IMPORT.headerTitle },
-    canActivate: [loggedInUsers],
+    canActivate: [autoLoginPartialRoutesGuard],
   },
   {
     path: Pages.LIDI.path,
@@ -58,7 +57,7 @@ export const routes: Routes = [
         (r) => r.routes
       ),
     data: { headerTitle: Pages.USER_ADMINISTRATION.headerTitle },
-    canActivate: [adminUser],
+    canActivate: [autoLoginPartialRoutesGuard, adminUser],
   },
   {
     path: Pages.HOME.path,
@@ -83,7 +82,7 @@ export const routes: Routes = [
         useClass: UserPermissionCurrentUserService,
       },
     ],
-    canActivate: [loggedInUsers],
+    canActivate: [autoLoginPartialRoutesGuard],
   },
   { path: '**', redirectTo: Pages.HOME.path },
 ];
