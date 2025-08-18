@@ -21,7 +21,6 @@ import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error
 @Component({
   selector: 'form-search-select',
   templateUrl: './search-select.component.html',
-  styleUrls: ['./search-select.component.scss'],
   imports: [
     ReactiveFormsModule,
     NgSelectComponent,
