@@ -25,6 +25,7 @@ import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.journey.poi.model.CountryCode;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.LocalDateTimeMatchers;
@@ -338,7 +339,11 @@ class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/service-points")
             .contentType(contentType)
             .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> {
+          assertThat(result.getResolvedException())
+              .isInstanceOf(IdProvidedOnCreateException.class);
+        });
   }
 
   @Test

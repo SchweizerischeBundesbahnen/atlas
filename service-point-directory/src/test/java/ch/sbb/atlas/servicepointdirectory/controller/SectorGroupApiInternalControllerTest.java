@@ -16,6 +16,7 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.SectorTestData;
@@ -174,8 +175,6 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
-    sectorGroupVersionRepository.deleteAll();
-
     SectorVersion sectorVersion = SectorTestData.getBasicSectorVersion();
     sectorVersionRepository.save(sectorVersion);
 
@@ -205,8 +204,11 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/internal/sector-groups")
             .contentType(contentType)
             .content(mapper.writeValueAsString(create)))
-        .andExpect(status().isBadRequest());
-
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> {
+          assertThat(result.getResolvedException())
+              .isInstanceOf(IdProvidedOnCreateException.class);
+        });
   }
 
   @Test

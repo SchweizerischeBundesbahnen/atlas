@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
@@ -97,9 +98,14 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
             .status(Status.VALIDATED).build();
     //when && then
     mvc.perform(post("/v1/field-numbers/versions")
-        .contentType(contentType)
-        .content(mapper.writeValueAsString(timetableFieldNumberVersionModel))
-    ).andExpect(status().isBadRequest());
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(timetableFieldNumberVersionModel))
+        ).
+        andExpect(status().isBadRequest())
+        .andExpect(result -> {
+          assertThat(result.getResolvedException())
+              .isInstanceOf(IdProvidedOnCreateException.class);
+        });
   }
 
   @Test
