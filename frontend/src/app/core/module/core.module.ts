@@ -9,8 +9,6 @@ import { TableComponent } from '../components/table/table.component';
 import { BaseDetailComponent } from '../components/base-detail/base-detail.component';
 import { SideNavComponent } from '../components/side-nav/side-nav.component';
 import { RouterModule } from '@angular/router';
-// import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
-import { environment } from '../../../environments/environment';
 import { TrimInputDirective } from '../text-input/trim-input';
 import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
 import { TableFilterComponent } from '../components/table-filter/table-filter.component';
@@ -111,16 +109,6 @@ const coreComponents = [
     CommonModule,
     RouterModule,
     FormModule,
-    // OAuthModule.forRoot({
-    //   resourceServer: {
-    //     // When sendAccessToken is set to true and you send
-    //     // a request to these, the access token is appended.
-    //     // Documentation:
-    //     // https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/working-with-httpinterceptors.html
-    //     allowedUrls: [environment.atlasApiUrl],
-    //     sendAccessToken: true,
-    //   },
-    // }),
     ...coreComponents,
     ShowTitlePipe,
     MouseOverTitleDirective,
@@ -128,10 +116,6 @@ const coreComponents = [
     InstanceOfPipe,
   ],
   exports: [...coreComponents, CommonModule],
-  providers: [
-    FormatPipe,
-    // { provide: OAuthStorage, useClass: OAuthCookieStorage },
-    // provideHttpClient(withFetch(), withInterceptorsFromDi()),
-  ],
+  providers: [FormatPipe],
 })
 export class CoreModule {}
