@@ -21,7 +21,6 @@ import { BusinessOrganisationService } from '../../../api/service/bodi/business-
 @Component({
   selector: 'bo-select',
   templateUrl: './business-organisation-select.component.html',
-  styleUrls: ['./business-organisation-select.component.scss'],
   imports: [
     SearchSelectComponent,
     ReactiveFormsModule,

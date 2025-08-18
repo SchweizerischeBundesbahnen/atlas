@@ -4,13 +4,14 @@
 $height: 34px;
 
 // Size Config
+.ng-select.ng-select-single .ng-select-container {
+  height: $height;
+}
+
 .ng-select.ng-select-single,
 .ng-select.ng-select-multiple {
-  z-index: 5;
-
   .ng-select-container {
     min-height: $height;
-    height: $height;
     border-radius: variables.$border-radius-small;
 
     .ng-value-container {
@@ -64,8 +65,10 @@ $height: 34px;
 }
 
 ng-select.ng-select.ng-select-opened {
-  .ng-select-container,
+  .ng-select-container {
+    z-index: 4;
+  }
   .ng-dropdown-panel {
-    z-index: 12;
+    z-index: 5;
   }
 }
