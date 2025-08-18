@@ -9,11 +9,11 @@ import {
 import { contactPointResolver } from './contact-point.resolver';
 import {
   ContactPointType,
-  PersonWithReducedMobilityService,
   ReadContactPointVersion,
   StandardAttributeType,
 } from '../../../../../../api';
 import { AppTestingModule } from '../../../../../../app.testing.module';
+import { ContactPointService } from '../../../../../../api/service/prm/contact-point/contact-point.service';
 
 const contactPoint: ReadContactPointVersion[] = [
   {
@@ -43,11 +43,10 @@ const contactPoint: ReadContactPointVersion[] = [
 ];
 
 describe('PrmContactPointResolver', () => {
-  const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['getContactPointVersions']
-  );
-  personWithReducedMobilityServiceSpy.getContactPointVersions.and.returnValue(
+  const contactPointServiceSpy = jasmine.createSpyObj('contanctPointService', [
+    'getContactPointVersions',
+  ]);
+  contactPointServiceSpy.getContactPointVersions.and.returnValue(
     of(contactPoint)
   );
 
@@ -56,8 +55,8 @@ describe('PrmContactPointResolver', () => {
       imports: [AppTestingModule],
       providers: [
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityServiceSpy,
+          provide: ContactPointService,
+          useValue: contactPointServiceSpy,
         },
       ],
     });

@@ -1,11 +1,10 @@
-package ch.sbb.prm.directory.controller;
+package ch.sbb.prm.directory.controller.contactpoint;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.prm.directory.api.ContactPointApiV1;
+import ch.sbb.prm.directory.api.contactpoint.ContactPointApiV1;
 import ch.sbb.prm.directory.controller.model.ContactPointObjectRequestParams;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.mapper.ContactPointVersionMapper;
@@ -18,33 +17,27 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class ContactPointController implements ContactPointApiV1 {
+public class ContactPointApiController implements ContactPointApiV1 {
 
   private final ContactPointService contactPointService;
 
   @Override
   public Container<ReadContactPointVersionModel> getContactPoints(Pageable pageable,
-                                                                    ContactPointObjectRequestParams contactPointObjectRequestParams) {
+      ContactPointObjectRequestParams contactPointObjectRequestParams) {
     ContactPointSearchRestrictions searchRestrictions = ContactPointSearchRestrictions.builder()
-            .pageable(pageable)
-            .contactPointObjectRequestParams(contactPointObjectRequestParams)
-            .build();
+        .pageable(pageable)
+        .contactPointObjectRequestParams(contactPointObjectRequestParams)
+        .build();
 
     Page<ContactPointVersion> contactPointVersions = contactPointService.findAll(searchRestrictions);
 
     return Container.<ReadContactPointVersionModel>builder()
-            .objects(contactPointVersions.stream().map(ContactPointVersionMapper::toModel).toList())
-            .totalCount(contactPointVersions.getTotalElements())
-            .build();
-  }
-
-  @Override
-  public List<ContactPointOverviewModel> getContactPointOverview(String parentServicePointSloid) {
-    return contactPointService.buildOverview(contactPointService.findByParentServicePointSloid(parentServicePointSloid));
+        .objects(contactPointVersions.stream().map(ContactPointVersionMapper::toModel).toList())
+        .totalCount(contactPointVersions.getTotalElements())
+        .build();
   }
 
   @Override

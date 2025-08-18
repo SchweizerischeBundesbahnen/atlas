@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
   ContactPointVersion,
-  PersonWithReducedMobilityService,
   ReadContactPointVersion,
   ReadServicePointVersion,
 } from '../../../../../../api';
@@ -23,6 +22,7 @@ import { UserDetailInfoComponent } from '../../../../../../core/components/base-
 import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ContactPointService } from '../../../../../../api/service/prm/contact-point/contact-point.service';
 
 @Component({
   selector: 'app-contact-point-detail',
@@ -51,9 +51,7 @@ export class ContactPointDetailComponent
   showVersionSwitch = false;
   businessOrganisations: string[] = [];
 
-  constructor(
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService
-  ) {
+  constructor(private readonly contactPointService: ContactPointService) {
     super();
   }
 
@@ -134,7 +132,7 @@ export class ContactPointDetailComponent
   }
 
   private create(contactPointVersion: ContactPointVersion) {
-    return this.personWithReducedMobilityService
+    return this.contactPointService
       .createContactPoint(contactPointVersion)
       .pipe(
         switchMap((createdVersion) => {
@@ -147,7 +145,7 @@ export class ContactPointDetailComponent
   }
 
   private update(contactPointVersion: ContactPointVersion) {
-    return this.personWithReducedMobilityService
+    return this.contactPointService
       .updateContactPoint(this.selectedVersion.id!, contactPointVersion)
       .pipe(
         switchMap((updatedVersions) => {

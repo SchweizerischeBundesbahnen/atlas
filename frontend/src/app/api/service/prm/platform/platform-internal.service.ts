@@ -15,4 +15,6 @@ export class PlatformInternalService {
   public getPlatformOverview(parentSloid: String): Observable<Array<PlatformOverview>> {
     this.atlasApiService.validateParams({parentSloid});
     return this.atlasApiService.get(`${this.V1_PLATFORMS}/${parentSloid}`);
-  }}
+  }
+
+}
