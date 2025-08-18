@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.controller;
+package ch.sbb.prm.directory.controller.relation;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;

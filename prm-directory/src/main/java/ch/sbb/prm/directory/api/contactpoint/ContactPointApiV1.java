@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.api;
+package ch.sbb.prm.directory.api.contactpoint;
 
 import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
@@ -6,7 +6,6 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMEN
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.prm.directory.controller.model.ContactPointObjectRequestParams;
@@ -43,10 +42,6 @@ public interface ContactPointApiV1 {
       @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid,
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject ContactPointObjectRequestParams contactPointObjectRequestParams);
-
-  //TODO [INTERNAL]
-  @GetMapping("overview/{parentServicePointSloid}")
-  List<ContactPointOverviewModel> getContactPointOverview(@PathVariable String parentServicePointSloid);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
