@@ -32,6 +32,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
@@ -256,7 +257,11 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
 
     mvc.perform(multipart(HttpMethod.POST, "/internal/timetable-hearing/statements")
             .file(statementJson))
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> {
+          assertThat(result.getResolvedException())
+              .isInstanceOf(IdProvidedOnCreateException.class);
+        });
   }
 
   @Test

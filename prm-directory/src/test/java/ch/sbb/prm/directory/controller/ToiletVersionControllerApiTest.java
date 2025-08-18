@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
@@ -19,6 +20,7 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -142,7 +144,11 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     //when && then
     mvc.perform(post("/v1/toilets").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> {
+          assertThat(result.getResolvedException())
+              .isInstanceOf(IdProvidedOnCreateException.class);
+        });
   }
 
   @Test

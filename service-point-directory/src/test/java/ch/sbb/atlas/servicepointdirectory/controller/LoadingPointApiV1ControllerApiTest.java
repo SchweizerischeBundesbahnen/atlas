@@ -15,6 +15,7 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.LocalDateTimeMatchers;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -202,7 +203,7 @@ class LoadingPointApiV1ControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
-    CreateLoadingPointVersionModel ladestationOne = CreateLoadingPointVersionModel
+    CreateLoadingPointVersionModel loadingPoint = CreateLoadingPointVersionModel
         .builder()
         .id(1111L)
         .number(2201)
@@ -216,8 +217,12 @@ class LoadingPointApiV1ControllerApiTest extends BaseControllerApiTest {
 
     mvc.perform(post("/v1/loading-points")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(ladestationOne)))
-        .andExpect(status().isBadRequest());
+            .content(mapper.writeValueAsString(loadingPoint)))
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> {
+          assertThat(result.getResolvedException())
+              .isInstanceOf(IdProvidedOnCreateException.class);
+        });
   }
 
   @Test

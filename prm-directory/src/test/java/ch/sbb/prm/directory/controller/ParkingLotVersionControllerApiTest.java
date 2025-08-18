@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -17,6 +18,7 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -243,7 +245,11 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/parking-lots")
             .contentType(contentType)
             .content(mapper.writeValueAsString(model)))
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> {
+          assertThat(result.getResolvedException())
+              .isInstanceOf(IdProvidedOnCreateException.class);
+        });
   }
 
   @Test
