@@ -51,7 +51,7 @@ export class ParkingLotTableComponent
   constructor(
     protected readonly router: Router,
     private route: ActivatedRoute,
-    private parkingLotInternalService: ParkingLotInternalService,
+    private readonly parkingLotInternalService: ParkingLotInternalService,
     private tableService: TableService
   ) {
     super(router);
