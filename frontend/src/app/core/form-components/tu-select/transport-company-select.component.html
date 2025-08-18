@@ -11,15 +11,24 @@
   <div class="d-flex flex-column">
     <app-atlas-label-field
       fieldLabel="BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANIES"
+      [fieldExamples]="
+        formModus
+          ? [
+              {
+                label: 'BODI.TRANSPORT_COMPANIES.ABBREVIATION',
+              },
+              {
+                label: '-',
+              },
+              {
+                label: 'BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NAME',
+              },
+            ]
+          : []
+      "
     ></app-atlas-label-field>
-    <div *ngIf="formModus" class="font-regular-sm">
-      {{ 'BODI.TRANSPORT_COMPANIES.ABBREVIATION' | translate }} -
-      {{ 'BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NAME' | translate }}
-    </div>
   </div>
-  <div
-    [ngClass]="formModus ? 'form-mode-label-form-field-space' : 'search-mode-space-between'"
-  ></div>
+
   <ng-template #labelOptionTemplates let-item>
     <div class="text-truncate" [title]="getDisplayText(item)">
       {{ getDisplayText(item) }}
