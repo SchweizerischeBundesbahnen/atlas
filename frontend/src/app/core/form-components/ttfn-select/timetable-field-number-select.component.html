@@ -8,15 +8,33 @@
   [items$]="timetableFieldNumbers"
 >
   <div class="d-flex flex-column">
-    <app-atlas-label-field fieldLabel="TTFN.TTFN" [required]="required"></app-atlas-label-field>
-    <div *ngIf="formModus" class="font-regular-sm">
-      {{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }} - {{ 'TTFN.NUMBER' | translate }} -
-      {{ 'TTFN.DESCRIPTION' | translate }}
-    </div>
+    <app-atlas-label-field
+      fieldLabel="TTFN.TTFN"
+      [required]="required"
+      [fieldExamples]="
+        formModus
+          ? [
+              {
+                label: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER',
+              },
+              {
+                label: '-',
+              },
+              {
+                label: 'TTFN.NUMBER',
+              },
+              {
+                label: '-',
+              },
+              {
+                label: 'TTFN.DESCRIPTION',
+              },
+            ]
+          : []
+      "
+    ></app-atlas-label-field>
   </div>
-  <div
-    [ngClass]="formModus ? 'form-mode-label-form-field-space' : 'search-mode-space-between'"
-  ></div>
+
   <ng-template #labelOptionTemplates let-item>
     <div class="text-truncate">
       {{ item | ttfnSelectDisplay }}

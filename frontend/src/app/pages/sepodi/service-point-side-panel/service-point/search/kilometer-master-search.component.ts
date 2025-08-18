@@ -21,7 +21,6 @@ import { ServicePointInternalService } from '../../../../../api/service/sepodi/s
 @Component({
   selector: 'kilometer-master-search',
   templateUrl: './kilometer-master-search.component.html',
-  styleUrls: ['./kilometer-master-search.component.scss'],
   imports: [
     SearchSelectComponent,
     ReactiveFormsModule,
