@@ -138,8 +138,8 @@ public class SectorService {
     List<TrafficPointElementVersion> trafficPointElementVersions =
         trafficPointElementService.findBySloidOrderByValidFrom(sectorVersion.getTrafficPointSloid());
 
-    TrafficPointElementVersion oldestVersion = trafficPointElementVersions.getLast();
-    TrafficPointElementVersion latestVersion = trafficPointElementVersions.getFirst();
+    TrafficPointElementVersion oldestVersion = trafficPointElementVersions.getFirst();
+    TrafficPointElementVersion latestVersion = trafficPointElementVersions.getLast();
 
     DateRange validityTrafficPoint = DateRange.builder()
         .from(oldestVersion.getValidFrom())
