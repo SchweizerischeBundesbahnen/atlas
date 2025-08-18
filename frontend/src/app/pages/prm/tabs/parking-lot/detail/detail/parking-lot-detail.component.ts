@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
   ParkingLotVersion,
-  PersonWithReducedMobilityService,
   ReadParkingLotVersion,
   ReadServicePointVersion,
 } from '../../../../../../api';
@@ -23,6 +22,7 @@ import { UserDetailInfoComponent } from '../../../../../../core/components/base-
 import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ParkingLotService } from '../../../../../../api/service/prm/parking-lot/parking-lot.service';
 
 @Component({
   selector: 'app-parking-lot-detail',
@@ -51,9 +51,7 @@ export class ParkingLotDetailComponent
   showVersionSwitch = false;
   businessOrganisations: string[] = [];
 
-  constructor(
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService
-  ) {
+  constructor(private readonly parkingLotService: ParkingLotService) {
     super();
   }
 
@@ -131,20 +129,18 @@ export class ParkingLotDetailComponent
   }
 
   private create(parkingLotVersion: ParkingLotVersion) {
-    return this.personWithReducedMobilityService
-      .createParkingLot(parkingLotVersion)
-      .pipe(
-        switchMap((createdVersion) => {
-          return this.notificateAndNavigate(
-            'PRM.PARKING_LOTS.NOTIFICATION.ADD_SUCCESS',
-            createdVersion.sloid!
-          ).pipe(map(() => createdVersion));
-        })
-      );
+    return this.parkingLotService.createParkingLot(parkingLotVersion).pipe(
+      switchMap((createdVersion) => {
+        return this.notificateAndNavigate(
+          'PRM.PARKING_LOTS.NOTIFICATION.ADD_SUCCESS',
+          createdVersion.sloid!
+        ).pipe(map(() => createdVersion));
+      })
+    );
   }
 
   private update(parkingLotVersion: ParkingLotVersion) {
-    return this.personWithReducedMobilityService
+    return this.parkingLotService
       .updateParkingLot(this.selectedVersion.id!, parkingLotVersion)
       .pipe(
         switchMap((updatedVersions) => {
