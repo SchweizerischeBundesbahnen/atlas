@@ -340,7 +340,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
     ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
     parkingLotRepository.save(parkingLotVersion);
     //when & then
-    mvc.perform(get("/v1/parking-lots/overview/" + parkingLotVersion.getParentServicePointSloid()))
+    mvc.perform(get("/internal/parking-lots/overview/" + parkingLotVersion.getParentServicePointSloid()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }

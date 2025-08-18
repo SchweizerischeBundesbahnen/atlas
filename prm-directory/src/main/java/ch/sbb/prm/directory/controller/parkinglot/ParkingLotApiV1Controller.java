@@ -1,11 +1,10 @@
-package ch.sbb.prm.directory.controller;
+package ch.sbb.prm.directory.controller.parkinglot;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.prm.directory.api.ParkingLotApiV1;
+import ch.sbb.prm.directory.api.parkinglot.ParkingLotApiV1;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.mapper.ParkingLotVersionMapper;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class ParkingLotsController implements ParkingLotApiV1 {
+public class ParkingLotApiV1Controller implements ParkingLotApiV1 {
 
   private final ParkingLotService parkingLotService;
 
@@ -39,11 +38,6 @@ public class ParkingLotsController implements ParkingLotApiV1 {
         .objects(platformVersions.stream().map(ParkingLotVersionMapper::toModel).toList())
         .totalCount(platformVersions.getTotalElements())
         .build();
-  }
-
-  @Override
-  public List<ParkingLotOverviewModel> getParkingLotsOverview( String parentServicePointSloid) {
-    return parkingLotService.buildOverview(parkingLotService.findByParentServicePointSloid(parentServicePointSloid));
   }
 
   @Override

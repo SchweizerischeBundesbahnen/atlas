@@ -8,15 +8,13 @@ import { Pages } from '../../../pages';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { TableColumn } from '../../../../core/components/table/table-column';
-import {
-  ParkingLotOverview,
-  PersonWithReducedMobilityService,
-} from '../../../../api';
+import { ParkingLotOverview } from '../../../../api';
 import { TableContentPaginationAndSorting } from '../../../../core/components/table/table-content-pagination-and-sorting';
 import { NgIf } from '@angular/common';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { ParkingLotInternalService } from '../../../../api/service/prm/parking-lot/parking-lot-internal.service';
 
 @Component({
   selector: 'app-parking-lot-table',
@@ -53,7 +51,7 @@ export class ParkingLotTableComponent
   constructor(
     protected readonly router: Router,
     private route: ActivatedRoute,
-    private personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private parkingLotInternalService: ParkingLotInternalService,
     private tableService: TableService
   ) {
     super(router);
@@ -75,7 +73,7 @@ export class ParkingLotTableComponent
     const parentServicePointSloid =
       this.route.parent!.snapshot.params.stopPointSloid!;
 
-    this.personWithReducedMobilityService
+    this.parkingLotInternalService
       .getParkingLotsOverview(parentServicePointSloid)
       .subscribe((overviewRows) => {
         this.parkingLots = TableContentPaginationAndSorting.pageAndSort(
