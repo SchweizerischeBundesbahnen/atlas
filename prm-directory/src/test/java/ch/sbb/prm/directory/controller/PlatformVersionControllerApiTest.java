@@ -175,7 +175,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     platformRepository.save(platformVersion);
 
     //when & then
-    mvc.perform(get("/v1/platforms/overview/" + platformVersion.getParentServicePointSloid()))
+    mvc.perform(get("/internal/platforms/overview/" + platformVersion.getParentServicePointSloid()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }

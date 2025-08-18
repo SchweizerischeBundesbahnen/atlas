@@ -32,7 +32,7 @@ describe('PlatformService', () => {
       sloid: 'ch:1:sloid:7000'
     });
     expect(apiService.get).toHaveBeenCalledOnceWith(
-      '/prm-directory/v1/platfroms/ch:1:sloid:7000',
+      '/prm-directory/v1/platforms/ch:1:sloid:7000',
     );
   });
 
