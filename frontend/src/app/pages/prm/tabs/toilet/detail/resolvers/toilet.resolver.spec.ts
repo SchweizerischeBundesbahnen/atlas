@@ -7,13 +7,13 @@ import {
 
 import { toiletResolver } from './toilet.resolver';
 import {
-  PersonWithReducedMobilityService,
   ReadToiletVersion,
   StandardAttributeType,
   ToiletVersion,
 } from '../../../../../../api';
 import { Observable, of } from 'rxjs';
 import { AppTestingModule } from '../../../../../../app.testing.module';
+import { ToiletService } from '../../../../../../api/service/prm/toilet/toilet.service';
 
 const toiletVersions: ReadToiletVersion[] = [
   {
@@ -40,21 +40,18 @@ const toiletVersions: ReadToiletVersion[] = [
 ];
 
 describe('toiletResolver', () => {
-  const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['getToiletVersions']
-  );
-  personWithReducedMobilityServiceSpy.getToiletVersions.and.returnValue(
-    of(toiletVersions)
-  );
+  const toiletServiceSpy = jasmine.createSpyObj('toiletService', [
+    'getToiletVersions',
+  ]);
+  toiletServiceSpy.getToiletVersions.and.returnValue(of(toiletVersions));
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
       providers: [
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityServiceSpy,
+          provide: ToiletService,
+          useValue: toiletServiceSpy,
         },
       ],
     });

@@ -1,11 +1,10 @@
-package ch.sbb.prm.directory.controller;
+package ch.sbb.prm.directory.controller.toilet;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
-import ch.sbb.atlas.api.prm.model.toilet.ToiletOverviewModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.prm.directory.api.ToiletApiV1;
+import ch.sbb.prm.directory.api.toilet.ToiletApiV1;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class ToiletController implements ToiletApiV1 {
+public class ToiletApiV1Controller implements ToiletApiV1 {
 
   private final ToiletService toiletService;
 
@@ -42,11 +41,6 @@ public class ToiletController implements ToiletApiV1 {
   public ReadToiletVersionModel createToiletVersion(ToiletVersionModel model) {
     ToiletVersion toiletVersion = toiletService.createToilet(ToiletVersionMapper.toEntity(model));
     return ToiletVersionMapper.toModel(toiletVersion);
-  }
-
-  @Override
-  public List<ToiletOverviewModel> getToiletOverview(String parentServicePointSloid) {
-    return toiletService.buildOverview(toiletService.findByParentServicePointSloid(parentServicePointSloid));
   }
 
   @Override
