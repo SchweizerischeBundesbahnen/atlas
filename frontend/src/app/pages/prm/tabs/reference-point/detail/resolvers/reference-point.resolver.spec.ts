@@ -7,11 +7,9 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { referencePointResolver } from './reference-point.resolver';
-import {
-  PersonWithReducedMobilityService,
-  ReadReferencePointVersion,
-} from '../../../../../../api';
+import { ReadReferencePointVersion } from '../../../../../../api';
 import { AppTestingModule } from '../../../../../../app.testing.module';
+import { ReferencePointService } from '../../../../../../api/service/prm/reference-point/reference-point.service';
 
 const referencePoint: ReadReferencePointVersion[] = [
   {
@@ -39,11 +37,11 @@ const referencePoint: ReadReferencePointVersion[] = [
 ];
 
 describe('PrmReferencePointResolver', () => {
-  const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
+  const referencePointServiceSpy = jasmine.createSpyObj(
+    'referencePointService',
     ['getReferencePointVersions']
   );
-  personWithReducedMobilityServiceSpy.getReferencePointVersions.and.returnValue(
+  referencePointServiceSpy.getReferencePointVersions.and.returnValue(
     of(referencePoint)
   );
 
@@ -52,8 +50,8 @@ describe('PrmReferencePointResolver', () => {
       imports: [AppTestingModule],
       providers: [
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityServiceSpy,
+          provide: ReferencePointService,
+          useValue: referencePointServiceSpy,
         },
       ],
     });

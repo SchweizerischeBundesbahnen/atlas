@@ -13,7 +13,6 @@ import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../../test/data/traffic-point-element';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import {
-  PersonWithReducedMobilityService,
   ReadReferencePointVersion,
   ReadRelationVersion,
 } from '../../../../../api';
@@ -23,6 +22,7 @@ import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atla
 import { ValidityService } from '../../../../sepodi/validity/validity.service';
 import moment from 'moment';
 import { RelationService } from '../../../../../api/service/prm/relation/relation.service';
+import { ReferencePointInternalService } from '../../../../../api/service/prm/reference-point/reference-point-internal.service';
 
 const referencePointOverview: ReadReferencePointVersion[] = [
   {
@@ -101,8 +101,8 @@ describe('RelationTabDetailComponent', () => {
   let component: RelationTabDetailComponent;
   let fixture: ComponentFixture<RelationTabDetailComponent>;
 
-  let personWithReducedMobilityService = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
+  let referencePointInternalService = jasmine.createSpyObj(
+    'referencePointInternalService',
     ['getReferencePointsOverview']
   );
 
@@ -124,15 +124,15 @@ describe('RelationTabDetailComponent', () => {
   };
 
   beforeEach(() => {
-    personWithReducedMobilityService = jasmine.createSpyObj(
-      'personWithReducedMobilityService',
+    referencePointInternalService = jasmine.createSpyObj(
+      'referencePointInternalService',
       ['getReferencePointsOverview']
     );
     relationService = jasmine.createSpyObj('relationService', [
       'getRelationsBySloid',
       'updateRelation',
     ]);
-    personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
+    referencePointInternalService.getReferencePointsOverview.and.returnValue(
       of([])
     );
     relationService.getRelationsBySloid.and.returnValue(of([]));
@@ -153,8 +153,8 @@ describe('RelationTabDetailComponent', () => {
         ValidityService,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityService,
+          provide: ReferencePointInternalService,
+          useValue: referencePointInternalService,
         },
         {
           provide: RelationService,
@@ -167,7 +167,7 @@ describe('RelationTabDetailComponent', () => {
   });
 
   it('should init relation tab for complete variant', () => {
-    personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
+    referencePointInternalService.getReferencePointsOverview.and.returnValue(
       of(referencePointOverview)
     );
     relationService.getRelationsBySloid.and.returnValue(of([relations[1]]));
@@ -175,7 +175,7 @@ describe('RelationTabDetailComponent', () => {
 
     expect(component).toBeTruthy();
     expect(
-      personWithReducedMobilityService.getReferencePointsOverview
+      referencePointInternalService.getReferencePointsOverview
     ).toHaveBeenCalled();
     expect(relationService.getRelationsBySloid).toHaveBeenCalled();
     expect(component.elementSloid).toBe('ch:1:sloid:89008:0:1');
@@ -191,7 +191,7 @@ describe('RelationTabDetailComponent', () => {
     fixture.detectChanges();
 
     expect(
-      personWithReducedMobilityService.getReferencePointsOverview
+      referencePointInternalService.getReferencePointsOverview
     ).toHaveBeenCalled();
     expect(relationService.getRelationsBySloid).not.toHaveBeenCalled();
     expect(component.elementSloid).toBe('ch:1:sloid:89008:0:1');
@@ -219,7 +219,7 @@ describe('RelationTabDetailComponent', () => {
   });
 
   it('should change relation version correctly', () => {
-    personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
+    referencePointInternalService.getReferencePointsOverview.and.returnValue(
       of(referencePointOverview)
     );
     relationService.getRelationsBySloid.and.returnValue(of(relations));
@@ -232,7 +232,7 @@ describe('RelationTabDetailComponent', () => {
   });
 
   it('should save valid form', () => {
-    personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
+    referencePointInternalService.getReferencePointsOverview.and.returnValue(
       of(referencePointOverview)
     );
     relationService.getRelationsBySloid.and.returnValue(of(relations));
