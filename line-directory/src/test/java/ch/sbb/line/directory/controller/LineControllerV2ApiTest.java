@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.controller;
 
 import static ch.sbb.atlas.api.lidi.BaseLineVersionModel.Fields.businessOrganisation;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,6 +16,7 @@ import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.LineConcessionType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -94,9 +96,14 @@ class LineControllerV2ApiTest extends BaseControllerApiTest {
             .build();
     //when && then
     mvc.perform(post("/v2/lines/versions")
-        .contentType(contentType)
-        .content(mapper.writeValueAsString(lineVersionModel))
-    ).andExpect(status().isBadRequest());
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(lineVersionModel))
+        )
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> {
+          assertThat(result.getResolvedException())
+              .isInstanceOf(IdProvidedOnCreateException.class);
+        });
   }
 
   @Test
