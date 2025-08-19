@@ -11,7 +11,6 @@ import ch.sbb.atlas.servicepointdirectory.mapper.LoadingPointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.LoadingPointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
-import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
@@ -55,7 +54,6 @@ public class LoadingPointService {
   @PreAuthorize(
       "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject"
           + "(#associatedServicePoint, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  @CreateCheck
   public LoadingPointVersion create(LoadingPointVersion loadingPointVersion, List<ServicePointVersion> associatedServicePoint) {
     if (isLoadingPointExisting(loadingPointVersion.getServicePointNumber(), loadingPointVersion.getNumber())) {
       throw new LoadingPointNumberAlreadyExistsException(loadingPointVersion.getServicePointNumber(),

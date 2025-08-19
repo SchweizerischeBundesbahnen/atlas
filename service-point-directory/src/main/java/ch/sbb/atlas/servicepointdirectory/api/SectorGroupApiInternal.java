@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.sector.CreateSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.ReadSectorGroupVersionModel;
 import ch.sbb.atlas.api.servicepoint.sector.SectorGroupVersionModel;
+import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -36,7 +37,7 @@ public interface SectorGroupApiInternal {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadSectorGroupVersionModel createSectorGroupVersion(
-      @Valid @RequestBody CreateSectorGroupVersionModel createSectorGroupVersionModel);
+      @Valid @RequestBody @CreateIdCheck CreateSectorGroupVersionModel createSectorGroupVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")

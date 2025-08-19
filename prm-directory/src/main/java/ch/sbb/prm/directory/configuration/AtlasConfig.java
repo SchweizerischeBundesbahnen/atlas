@@ -3,7 +3,6 @@ package ch.sbb.prm.directory.configuration;
 import ch.sbb.atlas.business.organisation.SharedBusinessOrganisationConfig;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.location.LocationService;
-import ch.sbb.atlas.validation.CreateCheckAspect;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.versioning.service.VersionableServiceImpl;
 import ch.sbb.prm.directory.client.LocationClient;
@@ -12,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-@Import({SharedBusinessOrganisationConfig.class, CreateCheckAspect.class})
+@Import({SharedBusinessOrganisationConfig.class})
 @EnableFeignClients(basePackages = {"ch.sbb.prm.directory.client"})
 @Configuration
 public class AtlasConfig {

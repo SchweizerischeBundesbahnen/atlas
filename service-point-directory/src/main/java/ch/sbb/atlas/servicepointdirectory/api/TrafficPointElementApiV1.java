@@ -11,6 +11,7 @@ import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
+import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -58,7 +59,7 @@ public interface TrafficPointElementApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadTrafficPointElementVersionModel createTrafficPoint(
-      @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel);
+      @RequestBody @Valid @CreateIdCheck CreateTrafficPointElementVersionModel trafficPointElementVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {

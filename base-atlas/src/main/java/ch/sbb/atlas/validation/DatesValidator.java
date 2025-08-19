@@ -13,7 +13,7 @@ public interface DatesValidator {
   LocalDate getValidFrom();
 
   LocalDate getValidTo();
-
+  
   @Schema(hidden = true)
   @JsonIgnore
   @AssertTrue(message = "validTo must not be before validFrom")

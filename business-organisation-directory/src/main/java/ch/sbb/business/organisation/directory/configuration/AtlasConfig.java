@@ -3,16 +3,13 @@ package ch.sbb.business.organisation.directory.configuration;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.amazon.service.FileServiceImpl;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
-import ch.sbb.atlas.validation.CreateCheckAspect;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.versioning.service.VersionableServiceImpl;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 @EnableFeignClients(basePackages = "ch.sbb.business.organisation.directory")
-@Import({CreateCheckAspect.class})
 @Configuration
 public class AtlasConfig {
 

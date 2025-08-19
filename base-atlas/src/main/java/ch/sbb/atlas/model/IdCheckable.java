@@ -1,6 +1,6 @@
 package ch.sbb.atlas.model;
 
-public interface Identifiable {
+public interface IdCheckable {
 
   Long getId();
 
