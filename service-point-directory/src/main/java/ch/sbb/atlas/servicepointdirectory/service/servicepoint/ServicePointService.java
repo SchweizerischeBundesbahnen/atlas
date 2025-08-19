@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.helper.TerminationHelper;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
@@ -20,6 +19,7 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.termination.TerminationCheck;
 import ch.sbb.atlas.servicepointdirectory.termination.TerminationCheckParameter;
+import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -95,12 +95,10 @@ public class ServicePointService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion,
       T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  @CreateCheck
   public ServicePointVersion createAndPublish(ServicePointVersion servicePointVersion,
       Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
-    if (servicePointVersion.getId() != null) {
-      throw new IdProvidedOnCreateException();
-    }
     ServicePointVersion createdVersion = save(servicePointVersion, currentVersion, currentVersions);
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return createdVersion;
