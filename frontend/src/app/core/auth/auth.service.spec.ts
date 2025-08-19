@@ -8,7 +8,7 @@ import { User } from './user/user';
 import SpyObj = jasmine.SpyObj;
 
 const fakeToken =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlcyI6W119.yjh-DMdelyF78dO4LdVa--VDaJOcdk8OYJ-FOQnAkKA';
+  'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkZha2UgVXNlciIsInJvbGVzIjpbImF0bGFzLWFkbWluIl0sImlzcyI6Im15LWFwcCIsImV4cCI6MTcwNTA5NjAwMH0.';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -38,6 +38,7 @@ describe('AuthService', () => {
       'getUserData',
       'authorize',
       'logoff',
+      'getAccessToken',
     ]);
 
     TestBed.configureTestingModule({
@@ -66,6 +67,7 @@ describe('AuthService', () => {
         sbbuid: 'u123456',
       })
     );
+    oidcSecurityServiceSpy.getAccessToken.and.returnValue(of(fakeToken));
     userServiceSpy.setCurrentUserAndLoadPermissions.and.returnValue(
       of({} as User)
     );
@@ -78,7 +80,7 @@ describe('AuthService', () => {
       email: 'test@sbb.ch',
       name: 'test',
       sbbuid: 'u123456',
-      isAdmin: false,
+      isAdmin: true,
       permissions: [],
     });
     expect(
