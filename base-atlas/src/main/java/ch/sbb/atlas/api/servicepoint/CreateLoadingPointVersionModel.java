@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.IdCheckable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -19,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "CreateLoadingPointVersion")
-public class CreateLoadingPointVersionModel extends LoadingPointVersionModel {
+public class CreateLoadingPointVersionModel extends LoadingPointVersionModel implements IdCheckable {
 
   @Schema(description = "Seven digits number. First two digits represent Country Code. "
       + "Last 5 digits represent service point ID.", example = "8034505")

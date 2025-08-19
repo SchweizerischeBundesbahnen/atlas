@@ -76,7 +76,8 @@ public class ServicePointApiV1Controller implements ServicePointApiV1 {
   }
 
   @Override
-  public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
+  public ReadServicePointVersionModel createServicePoint(
+      CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointVersion servicePointVersion = createServicePointMapper.toEntity(createServicePointVersionModel);
     geoReferenceService.addGeoReferenceInformation(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.createAndPublish(servicePointVersion, Optional.empty(), List.of());

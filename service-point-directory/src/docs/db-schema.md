@@ -23,6 +23,7 @@ Relations of LoadingPoints are:
 ![DB Schema Loading Point](db-loading-point.svg)
 
 
+
 ## Sectors and Sector Groups
 
 Relations of Sectors are:

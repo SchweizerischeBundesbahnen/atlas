@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
@@ -53,7 +52,6 @@ public class TimetableFieldNumberService {
       "@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka"
           + ".model.user.admin"
           + ".ApplicationType).TTFN)")
-  @CreateCheck
   public TimetableFieldNumberVersion create(TimetableFieldNumberVersion businessObject) {
     return save(businessObject);
   }

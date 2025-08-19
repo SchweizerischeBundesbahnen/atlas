@@ -19,7 +19,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.termination.TerminationCheck;
 import ch.sbb.atlas.servicepointdirectory.termination.TerminationCheckParameter;
-import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -95,7 +94,6 @@ public class ServicePointService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion,
       T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
-  @CreateCheck
   public ServicePointVersion createAndPublish(ServicePointVersion servicePointVersion,
       Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {

@@ -4,10 +4,15 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
+import ch.sbb.atlas.validation.CreateIdCheck;
 import ch.sbb.prm.directory.controller.model.StopPointRequestParams;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,6 +28,7 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +39,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/stop-points")
+@Validated
 public interface StopPointApiV1 {
 
   @GetMapping
@@ -47,7 +54,7 @@ public interface StopPointApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadStopPointVersionModel createStopPoint(@RequestBody @Valid StopPointVersionModel stopPointVersionModel);
+  ReadStopPointVersionModel createStopPoint(@RequestBody @Valid @CreateIdCheck StopPointVersionModel stopPointVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
