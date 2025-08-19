@@ -14,7 +14,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-@Entity(name = "id_generator_entity")
+@Entity(name = "unique_dummy_entity")
 class DummyEntity implements Identifiable {
 
   @Id
