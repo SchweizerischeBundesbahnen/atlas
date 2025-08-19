@@ -5,16 +5,16 @@ import static ch.sbb.prm.directory.util.PrmVariantUtil.isChangingFromReducedToCo
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.relation.entity.RelationVersion;
-import ch.sbb.prm.directory.platform.entity.PlatformVersion;
-import ch.sbb.prm.directory.platform.mapper.PlatformVersionMapper;
-import ch.sbb.prm.directory.platform.repository.PlatformRepository;
-import ch.sbb.prm.directory.referencepoint.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.referencepoint.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.relation.repository.RelationRepository;
-import ch.sbb.prm.directory.stoppoint.entity.StopPointVersion;
-import ch.sbb.prm.directory.stoppoint.mapper.StopPointVersionMapper;
-import ch.sbb.prm.directory.stoppoint.repository.StopPointRepository;
+import ch.sbb.prm.directory.domain.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.domain.platform.entity.PlatformVersion;
+import ch.sbb.prm.directory.domain.platform.mapper.PlatformVersionMapper;
+import ch.sbb.prm.directory.domain.platform.repository.PlatformRepository;
+import ch.sbb.prm.directory.domain.referencepoint.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.domain.referencepoint.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.domain.relation.repository.RelationRepository;
+import ch.sbb.prm.directory.domain.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.domain.stoppoint.mapper.StopPointVersionMapper;
+import ch.sbb.prm.directory.domain.stoppoint.repository.StopPointRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;

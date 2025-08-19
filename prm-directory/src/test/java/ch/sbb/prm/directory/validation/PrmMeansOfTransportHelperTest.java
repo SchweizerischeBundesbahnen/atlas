@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.stoppoint.exception.StopPointMeansOfTransportCombinationNotAllowedException;
+import ch.sbb.prm.directory.domain.stoppoint.exception.StopPointMeansOfTransportCombinationNotAllowedException;
 import ch.sbb.prm.directory.exception.UnknownMeanOfTransportNotAllowedException;
 import ch.sbb.prm.directory.util.PrmMeansOfTransportHelper;
 import java.util.Set;
