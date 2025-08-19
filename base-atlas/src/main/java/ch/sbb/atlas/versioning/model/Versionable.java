@@ -1,9 +1,8 @@
 package ch.sbb.atlas.versioning.model;
 
-import ch.sbb.atlas.model.Identifiable;
 import java.time.LocalDate;
 
-public interface Versionable extends Identifiable {
+public interface Versionable {
 
   LocalDate getValidFrom();
 
@@ -12,6 +11,8 @@ public interface Versionable extends Identifiable {
   LocalDate getValidTo();
 
   void setValidTo(LocalDate validTo);
+
+  Long getId();
 
   void setId(Long id);
 

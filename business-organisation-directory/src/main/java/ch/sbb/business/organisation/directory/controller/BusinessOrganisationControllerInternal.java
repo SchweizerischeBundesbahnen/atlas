@@ -36,7 +36,7 @@ public class BusinessOrganisationControllerInternal implements BusinessOrganisat
     BusinessOrganisationVersion businessOrganisationVersion = BusinessOrganisationVersionMapper.toEntity(newVersion);
     businessOrganisationVersion.setStatus(Status.VALIDATED);
     BusinessOrganisationVersion organisationVersionSaved =
-        service.create(businessOrganisationVersion);
+        service.save(businessOrganisationVersion);
     return BusinessOrganisationVersionMapper.toModel(organisationVersionSaved);
   }
 

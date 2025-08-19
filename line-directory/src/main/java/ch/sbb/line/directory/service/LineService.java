@@ -3,7 +3,6 @@ package ch.sbb.line.directory.service;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.convert.ReflectionHelper;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -80,7 +79,6 @@ public class LineService {
   @Transactional
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#lineVersion, T(ch.sbb.atlas"
       + ".kafka.model.user.admin.ApplicationType).LIDI)")
-  @CreateCheck
   public LineVersion createV2(LineVersion lineVersion) {
     lineValidationService.dynamicBeanValidation(lineVersion);
     LineVersion savedLineVersion = save(lineVersion);

@@ -15,7 +15,6 @@ import ch.sbb.atlas.servicepointdirectory.exception.SectorValidityException;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
-import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -65,7 +64,6 @@ public class SectorService {
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   @Transactional
-  @CreateCheck
   public SectorVersionModel create(SectorVersion sectorVersion,
       List<ServicePointVersion> servicePointVersions) {
     return createSector(sectorVersion, servicePointVersions);

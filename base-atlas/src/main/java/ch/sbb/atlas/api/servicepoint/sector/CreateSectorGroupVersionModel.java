@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.servicepoint.sector;
 
+import ch.sbb.atlas.model.IdCheckable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import java.util.List;
@@ -17,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "CreateSectorGroupVersion")
-public class CreateSectorGroupVersionModel extends SectorGroupVersionModel {
+public class CreateSectorGroupVersionModel extends SectorGroupVersionModel implements IdCheckable {
 
   @Size(min = 2)
   @Schema(description = "Sector sloid's related to the sector group")

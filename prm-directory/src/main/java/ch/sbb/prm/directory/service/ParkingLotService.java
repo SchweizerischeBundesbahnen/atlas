@@ -6,7 +6,6 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
-import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -69,7 +68,6 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
   }
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
-  @CreateCheck
   public ParkingLotVersion createParkingLot(ParkingLotVersion version) {
     createRelationWithSloidAllocation(version);
     return save(version);
