@@ -18,19 +18,21 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
-import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
-import ch.sbb.prm.directory.repository.ToiletRepository;
-import ch.sbb.prm.directory.search.ToiletSearchRestrictions;
+import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.referencepoint.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.referencepoint.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.relation.repository.RelationRepository;
+import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.stoppoint.exception.StopPointDoesNotExistException;
+import ch.sbb.prm.directory.stoppoint.repository.StopPointRepository;
+import ch.sbb.prm.directory.toilet.entity.ToiletVersion;
+import ch.sbb.prm.directory.toilet.repository.ToiletRepository;
+import ch.sbb.prm.directory.toilet.search.ToiletSearchRestrictions;
+import ch.sbb.prm.directory.toilet.service.ToiletService;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -177,7 +179,8 @@ class ToiletServiceTest extends BasePrmServiceTest {
     //when
     Page<ToiletVersion> result = toiletService.findAll(
         ToiletSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
-            PrmObjectRequestParams.builder().servicePointNumbers(List.of(toiletVersion.getNumber().getNumber())).build()).build());
+                PrmObjectRequestParams.builder().servicePointNumbers(List.of(toiletVersion.getNumber().getNumber())).build())
+            .build());
     //then
     assertThat(result.getTotalElements()).isOne();
     assertThat(result.getContent()).isNotEmpty();

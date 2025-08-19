@@ -4,8 +4,8 @@ import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.entity.ToiletVersion;
-import ch.sbb.prm.directory.entity.ToiletVersion.ToiletVersionBuilder;
+import ch.sbb.prm.directory.toilet.entity.ToiletVersion;
+import ch.sbb.prm.directory.toilet.entity.ToiletVersion.ToiletVersionBuilder;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 

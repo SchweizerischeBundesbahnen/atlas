@@ -4,8 +4,8 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.ReferencePointVersion.ReferencePointVersionBuilder;
+import ch.sbb.prm.directory.referencepoint.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.referencepoint.entity.ReferencePointVersion.ReferencePointVersionBuilder;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
