@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.prm.directory.platform.exception.PlatformAlreadyExistsException;
+import ch.sbb.prm.directory.domain.platform.exception.PlatformAlreadyExistsException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 

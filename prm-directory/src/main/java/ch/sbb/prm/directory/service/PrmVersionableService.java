@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.service;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import ch.sbb.prm.directory.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.domain.relation.entity.RelationVersion;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

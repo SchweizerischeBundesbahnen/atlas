@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.ParkingLotTestData;
-import ch.sbb.prm.directory.parkinglot.entity.ParkingLotVersion;
-import ch.sbb.prm.directory.parkinglot.repository.ParkingLotRepository;
+import ch.sbb.prm.directory.domain.parkinglot.entity.ParkingLotVersion;
+import ch.sbb.prm.directory.domain.parkinglot.repository.ParkingLotRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

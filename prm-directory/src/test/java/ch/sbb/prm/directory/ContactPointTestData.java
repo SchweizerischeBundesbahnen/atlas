@@ -5,8 +5,8 @@ import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.contactpoint.entity.ContactPointVersion;
-import ch.sbb.prm.directory.contactpoint.entity.ContactPointVersion.ContactPointVersionBuilder;
+import ch.sbb.prm.directory.domain.contactpoint.entity.ContactPointVersion;
+import ch.sbb.prm.directory.domain.contactpoint.entity.ContactPointVersion.ContactPointVersionBuilder;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
