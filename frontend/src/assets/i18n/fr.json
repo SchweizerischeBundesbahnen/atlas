@@ -11,7 +11,8 @@
       "MAX": "La valeur du paramètre <{{propertyPath}}> ne doit pas dépasser {{attributeValue}}.",
       "VALID_SPATIAL_REFERENCE_FRACTION": "Nombre maximal de décimales dépassé. LV03 et LV95 max. 5. WGS84 et WGS84WEB max. 11.",
       "VALID_SERVICE_POINT_NUMBER": "<numberShort> ne doit être présent que si le pays n'est pas dans (85,11,12,13,14).",
-      "VALID_STOP_POINT_TYPE": "<stopPointType> ne peut être utilisé que pour les arrêts. Un arrêt est défini par la sélection d’un moyen de transport. Une valeur valide, qui n’est pas \"UNKNOWN\", doit être attribuée aux arrêts."
+      "VALID_STOP_POINT_TYPE": "<stopPointType> ne peut être utilisé que pour les arrêts. Un arrêt est défini par la sélection d’un moyen de transport. Une valeur valide, qui n’est pas \"UNKNOWN\", doit être attribuée aux arrêts.",
+      "CREATE_ID_CHECK": "Lors de la création d'un nouvel objet, l'ID doit être vide."
     },
     "CLIENT": {
       "GENERIC": "Une erreur s’est produite sur le site Web, veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé atlas."

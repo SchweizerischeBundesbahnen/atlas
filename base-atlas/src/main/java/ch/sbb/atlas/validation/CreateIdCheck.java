@@ -26,8 +26,8 @@ public @interface CreateIdCheck {
   class Validator implements ConstraintValidator<CreateIdCheck, IdCheckable> {
 
     @Override
-    public boolean isValid(IdCheckable identifiable, ConstraintValidatorContext context) {
-      return identifiable.getId() == null;
+    public boolean isValid(IdCheckable idCheckable, ConstraintValidatorContext context) {
+      return idCheckable.getId() == null;
     }
   }
 }
