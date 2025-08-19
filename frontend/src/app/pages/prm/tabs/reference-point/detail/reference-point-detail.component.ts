@@ -3,7 +3,6 @@ import { VersionsHandlingService } from '../../../../../core/versioning/versions
 import { ReferencePointFormGroupBuilder } from './form/reference-point-form-group';
 import { DateRange } from '../../../../../core/versioning/date-range';
 import {
-  PersonWithReducedMobilityService,
   ReadReferencePointVersion,
   ReadServicePointVersion,
   ReferencePointVersion,
@@ -25,6 +24,7 @@ import { UserDetailInfoComponent } from '../../../../../core/components/base-det
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ReferencePointService } from '../../../../../api/service/prm/reference-point/reference-point.service';
 
 @Component({
   selector: 'app-reference-point',
@@ -56,9 +56,7 @@ export class ReferencePointDetailComponent
   businessOrganisations: string[] = [];
   protected readonly nbrOfBackPaths = 1;
 
-  constructor(
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService
-  ) {
+  constructor(private readonly referencePointService: ReferencePointService) {
     super();
   }
 
@@ -140,7 +138,7 @@ export class ReferencePointDetailComponent
   }
 
   private create(referencePointVersion: ReferencePointVersion) {
-    return this.personWithReducedMobilityService
+    return this.referencePointService
       .createReferencePoint(referencePointVersion)
       .pipe(
         switchMap((createdVersion) => {
@@ -153,7 +151,7 @@ export class ReferencePointDetailComponent
   }
 
   private update(referencePointVersion: ReferencePointVersion) {
-    return this.personWithReducedMobilityService
+    return this.referencePointService
       .updateReferencePoint(this.selectedVersion.id!, referencePointVersion)
       .pipe(
         switchMap((updatedVersions) => {

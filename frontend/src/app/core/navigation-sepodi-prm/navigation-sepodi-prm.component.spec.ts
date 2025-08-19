@@ -3,21 +3,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavigationSepodiPrmComponent } from './navigation-sepodi-prm.component';
 import { AppTestingModule } from '../../app.testing.module';
 import { Router } from '@angular/router';
-import { PersonWithReducedMobilityService, ReadServicePointVersion, ReadStopPointVersion, } from '../../api';
+import { ReadServicePointVersion, ReadStopPointVersion } from '../../api';
 import { BERN_WYLEREGG } from '../../../test/data/service-point';
 import { of } from 'rxjs';
 import { STOP_POINT } from '../../pages/prm/util/stop-point-test-data.spec';
 import { ServicePointService } from '../../api/service/sepodi/service-point.service';
+import { StopPointService } from '../../api/service/prm/stop-point/stop-point.service';
 import SpyObj = jasmine.SpyObj;
 
 describe('NavigationSepodiPrmComponent', () => {
   let component: NavigationSepodiPrmComponent;
   let fixture: ComponentFixture<NavigationSepodiPrmComponent>;
   let routerSpy: SpyObj<Router>;
-  const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['getStopPointVersions']
-  );
+  const stopPointServiceSpy = jasmine.createSpyObj('stopPointService', [
+    'getStopPointVersions',
+  ]);
   const servicePointServiceSpy = jasmine.createSpyObj('servicePointsService', [
     'getServicePointVersions',
   ]);
@@ -30,8 +30,8 @@ describe('NavigationSepodiPrmComponent', () => {
       providers: [
         { provide: Router, useValue: routerSpy },
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityServiceSpy,
+          provide: StopPointService,
+          useValue: stopPointServiceSpy,
         },
         { provide: ServicePointService, useValue: servicePointServiceSpy },
       ],
@@ -51,9 +51,7 @@ describe('NavigationSepodiPrmComponent', () => {
   });
 
   it('should navigate to the correct URL when targetPage is stop point', () => {
-    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(
-      of([STOP_POINT])
-    );
+    stopPointServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
     component.sloid = 'ch:1:sloid:89008';
 
     component.init();
@@ -65,9 +63,7 @@ describe('NavigationSepodiPrmComponent', () => {
   });
 
   it('should navigate to the correct URL when targetPage is service point', () => {
-    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(
-      of([STOP_POINT])
-    );
+    stopPointServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
     component.number = 8589008;
     component.targetPage = 'service-point';
 
@@ -80,9 +76,7 @@ describe('NavigationSepodiPrmComponent', () => {
   });
 
   it('should navigate to the correct URL when targetPage is traffic point table', () => {
-    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(
-      of([STOP_POINT])
-    );
+    stopPointServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
     component.number = 8589008;
     component.targetPage = 'traffic-point-table';
 
@@ -95,9 +89,7 @@ describe('NavigationSepodiPrmComponent', () => {
   });
 
   it('should navigate to the correct URL when targetPage is traffic point detail', () => {
-    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(
-      of([STOP_POINT])
-    );
+    stopPointServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
     component.sloid = 'ch:1:sloid:89008';
     component.targetPage = 'traffic-point-detail';
 
@@ -110,9 +102,7 @@ describe('NavigationSepodiPrmComponent', () => {
   });
 
   it('should navigate to the correct URL when targetPage is platform table', () => {
-    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(
-      of([STOP_POINT])
-    );
+    stopPointServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
     component.sloid = 'ch:1:sloid:89008';
     component.targetPage = 'platform-table';
 
@@ -125,9 +115,7 @@ describe('NavigationSepodiPrmComponent', () => {
   });
 
   it('should navigate to the correct URL when targetPage is platform detail', () => {
-    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(
-      of([STOP_POINT])
-    );
+    stopPointServiceSpy.getStopPointVersions.and.returnValue(of([STOP_POINT]));
     component.parentSloid = 'ch:1:sloid:89008';
     component.sloid = 'ch:1:sloid:89008:0:1';
     component.targetPage = 'platform-detail';
@@ -144,15 +132,13 @@ describe('NavigationSepodiPrmComponent', () => {
     const sloid = BERN_WYLEREGG.sloid!;
     const mockResponse: ReadStopPointVersion[] = [];
 
-    personWithReducedMobilityServiceSpy.getStopPointVersions.and.returnValue(
-      of(mockResponse)
-    );
+    stopPointServiceSpy.getStopPointVersions.and.returnValue(of(mockResponse));
 
     component.checkStopPointExists(sloid);
 
-    expect(
-      personWithReducedMobilityServiceSpy.getStopPointVersions
-    ).toHaveBeenCalledWith(sloid);
+    expect(stopPointServiceSpy.getStopPointVersions).toHaveBeenCalledWith(
+      sloid
+    );
     expect(routerSpy.navigateByUrl).toHaveBeenCalledWith(
       `/prm-directory/stop-points/${sloid}/stop-point`
     );
@@ -169,9 +155,9 @@ describe('NavigationSepodiPrmComponent', () => {
 
     component.checkServicePointIsLocatedInSwitzerland(number);
 
-    expect(
-      servicePointServiceSpy.getServicePointVersions
-    ).toHaveBeenCalledWith(number);
+    expect(servicePointServiceSpy.getServicePointVersions).toHaveBeenCalledWith(
+      number
+    );
     expect(component.isSwissServicePoint).toBeTrue();
   });
 
@@ -186,9 +172,9 @@ describe('NavigationSepodiPrmComponent', () => {
 
     component.checkServicePointIsLocatedInSwitzerland(number);
 
-    expect(
-      servicePointServiceSpy.getServicePointVersions
-    ).toHaveBeenCalledWith(number);
+    expect(servicePointServiceSpy.getServicePointVersions).toHaveBeenCalledWith(
+      number
+    );
     expect(component.isSwissServicePoint).toBeTrue();
     expect(component.isStopPoint).toBeTrue();
   });

@@ -140,7 +140,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/reference-points" +
             "?numbers=12345" +
             "&sloids=ch:1:sloid:12345:1" +
-            "&referencePointAttributeTypes=" + ReferencePointAttributeType.PLATFORM.name()+
+            "&referencePointAttributeTypes=" + ReferencePointAttributeType.PLATFORM.name() +
             "&fromDate=" + version.getValidFrom() +
             "&toDate=" + version.getValidTo() +
             "&validOn=" + LocalDate.of(2000, 6, 28) +
@@ -163,7 +163,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     version.setDesignation("Designation1");
     referencePointRepository.save(version);
 
-        //when & then
+    //when & then
     mvc.perform(get("/v1/reference-points?validToFromDate=" + version.getValidFrom()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(1)));
@@ -190,6 +190,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(0)));
   }
+
   @Test
   void shouldGetReferencePointVersionsWithFilterOnStatusRevoked() throws Exception {
     //given
@@ -221,7 +222,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         ReferencePointTestData.getReferencePointVersion());
 
     //when & then
-    mvc.perform(get("/v1/reference-points/overview/" + referencePointVersion.getParentServicePointSloid()))
+    mvc.perform(get("/internal/reference-points/overview/" + referencePointVersion.getParentServicePointSloid()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
