@@ -6,18 +6,18 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.ParkingLotVersion;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.repository.ParkingLotRepository;
-import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.parkinglot.entity.ParkingLotVersion;
+import ch.sbb.prm.directory.parkinglot.repository.ParkingLotRepository;
+import ch.sbb.prm.directory.parkinglot.service.ParkingLotService;
+import ch.sbb.prm.directory.referencepoint.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.referencepoint.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.relation.service.RelationService;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
-import ch.sbb.prm.directory.service.ParkingLotService;
-import ch.sbb.prm.directory.service.PrmLocationService;
-import ch.sbb.prm.directory.service.RelationService;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.stoppoint.repository.StopPointRepository;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -33,11 +33,11 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
 
   @Autowired
   ParkingLotVersioningTest(ParkingLotService parkingLotService,
-                           ParkingLotRepository parkingLotRepository,
-                           RelationService relationService,
-                           StopPointRepository stopPointRepository,
-                           ReferencePointRepository referencePointRepository,
-                           SharedServicePointRepository sharedServicePointRepository,
+      ParkingLotRepository parkingLotRepository,
+      RelationService relationService,
+      StopPointRepository stopPointRepository,
+      ReferencePointRepository referencePointRepository,
+      SharedServicePointRepository sharedServicePointRepository,
       PrmLocationService prmLocationService) {
     super(sharedServicePointRepository, prmLocationService);
     this.parkingLotService = parkingLotService;
@@ -52,7 +52,7 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
    * NEU:                             |________________________________
    * IST:      |----------------------|--------------------------------
    * Version:        1                                2
-   *
+   * <p>
    * RESULTAT: |----------------------|________________________________
    * Version:        1                                2
    */
@@ -109,7 +109,7 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
    * NEU:                       |___________|
    * IST:      |-----------|----------------------|--------------------
    * Version:        1                 2                  3
-   *
+   * <p>
    * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
    * Version:        1       2         4       5          3
    */
@@ -179,7 +179,7 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-            PARENT_SERVICE_POINT_SLOID);
+        PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
   }
 
@@ -188,7 +188,7 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
+   * <p>
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */

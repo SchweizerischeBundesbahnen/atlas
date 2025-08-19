@@ -10,15 +10,14 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
-import ch.sbb.prm.directory.repository.PlatformRepository;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.platform.entity.PlatformVersion;
+import ch.sbb.prm.directory.platform.repository.PlatformRepository;
+import ch.sbb.prm.directory.platform.service.PlatformService;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
-import ch.sbb.prm.directory.service.PlatformService;
-import ch.sbb.prm.directory.service.PrmLocationService;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.stoppoint.repository.StopPointRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -33,9 +32,9 @@ class PlatformVersioningTest extends BasePrmServiceTest {
 
   @Autowired
   PlatformVersioningTest(PlatformService platformService,
-                         PlatformRepository platformRepository,
-                         StopPointRepository stopPointRepository,
-                         SharedServicePointRepository sharedServicePointRepository,
+      PlatformRepository platformRepository,
+      StopPointRepository stopPointRepository,
+      SharedServicePointRepository sharedServicePointRepository,
       PrmLocationService prmLocationService) {
     super(sharedServicePointRepository, prmLocationService);
     this.platformService = platformService;
@@ -48,7 +47,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
    * NEU:                             |________________________________
    * IST:      |----------------------|--------------------------------
    * Version:        1                                2
-   *
+   * <p>
    * RESULTAT: |----------------------|________________________________
    * Version:        1                                2
    */
@@ -83,7 +82,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
     //when
-    platformService.updatePlatformVersion(version2,editedVersion);
+    platformService.updatePlatformVersion(version2, editedVersion);
 
     //then
     List<PlatformVersion> result = platformRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
@@ -108,7 +107,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
    * NEU:                             |________________________________
    * IST:      |----------------------|--------------------------------
    * Version:        1                                2
-   *
+   * <p>
    * RESULTAT: |----------------------|________________________________
    * Version:        1                                2
    */
@@ -142,7 +141,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
     //when
-    platformService.updatePlatformVersion(version2,editedVersion);
+    platformService.updatePlatformVersion(version2, editedVersion);
 
     //then
     List<PlatformVersion> result = platformRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
@@ -167,7 +166,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
    * NEU:                       |___________|
    * IST:      |-----------|----------------------|--------------------
    * Version:        1                 2                  3
-   *
+   * <p>
    * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
    * Version:        1       2         4       5          3
    */
@@ -222,7 +221,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion fourthTemporalVersion = result.get(3);
     assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2002, 6, 2));
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2002, 12, 31));
-    assertThat(fourthTemporalVersion.getAdditionalInformation()).isEqualTo("additional 2" );
+    assertThat(fourthTemporalVersion.getAdditionalInformation()).isEqualTo("additional 2");
 
     PlatformVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
@@ -231,13 +230,12 @@ class PlatformVersioningTest extends BasePrmServiceTest {
         .isEqualTo(savedVersion3);
   }
 
-
   /**
    * Szenario 2: Update innerhalb existierender Version
    * NEU:                       |___________|
    * IST:      |-----------|----------------------|--------------------
    * Version:        1                 2                  3
-   *
+   * <p>
    * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
    * Version:        1       2         4       5          3
    */
@@ -307,7 +305,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
+   * <p>
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */
@@ -358,7 +356,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
+   * <p>
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */

@@ -4,8 +4,8 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.entity.ParkingLotVersion;
-import ch.sbb.prm.directory.entity.ParkingLotVersion.ParkingLotVersionBuilder;
+import ch.sbb.prm.directory.parkinglot.entity.ParkingLotVersion;
+import ch.sbb.prm.directory.parkinglot.entity.ParkingLotVersion.ParkingLotVersionBuilder;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 

@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
@@ -16,17 +17,19 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.ContactPointVersion;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.contactpoint.entity.ContactPointVersion;
+import ch.sbb.prm.directory.contactpoint.repository.ContactPointRepository;
+import ch.sbb.prm.directory.contactpoint.service.ContactPointService;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
-import ch.sbb.prm.directory.repository.ContactPointRepository;
-import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.referencepoint.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.referencepoint.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.relation.repository.RelationRepository;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.stoppoint.exception.StopPointDoesNotExistException;
+import ch.sbb.prm.directory.stoppoint.repository.StopPointRepository;
 import java.util.List;
 import java.util.Set;
 import org.assertj.core.api.AbstractComparableAssert;
@@ -176,7 +179,8 @@ class ContactPointServiceTest extends BasePrmServiceTest {
     contactPoint.setSloid("ch:1:sloid:12345:1");
     contactPointRepository.saveAndFlush(contactPoint);
 
-    assertDoesNotThrow(() -> contactPointService.checkContactPointExists("ch:1:sloid:12345:1", ReferencePointElementType.CONTACT_POINT.name()));
+    assertDoesNotThrow(
+        () -> contactPointService.checkContactPointExists("ch:1:sloid:12345:1", ReferencePointElementType.CONTACT_POINT.name()));
   }
 
   @Test

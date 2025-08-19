@@ -6,8 +6,8 @@ import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.RelationVersion.RelationVersionBuilder;
+import ch.sbb.prm.directory.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.relation.entity.RelationVersion.RelationVersionBuilder;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 

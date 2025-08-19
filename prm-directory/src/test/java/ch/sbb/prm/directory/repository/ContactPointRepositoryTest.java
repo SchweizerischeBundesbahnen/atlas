@@ -4,7 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.ContactPointTestData;
-import ch.sbb.prm.directory.entity.ContactPointVersion;
+import ch.sbb.prm.directory.contactpoint.repository.ContactPointRepository;
+import ch.sbb.prm.directory.contactpoint.entity.ContactPointVersion;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

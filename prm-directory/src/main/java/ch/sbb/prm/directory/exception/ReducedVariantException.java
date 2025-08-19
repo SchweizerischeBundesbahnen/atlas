@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-import static ch.sbb.prm.directory.validation.PrmMeansOfTransportHelper.COMPLETE_MEANS_OF_TRANSPORT;
+import static ch.sbb.prm.directory.util.PrmMeansOfTransportHelper.COMPLETE_MEANS_OF_TRANSPORT;
 
 @RequiredArgsConstructor
 @Getter
