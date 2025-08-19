@@ -28,4 +28,4 @@ Relations of LoadingPoints are:
 Relations of Sectors are:
 - A `SectorGroup` may have at least two or more `Sectors` - in `SectorGroupRelations`.
 
-![DB Schema Loading Point](ERD_Sektoren.png)
+![DB Schema Sectors and Sector Groups](ERD_Sectors.svg)
