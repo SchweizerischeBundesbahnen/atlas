@@ -3,6 +3,7 @@ package ch.sbb.business.organisation.directory.service;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.redact.Redacted;
+import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
@@ -45,6 +46,11 @@ public class BusinessOrganisationService {
   public Page<BusinessOrganisationVersion> getBusinessOrganisationVersions(
       BusinessOrganisationVersionSearchRestrictions searchRestrictions) {
     return versionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  }
+
+  @CreateCheck
+  public BusinessOrganisationVersion create(BusinessOrganisationVersion version) {
+    return save(version);
   }
 
   public BusinessOrganisationVersion save(BusinessOrganisationVersion version) {

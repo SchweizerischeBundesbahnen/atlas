@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.api.model.CantonAssociated;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.model.Identifiable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Max;
@@ -31,7 +32,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @FieldNameConstants
-public class TimetableHearingStatementModel extends BaseVersionModel implements CantonAssociated {
+public class TimetableHearingStatementModel extends BaseVersionModel implements CantonAssociated, Identifiable {
 
   @Schema(description = "Technical identifier",
       example = "1", accessMode = AccessMode.READ_ONLY)
@@ -51,7 +52,8 @@ public class TimetableHearingStatementModel extends BaseVersionModel implements 
   @Schema(description = "Timetable field number", example = "100; 80.099; 2700")
   private String timetableFieldNumber;
 
-  @Schema(description = "Timetable field number description", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, Linien S1, S2)")
+  @Schema(description = "Timetable field number description", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, Linien "
+      + "S1, S2)")
   private String timetableFieldDescription;
 
   @NotNull

@@ -64,7 +64,7 @@ public class StopPointApiV1Controller implements StopPointApiV1 {
       throw new IdProvidedOnCreateException();
     }
     StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(model);
-    StopPointVersion savedVersion = stopPointService.save(stopPointVersion);
+    StopPointVersion savedVersion = stopPointService.create(stopPointVersion);
     return StopPointVersionMapper.toModel(savedVersion);
   }
 

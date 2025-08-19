@@ -4,6 +4,7 @@ import ch.sbb.atlas.business.organisation.SharedBusinessOrganisationConfig;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.servicepointdirectory.client.LocationClient;
+import ch.sbb.atlas.validation.CreateCheckAspect;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.versioning.service.VersionableServiceImpl;
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-@Import(SharedBusinessOrganisationConfig.class)
+@Import({SharedBusinessOrganisationConfig.class, CreateCheckAspect.class})
 @EnableFeignClients(basePackages = {
     "ch.sbb.atlas.servicepointdirectory.service.georeference", "ch.sbb.atlas.servicepointdirectory.client"})
 @Configuration

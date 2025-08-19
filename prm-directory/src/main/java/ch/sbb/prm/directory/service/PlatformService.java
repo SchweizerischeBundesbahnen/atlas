@@ -6,9 +6,9 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -91,13 +91,11 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   }
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
+  @CreateCheck
   public PlatformVersion createPlatformVersion(PlatformVersion version) {
     boolean isPlatformExisting = isPlatformExisting(version.getSloid());
     if (isPlatformExisting) {
       throw new PlatformAlreadyExistsException(version.getSloid());
-    }
-    if (version.getId() != null) {
-      throw new IdProvidedOnCreateException();
     }
     sharedServicePointService.validateTrafficPointElementExists(version.getParentServicePointSloid(), version.getSloid());
     PlatformVersion savedVersion = save(version);

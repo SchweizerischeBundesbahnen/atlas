@@ -2,7 +2,6 @@ package ch.sbb.atlas.servicepointdirectory.service.sector;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
@@ -16,6 +15,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.SectorValidityException;
 import ch.sbb.atlas.servicepointdirectory.mapper.SectorMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
+import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -48,16 +48,14 @@ public class SectorService {
     return sectorVersionRepository.findAll().stream().map(SectorMapper::toModel).toList();
   }
 
-  public SectorVersionModel createSector(SectorVersionModel createSectorVersionModel,
+  public SectorVersionModel createSector(SectorVersion sectorVersion,
       List<ServicePointVersion> servicePointVersions) {
-    SectorVersion sectorVersion = SectorMapper.toEntity(createSectorVersionModel);
-
-    trafficPointElementService.doesTrafficPointExist(createSectorVersionModel.getTrafficPointSloid());
+    trafficPointElementService.doesTrafficPointExist(sectorVersion.getTrafficPointSloid());
 
     validateSectorValidity(sectorVersion);
     validateMeanOfTransportOfServicePoint(servicePointVersions);
 
-    sectorVersion.setSloid(locationService.generateSloid(SloidType.SECTOR, createSectorVersionModel.getTrafficPointSloid()));
+    sectorVersion.setSloid(locationService.generateSloid(SloidType.SECTOR, sectorVersion.getTrafficPointSloid()));
 
     SectorVersion saved = save(sectorVersion);
     return SectorMapper.toModel(saved);
@@ -67,12 +65,10 @@ public class SectorService {
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   @Transactional
-  public SectorVersionModel create(SectorVersionModel createSectorVersionModel,
+  @CreateCheck
+  public SectorVersionModel create(SectorVersion sectorVersion,
       List<ServicePointVersion> servicePointVersions) {
-    if (createSectorVersionModel.getId() != null) {
-      throw new IdProvidedOnCreateException();
-    }
-    return createSector(createSectorVersionModel, servicePointVersions);
+    return createSector(sectorVersion, servicePointVersions);
   }
 
   @PreAuthorize("""
