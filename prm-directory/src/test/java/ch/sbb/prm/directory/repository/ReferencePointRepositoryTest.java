@@ -7,7 +7,8 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.referencepoint.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.referencepoint.entity.ReferencePointVersion;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @IntegrationTest
 @Transactional
 class ReferencePointRepositoryTest {
+
   private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
   private final ReferencePointRepository referencePointRepository;
 

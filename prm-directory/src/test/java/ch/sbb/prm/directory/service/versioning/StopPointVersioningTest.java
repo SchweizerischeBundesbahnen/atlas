@@ -9,11 +9,11 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.SharedServicePoint;
-import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
-import ch.sbb.prm.directory.service.StopPointService;
+import ch.sbb.prm.directory.shared.servicepoint.entity.SharedServicePoint;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.stoppoint.repository.StopPointRepository;
+import ch.sbb.prm.directory.stoppoint.service.StopPointService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -34,17 +34,18 @@ class StopPointVersioningTest {
 
   @Autowired
   StopPointVersioningTest(StopPointService stopPointService,
-                          StopPointRepository stopPointRepository,
-                          SharedServicePointRepository sharedServicePointRepository) {
+      StopPointRepository stopPointRepository,
+      SharedServicePointRepository sharedServicePointRepository) {
     this.stopPointService = stopPointService;
     this.stopPointRepository = stopPointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
   }
 
   @BeforeEach
-  public void init(){
+  public void init() {
     SharedServicePoint servicePoint =
-        SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid:100602"), Collections.emptySet());
+        SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid:100602"),
+            Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
@@ -58,7 +59,7 @@ class StopPointVersioningTest {
    * NEU:                             |________________________________
    * IST:      |----------------------|--------------------------------
    * Version:        1                                2
-   *
+   * <p>
    * RESULTAT: |----------------------|________________________________
    * Version:        1                                2
    */
@@ -123,7 +124,7 @@ class StopPointVersioningTest {
    * NEU:                       |___________|
    * IST:      |-----------|----------------------|--------------------
    * Version:        1                 2                  3
-   *
+   * <p>
    * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
    * Version:        1       2         4       5          3
    */
@@ -185,7 +186,7 @@ class StopPointVersioningTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
+   * <p>
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */

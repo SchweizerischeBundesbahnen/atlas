@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.prm.directory.entity.SharedServicePoint;
+import ch.sbb.prm.directory.shared.servicepoint.entity.SharedServicePoint;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collections;

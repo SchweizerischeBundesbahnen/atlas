@@ -4,8 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.SharedServicePointTestData;
-import ch.sbb.prm.directory.entity.SharedServicePoint;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.shared.servicepoint.entity.SharedServicePoint;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,33 +19,33 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public abstract class BasePrmServiceTest {
 
-    public static final String[] IGNORE_FIELDS = new String[]{"version", "editionDate", "creationDate", "editor", "creator"};
-    protected static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+  public static final String[] IGNORE_FIELDS = new String[]{"version", "editionDate", "creationDate", "editor", "creator"};
+  protected static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
 
-    private final SharedServicePointRepository sharedServicePointRepository;
-    @MockBean
-    protected final PrmLocationService prmLocationService;
+  private final SharedServicePointRepository sharedServicePointRepository;
+  @MockBean
+  protected final PrmLocationService prmLocationService;
 
-    @Autowired
-    public BasePrmServiceTest(SharedServicePointRepository sharedServicePointRepository, PrmLocationService prmLocationService) {
-        this.sharedServicePointRepository = sharedServicePointRepository;
-        this.prmLocationService = prmLocationService;
-    }
+  @Autowired
+  public BasePrmServiceTest(SharedServicePointRepository sharedServicePointRepository, PrmLocationService prmLocationService) {
+    this.sharedServicePointRepository = sharedServicePointRepository;
+    this.prmLocationService = prmLocationService;
+  }
 
-    @BeforeEach
-    void setUp() {
-        sharedServicePointRepository.saveAndFlush(SharedServicePointTestData.getSharedServicePoint());
-    }
+  @BeforeEach
+  void setUp() {
+    sharedServicePointRepository.saveAndFlush(SharedServicePointTestData.getSharedServicePoint());
+  }
 
-    @AfterEach
-    void cleanUp() {
-        sharedServicePointRepository.deleteAll();
-    }
+  @AfterEach
+  void cleanUp() {
+    sharedServicePointRepository.deleteAll();
+  }
 
-    @Test
-    void shouldVerifyRepoIsNotEmpty() {
-        List<SharedServicePoint> servicePointList = sharedServicePointRepository.findAll();
-        assertThat(servicePointList).isNotEmpty();
-    }
+  @Test
+  void shouldVerifyRepoIsNotEmpty() {
+    List<SharedServicePoint> servicePointList = sharedServicePointRepository.findAll();
+    assertThat(servicePointList).isNotEmpty();
+  }
 
 }

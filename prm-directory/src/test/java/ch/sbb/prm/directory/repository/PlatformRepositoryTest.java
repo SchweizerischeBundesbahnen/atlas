@@ -4,7 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.PlatformTestData;
-import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.platform.repository.PlatformRepository;
+import ch.sbb.prm.directory.platform.entity.PlatformVersion;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,7 @@ package ch.sbb.prm.directory.search;
 
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
-import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
+import ch.sbb.prm.directory.search.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion_;
 import java.util.Collections;
