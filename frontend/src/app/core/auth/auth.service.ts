@@ -7,6 +7,8 @@ import { combineLatest, EMPTY, of, take } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Role } from './role';
 import { map, switchMap } from 'rxjs/operators';
+import { Configuration } from '../../api';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,13 +17,13 @@ export class AuthService {
   constructor(
     private readonly oidcSecurityService: OidcSecurityService,
     private readonly userService: UserService,
-    private readonly pageService: PageService
+    private readonly pageService: PageService,
+    private readonly apiServiceConfig: Configuration
   ) {
     this.oidcSecurityService
       .getUserData()
       .pipe(
         switchMap((userData) => {
-          console.log(userData);
           if (!userData) {
             this.userService.setToUnauthenticatedUser();
             return EMPTY;
@@ -40,6 +42,7 @@ export class AuthService {
             isAdmin: this.isAdminFromToken(accessToken),
             permissions: [],
           };
+          this.apiServiceConfig.basePath = environment.atlasApiUrl;
           return this.userService.setCurrentUserAndLoadPermissions(user);
         }),
         map(() => {
@@ -59,7 +62,7 @@ export class AuthService {
       .logoff()
       .subscribe((result) => console.log(result));
     // todo: mby use with revoke (check if it logouts from provider and redirects to home)
-    //  check e2e tests
+    //  cleanup of environment
   }
 
   private isAdminFromToken(token: string): boolean {
