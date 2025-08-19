@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.prm.directory.toilet.repository.ToiletRepository;
-import ch.sbb.prm.directory.toilet.entity.ToiletVersion;
+import ch.sbb.prm.directory.domain.toilet.repository.ToiletRepository;
+import ch.sbb.prm.directory.domain.toilet.entity.ToiletVersion;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

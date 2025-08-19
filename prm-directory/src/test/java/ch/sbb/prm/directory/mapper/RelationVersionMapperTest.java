@@ -10,8 +10,8 @@ import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.RelationTestData;
-import ch.sbb.prm.directory.relation.entity.RelationVersion;
-import ch.sbb.prm.directory.relation.mapper.RelationVersionMapper;
+import ch.sbb.prm.directory.domain.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.domain.relation.mapper.RelationVersionMapper;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 

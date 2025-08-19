@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.prm.directory.stoppoint.exception.StopPointDoesNotExistException;
+import ch.sbb.prm.directory.domain.stoppoint.exception.StopPointDoesNotExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
