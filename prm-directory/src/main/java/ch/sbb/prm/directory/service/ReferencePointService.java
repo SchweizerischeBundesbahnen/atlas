@@ -8,9 +8,9 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
+import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -93,11 +93,8 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   }
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#referencePointVersion)")
+  @CreateCheck
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
-    if (referencePointVersion.getId() != null) {
-      throw new IdProvidedOnCreateException();
-    }
-
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
     stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
     referencePointValidationService.validatePreconditionBusinessRule(referencePointVersion);

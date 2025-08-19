@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -47,13 +48,18 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   @Override
-  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public StopPointVersion save(StopPointVersion version) {
     sharedServicePointService.validateServicePointExists(
         version.getSloid()); // This check is still needed because of import StopPoint
     stopPointValidationService.validateStopPointRecordingVariants(version);
     initDefaultData(version);
     return stopPointRepository.saveAndFlush(version);
+  }
+
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#stopPointVersion)")
+  @CreateCheck
+  public StopPointVersion create(StopPointVersion stopPointVersion) {
+    return save(stopPointVersion);
   }
 
   @Override
