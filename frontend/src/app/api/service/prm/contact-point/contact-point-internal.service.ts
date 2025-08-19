@@ -8,13 +8,13 @@ import {ContactPointOverview} from "../../../model/contactPointOverview";
 })
 export class ContactPointInternalService {
 
-  private readonly V1_PLATFORMS = '/prm-directory/internal/contact-points/overview';
+  private readonly INTERNAL_CONTACT_POINTS = '/prm-directory/internal/contact-points/overview';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
   public getContactPointOverview(parentServicePointSloid: String): Observable<Array<ContactPointOverview>> {
     this.atlasApiService.validateParams({parentServicePointSloid: parentServicePointSloid});
-    return this.atlasApiService.get(`${this.V1_PLATFORMS}/${parentServicePointSloid}`);
+    return this.atlasApiService.get(`${this.INTERNAL_CONTACT_POINTS}/${parentServicePointSloid}`);
   }
 
 
