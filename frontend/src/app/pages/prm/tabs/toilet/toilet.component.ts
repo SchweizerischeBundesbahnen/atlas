@@ -4,10 +4,7 @@ import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
 import { TableColumn } from '../../../../core/components/table/table-column';
-import {
-  PersonWithReducedMobilityService,
-  ToiletOverview,
-} from '../../../../api';
+import { ToiletOverview } from '../../../../api';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { TableService } from '../../../../core/components/table/table.service';
 import { Pages } from '../../../pages';
@@ -17,6 +14,7 @@ import { NgIf } from '@angular/common';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { ToiletInternalService } from '../../../../api/service/prm/toilet/toilet-internal.service';
 
 @Component({
   selector: 'app-toilet',
@@ -52,7 +50,7 @@ export class ToiletComponent
   constructor(
     readonly router: Router,
     private route: ActivatedRoute,
-    private personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private readonly toiletInternalService: ToiletInternalService,
     private tableService: TableService
   ) {
     super(router);
@@ -73,7 +71,7 @@ export class ToiletComponent
     const parentServicePointSloid =
       this.route.parent!.snapshot.params.stopPointSloid!;
 
-    this.personWithReducedMobilityService
+    this.toiletInternalService
       .getToiletOverview(parentServicePointSloid)
       .subscribe((overviewRows) => {
         this.toilets = TableContentPaginationAndSorting.pageAndSort(

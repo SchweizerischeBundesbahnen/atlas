@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContactPointDetailComponent } from './contact-point-detail.component';
 import {
   ContactPointType,
-  PersonWithReducedMobilityService,
   ReadContactPointVersion,
   StandardAttributeType,
 } from '../../../../../../api';
@@ -40,6 +39,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SplitServicePointNumberPipe } from '../../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
 import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
+import { ContactPointService } from '../../../../../../api/service/prm/contact-point/contact-point.service';
 import SpyObj = jasmine.SpyObj;
 
 const contactPoint: ReadContactPointVersion[] = [
@@ -73,17 +73,13 @@ describe('ContactPointDetailComponent', () => {
   let component: ContactPointDetailComponent;
   let fixture: ComponentFixture<ContactPointDetailComponent>;
 
-  const personWithReducedMobilityService = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['createContactPoint', 'updateContactPoint']
-  );
+  const contactPointService = jasmine.createSpyObj('contactPointService', [
+    'createContactPoint',
+    'updateContactPoint',
+  ]);
 
-  personWithReducedMobilityService.createContactPoint.and.returnValue(
-    of(contactPoint[0])
-  );
-  personWithReducedMobilityService.updateContactPoint.and.returnValue(
-    of(contactPoint)
-  );
+  contactPointService.createContactPoint.and.returnValue(of(contactPoint[0]));
+  contactPointService.updateContactPoint.and.returnValue(of(contactPoint));
 
   const notificationService = jasmine.createSpyObj('notificationService', [
     'success',
@@ -142,8 +138,8 @@ describe('ContactPointDetailComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityService,
+          provide: ContactPointService,
+          useValue: contactPointService,
         },
         { provide: DialogService, useValue: dialogService },
         TranslatePipe,
@@ -180,9 +176,7 @@ describe('ContactPointDetailComponent', () => {
 
       component.save();
 
-      expect(
-        personWithReducedMobilityService.createContactPoint
-      ).toHaveBeenCalled();
+      expect(contactPointService.createContactPoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
@@ -241,9 +235,7 @@ describe('ContactPointDetailComponent', () => {
       component.form.controls.designation.markAsDirty();
 
       component.save();
-      expect(
-        personWithReducedMobilityService.updateContactPoint
-      ).toHaveBeenCalled();
+      expect(contactPointService.updateContactPoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });

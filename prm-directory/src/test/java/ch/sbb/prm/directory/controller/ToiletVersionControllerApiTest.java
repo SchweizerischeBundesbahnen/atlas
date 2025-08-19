@@ -157,7 +157,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletRepository.save(toiletVersion);
     //when & then
-    mvc.perform(get("/v1/toilets/overview/" + toiletVersion.getParentServicePointSloid()))
+    mvc.perform(get("/internal/toilets/overview/" + toiletVersion.getParentServicePointSloid()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
