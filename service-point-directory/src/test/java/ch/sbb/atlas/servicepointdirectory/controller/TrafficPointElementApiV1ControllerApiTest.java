@@ -16,7 +16,6 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.LocalDateTimeMatchers;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -340,13 +339,14 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
     repository.deleteAll();
     CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
     platformToCreate.setId(1111L);
+
     mvc.perform(post("/v1/traffic-point-elements")
             .contentType(contentType)
             .content(mapper.writeValueAsString(platformToCreate)))
         .andExpect(status().isBadRequest())
         .andExpect(result -> {
-          assertThat(result.getResolvedException())
-              .isInstanceOf(IdProvidedOnCreateException.class);
+          assertThat(result.getResponse().getContentAsString().contains("atlas.constraint.createIdCheck")).isTrue();
+          assertThat(result.getResponse().getContentAsString().contains("ID must be null when creating a new element")).isTrue();
         });
   }
 

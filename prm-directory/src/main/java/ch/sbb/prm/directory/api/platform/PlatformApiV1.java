@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
+import ch.sbb.atlas.validation.CreateIdCheck;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
@@ -25,6 +26,7 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/platforms")
+@Validated
 public interface PlatformApiV1 {
 
   @GetMapping
@@ -46,7 +49,7 @@ public interface PlatformApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadPlatformVersionModel createPlatform(@RequestBody @Valid PlatformVersionModel model);
+  ReadPlatformVersionModel createPlatform(@RequestBody @Valid @CreateIdCheck PlatformVersionModel model);
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {

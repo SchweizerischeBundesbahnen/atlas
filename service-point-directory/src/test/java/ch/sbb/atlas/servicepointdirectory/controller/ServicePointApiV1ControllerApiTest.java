@@ -25,7 +25,6 @@ import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.journey.poi.model.CountryCode;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.LocalDateTimeMatchers;
@@ -341,8 +340,8 @@ class ServicePointApiV1ControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
         .andExpect(status().isBadRequest())
         .andExpect(result -> {
-          assertThat(result.getResolvedException())
-              .isInstanceOf(IdProvidedOnCreateException.class);
+          assertThat(result.getResponse().getContentAsString().contains("atlas.constraint.createIdCheck")).isTrue();
+          assertThat(result.getResponse().getContentAsString().contains("ID must be null when creating a new element")).isTrue();
         });
   }
 

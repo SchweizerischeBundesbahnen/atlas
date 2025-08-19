@@ -19,7 +19,6 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -246,8 +245,8 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isBadRequest())
         .andExpect(result -> {
-          assertThat(result.getResolvedException())
-              .isInstanceOf(IdProvidedOnCreateException.class);
+          assertThat(result.getResponse().getContentAsString().contains("atlas.constraint.createIdCheck")).isTrue();
+          assertThat(result.getResponse().getContentAsString().contains("ID must be null when creating a new element")).isTrue();
         });
   }
 

@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -162,8 +161,8 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
         .andExpect(status().isBadRequest())
         .andExpect(result -> {
-          assertThat(result.getResolvedException())
-              .isInstanceOf(IdProvidedOnCreateException.class);
+          assertThat(result.getResponse().getContentAsString().contains("atlas.constraint.createIdCheck")).isTrue();
+          assertThat(result.getResponse().getContentAsString().contains("ID must be null when creating a new element")).isTrue();
         });
   }
 

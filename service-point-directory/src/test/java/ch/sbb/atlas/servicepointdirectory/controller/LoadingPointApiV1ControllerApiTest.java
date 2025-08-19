@@ -15,7 +15,6 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.LocalDateTimeMatchers;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -220,8 +219,8 @@ class LoadingPointApiV1ControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(loadingPoint)))
         .andExpect(status().isBadRequest())
         .andExpect(result -> {
-          assertThat(result.getResolvedException())
-              .isInstanceOf(IdProvidedOnCreateException.class);
+          assertThat(result.getResponse().getContentAsString().contains("atlas.constraint.createIdCheck")).isTrue();
+          assertThat(result.getResponse().getContentAsString().contains("ID must be null when creating a new element")).isTrue();
         });
   }
 

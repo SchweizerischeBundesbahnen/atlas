@@ -5,7 +5,6 @@ import static ch.sbb.prm.directory.util.PrmVariantUtil.isPrmVariantChanging;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.stoppoint.StopPointApiV1;
 import ch.sbb.prm.directory.controller.model.StopPointRequestParams;
@@ -59,9 +58,6 @@ public class StopPointApiV1Controller implements StopPointApiV1 {
     boolean stopPointExisting = stopPointService.isStopPointExisting(model.getSloid());
     if (stopPointExisting) {
       throw new StopPointAlreadyExistsException(model.getSloid());
-    }
-    if (model.getId() != null) {
-      throw new IdProvidedOnCreateException();
     }
     StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(model);
     StopPointVersion savedVersion = stopPointService.create(stopPointVersion);

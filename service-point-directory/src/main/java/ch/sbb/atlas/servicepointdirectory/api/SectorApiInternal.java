@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.sector.SectorVersionModel;
+import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -33,7 +34,7 @@ public interface SectorApiInternal {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  SectorVersionModel createSectorVersion(@Valid @RequestBody SectorVersionModel sectorVersion);
+  SectorVersionModel createSectorVersion(@Valid @RequestBody @CreateIdCheck SectorVersionModel sectorVersion);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")

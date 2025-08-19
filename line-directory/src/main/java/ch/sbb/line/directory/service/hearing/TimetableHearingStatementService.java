@@ -13,7 +13,6 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.pdf.sanitize.PdfCdr;
-import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
@@ -100,7 +99,6 @@ public class TimetableHearingStatementService {
     return TimetableHearingStatementMapperV1.toModel(createHearingStatement(statementToCreate, documents));
   }
 
-  @CreateCheck
   public TimetableHearingStatementModelV2 createHearingStatementV2(TimetableHearingStatementModelV2 statement,
       List<MultipartFile> documents) {
     TimetableHearingStatement statementToCreate = timetableHearingStatementMapperV2.toEntity(statement);

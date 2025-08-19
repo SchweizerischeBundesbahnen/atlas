@@ -4,7 +4,6 @@ import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.service.OverviewDisplayBuilder;
-import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -37,7 +36,6 @@ public class SublineService {
   @Transactional
   @PreAuthorize("""
       @businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)""")
-  @CreateCheck
   public SublineVersion create(SublineVersion businessObject) {
     return save(businessObject);
   }

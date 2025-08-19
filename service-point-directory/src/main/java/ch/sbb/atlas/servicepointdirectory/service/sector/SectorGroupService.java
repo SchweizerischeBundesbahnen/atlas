@@ -21,7 +21,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupRelationReposito
 import ch.sbb.atlas.servicepointdirectory.repository.SectorGroupVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.SectorVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
-import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -82,7 +81,6 @@ public class SectorGroupService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
-  @CreateCheck
   public ReadSectorGroupVersionModel create(SectorGroupVersion sectorGroupVersion,
       List<String> sloids, List<ServicePointVersion> servicePointVersions) {
     return createSectorGroup(sectorGroupVersion, sloids);
