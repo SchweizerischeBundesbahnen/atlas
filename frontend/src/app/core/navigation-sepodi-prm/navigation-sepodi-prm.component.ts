@@ -1,10 +1,11 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Country, PersonWithReducedMobilityService } from '../../api';
+import { Country } from '../../api';
 import { Countries } from '../country/Countries';
 import { NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ServicePointService } from '../../api/service/sepodi/service-point.service';
+import { StopPointService } from '../../api/service/prm/stop-point/stop-point.service';
 
 export type TargetPageType =
   | 'stop-point'
@@ -32,7 +33,7 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
 
   constructor(
     private router: Router,
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private readonly stopPointService: StopPointService,
     private readonly servicePointService: ServicePointService
   ) {}
 
@@ -99,15 +100,13 @@ export class NavigationSepodiPrmComponent implements OnInit, OnChanges {
   }
 
   checkStopPointExists(sloid: string) {
-    this.personWithReducedMobilityService
-      .getStopPointVersions(sloid)
-      .subscribe((stoppoint) => {
-        if (stoppoint.length === 0) {
-          this.router.navigateByUrl(
-            `/prm-directory/stop-points/${sloid}/stop-point`
-          );
-        }
-      });
+    this.stopPointService.getStopPointVersions(sloid).subscribe((stoppoint) => {
+      if (stoppoint.length === 0) {
+        this.router.navigateByUrl(
+          `/prm-directory/stop-points/${sloid}/stop-point`
+        );
+      }
+    });
   }
 
   checkServicePointIsLocatedInSwitzerland(number: number) {

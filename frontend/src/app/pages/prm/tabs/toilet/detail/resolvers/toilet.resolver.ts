@@ -1,16 +1,14 @@
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
-import {
-  PersonWithReducedMobilityService,
-  ToiletVersion,
-} from '../../../../../../api';
+import { ToiletVersion } from '../../../../../../api';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { Pages } from '../../../../../pages';
+import { ToiletService } from '../../../../../../api/service/prm/toilet/toilet.service';
 
 @Injectable({ providedIn: 'root' })
 export class ToiletResolver {
   constructor(
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private readonly toiletService: ToiletService,
     private readonly router: Router
   ) {}
 
@@ -18,17 +16,15 @@ export class ToiletResolver {
     const sloidParameter = route.paramMap.get('sloid') || '';
     return sloidParameter === 'add'
       ? of([])
-      : this.personWithReducedMobilityService
-          .getToiletVersions(sloidParameter)
-          .pipe(
-            catchError(() =>
-              this.router
-                .navigate([Pages.PRM.path], {
-                  state: { notDismissSnackBar: true },
-                })
-                .then(() => [])
-            )
-          );
+      : this.toiletService.getToiletVersions(sloidParameter).pipe(
+          catchError(() =>
+            this.router
+              .navigate([Pages.PRM.path], {
+                state: { notDismissSnackBar: true },
+              })
+              .then(() => [])
+          )
+        );
   }
 }
 
