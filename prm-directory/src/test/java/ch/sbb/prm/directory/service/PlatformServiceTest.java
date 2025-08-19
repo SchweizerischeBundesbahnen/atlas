@@ -311,7 +311,11 @@ class PlatformServiceTest extends BasePrmServiceTest {
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     platformRepository.saveAndFlush(platformVersion);
 
-    assertThrows(PlatformAlreadyExistsException.class, () -> platformService.createPlatformVersion(platformVersion));
+    PlatformVersion platformVersionToCreate = PlatformTestData.getPlatformVersion();
+    platformVersionToCreate.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformVersionToCreate.setSloid("ch:1:sloid:12345:1");
+
+    assertThrows(PlatformAlreadyExistsException.class, () -> platformService.createPlatformVersion(platformVersionToCreate));
   }
 
   @Test

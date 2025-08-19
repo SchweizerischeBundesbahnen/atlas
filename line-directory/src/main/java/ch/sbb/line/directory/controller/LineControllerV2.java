@@ -6,7 +6,6 @@ import ch.sbb.atlas.api.lidi.LineApiV2;
 import ch.sbb.atlas.api.lidi.LineVersionModelV2;
 import ch.sbb.atlas.api.lidi.UpdateLineVersionModelV2;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
@@ -36,9 +35,6 @@ public class LineControllerV2 implements LineApiV2 {
 
   @Override
   public LineVersionModelV2 createLineVersionV2(LineVersionModelV2 newVersion) {
-    if (newVersion.getId() != null) {
-      throw new IdProvidedOnCreateException();
-    }
     LineVersion newLineVersion = toEntity(newVersion);
     newLineVersion.setStatus(Status.VALIDATED);
     LineVersion createdVersion = lineService.createV2(newLineVersion);

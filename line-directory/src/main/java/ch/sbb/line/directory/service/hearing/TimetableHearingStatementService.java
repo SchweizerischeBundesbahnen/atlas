@@ -9,11 +9,11 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
-import ch.sbb.atlas.exception.IdProvidedOnCreateException;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.pdf.sanitize.PdfCdr;
+import ch.sbb.atlas.validation.CreateCheck;
 import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
@@ -100,11 +100,9 @@ public class TimetableHearingStatementService {
     return TimetableHearingStatementMapperV1.toModel(createHearingStatement(statementToCreate, documents));
   }
 
+  @CreateCheck
   public TimetableHearingStatementModelV2 createHearingStatementV2(TimetableHearingStatementModelV2 statement,
       List<MultipartFile> documents) {
-    if (statement.getId() != null) {
-      throw new IdProvidedOnCreateException();
-    }
     TimetableHearingStatement statementToCreate = timetableHearingStatementMapperV2.toEntity(statement);
     return TimetableHearingStatementMapperV2.toModel(createHearingStatement(statementToCreate, documents));
   }
