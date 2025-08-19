@@ -47,17 +47,13 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   @Override
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public StopPointVersion save(StopPointVersion version) {
     sharedServicePointService.validateServicePointExists(
         version.getSloid()); // This check is still needed because of import StopPoint
     stopPointValidationService.validateStopPointRecordingVariants(version);
     initDefaultData(version);
     return stopPointRepository.saveAndFlush(version);
-  }
-
-  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#stopPointVersion)")
-  public StopPointVersion create(StopPointVersion stopPointVersion) {
-    return save(stopPointVersion);
   }
 
   @Override
