@@ -8,8 +8,8 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.platform.entity.PlatformVersion;
-import ch.sbb.prm.directory.platform.mapper.PlatformVersionMapper;
+import ch.sbb.prm.directory.domain.platform.entity.PlatformVersion;
+import ch.sbb.prm.directory.domain.platform.mapper.PlatformVersionMapper;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 

@@ -7,8 +7,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.RelationTestData;
-import ch.sbb.prm.directory.relation.repository.RelationRepository;
-import ch.sbb.prm.directory.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.domain.relation.repository.RelationRepository;
+import ch.sbb.prm.directory.domain.relation.entity.RelationVersion;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
