@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { VersionsHandlingService } from '../../../../../../core/versioning/versions-handling.service';
 import { ToiletFormGroupBuilder } from '../form/toilet-form-group';
 import {
-  PersonWithReducedMobilityService,
   ReadServicePointVersion,
   ReadToiletVersion,
   ToiletVersion,
@@ -23,6 +22,7 @@ import { UserDetailInfoComponent } from '../../../../../../core/components/base-
 import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ToiletService } from '../../../../../../api/service/prm/toilet/toilet.service';
 
 @Component({
   selector: 'app-toilet-detail',
@@ -51,9 +51,7 @@ export class ToiletDetailComponent
   showVersionSwitch = false;
   businessOrganisations: string[] = [];
 
-  constructor(
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService
-  ) {
+  constructor(private readonly toiletService: ToiletService) {
     super();
   }
 
@@ -130,20 +128,18 @@ export class ToiletDetailComponent
   }
 
   private create(toiletVersion: ToiletVersion) {
-    return this.personWithReducedMobilityService
-      .createToiletVersion(toiletVersion)
-      .pipe(
-        switchMap((createdVersion) => {
-          return this.notificateAndNavigate(
-            'PRM.TOILETS.NOTIFICATION.ADD_SUCCESS',
-            createdVersion.sloid!
-          ).pipe(map(() => createdVersion));
-        })
-      );
+    return this.toiletService.createToiletVersion(toiletVersion).pipe(
+      switchMap((createdVersion) => {
+        return this.notificateAndNavigate(
+          'PRM.TOILETS.NOTIFICATION.ADD_SUCCESS',
+          createdVersion.sloid!
+        ).pipe(map(() => createdVersion));
+      })
+    );
   }
 
   private update(toiletVersion: ToiletVersion) {
-    return this.personWithReducedMobilityService
+    return this.toiletService
       .updateToiletVersion(this.selectedVersion.id!, toiletVersion)
       .pipe(
         switchMap((updatedVersions) => {

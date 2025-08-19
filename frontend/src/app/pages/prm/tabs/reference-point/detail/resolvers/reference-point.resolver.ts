@@ -1,16 +1,14 @@
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
-import {
-  PersonWithReducedMobilityService,
-  ReadReferencePointVersion,
-} from '../../../../../../api';
+import { ReadReferencePointVersion } from '../../../../../../api';
 import { Pages } from '../../../../../pages';
+import { ReferencePointService } from '../../../../../../api/service/prm/reference-point/reference-point.service';
 
 @Injectable({ providedIn: 'root' })
 export class PrmReferencePointResolver {
   constructor(
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private readonly referencePointService: ReferencePointService,
     private readonly router: Router
   ) {}
 
@@ -20,7 +18,7 @@ export class PrmReferencePointResolver {
     const sloidParameter = route.paramMap.get('sloid') || '';
     return sloidParameter === 'add'
       ? of([])
-      : this.personWithReducedMobilityService
+      : this.referencePointService
           .getReferencePointVersions(sloidParameter)
           .pipe(
             catchError(() =>

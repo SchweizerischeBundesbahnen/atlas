@@ -200,8 +200,8 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
     contactPointRepository.save(contactPointVersion);
     //when & then
     mvc.perform(get("/v1/contact-points/" + contactPointVersion.getSloid()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(1)));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
   }
 
   @Test
@@ -349,7 +349,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
     contactPointRepository.saveAndFlush(contactPointVersion);
 
     //when & then
-    mvc.perform(get("/v1/contact-points/overview/" + contactPointVersion.getParentServicePointSloid()))
+    mvc.perform(get("/internal/contact-points/overview/" + contactPointVersion.getParentServicePointSloid()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  PersonWithReducedMobilityService,
   ReadReferencePointVersion,
   ReadRelationVersion,
   ReadServicePointVersion,
@@ -44,6 +43,8 @@ import { UserDetailInfoComponent } from '../../../../../core/components/base-det
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { RelationService } from '../../../../../api/service/prm/relation/relation.service';
+import { ReferencePointInternalService } from '../../../../../api/service/prm/reference-point/reference-point-internal.service';
 
 @Component({
   selector: 'app-relation-tab-detail',
@@ -94,7 +95,8 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private readonly referencePointInternalService: ReferencePointInternalService,
+    private readonly relationservice: RelationService,
     private readonly dialogService: DialogService,
     private readonly notificationService: NotificationService,
     private readonly validityService: ValidityService
@@ -113,7 +115,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
         ).map((version) => version.businessOrganisation)
       ),
     ];
-    this.personWithReducedMobilityService
+    this.referencePointInternalService
       .getReferencePointsOverview(this.parentServicePointSloid!)
       .subscribe((overviewRows) => {
         this.referencePoints = overviewRows;
@@ -190,7 +192,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private update(relationVersion: RelationVersion) {
-    return this.personWithReducedMobilityService.updateRelation(
+    return this.relationservice.updateRelation(
       this.currentRelationId,
       relationVersion
     );
@@ -207,7 +209,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private loadRelations(referencePointSloid: string) {
-    this.relations$ = this.personWithReducedMobilityService
+    this.relations$ = this.relationservice
       .getRelationsBySloid(this.elementSloid!)
       .pipe(
         map((relationVersions) => {

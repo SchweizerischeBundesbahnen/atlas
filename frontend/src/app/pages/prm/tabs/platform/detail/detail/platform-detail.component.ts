@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
   MeanOfTransport,
-  PersonWithReducedMobilityService,
   PlatformVersion,
   ReadPlatformVersion,
   ReadServicePointVersion,
@@ -34,6 +33,7 @@ import { UserDetailInfoComponent } from '../../../../../../core/components/base-
 import { DetailFooterComponent } from '../../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasButtonComponent } from '../../../../../../core/components/button/atlas-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { PlatformService } from '../../../../../../api/service/prm/platform/platform.service';
 
 @Component({
   selector: 'app-platforms',
@@ -79,7 +79,7 @@ export class PlatformDetailComponent
   }
 
   constructor(
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private readonly platformService: PlatformService,
     private readonly permissionService: PermissionService
   ) {
     super();
@@ -188,20 +188,18 @@ export class PlatformDetailComponent
   }
 
   private create(platformVersion: PlatformVersion) {
-    return this.personWithReducedMobilityService
-      .createPlatform(platformVersion)
-      .pipe(
-        switchMap((createdVersion) => {
-          return this.notificateAndNavigate(
-            'PRM.PLATFORMS.NOTIFICATION.ADD_SUCCESS',
-            this.trafficPoint.sloid!
-          ).pipe(map(() => createdVersion));
-        })
-      );
+    return this.platformService.createPlatform(platformVersion).pipe(
+      switchMap((createdVersion) => {
+        return this.notificateAndNavigate(
+          'PRM.PLATFORMS.NOTIFICATION.ADD_SUCCESS',
+          this.trafficPoint.sloid!
+        ).pipe(map(() => createdVersion));
+      })
+    );
   }
 
   private update(platformVersion: PlatformVersion) {
-    return this.personWithReducedMobilityService
+    return this.platformService
       .updatePlatform(this.selectedVersion!.id!, platformVersion)
       .pipe(
         switchMap((updatedVersions) => {

@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ParkingLotDetailComponent } from './parking-lot-detail.component';
 import {
   BooleanOptionalAttributeType,
-  PersonWithReducedMobilityService,
   ReadParkingLotVersion,
 } from '../../../../../../api';
 import { of } from 'rxjs';
@@ -39,6 +38,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SplitServicePointNumberPipe } from '../../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
 import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
+import { ParkingLotService } from '../../../../../../api/service/prm/parking-lot/parking-lot.service';
 import SpyObj = jasmine.SpyObj;
 
 const parkingLot: ReadParkingLotVersion[] = [
@@ -70,16 +70,12 @@ describe('ParkingLotDetailComponent', () => {
   let component: ParkingLotDetailComponent;
   let fixture: ComponentFixture<ParkingLotDetailComponent>;
 
-  const personWithReducedMobilityService = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['createParkingLot', 'updateParkingLot']
-  );
-  personWithReducedMobilityService.createParkingLot.and.returnValue(
-    of(parkingLot[0])
-  );
-  personWithReducedMobilityService.updateParkingLot.and.returnValue(
-    of(parkingLot)
-  );
+  const parkingLotService = jasmine.createSpyObj('parkingLotService', [
+    'createParkingLot',
+    'updateParkingLot',
+  ]);
+  parkingLotService.createParkingLot.and.returnValue(of(parkingLot[0]));
+  parkingLotService.updateParkingLot.and.returnValue(of(parkingLot));
 
   const notificationService = jasmine.createSpyObj('notificationService', [
     'success',
@@ -138,8 +134,8 @@ describe('ParkingLotDetailComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityService,
+          provide: ParkingLotService,
+          useValue: parkingLotService,
         },
         { provide: DialogService, useValue: dialogService },
         TranslatePipe,
@@ -175,9 +171,7 @@ describe('ParkingLotDetailComponent', () => {
 
       component.save();
 
-      expect(
-        personWithReducedMobilityService.createParkingLot
-      ).toHaveBeenCalled();
+      expect(parkingLotService.createParkingLot).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
@@ -236,9 +230,7 @@ describe('ParkingLotDetailComponent', () => {
       component.form.controls.designation.markAsDirty();
 
       component.save();
-      expect(
-        personWithReducedMobilityService.updateParkingLot
-      ).toHaveBeenCalled();
+      expect(parkingLotService.updateParkingLot).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });

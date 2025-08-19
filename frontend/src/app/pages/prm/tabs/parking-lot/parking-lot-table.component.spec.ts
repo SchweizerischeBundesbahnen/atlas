@@ -12,11 +12,11 @@ import { of } from 'rxjs';
 import {
   BooleanOptionalAttributeType,
   ParkingLotOverview,
-  PersonWithReducedMobilityService,
 } from '../../../../api';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { ParkingLotInternalService } from '../../../../api/service/prm/parking-lot/parking-lot-internal.service';
 
 const parkingLotOverview: ParkingLotOverview[] = [
   {
@@ -43,11 +43,11 @@ describe('ParkingLotTableComponent', () => {
   let fixture: ComponentFixture<ParkingLotTableComponent>;
   let router: Router;
 
-  const personWithReducedMobilityService = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
+  const parkingLotInternalService = jasmine.createSpyObj(
+    'ParkingLotInternalService',
     ['getParkingLotsOverview']
   );
-  personWithReducedMobilityService.getParkingLotsOverview.and.returnValue(
+  parkingLotInternalService.getParkingLotsOverview.and.returnValue(
     of(parkingLotOverview)
   );
 
@@ -66,8 +66,8 @@ describe('ParkingLotTableComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityService,
+          provide: ParkingLotInternalService,
+          useValue: parkingLotInternalService,
         },
       ],
     }).overrideComponent(ParkingLotTableComponent, {

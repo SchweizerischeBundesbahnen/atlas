@@ -8,15 +8,12 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
-import {
-  PersonWithReducedMobilityService,
-  StandardAttributeType,
-  ToiletOverview,
-} from '../../../../api';
+import { StandardAttributeType, ToiletOverview } from '../../../../api';
 import { of } from 'rxjs';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TableComponent } from '../../../../core/components/table/table.component';
+import { ToiletInternalService } from '../../../../api/service/prm/toilet/toilet-internal.service';
 
 const toiletOverview: ToiletOverview[] = [
   {
@@ -54,14 +51,11 @@ describe('Toilet Component', () => {
     },
   };
 
-  const personWithReducedMobilityService = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['getToiletOverview']
-  );
+  const toiletInternalService = jasmine.createSpyObj('toiletInternalService', [
+    'getToiletOverview',
+  ]);
 
-  personWithReducedMobilityService.getToiletOverview.and.returnValue(
-    of(toiletOverview)
-  );
+  toiletInternalService.getToiletOverview.and.returnValue(of(toiletOverview));
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -69,8 +63,8 @@ describe('Toilet Component', () => {
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityService,
+          provide: ToiletInternalService,
+          useValue: toiletInternalService,
         },
       ],
     }).overrideComponent(ToiletComponent, {

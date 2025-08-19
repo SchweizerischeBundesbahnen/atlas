@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ToiletDetailComponent } from './toilet-detail.component';
 import {
-  PersonWithReducedMobilityService,
   ReadToiletVersion,
   StandardAttributeType,
 } from '../../../../../../api';
@@ -40,6 +39,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SplitServicePointNumberPipe } from '../../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
 import { PermissionService } from '../../../../../../core/auth/permission/permission.service';
+import { ToiletService } from 'src/app/api/service/prm/toilet/toilet.service';
 import SpyObj = jasmine.SpyObj;
 
 const toilet: ReadToiletVersion[] = [
@@ -70,16 +70,12 @@ describe('ToiletDetailComponent', () => {
   let component: ToiletDetailComponent;
   let fixture: ComponentFixture<ToiletDetailComponent>;
 
-  const personWithReducedMobilityService = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['createToiletVersion', 'updateToiletVersion']
-  );
-  personWithReducedMobilityService.createToiletVersion.and.returnValue(
-    of(toilet[0])
-  );
-  personWithReducedMobilityService.updateToiletVersion.and.returnValue(
-    of(toilet)
-  );
+  const toiletService = jasmine.createSpyObj('toiletService', [
+    'createToiletVersion',
+    'updateToiletVersion',
+  ]);
+  toiletService.createToiletVersion.and.returnValue(of(toilet[0]));
+  toiletService.updateToiletVersion.and.returnValue(of(toilet));
 
   const notificationService = jasmine.createSpyObj('notificationService', [
     'success',
@@ -139,8 +135,8 @@ describe('ToiletDetailComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
         {
-          provide: PersonWithReducedMobilityService,
-          useValue: personWithReducedMobilityService,
+          provide: ToiletService,
+          useValue: toiletService,
         },
         { provide: DialogService, useValue: dialogService },
         TranslatePipe,
@@ -176,9 +172,7 @@ describe('ToiletDetailComponent', () => {
 
       component.save();
 
-      expect(
-        personWithReducedMobilityService.createToiletVersion
-      ).toHaveBeenCalled();
+      expect(toiletService.createToiletVersion).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
@@ -237,9 +231,7 @@ describe('ToiletDetailComponent', () => {
       component.form.controls.designation.markAsDirty();
 
       component.save();
-      expect(
-        personWithReducedMobilityService.updateToiletVersion
-      ).toHaveBeenCalled();
+      expect(toiletService.updateToiletVersion).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
