@@ -9,23 +9,23 @@ import {ReadContactPointVersion} from "../../../model/readContactPointVersion";
 })
 export class ContactPointService {
 
-  private readonly V1_PLATFORMS = '/prm-directory/v1/contact-points';
+  private readonly V1_CONTACT_POINTS = '/prm-directory/v1/contact-points';
 
   private readonly atlasApiService = inject(AtlasApiService);
 
   public createContactPoint(contactPointVersion: ContactPointVersion): Observable<ReadContactPointVersion> {
     this.atlasApiService.validateParams({contactPointVersion: contactPointVersion});
-    return this.atlasApiService.post(`${this.V1_PLATFORMS}`, contactPointVersion);
+    return this.atlasApiService.post(`${this.V1_CONTACT_POINTS}`, contactPointVersion);
   }
 
   public updateContactPoint(id: number, contactPointVersion: ContactPointVersion): Observable<ReadContactPointVersion> {
     this.atlasApiService.validateParams({id, contactPointVersion: contactPointVersion});
-    return this.atlasApiService.put(`${this.V1_PLATFORMS}/${id}`, contactPointVersion);
+    return this.atlasApiService.put(`${this.V1_CONTACT_POINTS}/${id}`, contactPointVersion);
   }
 
   public getContactPointVersions(sloid: String): Observable<Array<ReadContactPointVersion>> {
     this.atlasApiService.validateParams({sloid});
-    return this.atlasApiService.get(`${this.V1_PLATFORMS}/${sloid}`);
+    return this.atlasApiService.get(`${this.V1_CONTACT_POINTS}/${sloid}`);
   }
 
 }
