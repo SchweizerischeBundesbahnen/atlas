@@ -8,7 +8,8 @@ import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ContactPointTestData;
-import ch.sbb.prm.directory.entity.ContactPointVersion;
+import ch.sbb.prm.directory.contactpoint.entity.ContactPointVersion;
+import ch.sbb.prm.directory.contactpoint.mapper.ContactPointVersionMapper;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 

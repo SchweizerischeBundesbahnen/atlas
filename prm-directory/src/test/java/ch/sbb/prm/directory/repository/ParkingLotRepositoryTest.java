@@ -4,7 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.ParkingLotTestData;
-import ch.sbb.prm.directory.entity.ParkingLotVersion;
+import ch.sbb.prm.directory.parkinglot.entity.ParkingLotVersion;
+import ch.sbb.prm.directory.parkinglot.repository.ParkingLotRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,9 +31,9 @@ class ParkingLotRepositoryTest {
   @Test
   void shouldReturnParkingLots() {
     //when
-   List<ParkingLotVersion> result = parkingLotRepository.findAll();
-   //then
-   assertThat(result).hasSize(1);
+    List<ParkingLotVersion> result = parkingLotRepository.findAll();
+    //then
+    assertThat(result).hasSize(1);
   }
 
 }

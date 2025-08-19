@@ -17,25 +17,28 @@ import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.prm.directory.controller.model.ReferencePointRequestParams;
-import ch.sbb.prm.directory.entity.ContactPointVersion;
-import ch.sbb.prm.directory.entity.ParkingLotVersion;
-import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.entity.ToiletVersion;
+import ch.sbb.prm.directory.contactpoint.entity.ContactPointVersion;
+import ch.sbb.prm.directory.contactpoint.repository.ContactPointRepository;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.exception.ObjectRevokedException;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
-import ch.sbb.prm.directory.repository.ContactPointRepository;
-import ch.sbb.prm.directory.repository.ParkingLotRepository;
-import ch.sbb.prm.directory.repository.PlatformRepository;
-import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
-import ch.sbb.prm.directory.repository.ToiletRepository;
-import ch.sbb.prm.directory.search.ReferencePointSearchRestrictions;
+import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.parkinglot.entity.ParkingLotVersion;
+import ch.sbb.prm.directory.parkinglot.repository.ParkingLotRepository;
+import ch.sbb.prm.directory.platform.entity.PlatformVersion;
+import ch.sbb.prm.directory.platform.repository.PlatformRepository;
+import ch.sbb.prm.directory.referencepoint.controller.model.ReferencePointRequestParams;
+import ch.sbb.prm.directory.referencepoint.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.referencepoint.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.referencepoint.search.ReferencePointSearchRestrictions;
+import ch.sbb.prm.directory.referencepoint.service.ReferencePointService;
+import ch.sbb.prm.directory.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.relation.service.RelationService;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.stoppoint.repository.StopPointRepository;
+import ch.sbb.prm.directory.toilet.entity.ToiletVersion;
+import ch.sbb.prm.directory.toilet.repository.ToiletRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -95,7 +98,8 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
         .getRelationsByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).hasSize(4);
     assertThat(relations.stream().map(RelationVersion::getReferencePointElementType))
-        .containsExactlyInAnyOrder(ReferencePointElementType.PLATFORM, ReferencePointElementType.CONTACT_POINT, ReferencePointElementType.TOILET, ReferencePointElementType.PARKING_LOT);
+        .containsExactlyInAnyOrder(ReferencePointElementType.PLATFORM, ReferencePointElementType.CONTACT_POINT,
+            ReferencePointElementType.TOILET, ReferencePointElementType.PARKING_LOT);
   }
 
   @Test
@@ -149,7 +153,8 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     Page<ReferencePointVersion> result = referencePointService.findAll(
         ReferencePointSearchRestrictions.builder()
             .pageable(Pageable.ofSize(1))
-            .referencePointRequestParams(ReferencePointRequestParams.builder().parentServicePointSloids(List.of("ch:1:unknownsloid")).build()).build());
+            .referencePointRequestParams(
+                ReferencePointRequestParams.builder().parentServicePointSloids(List.of("ch:1:unknownsloid")).build()).build());
     assertThat(result.getTotalElements()).isZero();
     assertThat(result.getContent()).isEmpty();
 
@@ -253,7 +258,6 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
 
     assertThat(result).hasSize(2);
   }
-
 
   @Test
   void testCheckExistsForReferencePoint_DoesNotExist() {

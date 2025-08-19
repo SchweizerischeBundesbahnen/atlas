@@ -7,6 +7,8 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.exception.ServicePointDoesNotExistException;
+import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointConsumer;
+import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointService;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;

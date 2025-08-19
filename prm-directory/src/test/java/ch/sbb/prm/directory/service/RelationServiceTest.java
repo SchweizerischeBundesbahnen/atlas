@@ -11,12 +11,14 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
-import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.relation.repository.RelationRepository;
+import ch.sbb.prm.directory.relation.service.RelationService;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.stoppoint.repository.StopPointRepository;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
@@ -31,9 +33,9 @@ class RelationServiceTest extends BasePrmServiceTest {
 
   @Autowired
   RelationServiceTest(RelationService relationService,
-                      RelationRepository relationRepository,
-                      StopPointRepository stopPointRepository,
-                      SharedServicePointRepository sharedServicePointRepository,
+      RelationRepository relationRepository,
+      StopPointRepository stopPointRepository,
+      SharedServicePointRepository sharedServicePointRepository,
       PrmLocationService prmLocationService) {
     super(sharedServicePointRepository, prmLocationService);
     this.relationService = relationService;
@@ -107,7 +109,8 @@ class RelationServiceTest extends BasePrmServiceTest {
   void shouldUpdateRelationWhenWithMultipleReferencePoints() {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
-    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN)).build();
+    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .build();
     stopPointVersion.setSloid(parentServicePointSloid);
     stopPointRepository.save(stopPointVersion);
 

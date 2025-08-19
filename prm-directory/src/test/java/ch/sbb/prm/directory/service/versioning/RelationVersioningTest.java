@@ -9,14 +9,14 @@ import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.relation.repository.RelationRepository;
+import ch.sbb.prm.directory.relation.service.RelationService;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
-import ch.sbb.prm.directory.service.PrmLocationService;
-import ch.sbb.prm.directory.service.RelationService;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.stoppoint.repository.StopPointRepository;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -30,9 +30,9 @@ class RelationVersioningTest extends BasePrmServiceTest {
 
   @Autowired
   RelationVersioningTest(RelationService relationService,
-                         RelationRepository relationRepository,
-                         StopPointRepository stopPointRepository,
-                         SharedServicePointRepository sharedServicePointRepository,
+      RelationRepository relationRepository,
+      StopPointRepository stopPointRepository,
+      SharedServicePointRepository sharedServicePointRepository,
       PrmLocationService prmLocationService) {
     super(sharedServicePointRepository, prmLocationService);
     this.relationService = relationService;
@@ -45,7 +45,7 @@ class RelationVersioningTest extends BasePrmServiceTest {
    * NEU:                             |________________________________
    * IST:      |----------------------|--------------------------------
    * Version:        1                                2
-   *
+   * <p>
    * RESULTAT: |----------------------|________________________________
    * Version:        1                                2
    */
@@ -92,7 +92,7 @@ class RelationVersioningTest extends BasePrmServiceTest {
     RelationVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields( StopPointVersion.Fields.id)
+        .ignoringFields(StopPointVersion.Fields.id)
         .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(editedVersion);
   }
@@ -102,7 +102,7 @@ class RelationVersioningTest extends BasePrmServiceTest {
    * NEU:                       |___________|
    * IST:      |-----------|----------------------|--------------------
    * Version:        1                 2                  3
-   *
+   * <p>
    * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
    * Version:        1       2         4       5          3
    */
@@ -176,7 +176,7 @@ class RelationVersioningTest extends BasePrmServiceTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
+   * <p>
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */

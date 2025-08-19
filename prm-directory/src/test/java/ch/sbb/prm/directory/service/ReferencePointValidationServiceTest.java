@@ -6,9 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.exception.MainReferencePointConflictException;
-import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.referencepoint.exception.MainReferencePointConflictException;
+import ch.sbb.prm.directory.referencepoint.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.referencepoint.service.ReferencePointValidationService;
+import ch.sbb.prm.directory.referencepoint.entity.ReferencePointVersion;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

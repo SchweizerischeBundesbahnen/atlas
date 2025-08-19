@@ -7,18 +7,18 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.ContactPointVersion;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.repository.ContactPointRepository;
-import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.contactpoint.entity.ContactPointVersion;
+import ch.sbb.prm.directory.contactpoint.repository.ContactPointRepository;
+import ch.sbb.prm.directory.contactpoint.service.ContactPointService;
+import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.referencepoint.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.referencepoint.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.relation.service.RelationService;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
-import ch.sbb.prm.directory.service.ContactPointService;
-import ch.sbb.prm.directory.service.PrmLocationService;
-import ch.sbb.prm.directory.service.RelationService;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.stoppoint.repository.StopPointRepository;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -34,11 +34,11 @@ class ContactPointVersioningTest extends BasePrmServiceTest {
 
   @Autowired
   ContactPointVersioningTest(ContactPointService contactPointService,
-                             ContactPointRepository contactPointRepository,
-                             RelationService relationService,
-                             StopPointRepository stopPointRepository,
-                             ReferencePointRepository referencePointRepository,
-                             SharedServicePointRepository sharedServicePointRepository,
+      ContactPointRepository contactPointRepository,
+      RelationService relationService,
+      StopPointRepository stopPointRepository,
+      ReferencePointRepository referencePointRepository,
+      SharedServicePointRepository sharedServicePointRepository,
       PrmLocationService prmLocationService) {
     super(sharedServicePointRepository, prmLocationService);
     this.contactPointService = contactPointService;
@@ -53,7 +53,7 @@ class ContactPointVersioningTest extends BasePrmServiceTest {
    * NEU:                             |________________________________
    * IST:      |----------------------|--------------------------------
    * Version:        1                                2
-   *
+   * <p>
    * RESULTAT: |----------------------|________________________________
    * Version:        1                                2
    */
@@ -113,7 +113,7 @@ class ContactPointVersioningTest extends BasePrmServiceTest {
    * NEU:                       |___________|
    * IST:      |-----------|----------------------|--------------------
    * Version:        1                 2                  3
-   *
+   * <p>
    * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
    * Version:        1       2         4       5          3
    */
@@ -184,7 +184,7 @@ class ContactPointVersioningTest extends BasePrmServiceTest {
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-            PARENT_SERVICE_POINT_SLOID);
+        PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
   }
 
@@ -193,7 +193,7 @@ class ContactPointVersioningTest extends BasePrmServiceTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
+   * <p>
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */
