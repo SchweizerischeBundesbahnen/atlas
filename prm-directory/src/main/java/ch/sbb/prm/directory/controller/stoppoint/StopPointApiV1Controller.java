@@ -60,7 +60,7 @@ public class StopPointApiV1Controller implements StopPointApiV1 {
       throw new StopPointAlreadyExistsException(model.getSloid());
     }
     StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(model);
-    StopPointVersion savedVersion = stopPointService.create(stopPointVersion);
+    StopPointVersion savedVersion = stopPointService.save(stopPointVersion);
     return StopPointVersionMapper.toModel(savedVersion);
   }
 
