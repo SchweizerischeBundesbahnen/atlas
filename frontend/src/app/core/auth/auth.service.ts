@@ -58,11 +58,7 @@ export class AuthService {
   }
 
   logout() {
-    this.oidcSecurityService
-      .logoff()
-      .subscribe((result) => console.log(result));
-    // todo: mby use with revoke (check if it logouts from provider and redirects to home)
-    //  cleanup of environment
+    this.oidcSecurityService.logoffAndRevokeTokens().pipe(take(1)).subscribe();
   }
 
   private isAdminFromToken(token: string): boolean {
