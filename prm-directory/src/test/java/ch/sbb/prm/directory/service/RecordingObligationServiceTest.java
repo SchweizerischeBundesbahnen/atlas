@@ -3,8 +3,8 @@ package ch.sbb.prm.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.prm.directory.domain.recordingobbligation.repository.RecordingObligationRepository;
-import ch.sbb.prm.directory.domain.recordingobbligation.service.RecordingObligationService;
+import ch.sbb.prm.directory.module.recordingobbligation.repository.RecordingObligationRepository;
+import ch.sbb.prm.directory.module.recordingobbligation.service.RecordingObligationService;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
