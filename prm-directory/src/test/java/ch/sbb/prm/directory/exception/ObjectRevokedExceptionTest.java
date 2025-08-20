@@ -2,7 +2,7 @@ package ch.sbb.prm.directory.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.module.referencepoint.entity.ReferencePointVersion;
 import org.junit.jupiter.api.Test;
 
 class ObjectRevokedExceptionTest {

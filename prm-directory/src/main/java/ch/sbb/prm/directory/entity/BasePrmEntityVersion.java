@@ -7,6 +7,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.prm.directory.shared.servicepoint.entity.PrmSharedVersion;
 import ch.sbb.prm.directory.validation.status.PrmStatusSubSet;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

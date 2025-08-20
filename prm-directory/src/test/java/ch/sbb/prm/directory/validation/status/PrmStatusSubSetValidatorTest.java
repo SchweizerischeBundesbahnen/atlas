@@ -19,9 +19,8 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 class PrmStatusSubSetValidatorTest extends BaseValidatorTest {
 
-
   @ParameterizedTest
-  @EnumSource(value = Status.class, names = {"DRAFT","IN_REVIEW","WITHDRAWN"})
+  @EnumSource(value = Status.class, names = {"DRAFT", "IN_REVIEW", "WITHDRAWN"})
   void shouldNotBeValid(Status status) {
     //given
     MyStatusObj myStatusObj = MyStatusObj.builder().version(0).status(status).build();
@@ -33,12 +32,12 @@ class PrmStatusSubSetValidatorTest extends BaseValidatorTest {
         .map(ConstraintViolation::getMessage)
         .toList();
     assertThat(violationMessages).hasSize(1);
-    assertThat(violationMessages.get(0)).isEqualTo("must be any of [VALIDATED, REVOKED]");
+    assertThat(violationMessages.getFirst()).isEqualTo("must be any of [VALIDATED, REVOKED]");
 
   }
 
   @ParameterizedTest
-  @EnumSource(value = Status.class, names = {"REVOKED","VALIDATED"})
+  @EnumSource(value = Status.class, names = {"REVOKED", "VALIDATED"})
   void shouldBeValid(Status status) {
     //given
     MyStatusObj myStatusObj = MyStatusObj.builder().version(0).status(status).build();
@@ -60,7 +59,7 @@ class PrmStatusSubSetValidatorTest extends BaseValidatorTest {
         .map(ConstraintViolation::getMessage)
         .toList();
     assertThat(violationMessages).hasSize(1);
-    assertThat(violationMessages.get(0)).isEqualTo("must be any of [VALIDATED, REVOKED]");
+    assertThat(violationMessages.getFirst()).isEqualTo("must be any of [VALIDATED, REVOKED]");
   }
 
   @EqualsAndHashCode(callSuper = true)
@@ -69,7 +68,7 @@ class PrmStatusSubSetValidatorTest extends BaseValidatorTest {
   static class MyStatusObj extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
-    @PrmStatusSubSet(anyOf = {Status.VALIDATED,Status.REVOKED})
+    @PrmStatusSubSet(anyOf = {Status.VALIDATED, Status.REVOKED})
     private Status status;
 
   }
