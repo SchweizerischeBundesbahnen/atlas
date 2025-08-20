@@ -2,8 +2,8 @@ package ch.sbb.prm.directory.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
+import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import org.junit.jupiter.api.Test;
 
 class PrmVariantUtilTest {

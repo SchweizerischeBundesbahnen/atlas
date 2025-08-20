@@ -6,9 +6,9 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
-import ch.sbb.prm.directory.PlatformTestData;
-import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.util.PlatformRecordingStatusEvaluator;
+import ch.sbb.prm.directory.module.platform.PlatformTestData;
+import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
+import ch.sbb.prm.directory.module.platform.util.PlatformRecordingStatusEvaluator;
 import org.junit.jupiter.api.Test;
 
 class PlatformRecordingStatusEvaluatorTest {
