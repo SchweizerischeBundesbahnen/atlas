@@ -12,7 +12,7 @@ import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.TRAIN;
 import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.TRAM;
 
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.domain.stoppoint.exception.StopPointMeansOfTransportCombinationNotAllowedException;
+import ch.sbb.prm.directory.module.stoppoint.exception.StopPointMeansOfTransportCombinationNotAllowedException;
 import ch.sbb.prm.directory.exception.UnknownMeanOfTransportNotAllowedException;
 import java.util.List;
 import java.util.Set;
