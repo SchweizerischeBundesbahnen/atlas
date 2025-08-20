@@ -2,6 +2,7 @@ package ch.sbb.business.organisation.directory.controller;
 
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -11,6 +12,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "[INTERNAL] Business Organisations")
 @RequestMapping("internal/business-organisations")
+@Validated
 public interface BusinessOrganisationApiInternal {
 
   @PostMapping("{sboid}/revoke")
@@ -36,7 +39,7 @@ public interface BusinessOrganisationApiInternal {
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).BODI)")
   BusinessOrganisationVersionModel createBusinessOrganisationVersion(
-      @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
+      @RequestBody @Valid @CreateIdCheck BusinessOrganisationVersionModel newVersion);
 
   @PutMapping("versions/{id}")
   @ApiResponses(value = {

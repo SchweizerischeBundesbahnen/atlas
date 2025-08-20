@@ -110,7 +110,7 @@ class SectorServiceTest {
     TrafficPointElementVersion trafficPointElementVersion =
         trafficPointElementVersionRepository.save(TrafficPointTestData.getBasicTrafficPoint());
 
-    SectorVersionModel sectorVersionModel = SectorVersionModel.builder()
+    SectorVersion sectorVersionModel = SectorVersion.builder()
         .trafficPointSloid(trafficPointElementVersion.getSloid())
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2024, 1, 1))
@@ -137,7 +137,7 @@ class SectorServiceTest {
   @Test
   void shouldThrowWhenCreateSectorWithoutTrafficPoint() {
     // Given
-    SectorVersionModel model = SectorVersionModel.builder()
+    SectorVersion model = SectorVersion.builder()
         .trafficPointSloid("nonexistent-sloid")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2024, 1, 1))
@@ -162,7 +162,7 @@ class SectorServiceTest {
 
     TrafficPointElementVersion saved =
         trafficPointElementVersionRepository.save(trafficPointElementVersion);
-    SectorVersionModel model = SectorVersionModel.builder()
+    SectorVersion model = SectorVersion.builder()
         .trafficPointSloid(saved.getSloid())
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2024, 1, 1))
@@ -186,7 +186,7 @@ class SectorServiceTest {
     TrafficPointElementVersion saved =
         trafficPointElementVersionRepository.save(trafficPointElementVersion);
 
-    SectorVersionModel model = SectorVersionModel.builder()
+    SectorVersion model = SectorVersion.builder()
         .trafficPointSloid(saved.getSloid())
         .validFrom(LocalDate.of(2024, 1, 1))
         .validTo(LocalDate.of(2044, 1, 1))

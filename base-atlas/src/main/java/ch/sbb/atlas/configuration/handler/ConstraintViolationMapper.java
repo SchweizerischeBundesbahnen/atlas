@@ -50,6 +50,9 @@ public class ConstraintViolationMapper {
     ERROR_CODE_MAP.put("{atlas.constraint.validStopPointType}", new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_STOP_POINT_TYPE",
         cv -> "stopPointType is only allowed for StopPoints and must not be null or unknown"));
+    ERROR_CODE_MAP.put("{atlas.constraint.createIdCheck}", new ErrorInfo(
+        "ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK",
+        cv -> "ID must be null when creating a new element"));
     ERROR_CODE_MAP.put("{atlas.constraint.validServicePointNumber}", new ErrorInfo(
         "ERROR.CONSTRAINT_VIOLATION.VALID_SERVICE_POINT_NUMBER",
         cv -> "numberShort must be present only if country not in (85,11,12,13,14)"));

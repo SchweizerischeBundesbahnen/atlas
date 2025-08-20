@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.prm.model;
 
 import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.model.IdCheckable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotNull;
@@ -18,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @FieldNameConstants
-public abstract class BaseBasicPrmVersionModel extends BaseVersionModel {
+public abstract class BaseBasicPrmVersionModel extends BaseVersionModel implements IdCheckable {
 
   @Schema(description = """
       This ID helps identify versions of a prm object in the use case front end and/or update.

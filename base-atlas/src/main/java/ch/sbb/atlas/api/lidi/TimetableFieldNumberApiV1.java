@@ -5,6 +5,7 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFI
 import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Timetable Field Numbers")
 @RequestMapping("v1/field-numbers")
+@Validated
 public interface TimetableFieldNumberApiV1 {
 
   @GetMapping("/versions/{ttfnId}")
@@ -51,6 +54,6 @@ public interface TimetableFieldNumberApiV1 {
       @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
   TimetableFieldNumberVersionModel createVersion(
-      @RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
+      @RequestBody @Valid @CreateIdCheck TimetableFieldNumberVersionModel newVersion);
 
 }

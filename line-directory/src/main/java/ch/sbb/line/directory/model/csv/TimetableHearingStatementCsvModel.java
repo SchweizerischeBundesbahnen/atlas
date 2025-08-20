@@ -73,7 +73,8 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
         .street(timetableHearingStatementModel.getStatementSender().getStreet())
         .zipAndCity(getZipAndCity(timetableHearingStatementModel.getStatementSender().getZip(),
             timetableHearingStatementModel.getStatementSender().getCity()))
-        .emails(timetableHearingStatementModel.getStatementSender().getEmails().stream().sorted().collect(Collectors.joining(",")))
+        .emails(
+            timetableHearingStatementModel.getStatementSender().getEmails().stream().sorted().collect(Collectors.joining(",")))
         .editor(timetableHearingStatementModel.getEditor())
         .editionDate(timetableHearingStatementModel.getEditionDate())
         .timetableHearingYear(timetableHearingStatementModel.getTimetableYear())

@@ -12,7 +12,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ToiletVersionMapper {
 
-  public static ReadToiletVersionModel toModel(ToiletVersion version){
+  public static ReadToiletVersionModel toModel(ToiletVersion version) {
     return ReadToiletVersionModel.builder()
         .id(version.getId())
         .status(version.getStatus())

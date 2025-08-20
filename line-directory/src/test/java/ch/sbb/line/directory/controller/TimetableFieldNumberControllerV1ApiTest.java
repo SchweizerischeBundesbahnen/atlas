@@ -82,6 +82,32 @@ class TimetableFieldNumberControllerV1ApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel =
+        TimetableFieldNumberVersionModel.builder()
+            .id(1111L)
+            .validTo(LocalDate.of(2000, 12, 31))
+            .validFrom(LocalDate.of(2000, 1, 1))
+            .businessOrganisation("sbb")
+            .swissTimetableFieldNumber("swissLineNumber")
+            .number("123")
+            .description("description")
+            .ttfnid("123")
+            .status(Status.VALIDATED).build();
+    //when && then
+    mvc.perform(post("/v1/field-numbers/versions")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(timetableFieldNumberVersionModel))
+        ).
+        andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
+        .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
+  }
+
+  @Test
   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     // Given
     String responseBody = mvc.perform(

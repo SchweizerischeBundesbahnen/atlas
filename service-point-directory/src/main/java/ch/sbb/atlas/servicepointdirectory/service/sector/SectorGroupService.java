@@ -81,9 +81,9 @@ public class SectorGroupService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
-  public ReadSectorGroupVersionModel create(SectorGroupVersion toCreate,
+  public ReadSectorGroupVersionModel create(SectorGroupVersion sectorGroupVersion,
       List<String> sloids, List<ServicePointVersion> servicePointVersions) {
-    return createSectorGroup(toCreate, sloids);
+    return createSectorGroup(sectorGroupVersion, sloids);
   }
 
   public ReadSectorGroupVersionModel createSectorGroup(SectorGroupVersion sectorGroupVersion,
