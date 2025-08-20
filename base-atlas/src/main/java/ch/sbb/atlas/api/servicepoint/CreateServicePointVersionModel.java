@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.IdCheckable;
 import ch.sbb.atlas.servicepoint.Country;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "CreateServicePointVersion")
-public class CreateServicePointVersionModel extends UpdateServicePointVersionModel {
+public class CreateServicePointVersionModel extends UpdateServicePointVersionModel implements IdCheckable {
 
   @Schema(description = "Five digits number. Represent service point ID.", example = "34505")
   @Min(AtlasFieldLengths.MIN_NUMBER)

@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.controller;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -94,6 +95,29 @@ class SublineControllerV2ApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(sublineVersionModel)))
         .andExpect(status().isCreated());
+  }
+
+  @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    CreateSublineVersionModelV2 sublineVersionModel =
+        CreateSublineVersionModelV2.builder()
+            .id(1111L)
+            .validFrom(LocalDate.of(2020, 2, 1))
+            .validTo(LocalDate.of(2020, 11, 30))
+            .businessOrganisation("sbb")
+            .description("b0.Ic2-sibline")
+            .sublineType(SublineType.TECHNICAL)
+            .mainlineSlnid(mainLineVersion.getSlnid())
+            .build();
+
+    mvc.perform(post("/v2/sublines/versions")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(sublineVersionModel)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
+        .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
   }
 
   @Test

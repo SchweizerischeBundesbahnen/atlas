@@ -10,6 +10,7 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
+import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,6 +27,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "[INTERNAL] Timetable Hearing Statements")
 @RequestMapping("internal/timetable-hearing/statements")
+@Validated
 public interface TimetableHearingStatementApiInternal {
 
   @ResponseStatus(HttpStatus.OK)
@@ -117,7 +120,7 @@ public interface TimetableHearingStatementApiInternal {
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModelV2 createStatement(
-      @RequestPart @Valid TimetableHearingStatementModelV2 statement,
+      @RequestPart @Valid @CreateIdCheck TimetableHearingStatementModelV2 statement,
       @RequestPart(required = false) List<MultipartFile> documents);
 
   // ATLAS-2634: File-Upload with specific firewall rule. Be aware when changing the path!

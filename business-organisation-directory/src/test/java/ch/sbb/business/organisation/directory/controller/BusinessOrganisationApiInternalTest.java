@@ -90,6 +90,39 @@ class BusinessOrganisationApiInternalTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
+        .builder()
+        .id(1111L)
+        .sboid("ch:1:sboid:100000")
+        .abbreviationDe("abkde")
+        .abbreviationFr("abkfr")
+        .abbreviationIt("abkit")
+        .abbreviationEn("abken")
+        .descriptionDe("desc-de")
+        .descriptionFr("desc-fr")
+        .descriptionIt("desc-it")
+        .descriptionEn("desc-en")
+        .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
+        .contactEnterpriseEmail("mail@mail.ch")
+        .organisationNumber(1234)
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
+
+    //when and then
+    mvc.perform(post("/internal/business-organisations/versions").contentType(contentType)
+            .content(mapper.writeValueAsString(model)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
+        .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
+  }
+
+  @Test
   void shouldNotCreateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldProvidedIsTooLong()
       throws Exception {
     //given

@@ -40,14 +40,15 @@ public class SectorApiInternalController implements SectorApiInternal {
 
   @Override
   public SectorVersionModel createSectorVersion(SectorVersionModel createSectorVersionModel) {
-    trafficPointElementService.doesTrafficPointExist(createSectorVersionModel.getTrafficPointSloid());
+    SectorVersion sectorVersion = SectorMapper.toEntity(createSectorVersionModel);
+    trafficPointElementService.doesTrafficPointExist(sectorVersion.getTrafficPointSloid());
     TrafficPointElementVersion trafficPointElementVersion =
-        trafficPointElementService.findBySloidOrderByValidFrom(createSectorVersionModel.getTrafficPointSloid()).getFirst();
+        trafficPointElementService.findBySloidOrderByValidFrom(sectorVersion.getTrafficPointSloid()).getFirst();
 
     List<ServicePointVersion> servicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(
         trafficPointElementVersion.getServicePointNumber());
 
-    return sectorService.create(createSectorVersionModel, servicePointVersions);
+    return sectorService.create(sectorVersion, servicePointVersions);
   }
 
   @Override

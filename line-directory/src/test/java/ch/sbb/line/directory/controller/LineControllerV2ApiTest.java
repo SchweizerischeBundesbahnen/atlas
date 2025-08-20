@@ -81,6 +81,30 @@ class LineControllerV2ApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    LineVersionModelV2 lineVersionModel =
+        LineTestData.createLineVersionModelBuilder()
+            .id(1111L)
+            .validTo(LocalDate.of(2000, 12, 31))
+            .validFrom(LocalDate.of(2000, 1, 1))
+            .businessOrganisation("sbb")
+            .longName("long name")
+            .lineType(LineType.ORDERLY)
+            .build();
+    //when && then
+    mvc.perform(post("/v2/lines/versions")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(lineVersionModel))
+        )
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
+        .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
+  }
+
+  @Test
   void shouldUpdateLineVersion() throws Exception {
     //given
     LineVersionModelV2 createLineVersionModelV2 =

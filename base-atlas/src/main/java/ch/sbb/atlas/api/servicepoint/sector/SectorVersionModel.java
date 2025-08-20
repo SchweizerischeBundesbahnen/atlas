@@ -2,6 +2,7 @@ package ch.sbb.atlas.api.servicepoint.sector;
 
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import ch.sbb.atlas.model.IdCheckable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Digits;
@@ -20,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "SectorVersion")
-public class SectorVersionModel extends BaseSectorModel {
+public class SectorVersionModel extends BaseSectorModel implements IdCheckable {
 
   @NotNull
   @Digits(integer = 8, fraction = 11)
