@@ -6,8 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.exception.StopPointMeansOfTransportCombinationNotAllowedException;
 import ch.sbb.prm.directory.exception.UnknownMeanOfTransportNotAllowedException;
+import ch.sbb.prm.directory.module.stoppoint.exception.StopPointMeansOfTransportCombinationNotAllowedException;
+import ch.sbb.prm.directory.util.PrmMeansOfTransportHelper;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -26,10 +27,11 @@ class PrmMeansOfTransportHelperTest {
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
     assertThat(errorResponse.getMessage()).isEqualTo("Means of Transport combination not allowed!");
-    assertThat(errorResponse.getError()).isEqualTo("The given Means of Transport combination [BUS, TRAIN] is not allowed.\n"
-        + "Allowed combination:\n"
-        + "Reduced: [ELEVATOR, BUS, CHAIRLIFT, CABLE_CAR, CABLE_RAILWAY, BOAT, TRAM]\n"
-        + "Complete: [METRO, TRAIN, RACK_RAILWAY]");
+    assertThat(errorResponse.getError()).isEqualTo("""
+        The given Means of Transport combination [BUS, TRAIN] is not allowed.
+        Allowed combination:
+        Reduced: [ELEVATOR, BUS, CHAIRLIFT, CABLE_CAR, CABLE_RAILWAY, BOAT, TRAM]
+        Complete: [METRO, TRAIN, RACK_RAILWAY]""");
   }
 
   @Test

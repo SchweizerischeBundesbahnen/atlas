@@ -14,9 +14,12 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.RelationVersion.RelationVersionBuilder;
-import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.module.relation.service.RelationService;
+import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.module.relation.entity.RelationVersion.RelationVersionBuilder;
+import ch.sbb.prm.directory.module.referencepoint.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -69,7 +72,8 @@ class PrmRelatableVersionableServiceTest {
 
   @Test
   void shouldEvaluateRecordingStatusWithIncompleteRelationsAndElementStatusToIncomplete() {
-    when(relationService.getRelationsBySloid(any())).thenReturn(List.of(getRelation().tactileVisualMarks(TactileVisualAttributeType.TO_BE_COMPLETED).build()));
+    when(relationService.getRelationsBySloid(any())).thenReturn(
+        List.of(getRelation().tactileVisualMarks(TactileVisualAttributeType.TO_BE_COMPLETED).build()));
 
     RecordingStatus result = relatableService.getRecordingStatusIncludingRelation(ELEMENT_SLOID, RecordingStatus.COMPLETE);
     assertThat(result).isEqualTo(RecordingStatus.INCOMPLETE);
