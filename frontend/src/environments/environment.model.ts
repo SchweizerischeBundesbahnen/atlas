@@ -1,5 +1,3 @@
-// import { AuthConfig } from 'angular-oauth2-oidc';
-
 import { PassedInitialConfig } from 'angular-auth-oidc-client';
 
 export interface Environment {
