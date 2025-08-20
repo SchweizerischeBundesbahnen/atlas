@@ -12,17 +12,17 @@ import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
-import ch.sbb.prm.directory.ContactPointTestData;
-import ch.sbb.prm.directory.ParkingLotTestData;
-import ch.sbb.prm.directory.PlatformTestData;
-import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.RelationTestData;
-import ch.sbb.prm.directory.SharedServicePointTestData;
-import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.prm.directory.entity.PrmSharedVersion;
-import ch.sbb.prm.directory.entity.SharedServicePoint;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.module.contactpoint.ContactPointTestData;
+import ch.sbb.prm.directory.module.parkinglot.ParkingLotTestData;
+import ch.sbb.prm.directory.module.platform.PlatformTestData;
+import ch.sbb.prm.directory.module.referencepoint.ReferencePointTestData;
+import ch.sbb.prm.directory.module.relation.RelationTestData;
+import ch.sbb.prm.directory.shared.servicepoint.SharedServicePointTestData;
+import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
+import ch.sbb.prm.directory.module.toilet.ToiletTestData;
+import ch.sbb.prm.directory.shared.servicepoint.entity.PrmSharedVersion;
+import ch.sbb.prm.directory.shared.servicepoint.entity.SharedServicePoint;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -45,18 +45,17 @@ class PrmUserAdministrationServiceTest {
 
   private final PrmUserAdministrationService prmBOBasedUserAdministrationService;
 
-    private static final SharedServicePoint sharedServicePoint1 =
-        SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid:100001", "ch:1:sboid:100002",
-            "ch:1:sboid:100003", "ch:1:sboid:100004", "ch:1:sboid:100005"), Set.of("ch:1:sloid:12345:1"));
+  private static final SharedServicePoint sharedServicePoint1 =
+      SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid:100001", "ch:1:sboid:100002",
+          "ch:1:sboid:100003", "ch:1:sboid:100004", "ch:1:sboid:100005"), Set.of("ch:1:sloid:12345:1"));
 
-    private static final SharedServicePoint sharedServicePoint2 =
-        SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid:100001", "ch:1:sboid:100002",
-            "ch:1:sboid:100003", "ch:1:sboid:100004", "ch:1:sboid:100005"), Set.of("ch:1:sloid:12345:1"));
+  private static final SharedServicePoint sharedServicePoint2 =
+      SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid:100001", "ch:1:sboid:100002",
+          "ch:1:sboid:100003", "ch:1:sboid:100004", "ch:1:sboid:100005"), Set.of("ch:1:sloid:12345:1"));
 
-    private static final SharedServicePoint sharedServicePoint3 =
-        SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:8507000", Set.of("ch:1:sboid:100001", "ch:1:sboid:100002",
-            "ch:1:sboid:100003", "ch:1:sboid:100004", "ch:1:sboid:100005"), Set.of("ch:1:sloid:8507000:1"));
-
+  private static final SharedServicePoint sharedServicePoint3 =
+      SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:8507000", Set.of("ch:1:sboid:100001", "ch:1:sboid:100002",
+          "ch:1:sboid:100003", "ch:1:sboid:100004", "ch:1:sboid:100005"), Set.of("ch:1:sloid:8507000:1"));
 
   @Autowired
   public PrmUserAdministrationServiceTest(SharedServicePointRepository sharedServicePointRepository,

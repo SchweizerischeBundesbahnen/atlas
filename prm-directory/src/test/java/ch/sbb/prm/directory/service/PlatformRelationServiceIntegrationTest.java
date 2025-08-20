@@ -3,14 +3,21 @@ package ch.sbb.prm.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.prm.directory.PlatformTestData;
-import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.BasePrmServiceTest;
+import ch.sbb.prm.directory.location.service.PrmLocationService;
+import ch.sbb.prm.directory.module.platform.PlatformTestData;
+import ch.sbb.prm.directory.module.platform.entity.PlatformVersion;
+import ch.sbb.prm.directory.module.platform.service.PlatformService;
+import ch.sbb.prm.directory.module.referencepoint.ReferencePointTestData;
+import ch.sbb.prm.directory.module.referencepoint.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.module.referencepoint.service.ReferencePointService;
+import ch.sbb.prm.directory.module.relation.entity.RelationVersion;
+import ch.sbb.prm.directory.module.relation.service.RelationService;
+import ch.sbb.prm.directory.module.stoppoint.StopPointTestData;
+import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.module.stoppoint.service.StopPointService;
+import ch.sbb.prm.directory.shared.servicepoint.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.shared.servicepoint.service.SharedServicePointConsumer;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -47,9 +54,8 @@ class PlatformRelationServiceIntegrationTest extends BasePrmServiceTest {
     this.sharedServicePointConsumer = sharedServicePointConsumer;
   }
 
-  @Override
   @BeforeEach
-  void setUp() {
+  protected void setUp() {
     sharedServicePointConsumer.readServicePointFromKafka(SharedServicePointVersionModel.builder()
         .servicePointSloid(SERVICE_POINT_SLOID)
         .sboids(Set.of("ch:1:sboid:100001"))
