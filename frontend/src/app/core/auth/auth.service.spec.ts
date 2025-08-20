@@ -5,6 +5,7 @@ import { UserService } from './user/user.service';
 import { PageService } from '../pages/page.service';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { User } from './user/user';
+import { Configuration } from '../../api';
 import SpyObj = jasmine.SpyObj;
 
 const fakeToken =
@@ -16,6 +17,7 @@ describe('AuthService', () => {
   let userServiceSpy: SpyObj<UserService>;
   let pageServiceSpy: SpyObj<PageService>;
   let oidcSecurityServiceSpy: SpyObj<OidcSecurityService>;
+  let apiServiceConfigMock: Partial<Configuration>;
 
   beforeEach(() => {
     userServiceSpy = jasmine.createSpyObj<UserService>([
@@ -37,15 +39,20 @@ describe('AuthService', () => {
     oidcSecurityServiceSpy = jasmine.createSpyObj<OidcSecurityService>([
       'getUserData',
       'authorize',
-      'logoff',
+      'logoffAndRevokeTokens',
       'getAccessToken',
     ]);
+
+    apiServiceConfigMock = {
+      basePath: undefined,
+    };
 
     TestBed.configureTestingModule({
       providers: [
         { provide: UserService, useValue: userServiceSpy },
         { provide: PageService, useValue: pageServiceSpy },
         { provide: OidcSecurityService, useValue: oidcSecurityServiceSpy },
+        { provide: Configuration, useValue: apiServiceConfigMock },
         AuthService,
       ],
     });
@@ -57,6 +64,11 @@ describe('AuthService', () => {
     authService = TestBed.inject(AuthService);
 
     expect(userServiceSpy.setToUnauthenticatedUser).toHaveBeenCalledOnceWith();
+    expect(
+      userServiceSpy.setCurrentUserAndLoadPermissions
+    ).not.toHaveBeenCalled();
+    expect(pageServiceSpy.addPagesBasedOnPermissions).not.toHaveBeenCalled();
+    expect(apiServiceConfigMock.basePath).toBeUndefined();
   });
 
   it('init: should set current user, load permissions and show pages if user data is available', () => {
@@ -86,6 +98,7 @@ describe('AuthService', () => {
     expect(
       pageServiceSpy.addPagesBasedOnPermissions
     ).toHaveBeenCalledOnceWith();
+    expect(apiServiceConfigMock.basePath).toEqual('http://localhost:8888');
   });
 
   it('should login', () => {
@@ -99,11 +112,13 @@ describe('AuthService', () => {
 
   it('should logout', () => {
     oidcSecurityServiceSpy.getUserData.and.returnValue(of(null));
-    oidcSecurityServiceSpy.logoff.and.returnValue(of(null));
+    oidcSecurityServiceSpy.logoffAndRevokeTokens.and.returnValue(of(null));
 
     authService = TestBed.inject(AuthService);
     authService.logout();
 
-    expect(oidcSecurityServiceSpy.logoff).toHaveBeenCalledOnceWith();
+    expect(
+      oidcSecurityServiceSpy.logoffAndRevokeTokens
+    ).toHaveBeenCalledOnceWith();
   });
 });
