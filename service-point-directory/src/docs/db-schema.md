@@ -21,3 +21,11 @@ Relations of LoadingPoints are:
 - A `LoadingPoint` may have a location - in `LoadingPointGeolocation`.
 
 ![DB Schema Loading Point](db-loading-point.svg)
+
+
+## Sectors and Sector Groups
+
+Relations of Sectors are:
+- A `SectorGroup` may have at least two or more `Sectors` - in `SectorGroupRelations`.
+
+![DB Schema Sectors and Sector Groups](ERD_Sectors.svg)
