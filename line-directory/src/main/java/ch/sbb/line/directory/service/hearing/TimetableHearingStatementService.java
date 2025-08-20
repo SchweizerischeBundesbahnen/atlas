@@ -64,7 +64,7 @@ public class TimetableHearingStatementService {
 
   public TimetableHearingStatement getTimetableHearingStatementById(Long id) {
     return timetableHearingStatementRepository.findById(id)
-      .orElseThrow(() -> new IdNotFoundException(id));
+        .orElseThrow(() -> new IdNotFoundException(id));
   }
 
   public File getStatementDocument(Long timetableHearingStatementId, String documentFilename) {
@@ -128,7 +128,6 @@ public class TimetableHearingStatementService {
     TimetableHearingStatement updatedObject = updateObject(timetableHearingStatementModel, timetableHearingStatementInDb);
     addFilesToStatement(files, updatedObject);
     checkThatTimetableFieldNumberExists(updatedObject);
-
 
     TimetableHearingStatement timetableHearingStatement = timetableHearingStatementRepository.save(updatedObject);
     pdfsUploadAmazonService.uploadPdfFiles(files, timetableHearingStatement.getId().toString());
@@ -196,7 +195,7 @@ public class TimetableHearingStatementService {
   }
 
   private TimetableHearingStatement updateObject(TimetableHearingStatementModelV2 timetableHearingStatementModel,
-    TimetableHearingStatement timetableHearingStatementInDb) {
+      TimetableHearingStatement timetableHearingStatementInDb) {
     timetableHearingStatementInDb.setTimetableYear(timetableHearingStatementModel.getTimetableYear());
     timetableHearingStatementInDb.setStatementStatus(timetableHearingStatementModel.getStatementStatus());
     timetableHearingStatementInDb.setTtfnid(timetableHearingStatementModel.getTtfnid());
@@ -212,7 +211,8 @@ public class TimetableHearingStatementService {
         StatementSenderMapperV2.toEntity(timetableHearingStatementModel.getStatementSender()));
 
     updateResponsibleTransportCompanies(timetableHearingStatementModel, timetableHearingStatementInDb);
-    timetableHearingStatementInDb.setResponsibleTransportCompaniesDisplay(transformToCommaSeparated(timetableHearingStatementInDb));
+    timetableHearingStatementInDb.setResponsibleTransportCompaniesDisplay(
+        transformToCommaSeparated(timetableHearingStatementInDb));
 
     return timetableHearingStatementInDb;
   }
@@ -246,9 +246,9 @@ public class TimetableHearingStatementService {
   }
 
   private void checkThatTimetableFieldNumberExists(TimetableHearingStatement statement) {
-    if(statement.getTtfnid() != null && !statement.getTtfnid().isEmpty() &&
-            !timetableFieldNumberRepository.existsByTtfnid(statement.getTtfnid())){
-        throw new TtfnidNotFoundException(statement.getTtfnid());
+    if (statement.getTtfnid() != null && !statement.getTtfnid().isEmpty() &&
+        !timetableFieldNumberRepository.existsByTtfnid(statement.getTtfnid())) {
+      throw new TtfnidNotFoundException(statement.getTtfnid());
     }
 
   }

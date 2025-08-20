@@ -116,6 +116,32 @@ class SectorApiInternalControllerTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    sectorVersionRepository.deleteAll();
+
+    SectorVersionModel toCreate = SectorTestData.getCreateSectorVersion();
+    toCreate.setId(1111L);
+
+    doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR,
+        toCreate.getTrafficPointSloid());
+
+    when(trafficPointElementService.findBySloidOrderByValidFrom(toCreate.getTrafficPointSloid()))
+        .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
+
+    when(servicePointService.findAllByNumberOrderByValidFrom(any()))
+        .thenReturn(List.of(ServicePointTestData.getBern()));
+
+    mvc.perform(post("/internal/sectors")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(toCreate)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
+        .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
+  }
+
+  @Test
   void shouldUpdateSectorAndReturnTwoVersions() throws Exception {
     sectorVersionRepository.deleteAll();
 

@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
+import ch.sbb.atlas.validation.CreateIdCheck;
 import ch.sbb.prm.directory.controller.model.ReferencePointRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
@@ -24,6 +25,7 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +36,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/reference-points")
+@Validated
 public interface ReferencePointApiV1 {
 
   @GetMapping
@@ -45,7 +48,7 @@ public interface ReferencePointApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadReferencePointVersionModel createReferencePoint(@RequestBody @Valid ReferencePointVersionModel model);
+  ReadReferencePointVersionModel createReferencePoint(@RequestBody @Valid @CreateIdCheck ReferencePointVersionModel model);
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {

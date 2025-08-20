@@ -12,7 +12,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class RelationVersionMapper {
 
-  public static ReadRelationVersionModel toModel(RelationVersion version){
+  public static ReadRelationVersionModel toModel(RelationVersion version) {
     return ReadRelationVersionModel.builder()
         .id(version.getId())
         .status(version.getStatus())
@@ -35,7 +35,7 @@ public class RelationVersionMapper {
         .build();
   }
 
-  public static RelationVersion toEntity(RelationVersionModel model){
+  public static RelationVersion toEntity(RelationVersionModel model) {
     RelationVersion entity = RelationVersion.builder()
         .id(model.getId())
         .sloid(model.getElementSloid())

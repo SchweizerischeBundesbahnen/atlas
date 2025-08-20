@@ -226,6 +226,30 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointRepository.save(referencePointVersion);
+
+    ContactPointVersionModel contactPointVersionModel = ContactPointTestData.getContactPointVersionModel();
+    contactPointVersionModel.setId(1111L);
+    contactPointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    //when && then
+    mvc.perform(post("/v1/contact-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(contactPointVersionModel)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
+        .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
+  }
+
+  @Test
   void shouldCreateContactPointWithoutRelationWhenStopPointIsReduced() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";

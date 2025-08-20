@@ -9,7 +9,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ReferencePointVersionMapper {
 
-  public static ReadReferencePointVersionModel toModel(ReferencePointVersion version){
+  public static ReadReferencePointVersionModel toModel(ReferencePointVersion version) {
     return ReadReferencePointVersionModel.builder()
         .id(version.getId())
         .status(version.getStatus())
@@ -30,7 +30,7 @@ public class ReferencePointVersionMapper {
         .build();
   }
 
-  public static ReferencePointVersion toEntity(ReferencePointVersionModel model){
+  public static ReferencePointVersion toEntity(ReferencePointVersionModel model) {
     return ReferencePointVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())

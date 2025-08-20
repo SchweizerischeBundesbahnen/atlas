@@ -335,6 +335,22 @@ class TrafficPointElementApiV1ControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    repository.deleteAll();
+    CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
+    platformToCreate.setId(1111L);
+
+    mvc.perform(post("/v1/traffic-point-elements")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(platformToCreate)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
+        .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
+  }
+
+  @Test
   void shouldCreateTrafficPointElementPlatformWithGivenSloid() throws Exception {
     repository.deleteAll();
     CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();

@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.IdCheckable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,32 +24,32 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "CreateTrafficPointElementVersion")
-public class CreateTrafficPointElementVersionModel extends TrafficPointElementVersionModel {
+public class CreateTrafficPointElementVersionModel extends TrafficPointElementVersionModel implements IdCheckable {
 
-    @Schema(description = "Seven digits number. First two digits represent Country Code. "
-            + "Last 5 digits represent traffic point ID.", example = "8034505")
-    @Min(AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER)
-    @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER)
-    @NotNull
-    private Integer numberWithoutCheckDigit;
+  @Schema(description = "Seven digits number. First two digits represent Country Code. "
+      + "Last 5 digits represent traffic point ID.", example = "8034505")
+  @Min(AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER)
+  @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER)
+  @NotNull
+  private Integer numberWithoutCheckDigit;
 
-    @Valid
-    private GeolocationBaseCreateModel trafficPointElementGeolocation;
+  @Valid
+  private GeolocationBaseCreateModel trafficPointElementGeolocation;
 
-    @JsonInclude
-    @Schema(description = "TrafficPointElementVersion has a Geolocation")
-    public boolean isHasGeolocation() {
-        return trafficPointElementGeolocation != null;
+  @JsonInclude
+  @Schema(description = "TrafficPointElementVersion has a Geolocation")
+  public boolean isHasGeolocation() {
+    return trafficPointElementGeolocation != null;
+  }
+
+  @JsonIgnore
+  @AssertTrue(message = """
+      SLOID has to end in SID4PT character, not a :
+      """)
+  public boolean isSloidNotEndingInColon() {
+    if (getSloid() == null) {
+      return true;
     }
-
-    @JsonIgnore
-    @AssertTrue(message = """
-        SLOID has to end in SID4PT character, not a :
-        """)
-    public boolean isSloidNotEndingInColon() {
-        if (getSloid() == null) {
-            return true;
-        }
-        return !getSloid().endsWith(":");
-    }
+    return !getSloid().endsWith(":");
+  }
 }

@@ -12,6 +12,7 @@ import ch.sbb.atlas.api.servicepoint.TerminateServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
+import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -58,7 +59,8 @@ public interface ServicePointApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadServicePointVersionModel createServicePoint(@RequestBody @Valid CreateServicePointVersionModel servicePointVersionModel);
+  ReadServicePointVersionModel createServicePoint(
+      @RequestBody @Valid @CreateIdCheck CreateServicePointVersionModel servicePointVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {

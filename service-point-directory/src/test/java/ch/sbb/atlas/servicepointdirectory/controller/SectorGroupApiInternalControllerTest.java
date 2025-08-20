@@ -173,6 +173,44 @@ class SectorGroupApiInternalControllerTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    SectorVersion sectorVersion = SectorTestData.getBasicSectorVersion();
+    sectorVersionRepository.save(sectorVersion);
+
+    SectorVersion sectorVersion1 = SectorTestData.getBasicSectorVersion();
+    sectorVersion1.setSloid("new:sloid");
+    sectorVersionRepository.save(sectorVersion1);
+
+    CreateSectorGroupVersionModel create = CreateSectorGroupVersionModel.builder()
+        .id(1111L)
+        .trafficPointSloid(sectorVersion.getTrafficPointSloid())
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2030, 1, 1))
+        .designation("hihi")
+        .length(17.00)
+        .sectorSloids(List.of("ch:1:sloid:sector:1", "new:sloid"))
+        .build();
+
+    doReturn("ch:1:sloid:sector:1:0:1").when(locationService).generateSloid(SloidType.SECTOR_GROUP,
+        create.getTrafficPointSloid());
+
+    when(trafficPointElementService.findBySloidOrderByValidFrom(sectorVersion1.getTrafficPointSloid()))
+        .thenReturn(List.of(TrafficPointTestData.getBasicTrafficPoint()));
+
+    when(servicePointService.findAllByNumberOrderByValidFrom(any()))
+        .thenReturn(List.of(ServicePointTestData.getBern()));
+
+    mvc.perform(post("/internal/sector-groups")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(create)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
+        .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
+  }
+
+  @Test
   void shouldUpdateSectorGroupAndReturnTwoVersions() throws Exception {
     sectorGroupVersionRepository.deleteAll();
 

@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.model.IdCheckable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "LineVersionV2")
-public class LineVersionModelV2 extends UpdateLineVersionModelV2 {
+public class LineVersionModelV2 extends UpdateLineVersionModelV2 implements IdCheckable {
 
   @Schema(description = "LineType")
   @NotNull
