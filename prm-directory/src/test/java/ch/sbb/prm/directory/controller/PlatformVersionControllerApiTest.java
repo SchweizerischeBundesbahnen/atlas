@@ -220,10 +220,10 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(platformVersionModel)))
         .andExpect(status().isBadRequest())
-        .andExpect(result -> {
-          assertThat(result.getResponse().getContentAsString().contains("atlas.constraint.createIdCheck")).isTrue();
-          assertThat(result.getResponse().getContentAsString().contains("ID must be null when creating a new element")).isTrue();
-        });
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
+        .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
   }
 
   @Test

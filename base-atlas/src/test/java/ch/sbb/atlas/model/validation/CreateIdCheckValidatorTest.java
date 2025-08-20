@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.sbb.atlas.model.IdCheckable;
 import ch.sbb.atlas.validation.CreateIdCheck;
-import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,16 +20,26 @@ class CreateIdCheckValidatorTest {
   @Test
   void objectWithoutIdIsValid() {
     IdCheckable obj = new SimpleIdCheckable(null);
-    assertTrue(validator.isValid(obj, dummyContext()));
+    assertTrue(validator.isValid(obj, null));
   }
 
   @Test
   void objectWithIdIsInvalid() {
     IdCheckable obj = new SimpleIdCheckable(42L);
-    assertFalse(validator.isValid(obj, dummyContext()));
+    assertFalse(validator.isValid(obj, null));
   }
 
-  private ConstraintValidatorContext dummyContext() {
-    return null;
+  class SimpleIdCheckable implements IdCheckable {
+
+    private final Long id;
+
+    public SimpleIdCheckable(Long id) {
+      this.id = id;
+    }
+
+    @Override
+    public Long getId() {
+      return id;
+    }
   }
 }
