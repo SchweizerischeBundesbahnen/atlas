@@ -1,0 +1,9 @@
+frontend/src/app/core/components/user/user.component.spec.ts
+frontend/src/app/pages/bulk-import/overview/bulk-import-overview.component.spec.ts
+user-administration/src/test/java/ch/sbb/atlas/user/administration/controller/UserAdministrationControllerApiTest.java
+user-administration/src/test/java/ch/sbb/atlas/user/administration/service/GraphApiServiceIntegrationTest.java
+workflow/src/test/java/ch/sbb/workflow/sepodi/hearing/controller/StopPointWorkflowControllerVotingTest.java
+user-administration/src/test/java/ch/sbb/atlas/user/administration/controller/UserInformationApiControllerTest.java
+user-administration/src/test/java/ch/sbb/atlas/user/administration/service/UserAdministrationServiceTest.java
+workflow/src/main/resources/application-github.yml
+frontend/npm_publish.sh
