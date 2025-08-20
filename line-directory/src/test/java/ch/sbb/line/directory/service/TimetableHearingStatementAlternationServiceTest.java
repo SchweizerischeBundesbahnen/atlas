@@ -113,7 +113,7 @@ class TimetableHearingStatementAlternationServiceTest {
   void shouldFindPreviousStatementOfTwo() {
     TimetableHearingStatementAlternatingModel statementAlternation =
         timetableHearingStatementAlternationService.getPreviousStatement(
-        statement2.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
+            statement2.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
     assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 1");
     assertThat(statementAlternation.getPageable().getPageNumber()).isZero();
   }
@@ -122,7 +122,7 @@ class TimetableHearingStatementAlternationServiceTest {
   void shouldFindPreviousStatementOfOne() {
     TimetableHearingStatementAlternatingModel statementAlternation =
         timetableHearingStatementAlternationService.getPreviousStatement(
-        statement1.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
+            statement1.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
     assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 3");
     assertThat(statementAlternation.getPageable().getPageNumber()).isEqualTo(2);
   }
