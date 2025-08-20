@@ -19,7 +19,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class PlatformVersionMapper {
 
-  public static ReadPlatformVersionModel toModel(PlatformVersion version){
+  public static ReadPlatformVersionModel toModel(PlatformVersion version) {
     return ReadPlatformVersionModel.builder()
         .id(version.getId())
         .status(version.getStatus())
@@ -55,7 +55,8 @@ public class PlatformVersionMapper {
         .etagVersion(version.getVersion())
         .build();
   }
-  public static PlatformVersion toEntity(PlatformVersionModel model){
+
+  public static PlatformVersion toEntity(PlatformVersionModel model) {
     return PlatformVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
