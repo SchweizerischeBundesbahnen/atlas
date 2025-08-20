@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.lidi;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.model.IdCheckable;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @Schema(name = "TimetableFieldNumberVersion")
-public class TimetableFieldNumberVersionModel extends BaseVersionModel implements DatesValidator {
+public class TimetableFieldNumberVersionModel extends BaseVersionModel implements DatesValidator, IdCheckable {
 
   @Schema(description = """
       This ID helps identify versions of a timetable field number in the use case front end and/or update.

@@ -226,6 +226,44 @@ class TimetableHearingStatementControllerInternalApiTest extends BaseControllerA
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
+        .ttfnid("ch:1:ttfnid:12341241")
+        .swissTimetableFieldNumber("1234")
+        .number("5678")
+        .description("Description")
+        .status(Status.VALIDATED)
+        .businessOrganisation("Business Organisation")
+        .validFrom(LocalDate.now())
+        .validTo(LocalDate.now().plusYears(1))
+        .build();
+
+    timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
+
+    TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
+        .id(1111L)
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .ttfnid("ch:1:ttfnid:12341241")
+        .statementSender(TimetableHearingStatementSenderModelV2.builder()
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+
+    mvc.perform(multipart(HttpMethod.POST, "/internal/timetable-hearing/statements")
+            .file(statementJson))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
+        .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
+  }
+
+  @Test
   void shouldReportInvalidJsonInStatementWithoutDocuments() throws Exception {
     TimetableHearingStatementModelV1 statement = TimetableHearingStatementModelV1.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())

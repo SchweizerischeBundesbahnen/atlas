@@ -10,6 +10,7 @@ import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointRequestParams;
+import ch.sbb.atlas.validation.CreateIdCheck;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +24,7 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Loading Points")
 @RequestMapping("v1/loading-points")
+@Validated
 public interface LoadingPointApiV1 {
 
   @GetMapping
@@ -57,7 +60,7 @@ public interface LoadingPointApiV1 {
       @ApiResponse(responseCode = "409", description = "Number is not unique in time per service point", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  ReadLoadingPointVersionModel createLoadingPoint(@RequestBody @Valid CreateLoadingPointVersionModel newVersion);
+  ReadLoadingPointVersionModel createLoadingPoint(@RequestBody @Valid @CreateIdCheck CreateLoadingPointVersionModel newVersion);
 
   @PutMapping({"{id}"})
   @ApiResponses(value = {

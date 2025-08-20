@@ -226,6 +226,31 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionOnCreateWhenIdNotNull() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointRepository.save(referencePointVersion);
+
+    ParkingLotVersionModel model = ParkingLotTestData.getParkingLotVersionModel();
+    model.setId(11111L);
+    model.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+
+    //when && then
+    mvc.perform(post("/v1/parking-lots")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(model)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Constraint violation")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT_VIOLATION.CREATE_ID_CHECK")))
+        .andExpect(jsonPath("$.details[0].message", is("ID must be null when creating a new element")));
+  }
+
+  @Test
   void shouldCreateParkingLotWithReducedStopPoint() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";

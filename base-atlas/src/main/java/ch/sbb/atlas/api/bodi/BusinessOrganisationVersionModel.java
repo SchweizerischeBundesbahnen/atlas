@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.model.IdCheckable;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,7 +30,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "BusinessOrganisationVersion")
-public class BusinessOrganisationVersionModel extends BaseVersionModel implements DatesValidator {
+public class BusinessOrganisationVersionModel extends BaseVersionModel implements DatesValidator, IdCheckable {
 
   @Schema(description = """
       This ID helps identify versions of a business organisation in the use case front end and/or update.
