@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.util;
 
-import ch.sbb.prm.directory.domain.stoppoint.entity.StopPointVersion;
+import ch.sbb.prm.directory.module.stoppoint.entity.StopPointVersion;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
