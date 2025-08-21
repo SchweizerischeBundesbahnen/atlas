@@ -7,7 +7,6 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMEN
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.validation.CreateIdCheck;
@@ -74,7 +73,8 @@ public interface TimetableHearingStatementApiInternal {
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
   Container<TimetableHearingStatementModelV2> getStatements(
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.timetableYear, Fields.id}) Pageable pageable,
+      @Parameter(hidden = true) @PageableDefault(sort = {TimetableHearingStatementModel.Fields.timetableYear,
+          TimetableHearingStatementModel.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
   @GetMapping(path = "csv/{language}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -94,7 +94,8 @@ public interface TimetableHearingStatementApiInternal {
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
   TimetableHearingStatementAlternatingModel getPreviousStatement(
       @PathVariable Long id,
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.timetableYear, Fields.id}) Pageable pageable,
+      @Parameter(hidden = true) @PageableDefault(sort = {TimetableHearingStatementModel.Fields.timetableYear,
+          TimetableHearingStatementModel.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
   @GetMapping(path = "{id}/next")
@@ -103,7 +104,8 @@ public interface TimetableHearingStatementApiInternal {
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
   TimetableHearingStatementAlternatingModel getNextStatement(
       @PathVariable Long id,
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.timetableYear, Fields.id}) Pageable pageable,
+      @Parameter(hidden = true) @PageableDefault(sort = {TimetableHearingStatementModel.Fields.timetableYear,
+          TimetableHearingStatementModel.Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
   @GetMapping(path = "{id}/documents/{filename}", produces = MediaType.APPLICATION_PDF_VALUE)

@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.model;
 
-import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.module.subline.entity.SublineVersion;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
