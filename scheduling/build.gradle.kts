@@ -9,7 +9,7 @@ group = "ch.sbb.atlas"
 version = "2.798.0"
 
 description = "Atlas Scheduling Service"
-extra["shedlockVersion"] = "6.9.2"
+extra["shedlockVersion"] = "6.10.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
