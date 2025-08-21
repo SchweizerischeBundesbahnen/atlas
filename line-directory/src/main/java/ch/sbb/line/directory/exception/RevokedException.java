@@ -5,7 +5,7 @@ import static ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo.builder;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.line.directory.entity.SublineVersion.Fields;
+import ch.sbb.line.directory.module.subline.entity.SublineVersion.Fields;
 import java.util.Set;
 import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;

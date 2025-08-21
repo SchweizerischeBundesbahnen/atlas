@@ -17,16 +17,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
     implementation("org.apache.tika:tika-core:3.2.2")
-
-    implementation("org.hibernate.orm:hibernate-jpamodelgen")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
-
     implementation(project(":base-atlas"))
     implementation(project(":user-administration-security"))
     implementation(project(":kafka"))
-
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
+    implementation("org.hibernate.orm:hibernate-jpamodelgen")
+
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
 
     runtimeOnly("org.postgresql:postgresql")
 
