@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.exception;
 
 import ch.sbb.atlas.model.exception.NotFoundException;
-import ch.sbb.line.directory.entity.LineVersion.Fields;
+import ch.sbb.line.directory.module.line.entity.LineVersion.Fields;
 
 public class SlnidNotFoundException extends NotFoundException {
 

@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.exception;
 
 import ch.sbb.atlas.model.exception.NotFoundException;
-import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.module.ttfn.entity.TimetableFieldNumberVersion;
 
 public class TtfnidNotFoundException extends NotFoundException {
 

@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.converter;
 
-import static ch.sbb.line.directory.LineTestData.lineVersionModelBuilder;
+import static ch.sbb.line.directory.module.line.LineTestData.lineVersionModelBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.lidi.LineVersionModel;
@@ -18,7 +18,7 @@ class TrimLeadingTrailingWhitespaceTest {
   private ObjectMapper objectMapper;
 
   @Test
-   void shouldTrimLeadingWhitespaceTest() throws IOException {
+  void shouldTrimLeadingWhitespaceTest() throws IOException {
     LineVersionModel lineVersionModel = lineVersionModelBuilder().build();
     lineVersionModel.setAlternativeName("   TEST");
     LineVersionModel deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);
@@ -26,7 +26,7 @@ class TrimLeadingTrailingWhitespaceTest {
   }
 
   @Test
-   void shouldTrimTrailingWhitespaceTest() throws IOException {
+  void shouldTrimTrailingWhitespaceTest() throws IOException {
     LineVersionModel lineVersionModel = lineVersionModelBuilder().build();
     lineVersionModel.setAlternativeName("TEST   ");
     LineVersionModel deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);
@@ -34,7 +34,7 @@ class TrimLeadingTrailingWhitespaceTest {
   }
 
   @Test
-   void shouldNotTrimWhitespacesBetweenTest() throws IOException {
+  void shouldNotTrimWhitespacesBetweenTest() throws IOException {
     LineVersionModel lineVersionModel = lineVersionModelBuilder().build();
     lineVersionModel.setAlternativeName("   TEST  TEST  . ");
     LineVersionModel deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);
