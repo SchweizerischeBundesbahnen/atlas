@@ -1,0 +1,11 @@
+package ch.sbb.atlas.servicepointdirectory.module.geodata.client.journepoy;
+
+import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.context.annotation.Profile;
+
+@Profile("!github")
+@FeignClient(name = "journeyPoiClient", url = "${journeyPoi.client.url}", configuration = JourneyPoiConfig.class)
+public interface JourneyPoiClient extends JourneyPoiClientBase {
+
+}
