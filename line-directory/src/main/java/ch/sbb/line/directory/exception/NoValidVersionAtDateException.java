@@ -6,7 +6,7 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.line.directory.entity.TimetableHearingStatement.Fields;
+import ch.sbb.line.directory.module.tth.entity.TimetableHearingStatement.Fields;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
