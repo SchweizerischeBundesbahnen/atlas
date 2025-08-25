@@ -34,10 +34,8 @@ public class TransportCompanyControllerV1 implements TransportCompanyApiV1 {
             .statusRestrictions(statusChoices)
             .build());
     List<TransportCompanyModel> transportCompanyModels = transportCompanies.stream()
-        .map(
-            TransportCompanyMapper::fromEntity)
-        .collect(
-            Collectors.toList());
+        .map(TransportCompanyMapper::fromEntity)
+        .collect(Collectors.toList());
     return Container.<TransportCompanyModel>builder()
         .objects(transportCompanyModels)
         .totalCount(transportCompanies.getTotalElements())
