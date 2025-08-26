@@ -10,7 +10,7 @@ import {
 import { LineVersionSnapshotDetailComponent } from './line-version-snapshot-detail.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
-import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
+import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import {
   adminPermissionServiceMock,
   MockAppDetailWrapperComponent,
@@ -22,11 +22,11 @@ import { LinkIconComponent } from '../../../../core/form-components/link-icon/li
 import { of } from 'rxjs';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
-import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
-import { InfoLinkDirective } from '../../../../core/form-components/info-icon/info-link.directive';
+import { InfoLinkDirective } from '@atlas/form/info-icon/info-link.directive';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';

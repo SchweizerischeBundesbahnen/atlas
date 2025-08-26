@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MeanOfTransport } from '../../../api';
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';

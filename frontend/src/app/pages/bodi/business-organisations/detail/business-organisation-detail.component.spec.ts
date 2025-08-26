@@ -7,7 +7,7 @@ import { BusinessOrganisationDetailComponent } from './business-organisation-det
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
-import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
+import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import {
   adminPermissionServiceMock,
   MockAppDetailWrapperComponent,

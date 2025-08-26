@@ -59,7 +59,7 @@ import { TextFieldComponent } from '../../../core/form-components/text-field/tex
 import { StringListComponent } from '../../../core/form-components/string-list/string-list.component';
 import { AtlasClipboardComponent } from '../../../core/form-components/atlas-clipboard/atlas-clipboard.component';
 import { CommentComponent } from '../../../core/form-components/comment/comment.component';
-import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { FileComponent } from '../../../core/components/file-upload/file/file.component';
 import { FileUploadComponent } from '../../../core/components/file-upload/file-upload.component';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
