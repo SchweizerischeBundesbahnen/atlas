@@ -20,21 +20,18 @@ dependencies {
     implementation("com.sun.xml.messaging.saaj:saaj-impl")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
     implementation("org.springframework.boot:spring-boot-starter-web")
-
     implementation("org.hibernate.orm:hibernate-jpamodelgen")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
-
-    runtimeOnly("org.postgresql:postgresql")
-
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("software.amazon.awssdk:s3:${property("awsS3Version")}")
-
     implementation("org.springframework.kafka:spring-kafka")
-
     implementation(project(":base-atlas"))
     implementation(project(":kafka"))
     implementation(project(":user-administration-security"))
+
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
+
+    runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
