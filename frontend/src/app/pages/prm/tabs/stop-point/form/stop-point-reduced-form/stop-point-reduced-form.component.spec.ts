@@ -7,12 +7,12 @@ import {
   MockSelectComponent,
 } from '../../../../../../app.testing.mocks';
 import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent } from '../../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { MeansOfTransportPickerComponent } from '../../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
 import { AtlasSpacerComponent } from '../../../../../../core/components/spacer/atlas-spacer.component';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { By } from '@angular/platform-browser';
-import { InfoIconComponent } from '../../../../../../core/form-components/info-icon/info-icon.component';
+import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import { MeanOfTransport } from '../../../../../../api';
 import { PrmVariantInfoService } from '../../prm-variant-info.service';
 

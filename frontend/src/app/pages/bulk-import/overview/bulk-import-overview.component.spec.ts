@@ -17,7 +17,7 @@ import { SelectComponent } from '../../../core/form-components/select/select.com
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
-import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { LoadingSpinnerService } from '../../../core/components/loading-spinner/loading-spinner.service';
 import { BulkImportService } from '../../../api/service/bulk/bulk-import.service';
