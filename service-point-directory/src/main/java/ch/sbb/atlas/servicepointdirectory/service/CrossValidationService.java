@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.exception.ServicePointNumberNotFoundException;
+import ch.sbb.atlas.servicepointdirectory.module.servicepoint.service.ServicePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
