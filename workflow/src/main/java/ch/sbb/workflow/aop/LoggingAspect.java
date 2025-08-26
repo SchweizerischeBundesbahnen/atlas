@@ -1,7 +1,7 @@
 package ch.sbb.workflow.aop;
 
-import ch.sbb.workflow.sepodi.hearing.model.sepodi.StopPointAddWorkflowModel;
-import ch.sbb.workflow.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
+import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.module.sepodi.termination.model.StartTerminationStopPointWorkflowModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
