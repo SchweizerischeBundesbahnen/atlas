@@ -14,7 +14,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TransportCompany } from '../../../api';
 import { map } from 'rxjs/operators';
 import { SearchSelectComponent } from '../search-select/search-select.component';
-import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TransportCompanyService } from '../../../api/service/bodi/transport-company.service';
 
