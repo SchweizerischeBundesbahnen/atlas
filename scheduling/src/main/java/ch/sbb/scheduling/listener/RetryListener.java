@@ -1,6 +1,8 @@
-package ch.sbb.scheduling.service;
+package ch.sbb.scheduling.listener;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.scheduling.service.MailNotificationService;
+import ch.sbb.scheduling.service.MailProducerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.RetryCallback;
