@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WorkflowCheckFormComponent } from './workflow-check-form.component';
 import { AppTestingModule } from '../../../app.testing.module';
-import { InfoIconComponent } from '../../form-components/info-icon/info-icon.component';
+import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import { CommentComponent } from '../../form-components/comment/comment.component';
 import { By } from '@angular/platform-browser';
 import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
@@ -10,7 +10,7 @@ import { AtlasButtonComponent } from '../../components/button/atlas-button.compo
 import { WorkflowService } from '../../../api';
 import { of } from 'rxjs';
 import { AtlasFieldErrorComponent } from '../../form-components/atlas-field-error/atlas-field-error.component';
-import { AtlasLabelFieldComponent } from '../../form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { TextFieldComponent } from '../../form-components/text-field/text-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PermissionService } from '../../auth/permission/permission.service';

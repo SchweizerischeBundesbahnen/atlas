@@ -18,7 +18,7 @@ import {
   ApplicationPermission,
   PermissionRestriction,
 } from '../form/application-permission-form-group';
-import { AtlasLabelFieldComponent } from '../../../form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { AtlasSlideToggleComponent } from '../../../form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { BusinessOrganisationSelectComponent } from '../../../form-components/bo-select/business-organisation-select.component';
 import { TranslatePipe } from '@ngx-translate/core';

@@ -15,7 +15,7 @@ import { AtlasFieldErrorComponent } from '../../../../../../core/form-components
 import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { JudgementType } from '../../../../../../api';
-import { AtlasLabelFieldComponent } from '../../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { DateIconComponent } from '../../../../../../core/form-components/date-icon/date-icon.component';
 import {
   MatDatepicker,

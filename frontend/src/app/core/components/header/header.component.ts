@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { NON_PROD_STAGES, Stages } from '../../constants/stages';
 import { MatToolbar } from '@angular/material/toolbar';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { InfoIconComponent } from '../../form-components/info-icon/info-icon.component';
+import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import { MaintenanceIconComponent } from './maintenance-icon/maintenance-icon.component';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 import { UserComponent } from '../user/user.component';

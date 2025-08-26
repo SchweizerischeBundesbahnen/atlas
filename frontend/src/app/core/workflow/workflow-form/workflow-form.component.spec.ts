@@ -4,11 +4,11 @@ import { WorkflowFormComponent } from './workflow-form.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
 import { WorkflowFormGroup } from '../workflow-form-group';
-import { InfoIconComponent } from '../../form-components/info-icon/info-icon.component';
+import { InfoIconComponent } from '@atlas/form/info-icon/info-icon.component';
 import { CommentComponent } from '../../form-components/comment/comment.component';
 import { TextFieldComponent } from '../../form-components/text-field/text-field.component';
 import { AtlasFieldErrorComponent } from '../../form-components/atlas-field-error/atlas-field-error.component';
-import { AtlasLabelFieldComponent } from '../../form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasLabelFieldComponent } from '@atlas/form/atlas-label-field/atlas-label-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 describe('WorkflowFormComponent', () => {
