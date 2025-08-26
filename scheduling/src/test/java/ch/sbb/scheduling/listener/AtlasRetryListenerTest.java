@@ -1,10 +1,12 @@
-package ch.sbb.scheduling.service;
+package ch.sbb.scheduling.listener;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.scheduling.service.MailNotificationService;
+import ch.sbb.scheduling.service.MailProducerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,12 +33,12 @@ class AtlasRetryListenerTest {
   private RetryContext retryContext;
 
   @Mock
-  private RetryCallback<?,?> callback;
+  private RetryCallback<?, ?> callback;
 
   private final Throwable throwable = new RuntimeException("Fatal exception");
 
   @Test
-   void shouldSendEmailOnClose() {
+  void shouldSendEmailOnClose() {
     //given
     doReturn("export").when(retryListener).getJobName(any());
 
@@ -50,7 +52,7 @@ class AtlasRetryListenerTest {
   }
 
   @Test
-   void shouldCallOnError() {
+  void shouldCallOnError() {
     //given
     doReturn("export").when(retryListener).getJobName(any());
 

@@ -25,13 +25,13 @@ class LidiSchedulerServiceTest {
   private LiDiClient liDiClient;
 
   @BeforeEach
-   void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     lidiSchedulerService = new LidiSchedulerService(liDiClient);
   }
 
   @Test
-   void shouldExportFullLineVersionsSuccessfully() {
+  void shouldExportFullLineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -51,7 +51,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportFullLineVersionsUnsuccessful() {
+  void shouldExportFullLineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -68,7 +68,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportActualLineVersionsSuccessfully() {
+  void shouldExportActualLineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -88,7 +88,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportActualLineVersionsUnsuccessful() {
+  void shouldExportActualLineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -105,7 +105,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldNextTimetableLineVersionsSuccessfully() {
+  void shouldNextTimetableLineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -125,7 +125,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportNextTimetableLineVersionsUnsuccessful() {
+  void shouldExportNextTimetableLineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -142,7 +142,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportFullSublineVersionsSuccessfully() {
+  void shouldExportFullSublineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -162,7 +162,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportFullSublineVersionsUnsuccessful() {
+  void shouldExportFullSublineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -179,7 +179,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportActualSublineVersionsSuccessfully() {
+  void shouldExportActualSublineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -199,7 +199,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportActualSublineVersionsUnsuccessful() {
+  void shouldExportActualSublineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -216,7 +216,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldNextTimetableSublineVersionsSuccessfully() {
+  void shouldNextTimetableSublineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -236,7 +236,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExporttNextTimetableSublineVersionsUnsuccessful() {
+  void shouldExporttNextTimetableSublineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -253,7 +253,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportFullTimetableFieldNumberVersionsSuccessfully() {
+  void shouldExportFullTimetableFieldNumberVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -273,7 +273,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportFullTimetableFieldNumberVersionsUnsuccessful() {
+  void shouldExportFullTimetableFieldNumberVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -290,7 +290,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportActualTimetableFieldNumberVersionsSuccessfully() {
+  void shouldExportActualTimetableFieldNumberVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -310,7 +310,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportActualTimetableFieldNumberVersionsUnsuccessful() {
+  void shouldExportActualTimetableFieldNumberVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -327,7 +327,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldNextTimetableTimetableFieldNumberVersionsSuccessfully() {
+  void shouldNextTimetableTimetableFieldNumberVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -347,7 +347,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-   void shouldExportNextTimetableTimetableFieldNumberVersionsUnsuccessful() {
+  void shouldExportNextTimetableTimetableFieldNumberVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
