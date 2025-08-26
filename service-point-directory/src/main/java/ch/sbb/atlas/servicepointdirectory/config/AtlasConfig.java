@@ -14,7 +14,9 @@ import org.springframework.context.annotation.Import;
 
 @Import(SharedBusinessOrganisationConfig.class)
 @EnableFeignClients(basePackages = {
-    "ch.sbb.atlas.servicepointdirectory.service.georeference", "ch.sbb.atlas.servicepointdirectory.client"})
+    "ch.sbb.atlas.servicepointdirectory.module.geodata.client.geoadmin",
+    "ch.sbb.atlas.servicepointdirectory.module.geodata.client.journepoy",
+    "ch.sbb.atlas.servicepointdirectory.client"})
 @Configuration
 public class AtlasConfig {
 
