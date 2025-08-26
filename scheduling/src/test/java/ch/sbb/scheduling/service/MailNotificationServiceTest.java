@@ -28,7 +28,7 @@ class MailNotificationServiceTest {
   private MailNotificationService notificationService;
 
   @Test
-   void shouldBuildMailNotification() {
+  void shouldBuildMailNotification() {
     //given
     Map<String, Object> expectedMailContent = new HashMap<>();
     expectedMailContent.put("jobName", "export");
@@ -49,7 +49,7 @@ class MailNotificationServiceTest {
   }
 
   @Test
-   void shouldBuildMailNotificationWhenThrowableIsNull() {
+  void shouldBuildMailNotificationWhenThrowableIsNull() {
     //given
     Map<String, Object> expectedMailContent = new HashMap<>();
     expectedMailContent.put("jobName", "export");
@@ -69,7 +69,7 @@ class MailNotificationServiceTest {
   }
 
   @Test
-   void shouldThrowIllegalStateExceptionWhenCurrentSpanIsNull() {
+  void shouldThrowIllegalStateExceptionWhenCurrentSpanIsNull() {
     //given
     when(tracer.currentSpan()).thenReturn(null);
     //when
@@ -78,7 +78,7 @@ class MailNotificationServiceTest {
   }
 
   @Test
-   void shouldThrowIllegalStateExceptionWhenSpanIsNull() {
+  void shouldThrowIllegalStateExceptionWhenSpanIsNull() {
     //when
     assertThrows(IllegalStateException.class, () -> notificationService.getCurrentSpan());
   }
