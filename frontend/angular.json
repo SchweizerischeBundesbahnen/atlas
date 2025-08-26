@@ -3,6 +3,55 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "packages": {
+      "projectType": "library",
+      "sourceRoot": "packages",
+      "root": "",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "packages/form/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "packages/form/karma.asd.conf.js",
+            "inlineStyleLanguage": "scss",
+            "styles": [
+              "src/styles/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "ci": {
+              "karmaConfig": "karma.asd.conf.js",
+              "browsers": "ChromeHeadlessNoSandbox",
+              "codeCoverage": true,
+              "sourceMap": false,
+              "progress": false,
+              "watch": false,
+              "codeCoverageExclude": [
+                "src/app/api/**",
+                "charts/**",
+                "src/polyfills.ts"
+              ],
+              "reporters": [
+                "dots",
+                "sonarqube"
+              ]
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "packages/**/*.ts",
+              "packages/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "atlas-frontend": {
       "projectType": "application",
       "schematics": {
@@ -114,7 +163,7 @@
           "configurations": {
             "ci": {
               "karmaConfig": "karma.conf.js",
-              "browsers": "ChromeHeadless",
+              "browsers": "ChromeHeadlessNoSandbox",
               "codeCoverage": true,
               "sourceMap": false,
               "progress": false,
