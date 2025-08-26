@@ -3,7 +3,7 @@ package ch.sbb.workflow.exception;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
+import ch.sbb.workflow.module.sepodi.termination.entity.TerminationWorkflowStatus;
 import org.junit.jupiter.api.Test;
 
 class TerminationStopPointWorkflowStatusChangeNotAllowedExceptionTest {

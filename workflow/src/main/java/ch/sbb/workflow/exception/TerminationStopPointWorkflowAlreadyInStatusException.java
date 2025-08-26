@@ -1,6 +1,6 @@
 package ch.sbb.workflow.exception;
 
-import ch.sbb.workflow.sepodi.termination.entity.TerminationWorkflowStatus;
+import ch.sbb.workflow.module.sepodi.termination.entity.TerminationWorkflowStatus;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

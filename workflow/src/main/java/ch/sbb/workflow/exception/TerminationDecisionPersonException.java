@@ -2,7 +2,7 @@ package ch.sbb.workflow.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.workflow.sepodi.termination.entity.TerminationDecisionPerson;
+import ch.sbb.workflow.module.sepodi.termination.entity.TerminationDecisionPerson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
