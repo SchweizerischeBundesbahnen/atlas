@@ -7,7 +7,7 @@ module.exports = function (config) {
   process.env.CHROMIUM_BIN = require('@playwright/test').chromium.executablePath();
   process.env.CHROME_BIN = require('puppeteer').executablePath();
   config.set({
-    basePath: 'src',
+    basePath: '.',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
@@ -17,6 +17,9 @@ module.exports = function (config) {
       require('karma-sonarqube-reporter'),
       require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma'),
+    ],
+    files: [
+      '**/*.spec.ts'
     ],
     client: {
       jasmine: {
@@ -37,7 +40,7 @@ module.exports = function (config) {
       environment: 'dev',
     },
     sonarqubeReporter: {
-      basePath: require('path').join(__dirname, './src'),
+      basePath: require('path').join(__dirname, '.'),
       outputFolder: require('path').join(__dirname, './coverage/atlas-frontend'),
       reportName: (_metadata) => 'sonarqube.xml',
     },

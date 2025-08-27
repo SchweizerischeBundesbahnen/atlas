@@ -23,7 +23,7 @@
           },
           "configurations": {
             "ci": {
-              "karmaConfig": "karma.asd.conf.js",
+              "karmaConfig": "karma.conf.js",
               "browsers": "ChromeHeadlessNoSandbox",
               "codeCoverage": true,
               "sourceMap": false,
@@ -149,6 +149,10 @@
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
+            "include": [
+              "src/**/*.spec.ts",
+              "packages/**/*.spec.ts"
+            ],
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": [
