@@ -7,9 +7,9 @@ import ch.sbb.atlas.api.user.administration.PermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.workflow.InfoPlusTerminationVotePermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.workflow.NovaTerminationVotePermissionRestrictionModel;
-import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
-import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
-import ch.sbb.atlas.user.administration.entity.UserPermission;
+import ch.sbb.atlas.user.administration.module.clientcredential.entity.ClientCredentialPermission;
+import ch.sbb.atlas.user.administration.module.useradministration.entity.PermissionRestriction;
+import ch.sbb.atlas.user.administration.module.useradministration.entity.UserPermission;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

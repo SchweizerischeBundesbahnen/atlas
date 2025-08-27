@@ -1,0 +1,47 @@
+package ch.sbb.scheduling.listener;
+
+import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.scheduling.service.MailNotificationService;
+import ch.sbb.scheduling.service.MailProducerService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.RetryCallback;
+import org.springframework.retry.RetryContext;
+import org.springframework.retry.RetryListener;
+import org.springframework.retry.interceptor.MethodInvocationRetryCallback;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
+class AtlasRetryListener implements RetryListener {
+
+  private final MailProducerService service;
+
+  private final MailNotificationService mailNotificationService;
+
+  @Override
+  public <T, E extends Throwable> void close(RetryContext context,
+      RetryCallback<T, E> callback, Throwable throwable) {
+    if (throwable != null) {
+      String jobName = getJobName(callback);
+      log.error("Unable to recover job {} from  Exception", jobName, throwable);
+      log.error("Sending Mail notification...");
+      MailNotification mailNotification = mailNotificationService.buildMailNotification(getJobName(callback), throwable);
+      service.produceMailNotification(mailNotification);
+    }
+  }
+
+  @Override
+  public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback,
+      Throwable throwable) {
+    if (throwable != null) {
+      log.error("Exception Occurred on {}, Retry Count {} ", getJobName(callback), context.getRetryCount(), throwable);
+    }
+  }
+
+  <T, E extends Throwable> String getJobName(RetryCallback<T, E> callback) {
+    return ((MethodInvocationRetryCallback<?, ?>) callback).getLabel();
+  }
+
+}

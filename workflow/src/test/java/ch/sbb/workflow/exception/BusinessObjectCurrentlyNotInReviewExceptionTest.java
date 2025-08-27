@@ -2,6 +2,7 @@ package ch.sbb.workflow.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.workflow.module.lidi.line.exception.BusinessObjectCurrentlyNotInReviewException;
 import org.junit.jupiter.api.Test;
 
 class BusinessObjectCurrentlyNotInReviewExceptionTest {
