@@ -18,9 +18,6 @@ module.exports = function (config) {
       require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma'),
     ],
-    files: [
-      '**/*.spec.ts'
-    ],
     client: {
       jasmine: {
         // you can add configuration options for Jasmine here
@@ -63,7 +60,7 @@ module.exports = function (config) {
         pingTimeout: 10000
       }
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['sonarqube', 'kjhtml'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_ERROR,
