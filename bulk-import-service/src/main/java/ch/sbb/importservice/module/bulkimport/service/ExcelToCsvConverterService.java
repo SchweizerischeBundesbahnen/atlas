@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ExcelToCsvConverter {
+public class ExcelToCsvConverterService {
 
   private static final Predicate<Cell> IS_DATE_VALUE = cell -> cell.getCellStyle().getDataFormatString().equals("m/d/yy");
 

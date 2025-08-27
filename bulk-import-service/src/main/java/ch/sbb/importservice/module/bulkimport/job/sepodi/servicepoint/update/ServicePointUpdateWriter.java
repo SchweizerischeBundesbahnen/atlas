@@ -1,9 +1,9 @@
-package ch.sbb.importservice.module.bulkimport.job.sepodi.traffic.point.update;
+package ch.sbb.importservice.module.bulkimport.job.sepodi.servicepoint.update;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;
-import ch.sbb.importservice.module.bulkimport.client.TrafficPointBulkImportClient;
+import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
+import ch.sbb.importservice.module.bulkimport.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.writer.BulkImportItemWriter;
 import ch.sbb.importservice.module.bulkimport.writer.WriterUtil;
 import java.util.List;
@@ -19,22 +19,24 @@ import org.springframework.stereotype.Service;
 @Service
 @StepScope
 @RequiredArgsConstructor
-public class TrafficPointUpdateWriter extends TrafficPointUpdate implements BulkImportItemWriter {
+public class ServicePointUpdateWriter extends ServicePointUpdate implements BulkImportItemWriter {
 
   @Value("#{stepExecution}")
   private StepExecution stepExecution;
 
-  private final TrafficPointBulkImportClient trafficPointBulkImportClient;
+  private final ServicePointBulkImportClient servicePointBulkImportClient;
 
   @Override
   public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
-    List<BulkImportUpdateContainer<TrafficPointUpdateCsvModel>> updateContainers =
+    log.info("Writing {} items", items.size());
+
+    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers =
         WriterUtil.getContainersWithoutDataValidationErrors(items);
     WriterUtil.addInNameOfTo(stepExecution, updateContainers);
 
     log.info("Writing {} containers to service-point-directory", updateContainers.size());
 
-    List<BulkImportItemExecutionResult> importResult = trafficPointBulkImportClient.bulkImportUpdate(updateContainers);
+    List<BulkImportItemExecutionResult> importResult = servicePointBulkImportClient.bulkImportUpdate(updateContainers);
 
     WriterUtil.mapExecutionResultToLogEntry(importResult, updateContainers);
   }

@@ -1,4 +1,4 @@
-package ch.sbb.importservice.module.bulkimport.job.sepodi.service.point.update;
+package ch.sbb.importservice.module.bulkimport.job.sepodi.servicepoint.update;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.ServicePointUpdateCsvModel;
