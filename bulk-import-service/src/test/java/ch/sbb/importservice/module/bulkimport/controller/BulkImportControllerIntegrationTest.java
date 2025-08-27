@@ -22,7 +22,6 @@ import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
 import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.importservice.module.bulkimport.BulkImportController;
 import ch.sbb.importservice.module.bulkimport.client.LineBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.client.TrafficPointBulkImportClient;

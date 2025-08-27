@@ -1,4 +1,4 @@
-package ch.sbb.importservice.module.bulkimport.job.sepodi.service.point.terminate;
+package ch.sbb.importservice.module.bulkimport.job.sepodi.servicepoint.terminate;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;

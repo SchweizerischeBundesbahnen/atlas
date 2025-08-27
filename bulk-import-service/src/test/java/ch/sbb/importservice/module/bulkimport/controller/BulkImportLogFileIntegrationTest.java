@@ -27,7 +27,6 @@ import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.config.mail.MailProducerService;
-import ch.sbb.importservice.module.bulkimport.BulkImportController;
 import ch.sbb.importservice.module.bulkimport.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
 import ch.sbb.importservice.module.bulkimport.log.BulkImportLogService;

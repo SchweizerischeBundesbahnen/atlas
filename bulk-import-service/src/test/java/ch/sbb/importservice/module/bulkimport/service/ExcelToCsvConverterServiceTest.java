@@ -16,16 +16,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-class ExcelToCsvConverterTest {
+class ExcelToCsvConverterServiceTest {
 
   @Autowired
-  private ExcelToCsvConverter excelToCsvConverter;
+  private ExcelToCsvConverterService excelToCsvConverterService;
 
   @Test
   void shouldReadServicePointUpdateXlsCorrectly() {
     File file = ImportFiles.getFileByPath("import-files/valid/service-point-update.xls");
 
-    File csvFile = excelToCsvConverter.convertToCsv(file);
+    File csvFile = excelToCsvConverterService.convertToCsv(file);
 
     ImportFiles.assertThatFileContainsExpectedServicePointUpdate(csvFile);
   }
@@ -34,7 +34,7 @@ class ExcelToCsvConverterTest {
   void shouldReadServicePointUpdateXlsxCorrectly() {
     File file = ImportFiles.getFileByPath("import-files/valid/service-point-update.xlsx");
 
-    File csvFile = excelToCsvConverter.convertToCsv(file);
+    File csvFile = excelToCsvConverterService.convertToCsv(file);
 
     ImportFiles.assertThatFileContainsExpectedServicePointUpdate(csvFile);
   }
@@ -43,7 +43,7 @@ class ExcelToCsvConverterTest {
   void shouldReadServicePointUpdateXlsxWithEmptyLinesCorrectly() {
     File file = ImportFiles.getFileByPath("import-files/valid/service-point-update-with-empty-lines.xlsx");
 
-    File csvFile = excelToCsvConverter.convertToCsv(file);
+    File csvFile = excelToCsvConverterService.convertToCsv(file);
 
     List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> servicePointUpdates =
         BulkImportCsvReader.readLinesFromFileWithNullingValue(csvFile, ServicePointUpdateCsvModel.class);
@@ -59,7 +59,7 @@ class ExcelToCsvConverterTest {
     when(cell.getCellType()).thenReturn(CellType.STRING);
 
     when(cell.getStringCellValue()).thenReturn("\tch:1:sloid:77234:0:01 ");
-    String cellValue = ExcelToCsvConverter.getCellValue(cell);
+    String cellValue = ExcelToCsvConverterService.getCellValue(cell);
     assertThat(cellValue).isEqualTo("ch:1:sloid:77234:0:01");
   }
 
@@ -69,7 +69,7 @@ class ExcelToCsvConverterTest {
     when(cell.getCellType()).thenReturn(CellType.STRING);
 
     when(cell.getStringCellValue()).thenReturn(" ");
-    String cellValue = ExcelToCsvConverter.getCellValue(cell);
+    String cellValue = ExcelToCsvConverterService.getCellValue(cell);
     assertThat(cellValue).isNotNull().isEmpty();
   }
 

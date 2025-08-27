@@ -1,21 +1,21 @@
-package ch.sbb.importservice.module.bulkimport;
+package ch.sbb.importservice.module.bulkimport.controller;
 
 import ch.sbb.atlas.imports.bulk.BulkImportRequest;
 import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
 import ch.sbb.atlas.imports.bulk.model.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.service.UserService;
-import ch.sbb.importservice.module.bulkimport.exception.LogFileNotFoundException;
 import ch.sbb.importservice.module.bulkimport.api.BulkImportApiV1;
 import ch.sbb.importservice.module.bulkimport.entity.BulkImport;
+import ch.sbb.importservice.module.bulkimport.exception.LogFileNotFoundException;
+import ch.sbb.importservice.module.bulkimport.log.BulkImportLogService;
+import ch.sbb.importservice.module.bulkimport.log.LogFile;
 import ch.sbb.importservice.module.bulkimport.model.BulkImportConfig;
 import ch.sbb.importservice.module.bulkimport.model.BulkImportResult;
 import ch.sbb.importservice.module.bulkimport.service.BulkImportFileValidationService;
 import ch.sbb.importservice.module.bulkimport.service.BulkImportService;
-import ch.sbb.importservice.module.bulkimport.log.BulkImportLogService;
-import ch.sbb.importservice.module.bulkimport.log.LogFile;
-import ch.sbb.importservice.module.bulkimport.template.BulkImportTemplateGenerator;
 import ch.sbb.importservice.module.bulkimport.service.BulkImporterMailService;
+import ch.sbb.importservice.module.bulkimport.template.BulkImportTemplateGenerator;
 import jakarta.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileInputStream;
