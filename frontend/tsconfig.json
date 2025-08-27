@@ -34,5 +34,8 @@
     "strictTemplates": true
   },
   // without this inclusion jasmine expect does not work correctly with intellij
-  "include": ["src/**/*.spec.ts", "src/**/*.ts", "packages/**/*.spec.ts", "packages/**/*.test.ts"]
+  "include": ["src/**/*.spec.ts", "src/**/*.ts",
+    "components/**/*.spec.ts",
+    "components/**/*.test.ts"
+  ]
 }
