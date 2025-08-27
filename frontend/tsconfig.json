@@ -23,8 +23,8 @@
     "esModuleInterop": true,
     "useDefineForClassFields": false,
     "paths": {
-      "@atlas/form": ["packages/form/index.ts"],
-      "@atlas/form/*": ["packages/form/*"]
+      "@atlas/form": ["components/form/index.ts"],
+      "@atlas/form/*": ["components/form/*"]
     }
   },
   "angularCompilerOptions": {
