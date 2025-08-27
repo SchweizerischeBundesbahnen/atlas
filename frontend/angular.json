@@ -3,9 +3,9 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "packages": {
+    "components": {
       "projectType": "library",
-      "sourceRoot": "packages",
+      "sourceRoot": "components",
       "root": "",
       "architect": {
         "test": {
@@ -27,7 +27,7 @@
               "browsers": "ChromeHeadlessNoSandbox",
               "codeCoverage": true,
               "sourceMap": false,
-              "progress": false,
+              "progress": true,
               "watch": false,
               "codeCoverageExclude": [
                 "src/app/api/**",

@@ -1,0 +1,11 @@
+{
+  "name": "@atlas/form",
+  "version": "1.0.0",
+  "devDependencies": {},
+  "scripts": {
+    "test": "ng test components -c ci"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
