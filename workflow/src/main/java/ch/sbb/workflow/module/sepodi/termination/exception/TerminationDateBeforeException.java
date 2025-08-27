@@ -1,4 +1,4 @@
-package ch.sbb.workflow.exception;
+package ch.sbb.workflow.module.sepodi.termination.exception;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;

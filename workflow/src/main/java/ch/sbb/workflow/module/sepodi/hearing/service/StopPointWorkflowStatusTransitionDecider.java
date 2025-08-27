@@ -1,7 +1,7 @@
 package ch.sbb.workflow.module.sepodi.hearing.service;
 
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.workflow.exception.StopPointPointStatusChangeNotAllowedException;
+import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointPointStatusChangeNotAllowedException;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
 

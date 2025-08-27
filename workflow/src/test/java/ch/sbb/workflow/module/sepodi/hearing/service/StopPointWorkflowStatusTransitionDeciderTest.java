@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.workflow.exception.StopPointPointStatusChangeNotAllowedException;
+import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointPointStatusChangeNotAllowedException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 

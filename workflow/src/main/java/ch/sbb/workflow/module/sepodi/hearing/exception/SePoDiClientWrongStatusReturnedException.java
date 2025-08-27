@@ -1,4 +1,4 @@
-package ch.sbb.workflow.exception;
+package ch.sbb.workflow.module.sepodi.hearing.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.Status;

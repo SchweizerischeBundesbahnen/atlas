@@ -1,4 +1,4 @@
-package ch.sbb.workflow.exception;
+package ch.sbb.workflow.module.sepodi.hearing.exception;
 
 import static ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo.builder;
 
@@ -7,17 +7,17 @@ import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.model.exception.AtlasException;
 import java.util.List;
 import java.util.TreeSet;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@RequiredArgsConstructor
-public class StopPointWorkflowExaminantNotFoundException extends AtlasException {
+public class StopPointWorkflowExaminantEmailNotUniqueException extends AtlasException {
+
+  public static final String UNIQUE_EMAIL_MESSAGE = "Email of the workflow Examinants must be unique.";
 
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-        .status(HttpStatus.FORBIDDEN.value())
-        .message("The given examinant was not present on the according workflow")
+        .status(HttpStatus.BAD_REQUEST.value())
+        .message(UNIQUE_EMAIL_MESSAGE)
         .error("StopPoint Workflow error")
         .details(new TreeSet<>(getErrorDetails()))
         .build();
@@ -25,10 +25,10 @@ public class StopPointWorkflowExaminantNotFoundException extends AtlasException 
 
   private List<Detail> getErrorDetails() {
     return List.of(Detail.builder()
-        .message("Examinant Mail not part of workflow")
+        .message("Email is not unique, it is already used by another examinant.")
         .field("examinantMail")
         .displayInfo(builder()
-            .code("WORKFLOW.ERROR.EXAMINANT_MAIL_NOT_FOUND")
+            .code("WORKFLOW.ERROR.EMAIL_MUST_BE_UNIQUE")
             .build())
         .build());
   }

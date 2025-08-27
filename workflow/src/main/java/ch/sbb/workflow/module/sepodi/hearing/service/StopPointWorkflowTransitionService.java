@@ -8,7 +8,7 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.LoggingAspect;
 import ch.sbb.workflow.aop.MethodLogged;
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.exception.TerminationStopPointWorkflowConflictException;
+import ch.sbb.workflow.module.sepodi.termination.exception.TerminationStopPointWorkflowConflictException;
 import ch.sbb.workflow.mapper.PersonMapper;
 import ch.sbb.workflow.module.sepodi.hearing.enity.Decision;
 import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;

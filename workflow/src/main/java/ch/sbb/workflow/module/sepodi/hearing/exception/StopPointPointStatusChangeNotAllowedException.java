@@ -1,25 +1,26 @@
-package ch.sbb.workflow.exception;
+package ch.sbb.workflow.module.sepodi.hearing.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.workflow.module.sepodi.termination.entity.TerminationWorkflowStatus;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import java.text.MessageFormat;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class TerminationStopPointWorkflowStatusChangeNotAllowedException extends AtlasException {
+@Getter
+public class StopPointPointStatusChangeNotAllowedException extends AtlasException {
 
-  private final TerminationWorkflowStatus actualWorkflowStatus;
-  private final TerminationWorkflowStatus currentWorkflowStatus;
+  private final WorkflowStatus actualWorkflowStatus;
+  private final WorkflowStatus currentWorkflowStatus;
 
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.PRECONDITION_FAILED.value())
         .message(MessageFormat.format(
-            "Termination Stop Point Workflow Status cannot be changed from {0} to {1}!", actualWorkflowStatus,
-            currentWorkflowStatus))
+            "Stop Point Workflow Status cannot be changed from {0} to {1}!", actualWorkflowStatus, currentWorkflowStatus))
         .error("Update status not allowed!")
         .build();
   }
