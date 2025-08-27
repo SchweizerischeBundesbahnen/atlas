@@ -1,9 +1,9 @@
-package ch.sbb.importservice.module.bulkimport.job.sepodi.traffic.point.create;
+package ch.sbb.importservice.module.bulkimport.job.sepodi.servicepoint.create;
 
 import ch.sbb.atlas.imports.BulkImportItemExecutionResult;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
-import ch.sbb.importservice.module.bulkimport.client.TrafficPointBulkImportClient;
+import ch.sbb.atlas.imports.model.create.ServicePointCreateCsvModel;
+import ch.sbb.importservice.module.bulkimport.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.module.bulkimport.writer.BulkImportItemWriter;
 import ch.sbb.importservice.module.bulkimport.writer.WriterUtil;
 import java.util.List;
@@ -19,24 +19,25 @@ import org.springframework.stereotype.Service;
 @Service
 @StepScope
 @RequiredArgsConstructor
-public class TrafficPointCreateWriter extends TrafficPointCreate implements BulkImportItemWriter {
+public class ServicePointCreateWriter extends ServicePointCreate implements BulkImportItemWriter {
 
   @Value("#{stepExecution}")
   private StepExecution stepExecution;
 
-  private final TrafficPointBulkImportClient trafficPointBulkImportClient;
+  private final ServicePointBulkImportClient servicePointBulkImportClient;
 
   @Override
   public void accept(Chunk<? extends BulkImportUpdateContainer<?>> items) {
-    List<BulkImportUpdateContainer<TrafficPointCreateCsvModel>> createContainers =
+    log.info("Writing {} items", items.size());
+
+    List<BulkImportUpdateContainer<ServicePointCreateCsvModel>> updateContainers =
         WriterUtil.getContainersWithoutDataValidationErrors(items);
-    WriterUtil.addInNameOfTo(stepExecution, createContainers);
+    WriterUtil.addInNameOfTo(stepExecution, updateContainers);
 
-    log.info("Writing {} containers to service-point-directory", createContainers.size());
+    log.info("Writing {} containers to service-point-directory", updateContainers.size());
 
-    List<BulkImportItemExecutionResult> importResult = trafficPointBulkImportClient.bulkImportCreate(createContainers);
+    List<BulkImportItemExecutionResult> importResult = servicePointBulkImportClient.bulkImportCreate(updateContainers);
 
-    WriterUtil.mapExecutionResultToLogEntry(importResult, createContainers);
+    WriterUtil.mapExecutionResultToLogEntry(importResult, updateContainers);
   }
-
 }
