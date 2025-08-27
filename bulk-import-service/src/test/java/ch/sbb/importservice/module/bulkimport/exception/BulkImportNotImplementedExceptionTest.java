@@ -1,0 +1,25 @@
+package ch.sbb.importservice.module.bulkimport.exception;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.importservice.module.bulkimport.exception.BulkImportNotImplementedException;
+import ch.sbb.importservice.module.bulkimport.model.BulkImportConfig;
+import org.junit.jupiter.api.Test;
+
+class BulkImportNotImplementedExceptionTest {
+
+  @Test
+  void shouldRespondWithScenarioNotImplemented() {
+    BulkImportNotImplementedException exception = new BulkImportNotImplementedException(
+        BulkImportConfig.builder()
+            .application(ApplicationType.SEPODI)
+            .objectType(BusinessObjectType.SERVICE_POINT)
+            .importType(ImportType.CREATE)
+            .build());
+    assertThat(exception.getMessage()).isEqualTo("BulkImport Scenario BulkImportConfig(application=SEPODI, "
+        + "objectType=SERVICE_POINT, importType=CREATE) not implemented yet");
+  }
+}
