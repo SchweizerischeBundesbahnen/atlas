@@ -35,8 +35,7 @@
                 "src/polyfills.ts"
               ],
               "reporters": [
-                "dots",
-                "sonarqube"
+                "progress"
               ]
             }
           }
@@ -178,8 +177,7 @@
                 "src/polyfills.ts"
               ],
               "reporters": [
-                "dots",
-                "sonarqube"
+                "progress"
               ]
             }
           }
