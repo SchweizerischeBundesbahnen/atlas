@@ -1,0 +1,11 @@
+package ch.sbb.importservice.module.bulkimport.client;
+
+import ch.sbb.atlas.api.client.TokenPassingFeignClientConfig;
+import ch.sbb.atlas.api.servicepoint.ServicePointBulkImportApi;
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(name = "servicePointBulkImportClient", url = "${atlas.client.gateway.url}", path = "service-point-directory",
+    configuration = TokenPassingFeignClientConfig.class)
+public interface ServicePointBulkImportClient extends ServicePointBulkImportApi {
+
+}
