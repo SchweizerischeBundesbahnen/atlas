@@ -1,7 +1,7 @@
 package ch.sbb.workflow.module.sepodi.termination.entity;
 
-import ch.sbb.workflow.exception.TerminationStopPointWorkflowPreconditionStatusException;
-import ch.sbb.workflow.exception.TerminationStopPointWorkflowStatusChangeNotAllowedException;
+import ch.sbb.workflow.module.sepodi.termination.exception.TerminationStopPointWorkflowPreconditionStatusException;
+import ch.sbb.workflow.module.sepodi.termination.exception.TerminationStopPointWorkflowStatusChangeNotAllowedException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Set;
 

@@ -1,14 +1,14 @@
 package ch.sbb.workflow.module.sepodi.hearing.service;
 
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.exception.StopPointWorkflowExaminantNotFoundException;
-import ch.sbb.workflow.exception.StopPointWorkflowPinCodeInvalidException;
+import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
+import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowExaminantNotFoundException;
+import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowPinCodeInvalidException;
+import ch.sbb.workflow.module.sepodi.hearing.mail.StopPointWorkflowNotificationService;
+import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.otp.entity.Otp;
 import ch.sbb.workflow.otp.helper.OtpHelper;
 import ch.sbb.workflow.otp.repository.OtpRepository;
-import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
-import ch.sbb.workflow.module.sepodi.hearing.mail.StopPointWorkflowNotificationService;
-import ch.sbb.workflow.module.sepodi.hearing.model.sepodi.OtpVerificationModel;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;

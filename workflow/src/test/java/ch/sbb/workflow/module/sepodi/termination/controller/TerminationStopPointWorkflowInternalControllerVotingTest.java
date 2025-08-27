@@ -13,7 +13,7 @@ import ch.sbb.atlas.api.servicepoint.UpdateTerminationServicePointModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.user.administration.security.service.ServicePointTerminationBasedUserAdministrationService;
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
-import ch.sbb.workflow.exception.TerminationStopPointWorkflowPreconditionStatusException;
+import ch.sbb.workflow.module.sepodi.termination.exception.TerminationStopPointWorkflowPreconditionStatusException;
 import ch.sbb.workflow.module.sepodi.client.SePoDiAdminClient;
 import ch.sbb.workflow.module.sepodi.hearing.enity.JudgementType;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationDecisionPerson;

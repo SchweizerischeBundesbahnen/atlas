@@ -7,7 +7,7 @@ import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.workflow.module.sepodi.client.SePoDiAdminClient;
 import ch.sbb.workflow.module.sepodi.client.SePoDiClient;
 import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
-import ch.sbb.workflow.exception.SePoDiClientWrongStatusReturnedException;
+import ch.sbb.workflow.module.sepodi.hearing.exception.SePoDiClientWrongStatusReturnedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
