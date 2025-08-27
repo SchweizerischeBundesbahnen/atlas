@@ -1,4 +1,4 @@
-package ch.sbb.importservice.module.bulkimport.job.sepodi.traffic.point.update;
+package ch.sbb.importservice.module.bulkimport.job.sepodi.trafficpoint.update;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.TrafficPointUpdateCsvModel;

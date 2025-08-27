@@ -1,4 +1,4 @@
-package ch.sbb.importservice.module.bulkimport.job.sepodi.traffic.point.create;
+package ch.sbb.importservice.module.bulkimport.job.sepodi.trafficpoint.create;
 
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.model.create.TrafficPointCreateCsvModel;
