@@ -6,11 +6,9 @@
     "docker": "sh ./prepare-docker.sh",
     "publish-frontend": "sh ./npm_publish.sh",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage",
-    "testasd": "ng test --include ../packages --browsers=ChromeHeadlessNoSandbox --code-coverage",
-    "test-all": "ng test --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage && ng test --no-watch --include ../packages --browsers=ChromeHeadlessNoSandbox --code-coverage",
-    "test-dir": "ng test --include src/app/pages/prm --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage",
-    "test:ci": "ng test --configuration ci",
+    "test": "ng test --configuration ci",
+    "test:packages": "ng test components -c ci",
+    "test:atlas": "ng test atlas-frontend -c ci",
     "test-debug": "ng test --watch true --browsers=Chrome",
     "test-dir-debug": "ng test --watch true --include src/app/pages/user-profile --browsers=Chrome",
     "lint": "ng lint",
@@ -115,6 +113,6 @@
     "typescript": "^5.8.2"
   },
   "workspaces": [
-    "packages/form"
+    "components/form"
   ]
 }

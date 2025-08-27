@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FieldExample } from '../../../src/app/core/form-components/text-field/field-example';
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { InfoIconComponent } from 'packages/form/info-icon/info-icon.component';
-import { InfoLinkDirective } from 'packages/form/info-icon/info-link.directive';
+import { InfoIconComponent } from '../info-icon/info-icon.component';
+import { InfoLinkDirective } from '../info-icon/info-link.directive';
 
 @Component({
   selector: 'app-atlas-label-field',
