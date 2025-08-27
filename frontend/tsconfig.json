@@ -36,6 +36,6 @@
   // without this inclusion jasmine expect does not work correctly with intellij
   "include": ["src/**/*.spec.ts", "src/**/*.ts",
     "components/**/*.spec.ts",
-    "components/**/*.test.ts"
+    "components/**/*.ts"
   ]
 }
