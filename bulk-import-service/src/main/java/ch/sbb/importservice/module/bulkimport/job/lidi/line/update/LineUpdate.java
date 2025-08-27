@@ -1,0 +1,22 @@
+package ch.sbb.importservice.module.bulkimport.job.lidi.line.update;
+
+import ch.sbb.atlas.imports.bulk.model.BusinessObjectType;
+import ch.sbb.atlas.imports.bulk.model.ImportType;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.importservice.module.bulkimport.model.BulkImportConfig;
+import ch.sbb.importservice.module.bulkimport.service.BulkImportType;
+
+public abstract class LineUpdate implements BulkImportType {
+
+  public static final BulkImportConfig CONFIG = BulkImportConfig.builder()
+      .application(ApplicationType.LIDI)
+      .objectType(BusinessObjectType.LINE)
+      .importType(ImportType.UPDATE)
+      .build();
+
+  @Override
+  public BulkImportConfig getBulkImportConfig() {
+    return CONFIG;
+  }
+
+}
