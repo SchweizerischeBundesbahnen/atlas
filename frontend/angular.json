@@ -11,10 +11,10 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "packages/form/test.ts",
+            "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "packages/form/karma.asd.conf.js",
+            "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
             "styles": [
               "src/styles/styles.scss"
