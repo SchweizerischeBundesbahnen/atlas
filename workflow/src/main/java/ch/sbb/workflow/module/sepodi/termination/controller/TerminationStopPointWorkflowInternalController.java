@@ -5,7 +5,7 @@ import static ch.sbb.workflow.module.sepodi.termination.TerminationWorkflowHelpe
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.redact.Redacted;
 import ch.sbb.atlas.workflow.termination.TerminationStopPointFeatureTogglingService;
-import ch.sbb.workflow.exception.TerminationDecisionPersonException;
+import ch.sbb.workflow.module.sepodi.termination.exception.TerminationDecisionPersonException;
 import ch.sbb.workflow.module.sepodi.termination.api.TerminationStopPointWorkflowApi;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationDecisionPerson;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationStopPointWorkflow;

@@ -15,7 +15,7 @@ import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.workflow.exception.SePoDiClientWrongStatusReturnedException;
+import ch.sbb.workflow.module.sepodi.hearing.exception.SePoDiClientWrongStatusReturnedException;
 import ch.sbb.workflow.module.sepodi.client.SePoDiAdminClient;
 import ch.sbb.workflow.module.sepodi.client.SePoDiClient;
 import ch.sbb.workflow.module.sepodi.hearing.enity.StopPointWorkflow;
