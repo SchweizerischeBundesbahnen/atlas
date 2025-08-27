@@ -10,6 +10,7 @@
     "testasd": "ng test --include ../packages --browsers=ChromeHeadlessNoSandbox --code-coverage",
     "test-all": "ng test --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage && ng test --no-watch --include ../packages --browsers=ChromeHeadlessNoSandbox --code-coverage",
     "test-dir": "ng test --include src/app/pages/prm --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage",
+    "test:ci": "ng test --configuration ci",
     "test-debug": "ng test --watch true --browsers=Chrome",
     "test-dir-debug": "ng test --watch true --include src/app/pages/user-profile --browsers=Chrome",
     "lint": "ng lint",
