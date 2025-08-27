@@ -1,6 +1,7 @@
-package ch.sbb.workflow.exception;
+package ch.sbb.workflow.module.sepodi.hearing.exception;
 
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.exception.BaseWorkflowPreconditionStatusException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package ch.sbb.workflow.exception;
+package ch.sbb.workflow.module.sepodi.hearing.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

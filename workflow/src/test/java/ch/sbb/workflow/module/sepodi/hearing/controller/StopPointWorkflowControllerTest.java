@@ -27,7 +27,7 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
+import ch.sbb.workflow.module.sepodi.hearing.exception.StopPointWorkflowExaminantEmailNotUniqueException;
 import ch.sbb.workflow.module.sepodi.hearing.StopPointWorkflowTestData;
 import ch.sbb.workflow.module.sepodi.hearing.enity.Decision;
 import ch.sbb.workflow.module.sepodi.hearing.enity.DecisionType;

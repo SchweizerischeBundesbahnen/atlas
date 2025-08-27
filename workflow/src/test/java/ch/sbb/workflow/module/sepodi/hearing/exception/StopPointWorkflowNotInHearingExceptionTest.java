@@ -1,16 +1,15 @@
-package ch.sbb.workflow.exception;
+package ch.sbb.workflow.module.sepodi.hearing.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-class StopPointWorkflowPinCodeInvalidExceptionTest {
+class StopPointWorkflowNotInHearingExceptionTest {
 
   @Test
   void shouldHaveCorrectErrorCode() {
-    StopPointWorkflowPinCodeInvalidException exception = new StopPointWorkflowPinCodeInvalidException();
+    StopPointWorkflowNotInHearingException exception = new StopPointWorkflowNotInHearingException();
     assertThat(exception.getErrorResponse().getDetails().getFirst().getDisplayInfo().getCode()).isEqualTo(
-        "WORKFLOW.ERROR.PIN_CODE_INVALID");
+        "WORKFLOW.ERROR.NOT_IN_HEARING");
   }
-
 }

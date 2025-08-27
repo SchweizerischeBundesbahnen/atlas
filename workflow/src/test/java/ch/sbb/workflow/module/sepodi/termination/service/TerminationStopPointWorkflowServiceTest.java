@@ -26,9 +26,9 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableTyp
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.workflow.aop.LoggingAspect;
 import ch.sbb.workflow.exception.SePoDiClientException;
-import ch.sbb.workflow.exception.TerminationDateBeforeException;
-import ch.sbb.workflow.exception.TerminationStopPointWorkflowAlreadyInStatusException;
-import ch.sbb.workflow.exception.TerminationStopPointWorkflowPreconditionStatusException;
+import ch.sbb.workflow.module.sepodi.termination.exception.TerminationDateBeforeException;
+import ch.sbb.workflow.module.sepodi.termination.exception.TerminationStopPointWorkflowAlreadyInStatusException;
+import ch.sbb.workflow.module.sepodi.termination.exception.TerminationStopPointWorkflowPreconditionStatusException;
 import ch.sbb.workflow.module.sepodi.client.SePoDiAdminClient;
 import ch.sbb.workflow.module.sepodi.hearing.enity.JudgementType;
 import ch.sbb.workflow.module.sepodi.termination.entity.TerminationDecision;
