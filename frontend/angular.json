@@ -26,7 +26,7 @@
               "karmaConfig": "components/karma.conf.js",
               "browsers": "ChromeHeadlessNoSandbox",
               "codeCoverage": true,
-              "sourceMap": false,
+              "sourceMap": true,
               "progress": true,
               "watch": false,
               "codeCoverageExclude": [
@@ -150,8 +150,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "include": [
-              "src/**/*.spec.ts",
-              "packages/**/*.spec.ts"
+              "src/**/*.spec.ts"
             ],
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
@@ -169,7 +168,7 @@
               "karmaConfig": "karma.conf.js",
               "browsers": "ChromeHeadlessNoSandbox",
               "codeCoverage": true,
-              "sourceMap": false,
+              "sourceMap": true,
               "progress": false,
               "watch": false,
               "codeCoverageExclude": [
