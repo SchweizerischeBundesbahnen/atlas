@@ -4,8 +4,6 @@ import { AtlasLabelFieldComponent } from './atlas-label-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { translateServiceProvider } from '../../../src/app/app.testing.mocks';
 import { provideHttpClient } from '@angular/common/http';
-import { InfoIconComponent } from '@atlas/form';
-import { InfoLinkDirective } from '@atlas/form/info-icon/info-link.directive';
 
 describe('AtlasLabelFieldComponent', () => {
   let component: AtlasLabelFieldComponent;
@@ -13,7 +11,7 @@ describe('AtlasLabelFieldComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AtlasLabelFieldComponent, InfoIconComponent, InfoLinkDirective],
+      imports: [AtlasLabelFieldComponent],
       providers: [TranslatePipe, translateServiceProvider, provideHttpClient()],
     }).compileComponents();
 
