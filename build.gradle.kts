@@ -1,11 +1,11 @@
 plugins {
-    id("org.sonarqube") version "6.2.0.5505"
+    id("org.sonarqube") version "6.3.1.5724"
 }
 
 group = "ch.sbb.atlas"
 version = "2.809.0"
 
-extra["awsS3Version"] = "2.32.29"
+extra["awsS3Version"] = "2.32.31"
 
 extra["okhttpVersion"] = "5.1.0"
 
