@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FieldExample } from '../../../src/app/core/form-components/text-field/field-example';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { InfoIconComponent } from '../info-icon/info-icon.component';
 import { InfoLinkDirective } from '../info-icon/info-link.directive';
 
@@ -10,12 +10,10 @@ import { InfoLinkDirective } from '../info-icon/info-link.directive';
   templateUrl: './atlas-label-field.component.html',
   imports: [
     NgClass,
-    NgIf,
     InfoIconComponent,
     InfoLinkDirective,
-    NgFor,
-    TranslatePipe,
-  ],
+    TranslatePipe
+],
   providers: [TranslatePipe],
 })
 export class AtlasLabelFieldComponent {
