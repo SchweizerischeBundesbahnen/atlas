@@ -14,7 +14,7 @@
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
+            "karmaConfig": "components/karma.conf.js",
             "inlineStyleLanguage": "scss",
             "styles": [
               "src/styles/styles.scss"
@@ -23,7 +23,7 @@
           },
           "configurations": {
             "ci": {
-              "karmaConfig": "karma.conf.js",
+              "karmaConfig": "components/karma.conf.js",
               "browsers": "ChromeHeadlessNoSandbox",
               "codeCoverage": true,
               "sourceMap": false,
@@ -35,7 +35,8 @@
                 "src/polyfills.ts"
               ],
               "reporters": [
-                "progress"
+                "progress",
+                "sonarqube"
               ]
             }
           }
@@ -177,7 +178,8 @@
                 "src/polyfills.ts"
               ],
               "reporters": [
-                "progress"
+                "progress",
+                "sonarqube"
               ]
             }
           }
