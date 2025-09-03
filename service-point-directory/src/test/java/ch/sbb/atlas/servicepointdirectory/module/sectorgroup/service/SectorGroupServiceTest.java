@@ -205,7 +205,7 @@ class SectorGroupServiceTest {
         toCreate.getTrafficPointSloid());
 
     ReadSectorGroupVersionModel result =
-        sectorGroupService.createSectorGroup(toCreate, sloids);
+        sectorGroupService.createSectorGroup(toCreate, sloids, List.of());
 
     assertThat(sectorGroupVersionRepository.findById(result.getId())).isPresent();
     assertThat(result.getSloid()).isEqualTo("ch:1:sloid:sector:1:0:1");
@@ -238,7 +238,7 @@ class SectorGroupServiceTest {
         .build();
 
     assertThatThrownBy(() ->
-        sectorGroupService.createSectorGroup(toCreate, sloids)
+        sectorGroupService.createSectorGroup(toCreate, sloids, List.of())
     ).isInstanceOf(SectorNotExistingException.class);
   }
 
@@ -271,7 +271,7 @@ class SectorGroupServiceTest {
         .build();
 
     assertThatThrownBy(() ->
-        sectorGroupService.createSectorGroup(toCreate, List.of(sloid, sloid2))
+        sectorGroupService.createSectorGroup(toCreate, List.of(sloid, sloid2), List.of())
     ).isInstanceOf(SloidNotFoundException.class);
   }
 
@@ -307,7 +307,7 @@ class SectorGroupServiceTest {
         .build();
 
     assertThatThrownBy(() ->
-        sectorGroupService.createSectorGroup(toCreate, List.of("s1", "s2"))
+        sectorGroupService.createSectorGroup(toCreate, List.of("s1", "s2"), List.of())
     ).isInstanceOf(SloidsNotEqualException.class);
   }
 
