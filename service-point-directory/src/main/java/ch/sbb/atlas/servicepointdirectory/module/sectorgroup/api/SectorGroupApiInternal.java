@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Tag(name = AtlasApiConstants.INTERNAL_API_TAG_PREFIX + "Sector Groups")
 @RequestMapping("internal/sector-groups")
 @Validated
-@Hidden
+@Hidden // ATLAS-3130 To Remove once public, add link to sector restdoc in SePoDi
 public interface SectorGroupApiInternal {
 
   @GetMapping

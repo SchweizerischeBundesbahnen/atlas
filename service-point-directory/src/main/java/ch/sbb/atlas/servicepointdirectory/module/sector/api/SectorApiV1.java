@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Tag(name = "Sectors")
 @RequestMapping("v1/sectors")
 @Validated
-@Hidden
+@Hidden // ATLAS-3130 To Remove once public, add link to sector restdoc in SePoDi
 public interface SectorApiV1 {
 
   @GetMapping("{sloid}")
