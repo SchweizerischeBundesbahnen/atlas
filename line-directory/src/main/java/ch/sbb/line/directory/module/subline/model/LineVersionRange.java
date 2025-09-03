@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.model;
+package ch.sbb.line.directory.module.subline.model;
 
 import ch.sbb.line.directory.module.line.entity.LineVersion;
 import lombok.AllArgsConstructor;

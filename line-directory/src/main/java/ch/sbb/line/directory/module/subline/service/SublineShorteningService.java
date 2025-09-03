@@ -2,12 +2,12 @@ package ch.sbb.line.directory.module.subline.service;
 
 import ch.sbb.atlas.api.lidi.AffectedSublinesModel;
 import ch.sbb.atlas.model.DateRange;
+import ch.sbb.line.directory.model.SublineVersionRange;
 import ch.sbb.line.directory.module.line.entity.LineVersion;
+import ch.sbb.line.directory.module.line.repository.LineVersionRepository;
 import ch.sbb.line.directory.module.subline.entity.SublineVersion;
 import ch.sbb.line.directory.module.subline.model.AffectedSublinesData;
-import ch.sbb.line.directory.model.LineVersionRange;
-import ch.sbb.line.directory.model.SublineVersionRange;
-import ch.sbb.line.directory.module.line.repository.LineVersionRepository;
+import ch.sbb.line.directory.module.subline.model.LineVersionRange;
 import ch.sbb.line.directory.module.subline.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
